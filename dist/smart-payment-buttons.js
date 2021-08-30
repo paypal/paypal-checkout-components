@@ -2491,17 +2491,44 @@ window.spb = function(modules) {
         var LSAT_UPGRADE_EXCLUDED_MERCHANTS = [ "AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz", "Aco-yrRKihknb5vDBbDOdtYywjYMEPaM7mQg6kev8VDAz01lLA88J4oAUnF4UV9F_InqkqX7K62_jOjx", "AeAiB9K2rRsTXsFKZt4FMAQ8a6VEu4hijducis3a8NcIjV2J_c5I2H2PYhT3qCOwxT8P4l17skqgBlmg", "AXKrWRqEvxiDoUIZQaD1tFi2QhtmhWve3yTDBi58bxWjieYJ9j73My-yJmM7hP00JvOXu4YD6L2eaI5O", "AfRTnXv_QcuVyalbUxThtgk1xTygygsdevlBUTz36dDgD6XZNHp3Ym99a-mjMaokXyTTiI8VJ9mRgaFB", "AejlsIlg_KjKjmLKqxJqFIAwn3ZP02emx41Z2It4IfirQ-nNgZgzWk1CU-Q1QDbYUXjWoYJZ4dq1S2pK", "AQXD7-m_2yMo-5AxJ1fQaPeEWYDE7NZ9XrLzEXeiPLTHDu9vfe_T0foF8BoX8K5cMfXuRDysUEmhw-8Z" ];
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
-        function httpTransport(_ref) {
-            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-            return promise_ZalgoPromise.try((function() {
-                var hasHeaders = headers && Object.keys(headers).length;
-                if (window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob) try {
-                    var blob = new Blob([ JSON.stringify(json) ], {
+        var sendBeacon = function(_ref2) {
+            var url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+            try {
+                var json = JSON.stringify(data);
+                if (useBlob) {
+                    var blob = new Blob([ json ], {
                         type: "application/json"
                     });
                     return window.navigator.sendBeacon(url, blob);
-                } catch (e) {}
-                return request({
+                }
+                return window.navigator.sendBeacon(url, json);
+            } catch (e) {
+                return !1;
+            }
+        };
+        function httpTransport(_ref) {
+            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+            return promise_ZalgoPromise.try((function() {
+                var beaconResult = !1;
+                (function(_ref) {
+                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                    var hasHeaders = headers && Object.keys(headers).length;
+                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                })({
+                    headers: headers,
+                    enableSendBeacon: enableSendBeacon
+                }) && (beaconResult = function(url) {
+                    return "https://api2.amplitude.com/2/httpapi" === url;
+                }(url) ? sendBeacon({
+                    url: url,
+                    data: json,
+                    useBlob: !1
+                }) : sendBeacon({
+                    url: url,
+                    data: json,
+                    useBlob: !0
+                }));
+                return beaconResult || request({
                     url: url,
                     method: method,
                     headers: headers,
@@ -2553,9 +2580,7 @@ window.spb = function(modules) {
                         amplitudeApiKey && transport({
                             method: "POST",
                             url: "https://api2.amplitude.com/2/httpapi",
-                            headers: {
-                                "content-type": "application/json"
-                            },
+                            headers: {},
                             json: {
                                 api_key: amplitudeApiKey,
                                 events: tracking.map((function(payload) {
@@ -2564,7 +2589,8 @@ window.spb = function(modules) {
                                         event_properties: payload
                                     }, payload);
                                 }))
-                            }
+                            },
+                            enableSendBeacon: enableSendBeacon
                         }).catch(src_util_noop);
                         events = [];
                         tracking = [];
@@ -2627,6 +2653,9 @@ window.spb = function(modules) {
                     immediateFlush();
                 }));
                 window.addEventListener("unload", (function() {
+                    immediateFlush();
+                }));
+                window.addEventListener("pagehide", (function() {
                     immediateFlush();
                 }));
             }
@@ -2708,7 +2737,7 @@ window.spb = function(modules) {
         function promiseNoop() {
             return promise_ZalgoPromise.resolve();
         }
-        function sendBeacon(url) {
+        function util_sendBeacon(url) {
             var img = document.createElement("img");
             img.src = url;
             img.style.visibility = "hidden";
@@ -3011,7 +3040,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.49", _headers15);
+            _headers15["x-app-version"] = "5.0.50", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -5180,84 +5209,86 @@ window.spb = function(modules) {
                 }));
                 return {
                     click: function() {
-                        if (!win && supportsPopups()) try {
-                            win = function(_ref) {
-                                var win = function(win) {
-                                    if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-                                    return win;
-                                }(function(url, options) {
-                                    var width = (options = options || {}).width, height = options.height;
-                                    var top = 0;
-                                    var left = 0;
-                                    width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
-                                    height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-                                    width && height && (options = _extends({
-                                        top: top,
-                                        left: left,
-                                        width: width,
-                                        height: height,
-                                        status: 1,
-                                        toolbar: 0,
-                                        menubar: 0,
-                                        resizable: 1,
-                                        scrollbars: 1
-                                    }, options));
-                                    var name = options.name || "";
-                                    delete options.name;
-                                    var params = Object.keys(options).map((function(key) {
-                                        if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-                                        var item;
-                                    })).filter(Boolean).join(",");
-                                    var win;
-                                    try {
-                                        win = window.open("", name, params);
-                                    } catch (err) {
-                                        throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
-                                    }
-                                    if (isWindowClosed(win)) {
-                                        var err;
-                                        throw new dom_PopupOpenError("Can not open popup window - blocked");
-                                    }
-                                    window.addEventListener("unload", (function() {
-                                        return win.close();
+                        return promise_ZalgoPromise.try((function() {
+                            if (!win && supportsPopups()) try {
+                                win = function(_ref) {
+                                    var win = function(win) {
+                                        if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+                                        return win;
+                                    }(function(url, options) {
+                                        var width = (options = options || {}).width, height = options.height;
+                                        var top = 0;
+                                        var left = 0;
+                                        width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+                                        height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+                                        width && height && (options = _extends({
+                                            top: top,
+                                            left: left,
+                                            width: width,
+                                            height: height,
+                                            status: 1,
+                                            toolbar: 0,
+                                            menubar: 0,
+                                            resizable: 1,
+                                            scrollbars: 1
+                                        }, options));
+                                        var name = options.name || "";
+                                        delete options.name;
+                                        var params = Object.keys(options).map((function(key) {
+                                            if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                                            var item;
+                                        })).filter(Boolean).join(",");
+                                        var win;
+                                        try {
+                                            win = window.open("", name, params);
+                                        } catch (err) {
+                                            throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                                        }
+                                        if (isWindowClosed(win)) {
+                                            var err;
+                                            throw new dom_PopupOpenError("Can not open popup window - blocked");
+                                        }
+                                        window.addEventListener("unload", (function() {
+                                            return win.close();
+                                        }));
+                                        return win;
+                                    }(0, {
+                                        width: _ref.width,
+                                        height: _ref.height
                                     }));
+                                    var doc = win.document;
+                                    !function(win, el) {
+                                        var tag = el.tagName.toLowerCase();
+                                        if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                                        var documentElement = win.document.documentElement;
+                                        for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+                                        for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+                                    }(win, node_node(SpinnerPage, {
+                                        nonce: getNonce()
+                                    }).render(dom({
+                                        doc: doc
+                                    })));
                                     return win;
-                                }(0, {
-                                    width: _ref.width,
-                                    height: _ref.height
-                                }));
-                                var doc = win.document;
-                                !function(win, el) {
-                                    var tag = el.tagName.toLowerCase();
-                                    if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                                    var documentElement = win.document.documentElement;
-                                    for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
-                                    for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
-                                }(win, node_node(SpinnerPage, {
-                                    nonce: getNonce()
-                                }).render(dom({
-                                    doc: doc
-                                })));
-                                return win;
-                            }({
-                                width: 500,
-                                height: 590
-                            });
-                        } catch (err) {
-                            logger_getLogger().warn("popup_open_error_iframe_fallback", {
-                                err: stringifyError(err)
-                            });
-                            if (!(err instanceof dom_PopupOpenError)) throw err;
-                            context = "iframe";
-                        }
-                        if (onClick) return promise_ZalgoPromise.try((function() {
-                            return !onClick || onClick({
-                                fundingSource: fundingSource
-                            });
-                        })).then((function(valid) {
-                            win && !valid && win.close();
+                                }({
+                                    width: 500,
+                                    height: 590
+                                });
+                            } catch (err) {
+                                logger_getLogger().warn("popup_open_error_iframe_fallback", {
+                                    err: stringifyError(err)
+                                });
+                                if (!(err instanceof dom_PopupOpenError)) throw err;
+                                context = "iframe";
+                            }
+                            if (onClick) return promise_ZalgoPromise.try((function() {
+                                return !onClick || onClick({
+                                    fundingSource: fundingSource
+                                });
+                            })).then((function(valid) {
+                                win && !valid && win.close();
+                            }));
+                            start();
                         }));
-                        start();
                     },
                     start: start,
                     close: close
@@ -6243,6 +6274,7 @@ window.spb = function(modules) {
             } catch (err) {}
             return !1;
         }
+        var nativeEligibilityResults;
         function canUsePopupAppSwitch(_ref4) {
             var fundingSource = _ref4.fundingSource;
             return !(!isIOSSafari() && !isAndroidChrome() || fundingSource && "paypal" !== fundingSource && "venmo" !== fundingSource);
@@ -6787,20 +6819,156 @@ window.spb = function(modules) {
                         var eligibleReasons = [ "isUserAgentEligible", "isBrowserMobileAndroid" ];
                         var ineligibleReasons = eligibility && (null == (_eligibility$fundingS = eligibility[fundingSource]) || null == (_eligibility$fundingS2 = _eligibility$fundingS.ineligibilityReason) ? void 0 : _eligibility$fundingS2.split(","));
                         var eligible = null == ineligibleReasons ? void 0 : ineligibleReasons.every((function(reason) {
-                            return -1 !== (null == eligibleReasons ? void 0 : eligibleReasons.indexOf(reason));
+                            return !reason || -1 !== (null == eligibleReasons ? void 0 : eligibleReasons.indexOf(reason));
                         }));
                         if (ineligibleReasons && !eligible) {
                             var _getLogger$info$track;
                             logger_getLogger().info("native_appswitch_ineligible", {
                                 orderID: orderID
                             }).track((_getLogger$info$track = {}, _getLogger$info$track.state_name = "smart_button", 
-                            _getLogger$info$track.transition_name = "app_switch_ineligible", _getLogger$info$track)).flush();
+                            _getLogger$info$track.transition_name = "app_switch_ineligible", _getLogger$info$track.info_msg = null == ineligibleReasons ? void 0 : ineligibleReasons.join(","), 
+                            _getLogger$info$track)).flush();
                             return !1;
                         }
                         return !0;
                     }));
                 })));
             }));
+        }
+        function initNativeQRCode(_ref2) {
+            var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, fundingSource = _ref2.fundingSource, clean = _ref2.clean, callbacks = _ref2.callbacks, sessionUID = _ref2.sessionUID;
+            var createOrder = props.createOrder, onClick = props.onClick;
+            var QRCode = _ref2.components.QRCode;
+            var onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onError = callbacks.onError, onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange;
+            var qrCodeRenderTarget = window.xprops.getParent();
+            var pageUrl = window.xprops.getPageUrl();
+            var stickinessID = getStorageID();
+            return {
+                click: src_util_noop,
+                start: function() {
+                    var _getLogger$info$track2;
+                    logger_getLogger().info("VenmoDesktopPay_qrcode").track((_getLogger$info$track2 = {}, 
+                    _getLogger$info$track2.transition_name = "qr_shown", _getLogger$info$track2)).flush();
+                    var onQRClose = function(event) {
+                        void 0 === event && (event = "closeQRCode");
+                        return promise_ZalgoPromise.try((function() {
+                            var _getLogger$info$track3;
+                            logger_getLogger().info("VenmoDesktopPay_qrcode_closing_" + event).track((_getLogger$info$track3 = {}, 
+                            _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = event ? "qr_closing_" + event : "qr_closing", 
+                            _getLogger$info$track3)).flush();
+                            onClose();
+                        }));
+                    };
+                    var validatePromise = promise_ZalgoPromise.try((function() {
+                        return !onClick || onClick({
+                            fundingSource: fundingSource
+                        });
+                    })).then((function(valid) {
+                        if (!valid) {
+                            var _getLogger$info$track4;
+                            logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track4 = {}, 
+                            _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "native_onclick_invalid", 
+                            _getLogger$info$track4)).flush();
+                        }
+                        return valid;
+                    }));
+                    return promise_ZalgoPromise.hash({
+                        valid: validatePromise,
+                        eligible: getEligibility({
+                            fundingSource: fundingSource,
+                            props: props,
+                            serviceData: serviceData,
+                            validatePromise: validatePromise
+                        })
+                    }).then((function(_ref3) {
+                        if (_ref3.valid) return _ref3.eligible ? createOrder().then((function(orderID) {
+                            var url = getNativeUrl({
+                                props: props,
+                                serviceData: serviceData,
+                                config: config,
+                                fundingSource: fundingSource,
+                                sessionUID: sessionUID,
+                                orderID: orderID,
+                                stickinessID: stickinessID,
+                                pageUrl: pageUrl
+                            });
+                            var qrCodeComponentInstance = QRCode({
+                                cspNonce: config.cspNonce,
+                                qrPath: url,
+                                state: "qr_default",
+                                onClose: onQRClose
+                            });
+                            function updateQRCodeComponentState(newState) {
+                                return qrCodeComponentInstance.updateProps(_extends({
+                                    cspNonce: config.cspNonce,
+                                    qrPath: url,
+                                    onClose: onQRClose
+                                }, newState));
+                            }
+                            var connection = connectNative({
+                                config: config,
+                                sessionUID: sessionUID,
+                                callbacks: {
+                                    onInit: function() {
+                                        return updateQRCodeComponentState({
+                                            state: "qr_scanned"
+                                        }).then((function() {
+                                            return onInit();
+                                        }));
+                                    },
+                                    onApprove: function(res) {
+                                        return updateQRCodeComponentState({
+                                            state: "qr_authorized"
+                                        }).then((function() {
+                                            return function(event) {
+                                                onQRClose("onApprove");
+                                                return promise_ZalgoPromise.delay(2e3).then((function() {
+                                                    return promise_ZalgoPromise.try((function() {
+                                                        qrCodeComponentInstance.close();
+                                                        return onDestroy();
+                                                    }));
+                                                })).then(src_util_noop);
+                                            }().then((function() {
+                                                return onApprove(res);
+                                            }));
+                                        }));
+                                    },
+                                    onCancel: function() {
+                                        return updateQRCodeComponentState({
+                                            state: "qr_error",
+                                            errorText: "The authorization was canceled"
+                                        }).then((function() {
+                                            return onCancel();
+                                        }));
+                                    },
+                                    onError: function(res) {
+                                        return updateQRCodeComponentState({
+                                            state: "qr_authorized",
+                                            errorText: res.data.message
+                                        }).then((function() {
+                                            return onError(res);
+                                        }));
+                                    },
+                                    onFallback: function(_ref4) {
+                                        var data = _ref4.data;
+                                        return updateQRCodeComponentState({
+                                            state: "qr_error",
+                                            errorText: "The authorization was canceled"
+                                        }).then((function() {
+                                            return onFallback({
+                                                optOut: data
+                                            });
+                                        }));
+                                    },
+                                    onShippingChange: onShippingChange
+                                }
+                            });
+                            clean.register(connection.cancel);
+                            return qrCodeComponentInstance.renderTo(qrCodeRenderTarget, "body");
+                        })) : onFallback().then(src_util_noop);
+                    }));
+                }
+            };
         }
         function onPostMessage(win, domain, event, handler) {
             return paypal.postRobot.once(event, {
@@ -6832,18 +7000,365 @@ window.spb = function(modules) {
                         merchantID: merchantID[0],
                         domain: merchantDomain
                     }).then((function(eligibility) {
+                        var _eligibility$fundingS;
+                        var ineligibilityReason = eligibility && null != (_eligibility$fundingS = eligibility[fundingSource]) && _eligibility$fundingS.ineligibilityReason ? eligibility[fundingSource].ineligibilityReason : "";
                         if (!eligibility || !eligibility[fundingSource] || !eligibility[fundingSource].eligibility) {
                             var _getLogger$info$track2;
                             logger_getLogger().info("native_appswitch_ineligible", {
                                 orderID: orderID
                             }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.state_name = "smart_button", 
-                            _getLogger$info$track2.transition_name = "app_switch_ineligible", _getLogger$info$track2)).flush();
+                            _getLogger$info$track2.transition_name = "app_switch_ineligible", _getLogger$info$track2.info_msg = ineligibilityReason, 
+                            _getLogger$info$track2)).flush();
                             return !1;
                         }
                         return !0;
                     }));
                 })));
             }));
+        }
+        function initNativePopup(_ref2) {
+            var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, fundingSource = _ref2.fundingSource, sessionUID = _ref2.sessionUID, callbacks = _ref2.callbacks, clean = _ref2.clean;
+            var onClick = props.onClick, createOrder = props.createOrder;
+            var _onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, _onError = callbacks.onError, _onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange;
+            if (!config.firebase) throw new Error("Can not load popup without firebase config");
+            var nativePopupPromise;
+            return {
+                click: function() {
+                    nativePopupPromise = new promise_ZalgoPromise((function(resolve, reject) {
+                        var _getLogger$info$track3;
+                        var nativePopupWin = window.open(function(_ref8) {
+                            var props = _ref8.props, fundingSource = _ref8.fundingSource;
+                            var queryParams = function(_ref7) {
+                                var props = _ref7.props, serviceData = _ref7.serviceData;
+                                var buttonSessionID = props.buttonSessionID, env = props.env, clientID = props.clientID, sessionID = props.sessionID, sdkCorrelationID = props.sdkCorrelationID;
+                                var sdkMeta = serviceData.sdkMeta, buyerCountry = serviceData.buyerCountry;
+                                var parentDomain = getDomain();
+                                return {
+                                    buttonSessionID: buttonSessionID,
+                                    buyerCountry: buyerCountry,
+                                    clientID: clientID,
+                                    channel: isDevice() ? "mobile-web" : "desktop-web",
+                                    env: env,
+                                    parentDomain: parentDomain,
+                                    sdkCorrelationID: sdkCorrelationID,
+                                    sdkMeta: sdkMeta,
+                                    sessionID: sessionID
+                                };
+                            }({
+                                props: props,
+                                serviceData: _ref8.serviceData,
+                                fundingSource: fundingSource
+                            });
+                            return extendUrl("" + getNativePopupDomain({
+                                props: props
+                            }) + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
+                                query: queryParams
+                            }) + "#init";
+                        }({
+                            props: props,
+                            serviceData: serviceData,
+                            fundingSource: fundingSource
+                        }));
+                        if (!nativePopupWin) throw new Error("Expected native popup to have opened");
+                        var nativePopupDomain = getNativePopupDomain({
+                            props: props
+                        });
+                        logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track3 = {}, 
+                        _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = "popup_shown", 
+                        _getLogger$info$track3)).flush();
+                        var closeListener = onCloseWindow(nativePopupWin, (function() {
+                            var _getLogger$info$track4;
+                            logger_getLogger().info("native_popup_closed").track((_getLogger$info$track4 = {}, 
+                            _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "popup_closed", 
+                            _getLogger$info$track4)).flush();
+                            onClose();
+                        }), 500);
+                        var closeErrorListener = onCloseWindow(nativePopupWin, (function() {
+                            reject(new Error("Native popup closed"));
+                        }), 500);
+                        var closePopup = function(event) {
+                            var _getLogger$info$track5;
+                            logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track5 = {}, 
+                            _getLogger$info$track5.state_name = "smart_button", _getLogger$info$track5.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
+                            _getLogger$info$track5)).flush();
+                            closeListener.cancel();
+                            nativePopupWin.close();
+                        };
+                        var redirectListenerTimeout = setTimeout((function() {
+                            logger_getLogger().info("native_popup_load_timeout").flush();
+                        }), 5e3);
+                        var validatePromise = promise_ZalgoPromise.try((function() {
+                            return !onClick || onClick({
+                                fundingSource: fundingSource
+                            });
+                        })).then((function(valid) {
+                            if (!valid) {
+                                var _getLogger$info$track6;
+                                logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track6 = {}, 
+                                _getLogger$info$track6.state_name = "smart_button", _getLogger$info$track6.transition_name = "native_onclick_invalid", 
+                                _getLogger$info$track6)).flush();
+                            }
+                            return valid;
+                        }));
+                        var orderPromise = validatePromise.then((function(valid) {
+                            return valid ? createOrder() : unresolvedPromise();
+                        }));
+                        var detectAppSwitch = once((function() {
+                            return promise_ZalgoPromise.try((function() {
+                                var _getLogger$info$track7;
+                                onLsatUpgradeCalled();
+                                getStorageState((function(state) {
+                                    var _state$lastAppSwitchT = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT ? 0 : _state$lastAppSwitchT, _state$lastWebSwitchT = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT ? 0 : _state$lastWebSwitchT;
+                                    lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_app_switch", {
+                                        lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                        lastWebSwitchTime: lastWebSwitchTime.toString()
+                                    });
+                                    lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_web_switch", {
+                                        lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                        lastWebSwitchTime: lastWebSwitchTime.toString()
+                                    });
+                                    lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("app_switch_detect_with_no_previous_switch", {
+                                        lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                        lastWebSwitchTime: lastWebSwitchTime.toString()
+                                    });
+                                    state.lastAppSwitchTime = Date.now();
+                                }));
+                                logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track7 = {}, 
+                                _getLogger$info$track7.transition_name = "native_detect_app_switch", _getLogger$info$track7)).flush();
+                                var connection = connectNative({
+                                    config: config,
+                                    sessionUID: sessionUID,
+                                    callbacks: {
+                                        onInit: function() {
+                                            resolve();
+                                            return _onInit();
+                                        },
+                                        onApprove: onApprove,
+                                        onCancel: onCancel,
+                                        onShippingChange: onShippingChange,
+                                        onError: function(_ref3) {
+                                            var data = _ref3.data;
+                                            reject(new Error(data.message));
+                                            return _onError({
+                                                data: data
+                                            });
+                                        },
+                                        onFallback: function(_ref4) {
+                                            return _onFallback({
+                                                win: nativePopupWin,
+                                                optOut: _ref4.data
+                                            });
+                                        }
+                                    }
+                                });
+                                clean.register(connection.cancel);
+                            })).catch(reject);
+                        }));
+                        var detectWebSwitch = once((function() {
+                            return promise_ZalgoPromise.try((function() {
+                                var _getLogger$info$track8;
+                                getStorageState((function(state) {
+                                    var _state$lastAppSwitchT2 = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT2 ? 0 : _state$lastAppSwitchT2, _state$lastWebSwitchT2 = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT2 ? 0 : _state$lastWebSwitchT2;
+                                    lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_app_switch", {
+                                        lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                        lastWebSwitchTime: lastWebSwitchTime.toString()
+                                    });
+                                    lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_web_switch", {
+                                        lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                        lastWebSwitchTime: lastWebSwitchTime.toString()
+                                    });
+                                    lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("web_switch_detect_with_no_previous_switch", {
+                                        lastAppSwitchTime: lastAppSwitchTime.toString(),
+                                        lastWebSwitchTime: lastWebSwitchTime.toString()
+                                    });
+                                    state.lastWebSwitchTime = Date.now();
+                                }));
+                                logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track8 = {}, 
+                                _getLogger$info$track8.transition_name = "native_detect_web_switch", _getLogger$info$track8)).flush();
+                                return _onFallback({
+                                    win: nativePopupWin
+                                }).then(src_util_noop);
+                            })).then(resolve, reject);
+                        }));
+                        var awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, "awaitRedirect", (function(_ref5) {
+                            var _ref5$data = _ref5.data, appDetect = _ref5$data.app, pageUrl = _ref5$data.pageUrl, sfvc = _ref5$data.sfvc, stickinessID = _ref5$data.stickinessID;
+                            clearTimeout(redirectListenerTimeout);
+                            logger_getLogger().info("native_post_message_await_redirect").flush();
+                            (app = appDetect) && Object.keys(app).forEach((function(key) {
+                                var _getLogger$info, _getLogger$info$track;
+                                logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
+                                _getLogger$info[key] = app[key], _getLogger$info)).track((_getLogger$info$track = {}, 
+                                _getLogger$info$track.state_name = "smart_button", _getLogger$info$track.transition_name = "native_app_installed", 
+                                _getLogger$info$track.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key].toString(), 
+                                _getLogger$info$track)).flush();
+                            }));
+                            var app;
+                            logger_getLogger().addTrackingBuilder((function() {
+                                var _ref6;
+                                return (_ref6 = {}).stickiness_id = stickinessID, _ref6;
+                            }));
+                            return promise_ZalgoPromise.hash({
+                                valid: validatePromise,
+                                eligible: popup_getEligibility({
+                                    fundingSource: fundingSource,
+                                    props: props,
+                                    serviceData: serviceData,
+                                    sfvc: sfvc,
+                                    validatePromise: validatePromise,
+                                    stickinessID: stickinessID,
+                                    appDetect: appDetect
+                                })
+                            }).then((function(_ref7) {
+                                var eligible = _ref7.eligible;
+                                if (!_ref7.valid) {
+                                    nativePopupWin.close();
+                                    return onDestroy().then((function() {
+                                        return {
+                                            redirect: !1,
+                                            appSwitch: !1
+                                        };
+                                    }));
+                                }
+                                return orderPromise.then(eligible ? function(orderID) {
+                                    var _getLogger$info$track9;
+                                    var nativeUrl = getNativeUrl({
+                                        props: props,
+                                        serviceData: serviceData,
+                                        config: config,
+                                        fundingSource: fundingSource,
+                                        sessionUID: sessionUID,
+                                        pageUrl: pageUrl,
+                                        orderID: orderID,
+                                        stickinessID: stickinessID
+                                    });
+                                    logger_getLogger().info("native_attempt_appswitch_url_popup", {
+                                        url: nativeUrl
+                                    }).track((_getLogger$info$track9 = {}, _getLogger$info$track9.state_name = "smart_button", 
+                                    _getLogger$info$track9.transition_name = "app_switch_attempted", _getLogger$info$track9.info_msg = nativeUrl, 
+                                    _getLogger$info$track9)).flush();
+                                    if (isAndroidChrome()) {
+                                        closeErrorListener.cancel();
+                                        var appSwitchCloseListener = onCloseWindow(nativePopupWin, (function() {
+                                            return detectAppSwitch();
+                                        }), 50);
+                                        setTimeout(appSwitchCloseListener.cancel, 1e3);
+                                    }
+                                    return {
+                                        redirect: !0,
+                                        appSwitch: !0,
+                                        redirectUrl: nativeUrl
+                                    };
+                                } : function(orderID) {
+                                    return {
+                                        redirect: !0,
+                                        appSwitch: !1,
+                                        redirectUrl: getNativeFallbackUrl({
+                                            props: props,
+                                            serviceData: serviceData,
+                                            config: config,
+                                            fundingSource: fundingSource,
+                                            sessionUID: sessionUID,
+                                            pageUrl: pageUrl,
+                                            orderID: orderID,
+                                            stickinessID: stickinessID
+                                        })
+                                    };
+                                });
+                            })).catch((function(err) {
+                                var _getLogger$info$track10;
+                                logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track10 = {}, 
+                                _getLogger$info$track10.state_name = "smart_button", _getLogger$info$track10.transition_name = "app_switch_attempted_errored", 
+                                _getLogger$info$track10.int_error_desc = stringifyError(err), _getLogger$info$track10)).flush();
+                                return orderPromise.then((function(orderID) {
+                                    return {
+                                        redirect: !0,
+                                        appSwitch: !1,
+                                        redirectUrl: getNativeFallbackUrl({
+                                            props: props,
+                                            serviceData: serviceData,
+                                            config: config,
+                                            fundingSource: fundingSource,
+                                            sessionUID: sessionUID,
+                                            pageUrl: pageUrl,
+                                            orderID: orderID,
+                                            stickinessID: stickinessID
+                                        })
+                                    };
+                                }));
+                            })).catch((function(err) {
+                                nativePopupWin.close();
+                                reject(err);
+                                return onDestroy().then((function() {
+                                    return _onError({
+                                        data: {
+                                            message: stringifyError(err)
+                                        }
+                                    });
+                                })).then((function() {
+                                    return {
+                                        redirect: !1,
+                                        appSwitch: !1
+                                    };
+                                }));
+                            }));
+                        }));
+                        var detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, "detectAppSwitch", (function() {
+                            logger_getLogger().info("native_post_message_detect_app_switch").flush();
+                            return detectAppSwitch();
+                        }));
+                        var detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({
+                            props: props
+                        }), "detectWebSwitch", (function() {
+                            logger_getLogger().info("native_post_message_detect_web_switch").flush();
+                            return detectWebSwitch({
+                                win: nativePopupWin
+                            });
+                        }));
+                        var onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, "onApprove", (function(data) {
+                            onApprove(data);
+                            closePopup("onApprove");
+                        }));
+                        var onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, "onCancel", (function() {
+                            onCancel();
+                            closePopup("onCancel");
+                        }));
+                        var onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, "onFallback", (function(data) {
+                            var _getLogger$info$track11;
+                            logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track11 = {}, 
+                            _getLogger$info$track11.transition_name = "native_onfallback", _getLogger$info$track11)).flush();
+                            _onFallback({
+                                win: nativePopupWin,
+                                optOut: data
+                            });
+                        }));
+                        var onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, "onComplete", (function() {
+                            var _getLogger$info$track12;
+                            logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track12 = {}, 
+                            _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = "native_oncomplete", 
+                            _getLogger$info$track12)).flush();
+                            closePopup("onComplete");
+                        }));
+                        var onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, "onError", (function(data) {
+                            _onError(data);
+                            closePopup("onError");
+                            reject(data);
+                        }));
+                        window.addEventListener("pagehide", (function() {
+                            return closePopup("pagehide");
+                        }));
+                        window.addEventListener("unload", (function() {
+                            return closePopup("unload");
+                        }));
+                        clean.register((function() {
+                            return promise_ZalgoPromise.all([ awaitRedirectListener.cancel, detectAppSwitchListener.cancel, onApproveListener.cancel, onCancelListener.cancel, onFallbackListener.cancel, onCompleteListener.cancel, onErrorListener.cancel, detectWebSwitchListener.cancel, closeListener.cancel ]).then(src_util_noop);
+                        }));
+                    }));
+                },
+                start: function() {
+                    if (!nativePopupPromise) throw new Error("Expected native popup promise to be set");
+                    return nativePopupPromise;
+                }
+            };
         }
         var native_clean;
         var parentPopupBridge;
@@ -7114,6 +7629,7 @@ window.spb = function(modules) {
                     merchantID: merchantID[0],
                     domain: merchantDomain
                 }).then((function(nativeEligibility) {
+                    nativeEligibilityResults = nativeEligibility;
                     (function(_ref) {
                         var nativeEligibility = _ref.nativeEligibility;
                         for (var _i2 = 0; _i2 < SUPPORTED_FUNDING.length; _i2++) {
@@ -7159,18 +7675,36 @@ window.spb = function(modules) {
             },
             isPaymentEligible: function(_ref7) {
                 var payment = _ref7.payment;
+                var platform = _ref7.props.platform;
                 var fundingSource = payment.fundingSource;
-                return !(payment.win || !(NATIVE_CHECKOUT_URI[fundingSource] && NATIVE_CHECKOUT_POPUP_URI[fundingSource] && NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) || !canUsePopupAppSwitch({
+                if (payment.win) return !1;
+                if (!NATIVE_CHECKOUT_URI[fundingSource] || !NATIVE_CHECKOUT_POPUP_URI[fundingSource] || !NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) return !1;
+                if (!canUsePopupAppSwitch({
                     fundingSource: fundingSource
                 }) && !canUseNativeQRCode({
                     fundingSource: fundingSource
-                }));
+                })) return !1;
+                if (platform && "desktop" === platform) {
+                    var _nativeEligibilityRes, _nativeEligibilityRes2;
+                    var eligibleReasons = [ "isUserAgentEligible", "isBrowserMobileAndroid" ];
+                    var ineligibleReasons = nativeEligibilityResults && (null == (_nativeEligibilityRes = nativeEligibilityResults[fundingSource]) || null == (_nativeEligibilityRes2 = _nativeEligibilityRes.ineligibilityReason) ? void 0 : _nativeEligibilityRes2.split(","));
+                    var eligible = null == ineligibleReasons ? void 0 : ineligibleReasons.every((function(reason) {
+                        return !reason || -1 !== (null == eligibleReasons ? void 0 : eligibleReasons.indexOf(reason));
+                    }));
+                    if (ineligibleReasons && !eligible) return !1;
+                }
+                return !0;
             },
             init: function(_ref2) {
                 var props = _ref2.props, components = _ref2.components, config = _ref2.config, payment = _ref2.payment, serviceData = _ref2.serviceData;
                 var onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, buttonSessionID = props.buttonSessionID, onShippingChange = props.onShippingChange;
                 var fundingSource = payment.fundingSource;
-                if (!config.firebase) throw new Error("Can not run native flow without firebase config");
+                var firebaseConfig = config.firebase;
+                logger_getLogger().addTrackingBuilder((function() {
+                    var _ref3;
+                    return (_ref3 = {}).selected_payment_method = fundingSource, _ref3;
+                }));
+                if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
                 native_clean && native_clean.all();
                 native_clean = cleanup();
                 var approved = !1;
@@ -7198,649 +7732,169 @@ window.spb = function(modules) {
                     }));
                     return instance.start();
                 };
-                var onInitCallback = function() {
-                    return promise_ZalgoPromise.try((function() {
-                        onLsatUpgradeCalled();
-                        return {
-                            buttonSessionID: buttonSessionID
-                        };
-                    }));
-                };
-                var onApproveCallback = function(_ref3) {
-                    var _getLogger$info$track;
-                    var _ref3$data = _ref3.data, payerID = _ref3$data.payerID, paymentID = _ref3$data.paymentID, billingToken = _ref3$data.billingToken;
-                    approved = !0;
-                    logger_getLogger().info("native_message_onapprove", {
-                        payerID: payerID,
-                        paymentID: paymentID,
-                        billingToken: billingToken
-                    }).track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "native_onapprove", 
-                    _getLogger$info$track.info_msg = "payerID: " + payerID + ", paymentID: " + (paymentID || "undefined") + ", billingToken: " + (billingToken || "undefined"), 
-                    _getLogger$info$track)).flush();
-                    return promise_ZalgoPromise.all([ onApprove({
-                        payerID: payerID,
-                        paymentID: paymentID,
-                        billingToken: billingToken,
-                        forceRestAPI: !0
-                    }, {
-                        restart: function() {
-                            return fallbackToWebCheckout();
-                        }
-                    }).catch((function(err) {
-                        var _getLogger$info$track2;
-                        logger_getLogger().info("native_message_onapprove_error", {
-                            payerID: payerID,
-                            paymentID: paymentID,
-                            billingToken: billingToken
-                        }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "native_onapprove_error", 
-                        _getLogger$info$track2.info_msg = "Error: " + stringifyError(err), _getLogger$info$track2)).flush();
-                        onError(err);
-                    })), destroy() ]).then((function() {
-                        return {
-                            buttonSessionID: buttonSessionID
-                        };
-                    }));
-                };
-                var onCancelCallback = function() {
-                    var _getLogger$info$track3;
-                    cancelled = !0;
-                    logger_getLogger().info("native_message_oncancel").track((_getLogger$info$track3 = {}, 
-                    _getLogger$info$track3.transition_name = "native_oncancel", _getLogger$info$track3)).flush();
-                    return promise_ZalgoPromise.all([ onCancel(), destroy() ]).then((function() {
-                        return {
-                            buttonSessionID: buttonSessionID
-                        };
-                    }));
-                };
-                var onErrorCallback = function(_ref4) {
-                    var _getLogger$info$track4;
-                    var message = _ref4.data.message;
-                    logger_getLogger().info("native_message_onerror", {
-                        err: message
-                    }).track((_getLogger$info$track4 = {}, _getLogger$info$track4.transition_name = "native_onerror", 
-                    _getLogger$info$track4.info_msg = "Error message: " + message, _getLogger$info$track4)).flush();
-                    return promise_ZalgoPromise.all([ onError(new Error(message)), destroy() ]).then((function() {
-                        return {
-                            buttonSessionID: buttonSessionID
-                        };
-                    }));
-                };
-                var onShippingChangeCallback = function(_ref5) {
-                    var data = _ref5.data;
-                    return promise_ZalgoPromise.try((function() {
-                        var _getLogger$info$track5;
-                        logger_getLogger().info("native_message_onshippingchange").track((_getLogger$info$track5 = {}, 
-                        _getLogger$info$track5.transition_name = "native_onshippingchange", _getLogger$info$track5)).flush();
-                        if (onShippingChange) {
-                            var resolved = !0;
-                            var actions = {
-                                resolve: function() {
-                                    return promise_ZalgoPromise.try((function() {
-                                        resolved = !0;
-                                    }));
-                                },
-                                reject: function() {
-                                    return promise_ZalgoPromise.try((function() {
-                                        resolved = !1;
-                                    }));
-                                }
-                            };
-                            return onShippingChange(_extends({}, data, {
-                                forceRestAPI: !0
-                            }), actions).then((function() {
+                var sessionUID = uniqueID();
+                var initFlow;
+                if (canUsePopupAppSwitch({
+                    fundingSource: fundingSource
+                })) initFlow = initNativePopup; else {
+                    if (!canUseNativeQRCode({
+                        fundingSource: fundingSource
+                    })) throw new Error("No valid native payment flow found");
+                    initFlow = initNativeQRCode;
+                }
+                var flow = initFlow({
+                    props: props,
+                    serviceData: serviceData,
+                    config: config,
+                    components: components,
+                    fundingSource: fundingSource,
+                    clean: native_clean,
+                    sessionUID: sessionUID,
+                    callbacks: {
+                        onInit: function() {
+                            return promise_ZalgoPromise.try((function() {
+                                onLsatUpgradeCalled();
                                 return {
-                                    resolved: resolved
+                                    buttonSessionID: buttonSessionID
                                 };
                             }));
-                        }
-                        return {
-                            resolved: !0
-                        };
-                    }));
-                };
-                var onFallbackCallback = function(opts) {
-                    var _ref6 = opts || {}, win = _ref6.win, _ref6$optOut = _ref6.optOut, optOut = void 0 === _ref6$optOut ? {} : _ref6$optOut;
-                    return promise_ZalgoPromise.try((function() {
-                        if (optOut) {
-                            var _getLogger$info$track6;
-                            var result = function(optOut) {
-                                if ("native_opt_out" === optOut.type) {
-                                    var OPT_OUT_TIME = 36288e5;
-                                    optOut.skip_native_duration && "number" == typeof optOut.skip_native_duration && (OPT_OUT_TIME = optOut.skip_native_duration);
-                                    var now = Date.now();
-                                    getStorageState((function(state) {
-                                        state.nativeOptOutLifetime = now + OPT_OUT_TIME;
-                                    }));
-                                    return !0;
+                        },
+                        onApprove: function(_ref4) {
+                            var _getLogger$info$track;
+                            var _ref4$data = _ref4.data, payerID = _ref4$data.payerID, paymentID = _ref4$data.paymentID, billingToken = _ref4$data.billingToken;
+                            approved = !0;
+                            logger_getLogger().info("native_message_onapprove", {
+                                payerID: payerID,
+                                paymentID: paymentID,
+                                billingToken: billingToken
+                            }).track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "native_onapprove", 
+                            _getLogger$info$track.info_msg = "payerID: " + payerID + ", paymentID: " + (paymentID || "undefined") + ", billingToken: " + (billingToken || "undefined"), 
+                            _getLogger$info$track)).flush();
+                            return promise_ZalgoPromise.all([ onApprove({
+                                payerID: payerID,
+                                paymentID: paymentID,
+                                billingToken: billingToken,
+                                forceRestAPI: !0
+                            }, {
+                                restart: function() {
+                                    return fallbackToWebCheckout();
                                 }
-                                return !1;
-                            }(optOut);
-                            logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track6 = {}, 
-                            _getLogger$info$track6.transition_name = "native_onfallback", _getLogger$info$track6.transition_type = result ? "native_opt_out" : "native_fallback", 
-                            _getLogger$info$track6)).flush();
-                        }
-                        fallbackToWebCheckout(win);
-                        return {
-                            buttonSessionID: buttonSessionID
-                        };
-                    }));
-                };
-                var onCloseCallback = function() {
-                    return promise_ZalgoPromise.delay(1e3).then((function() {
-                        if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.try((function() {
-                            return destroy();
-                        }));
-                    })).then(src_util_noop);
-                };
+                            }).catch((function(err) {
+                                var _getLogger$info$track2;
+                                logger_getLogger().info("native_message_onapprove_error", {
+                                    payerID: payerID,
+                                    paymentID: paymentID,
+                                    billingToken: billingToken
+                                }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "native_onapprove_error", 
+                                _getLogger$info$track2.info_msg = "Error: " + stringifyError(err), _getLogger$info$track2)).flush();
+                                onError(err);
+                            })), destroy() ]).then((function() {
+                                return {
+                                    buttonSessionID: buttonSessionID
+                                };
+                            }));
+                        },
+                        onCancel: function() {
+                            var _getLogger$info$track3;
+                            cancelled = !0;
+                            logger_getLogger().info("native_message_oncancel").track((_getLogger$info$track3 = {}, 
+                            _getLogger$info$track3.transition_name = "native_oncancel", _getLogger$info$track3)).flush();
+                            return promise_ZalgoPromise.all([ onCancel(), destroy() ]).then((function() {
+                                return {
+                                    buttonSessionID: buttonSessionID
+                                };
+                            }));
+                        },
+                        onError: function(_ref5) {
+                            var _getLogger$info$track4;
+                            var message = _ref5.data.message;
+                            logger_getLogger().info("native_message_onerror", {
+                                err: message
+                            }).track((_getLogger$info$track4 = {}, _getLogger$info$track4.transition_name = "native_onerror", 
+                            _getLogger$info$track4.info_msg = "Error message: " + message, _getLogger$info$track4)).flush();
+                            return promise_ZalgoPromise.all([ onError(new Error(message)), destroy() ]).then((function() {
+                                return {
+                                    buttonSessionID: buttonSessionID
+                                };
+                            }));
+                        },
+                        onShippingChange: function(_ref6) {
+                            var data = _ref6.data;
+                            return promise_ZalgoPromise.try((function() {
+                                var _getLogger$info$track5;
+                                logger_getLogger().info("native_message_onshippingchange").track((_getLogger$info$track5 = {}, 
+                                _getLogger$info$track5.transition_name = "native_onshippingchange", _getLogger$info$track5)).flush();
+                                if (onShippingChange) {
+                                    var resolved = !0;
+                                    var actions = {
+                                        resolve: function() {
+                                            return promise_ZalgoPromise.try((function() {
+                                                resolved = !0;
+                                            }));
+                                        },
+                                        reject: function() {
+                                            return promise_ZalgoPromise.try((function() {
+                                                resolved = !1;
+                                            }));
+                                        }
+                                    };
+                                    return onShippingChange(_extends({}, data, {
+                                        forceRestAPI: !0
+                                    }), actions).then((function() {
+                                        return {
+                                            resolved: resolved
+                                        };
+                                    }));
+                                }
+                                return {
+                                    resolved: !0
+                                };
+                            }));
+                        },
+                        onFallback: function(opts) {
+                            var _ref7 = opts || {}, win = _ref7.win, _ref7$optOut = _ref7.optOut, optOut = void 0 === _ref7$optOut ? {} : _ref7$optOut;
+                            return promise_ZalgoPromise.try((function() {
+                                if (optOut) {
+                                    var _getLogger$info$track6;
+                                    var result = function(optOut) {
+                                        if ("native_opt_out" === optOut.type) {
+                                            var OPT_OUT_TIME = 36288e5;
+                                            optOut.skip_native_duration && "number" == typeof optOut.skip_native_duration && (OPT_OUT_TIME = optOut.skip_native_duration);
+                                            var now = Date.now();
+                                            getStorageState((function(state) {
+                                                state.nativeOptOutLifetime = now + OPT_OUT_TIME;
+                                            }));
+                                            return !0;
+                                        }
+                                        return !1;
+                                    }(optOut);
+                                    logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track6 = {}, 
+                                    _getLogger$info$track6.transition_name = "native_onfallback", _getLogger$info$track6.transition_type = result ? "native_opt_out" : "native_fallback", 
+                                    _getLogger$info$track6)).flush();
+                                }
+                                fallbackToWebCheckout(win);
+                                return {
+                                    buttonSessionID: buttonSessionID
+                                };
+                            }));
+                        },
+                        onClose: function() {
+                            return promise_ZalgoPromise.delay(1e3).then((function() {
+                                if (!(approved || cancelled || didFallback || isAndroidChrome())) return promise_ZalgoPromise.try((function() {
+                                    return destroy();
+                                }));
+                            })).then(src_util_noop);
+                        },
+                        onDestroy: destroy
+                    }
+                });
                 return {
                     click: function() {
+                        return flow.click();
+                    },
+                    start: function() {
                         return promise_ZalgoPromise.try((function() {
-                            var sessionUID = uniqueID();
-                            if (canUsePopupAppSwitch({
-                                fundingSource: fundingSource
-                            })) return function(_ref2) {
-                                var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, fundingSource = _ref2.fundingSource, sessionUID = _ref2.sessionUID, callbacks = _ref2.callbacks, clean = _ref2.clean;
-                                var onClick = props.onClick, createOrder = props.createOrder;
-                                var _onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, _onError = callbacks.onError, _onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange;
-                                if (!config.firebase) throw new Error("Can not load popup without firebase config");
-                                return new promise_ZalgoPromise((function(resolve, reject) {
-                                    var _getLogger$info$track3;
-                                    var nativePopupWin = window.open(function(_ref8) {
-                                        var props = _ref8.props, fundingSource = _ref8.fundingSource;
-                                        var queryParams = function(_ref7) {
-                                            var props = _ref7.props, serviceData = _ref7.serviceData;
-                                            var buttonSessionID = props.buttonSessionID, env = props.env, clientID = props.clientID, sessionID = props.sessionID, sdkCorrelationID = props.sdkCorrelationID;
-                                            var sdkMeta = serviceData.sdkMeta, buyerCountry = serviceData.buyerCountry;
-                                            var parentDomain = getDomain();
-                                            return {
-                                                buttonSessionID: buttonSessionID,
-                                                buyerCountry: buyerCountry,
-                                                clientID: clientID,
-                                                channel: isDevice() ? "mobile-web" : "desktop-web",
-                                                env: env,
-                                                parentDomain: parentDomain,
-                                                sdkCorrelationID: sdkCorrelationID,
-                                                sdkMeta: sdkMeta,
-                                                sessionID: sessionID
-                                            };
-                                        }({
-                                            props: props,
-                                            serviceData: _ref8.serviceData,
-                                            fundingSource: fundingSource
-                                        });
-                                        return extendUrl("" + getNativePopupDomain({
-                                            props: props
-                                        }) + NATIVE_CHECKOUT_POPUP_URI[fundingSource], {
-                                            query: queryParams
-                                        }) + "#init";
-                                    }({
-                                        props: props,
-                                        serviceData: serviceData,
-                                        fundingSource: fundingSource
-                                    }));
-                                    var nativePopupDomain = getNativePopupDomain({
-                                        props: props
-                                    });
-                                    logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track3 = {}, 
-                                    _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = "popup_shown", 
-                                    _getLogger$info$track3)).flush();
-                                    var closeListener = onCloseWindow(nativePopupWin, (function() {
-                                        var _getLogger$info$track4;
-                                        logger_getLogger().info("native_popup_closed").track((_getLogger$info$track4 = {}, 
-                                        _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "popup_closed", 
-                                        _getLogger$info$track4)).flush();
-                                        onClose();
-                                    }), 500);
-                                    var closeErrorListener = onCloseWindow(nativePopupWin, (function() {
-                                        reject(new Error("Native popup closed"));
-                                    }), 500);
-                                    var closePopup = function(event) {
-                                        var _getLogger$info$track5;
-                                        logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track5 = {}, 
-                                        _getLogger$info$track5.state_name = "smart_button", _getLogger$info$track5.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
-                                        _getLogger$info$track5)).flush();
-                                        closeListener.cancel();
-                                        nativePopupWin.close();
-                                    };
-                                    var redirectListenerTimeout = setTimeout((function() {
-                                        logger_getLogger().info("native_popup_load_timeout").flush();
-                                    }), 5e3);
-                                    var validatePromise = promise_ZalgoPromise.try((function() {
-                                        return !onClick || onClick({
-                                            fundingSource: fundingSource
-                                        });
-                                    })).then((function(valid) {
-                                        if (!valid) {
-                                            var _getLogger$info$track6;
-                                            logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track6 = {}, 
-                                            _getLogger$info$track6.state_name = "smart_button", _getLogger$info$track6.transition_name = "native_onclick_invalid", 
-                                            _getLogger$info$track6)).flush();
-                                        }
-                                        return valid;
-                                    }));
-                                    var orderPromise = validatePromise.then((function(valid) {
-                                        return valid ? createOrder() : unresolvedPromise();
-                                    }));
-                                    var detectAppSwitch = once((function() {
-                                        return promise_ZalgoPromise.try((function() {
-                                            var _getLogger$info$track7;
-                                            onLsatUpgradeCalled();
-                                            getStorageState((function(state) {
-                                                var _state$lastAppSwitchT = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT ? 0 : _state$lastAppSwitchT, _state$lastWebSwitchT = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT ? 0 : _state$lastWebSwitchT;
-                                                lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_app_switch", {
-                                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
-                                                    lastWebSwitchTime: lastWebSwitchTime.toString()
-                                                });
-                                                lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_web_switch", {
-                                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
-                                                    lastWebSwitchTime: lastWebSwitchTime.toString()
-                                                });
-                                                lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("app_switch_detect_with_no_previous_switch", {
-                                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
-                                                    lastWebSwitchTime: lastWebSwitchTime.toString()
-                                                });
-                                                state.lastAppSwitchTime = Date.now();
-                                            }));
-                                            logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track7 = {}, 
-                                            _getLogger$info$track7.transition_name = "native_detect_app_switch", _getLogger$info$track7)).flush();
-                                            var connection = connectNative({
-                                                config: config,
-                                                sessionUID: sessionUID,
-                                                callbacks: {
-                                                    onInit: function() {
-                                                        resolve();
-                                                        return _onInit();
-                                                    },
-                                                    onApprove: onApprove,
-                                                    onCancel: onCancel,
-                                                    onShippingChange: onShippingChange,
-                                                    onError: function(_ref3) {
-                                                        var data = _ref3.data;
-                                                        reject(new Error(data.message));
-                                                        return _onError({
-                                                            data: data
-                                                        });
-                                                    },
-                                                    onFallback: function(_ref4) {
-                                                        return _onFallback({
-                                                            win: nativePopupWin,
-                                                            optOut: _ref4.data
-                                                        });
-                                                    }
-                                                }
-                                            });
-                                            clean.register(connection.cancel);
-                                        })).catch(reject);
-                                    }));
-                                    var detectWebSwitch = once((function() {
-                                        return promise_ZalgoPromise.try((function() {
-                                            var _getLogger$info$track8;
-                                            getStorageState((function(state) {
-                                                var _state$lastAppSwitchT2 = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT2 ? 0 : _state$lastAppSwitchT2, _state$lastWebSwitchT2 = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT2 ? 0 : _state$lastWebSwitchT2;
-                                                lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_app_switch", {
-                                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
-                                                    lastWebSwitchTime: lastWebSwitchTime.toString()
-                                                });
-                                                lastWebSwitchTime > lastAppSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_web_switch", {
-                                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
-                                                    lastWebSwitchTime: lastWebSwitchTime.toString()
-                                                });
-                                                lastAppSwitchTime || lastWebSwitchTime || logger_getLogger().info("web_switch_detect_with_no_previous_switch", {
-                                                    lastAppSwitchTime: lastAppSwitchTime.toString(),
-                                                    lastWebSwitchTime: lastWebSwitchTime.toString()
-                                                });
-                                                state.lastWebSwitchTime = Date.now();
-                                            }));
-                                            logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track8 = {}, 
-                                            _getLogger$info$track8.transition_name = "native_detect_web_switch", _getLogger$info$track8)).flush();
-                                            return _onFallback({
-                                                win: nativePopupWin
-                                            }).then(src_util_noop);
-                                        })).then(resolve, reject);
-                                    }));
-                                    var awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, "awaitRedirect", (function(_ref5) {
-                                        var _ref5$data = _ref5.data, appDetect = _ref5$data.app, pageUrl = _ref5$data.pageUrl, sfvc = _ref5$data.sfvc, stickinessID = _ref5$data.stickinessID;
-                                        clearTimeout(redirectListenerTimeout);
-                                        logger_getLogger().info("native_post_message_await_redirect").flush();
-                                        (app = appDetect) && Object.keys(app).forEach((function(key) {
-                                            var _getLogger$info, _getLogger$info$track;
-                                            logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
-                                            _getLogger$info[key] = app[key], _getLogger$info)).track((_getLogger$info$track = {}, 
-                                            _getLogger$info$track.state_name = "smart_button", _getLogger$info$track.transition_name = "native_app_installed", 
-                                            _getLogger$info$track.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key].toString(), 
-                                            _getLogger$info$track)).flush();
-                                        }));
-                                        var app;
-                                        logger_getLogger().addTrackingBuilder((function() {
-                                            var _ref6;
-                                            return (_ref6 = {}).stickiness_id = stickinessID, _ref6;
-                                        }));
-                                        return promise_ZalgoPromise.hash({
-                                            valid: validatePromise,
-                                            eligible: popup_getEligibility({
-                                                fundingSource: fundingSource,
-                                                props: props,
-                                                serviceData: serviceData,
-                                                sfvc: sfvc,
-                                                validatePromise: validatePromise,
-                                                stickinessID: stickinessID,
-                                                appDetect: appDetect
-                                            })
-                                        }).then((function(_ref7) {
-                                            var eligible = _ref7.eligible;
-                                            if (!_ref7.valid) {
-                                                nativePopupWin.close();
-                                                return onDestroy().then((function() {
-                                                    return {
-                                                        redirect: !1,
-                                                        appSwitch: !1
-                                                    };
-                                                }));
-                                            }
-                                            return orderPromise.then(eligible ? function(orderID) {
-                                                var _getLogger$info$track9;
-                                                var nativeUrl = getNativeUrl({
-                                                    props: props,
-                                                    serviceData: serviceData,
-                                                    config: config,
-                                                    fundingSource: fundingSource,
-                                                    sessionUID: sessionUID,
-                                                    pageUrl: pageUrl,
-                                                    orderID: orderID,
-                                                    stickinessID: stickinessID
-                                                });
-                                                logger_getLogger().info("native_attempt_appswitch_url_popup", {
-                                                    url: nativeUrl
-                                                }).track((_getLogger$info$track9 = {}, _getLogger$info$track9.state_name = "smart_button", 
-                                                _getLogger$info$track9.transition_name = "app_switch_attempted", _getLogger$info$track9.info_msg = nativeUrl, 
-                                                _getLogger$info$track9)).flush();
-                                                if (isAndroidChrome()) {
-                                                    closeErrorListener.cancel();
-                                                    var appSwitchCloseListener = onCloseWindow(nativePopupWin, (function() {
-                                                        return detectAppSwitch();
-                                                    }), 50);
-                                                    setTimeout(appSwitchCloseListener.cancel, 1e3);
-                                                }
-                                                return {
-                                                    redirect: !0,
-                                                    appSwitch: !0,
-                                                    redirectUrl: nativeUrl
-                                                };
-                                            } : function(orderID) {
-                                                return {
-                                                    redirect: !0,
-                                                    appSwitch: !1,
-                                                    redirectUrl: getNativeFallbackUrl({
-                                                        props: props,
-                                                        serviceData: serviceData,
-                                                        config: config,
-                                                        fundingSource: fundingSource,
-                                                        sessionUID: sessionUID,
-                                                        pageUrl: pageUrl,
-                                                        orderID: orderID,
-                                                        stickinessID: stickinessID
-                                                    })
-                                                };
-                                            });
-                                        })).catch((function(err) {
-                                            var _getLogger$info$track10;
-                                            logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track10 = {}, 
-                                            _getLogger$info$track10.state_name = "smart_button", _getLogger$info$track10.transition_name = "app_switch_attempted_errored", 
-                                            _getLogger$info$track10.int_error_desc = stringifyError(err), _getLogger$info$track10)).flush();
-                                            return orderPromise.then((function(orderID) {
-                                                return {
-                                                    redirect: !0,
-                                                    appSwitch: !1,
-                                                    redirectUrl: getNativeFallbackUrl({
-                                                        props: props,
-                                                        serviceData: serviceData,
-                                                        config: config,
-                                                        fundingSource: fundingSource,
-                                                        sessionUID: sessionUID,
-                                                        pageUrl: pageUrl,
-                                                        orderID: orderID,
-                                                        stickinessID: stickinessID
-                                                    })
-                                                };
-                                            }));
-                                        })).catch((function(err) {
-                                            nativePopupWin.close();
-                                            reject(err);
-                                            return onDestroy().then((function() {
-                                                return _onError({
-                                                    data: {
-                                                        message: stringifyError(err)
-                                                    }
-                                                });
-                                            })).then((function() {
-                                                return {
-                                                    redirect: !1,
-                                                    appSwitch: !1
-                                                };
-                                            }));
-                                        }));
-                                    }));
-                                    var detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, "detectAppSwitch", (function() {
-                                        logger_getLogger().info("native_post_message_detect_app_switch").flush();
-                                        return detectAppSwitch();
-                                    }));
-                                    var detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({
-                                        props: props
-                                    }), "detectWebSwitch", (function() {
-                                        logger_getLogger().info("native_post_message_detect_web_switch").flush();
-                                        return detectWebSwitch({
-                                            win: nativePopupWin
-                                        });
-                                    }));
-                                    var onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, "onApprove", (function(data) {
-                                        onApprove(data);
-                                        closePopup("onApprove");
-                                    }));
-                                    var onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, "onCancel", (function() {
-                                        onCancel();
-                                        closePopup("onCancel");
-                                    }));
-                                    var onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, "onFallback", (function(data) {
-                                        var _getLogger$info$track11;
-                                        logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track11 = {}, 
-                                        _getLogger$info$track11.transition_name = "native_onfallback", _getLogger$info$track11)).flush();
-                                        _onFallback({
-                                            win: nativePopupWin,
-                                            optOut: data
-                                        });
-                                    }));
-                                    var onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, "onComplete", (function() {
-                                        var _getLogger$info$track12;
-                                        logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track12 = {}, 
-                                        _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = "native_oncomplete", 
-                                        _getLogger$info$track12)).flush();
-                                        closePopup("onComplete");
-                                    }));
-                                    var onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, "onError", (function(data) {
-                                        _onError(data);
-                                        closePopup("onError");
-                                        reject(data);
-                                    }));
-                                    window.addEventListener("pagehide", (function() {
-                                        return closePopup("pagehide");
-                                    }));
-                                    window.addEventListener("unload", (function() {
-                                        return closePopup("unload");
-                                    }));
-                                    clean.register((function() {
-                                        return promise_ZalgoPromise.all([ awaitRedirectListener.cancel, detectAppSwitchListener.cancel, onApproveListener.cancel, onCancelListener.cancel, onFallbackListener.cancel, onCompleteListener.cancel, onErrorListener.cancel, detectWebSwitchListener.cancel, closeListener.cancel ]).then(src_util_noop);
-                                    }));
-                                }));
-                            }({
-                                props: props,
-                                serviceData: serviceData,
-                                config: config,
-                                components: components,
-                                fundingSource: fundingSource,
-                                clean: native_clean,
-                                sessionUID: sessionUID,
-                                callbacks: {
-                                    onInit: onInitCallback,
-                                    onApprove: onApproveCallback,
-                                    onCancel: onCancelCallback,
-                                    onError: onErrorCallback,
-                                    onShippingChange: onShippingChangeCallback,
-                                    onFallback: onFallbackCallback,
-                                    onClose: onCloseCallback,
-                                    onDestroy: destroy
-                                }
-                            });
-                            if (canUseNativeQRCode({
-                                fundingSource: fundingSource
-                            })) return function(_ref2) {
-                                var _getLogger$info$track2;
-                                var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, fundingSource = _ref2.fundingSource, clean = _ref2.clean, callbacks = _ref2.callbacks, sessionUID = _ref2.sessionUID;
-                                var createOrder = props.createOrder, onClick = props.onClick;
-                                var QRCode = _ref2.components.QRCode;
-                                var onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onError = callbacks.onError, onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange;
-                                var qrCodeRenderTarget = window.xprops.getParent();
-                                var pageUrl = window.xprops.getPageUrl();
-                                var stickinessID = getStorageID();
-                                logger_getLogger().info("VenmoDesktopPay_qrcode").track((_getLogger$info$track2 = {}, 
-                                _getLogger$info$track2.transition_name = "qr_shown", _getLogger$info$track2)).flush();
-                                var onQRClose = function(event) {
-                                    void 0 === event && (event = "closeQRCode");
-                                    return promise_ZalgoPromise.try((function() {
-                                        var _getLogger$info$track3;
-                                        logger_getLogger().info("VenmoDesktopPay_qrcode_closing_" + event).track((_getLogger$info$track3 = {}, 
-                                        _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = event ? "qr_closing_" + event : "qr_closing", 
-                                        _getLogger$info$track3)).flush();
-                                        onClose();
-                                    }));
-                                };
-                                var validatePromise = promise_ZalgoPromise.try((function() {
-                                    return !onClick || onClick({
-                                        fundingSource: fundingSource
-                                    });
-                                })).then((function(valid) {
-                                    if (!valid) {
-                                        var _getLogger$info$track4;
-                                        logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track4 = {}, 
-                                        _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "native_onclick_invalid", 
-                                        _getLogger$info$track4)).flush();
-                                    }
-                                    return valid;
-                                }));
-                                return promise_ZalgoPromise.hash({
-                                    valid: validatePromise,
-                                    eligible: getEligibility({
-                                        fundingSource: fundingSource,
-                                        props: props,
-                                        serviceData: serviceData,
-                                        validatePromise: validatePromise
-                                    })
-                                }).then((function(_ref3) {
-                                    if (_ref3.valid) return _ref3.eligible ? createOrder().then((function(orderID) {
-                                        var url = getNativeUrl({
-                                            props: props,
-                                            serviceData: serviceData,
-                                            config: config,
-                                            fundingSource: fundingSource,
-                                            sessionUID: sessionUID,
-                                            orderID: orderID,
-                                            stickinessID: stickinessID,
-                                            pageUrl: pageUrl
-                                        });
-                                        var qrCodeComponentInstance = QRCode({
-                                            cspNonce: config.cspNonce,
-                                            qrPath: url,
-                                            state: "qr_default",
-                                            onClose: onQRClose
-                                        });
-                                        function updateQRCodeComponentState(newState) {
-                                            return qrCodeComponentInstance.updateProps(_extends({
-                                                cspNonce: config.cspNonce,
-                                                qrPath: url,
-                                                onClose: onQRClose
-                                            }, newState));
-                                        }
-                                        var connection = connectNative({
-                                            config: config,
-                                            sessionUID: sessionUID,
-                                            callbacks: {
-                                                onInit: function() {
-                                                    return updateQRCodeComponentState({
-                                                        state: "qr_scanned"
-                                                    }).then((function() {
-                                                        return onInit();
-                                                    }));
-                                                },
-                                                onApprove: function(res) {
-                                                    return updateQRCodeComponentState({
-                                                        state: "qr_authorized"
-                                                    }).then((function() {
-                                                        return function(event) {
-                                                            onQRClose("onApprove");
-                                                            return promise_ZalgoPromise.delay(2e3).then((function() {
-                                                                return promise_ZalgoPromise.try((function() {
-                                                                    qrCodeComponentInstance.close();
-                                                                    return onDestroy();
-                                                                }));
-                                                            })).then(src_util_noop);
-                                                        }().then((function() {
-                                                            return onApprove(res);
-                                                        }));
-                                                    }));
-                                                },
-                                                onCancel: function() {
-                                                    return updateQRCodeComponentState({
-                                                        state: "qr_error",
-                                                        errorText: "The authorization was canceled"
-                                                    }).then((function() {
-                                                        return onCancel();
-                                                    }));
-                                                },
-                                                onError: function(res) {
-                                                    return updateQRCodeComponentState({
-                                                        state: "qr_authorized",
-                                                        errorText: res.data.message
-                                                    }).then((function() {
-                                                        return onError(res);
-                                                    }));
-                                                },
-                                                onFallback: function(_ref4) {
-                                                    var data = _ref4.data;
-                                                    return updateQRCodeComponentState({
-                                                        state: "qr_error",
-                                                        errorText: "The authorization was canceled"
-                                                    }).then((function() {
-                                                        return onFallback({
-                                                            optOut: data
-                                                        });
-                                                    }));
-                                                },
-                                                onShippingChange: onShippingChange
-                                            }
-                                        });
-                                        clean.register(connection.cancel);
-                                        return qrCodeComponentInstance.renderTo(qrCodeRenderTarget, "body");
-                                    })) : onFallback().then(src_util_noop);
-                                }));
-                            }({
-                                props: props,
-                                serviceData: serviceData,
-                                config: config,
-                                components: components,
-                                fundingSource: fundingSource,
-                                clean: native_clean,
-                                sessionUID: sessionUID,
-                                callbacks: {
-                                    onInit: onInitCallback,
-                                    onApprove: onApproveCallback,
-                                    onCancel: onCancelCallback,
-                                    onError: onErrorCallback,
-                                    onShippingChange: onShippingChangeCallback,
-                                    onFallback: onFallbackCallback,
-                                    onClose: onCloseCallback,
-                                    onDestroy: destroy
-                                }
-                            });
-                            throw new Error("No valid native payment flow found");
+                            return flow.start();
                         })).catch((function(err) {
                             return destroy().then((function() {
                                 var _getLogger$error$trac;
@@ -7853,12 +7907,11 @@ window.spb = function(modules) {
                             }));
                         }));
                     },
-                    start: promiseNoop,
                     close: destroy
                 };
             },
-            updateFlowClientConfig: function(_ref9) {
-                var orderID = _ref9.orderID, payment = _ref9.payment, userExperienceFlow = _ref9.userExperienceFlow, buttonSessionID = _ref9.buttonSessionID;
+            updateFlowClientConfig: function(_ref8) {
+                var orderID = _ref8.orderID, payment = _ref8.payment, userExperienceFlow = _ref8.userExperienceFlow, buttonSessionID = _ref8.buttonSessionID;
                 return promise_ZalgoPromise.try((function() {
                     return updateButtonClientConfig({
                         fundingSource: payment.fundingSource,
@@ -7899,8 +7952,8 @@ window.spb = function(modules) {
                 var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry;
                 var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken;
                 !function(personalization) {
-                    personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
-                    personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
+                    personalization && personalization.tagline && personalization.tagline.tracking && util_sendBeacon(personalization.tagline.tracking.click);
+                    personalization && personalization.buttonText && personalization.buttonText.tracking && util_sendBeacon(personalization.buttonText.tracking.click);
                 }(serviceData.personalization);
                 var _getPaymentFlow = getPaymentFlow({
                     props: props,
@@ -8717,7 +8770,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.49", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.50", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 

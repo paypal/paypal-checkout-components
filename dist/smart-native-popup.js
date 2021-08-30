@@ -1115,17 +1115,44 @@
         var http_headerBuilders = [];
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
-        function httpTransport(_ref) {
-            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-            return promise_ZalgoPromise.try((function() {
-                var hasHeaders = headers && Object.keys(headers).length;
-                if (window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob) try {
-                    var blob = new Blob([ JSON.stringify(json) ], {
+        var sendBeacon = function(_ref2) {
+            var url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+            try {
+                var json = JSON.stringify(data);
+                if (useBlob) {
+                    var blob = new Blob([ json ], {
                         type: "application/json"
                     });
                     return window.navigator.sendBeacon(url, blob);
-                } catch (e) {}
-                return function(_ref) {
+                }
+                return window.navigator.sendBeacon(url, json);
+            } catch (e) {
+                return !1;
+            }
+        };
+        function httpTransport(_ref) {
+            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+            return promise_ZalgoPromise.try((function() {
+                var beaconResult = !1;
+                (function(_ref) {
+                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                    var hasHeaders = headers && Object.keys(headers).length;
+                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                })({
+                    headers: headers,
+                    enableSendBeacon: enableSendBeacon
+                }) && (beaconResult = function(url) {
+                    return "https://api2.amplitude.com/2/httpapi" === url;
+                }(url) ? sendBeacon({
+                    url: url,
+                    data: json,
+                    useBlob: !1
+                }) : sendBeacon({
+                    url: url,
+                    data: json,
+                    useBlob: !0
+                }));
+                return beaconResult || function(_ref) {
                     var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
                     return new promise_ZalgoPromise((function(resolve, reject) {
                         if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
@@ -1244,9 +1271,7 @@
                                 amplitudeApiKey && transport({
                                     method: "POST",
                                     url: "https://api2.amplitude.com/2/httpapi",
-                                    headers: {
-                                        "content-type": "application/json"
-                                    },
+                                    headers: {},
                                     json: {
                                         api_key: amplitudeApiKey,
                                         events: tracking.map((function(payload) {
@@ -1255,7 +1280,8 @@
                                                 event_properties: payload
                                             }, payload);
                                         }))
-                                    }
+                                    },
+                                    enableSendBeacon: enableSendBeacon
                                 }).catch(src_util_noop);
                                 events = [];
                                 tracking = [];
@@ -1318,6 +1344,9 @@
                             immediateFlush();
                         }));
                         window.addEventListener("unload", (function() {
+                            immediateFlush();
+                        }));
+                        window.addEventListener("pagehide", (function() {
                             immediateFlush();
                         }));
                     }
@@ -1479,7 +1508,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.49", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.50", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
