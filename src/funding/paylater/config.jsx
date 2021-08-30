@@ -24,14 +24,13 @@ export function getPaylaterConfig() : FundingSourceConfig {
             const { paylater } = fundingEligibility;
             if (
                 experiment
-                && experiment.disablePaylater === true
+                && experiment.disablePaylater
                 && !fundingSource  // Exclude standalone buttons
                 && (paylater?.products?.paylater?.variant === 'experimentable'
                     || paylater?.products?.payIn4?.variant === 'experimentable') // Only use tagged eligibility
             ) {
                 return false;
             }
-
             return true;
         },
 

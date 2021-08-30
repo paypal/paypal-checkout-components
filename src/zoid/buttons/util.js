@@ -131,24 +131,25 @@ export function createNoPaylaterExperiment() : Experiment | void {
         const fundingEligibility = getFundingEligibility();
         const isEligibleForPaylater = fundingEligibility && fundingEligibility[FUNDING.PAYLATER] && fundingEligibility[FUNDING.PAYLATER].eligible;
 
+        // No experiment because ineligible, already forced on or off, unsupported browser
+        if (!isEligibleForPaylater
+            || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
+            || !isSupportedNativeBrowser())
+        {
+            return;
+        }
+        
         if (isDevice()) {
-            // No experiment because ineligible, already forced on or off, unsupported browser
-            if (!isEligibleForPaylater
-                || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
-                || !isSupportedNativeBrowser())
-            {
-                return;
-            }
 
             if (isIos() && isSafari()) {
-                return createExperiment('disable_paylater_ios', 50);
+                return createExperiment('disable_paylater_ios', 0);
             }
 
             if (isAndroid() && isChrome()) {
-                return createExperiment('disable_paylater_android', 50);
+                return createExperiment('disable_paylater_android', 0);
             }
         } else {
-            return createExperiment('disable_paylater_desktop', 50);
+            return createExperiment('disable_paylater_desktop', 0);
         }
     });
 }
