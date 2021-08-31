@@ -114,8 +114,8 @@ export type Components = {|
 |};
 
 export function getComponents() : Components {
-    const { Checkout, CardFields, ThreeDomainSecure, Menu, Installments, QRCode } = paypal;
-    return { Checkout, CardFields, ThreeDomainSecure, Menu, Installments, QRCode };
+    const { Checkout, CardFields, CardForm, ThreeDomainSecure, Menu, Installments, QRCode } = paypal;
+    return { Checkout, CardFields: CardForm || CardFields, ThreeDomainSecure, Menu, Installments, QRCode };
 }
 
 export type Config = {|
