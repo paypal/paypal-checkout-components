@@ -2,6 +2,8 @@
 
 import { join } from 'path';
 
+import { ENV } from '@paypal/sdk-constants';
+
 import pkg from '../../package.json';
 
 import { getEnv } from './env';
@@ -42,8 +44,20 @@ export const SDK_CDN_NAMESPACE = 'js-sdk-release';
 export const SMART_BUTTONS_CDN_NAMESPACE = 'smart-payment-buttons';
 
 export const FUNDING_ELIGIBILITY_TIMEOUT = 200;
-export const WALLET_TIMEOUT = 2000;
-export const EXPERIMENT_TIMEOUT = 100;
+export const WALLET_TIMEOUT : number = {
+    [ENV.PRODUCTION]:       2000,
+    [ENV.LOCAL]:            10000,
+    [ENV.STAGE]:            10000,
+    [ENV.SANDBOX]:          10000,
+    [ENV.TEST]:             10000
+}[getEnv()];
+export const EXPERIMENT_TIMEOUT : number = {
+    [ENV.PRODUCTION]: 100,
+    [ENV.LOCAL]:      10000,
+    [ENV.STAGE]:      10000,
+    [ENV.SANDBOX]:    10000,
+    [ENV.TEST]:       10000
+}[getEnv()];
 export const PERSONALIZATION_TIMEOUT = 100;
 
 export const LATEST_TAG = 'latest';
