@@ -16,7 +16,7 @@ export function getInstallmentsComponent() : InstallmentsComponent {
     return inlineMemoize(getInstallmentsComponent, () => {
         return create({
             tag: 'paypal-installments',
-            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__INSTALLMENTS__ }`,
+            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__INSTALLMENTS__ }`,
 
             domain: getPayPalDomainRegex(),
             

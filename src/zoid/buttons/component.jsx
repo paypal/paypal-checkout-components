@@ -29,7 +29,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     const queriedEligibleFunding = [];
     return create({
         tag:  'paypal-buttons',
-        url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
+        url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
         domain: getPayPalDomainRegex(),
 

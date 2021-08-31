@@ -26,7 +26,7 @@ export function getCheckoutComponent() : CheckoutComponent {
     return inlineMemoize(getCheckoutComponent, () => {
         const component = create({
             tag: 'paypal-checkout',
-            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`,
+            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__ }`,
         
             attributes: {
                 iframe: {

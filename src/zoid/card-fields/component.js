@@ -32,7 +32,7 @@ export function getCardFieldsComponent() : CardFieldsComponent {
     return inlineMemoize(getCardFieldsComponent, () => {
         return create({
             tag:  'paypal-card-fields',
-            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`,
+            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`,
 
             dimensions: {
                 height: '300px',
