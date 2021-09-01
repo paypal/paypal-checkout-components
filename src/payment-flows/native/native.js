@@ -30,12 +30,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     const { fundingSource } = payment;
     const { firebase: firebaseConfig } = config;
 
-    getLogger().addTrackingBuilder(() => {
-        return {
-            [FPTI_KEY.CHOSEN_FUNDING]: fundingSource
-        };
-    });
-
     if (!firebaseConfig) {
         throw new Error(`Can not run native flow without firebase config`);
     }
@@ -220,6 +214,12 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const click = () => {
+        getLogger().addTrackingBuilder(() => {
+            return {
+                [FPTI_KEY.CHOSEN_FUNDING]: fundingSource
+            };
+        });
+        
         return flow.click();
     };
 
