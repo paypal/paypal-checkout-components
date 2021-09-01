@@ -1,3 +1,16 @@
+## <small>5.0.177 (2021-09-01)</small>
+
+* Add CardForm alias for existing card fields ([f8e1138](https://github.com/paypal/paypal-checkout-components/commit/f8e1138))
+* Edit qrModal height (#1730) ([94b8b9e](https://github.com/paypal/paypal-checkout-components/commit/94b8b9e)), closes [#1730](https://github.com/paypal/paypal-checkout-components/issues/1730)
+* Fix Venmo Prerender (#1729) ([3c45aca](https://github.com/paypal/paypal-checkout-components/commit/3c45aca)), closes [#1729](https://github.com/paypal/paypal-checkout-components/issues/1729)
+* Make QR component protected export ([918606f](https://github.com/paypal/paypal-checkout-components/commit/918606f))
+* Refactor Funding Config (#1724) ([731a2ab](https://github.com/paypal/paypal-checkout-components/commit/731a2ab)), closes [#1724](https://github.com/paypal/paypal-checkout-components/issues/1724)
+* Remove window.__CHECKOUT_URI__ global hack ([10632e3](https://github.com/paypal/paypal-checkout-components/commit/10632e3))
+* Use POST for id token on local and stage ([4a5eadc](https://github.com/paypal/paypal-checkout-components/commit/4a5eadc))
+* chore(release): 5.0.176 :tada: ([8ee79bd](https://github.com/paypal/paypal-checkout-components/commit/8ee79bd))
+
+
+
 ## <small>5.0.176 (2021-08-20)</small>
 
 * Use POST for id token on local and stage ([4a5eadc](https://github.com/paypal/paypal-checkout-components/commit/4a5eadc))
