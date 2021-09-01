@@ -54,23 +54,31 @@ function QRCard({
         return state === QRCODE_STATE.ERROR;
     };
 
+    const errorMessage = (
+        <ErrorMessage
+            message={ errorText }
+            resetFunc={ () => setState(QRCODE_STATE.DEFAULT) }
+        />
+    );
+
+    const frontView = (
+        <div id="front-view" className="card">
+            <div id="instructions">
+                <InstructionIcon stylingClass="instruction-icon" />
+                <span>
+                    To pay, open the Venmo app and <br />scan the QR code above.
+                </span>
+            </div>
+            <QRCodeElement svgString={ svgString } />
+            <Logo />
+        </div>
+    );
+
     return (
         <Fragment>
             <style nonce={ cspNonce }> { cardStyle } </style>
             <div id="view-boxes" className={ state }>
-                { isError() ?
-                    <ErrorMessage
-                        message={ errorText }
-                        resetFunc={ () => setState(QRCODE_STATE.DEFAULT) }
-                    /> :
-                    <div id="front-view" className="card">
-                        <QRCodeElement svgString={ svgString } />
-                        <Logo />
-                        <div id="instructions">
-                            <InstructionIcon stylingClass="instruction-icon" />
-                            To scan QR code, Open your Venmo App
-                        </div>
-                    </div>}
+                { isError() ? errorMessage : frontView }
                 <div className="card" id="back-view" >
                     <span className="mark">
                         <VenmoMark />
