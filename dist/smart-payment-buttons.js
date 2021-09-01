@@ -3040,7 +3040,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.50", _headers15);
+            _headers15["x-app-version"] = "5.0.51", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4255,7 +4255,7 @@ window.spb = function(modules) {
             var _paypal = paypal;
             return {
                 Checkout: _paypal.Checkout,
-                CardFields: _paypal.CardFields,
+                CardFields: _paypal.CardForm || _paypal.CardFields,
                 ThreeDomainSecure: _paypal.ThreeDomainSecure,
                 Menu: _paypal.Menu,
                 Installments: _paypal.Installments,
@@ -7699,12 +7699,7 @@ window.spb = function(modules) {
                 var props = _ref2.props, components = _ref2.components, config = _ref2.config, payment = _ref2.payment, serviceData = _ref2.serviceData;
                 var onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, buttonSessionID = props.buttonSessionID, onShippingChange = props.onShippingChange;
                 var fundingSource = payment.fundingSource;
-                var firebaseConfig = config.firebase;
-                logger_getLogger().addTrackingBuilder((function() {
-                    var _ref3;
-                    return (_ref3 = {}).selected_payment_method = fundingSource, _ref3;
-                }));
-                if (!firebaseConfig) throw new Error("Can not run native flow without firebase config");
+                if (!config.firebase) throw new Error("Can not run native flow without firebase config");
                 native_clean && native_clean.all();
                 native_clean = cleanup();
                 var approved = !1;
@@ -7759,9 +7754,9 @@ window.spb = function(modules) {
                                 };
                             }));
                         },
-                        onApprove: function(_ref4) {
+                        onApprove: function(_ref3) {
                             var _getLogger$info$track;
-                            var _ref4$data = _ref4.data, payerID = _ref4$data.payerID, paymentID = _ref4$data.paymentID, billingToken = _ref4$data.billingToken;
+                            var _ref3$data = _ref3.data, payerID = _ref3$data.payerID, paymentID = _ref3$data.paymentID, billingToken = _ref3$data.billingToken;
                             approved = !0;
                             logger_getLogger().info("native_message_onapprove", {
                                 payerID: payerID,
@@ -7805,9 +7800,9 @@ window.spb = function(modules) {
                                 };
                             }));
                         },
-                        onError: function(_ref5) {
+                        onError: function(_ref4) {
                             var _getLogger$info$track4;
-                            var message = _ref5.data.message;
+                            var message = _ref4.data.message;
                             logger_getLogger().info("native_message_onerror", {
                                 err: message
                             }).track((_getLogger$info$track4 = {}, _getLogger$info$track4.transition_name = "native_onerror", 
@@ -7818,8 +7813,8 @@ window.spb = function(modules) {
                                 };
                             }));
                         },
-                        onShippingChange: function(_ref6) {
-                            var data = _ref6.data;
+                        onShippingChange: function(_ref5) {
+                            var data = _ref5.data;
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$track5;
                                 logger_getLogger().info("native_message_onshippingchange").track((_getLogger$info$track5 = {}, 
@@ -7852,7 +7847,7 @@ window.spb = function(modules) {
                             }));
                         },
                         onFallback: function(opts) {
-                            var _ref7 = opts || {}, win = _ref7.win, _ref7$optOut = _ref7.optOut, optOut = void 0 === _ref7$optOut ? {} : _ref7$optOut;
+                            var _ref6 = opts || {}, win = _ref6.win, _ref6$optOut = _ref6.optOut, optOut = void 0 === _ref6$optOut ? {} : _ref6$optOut;
                             return promise_ZalgoPromise.try((function() {
                                 if (optOut) {
                                     var _getLogger$info$track6;
@@ -7868,9 +7863,10 @@ window.spb = function(modules) {
                                         }
                                         return !1;
                                     }(optOut);
+                                    var fallback_reason = optOut.fallback_reason;
                                     logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track6 = {}, 
                                     _getLogger$info$track6.transition_name = "native_onfallback", _getLogger$info$track6.transition_type = result ? "native_opt_out" : "native_fallback", 
-                                    _getLogger$info$track6)).flush();
+                                    _getLogger$info$track6.transition_reason = fallback_reason || "", _getLogger$info$track6)).flush();
                                 }
                                 fallbackToWebCheckout(win);
                                 return {
@@ -7890,6 +7886,10 @@ window.spb = function(modules) {
                 });
                 return {
                     click: function() {
+                        logger_getLogger().addTrackingBuilder((function() {
+                            var _ref7;
+                            return (_ref7 = {}).selected_payment_method = fundingSource, _ref7;
+                        }));
                         return flow.click();
                     },
                     start: function() {
@@ -8140,14 +8140,16 @@ window.spb = function(modules) {
                                 var env = _ref3.env, clientID = _ref3.clientID, merchantID = _ref3.merchantID, currency = _ref3.currency, intent = _ref3.intent, vault = _ref3.vault, buttonLabel = _ref3.buttonLabel;
                                 var logger = logger_getLogger();
                                 return getSupplementalOrderInfo(orderID).then((function(order) {
+                                    var _cart$supplementary, _cart$supplementary$i, _cart$supplementary2, _cart$supplementary2$;
                                     var cart = order.checkoutSession.cart;
                                     var cartIntent = "sale" === cart.intent.toLowerCase() ? "capture" : cart.intent.toLowerCase();
+                                    var initiationIntent = "authorization" === (null == (_cart$supplementary = cart.supplementary) || null == (_cart$supplementary$i = _cart$supplementary.initiationIntent) ? void 0 : _cart$supplementary$i.toLowerCase()) ? "authorize" : null == (_cart$supplementary2 = cart.supplementary) || null == (_cart$supplementary2$ = _cart$supplementary2.initiationIntent) ? void 0 : _cart$supplementary2$.toLowerCase();
                                     var cartCurrency = cart.amounts && cart.amounts.total.currencyCode;
                                     var cartAmount = cart.amounts && cart.amounts.total.currencyValue;
                                     var cartBillingType = cart.billingType;
-                                    cartIntent === intent || (cart.supplementary && cart.supplementary.initiationIntent) === intent || -1 === VALIDATE_INTENTS.indexOf(intent) || triggerIntegrationError({
+                                    cartIntent === intent || initiationIntent === intent || -1 === VALIDATE_INTENTS.indexOf(intent) || triggerIntegrationError({
                                         error: "smart_button_validation_error_incorrect_intent",
-                                        message: "Expected intent from order api call to be " + intent + ", got " + cartIntent + ". Please ensure you are passing intent=" + cartIntent + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
+                                        message: "Expected intent from order api call to be " + intent + ", got " + cartIntent + ". Please ensure you are passing intent=" + (initiationIntent || cartIntent) + " to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/",
                                         loggerPayload: {
                                             cartIntent: cartIntent,
                                             intent: intent
@@ -8329,6 +8331,7 @@ window.spb = function(modules) {
                                 buttonLabel: buttonLabel
                             });
                         }));
+                        validateOrderPromise.catch(src_util_noop);
                         var confirmOrderPromise = createOrder().then((function(orderID) {
                             return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmOrderPayload) {
                                 if (confirmOrderPayload) {
@@ -8538,7 +8541,7 @@ window.spb = function(modules) {
                     });
                     var onError = paymentProps.onError;
                     payPromise.catch((function(err) {
-                        logger_getLogger().error("click_initiate_payment_reject", {
+                        logger_getLogger().warn("click_initiate_payment_reject", {
                             err: stringifyError(err)
                         }).flush();
                         onError(err);
@@ -8770,7 +8773,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.50", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.51", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
