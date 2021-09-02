@@ -66,7 +66,7 @@ function QRCard({
             <div id="instructions">
                 <InstructionIcon stylingClass="instruction-icon" />
                 <span>
-                    To pay, open the Venmo app and <br />scan the QR code above.
+                    To pay, scan the QR code with <br />your Venmo app
                 </span>
             </div>
             <QRCodeElement svgString={ svgString } />
