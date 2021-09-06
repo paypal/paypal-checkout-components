@@ -158,6 +158,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -231,6 +232,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -452,6 +454,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -637,6 +640,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             createButtonHTML();
 
@@ -724,6 +728,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -950,6 +955,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onApprove = avoid('onApprove');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onCancel = mockAsyncProp(expect('onCancel', (data) => {
                 if (data.orderID !== orderID) {
@@ -1100,8 +1106,8 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onApprove = avoid('onApprove');
-
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             createButtonHTML();
 
@@ -1398,6 +1404,7 @@ describe('native ios/safari cases', () => {
             }));
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -1463,6 +1470,7 @@ describe('native ios/safari cases', () => {
 
             window.xprops.onCancel = mockAsyncProp(avoid('onCancel', promiseNoop));
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove', promiseNoop));
+            window.xprops.onError = avoid('onError');
 
             createButtonHTML();
 
@@ -1553,6 +1561,7 @@ describe('native ios/safari cases', () => {
             }));
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -1681,6 +1690,7 @@ describe('native ios/safari cases', () => {
             }));
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -1847,6 +1857,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove'));
 
@@ -1995,6 +2006,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -2168,6 +2180,7 @@ describe('native ios/safari cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -2194,6 +2207,176 @@ describe('native ios/safari cases', () => {
             if (mockWebSocketServer) {
                 mockWebSocketServer.done();
             }
+            gqlMock.done();
+            mockWindow.done();
+        });
+    });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path in iOS without onInit', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = IOS_SAFARI_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+            const orderID = uniqueID();
+            const payerID = uniqueID();
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let mockWebSocketServer;
+
+            const mockWindow = getMockWindowOpen({
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                onOpen:             () => {
+
+                    mockWindow.send({
+                        name:   'awaitRedirect',
+                        data:   {
+                            redirect: true,
+                            pageUrl:  `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (res.redirect !== true) {
+                            throw new Error(`Expected redirect to be true`);
+                        }
+
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const [ redirectUrl, redirectQueryString ] = res.redirectUrl.split('?');
+
+                        // eslint-disable-next-line compat/compat
+                        const redirectDomain = new URL(redirectUrl).origin;
+                        const redirectQuery = parseQuery(redirectQueryString);
+
+                        if (redirectDomain !== 'https://www.paypal.com') {
+                            throw new Error(`Unexpected redirect domain: ${ redirectDomain }`);
+                        }
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
+                        }
+
+                        if (!redirectQuery.channel) {
+                            throw new Error(`Expected channel to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buyerCountry) {
+                            throw new Error(`Expected buyerCountry to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sdkVersion) {
+                            throw new Error(`Expected sdkVersion to be passed in url`);
+                        }
+
+                        if (mockWebSocketServer) {
+                            mockWebSocketServer.done();
+                        }
+
+                        const { expect: expectSocket } = getNativeFirebaseMock({
+                            sessionUID: redirectQuery.sessionUID
+                        });
+
+                        mockWebSocketServer = expectSocket();
+
+                        return ZalgoPromise.try(() => {
+                            return mockWindow.send({
+                                name: 'detectAppSwitch'
+                            });
+                        }).then(() => {
+                            mockWindow.expectClose();
+                            return mockWindow.send({
+                                name:   'onApprove',
+                                data:   {
+                                    payerID
+                                }
+                            });
+                        });
+                    }));
+                }
+            });
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }), 50);
+
+            window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            await window.xprops.onApprove.await();
+
+            if (mockWebSocketServer) {
+                mockWebSocketServer.done();
+            }
+            
             gqlMock.done();
             mockWindow.done();
         });
@@ -2330,6 +2513,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -2402,6 +2586,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -2616,6 +2801,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -2793,6 +2979,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             createButtonHTML();
 
@@ -2880,6 +3067,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -3101,6 +3289,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onApprove = avoid('onApprove');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onCancel = mockAsyncProp(expect('onCancel', (data) => {
                 if (data.orderID !== orderID) {
@@ -3390,6 +3579,7 @@ describe('native android/chrome cases', () => {
             }));
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -3455,6 +3645,7 @@ describe('native android/chrome cases', () => {
 
             window.xprops.onCancel = mockAsyncProp(avoid('onCancel', promiseNoop));
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove', promiseNoop));
+            window.xprops.onError = avoid('onError');
 
             createButtonHTML();
 
@@ -3546,6 +3737,7 @@ describe('native android/chrome cases', () => {
             }));
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -3674,6 +3866,7 @@ describe('native android/chrome cases', () => {
             }));
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
                 if (data.orderID !== orderID) {
@@ -3840,6 +4033,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove'));
 
@@ -3981,6 +4175,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -4149,6 +4344,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -4305,6 +4501,7 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {
@@ -4470,6 +4667,161 @@ describe('native android/chrome cases', () => {
             }), 50);
 
             window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                eligibility: {
+                    cardFields: false,
+                    native:     true
+                }
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            await window.xprops.onApprove.await();
+
+            if (mockWebSocketServer) {
+                mockWebSocketServer.done();
+            }
+            gqlMock.done();
+            mockWindow.done();
+        });
+    });
+
+    it('should render a button with createOrder, click the button, and render checkout via popup to native path in Android without onInit', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            window.navigator.mockUserAgent = ANDROID_CHROME_USER_AGENT;
+
+            window.xprops.enableNativeCheckout = true;
+            window.xprops.platform = PLATFORM.MOBILE;
+            delete window.xprops.onClick;
+
+            const sessionToken = uniqueID();
+            const orderID = uniqueID();
+            const payerID = uniqueID();
+            
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: expect('firebaseGQLCall', ({ data }) => {
+                    if (!data.query.includes('query GetFireBaseSessionToken')) {
+                        return;
+                    }
+
+                    if (!data.variables.sessionUID) {
+                        throw new Error(`Expected sessionUID to be passed`);
+                    }
+
+                    return {
+                        data: {
+                            firebase: {
+                                auth: {
+                                    sessionUID: data.variables.sessionUID,
+                                    sessionToken
+                                }
+                            }
+                        }
+                    };
+                })
+            }).expectCalls();
+
+            let mockWebSocketServer;
+
+            const mockWindow = getMockWindowOpen({
+                expectedUrl:        'https://history.paypal.com/smart/checkout/native/popup',
+                expectedQuery:      [ 'sdkMeta', 'buttonSessionID', 'parentDomain' ],
+                expectClose:        true,
+                onOpen:             () => {
+                    mockWindow.send({
+                        name:   'awaitRedirect',
+                        data:   {
+                            redirect: true,
+                            pageUrl:  `${ window.location.href }#close`
+                        }
+                    }).then(expect('awaitRedirectResponse', res => {
+                        if (res.redirect !== true) {
+                            throw new Error(`Expected redirect to be true`);
+                        }
+
+                        if (!res.redirectUrl) {
+                            throw new Error(`Expected native redirect url`);
+                        }
+
+                        const [ redirectUrl, redirectQueryString ] = res.redirectUrl.split('?');
+
+                        // eslint-disable-next-line compat/compat
+                        const redirectDomain = new URL(redirectUrl).origin;
+                        const redirectQuery = parseQuery(redirectQueryString);
+
+                        if (redirectDomain !== 'https://www.paypal.com') {
+                            throw new Error(`Unexpected redirect domain: ${ redirectDomain }`);
+                        }
+
+                        if (!redirectQuery.sdkMeta) {
+                            throw new Error(`Expected sdkMeta to be passed in url`);
+                        }
+
+                        if (!redirectQuery.sessionUID) {
+                            throw new Error(`Expected sessionUID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.pageUrl) {
+                            throw new Error(`Expected pageUrl to be passed in url`);
+                        }
+
+                        if (!redirectQuery.buttonSessionID) {
+                            throw new Error(`Expected buttonSessionID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.orderID) {
+                            throw new Error(`Expected orderID to be passed in url`);
+                        }
+
+                        if (!redirectQuery.env) {
+                            throw new Error(`Expected env to be passed in url`);
+                        }
+
+                        if (!redirectQuery.channel) {
+                            throw new Error(`Expected channel to be passed in url`);
+                        }
+
+                        mockWindow.close();
+
+                        if (mockWebSocketServer) {
+                            mockWebSocketServer.done();
+                        }
+
+                        const { expect: expectSocket, onApprove } = getNativeFirebaseMock({
+                            sessionUID: redirectQuery.sessionUID
+                        });
+
+                        mockWebSocketServer = expectSocket();
+
+                        return ZalgoPromise.delay(100).then(() => {
+                            return onApprove({ payerID });
+                        });
+                    }));
+                }
+            });
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }), 50);
+
+            window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onError = avoid('onError');
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
                 if (data.orderID !== orderID) {

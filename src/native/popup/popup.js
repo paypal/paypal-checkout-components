@@ -314,7 +314,7 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
             if (appSwitch) {
                 const timer = setTimeout(() => {
                     if (!didRedirect) {
-                        sendToParent(MESSAGE.DETECT_APP_SWITCH);
+                        sendToParent(MESSAGE.DETECT_POSSIBLE_APP_SWITCH);
                     }
                 }, 1500);
                 clean.register(() => clearTimeout(timer));
