@@ -102,7 +102,7 @@ export function createVenmoExperiment() : ?Experiment {
     }
 }
 
-export function getVenmoExperiment() : VenmoExperiment {
+export function getVenmoExperiment() : EligibilityExperiment {
     const experiment = createVenmoExperiment();
 
     const enableFunding = getEnableFunding();
@@ -142,14 +142,14 @@ export function createNoPaylaterExperiment() : Experiment | void {
     if (isDevice()) {
 
         if (isIos() && isSafari()) {
-            return createExperiment('disable_paylater_ios', 0);
+            return createExperiment('disable_paylater_ios', 100);
         }
 
         if (isAndroid() && isChrome()) {
-            return createExperiment('disable_paylater_android', 0);
+            return createExperiment('disable_paylater_android', 100);
         }
     } else {
-        return createExperiment('disable_paylater_desktop', 0);
+        return createExperiment('disable_paylater_desktop', 100);
     }
 }
 
