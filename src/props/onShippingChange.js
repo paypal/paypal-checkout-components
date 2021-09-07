@@ -4,7 +4,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { COUNTRY, CURRENCY, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { patchOrder, type OrderResponse } from '../api';
-import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_CUSTOM_KEY } from '../constants';
 import { getLogger } from '../lib';
 
 import type { CreateOrder } from './createOrder';
@@ -110,10 +110,11 @@ export function getOnShippingChange({ onShippingChange, partnerAttributionID, cl
                 getLogger()
                     .info('button_shipping_change')
                     .track({
-                        [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
-                        [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
-                        [FPTI_KEY.TOKEN]:        orderID,
-                        [FPTI_KEY.CONTEXT_ID]:   orderID
+                        [FPTI_KEY.TRANSITION]:                       FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
+                        [FPTI_KEY.CONTEXT_TYPE]:                     FPTI_CONTEXT_TYPE.ORDER_ID,
+                        [FPTI_KEY.TOKEN]:                            orderID,
+                        [FPTI_KEY.CONTEXT_ID]:                       orderID,
+                        [FPTI_CUSTOM_KEY.SHIPPING_CALLBACK_INVOKED]: '1'
                     }).flush();
 
                 return onShippingChange(buildXOnShippingChangeData(data), buildXShippingChangeActions({ orderID, facilitatorAccessToken, buyerAccessToken, actions, partnerAttributionID, forceRestAPI }));

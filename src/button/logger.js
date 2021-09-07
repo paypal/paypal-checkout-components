@@ -6,8 +6,9 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { LocaleType } from '../types';
 import { getLogger, setupLogger, isStorageStateFresh, isIOSSafari, isAndroidChrome } from '../lib';
-import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY, FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY } from '../constants';
-import type { GetQueriedEligibleFunding } from '../props';
+import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY,
+    FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY, FPTI_CUSTOM_KEY } from '../constants';
+import type { GetQueriedEligibleFunding, OnShippingChange } from '../props';
 
 import type { ButtonStyle } from './props';
 
@@ -38,11 +39,12 @@ type ButtonLoggerOptions = {|
     fundingSource : ?$Values<typeof FUNDING>,
     getQueriedEligibleFunding : GetQueriedEligibleFunding,
     stickinessID : string,
-    buyerCountry : $Values<typeof COUNTRY>
+    buyerCountry : $Values<typeof COUNTRY>,
+    onShippingChange : ?OnShippingChange
 |};
 
 export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, partnerAttributionID, commit, sdkCorrelationID, buttonCorrelationID, locale,
-    merchantID, merchantDomain, sdkVersion, style, fundingSource, getQueriedEligibleFunding, stickinessID, buyerCountry } : ButtonLoggerOptions) : ZalgoPromise<void> {
+    merchantID, merchantDomain, sdkVersion, style, fundingSource, getQueriedEligibleFunding, stickinessID, buyerCountry, onShippingChange } : ButtonLoggerOptions) : ZalgoPromise<void> {
 
     const logger = getLogger();
 
@@ -122,22 +124,23 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         }
 
         logger.track({
-            [FPTI_KEY.TRANSITION]:                    FPTI_TRANSITION.BUTTON_LOAD,
-            [FPTI_KEY.FUNDING_LIST]:                  fundingSources.join(':'),
-            [FPTI_KEY.FI_LIST]:                       walletInstruments.join(':'),
-            [FPTI_KEY.SELECTED_FI]:                   fundingSource,
-            [FPTI_KEY.FUNDING_COUNT]:                 fundingSources.length.toString(),
-            [FPTI_KEY.PAGE_LOAD_TIME]:                pageRenderTime ? pageRenderTime.toString() : '',
-            [FPTI_KEY.POTENTIAL_PAYMENT_METHODS]:     queriedEligibleFunding.join(':'),
-            [FPTI_KEY.PAY_NOW]:                       payNow.toString(),
-            [FPTI_BUTTON_KEY.BUTTON_LAYOUT]:          layout,
-            [FPTI_BUTTON_KEY.BUTTON_COLOR]:           color,
-            [FPTI_BUTTON_KEY.BUTTON_SIZE]:            'responsive',
-            [FPTI_BUTTON_KEY.BUTTON_SHAPE]:           shape,
-            [FPTI_BUTTON_KEY.BUTTON_LABEL]:           label,
-            [FPTI_BUTTON_KEY.BUTTON_WIDTH]:           window.innerWidth,
-            [FPTI_BUTTON_KEY.BUTTON_TYPE]:            FPTI_BUTTON_TYPE.IFRAME,
-            [FPTI_BUTTON_KEY.BUTTON_TAGLINE_ENABLED]: tagline ? '1' : '0'
+            [FPTI_KEY.TRANSITION]:                      FPTI_TRANSITION.BUTTON_LOAD,
+            [FPTI_KEY.FUNDING_LIST]:                    fundingSources.join(':'),
+            [FPTI_KEY.FI_LIST]:                         walletInstruments.join(':'),
+            [FPTI_KEY.SELECTED_FI]:                     fundingSource,
+            [FPTI_KEY.FUNDING_COUNT]:                   fundingSources.length.toString(),
+            [FPTI_KEY.PAGE_LOAD_TIME]:                  pageRenderTime ? pageRenderTime.toString() : '',
+            [FPTI_KEY.POTENTIAL_PAYMENT_METHODS]:       queriedEligibleFunding.join(':'),
+            [FPTI_KEY.PAY_NOW]:                         payNow.toString(),
+            [FPTI_BUTTON_KEY.BUTTON_LAYOUT]:            layout,
+            [FPTI_BUTTON_KEY.BUTTON_COLOR]:             color,
+            [FPTI_BUTTON_KEY.BUTTON_SIZE]:              'responsive',
+            [FPTI_BUTTON_KEY.BUTTON_SHAPE]:             shape,
+            [FPTI_BUTTON_KEY.BUTTON_LABEL]:             label,
+            [FPTI_BUTTON_KEY.BUTTON_WIDTH]:             window.innerWidth,
+            [FPTI_BUTTON_KEY.BUTTON_TYPE]:              FPTI_BUTTON_TYPE.IFRAME,
+            [FPTI_BUTTON_KEY.BUTTON_TAGLINE_ENABLED]:   tagline ? '1' : '0',
+            [FPTI_CUSTOM_KEY.SHIPPING_CALLBACK_PASSED]: onShippingChange ? '1' : '0'
         });
 
         logger.flush();

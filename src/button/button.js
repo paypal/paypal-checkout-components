@@ -68,7 +68,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const { merchantID, buyerCountry } = serviceData;
 
     const props = getButtonProps({ facilitatorAccessToken, brandedDefault });
-    const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale,
+    const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale, onShippingChange,
         buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
         style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID } = props;
         
@@ -224,7 +224,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
     const setupButtonLogsTask = setupButtonLogger({
         style, env, sdkVersion, sessionID, clientID, partnerAttributionID, commit, sdkCorrelationID,
         stickinessID, buttonCorrelationID, locale, merchantID, buttonSessionID, merchantDomain,
-        fundingSource, getQueriedEligibleFunding, buyerCountry });
+        fundingSource, getQueriedEligibleFunding, buyerCountry, onShippingChange });
     const setupPaymentFlowsTask = setupPaymentFlows({ props, config, serviceData, components });
     const setupExportsTask = setupExports({ props, isEnabled });
 
