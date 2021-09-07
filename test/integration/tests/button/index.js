@@ -16,3 +16,4 @@ import './standalone';
 import './clone';
 import './renderOrder';
 import './nonce';
+import './eligibility';

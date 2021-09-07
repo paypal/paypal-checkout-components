@@ -11,7 +11,7 @@ import { getComponents, getFundingEligibility, getEnv } from '@paypal/sdk-client
 import type { OnShippingChange } from '../ui/buttons/props';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import { determineEligibleFunding, isFundingEligible } from '../funding';
-import { isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment } from '../zoid/buttons/util';
+import { isSupportedNativeBrowser, getVenmoExperiment } from '../zoid/buttons/util';
 
 import { MarksElement } from './template';
 
@@ -42,8 +42,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
         const applePaySupport = fundingEligibility?.applepay?.eligible ? isApplePaySupported() : false;
         const supportsPopups = userAgentSupportsPopups();
         const supportedNativeBrowser = isSupportedNativeBrowser();
-        const enableVenmoExperiment = createVenmoExperiment();
-        const experiment = getVenmoExperiment(enableVenmoExperiment);
+        const experiment = getVenmoExperiment();
         const fundingSources = determineEligibleFunding({ fundingSource, fundingEligibility, components, platform, remembered, layout, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
         const env = getEnv();
 
