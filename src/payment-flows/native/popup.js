@@ -468,8 +468,7 @@ export function initNativePopup({ props, serviceData, config, fundingSource, ses
                     closePopup('onCancel');
                 });
 
-                const onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_FALLBACK, (data) => {
-                    detectAppSwitch();
+                const onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, POST_MESSAGE.ON_FALLBACK, ({ data }) => {
                     getLogger().info(`native_message_onfallback`)
                         .track({
                             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK

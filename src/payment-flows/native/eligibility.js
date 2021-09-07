@@ -6,7 +6,7 @@ import { supportsPopups, isIos, isAndroid } from 'belter/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
 import { enableAmplitude, getStorageState, isIOSSafari, isAndroidChrome } from '../../lib';
-import { LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_TRANSITION } from '../../constants';
+import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
 
@@ -221,14 +221,17 @@ export function getDefaultNativeOptOutOptions() : NativeOptOutOptions {
 }
 
 export function setNativeOptOut(optOut : NativeOptOutOptions) : boolean {
-    if (optOut.type === FPTI_TRANSITION.NATIVE_OPT_OUT) {
+    const NATIVE_OPT_OUT = 'native_opt_out';
+    const { type, skip_native_duration } = optOut;
+
+    if (type && type === NATIVE_OPT_OUT) {
 
         // Opt-out 6 weeks from native experience as default
         let OPT_OUT_TIME = 6 * 7 * 24 * 60 * 60 * 1000;
-        if (optOut.skip_native_duration && typeof optOut.skip_native_duration === 'number') {
-            OPT_OUT_TIME = optOut.skip_native_duration;
+        if (skip_native_duration && typeof skip_native_duration === 'number') {
+            OPT_OUT_TIME = skip_native_duration;
         }
-
+        
         const now = Date.now();
         getStorageState(state => {
             state.nativeOptOutLifetime = now + OPT_OUT_TIME;
