@@ -339,11 +339,8 @@ export function initNativePopup({ props, serviceData, config, fundingSource, ses
                         [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
                         [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
                     }).flush();
-                    onClose();
-                }, 500);
-
-                const closeErrorListener = onCloseWindow(nativePopupWin, () => {
                     appSwitchError(new Error(`Native popup closed`));
+                    onClose();
                 }, 500);
 
                 const closePopup = (event : string) => {
@@ -372,6 +369,7 @@ export function initNativePopup({ props, serviceData, config, fundingSource, ses
                     }).then(({ valid, eligible }) => {
 
                         if (!valid) {
+                            closeListener.cancel();
                             nativePopupWin.close();
                             return onDestroy().then(() => {
                                 return {
@@ -404,7 +402,7 @@ export function initNativePopup({ props, serviceData, config, fundingSource, ses
                                 }).flush();
 
                             if (isAndroidChrome()) {
-                                closeErrorListener.cancel();
+                                closeListener.cancel();
                                 const appSwitchCloseListener = onCloseWindow(nativePopupWin, () => detectPossibleAppSwitch(), 50);
                                 setTimeout(appSwitchCloseListener.cancel, 1000);
                             }
