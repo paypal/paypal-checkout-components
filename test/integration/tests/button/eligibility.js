@@ -25,7 +25,7 @@ describe('venmo button eligibility', () => {
         window.localStorage.removeItem('enable_venmo_ios');
     });
 
-    it('should render venmo button for desktop', () => {
+    it('should render venmo button for desktop when eligibility is true', () => {
         return wrapPromise(({ expect, avoid }) => {
             window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
             window.localStorage.setItem('enable_venmo_desktop', true);
@@ -56,7 +56,7 @@ describe('venmo button eligibility', () => {
         });
     });
 
-    it('should not render venmo button for desktop', () => {
+    it('should not render venmo button for desktop when eligibility is false', () => {
         return wrapPromise(({ expect, avoid }) => {
             window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
             const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO], 'eligible', false);
@@ -86,7 +86,7 @@ describe('venmo button eligibility', () => {
         });
     });
 
-    it('should render venmo button for mobile', () => {
+    it('should render venmo button for mobile when eligibility is true', () => {
         return wrapPromise(({ expect, avoid }) => {
             window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
             window.localStorage.setItem('enable_venmo_ios', true);
@@ -117,7 +117,7 @@ describe('venmo button eligibility', () => {
         });
     });
 
-    it('should not render venmo button for mobile', () => {
+    it('should not render venmo button for mobile when eligibility is false', () => {
         return wrapPromise(({ expect, avoid }) => {
             window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
             const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO], 'eligible', true);

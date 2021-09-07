@@ -77,10 +77,16 @@ export function createVenmoExperiment() : ?Experiment {
     const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
 
     const fundingEligibility = getFundingEligibility();
-    const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
+    const hasBasicVenmoEligibility = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
+    const isEligibleForVenmoNative = isSupportedNativeBrowser() && !isEnableFundingVenmo;
+
+    // basic eligibility must be true for venmo to be eligible for the experiments
+    if (!hasBasicVenmoEligibility) {
+        return;
+    }
 
     if (isDevice()) {
-        if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser()) || !isSupportedNativeBrowser()) {
+        if (!isEligibleForVenmoNative) {
             return;
         }
 
