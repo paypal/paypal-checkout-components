@@ -122,37 +122,35 @@ export function getVenmoExperiment() : VenmoExperiment {
 }
 
 export function createNoPaylaterExperiment() : Experiment | void {
-    return inlineMemoize(createNoPaylaterExperiment, () => {
-        const disableFunding = getDisableFunding();
-        const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
-        const enableFunding = getEnableFunding();
-        const isEnableFundingPaylater = enableFunding && enableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+    const disableFunding = getDisableFunding();
+    const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+    const enableFunding = getEnableFunding();
+    const isEnableFundingPaylater = enableFunding && enableFunding.indexOf(FUNDING.PAYLATER) !== -1;
 
-        const { paylater } = getFundingEligibility();
-        const isEligibleForPaylater = paylater?.eligible;
-        const isExperimentable = paylater?.products?.paylater?.variant === 'experimentable' || paylater?.products?.payIn4?.variant === 'experimentable';
-        // No experiment because ineligible, already forced on or off, unsupported browser
-        if (!isEligibleForPaylater
-            || !isExperimentable
-            || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
-            || (isDevice() && !isSupportedNativeBrowser())
-        ) {
-            return;
+    const { paylater } = getFundingEligibility();
+    const isEligibleForPaylater = paylater?.eligible;
+    const isExperimentable = paylater?.products?.paylater?.variant === 'experimentable' || paylater?.products?.payIn4?.variant === 'experimentable';
+    // No experiment because ineligible, already forced on or off, unsupported browser
+    if (!isEligibleForPaylater
+        || !isExperimentable
+        || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
+        || (isDevice() && !isSupportedNativeBrowser())
+    ) {
+        return;
+    }
+
+    if (isDevice()) {
+
+        if (isIos() && isSafari()) {
+            return createExperiment('disable_paylater_ios', 0);
         }
 
-        if (isDevice()) {
-
-            if (isIos() && isSafari()) {
-                return createExperiment('disable_paylater_ios', 0);
-            }
-
-            if (isAndroid() && isChrome()) {
-                return createExperiment('disable_paylater_android', 0);
-            }
-        } else {
-            return createExperiment('disable_paylater_desktop', 0);
+        if (isAndroid() && isChrome()) {
+            return createExperiment('disable_paylater_android', 0);
         }
-    });
+    } else {
+        return createExperiment('disable_paylater_desktop', 0);
+    }
 }
 
 export function getNoPaylaterExperiment() : EligibilityExperiment {
