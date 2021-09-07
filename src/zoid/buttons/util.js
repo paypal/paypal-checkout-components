@@ -128,17 +128,18 @@ export function createNoPaylaterExperiment() : Experiment | void {
         const enableFunding = getEnableFunding();
         const isEnableFundingPaylater = enableFunding && enableFunding.indexOf(FUNDING.PAYLATER) !== -1;
 
-        const fundingEligibility = getFundingEligibility();
-        const isEligibleForPaylater = fundingEligibility && fundingEligibility[FUNDING.PAYLATER] && fundingEligibility[FUNDING.PAYLATER].eligible;
-
+        const { paylater } = getFundingEligibility();
+        const isEligibleForPaylater = paylater?.eligible;
+        const isExperimentable = paylater?.products?.paylater?.variant === 'experimentable' || paylater?.products?.payIn4?.variant === 'experimentable';
         // No experiment because ineligible, already forced on or off, unsupported browser
         if (!isEligibleForPaylater
+            || !isExperimentable
             || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
-            || !isSupportedNativeBrowser())
-        {
+            || (isDevice() && !isSupportedNativeBrowser())
+        ) {
             return;
         }
-        
+
         if (isDevice()) {
 
             if (isIos() && isSafari()) {
@@ -154,7 +155,9 @@ export function createNoPaylaterExperiment() : Experiment | void {
     });
 }
 
-export function getNoPaylaterExperiment(experiment : ?Experiment) : EligibilityExperiment {
+export function getNoPaylaterExperiment() : EligibilityExperiment {
+    const experiment = createNoPaylaterExperiment();
+
     const disableFunding = getDisableFunding();
     const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
     const isNativeSupported = isSupportedNativeBrowser();

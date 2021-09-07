@@ -71,7 +71,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 supportedNativeBrowser = isSupportedNativeBrowser(),
                 experiment = {
                     ...getVenmoExperiment(),
-                    ...getNoPaylaterExperiment(disablePaylaterExperiment)
+                    ...getNoPaylaterExperiment()
                 },
                 createBillingAgreement, createSubscription
             } = props;
@@ -256,8 +256,14 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
                         }
 
-                        if (disablePaylaterExperiment) {
-                            disablePaylaterExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        const enableNoPaylaterExperiment = createNoPaylaterExperiment();
+
+                        if (enableNoPaylaterExperiment) {
+                            enableNoPaylaterExperiment.logStart({
+                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
+                                [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
+                                [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id'
+                            });
                         }
 
                         return value(...args);
@@ -378,7 +384,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      () => {
                     const experimentTreatments = {
                         ...getVenmoExperiment(),
-                        ...getNoPaylaterExperiment(disablePaylaterExperiment)
+                        ...getNoPaylaterExperiment()
                     };
                     return experimentTreatments;
                 }
