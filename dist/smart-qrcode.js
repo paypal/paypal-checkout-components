@@ -2417,7 +2417,7 @@
                 id: "instructions"
             }, v(InstructionIcon, {
                 stylingClass: "instruction-icon"
-            }), v("span", null, "To pay, open the Venmo app and ", v("br", null), "scan the QR code above.")), v(QRCodeElement, {
+            }), v("span", null, "To pay, scan the QR code with ", v("br", null), "your Venmo app")), v(QRCodeElement, {
                 svgString: svgString
             }), v(Logo, null));
             return v(d, null, v("style", {

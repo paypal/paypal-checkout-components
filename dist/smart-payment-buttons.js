@@ -2491,44 +2491,17 @@ window.spb = function(modules) {
         var LSAT_UPGRADE_EXCLUDED_MERCHANTS = [ "AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz", "Aco-yrRKihknb5vDBbDOdtYywjYMEPaM7mQg6kev8VDAz01lLA88J4oAUnF4UV9F_InqkqX7K62_jOjx", "AeAiB9K2rRsTXsFKZt4FMAQ8a6VEu4hijducis3a8NcIjV2J_c5I2H2PYhT3qCOwxT8P4l17skqgBlmg", "AXKrWRqEvxiDoUIZQaD1tFi2QhtmhWve3yTDBi58bxWjieYJ9j73My-yJmM7hP00JvOXu4YD6L2eaI5O", "AfRTnXv_QcuVyalbUxThtgk1xTygygsdevlBUTz36dDgD6XZNHp3Ym99a-mjMaokXyTTiI8VJ9mRgaFB", "AejlsIlg_KjKjmLKqxJqFIAwn3ZP02emx41Z2It4IfirQ-nNgZgzWk1CU-Q1QDbYUXjWoYJZ4dq1S2pK", "AQXD7-m_2yMo-5AxJ1fQaPeEWYDE7NZ9XrLzEXeiPLTHDu9vfe_T0foF8BoX8K5cMfXuRDysUEmhw-8Z" ];
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
-        var sendBeacon = function(_ref2) {
-            var url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
-            try {
-                var json = JSON.stringify(data);
-                if (useBlob) {
-                    var blob = new Blob([ json ], {
-                        type: "application/json"
-                    });
-                    return window.navigator.sendBeacon(url, blob);
-                }
-                return window.navigator.sendBeacon(url, json);
-            } catch (e) {
-                return !1;
-            }
-        };
         function httpTransport(_ref) {
             var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
             return promise_ZalgoPromise.try((function() {
-                var beaconResult = !1;
-                (function(_ref) {
-                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
-                    var hasHeaders = headers && Object.keys(headers).length;
-                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
-                })({
-                    headers: headers,
-                    enableSendBeacon: enableSendBeacon
-                }) && (beaconResult = function(url) {
-                    return "https://api2.amplitude.com/2/httpapi" === url;
-                }(url) ? sendBeacon({
-                    url: url,
-                    data: json,
-                    useBlob: !1
-                }) : sendBeacon({
-                    url: url,
-                    data: json,
-                    useBlob: !0
-                }));
-                return beaconResult || request({
+                var hasHeaders = headers && Object.keys(headers).length;
+                if (window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob) try {
+                    var blob = new Blob([ JSON.stringify(json) ], {
+                        type: "application/json"
+                    });
+                    return window.navigator.sendBeacon(url, blob);
+                } catch (e) {}
+                return request({
                     url: url,
                     method: method,
                     headers: headers,
@@ -2580,7 +2553,9 @@ window.spb = function(modules) {
                         amplitudeApiKey && transport({
                             method: "POST",
                             url: "https://api2.amplitude.com/2/httpapi",
-                            headers: {},
+                            headers: {
+                                "content-type": "application/json"
+                            },
                             json: {
                                 api_key: amplitudeApiKey,
                                 events: tracking.map((function(payload) {
@@ -2589,8 +2564,7 @@ window.spb = function(modules) {
                                         event_properties: payload
                                     }, payload);
                                 }))
-                            },
-                            enableSendBeacon: enableSendBeacon
+                            }
                         }).catch(src_util_noop);
                         events = [];
                         tracking = [];
@@ -2653,9 +2627,6 @@ window.spb = function(modules) {
                     immediateFlush();
                 }));
                 window.addEventListener("unload", (function() {
-                    immediateFlush();
-                }));
-                window.addEventListener("pagehide", (function() {
                     immediateFlush();
                 }));
             }
@@ -2737,7 +2708,7 @@ window.spb = function(modules) {
         function promiseNoop() {
             return promise_ZalgoPromise.resolve();
         }
-        function util_sendBeacon(url) {
+        function sendBeacon(url) {
             var img = document.createElement("img");
             img.src = url;
             img.style.visibility = "hidden";
@@ -3040,7 +3011,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.51", _headers15);
+            _headers15["x-app-version"] = "5.0.52", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7019,7 +6990,7 @@ window.spb = function(modules) {
         function initNativePopup(_ref2) {
             var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, fundingSource = _ref2.fundingSource, sessionUID = _ref2.sessionUID, callbacks = _ref2.callbacks, clean = _ref2.clean;
             var onClick = props.onClick, createOrder = props.createOrder;
-            var _onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, _onError = callbacks.onError, _onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange;
+            var _onInit = callbacks.onInit, _onApprove = callbacks.onApprove, _onCancel = callbacks.onCancel, _onError = callbacks.onError, _onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, _onShippingChange = callbacks.onShippingChange;
             if (!config.firebase) throw new Error("Can not load popup without firebase config");
             var nativePopupPromise;
             return {
@@ -7066,24 +7037,6 @@ window.spb = function(modules) {
                         logger_getLogger().info("native_attempt_appswitch_popup_shown").track((_getLogger$info$track3 = {}, 
                         _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = "popup_shown", 
                         _getLogger$info$track3)).flush();
-                        var closeListener = onCloseWindow(nativePopupWin, (function() {
-                            var _getLogger$info$track4;
-                            logger_getLogger().info("native_popup_closed").track((_getLogger$info$track4 = {}, 
-                            _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "popup_closed", 
-                            _getLogger$info$track4)).flush();
-                            onClose();
-                        }), 500);
-                        var closeErrorListener = onCloseWindow(nativePopupWin, (function() {
-                            reject(new Error("Native popup closed"));
-                        }), 500);
-                        var closePopup = function(event) {
-                            var _getLogger$info$track5;
-                            logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track5 = {}, 
-                            _getLogger$info$track5.state_name = "smart_button", _getLogger$info$track5.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
-                            _getLogger$info$track5)).flush();
-                            closeListener.cancel();
-                            nativePopupWin.close();
-                        };
                         var redirectListenerTimeout = setTimeout((function() {
                             logger_getLogger().info("native_popup_load_timeout").flush();
                         }), 5e3);
@@ -7093,10 +7046,10 @@ window.spb = function(modules) {
                             });
                         })).then((function(valid) {
                             if (!valid) {
-                                var _getLogger$info$track6;
-                                logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track6 = {}, 
-                                _getLogger$info$track6.state_name = "smart_button", _getLogger$info$track6.transition_name = "native_onclick_invalid", 
-                                _getLogger$info$track6)).flush();
+                                var _getLogger$info$track4;
+                                logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track4 = {}, 
+                                _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "native_onclick_invalid", 
+                                _getLogger$info$track4)).flush();
                             }
                             return valid;
                         }));
@@ -7105,8 +7058,11 @@ window.spb = function(modules) {
                         }));
                         var detectAppSwitch = once((function() {
                             return promise_ZalgoPromise.try((function() {
-                                var _getLogger$info$track7;
+                                var _getLogger$info$track5;
+                                resolve();
                                 onLsatUpgradeCalled();
+                                logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track5 = {}, 
+                                _getLogger$info$track5.transition_name = "native_detect_app_switch", _getLogger$info$track5)).flush();
                                 getStorageState((function(state) {
                                     var _state$lastAppSwitchT = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT ? 0 : _state$lastAppSwitchT, _state$lastWebSwitchT = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT ? 0 : _state$lastWebSwitchT;
                                     lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("app_switch_detect_with_previous_app_switch", {
@@ -7123,30 +7079,56 @@ window.spb = function(modules) {
                                     });
                                     state.lastAppSwitchTime = Date.now();
                                 }));
-                                logger_getLogger().info("native_detect_app_switch").track((_getLogger$info$track7 = {}, 
-                                _getLogger$info$track7.transition_name = "native_detect_app_switch", _getLogger$info$track7)).flush();
+                            }));
+                        }));
+                        var appSwitchError = once((function(err) {
+                            reject(err);
+                        }));
+                        var detectPossibleAppSwitch = once((function() {
+                            return promise_ZalgoPromise.try((function() {
+                                var _getLogger$info$track6;
+                                onLsatUpgradeCalled();
+                                logger_getLogger().info("native_detect_possible_app_switch").track((_getLogger$info$track6 = {}, 
+                                _getLogger$info$track6.transition_name = "native_detect_app_switch", _getLogger$info$track6)).flush();
                                 var connection = connectNative({
                                     config: config,
                                     sessionUID: sessionUID,
                                     callbacks: {
                                         onInit: function() {
-                                            resolve();
+                                            detectAppSwitch();
                                             return _onInit();
                                         },
-                                        onApprove: onApprove,
-                                        onCancel: onCancel,
-                                        onShippingChange: onShippingChange,
-                                        onError: function(_ref3) {
+                                        onApprove: function(_ref3) {
                                             var data = _ref3.data;
-                                            reject(new Error(data.message));
+                                            detectAppSwitch();
+                                            return _onApprove({
+                                                data: data
+                                            });
+                                        },
+                                        onCancel: function() {
+                                            detectAppSwitch();
+                                            return _onCancel();
+                                        },
+                                        onShippingChange: function(_ref4) {
+                                            var data = _ref4.data;
+                                            detectAppSwitch();
+                                            return _onShippingChange({
+                                                data: data
+                                            });
+                                        },
+                                        onError: function(_ref5) {
+                                            var data = _ref5.data;
+                                            appSwitchError(new Error(data.message));
                                             return _onError({
                                                 data: data
                                             });
                                         },
-                                        onFallback: function(_ref4) {
+                                        onFallback: function(_ref6) {
+                                            var data = _ref6.data;
+                                            detectAppSwitch();
                                             return _onFallback({
                                                 win: nativePopupWin,
-                                                optOut: _ref4.data
+                                                optOut: data
                                             });
                                         }
                                     }
@@ -7156,7 +7138,7 @@ window.spb = function(modules) {
                         }));
                         var detectWebSwitch = once((function() {
                             return promise_ZalgoPromise.try((function() {
-                                var _getLogger$info$track8;
+                                var _getLogger$info$track7;
                                 getStorageState((function(state) {
                                     var _state$lastAppSwitchT2 = state.lastAppSwitchTime, lastAppSwitchTime = void 0 === _state$lastAppSwitchT2 ? 0 : _state$lastAppSwitchT2, _state$lastWebSwitchT2 = state.lastWebSwitchTime, lastWebSwitchTime = void 0 === _state$lastWebSwitchT2 ? 0 : _state$lastWebSwitchT2;
                                     lastAppSwitchTime > lastWebSwitchTime && logger_getLogger().info("web_switch_detect_with_previous_app_switch", {
@@ -7173,15 +7155,33 @@ window.spb = function(modules) {
                                     });
                                     state.lastWebSwitchTime = Date.now();
                                 }));
-                                logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track8 = {}, 
-                                _getLogger$info$track8.transition_name = "native_detect_web_switch", _getLogger$info$track8)).flush();
+                                logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track7 = {}, 
+                                _getLogger$info$track7.transition_name = "native_detect_web_switch", _getLogger$info$track7)).flush();
                                 return _onFallback({
                                     win: nativePopupWin
                                 }).then(src_util_noop);
                             })).then(resolve, reject);
                         }));
-                        var awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, "awaitRedirect", (function(_ref5) {
-                            var _ref5$data = _ref5.data, appDetect = _ref5$data.app, pageUrl = _ref5$data.pageUrl, sfvc = _ref5$data.sfvc, stickinessID = _ref5$data.stickinessID;
+                        var closeListener = onCloseWindow(nativePopupWin, (function() {
+                            var _getLogger$info$track8;
+                            logger_getLogger().info("native_popup_closed").track((_getLogger$info$track8 = {}, 
+                            _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "popup_closed", 
+                            _getLogger$info$track8)).flush();
+                            onClose();
+                        }), 500);
+                        var closeErrorListener = onCloseWindow(nativePopupWin, (function() {
+                            appSwitchError(new Error("Native popup closed"));
+                        }), 500);
+                        var closePopup = function(event) {
+                            var _getLogger$info$track9;
+                            logger_getLogger().info("native_closing_popup_" + event).track((_getLogger$info$track9 = {}, 
+                            _getLogger$info$track9.state_name = "smart_button", _getLogger$info$track9.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
+                            _getLogger$info$track9)).flush();
+                            closeListener.cancel();
+                            nativePopupWin.close();
+                        };
+                        var awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, "awaitRedirect", (function(_ref7) {
+                            var _ref7$data = _ref7.data, appDetect = _ref7$data.app, pageUrl = _ref7$data.pageUrl, sfvc = _ref7$data.sfvc, stickinessID = _ref7$data.stickinessID;
                             clearTimeout(redirectListenerTimeout);
                             logger_getLogger().info("native_post_message_await_redirect").flush();
                             (app = appDetect) && Object.keys(app).forEach((function(key) {
@@ -7194,8 +7194,8 @@ window.spb = function(modules) {
                             }));
                             var app;
                             logger_getLogger().addTrackingBuilder((function() {
-                                var _ref6;
-                                return (_ref6 = {}).stickiness_id = stickinessID, _ref6;
+                                var _ref8;
+                                return (_ref8 = {}).stickiness_id = stickinessID, _ref8;
                             }));
                             return promise_ZalgoPromise.hash({
                                 valid: validatePromise,
@@ -7208,9 +7208,9 @@ window.spb = function(modules) {
                                     stickinessID: stickinessID,
                                     appDetect: appDetect
                                 })
-                            }).then((function(_ref7) {
-                                var eligible = _ref7.eligible;
-                                if (!_ref7.valid) {
+                            }).then((function(_ref9) {
+                                var eligible = _ref9.eligible;
+                                if (!_ref9.valid) {
                                     nativePopupWin.close();
                                     return onDestroy().then((function() {
                                         return {
@@ -7220,7 +7220,7 @@ window.spb = function(modules) {
                                     }));
                                 }
                                 return orderPromise.then(eligible ? function(orderID) {
-                                    var _getLogger$info$track9;
+                                    var _getLogger$info$track10;
                                     var nativeUrl = getNativeUrl({
                                         props: props,
                                         serviceData: serviceData,
@@ -7233,13 +7233,13 @@ window.spb = function(modules) {
                                     });
                                     logger_getLogger().info("native_attempt_appswitch_url_popup", {
                                         url: nativeUrl
-                                    }).track((_getLogger$info$track9 = {}, _getLogger$info$track9.state_name = "smart_button", 
-                                    _getLogger$info$track9.transition_name = "app_switch_attempted", _getLogger$info$track9.info_msg = nativeUrl, 
-                                    _getLogger$info$track9)).flush();
+                                    }).track((_getLogger$info$track10 = {}, _getLogger$info$track10.state_name = "smart_button", 
+                                    _getLogger$info$track10.transition_name = "app_switch_attempted", _getLogger$info$track10.info_msg = nativeUrl, 
+                                    _getLogger$info$track10)).flush();
                                     if (isAndroidChrome()) {
                                         closeErrorListener.cancel();
                                         var appSwitchCloseListener = onCloseWindow(nativePopupWin, (function() {
-                                            return detectAppSwitch();
+                                            return detectPossibleAppSwitch();
                                         }), 50);
                                         setTimeout(appSwitchCloseListener.cancel, 1e3);
                                     }
@@ -7265,10 +7265,10 @@ window.spb = function(modules) {
                                     };
                                 });
                             })).catch((function(err) {
-                                var _getLogger$info$track10;
-                                logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track10 = {}, 
-                                _getLogger$info$track10.state_name = "smart_button", _getLogger$info$track10.transition_name = "app_switch_attempted_errored", 
-                                _getLogger$info$track10.int_error_desc = stringifyError(err), _getLogger$info$track10)).flush();
+                                var _getLogger$info$track11;
+                                logger_getLogger().info("native_attempt_appswitch_url_popup_errored").track((_getLogger$info$track11 = {}, 
+                                _getLogger$info$track11.state_name = "smart_button", _getLogger$info$track11.transition_name = "app_switch_attempted_errored", 
+                                _getLogger$info$track11.int_error_desc = stringifyError(err), _getLogger$info$track11)).flush();
                                 return orderPromise.then((function(orderID) {
                                     return {
                                         redirect: !0,
@@ -7287,7 +7287,7 @@ window.spb = function(modules) {
                                 }));
                             })).catch((function(err) {
                                 nativePopupWin.close();
-                                reject(err);
+                                appSwitchError(err);
                                 return onDestroy().then((function() {
                                     return _onError({
                                         data: {
@@ -7302,9 +7302,9 @@ window.spb = function(modules) {
                                 }));
                             }));
                         }));
-                        var detectAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, "detectAppSwitch", (function() {
-                            logger_getLogger().info("native_post_message_detect_app_switch").flush();
-                            return detectAppSwitch();
+                        var detectPossibleAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, "detectAppSwitch", (function() {
+                            logger_getLogger().info("native_post_message_detect_possible_app_switch").flush();
+                            return detectPossibleAppSwitch();
                         }));
                         var detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({
                             props: props
@@ -7315,33 +7315,37 @@ window.spb = function(modules) {
                             });
                         }));
                         var onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, "onApprove", (function(data) {
-                            onApprove(data);
+                            detectAppSwitch();
+                            _onApprove(data);
                             closePopup("onApprove");
                         }));
                         var onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, "onCancel", (function() {
-                            onCancel();
+                            detectAppSwitch();
+                            _onCancel();
                             closePopup("onCancel");
                         }));
                         var onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, "onFallback", (function(data) {
-                            var _getLogger$info$track11;
-                            logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track11 = {}, 
-                            _getLogger$info$track11.transition_name = "native_onfallback", _getLogger$info$track11)).flush();
+                            var _getLogger$info$track12;
+                            detectAppSwitch();
+                            logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track12 = {}, 
+                            _getLogger$info$track12.transition_name = "native_onfallback", _getLogger$info$track12)).flush();
                             _onFallback({
                                 win: nativePopupWin,
                                 optOut: data
                             });
                         }));
                         var onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, "onComplete", (function() {
-                            var _getLogger$info$track12;
-                            logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track12 = {}, 
-                            _getLogger$info$track12.state_name = "smart_button", _getLogger$info$track12.transition_name = "native_oncomplete", 
-                            _getLogger$info$track12)).flush();
+                            var _getLogger$info$track13;
+                            detectAppSwitch();
+                            logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track13 = {}, 
+                            _getLogger$info$track13.state_name = "smart_button", _getLogger$info$track13.transition_name = "native_oncomplete", 
+                            _getLogger$info$track13)).flush();
                             closePopup("onComplete");
                         }));
                         var onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, "onError", (function(data) {
                             _onError(data);
                             closePopup("onError");
-                            reject(data);
+                            appSwitchError(new Error(data.message));
                         }));
                         window.addEventListener("pagehide", (function() {
                             return closePopup("pagehide");
@@ -7350,7 +7354,7 @@ window.spb = function(modules) {
                             return closePopup("unload");
                         }));
                         clean.register((function() {
-                            return promise_ZalgoPromise.all([ awaitRedirectListener.cancel, detectAppSwitchListener.cancel, onApproveListener.cancel, onCancelListener.cancel, onFallbackListener.cancel, onCompleteListener.cancel, onErrorListener.cancel, detectWebSwitchListener.cancel, closeListener.cancel ]).then(src_util_noop);
+                            return promise_ZalgoPromise.all([ awaitRedirectListener.cancel, detectPossibleAppSwitchListener.cancel, onApproveListener.cancel, onCancelListener.cancel, onFallbackListener.cancel, onCompleteListener.cancel, onErrorListener.cancel, detectWebSwitchListener.cancel, closeListener.cancel ]).then(src_util_noop);
                         }));
                     }));
                 },
@@ -7952,8 +7956,8 @@ window.spb = function(modules) {
                 var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry;
                 var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken;
                 !function(personalization) {
-                    personalization && personalization.tagline && personalization.tagline.tracking && util_sendBeacon(personalization.tagline.tracking.click);
-                    personalization && personalization.buttonText && personalization.buttonText.tracking && util_sendBeacon(personalization.buttonText.tracking.click);
+                    personalization && personalization.tagline && personalization.tagline.tracking && sendBeacon(personalization.tagline.tracking.click);
+                    personalization && personalization.buttonText && personalization.buttonText.tracking && sendBeacon(personalization.buttonText.tracking.click);
                 }(serviceData.personalization);
                 var _getPaymentFlow = getPaymentFlow({
                     props: props,
@@ -8773,7 +8777,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.51", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.52", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
