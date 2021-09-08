@@ -130,22 +130,22 @@ export function createNoPaylaterExperiment() : Experiment | void {
     const { paylater } = getFundingEligibility();
     const isEligibleForPaylater = paylater?.eligible;
     const isExperimentable = paylater?.products?.paylater?.variant === 'experimentable' || paylater?.products?.payIn4?.variant === 'experimentable';
-    // No experiment because ineligible, already forced on or off, unsupported browser
+    // No experiment because ineligible, already forced on or off
     if (!isEligibleForPaylater
         || !isExperimentable
-        || ((isDisableFundingPaylater || isEnableFundingPaylater) && isSupportedNativeBrowser())
-        || (isDevice() && !isSupportedNativeBrowser())
+        || isDisableFundingPaylater
+        || isEnableFundingPaylater
     ) {
         return;
     }
 
     if (isDevice()) {
 
-        if (isIos() && isSafari()) {
+        if (isIos()) {
             return createExperiment('disable_paylater_ios', 100);
         }
 
-        if (isAndroid() && isChrome()) {
+        if (isAndroid()) {
             return createExperiment('disable_paylater_android', 100);
         }
     } else {
@@ -158,17 +158,10 @@ export function getNoPaylaterExperiment() : EligibilityExperiment {
 
     const disableFunding = getDisableFunding();
     const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
-    const isNativeSupported = isSupportedNativeBrowser();
     const isExperimentEnabled = experiment && experiment.isEnabled();
-    if (isDevice()) {
-        return {
-            disablePaylater: Boolean((isExperimentEnabled || isDisableFundingPaylater) && isNativeSupported)
-        };
-    } else {
-        return {
-            disablePaylater: Boolean(isExperimentEnabled)
-        };
-    }
+    return {
+        disablePaylater: Boolean((isExperimentEnabled || isDisableFundingPaylater))
+    };
 }
 
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
