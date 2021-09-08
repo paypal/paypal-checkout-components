@@ -37,3 +37,9 @@ export const AUTH_ERROR_CODE = {
 };
 
 export const TIMEOUT_ERROR_MESSAGE = 'Timed out after';
+
+export const FPTI_STATE = {
+    BUTTON:   ('smart_button' : 'smart_button'),
+    WALLET:   ('smart_wallet' : 'smart_wallet'),
+    PXP:      ('PXP_CHECK' : 'PXP_CHECK')
+};

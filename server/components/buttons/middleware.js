@@ -7,7 +7,7 @@ import { stringifyError, noop } from 'belter';
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest } from '../../lib';
 import { resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
-import { EXPERIMENT_TIMEOUT, TIMEOUT_ERROR_MESSAGE } from '../../config';
+import { EXPERIMENT_TIMEOUT, TIMEOUT_ERROR_MESSAGE, FPTI_STATE } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, InstanceLocationInformation, SDKLocationInformation } from '../../types';
 import type { ContentType, Wallet } from '../../../src/types';
 
@@ -15,7 +15,6 @@ import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderS
 import { getButtonParams, getButtonPreflightParams } from './params';
 import { buttonStyle } from './style';
 import { setRootTransaction } from './instrumentation';
-import { FPTI_STATE } from './constants';
 
 type InlineGuestElmoParams = {|
     merchantID : string,

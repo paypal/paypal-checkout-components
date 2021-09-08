@@ -4,9 +4,8 @@ import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, FPTI_KEY } from '@paypal/sdk-constants';
 import { strictMerge } from 'strict-merge';
 
-import { FPTI_STATE } from '../../src/constants';
 import { pruneQuery, buildQuery, graphqlTypes, copy, type GraphQLBatchCall } from '../lib';
-import { FUNDING_ELIGIBILITY_TIMEOUT, TIMEOUT_ERROR_MESSAGE } from '../config';
+import { FUNDING_ELIGIBILITY_TIMEOUT, TIMEOUT_ERROR_MESSAGE, FPTI_STATE } from '../config';
 import type { ExpressRequest, LoggerType } from '../types';
 
 function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibilityType) : ?string {

@@ -6,10 +6,9 @@ import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 import { node } from 'jsx-pragmatic';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos';
 
-import { PERSONALIZATION_TIMEOUT, TIMEOUT_ERROR_MESSAGE } from '../config';
+import { PERSONALIZATION_TIMEOUT, TIMEOUT_ERROR_MESSAGE, FPTI_STATE } from '../config';
 import { placeholderToJSX, type GraphQLBatchCall } from '../lib';
 import type { ExpressRequest, LocaleType, LoggerType } from '../types';
-import { FPTI_STATE } from '../../src/constants';
 
 type PersonalizationComponentProps = {|
    logoColor : $Values<typeof LOGO_COLOR>,
@@ -137,7 +136,7 @@ function contentToJSX(content : string) : ComponentFunctionType<PersonalizationC
 export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatchCall, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
     let { logger, clientID, locale, buyerCountry, buttonSessionID, currency, intent, commit,
         vault, label, period, tagline, personalizationEnabled, renderedButtons } = personalizationOptions;
-    
+
     if (!personalizationEnabled) {
         return getDefaultPersonalization();
     }

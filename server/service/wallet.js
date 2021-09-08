@@ -4,11 +4,10 @@ import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, WALLET_INSTRUM
 import { params, types, query } from 'typed-graphqlify';
 import { values } from 'belter';
 
-import { FPTI_STATE } from '../../src/constants';
 import type { ExpressRequest, LoggerType } from '../types';
 import type { Wallet } from '../../src/types';
 import { type GraphQLBatchCall } from '../lib';
-import { WALLET_TIMEOUT, TIMEOUT_ERROR_MESSAGE } from '../config';
+import { WALLET_TIMEOUT, TIMEOUT_ERROR_MESSAGE, FPTI_STATE } from '../config';
 
 
 type SmartWallet = {|
@@ -311,7 +310,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 }) : null;
 
         const buyerVault = fundingElig && fundingElig.fundingEligibility;
-        
+
         if (buyerVault) {
             if (buyerVault && buyerVault.paypal && buyerVault.paypal.vaultedInstruments) {
                 for (const vaultedInstrument of buyerVault.paypal.vaultedInstruments) {
