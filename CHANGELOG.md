@@ -1,3 +1,9 @@
+## <small>5.0.178 (2021-09-08)</small>
+
+* Add tests for venmo experiment (#1732) ([7bd4e02](https://github.com/paypal/paypal-checkout-components/commit/7bd4e02)), closes [#1732](https://github.com/paypal/paypal-checkout-components/issues/1732)
+
+
+
 ## <small>5.0.177 (2021-09-01)</small>
 
 * Add CardForm alias for existing card fields ([f8e1138](https://github.com/paypal/paypal-checkout-components/commit/f8e1138))
