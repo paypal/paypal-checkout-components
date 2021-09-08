@@ -4,7 +4,6 @@ import { html } from 'jsx-pragmatic';
 import { COUNTRY, LANG, FUNDING, FPTI_KEY } from '@paypal/sdk-constants';
 import { stringifyError, noop } from 'belter';
 
-import { FPTI_STATE } from '../../../src/constants';
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest } from '../../lib';
 import { resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
@@ -16,6 +15,7 @@ import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderS
 import { getButtonParams, getButtonPreflightParams } from './params';
 import { buttonStyle } from './style';
 import { setRootTransaction } from './instrumentation';
+import { FPTI_STATE } from './constants';
 
 type InlineGuestElmoParams = {|
     merchantID : string,
@@ -79,7 +79,7 @@ export function getButtonMiddleware({
 
             const { label, period, tagline } = style;
             logger.info(req, `button_params`, { params: JSON.stringify(params) });
-            
+
             const sdkLocationInformation = await getSDKLocationInformation(req, params.env);
 
             if (!clientID) {
@@ -88,7 +88,7 @@ export function getButtonMiddleware({
 
             const gqlBatch = graphQLBatch(req, graphQL, { env });
             const content = smartContent[locale.country][locale.lang] || {};
-            
+
             const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
             const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
             const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
