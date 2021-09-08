@@ -24,12 +24,10 @@ import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoEx
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
-    const enableVenmoExperiment = createVenmoExperiment();
-
     const queriedEligibleFunding = [];
     return create({
         tag:  'paypal-buttons',
-        url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
+        url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
         domain: getPayPalDomainRegex(),
 
@@ -70,7 +68,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = getVenmoExperiment(enableVenmoExperiment),
+                experiment = getVenmoExperiment(),
                 createBillingAgreement, createSubscription
             } = props;
 
@@ -247,8 +245,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        if (enableVenmoExperiment) {
-                            enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        const { experiment: { enableVenmo } } = props;
+                        const venmoExperiment = createVenmoExperiment();
+
+                        if (enableVenmo && venmoExperiment) {
+                            venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
                         }
 
                         return value(...args);
@@ -366,7 +367,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      () => getVenmoExperiment(enableVenmoExperiment)
+                value:      () => getVenmoExperiment()
             },
 
             flow: {

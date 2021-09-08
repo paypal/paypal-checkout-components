@@ -20,7 +20,7 @@ export function getModalComponent() : ModalComponent {
     return inlineMemoize(getModalComponent, () => {
         return create({
             tag:    'paypal-modal',
-            url:    () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__MODAL__ }`,
+            url:    () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__MODAL__ }`,
             domain: getPayPalDomainRegex(),
 
             dimensions: {

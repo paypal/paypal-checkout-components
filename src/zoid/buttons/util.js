@@ -1,5 +1,5 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, inlineMemoize } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
@@ -72,33 +72,39 @@ export function isSupportedNativeBrowser() : boolean {
     return false;
 }
 
-export function createVenmoExperiment() : Experiment | void {
-    return inlineMemoize(createVenmoExperiment, () => {
-        const enableFunding = getEnableFunding();
-        const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
+export function createVenmoExperiment() : ?Experiment {
+    const enableFunding = getEnableFunding();
+    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
 
-        const fundingEligibility = getFundingEligibility();
-        const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
+    const fundingEligibility = getFundingEligibility();
+    const hasBasicVenmoEligibility = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
+    const isEligibleForVenmoNative = isSupportedNativeBrowser() && !isEnableFundingVenmo;
 
-        if (isDevice()) {
-            if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser()) || !isSupportedNativeBrowser()) {
-                return;
-            }
+    // basic eligibility must be true for venmo to be eligible for the experiments
+    if (!hasBasicVenmoEligibility) {
+        return;
+    }
 
-            if (isIos() && isSafari()) {
-                return createExperiment('enable_venmo_ios', 90);
-            }
-
-            if (isAndroid() && isChrome()) {
-                return createExperiment('enable_venmo_android', 90);
-            }
-        } else {
-            return createExperiment('enable_venmo_desktop', 100);
+    if (isDevice()) {
+        if (!isEligibleForVenmoNative) {
+            return;
         }
-    });
+
+        if (isIos() && isSafari()) {
+            return createExperiment('enable_venmo_ios', 90);
+        }
+
+        if (isAndroid() && isChrome()) {
+            return createExperiment('enable_venmo_android', 90);
+        }
+    } else {
+        return createExperiment('enable_venmo_desktop', 100);
+    }
 }
 
-export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
+export function getVenmoExperiment() : VenmoExperiment {
+    const experiment = createVenmoExperiment();
+
     const enableFunding = getEnableFunding();
     const isVenmoFundingEnabled = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
     const isNativeSupported = isSupportedNativeBrowser();
@@ -117,7 +123,7 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
 
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
-        experiment = getVenmoExperiment(createVenmoExperiment()), applePaySupport, supportsPopups = userAgentSupportsPopups(),
+        experiment = getVenmoExperiment(), applePaySupport, supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(), createBillingAgreement, createSubscription } = props;
 
     const flow               = determineFlow({ createBillingAgreement, createSubscription });
