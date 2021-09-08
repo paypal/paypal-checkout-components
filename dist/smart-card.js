@@ -2322,17 +2322,44 @@ window.smartCard = function(modules) {
     var LSAT_UPGRADE_EXCLUDED_MERCHANTS = [ "AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz", "Aco-yrRKihknb5vDBbDOdtYywjYMEPaM7mQg6kev8VDAz01lLA88J4oAUnF4UV9F_InqkqX7K62_jOjx", "AeAiB9K2rRsTXsFKZt4FMAQ8a6VEu4hijducis3a8NcIjV2J_c5I2H2PYhT3qCOwxT8P4l17skqgBlmg", "AXKrWRqEvxiDoUIZQaD1tFi2QhtmhWve3yTDBi58bxWjieYJ9j73My-yJmM7hP00JvOXu4YD6L2eaI5O", "AfRTnXv_QcuVyalbUxThtgk1xTygygsdevlBUTz36dDgD6XZNHp3Ym99a-mjMaokXyTTiI8VJ9mRgaFB", "AejlsIlg_KjKjmLKqxJqFIAwn3ZP02emx41Z2It4IfirQ-nNgZgzWk1CU-Q1QDbYUXjWoYJZ4dq1S2pK", "AQXD7-m_2yMo-5AxJ1fQaPeEWYDE7NZ9XrLzEXeiPLTHDu9vfe_T0foF8BoX8K5cMfXuRDysUEmhw-8Z" ];
     var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
     var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
-    function httpTransport(_ref) {
-        var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-        return promise_ZalgoPromise.try((function() {
-            var hasHeaders = headers && Object.keys(headers).length;
-            if (window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob) try {
-                var blob = new Blob([ JSON.stringify(json) ], {
+    var sendBeacon = function(_ref2) {
+        var url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+        try {
+            var json = JSON.stringify(data);
+            if (useBlob) {
+                var blob = new Blob([ json ], {
                     type: "application/json"
                 });
                 return window.navigator.sendBeacon(url, blob);
-            } catch (e) {}
-            return request({
+            }
+            return window.navigator.sendBeacon(url, json);
+        } catch (e) {
+            return !1;
+        }
+    };
+    function httpTransport(_ref) {
+        var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+        return promise_ZalgoPromise.try((function() {
+            var beaconResult = !1;
+            (function(_ref) {
+                var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                var hasHeaders = headers && Object.keys(headers).length;
+                return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+            })({
+                headers: headers,
+                enableSendBeacon: enableSendBeacon
+            }) && (beaconResult = function(url) {
+                return "https://api2.amplitude.com/2/httpapi" === url;
+            }(url) ? sendBeacon({
+                url: url,
+                data: json,
+                useBlob: !1
+            }) : sendBeacon({
+                url: url,
+                data: json,
+                useBlob: !0
+            }));
+            return beaconResult || request({
                 url: url,
                 method: method,
                 headers: headers,
@@ -2392,9 +2419,7 @@ window.smartCard = function(modules) {
                             amplitudeApiKey && transport({
                                 method: "POST",
                                 url: "https://api2.amplitude.com/2/httpapi",
-                                headers: {
-                                    "content-type": "application/json"
-                                },
+                                headers: {},
                                 json: {
                                     api_key: amplitudeApiKey,
                                     events: tracking.map((function(payload) {
@@ -2403,7 +2428,8 @@ window.smartCard = function(modules) {
                                             event_properties: payload
                                         }, payload);
                                     }))
-                                }
+                                },
+                                enableSendBeacon: enableSendBeacon
                             }).catch(src_util_noop);
                             events = [];
                             tracking = [];
@@ -2466,6 +2492,9 @@ window.smartCard = function(modules) {
                         immediateFlush();
                     }));
                     window.addEventListener("unload", (function() {
+                        immediateFlush();
+                    }));
+                    window.addEventListener("pagehide", (function() {
                         immediateFlush();
                     }));
                 }
@@ -3825,7 +3854,8 @@ window.smartCard = function(modules) {
                     var _getLogger$info$track;
                     getLogger().info("button_shipping_change").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_shipping_change", 
                     _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
-                    _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
+                    _getLogger$info$track.context_id = orderID, _getLogger$info$track.shipping_callback_invoked = "1", 
+                    _getLogger$info$track)).flush();
                     return onShippingChange(data, function(_ref) {
                         var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
                         return {
