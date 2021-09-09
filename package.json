@@ -29,7 +29,7 @@
         "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
         "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
         "get-size": "gzip -9 < dist/size.min.js | wc -c",
-        "check-size": "npm run webpack-size && if [ $(npm run -s get-size) -ge 70000 ]; then echo 'Bundle size greater than 65k'; exit 1; else npm run delete-size; fi;",
+        "check-size": "npm run webpack-size && if [ $(npm run -s get-size) -ge 72000 ]; then echo 'Bundle size greater than 72k'; exit 1; else npm run delete-size; fi;",
         "delete-size": "rm dist/size.* dist/report.html"
     },
     "files": [
