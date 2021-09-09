@@ -42,7 +42,8 @@ export type ContentType = {|
 |};
 
 export type Experiment = {|
-    enableVenmo : boolean
+    enableVenmo? : boolean,
+    disablePaylater? : boolean
 |};
 
 export type Requires = {|

@@ -19,7 +19,8 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
-import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment, getRenderedButtons } from './util';
+import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
+    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -68,7 +69,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = getVenmoExperiment(),
+                experiment = {
+                    ...getVenmoExperiment(),
+                    ...getNoPaylaterExperiment(fundingSource)
+                },
                 createBillingAgreement, createSubscription
             } = props;
 
@@ -245,11 +249,21 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        const { experiment: { enableVenmo } } = props;
+                        const { experiment: { enableVenmo }, fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
 
                         if (enableVenmo && venmoExperiment) {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        }
+
+                        const enableNoPaylaterExperiment = createNoPaylaterExperiment(fundingSource);
+
+                        if (enableNoPaylaterExperiment) {
+                            enableNoPaylaterExperiment.logStart({
+                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
+                                [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
+                                [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id'
+                            });
                         }
 
                         return value(...args);
@@ -367,7 +381,14 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      () => getVenmoExperiment()
+                value:      ({ props }) => {
+                    const { fundingSource } = props;
+                    const experimentTreatments = {
+                        ...getVenmoExperiment(),
+                        ...getNoPaylaterExperiment(fundingSource)
+                    };
+                    return experimentTreatments;
+                }
             },
 
             flow: {
