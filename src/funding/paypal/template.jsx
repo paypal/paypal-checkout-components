@@ -197,7 +197,6 @@ const getExperimentOneAnimation = (opts) => {
 };
 
 export function Label(opts : LabelOptions) : ChildType {
-    console.log("opts ",opts)
     return (
         <Fragment>
             <BasicLabel { ...opts } />
