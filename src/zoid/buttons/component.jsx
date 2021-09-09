@@ -71,7 +71,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 supportedNativeBrowser = isSupportedNativeBrowser(),
                 experiment = {
                     ...getVenmoExperiment(),
-                    ...getNoPaylaterExperiment()
+                    ...getNoPaylaterExperiment(fundingSource)
                 },
                 createBillingAgreement, createSubscription
             } = props;
@@ -249,14 +249,14 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        const { experiment: { enableVenmo } } = props;
+                        const { experiment: { enableVenmo }, fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
 
                         if (enableVenmo && venmoExperiment) {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
                         }
 
-                        const enableNoPaylaterExperiment = createNoPaylaterExperiment();
+                        const enableNoPaylaterExperiment = createNoPaylaterExperiment(fundingSource);
 
                         if (enableNoPaylaterExperiment) {
                             enableNoPaylaterExperiment.logStart({
@@ -381,10 +381,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      () => {
+                value:      ({ props }) => {
+                    const { fundingSource } = props;
                     const experimentTreatments = {
                         ...getVenmoExperiment(),
-                        ...getNoPaylaterExperiment()
+                        ...getNoPaylaterExperiment(fundingSource)
                     };
                     return experimentTreatments;
                 }

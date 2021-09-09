@@ -5,7 +5,7 @@ import { wrapPromise } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, COMMON_DESKTOP_USER_AGENT, mockProp } from '../common';
+import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, mockProp } from '../common';
 
 describe(`paypal button component props`, () => {
 
@@ -35,8 +35,7 @@ describe(`paypal button component props`, () => {
                     }
                 });
 
-                window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
-                window.localStorage.setItem('disable_paylater_desktop', true);
+                window.localStorage.setItem('disable_paylater', true);
 
                 let onRender = ({ xprops }) => {
                     const renderedButtons = xprops.renderedButtons;
@@ -89,8 +88,6 @@ describe(`paypal button component props`, () => {
                         }
                     }
                 });
-
-                window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
 
                 let onRender = ({ xprops }) => {
                     const renderedButtons = xprops.renderedButtons;
@@ -298,15 +295,14 @@ describe(`paypal button component props`, () => {
                     }
                 });
 
-                window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
-                window.localStorage.setItem('disable_paylater_desktop', true);
+                window.localStorage.setItem('disable_paylater', true);
 
                 let onRender = ({ xprops }) => {
                     const renderedButtons = xprops.renderedButtons;
                     const experiment = xprops.experiment;
 
-                    if (!experiment.disablePaylater) {
-                        throw new Error(`disablePaylater should be truthy ${ JSON.stringify(experiment) }`);
+                    if (experiment.disablePaylater) {
+                        throw new Error(`disablePaylater should not exist ${ JSON.stringify(experiment) }`);
                     }
 
                     if (!JSON.stringify(renderedButtons).includes('paylater')) {

@@ -121,7 +121,7 @@ export function getVenmoExperiment() : EligibilityExperiment {
     }
 }
 
-export function createNoPaylaterExperiment() : Experiment | void {
+export function createNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>) : Experiment | void {
     const disableFunding = getDisableFunding();
     const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
     const enableFunding = getEnableFunding();
@@ -135,26 +135,16 @@ export function createNoPaylaterExperiment() : Experiment | void {
         || !isExperimentable
         || isDisableFundingPaylater
         || isEnableFundingPaylater
+        || fundingSource
     ) {
         return;
     }
 
-    if (isDevice()) {
-
-        if (isIos()) {
-            return createExperiment('disable_paylater_ios', 100);
-        }
-
-        if (isAndroid()) {
-            return createExperiment('disable_paylater_android', 100);
-        }
-    } else {
-        return createExperiment('disable_paylater_desktop', 100);
-    }
+    return createExperiment('disable_paylater', 1);
 }
 
-export function getNoPaylaterExperiment() : EligibilityExperiment {
-    const experiment = createNoPaylaterExperiment();
+export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
+    const experiment = createNoPaylaterExperiment(fundingSource);
 
     const disableFunding = getDisableFunding();
     const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
