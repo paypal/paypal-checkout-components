@@ -6,7 +6,7 @@ import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, Glyp
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
+import { CLASS, EXPERIMENT_ONE, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
@@ -126,7 +126,7 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 
     const personalizationText = getPersonalizationText(opts);
     const personalizationTracker = getPersonalizationTracker(opts);
-
+    
     if (!personalizationText) {
         return;
     }
@@ -147,10 +147,61 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 }
 
 
+const getExperimentOneAnimation = (opts) => {
+    if (!opts.enableExperimentOne) {
+        return;
+    }
+    const experimentStyles = (<style innerHTML={ `
+        .${ CLASS.DOM_READY } .${ LOGO_CLASS.LOGO }{
+            animation: 1s experiment-one-move-logo-to-the-left 2s forwards;
+            position: relative;
+        }
+
+        .${ EXPERIMENT_ONE.PLACE_HOLDER } {
+            display: inline-block;
+            position: absolute;
+            opacity: 0; 
+            animation: 1s experiment-one-move-placeholder-to-the-right 2s forwards;
+        }
+
+        .${ CLASS.BUTTON_LABEL } .${ EXPERIMENT_ONE.PLACE_HOLDER } span {
+            font-size: 14px;
+            color: #142C8E;
+            padding-top: 3px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        @keyframes experiment-one-move-logo-to-the-left {
+            100% {
+                transform: translateX(-300px)
+            }
+        }
+        
+        @keyframes experiment-one-move-placeholder-to-the-right {
+            0%{
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(220px);
+                opacity: 1;
+            }
+        }
+    ` }
+    />);
+    return (
+        <Fragment>
+            <div class="experiment-one-label"> <span>Earn rewards</span></div>
+            { experimentStyles }
+        </Fragment>
+    );
+};
+
 export function Label(opts : LabelOptions) : ChildType {
+    console.log("opts ",opts)
     return (
         <Fragment>
             <BasicLabel { ...opts } />
+            {getExperimentOneAnimation(opts)}
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );
