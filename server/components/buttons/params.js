@@ -184,6 +184,11 @@ function getFundingEligibilityParam(req : ExpressRequest) : FundingEligibilityTy
                             productEligibility.eligible = productEligibilityInput.eligible;
                             productsEligibility[product] = productEligibility;
                         }
+
+                        if (typeof productEligibilityInput.variant === 'string') {
+                            productEligibility.variant = productEligibilityInput.variant;
+                            productsEligibility[product] = productEligibility;
+                        }
                     }
                 }
             }
