@@ -132,7 +132,7 @@ export function setupMocks() {
                 }
             };
         },
-        CardFields: (props) => {
+        CardForm: (props) => {
             props.onAuth = once(props.onAuth);
 
             return {

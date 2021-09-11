@@ -3,7 +3,7 @@
 import { COUNTRY, FUNDING, CARD, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import type { InstallmentsFlowType } from '@paypal/installments/src/types';
 
-import type { ContentType, ProxyWindow, Wallet, CheckoutFlowType, CardFieldsFlowType,
+import type { ContentType, ProxyWindow, Wallet, CheckoutFlowType, CardFormFlowType,
     ThreeDomainSecureFlowType, MenuFlowType, PersonalizationType, QRCodeType } from '../types';
 import { type FirebaseConfig } from '../api';
 import { getNonce } from '../lib';
@@ -106,7 +106,7 @@ export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| f
 
 export type Components = {|
     Checkout : CheckoutFlowType,
-    CardFields : CardFieldsFlowType,
+    CardForm : CardFormFlowType,
     ThreeDomainSecure : ThreeDomainSecureFlowType,
     Menu : MenuFlowType,
     Installments : InstallmentsFlowType,
@@ -114,8 +114,8 @@ export type Components = {|
 |};
 
 export function getComponents() : Components {
-    const { Checkout, CardFields, CardForm, ThreeDomainSecure, Menu, Installments, QRCode } = paypal;
-    return { Checkout, CardFields: CardForm || CardFields, ThreeDomainSecure, Menu, Installments, QRCode };
+    const { Checkout, CardForm, ThreeDomainSecure, Menu, Installments, QRCode } = paypal;
+    return { Checkout, CardForm, ThreeDomainSecure, Menu, Installments, QRCode };
 }
 
 export type Config = {|
@@ -145,7 +145,7 @@ export type ServiceData = {|
     buyerAccessToken : ?string,
     content : ContentType,
     eligibility : {|
-        cardFields : boolean
+        cardForm : boolean
     |},
     cookies : string,
     personalization : PersonalizationType
@@ -179,7 +179,11 @@ export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyer
         content,
         buyerAccessToken,
         facilitatorAccessToken,
-        eligibility,
+        eligibility:  eligibility ? {
+            cardForm: eligibility.cardFields || false
+        } : {
+            cardForm: false
+        },
         cookies,
         personalization
     };

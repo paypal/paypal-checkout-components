@@ -32,7 +32,7 @@ describe('card field cases', () => {
                 }
             }));
 
-            mockFunction(window.paypal, 'CardFields', expect('CardFields', ({ original: CheckoutOriginal, args: [ props ] }) => {
+            mockFunction(window.paypal, 'CardForm', expect('CardForm', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
                 mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
                     return onApproveOriginal({ ...data, payerID }, actions);
