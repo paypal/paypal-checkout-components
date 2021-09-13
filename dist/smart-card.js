@@ -175,17 +175,17 @@ window.smartCard = function(modules) {
         })), S.d(N, "QUERY_BOOL", (function() {
             return o;
         })), S.d(N, "UNKNOWN", (function() {
-            return O;
-        })), S.d(N, "PROTOCOL", (function() {
             return Z;
+        })), S.d(N, "PROTOCOL", (function() {
+            return O;
         })), S.d(N, "PAGE_TYPES", (function() {
             return i;
         })), S.d(N, "MERCHANT_ID_MAX", (function() {
             return M;
         })), S.d(N, "PLATFORM", (function() {
-            return k;
+            return h;
         })), S.d(N, "TYPES", (function() {
-            return g;
+            return k;
         }));
         var R = {
             AD: "AD",
@@ -427,7 +427,8 @@ window.smartCard = function(modules) {
             TL: "tl",
             TR: "tr",
             VI: "vi",
-            ZH: "zh"
+            ZH: "zh",
+            ZH_HANT: "zh_Hant"
         }, T = {
             AD: [ t.EN, t.FR, t.ES, t.ZH ],
             AE: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
@@ -505,7 +506,7 @@ window.smartCard = function(modules) {
             GT: [ t.ES, t.EN, t.FR, t.ZH ],
             GW: [ t.EN, t.FR, t.ES, t.ZH ],
             GY: [ t.EN, t.FR, t.ES, t.ZH ],
-            HK: [ t.EN, t.ZH ],
+            HK: [ t.EN, t.ZH_HANT, t.ZH ],
             HN: [ t.ES, t.EN, t.FR, t.ZH ],
             HR: [ t.EN ],
             HU: [ t.HU, t.EN, t.FR, t.ES, t.ZH ],
@@ -613,7 +614,7 @@ window.smartCard = function(modules) {
             TR: [ t.TR, t.EN ],
             TT: [ t.EN, t.FR, t.ES, t.ZH ],
             TV: [ t.EN, t.FR, t.ES, t.ZH ],
-            TW: [ t.ZH, t.EN ],
+            TW: [ t.ZH_HANT, t.ZH, t.EN ],
             TZ: [ t.EN, t.FR, t.ES, t.ZH ],
             UA: [ t.EN, t.RU, t.FR, t.ES, t.ZH ],
             UG: [ t.EN, t.FR, t.ES, t.ZH ],
@@ -792,7 +793,7 @@ window.smartCard = function(modules) {
         }, o = {
             TRUE: "true",
             FALSE: "false"
-        }, O = "unknown", Z = {
+        }, Z = "unknown", O = {
             HTTP: "http",
             HTTPS: "https"
         }, i = {
@@ -872,7 +873,8 @@ window.smartCard = function(modules) {
             PAY_NOW: "pay_now",
             STICKINESS_ID: "stickiness_id",
             TIMESTAMP: "t",
-            OPTION_SELECTED: "optsel"
+            OPTION_SELECTED: "optsel",
+            USER_IDENTITY_METHOD: "user_identity_method"
         }, p = {
             COMMIT: "commit",
             CONTINUE: "continue"
@@ -929,10 +931,10 @@ window.smartCard = function(modules) {
             PAY_IN_4: "payIn4",
             PAYLATER: "paylater",
             CREDIT: "credit"
-        }, k = {
+        }, h = {
             DESKTOP: "desktop",
             MOBILE: "mobile"
-        }, g = !0;
+        }, k = !0;
     } ]);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -2337,6 +2339,9 @@ window.smartCard = function(modules) {
             return !1;
         }
     };
+    var extendIfDefined = function(target, source) {
+        for (var key in source) source.hasOwnProperty(key) && source[key] && (target[key] = source[key]);
+    };
     function httpTransport(_ref) {
         var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
         return promise_ZalgoPromise.try((function() {
@@ -2366,9 +2371,6 @@ window.smartCard = function(modules) {
                 json: json
             });
         })).then(src_util_noop);
-    }
-    function extendIfDefined(target, source) {
-        for (var key in source) source.hasOwnProperty(key) && source[key] && !target[key] && (target[key] = source[key]);
     }
     var _FUNDING_SKIP_LOGIN, _AMPLITUDE_API_KEY;
     (_FUNDING_SKIP_LOGIN = {}).paypal = "paypal", _FUNDING_SKIP_LOGIN.paylater = "paypal", 
