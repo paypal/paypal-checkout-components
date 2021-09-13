@@ -42,8 +42,8 @@ function isCardFieldPaymentEligible({ payment } : IsPaymentEligibleOptions) : bo
     return true;
 }
 
-function initCardField({ props } : InitOptions) : PaymentFlowInstance {
-    const { createOrder, onApprove, branded, vault, intent } = props;
+function initCardField({ serviceData } : InitOptions) : PaymentFlowInstance {
+    const { facilitatorAccessToken } = serviceData;
 
     const click = () => {
         if (!getCardFields()) {
@@ -52,9 +52,7 @@ function initCardField({ props } : InitOptions) : PaymentFlowInstance {
     };
     
     const start = () => {
-        return submitCardFields({
-            createOrder, onApprove, branded: branded ?? true, vault, intent
-        });
+        return submitCardFields({ facilitatorAccessToken });
     };
 
     const close = promiseNoop;

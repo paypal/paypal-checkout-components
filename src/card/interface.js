@@ -7,8 +7,8 @@ import { uniqueID } from 'belter/src';
 
 import { FRAME_NAME } from '../constants';
 import { tokenizeCard, approveCardPayment } from '../api';
-import type { OnApprove } from '../props';
 
+import { getCardProps } from './props';
 import type { Card } from './types';
 import type { CardExports } from './lib';
 
@@ -73,14 +73,12 @@ export function getCardFields() : ?Card {
 }
 
 type SubmitCardFieldsOptions = {|
-    intent : $Values<typeof INTENT>,
-    vault : boolean,
-    branded : boolean,
-    createOrder : () => ZalgoPromise<string>,
-    onApprove : OnApprove
+    facilitatorAccessToken : string
 |};
 
-export function submitCardFields({ intent, branded, vault, createOrder, onApprove } : SubmitCardFieldsOptions) : ZalgoPromise<void> {
+export function submitCardFields({ facilitatorAccessToken } : SubmitCardFieldsOptions) : ZalgoPromise<void> {
+    const { intent, branded, vault, createOrder, onApprove } = getCardProps({ facilitatorAccessToken });
+    
     return ZalgoPromise.try(() => {
         if (!hasCardFields()) {
             throw new Error(`Card fields not available to submit`);

@@ -113,6 +113,8 @@ export const FPTI_TRANSITION = {
     CHECKOUT_APPROVE:         ('process_checkout_approve' : 'process_checkout_approve'),
     CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel'),
 
+    TOKENIZE_APPROVE:         ('process_tokenize_approve' : 'process_tokenize_approve'),
+
     CONNECT_REDIRECT:         ('process_connect_redirect' : 'process_connect_redirect'),
 
     FIREBASE_CONNECTION_OPENED:     ('firebase_connection_opened' : 'firebase_connection_opened'),

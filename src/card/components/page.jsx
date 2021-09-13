@@ -19,10 +19,7 @@ type PageProps = {|
 |};
 
 function Page({ cspNonce, props } : PageProps) : mixed {
-    const {
-        createOrder, onApprove, intent, branded, vault,
-        style, type, onChange, export: xport
-    } = props;
+    const { facilitatorAccessToken, style, type, onChange, export: xport } = props;
 
     const [ fieldValue, setFieldValue ] = useState();
     const [ fieldValid, setFieldValid ] = useState(false);
@@ -50,13 +47,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
 
         xport({
             submit: () => {
-                return submitCardFields({
-                    createOrder,
-                    onApprove,
-                    intent,
-                    branded,
-                    vault
-                });
+                return submitCardFields({ facilitatorAccessToken });
             }
         });
     }, [ getFieldValue ]);

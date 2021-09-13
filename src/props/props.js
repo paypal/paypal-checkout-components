@@ -227,7 +227,7 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
     const createOrder = getCreateOrder({ createOrder: xprops.createOrder, currency, intent, merchantID, partnerAttributionID }, { facilitatorAccessToken, createBillingAgreement, createSubscription });
 
     const onError = getOnError({ onError: xprops.onError });
-    const onApprove = getOnApprove({ onApprove: xprops.onApprove, intent, onError, partnerAttributionID, clientAccessToken, vault, clientID }, { facilitatorAccessToken, branded, createOrder });
+    const onApprove = getOnApprove({ onApprove: xprops.onApprove, createBillingAgreement, createSubscription, intent, onError, partnerAttributionID, clientAccessToken, vault, clientID, facilitatorAccessToken, branded, createOrder });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
     const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
     const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, createSubscription, clientID });

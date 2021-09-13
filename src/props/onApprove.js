@@ -13,15 +13,36 @@ import { unresolvedPromise, getLogger } from '../lib';
 import { ENABLE_PAYMENT_API } from '../config';
 
 import type { CreateOrder } from './createOrder';
-import type { XOnError } from './onError';
+import type { CreateBillingAgreement } from './createBillingAgreement';
+import type { CreateSubscription } from './createSubscription';
+import type { OnError } from './onError';
 
-export type XOnApproveDataType = {|
+export type XOnApproveOrderDataType = {|
     orderID : string,
     payerID : ?string,
     paymentID : ?string,
-    subscriptionID? : ?string,
+    billingToken : ?string,
+    authCode : ?string,
+    facilitatorAccessToken : string
+|};
+
+export type XOnApproveBillingDataType = {|
+    orderID : string,
+    payerID : ?string,
+    paymentID : ?string,
     billingToken? : ?string,
-    authCode? : ?string,
+    facilitatorAccessToken : string
+|};
+
+export type XOnApproveTokenizeDataType = {|
+    facilitatorAccessToken : string,
+    paymentMethodToken : string
+|};
+
+export type XOnApproveSubscriptionDataType = {|
+    orderID? : string,
+    payerID : ?string,
+    subscriptionID : string,
     facilitatorAccessToken : string
 |};
 
@@ -38,9 +59,24 @@ export type PaymentActions = {|
     get : () => ZalgoPromise<PaymentResponse>
 |};
 
-export type XOnApproveActionsType = {|
+export type XOnApproveOrderActionsType = {|
     order : OrderActions,
     payment : ?PaymentActions,
+    restart : () => ZalgoPromise<void>,
+    redirect : (string) => ZalgoPromise<void>
+|};
+
+export type XOnApproveBillingActionsType = {|
+    restart : () => ZalgoPromise<void>,
+    redirect : (string) => ZalgoPromise<void>
+|};
+
+export type XOnApproveTokenizeActionsType = {|
+    restart : () => ZalgoPromise<void>,
+    redirect : (string) => ZalgoPromise<void>
+|};
+
+export type XOnApproveSubscriptionActionsType = {|
     subscription : {|
         get : () => ZalgoPromise<SubscriptionResponse>,
         activate : () => ZalgoPromise<SubscriptionResponse>
@@ -49,19 +85,20 @@ export type XOnApproveActionsType = {|
     redirect : (string) => ZalgoPromise<void>
 |};
 
-type ActionOptions = {|
-    orderID : string,
-    paymentID : ?string,
-    payerID : ?string,
-    restart : () => ZalgoPromise<void>,
-    intent : $Values<typeof INTENT>,
-    subscriptionID : ?string,
-    facilitatorAccessToken : string,
-    buyerAccessToken : ?string,
-    partnerAttributionID : ?string,
-    forceRestAPI : boolean,
-    idempotencyID? : ?string
-|};
+const redirect = (url) => {
+    if (!url) {
+        throw new Error(`Expected redirect url`);
+    }
+
+    if (url.indexOf('://') === -1) {
+        getLogger().warn('redir_url_non_scheme', { url }).flush();
+        throw new Error(`Invalid redirect url: ${ url } - must be fully qualified url`);
+    } else if (!url.match(/^https?:\/\//)) {
+        getLogger().warn('redir_url_non_http', { url }).flush();
+    }
+
+    return redir(url, window.top);
+};
 
 const handleProcessorError = <T>(err : mixed, restart : () => ZalgoPromise<void>) : ZalgoPromise<T> => {
     if (isProcessorDeclineError(err)) {
@@ -71,7 +108,19 @@ const handleProcessorError = <T>(err : mixed, restart : () => ZalgoPromise<void>
     throw err;
 };
 
-function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID = '' } : ActionOptions) : OrderActions {
+type OrderActionOptions = {|
+    orderID : string,
+    paymentID : ?string,
+    payerID : ?string,
+    restart : () => ZalgoPromise<void>,
+    intent : $Values<typeof INTENT>,
+    facilitatorAccessToken : string,
+    buyerAccessToken : ?string,
+    partnerAttributionID : ?string,
+    forceRestAPI : boolean
+|};
+
+function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : OrderActionOptions) : OrderActions {
     const get = memoize(() => {
         return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
     });
@@ -81,7 +130,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, b
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
 
-        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID })
+        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
             .finally(get.reset)
             .finally(capture.reset)
             .catch(err => handleProcessorError<OrderResponse>(err, restart));
@@ -107,7 +156,19 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, b
     return { capture, authorize, patch, get };
 }
 
-function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : ActionOptions) : ?PaymentActions {
+type PaymentActionOptions = {|
+    orderID : string,
+    paymentID : ?string,
+    payerID : ?string,
+    restart : () => ZalgoPromise<void>,
+    intent : $Values<typeof INTENT>,
+    facilitatorAccessToken : string,
+    buyerAccessToken : ?string,
+    partnerAttributionID : ?string,
+    forceRestAPI : boolean
+|};
+
+function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID } : PaymentActionOptions) : ?PaymentActions {
 
     if (!paymentID) {
         return;
@@ -141,9 +202,67 @@ function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorA
     return { execute, patch, get };
 }
 
-export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
+export type XOnApproveOrder = (XOnApproveOrderDataType, XOnApproveOrderActionsType) => ZalgoPromise<void>;
+export type XOnApproveBilling = (XOnApproveBillingDataType, XOnApproveBillingActionsType) => ZalgoPromise<void>;
+export type XOnApproveTokenize = (XOnApproveTokenizeDataType, XOnApproveTokenizeActionsType) => ZalgoPromise<void>;
+export type XOnApproveSubscription = (XOnApproveSubscriptionDataType, XOnApproveSubscriptionActionsType) => ZalgoPromise<void>;
 
-function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID } : ActionOptions) : XOnApproveActionsType {
+export type XOnApprove = XOnApproveOrder & XOnApproveBilling & XOnApproveTokenize & XOnApproveSubscription;
+
+type ApproveOrderActionOptions = {|
+    orderID : string,
+    paymentID : ?string,
+    payerID : ?string,
+    restart : () => ZalgoPromise<void>,
+    intent : $Values<typeof INTENT>,
+    facilitatorAccessToken : string,
+    buyerAccessToken : ?string,
+    partnerAttributionID : ?string,
+    forceRestAPI : boolean
+|};
+
+function buildXApproveOrderActions({ intent, orderID, paymentID, payerID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : ApproveOrderActionOptions) : XOnApproveOrderActionsType {
+    const order = buildOrderActions({ intent, orderID, paymentID, payerID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+    const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+
+    return {
+        order,
+        payment:      ENABLE_PAYMENT_API ? payment : null,
+        restart,
+        redirect
+    };
+}
+
+type ApproveBillingActionOptions = {|
+    restart : () => ZalgoPromise<void>
+|};
+
+function buildXApproveBillingActions({ restart } : ApproveBillingActionOptions) : XOnApproveTokenizeActionsType {
+    return {
+        restart,
+        redirect
+    };
+}
+
+type ApproveTokenizeActionOptions = {|
+    restart : () => ZalgoPromise<void>
+|};
+
+function buildXApproveTokenizeActions({ restart } : ApproveTokenizeActionOptions) : XOnApproveTokenizeActionsType {
+    return {
+        restart,
+        redirect
+    };
+}
+
+type ApproveSubscriptionsActionOptions = {|
+    restart : () => ZalgoPromise<void>,
+    subscriptionID : ?string,
+    buyerAccessToken : ?string
+|};
+
+function buildXApproveSubscriptionActions({ restart, subscriptionID, buyerAccessToken } : ApproveSubscriptionsActionOptions) : XOnApproveSubscriptionActionsType {
+
     const getSubscriptionApi = memoize(() => {
         if (!subscriptionID) {
             throw new Error(`No subscription ID present`);
@@ -160,27 +279,7 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
         return activateSubscription(subscriptionID, { buyerAccessToken });
     });
 
-    const redirect = (url) => {
-        if (!url) {
-            throw new Error(`Expected redirect url`);
-        }
-
-        if (url.indexOf('://') === -1) {
-            getLogger().warn('redir_url_non_scheme', { url }).flush();
-            throw new Error(`Invalid redirect url: ${ url } - must be fully qualified url`);
-        } else if (!url.match(/^https?:\/\//)) {
-            getLogger().warn('redir_url_non_http', { url }).flush();
-        }
-
-        return redir(url, window.top);
-    };
-
-    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID });
-    const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
-
     return {
-        order,
-        payment:      ENABLE_PAYMENT_API ? payment : null,
         subscription: { get: getSubscriptionApi, activate: activateSubscriptionApi },
         restart,
         redirect
@@ -204,7 +303,20 @@ export type OnApproveActions = {|
 
 export type OnApprove = (OnApproveData, OnApproveActions) => ZalgoPromise<void>;
 
-function getDefaultOnApprove(intent : $Values<typeof INTENT>) : XOnApprove {
+type GetOnApproveOrderOptions = {|
+    intent : $Values<typeof INTENT>,
+    onApprove : ?XOnApproveOrder,
+    partnerAttributionID : ?string,
+    onError : OnError,
+    clientAccessToken : ?string,
+    vault : boolean,
+    clientID : string,
+    facilitatorAccessToken : string,
+    branded : boolean | null,
+    createOrder : CreateOrder
+|};
+
+function getDefaultOnApproveOrder(intent : $Values<typeof INTENT>) : XOnApproveOrder {
     return (data, actions) => {
         if (intent === INTENT.CAPTURE) {
             return actions.order.capture().then(noop);
@@ -216,27 +328,15 @@ function getDefaultOnApprove(intent : $Values<typeof INTENT>) : XOnApprove {
     };
 }
 
-type GetOnApproveOptions = {|
-    intent : $Values<typeof INTENT>,
-    onApprove : ?XOnApprove,
-    partnerAttributionID : ?string,
-    onError : XOnError,
-    clientAccessToken : ?string,
-    vault : boolean,
-    clientID : string
-|};
-
-export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), partnerAttributionID, onError, clientAccessToken, vault, clientID } : GetOnApproveOptions, { facilitatorAccessToken, branded, createOrder } : {| facilitatorAccessToken : string, branded : boolean | null, createOrder : CreateOrder |}) : OnApprove {
+export function getOnApproveOrder({ intent, onApprove = getDefaultOnApproveOrder(intent), partnerAttributionID, onError, clientAccessToken, vault, clientID, facilitatorAccessToken, branded, createOrder } : GetOnApproveOrderOptions) : OnApprove {
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
     
     const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
-    return memoize(({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
-        return ZalgoPromise.try(() => {
-            return createOrder();
-        }).then(orderID => {
+    return memoize(({ payerID, paymentID, billingToken, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
+        return createOrder().then(orderID => {
             getLogger()
                 .info('button_approve')
                 .track({
@@ -246,20 +346,18 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
                     [FPTI_KEY.CONTEXT_ID]:   orderID
                 }).flush();
 
-            if (!billingToken && !subscriptionID && !clientAccessToken && !vault) {
+            if (!billingToken && !clientAccessToken && !vault) {
                 if (!payerID && branded) {
                     getLogger().error('onapprove_payerid_not_present_for_branded_standalone_button', { orderID }).flush();
                 }
             }
 
             return getSupplementalOrderInfo(orderID).then(supplementalData => {
-                intent = intent || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.intent);
                 billingToken = billingToken || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken);
                 paymentID = paymentID || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId);
-                const idempotencyID = orderID;
 
-                const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken, authCode };
-                const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID });
+                const data = { orderID, payerID, paymentID, billingToken, facilitatorAccessToken, authCode };
+                const actions = buildXApproveOrderActions({ orderID, paymentID, payerID, intent, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
 
                 return onApprove(data, actions).catch(err => {
                     return ZalgoPromise.try(() => {
@@ -271,4 +369,177 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
             });
         });
     });
+}
+
+type GetOnApproveBillingOptions = {|
+    onApprove : ?XOnApproveBilling,
+    onError : OnError,
+    facilitatorAccessToken : string,
+    createOrder : CreateOrder
+|};
+
+function getDefaultOnApproveBilling() : XOnApproveBilling {
+    return () => {
+        throw new Error(`Expected onApprove`);
+    };
+}
+
+export function getOnApproveBilling({ onApprove = getDefaultOnApproveBilling(), onError, facilitatorAccessToken, createOrder } : GetOnApproveBillingOptions) : OnApprove {
+    if (!onApprove) {
+        throw new Error(`Expected onApprove`);
+    }
+
+    return memoize(({ payerID, paymentID, billingToken } : OnApproveData, { restart } : OnApproveActions) => {
+        return createOrder().then(orderID => {
+            getLogger()
+                .info('button_approve')
+                .track({
+                    [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_APPROVE,
+                    [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
+                    [FPTI_KEY.TOKEN]:        orderID,
+                    [FPTI_KEY.CONTEXT_ID]:   orderID
+                }).flush();
+
+            return getSupplementalOrderInfo(orderID).then(supplementalData => {
+                billingToken = billingToken || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken);
+                paymentID = paymentID || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId);
+
+                const data = { orderID, payerID, paymentID, billingToken, facilitatorAccessToken };
+                const actions = buildXApproveBillingActions({ restart });
+
+                return onApprove(data, actions).catch(err => {
+                    return ZalgoPromise.try(() => {
+                        return onError(err);
+                    }).then(() => {
+                        throw err;
+                    });
+                });
+            });
+        });
+    });
+}
+
+type GetOnApproveTokenizeOptions = {|
+    facilitatorAccessToken : string,
+    onApprove : ?XOnApproveTokenize,
+    onError : OnError
+|};
+
+function getDefaultOnApproveTokenize() : XOnApproveTokenize {
+    return () => {
+        throw new Error(`Expected onApprove`);
+    };
+}
+
+export function getOnApproveTokenize({ onApprove = getDefaultOnApproveTokenize(), onError, facilitatorAccessToken } : GetOnApproveTokenizeOptions) : OnApprove {
+    if (!onApprove) {
+        throw new Error(`Expected onApprove`);
+    }
+    
+    return memoize(({ paymentMethodToken } : OnApproveData, { restart } : OnApproveActions) => {
+        if (!paymentMethodToken) {
+            throw new Error(`Payment method token required for tokenize onApprove`);
+        }
+
+        getLogger()
+            .info('button_approve')
+            .track({
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.TOKENIZE_APPROVE
+            }).flush();
+
+        const data = { facilitatorAccessToken, paymentMethodToken };
+        const actions = buildXApproveTokenizeActions({ restart });
+
+        return onApprove(data, actions).catch(err => {
+            return ZalgoPromise.try(() => {
+                return onError(err);
+            }).then(() => {
+                throw err;
+            });
+        });
+        
+    });
+}
+
+type GetOnApproveSubscriptionOptions = {|
+    onApprove : ?XOnApproveSubscription,
+    onError : OnError,
+    clientID : string,
+    facilitatorAccessToken : string,
+    createOrder : CreateOrder
+|};
+
+function getDefaultOnApproveSubscription() : XOnApproveSubscription {
+    return () => {
+        throw new Error(`Expected onApprove`);
+    };
+}
+
+export function getOnApproveSubscription({ onApprove = getDefaultOnApproveSubscription(), onError, facilitatorAccessToken, createOrder } : GetOnApproveSubscriptionOptions) : OnApprove {
+    if (!onApprove) {
+        throw new Error(`Expected onApprove`);
+    }
+
+    return memoize(({ payerID, subscriptionID, buyerAccessToken } : OnApproveData, { restart } : OnApproveActions) => {
+        if (!subscriptionID) {
+            throw new Error(`Expected subscriptionID`);
+        }
+
+        return createOrder().then(orderID => {
+            getLogger()
+                .info('button_approve')
+                .track({
+                    [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_APPROVE,
+                    [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
+                    [FPTI_KEY.TOKEN]:        orderID,
+                    [FPTI_KEY.CONTEXT_ID]:   orderID
+                }).flush();
+
+            const data = { orderID, payerID, subscriptionID, facilitatorAccessToken };
+            const actions = buildXApproveSubscriptionActions({ restart, subscriptionID, buyerAccessToken });
+
+            return onApprove(data, actions).catch(err => {
+                return ZalgoPromise.try(() => {
+                    return onError(err);
+                }).then(() => {
+                    throw err;
+                });
+            });
+        });
+    });
+}
+
+type GetOnApproveOptions = {|
+    intent : $Values<typeof INTENT>,
+    onApprove : ?XOnApprove,
+    partnerAttributionID : ?string,
+    onError : OnError,
+    clientAccessToken : ?string,
+    vault : boolean,
+    clientID : string,
+    facilitatorAccessToken : string,
+    branded : boolean | null,
+    createOrder : CreateOrder,
+    createBillingAgreement : ?CreateBillingAgreement,
+    createSubscription : ?CreateSubscription
+|};
+
+export function getOnApprove({ intent, createBillingAgreement, createSubscription, onApprove, partnerAttributionID, onError, clientAccessToken, vault, clientID, facilitatorAccessToken, branded, createOrder } : GetOnApproveOptions) : OnApprove {
+    if (createBillingAgreement) {
+        return getOnApproveBilling({ onApprove, onError, facilitatorAccessToken, createOrder });
+    }
+
+    if (intent === INTENT.SUBSCRIPTION || createSubscription) {
+        return getOnApproveSubscription({ clientID, onApprove, onError, facilitatorAccessToken, createOrder });
+    }
+
+    if (intent === INTENT.CAPTURE || intent === INTENT.AUTHORIZE || intent === INTENT.ORDER) {
+        return getOnApproveOrder({ intent, onApprove, partnerAttributionID, onError, clientAccessToken, vault, clientID, facilitatorAccessToken, branded, createOrder });
+    }
+
+    if (intent === INTENT.TOKENIZE) {
+        return getOnApproveTokenize({ onApprove, onError, facilitatorAccessToken });
+    }
+
+    throw new Error(`Unsupported intent: ${ intent }`);
 }

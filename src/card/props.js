@@ -37,7 +37,11 @@ export type CardXProps = {|
     cardSessionID : string,
     fundingEligibility : FundingEligibilityType,
     onChange : OnChange,
-    export : CardExport
+    export : CardExport,
+    parent? : {|
+        props : XProps,
+        export : CardExport
+    |}
 |};
 
 export type CardProps = {|
@@ -49,7 +53,8 @@ export type CardProps = {|
     cardSessionID : string,
     fundingEligibility : FundingEligibilityType,
     export : CardExport,
-    onChange : OnChange
+    onChange : OnChange,
+    facilitatorAccessToken : string
 |};
 
 type GetCardPropsOptions = {|
@@ -66,17 +71,21 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         fundingEligibility,
         onChange,
         branded = fundingEligibility?.card?.branded ?? true,
+        parent,
         export: xport
     } = xprops;
 
+    const props = getProps({ facilitatorAccessToken, branded });
+
     return {
-        ...getProps({ facilitatorAccessToken, branded }),
+        ...props,
         type,
         branded,
         style,
         cardSessionID,
         fundingEligibility,
         onChange,
-        export: xport
+        export: parent ? parent.export : xport,
+        facilitatorAccessToken
     };
 }
