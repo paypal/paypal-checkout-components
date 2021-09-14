@@ -112,7 +112,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     let labelNode = (
         <Label
-            enableExperimentOne={ false }
+            enableDivideLogoAnimationExperiment={ false }
             i={ i }
             logo={ logoNode }
             label={ label }

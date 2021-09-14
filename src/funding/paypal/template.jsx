@@ -6,7 +6,7 @@ import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, Glyp
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, DIVIDE_ANIMATE_LOGO_EXPERIMENT, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
+import { CLASS, DIVIDE_LOGO_ANIMATION_EXPERIMENT, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
@@ -147,37 +147,37 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 }
 
 
-const getExperimentOneAnimation = (opts) => {
-    if (!opts.enableExperimentOne) {
+const getDivideLogoAnimationExperiment = (opts) => {
+    if (!opts.enableDivideLogoAnimationExperiment) {
         return;
     }
     const experimentStyles = (<style innerHTML={ `
         .${ CLASS.DOM_READY } .${ LOGO_CLASS.LOGO }{
-            animation: 1s experiment-one-move-logo-to-the-left 2s forwards;
+            animation: 1s divide-logo-animation-experiment-left-side 2s forwards;
             position: relative;
         }
 
-        .${ DIVIDE_ANIMATE_LOGO_EXPERIMENT.PLACE_HOLDER } {
+        .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } {
             display: inline-block;
             position: absolute;
             opacity: 0; 
-            animation: 1s experiment-one-move-placeholder-to-the-right 2s forwards;
+            animation: 1s divide-logo-animation-experiment-right-side 2s forwards;
         }
 
-        .${ CLASS.BUTTON_LABEL } .${ DIVIDE_ANIMATE_LOGO_EXPERIMENT.PLACE_HOLDER } span {
+        .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
             font-size: 14px;
             color: #142C8E;
             padding-top: 3px;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        @keyframes experiment-one-move-logo-to-the-left {
+        @keyframes divide-logo-animation-experiment-left-side {
             100% {
                 transform: translateX(-300px)
             }
         }
         
-        @keyframes experiment-one-move-placeholder-to-the-right {
+        @keyframes divide-logo-animation-experiment-right-side {
             0%{
                 opacity: 1;
             }
@@ -190,7 +190,7 @@ const getExperimentOneAnimation = (opts) => {
     />);
     return (
         <Fragment>
-            <div class={ DIVIDE_ANIMATE_LOGO_EXPERIMENT.PLACE_HOLDER }> <span>Earn rewards</span></div>
+            <div class={ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER }> <span>Earn rewards</span></div>
             { experimentStyles }
         </Fragment>
     );
@@ -200,7 +200,7 @@ export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
             <BasicLabel { ...opts } />
-            {getExperimentOneAnimation(opts)}
+            {getDivideLogoAnimationExperiment(opts)}
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );
