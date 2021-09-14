@@ -190,7 +190,7 @@ const getExperimentOneAnimation = (opts) => {
     />);
     return (
         <Fragment>
-            <div class="experiment-one-label"> <span>Earn rewards</span></div>
+            <div class={ EXPERIMENT_ONE.PLACE_HOLDER }> <span>Earn rewards</span></div>
             { experimentStyles }
         </Fragment>
     );
