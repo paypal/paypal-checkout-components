@@ -47,7 +47,7 @@ export type LabelOptions = {|
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
-    enableExperimentOne : ?boolean
+    enableDivideLogoAnimationExperiment : ?boolean
 |};
 
 export type WalletLabelOptions = {|
