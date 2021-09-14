@@ -6,7 +6,7 @@ import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, Glyp
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, EXPERIMENT_ONE, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
+import { CLASS, DIVIDE_ANIMATE_LOGO_EXPERIMENT, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
@@ -157,14 +157,14 @@ const getExperimentOneAnimation = (opts) => {
             position: relative;
         }
 
-        .${ EXPERIMENT_ONE.PLACE_HOLDER } {
+        .${ DIVIDE_ANIMATE_LOGO_EXPERIMENT.PLACE_HOLDER } {
             display: inline-block;
             position: absolute;
             opacity: 0; 
             animation: 1s experiment-one-move-placeholder-to-the-right 2s forwards;
         }
 
-        .${ CLASS.BUTTON_LABEL } .${ EXPERIMENT_ONE.PLACE_HOLDER } span {
+        .${ CLASS.BUTTON_LABEL } .${ DIVIDE_ANIMATE_LOGO_EXPERIMENT.PLACE_HOLDER } span {
             font-size: 14px;
             color: #142C8E;
             padding-top: 3px;
@@ -190,7 +190,7 @@ const getExperimentOneAnimation = (opts) => {
     />);
     return (
         <Fragment>
-            <div class={ EXPERIMENT_ONE.PLACE_HOLDER }> <span>Earn rewards</span></div>
+            <div class={ DIVIDE_ANIMATE_LOGO_EXPERIMENT.PLACE_HOLDER }> <span>Earn rewards</span></div>
             { experimentStyles }
         </Fragment>
     );
