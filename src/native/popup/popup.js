@@ -49,7 +49,7 @@ function isAndroidAppInstalled(appId : string) : ZalgoPromise<AndroidApp> {
 
                     return ZalgoPromise.resolve({ id, installed: true, version });
                 } else {
-                    return ZalgoPromise.resolve({ installed: false });
+                    return ZalgoPromise.resolve({ installed: true });
                 }
             }
             
