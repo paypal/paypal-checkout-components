@@ -233,7 +233,7 @@ export function getCheckoutComponent() : CheckoutComponent {
             },
         
             dimensions: ({ props }) => {
-                if (props.dimensions) {
+                if (typeof props.dimensions === 'object') {
                     return { width: `${ props.dimensions.width }px`, height: `${ props.dimensions.height }px` };
                 } else {
                     return isDevice()
