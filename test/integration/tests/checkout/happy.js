@@ -204,10 +204,10 @@ describe(`paypal checkout component happy path`, () => {
                 const { outerWidth: width, outerHeight: height } = childWindow;
 
                 if (height !== DEFAULT_POPUP_SIZE.HEIGHT) {
-                    done(`height does not match. expected ${ DEFAULT_POPUP_SIZE.HEIGHT }, got ${ height }`);
+                    done(new Error(`height does not match. expected ${ DEFAULT_POPUP_SIZE.HEIGHT }, got ${ height }`));
                 }
                 if (width !== DEFAULT_POPUP_SIZE.WIDTH) {
-                    done(`width does not match. expected ${ DEFAULT_POPUP_SIZE.WIDTH }, got ${ width }`);
+                    done(new Error(`width does not match. expected ${ DEFAULT_POPUP_SIZE.WIDTH }, got ${ width }`));
                 }
                 done();
             });
