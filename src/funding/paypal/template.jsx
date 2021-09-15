@@ -164,15 +164,15 @@ const getDivideLogoAnimationExperiment = (opts) => {
         }
 
         .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
-            font-size: 14px;
+            font-size: 16px;
             color: #142C8E;
-            padding-top: 3px;
+            padding-top: 2px;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
         @keyframes divide-logo-animation-experiment-left-side {
             100% {
-                transform: translateX(-300px)
+                transform: translateX(-306px)
             }
         }
         
@@ -181,7 +181,7 @@ const getDivideLogoAnimationExperiment = (opts) => {
                 opacity: 1;
             }
             100% {
-                transform: translateX(220px);
+                transform: translateX(210px);
                 opacity: 1;
             }
         }
