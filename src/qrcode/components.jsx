@@ -90,6 +90,9 @@ export const cardStyle : string = `
         align-items: center;
         justify-content: center;
     }
+    body {
+        flex-direction: column;
+    }
     #error-view {
         width: 100%;
         height: 100%;
@@ -232,6 +235,23 @@ export const cardStyle : string = `
         bottom: -10%;
         transition: transform 500ms, opacity 500ms;
         transition-delay: 350ms;
+    }
+    .escape-path {    
+        background-color: white;
+        color: #2F3033;
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+        margin: 0;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+    }
+    .escape-path__link {
+        font-weight: 600;
+        color: #008CFF;
+    }
+    .escape-path__link:hover {
+        cursor: pointer;
     }
     `;
 
