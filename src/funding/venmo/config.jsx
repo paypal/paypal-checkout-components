@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx node */
 
+import { isTablet } from 'belter/src';
 import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { PLATFORM } from '@paypal/sdk-constants/src';
 
@@ -21,6 +22,11 @@ export function getVenmoConfig() : FundingSourceConfig {
         ],
         
         eligible: ({ experiment }) => {
+            // If user is using a tablet don't show venmo button
+            if (isTablet()) {
+                return false;
+            }
+
             if (experiment && experiment.enableVenmo === false) {
                 return false;
             }
