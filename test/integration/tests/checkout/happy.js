@@ -221,4 +221,37 @@ describe(`paypal checkout component happy path`, () => {
             }).render('body');
         });
     });
+
+    it('should render checkout, then complete the payment with dimensions', (done) => {
+        const CUSTOM_DEFAULT_POPUP_SIZE = {
+            WIDTH:  600,
+            HEIGHT: 600
+        };
+
+        runOnClick(() => {
+            let childWindow;
+            onWindowOpen().then(win => {
+                childWindow = win;
+                // $FlowFixMe
+                const { outerWidth: width, outerHeight: height } = childWindow;
+
+                if (height !== CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT) {
+                    done(new Error(`height does not match. expected ${ CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT }, got ${ height }`));
+                }
+                if (width !== CUSTOM_DEFAULT_POPUP_SIZE.WIDTH) {
+                    done(new Error(`width does not match. expected ${ CUSTOM_DEFAULT_POPUP_SIZE.WIDTH }, got ${ width }`));
+                }
+                done();
+            });
+
+            return window.paypal.Checkout({
+                test:            { action: 'init' },
+                dimensions:      { width: '600', height: '600' },
+                buttonSessionID: uniqueID(),
+                fundingSource:   FUNDING.PAYPAL,
+                createOrder:     generateOrderID,
+                onApprove:       noop
+            }).render('body');
+        });
+    });
 });
