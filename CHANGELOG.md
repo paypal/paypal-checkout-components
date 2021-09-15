@@ -1,3 +1,19 @@
+## <small>5.0.179 (2021-09-15)</small>
+
+* Add dimensions prop for Checkout (#1733) ([0eaad0d](https://github.com/paypal/paypal-checkout-components/commit/0eaad0d)), closes [#1733](https://github.com/paypal/paypal-checkout-components/issues/1733)
+* Add experiment for removing paylater button (#1725) ([0e250ec](https://github.com/paypal/paypal-checkout-components/commit/0e250ec)), closes [#1725](https://github.com/paypal/paypal-checkout-components/issues/1725)
+* add payment fields component (#1737) ([2e2baa4](https://github.com/paypal/paypal-checkout-components/commit/2e2baa4)), closes [#1737](https://github.com/paypal/paypal-checkout-components/issues/1737)
+* Add test for default popup dimensions (#1741) ([86033da](https://github.com/paypal/paypal-checkout-components/commit/86033da)), closes [#1741](https://github.com/paypal/paypal-checkout-components/issues/1741)
+* added escape path prop to qr component (#1734) ([c2ad1f6](https://github.com/paypal/paypal-checkout-components/commit/c2ad1f6)), closes [#1734](https://github.com/paypal/paypal-checkout-components/issues/1734)
+* added support for zh Hant (#1637) ([9c17a3e](https://github.com/paypal/paypal-checkout-components/commit/9c17a3e)), closes [#1637](https://github.com/paypal/paypal-checkout-components/issues/1637)
+* Rename inline guest CardFields to CardForm ([28084f6](https://github.com/paypal/paypal-checkout-components/commit/28084f6))
+* Revert "feat(venmo): Surpress showing venmo on tablets (#1740)" (#1742) ([8509b6c](https://github.com/paypal/paypal-checkout-components/commit/8509b6c)), closes [#1740](https://github.com/paypal/paypal-checkout-components/issues/1740) [#1742](https://github.com/paypal/paypal-checkout-components/issues/1742)
+* wait to start experiment (#1739) ([58af331](https://github.com/paypal/paypal-checkout-components/commit/58af331)), closes [#1739](https://github.com/paypal/paypal-checkout-components/issues/1739)
+* feat(venmo): Surpress showing venmo on tablets (#1740) ([d068dc3](https://github.com/paypal/paypal-checkout-components/commit/d068dc3)), closes [#1740](https://github.com/paypal/paypal-checkout-components/issues/1740)
+* chore(build): increase bundle size limits (#1736) ([d01cd65](https://github.com/paypal/paypal-checkout-components/commit/d01cd65)), closes [#1736](https://github.com/paypal/paypal-checkout-components/issues/1736)
+
+
+
 ## <small>5.0.178 (2021-09-08)</small>
 
 * Add tests for venmo experiment (#1732) ([7bd4e02](https://github.com/paypal/paypal-checkout-components/commit/7bd4e02)), closes [#1732](https://github.com/paypal/paypal-checkout-components/issues/1732)
