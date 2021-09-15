@@ -126,7 +126,6 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 
     const personalizationText = getPersonalizationText(opts);
     const personalizationTracker = getPersonalizationTracker(opts);
-    
     if (!personalizationText) {
         return;
     }
