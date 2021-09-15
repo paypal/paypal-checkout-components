@@ -26,13 +26,13 @@ type CardProps = {|
     token : string
 |};
 
-export type CardFieldsComponent = ZoidComponent<CardProps>;
+export type CardFormComponent = ZoidComponent<CardProps>;
 
-export function getCardFieldsComponent() : CardFieldsComponent {
-    return inlineMemoize(getCardFieldsComponent, () => {
+export function getCardFormComponent() : CardFormComponent {
+    return inlineMemoize(getCardFormComponent, () => {
         return create({
-            tag:  'paypal-card-fields',
-            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`,
+            tag:  'paypal-card-form',
+            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELDS__ }`,
 
             dimensions: {
                 height: '300px',

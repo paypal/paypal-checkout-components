@@ -58,6 +58,23 @@ test(`Button should render with ssr, with minimal options`, async () => {
     }
 });
 
+test(`Button should render with ssr, with zh_Hant locale option`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'HK', lang: 'zh_Hant' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+});
+
 test(`Button should fail to render with ssr, with invalid style option`, async () => {
 
     const { Buttons } = await getButtonScript();
@@ -130,6 +147,7 @@ test(`Button should fail to render with ssr, with invalid locale`, async () => {
         throw new Error(`Expected button render to error out`);
     }
 });
+
 
 test(`Button renderer should export DEFAULT_PROPS`, async () => {
 

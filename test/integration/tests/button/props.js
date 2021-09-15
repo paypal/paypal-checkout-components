@@ -56,7 +56,7 @@ describe(`paypal button component props`, () => {
                             'amount':   '1.99'
                         }
                     };
-                  
+
                     return await applePay(3, request).then(response => {
                         const {
                             begin,
@@ -89,7 +89,7 @@ describe(`paypal button component props`, () => {
                     onCancel:  avoid('onCancel')
 
                 });
-                
+
                 if (instance.isEligible()) {
                     onRender = expect('onRender', onRender);
                     return instance.render('#testContainer');
@@ -127,7 +127,7 @@ describe(`paypal button component props`, () => {
                     onCancel:  avoid('onCancel')
 
                 });
-                
+
                 if (instance.isEligible()) {
                     onRender = expect('onRender', onRender);
                     return instance.render('#testContainer');
@@ -162,7 +162,7 @@ describe(`paypal button component props`, () => {
                     onCancel:  avoid('onCancel')
 
                 });
-                
+
                 if (instance.isEligible()) {
                     onRender = expect('onRender', onRender);
                     return instance.render('#testContainer');
@@ -170,4 +170,5 @@ describe(`paypal button component props`, () => {
             });
         });
     });
+
 });
