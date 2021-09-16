@@ -1,13 +1,7 @@
 name: publish to npm
-on:
-  # manually run this action using the GitHub UI
-  # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
-  workflow_dispatch:
-    inputs:
-      version:
-        description: Optional argument for "npm run release"
-        required: false
-        default: 'patch'
+# manually run this action using the GitHub UI
+# https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+on: workflow_dispatch
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -35,7 +29,7 @@ jobs:
           git config --global user.name ${{ github.actor }}
 
       - name: Publish to npm
-        run: npm run release -- ${{ github.event.inputs.version }}
+        run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
