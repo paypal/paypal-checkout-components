@@ -28,7 +28,7 @@ export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildT
                             background: #e9ebee;
                             position: relative;
                             overflow: hidden;
-                            height: ${ height ?? DEFAULT_HEIGHT }px;
+                            height: ${ height ?? DEFAULT_HEIGHT };
                         }
 
                         body::after {
@@ -39,7 +39,7 @@ export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildT
                             top: 0;
                             bottom: 0;
                             width: 100%;
-                            height: 100%;
+                            height: ${ height ?? DEFAULT_HEIGHT };
                             transform: translateX(0);
                             box-shadow: 0px 0px 107px 60px #dddfe2;
                             animation: 1.5s loading-placeholder ease-in-out infinite;
