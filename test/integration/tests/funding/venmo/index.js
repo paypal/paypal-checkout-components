@@ -87,3 +87,27 @@ describe(`venmo desktop web button test `, () => {
         done();
     });
 });
+
+describe(`venmo on tablet `, () => {
+
+    beforeEach(() => {
+        createTestContainer();
+        window.navigator.mockUserAgent = 'Mozilla/5.0 (iPad; CPU OS 14_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1';
+        
+    });
+
+    afterEach(() => {
+        destroyTestContainer();
+    });
+
+
+    it(`should NOT display button`, (done) => {
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+        
+        const paypalButtons = window.paypal.Buttons({
+            fundingSource
+        });
+        assert.equal(paypalButtons.isEligible(), false);
+        done();
+    });
+});
