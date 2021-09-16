@@ -72,7 +72,7 @@ export function getQRCodeComponent() : QRCodeComponent {
             props: {
                 onEscapePath: {
                     type:     'function',
-                    required: false
+                    required: true
                 },
                 qrPath: {
                     type:       'string',
