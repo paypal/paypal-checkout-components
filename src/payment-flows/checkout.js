@@ -122,6 +122,7 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
     const connectEligible = isConnectEligible({ connect, createBillingAgreement, createSubscription, vault, fundingSource });
 
     let approved = false;
+    let doApproveOnClose = false;
     let forceClosed = false;
 
     const init = () => {
@@ -202,7 +203,11 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
                 });
             },
 
-            onApprove: ({ payerID, paymentID, billingToken, subscriptionID, authCode }) => {
+            onApprove: ({ approveOnClose = false, payerID, paymentID, billingToken, subscriptionID, authCode }) => {
+                if (approveOnClose) {
+                    doApproveOnClose = true;
+                    return;
+                }
                 approved = true;
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
 
@@ -235,6 +240,10 @@ function initCheckout({ props, components, serviceData, payment, config } : Init
 
             onClose: () => {
                 checkoutOpen = false;
+                if (doApproveOnClose) {
+                    // eslint-disable-next-line no-use-before-define
+                    return onApprove({ forceRestAPI: true }, { restart }).catch(noop);
+                }
                 if (!forceClosed && !approved) {
                     return onCancel();
                 }

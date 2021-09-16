@@ -37,7 +37,8 @@ type OrderAPIOptions = {|
     facilitatorAccessToken : string,
     buyerAccessToken? : ?string,
     partnerAttributionID : ?string,
-    forceRestAPI? : boolean
+    forceRestAPI? : boolean,
+    idempotencyID? : ?string
 |};
 
 export function createOrderID(order : OrderCreateRequest, { facilitatorAccessToken, partnerAttributionID } : OrderAPIOptions) : ZalgoPromise<string> {
@@ -126,7 +127,7 @@ export function isProcessorDeclineError(err : mixed) : boolean {
     }));
 }
 
-export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
+export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false, idempotencyID } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
     getLogger().info(`capture_order_lsat_upgrade_${ getLsatUpgradeCalled() ? 'called' : 'not_called' }`);
     getLogger().info(`capture_order_lsat_upgrade_${ getLsatUpgradeError() ? 'errored' : 'did_not_error' }`, { err: stringifyError(getLsatUpgradeError()) });
 
@@ -138,7 +139,8 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
             url:         `${ ORDERS_API_URL }/${ orderID }/capture`,
             headers:     {
                 [ HEADERS.PARTNER_ATTRIBUTION_ID ]: partnerAttributionID || '',
-                [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION
+                [ HEADERS.PREFER ]:                 PREFER.REPRESENTATION,
+                ...(idempotencyID && { [HEADERS.PAYPAL_REQUEST_ID]: idempotencyID })
             }
         }).catch(err => {
             const restCorrID = getErrorResponseCorrelationID(err);
@@ -154,7 +156,8 @@ export function captureOrder(orderID : string, { facilitatorAccessToken, buyerAc
                 eventName:   'order_capture',
                 url:         `${ SMART_API_URI.ORDER }/${ orderID }/capture`,
                 headers:     {
-                    [HEADERS.CLIENT_CONTEXT]: orderID
+                    [HEADERS.CLIENT_CONTEXT]: orderID,
+                    ...(idempotencyID && { [HEADERS.PAYPAL_REQUEST_ID]: idempotencyID })
                 }
             }).then((res) => {
                 const smartCorrID = getResponseCorrelationID(res);

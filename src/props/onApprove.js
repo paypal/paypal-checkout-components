@@ -59,7 +59,8 @@ type ActionOptions = {|
     facilitatorAccessToken : string,
     buyerAccessToken : ?string,
     partnerAttributionID : ?string,
-    forceRestAPI : boolean
+    forceRestAPI : boolean,
+    idempotencyID? : ?string
 |};
 
 const handleProcessorError = <T>(err : mixed, restart : () => ZalgoPromise<void>) : ZalgoPromise<T> => {
@@ -70,7 +71,7 @@ const handleProcessorError = <T>(err : mixed, restart : () => ZalgoPromise<void>
     throw err;
 };
 
-function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : ActionOptions) : OrderActions {
+function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID = '' } : ActionOptions) : OrderActions {
     const get = memoize(() => {
         return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
     });
@@ -80,7 +81,7 @@ function buildOrderActions({ intent, orderID, restart, facilitatorAccessToken, b
             throw new Error(`Use ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.CAPTURE } to use client-side capture`);
         }
 
-        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
+        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID })
             .finally(get.reset)
             .finally(capture.reset)
             .catch(err => handleProcessorError<OrderResponse>(err, restart));
@@ -142,8 +143,7 @@ function buildPaymentActions({ intent, paymentID, payerID, restart, facilitatorA
 
 export type XOnApprove = (XOnApproveDataType, XOnApproveActionsType) => ZalgoPromise<void>;
 
-function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : ActionOptions) : XOnApproveActionsType {
-
+function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID } : ActionOptions) : XOnApproveActionsType {
     const getSubscriptionApi = memoize(() => {
         if (!subscriptionID) {
             throw new Error(`No subscription ID present`);
@@ -175,7 +175,7 @@ function buildXApproveActions({ intent, orderID, paymentID, payerID, restart, su
         return redir(url, window.top);
     };
 
-    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+    const order = buildOrderActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID });
     const payment = buildPaymentActions({ intent, orderID, paymentID, payerID, subscriptionID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
 
     return {
@@ -256,9 +256,10 @@ export function getOnApprove({ intent, onApprove = getDefaultOnApprove(intent), 
                 intent = intent || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.intent);
                 billingToken = billingToken || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken);
                 paymentID = paymentID || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId);
+                const idempotencyID = orderID;
 
                 const data = { orderID, payerID, paymentID, billingToken, subscriptionID, facilitatorAccessToken, authCode };
-                const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+                const actions = buildXApproveActions({ orderID, paymentID, payerID, intent, restart, subscriptionID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, idempotencyID });
 
                 return onApprove(data, actions).catch(err => {
                     return ZalgoPromise.try(() => {
