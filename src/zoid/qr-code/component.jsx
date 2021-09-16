@@ -73,6 +73,9 @@ export function getQRCodeComponent() : QRCodeComponent {
                 onEscapePath: {
                     type: 'function'
                 },
+                onSubmitFeedback: {
+                    type: 'function'
+                },
                 qrPath: {
                     type:       'string',
                     queryParam: true,
@@ -142,6 +145,9 @@ export function QRCodeContainer({
 
         frame.classList.remove(CLASS.INVISIBLE);
         frame.classList.add(CLASS.VISIBLE);
+
+        // Close is now controlled by QRCard on smart-payment-buttons
+        document.querySelector('#close').remove();
 
         setTimeout(() => {
             destroyElement(prerenderFrame);
