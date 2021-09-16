@@ -3042,7 +3042,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.57", _headers15);
+            _headers15["x-app-version"] = "5.0.58", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -6841,25 +6841,34 @@ window.spb = function(modules) {
             var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, fundingSource = _ref2.fundingSource, clean = _ref2.clean, callbacks = _ref2.callbacks, sessionUID = _ref2.sessionUID;
             var createOrder = props.createOrder, onClick = props.onClick;
             var QRCode = _ref2.components.QRCode;
-            var onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onError = callbacks.onError, onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange;
+            var onInit = callbacks.onInit, onApprove = callbacks.onApprove, onCancel = callbacks.onCancel, onError = callbacks.onError, onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, onShippingChange = callbacks.onShippingChange, onQrEscapePath = callbacks.onQrEscapePath;
             var qrCodeRenderTarget = window.xprops.getParent();
             var pageUrl = window.xprops.getPageUrl();
             var stickinessID = getStorageID();
             return {
                 click: src_util_noop,
                 start: function() {
-                    var _getLogger$info$track2;
+                    var _getLogger$info$track2, _getLogger$info$track3;
                     logger_getLogger().info("VenmoDesktopPay_qrcode").track((_getLogger$info$track2 = {}, 
                     _getLogger$info$track2.transition_name = "qr_shown", _getLogger$info$track2)).flush();
+                    logger_getLogger().info("VenmoDesktopPay_qrcode_prepare_escape").track((_getLogger$info$track3 = {}, 
+                    _getLogger$info$track3.transition_name = "qr_prepare_pay", _getLogger$info$track3)).flush();
                     var onQRClose = function(event) {
                         void 0 === event && (event = "closeQRCode");
                         return promise_ZalgoPromise.try((function() {
-                            var _getLogger$info$track3;
-                            logger_getLogger().info("VenmoDesktopPay_qrcode_closing_" + event).track((_getLogger$info$track3 = {}, 
-                            _getLogger$info$track3.state_name = "smart_button", _getLogger$info$track3.transition_name = event ? "qr_closing_" + event : "qr_closing", 
-                            _getLogger$info$track3)).flush();
+                            var _getLogger$info$track4;
+                            logger_getLogger().info("VenmoDesktopPay_qrcode_closing_" + event).track((_getLogger$info$track4 = {}, 
+                            _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = event ? "qr_closing_" + event : "qr_closing", 
+                            _getLogger$info$track4)).flush();
                             onClose();
                         }));
+                    };
+                    var onEscapePath = function(selectedFundingSource) {
+                        var _getLogger$info$track5;
+                        logger_getLogger().info("VenmoDesktopPay_process_pay_with_" + selectedFundingSource).track((_getLogger$info$track5 = {}, 
+                        _getLogger$info$track5.state_name = "smart_button", _getLogger$info$track5.transition_name = "qr_process_pay_with_" + selectedFundingSource, 
+                        _getLogger$info$track5)).flush();
+                        return onQrEscapePath(selectedFundingSource);
                     };
                     var validatePromise = promise_ZalgoPromise.try((function() {
                         return !onClick || onClick({
@@ -6867,10 +6876,10 @@ window.spb = function(modules) {
                         });
                     })).then((function(valid) {
                         if (!valid) {
-                            var _getLogger$info$track4;
-                            logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track4 = {}, 
-                            _getLogger$info$track4.state_name = "smart_button", _getLogger$info$track4.transition_name = "native_onclick_invalid", 
-                            _getLogger$info$track4)).flush();
+                            var _getLogger$info$track6;
+                            logger_getLogger().info("native_onclick_invalid").track((_getLogger$info$track6 = {}, 
+                            _getLogger$info$track6.state_name = "smart_button", _getLogger$info$track6.transition_name = "native_onclick_invalid", 
+                            _getLogger$info$track6)).flush();
                         }
                         return valid;
                     }));
@@ -6898,13 +6907,15 @@ window.spb = function(modules) {
                                 cspNonce: config.cspNonce,
                                 qrPath: url,
                                 state: "qr_default",
-                                onClose: onQRClose
+                                onClose: onQRClose,
+                                onEscapePath: onEscapePath
                             });
                             function updateQRCodeComponentState(newState) {
                                 return qrCodeComponentInstance.updateProps(_extends({
                                     cspNonce: config.cspNonce,
                                     qrPath: url,
-                                    onClose: onQRClose
+                                    onClose: onQRClose,
+                                    onEscapePath: onEscapePath
                                 }, newState));
                             }
                             var connection = connectNative({
@@ -7914,6 +7925,26 @@ window.spb = function(modules) {
                                 }));
                             })).then(src_util_noop);
                         },
+                        onQrEscapePath: function(selectedFundingSource) {
+                            return promise_ZalgoPromise.try((function() {
+                                return function(selectedFundingSource) {
+                                    var paymentInfo = _extends({}, payment, {
+                                        fundingSource: selectedFundingSource
+                                    });
+                                    var instance = checkout.init({
+                                        props: props,
+                                        components: components,
+                                        payment: paymentInfo,
+                                        config: config,
+                                        serviceData: serviceData
+                                    });
+                                    native_clean.register((function() {
+                                        return instance.close();
+                                    }));
+                                    return instance.start();
+                                }(selectedFundingSource);
+                            }));
+                        },
                         onDestroy: destroy
                     }
                 });
@@ -8806,7 +8837,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
                     _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.57", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_version = "5.0.58", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
