@@ -109,15 +109,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         left: 0;
                         width: 100%;
                         height: 100%;
-                    }
-
-                    #${ uid } > iframe.${ CLASS.COMPONENT_FRAME } {
-                        z-index: 100;
-                    }
-
-                    #${ uid } > iframe.${ CLASS.PRERENDER_FRAME } {
                         transition: opacity .2s linear;
-                        z-index: 200;
                     }
 
                     #${ uid } > iframe.${ CLASS.VISIBLE } {
@@ -127,6 +119,15 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                     #${ uid } > iframe.${ CLASS.INVISIBLE } {
                         opacity: 0;
                         pointer-events: none;
+                    }
+
+                    #${ uid } > iframe.${ CLASS.COMPONENT_FRAME } {
+                        z-index: 100;
+                    }
+
+                    #${ uid } > iframe.${ CLASS.PRERENDER_FRAME } {
+                        opacity: 0.1;
+                        z-index: 50;
                     }
 
                     #${ uid } > .${ CLASS.SMART_MENU } {
