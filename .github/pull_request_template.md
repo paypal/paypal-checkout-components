@@ -1,5 +1,5 @@
 ### Your checklist for this pull request
-🚨 Please review the [guidelines for contributing](../../CONTRIBUTING.md) to this repository.
+🚨 Please review the [guidelines for contributing](https://github.com/paypal/paypal-checkout-components/blob/master/CONTRIBUTING.md) to this repository.
 🚨 Please review the [guidelines for a good PR Description](https://www.pullrequest.com/blog/writing-a-great-pull-request-description/)
 
 - [ ] Ensure you have a PR description that answers: What? Why? How?
