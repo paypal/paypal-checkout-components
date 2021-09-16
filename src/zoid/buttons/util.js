@@ -1,5 +1,5 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
@@ -58,6 +58,10 @@ export function isSupportedNativeBrowser() : boolean {
     }
 
     if (isSFVC()) {
+        return false;
+    }
+
+    if (isTablet()) {
         return false;
     }
 
