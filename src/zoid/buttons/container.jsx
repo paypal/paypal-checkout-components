@@ -109,7 +109,6 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        transition: opacity .2s linear;
                     }
 
                     #${ uid } > iframe.${ CLASS.VISIBLE } {
