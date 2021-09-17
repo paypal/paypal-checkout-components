@@ -75,7 +75,7 @@ module.exports = {
         cards:          SMART_CARDS
     },
     'card-fields': {
-        entry:          './src/interface/card',
+        entry:          './src/interface/card-fields',
         globals
     }
 };
