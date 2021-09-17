@@ -147,7 +147,10 @@ export function QRCodeContainer({
         frame.classList.add(CLASS.VISIBLE);
 
         // Close is now controlled by QRCard on smart-payment-buttons
-        document.querySelector('#close')?.remove();
+        const closeButton = document.querySelector('#close');
+        if (closeButton) {
+            closeButton.remove();
+        }
 
         setTimeout(() => {
             destroyElement(prerenderFrame);
