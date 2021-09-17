@@ -2406,9 +2406,7 @@
             }(), state = _useXProps.state, setState = _useXProps.setState;
             var handleClick = function(selectedFundingSource) {
                 window.xprops.hide();
-                window.xprops.onEscapePath(selectedFundingSource).then((function() {
-                    window.xprops.close();
-                }));
+                window.xprops.onEscapePath(selectedFundingSource);
             };
             var errorMessage = v(ErrorMessage, {
                 message: _useXProps.errorText,
