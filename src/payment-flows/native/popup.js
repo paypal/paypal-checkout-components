@@ -10,6 +10,7 @@ import { getLogger, isAndroidChrome, unresolvedPromise, getStorageState } from '
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../../constants';
 import type { ButtonProps, ServiceData, Config, Components } from '../../button/props';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
+import type { Payment } from '../types';
 
 
 import { isNativeOptedIn, type NativeOptOutOptions } from './eligibility';
@@ -108,7 +109,7 @@ type NativePopupOptions = {|
     serviceData : ServiceData,
     config : Config,
     components : Components,
-    fundingSource : $Values<typeof FUNDING>,
+    payment : Payment,
     sessionUID : string,
     clean : CleanupType,
     callbacks : {|
@@ -146,8 +147,7 @@ type NativePopupOptions = {|
             buttonSessionID : string
         |}>,
         onClose : () => ZalgoPromise<void>,
-        onDestroy : () => ZalgoPromise<void>,
-        onQrEscapePath : (selectedFundingSource : $Values<typeof FUNDING>) => ZalgoPromise<void>
+        onDestroy : () => ZalgoPromise<void>
     |}
 |};
 
@@ -156,9 +156,10 @@ type NativePopup = {|
     start : () => ZalgoPromise<void>
 |};
 
-export function initNativePopup({ props, serviceData, config, fundingSource, sessionUID, callbacks, clean } : NativePopupOptions) : NativePopup {
+export function initNativePopup({ props, serviceData, config, payment, sessionUID, callbacks, clean } : NativePopupOptions) : NativePopup {
     const { onClick, createOrder } = props;
     const { firebase: firebaseConfig } = config;
+    const { fundingSource } = payment;
     const { onInit, onApprove, onCancel, onError, onFallback, onClose, onDestroy, onShippingChange } = callbacks;
 
     if (!firebaseConfig) {
