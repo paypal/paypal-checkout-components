@@ -57,9 +57,7 @@ function QRCard({
 
     const handleClick = (selectedFundingSource : $Values<typeof FUNDING>) => {
         window.xprops.hide();
-        window.xprops.onEscapePath(selectedFundingSource).then(() => {
-            window.xprops.close();
-        });
+        window.xprops.onEscapePath(selectedFundingSource);
     };
 
     const errorMessage = (
