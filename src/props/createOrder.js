@@ -212,7 +212,9 @@ export function getCreateOrder({ createOrder, intent, currency, merchantID, part
                 })
                 .addTrackingBuilder(() => {
                     return {
-                        [FPTI_KEY.TOKEN]: orderID
+                        [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
+                        [FPTI_KEY.CONTEXT_ID]:   orderID,
+                        [FPTI_KEY.TOKEN]:        orderID
                     };
                 })
                 .track({

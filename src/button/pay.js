@@ -6,7 +6,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { applepay, checkout, cardField, cardForm, native, brandedVaultCard, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { getLogger, sendBeacon } from '../lib';
-import { FPTI_TRANSITION, BUYER_INTENT } from '../constants';
+import { FPTI_TRANSITION, BUYER_INTENT, FPTI_CONTEXT_TYPE } from '../constants';
 import { updateButtonClientConfig } from '../api';
 import { getConfirmOrder } from '../props/confirmOrder';
 import { enableVaultSetup } from '../middleware';
@@ -89,6 +89,13 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             .info(`button_click_pay_flow_${ name }`)
             .info(`button_click_fundingsource_${ fundingSource }`)
             .info(`button_click_instrument_${ instrumentType || 'default' }`)
+            .addTrackingBuilder(() => {
+                return {
+                    [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
+                    [FPTI_KEY.CONTEXT_ID]:   buttonSessionID,
+                    [FPTI_KEY.TOKEN]:        ''
+                };
+            })
             .track({
                 [FPTI_KEY.TRANSITION]:     FPTI_TRANSITION.BUTTON_CLICK,
                 [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
