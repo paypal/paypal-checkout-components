@@ -167,7 +167,6 @@ const getTagLineForDivideLogoAnimationExperiment = (opts) => {
         .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
             font-size: 16px;
             color: #142C8E;
-            padding-top: 2px;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
