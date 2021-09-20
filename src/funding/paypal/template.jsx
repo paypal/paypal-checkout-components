@@ -146,10 +146,11 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 }
 
 
-const getDivideLogoAnimationExperiment = (opts) => {
+const getTagLineForDivideLogoAnimationExperiment = (opts) => {
     if (!opts.enableDivideLogoAnimationExperiment) {
         return;
     }
+
     const experimentStyles = (<style innerHTML={ `
         .${ CLASS.DOM_READY } .${ LOGO_CLASS.LOGO }{
             animation: 1s divide-logo-animation-experiment-left-side 2s forwards;
@@ -157,7 +158,7 @@ const getDivideLogoAnimationExperiment = (opts) => {
         }
 
         .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } {
-            display: inline-block;
+            display: block;
             position: absolute;
             opacity: 0; 
             animation: 1s divide-logo-animation-experiment-right-side 2s forwards;
@@ -170,19 +171,9 @@ const getDivideLogoAnimationExperiment = (opts) => {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
-        @keyframes divide-logo-animation-experiment-left-side {
-            100% {
-                transform: translateX(-306px)
-            }
-        }
-        
-        @keyframes divide-logo-animation-experiment-right-side {
-            0%{
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(210px);
-                opacity: 1;
+        @media only screen and (max-width: 315px){
+            .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
+                font-size: 14px;
             }
         }
     ` }
@@ -199,7 +190,7 @@ export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
             <BasicLabel { ...opts } />
-            {getDivideLogoAnimationExperiment(opts)}
+            {getTagLineForDivideLogoAnimationExperiment(opts)}
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );
