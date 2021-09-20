@@ -74,8 +74,8 @@ export function getQRCodeComponent() : QRCodeComponent {
                     type: 'function'
                 },
                 onSubmitFeedback: {
-                    type: 'function',
-                    required: true
+                    type:       'function',
+                    required:   true
                 },
                 qrPath: {
                     type:       'string',
