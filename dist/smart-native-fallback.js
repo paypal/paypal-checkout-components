@@ -842,7 +842,7 @@
                     return item;
                 },
                 register: function(method) {
-                    cleaned ? method(cleanErr) : tasks.push(function(method) {
+                    var task = function(method) {
                         var called = !1;
                         return setFunctionName((function() {
                             if (!called) {
@@ -852,7 +852,14 @@
                         }), getFunctionName(method) + "::once");
                     }((function() {
                         return method(cleanErr);
-                    })));
+                    }));
+                    cleaned ? method(cleanErr) : tasks.push(task);
+                    return {
+                        cancel: function() {
+                            var index = tasks.indexOf(task);
+                            -1 !== index && tasks.splice(index, 1);
+                        }
+                    };
                 },
                 all: function(err) {
                     cleanErr = err;

@@ -1131,7 +1131,7 @@
             }
         };
         var extendIfDefined = function(target, source) {
-            for (var key in source) source.hasOwnProperty(key) && source[key] && (target[key] = source[key]);
+            for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
         };
         function httpTransport(_ref) {
             var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
@@ -1508,7 +1508,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.60", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.61", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -1679,7 +1679,7 @@
                     return item;
                 },
                 register: function(method) {
-                    cleaned ? method(cleanErr) : tasks.push(function(method) {
+                    var task = function(method) {
                         var called = !1;
                         return setFunctionName((function() {
                             if (!called) {
@@ -1689,7 +1689,14 @@
                         }), getFunctionName(method) + "::once");
                     }((function() {
                         return method(cleanErr);
-                    })));
+                    }));
+                    cleaned ? method(cleanErr) : tasks.push(task);
+                    return {
+                        cancel: function() {
+                            var index = tasks.indexOf(task);
+                            -1 !== index && tasks.splice(index, 1);
+                        }
+                    };
                 },
                 all: function(err) {
                     cleanErr = err;
@@ -1795,8 +1802,13 @@
                     sfvc: sfvc = !!sfvc || !0 === sfvcOrSafari,
                     stickinessID: stickinessID
                 }).then((function(_ref3) {
-                    var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
+                    var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, orderID = _ref3.orderID, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
                     if (void 0 === _ref3$redirect || _ref3$redirect) {
+                        orderID && logger.addTrackingBuilder((function() {
+                            var _ref4;
+                            return (_ref4 = {}).context_type = "EC-Token", _ref4.context_id = orderID, _ref4.token = orderID, 
+                            _ref4;
+                        }));
                         replaceHash(appSwitch ? "appswitch" : "webswitch");
                         window.location.replace(redirectUrl);
                         var didRedirect = !1;

@@ -1944,9 +1944,16 @@ window.spb = function(modules) {
                     return item;
                 },
                 register: function(method) {
-                    cleaned ? method(cleanErr) : tasks.push(once((function() {
+                    var task = once((function() {
                         return method(cleanErr);
-                    })));
+                    }));
+                    cleaned ? method(cleanErr) : tasks.push(task);
+                    return {
+                        cancel: function() {
+                            var index = tasks.indexOf(task);
+                            -1 !== index && tasks.splice(index, 1);
+                        }
+                    };
                 },
                 all: function(err) {
                     cleanErr = err;
@@ -2509,7 +2516,7 @@ window.spb = function(modules) {
             }
         };
         var extendIfDefined = function(target, source) {
-            for (var key in source) source.hasOwnProperty(key) && source[key] && (target[key] = source[key]);
+            for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
         };
         function httpTransport(_ref) {
             var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
@@ -3042,7 +3049,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.60", _headers15);
+            _headers15["x-app-version"] = "5.0.61", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7429,8 +7436,9 @@ window.spb = function(modules) {
                                     nativePopupWin.close();
                                     return onDestroy().then((function() {
                                         return {
-                                            redirect: !1,
-                                            appSwitch: !1
+                                            appSwitch: !1,
+                                            orderID: null,
+                                            redirect: !1
                                         };
                                     }));
                                 }
@@ -7459,14 +7467,16 @@ window.spb = function(modules) {
                                         setTimeout(appSwitchCloseListener.cancel, 1e3);
                                     }
                                     return {
-                                        redirect: !0,
                                         appSwitch: !0,
+                                        orderID: orderID,
+                                        redirect: !0,
                                         redirectUrl: nativeUrl
                                     };
                                 } : function(orderID) {
                                     return {
                                         redirect: !0,
                                         appSwitch: !1,
+                                        orderID: orderID,
                                         redirectUrl: getNativeFallbackUrl({
                                             props: props,
                                             serviceData: serviceData,
@@ -7486,8 +7496,9 @@ window.spb = function(modules) {
                                 _getLogger$info$track11.int_error_desc = stringifyError(err), _getLogger$info$track11)).flush();
                                 return orderPromise.then((function(orderID) {
                                     return {
-                                        redirect: !0,
                                         appSwitch: !1,
+                                        orderID: orderID,
+                                        redirect: !0,
                                         redirectUrl: getNativeFallbackUrl({
                                             props: props,
                                             serviceData: serviceData,
@@ -8104,10 +8115,6 @@ window.spb = function(modules) {
                 });
                 return {
                     click: function() {
-                        logger_getLogger().addTrackingBuilder((function() {
-                            var _ref7;
-                            return (_ref7 = {}).selected_payment_method = fundingSource, _ref7;
-                        }));
                         return flow.click();
                     },
                     start: function() {
@@ -8128,8 +8135,8 @@ window.spb = function(modules) {
                     close: destroy
                 };
             },
-            updateFlowClientConfig: function(_ref8) {
-                var orderID = _ref8.orderID, payment = _ref8.payment, userExperienceFlow = _ref8.userExperienceFlow, buttonSessionID = _ref8.buttonSessionID;
+            updateFlowClientConfig: function(_ref7) {
+                var orderID = _ref7.orderID, payment = _ref7.payment, userExperienceFlow = _ref7.userExperienceFlow, buttonSessionID = _ref7.buttonSessionID;
                 return promise_ZalgoPromise.try((function() {
                     return updateButtonClientConfig({
                         fundingSource: payment.fundingSource,
@@ -8166,7 +8173,7 @@ window.spb = function(modules) {
             var button = payment.button, fundingSource = payment.fundingSource, instrumentType = payment.instrumentType, buyerIntent = payment.buyerIntent;
             var buttonLabel = null == (_props$style = props.style) ? void 0 : _props$style.label;
             return promise_ZalgoPromise.try((function() {
-                var _getLogger$info$info$;
+                var _getLogger$addPayload;
                 var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry;
                 var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken;
                 !function(personalization) {
@@ -8187,16 +8194,19 @@ window.spb = function(modules) {
                     components: components,
                     payment: payment
                 }), click = _init.click, start = _init.start, close = _init.close;
+                logger_getLogger().addPayloadBuilder((function() {
+                    return {
+                        token: null
+                    };
+                })).info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).addTrackingBuilder((function() {
+                    var _ref4;
+                    return (_ref4 = {}).selected_payment_method = fundingSource, _ref4.context_type = "button_session_id", 
+                    _ref4.context_id = buttonSessionID, _ref4.token = null, _ref4;
+                })).track((_getLogger$addPayload = {}, _getLogger$addPayload.transition_name = "process_button_click", 
+                _getLogger$addPayload.chosen_fi_type = instrumentType, _getLogger$addPayload.payment_flow = name, 
+                _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload)).flush();
                 var clickPromise = click ? promise_ZalgoPromise.try(click) : promise_ZalgoPromise.resolve();
                 clickPromise.catch(src_util_noop);
-                logger_getLogger().info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).addTrackingBuilder((function() {
-                    var _ref4;
-                    return (_ref4 = {}).context_type = "button_session_id", _ref4.context_id = buttonSessionID, 
-                    _ref4.token = "", _ref4;
-                })).track((_getLogger$info$info$ = {}, _getLogger$info$info$.transition_name = "process_button_click", 
-                _getLogger$info$info$.selected_payment_method = fundingSource, _getLogger$info$info$.chosen_fi_type = instrumentType, 
-                _getLogger$info$info$.payment_flow = name, _getLogger$info$info$.is_vault = instrumentType ? "1" : "0", 
-                _getLogger$info$info$)).flush();
                 return promise_ZalgoPromise.try((function() {
                     return !onClick || onClick({
                         fundingSource: fundingSource
@@ -8792,7 +8802,7 @@ window.spb = function(modules) {
                                 if (!paymentProcessing) return isEnabled() ? function(_ref6) {
                                     var payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config, components = _ref6.components, props = _ref6.props;
                                     return promise_ZalgoPromise.try((function() {
-                                        var _getLogger$info$info$2;
+                                        var _getLogger$info$info$;
                                         var fundingSource = payment.fundingSource, button = payment.button;
                                         var _getPaymentFlow2 = getPaymentFlow({
                                             props: props,
@@ -8802,9 +8812,9 @@ window.spb = function(modules) {
                                             serviceData: serviceData
                                         }), name = _getPaymentFlow2.name, setupMenu = _getPaymentFlow2.setupMenu;
                                         if (!setupMenu) throw new Error(name + " does not support menu");
-                                        logger_getLogger().info("menu_click").info("pay_flow_" + name).track((_getLogger$info$info$2 = {}, 
-                                        _getLogger$info$info$2.transition_name = "process_menu_click", _getLogger$info$info$2.selected_payment_method = fundingSource, 
-                                        _getLogger$info$info$2.payment_flow = name, _getLogger$info$info$2)).flush();
+                                        logger_getLogger().info("menu_click").info("pay_flow_" + name).track((_getLogger$info$info$ = {}, 
+                                        _getLogger$info$info$.transition_name = "process_menu_click", _getLogger$info$info$.selected_payment_method = fundingSource, 
+                                        _getLogger$info$info$.payment_flow = name, _getLogger$info$info$)).flush();
                                         var choices = setupMenu({
                                             props: props,
                                             payment: payment,
@@ -8994,12 +9004,11 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.state_name = "smart_button", _ref3.button_session_id = buttonSessionID, 
-                    _ref3.button_version = "5.0.60", _ref3.button_correlation_id = buttonCorrelationID, 
-                    _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
-                    _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
-                    _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.user_id = buttonSessionID, 
-                    _ref3;
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.61", 
+                    _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
+                    _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
+                    _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
+                    _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
