@@ -213,12 +213,6 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     });
 
     const click = () => {
-        getLogger().addTrackingBuilder(() => {
-            return {
-                [FPTI_KEY.CHOSEN_FUNDING]: fundingSource
-            };
-        });
-        
         return flow.click();
     };
 

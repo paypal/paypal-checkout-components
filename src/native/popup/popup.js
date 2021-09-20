@@ -6,7 +6,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, FUNDING, FPTI_KEY, COUNTRY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../../types';
-import { FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
+import { FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
 import { getPostRobot, setupNativeLogger, getSDKVersion } from '../lib';
 import { isAndroidChrome, isIOSSafari, getStorageID } from '../../lib';
 
@@ -288,9 +288,19 @@ export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID
 
     appInstalledPromise.then(app => {
         sfvc = !sfvc ? sfvcOrSafari === true : true;
-        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl, sfvc, stickinessID }).then(({ redirect = true, redirectUrl, appSwitch = true }) => {
+        sendToParent(MESSAGE.AWAIT_REDIRECT, { app, pageUrl, sfvc, stickinessID }).then(({ redirect = true, redirectUrl, orderID, appSwitch = true }) => {
             if (!redirect) {
                 return;
+            }
+
+            if (orderID) {
+                logger.addTrackingBuilder(() => {
+                    return {
+                        [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
+                        [FPTI_KEY.CONTEXT_ID]:   orderID,
+                        [FPTI_KEY.TOKEN]:        orderID
+                    };
+                });
             }
 
             replaceHash(appSwitch ? HASH.APPSWITCH : HASH.WEBSWITCH);
