@@ -174,6 +174,7 @@ const getTagLineForDivideLogoAnimationExperiment = (opts) => {
         @media only screen and (max-width: 315px){
             .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
                 font-size: 14px;
+                padding-top: 3px;
             }
         }
     ` }
