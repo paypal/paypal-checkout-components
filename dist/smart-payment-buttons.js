@@ -3049,7 +3049,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.62", _headers15);
+            _headers15["x-app-version"] = "5.0.63", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7026,26 +7026,23 @@ window.spb = function(modules) {
                             onClose();
                         }));
                     };
-                    var onEscapePath = function(selectedFundingSource) {
+                    var onEscapePath = function(win, selectedFundingSource) {
                         var _getLogger$info$track5;
                         logger_getLogger().info("VenmoDesktopPay_process_pay_with_" + selectedFundingSource).track((_getLogger$info$track5 = {}, 
                         _getLogger$info$track5.state_name = "smart_button", _getLogger$info$track5.transition_name = "qr_process_pay_with_" + selectedFundingSource, 
                         _getLogger$info$track5)).flush();
                         return promise_ZalgoPromise.try((function() {
                             var paymentInfo = _extends({}, payment, {
+                                win: win,
                                 fundingSource: selectedFundingSource
                             });
-                            var instance = checkout.init({
+                            return checkout.init({
                                 props: props,
                                 components: components,
                                 payment: paymentInfo,
                                 config: config,
                                 serviceData: serviceData
-                            });
-                            clean.register((function() {
-                                return instance.close();
-                            }));
-                            return instance.start().then((function() {
+                            }).start().then((function() {
                                 return promise_ZalgoPromise.resolve();
                             }));
                         }));
@@ -9004,7 +9001,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.62", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.63", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 

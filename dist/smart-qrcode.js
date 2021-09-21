@@ -1183,6 +1183,17 @@
             };
             return ZalgoPromise;
         }();
+        function _setPrototypeOf(o, p) {
+            return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
+                o.__proto__ = p;
+                return o;
+            })(o, p);
+        }
+        function _inheritsLoose(subClass, superClass) {
+            subClass.prototype = Object.create(superClass.prototype);
+            subClass.prototype.constructor = subClass;
+            _setPrototypeOf(subClass, superClass);
+        }
         var IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
         function isAboutProtocol(win) {
             void 0 === win && (win = window);
@@ -1219,6 +1230,30 @@
             var domain = getActualDomain(win);
             return domain && win.mockDomain && 0 === win.mockDomain.indexOf("mock:") ? win.mockDomain : domain;
         }
+        function isSameDomain(win) {
+            if (!function(win) {
+                try {
+                    if (win === window) return !0;
+                } catch (err) {}
+                try {
+                    var desc = Object.getOwnPropertyDescriptor(win, "location");
+                    if (desc && !1 === desc.enumerable) return !1;
+                } catch (err) {}
+                try {
+                    if (isAboutProtocol(win) && canReadFromWindow()) return !0;
+                } catch (err) {}
+                try {
+                    if (getActualDomain(win) === getActualDomain(window)) return !0;
+                } catch (err) {}
+                return !1;
+            }(win)) return !1;
+            try {
+                if (win === window) return !0;
+                if (isAboutProtocol(win) && canReadFromWindow()) return !0;
+                if (getDomain(window) === getDomain(win)) return !0;
+            } catch (err) {}
+            return !1;
+        }
         var iframeWindows = [];
         var iframeFrames = [];
         function isWindowClosed(win, allowMock) {
@@ -1238,30 +1273,7 @@
             } catch (err) {
                 return !err || err.message !== IE_WIN_ACCESS_ERROR;
             }
-            if (allowMock && function(win) {
-                if (!function(win) {
-                    try {
-                        if (win === window) return !0;
-                    } catch (err) {}
-                    try {
-                        var desc = Object.getOwnPropertyDescriptor(win, "location");
-                        if (desc && !1 === desc.enumerable) return !1;
-                    } catch (err) {}
-                    try {
-                        if (isAboutProtocol(win) && canReadFromWindow()) return !0;
-                    } catch (err) {}
-                    try {
-                        if (getActualDomain(win) === getActualDomain(window)) return !0;
-                    } catch (err) {}
-                    return !1;
-                }(win)) return !1;
-                try {
-                    if (win === window) return !0;
-                    if (isAboutProtocol(win) && canReadFromWindow()) return !0;
-                    if (getDomain(window) === getDomain(win)) return !0;
-                } catch (err) {}
-                return !1;
-            }(win)) try {
+            if (allowMock && isSameDomain(win)) try {
                 if (win.mockclosed) return !0;
             } catch (err) {}
             try {
@@ -1465,6 +1477,66 @@
             };
             return CrossDomainSafeWeakMap;
         }();
+        function _getPrototypeOf(o) {
+            return (_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function(o) {
+                return o.__proto__ || Object.getPrototypeOf(o);
+            })(o);
+        }
+        function _isNativeReflectConstruct() {
+            if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
+            if (Reflect.construct.sham) return !1;
+            if ("function" == typeof Proxy) return !0;
+            try {
+                Date.prototype.toString.call(Reflect.construct(Date, [], (function() {})));
+                return !0;
+            } catch (e) {
+                return !1;
+            }
+        }
+        function construct_construct(Parent, args, Class) {
+            return (construct_construct = _isNativeReflectConstruct() ? Reflect.construct : function(Parent, args, Class) {
+                var a = [ null ];
+                a.push.apply(a, args);
+                var instance = new (Function.bind.apply(Parent, a));
+                Class && _setPrototypeOf(instance, Class.prototype);
+                return instance;
+            }).apply(null, arguments);
+        }
+        function wrapNativeSuper_wrapNativeSuper(Class) {
+            var _cache = "function" == typeof Map ? new Map : void 0;
+            return (wrapNativeSuper_wrapNativeSuper = function(Class) {
+                if (null === Class || !(fn = Class, -1 !== Function.toString.call(fn).indexOf("[native code]"))) return Class;
+                var fn;
+                if ("function" != typeof Class) throw new TypeError("Super expression must either be null or a function");
+                if (void 0 !== _cache) {
+                    if (_cache.has(Class)) return _cache.get(Class);
+                    _cache.set(Class, Wrapper);
+                }
+                function Wrapper() {
+                    return construct_construct(Class, arguments, _getPrototypeOf(this).constructor);
+                }
+                Wrapper.prototype = Object.create(Class.prototype, {
+                    constructor: {
+                        value: Wrapper,
+                        enumerable: !1,
+                        writable: !0,
+                        configurable: !0
+                    }
+                });
+                return _setPrototypeOf(Wrapper, Class);
+            })(Class);
+        }
+        function getFunctionName(fn) {
+            return fn.name || fn.__name__ || fn.displayName || "anonymous";
+        }
+        function setFunctionName(fn, name) {
+            try {
+                delete fn.name;
+                fn.name = name;
+            } catch (err) {}
+            fn.__name__ = fn.displayName = name;
+            return fn;
+        }
         function base64encode(str) {
             if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
                 return String.fromCharCode(parseInt(p1, 16));
@@ -1538,19 +1610,12 @@
                 simpleCache = null;
                 thisCache = null;
             };
-            return function(fn, name) {
-                try {
-                    delete fn.name;
-                    fn.name = name;
-                } catch (err) {}
-                fn.__name__ = fn.displayName = name;
-                return fn;
-            }(memoizedFunction, (options.name || (fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::memoized");
-            var fn;
+            return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
         }
         memoize.clear = function() {
             memoizeGlobalIndexValidFrom = memoizeGlobalIndex;
         };
+        function src_util_noop() {}
         memoize((function(obj) {
             if (Object.values) return Object.values(obj);
             var result = [];
@@ -1560,7 +1625,28 @@
         function svgToBase64(svg) {
             return "data:image/svg+xml;base64," + base64encode(svg);
         }
-        Error;
+        function objFilter(obj, filter) {
+            void 0 === filter && (filter = Boolean);
+            var result = {};
+            for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
+            return result;
+        }
+        function arrayFrom(item) {
+            return [].slice.call(item);
+        }
+        var util_ExtendableError = function(_Error) {
+            _inheritsLoose(ExtendableError, _Error);
+            function ExtendableError(message) {
+                var _this6;
+                (_this6 = _Error.call(this, message) || this).name = _this6.constructor.name;
+                "function" == typeof Error.captureStackTrace ? Error.captureStackTrace(function(self) {
+                    if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+                    return self;
+                }(_this6), _this6.constructor) : _this6.stack = new Error(message).stack;
+                return _this6;
+            }
+            return ExtendableError;
+        }(wrapNativeSuper_wrapNativeSuper(Error));
         function isDocumentReady() {
             return Boolean(document.body) && "complete" === document.readyState;
         }
@@ -1578,6 +1664,16 @@
                 }), 10);
             }));
         }));
+        function dom_isBrowser() {
+            return "undefined" != typeof window && void 0 !== window.location;
+        }
+        var dom_PopupOpenError = function(_ExtendableError) {
+            _inheritsLoose(PopupOpenError, _ExtendableError);
+            function PopupOpenError() {
+                return _ExtendableError.apply(this, arguments) || this;
+            }
+            return PopupOpenError;
+        }(util_ExtendableError);
         var currentScript = "undefined" != typeof document ? document.currentScript : null;
         var getCurrentScript = memoize((function() {
             if (currentScript) return currentScript;
@@ -1630,20 +1726,332 @@
             script.setAttribute("data-uid-auto", uid);
             return uid;
         }));
+        var http_headerBuilders = [];
+        function request(_ref) {
+            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+            return new promise_ZalgoPromise((function(resolve, reject) {
+                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                var normalizedHeaders = {};
+                for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                    var _key2 = _Object$keys2[_i4];
+                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                }
+                json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
+                for (var _i6 = 0; _i6 < http_headerBuilders.length; _i6++) {
+                    var builtHeaders = (0, http_headerBuilders[_i6])();
+                    for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                        var _key3 = _Object$keys4[_i8];
+                        normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                    }
+                }
+                var xhr = new win.XMLHttpRequest;
+                xhr.addEventListener("load", (function() {
+                    var responseHeaders = function(rawHeaders) {
+                        void 0 === rawHeaders && (rawHeaders = "");
+                        var result = {};
+                        for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                            result[_key.toLowerCase()] = values.join(":").trim();
+                        }
+                        return result;
+                    }(this.getAllResponseHeaders());
+                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+                    var contentType = responseHeaders["content-type"];
+                    var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
+                    var responseBody = this.responseText;
+                    try {
+                        responseBody = JSON.parse(responseBody);
+                    } catch (err) {
+                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
+                    }
+                    return resolve({
+                        status: this.status,
+                        headers: responseHeaders,
+                        body: responseBody
+                    });
+                }), !1);
+                xhr.addEventListener("error", (function(evt) {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+                }), !1);
+                xhr.open(method, url, !0);
+                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
+                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                })).join("&"));
+                xhr.timeout = timeout;
+                xhr.ontimeout = function() {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                };
+                xhr.send(body);
+            }));
+        }
+        var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
+        var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
+        var sendBeacon = function(_ref2) {
+            var url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+            try {
+                var json = JSON.stringify(data);
+                if (useBlob) {
+                    var blob = new Blob([ json ], {
+                        type: "application/json"
+                    });
+                    return window.navigator.sendBeacon(url, blob);
+                }
+                return window.navigator.sendBeacon(url, json);
+            } catch (e) {
+                return !1;
+            }
+        };
+        var extendIfDefined = function(target, source) {
+            for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
+        };
+        function httpTransport(_ref) {
+            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+            return promise_ZalgoPromise.try((function() {
+                var beaconResult = !1;
+                (function(_ref) {
+                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                    var hasHeaders = headers && Object.keys(headers).length;
+                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                })({
+                    headers: headers,
+                    enableSendBeacon: enableSendBeacon
+                }) && (beaconResult = function(url) {
+                    return "https://api2.amplitude.com/2/httpapi" === url;
+                }(url) ? sendBeacon({
+                    url: url,
+                    data: json,
+                    useBlob: !1
+                }) : sendBeacon({
+                    url: url,
+                    data: json,
+                    useBlob: !0
+                }));
+                return beaconResult || request({
+                    url: url,
+                    method: method,
+                    headers: headers,
+                    json: json
+                });
+            })).then(src_util_noop);
+        }
         var _FUNDING_SKIP_LOGIN, _AMPLITUDE_API_KEY;
         (_FUNDING_SKIP_LOGIN = {}).paypal = "paypal", _FUNDING_SKIP_LOGIN.paylater = "paypal", 
         _FUNDING_SKIP_LOGIN.credit = "paypal";
         (_AMPLITUDE_API_KEY = {}).test = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.local = "a23fb4dfae56daf7c3212303b53a8527", 
         _AMPLITUDE_API_KEY.stage = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.sandbox = "a23fb4dfae56daf7c3212303b53a8527", 
         _AMPLITUDE_API_KEY.production = "ce423f79daba95faeb0694186170605c";
-        var jsx_pragmatic = __webpack_require__(0);
-        function _objectWithoutPropertiesLoose(source, excluded) {
-            if (null == source) return {};
-            var target = {};
-            var sourceKeys = Object.keys(source);
-            var key, i;
-            for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
-            return target;
+        function getLogger() {
+            return function(method, logic, args) {
+                void 0 === args && (args = []);
+                var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+                var key = serializeArgs(args);
+                return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
+                    return function(_ref2) {
+                        var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? "warn" : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, amplitudeApiKey = _ref2.amplitudeApiKey, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? 6e4 : _ref2$flushInterval, _ref2$enableSendBeaco = _ref2.enableSendBeacon, enableSendBeacon = void 0 !== _ref2$enableSendBeaco && _ref2$enableSendBeaco;
+                        var events = [];
+                        var tracking = [];
+                        var payloadBuilders = [];
+                        var metaBuilders = [];
+                        var trackingBuilders = [];
+                        var headerBuilders = [];
+                        function print(level, event, payload) {
+                            if (dom_isBrowser() && window.console && window.console.log && !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
+                                var args = [ event ];
+                                args.push(payload);
+                                (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                                try {
+                                    window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                                } catch (err) {}
+                            }
+                        }
+                        function immediateFlush() {
+                            return promise_ZalgoPromise.try((function() {
+                                if (dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
+                                    var meta = {};
+                                    for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, metaBuilders[_i2])(meta));
+                                    var headers = {};
+                                    for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
+                                    headerBuilders[_i4])(headers));
+                                    var res;
+                                    url && (res = transport({
+                                        method: "POST",
+                                        url: url,
+                                        headers: headers,
+                                        json: {
+                                            events: events,
+                                            meta: meta,
+                                            tracking: tracking
+                                        },
+                                        enableSendBeacon: enableSendBeacon
+                                    }).catch(src_util_noop));
+                                    amplitudeApiKey && transport({
+                                        method: "POST",
+                                        url: "https://api2.amplitude.com/2/httpapi",
+                                        headers: {},
+                                        json: {
+                                            api_key: amplitudeApiKey,
+                                            events: tracking.map((function(payload) {
+                                                return _extends({
+                                                    event_type: payload.transition_name || "event",
+                                                    event_properties: payload
+                                                }, payload);
+                                            }))
+                                        },
+                                        enableSendBeacon: enableSendBeacon
+                                    }).catch(src_util_noop);
+                                    events = [];
+                                    tracking = [];
+                                    return promise_ZalgoPromise.resolve(res).then(src_util_noop);
+                                }
+                            }));
+                        }
+                        var flush = function(method, delay) {
+                            void 0 === delay && (delay = 50);
+                            var promise;
+                            var timeout;
+                            return setFunctionName((function() {
+                                timeout && clearTimeout(timeout);
+                                var localPromise = promise = promise || new promise_ZalgoPromise;
+                                timeout = setTimeout((function() {
+                                    promise = null;
+                                    timeout = null;
+                                    promise_ZalgoPromise.try(method).then((function(result) {
+                                        localPromise.resolve(result);
+                                    }), (function(err) {
+                                        localPromise.reject(err);
+                                    }));
+                                }), delay);
+                                return localPromise;
+                            }), getFunctionName(method) + "::promiseDebounced");
+                        }(immediateFlush);
+                        function log(level, event, payload) {
+                            void 0 === payload && (payload = {});
+                            if (!dom_isBrowser()) return logger;
+                            prefix && (event = prefix + "_" + event);
+                            var logPayload = _extends({}, objFilter(payload), {
+                                timestamp: Date.now().toString()
+                            });
+                            for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
+                            payloadBuilders[_i6])(logPayload));
+                            !function(level, event, payload) {
+                                events.push({
+                                    level: level,
+                                    event: event,
+                                    payload: payload
+                                });
+                                -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
+                            }(level, event, logPayload);
+                            print(level, event, logPayload);
+                            return logger;
+                        }
+                        function addBuilder(builders, builder) {
+                            builders.push(builder);
+                            return logger;
+                        }
+                        dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
+                            setTimeout((function() {
+                                method();
+                                loop();
+                            }), time);
+                        }());
+                        var method, time;
+                        if ("object" == typeof window) {
+                            window.addEventListener("beforeunload", (function() {
+                                immediateFlush();
+                            }));
+                            window.addEventListener("unload", (function() {
+                                immediateFlush();
+                            }));
+                            window.addEventListener("pagehide", (function() {
+                                immediateFlush();
+                            }));
+                        }
+                        var logger = {
+                            debug: function(event, payload) {
+                                return log("debug", event, payload);
+                            },
+                            info: function(event, payload) {
+                                return log("info", event, payload);
+                            },
+                            warn: function(event, payload) {
+                                return log("warn", event, payload);
+                            },
+                            error: function(event, payload) {
+                                return log("error", event, payload);
+                            },
+                            track: function(payload) {
+                                void 0 === payload && (payload = {});
+                                if (!dom_isBrowser()) return logger;
+                                var trackingPayload = objFilter(payload);
+                                for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
+                                trackingBuilders[_i8])(trackingPayload));
+                                print("debug", "track", trackingPayload);
+                                tracking.push(trackingPayload);
+                                return logger;
+                            },
+                            flush: flush,
+                            immediateFlush: immediateFlush,
+                            addPayloadBuilder: function(builder) {
+                                return addBuilder(payloadBuilders, builder);
+                            },
+                            addMetaBuilder: function(builder) {
+                                return addBuilder(metaBuilders, builder);
+                            },
+                            addTrackingBuilder: function(builder) {
+                                return addBuilder(trackingBuilders, builder);
+                            },
+                            addHeaderBuilder: function(builder) {
+                                return addBuilder(headerBuilders, builder);
+                            },
+                            setTransport: function(newTransport) {
+                                transport = newTransport;
+                                return logger;
+                            },
+                            configure: function(opts) {
+                                opts.url && (url = opts.url);
+                                opts.prefix && (prefix = opts.prefix);
+                                opts.logLevel && (logLevel = opts.logLevel);
+                                opts.transport && (transport = opts.transport);
+                                opts.amplitudeApiKey && (amplitudeApiKey = opts.amplitudeApiKey);
+                                opts.flushInterval && (flushInterval = opts.flushInterval);
+                                opts.enableSendBeacon && (enableSendBeacon = opts.enableSendBeacon);
+                                return logger;
+                            }
+                        };
+                        return logger;
+                    }({
+                        url: "/xoplatform/logger/api/logger",
+                        enableSendBeacon: !0
+                    });
+                }.apply(void 0, args);
+            }(getLogger);
+        }
+        function util_getBody() {
+            var body = document.body;
+            if (!body) throw new Error("Document body not found");
+            return body;
+        }
+        function loadScript(url) {
+            return new promise_ZalgoPromise((function(resolve, reject) {
+                var container = document.body || document.head;
+                if (!container) return reject(new Error("Can not find container for script: " + url));
+                var script = document.createElement("script");
+                script.setAttribute("src", url);
+                script.addEventListener("load", (function() {
+                    return resolve(script);
+                }));
+                script.addEventListener("error", (function(err) {
+                    return reject(err);
+                }));
+                container.appendChild(script);
+            }));
+        }
+        function getNonce() {
+            var nonce = "";
+            document.body && (nonce = document.body.getAttribute("data-nonce") || "");
+            return nonce;
         }
         function _renderChildren(children, renderer) {
             var result = [];
@@ -1763,56 +2171,7 @@
                 var doc = win.document;
                 var docElement = doc.documentElement;
                 for (;docElement.children && docElement.children.length; ) docElement.removeChild(docElement.children[0]);
-                var child = firstChild.render(function(opts) {
-                    void 0 === opts && (opts = {});
-                    var _opts$doc = opts.doc, doc = void 0 === _opts$doc ? document : _opts$doc;
-                    return function domRenderer(node) {
-                        if ("component" === node.type) return node.renderComponent(domRenderer);
-                        if ("text" === node.type) return function(doc, node) {
-                            return doc.createTextNode(node.text);
-                        }(doc, node);
-                        if ("element" === node.type) {
-                            var el = function(doc, node) {
-                                return node.props.el ? node.props.el : doc.createElement(node.name);
-                            }(doc, node);
-                            !function(el, node) {
-                                var props = node.props;
-                                for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
-                                    var prop = _Object$keys2[_i4];
-                                    var val = props[prop];
-                                    null != val && "el" !== prop && "innerHTML" !== prop && (prop.match(/^on[A-Z][a-z]/) && "function" == typeof val ? el.addEventListener(prop.slice(2).toLowerCase(), val) : "string" == typeof val || "number" == typeof val ? el.setAttribute(prop, val.toString()) : "boolean" == typeof val && !0 === val && el.setAttribute(prop, ""));
-                                }
-                                "iframe" !== el.tagName.toLowerCase() || props.id || el.setAttribute("id", "jsx-iframe-" + "xxxxxxxxxx".replace(/./g, (function() {
-                                    return "0123456789abcdef".charAt(Math.floor(Math.random() * "0123456789abcdef".length));
-                                })));
-                            }(el, node);
-                            !function(el, node, doc, renderer) {
-                                if (node.props.hasOwnProperty("innerHTML")) {
-                                    if (node.children.length) throw new Error("Expected no children to be passed when innerHTML prop is set");
-                                    var html = node.props.innerHTML;
-                                    if ("string" != typeof html) throw new TypeError("innerHTML prop must be string");
-                                    if ("script" === node.name) el.text = html; else {
-                                        el.innerHTML = html;
-                                        !function(el, doc) {
-                                            void 0 === doc && (doc = window.document);
-                                            for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll("script"); _i2 < _el$querySelectorAll2.length; _i2++) {
-                                                var script = _el$querySelectorAll2[_i2];
-                                                var parentNode = script.parentNode;
-                                                if (parentNode) {
-                                                    var newScript = doc.createElement("script");
-                                                    newScript.text = script.textContent;
-                                                    parentNode.replaceChild(newScript, script);
-                                                }
-                                            }
-                                        }(el, doc);
-                                    }
-                                } else (ADD_CHILDREN[node.name] || ADD_CHILDREN.default)(el, node, renderer);
-                            }(el, node, doc, domRenderer);
-                            return el;
-                        }
-                        throw new TypeError("Unhandleable node");
-                    };
-                }({
+                var child = firstChild.render(dom({
                     doc: doc
                 }));
                 for (;child.children.length; ) docElement.appendChild(child.children[0]);
@@ -1824,12 +2183,201 @@
         }, _ADD_CHILDREN.default = function(el, node, renderer) {
             for (var _i6 = 0, _node$renderChildren2 = node.renderChildren(renderer); _i6 < _node$renderChildren2.length; _i6++) el.appendChild(_node$renderChildren2[_i6]);
         }, _ADD_CHILDREN);
+        function dom(opts) {
+            void 0 === opts && (opts = {});
+            var _opts$doc = opts.doc, doc = void 0 === _opts$doc ? document : _opts$doc;
+            return function domRenderer(node) {
+                if ("component" === node.type) return node.renderComponent(domRenderer);
+                if ("text" === node.type) return function(doc, node) {
+                    return doc.createTextNode(node.text);
+                }(doc, node);
+                if ("element" === node.type) {
+                    var el = function(doc, node) {
+                        return node.props.el ? node.props.el : doc.createElement(node.name);
+                    }(doc, node);
+                    !function(el, node) {
+                        var props = node.props;
+                        for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
+                            var prop = _Object$keys2[_i4];
+                            var val = props[prop];
+                            null != val && "el" !== prop && "innerHTML" !== prop && (prop.match(/^on[A-Z][a-z]/) && "function" == typeof val ? el.addEventListener(prop.slice(2).toLowerCase(), val) : "string" == typeof val || "number" == typeof val ? el.setAttribute(prop, val.toString()) : "boolean" == typeof val && !0 === val && el.setAttribute(prop, ""));
+                        }
+                        "iframe" !== el.tagName.toLowerCase() || props.id || el.setAttribute("id", "jsx-iframe-" + "xxxxxxxxxx".replace(/./g, (function() {
+                            return "0123456789abcdef".charAt(Math.floor(Math.random() * "0123456789abcdef".length));
+                        })));
+                    }(el, node);
+                    !function(el, node, doc, renderer) {
+                        if (node.props.hasOwnProperty("innerHTML")) {
+                            if (node.children.length) throw new Error("Expected no children to be passed when innerHTML prop is set");
+                            var html = node.props.innerHTML;
+                            if ("string" != typeof html) throw new TypeError("innerHTML prop must be string");
+                            if ("script" === node.name) el.text = html; else {
+                                el.innerHTML = html;
+                                !function(el, doc) {
+                                    void 0 === doc && (doc = window.document);
+                                    for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll("script"); _i2 < _el$querySelectorAll2.length; _i2++) {
+                                        var script = _el$querySelectorAll2[_i2];
+                                        var parentNode = script.parentNode;
+                                        if (parentNode) {
+                                            var newScript = doc.createElement("script");
+                                            newScript.text = script.textContent;
+                                            parentNode.replaceChild(newScript, script);
+                                        }
+                                    }
+                                }(el, doc);
+                            }
+                        } else (ADD_CHILDREN[node.name] || ADD_CHILDREN.default)(el, node, renderer);
+                    }(el, node, doc, domRenderer);
+                    return el;
+                }
+                throw new TypeError("Unhandleable node");
+            };
+        }
+        function _objectWithoutPropertiesLoose(source, excluded) {
+            if (null == source) return {};
+            var target = {};
+            var sourceKeys = Object.keys(source);
+            var key, i;
+            for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
+            return target;
+        }
         var SELF_CLOSING_TAGS = {
             br: !0
         };
         function html_htmlEncode(text) {
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
         }
+        function Spinner(_ref) {
+            return node_node("div", {
+                class: "preloader spinner"
+            }, node_node("style", {
+                nonce: _ref.nonce,
+                innerHTML: "\n\n    body {\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        position: fixed;\n        top: 0;\n        left: 0;\n        margin: 0;\n    }\n\n    .spinner {\n        height: 100%;\n        width: 100%;\n        position: absolute;\n        z-index: 10\n    }\n\n    .spinner .spinWrap {\n        width: 200px;\n        height: 100px;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        margin-left: -100px;\n        margin-top: -50px\n    }\n\n    .spinner .loader,\n    .spinner .spinnerImage {\n        height: 100px;\n        width: 100px;\n        position: absolute;\n        top: 0;\n        left: 50%;\n        opacity: 1;\n        filter: alpha(opacity=100)\n    }\n\n    .spinner .spinnerImage {\n        margin: 28px 0 0 -25px;\n        background: url(https://www.paypalobjects.com/images/checkout/hermes/icon_ot_spin_lock_skinny.png) no-repeat\n    }\n\n    .spinner .loader {\n        margin: 0 0 0 -55px;\n        background-color: transparent;\n        animation: rotation .7s infinite linear;\n        border-left: 5px solid #cbcbca;\n        border-right: 5px solid #cbcbca;\n        border-bottom: 5px solid #cbcbca;\n        border-top: 5px solid #2380be;\n        border-radius: 100%\n    }\n\n    @keyframes rotation {\n        from {\n            transform: rotate(0deg)\n        }\n        to {\n            transform: rotate(359deg)\n        }\n    }\n"
+            }), node_node("div", {
+                class: "spinWrap"
+            }, node_node("p", {
+                class: "spinnerImage"
+            }), node_node("p", {
+                class: "loader"
+            })));
+        }
+        function SpinnerPage(_ref2, children) {
+            var nonce = _ref2.nonce;
+            return node_node("html", null, node_node("head", null, node_node("title", null, "PayPal"), node_node("meta", {
+                name: "viewport",
+                content: "width=device-width, initial-scale=1"
+            })), node_node("body", null, node_node(Spinner, {
+                nonce: nonce
+            }), children));
+        }
+        function callGraphQL(_ref5) {
+            var name = _ref5.name, _ref5$variables = _ref5.variables, _ref5$headers = _ref5.headers;
+            return request({
+                url: "/graphql?" + name,
+                method: "POST",
+                json: {
+                    query: _ref5.query,
+                    variables: void 0 === _ref5$variables ? {} : _ref5$variables
+                },
+                headers: _extends({
+                    "x-app-name": "smart-payment-buttons"
+                }, void 0 === _ref5$headers ? {} : _ref5$headers)
+            }).then((function(_ref6) {
+                var status = _ref6.status, body = _ref6.body;
+                var errors = body.errors || [];
+                if (errors.length) {
+                    var message = errors[0].message || JSON.stringify(errors[0]);
+                    getLogger().warn("graphql_" + name + "_error", {
+                        err: message
+                    });
+                    throw new Error(message);
+                }
+                if (200 !== status) {
+                    getLogger().warn("graphql_" + name + "_status_" + status + "_error");
+                    throw new Error("/graphql returned status " + status + "\n\n" + JSON.stringify(body));
+                }
+                return body.data;
+            }));
+        }
+        memoize((function(orderID) {
+            var _headers21;
+            return callGraphQL({
+                name: "GetCheckoutDetails",
+                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+                variables: {
+                    orderID: orderID
+                },
+                headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
+            });
+        }));
+        memoize((function(config) {
+            return promise_ZalgoPromise.try((function() {
+                if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
+                    return promise_ZalgoPromise.all([ loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js"), loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-database.js") ]);
+                }));
+            })).then((function() {
+                var firebase = window.firebase;
+                if (!firebase) throw new Error("Firebase failed to load");
+                firebase.initializeApp(config);
+                return firebase;
+            }));
+        }));
+        var _FRAUDNET_URL;
+        var FRAUDNET_URL = ((_FRAUDNET_URL = {}).local = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
+        _FRAUDNET_URL.stage = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
+        _FRAUDNET_URL.sandbox = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL.production = "https://c.paypal.com/da/r/fb.js", 
+        _FRAUDNET_URL.test = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL);
+        memoize((function(_ref) {
+            var env = _ref.env, clientMetadataID = _ref.clientMetadataID, cspNonce = _ref.cspNonce, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 1e3 : _ref$timeout;
+            return new promise_ZalgoPromise((function(resolve) {
+                var config = {
+                    f: clientMetadataID,
+                    s: "SMART_PAYMENT_BUTTONS",
+                    cb1: "fnCallback"
+                };
+                "sandbox" === env && (config.sandbox = !0);
+                var configScript = document.createElement("script");
+                configScript.setAttribute("nonce", cspNonce || "");
+                configScript.setAttribute("type", "application/json");
+                configScript.setAttribute("id", "fconfig");
+                configScript.setAttribute("fncls", "fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99");
+                configScript.textContent = JSON.stringify(config);
+                var fraudnetScript = document.createElement("script");
+                fraudnetScript.setAttribute("nonce", cspNonce || "");
+                fraudnetScript.setAttribute("src", FRAUDNET_URL[env]);
+                fraudnetScript.addEventListener("error", (function() {
+                    return resolve();
+                }));
+                window.fnCallback = resolve;
+                setTimeout(resolve, timeout);
+                var body = util_getBody();
+                body.appendChild(configScript);
+                body.appendChild(fraudnetScript);
+            }));
+        }));
+        memoize((function(_ref) {
+            var _headers;
+            var _ref$amount = _ref.amount, _ref$vetted = _ref.vetted;
+            return callGraphQL({
+                name: "GetSmartWallet",
+                query: "\n            query GetSmartWallet(\n                $clientID: String!\n                $merchantID: [String!]\n                $currency: String\n                $amount: String\n                $userIDToken: String\n                $vetted: Boolean\n                $paymentMethodToken: String\n                $branded: Boolean\n            ) {\n                smartWallet(\n                    clientId: $clientID\n                    merchantId: $merchantID\n                    currency: $currency\n                    amount: $amount\n                    userIdToken: $userIDToken\n                    vetted: $vetted\n                    paymentMethodNonce: $paymentMethodToken\n                    branded: $branded\n                ) {\n                    paypal {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    credit {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                            accessToken\n                        }\n                    }\n                    card {\n                        instruments {\n                            type\n                            label\n                            logoUrl\n                            instrumentID\n                            tokenID\n                            vendor\n                            oneClick\n                        }\n                    }\n                }\n            }\n        ",
+                variables: {
+                    clientID: _ref.clientID,
+                    merchantID: _ref.merchantID,
+                    currency: _ref.currency,
+                    amount: void 0 === _ref$amount ? "0.00" : _ref$amount,
+                    userIDToken: _ref.userIDToken,
+                    vetted: void 0 === _ref$vetted || _ref$vetted,
+                    paymentMethodToken: _ref.paymentMethodToken,
+                    branded: _ref.branded
+                },
+                headers: (_headers = {}, _headers["paypal-client-metadata-id"] = _ref.clientMetadataID, 
+                _headers)
+            }).then((function(_ref2) {
+                return _ref2.smartWallet;
+            }));
+        }));
+        var jsx_pragmatic = __webpack_require__(0);
         var components_excluded = [ "svg" ], _excluded2 = [ "render", "name", "logoColor" ];
         function SVG(props) {
             var svg = props.svg, otherProps = _objectWithoutPropertiesLoose(props, components_excluded);
@@ -2406,7 +2954,69 @@
             }(), state = _useXProps.state, setState = _useXProps.setState;
             var handleClick = function(selectedFundingSource) {
                 window.xprops.hide();
-                window.xprops.onEscapePath(selectedFundingSource).then((function() {
+                var win = function(_ref) {
+                    var win = function(win) {
+                        if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+                        return win;
+                    }(function(url, options) {
+                        var width = (options = options || {}).width, height = options.height;
+                        var top = 0;
+                        var left = 0;
+                        width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+                        height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+                        width && height && (options = _extends({
+                            top: top,
+                            left: left,
+                            width: width,
+                            height: height,
+                            status: 1,
+                            toolbar: 0,
+                            menubar: 0,
+                            resizable: 1,
+                            scrollbars: 1
+                        }, options));
+                        var name = options.name || "";
+                        delete options.name;
+                        var params = Object.keys(options).map((function(key) {
+                            if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                            var item;
+                        })).filter(Boolean).join(",");
+                        var win;
+                        try {
+                            win = window.open("", name, params);
+                        } catch (err) {
+                            throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                        }
+                        if (isWindowClosed(win)) {
+                            var err;
+                            throw new dom_PopupOpenError("Can not open popup window - blocked");
+                        }
+                        window.addEventListener("unload", (function() {
+                            return win.close();
+                        }));
+                        return win;
+                    }(0, {
+                        width: _ref.width,
+                        height: _ref.height
+                    }));
+                    var doc = win.document;
+                    !function(win, el) {
+                        var tag = el.tagName.toLowerCase();
+                        if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                        var documentElement = win.document.documentElement;
+                        for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+                        for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+                    }(win, node_node(SpinnerPage, {
+                        nonce: getNonce()
+                    }).render(dom({
+                        doc: doc
+                    })));
+                    return win;
+                }({
+                    width: 500,
+                    height: 590
+                });
+                window.xprops.onEscapePath(win, selectedFundingSource).then((function() {
                     window.xprops.close();
                 }));
             };
@@ -2471,11 +3081,7 @@
                 cspNonce: void 0 === _ref2$cspNonce ? "" : _ref2$cspNonce,
                 svgString: _ref2.svgString,
                 debug: void 0 !== _ref2$debug && _ref2$debug
-            }), i = function() {
-                var body = document.body;
-                if (!body) throw new Error("Document body not found");
-                return body;
-            }(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), r || e, e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
+            }), i = util_getBody(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), r || e, e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
             z(f, u);
             var u, i, r, f;
         }
