@@ -5,10 +5,10 @@ import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
-import {
-    getBody
-} from '../lib';
+import { getBody } from '../lib';
+import { openPopup } from '../ui';
 import { QRCODE_STATE } from '../constants';
+import { CHECKOUT_POPUP_DIMENSIONS } from '../payment-flows/checkout';
 
 import {
     ErrorMessage,
@@ -57,7 +57,8 @@ function QRCard({
 
     const handleClick = (selectedFundingSource : $Values<typeof FUNDING>) => {
         window.xprops.hide();
-        window.xprops.onEscapePath(selectedFundingSource).then(() => {
+        const win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+        window.xprops.onEscapePath(win, selectedFundingSource).then(() => {
             window.xprops.close();
         });
     };

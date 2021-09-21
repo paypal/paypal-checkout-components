@@ -157,16 +157,15 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
             };
 
 
-            const onEscapePath = (selectedFundingSource : $Values<typeof FUNDING>) => {
+            const onEscapePath = (win : CrossDomainWindowType, selectedFundingSource : $Values<typeof FUNDING>) => {
                 getLogger().info(`VenmoDesktopPay_process_pay_with_${ selectedFundingSource }`).track({
                     [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
                     [FPTI_KEY.TRANSITION]:  `${ FPTI_TRANSITION.QR_PROCESS_PAY_WITH }_${ selectedFundingSource }`
                 }).flush();
 
                 return ZalgoPromise.try(() => {
-                    const paymentInfo = { ...payment, fundingSource: selectedFundingSource };
+                    const paymentInfo = { ...payment, win, fundingSource: selectedFundingSource };
                     const instance = checkout.init({ props, components, payment: paymentInfo, config, serviceData });
-                    clean.register(() => instance.close());
                     
                     return instance.start().then(() => {
                         return ZalgoPromise.resolve();
