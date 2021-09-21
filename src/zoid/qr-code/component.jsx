@@ -5,7 +5,7 @@ import { inlineMemoize, destroyElement, type EventEmitterType } from 'belter/src
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { node, dom, type ChildType } from 'jsx-pragmatic/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
-import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta, getDebug } from '@paypal/sdk-client/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 
 const CLASS = {
@@ -87,8 +87,8 @@ export function getQRCodeComponent() : QRCodeComponent {
                 },
                 debug: {
                     type:       'boolean',
-                    queryParam: true,
-                    required:   false
+                    value:      getDebug,
+                    queryParam: true
                 },
                 state: {
                     type:       'string',
