@@ -145,8 +145,7 @@ function getComponentScript() : () => void {
         }
 
         function addDivideLogoAnimationExperiment() {
-            const buttonElement = document ? document.querySelector('.paypal-button-label-container') : null;
-            
+            const buttonElement = document && document.querySelector('.paypal-button-label-container');
             if (buttonElement) {
                 const style = document.createElement('style');
         

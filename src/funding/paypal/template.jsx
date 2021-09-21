@@ -146,7 +146,7 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 }
 
 
-const getTagLineForDivideLogoAnimationExperiment = (opts) => {
+const getLabelTextForDivideLogoAnimationExperiment = (opts) => {
     if (!opts.enableDivideLogoAnimationExperiment) {
         return;
     }
@@ -157,21 +157,21 @@ const getTagLineForDivideLogoAnimationExperiment = (opts) => {
             position: relative;
         }
 
-        .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } {
+        .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT } {
             display: block;
             position: absolute;
             opacity: 0; 
             animation: 1s divide-logo-animation-experiment-right-side 2s forwards;
         }
 
-        .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
+        .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT } span {
             font-size: 16px;
             color: #142C8E;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
         @media only screen and (max-width: 315px){
-            .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER } span {
+            .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT } span {
                 font-size: 14px;
                 padding-top: 3px;
             }
@@ -180,7 +180,7 @@ const getTagLineForDivideLogoAnimationExperiment = (opts) => {
     />);
     return (
         <Fragment>
-            <div class={ DIVIDE_LOGO_ANIMATION_EXPERIMENT.PLACE_HOLDER }> <span>Earn rewards</span></div>
+            <div class={ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT }> <span>Earn rewards</span></div>
             { experimentStyles }
         </Fragment>
     );
@@ -190,7 +190,7 @@ export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
             <BasicLabel { ...opts } />
-            {getTagLineForDivideLogoAnimationExperiment(opts)}
+            {getLabelTextForDivideLogoAnimationExperiment(opts)}
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );
