@@ -36,7 +36,7 @@
     "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
     "release": "npm run build-commit && grabthar-release",
     "postrelease": "npm run cdnify -- --commitonly",
-    "release:pre": "npm run build-commit && grabthar-release prerelease",
+    "release:pre": "npm run build-commit && DIST_TAG=alpha grabthar-release prerelease",
     "deploy": "npm run cdnify",
     "activate:cli": "CDN='https://www.paypalobjects.com' grabthar-activate",
     "activate": "CDNIFY=false grabthar-activate",
