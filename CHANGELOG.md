@@ -1,3 +1,9 @@
+## <small>5.0.180 (2021-09-22)</small>
+
+* Fix QRCode component debug flag ([be9fc60](https://github.com/paypal/paypal-checkout-components/commit/be9fc60))
+
+
+
 ## <small>5.0.179 (2021-09-15)</small>
 
 * Add dimensions prop for Checkout (#1733) ([0eaad0d](https://github.com/paypal/paypal-checkout-components/commit/0eaad0d)), closes [#1733](https://github.com/paypal/paypal-checkout-components/issues/1733)
