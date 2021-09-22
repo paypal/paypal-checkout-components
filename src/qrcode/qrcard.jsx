@@ -57,7 +57,7 @@ function QRCard({
 
     const handleClick = (selectedFundingSource : $Values<typeof FUNDING>) => {
         window.xprops.hide();
-        const win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT });
+        const win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT, closeOnUnload: 0 });
         window.xprops.onEscapePath(win, selectedFundingSource).then(() => {
             window.xprops.close();
         });
