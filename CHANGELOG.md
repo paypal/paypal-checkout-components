@@ -1,3 +1,9 @@
+## <small>5.0.182 (2021-09-22)</small>
+
+* chore(release): 5.0.181 :tada: ([f0dc8da](https://github.com/paypal/paypal-checkout-components/commit/f0dc8da))
+
+
+
 ## <small>5.0.181 (2021-09-22)</small>
 
 * chore(release): 5.0.180 :tada: ([71f7d8e](https://github.com/paypal/paypal-checkout-components/commit/71f7d8e))
