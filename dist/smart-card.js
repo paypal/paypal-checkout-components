@@ -3104,7 +3104,7 @@ window.smartCard = function(modules) {
         if (isProcessorDeclineError(err)) return restart().then(unresolvedPromise);
         throw err;
     };
-    var _excluded = [ "buyerAccessToken", "forceRestAPI" ];
+    var onShippingChange_excluded = [ "buyerAccessToken", "forceRestAPI" ];
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
         var xprops = window.xprops;
@@ -3872,7 +3872,7 @@ window.smartCard = function(modules) {
                     var key, i;
                     for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
                     return target;
-                }(_ref4, _excluded);
+                }(_ref4, onShippingChange_excluded);
                 return createOrder().then((function(orderID) {
                     var _getLogger$info$track;
                     getLogger().info("button_shipping_change").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_shipping_change", 

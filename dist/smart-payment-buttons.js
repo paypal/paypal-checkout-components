@@ -1010,6 +1010,14 @@ window.spb = function(modules) {
             void 0 === ua && (ua = getUserAgent());
             return /Chrome|Chromium|CriOS/.test(ua);
         }
+        function _objectWithoutPropertiesLoose(source, excluded) {
+            if (null == source) return {};
+            var target = {};
+            var sourceKeys = Object.keys(source);
+            var key, i;
+            for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
+            return target;
+        }
         function _setPrototypeOf(o, p) {
             return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
                 o.__proto__ = p;
@@ -1981,6 +1989,7 @@ window.spb = function(modules) {
             }
             return ExtendableError;
         }(wrapNativeSuper_wrapNativeSuper(Error));
+        var _excluded = [ "closeOnUnload", "name" ];
         function isDocumentReady() {
             return Boolean(document.body) && "complete" === document.readyState;
         }
@@ -3049,7 +3058,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.65", _headers15);
+            _headers15["x-app-version"] = "5.0.66", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -3436,7 +3445,7 @@ window.spb = function(modules) {
             if (isProcessorDeclineError(err)) return restart().then(unresolvedPromise);
             throw err;
         };
-        var _excluded = [ "buyerAccessToken", "forceRestAPI" ];
+        var onShippingChange_excluded = [ "buyerAccessToken", "forceRestAPI" ];
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
             var xprops = window.xprops;
@@ -4197,14 +4206,7 @@ window.spb = function(modules) {
                 var facilitatorAccessToken = _ref3.facilitatorAccessToken, createOrder = _ref3.createOrder;
                 var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref2.clientID);
                 if (onShippingChange) return function(_ref4, actions) {
-                    var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 === _ref4$forceRestAPI ? upgradeLSAT : _ref4$forceRestAPI, data = function(source, excluded) {
-                        if (null == source) return {};
-                        var target = {};
-                        var sourceKeys = Object.keys(source);
-                        var key, i;
-                        for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
-                        return target;
-                    }(_ref4, _excluded);
+                    var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 === _ref4$forceRestAPI ? upgradeLSAT : _ref4$forceRestAPI, data = _objectWithoutPropertiesLoose(_ref4, onShippingChange_excluded);
                     return createOrder().then((function(orderID) {
                         var _getLogger$info$track;
                         logger_getLogger().info("button_shipping_change").track((_getLogger$info$track = {}, 
@@ -5361,16 +5363,18 @@ window.spb = function(modules) {
                         return promise_ZalgoPromise.try((function() {
                             if (!win && supportsPopups()) try {
                                 win = function(_ref) {
+                                    var _ref$closeOnUnload = _ref.closeOnUnload;
                                     var win = function(win) {
                                         if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
                                         return win;
                                     }(function(url, options) {
-                                        var width = (options = options || {}).width, height = options.height;
+                                        var _options$closeOnUnloa = (options = options || {}).closeOnUnload, closeOnUnload = void 0 === _options$closeOnUnloa ? 1 : _options$closeOnUnloa, _options$name = options.name, name = void 0 === _options$name ? "" : _options$name, restOptions = _objectWithoutPropertiesLoose(options, _excluded);
+                                        var width = restOptions.width, height = restOptions.height;
                                         var top = 0;
                                         var left = 0;
                                         width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
                                         height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-                                        width && height && (options = _extends({
+                                        width && height && (restOptions = _extends({
                                             top: top,
                                             left: left,
                                             width: width,
@@ -5380,10 +5384,8 @@ window.spb = function(modules) {
                                             menubar: 0,
                                             resizable: 1,
                                             scrollbars: 1
-                                        }, options));
-                                        var name = options.name || "";
-                                        delete options.name;
-                                        var params = Object.keys(options).map((function(key) {
+                                        }, restOptions));
+                                        var params = Object.keys(restOptions).map((function(key) {
                                             if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
                                             var item;
                                         })).filter(Boolean).join(",");
@@ -5397,13 +5399,14 @@ window.spb = function(modules) {
                                             var err;
                                             throw new dom_PopupOpenError("Can not open popup window - blocked");
                                         }
-                                        window.addEventListener("unload", (function() {
+                                        closeOnUnload && window.addEventListener("unload", (function() {
                                             return win.close();
                                         }));
                                         return win;
                                     }(0, {
                                         width: _ref.width,
-                                        height: _ref.height
+                                        height: _ref.height,
+                                        closeOnUnload: void 0 === _ref$closeOnUnload ? 1 : _ref$closeOnUnload
                                     }));
                                     var doc = win.document;
                                     !function(win, el) {
@@ -9001,7 +9004,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.65", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.66", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
