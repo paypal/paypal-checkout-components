@@ -1,3 +1,9 @@
+## <small>5.0.181 (2021-09-22)</small>
+
+* chore(release): 5.0.180 :tada: ([71f7d8e](https://github.com/paypal/paypal-checkout-components/commit/71f7d8e))
+
+
+
 ## <small>5.0.180 (2021-09-22)</small>
 
 * Fix QRCode component debug flag ([be9fc60](https://github.com/paypal/paypal-checkout-components/commit/be9fc60))
