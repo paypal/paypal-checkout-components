@@ -33,11 +33,47 @@ export function getQRCodeComponent() : QRCodeComponent {
                 height: '100%'
             },
             logger:            getLogger(),
-            prerenderTemplate: ({ doc, props }) => {
+            prerenderTemplate: ({ doc, props, close }) => {
+                const style= `
+                #close {
+                    position: absolute;
+                    right: 16px;
+                    top: 16px;
+                    width: 16px;
+                    height: 0;
+                    opacity: 0.6;
+                    z-index: 10;
+                    padding: 0;
+                    border: none;
+                    cursor: pointer;
+                }
+                #close:hover {
+                    opacity: 1;
+                }
+                #close:before, #close:after {
+                    position: absolute;
+                    left: 8px;
+                    content: ' ';
+                    height: 20px;
+                    width: 2px;
+                    background-color: #FFF;
+                }
+                #close:before {
+                    transform: rotate(45deg);
+                }
+                #close:after {
+                    transform: rotate(-45deg);
+                }  
+                `
                 return (
                     <SpinnerPage
                         nonce={ props.cspNonce }
-                    />
+                    >
+                         <style innerHTML={style} />
+
+                        <button id="close" aria-label="close" role="button" onClick={ close } />
+                    </SpinnerPage>
+                    
                 ).render(dom({ doc }));
             },
 
@@ -52,7 +88,6 @@ export function getQRCodeComponent() : QRCodeComponent {
                     <QRCodeContainer
                         uid={ uid }
                         cspNonce={ cspNonce }
-                        close={ close }
                         event={ event }
                         frame={ frame }
                         prerenderFrame={ prerenderFrame }
@@ -120,15 +155,13 @@ export function QRCodeContainer({
     frame,
     prerenderFrame,
     event,
-    cspNonce,
-    close
+    cspNonce
 } : {|
     uid : string,
     frame : ?HTMLIFrameElement,
     prerenderFrame : ?HTMLIFrameElement,
     event : EventEmitterType,
-    cspNonce? : ?string,
-    close : () => ZalgoPromise<void>
+    cspNonce? : ?string
 |}) : ?ChildType {
     if (!frame || !prerenderFrame) {
         throw new Error(`Expected frame and prerenderframe`);
@@ -166,7 +199,7 @@ export function QRCodeContainer({
             * {
                 box-sizing: border-box;
             }
-        
+
             #${ uid } {
                 display: flex;
                 position: fixed;
@@ -189,6 +222,9 @@ export function QRCodeContainer({
                 top: 0;
                 left: 0;
                 transition: opacity .2s ease-in-out;
+            }
+            #${ uid } iframe.invisible {
+                display: none;
             }
             #qrModal {
                 background: #2F3033;
@@ -230,7 +266,6 @@ export function QRCodeContainer({
             }        
             ` } />
             <div id="qrModal">
-                <a href="#" id="close" aria-label="close" role="button" onClick={ close } />
                 <node el={ prerenderFrame } />
                 <node el={ frame } />
             </div>
