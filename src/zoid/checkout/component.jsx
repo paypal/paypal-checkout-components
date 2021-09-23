@@ -232,9 +232,15 @@ export function getCheckoutComponent() : CheckoutComponent {
                 }
             },
         
-            dimensions: isDevice()
-                ? { width:  '100%', height: `${ DEFAULT_POPUP_SIZE.HEIGHT }px` }
-                : { width:  `${ DEFAULT_POPUP_SIZE.WIDTH }px`, height: `${ DEFAULT_POPUP_SIZE.HEIGHT }px` }
+            dimensions: ({ props }) => {
+                if (typeof props.dimensions === 'object') {
+                    return { width: `${ props.dimensions.width }px`, height: `${ props.dimensions.height }px` };
+                } else {
+                    return isDevice()
+                        ? { width:  '100%', height: `${ DEFAULT_POPUP_SIZE.HEIGHT }px` }
+                        : { width:  `${ DEFAULT_POPUP_SIZE.WIDTH }px`, height: `${ DEFAULT_POPUP_SIZE.HEIGHT }px` };
+                }
+            }
         });
         
         if (component.isChild()) {

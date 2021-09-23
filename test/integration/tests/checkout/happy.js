@@ -2,7 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise, uniqueID } from 'belter/src';
+import { wrapPromise, uniqueID, noop } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, runOnClick,
@@ -187,6 +187,71 @@ describe(`paypal checkout component happy path`, () => {
                     nonce
                 }).render('body');
             });
+        });
+    });
+
+    it('should render checkout with default dimensions', (done) => {
+        const DEFAULT_POPUP_SIZE = {
+            WIDTH:  500,
+            HEIGHT: 590
+        };
+
+        runOnClick(() => {
+            let childWindow;
+            onWindowOpen().then(win => {
+                childWindow = win;
+                // $FlowFixMe
+                const { outerWidth: width, outerHeight: height } = childWindow;
+
+                if (height !== DEFAULT_POPUP_SIZE.HEIGHT) {
+                    done(new Error(`height does not match. expected ${ DEFAULT_POPUP_SIZE.HEIGHT }, got ${ height }`));
+                }
+                if (width !== DEFAULT_POPUP_SIZE.WIDTH) {
+                    done(new Error(`width does not match. expected ${ DEFAULT_POPUP_SIZE.WIDTH }, got ${ width }`));
+                }
+                done();
+            });
+
+            return window.paypal.Checkout({
+                test:            { action: 'init' },
+                buttonSessionID: uniqueID(),
+                fundingSource:   FUNDING.PAYPAL,
+                createOrder:     generateOrderID,
+                onApprove:       noop
+            }).render('body');
+        });
+    });
+
+    it('should render checkout, then complete the payment with dimensions', (done) => {
+        const CUSTOM_DEFAULT_POPUP_SIZE = {
+            WIDTH:  600,
+            HEIGHT: 600
+        };
+
+        runOnClick(() => {
+            let childWindow;
+            onWindowOpen().then(win => {
+                childWindow = win;
+                // $FlowFixMe
+                const { outerWidth: width, outerHeight: height } = childWindow;
+
+                if (height !== CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT) {
+                    done(new Error(`height does not match. expected ${ CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT }, got ${ height }`));
+                }
+                if (width !== CUSTOM_DEFAULT_POPUP_SIZE.WIDTH) {
+                    done(new Error(`width does not match. expected ${ CUSTOM_DEFAULT_POPUP_SIZE.WIDTH }, got ${ width }`));
+                }
+                done();
+            });
+
+            return window.paypal.Checkout({
+                test:            { action: 'init' },
+                dimensions:      { width: '600', height: '600' },
+                buttonSessionID: uniqueID(),
+                fundingSource:   FUNDING.PAYPAL,
+                createOrder:     generateOrderID,
+                onApprove:       noop
+            }).render('body');
         });
     });
 });
