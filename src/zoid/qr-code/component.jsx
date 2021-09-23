@@ -65,6 +65,7 @@ export function getQRCodeComponent() : QRCodeComponent {
                 }  
                 `;
                 return (
+                    // $FlowFixMe - Types on the SpinnerPage are not using children as part of props
                     <SpinnerPage
                         nonce={ props.cspNonce }
                     >
