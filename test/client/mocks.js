@@ -1608,6 +1608,7 @@ type MockWindowOptions = {|
 
 type MockWindow = {|
     getWindow : () => ?CrossDomainWindowType,
+    getOpts : () => {| [string] : string |},
     send : ({| name : string, data? : mixed |}) => ZalgoPromise<Object>,
     redirect : (url : string) => ZalgoPromise<void>,
     close : () => void,
@@ -1626,9 +1627,10 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
     const postRobotMock = getPostRobotMock();
 
     let win : ?CrossDomainWindowType;
-
+    let winOpts : ?{| [string] : string |};
+    
     const windowOpen = window.open;
-    window.open = (url) : CrossDomainWindowType => {
+    window.open = (url, name, opts) : CrossDomainWindowType => {
         if (expectImmediateUrl && !url) {
             throw new Error(`Expected url to be immediately passed to window.open`);
         }
@@ -1638,6 +1640,10 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         if (windowOpenedTimes === times) {
             window.open = windowOpen;
         }
+
+        winOpts = opts
+            ? Object.fromEntries(opts.split(',').map(pair => pair.split('=')))
+            : {};
 
         let currentUrl = 'about:blank';
 
@@ -1808,8 +1814,17 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
         expectClose = true;
     };
 
+    const getOpts = () => {
+        if (!winOpts) {
+            throw new Error(`Window options not get set`);
+        }
+
+        return winOpts;
+    };
+
     return {
         getWindow,
+        getOpts,
         send,
         redirect,
         close,
