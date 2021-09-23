@@ -4,7 +4,6 @@
 import { inlineMemoize, destroyElement, type EventEmitterType } from 'belter/src';
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { node, dom, type ChildType } from 'jsx-pragmatic/src';
-import type { ZalgoPromise } from 'zalgo-promise/src';
 import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta } from '@paypal/sdk-client/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 
@@ -34,7 +33,7 @@ export function getQRCodeComponent() : QRCodeComponent {
             },
             logger:            getLogger(),
             prerenderTemplate: ({ doc, props, close }) => {
-                const style= `
+                const style = `
                 #close {
                     position: absolute;
                     right: 16px;
@@ -64,20 +63,20 @@ export function getQRCodeComponent() : QRCodeComponent {
                 #close:after {
                     transform: rotate(-45deg);
                 }  
-                `
+                `;
                 return (
                     <SpinnerPage
                         nonce={ props.cspNonce }
                     >
-                         <style innerHTML={style} />
+                        <style innerHTML={ style } />
 
-                        <button id="close" aria-label="close" role="button" onClick={ close } />
+                        <button id="close" aria-label="close" role="button" type="button" onClick={ close } />
                     </SpinnerPage>
                     
                 ).render(dom({ doc }));
             },
 
-            containerTemplate: ({ close, frame, prerenderFrame, props, doc, uid, event }) => {
+            containerTemplate: ({ frame, prerenderFrame, props, doc, uid, event }) => {
                 if (!frame || !prerenderFrame) {
                     return;
                 }
