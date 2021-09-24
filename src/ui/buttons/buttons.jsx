@@ -87,6 +87,7 @@ function getWalletInstruments({ wallet, layout, fundingSources, onShippingChange
 
 type ButtonsProps = ButtonPropsInputs & {|
     onClick? : Function,
+    prerender? : boolean,
     wallet? : ?Wallet
 |};
 
@@ -97,7 +98,8 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
-        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
+        supportsPopups, supportedNativeBrowser, prerender = false } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
@@ -158,6 +160,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         flow={ flow }
                         vault={ vault }
                         instrument={ instruments[source] }
+                        prerender={ prerender }
                     />
                 ))
             }

@@ -27,7 +27,8 @@ export type LogoOptions = {|
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     nonce? : ?string,
     experiment : Experiment,
-    env : $Values<typeof ENV>
+    env : $Values<typeof ENV>,
+    prerender : boolean
 |};
 
 export type LabelOptions = {|

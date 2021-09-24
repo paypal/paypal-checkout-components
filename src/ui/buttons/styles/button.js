@@ -39,6 +39,17 @@ export const buttonStyle = `
         cursor: pointer;
     }
 
+
+    .${ CLASS.BUTTON }.prerender {
+        animation: prerender-background 1s ease-out;
+        opacity: 0.0;
+    }
+
+    @keyframes prerender-background {
+        0%      { opacity: 0.0; }
+        100%    { opacity: 1.0; }
+    } 
+
     .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT } {
         font-family: Arial !important;
         background: rgba(0, 0, 0, 0.5) !important;

@@ -83,7 +83,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
         <html>
             <body>
                 {/* $FlowFixMe */}
-                <Buttons { ...props } onClick={ handleClick } />
+                <Buttons { ...props } onClick={ handleClick } prerender={ true } />
             </body>
         </html>
     );

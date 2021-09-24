@@ -14,9 +14,9 @@ import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/l
 
 import css from './style.scoped.scss';
 
-export function Logo({ logoColor } : LogoOptions) : ChildType {
+export function Logo({ logoColor, prerender } : LogoOptions) : ChildType {
     return (
-        <PayPalLogo logoColor={ logoColor } />
+        <PayPalLogo logoColor={ logoColor } prerender={ prerender } />
     );
 }
 

@@ -36,11 +36,12 @@ type IndividualButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
-    instrument : ?WalletInstrument
+    instrument : ?WalletInstrument,
+    prerender : boolean
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, prerender } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -107,6 +108,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             nonce={ nonce }
             experiment={ experiment }
             env={ env }
+            prerender={ prerender }
         />
     );
 
@@ -192,6 +194,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                     `${ CLASS.COLOR }-${ color }`,
                     `${ CLASS.TEXT_COLOR }-${ textColor }`,
                     `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
+                    `${ prerender ? 'prerender' : '' }`,
                     `${ isWallet ? CLASS.WALLET : '' }`
                 ].join(' ') }
                 onClick={ clickHandler }
