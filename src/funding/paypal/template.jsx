@@ -6,11 +6,12 @@ import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, Glyp
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
-import { CLASS, DIVIDE_LOGO_ANIMATION_EXPERIMENT, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
 import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
+import { getAnimationLabelAndStyles } from "../../ui/buttons/buttonAnimations"
 
 import css from './style.scoped.scss';
 
@@ -146,42 +147,16 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 }
 
 
-const getLabelTextForDivideLogoAnimationExperiment = (opts) => {
-    if (!opts.enableDivideLogoAnimationExperiment) {
+const getLabelTextForDivideLogoAnimation = (opts) => {
+    const config = getAnimationLabelAndStyles(opts);
+    if (!config) {
         return;
     }
 
-    const experimentStyles = (<style innerHTML={ `
-        .${ CLASS.DOM_READY } .${ LOGO_CLASS.LOGO }{
-            animation: 1s divide-logo-animation-experiment-left-side 2s forwards;
-            position: relative;
-        }
-
-        .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT } {
-            display: block;
-            position: absolute;
-            opacity: 0; 
-            animation: 1s divide-logo-animation-experiment-right-side 2s forwards;
-        }
-
-        .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT } span {
-            font-size: 16px;
-            color: #142C8E;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-
-        @media only screen and (max-width: 315px){
-            .${ CLASS.BUTTON_LABEL } .${ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT } span {
-                font-size: 14px;
-                padding-top: 3px;
-            }
-        }
-    ` }
-    />);
     return (
         <Fragment>
-            <div class={ DIVIDE_LOGO_ANIMATION_EXPERIMENT.LABEL_TEXT }> <span>Earn rewards</span></div>
-            { experimentStyles }
+            <div class={ config.labelClass }> <span>{config.labelText}</span></div>
+            <style innerHTML={ config.styles } />;
         </Fragment>
     );
 };
@@ -190,7 +165,7 @@ export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
             <BasicLabel { ...opts } />
-            {getLabelTextForDivideLogoAnimationExperiment(opts)}
+            {getLabelTextForDivideLogoAnimation(opts)}
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );

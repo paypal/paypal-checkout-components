@@ -4,7 +4,6 @@
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 function getComponentScript() : () => void {
-   
     /* istanbul ignore next */
     return () => {
         const ATTRIBUTE = {
@@ -144,45 +143,6 @@ function getComponentScript() : () => void {
             }
         }
 
-        function addDivideLogoAnimationExperiment() {
-            const buttonElement = document && document.querySelector('.paypal-button-label-container');
-            if (buttonElement) {
-                const style = document.createElement('style');
-        
-                const containerWidth = buttonElement.offsetWidth;
-                const logoWidth = document.querySelector('.paypal-logo').offsetWidth;
-                const logoWidthSize = logoWidth / 2;
-                const logoTranslateSize = (containerWidth / 2) - logoWidthSize;
-
-                const placeholderTextWidth = document.querySelector('.divide-logo-animation-experiment').offsetWidth;
-                const defaultPlaceholderTranslateSize = (containerWidth / 2) - placeholderTextWidth;
-                const placeholderTranslateSize = containerWidth - placeholderTextWidth;
-
-                buttonElement.appendChild(style);
-                
-                const animations = `
-                    @keyframes divide-logo-animation-experiment-left-side {
-                        100% {
-                            transform: translateX(-${ logoTranslateSize }px);
-                        }
-                    }
-                    
-                    @keyframes divide-logo-animation-experiment-right-side {
-                        0%{
-                            opacity: 0;
-                            transform: translate(${ defaultPlaceholderTranslateSize }px,-22px);
-                        }
-                        100% {
-                            opacity: 1;
-                            transform: translate(${ placeholderTranslateSize }px,-22px);
-                        }
-                    }
-                `;
-                style.type = 'text/css';
-                style.appendChild(document.createTextNode(animations));
-            }
-        }
-
         const setDomReady = once(debounce(() => {
             window.addEventListener('resize', toggleOptionals);
             setTimeout(toggleOptionals);
@@ -195,21 +155,27 @@ function getComponentScript() : () => void {
             toggleOptionals();
             setDomReady();
         };
-
         toggleOptionals();
         document.addEventListener('DOMContentLoaded', load);
         window.addEventListener('load', load);
         window.addEventListener('resize', load);
-        addDivideLogoAnimationExperiment();
     };
 }
 
 type ScriptProps = {|
-    nonce : ?string
+    nonce : ?string,
+    // eslint-disable-next-line flowtype/no-weak-types
+    buttonAnimation : any
 |};
 
-export function Script({ nonce } : ScriptProps) : ElementNode {
+export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
+    const htmlForScript = `
+        const scriptFns = ${ getComponentScript().toString() }
+        const animation = ${ buttonAnimation.fn.toString() }
+        scriptFns()
+        animation(${ JSON.stringify(buttonAnimation.params) })
+    `;
     return (
-        <script nonce={ nonce } innerHTML={ `(${ getComponentScript().toString() })()` } />
+        <script nonce={ nonce } innerHTML={  `(function(){ ${ htmlForScript }})()` } />
     );
 }

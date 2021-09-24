@@ -8,7 +8,7 @@ import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
-import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
+import { ATTRIBUTE, CLASS, DIVIDE_LOGO_ANIMATION, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
 
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
@@ -41,7 +41,8 @@ type IndividualButtonProps = {|
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
-
+    const fundingIsPaypal = fundingSource === FUNDING.PAYPAL;
+    const enableDivideLogoAnimation =  fundingIsPaypal && true;
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -112,7 +113,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     let labelNode = (
         <Label
-            enableDivideLogoAnimationExperiment={ false }
+            enableDivideLogoAnimation={ enableDivideLogoAnimation }
             i={ i }
             logo={ logoNode }
             label={ label }
@@ -157,23 +158,30 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     }
 
     const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument });
+    const cssClasses = [
+        CLASS.BUTTON_ROW,
+        `${ CLASS.NUMBER }-${ i }`,
+        `${ CLASS.LAYOUT }-${ layout }`,
+        `${ CLASS.SHAPE }-${ shape }`,
+        `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
+        `${ CLASS.ENV }-${ env }`,
+        `${ CLASS.COLOR }-${ color }`,
+        `${ CLASS.TEXT_COLOR }-${ textColor }`,
+        `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
+    ];
 
+    if (isWallet) {
+        cssClasses.push(CLASS.WALLET);
+    }
+    if (shouldShowWalletMenu) {
+        cssClasses.push(CLASS.WALLET_MENU);
+    }
+    if (enableDivideLogoAnimation) {
+        cssClasses.push(DIVIDE_LOGO_ANIMATION.LOGO);
+    }
+    
     return (
-        <div
-            class={ [
-                CLASS.BUTTON_ROW,
-                `${ CLASS.NUMBER }-${ i }`,
-                `${ CLASS.LAYOUT }-${ layout }`,
-                `${ CLASS.SHAPE }-${ shape }`,
-                `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
-                `${ CLASS.ENV }-${ env }`,
-                `${ CLASS.COLOR }-${ color }`,
-                `${ CLASS.TEXT_COLOR }-${ textColor }`,
-                `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
-                `${ isWallet ? CLASS.WALLET : '' }`,
-                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`
-            ].join(' ') }
-        >
+        <div class={ cssClasses.join(' ') }>
             <div
                 role='button'
                 { ...{
@@ -200,11 +208,9 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 onKeyPress={ keypressHandler }
                 tabindex='0'
                 aria-label={ labelText }>
-
                 <div class={ CLASS.BUTTON_LABEL }>
                     { labelNode }
                 </div>
-
                 <Spinner />
             </div>
 
