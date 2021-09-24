@@ -120,17 +120,16 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 enableLoadingSpinner(button);
             }
 
-            const updateClientConfigPromise = createOrder()
-                .then(orderID => {
-                    if (updateFlowClientConfig) {
-                        return updateFlowClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID });
-                    }
+            const updateClientConfigPromise = createOrder().then(orderID => {
+                if (updateFlowClientConfig) {
+                    return updateFlowClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID });
+                }
 
-                    // Do not block by default
-                    updateButtonClientConfig({ orderID, fundingSource, inline, userExperienceFlow }).catch(err => {
-                        getLogger().error('update_client_config_error', { err: stringifyError(err) });
-                    });
-                }).catch(noop);
+                // Do not block by default
+                updateButtonClientConfig({ orderID, fundingSource, inline, userExperienceFlow }).catch(err => {
+                    getLogger().error('update_client_config_error', { err: stringifyError(err) });
+                });
+            }).catch(noop);
 
             const vaultPromise = createOrder().then(orderID => {
                 return ZalgoPromise.try(() => {
@@ -141,46 +140,37 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 });
             });
 
-            const startPromise = ZalgoPromise.try(() => {
-                return updateClientConfigPromise;
-            }).then(() => {
+            const startPromise = updateClientConfigPromise.then(() => {
                 return start();
             });
 
             const validateOrderPromise = createOrder().then(orderID => {
                 return validateOrder(orderID, { env, clientID, merchantID, intent, currency, vault, buttonLabel });
             });
+             
+            const confirmOrderPromise = createOrder().then((orderID) => {
+                return window.xprops.sessionState.get(
+                    `__confirm_${ fundingSource }_payload__`
+                ).then(confirmOrderPayload => {
+                    if (!confirmOrderPayload) {
+                        // skip the confirm call when there is no confirm payload (regular flow).
+                        return;
+                    }
 
-            validateOrderPromise.catch(noop);
-            
-            const confirmOrder = ({ orderID, payload }) => getConfirmOrder({ orderID, payload, partnerAttributionID }, { facilitatorAccessToken: serviceData.facilitatorAccessToken });
-
-            
-            const confirmOrderPromise = createOrder()
-                .then((orderID) => {
-                    return window.xprops.sessionState.get(
-                        `__confirm_${ fundingSource }_payload__`
-                    )
-                        .then(confirmOrderPayload => {
-                            if (!confirmOrderPayload) {
-                                // skip the confirm call when there is no confirm payload (regular flow).
-                                return;
-                            }
-
-                            return confirmOrder({ orderID, payload: confirmOrderPayload });
-                        });
+                    return getConfirmOrder({
+                        orderID, payload: confirmOrderPayload, partnerAttributionID
+                    }, {
+                        facilitatorAccessToken: serviceData.facilitatorAccessToken
+                    });
                 });
-
-            const startSequencePromise = vaultPromise
-                .then(() => {
-                    return validateOrderPromise;
-                }).then(() => {
-                    return startPromise;
-                });
+            });
 
             return ZalgoPromise.all([
+                updateClientConfigPromise,
                 clickPromise,
-                startSequencePromise,
+                vaultPromise,
+                validateOrderPromise,
+                startPromise,
                 confirmOrderPromise
             ]).catch(err => {
                 return ZalgoPromise.try(close).then(() => {
