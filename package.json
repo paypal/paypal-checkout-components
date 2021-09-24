@@ -35,6 +35,7 @@
     "build": "npm run test && npm run webpack",
     "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
     "release": "npm run build-commit && grabthar-release",
+    "release:cli": "rm -rf node_modules && npm i && npm run build-commit && grabthar-release",
     "postrelease": "npm run cdnify -- --commitonly",
     "release:pre": "npm run build-commit && DIST_TAG=alpha grabthar-release prerelease",
     "deploy": "npm run cdnify",
