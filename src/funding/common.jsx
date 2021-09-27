@@ -28,7 +28,7 @@ export type LogoOptions = {|
     nonce? : ?string,
     experiment : Experiment,
     env : $Values<typeof ENV>,
-    prerender : boolean
+    prerender? : boolean
 |};
 
 export type LabelOptions = {|

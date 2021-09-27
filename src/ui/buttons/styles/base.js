@@ -8,10 +8,10 @@ import { labelStyle } from './labels';
 import { buttonResponsiveStyle } from './responsive';
 import { buttonColorStyle } from './color';
 
-export function componentStyle({ height, fundingEligibility } : {| height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
+export function componentStyle({ color, height, fundingEligibility } : {| color? : ?string, height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
     return `
         ${ pageStyle }
-        ${ buttonStyle }
+        ${ buttonStyle({ color }) }
         ${ buttonColorStyle }
         ${ labelStyle }
         ${ buttonResponsiveStyle({ height, fundingEligibility }) }

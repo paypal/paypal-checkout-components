@@ -252,8 +252,7 @@ export type RenderButtonProps = {|
     applePay : ApplePaySessionConfigRequest,
     applePaySupport : boolean,
     supportsPopups : boolean,
-    supportedNativeBrowser : boolean,
-    prerender : boolean
+    supportedNativeBrowser : boolean
 |};
 
 export type PrerenderDetails = {|

@@ -96,7 +96,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const { layout, shape } = style;
     
     const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content }) : (fundingConfig.labelText || fundingSource);
-
     const logoNode = (
         <Logo
             label={ label }
@@ -194,7 +193,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                     `${ CLASS.COLOR }-${ color }`,
                     `${ CLASS.TEXT_COLOR }-${ textColor }`,
                     `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
-                    `${ prerender ? 'prerender' : '' }`,
                     `${ isWallet ? CLASS.WALLET : '' }`
                 ].join(' ') }
                 onClick={ clickHandler }
