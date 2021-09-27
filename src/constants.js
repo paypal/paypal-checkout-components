@@ -113,6 +113,7 @@ export const FPTI_TRANSITION = {
     CHECKOUT_SHIPPING_CHANGE: ('process_checkout_shipping_change' : 'process_checkout_shipping_change'),
     CHECKOUT_APPROVE:         ('process_checkout_approve' : 'process_checkout_approve'),
     CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel'),
+    CHECKOUT_ERROR:           ('process_checkout_error' : 'process_checkout_error'),
 
     TOKENIZE_APPROVE:         ('process_tokenize_approve' : 'process_tokenize_approve'),
 
