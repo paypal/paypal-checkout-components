@@ -11,7 +11,6 @@ import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
 import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
-import { getAnimationLabelAndStyles } from "../../ui/buttons/buttonAnimations"
 
 import css from './style.scoped.scss';
 
@@ -147,25 +146,11 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
 }
 
 
-const getLabelTextForDivideLogoAnimation = (opts) => {
-    const config = getAnimationLabelAndStyles(opts);
-    if (!config) {
-        return;
-    }
-
-    return (
-        <Fragment>
-            <div class={ config.labelClass }> <span>{config.labelText}</span></div>
-            <style innerHTML={ config.styles } />;
-        </Fragment>
-    );
-};
-
 export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
             <BasicLabel { ...opts } />
-            {getLabelTextForDivideLogoAnimation(opts)}
+            {opts.divideLogoAnimationLabel}
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );

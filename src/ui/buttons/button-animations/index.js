@@ -1,10 +1,8 @@
 /* @flow */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
-import { CLASS, DIVIDE_LOGO_ANIMATION } from '../../constants';
-
-import { BUTTON_SIZE_STYLE } from './config';
-
+import { CLASS, DIVIDE_LOGO_ANIMATION } from '../../../constants';
+import { BUTTON_SIZE_STYLE } from '../config';
 
 type ButtonSizeProperties = {| 
     min : number,
@@ -74,8 +72,8 @@ export const createAddDivideLogoAnimation = () : ButtonAnimation => {
     };
 };
 
-export const getAnimationLabelAndStyles = (opts) => {
-    if (!opts.enableDivideLogoAnimation) {
+export const getDivideLogoAnimationLabelAndStyles = (enableDivideLogoAnimation) => {
+    if (!enableDivideLogoAnimation) {
         return;
     }
 

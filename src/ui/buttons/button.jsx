@@ -14,6 +14,7 @@ import { getFundingConfig } from '../../funding';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
+import { LabelTextForDivideLogoAnimation } from './button-animations/components';
 
 type IndividualButtonProps = {|
     style : ButtonStyle,
@@ -41,8 +42,6 @@ type IndividualButtonProps = {|
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
-    const fundingIsPaypal = fundingSource === FUNDING.PAYPAL;
-    const enableDivideLogoAnimation =  fundingIsPaypal && true;
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -96,7 +95,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const { layout, shape } = style;
     
     const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content }) : (fundingConfig.labelText || fundingSource);
-
+    
     const logoNode = (
         <Logo
             label={ label }
@@ -111,9 +110,14 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         />
     );
 
+    const fundingIsPaypal = fundingSource === FUNDING.PAYPAL;
+    const enableDivideLogoAnimation =  fundingIsPaypal && true;
+    const divideLogoAnimationProps = { enableDivideLogoAnimation };
+    const divideLogoAnimationLabel = (<LabelTextForDivideLogoAnimation { ...divideLogoAnimationProps } />);
+
     let labelNode = (
         <Label
-            enableDivideLogoAnimation={ enableDivideLogoAnimation }
+            divideLogoAnimationLabel={ divideLogoAnimationLabel }
             i={ i }
             logo={ logoNode }
             label={ label }
