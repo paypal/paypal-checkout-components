@@ -2,13 +2,15 @@
 
 import { type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
+import { BUTTON_COLOR } from '../../../constants';
+
 import { pageStyle } from './page';
 import { buttonStyle } from './button';
 import { labelStyle } from './labels';
 import { buttonResponsiveStyle } from './responsive';
 import { buttonColorStyle } from './color';
 
-export function componentStyle({ color, height, fundingEligibility } : {| color? : ?string, height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
+export function componentStyle({ color, height, fundingEligibility } : {| color : $Values<typeof BUTTON_COLOR>, height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
     return `
         ${ pageStyle }
         ${ buttonStyle({ color }) }

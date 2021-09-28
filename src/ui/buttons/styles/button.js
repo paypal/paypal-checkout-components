@@ -3,9 +3,9 @@
 import { ENV } from '@paypal/sdk-constants/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
-import { CLASS } from '../../../constants';
+import { BUTTON_COLOR, CLASS } from '../../../constants';
 
-export const buttonStyle = ({ color }) => {
+export const buttonStyle = ({ color } : {| color : $Values<typeof BUTTON_COLOR> |}) : string => {
     return `
         .${ CLASS.CONTAINER } {
             display: block;
