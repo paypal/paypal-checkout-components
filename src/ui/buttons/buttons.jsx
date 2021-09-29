@@ -3,6 +3,7 @@
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { noop } from 'belter/src';
+
 import type { Wallet, WalletInstrument } from '../../types';
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constants';
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';

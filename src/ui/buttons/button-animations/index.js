@@ -4,7 +4,7 @@ import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { CLASS, DIVIDE_LOGO_ANIMATION } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-type ButtonSizeProperties = {| 
+type ButtonSizeProperties = {|
     min : number,
     max : number
 |};
@@ -12,7 +12,7 @@ type ButtonSizeProperties = {|
 type ButtonSizes = {|
     large : ButtonSizeProperties,
     huge : ButtonSizeProperties
-|}
+|};
 
 export type ButtonAnimation = {|
     params : ButtonSizes,
