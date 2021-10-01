@@ -3,6 +3,8 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { noop, experiment, isAndroid, isIos, isChrome, isSafari, type Experiment } from 'belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
+import type { ProxyWindow } from 'post-robot/src';
+import { onCloseWindow } from 'cross-domain-utils/src';
 
 import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 
@@ -130,4 +132,22 @@ export function isIOSSafari() : boolean {
 
 export function isAndroidChrome() : boolean {
     return isAndroid() && isChrome();
+}
+
+export function onCloseProxyWindow(proxyWin : ProxyWindow, callback : Function, delay : number = 1000, maxtime : number = Infinity) : {| cancel : () => void |} {
+    let cancelled = false;
+
+    let cancel = () => {
+        cancelled = true;
+    };
+
+    proxyWin.awaitWindow().then(win => {
+        if (!cancelled) {
+            cancel = onCloseWindow(win, callback, delay, maxtime).cancel;
+        }
+    });
+
+    return {
+        cancel
+    };
 }

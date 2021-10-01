@@ -18,7 +18,7 @@ export const SUPPORTED_FUNDING : $ReadOnlyArray<$Values<typeof FUNDING>> = [
 
 export const NATIVE_DOMAIN : EnvConfig = {
     [ ENV.TEST ]:       'https://www.paypal.com',
-    [ ENV.LOCAL ]:      'https://www.paypal.com',
+    [ ENV.LOCAL ]:      getDomain(),
     [ ENV.STAGE ]:      'https://www.paypal.com',
     [ ENV.SANDBOX ]:    'https://www.sandbox.paypal.com',
     [ ENV.PRODUCTION ]: 'https://www.paypal.com'

@@ -175,11 +175,7 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
 export function isNativePaymentEligible({ props, payment } : IsPaymentEligibleOptions) : boolean {
 
     const { platform } = props;
-    const { win, fundingSource } = payment;
-
-    if (win) {
-        return false;
-    }
+    const { fundingSource } = payment;
 
     if (!NATIVE_CHECKOUT_URI[fundingSource] || !NATIVE_CHECKOUT_POPUP_URI[fundingSource] || !NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) {
         return false;
@@ -209,20 +205,20 @@ export function isNativePaymentEligible({ props, payment } : IsPaymentEligibleOp
     return true;
 }
 
-export type NativeOptOutOptions = {|
+export type NativeFallbackOptions = {|
     type? : string,
     skip_native_duration? : number,
     fallback_reason? : string
 |};
 
-export function getDefaultNativeOptOutOptions() : NativeOptOutOptions {
+export function getDefaultNativeFallbackOptions() : NativeFallbackOptions {
     // $FlowFixMe
     return {};
 }
 
-export function setNativeOptOut(optOut : NativeOptOutOptions) : boolean {
+export function setNativeOptOut(fallbackOptions : NativeFallbackOptions) : boolean {
     const NATIVE_OPT_OUT = 'native_opt_out';
-    const { type, skip_native_duration } = optOut;
+    const { type, skip_native_duration } = fallbackOptions;
 
     if (type && type === NATIVE_OPT_OUT) {
 

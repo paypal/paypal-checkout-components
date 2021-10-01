@@ -115,7 +115,7 @@ function isWalletCapturePaymentEligible({ serviceData, payment } : IsPaymentElig
     return true;
 }
 
-function initWalletCapture({ props, components, payment, serviceData, config } : InitOptions) : PaymentFlowInstance {
+function initWalletCapture({ props, components, payment, serviceData, config, restart: fullRestart } : InitOptions) : PaymentFlowInstance {
     const { createOrder, onApprove, clientMetadataID, vault, onAuth } = props;
     const { fundingSource, instrumentID } = payment;
     const { wallet } = serviceData;
@@ -154,7 +154,7 @@ function initWalletCapture({ props, components, payment, serviceData, config } :
                 isClick:       false,
                 buyerIntent:   BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING,
                 fundingSource: (instrument && instrument.type === WALLET_INSTRUMENT.CREDIT) ? FUNDING.CREDIT : fundingSource
-            }, config
+            }, config, restart: fullRestart
         });
     };
 
@@ -229,7 +229,7 @@ const POPUP_OPTIONS = {
     height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
 };
 
-function setupWalletMenu({ props, payment, serviceData, components, config } : MenuOptions) : MenuChoices {
+function setupWalletMenu({ props, payment, serviceData, components, config, restart } : MenuOptions) : MenuChoices {
     const { createOrder } = props;
     const { fundingSource, instrumentID } = payment;
     const { wallet, content } = serviceData;
@@ -258,7 +258,7 @@ function setupWalletMenu({ props, payment, serviceData, components, config } : M
 
     const loadCheckout = ({ payment: checkoutPayment } : {| payment : Payment |}) => {
         return checkout.init({
-            props, components, serviceData, config, payment: checkoutPayment
+            props, components, serviceData, config, payment: checkoutPayment, restart
         }).start();
     };
 

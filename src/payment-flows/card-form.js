@@ -123,7 +123,7 @@ function initCardForm({ props, components, payment, serviceData, config } : Init
     }
 
     const restart = memoize(() : ZalgoPromise<void> =>
-        checkout.init({ props, components, payment: { ...payment, isClick: false }, serviceData, config })
+        checkout.init({ props, components, payment: { ...payment, isClick: false }, serviceData, config, restart })
             .start().finally(unresolvedPromise));
 
     const onClose = () => {

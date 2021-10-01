@@ -102,7 +102,7 @@ function approveOrder({ orderID, paymentMethodToken, clientID, branded, buttonSe
         });
 }
 
-function initBrandedVaultCard({ props, components, payment, serviceData, config }) : PaymentFlowInstance {
+function initBrandedVaultCard({ props, components, payment, serviceData, config, restart: fullRestart }) : PaymentFlowInstance {
     const { createOrder, onApprove, clientID, branded, buttonSessionID } = props;
     const { wallet } = serviceData;
     const { paymentMethodID } = payment;
@@ -119,7 +119,7 @@ function initBrandedVaultCard({ props, components, payment, serviceData, config 
     const fallbackToWebCheckout = () => {
         getLogger().info('web_checkout_fallback').flush();
         return checkout.init({
-            props, components, serviceData, payment, config
+            props, components, serviceData, payment, config, restart: fullRestart
         });
     };
 

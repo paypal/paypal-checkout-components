@@ -7,8 +7,8 @@ import { ENV, FUNDING, FPTI_KEY, COUNTRY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../../types';
 import { FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
-import { getPostRobot, setupNativeLogger, getSDKVersion } from '../lib';
-import { isAndroidChrome, isIOSSafari, getStorageID } from '../../lib';
+import {  setupNativeLogger } from '../lib';
+import { isAndroidChrome, isIOSSafari, getStorageID, getPostRobot, getSDKVersion } from '../../lib';
 
 import { MESSAGE, HASH, EVENT } from './constants';
 

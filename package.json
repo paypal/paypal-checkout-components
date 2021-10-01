@@ -20,6 +20,7 @@
     "babel.config.js",
     "index.js",
     "globals.js",
+    "test/globals.js",
     "webpack.config.js"
   ],
   "scripts": {

@@ -134,7 +134,7 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
 
     const fallbackToWebCheckout = () => {
         getLogger().info('web_checkout_fallback').flush();
-        return checkout.init({ props, components, serviceData, payment: { ...payment, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING }, config }).start();
+        return checkout.init({ props, components, serviceData, payment: { ...payment, isClick: false, buyerIntent: BUYER_INTENT.PAY_WITH_DIFFERENT_FUNDING_SHIPPING }, config, restart }).start();
     };
 
     const shippingRequired = (orderID) => {
@@ -206,7 +206,7 @@ const POPUP_OPTIONS = {
     height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT
 };
 
-function setupVaultMenu({ props, payment, serviceData, components, config } : MenuOptions) : MenuChoices {
+function setupVaultMenu({ props, payment, serviceData, components, config, restart } : MenuOptions) : MenuChoices {
     const { clientAccessToken, createOrder, enableThreeDomainSecure, partnerAttributionID, sessionID, clientMetadataID, userIDToken } = props;
     const { fundingSource, paymentMethodID, button } = payment;
     const { content, facilitatorAccessToken } = serviceData;
@@ -235,7 +235,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config } : Me
 
     const loadCheckout = ({ payment: checkoutPayment } : {| payment : Payment |}) => {
         return checkout.init({
-            props, components, serviceData, config, payment: checkoutPayment
+            props, components, serviceData, config, payment: checkoutPayment, restart
         }).start();
     };
 

@@ -59,12 +59,16 @@ export type IsInstallmentsEligibleOptions = {|
     serviceData : ServiceData
 |};
 
+
+export type RestartPayment = ({| payment : Payment |}) => ZalgoPromise<void>;
+
 export type InitOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
     payment : Payment,
     components : Components,
-    config : Config
+    config : Config,
+    restart : RestartPayment
 |};
 
 export type MenuOptions = {|
@@ -72,7 +76,8 @@ export type MenuOptions = {|
     payment : Payment,
     serviceData : ServiceData,
     components : Components,
-    config : Config
+    config : Config,
+    restart : RestartPayment
 |};
 
 export type UpdateClientConfigOptions = {|

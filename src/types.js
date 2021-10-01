@@ -3,16 +3,14 @@
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { COUNTRY, LANG, CARD, WALLET_INSTRUMENT, FUNDING } from '@paypal/sdk-constants/src';
+import type { ProxyWindow as _ProxyWindow } from 'post-robot/src';
 
 import { CONTEXT, QRCODE_STATE } from './constants';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
 
-export type ProxyWindow = {|
-    close : () => ZalgoPromise<void>,
-    setLocation : (string) => ZalgoPromise<void>
-|};
+export type ProxyWindow = _ProxyWindow;
 
 export type LocaleType = {|
     country : $Values<typeof COUNTRY>,
@@ -63,6 +61,7 @@ export type CheckoutProps = {|
     standaloneFundingSource : ?FundingType,
     amplitude? : boolean,
     branded : boolean | null,
+    restart : () => ZalgoPromise<void>,
     dimensions : {|
         width : number,
         height : number

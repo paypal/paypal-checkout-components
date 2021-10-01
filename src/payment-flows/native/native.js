@@ -6,6 +6,7 @@ import { uniqueID, memoize, stringifyError,
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
+import type { ProxyWindow } from 'post-robot/src';
 
 import { updateButtonClientConfig, onLsatUpgradeCalled } from '../../api';
 import { getLogger, isAndroidChrome } from '../../lib';
@@ -15,7 +16,7 @@ import { checkout } from '../checkout';
 import type { PaymentFlow, PaymentFlowInstance, SetupOptions, InitOptions } from '../types';
 
 import { isNativeEligible, isNativePaymentEligible, prefetchNativeEligibility, canUsePopupAppSwitch,
-    canUseNativeQRCode, setNativeOptOut, getDefaultNativeOptOutOptions, type NativeOptOutOptions } from './eligibility';
+    canUseNativeQRCode, setNativeOptOut, getDefaultNativeFallbackOptions, type NativeFallbackOptions } from './eligibility';
 import { initNativeQRCode } from './qrcode';
 import { initNativePopup } from './popup';
 
@@ -25,7 +26,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
     return prefetchNativeEligibility({ props, serviceData }).then(noop);
 }
 
-function initNative({ props, components, config, payment, serviceData } : InitOptions) : PaymentFlowInstance {
+function initNative({ props, components, config, payment, serviceData, restart } : InitOptions) : PaymentFlowInstance {
     const { onApprove, onCancel, onError, buttonSessionID, onShippingChange } = props;
     const { fundingSource } = payment;
     const { firebase: firebaseConfig } = config;
@@ -48,12 +49,15 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         return clean.all();
     });
 
-    const fallbackToWebCheckout = (fallbackWin? : ?CrossDomainWindowType) => {
+    const fallbackToWebCheckout = (fallbackWin? : ?(CrossDomainWindowType | ProxyWindow)) => {
         didFallback = true;
         const checkoutPayment = { ...payment, win: fallbackWin, isClick: false, isNativeFallback: true };
-        const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData });
-        clean.register(() => instance.close());
-        return instance.start();
+        const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData, restart });
+
+        return ZalgoPromise.all([
+            destroy(),
+            instance.start()
+        ]).then(noop);
     };
 
     const onInitCallback = () => {
@@ -156,13 +160,13 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
         });
     };
 
-    const onFallbackCallback = (opts? : {| win? : CrossDomainWindowType, optOut? : NativeOptOutOptions |}) => {
-        const { win, optOut = getDefaultNativeOptOutOptions() } = opts || {};
+    const onFallbackCallback = (opts? : {| win? : CrossDomainWindowType | ProxyWindow, fallbackOptions? : NativeFallbackOptions |}) => {
+        const { win, fallbackOptions = getDefaultNativeFallbackOptions() } = opts || {};
         
         return ZalgoPromise.try(() => {
 
-            const result = setNativeOptOut(optOut);
-            const { fallback_reason } = optOut;
+            const result = setNativeOptOut(fallbackOptions);
+            const { fallback_reason } = fallbackOptions;
 
             getLogger().info(`native_message_onfallback`)
                 .track({
@@ -199,7 +203,7 @@ function initNative({ props, components, config, payment, serviceData } : InitOp
     }
 
     const flow = initFlow({
-        props, serviceData, config, components, payment, clean, sessionUID,
+        payment, props, serviceData, config, components, clean, sessionUID,
         callbacks: {
             onInit:            onInitCallback,
             onApprove:         onApproveCallback,

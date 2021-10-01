@@ -5,6 +5,7 @@ import type { WebpackConfig } from 'grumbler-scripts/config/types';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
 import { globals } from './globals';
+import { testGlobals } from './test/globals';
 
 type SmartWebpackConfig = {|
     modulename : string,
@@ -210,6 +211,7 @@ export const WEBPACK_CONFIG_TEST : WebpackConfig = getWebpackConfig({
     },
     vars: {
         ...globals,
+        ...testGlobals,
         __TEST__: true
     }
 });

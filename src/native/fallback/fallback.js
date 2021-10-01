@@ -3,7 +3,7 @@
 import { cleanup } from 'belter/src';
 import type { ZalgoPromise } from 'zalgo-promise/src';
 
-import { getPostRobot } from '../lib';
+import { getPostRobot } from '../../lib';
 
 import { MESSAGE } from './constants';
 
