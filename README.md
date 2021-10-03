@@ -1,6 +1,6 @@
 ## PayPal Checkout
 ![logo](https://github.com/idivyanshbansal/paypal-checkout-components/blob/884de077d013e0929bcb101d14b4cfd547e090d3/paypal-logo.png)
-###[Paypal](https://www.paypal.com/in/home)
+### [Paypal](https://www.paypal.com/in/home)
 
 [![build status][build-badge]][build]
 [![code coverage][coverage-badge]][coverage]
