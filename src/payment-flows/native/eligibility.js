@@ -224,8 +224,11 @@ export function setNativeOptOut(fallbackOptions : NativeFallbackOptions) : boole
 
         // Opt-out 6 weeks from native experience as default
         let OPT_OUT_TIME = 6 * 7 * 24 * 60 * 60 * 1000;
-        if (skip_native_duration && typeof skip_native_duration === 'number') {
-            OPT_OUT_TIME = skip_native_duration;
+
+        const parsedSkipDuration = parseInt(skip_native_duration, 10);
+
+        if (parsedSkipDuration && typeof parsedSkipDuration === 'number') {
+            OPT_OUT_TIME = parsedSkipDuration;
         }
         
         const now = Date.now();
