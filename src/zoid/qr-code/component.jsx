@@ -4,7 +4,7 @@
 import { inlineMemoize, destroyElement, type EventEmitterType } from 'belter/src';
 import { create, EVENT, type ZoidComponent } from 'zoid/src';
 import { node, dom, type ChildType } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta, getDebug } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta, getDebug, getEnv, getSessionID, getLocale, getClientID, getCorrelationID, getBuyerCountry } from '@paypal/sdk-client/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 
 const CLASS = {
@@ -144,6 +144,42 @@ export function getQRCodeComponent() : QRCodeComponent {
                     queryParam:  true,
                     sendToChild: false,
                     value:       getSDKMeta
+                },
+                env: {
+                    type:        'string',
+                    queryParam:  true,
+                    required:    false,
+                    value:       getEnv
+                },
+                sessionID: {
+                    type:        'string',
+                    queryParam:  true,
+                    required:    false,
+                    value:       getSessionID
+                },
+                locale: {
+                    type:        'object',
+                    queryParam:  true,
+                    required:    false,
+                    value:       getLocale
+                },
+                clientID: {
+                    type:         'string',
+                    queryParam:   true,
+                    required:     false,
+                    value:        getClientID
+                },
+                sdkCorrelationID: {
+                    type:       'string',
+                    required:   false,
+                    value:      getCorrelationID,
+                    queryParam: true
+                },
+                buyerCountry: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getBuyerCountry
                 }
             }
         });
