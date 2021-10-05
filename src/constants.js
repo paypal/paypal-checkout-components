@@ -234,6 +234,7 @@ export const FRAME_NAME = {
 };
 
 export const AMPLITUDE_KEY = {
+    TIME:    'time',
     USER_ID: 'user_id'
 };
 
