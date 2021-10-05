@@ -9,7 +9,7 @@ import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constant
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 import { ValidationError } from '../../lib';
 
-import { createAddDivideLogoAnimation } from './button-animations';
+import { getButtonAnimation } from './button-animations';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
@@ -100,7 +100,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
         nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
-
+    const buttonAnimation = getButtonAnimation(personalization);
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
 
@@ -138,6 +138,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 fundingSources.map((source, i) => (
                     <Button
+                        buttonAnimation={ buttonAnimation }
                         content={ content }
                         i={ i }
                         style={ style }
@@ -190,7 +191,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             <Script
-                buttonAnimation={ createAddDivideLogoAnimation() }
+                buttonAnimation={ buttonAnimation.animationStyles || {} }
                 nonce={ nonce }
             />
         </div>

@@ -14,7 +14,6 @@ import { getFundingConfig } from '../../funding';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
-import { LabelTextForDivideLogoAnimation } from './button-animations/components';
 
 type IndividualButtonProps = {|
     style : ButtonStyle,
@@ -37,13 +36,15 @@ type IndividualButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
-    instrument : ?WalletInstrument
+    instrument : ?WalletInstrument,
+    // eslint-disable-next-line flowtype/no-weak-types
+    buttonAnimation : any
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, buttonAnimation } : IndividualButtonProps) : ElementNode {
     const fundingConfig = getFundingConfig()[fundingSource];
-
+        
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
@@ -110,14 +111,9 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         />
     );
 
-    const fundingIsPaypal = fundingSource === FUNDING.PAYPAL;
-    const enableDivideLogoAnimation =  fundingIsPaypal && true;
-    const divideLogoAnimationProps = { enableDivideLogoAnimation };
-    const divideLogoAnimationLabel = (<LabelTextForDivideLogoAnimation { ...divideLogoAnimationProps } />);
-
     let labelNode = (
         <Label
-            divideLogoAnimationLabel={ divideLogoAnimationLabel }
+            buttonAnimation={ buttonAnimation }
             i={ i }
             logo={ logoNode }
             label={ label }
@@ -180,8 +176,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     if (shouldShowWalletMenu) {
         cssClasses.push(CLASS.WALLET_MENU);
     }
-    if (enableDivideLogoAnimation) {
-        cssClasses.push(DIVIDE_LOGO_ANIMATION.LOGO);
+    if (buttonAnimation && buttonAnimation.animationContainerClass) {
+        cssClasses.push(buttonAnimation.animationContainerClass);
     }
     
     return (

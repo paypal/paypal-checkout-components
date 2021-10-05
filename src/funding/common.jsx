@@ -47,7 +47,8 @@ export type LabelOptions = {|
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
-    divideLogoAnimationLabel : ?ChildType
+    // eslint-disable-next-line flowtype/no-weak-types
+    buttonAnimation : any
 |};
 
 export type WalletLabelOptions = {|
