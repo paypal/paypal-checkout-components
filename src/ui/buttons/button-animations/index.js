@@ -1,10 +1,10 @@
 /* @flow */
 
-import { setupAnimation } from "./divide-logo-animation"
+import { setupDivideLogoAnimation } from "./divide-logo-animation"
 
 type ButtonAnimationConfig ={|
     id : string,
-    labelText : string
+    text : string
 |};
 
 type ButtonAnimationFlag = {|
@@ -12,11 +12,11 @@ type ButtonAnimationFlag = {|
 |};
 
 export function getButtonAnimation({ buttonAnimation } : ButtonAnimationFlag) : void {
-    const animationId = buttonAnimation.id || null;
+    const animationId = buttonAnimation.id || '';
 
     if (animationId && animationId === '1') {
-        const animationLabelText = buttonAnimation.labelText || 'Pay now or pay later';
-        return setupAnimation(animationLabelText);
+        const animationLabelText = buttonAnimation.text || 'Pay now or pay later';
+        return setupDivideLogoAnimation(animationLabelText);
     }
     return {};
 }

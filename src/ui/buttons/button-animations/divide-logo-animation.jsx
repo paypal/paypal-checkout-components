@@ -28,6 +28,12 @@ export type LabelOptions = {|
     enableDivideLogoAnimation : ?boolean
 |};
 
+type SetupAnimationConfig = {|
+    animationContainerClass : string,
+    animationScript : string,
+    animationComponent : ElementNode
+|};
+
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
     CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation')
@@ -131,7 +137,7 @@ export function createDivideLogoAnimation() : ButtonAnimation {
     };
 }
 
-export function setupAnimation (animationLabelText : string) : void {
+export function setupDivideLogoAnimation (animationLabelText : string) : SetupAnimationConfig {
     let animationScript = '';
     const animationProps = { animationLabelText };
     const animation = createDivideLogoAnimation();
@@ -149,6 +155,6 @@ export function setupAnimation (animationLabelText : string) : void {
     return {
         animationContainerClass: ANIMATION.CONTAINER,
         animationScript,
-        animationComponent:            (<LabelForDivideLogoAnimation { ...animationProps } />)
+        animationComponent:      (<LabelForDivideLogoAnimation { ...animationProps } />)
     };
 }

@@ -166,7 +166,11 @@ export type Personalization = {|
     |},
     buttonAnimation : {|
         id : string,
-        labelText : string
+        text : string,
+        tracking : {|
+            impression : string,
+            click : string
+        |}
     |}
 |};
 

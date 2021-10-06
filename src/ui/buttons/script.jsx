@@ -170,9 +170,9 @@ type ScriptProps = {|
 
 export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
     const scripts = `
-        const scriptFns = ${ getComponentScript().toString() }
-        scriptFns()
-        function onDomLoad(){ ${ buttonAnimation } }
+        const scriptFns = ${ getComponentScript().toString() };
+        scriptFns();
+        function onDomLoad(){ ${ buttonAnimation } };
         document.addEventListener('DOMContentLoaded', onDomLoad);
     `;
     return (
