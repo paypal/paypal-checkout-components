@@ -150,7 +150,7 @@ export function Label(opts : LabelOptions) : ChildType {
     return (
         <Fragment>
             <BasicLabel { ...opts } />
-            {opts.buttonAnimation &&  opts.buttonAnimation.animationComponent ? opts.buttonAnimation.animationComponent : null }
+            { (opts.buttonAnimation &&  opts.buttonAnimation.animationComponent) || null }
             <ButtonPersonalization { ...opts } />
         </Fragment>
     );
