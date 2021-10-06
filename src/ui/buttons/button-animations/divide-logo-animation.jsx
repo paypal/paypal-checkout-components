@@ -130,10 +130,23 @@ export function createDivideLogoAnimation() : ButtonAnimation {
 }
 
 export function setupAnimation (animationLabelText : string) : void {
+    let animationScript = '';
     const animationProps = { animationLabelText };
+    const animation = createDivideLogoAnimation();
+    const { params, fn } = animation;
+
+    if (!params || !fn) {
+        animationScript = '';
+    } else {
+        animationScript = `
+            const animation = ${ fn.toString() }
+            animation(${ JSON.stringify(params) })
+        `;
+    }
+
     return {
         animationContainerClass: ANIMATION.CONTAINER,
-        animationStyles:                      createDivideLogoAnimation(),
+        animationScript,
         animationComponent:            (<LabelForDivideLogoAnimation { ...animationProps } />)
     };
 }

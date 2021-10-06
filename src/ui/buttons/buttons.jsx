@@ -193,7 +193,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             <Script
-                buttonAnimation={ buttonAnimation.animationStyles || {} }
+                buttonAnimation={ buttonAnimation.animationScript || {} }
                 nonce={ nonce }
             />
         </div>

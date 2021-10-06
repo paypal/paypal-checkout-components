@@ -165,21 +165,15 @@ function getComponentScript() : () => void {
 type ScriptProps = {|
     nonce : ?string,
     // eslint-disable-next-line flowtype/no-weak-types
-    buttonAnimation : any
+    buttonAnimation : string
 |};
 
 export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
     const scripts = `
         const scriptFns = ${ getComponentScript().toString() }
         scriptFns()
-        function onDomLoad(){
-            const animation = ${ buttonAnimation && buttonAnimation.fn ? buttonAnimation.fn.toString() : null }
-            if (animation) {
-                animation(${ buttonAnimation && buttonAnimation.params ?  JSON.stringify(buttonAnimation.params) : null })
-            }
-        }
+        function onDomLoad(){ ${ buttonAnimation } }
         document.addEventListener('DOMContentLoaded', onDomLoad);
-        
     `;
     return (
         <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts }})()` } />

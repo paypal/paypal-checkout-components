@@ -13,9 +13,9 @@ type ButtonAnimationFlag = {|
 
 export function getButtonAnimation({ buttonAnimation } : ButtonAnimationFlag) : void {
     const animationId = buttonAnimation.id || null;
-    const animationLabelText = buttonAnimation.labelText || '';
 
     if (animationId && animationId === '1') {
+        const animationLabelText = buttonAnimation.labelText || 'Pay now or pay later';
         return setupAnimation(animationLabelText);
     }
     return {};
