@@ -169,9 +169,8 @@ type ScriptProps = {|
 |};
 
 export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
-    const htmlForScript = `
+    const scripts = `
         const scriptFns = ${ getComponentScript().toString() }
-        
         scriptFns()
         function onDomLoad(){
             const animation = ${ buttonAnimation && buttonAnimation.fn ? buttonAnimation.fn.toString() : null }
@@ -183,6 +182,6 @@ export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
         
     `;
     return (
-        <script nonce={ nonce } innerHTML={  `(function(){ ${ htmlForScript }})()` } />
+        <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts }})()` } />
     );
 }
