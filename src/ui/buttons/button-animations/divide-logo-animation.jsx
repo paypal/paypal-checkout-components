@@ -62,24 +62,26 @@ export function LabelForDivideLogoAnimation({ animationLabelText }) : ElementNod
 export function createDivideLogoAnimation() : ButtonAnimation {
     const animation = (params) : void => {
         const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO, PAYPAL_BUTTON_LABEL } = params.cssClasses;
+        // we get the animation main container to later make some calculations to know where to put the animation elements
         const animationContainer = document && document.querySelector(`.${ ANIMATION_CONTAINER }`);
         const paypalLabelContainerElement = animationContainer && animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`);
 
         if (!animationContainer) {
             return;
         }
-
+        // get some values from some dom elements to make calculations and adjust the animation accordingly
         let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
         marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
-        
+        // get the left of the logo to calcuate the translate size
         const logoElement = paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`);
         const logoElementLeftPosition = logoElement ? logoElement.getBoundingClientRect().left : 0;
-        const logoFinalPosition = logoElementLeftPosition - marginPaypalLabelContainer;
-
+        const logoTranslateXPosition = logoElementLeftPosition - marginPaypalLabelContainer;
+        // get cpmtaomer width and text width in order to calculate translate x position for text
         const paypalLabelContainerElementWith  = paypalLabelContainerElement.offsetWidth;
         const textElementWidth = paypalLabelContainerElement.querySelector('span').offsetWidth;
-        const initialTextXposition = (paypalLabelContainerElementWith - textElementWidth) / 2;
-        const finalTextXPosition = (paypalLabelContainerElementWith - textElementWidth);
+        const initialTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth) / 2;
+        const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
+        const textYposition = 22;
 
         const animations = `
             .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
@@ -92,18 +94,18 @@ export function createDivideLogoAnimation() : ButtonAnimation {
 
             @keyframes divide-logo-animation-left-side {
                 100% {
-                    transform: translateX(-${ logoFinalPosition }px);
+                    transform: translateX(-${ logoTranslateXPosition }px);
                 }
             }
             
             @keyframes divide-logo-animation-right-side {
                 0%{
                     opacity: 0;
-                    transform: translate(${ initialTextXposition }px,-22px);
+                    transform: translate(${ initialTranslateXTextPosition }px,-${ textYposition }px);
                 }
                 100% {
                     opacity: 1;
-                    transform: translate(${ finalTextXPosition }px,-22px);
+                    transform: translate(${ finalTranslateXTextPosition }px,-${ textYposition }px);
                 }
             }
         `;
