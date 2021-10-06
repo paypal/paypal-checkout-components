@@ -171,11 +171,16 @@ type ScriptProps = {|
 export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
     const htmlForScript = `
         const scriptFns = ${ getComponentScript().toString() }
-        const animation = ${ buttonAnimation && buttonAnimation.fn ? buttonAnimation.fn.toString() : null }
+        
         scriptFns()
-        if (animation) {
-            animation(${ buttonAnimation && buttonAnimation.params ?  JSON.stringify(buttonAnimation.params) : null })
+        function onDomLoad(){
+            const animation = ${ buttonAnimation && buttonAnimation.fn ? buttonAnimation.fn.toString() : null }
+            if (animation) {
+                animation(${ buttonAnimation && buttonAnimation.params ?  JSON.stringify(buttonAnimation.params) : null })
+            }
         }
+        document.addEventListener('DOMContentLoaded', onDomLoad);
+        
     `;
     return (
         <script nonce={ nonce } innerHTML={  `(function(){ ${ htmlForScript }})()` } />

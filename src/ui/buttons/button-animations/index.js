@@ -2,18 +2,21 @@
 
 import { setupAnimation } from "./divide-logo-animation"
 
-type ButtonAnimationFlagConfig ={|
-    id : string
+type ButtonAnimationConfig ={|
+    id : string,
+    labelText : string
 |};
 
 type ButtonAnimationFlag = {|
-    buttonAnimation : ButtonAnimationFlagConfig
+    buttonAnimation : ButtonAnimationConfig
 |};
 
 export function getButtonAnimation({ buttonAnimation } : ButtonAnimationFlag) : void {
     const animationId = buttonAnimation.id || null;
-    if (animationId) {
-        return setupAnimation();
+    const animationLabelText = buttonAnimation.labelText || '';
+
+    if (animationId && animationId === '1') {
+        return setupAnimation(animationLabelText);
     }
     return {};
 }
