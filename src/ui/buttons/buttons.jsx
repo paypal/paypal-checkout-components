@@ -118,7 +118,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
-
     const buttonAnimation = getButtonAnimation(personalization);
 
     return (
@@ -193,7 +192,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             <Script
-                buttonAnimation={ buttonAnimation.animationScript || {} }
+                buttonAnimation={ buttonAnimation.animationScript || '' }
                 nonce={ nonce }
             />
         </div>

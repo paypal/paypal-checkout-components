@@ -1,44 +1,20 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
+import  { type ButtonAnimationOutputParams, type LabelOptions, type ButtonAnimation } from './types';
 
-type ButtonSizeProperties = {|
-    min : number,
-    max : number
-|};
-
-type ButtonSizes = {|
-    large : ButtonSizeProperties,
-    huge : ButtonSizeProperties
-|};
-
-export type ButtonAnimation = {|
-    params : ButtonSizes,
-    fn : Function
-|};
-
-
-export type LabelOptions = {|
-    enableDivideLogoAnimation : ?boolean
-|};
-
-type SetupAnimationConfig = {|
-    animationContainerClass : string,
-    animationScript : string,
-    animationComponent : ElementNode
-|};
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
     CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation')
 };
 
-export function LabelForDivideLogoAnimation({ animationLabelText }) : ElementNode {
+export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : ChildType {
     const config = {
         labelText:  animationLabelText,
         labelClass:  ANIMATION.LABEL_CONTAINER
@@ -68,8 +44,8 @@ export function createDivideLogoAnimation() : ButtonAnimation {
     const animation = (params) : void => {
         const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO, PAYPAL_BUTTON_LABEL } = params.cssClasses;
         // we get the animation main container to later make some calculations to know where to put the animation elements
-        const animationContainer = document && document.querySelector(`.${ ANIMATION_CONTAINER }`);
-        const paypalLabelContainerElement = animationContainer && animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`);
+        const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
+        const paypalLabelContainerElement = (animationContainer && animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`)) || null;
 
         if (!animationContainer) {
             return;
@@ -78,12 +54,13 @@ export function createDivideLogoAnimation() : ButtonAnimation {
         let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
         marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
         // get the left of the logo to calcuate the translate size
-        const logoElement = paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`);
-        const logoElementLeftPosition = logoElement ? logoElement.getBoundingClientRect().left : 0;
+        const logoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
+        const logoElementLeftPosition = (logoElement && logoElement.getBoundingClientRect().left) || 0;
         const logoTranslateXPosition = logoElementLeftPosition - marginPaypalLabelContainer;
         // get cpmtaomer width and text width in order to calculate translate x position for text
-        const paypalLabelContainerElementWith  = paypalLabelContainerElement.offsetWidth;
-        const textElementWidth = paypalLabelContainerElement.querySelector('span').offsetWidth;
+        const paypalLabelContainerElementWith  = (paypalLabelContainerElement &&  paypalLabelContainerElement.offsetWidth) || 0;
+        const textElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector('span')) || 0;
+        const textElementWidth = (textElement && textElement.offsetWidth) || 0;
         const initialTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth) / 2;
         const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
         const textYposition = 22;
@@ -114,10 +91,12 @@ export function createDivideLogoAnimation() : ButtonAnimation {
                 }
             }
         `;
-        const style = document.createElement('style');
-        paypalLabelContainerElement.appendChild(style);
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(animations));
+        if (paypalLabelContainerElement) {
+            const style = document.createElement('style');
+            paypalLabelContainerElement.appendChild(style);
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(animations));
+        }
     };
     
     return {
@@ -136,7 +115,7 @@ export function createDivideLogoAnimation() : ButtonAnimation {
     };
 }
 
-export function setupDivideLogoAnimation (animationLabelText : string) : SetupAnimationConfig {
+export function setupDivideLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
     let animationScript = '';
     const animationProps = { animationLabelText };
     const animation = createDivideLogoAnimation();

@@ -164,7 +164,7 @@ export type Personalization = {|
             click : string
         |}
     |},
-    buttonAnimation : {|
+    buttonAnimation? : {|
         id : string,
         text : string,
         tracking : {|
