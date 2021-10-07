@@ -164,7 +164,6 @@ function getComponentScript() : () => void {
 
 type ScriptProps = {|
     nonce : ?string,
-    // eslint-disable-next-line flowtype/no-weak-types
     buttonAnimation : string
 |};
 
