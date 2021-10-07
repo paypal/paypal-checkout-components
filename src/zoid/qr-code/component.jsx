@@ -217,12 +217,6 @@ export function QRCodeContainer({
         frame.classList.remove(CLASS.INVISIBLE);
         frame.classList.add(CLASS.VISIBLE);
 
-        // Close is now controlled by QRCard on smart-payment-buttons
-        const closeButton = document.querySelector('#close');
-        if (closeButton) {
-            closeButton.remove();
-        }
-
         setTimeout(() => {
             destroyElement(prerenderFrame);
         }, 1000);
@@ -274,33 +268,7 @@ export function QRCodeContainer({
                 justify-content: center;
                 flex-direction: column;
                 position: relative;
-            }
-            #close {
-                position: absolute;
-                right: 16px;
-                top: 16px;
-                width: 16px;
-                height: 16px;
-                opacity: 0.6;
-                z-index: 10;
-            }
-            #close:hover {
-                opacity: 1;
-            }
-            #close:before, #close:after {
-                position: absolute;
-                left: 8px;
-                content: ' ';
-                height: 20px;
-                width: 2px;
-                background-color: #FFF;
-            }
-            #close:before {
-                transform: rotate(45deg);
-            }
-            #close:after {
-                transform: rotate(-45deg);
-            }        
+            }     
             ` } />
             <div id="qrModal">
                 <node el={ prerenderFrame } />
