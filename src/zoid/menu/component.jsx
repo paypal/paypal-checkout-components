@@ -14,7 +14,7 @@ export function getMenuComponent() : MenuComponent {
     return inlineMemoize(getMenuComponent, () => {
         return create({
             tag: 'paypal-menu',
-            url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__MENU__ }`,
+            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__MENU__ }`,
 
             domain: getPayPalDomainRegex(),
             

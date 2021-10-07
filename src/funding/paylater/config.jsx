@@ -20,6 +20,17 @@ export function getPaylaterConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
+        eligible: ({ experiment, fundingSource }) => {
+            if (
+                experiment
+                && experiment.disablePaylater
+                && !fundingSource  // Exclude standalone buttons
+            ) {
+                return false;
+            }
+            return true;
+        },
+
         Label: ({ logo }) => logo,
 
         Logo: ({ logoColor, nonce, fundingEligibility }) => {

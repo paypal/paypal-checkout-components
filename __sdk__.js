@@ -61,14 +61,21 @@ module.exports = {
         entry: './src/interface/wallet',
         globals
     },
+    // @deprecated - renamed to payment-fields to be removed
     'fields': {
         entry:          './src/interface/fields',
         globals,
         fundingSources: SMART_FUNDING_SOURCES,
         cards:          SMART_CARDS
     },
+    'payment-fields': {
+        entry:          './src/interface/payment-fields',
+        globals,
+        fundingSources: SMART_FUNDING_SOURCES,
+        cards:          SMART_CARDS
+    },
     'card-fields': {
-        entry:          './src/interface/card',
+        entry:          './src/interface/card-fields',
         globals
     }
 };

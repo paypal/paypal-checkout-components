@@ -12,7 +12,7 @@ const CLASS = {
     PRERENDER_FRAME: 'prerender-frame'
 };
 
-type FieldsContainerOptions = {|
+type PaymentFieldsContainerOptions = {|
     uid : string,
     frame : ?HTMLIFrameElement,
     prerenderFrame : ?HTMLIFrameElement,
@@ -20,7 +20,7 @@ type FieldsContainerOptions = {|
     nonce? : ?string
 |};
 
-export function FieldsContainer({ uid, frame, prerenderFrame, event, nonce } : FieldsContainerOptions) : ?ChildType {
+export function PaymentFieldsContainer({ uid, frame, prerenderFrame, event, nonce } : PaymentFieldsContainerOptions) : ?ChildType {
 
     if (!frame || !prerenderFrame) {
         throw new Error(`Expected frame and prerenderframe`);

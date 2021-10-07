@@ -1,10 +1,10 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, inlineMemoize } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
+import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
-import type { Experiment as VenmoExperiment } from '../../types';
+import type { Experiment as EligibilityExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
 import { determineEligibleFunding } from '../../funding';
@@ -61,6 +61,10 @@ export function isSupportedNativeBrowser() : boolean {
         return false;
     }
 
+    if (isTablet()) {
+        return false;
+    }
+
     if (isIos() && isSafari()) {
         return true;
     }
@@ -72,33 +76,39 @@ export function isSupportedNativeBrowser() : boolean {
     return false;
 }
 
-export function createVenmoExperiment() : Experiment | void {
-    return inlineMemoize(createVenmoExperiment, () => {
-        const enableFunding = getEnableFunding();
-        const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
+export function createVenmoExperiment() : ?Experiment {
+    const enableFunding = getEnableFunding();
+    const isEnableFundingVenmo = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
 
-        const fundingEligibility = getFundingEligibility();
-        const isEligibleForVenmo = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
+    const fundingEligibility = getFundingEligibility();
+    const hasBasicVenmoEligibility = fundingEligibility && fundingEligibility[FUNDING.VENMO] && fundingEligibility[FUNDING.VENMO].eligible;
+    const isEligibleForVenmoNative = isSupportedNativeBrowser() && !isEnableFundingVenmo;
 
-        if (isDevice()) {
-            if (!isEligibleForVenmo || (isEnableFundingVenmo && isSupportedNativeBrowser()) || !isSupportedNativeBrowser()) {
-                return;
-            }
+    // basic eligibility must be true for venmo to be eligible for the experiments
+    if (!hasBasicVenmoEligibility) {
+        return;
+    }
 
-            if (isIos() && isSafari()) {
-                return createExperiment('enable_venmo_ios', 90);
-            }
-
-            if (isAndroid() && isChrome()) {
-                return createExperiment('enable_venmo_android', 90);
-            }
-        } else {
-            return createExperiment('enable_venmo_desktop', 100);
+    if (isDevice()) {
+        if (!isEligibleForVenmoNative) {
+            return;
         }
-    });
+
+        if (isIos() && isSafari()) {
+            return createExperiment('enable_venmo_ios', 90);
+        }
+
+        if (isAndroid() && isChrome()) {
+            return createExperiment('enable_venmo_android', 90);
+        }
+    } else {
+        return createExperiment('enable_venmo_desktop', 90);
+    }
 }
 
-export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
+export function getVenmoExperiment() : EligibilityExperiment {
+    const experiment = createVenmoExperiment();
+
     const enableFunding = getEnableFunding();
     const isVenmoFundingEnabled = enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
     const isNativeSupported = isSupportedNativeBrowser();
@@ -115,9 +125,42 @@ export function getVenmoExperiment(experiment : ?Experiment) : VenmoExperiment {
     }
 }
 
+export function createNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>) : Experiment | void {
+    const disableFunding = getDisableFunding();
+    const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+    const enableFunding = getEnableFunding();
+    const isEnableFundingPaylater = enableFunding && enableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+
+    const { paylater } = getFundingEligibility();
+    const isEligibleForPaylater = paylater?.eligible;
+    const isExperimentable = paylater?.products?.paylater?.variant === 'experimentable' || paylater?.products?.payIn4?.variant === 'experimentable';
+    // No experiment because ineligible, already forced on or off
+    if (!isEligibleForPaylater
+        || !isExperimentable
+        || isDisableFundingPaylater
+        || isEnableFundingPaylater
+        || fundingSource
+    ) {
+        return;
+    }
+
+    return createExperiment('disable_paylater', 1);
+}
+
+export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
+    const experiment = createNoPaylaterExperiment(fundingSource);
+
+    const disableFunding = getDisableFunding();
+    const isDisableFundingPaylater = disableFunding && disableFunding.indexOf(FUNDING.PAYLATER) !== -1;
+    const isExperimentEnabled = experiment && experiment.isEnabled();
+    return {
+        disablePaylater: Boolean((isExperimentEnabled || isDisableFundingPaylater))
+    };
+}
+
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
-        experiment = getVenmoExperiment(createVenmoExperiment()), applePaySupport, supportsPopups = userAgentSupportsPopups(),
+        experiment = getVenmoExperiment(), applePaySupport, supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(), createBillingAgreement, createSubscription } = props;
 
     const flow               = determineFlow({ createBillingAgreement, createSubscription });

@@ -19,17 +19,16 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
-import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment, getVenmoExperiment, getRenderedButtons } from './util';
+import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
+    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
-    const enableVenmoExperiment = createVenmoExperiment();
-
     const queriedEligibleFunding = [];
     return create({
         tag:  'paypal-buttons',
-        url: () => `${ getPayPalDomain() }${ window.__CHECKOUT_URI__ || __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
+        url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
 
         domain: getPayPalDomainRegex(),
 
@@ -70,7 +69,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = getVenmoExperiment(enableVenmoExperiment),
+                experiment = {
+                    ...getVenmoExperiment(),
+                    ...getNoPaylaterExperiment(fundingSource)
+                },
                 createBillingAgreement, createSubscription
             } = props;
 
@@ -247,8 +249,21 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        if (enableVenmoExperiment) {
-                            enableVenmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        const { experiment: { enableVenmo }, fundingSource } = props;
+                        const venmoExperiment = createVenmoExperiment();
+
+                        if (enableVenmo && venmoExperiment) {
+                            venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
+                        }
+
+                        const enableNoPaylaterExperiment = createNoPaylaterExperiment(fundingSource);
+
+                        if (enableNoPaylaterExperiment) {
+                            enableNoPaylaterExperiment.logStart({
+                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
+                                [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
+                                [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id'
+                            });
                         }
 
                         return value(...args);
@@ -366,7 +381,14 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      () => getVenmoExperiment(enableVenmoExperiment)
+                value:      ({ props }) => {
+                    const { fundingSource } = props;
+                    const experimentTreatments = {
+                        ...getVenmoExperiment(),
+                        ...getNoPaylaterExperiment(fundingSource)
+                    };
+                    return experimentTreatments;
+                }
             },
 
             flow: {
@@ -473,7 +495,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'string',
                 default:    getUserIDToken,
                 required:   false,
-                queryParam: true
+                queryParam: (getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE),
+                bodyParam:  (getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE)
             },
 
             clientMetadataID: {
