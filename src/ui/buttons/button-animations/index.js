@@ -1,6 +1,6 @@
 /* @flow */
 
-import { setupDivideLogoAnimation } from "./divide-logo-animation"
+import { setupDivideLogoAnimation } from './divide-logo-animation';
 
 type ButtonAnimationConfig ={|
     id : string,

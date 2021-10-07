@@ -1,7 +1,6 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-
 import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
