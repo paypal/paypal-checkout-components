@@ -991,3 +991,53 @@ buttonConfigs.push({
         }
     }
 });
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 240
+    },
+    button: {
+        fundingSource: 'paypal'
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    label:    'foo2@bar2.com',
+                    oneClick: true,
+                    tokenID:  '123456'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc1234',
+                    vendor:  'visa'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
