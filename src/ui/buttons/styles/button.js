@@ -128,8 +128,7 @@ export const buttonStyle = `
 
     @media only screen and (max-width: ${ MIN_VAULT_BUTTON_WIDTH }px) {
         .menu-button {
-            display: none !important;
-            visibility: hidden !important;
+            display: none;
         }
         .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW }.${ CLASS.WALLET }.${ CLASS.WALLET_MENU } .${ CLASS.BUTTON }  {
             border-top-right-radius: 4px;
