@@ -119,7 +119,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
     const buttonAnimation = getButtonAnimation(personalization);
-
     return (
         <div class={ [
             CLASS.CONTAINER,

@@ -4,7 +4,7 @@ import { type ChildType, type ElementNode } from 'jsx-pragmatic/src';
 export type ButtonAnimationOutputParams ={|
     animationContainerClass : string,
     animationScript : string,
-    animationComponent : ChildType
+    animationComponent : ChildType | null
 |};
 
 export type ButtonSizeProperties = {|
@@ -20,7 +20,7 @@ type ButtonAnimationCss ={|
     PAYPAL_BUTTON_LABEL : string
 |};
 
-type ButtonSizes = {|
+export type ButtonSizes = {|
     large : ButtonSizeProperties,
     huge : ButtonSizeProperties,
     cssClasses : ButtonAnimationCss
@@ -43,8 +43,8 @@ export type ButtonAnimationEmptyOutput ={|
 
 export type ResizeButtonAnimationDomElementPositions = {|
     logoTranslateXPosition : number,
-    initialTranslateXTextPosition : float,
+    initialTranslateXTextPosition : number,
     textYposition : number,
-    finalTranslateXTextPosition: float,
-    paypalLabelContainerElement: ElementNode
+    finalTranslateXTextPosition : number,
+    paypalLabelContainerElement : ElementNode
 |};

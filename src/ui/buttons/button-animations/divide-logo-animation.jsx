@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import  type { ButtonAnimationOutputParams, LabelOptions, ButtonAnimation, ResizeButtonAnimationDomElementPositions } from './types';
+import  type { ButtonAnimationOutputParams, LabelOptions,  ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
 
 
 export const ANIMATION = {
@@ -88,7 +88,7 @@ const getPositionsOfElementsForAnimation = function(document, configuration) : R
     };
 };
 
-function animationConfiguration () : void {
+function animationConfiguration () : ButtonSizes {
     return {
         large:      { min: BUTTON_SIZE_STYLE.large.minWidth, max: BUTTON_SIZE_STYLE.large.maxWidth },
         huge:       { min: BUTTON_SIZE_STYLE.huge.minWidth, max: BUTTON_SIZE_STYLE.huge.maxWidth },
@@ -102,8 +102,8 @@ function animationConfiguration () : void {
     };
 }
 
-export function createDivideLogoAnimation() : ButtonAnimation {
-    const animation = (params, cssClasses) : void => {
+export function createDivideLogoAnimation() : Function {
+    return (params, cssClasses) : void => {
         const { logoTranslateXPosition, initialTranslateXTextPosition, textYposition, finalTranslateXTextPosition, paypalLabelContainerElement } = params;
         const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
         const animations = `
@@ -140,8 +140,6 @@ export function createDivideLogoAnimation() : ButtonAnimation {
             style.appendChild(document.createTextNode(animations));
         }
     };
-    
-    return animation;
 }
 
 export function setupDivideLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
