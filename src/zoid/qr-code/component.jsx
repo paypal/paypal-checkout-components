@@ -21,7 +21,7 @@ export function getQRCodeComponent() : QRCodeComponent {
                 width:  '100%',
                 height: '100%'
             },
-            logger:            getLogger(),
+            logger:     getLogger(),
             prerenderTemplate,
 
             containerTemplate,
