@@ -1,12 +1,12 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType, type ElementNode } from 'jsx-pragmatic/src';
 
 import { BUTTON_SIZE_STYLE } from '../config';
 import { CLASS } from '../../../constants';
 
-import { type LabelOptions, type ButtonAnimationOutputParams, ButtonSizeProperties } from './types';
+import type { LabelOptions, ButtonAnimationOutputParams, ButtonSizeProperties } from './types';
 
 type ButtonAnimationCss ={|
     ANIMATION_CONTAINER : string,
@@ -23,6 +23,18 @@ type ButtonSizes = {|
 export type ButtonAnimation = {|
     params : ButtonSizes,
     fn : Function
+|};
+
+export type ButtonAnimationConfig = {|
+    buttonHeight : number,
+    buttonWidth : number,
+    rightStartPositionX : number,
+    transLateYposition : number,
+    leftStartPositionX : number,
+    logoContainerWidthSize : number,
+    logoTranslateXSize : number,
+    leftSiseWidth : number,
+    paypalLabelContainer : ElementNode
 |};
 
 export const ANIMATION = {
@@ -63,7 +75,7 @@ function getAnimationParameters() : ButtonSizes {
     };
 }
 
-const getAnimationPositions = function (document, config) : void {
+const getAnimationPositions = function (document, config) : ButtonAnimationConfig | null {
     const { large, huge, cssClasses  } = config;
     const { ANIMATION_CONTAINER, BUTTON_LABEL, LOGO_CLASS_LOGO } = cssClasses;
 

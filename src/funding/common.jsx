@@ -10,7 +10,7 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import type { ContentType, WalletInstrument, Experiment, Requires, Wallet } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW, TEXT_COLOR } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
-import type { ButtonAnimationOutputParams } from '../ui/buttons/button-animations/types';
+import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from '../ui/buttons/button-animations/types';
 
 import { componentContent } from './content';
 
@@ -48,7 +48,7 @@ export type LabelOptions = {|
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
-    buttonAnimation? : ?ButtonAnimationOutputParams
+    buttonAnimation? : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput
 |};
 
 export type WalletLabelOptions = {|

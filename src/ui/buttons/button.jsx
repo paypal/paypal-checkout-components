@@ -14,7 +14,7 @@ import { getFundingConfig } from '../../funding';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
-import type { ButtonAnimationOutputParams } from './button-animations/types';
+import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from './button-animations/types';
 
 type IndividualButtonProps = {|
     style : ButtonStyle,
@@ -38,7 +38,7 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    buttonAnimation : ?ButtonAnimationOutputParams
+    buttonAnimation? : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
