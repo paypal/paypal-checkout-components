@@ -11,6 +11,8 @@ import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../ty
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
 
+import type { ButtonAnimationOutputParams } from '../buttons/button-animations/types';
+
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
@@ -38,7 +40,7 @@ type IndividualButtonProps = {|
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
     // eslint-disable-next-line flowtype/no-weak-types
-    buttonAnimation : any
+    buttonAnimation : ButtonAnimationOutputParams
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
