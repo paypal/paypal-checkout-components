@@ -35,7 +35,7 @@ npm install
 npm start
 ```
 
-Then load http://localhost/smart/buttons?clientID=alc_client1 in your browser.
+Then load http://localhost:8003/smart/buttons?clientID=alc_client1 in your browser.
 
 ## Running tests
 
