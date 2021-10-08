@@ -14,6 +14,7 @@ import { getFundingConfig } from '../../funding';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
+import type { ButtonAnimationOutputParams } from './button-animations/types';
 
 type IndividualButtonProps = {|
     style : ButtonStyle,
@@ -37,8 +38,7 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    // eslint-disable-next-line flowtype/no-weak-types
-    buttonAnimation : any
+    buttonAnimation : ?ButtonAnimationOutputParams
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,

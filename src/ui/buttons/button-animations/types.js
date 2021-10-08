@@ -1,13 +1,13 @@
 /* @flow */
-import { type ChildType } from 'jsx-pragmatic/src';
+import { type ChildType, type ElementNode } from 'jsx-pragmatic/src';
 
 export type ButtonAnimationOutputParams ={|
     animationContainerClass : string,
     animationScript : string,
-    animationComponent : ChildType
+    animationComponent : ChildType | null
 |};
 
-type ButtonSizeProperties = {|
+export type ButtonSizeProperties = {|
     min : number,
     max : number
 |};
@@ -20,7 +20,7 @@ type ButtonAnimationCss ={|
     PAYPAL_BUTTON_LABEL : string
 |};
 
-type ButtonSizes = {|
+export type ButtonSizes = {|
     large : ButtonSizeProperties,
     huge : ButtonSizeProperties,
     cssClasses : ButtonAnimationCss
@@ -39,4 +39,12 @@ export type ButtonAnimationEmptyOutput ={|
     animationContainerClass : null,
     animationScript : null,
     animationComponent : null
+|};
+
+export type ResizeButtonAnimationDomElementPositions = {|
+    logoTranslateXPosition : number,
+    initialTranslateXTextPosition : number,
+    textYposition : number,
+    finalTranslateXTextPosition : number,
+    paypalLabelContainerElement : ElementNode
 |};
