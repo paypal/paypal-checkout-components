@@ -53,7 +53,8 @@ export function getQRCodeComponent() : QRCodeComponent {
                 debug: {
                     type:       'boolean',
                     value:      getDebug,
-                    queryParam: true
+                    queryParam: true,
+                    required:   false
                 },
                 state: {
                     type:       'string',
