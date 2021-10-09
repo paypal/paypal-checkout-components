@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { inlineMemoize } from 'belter/src';
+import { inlineMemoize, uniqueID } from 'belter/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta, getDebug, getEnv, getSessionID, getLocale, getClientID, getCorrelationID, getBuyerCountry } from '@paypal/sdk-client/src';
 
@@ -106,6 +106,12 @@ export function getQRCodeComponent() : QRCodeComponent {
                     queryParam: true,
                     required:   false,
                     value:      getBuyerCountry
+                },
+                buttonSessionID: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      uniqueID
                 }
             }
         });
