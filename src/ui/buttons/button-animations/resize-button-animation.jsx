@@ -102,20 +102,32 @@ const getAnimationPositions = function (document, config) : ButtonAnimationConfi
         }
         return null;
     }
-
+    // get the label container element to calculate to get the logo element and right element ( blue background )
     const paypalLabelContainer = animationContainerElement && animationContainerElement.querySelector(`.${ BUTTON_LABEL }`);
+    // get the logo image element which is inside the label container, to later determine the logo translation size
     const logoElement = paypalLabelContainer.querySelector(`.${ LOGO_CLASS_LOGO }`);
+    // get the left element( yellow background element ) to later know where the position of this element starts
     const leftElement = animationContainerElement.querySelector(`.${ ANIMATION_CONTAINER }-left`);
+    // this is the position where yellow element is going to start
     const leftStartPositionX =  leftElement ? parseInt(leftElement.getBoundingClientRect().left, 10) : 0;
+    // get right element ( blue background element ) to later know in which position to start it
     const rightElement = paypalLabelContainer.querySelector(`.${ ANIMATION_CONTAINER }-right`);
+    // position where the blue background is goin to start
     const rightStartPositionX = rightElement ? parseInt(rightElement.getBoundingClientRect().left, 10) : 0;
+    // get the total width of the animation container to allow to find the logo container´s width size
     const mainContainerWidth = animationContainerElement.offsetWidth;
+    // calculate the 35% that is going to be used by the yellow background element
     const logoContainerWidthSize = ((mainContainerWidth * 35) / 100);
+    // calculate the remaining pecent for right element ( blue background element)
     const logoSizeRemaining = (logoContainerWidthSize - logoElement.offsetWidth) / 2;
+    // calculate the position of the logo elemnt within the yellow background
     const logoTranslateXSize = (buttonWidth / 2) - logoSizeRemaining;
+    // get the label container position in Y axis to later know where to place the yellow and blue backgrounds in Y axis.
     const paypalLabelContainerTopPosition = (paypalLabelContainer && paypalLabelContainer.getBoundingClientRect().top) || 0;
+    // get the translate position in Y axis for blue and yellos backgrounds
     const transLateYposition = paypalLabelContainerTopPosition ? Math.round(paypalLabelContainerTopPosition) : 0;
-    const buttonHeight = 55;
+    // determine the position in Y axis to place the left and right elements ( yellow and blue background elements )
+    const buttonHeight = animationContainerElement.offsetHeight;
 
     return {
         buttonHeight,
