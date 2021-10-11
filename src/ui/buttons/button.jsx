@@ -44,7 +44,6 @@ type IndividualButtonProps = {|
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, buttonAnimation } : IndividualButtonProps) : ElementNode {
     const fundingConfig = getFundingConfig()[fundingSource];
-        
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
