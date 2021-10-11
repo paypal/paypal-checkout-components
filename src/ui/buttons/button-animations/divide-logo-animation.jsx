@@ -51,32 +51,32 @@ const getPositionsOfElementsForAnimation = function(document, configuration) : R
     if (!animationContainer) {
         return null;
     }
-    // get margin of paypal label container as an integer
+    // get margin of paypal label container as an integer to later calculate logo translate position
     let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
     marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
 
-    // get the logo image element from dom
+    // get the logo image element from dom to get the left position
     const logoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
-    // get the left position of the logo image dom element
+    // get the left position of the logo element to later calculate the translate position
     const logoElementLeftPosition = (logoElement && logoElement.getBoundingClientRect().left) || 0;
 
-    // calculate translate position based on the logo left position and container of the margin
+    // calculate translate position based on the logo left position and margin of paypal label container
     const logoTranslateXPosition = logoElementLeftPosition - marginPaypalLabelContainer;
 
-    // get paypal label container's width of the element
+    // get paypal label container's width to calculate initial and final translate positions
     const paypalLabelContainerElementWith  = (paypalLabelContainerElement &&  paypalLabelContainerElement.offsetWidth) || 0;
     // find label text element
     const textElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector('span')) || 0;
-    // find label text dom element's width
+    // find label text dom element to help to calculate initial and final translate position
     const textElementWidth = (textElement && textElement.offsetWidth) || 0;
 
-    // calculate initial translate position to move text element to that initial position
+    // calculate initial translate position to start the animation with the text in that position
     const initialTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth) / 2;
 
     // calculate final translate in x axis to move text element to that position
     const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
 
-    // text position in y axis to center the text
+    // text position in y axis to center the text in y axis
     const textYposition = 22;
 
     return {
