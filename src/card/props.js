@@ -6,7 +6,8 @@ import { FUNDING, CARD, type FundingEligibilityType } from '@paypal/sdk-constant
 import type { ProxyWindow } from '../types';
 import { getProps, type XProps, type Props } from '../props/props';
 
-import { CARD_FIELD_TYPE } from './constants';
+import type { CardStyle, CardPlaceholder } from './types';
+import { CARD_FIELD_TYPE, CARD_ERRORS } from './constants';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -17,16 +18,13 @@ export type PrerenderDetailsType = {|
     card? : ?$Values<typeof CARD>
 |};
 
-export type CardStyle = {|
-    height? : number
-|};
-
 export type CardExport = ({|
     submit : () => ZalgoPromise<void>
 |}) => ZalgoPromise<void>;
 
 export type OnChange = ({|
-    valid : boolean
+    valid : boolean,
+    errors : [$Values<typeof CARD_ERRORS>] | []
 |}) => ZalgoPromise<void>;
 
 export type CardXProps = {|
@@ -34,6 +32,7 @@ export type CardXProps = {|
 
     type : $Values<typeof CARD_FIELD_TYPE>,
     style : CardStyle,
+    placeholder : CardPlaceholder,
     cardSessionID : string,
     fundingEligibility : FundingEligibilityType,
     onChange : OnChange,
@@ -50,6 +49,7 @@ export type CardProps = {|
     type : $Values<typeof CARD_FIELD_TYPE>,
     branded : boolean,
     style : CardStyle,
+    placeholder : CardPlaceholder,
     cardSessionID : string,
     fundingEligibility : FundingEligibilityType,
     export : CardExport,
@@ -68,6 +68,7 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         type,
         cardSessionID,
         style,
+        placeholder,
         fundingEligibility,
         onChange,
         branded = fundingEligibility?.card?.branded ?? true,
@@ -82,6 +83,7 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         type,
         branded,
         style,
+        placeholder,
         cardSessionID,
         fundingEligibility,
         onChange,
