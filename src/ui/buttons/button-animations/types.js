@@ -48,3 +48,10 @@ export type ResizeButtonAnimationDomElementPositions = {|
     finalTranslateXTextPosition : number,
     paypalLabelContainerElement : ElementNode
 |};
+
+export type labelNextToLogoAnimation = {|
+    logoTranslateXPosition: number,
+    textYposition : number,
+    paypalLabelContainerElement : ElementNode,
+    finalTranslateXTextPosition : number
+|};
