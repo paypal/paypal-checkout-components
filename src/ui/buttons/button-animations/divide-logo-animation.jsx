@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import  type { ButtonAnimationOutputParams, LabelOptions,  ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
+import  type { ButtonAnimationOutputParams, LabelOptions, ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
 
 
 export const ANIMATION = {

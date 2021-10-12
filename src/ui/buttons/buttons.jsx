@@ -23,7 +23,6 @@ type GetWalletInstrumentOptions = {|
     onShippingChange : ?OnShippingChange
 |};
 
-
 function getWalletInstrument({ wallet, fundingSource, onShippingChange } : GetWalletInstrumentOptions) : ?WalletInstrument {
     if (!isWalletFundingEligible({ wallet, onShippingChange })) {
         return;
