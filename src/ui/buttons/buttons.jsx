@@ -137,7 +137,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 fundingSources.map((source, i) => (
                     <Button
-                        buttonAnimation={ buttonAnimation }
+                        buttonAnimation={ source && source === FUNDING.PAYPAL ? buttonAnimation : null }
                         content={ content }
                         i={ i }
                         style={ style }

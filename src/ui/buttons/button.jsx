@@ -38,7 +38,7 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    buttonAnimation : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput
+    buttonAnimation : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput | null
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
