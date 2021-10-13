@@ -50,7 +50,7 @@ export type ResizeButtonAnimationDomElementPositions = {|
 |};
 
 export type labelNextToLogoAnimation = {|
-    logoTranslateXPosition: number,
+    logoTranslateXPosition : number,
     textYposition : number,
     paypalLabelContainerElement : ElementNode,
     finalTranslateXTextPosition : number

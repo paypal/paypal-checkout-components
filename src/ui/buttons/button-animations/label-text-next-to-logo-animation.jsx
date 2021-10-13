@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { BUTTON_SIZE_STYLE } from '../config';
 import { CLASS } from '../../../constants';
 
-import  type { ButtonAnimationOutputParams, LabelOptions } from './types';
+import  type { ButtonAnimationOutputParams, LabelOptions, labelNextToLogoAnimation } from './types';
 
 export const ANIMATION = {
     ELEMENT:         ('label-next-to-logo-animation-element' : 'label-next-to-logo-animation-element'),
@@ -35,7 +35,7 @@ function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : Ch
     );
 }
 
-const findAnimationPositions = function (document, configuration) : void {
+const findAnimationPositions = function (document, configuration) : labelNextToLogoAnimation | null {
     const { ANIMATION_CONTAINER, PAYPAL_LABEL_CONTAINER, PAYPAL_LOGO } = configuration.cssStyles;
     const { large, huge } = configuration;
 
@@ -59,14 +59,14 @@ const findAnimationPositions = function (document, configuration) : void {
     
     // validate label text size to avoid showing a very large text in a small space
     if (animationContainerWidth < (large.min + 10)) {
-        const MAX_TEXT_LENGTH = 17;
+        const MAX_LENGTH_TEXT = 17;
         // eslint-disable-next-line unicorn/prefer-text-content
         const labelText =  textElement.innerText || textElement.textContent;
         if (!labelText) {
             return null;
         }
         
-        if (labelText.length && labelText.length > MAX_TEXT_LENGTH) {
+        if (labelText.length && labelText.length > MAX_LENGTH_TEXT) {
             return null;
         }
     }
@@ -76,6 +76,9 @@ const findAnimationPositions = function (document, configuration) : void {
     const logoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
     // get the left position of the logo element to later calculate the translate position
     const logoElementLeftPosition = (logoElement && logoElement.getBoundingClientRect().left) || 0;
+    if (logoElementLeftPosition) {
+        return null;
+    }
     // get margin of paypal label container as an integer to later calculate logo translate position
     let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
     marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
@@ -85,6 +88,9 @@ const findAnimationPositions = function (document, configuration) : void {
     const paypalLabelContainerElementWith  = (paypalLabelContainerElement &&  paypalLabelContainerElement.offsetWidth) || 0;
     // calculate final translate in x axis to move text element to that position
     const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
+    if (!finalTranslateXTextPosition) {
+        return null;
+    }
     // text position in y axis to center the text in y axis
     const textYposition = 22;
     return {
