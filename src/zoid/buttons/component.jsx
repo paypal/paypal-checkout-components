@@ -249,10 +249,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        const { experiment: { enableVenmo }, fundingSource } = props;
+                        const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
 
-                        if (enableVenmo && venmoExperiment) {
+                        if (venmoExperiment) {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
                         }
 

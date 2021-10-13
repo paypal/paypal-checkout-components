@@ -1,3 +1,9 @@
+## <small>5.0.183 (2021-10-06)</small>
+
+* venmo desktop to 90% (#1759) ([f30d58b](https://github.com/paypal/paypal-checkout-components/commit/f30d58b)), closes [#1759](https://github.com/paypal/paypal-checkout-components/issues/1759)
+
+
+
 ## <small>5.0.182 (2021-09-22)</small>
 
 * chore(release): 5.0.181 :tada: ([f0dc8da](https://github.com/paypal/paypal-checkout-components/commit/f0dc8da))
