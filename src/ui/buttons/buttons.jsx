@@ -23,7 +23,6 @@ type GetWalletInstrumentOptions = {|
     onShippingChange : ?OnShippingChange
 |};
 
-
 function getWalletInstrument({ wallet, fundingSource, onShippingChange } : GetWalletInstrumentOptions) : ?WalletInstrument {
     if (!isWalletFundingEligible({ wallet, onShippingChange })) {
         return;
@@ -138,7 +137,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 fundingSources.map((source, i) => (
                     <Button
-                        buttonAnimation={ buttonAnimation }
+                        buttonAnimation={ source && source === FUNDING.PAYPAL ? buttonAnimation : null }
                         content={ content }
                         i={ i }
                         style={ style }
