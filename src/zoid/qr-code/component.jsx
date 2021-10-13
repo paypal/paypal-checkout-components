@@ -96,6 +96,10 @@ export function getQRCodeComponent() : QRCodeComponent {
                     required:     false,
                     value:        getClientID
                 },
+                orderID: {
+                    type:       'string',
+                    queryParam: true
+                },
                 sdkCorrelationID: {
                     type:       'string',
                     required:   false,
