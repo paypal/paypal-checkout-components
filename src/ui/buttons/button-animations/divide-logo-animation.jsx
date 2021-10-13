@@ -8,7 +8,6 @@ import { BUTTON_SIZE_STYLE } from '../config';
 
 import  type { ButtonAnimationOutputParams, LabelOptions, ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
 
-
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
     CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation')
