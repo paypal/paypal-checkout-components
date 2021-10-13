@@ -39,12 +39,11 @@ export function prerenderTemplate({ doc, props, close } : (RenderOptionsType<QRC
         transform: rotate(-45deg);
     }  
     `;
-    return (
-        // $FlowFixMe - Types on the SpinnerPage are not using children as part of props
-        <SpinnerPage nonce={ props.cspNonce }>
-            <style innerHTML={ style } />
-            <button id="close" aria-label="close" role="button" type="button" onClick={ close } />
-        </SpinnerPage>
-        
-    ).render(dom({ doc }));
+    const children = [
+        <style nonce={ props.cspNonce } innerHTML={ style } />,
+        <a href="#" id="close" aria-label="close" role="button" onClick={ close } />
+    ];
+
+    const SpinnerModal = new SpinnerPage({ nonce: props.cspNonce }, children);
+    return SpinnerModal.render(dom({ doc }));
 }

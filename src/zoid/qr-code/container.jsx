@@ -44,9 +44,9 @@ export function QRCodeContainer({
         frame.classList.remove(CLASS.INVISIBLE);
         frame.classList.add(CLASS.VISIBLE);
 
-        setTimeout(() => {
-            destroyElement(prerenderFrame);
-        }, 1000);
+        // setTimeout(() => {
+        //     destroyElement(prerenderFrame);
+        // }, 1000);
     });
 
     return (
