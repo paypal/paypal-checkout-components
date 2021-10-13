@@ -16,10 +16,7 @@ export function prerenderTemplate({ doc, props, close } : (RenderOptionsType<QRC
         width: 16px;
         height: 0;
         opacity: 0.6;
-        z-index: 10;
-        padding: 0;
-        border: none;
-        cursor: pointer;
+        z-index: 100;
     }
     #close:hover {
         opacity: 1;
@@ -39,6 +36,7 @@ export function prerenderTemplate({ doc, props, close } : (RenderOptionsType<QRC
         transform: rotate(-45deg);
     }  
     `;
+
     const children = [
         <style nonce={ props.cspNonce } innerHTML={ style } />,
         <a href="#" id="close" aria-label="close" role="button" onClick={ close } />
