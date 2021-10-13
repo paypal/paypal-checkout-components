@@ -1,0 +1,45 @@
+[Bug] Popup flashes on screen for a second when onClick() returns actions.reject() #1752
+
+
+🐞 Describe the Bug
+  I'm attempting to do asynchronous validation following the docs here. However, the popup window seems to open, then immediately close when my onClick() method returns actions.reject()
+
+🔬 Minimal Reproduction
+  paypal
+    .Buttons({
+      onClick: function (data, actions) {
+        return actions.reject();
+      },
+    })
+    .render("#paypal-button-container");
+  
+😕 Actual Behavior
+  PayPal popup opens, then immediately closes.
+
+🤔 Expected Behavior
+  I would expect that the popup doesn't open at all when onClick() is rejected.
+
+🌍 Environment
+  Browser version: Firefox 92.0
+  OS version: MacOS 11.5.2
+  SDK version (window.paypal.version): 5.0.258
+  Affected browsers
+  What browser(s) are affected?
+
+  Chrome
+  Safari
+  Firefox
+
+Solution:
+
+  You can return the action in form of a promise & set timout to be very less. Example:
+  paypal
+    .Buttons({
+    onClick: function(data, actions) {
+      return new Promise(resolve => setTimeout(resolve, 1)).then(() => {
+          return actions.reject();
+        })
+      },
+    })
+    .render("#paypal-button-container");
+  
