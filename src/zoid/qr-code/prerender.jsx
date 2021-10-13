@@ -14,7 +14,7 @@ export function prerenderTemplate({ doc, props, close } : (RenderOptionsType<QRC
         right: 16px;
         top: 16px;
         width: 16px;
-        height: 0;
+        height: 16px;
         opacity: 0.6;
         z-index: 100;
     }

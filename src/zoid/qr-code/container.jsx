@@ -46,7 +46,7 @@ export function QRCodeContainer({
 
         setTimeout(() => {
             destroyElement(prerenderFrame);
-        }, 1000);
+        }, 1);
     });
 
     return (
@@ -102,8 +102,8 @@ export function QRCodeContainer({
             }     
             ` } />
             <div id="qrModal">
-                <node el={ prerenderFrame } />
                 <node el={ frame } />
+                <node el={ prerenderFrame } />
             </div>
                         
         </div>
