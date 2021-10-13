@@ -44,6 +44,6 @@ export function prerenderTemplate({ doc, props, close } : (RenderOptionsType<QRC
         <a href="#" id="close" aria-label="close" role="button" onClick={ close } />
     ];
 
-    const SpinnerModal = new SpinnerPage({ nonce: props.cspNonce }, children);
-    return SpinnerModal.render(dom({ doc }));
+    return new SpinnerPage({ nonce: props.cspNonce }, children)
+        .render(dom({ doc }));
 }
