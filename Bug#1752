@@ -42,4 +42,13 @@ Solution:
       },
     })
     .render("#paypal-button-container");
+    
+    We can also add some error message incase if the window opens which we don't want to open up in the manner,
+
+    onClick: function(data,actions) {
+        console.log("onClick");
+        return new Promise(function(resolve, reject) {
+            reject(Error("error: async onClick"));
+        });
+    },
   
