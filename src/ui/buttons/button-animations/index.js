@@ -3,7 +3,7 @@
 import { type Personalization } from '../props';
 
 import { setupDivideLogoAnimation } from './divide-logo-animation';
-import { setupLabelNextToLogoAnimation } from './labelNextToLogoAnimation';
+import { setupLabelTextNextToLogoAnimation } from './label-text-next-to-logo-animation';
 import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from './types';
 
 
@@ -23,7 +23,7 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
     
     if (animationId && animationId === '3') {
         const animationLabelText = (buttonAnimation && buttonAnimation.text) || 'The secure, easy way to pay';
-        configuration =  setupLabelNextToLogoAnimation(animationLabelText);
+        configuration =  setupLabelTextNextToLogoAnimation(animationLabelText);
     }
 
     return configuration;

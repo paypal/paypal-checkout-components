@@ -37,7 +37,7 @@ function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : Ch
 
 const findAnimationPositions = function (document, configuration) : void {
     const { ANIMATION_CONTAINER, PAYPAL_LABEL_CONTAINER, PAYPAL_LOGO } = configuration.cssStyles;
-    const { large, huge } = configuration.buttonSizes;
+    const { large, huge } = configuration;
 
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
@@ -47,39 +47,46 @@ const findAnimationPositions = function (document, configuration) : void {
     if (!animationContainer) {
         return null;
     }
-
+   
     const animationContainerWidth = animationContainer.offsetWidth;
     // only support large and extra large button sizes
     if (animationContainerWidth < large.min || animationContainerWidth > huge.max) {
         return null;
     }
 
+    // find label text element
+    const textElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector('span')) || 0;
+    
+    // validate label text size to avoid showing a very large text in a small space
+    if (animationContainerWidth < (large.min + 10)) {
+        const MAX_TEXT_LENGTH = 17;
+        // eslint-disable-next-line unicorn/prefer-text-content
+        const labelText =  textElement.innerText || textElement.textContent;
+        if (!labelText) {
+            return null;
+        }
+        
+        if (labelText.length && labelText.length > MAX_TEXT_LENGTH) {
+            return null;
+        }
+    }
+    // find label text dom element to help to calculate initial and final translate position
+    const textElementWidth = (textElement && textElement.offsetWidth) || 0;
     // get the logo image element from dom to get the left position
     const logoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
     // get the left position of the logo element to later calculate the translate position
     const logoElementLeftPosition = (logoElement && logoElement.getBoundingClientRect().left) || 0;
-
     // get margin of paypal label container as an integer to later calculate logo translate position
     let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
     marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
-
     // calculate translate position based on the logo left position and margin of paypal label container
     const logoTranslateXPosition = logoElementLeftPosition - marginPaypalLabelContainer;
-
     // get paypal label container's width to calculate initial and final translate positions
     const paypalLabelContainerElementWith  = (paypalLabelContainerElement &&  paypalLabelContainerElement.offsetWidth) || 0;
-
-    // find label text element
-    const textElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector('span')) || 0;
-    // find label text dom element to help to calculate initial and final translate position
-    const textElementWidth = (textElement && textElement.offsetWidth) || 0;
-
     // calculate final translate in x axis to move text element to that position
     const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
-
     // text position in y axis to center the text in y axis
     const textYposition = 22;
-
     return {
         logoTranslateXPosition,
         textYposition,
@@ -90,13 +97,13 @@ const findAnimationPositions = function (document, configuration) : void {
 
 const createAnimation = function (params, cssClasses) : void {
     const { logoTranslateXPosition, finalTranslateXTextPosition, textYposition, paypalLabelContainerElement } = params;
-    const { ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
+    const { ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO, ANIMATION_ELEMENT } = cssClasses;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
             transform: translateX(-${ logoTranslateXPosition }px);
         }
 
-        .${ ANIMATION.CONTAINER } .${ ANIMATION.ELEMENT } {
+        .${ ANIMATION_CONTAINER } .${ ANIMATION_ELEMENT } {
             opacity: 1;
             transform: translate(${ finalTranslateXTextPosition }px,-${ textYposition }px);
         }
@@ -109,26 +116,27 @@ const createAnimation = function (params, cssClasses) : void {
 };
 
 
-export function setupLabelNextToLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
+export function setupLabelTextNextToLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
     let animationScript = '';
     const animationProps = { animationLabelText };
     const animationConfig = {
         cssStyles: {
             ANIMATION_CONTAINER:    ANIMATION.CONTAINER,
+            ANIMATION_ELEMENT:      ANIMATION.ELEMENT,
             PAYPAL_LABEL_CONTAINER: CLASS.BUTTON_LABEL,
             PAYPAL_LOGO:            LOGO_CLASS.LOGO,
             DOM_READY:              CLASS.DOM_READY
         },
-        buttonSizes: {
-            large:      { min: BUTTON_SIZE_STYLE.large.minWidth },
-            huge:       { max: BUTTON_SIZE_STYLE.huge.maxWidth }
-        }
+        large:      { min: BUTTON_SIZE_STYLE.large.minWidth, max: BUTTON_SIZE_STYLE.large.maxWidth  },
+        huge:       { max: BUTTON_SIZE_STYLE.huge.maxWidth }
     };
 
     animationScript = `
         const elementPositionsForAnimation = ${ findAnimationPositions.toString() }( document, ${ JSON.stringify(animationConfig) })
-        const animation = ${ createAnimation.toString() }
-        animation(elementPositionsForAnimation, ${ JSON.stringify(animationConfig) })
+        if(elementPositionsForAnimation){
+            const animation = ${ createAnimation.toString() }
+            animation(elementPositionsForAnimation, ${ JSON.stringify(animationConfig.cssStyles) })
+        }
     `;
 
     return {
