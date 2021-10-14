@@ -10,19 +10,19 @@ import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from './
 export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | ButtonAnimationEmptyOutput {
     const buttonAnimation = (personalization && personalization.buttonAnimation) || null;
     const animationId = (buttonAnimation && buttonAnimation.id) || '';
+    let animationLabelText = (buttonAnimation && buttonAnimation.text) || 'Pay now or pay later';
     let configuration = {
         animationContainerClass: null,
         animationScript:         null,
         animationComponent:      null
     };
 
-    if (animationId && animationId === '1') {
-        const animationLabelText = (buttonAnimation && buttonAnimation.text) || 'Pay now or pay later';
+    if (animationId && animationId === 'run-divide-logo-animation') {
         configuration =  setupDivideLogoAnimation(animationLabelText);
     }
     
-    if (animationId && animationId === '3') {
-        const animationLabelText = (buttonAnimation && buttonAnimation.text) || 'The secure, easy way to pay';
+    if (animationId && animationId === 'run-add-label-text-next-to-logo-animation') {
+        animationLabelText = animationLabelText || 'The secure, easy way to pay';
         configuration =  setupLabelTextNextToLogoAnimation(animationLabelText);
     }
 

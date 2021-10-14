@@ -249,10 +249,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
                     return (...args) => {
-                        const { experiment: { enableVenmo }, fundingSource } = props;
+                        const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
 
-                        if (enableVenmo && venmoExperiment) {
+                        if (venmoExperiment) {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
                         }
 
@@ -575,6 +575,15 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'function',
                 required:   false,
                 value:      applePaySession
+            },
+
+            // allowBillingPayments prop is used by Honey Extension to render the one-click button
+            // with payment methods & to use the payment methods instead of the Billing Agreement
+            allowBillingPayments: {
+                type:       'boolean',
+                queryParam: true,
+                required:   false,
+                default:    () => true
             }
         }
     });

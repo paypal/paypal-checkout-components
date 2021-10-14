@@ -1,3 +1,15 @@
+## <small>5.0.185 (2021-10-14)</small>
+
+* chore: hardcode bundlemon public key (#1770) ([35211a4](https://github.com/paypal/paypal-checkout-components/commit/35211a4)), closes [#1770](https://github.com/paypal/paypal-checkout-components/issues/1770)
+
+
+
+## <small>5.0.184 (2021-10-13)</small>
+
+* Add new allowBillingPayments prop for Honey (#1758) ([12b6d04](https://github.com/paypal/paypal-checkout-components/commit/12b6d04)), closes [#1758](https://github.com/paypal/paypal-checkout-components/issues/1758)
+
+
+
 ## <small>5.0.183 (2021-10-06)</small>
 
 * venmo desktop to 90% (#1759) ([f30d58b](https://github.com/paypal/paypal-checkout-components/commit/f30d58b)), closes [#1759](https://github.com/paypal/paypal-checkout-components/issues/1759)
