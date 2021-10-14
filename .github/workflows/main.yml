@@ -9,17 +9,17 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [12, 14]
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -43,3 +43,8 @@ jobs:
         with:
           directory: ./coverage/jest
           flags: jest
+
+      - name: 🤏 Check bundlesize
+        run: npm run check-size
+        env:
+          BUNDLEMON_PROJECT_ID: ${{ secrets.BUNDLEMON_PROJECT_ID }}

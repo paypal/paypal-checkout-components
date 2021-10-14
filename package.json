@@ -9,9 +9,9 @@
         "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
         "flow": "flow",
         "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
-        "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot && npm run check-size; fi;",
+        "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot; fi;",
         "webpack": "babel-node $(npm bin)/webpack --progress",
-        "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size && echo && echo Final bundle size: $( npm run -s get-size );",
+        "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size",
         "build": "npm run test && npm run webpack",
         "release": "./scripts/publish.sh",
         "release:patch": "./scripts/publish.sh patch",
@@ -28,8 +28,7 @@
         "jest-screenshot": "jest test/screenshot --env=node --no-cache",
         "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
         "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
-        "get-size": "gzip -9 < dist/size.min.js | wc -c",
-        "check-size": "npm run webpack-size && if [ $(npm run -s get-size) -ge 75000 ]; then echo 'Bundle size greater than 75k'; exit 1; else npm run delete-size; fi;",
+        "check-size": "npm run webpack-size && bundlemon && npm run delete-size",
         "delete-size": "rm dist/size.* dist/report.html"
     },
     "files": [
@@ -62,6 +61,7 @@
     "readmeFilename": "README.md",
     "devDependencies": {
         "babel-core": "^7.0.0-bridge.0",
+        "bundlemon": "^1.1.0",
         "conventional-changelog-cli": "^2.0.34",
         "flow-bin": "0.155.0",
         "fs-extra": "^9.0.1",
