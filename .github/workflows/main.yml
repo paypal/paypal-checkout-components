@@ -47,4 +47,4 @@ jobs:
       - name: 🤏 Check bundlesize
         run: npm run check-size
         env:
-          BUNDLEMON_PROJECT_ID: ${{ secrets.BUNDLEMON_PROJECT_ID }}
+          BUNDLEMON_PROJECT_ID: 6166e8ee491d1e00090fee72
