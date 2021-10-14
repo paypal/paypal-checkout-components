@@ -13,7 +13,7 @@ export const ANIMATION = {
     CONTAINER:       ('label-next-to-logo-animation' : 'label-next-to-logo-animation')
 };
 
-function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : ChildType {
+function ComponentForAnimation({ animationLabelText } : LabelOptions) : ChildType {
     return (
         <Fragment>
             <span class={ ANIMATION.ELEMENT }>{animationLabelText}</span>
@@ -47,16 +47,15 @@ const findAnimationPositions = function (document, configuration) : labelNextToL
     if (!animationContainer) {
         return null;
     }
-   
+
     const animationContainerWidth = animationContainer.offsetWidth;
     // only support large and extra large button sizes
     if (animationContainerWidth < large.min || animationContainerWidth > huge.max) {
         return null;
     }
-
     // find label text element
     const textElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector('span')) || 0;
-    
+
     // validate label text size to avoid showing a very large text in a small space
     if (animationContainerWidth < (large.min + 10)) {
         const MAX_LENGTH_TEXT = 17;
@@ -70,15 +69,18 @@ const findAnimationPositions = function (document, configuration) : labelNextToL
             return null;
         }
     }
+
     // find label text dom element to help to calculate initial and final translate position
     const textElementWidth = (textElement && textElement.offsetWidth) || 0;
     // get the logo image element from dom to get the left position
     const logoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
     // get the left position of the logo element to later calculate the translate position
     const logoElementLeftPosition = (logoElement && logoElement.getBoundingClientRect().left) || 0;
-    if (logoElementLeftPosition) {
+    // return null to indicate the logo element position couldn't be calculate
+    if (!logoElementLeftPosition) {
         return null;
     }
+
     // get margin of paypal label container as an integer to later calculate logo translate position
     let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
     marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
@@ -88,6 +90,7 @@ const findAnimationPositions = function (document, configuration) : labelNextToL
     const paypalLabelContainerElementWith  = (paypalLabelContainerElement &&  paypalLabelContainerElement.offsetWidth) || 0;
     // calculate final translate in x axis to move text element to that position
     const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
+    // return null to indicate the label text element position couldn't be calculate
     if (!finalTranslateXTextPosition) {
         return null;
     }
@@ -148,6 +151,6 @@ export function setupLabelTextNextToLogoAnimation (animationLabelText : string) 
     return {
         animationContainerClass: ANIMATION.CONTAINER,
         animationScript,
-        animationComponent:      (<LabelForDivideLogoAnimation { ...animationProps } />)
+        animationComponent:      (<ComponentForAnimation { ...animationProps } />)
     };
 }
