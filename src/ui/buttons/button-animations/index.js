@@ -18,7 +18,6 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
 
     if (animationId && animationId === 'run-divide-logo-animation') {
         configuration =  setupDivideLogoAnimation(animationLabelText);
-        return configuration;
     }
    
     if (animationId && animationId === 'run-resize-button-animation') {
