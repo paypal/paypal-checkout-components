@@ -42,7 +42,7 @@ export const ANIMATION = {
     LABEL_CONTAINER: ('label-text-resize-button-animation' : 'label-text-resize-button-animation')
 };
 
-function LabelForAnimation({ animationLabelText } : LabelOptions) : ChildType {
+function ComponentForAnimation({ animationLabelText } : LabelOptions) : ChildType {
     const config = {
         labelText:  animationLabelText,
         labelClass:  ANIMATION.CONTAINER
@@ -57,7 +57,7 @@ function LabelForAnimation({ animationLabelText } : LabelOptions) : ChildType {
     );
 }
 
-function getAnimationParameters() : ButtonSizes {
+function getAnimationConfig() : ButtonSizes {
     return {
         large:      {
             min: BUTTON_SIZE_STYLE.large.minWidth,
@@ -247,7 +247,7 @@ const createAnimation = function (params, cssClasses) : void {
 export function setupResizeButtonAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
     let animationScript = '';
     const animationProps = { animationLabelText };
-    const configParameters = getAnimationParameters();
+    const configParameters = getAnimationConfig();
   
     animationScript = `
         const positionsForAnimation = ${ getAnimationPositions.toString() }(document,${ JSON.stringify(configParameters) });
@@ -260,6 +260,6 @@ export function setupResizeButtonAnimation (animationLabelText : string) : Butto
     return {
         animationContainerClass: ANIMATION.CONTAINER,
         animationScript,
-        animationComponent:      (<LabelForAnimation { ...animationProps } />)
+        animationComponent:      (<ComponentForAnimation { ...animationProps } />)
     };
 }
