@@ -6,8 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import  type { ButtonAnimationOutputParams, LabelOptions,  ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
-
+import  type { ButtonAnimationOutputParams, LabelOptions, ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
@@ -42,7 +41,7 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
 
 const getPositionsOfElementsForAnimation = function(document, configuration) : ResizeButtonAnimationDomElementPositions | null {
     const { ANIMATION_CONTAINER, PAYPAL_LOGO, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
-
+    const { large, huge } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     // get the label container element having into account the animation container to force specificity in css
@@ -51,34 +50,33 @@ const getPositionsOfElementsForAnimation = function(document, configuration) : R
     if (!animationContainer) {
         return null;
     }
-    // get margin of paypal label container as an integer
+
+    const animationContainerWidth = animationContainer.offsetWidth;
+    if (animationContainerWidth < large.min  || animationContainerWidth > huge.max) {
+        return null;
+    }
+
+    // get margin of paypal label container as an integer to later calculate logo translate position
     let marginPaypalLabelContainer = document.defaultView.getComputedStyle(paypalLabelContainerElement).getPropertyValue('margin-left');
     marginPaypalLabelContainer = marginPaypalLabelContainer ? parseInt(marginPaypalLabelContainer.replace('px', ''), 10) : 0;
-
-    // get the logo image element from dom
+    // get the logo image element from dom to get the left position
     const logoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
-    // get the left position of the logo image dom element
+    // get the left position of the logo element to later calculate the translate position
     const logoElementLeftPosition = (logoElement && logoElement.getBoundingClientRect().left) || 0;
-
-    // calculate translate position based on the logo left position and container of the margin
+    // calculate translate position based on the logo left position and margin of paypal label container
     const logoTranslateXPosition = logoElementLeftPosition - marginPaypalLabelContainer;
-
-    // get paypal label container's width of the element
+    // get paypal label container's width to calculate initial and final translate positions
     const paypalLabelContainerElementWith  = (paypalLabelContainerElement &&  paypalLabelContainerElement.offsetWidth) || 0;
     // find label text element
     const textElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector('span')) || 0;
-    // find label text dom element's width
+    // find label text dom element to help to calculate initial and final translate position
     const textElementWidth = (textElement && textElement.offsetWidth) || 0;
-
-    // calculate initial translate position to move text element to that initial position
+    // calculate initial translate position to start the animation with the text in that position
     const initialTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth) / 2;
-
     // calculate final translate in x axis to move text element to that position
     const finalTranslateXTextPosition = (paypalLabelContainerElementWith - textElementWidth);
-
-    // text position in y axis to center the text
+    // text position in y axis to center the text in y axis
     const textYposition = 22;
-
     return {
         logoTranslateXPosition,
         initialTranslateXTextPosition,
@@ -90,8 +88,8 @@ const getPositionsOfElementsForAnimation = function(document, configuration) : R
 
 function animationConfiguration () : ButtonSizes {
     return {
-        large:      { min: BUTTON_SIZE_STYLE.large.minWidth, max: BUTTON_SIZE_STYLE.large.maxWidth },
-        huge:       { min: BUTTON_SIZE_STYLE.huge.minWidth, max: BUTTON_SIZE_STYLE.huge.maxWidth },
+        large:      { min: BUTTON_SIZE_STYLE.large.minWidth },
+        huge:       { max: BUTTON_SIZE_STYLE.huge.maxWidth },
         cssClasses: {
             DOM_READY:                  CLASS.DOM_READY,
             ANIMATION_CONTAINER:         ANIMATION.CONTAINER,
@@ -147,7 +145,6 @@ export function setupDivideLogoAnimation (animationLabelText : string) : ButtonA
     const animationProps = { animationLabelText };
     const animationFn = createDivideLogoAnimation();
     const animationConfig = animationConfiguration();
-
     animationScript = `
         const elementPositionsForAnimation = ${ getPositionsOfElementsForAnimation.toString() }( document, ${ JSON.stringify(animationConfig) })
         if (elementPositionsForAnimation) {
@@ -155,7 +152,6 @@ export function setupDivideLogoAnimation (animationLabelText : string) : ButtonA
             animation(elementPositionsForAnimation, ${ JSON.stringify(animationConfig.cssClasses) })
         }
     `;
-
     return {
         animationContainerClass: ANIMATION.CONTAINER,
         animationScript,

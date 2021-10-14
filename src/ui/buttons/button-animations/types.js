@@ -8,8 +8,8 @@ export type ButtonAnimationOutputParams ={|
 |};
 
 export type ButtonSizeProperties = {|
-    min : number,
-    max : number
+    min? : number,
+    max? : number
 |};
 
 type ButtonAnimationCss ={|

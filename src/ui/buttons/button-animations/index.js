@@ -16,11 +16,12 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
         animationComponent:      null
     };
 
-    if (animationId && animationId === '1') {
+    if (animationId && animationId === 'run-divide-logo-animation') {
         configuration =  setupDivideLogoAnimation(animationLabelText);
+        return configuration;
     }
-
-    if (animationId && animationId === '2') {
+   
+    if (animationId && animationId === 'run-resize-button-animation') {
         configuration =  setupResizeButtonAnimation(animationLabelText);
     }
 

@@ -38,13 +38,12 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    buttonAnimation? : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput
+    buttonAnimation : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput | null
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, buttonAnimation } : IndividualButtonProps) : ElementNode {
     const fundingConfig = getFundingConfig()[fundingSource];
-        
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
@@ -96,7 +95,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const { layout, shape } = style;
     
     const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content }) : (fundingConfig.labelText || fundingSource);
-    
     const logoNode = (
         <Logo
             label={ label }
