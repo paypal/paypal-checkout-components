@@ -4,10 +4,8 @@
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 
 function getComponentScript() : () => void {
-
     /* istanbul ignore next */
     return () => {
-
         const ATTRIBUTE = {
             OPTIONAL: 'optional'
         };
@@ -157,7 +155,6 @@ function getComponentScript() : () => void {
             toggleOptionals();
             setDomReady();
         };
-
         toggleOptionals();
         document.addEventListener('DOMContentLoaded', load);
         window.addEventListener('load', load);
@@ -166,11 +163,18 @@ function getComponentScript() : () => void {
 }
 
 type ScriptProps = {|
-    nonce : ?string
+    nonce : ?string,
+    buttonAnimation : string
 |};
 
-export function Script({ nonce } : ScriptProps) : ElementNode {
+export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
+    const scripts = `
+        const scriptFns = ${ getComponentScript().toString() };
+        scriptFns();
+        function onDomLoad(){ ${ buttonAnimation } };
+        document.addEventListener('DOMContentLoaded', onDomLoad);
+    `;
     return (
-        <script nonce={ nonce } innerHTML={ `(${ getComponentScript().toString() })()` } />
+        <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts }})()` } />
     );
 }
