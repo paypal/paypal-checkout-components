@@ -248,6 +248,13 @@ export function getWalletComponent() : WalletComponent {
                     type:       'boolean',
                     value:      getDebug,
                     queryParam: true
+                },
+
+                allowBillingPayments: {
+                    type:       'boolean',
+                    queryParam: true,
+                    required:   false,
+                    default:    () => true
                 }
             }
         });
