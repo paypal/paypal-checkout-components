@@ -517,6 +517,7 @@ describe('native qrcode cases', () => {
         it('should render a button with createOrder, click the button, and render checkout via qrcode path with empty ineligibilityReason', async () => {
             return await wrapPromise(async ({ expect, avoid }) => {
                 window.xprops.platform = PLATFORM.DESKTOP;
+                window.xprops.intent = 'capture';
                 delete window.xprops.onClick;
     
                 const sessionToken = uniqueID();
@@ -728,5 +729,6 @@ describe('native qrcode cases', () => {
                 gqlMock.done();
             });
         });
+
     });
 });

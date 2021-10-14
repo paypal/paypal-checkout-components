@@ -236,6 +236,125 @@ export const cardStyle : string = `
         transition: transform 500ms, opacity 500ms;
         transition-delay: 350ms;
     }
+    #close {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 16px;
+        height: 16px;
+        opacity: 0.6;
+        z-index: 10;
+    }
+    #close:hover {
+        opacity: 1;
+    }
+    #close:before, #close:after {
+        position: absolute;
+        left: 8px;
+        content: ' ';
+        height: 20px;
+        width: 2px;
+        background-color: #FFF;
+    }
+    #close:before {
+        transform: rotate(45deg);
+    }
+    #close:after {
+        transform: rotate(-45deg);
+    }
+    #survey {
+        background: #FFFFFF;
+        height: 542px;
+        width: 500px;
+        border-radius: 8px;
+    }
+    #survey h1 {
+        width: 423px;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 32px;
+        text-align: center;
+        margin: auto;
+        margin-top: 30px;
+    }
+    #survey button {
+        display: block;
+        margin: auto;
+        border: none;
+        font-family: sans-serif;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    #survey button.continue-button {
+        margin-top: 40px;
+        min-height: 48px;
+        width:  335px;
+        background: #0074DE;
+        height: 24px;
+        font-size: 18px;
+        line-height: 24px;
+        text-align: center;
+        color: #FFFFFF;
+        border-radius: 24px;
+        display: block;
+    }
+    #survey button.leave-button {
+        margin-top: 10px;
+        height: 48px;
+        width:  335px;
+        color: #0074DE;
+        background: none;
+        font-size: 18px;
+        line-height: 24px;
+        text-align: center;
+        display: block;
+    }
+    #survey .message {
+        width: 333px;
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+        text-align: center;
+        margin: auto;
+        margin-top: 8px;
+    }
+    
+    #survey .answers {
+        width: 400px;
+        font-size: 16px;
+        line-height: 20px;
+        margin: auto;
+        cursor: pointer;
+    }
+    #survey .answers .answer {
+        margin-top: 28px;
+        display: flex;
+        align-items: center;
+    }
+    #survey label {
+        font-family: sans-serif;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+    #survey .answers svg{
+        margin-right: 8px;
+        min-width: 40px;
+    }
+    #survey .answers input{
+        display: none;
+    }
+    #survey .answers input:focus::after {
+        content: "";
+        min-width: 44px;
+        height: 44px;
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        border: solid 1px black;
+        border-radius: 50%;
+    }
     .escape-path {    
         background-color: white;
         color: #2F3033;

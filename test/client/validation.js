@@ -966,7 +966,7 @@ describe('validation cases', () => {
 
             const orderID = generateOrderID();
 
-            window.xprops.intent = INTENT.CAPTURE;
+            window.xprops.intent = INTENT.AUTHORIZE;
 
             const gqlMock = getGraphQLApiMock({
                 extraHandler: expect('checkoutGQLCall', ({ data }) => {

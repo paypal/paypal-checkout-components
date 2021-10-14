@@ -24,7 +24,7 @@ describe('payee cases', () => {
 
             const orderID = generateOrderID();
             const payerID = 'YYYYYYYYYY';
-            const merchantID = [ 'ABCDEF123' ];
+            const merchantID = [ 'XYZ12345' ];
             const payees = merchantID;
 
             window.xprops.intent = INTENT.AUTHORIZE;

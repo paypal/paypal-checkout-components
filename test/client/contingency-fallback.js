@@ -474,6 +474,7 @@ describe('contingency cases with smart api fallback', () => {
             const accessToken = MOCK_BUYER_ACCESS_TOKEN;
 
             window.xprops.onClick = mockAsyncProp(expect('onClick'));
+            window.xprops.intent = INTENT.CAPTURE;
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                 return ZalgoPromise.try(() => {

@@ -30,20 +30,19 @@ const logger = {
 
 const test_qrPath = 'string_to_be_encoded';
 
-function isRenderCallCorrect ({ html, debug } : {|html : string, debug : boolean|}) : boolean {
-    /* eslint-disable prefer-regex-literals */
-    const debugValue = debug.toString();
-    const startOfSVGString = RegExp(`renderQRCode.*,"svgString":".*"http://www.w3.org/2000/svg`);
-    const cspNonce_isCorrect = Boolean(html.match(RegExp(`renderQRCode.{"cspNonce":".*"`)));
+function isRenderCallCorrect ({ html } : {|html : string |}) : boolean {
+    const startOfSVGString = /renderQRCode.*{"svgString":.*"http:\/\/www.w3.org\/2000\/svg/g;
+
     const svgPath_isCorrect = Boolean(html.match(startOfSVGString));
-    const debug_isCorrect = Boolean(html.match(RegExp(`renderQRCode.*,"debug":${ debugValue }}`)));
-    return cspNonce_isCorrect && svgPath_isCorrect && debug_isCorrect;
-    /* eslint-enable */
+    if (!svgPath_isCorrect) {
+        throw new Error(`svgPath is not correct.`);
+    }
+
+    return svgPath_isCorrect;
 }
 
 test('should do a basic QRCode page render', async () => {
     const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
-
     const req = mockReq({
         query: {
             parentDomain: 'foo.paypal.com',
@@ -70,10 +69,13 @@ test('should do a basic QRCode page render', async () => {
     if (!html) {
         throw new Error(`Expected res to have a body`);
     }
-
-    if (!isRenderCallCorrect({ html, debug: false })) {
-        throw new Error(`Construction of the renderQRCode call is incorrect`);
+    
+    try {
+        isRenderCallCorrect({ html });
+    } catch (e) {
+        throw new Error(e.message);
     }
+
 });
 
 test('should fail if qrPath query param not provided', async () => {
@@ -171,7 +173,7 @@ test('should render & make correct init call when when "debug" param passed', as
         throw new Error(`Expected res to have a body`);
     }
 
-    if (!isRenderCallCorrect({ html, debug: true })) {
+    if (!isRenderCallCorrect({ html })) {
         throw new Error(`Construction of the renderQRCode call is incorrect`);
     }
 });

@@ -3,11 +3,11 @@
 
 import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import { FUNDING } from '@paypal/sdk-constants/src';
+import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { getBody } from '../lib';
+import { QRCODE_STATE, FPTI_CUSTOM_KEY, FPTI_TRANSITION, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
 import { openPopup } from '../ui';
-import { QRCODE_STATE } from '../constants';
 import { CHECKOUT_POPUP_DIMENSIONS } from '../payment-flows/checkout';
 
 import {
@@ -20,7 +20,10 @@ import {
     cardStyle,
     debugging_nextStateMap
 } from './components';
+import { setupNativeQRLogger } from './lib/logger';
+import { Survey, useSurvey } from './survey';
 
+let logger;
 
 function useXProps<T>() : T {
     const [ xprops, setXProps ] = useState(window.xprops);
@@ -42,15 +45,13 @@ function useXProps<T>() : T {
 }
 
 function QRCard({
-    cspNonce,
-    svgString,
-    debug
+    svgString
 } : {|
-    cspNonce : ?string,
-    svgString : string,
-    debug? : boolean
+    svgString : string
 |}) : mixed {
-    const { state, errorText, setState } = useXProps();
+
+    const { state, errorText, setState, close } = useXProps();
+    const survey = useSurvey();
     const isError = () => {
         return state === QRCODE_STATE.ERROR;
     };
@@ -59,8 +60,25 @@ function QRCard({
         window.xprops.hide();
         const win = openPopup({ width: CHECKOUT_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_POPUP_DIMENSIONS.HEIGHT, closeOnUnload: 0 });
         window.xprops.onEscapePath(win, selectedFundingSource).then(() => {
-            window.xprops.close();
+            close();
         });
+    };
+
+    const onCloseClick = () => {
+        if (state !== QRCODE_STATE.DEFAULT) {
+            close();
+        } else if (survey.isEnabled) {
+            logger.info(`VenmoDesktopPay_qrcode_survey`).track({
+                [FPTI_KEY.STATE]:                               FPTI_STATE.BUTTON,
+                [FPTI_KEY.CONTEXT_TYPE]:                        FPTI_CONTEXT_TYPE.ORDER_ID,
+                [FPTI_KEY.CONTEXT_ID]:                          window.xprops.orderID,
+                [FPTI_KEY.TRANSITION]:                          `${ FPTI_TRANSITION.QR_SURVEY }`,
+                [FPTI_CUSTOM_KEY.DESKTOP_EXIT_SURVEY_REASON]:   survey.reason
+            }).flush();
+            close();
+        } else {
+            survey.enable();
+        }
     };
 
     const errorMessage = (
@@ -82,12 +100,24 @@ function QRCard({
             <Logo />
         </div>
     );
+    
+    const surveyElement = (
+        <Survey survey={ survey } onCloseClick={ onCloseClick } />
+    );
+
+    const displaySurvey = survey.isEnabled && state === QRCODE_STATE.DEFAULT;
+
+    const content = displaySurvey ? surveyElement : frontView;
+    const escapePathFooter = !survey.isEnabled && (
+        <p className="escape-path">Don&apos;t have the app? Pay with <span className="escape-path__link" onClick={ () => handleClick(FUNDING.PAYPAL) }>PayPal</span> or <span className="escape-path__link" onClick={ () => handleClick(FUNDING.CARD) }>Credit/Debit card</span></p>
+    );
 
     return (
         <Fragment>
-            <style nonce={ cspNonce }> { cardStyle } </style>
+            <style nonce={ window.xprops.cspNonce }> { cardStyle } </style>
+            <a href="#" id="close" aria-label="close" role="button" onClick={ onCloseClick } />
             <div id="view-boxes" className={ state }>
-                { isError() ? errorMessage : frontView }
+                { isError() ? errorMessage : content }
                 <div className="card" id="back-view" >
                     <span className="mark">
                         <VenmoMark />
@@ -102,33 +132,31 @@ function QRCard({
                     </div>
 
                 </div>
-                { debug && <button
-                    type="button"
-                    style={ { position: 'absolute', bottom: '8px', padding: '4px', right: '8px' } }
-                    onClick={ () => setState(debugging_nextStateMap.get(state)) }
-                >Next State</button>}
+                { window.xprops.debug &&
+                    <button
+                        type="button"
+                        style={ { position: 'absolute', bottom: '8px', padding: '4px', right: '8px' } }
+                        onClick={ () => setState(debugging_nextStateMap.get(state)) }
+                    >
+                        Next State
+                    </button>}
             </div>
-            <p className="escape-path">Don&apos;t have the app? Pay with <span className="escape-path__link" onClick={ () => handleClick(FUNDING.PAYPAL) }>PayPal</span> or <span className="escape-path__link" onClick={ () => handleClick(FUNDING.CARD) }>Credit/Debit card</span></p>
+            { escapePathFooter }
         </Fragment>
     );
 }
 
 type RenderQRCodeOptions = {|
-    cspNonce? : string,
-    svgString : string,
-    debug : boolean
+    svgString : string
 |};
 
 export function renderQRCode({
-    cspNonce = '',
-    svgString,
-    debug = false
+    svgString
 } : RenderQRCodeOptions) {
+    logger = setupNativeQRLogger();
     render(
         <QRCard
-            cspNonce={ cspNonce }
             svgString={ svgString }
-            debug={ debug }
         />,
         getBody()
     );

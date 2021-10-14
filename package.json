@@ -65,7 +65,7 @@
     "@paypal/sdk-constants": "^1.0.107",
     "@paypal/sdk-logos": "^1.0.26",
     "@paypal/sdk-release": "^5.0.138",
-    "beaver-logger": "^4.0.12",
+    "beaver-logger": "^4.0.32",
     "belter": "^1.0.19",
     "card-validator": "^8.1.1",
     "credit-card-type": "^9.1.0",
