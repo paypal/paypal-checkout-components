@@ -160,9 +160,9 @@ window.spb = function(modules) {
             })), S.d(N, "VAULT", (function() {
                 return A;
             })), S.d(N, "CURRENCY", (function() {
-                return F;
-            })), S.d(N, "SDK_PATH", (function() {
                 return r;
+            })), S.d(N, "SDK_PATH", (function() {
+                return F;
             })), S.d(N, "SDK_SETTINGS", (function() {
                 return H;
             })), S.d(N, "SDK_QUERY_KEYS", (function() {
@@ -174,13 +174,13 @@ window.spb = function(modules) {
             })), S.d(N, "QUERY_BOOL", (function() {
                 return o;
             })), S.d(N, "UNKNOWN", (function() {
-                return Z;
-            })), S.d(N, "PROTOCOL", (function() {
                 return O;
-            })), S.d(N, "PAGE_TYPES", (function() {
+            })), S.d(N, "PROTOCOL", (function() {
                 return i;
-            })), S.d(N, "MERCHANT_ID_MAX", (function() {
+            })), S.d(N, "PAGE_TYPES", (function() {
                 return M;
+            })), S.d(N, "MERCHANT_ID_MAX", (function() {
+                return Z;
             })), S.d(N, "PLATFORM", (function() {
                 return h;
             })), S.d(N, "TYPES", (function() {
@@ -472,7 +472,7 @@ window.spb = function(modules) {
                 CR: [ t.ES, t.EN, t.FR, t.ZH ],
                 CV: [ t.EN, t.FR, t.ES, t.ZH ],
                 CY: [ t.EN ],
-                CZ: [ t.CS, t.EN, t.FR, t.ES, t.ZH ],
+                CZ: [ t.CS, t.EN ],
                 DE: [ t.DE, t.EN ],
                 DJ: [ t.FR, t.EN, t.ES, t.ZH ],
                 DK: [ t.DA, t.EN ],
@@ -480,12 +480,12 @@ window.spb = function(modules) {
                 DO: [ t.ES, t.EN, t.FR, t.ZH ],
                 DZ: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
                 EC: [ t.ES, t.EN, t.FR, t.ZH ],
-                EE: [ t.ET, t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                EE: [ t.ET, t.EN, t.RU ],
                 EG: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
                 ER: [ t.EN, t.FR, t.ES, t.ZH ],
                 ES: [ t.ES, t.EN ],
                 ET: [ t.EN, t.FR, t.ES, t.ZH ],
-                FI: [ t.FI, t.EN, t.FR, t.ES, t.ZH ],
+                FI: [ t.FI, t.EN ],
                 FJ: [ t.EN, t.FR, t.ES, t.ZH ],
                 FK: [ t.EN, t.FR, t.ES, t.ZH ],
                 FM: [ t.EN ],
@@ -501,14 +501,14 @@ window.spb = function(modules) {
                 GM: [ t.EN, t.FR, t.ES, t.ZH ],
                 GN: [ t.FR, t.EN, t.ES, t.ZH ],
                 GP: [ t.EN, t.FR, t.ES, t.ZH ],
-                GR: [ t.EL, t.EN, t.FR, t.ES, t.ZH ],
+                GR: [ t.EL, t.EN ],
                 GT: [ t.ES, t.EN, t.FR, t.ZH ],
                 GW: [ t.EN, t.FR, t.ES, t.ZH ],
                 GY: [ t.EN, t.FR, t.ES, t.ZH ],
                 HK: [ t.EN, t.ZH_HANT, t.ZH ],
                 HN: [ t.ES, t.EN, t.FR, t.ZH ],
                 HR: [ t.EN ],
-                HU: [ t.HU, t.EN, t.FR, t.ES, t.ZH ],
+                HU: [ t.HU, t.EN ],
                 ID: [ t.ID, t.EN ],
                 IE: [ t.EN, t.FR, t.ES, t.ZH ],
                 IL: [ t.HE, t.EN ],
@@ -533,9 +533,9 @@ window.spb = function(modules) {
                 LI: [ t.EN, t.FR, t.ES, t.ZH ],
                 LK: [ t.SI, t.EN ],
                 LS: [ t.EN, t.FR, t.ES, t.ZH ],
-                LT: [ t.LT, t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                LT: [ t.LT, t.EN, t.RU, t.ZH ],
                 LU: [ t.EN, t.DE, t.FR, t.ES, t.ZH ],
-                LV: [ t.LV, t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                LV: [ t.LV, t.EN, t.RU ],
                 MA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
                 MC: [ t.FR, t.EN ],
                 MD: [ t.EN ],
@@ -581,7 +581,7 @@ window.spb = function(modules) {
                 PY: [ t.ES, t.EN ],
                 QA: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
                 RE: [ t.EN, t.FR, t.ES, t.ZH ],
-                RO: [ t.RO, t.EN, t.FR, t.ES, t.ZH ],
+                RO: [ t.RO, t.EN ],
                 RS: [ t.EN, t.FR, t.ES, t.ZH ],
                 RU: [ t.RU, t.EN ],
                 RW: [ t.FR, t.EN, t.ES, t.ZH ],
@@ -591,9 +591,9 @@ window.spb = function(modules) {
                 SE: [ t.SV, t.EN ],
                 SG: [ t.EN ],
                 SH: [ t.EN, t.FR, t.ES, t.ZH ],
-                SI: [ t.SL, t.EN, t.FR, t.ES, t.ZH ],
+                SI: [ t.SL, t.EN ],
                 SJ: [ t.EN, t.FR, t.ES, t.ZH ],
-                SK: [ t.SK, t.EN, t.FR, t.ES, t.ZH ],
+                SK: [ t.SK, t.EN ],
                 SL: [ t.EN, t.FR, t.ES, t.ZH ],
                 SM: [ t.EN, t.FR, t.ES, t.ZH ],
                 SN: [ t.FR, t.EN, t.ES, t.ZH ],
@@ -644,7 +644,7 @@ window.spb = function(modules) {
             }, A = {
                 TRUE: !0,
                 FALSE: !1
-            }, F = {
+            }, r = {
                 AED: "AED",
                 ALL: "ALL",
                 ANG: "ANG",
@@ -747,7 +747,7 @@ window.spb = function(modules) {
                 XAF: "XAF",
                 XCD: "XCD",
                 YER: "YER"
-            }, r = "/sdk/js", H = {
+            }, F = "/sdk/js", H = {
                 NAMESPACE: "data-namespace",
                 CLIENT_TOKEN: "data-client-token",
                 MERCHANT_ID: "data-merchant-id",
@@ -792,10 +792,10 @@ window.spb = function(modules) {
             }, o = {
                 TRUE: "true",
                 FALSE: "false"
-            }, Z = "unknown", O = {
+            }, O = "unknown", i = {
                 HTTP: "http",
                 HTTPS: "https"
-            }, i = {
+            }, M = {
                 HOME: "home",
                 PRODUCT: "product",
                 CART: "cart",
@@ -804,7 +804,7 @@ window.spb = function(modules) {
                 SEARCH_RESULTS: "search-results",
                 PRODUCT_DETAILS: "product-details",
                 MINI_CART: "mini-cart"
-            }, M = 10, C = R.US, u = F.USD, a = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, c = A.FALSE, U = _.BUTTONS, G = I.FALSE, B = {
+            }, Z = 10, C = R.US, u = r.USD, a = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, c = A.FALSE, U = _.BUTTONS, G = I.FALSE, B = {
                 LOCAL: "local",
                 STAGE: "stage",
                 SANDBOX: "sandbox",
@@ -938,6 +938,308 @@ window.spb = function(modules) {
     },
     "./node_modules/@paypal/sdk-constants/index.js": function(module, exports, __webpack_require__) {
         module.exports = __webpack_require__("./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js");
+    },
+    "./node_modules/credit-card-type/dist/index.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        var __assign = this && this.__assign || function() {
+            return (__assign = Object.assign || function(t) {
+                for (var s, i = 1, n = arguments.length; i < n; i++) {
+                    s = arguments[i];
+                    for (var p in s) ({}).hasOwnProperty.call(s, p) && (t[p] = s[p]);
+                }
+                return t;
+            }).apply(this, arguments);
+        };
+        var cardTypes = __webpack_require__("./node_modules/credit-card-type/dist/lib/card-types.js");
+        var add_matching_cards_to_results_1 = __webpack_require__("./node_modules/credit-card-type/dist/lib/add-matching-cards-to-results.js");
+        var is_valid_input_type_1 = __webpack_require__("./node_modules/credit-card-type/dist/lib/is-valid-input-type.js");
+        var find_best_match_1 = __webpack_require__("./node_modules/credit-card-type/dist/lib/find-best-match.js");
+        var clone_1 = __webpack_require__("./node_modules/credit-card-type/dist/lib/clone.js");
+        var customCards = {};
+        var cardNames = {
+            VISA: "visa",
+            MASTERCARD: "mastercard",
+            AMERICAN_EXPRESS: "american-express",
+            DINERS_CLUB: "diners-club",
+            DISCOVER: "discover",
+            JCB: "jcb",
+            UNIONPAY: "unionpay",
+            MAESTRO: "maestro",
+            ELO: "elo",
+            MIR: "mir",
+            HIPER: "hiper",
+            HIPERCARD: "hipercard"
+        };
+        var ORIGINAL_TEST_ORDER = [ cardNames.VISA, cardNames.MASTERCARD, cardNames.AMERICAN_EXPRESS, cardNames.DINERS_CLUB, cardNames.DISCOVER, cardNames.JCB, cardNames.UNIONPAY, cardNames.MAESTRO, cardNames.ELO, cardNames.MIR, cardNames.HIPER, cardNames.HIPERCARD ];
+        var testOrder = clone_1.clone(ORIGINAL_TEST_ORDER);
+        function findType(cardType) {
+            return customCards[cardType] || cardTypes[cardType];
+        }
+        function getCardPosition(name, ignoreErrorForNotExisting) {
+            void 0 === ignoreErrorForNotExisting && (ignoreErrorForNotExisting = !1);
+            var position = testOrder.indexOf(name);
+            if (!ignoreErrorForNotExisting && -1 === position) throw new Error('"' + name + '" is not a supported card type.');
+            return position;
+        }
+        function creditCardType(cardNumber) {
+            var results = [];
+            if (!is_valid_input_type_1.isValidInputType(cardNumber)) return results;
+            if (0 === cardNumber.length) return testOrder.map((function(cardType) {
+                return clone_1.clone(findType(cardType));
+            }));
+            testOrder.forEach((function(cardType) {
+                var cardConfiguration = findType(cardType);
+                add_matching_cards_to_results_1.addMatchingCardsToResults(cardNumber, cardConfiguration, results);
+            }));
+            var bestMatch = find_best_match_1.findBestMatch(results);
+            return bestMatch ? [ bestMatch ] : results;
+        }
+        creditCardType.getTypeInfo = function(cardType) {
+            return clone_1.clone(findType(cardType));
+        };
+        creditCardType.removeCard = function(name) {
+            var position = getCardPosition(name);
+            testOrder.splice(position, 1);
+        };
+        creditCardType.addCard = function(config) {
+            var existingCardPosition = getCardPosition(config.type, !0);
+            customCards[config.type] = config;
+            -1 === existingCardPosition && testOrder.push(config.type);
+        };
+        creditCardType.updateCard = function(cardType, updates) {
+            var originalObject = customCards[cardType] || cardTypes[cardType];
+            if (!originalObject) throw new Error('"' + cardType + "\" is not a recognized type. Use `addCard` instead.'");
+            if (updates.type && originalObject.type !== updates.type) throw new Error("Cannot overwrite type parameter.");
+            var clonedCard = clone_1.clone(originalObject);
+            clonedCard = __assign(__assign({}, clonedCard), updates);
+            customCards[clonedCard.type] = clonedCard;
+        };
+        creditCardType.changeOrder = function(name, position) {
+            var currentPosition = getCardPosition(name);
+            testOrder.splice(currentPosition, 1);
+            testOrder.splice(position, 0, name);
+        };
+        creditCardType.resetModifications = function() {
+            testOrder = clone_1.clone(ORIGINAL_TEST_ORDER);
+            customCards = {};
+        };
+        creditCardType.types = cardNames;
+        module.exports = creditCardType;
+    },
+    "./node_modules/credit-card-type/dist/lib/add-matching-cards-to-results.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: !0
+        });
+        exports.addMatchingCardsToResults = void 0;
+        var clone_1 = __webpack_require__("./node_modules/credit-card-type/dist/lib/clone.js");
+        var matches_1 = __webpack_require__("./node_modules/credit-card-type/dist/lib/matches.js");
+        exports.addMatchingCardsToResults = function(cardNumber, cardConfiguration, results) {
+            var i, patternLength;
+            for (i = 0; i < cardConfiguration.patterns.length; i++) {
+                var pattern = cardConfiguration.patterns[i];
+                if (matches_1.matches(cardNumber, pattern)) {
+                    var clonedCardConfiguration = clone_1.clone(cardConfiguration);
+                    patternLength = Array.isArray(pattern) ? String(pattern[0]).length : String(pattern).length;
+                    cardNumber.length >= patternLength && (clonedCardConfiguration.matchStrength = patternLength);
+                    results.push(clonedCardConfiguration);
+                    break;
+                }
+            }
+        };
+    },
+    "./node_modules/credit-card-type/dist/lib/card-types.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        module.exports = {
+            visa: {
+                niceType: "Visa",
+                type: "visa",
+                patterns: [ 4 ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16, 18, 19 ],
+                code: {
+                    name: "CVV",
+                    size: 3
+                }
+            },
+            mastercard: {
+                niceType: "Mastercard",
+                type: "mastercard",
+                patterns: [ [ 51, 55 ], [ 2221, 2229 ], [ 223, 229 ], [ 23, 26 ], [ 270, 271 ], 2720 ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16 ],
+                code: {
+                    name: "CVC",
+                    size: 3
+                }
+            },
+            "american-express": {
+                niceType: "American Express",
+                type: "american-express",
+                patterns: [ 34, 37 ],
+                gaps: [ 4, 10 ],
+                lengths: [ 15 ],
+                code: {
+                    name: "CID",
+                    size: 4
+                }
+            },
+            "diners-club": {
+                niceType: "Diners Club",
+                type: "diners-club",
+                patterns: [ [ 300, 305 ], 36, 38, 39 ],
+                gaps: [ 4, 10 ],
+                lengths: [ 14, 16, 19 ],
+                code: {
+                    name: "CVV",
+                    size: 3
+                }
+            },
+            discover: {
+                niceType: "Discover",
+                type: "discover",
+                patterns: [ 6011, [ 644, 649 ], 65 ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16, 19 ],
+                code: {
+                    name: "CID",
+                    size: 3
+                }
+            },
+            jcb: {
+                niceType: "JCB",
+                type: "jcb",
+                patterns: [ 2131, 1800, [ 3528, 3589 ] ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16, 17, 18, 19 ],
+                code: {
+                    name: "CVV",
+                    size: 3
+                }
+            },
+            unionpay: {
+                niceType: "UnionPay",
+                type: "unionpay",
+                patterns: [ 620, [ 624, 626 ], [ 62100, 62182 ], [ 62184, 62187 ], [ 62185, 62197 ], [ 62200, 62205 ], [ 622010, 622999 ], 622018, [ 622019, 622999 ], [ 62207, 62209 ], [ 622126, 622925 ], [ 623, 626 ], 6270, 6272, 6276, [ 627700, 627779 ], [ 627781, 627799 ], [ 6282, 6289 ], 6291, 6292, 810, [ 8110, 8131 ], [ 8132, 8151 ], [ 8152, 8163 ], [ 8164, 8171 ] ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 14, 15, 16, 17, 18, 19 ],
+                code: {
+                    name: "CVN",
+                    size: 3
+                }
+            },
+            maestro: {
+                niceType: "Maestro",
+                type: "maestro",
+                patterns: [ 493698, [ 5e5, 504174 ], [ 504176, 506698 ], [ 506779, 508999 ], [ 56, 59 ], 63, 67, 6 ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 12, 13, 14, 15, 16, 17, 18, 19 ],
+                code: {
+                    name: "CVC",
+                    size: 3
+                }
+            },
+            elo: {
+                niceType: "Elo",
+                type: "elo",
+                patterns: [ 401178, 401179, 438935, 457631, 457632, 431274, 451416, 457393, 504175, [ 506699, 506778 ], [ 509e3, 509999 ], 627780, 636297, 636368, [ 650031, 650033 ], [ 650035, 650051 ], [ 650405, 650439 ], [ 650485, 650538 ], [ 650541, 650598 ], [ 650700, 650718 ], [ 650720, 650727 ], [ 650901, 650978 ], [ 651652, 651679 ], [ 655e3, 655019 ], [ 655021, 655058 ] ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16 ],
+                code: {
+                    name: "CVE",
+                    size: 3
+                }
+            },
+            mir: {
+                niceType: "Mir",
+                type: "mir",
+                patterns: [ [ 2200, 2204 ] ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16, 17, 18, 19 ],
+                code: {
+                    name: "CVP2",
+                    size: 3
+                }
+            },
+            hiper: {
+                niceType: "Hiper",
+                type: "hiper",
+                patterns: [ 637095, 63737423, 63743358, 637568, 637599, 637609, 637612 ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16 ],
+                code: {
+                    name: "CVC",
+                    size: 3
+                }
+            },
+            hipercard: {
+                niceType: "Hipercard",
+                type: "hipercard",
+                patterns: [ 606282 ],
+                gaps: [ 4, 8, 12 ],
+                lengths: [ 16 ],
+                code: {
+                    name: "CVC",
+                    size: 3
+                }
+            }
+        };
+    },
+    "./node_modules/credit-card-type/dist/lib/clone.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: !0
+        });
+        exports.clone = void 0;
+        exports.clone = function(originalObject) {
+            return originalObject ? JSON.parse(JSON.stringify(originalObject)) : null;
+        };
+    },
+    "./node_modules/credit-card-type/dist/lib/find-best-match.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: !0
+        });
+        exports.findBestMatch = void 0;
+        exports.findBestMatch = function(results) {
+            return function(results) {
+                var numberOfResultsWithMaxStrengthProperty = results.filter((function(result) {
+                    return result.matchStrength;
+                })).length;
+                return numberOfResultsWithMaxStrengthProperty > 0 && numberOfResultsWithMaxStrengthProperty === results.length;
+            }(results) ? results.reduce((function(bestMatch, result) {
+                return bestMatch ? Number(bestMatch.matchStrength) < Number(result.matchStrength) ? result : bestMatch : result;
+            })) : null;
+        };
+    },
+    "./node_modules/credit-card-type/dist/lib/is-valid-input-type.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: !0
+        });
+        exports.isValidInputType = void 0;
+        exports.isValidInputType = function(cardNumber) {
+            return "string" == typeof cardNumber || cardNumber instanceof String;
+        };
+    },
+    "./node_modules/credit-card-type/dist/lib/matches.js": function(module, exports, __webpack_require__) {
+        "use strict";
+        Object.defineProperty(exports, "__esModule", {
+            value: !0
+        });
+        exports.matches = void 0;
+        exports.matches = function(cardNumber, pattern) {
+            return Array.isArray(pattern) ? function(cardNumber, min, max) {
+                var maxLengthToCheck = String(min).length;
+                var substr = cardNumber.substr(0, maxLengthToCheck);
+                var integerRepresentationOfCardNumber = parseInt(substr, 10);
+                min = parseInt(String(min).substr(0, substr.length), 10);
+                max = parseInt(String(max).substr(0, substr.length), 10);
+                return integerRepresentationOfCardNumber >= min && integerRepresentationOfCardNumber <= max;
+            }(cardNumber, pattern[0], pattern[1]) : function(cardNumber, pattern) {
+                return (pattern = String(pattern)).substring(0, cardNumber.length) === cardNumber.substring(0, pattern.length);
+            }(cardNumber, pattern);
+        };
     },
     "./src/button/index.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -1238,6 +1540,10 @@ window.spb = function(modules) {
                 if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
                 return Promise.resolve(this);
             };
+            _proto.lazy = function() {
+                this.errorHandled = !0;
+                return this;
+            };
             ZalgoPromise.resolve = function(value) {
                 return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
                     return value.then(resolve, reject);
@@ -1403,6 +1709,10 @@ window.spb = function(modules) {
             } catch (err) {}
             return !1;
         }
+        function assertSameDomain(win) {
+            if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+            return win;
+        }
         function isAncestorParent(parent, child) {
             if (!parent || !child) return !1;
             var childParent = utils_getParent(child);
@@ -1535,26 +1845,6 @@ window.spb = function(modules) {
                 }(frame)) return !0;
             }
             return !1;
-        }
-        function onCloseWindow(win, callback, delay, maxtime) {
-            void 0 === delay && (delay = 1e3);
-            void 0 === maxtime && (maxtime = 1 / 0);
-            var timeout;
-            !function check() {
-                if (isWindowClosed(win)) {
-                    timeout && clearTimeout(timeout);
-                    return callback();
-                }
-                if (maxtime <= 0) clearTimeout(timeout); else {
-                    maxtime -= delay;
-                    timeout = setTimeout(check, delay);
-                }
-            }();
-            return {
-                cancel: function() {
-                    timeout && clearTimeout(timeout);
-                }
-            };
         }
         function isWindow(obj) {
             try {
@@ -2498,19 +2788,21 @@ window.spb = function(modules) {
             FALSE: !1
         };
         var LSAT_UPGRADE_EXCLUDED_MERCHANTS = [ "AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz", "Aco-yrRKihknb5vDBbDOdtYywjYMEPaM7mQg6kev8VDAz01lLA88J4oAUnF4UV9F_InqkqX7K62_jOjx", "AeAiB9K2rRsTXsFKZt4FMAQ8a6VEu4hijducis3a8NcIjV2J_c5I2H2PYhT3qCOwxT8P4l17skqgBlmg", "AXKrWRqEvxiDoUIZQaD1tFi2QhtmhWve3yTDBi58bxWjieYJ9j73My-yJmM7hP00JvOXu4YD6L2eaI5O", "AfRTnXv_QcuVyalbUxThtgk1xTygygsdevlBUTz36dDgD6XZNHp3Ym99a-mjMaokXyTTiI8VJ9mRgaFB", "AejlsIlg_KjKjmLKqxJqFIAwn3ZP02emx41Z2It4IfirQ-nNgZgzWk1CU-Q1QDbYUXjWoYJZ4dq1S2pK", "AQXD7-m_2yMo-5AxJ1fQaPeEWYDE7NZ9XrLzEXeiPLTHDu9vfe_T0foF8BoX8K5cMfXuRDysUEmhw-8Z" ];
+        var APM_LIST = [ "ideal", "bancontact", "giropay", "sofort", "eps", "mybank", "p24", "payu", "blik", "trustly", "zimpler", "maxima", "oxxo", "boleto", "wechatpay", "mercadopago" ];
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
         var sendBeacon = function(_ref2) {
-            var url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+            var _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
             try {
                 var json = JSON.stringify(data);
+                if (!win.navigator.sendBeacon) throw new Error("No sendBeacon available");
                 if (useBlob) {
                     var blob = new Blob([ json ], {
                         type: "application/json"
                     });
-                    return window.navigator.sendBeacon(url, blob);
+                    return win.navigator.sendBeacon(url, blob);
                 }
-                return window.navigator.sendBeacon(url, json);
+                return win.navigator.sendBeacon(url, json);
             } catch (e) {
                 return !1;
             }
@@ -2518,38 +2810,44 @@ window.spb = function(modules) {
         var extendIfDefined = function(target, source) {
             for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
         };
-        function httpTransport(_ref) {
-            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-            return promise_ZalgoPromise.try((function() {
-                var beaconResult = !1;
-                (function(_ref) {
-                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
-                    var hasHeaders = headers && Object.keys(headers).length;
-                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
-                })({
-                    headers: headers,
-                    enableSendBeacon: enableSendBeacon
-                }) && (beaconResult = function(url) {
-                    return "https://api2.amplitude.com/2/httpapi" === url;
-                }(url) ? sendBeacon({
-                    url: url,
-                    data: json,
-                    useBlob: !1
-                }) : sendBeacon({
-                    url: url,
-                    data: json,
-                    useBlob: !0
-                }));
-                return beaconResult || request({
-                    url: url,
-                    method: method,
-                    headers: headers,
-                    json: json
-                });
-            })).then(src_util_noop);
-        }
-        function Logger(_ref2) {
-            var url = _ref2.url, prefix = _ref2.prefix, _ref2$logLevel = _ref2.logLevel, logLevel = void 0 === _ref2$logLevel ? "debug" : _ref2$logLevel, _ref2$transport = _ref2.transport, transport = void 0 === _ref2$transport ? httpTransport : _ref2$transport, amplitudeApiKey = _ref2.amplitudeApiKey, _ref2$flushInterval = _ref2.flushInterval, flushInterval = void 0 === _ref2$flushInterval ? 6e4 : _ref2$flushInterval, _ref2$enableSendBeaco = _ref2.enableSendBeacon, enableSendBeacon = void 0 !== _ref2$enableSendBeaco && _ref2$enableSendBeaco;
+        function Logger(_ref) {
+            var url = _ref.url, prefix = _ref.prefix, _ref$logLevel = _ref.logLevel, logLevel = void 0 === _ref$logLevel ? "debug" : _ref$logLevel, _ref$transport = _ref.transport, transport = void 0 === _ref$transport ? function(httpWin) {
+                void 0 === httpWin && (httpWin = window);
+                var win = isSameDomain(httpWin) ? assertSameDomain(httpWin) : window;
+                return function(_ref) {
+                    var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+                    return promise_ZalgoPromise.try((function() {
+                        var beaconResult = !1;
+                        (function(_ref) {
+                            var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                            var hasHeaders = headers && Object.keys(headers).length;
+                            return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                        })({
+                            headers: headers,
+                            enableSendBeacon: enableSendBeacon
+                        }) && (beaconResult = function(url) {
+                            return "https://api2.amplitude.com/2/httpapi" === url;
+                        }(url) ? sendBeacon({
+                            win: win,
+                            url: url,
+                            data: json,
+                            useBlob: !1
+                        }) : sendBeacon({
+                            win: win,
+                            url: url,
+                            data: json,
+                            useBlob: !0
+                        }));
+                        return beaconResult || request({
+                            win: win,
+                            url: url,
+                            method: method,
+                            headers: headers,
+                            json: json
+                        });
+                    })).then(src_util_noop);
+                };
+            }() : _ref$transport, amplitudeApiKey = _ref.amplitudeApiKey, _ref$flushInterval = _ref.flushInterval, flushInterval = void 0 === _ref$flushInterval ? 6e4 : _ref$flushInterval, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
             var events = [];
             var tracking = [];
             var payloadBuilders = [];
@@ -2780,6 +3078,39 @@ window.spb = function(modules) {
         function isAndroidChrome() {
             return isAndroid() && isChrome();
         }
+        function onCloseProxyWindow(proxyWin, callback, delay, maxtime) {
+            void 0 === delay && (delay = 1e3);
+            void 0 === maxtime && (maxtime = 1 / 0);
+            var cancelled = !1;
+            var cancel = function() {
+                cancelled = !0;
+            };
+            proxyWin.awaitWindow().then((function(win) {
+                cancelled || (cancel = function(win, callback, delay, maxtime) {
+                    void 0 === delay && (delay = 1e3);
+                    void 0 === maxtime && (maxtime = 1 / 0);
+                    var timeout;
+                    !function check() {
+                        if (isWindowClosed(win)) {
+                            timeout && clearTimeout(timeout);
+                            return callback();
+                        }
+                        if (maxtime <= 0) clearTimeout(timeout); else {
+                            maxtime -= delay;
+                            timeout = setTimeout(check, delay);
+                        }
+                    }();
+                    return {
+                        cancel: function() {
+                            timeout && clearTimeout(timeout);
+                        }
+                    };
+                }(win, callback, delay, maxtime).cancel);
+            }));
+            return {
+                cancel: cancel
+            };
+        }
         function getNonce() {
             var nonce = "";
             document.body && (nonce = document.body.getAttribute("data-nonce") || "");
@@ -2798,6 +3129,34 @@ window.spb = function(modules) {
         }
         function isStorageStateFresh() {
             return getSDKStorage().isStateFresh();
+        }
+        function getPostRobot() {
+            var paypal = function() {
+                if (!window.paypal) throw new Error("paypal not found");
+                return window.paypal;
+            }();
+            if (!paypal.postRobot) throw new Error("paypal.postRobot not found");
+            return paypal.postRobot;
+        }
+        function postRobotOnceProxy(event, _ref, handler) {
+            var domain = _ref.domain;
+            var cancelled = !1;
+            var cancel = function() {
+                cancelled = !0;
+            };
+            _ref.proxyWin.awaitWindow().then((function(win) {
+                cancelled || (cancel = getPostRobot().once(event, {
+                    window: win,
+                    domain: domain
+                }, (function(_ref2) {
+                    return handler({
+                        data: _ref2.data
+                    });
+                })).cancel);
+            }));
+            return {
+                cancel: cancel
+            };
         }
         function callRestAPI(_ref) {
             var _extends2;
@@ -3049,7 +3408,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.68", _headers15);
+            _headers15["x-app-version"] = "5.0.69", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -5024,7 +5383,28 @@ window.spb = function(modules) {
             if ("function" == typeof element) return new node_ComponentNode(element, props, children);
             throw new TypeError("Expected jsx element to be a string or a function");
         };
-        var _ADD_CHILDREN;
+        var _ELEMENT_DEFAULT_XML_, _ATTRIBUTE_DEFAULT_XM, _ADD_CHILDREN;
+        var ELEMENT_DEFAULT_XML_NAMESPACE = ((_ELEMENT_DEFAULT_XML_ = {}).svg = "http://www.w3.org/2000/svg", 
+        _ELEMENT_DEFAULT_XML_);
+        var ATTRIBUTE_DEFAULT_XML_NAMESPACE = ((_ATTRIBUTE_DEFAULT_XM = {})["xlink:href"] = "http://www.w3.org/1999/xlink", 
+        _ATTRIBUTE_DEFAULT_XM);
+        function createTextElement(doc, node) {
+            return doc.createTextNode(node.text);
+        }
+        function addProps(el, node) {
+            var props = node.props;
+            for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
+                var prop = _Object$keys2[_i4];
+                var val = props[prop];
+                if (null != val && "el" !== prop && "innerHTML" !== prop) if (prop.match(/^on[A-Z][a-z]/) && "function" == typeof val) el.addEventListener(prop.slice(2).toLowerCase(), val); else if ("string" == typeof val || "number" == typeof val) {
+                    var xmlNamespace = ATTRIBUTE_DEFAULT_XML_NAMESPACE[prop];
+                    xmlNamespace ? el.setAttributeNS(xmlNamespace, prop, val.toString()) : el.setAttribute(prop, val.toString());
+                } else "boolean" == typeof val && !0 === val && el.setAttribute(prop, "");
+            }
+            "iframe" !== el.tagName.toLowerCase() || props.id || el.setAttribute("id", "jsx-iframe-" + "xxxxxxxxxx".replace(/./g, (function() {
+                return "0123456789abcdef".charAt(Math.floor(Math.random() * "0123456789abcdef".length));
+            })));
+        }
         var ADD_CHILDREN = ((_ADD_CHILDREN = {}).iframe = function(el, node) {
             var firstChild = node.children[0];
             if (1 !== node.children.length || !firstChild || "element" !== firstChild.type || "html" !== firstChild.name) throw new Error("Expected only single html element node as child of iframe element");
@@ -5046,51 +5426,58 @@ window.spb = function(modules) {
         }, _ADD_CHILDREN.default = function(el, node, renderer) {
             for (var _i6 = 0, _node$renderChildren2 = node.renderChildren(renderer); _i6 < _node$renderChildren2.length; _i6++) el.appendChild(_node$renderChildren2[_i6]);
         }, _ADD_CHILDREN);
+        function addChildren(el, node, doc, renderer) {
+            if (node.props.hasOwnProperty("innerHTML")) {
+                if (node.children.length) throw new Error("Expected no children to be passed when innerHTML prop is set");
+                var html = node.props.innerHTML;
+                if ("string" != typeof html) throw new TypeError("innerHTML prop must be string");
+                if ("script" === node.name) el.text = html; else {
+                    el.innerHTML = html;
+                    !function(el, doc) {
+                        void 0 === doc && (doc = window.document);
+                        for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll("script"); _i2 < _el$querySelectorAll2.length; _i2++) {
+                            var script = _el$querySelectorAll2[_i2];
+                            var parentNode = script.parentNode;
+                            if (parentNode) {
+                                var newScript = doc.createElement("script");
+                                newScript.text = script.textContent;
+                                parentNode.replaceChild(newScript, script);
+                            }
+                        }
+                    }(el, doc);
+                }
+            } else (ADD_CHILDREN[node.name] || ADD_CHILDREN.default)(el, node, renderer);
+        }
         function dom(opts) {
             void 0 === opts && (opts = {});
             var _opts$doc = opts.doc, doc = void 0 === _opts$doc ? document : _opts$doc;
             return function domRenderer(node) {
                 if ("component" === node.type) return node.renderComponent(domRenderer);
-                if ("text" === node.type) return function(doc, node) {
-                    return doc.createTextNode(node.text);
-                }(doc, node);
+                if ("text" === node.type) return createTextElement(doc, node);
                 if ("element" === node.type) {
+                    var xmlNamespace = ELEMENT_DEFAULT_XML_NAMESPACE[node.name.toLowerCase()];
+                    if (xmlNamespace) return function xmlNamespaceDomRenderer(node, xmlNamespace) {
+                        if ("component" === node.type) return node.renderComponent((function(childNode) {
+                            return xmlNamespaceDomRenderer(childNode, xmlNamespace);
+                        }));
+                        if ("text" === node.type) return createTextElement(doc, node);
+                        if ("element" === node.type) {
+                            var el = function(doc, node, xmlNamespace) {
+                                return doc.createElementNS(xmlNamespace, node.name);
+                            }(doc, node, xmlNamespace);
+                            addProps(el, node);
+                            addChildren(el, node, doc, (function(childNode) {
+                                return xmlNamespaceDomRenderer(childNode, xmlNamespace);
+                            }));
+                            return el;
+                        }
+                        throw new TypeError("Unhandleable node");
+                    }(node, xmlNamespace);
                     var el = function(doc, node) {
                         return node.props.el ? node.props.el : doc.createElement(node.name);
                     }(doc, node);
-                    !function(el, node) {
-                        var props = node.props;
-                        for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
-                            var prop = _Object$keys2[_i4];
-                            var val = props[prop];
-                            null != val && "el" !== prop && "innerHTML" !== prop && (prop.match(/^on[A-Z][a-z]/) && "function" == typeof val ? el.addEventListener(prop.slice(2).toLowerCase(), val) : "string" == typeof val || "number" == typeof val ? el.setAttribute(prop, val.toString()) : "boolean" == typeof val && !0 === val && el.setAttribute(prop, ""));
-                        }
-                        "iframe" !== el.tagName.toLowerCase() || props.id || el.setAttribute("id", "jsx-iframe-" + "xxxxxxxxxx".replace(/./g, (function() {
-                            return "0123456789abcdef".charAt(Math.floor(Math.random() * "0123456789abcdef".length));
-                        })));
-                    }(el, node);
-                    !function(el, node, doc, renderer) {
-                        if (node.props.hasOwnProperty("innerHTML")) {
-                            if (node.children.length) throw new Error("Expected no children to be passed when innerHTML prop is set");
-                            var html = node.props.innerHTML;
-                            if ("string" != typeof html) throw new TypeError("innerHTML prop must be string");
-                            if ("script" === node.name) el.text = html; else {
-                                el.innerHTML = html;
-                                !function(el, doc) {
-                                    void 0 === doc && (doc = window.document);
-                                    for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll("script"); _i2 < _el$querySelectorAll2.length; _i2++) {
-                                        var script = _el$querySelectorAll2[_i2];
-                                        var parentNode = script.parentNode;
-                                        if (parentNode) {
-                                            var newScript = doc.createElement("script");
-                                            newScript.text = script.textContent;
-                                            parentNode.replaceChild(newScript, script);
-                                        }
-                                    }
-                                }(el, doc);
-                            }
-                        } else (ADD_CHILDREN[node.name] || ADD_CHILDREN.default)(el, node, renderer);
-                    }(el, node, doc, domRenderer);
+                    addProps(el, node);
+                    addChildren(el, node, doc, domRenderer);
                     return el;
                 }
                 throw new TypeError("Unhandleable node");
@@ -5121,6 +5508,20 @@ window.spb = function(modules) {
         }
         var checkoutOpen = !1;
         var canRenderTop = !1;
+        function getDimensions(fundingSource) {
+            if (-1 !== APM_LIST.indexOf(fundingSource)) {
+                logger_getLogger().info("popup_dimensions_value_" + fundingSource).flush();
+                return {
+                    width: 1282,
+                    height: 720
+                };
+            }
+            logger_getLogger().info("popup_dimensions_" + fundingSource).flush();
+            return {
+                width: 500,
+                height: 590
+            };
+        }
         var checkout = {
             name: "checkout",
             setup: function(_ref) {
@@ -5140,10 +5541,10 @@ window.spb = function(modules) {
                 return !0;
             },
             init: function initCheckout(_ref5) {
-                var props = _ref5.props, components = _ref5.components, serviceData = _ref5.serviceData, payment = _ref5.payment, config = _ref5.config;
+                var props = _ref5.props, components = _ref5.components, serviceData = _ref5.serviceData, payment = _ref5.payment, config = _ref5.config, fullRestart = _ref5.restart;
                 if (checkoutOpen) throw new Error("Checkout already rendered");
                 var Checkout = components.Checkout;
-                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded;
+                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded;
                 var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
                 var buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta, merchantID = serviceData.merchantID;
                 var cspNonce = config.cspNonce;
@@ -5323,7 +5724,15 @@ window.spb = function(modules) {
                                 restart: restart
                             }).catch(src_util_noop) : forceClosed || approved ? void 0 : _onCancel();
                         },
-                        onError: onError,
+                        onError: function(err) {
+                            var _getLogger$info$track2;
+                            logger_getLogger().info("checkout_flow_error ", {
+                                err: stringifyError(err)
+                            }).track((_getLogger$info$track2 = {}, _getLogger$info$track2.transition_name = "process_checkout_error", 
+                            _getLogger$info$track2.ext_error_desc = stringifyError(err), _getLogger$info$track2)).flush();
+                            return _onError(err);
+                        },
+                        dimensions: getDimensions(fundingSource),
                         fundingSource: fundingSource,
                         card: card,
                         buyerCountry: buyerCountry,
@@ -5333,7 +5742,14 @@ window.spb = function(modules) {
                         clientMetadataID: cmid,
                         enableFunding: enableFunding,
                         standaloneFundingSource: standaloneFundingSource,
-                        branded: branded
+                        branded: branded,
+                        restart: function() {
+                            return fullRestart({
+                                payment: _extends({}, payment, {
+                                    win: win
+                                })
+                            });
+                        }
                     })).renderTo((top = getTop(window), canRenderTop && top ? top : utils_getParent() ? utils_getParent() : window), "body", context).catch((function(err) {
                         if (checkoutOpen) throw err;
                     }));
@@ -5352,7 +5768,8 @@ window.spb = function(modules) {
                                 card: card,
                                 buyerIntent: buyerIntent,
                                 isClick: !1
-                            }
+                            },
+                            restart: restart
                         }).start().finally(unresolvedPromise);
                     }));
                 }));
@@ -5360,12 +5777,10 @@ window.spb = function(modules) {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
                             if (!win && supportsPopups()) try {
+                                var _getDimensions = getDimensions(fundingSource);
                                 win = function(_ref) {
                                     var _ref$closeOnUnload = _ref.closeOnUnload;
-                                    var win = function(win) {
-                                        if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-                                        return win;
-                                    }(function(url, options) {
+                                    var win = assertSameDomain(function(url, options) {
                                         var _options$closeOnUnloa = (options = options || {}).closeOnUnload, closeOnUnload = void 0 === _options$closeOnUnloa ? 1 : _options$closeOnUnloa, _options$name = options.name, name = void 0 === _options$name ? "" : _options$name, width = options.width, height = options.height;
                                         var top = 0;
                                         var left = 0;
@@ -5421,8 +5836,8 @@ window.spb = function(modules) {
                                     })));
                                     return win;
                                 }({
-                                    width: 500,
-                                    height: 590
+                                    width: _getDimensions.width,
+                                    height: _getDimensions.height
                                 });
                             } catch (err) {
                                 logger_getLogger().warn("popup_open_error_iframe_fallback", {
@@ -5510,7 +5925,8 @@ window.spb = function(modules) {
                             isClick: !1
                         }),
                         serviceData: serviceData,
-                        config: config
+                        config: config,
+                        restart: restart
                     }).start().finally(unresolvedPromise);
                 }));
                 var buyerAccessToken;
@@ -5609,9 +6025,18 @@ window.spb = function(modules) {
             inline: !0
         };
         var sdk_constants = __webpack_require__("./node_modules/@paypal/sdk-constants/index.js");
-        var _CARD_FIELD_TYPE_TO_F;
+        var dist = __webpack_require__("./node_modules/credit-card-type/dist/index.js");
+        var _CARD_FIELD_TYPE_TO_F, _VALIDATOR_TO_TYPE_MA;
         (_CARD_FIELD_TYPE_TO_F = {}).single = "card-field", _CARD_FIELD_TYPE_TO_F.number = "card-number-field", 
         _CARD_FIELD_TYPE_TO_F.cvv = "card-cvv-field", _CARD_FIELD_TYPE_TO_F.expiry = "card-expiry-field";
+        (_VALIDATOR_TO_TYPE_MA = {})[dist.types.AMERICAN_EXPRESS] = "AMEX", _VALIDATOR_TO_TYPE_MA[dist.types.DINERS_CLUB] = "DINERS", 
+        _VALIDATOR_TO_TYPE_MA[dist.types.DISCOVER] = "DISCOVER", _VALIDATOR_TO_TYPE_MA[dist.types.ELO] = "ELO", 
+        _VALIDATOR_TO_TYPE_MA[dist.types.HIPER] = "HIPER", _VALIDATOR_TO_TYPE_MA[dist.types.HIPERCARD] = "HIPERCARD", 
+        _VALIDATOR_TO_TYPE_MA[dist.types.JCB] = "JCB", _VALIDATOR_TO_TYPE_MA[dist.types.MASTERCARD] = "MASTER_CARD", 
+        _VALIDATOR_TO_TYPE_MA[dist.types.MAESTRO] = "MAESTRO", _VALIDATOR_TO_TYPE_MA[dist.types.UNIONPAY] = "CHINA_UNION_PAY", 
+        _VALIDATOR_TO_TYPE_MA[dist.types.VISA] = "VISA", _VALIDATOR_TO_TYPE_MA["cb-nationale"] = "CB_NATIONALE", 
+        _VALIDATOR_TO_TYPE_MA.cetelem = "CETELEM", _VALIDATOR_TO_TYPE_MA.cofidis = "COFIDIS", 
+        _VALIDATOR_TO_TYPE_MA.cofinoga = "COFINOGA";
         function getExportsByFrameName(name) {
             try {
                 for (var _i2 = 0, _getAllFramesInWindow2 = getAllFramesInWindow(window); _i2 < _getAllFramesInWindow2.length; _i2++) {
@@ -5629,7 +6054,7 @@ window.spb = function(modules) {
         }
         function getCardFields() {
             var cardFrame = getExportsByFrameName("card-field");
-            if (cardFrame && cardFrame.isFieldValid()) return cardFrame.getFieldValue();
+            if (cardFrame) return cardFrame.getFieldValue();
             var cardNumberFrame = getExportsByFrameName("card-number-field");
             var cardCVVFrame = getExportsByFrameName("card-cvv-field");
             var cardExpiryFrame = getExportsByFrameName("card-expiry-field");
@@ -5661,7 +6086,7 @@ window.spb = function(modules) {
                             var _fundingEligibility$c, _fundingEligibility$c2;
                             var facilitatorAccessToken = _ref.facilitatorAccessToken;
                             var xprops = window.xprops;
-                            var type = xprops.type, cardSessionID = xprops.cardSessionID, style = xprops.style, fundingEligibility = xprops.fundingEligibility, onChange = xprops.onChange, _xprops$branded = xprops.branded, branded = void 0 === _xprops$branded ? null == (_fundingEligibility$c = null == fundingEligibility || null == (_fundingEligibility$c2 = fundingEligibility.card) ? void 0 : _fundingEligibility$c2.branded) || _fundingEligibility$c : _xprops$branded, parent = xprops.parent, xport = xprops.export;
+                            var type = xprops.type, cardSessionID = xprops.cardSessionID, style = xprops.style, placeholder = xprops.placeholder, fundingEligibility = xprops.fundingEligibility, onChange = xprops.onChange, _xprops$branded = xprops.branded, branded = void 0 === _xprops$branded ? null == (_fundingEligibility$c = null == fundingEligibility || null == (_fundingEligibility$c2 = fundingEligibility.card) ? void 0 : _fundingEligibility$c2.branded) || _fundingEligibility$c : _xprops$branded, parent = xprops.parent, xport = xprops.export;
                             return _extends({}, getProps({
                                 facilitatorAccessToken: facilitatorAccessToken,
                                 branded: branded
@@ -5669,6 +6094,7 @@ window.spb = function(modules) {
                                 type: type,
                                 branded: branded,
                                 style: style,
+                                placeholder: placeholder,
                                 cardSessionID: cardSessionID,
                                 fundingEligibility: fundingEligibility,
                                 onChange: onChange,
@@ -5678,7 +6104,8 @@ window.spb = function(modules) {
                         }({
                             facilitatorAccessToken: facilitatorAccessToken
                         }), intent = _getCardProps.intent, branded = _getCardProps.branded, vault = _getCardProps.vault, 
-                        createOrder = _getCardProps.createOrder, onApprove = _getCardProps.onApprove, promise_ZalgoPromise.try((function() {
+                        createOrder = _getCardProps.createOrder, onApprove = _getCardProps.onApprove, clientID = _getCardProps.clientID, 
+                        promise_ZalgoPromise.try((function() {
                             if (!hasCardFields()) throw new Error("Card fields not available to submit");
                             var card = getCardFields();
                             if (card) {
@@ -5688,7 +6115,7 @@ window.spb = function(modules) {
                                 return intent === sdk_constants.INTENT.TOKENIZE ? function(_ref25) {
                                     var card = _ref25.card;
                                     return promise_ZalgoPromise.try((function() {
-                                        console.warn("Card Tokenize GQL mutation not yet implemented", {
+                                        console.info("Card Tokenize GQL mutation not yet implemented", {
                                             card: card
                                         });
                                         return {
@@ -5704,22 +6131,34 @@ window.spb = function(modules) {
                                         restart: restart
                                     });
                                 })) : intent === sdk_constants.INTENT.CAPTURE || intent === sdk_constants.INTENT.AUTHORIZE ? createOrder().then((function(orderID) {
-                                    return function(_ref26) {
-                                        var card = _ref26.card, orderID = _ref26.orderID, vault = _ref26.vault, branded = _ref26.branded;
-                                        return promise_ZalgoPromise.try((function() {
-                                            console.warn("Card Approve Payment GQL mutation not yet implemented", {
-                                                card: card,
-                                                orderID: orderID,
-                                                vault: vault,
-                                                branded: branded
-                                            });
-                                        }));
-                                    }({
-                                        card: card,
+                                    return (_ref26 = {
+                                        card: {
+                                            cardNumber: card.number,
+                                            expirationDate: card.expiry,
+                                            cvv: card.cvv,
+                                            postalCode: "48007"
+                                        },
                                         orderID: orderID,
                                         vault: vault,
-                                        branded: branded
-                                    });
+                                        branded: branded,
+                                        clientID: clientID
+                                    }, callGraphQL({
+                                        name: "ProcessPayment",
+                                        query: '\n            mutation ProcessPayment(\n                $orderID: String!\n                $clientID: String!\n                $card: CardInput!\n                $branded: Boolean!\n            ) {\n                processPayment(\n                    clientID: $clientID\n                    paymentMethod: { type: CREDIT_CARD, card: $card }\n                    branded: $branded\n                    token: $orderID\n                    buttonSessionID: "f7r7367r4"\n                )\n            }\n        ',
+                                        variables: {
+                                            orderID: _ref26.orderID,
+                                            clientID: _ref26.clientID,
+                                            card: _ref26.card,
+                                            branded: !0
+                                        }
+                                    }).then((function(gqlResult) {
+                                        if (!gqlResult) throw new Error("Error on GraphQL ProcessPayment mutation");
+                                        return gqlResult;
+                                    }))).catch((function(error) {
+                                        logger_getLogger().info("card_fields_payment_failed");
+                                        throw error;
+                                    }));
+                                    var _ref26;
                                 })).then((function() {
                                     return onApprove({
                                         payerID: uniqueID()
@@ -5729,7 +6168,7 @@ window.spb = function(modules) {
                                 })) : void 0;
                             }
                         }));
-                        var _getCardProps, intent, branded, vault, createOrder, onApprove;
+                        var _getCardProps, intent, branded, vault, createOrder, onApprove, clientID;
                     },
                     close: promiseNoop
                 };
@@ -5810,7 +6249,8 @@ window.spb = function(modules) {
                                         isClick: !1,
                                         buyerIntent: "pay_with_different_funding_shipping"
                                     }),
-                                    config: config
+                                    config: config,
+                                    restart: restart
                                 }).start();
                             }();
                         }
@@ -6043,7 +6483,7 @@ window.spb = function(modules) {
                 };
             },
             setupMenu: function(_ref9) {
-                var props = _ref9.props, payment = _ref9.payment, serviceData = _ref9.serviceData, components = _ref9.components, config = _ref9.config;
+                var props = _ref9.props, payment = _ref9.payment, serviceData = _ref9.serviceData, components = _ref9.components, config = _ref9.config, restart = _ref9.restart;
                 var clientAccessToken = props.clientAccessToken, createOrder = props.createOrder, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, sessionID = props.sessionID, clientMetadataID = props.clientMetadataID, userIDToken = props.userIDToken;
                 var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
                 var content = serviceData.content, facilitatorAccessToken = serviceData.facilitatorAccessToken;
@@ -6065,7 +6505,8 @@ window.spb = function(modules) {
                         components: components,
                         serviceData: serviceData,
                         config: config,
-                        payment: _ref10.payment
+                        payment: _ref10.payment,
+                        restart: restart
                     }).start();
                 };
                 if ("paypal" === fundingSource) return [ {
@@ -6234,7 +6675,7 @@ window.spb = function(modules) {
                 return !0;
             },
             init: function(_ref5) {
-                var props = _ref5.props, components = _ref5.components, payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config;
+                var props = _ref5.props, components = _ref5.components, payment = _ref5.payment, serviceData = _ref5.serviceData, config = _ref5.config, fullRestart = _ref5.restart;
                 var createOrder = props.createOrder, onApprove = props.onApprove, clientMetadataID = props.clientMetadataID, vault = props.vault, onAuth = props.onAuth;
                 var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
                 var wallet = serviceData.wallet;
@@ -6260,7 +6701,8 @@ window.spb = function(modules) {
                             buyerIntent: "pay_with_different_funding_shipping",
                             fundingSource: instrument && "credit" === instrument.type ? "credit" : fundingSource
                         }),
-                        config: config
+                        config: config,
+                        restart: fullRestart
                     });
                 };
                 var fallbackToWebCheckout = function() {
@@ -6321,7 +6763,7 @@ window.spb = function(modules) {
                 };
             },
             setupMenu: function(_ref8) {
-                var props = _ref8.props, payment = _ref8.payment, serviceData = _ref8.serviceData, components = _ref8.components, config = _ref8.config;
+                var props = _ref8.props, payment = _ref8.payment, serviceData = _ref8.serviceData, components = _ref8.components, config = _ref8.config, restart = _ref8.restart;
                 var createOrder = props.createOrder;
                 var fundingSource = payment.fundingSource, instrumentID = payment.instrumentID;
                 var wallet = serviceData.wallet, content = serviceData.content;
@@ -6335,7 +6777,8 @@ window.spb = function(modules) {
                         components: components,
                         serviceData: serviceData,
                         config: config,
-                        payment: _ref9.payment
+                        payment: _ref9.payment,
+                        restart: restart
                     }).start();
                 };
                 var newFundingSource = "credit" === instrument.type ? "credit" : fundingSource;
@@ -6408,7 +6851,7 @@ window.spb = function(modules) {
         };
         var _NATIVE_DOMAIN, _HISTORY_NATIVE_POPUP, _MOBILE_NATIVE_POPUP_, _NATIVE_CHECKOUT_URI, _NATIVE_CHECKOUT_POPU, _NATIVE_CHECKOUT_FALL;
         var SUPPORTED_FUNDING = [ "paypal", "venmo" ];
-        var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = "https://www.paypal.com", 
+        var NATIVE_DOMAIN = ((_NATIVE_DOMAIN = {}).test = "https://www.paypal.com", _NATIVE_DOMAIN.local = getDomain(), 
         _NATIVE_DOMAIN.stage = "https://www.paypal.com", _NATIVE_DOMAIN.sandbox = "https://www.sandbox.paypal.com", 
         _NATIVE_DOMAIN.production = "https://www.paypal.com", _NATIVE_DOMAIN);
         var HISTORY_NATIVE_POPUP_DOMAIN = ((_HISTORY_NATIVE_POPUP = {}).test = "https://history.paypal.com", 
@@ -7028,6 +7471,11 @@ window.spb = function(modules) {
                             onClose();
                         }));
                     };
+                    var restart = function() {
+                        return promise_ZalgoPromise.try((function() {
+                            throw new Error("QRcode restart not implemented");
+                        }));
+                    };
                     var onEscapePath = function(win, selectedFundingSource) {
                         var _getLogger$info$track5;
                         logger_getLogger().info("VenmoDesktopPay_process_pay_with_" + selectedFundingSource).track((_getLogger$info$track5 = {}, 
@@ -7043,7 +7491,8 @@ window.spb = function(modules) {
                                 components: components,
                                 payment: paymentInfo,
                                 config: config,
-                                serviceData: serviceData
+                                serviceData: serviceData,
+                                restart: restart
                             }).start().then((function() {
                                 return promise_ZalgoPromise.resolve();
                             }));
@@ -7086,6 +7535,7 @@ window.spb = function(modules) {
                                 cspNonce: config.cspNonce,
                                 qrPath: url,
                                 state: "qr_default",
+                                orderID: orderID,
                                 onClose: onQRClose,
                                 onEscapePath: onEscapePath
                             });
@@ -7093,6 +7543,7 @@ window.spb = function(modules) {
                                 return qrCodeComponentInstance.updateProps(_extends({
                                     cspNonce: config.cspNonce,
                                     qrPath: url,
+                                    orderID: orderID,
                                     onClose: onQRClose,
                                     onEscapePath: onEscapePath
                                 }, newState));
@@ -7148,7 +7599,7 @@ window.spb = function(modules) {
                                             errorText: "The authorization was canceled"
                                         }).then((function() {
                                             return onFallback({
-                                                optOut: data
+                                                fallbackOptions: data
                                             });
                                         }));
                                     },
@@ -7161,12 +7612,6 @@ window.spb = function(modules) {
                     }));
                 }
             };
-        }
-        function onPostMessage(win, domain, event, handler) {
-            return paypal.postRobot.once(event, {
-                window: win,
-                domain: domain
-            }, handler);
         }
         function popup_getEligibility(_ref) {
             var fundingSource = _ref.fundingSource, props = _ref.props, serviceData = _ref.serviceData, sfvc = _ref.sfvc, validatePromise = _ref.validatePromise, stickinessID = _ref.stickinessID, appDetect = _ref.appDetect;
@@ -7209,17 +7654,17 @@ window.spb = function(modules) {
             }));
         }
         function initNativePopup(_ref2) {
-            var props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, sessionUID = _ref2.sessionUID, callbacks = _ref2.callbacks, clean = _ref2.clean;
+            var payment = _ref2.payment, props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, sessionUID = _ref2.sessionUID, callbacks = _ref2.callbacks, clean = _ref2.clean;
             var onClick = props.onClick, createOrder = props.createOrder;
-            var fundingSource = _ref2.payment.fundingSource;
-            var _onInit = callbacks.onInit, _onApprove = callbacks.onApprove, _onCancel = callbacks.onCancel, _onError = callbacks.onError, _onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, _onShippingChange = callbacks.onShippingChange;
+            var fundingSource = payment.fundingSource, win = payment.win;
+            var _onInit = callbacks.onInit, _onApprove = callbacks.onApprove, _onCancel = callbacks.onCancel, _onError = callbacks.onError, onFallback = callbacks.onFallback, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, _onShippingChange = callbacks.onShippingChange;
             if (!config.firebase) throw new Error("Can not load popup without firebase config");
             var nativePopupPromise;
             return {
                 click: function() {
                     nativePopupPromise = new promise_ZalgoPromise((function(resolve, reject) {
                         var _getLogger$info$track3;
-                        var nativePopupWin = window.open(function(_ref8) {
+                        var url = function(_ref8) {
                             var props = _ref8.props, fundingSource = _ref8.fundingSource;
                             var queryParams = function(_ref7) {
                                 var props = _ref7.props, serviceData = _ref7.serviceData;
@@ -7251,8 +7696,16 @@ window.spb = function(modules) {
                             props: props,
                             serviceData: serviceData,
                             fundingSource: fundingSource
+                        });
+                        var nativePopupWinProxy;
+                        if (win) (nativePopupWinProxy = getPostRobot().toProxyWindow(win)).setLocation(url); else {
+                            var popup = window.open(url);
+                            if (!popup) throw new Error("Expected native popup to have opened");
+                            nativePopupWinProxy = paypal.postRobot.toProxyWindow(popup);
+                        }
+                        var cleanupPopupWin = clean.register((function() {
+                            return nativePopupWinProxy.close();
                         }));
-                        if (!nativePopupWin) throw new Error("Expected native popup to have opened");
                         var nativePopupDomain = getNativePopupDomain({
                             props: props
                         });
@@ -7278,6 +7731,13 @@ window.spb = function(modules) {
                         var orderPromise = validatePromise.then((function(valid) {
                             return valid ? createOrder() : unresolvedPromise();
                         }));
+                        var fallback = function(fallbackOptions) {
+                            cleanupPopupWin.cancel();
+                            return onFallback({
+                                win: nativePopupWinProxy,
+                                fallbackOptions: fallbackOptions
+                            });
+                        };
                         var detectAppSwitch = once((function() {
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$track5;
@@ -7346,12 +7806,9 @@ window.spb = function(modules) {
                                             });
                                         },
                                         onFallback: function(_ref6) {
-                                            var data = _ref6.data;
+                                            var fallbackOptions = _ref6.data;
                                             detectAppSwitch();
-                                            return _onFallback({
-                                                win: nativePopupWin,
-                                                optOut: data
-                                            });
+                                            return fallback(fallbackOptions);
                                         }
                                     }
                                 });
@@ -7379,12 +7836,10 @@ window.spb = function(modules) {
                                 }));
                                 logger_getLogger().info("native_detect_web_switch").track((_getLogger$info$track7 = {}, 
                                 _getLogger$info$track7.transition_name = "native_detect_web_switch", _getLogger$info$track7)).flush();
-                                return _onFallback({
-                                    win: nativePopupWin
-                                }).then(src_util_noop);
+                                return fallback().then(src_util_noop);
                             })).then(resolve, reject);
                         }));
-                        var closeListener = onCloseWindow(nativePopupWin, (function() {
+                        var closeListener = onCloseProxyWindow(nativePopupWinProxy, (function() {
                             var _getLogger$info$track8;
                             logger_getLogger().info("native_popup_closed").track((_getLogger$info$track8 = {}, 
                             _getLogger$info$track8.state_name = "smart_button", _getLogger$info$track8.transition_name = "popup_closed", 
@@ -7398,9 +7853,12 @@ window.spb = function(modules) {
                             _getLogger$info$track9.state_name = "smart_button", _getLogger$info$track9.transition_name = event ? "native_closing_popup_" + event : "native_closing_popup", 
                             _getLogger$info$track9)).flush();
                             closeListener.cancel();
-                            nativePopupWin.close();
+                            nativePopupWinProxy.close();
                         };
-                        var awaitRedirectListener = onPostMessage(nativePopupWin, nativePopupDomain, "awaitRedirect", (function(_ref7) {
+                        var awaitRedirectListener = postRobotOnceProxy("awaitRedirect", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function(_ref7) {
                             var _ref7$data = _ref7.data, appDetect = _ref7$data.app, pageUrl = _ref7$data.pageUrl, sfvc = _ref7$data.sfvc, stickinessID = _ref7$data.stickinessID;
                             clearTimeout(redirectListenerTimeout);
                             logger_getLogger().info("native_post_message_await_redirect").flush();
@@ -7432,7 +7890,7 @@ window.spb = function(modules) {
                                 var eligible = _ref9.eligible;
                                 if (!_ref9.valid) {
                                     closeListener.cancel();
-                                    nativePopupWin.close();
+                                    nativePopupWinProxy.close();
                                     return onDestroy().then((function() {
                                         return {
                                             appSwitch: !1,
@@ -7460,7 +7918,7 @@ window.spb = function(modules) {
                                     _getLogger$info$track10)).flush();
                                     if (isAndroidChrome()) {
                                         closeListener.cancel();
-                                        var appSwitchCloseListener = onCloseWindow(nativePopupWin, (function() {
+                                        var appSwitchCloseListener = onCloseProxyWindow(nativePopupWinProxy, (function() {
                                             return detectPossibleAppSwitch();
                                         }), 50);
                                         setTimeout(appSwitchCloseListener.cancel, 1e3);
@@ -7511,7 +7969,7 @@ window.spb = function(modules) {
                                     };
                                 }));
                             })).catch((function(err) {
-                                nativePopupWin.close();
+                                nativePopupWinProxy.close();
                                 appSwitchError(err);
                                 return onDestroy().then((function() {
                                     return _onError({
@@ -7527,39 +7985,55 @@ window.spb = function(modules) {
                                 }));
                             }));
                         }));
-                        var detectPossibleAppSwitchListener = onPostMessage(nativePopupWin, nativePopupDomain, "detectAppSwitch", (function() {
+                        var detectPossibleAppSwitchListener = postRobotOnceProxy("detectAppSwitch", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function() {
                             logger_getLogger().info("native_post_message_detect_possible_app_switch").flush();
                             return detectPossibleAppSwitch();
                         }));
-                        var detectWebSwitchListener = onPostMessage(nativePopupWin, getNativeDomain({
-                            props: props
-                        }), "detectWebSwitch", (function() {
+                        var detectWebSwitchListener = postRobotOnceProxy("detectWebSwitch", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: getNativeDomain({
+                                props: props
+                            })
+                        }, (function() {
                             logger_getLogger().info("native_post_message_detect_web_switch").flush();
-                            return detectWebSwitch({
-                                win: nativePopupWin
-                            });
+                            return detectWebSwitch();
                         }));
-                        var onApproveListener = onPostMessage(nativePopupWin, nativePopupDomain, "onApprove", (function(data) {
+                        var onApproveListener = postRobotOnceProxy("onApprove", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function(_ref10) {
+                            var data = _ref10.data;
                             detectAppSwitch();
-                            _onApprove(data);
+                            _onApprove({
+                                data: data
+                            });
                             closePopup("onApprove");
                         }));
-                        var onCancelListener = onPostMessage(nativePopupWin, nativePopupDomain, "onCancel", (function() {
+                        var onCancelListener = postRobotOnceProxy("onCancel", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function() {
                             detectAppSwitch();
                             _onCancel();
                             closePopup("onCancel");
                         }));
-                        var onFallbackListener = onPostMessage(nativePopupWin, nativePopupDomain, "onFallback", (function(_ref10) {
+                        var onFallbackListener = postRobotOnceProxy("onFallback", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function(_ref11) {
                             var _getLogger$info$track12;
-                            var data = _ref10.data;
+                            var fallbackOptions = _ref11.data;
                             logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track12 = {}, 
                             _getLogger$info$track12.transition_name = "native_onfallback", _getLogger$info$track12)).flush();
-                            _onFallback({
-                                win: nativePopupWin,
-                                optOut: data
-                            });
+                            fallback(fallbackOptions);
                         }));
-                        var onCompleteListener = onPostMessage(nativePopupWin, nativePopupDomain, "onComplete", (function() {
+                        var onCompleteListener = postRobotOnceProxy("onComplete", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function() {
                             var _getLogger$info$track13;
                             detectAppSwitch();
                             logger_getLogger().info("native_post_message_on_complete").track((_getLogger$info$track13 = {}, 
@@ -7567,8 +8041,14 @@ window.spb = function(modules) {
                             _getLogger$info$track13)).flush();
                             closePopup("onComplete");
                         }));
-                        var onErrorListener = onPostMessage(nativePopupWin, nativePopupDomain, "onError", (function(data) {
-                            _onError(data);
+                        var onErrorListener = postRobotOnceProxy("onError", {
+                            proxyWin: nativePopupWinProxy,
+                            domain: nativePopupDomain
+                        }, (function(_ref12) {
+                            var data = _ref12.data;
+                            _onError({
+                                data: data
+                            });
                             closePopup("onError");
                             appSwitchError(new Error(data.message));
                         }));
@@ -7579,7 +8059,7 @@ window.spb = function(modules) {
                             return closePopup("unload");
                         }));
                         clean.register((function() {
-                            return promise_ZalgoPromise.all([ awaitRedirectListener.cancel, detectPossibleAppSwitchListener.cancel, onApproveListener.cancel, onCancelListener.cancel, onFallbackListener.cancel, onCompleteListener.cancel, onErrorListener.cancel, detectWebSwitchListener.cancel, closeListener.cancel ]).then(src_util_noop);
+                            return promise_ZalgoPromise.all([ awaitRedirectListener.cancel(), detectPossibleAppSwitchListener.cancel(), onApproveListener.cancel(), onCancelListener.cancel(), onFallbackListener.cancel(), onCompleteListener.cancel(), onErrorListener.cancel(), detectWebSwitchListener.cancel(), closeListener.cancel() ]).then(src_util_noop);
                         }));
                     }));
                 },
@@ -7684,7 +8164,7 @@ window.spb = function(modules) {
             },
             init: function(_ref8) {
                 var _wallet$card3;
-                var props = _ref8.props, components = _ref8.components, payment = _ref8.payment, serviceData = _ref8.serviceData, config = _ref8.config;
+                var props = _ref8.props, components = _ref8.components, payment = _ref8.payment, serviceData = _ref8.serviceData, config = _ref8.config, fullRestart = _ref8.restart;
                 var createOrder = props.createOrder, onApprove = props.onApprove, clientID = props.clientID, branded = props.branded, buttonSessionID = props.buttonSessionID;
                 var wallet = serviceData.wallet;
                 var paymentMethodID = payment.paymentMethodID;
@@ -7707,7 +8187,8 @@ window.spb = function(modules) {
                             components: components,
                             serviceData: serviceData,
                             payment: payment,
-                            config: config
+                            config: config,
+                            restart: fullRestart
                         });
                     }().start();
                 };
@@ -7903,10 +8384,8 @@ window.spb = function(modules) {
                 }) && ("local" === env || "stage" === env || merchantID.length > 1 || -1 !== LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID)));
             },
             isPaymentEligible: function(_ref7) {
-                var payment = _ref7.payment;
                 var platform = _ref7.props.platform;
-                var fundingSource = payment.fundingSource;
-                if (payment.win) return !1;
+                var fundingSource = _ref7.payment.fundingSource;
                 if (!NATIVE_CHECKOUT_URI[fundingSource] || !NATIVE_CHECKOUT_POPUP_URI[fundingSource] || !NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) return !1;
                 if (!canUsePopupAppSwitch({
                     fundingSource: fundingSource
@@ -7925,7 +8404,7 @@ window.spb = function(modules) {
                 return !0;
             },
             init: function(_ref2) {
-                var props = _ref2.props, components = _ref2.components, config = _ref2.config, payment = _ref2.payment, serviceData = _ref2.serviceData;
+                var props = _ref2.props, components = _ref2.components, config = _ref2.config, payment = _ref2.payment, serviceData = _ref2.serviceData, restart = _ref2.restart;
                 var onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, buttonSessionID = props.buttonSessionID, onShippingChange = props.onShippingChange;
                 var fundingSource = payment.fundingSource;
                 if (!config.firebase) throw new Error("Can not run native flow without firebase config");
@@ -7949,12 +8428,10 @@ window.spb = function(modules) {
                         components: components,
                         payment: checkoutPayment,
                         config: config,
-                        serviceData: serviceData
+                        serviceData: serviceData,
+                        restart: restart
                     });
-                    native_clean.register((function() {
-                        return instance.close();
-                    }));
-                    return instance.start();
+                    return promise_ZalgoPromise.all([ destroy(), instance.start() ]).then(src_util_noop);
                 };
                 var sessionUID = uniqueID();
                 var initFlow;
@@ -7967,11 +8444,11 @@ window.spb = function(modules) {
                     initFlow = initNativeQRCode;
                 }
                 var flow = initFlow({
+                    payment: payment,
                     props: props,
                     serviceData: serviceData,
                     config: config,
                     components: components,
-                    payment: payment,
                     clean: native_clean,
                     sessionUID: sessionUID,
                     callbacks: {
@@ -8076,14 +8553,15 @@ window.spb = function(modules) {
                             }));
                         },
                         onFallback: function(opts) {
-                            var _ref6 = opts || {}, win = _ref6.win, _ref6$optOut = _ref6.optOut, optOut = void 0 === _ref6$optOut ? {} : _ref6$optOut;
+                            var _ref6 = opts || {}, win = _ref6.win, _ref6$fallbackOptions = _ref6.fallbackOptions, fallbackOptions = void 0 === _ref6$fallbackOptions ? {} : _ref6$fallbackOptions;
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$track6;
-                                var result = function(optOut) {
-                                    var type = optOut.type, skip_native_duration = optOut.skip_native_duration;
+                                var result = function(fallbackOptions) {
+                                    var type = fallbackOptions.type;
                                     if (type && "native_opt_out" === type) {
                                         var OPT_OUT_TIME = 36288e5;
-                                        skip_native_duration && "number" == typeof skip_native_duration && (OPT_OUT_TIME = skip_native_duration);
+                                        var parsedSkipDuration = parseInt(fallbackOptions.skip_native_duration, 10);
+                                        parsedSkipDuration && "number" == typeof parsedSkipDuration && (OPT_OUT_TIME = parsedSkipDuration);
                                         var now = Date.now();
                                         getStorageState((function(state) {
                                             state.nativeOptOutLifetime = now + OPT_OUT_TIME;
@@ -8091,8 +8569,8 @@ window.spb = function(modules) {
                                         return !0;
                                     }
                                     return !1;
-                                }(optOut);
-                                var fallback_reason = optOut.fallback_reason;
+                                }(fallbackOptions);
+                                var fallback_reason = fallbackOptions.fallback_reason;
                                 logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track6 = {}, 
                                 _getLogger$info$track6.transition_name = "native_onfallback", _getLogger$info$track6.transition_type = result ? "native_opt_out" : "native_fallback", 
                                 _getLogger$info$track6.transition_reason = fallback_reason || "", _getLogger$info$track6)).flush();
@@ -8174,7 +8652,7 @@ window.spb = function(modules) {
             return promise_ZalgoPromise.try((function() {
                 var _getLogger$addPayload;
                 var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry;
-                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken;
+                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken, enableNativeCheckout = props.enableNativeCheckout;
                 !function(personalization) {
                     personalization && personalization.tagline && personalization.tagline.tracking && util_sendBeacon(personalization.tagline.tracking.click);
                     personalization && personalization.buttonText && personalization.buttonText.tracking && util_sendBeacon(personalization.buttonText.tracking.click);
@@ -8191,19 +8669,29 @@ window.spb = function(modules) {
                     config: config,
                     serviceData: serviceData,
                     components: components,
-                    payment: payment
+                    payment: payment,
+                    restart: function(_ref4) {
+                        return initiatePaymentFlow({
+                            payment: _ref4.payment,
+                            serviceData: serviceData,
+                            config: config,
+                            components: components,
+                            props: props
+                        });
+                    }
                 }), click = _init.click, start = _init.start, close = _init.close;
                 logger_getLogger().addPayloadBuilder((function() {
                     return {
                         token: null
                     };
                 })).info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).addTrackingBuilder((function() {
-                    var _ref4;
-                    return (_ref4 = {}).selected_payment_method = fundingSource, _ref4.context_type = "button_session_id", 
-                    _ref4.context_id = buttonSessionID, _ref4.token = null, _ref4;
+                    var _ref5;
+                    return (_ref5 = {}).selected_payment_method = fundingSource, _ref5.context_type = "button_session_id", 
+                    _ref5.context_id = buttonSessionID, _ref5.token = null, _ref5;
                 })).track((_getLogger$addPayload = {}, _getLogger$addPayload.transition_name = "process_button_click", 
                 _getLogger$addPayload.chosen_fi_type = instrumentType, _getLogger$addPayload.payment_flow = name, 
-                _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload)).flush();
+                _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload.info_msg = enableNativeCheckout ? "tester" : "", 
+                _getLogger$addPayload)).flush();
                 var clickPromise = click ? promise_ZalgoPromise.try(click) : promise_ZalgoPromise.resolve();
                 clickPromise.catch(src_util_noop);
                 return promise_ZalgoPromise.try((function() {
@@ -8361,9 +8849,7 @@ window.spb = function(modules) {
                                 });
                             }));
                         }));
-                        var startPromise = promise_ZalgoPromise.try((function() {
-                            return updateClientConfigPromise;
-                        })).then((function() {
+                        var startPromise = updateClientConfigPromise.then((function() {
                             return start();
                         }));
                         var validateOrderPromise = createOrder().then((function(orderID) {
@@ -8562,65 +9048,53 @@ window.spb = function(modules) {
                                 buttonLabel: buttonLabel
                             });
                         }));
-                        validateOrderPromise.catch(src_util_noop);
                         var confirmOrderPromise = createOrder().then((function(orderID) {
                             return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmOrderPayload) {
-                                if (confirmOrderPayload) {
-                                    return function(_ref, _ref2) {
-                                        var orderID = _ref.orderID, payload = _ref.payload, partnerAttributionID = _ref.partnerAttributionID;
-                                        var facilitatorAccessToken = _ref2.facilitatorAccessToken;
-                                        var startTime = Date.now();
-                                        return promise_ZalgoPromise.try((function() {
-                                            return function(orderID, data, _ref10) {
-                                                var _headers14;
-                                                return callRestAPI({
-                                                    accessToken: _ref10.facilitatorAccessToken,
-                                                    method: "post",
-                                                    eventName: "order_confirm_payment_source",
-                                                    url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
-                                                    data: data,
-                                                    headers: (_headers14 = {}, _headers14["paypal-partner-attribution-id"] = _ref10.partnerAttributionID || "", 
-                                                    _headers14.prefer = "return=representation", _headers14)
-                                                }).then((function(_ref11) {
-                                                    return _ref11.data;
-                                                }));
-                                            }(orderID, payload, {
-                                                facilitatorAccessToken: facilitatorAccessToken,
-                                                partnerAttributionID: partnerAttributionID
-                                            });
-                                        })).catch((function(err) {
-                                            logger_getLogger().error("confirm_order_error", {
-                                                err: stringifyError(err)
-                                            });
-                                            throw err;
-                                        })).then((function() {
-                                            var _getLogger$track;
-                                            var duration = Date.now() - startTime;
-                                            logger_getLogger().track((_getLogger$track = {}, _getLogger$track.state_name = "smart_button", 
-                                            _getLogger$track.transition_name = "process_confirm_order", _getLogger$track.context_type = "EC-Token", 
-                                            _getLogger$track.context_id = orderID, _getLogger$track.token = orderID, _getLogger$track.response_duration = duration.toString(), 
-                                            _getLogger$track)).flush();
-                                        }));
-                                    }({
-                                        orderID: (_ref5 = {
-                                            orderID: orderID,
-                                            payload: confirmOrderPayload
-                                        }).orderID,
-                                        payload: _ref5.payload,
-                                        partnerAttributionID: partnerAttributionID
-                                    }, {
-                                        facilitatorAccessToken: serviceData.facilitatorAccessToken
-                                    });
-                                    var _ref5;
-                                }
+                                if (confirmOrderPayload) return function(_ref, _ref2) {
+                                    var orderID = _ref.orderID, payload = _ref.payload, partnerAttributionID = _ref.partnerAttributionID;
+                                    var facilitatorAccessToken = _ref2.facilitatorAccessToken;
+                                    var startTime = Date.now();
+                                    return promise_ZalgoPromise.try((function() {
+                                        return function(orderID, data, _ref10) {
+                                            var _headers14;
+                                            return callRestAPI({
+                                                accessToken: _ref10.facilitatorAccessToken,
+                                                method: "post",
+                                                eventName: "order_confirm_payment_source",
+                                                url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
+                                                data: data,
+                                                headers: (_headers14 = {}, _headers14["paypal-partner-attribution-id"] = _ref10.partnerAttributionID || "", 
+                                                _headers14.prefer = "return=representation", _headers14)
+                                            }).then((function(_ref11) {
+                                                return _ref11.data;
+                                            }));
+                                        }(orderID, payload, {
+                                            facilitatorAccessToken: facilitatorAccessToken,
+                                            partnerAttributionID: partnerAttributionID
+                                        });
+                                    })).catch((function(err) {
+                                        logger_getLogger().error("confirm_order_error", {
+                                            err: stringifyError(err)
+                                        });
+                                        throw err;
+                                    })).then((function() {
+                                        var _getLogger$track;
+                                        var duration = Date.now() - startTime;
+                                        logger_getLogger().track((_getLogger$track = {}, _getLogger$track.state_name = "smart_button", 
+                                        _getLogger$track.transition_name = "process_confirm_order", _getLogger$track.context_type = "EC-Token", 
+                                        _getLogger$track.context_id = orderID, _getLogger$track.token = orderID, _getLogger$track.response_duration = duration.toString(), 
+                                        _getLogger$track)).flush();
+                                    }));
+                                }({
+                                    orderID: orderID,
+                                    payload: confirmOrderPayload,
+                                    partnerAttributionID: partnerAttributionID
+                                }, {
+                                    facilitatorAccessToken: serviceData.facilitatorAccessToken
+                                });
                             }));
                         }));
-                        var startSequencePromise = vaultPromise.then((function() {
-                            return validateOrderPromise;
-                        })).then((function() {
-                            return startPromise;
-                        }));
-                        return promise_ZalgoPromise.all([ clickPromise, startSequencePromise, confirmOrderPromise ]).catch((function(err) {
+                        return promise_ZalgoPromise.all([ updateClientConfigPromise, clickPromise, vaultPromise, validateOrderPromise, startPromise, confirmOrderPromise ]).catch((function(err) {
                             return promise_ZalgoPromise.try(close).then((function() {
                                 throw err;
                             }));
@@ -8819,7 +9293,16 @@ window.spb = function(modules) {
                                             payment: payment,
                                             serviceData: serviceData,
                                             components: components,
-                                            config: config
+                                            config: config,
+                                            restart: function(_ref7) {
+                                                return initiatePaymentFlow({
+                                                    payment: _ref7.payment,
+                                                    serviceData: serviceData,
+                                                    config: config,
+                                                    components: components,
+                                                    props: props
+                                                });
+                                            }
                                         }).map((function(choice) {
                                             return _extends({}, choice, {
                                                 onSelect: function() {
@@ -8998,16 +9481,16 @@ window.spb = function(modules) {
                     return (_ref2 = {
                         buttonSessionID: buttonSessionID,
                         buttonCorrelationID: buttonCorrelationID
-                    }).user_id = buttonSessionID, _ref2;
+                    }).time = Date.now().toString(), _ref2.user_id = buttonSessionID, _ref2;
                 }));
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.68", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.69", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
-                    _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.time = Date.now().toString(), _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {

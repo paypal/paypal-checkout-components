@@ -62,7 +62,7 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "setupMenu", (function() {
         return setupMenu;
     }));
-    var n, l, preact_module_u, preact_module_t, preact_module_o, preact_module_r, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+    var n, l, preact_module_u, preact_module_t, preact_module_r, preact_module_o, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
     function preact_module_a(n, l) {
         for (var u in l) n[u] = l[u];
         return n;
@@ -72,18 +72,18 @@ window.spb = function(modules) {
         l && l.removeChild(n);
     }
     function v(l, u, i) {
-        var t, o, r, f = {};
-        for (r in u) "key" == r ? t = u[r] : "ref" == r ? o = u[r] : f[r] = u[r];
+        var t, r, o, f = {};
+        for (o in u) "key" == o ? t = u[o] : "ref" == o ? r = u[o] : f[o] = u[o];
         if (arguments.length > 2 && (f.children = arguments.length > 3 ? n.call(arguments, 2) : i), 
-        "function" == typeof l && null != l.defaultProps) for (r in l.defaultProps) void 0 === f[r] && (f[r] = l.defaultProps[r]);
-        return y(l, f, t, o, null);
+        "function" == typeof l && null != l.defaultProps) for (o in l.defaultProps) void 0 === f[o] && (f[o] = l.defaultProps[o]);
+        return y(l, f, t, r, null);
     }
-    function y(n, i, t, o, r) {
+    function y(n, i, t, r, o) {
         var f = {
             type: n,
             props: i,
             key: t,
-            ref: o,
+            ref: r,
             __k: null,
             __: null,
             __b: 0,
@@ -92,9 +92,9 @@ window.spb = function(modules) {
             __c: null,
             __h: null,
             constructor: void 0,
-            __v: null == r ? ++preact_module_u : r
+            __v: null == o ? ++preact_module_u : o
         };
-        return null != l.vnode && l.vnode(f), f;
+        return null == o && null != l.vnode && l.vnode(f), f;
     }
     function d(n) {
         return n.children;
@@ -118,19 +118,19 @@ window.spb = function(modules) {
         }
     }
     function m(n) {
-        (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_r !== l.debounceRendering) && ((preact_module_r = l.debounceRendering) || preact_module_o)(g);
+        (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_o !== l.debounceRendering) && ((preact_module_o = l.debounceRendering) || preact_module_r)(g);
     }
     function g() {
         for (var n; g.__r = preact_module_t.length; ) n = preact_module_t.sort((function(n, l) {
             return n.__v.__b - l.__v.__b;
         })), preact_module_t = [], n.some((function(n) {
-            var l, u, i, t, o, r;
-            n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = preact_module_a({}, t)).__v = t.__v + 1, 
-            j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? k(t) : o, t.__h), 
-            z(u, t), t.__e != o && b(t)));
+            var l, u, i, t, r, o;
+            n.__d && (r = (t = (l = n).__v).__e, (o = l.__P) && (u = [], (i = preact_module_a({}, t)).__v = t.__v + 1, 
+            j(o, t, i, l.__n, void 0 !== o.ownerSVGElement, null != t.__h ? [ r ] : null, u, null == r ? k(t) : r, t.__h), 
+            z(u, t), t.__e != r && b(t)));
         }));
     }
-    function w(n, l, u, i, t, o, r, f, s, a) {
+    function w(n, l, u, i, t, r, o, f, s, a) {
         var h, v, p, _, b, m, g, w = i && i.__k || c, A = w.length;
         for (u.__k = [], h = 0; h < l.length; h++) if (null != (_ = u.__k[h] = null == (_ = l[h]) || "boolean" == typeof _ ? null : "string" == typeof _ || "number" == typeof _ || "bigint" == typeof _ ? y(null, _, null, null, _) : Array.isArray(_) ? y(d, {
             children: _
@@ -142,40 +142,39 @@ window.spb = function(modules) {
                 }
                 p = null;
             }
-            j(n, _, p = p || e, t, o, r, f, s, a), b = _.__e, (v = _.ref) && p.ref != v && (g || (g = []), 
+            j(n, _, p = p || e, t, r, o, f, s, a), b = _.__e, (v = _.ref) && p.ref != v && (g || (g = []), 
             p.ref && g.push(p.ref, null, _), g.push(v, _.__c || b, _)), null != b ? (null == m && (m = b), 
-            "function" == typeof _.type && null != _.__k && _.__k === p.__k ? _.__d = s = x(_, s, n) : s = P(n, _, p, w, b, s), 
-            a || "option" !== u.type ? "function" == typeof u.type && (u.__d = s) : n.value = "") : s && p.__e == s && s.parentNode != n && (s = k(p));
+            "function" == typeof _.type && _.__k === p.__k ? _.__d = s = x(_, s, n) : s = P(n, _, p, w, b, s), 
+            "function" == typeof u.type && (u.__d = s)) : s && p.__e == s && s.parentNode != n && (s = k(p));
         }
         for (u.__e = m, h = A; h--; ) null != w[h] && ("function" == typeof u.type && null != w[h].__e && w[h].__e == u.__d && (u.__d = k(i, h + 1)), 
         N(w[h], w[h]));
         if (g) for (h = 0; h < g.length; h++) M(g[h], g[++h], g[++h]);
     }
     function x(n, l, u) {
-        var i, t;
-        for (i = 0; i < n.__k.length; i++) (t = n.__k[i]) && (t.__ = n, l = "function" == typeof t.type ? x(t, l, u) : P(u, t, t, n.__k, t.__e, l));
+        for (var i, t = n.__k, r = 0; t && r < t.length; r++) (i = t[r]) && (i.__ = n, l = "function" == typeof i.type ? x(i, l, u) : P(u, i, i, t, i.__e, l));
         return l;
     }
-    function P(n, l, u, i, t, o) {
-        var r, f, e;
-        if (void 0 !== l.__d) r = l.__d, l.__d = void 0; else if (null == u || t != o || null == t.parentNode) n: if (null == o || o.parentNode !== n) n.appendChild(t), 
-        r = null; else {
-            for (f = o, e = 0; (f = f.nextSibling) && e < i.length; e += 2) if (f == t) break n;
-            n.insertBefore(t, o), r = o;
+    function P(n, l, u, i, t, r) {
+        var o, f, e;
+        if (void 0 !== l.__d) o = l.__d, l.__d = void 0; else if (null == u || t != r || null == t.parentNode) n: if (null == r || r.parentNode !== n) n.appendChild(t), 
+        o = null; else {
+            for (f = r, e = 0; (f = f.nextSibling) && e < i.length; e += 2) if (f == t) break n;
+            n.insertBefore(t, r), o = r;
         }
-        return void 0 !== r ? r : t.nextSibling;
+        return void 0 !== o ? o : t.nextSibling;
     }
     function $(n, l, u) {
         "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || s.test(l) ? u : u + "px";
     }
     function H(n, l, u, i, t) {
-        var o;
+        var r;
         n: if ("style" === l) if ("string" == typeof u) n.style.cssText = u; else {
             if ("string" == typeof i && (n.style.cssText = i = ""), i) for (l in i) u && l in u || $(n.style, l, "");
             if (u) for (l in u) i && u[l] === i[l] || $(n.style, l, u[l]);
-        } else if ("o" === l[0] && "n" === l[1]) o = l !== (l = l.replace(/Capture$/, "")), 
+        } else if ("o" === l[0] && "n" === l[1]) r = l !== (l = l.replace(/Capture$/, "")), 
         l = l.toLowerCase() in n ? l.toLowerCase().slice(2) : l.slice(2), n.l || (n.l = {}), 
-        n.l[l + o] = u, u ? i || n.addEventListener(l, o ? T : I, o) : n.removeEventListener(l, o ? T : I, o); else if ("dangerouslySetInnerHTML" !== l) {
+        n.l[l + r] = u, u ? i || n.addEventListener(l, r ? T : I, r) : n.removeEventListener(l, r ? T : I, r); else if ("dangerouslySetInnerHTML" !== l) {
             if (t) l = l.replace(/xlink[H:h]/, "h").replace(/sName$/, "s"); else if ("href" !== l && "list" !== l && "form" !== l && "tabIndex" !== l && "download" !== l && l in n) try {
                 n[l] = null == u ? "" : u;
                 break n;
@@ -189,10 +188,10 @@ window.spb = function(modules) {
     function T(n) {
         this.l[n.type + !0](l.event ? l.event(n) : n);
     }
-    function j(n, u, i, t, o, r, f, e, c) {
+    function j(n, u, i, t, r, o, f, e, c) {
         var s, h, v, y, p, k, b, m, g, x, A, P = u.type;
         if (void 0 !== u.constructor) return null;
-        null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (s = l.__b) && s(u);
+        null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, o = [ e ]), (s = l.__b) && s(u);
         try {
             n: if ("function" == typeof P) {
                 if (m = u.props, g = (s = P.contextType) && t[s.__c], x = s ? g ? g.props.value : s.__ : t, 
@@ -218,13 +217,13 @@ window.spb = function(modules) {
                 h.context = x, h.props = m, h.state = h.__s, (s = l.__r) && s(u), h.__d = !1, h.__v = u, 
                 h.__P = n, s = h.render(h.props, h.state, h.context), h.state = h.__s, null != h.getChildContext && (t = preact_module_a(preact_module_a({}, t), h.getChildContext())), 
                 v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, p)), 
-                A = null != s && s.type === d && null == s.key ? s.props.children : s, w(n, Array.isArray(A) ? A : [ A ], u, i, t, o, r, f, e, c), 
+                A = null != s && s.type === d && null == s.key ? s.props.children : s, w(n, Array.isArray(A) ? A : [ A ], u, i, t, r, o, f, e, c), 
                 h.base = u.__e, u.__h = null, h.__h.length && f.push(h), b && (h.__E = h.__ = null), 
                 h.__e = !1;
-            } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = L(i.__e, u, i, t, o, r, f, c);
+            } else null == o && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = L(i.__e, u, i, t, r, o, f, c);
             (s = l.diffed) && s(u);
         } catch (n) {
-            u.__v = null, (c || null != r) && (u.__e = e, u.__h = !!c, r[r.indexOf(e)] = null), 
+            u.__v = null, (c || null != o) && (u.__e = e, u.__h = !!c, o[o.indexOf(e)] = null), 
             l.__e(n, u, i);
         }
     }
@@ -239,29 +238,29 @@ window.spb = function(modules) {
             }
         }));
     }
-    function L(l, u, i, t, o, r, f, c) {
+    function L(l, u, i, t, r, o, f, c) {
         var s, a, v, y = i.props, p = u.props, d = u.type, _ = 0;
-        if ("svg" === d && (o = !0), null != r) for (;_ < r.length; _++) if ((s = r[_]) && (s === l || (d ? s.localName == d : 3 == s.nodeType))) {
-            l = s, r[_] = null;
+        if ("svg" === d && (r = !0), null != o) for (;_ < o.length; _++) if ((s = o[_]) && (s === l || (d ? s.localName == d : 3 == s.nodeType))) {
+            l = s, o[_] = null;
             break;
         }
         if (null == l) {
             if (null === d) return document.createTextNode(p);
-            l = o ? document.createElementNS("http://www.w3.org/2000/svg", d) : document.createElement(d, p.is && p), 
-            r = null, c = !1;
+            l = r ? document.createElementNS("http://www.w3.org/2000/svg", d) : document.createElement(d, p.is && p), 
+            o = null, c = !1;
         }
         if (null === d) y === p || c && l.data === p || (l.data = p); else {
-            if (r = r && n.call(l.childNodes), a = (y = i.props || e).dangerouslySetInnerHTML, 
+            if (o = o && n.call(l.childNodes), a = (y = i.props || e).dangerouslySetInnerHTML, 
             v = p.dangerouslySetInnerHTML, !c) {
-                if (null != r) for (y = {}, _ = 0; _ < l.attributes.length; _++) y[l.attributes[_].name] = l.attributes[_].value;
+                if (null != o) for (y = {}, _ = 0; _ < l.attributes.length; _++) y[l.attributes[_].name] = l.attributes[_].value;
                 (v || a) && (v && (a && v.__html == a.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
             }
             if (function(n, l, u, i, t) {
-                var o;
-                for (o in u) "children" === o || "key" === o || o in l || H(n, o, null, u[o], i);
-                for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || H(n, o, l[o], u[o], i);
-            }(l, p, y, o, c), v) u.__k = []; else if (_ = u.props.children, w(l, Array.isArray(_) ? _ : [ _ ], u, i, t, o && "foreignObject" !== d, r, f, r ? r[0] : i.__k && k(i, 0), c), 
-            null != r) for (_ = r.length; _--; ) null != r[_] && h(r[_]);
+                var r;
+                for (r in u) "children" === r || "key" === r || r in l || H(n, r, null, u[r], i);
+                for (r in l) t && "function" != typeof l[r] || "children" === r || "key" === r || "value" === r || "checked" === r || u[r] === l[r] || H(n, r, l[r], u[r], i);
+            }(l, p, y, r, c), v) u.__k = []; else if (_ = u.props.children, w(l, Array.isArray(_) ? _ : [ _ ], u, i, t, r && "foreignObject" !== d, o, f, o ? o[0] : i.__k && k(i, 0), c), 
+            null != o) for (_ = o.length; _--; ) null != o[_] && h(o[_]);
             c || ("value" in p && void 0 !== (_ = p.value) && (_ !== l.value || "progress" === d && !_) && H(l, "value", _, y.value, !1), 
             "checked" in p && void 0 !== (_ = p.checked) && _ !== l.checked && H(l, "checked", _, y.checked, !1));
         }
@@ -275,7 +274,7 @@ window.spb = function(modules) {
         }
     }
     function N(n, u, i) {
-        var t, o;
+        var t, r;
         if (l.unmount && l.unmount(n), (t = n.ref) && (t.current && t.current !== n.__e || M(t, null, u)), 
         null != (t = n.__c)) {
             if (t.componentWillUnmount) try {
@@ -285,7 +284,7 @@ window.spb = function(modules) {
             }
             t.base = t.__P = null;
         }
-        if (t = n.__k) for (o = 0; o < t.length; o++) t[o] && N(t[o], u, "function" != typeof n.type);
+        if (t = n.__k) for (r = 0; r < t.length; r++) t[r] && N(t[r], u, "function" != typeof n.type);
         i || null == n.__e || h(n.__e), n.__e = n.__d = void 0;
     }
     function O(n, l, u) {
@@ -309,7 +308,7 @@ window.spb = function(modules) {
         null != n && this.__v && (l && this.__h.push(l), m(this));
     }, _.prototype.forceUpdate = function(n) {
         this.__v && (this.__e = !0, n && this.__h.push(n), m(this));
-    }, _.prototype.render = d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
+    }, _.prototype.render = d, preact_module_t = [], preact_module_r = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
     g.__r = 0;
     var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o = 0, hooks_module_i = [], hooks_module_c = l.__b, hooks_module_f = l.__r, hooks_module_e = l.diffed, hooks_module_a = l.__c, hooks_module_v = l.unmount;
     function hooks_module_m(t, r) {
@@ -356,7 +355,7 @@ window.spb = function(modules) {
                 clearTimeout(r), hooks_module_b && cancelAnimationFrame(t), setTimeout(n);
             }, r = setTimeout(u, 100);
             hooks_module_b && (t = requestAnimationFrame(u));
-        })(hooks_module_x)), hooks_module_u = void 0;
+        })(hooks_module_x)), hooks_module_u = null;
     }, l.__c = function(t, u) {
         u.some((function(t) {
             try {
@@ -617,6 +616,10 @@ window.spb = function(modules) {
         _proto.toPromise = function() {
             if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
             return Promise.resolve(this);
+        };
+        _proto.lazy = function() {
+            this.errorHandled = !0;
+            return this;
         };
         ZalgoPromise.resolve = function(value) {
             return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
@@ -1357,7 +1360,28 @@ window.spb = function(modules) {
         if ("function" == typeof element) return new node_ComponentNode(element, props, children);
         throw new TypeError("Expected jsx element to be a string or a function");
     };
-    var _ADD_CHILDREN;
+    var _ELEMENT_DEFAULT_XML_, _ATTRIBUTE_DEFAULT_XM, _ADD_CHILDREN;
+    var ELEMENT_DEFAULT_XML_NAMESPACE = ((_ELEMENT_DEFAULT_XML_ = {}).svg = "http://www.w3.org/2000/svg", 
+    _ELEMENT_DEFAULT_XML_);
+    var ATTRIBUTE_DEFAULT_XML_NAMESPACE = ((_ATTRIBUTE_DEFAULT_XM = {})["xlink:href"] = "http://www.w3.org/1999/xlink", 
+    _ATTRIBUTE_DEFAULT_XM);
+    function createTextElement(doc, node) {
+        return doc.createTextNode(node.text);
+    }
+    function addProps(el, node) {
+        var props = node.props;
+        for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
+            var prop = _Object$keys2[_i4];
+            var val = props[prop];
+            if (null != val && "el" !== prop && "innerHTML" !== prop) if (prop.match(/^on[A-Z][a-z]/) && "function" == typeof val) el.addEventListener(prop.slice(2).toLowerCase(), val); else if ("string" == typeof val || "number" == typeof val) {
+                var xmlNamespace = ATTRIBUTE_DEFAULT_XML_NAMESPACE[prop];
+                xmlNamespace ? el.setAttributeNS(xmlNamespace, prop, val.toString()) : el.setAttribute(prop, val.toString());
+            } else "boolean" == typeof val && !0 === val && el.setAttribute(prop, "");
+        }
+        "iframe" !== el.tagName.toLowerCase() || props.id || el.setAttribute("id", "jsx-iframe-" + "xxxxxxxxxx".replace(/./g, (function() {
+            return "0123456789abcdef".charAt(Math.floor(Math.random() * "0123456789abcdef".length));
+        })));
+    }
     var ADD_CHILDREN = ((_ADD_CHILDREN = {}).iframe = function(el, node) {
         var firstChild = node.children[0];
         if (1 !== node.children.length || !firstChild || "element" !== firstChild.type || "html" !== firstChild.name) throw new Error("Expected only single html element node as child of iframe element");
@@ -1379,51 +1403,58 @@ window.spb = function(modules) {
     }, _ADD_CHILDREN.default = function(el, node, renderer) {
         for (var _i6 = 0, _node$renderChildren2 = node.renderChildren(renderer); _i6 < _node$renderChildren2.length; _i6++) el.appendChild(_node$renderChildren2[_i6]);
     }, _ADD_CHILDREN);
+    function addChildren(el, node, doc, renderer) {
+        if (node.props.hasOwnProperty("innerHTML")) {
+            if (node.children.length) throw new Error("Expected no children to be passed when innerHTML prop is set");
+            var html = node.props.innerHTML;
+            if ("string" != typeof html) throw new TypeError("innerHTML prop must be string");
+            if ("script" === node.name) el.text = html; else {
+                el.innerHTML = html;
+                !function(el, doc) {
+                    void 0 === doc && (doc = window.document);
+                    for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll("script"); _i2 < _el$querySelectorAll2.length; _i2++) {
+                        var script = _el$querySelectorAll2[_i2];
+                        var parentNode = script.parentNode;
+                        if (parentNode) {
+                            var newScript = doc.createElement("script");
+                            newScript.text = script.textContent;
+                            parentNode.replaceChild(newScript, script);
+                        }
+                    }
+                }(el, doc);
+            }
+        } else (ADD_CHILDREN[node.name] || ADD_CHILDREN.default)(el, node, renderer);
+    }
     function dom(opts) {
         void 0 === opts && (opts = {});
         var _opts$doc = opts.doc, doc = void 0 === _opts$doc ? document : _opts$doc;
         return function domRenderer(node) {
             if ("component" === node.type) return node.renderComponent(domRenderer);
-            if ("text" === node.type) return function(doc, node) {
-                return doc.createTextNode(node.text);
-            }(doc, node);
+            if ("text" === node.type) return createTextElement(doc, node);
             if ("element" === node.type) {
+                var xmlNamespace = ELEMENT_DEFAULT_XML_NAMESPACE[node.name.toLowerCase()];
+                if (xmlNamespace) return function xmlNamespaceDomRenderer(node, xmlNamespace) {
+                    if ("component" === node.type) return node.renderComponent((function(childNode) {
+                        return xmlNamespaceDomRenderer(childNode, xmlNamespace);
+                    }));
+                    if ("text" === node.type) return createTextElement(doc, node);
+                    if ("element" === node.type) {
+                        var el = function(doc, node, xmlNamespace) {
+                            return doc.createElementNS(xmlNamespace, node.name);
+                        }(doc, node, xmlNamespace);
+                        addProps(el, node);
+                        addChildren(el, node, doc, (function(childNode) {
+                            return xmlNamespaceDomRenderer(childNode, xmlNamespace);
+                        }));
+                        return el;
+                    }
+                    throw new TypeError("Unhandleable node");
+                }(node, xmlNamespace);
                 var el = function(doc, node) {
                     return node.props.el ? node.props.el : doc.createElement(node.name);
                 }(doc, node);
-                !function(el, node) {
-                    var props = node.props;
-                    for (var _i4 = 0, _Object$keys2 = Object.keys(props); _i4 < _Object$keys2.length; _i4++) {
-                        var prop = _Object$keys2[_i4];
-                        var val = props[prop];
-                        null != val && "el" !== prop && "innerHTML" !== prop && (prop.match(/^on[A-Z][a-z]/) && "function" == typeof val ? el.addEventListener(prop.slice(2).toLowerCase(), val) : "string" == typeof val || "number" == typeof val ? el.setAttribute(prop, val.toString()) : "boolean" == typeof val && !0 === val && el.setAttribute(prop, ""));
-                    }
-                    "iframe" !== el.tagName.toLowerCase() || props.id || el.setAttribute("id", "jsx-iframe-" + "xxxxxxxxxx".replace(/./g, (function() {
-                        return "0123456789abcdef".charAt(Math.floor(Math.random() * "0123456789abcdef".length));
-                    })));
-                }(el, node);
-                !function(el, node, doc, renderer) {
-                    if (node.props.hasOwnProperty("innerHTML")) {
-                        if (node.children.length) throw new Error("Expected no children to be passed when innerHTML prop is set");
-                        var html = node.props.innerHTML;
-                        if ("string" != typeof html) throw new TypeError("innerHTML prop must be string");
-                        if ("script" === node.name) el.text = html; else {
-                            el.innerHTML = html;
-                            !function(el, doc) {
-                                void 0 === doc && (doc = window.document);
-                                for (var _i2 = 0, _el$querySelectorAll2 = el.querySelectorAll("script"); _i2 < _el$querySelectorAll2.length; _i2++) {
-                                    var script = _el$querySelectorAll2[_i2];
-                                    var parentNode = script.parentNode;
-                                    if (parentNode) {
-                                        var newScript = doc.createElement("script");
-                                        newScript.text = script.textContent;
-                                        parentNode.replaceChild(newScript, script);
-                                    }
-                                }
-                            }(el, doc);
-                        }
-                    } else (ADD_CHILDREN[node.name] || ADD_CHILDREN.default)(el, node, renderer);
-                }(el, node, doc, domRenderer);
+                addProps(el, node);
+                addChildren(el, node, doc, domRenderer);
                 return el;
             }
             throw new TypeError("Unhandleable node");
@@ -1612,8 +1643,8 @@ window.spb = function(modules) {
             var body = document.body;
             if (!body) throw new Error("Document body not found");
             return body;
-        }(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), r || e, e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
+        }(), l.__ && l.__(u, i), o = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), o || e, e, void 0 !== i.ownerSVGElement, o ? null : i.firstChild ? n.call(i.childNodes) : null, f, o ? o.__e : i.firstChild, !1), 
         z(f, u);
-        var u, i, r, f;
+        var u, i, o, f;
     }
 } ]);
