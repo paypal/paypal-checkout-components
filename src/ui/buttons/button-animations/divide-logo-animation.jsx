@@ -92,9 +92,9 @@ function animationConfiguration () : ButtonSizes {
         huge:       { max: BUTTON_SIZE_STYLE.huge.maxWidth },
         cssClasses: {
             DOM_READY:                  CLASS.DOM_READY,
-            ANIMATION_CONTAINER:         ANIMATION.CONTAINER,
+            ANIMATION_CONTAINER:        ANIMATION.CONTAINER,
             PAYPAL_LOGO:                LOGO_CLASS.LOGO,
-            ANIMATION_LABEL_CONTAINER:        ANIMATION.LABEL_CONTAINER,
+            ANIMATION_LABEL_CONTAINER:  ANIMATION.LABEL_CONTAINER,
             PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
         }
     };
