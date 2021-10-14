@@ -144,7 +144,7 @@ export function createNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDI
         return;
     }
 
-    return createExperiment('disable_paylater', 1);
+    return createExperiment('disable_paylater', 10);
 }
 
 export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
