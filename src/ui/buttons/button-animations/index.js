@@ -10,7 +10,7 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
     const buttonAnimation = (personalization && personalization.buttonAnimation) || null;
     const animationId = (buttonAnimation && buttonAnimation.id) || '';
 
-    if (animationId && animationId === '1') {
+    if (animationId && animationId === 'run-divide-logo-animation') {
         const animationLabelText = (buttonAnimation && buttonAnimation.text) || 'Pay now or pay later';
         const configuration =  setupDivideLogoAnimation(animationLabelText);
         return configuration;
