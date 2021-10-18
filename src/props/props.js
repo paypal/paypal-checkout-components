@@ -92,6 +92,7 @@ export type XProps = {|
     paymentMethodToken : ?string,
     branded? : boolean,
     userExperienceFlow : string,
+    allowBillingPayments : boolean,
 
     applePay : XApplePaySessionConfigRequest
 |};
@@ -160,7 +161,8 @@ export type Props = {|
     applePay : XApplePaySessionConfigRequest,
 
     branded : boolean | null,
-    userExperienceFlow : string
+    userExperienceFlow : string,
+    allowBillingPayments : boolean
 |};
 
 export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAccessToken : string, branded : boolean | null |}) : Props {
@@ -206,7 +208,8 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
         getQueriedEligibleFunding = () => ZalgoPromise.resolve([]),
         storageID,
         applePay,
-        userExperienceFlow
+        userExperienceFlow,
+        allowBillingPayments
     } = xprops;
 
     const onInit = getOnInit({ onInit: xprops.onInit });
@@ -291,6 +294,7 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
         branded,
         stickinessID,
         applePay,
-        userExperienceFlow
+        userExperienceFlow,
+        allowBillingPayments
     };
 }

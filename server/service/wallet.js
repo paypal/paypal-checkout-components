@@ -144,8 +144,9 @@ function buildSmartWalletQuery() : string {
 
         $vetted:           'Boolean',
 
-        $paymentMethodToken: 'String',
-        $branded:            'Boolean'
+        $paymentMethodToken:   'String',
+        $branded:              'Boolean',
+        $allowBillingPayments: 'Boolean'
     };
 
     const Inputs = {
@@ -161,7 +162,8 @@ function buildSmartWalletQuery() : string {
         vetted:           '$vetted',
 
         paymentMethodNonce:   '$paymentMethodToken',
-        branded:              '$branded'
+        branded:              '$branded',
+        allowBillingPayments: '$allowBillingPayments'
     };
 
     const getSmartWalletInstrumentQuery = () => {
@@ -213,7 +215,8 @@ export type WalletOptions = {|
     userIDToken? : ?string,
     userRefreshToken? : ?string,
     paymentMethodToken? : ?string,
-    branded? : ?boolean
+    branded? : ?boolean,
+    allowBillingPayments? : ?boolean
 |};
 
 const DEFAULT_AMOUNT = '0.00';
@@ -221,7 +224,7 @@ const DEFAULT_AMOUNT = '0.00';
 // eslint-disable-next-line complexity
 export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatchCall, { logger, clientID, merchantID, buttonSessionID,
     currency, intent, commit, vault, disableFunding, disableCard, clientAccessToken, buyerCountry, buyerAccessToken, amount = DEFAULT_AMOUNT,
-    userIDToken, userRefreshToken, paymentMethodToken, branded } : WalletOptions) : Promise<Wallet> {
+    userIDToken, userRefreshToken, paymentMethodToken, branded, allowBillingPayments } : WalletOptions) : Promise<Wallet> {
 
     const wallet : Wallet = {
         paypal: {
@@ -245,7 +248,7 @@ export async function resolveWallet(req : ExpressRequest, gqlBatch : GraphQLBatc
                 variables: {
                     clientID, merchantID, currency, amount,
                     userIDToken, userRefreshToken, buyerAccessToken,
-                    paymentMethodToken, branded, vetted: false
+                    paymentMethodToken, branded, vetted: false, allowBillingPayments
                 },
                 accessToken: clientAccessToken,
                 timeout:     WALLET_TIMEOUT

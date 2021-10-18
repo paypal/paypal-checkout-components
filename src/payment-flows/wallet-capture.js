@@ -37,7 +37,7 @@ let smartWalletPromise;
 let smartWalletErrored = false;
 
 function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
-    const { env, clientID, currency, amount, userIDToken } = props;
+    const { env, clientID, currency, amount, userIDToken, paymentMethodToken, allowBillingPayments, branded } = props;
     const { cspNonce } = config;
     const { merchantID, wallet } = serviceData;
 
@@ -49,7 +49,7 @@ function setupWalletCapture({ props, config, serviceData } : SetupOptions) {
 
     smartWalletPromise = loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
         return userIDToken
-            ? getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken })
+            ? getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, paymentMethodToken, allowBillingPayments, branded })
             : wallet;
     });
 

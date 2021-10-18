@@ -150,8 +150,9 @@ describe('wallet cases', () => {
 
             createButtonHTML({ wallet });
             await mockSetupButton({
-                merchantID:       [ uniqueID() ],
-                wallet
+                merchantID:           [ uniqueID() ],
+                wallet,
+                allowBillingPayments: true
             });
 
             await clickButton(FUNDING.PAYPAL);

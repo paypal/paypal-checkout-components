@@ -332,7 +332,7 @@ describe('vault cases', () => {
             };
 
             createButtonHTML({ fundingEligibility });
-            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility, allowBillingPayments: true });
 
             await clickButton(FUNDING.PAYPAL);
             gqlMock.done();

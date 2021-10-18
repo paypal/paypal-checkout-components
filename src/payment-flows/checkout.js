@@ -127,7 +127,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
         createBillingAgreement, createSubscription, onClick, amount,
         clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
         currency, enableFunding, stickinessID,
-        standaloneFundingSource, branded } = props;
+        standaloneFundingSource, branded, paymentMethodToken, allowBillingPayments } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
     const { buyerCountry, sdkMeta, merchantID } = serviceData;
@@ -161,7 +161,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                         const clientMetadataID = cmid || sessionID;
 
                         return loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
-                            return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken });
+                            return getSmartWallet({ clientID, merchantID, currency, amount, clientMetadataID, userIDToken, paymentMethodToken, allowBillingPayments, branded });
                         }).then(wallet => {
                             // $FlowFixMe
                             const walletInstruments = wallet[fundingSkipLogin] && wallet[fundingSkipLogin].instruments;

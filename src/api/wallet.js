@@ -18,14 +18,15 @@ type GetSmartWalletOptions = {|
     userIDToken : string,
     vetted? : boolean,
     paymentMethodToken? : ?string,
-    branded? : ?boolean
+    branded? : ?boolean,
+    allowBillingPayments? : ?boolean
 |};
 
 const DEFAULT_AMOUNT = '0.00';
 
 type GetSmartWallet = (GetSmartWalletOptions) => ZalgoPromise<Wallet>;
 
-export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, paymentMethodToken, branded }) => {
+export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, currency, amount = DEFAULT_AMOUNT, clientMetadataID, userIDToken, vetted = true, paymentMethodToken, branded, allowBillingPayments = true }) => {
     return callGraphQL({
         name:  'GetSmartWallet',
         query: `
@@ -37,7 +38,8 @@ export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, 
                 $userIDToken: String
                 $vetted: Boolean
                 $paymentMethodToken: String
-                $branded: Boolean
+                $branded: Boolean,
+                $allowBillingPayments: Boolean
             ) {
                 smartWallet(
                     clientId: $clientID
@@ -47,7 +49,8 @@ export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, 
                     userIdToken: $userIDToken
                     vetted: $vetted
                     paymentMethodNonce: $paymentMethodToken
-                    branded: $branded
+                    branded: $branded,
+                    allowBillingPayments: $allowBillingPayments
                 ) {
                     paypal {
                         instruments {
@@ -87,7 +90,7 @@ export const getSmartWallet : GetSmartWallet = memoize(({ clientID, merchantID, 
                 }
             }
         `,
-        variables: { clientID, merchantID, currency, amount, userIDToken, vetted, paymentMethodToken, branded },
+        variables: { clientID, merchantID, currency, amount, userIDToken, vetted, paymentMethodToken, branded, allowBillingPayments },
         headers:   {
             [HEADERS.CLIENT_METADATA_ID]: clientMetadataID
         }

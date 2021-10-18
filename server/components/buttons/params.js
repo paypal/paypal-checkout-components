@@ -46,7 +46,8 @@ type ButtonInputParams = {|
     paymentMethodToken? : ?string,
     branded? : boolean,
     fundingSource : $Values<typeof FUNDING>,
-    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>
+    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    allowBillingPayments? : boolean
 |};
 
 type Style = {|
@@ -86,7 +87,8 @@ type ButtonParams = {|
     paymentMethodToken : ?string,
     branded : ?boolean,
     fundingSource : $Values<typeof FUNDING>,
-    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>
+    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    allowBillingPayments : ?boolean
 |};
 
 function getCookieString(req : ExpressRequest) : string {
@@ -226,6 +228,17 @@ function getBranded(params : ButtonInputParams) : ?boolean {
     return branded;
 }
 
+
+function getAllowBillingPayments(params : ButtonInputParams) : ?boolean {
+    const allowBillingPayments = params.allowBillingPayments;
+
+    if (typeof allowBillingPayments !== 'boolean') {
+        return;
+    }
+
+    return allowBillingPayments;
+}
+
 function getRiskDataParam(req : ExpressRequest) : ?RiskData {
     const serializedRiskData = req.query.riskData;
 
@@ -324,6 +337,7 @@ export function getButtonParams(params : ButtonInputParams, req : ExpressRequest
     const paymentMethodToken = getPaymentMethodToken(req);
 
     const branded = getBranded(params);
+    const allowBillingPayments = getAllowBillingPayments(params);
     const riskData = getRiskDataParam(req);
     const correlationID = req.correlationId || '';
 
@@ -360,7 +374,8 @@ export function getButtonParams(params : ButtonInputParams, req : ExpressRequest
         platform,
         cookies,
         paymentMethodToken,
-        branded
+        branded,
+        allowBillingPayments
     };
 }
 
