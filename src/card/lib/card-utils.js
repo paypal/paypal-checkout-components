@@ -1,6 +1,6 @@
 /* @flow */
 
-import { camelToDasherize, noop } from 'belter';
+import { camelToDasherize, noop, values } from 'belter';
 import creditCardType from 'credit-card-type';
 import luhn10 from 'card-validator/src/luhn-10';
 
@@ -181,7 +181,7 @@ export function maskDate(date : string, prevMask? : string = '') : string {
 // $FlowFixMe
 export function filterStyles(rawStyles : {| |} = {}) : FieldStyle {
     const camelKey = Object.keys(FIELD_STYLE);
-    const dashKey = Object.values(FIELD_STYLE);
+    const dashKey = values(FIELD_STYLE);
 
     // $FlowFixMe
     return Object.keys(rawStyles).reduce((acc : {|  |}, key : string) => {
