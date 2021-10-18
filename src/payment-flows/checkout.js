@@ -25,7 +25,6 @@ export const CHECKOUT_APM_POPUP_DIMENSIONS = {
     HEIGHT: 720
 };
 
-let checkoutOpen = false;
 let canRenderTop = false;
 
 function getRenderWindow() : Object {
@@ -41,8 +40,6 @@ function getRenderWindow() : Object {
 
 function setupCheckout({ components } : SetupOptions) : ZalgoPromise<void> {
     const { Checkout } = components;
-
-    checkoutOpen = false;
 
     const [ parent, top ] = [ getParent(window), getTop(window) ];
 
@@ -117,10 +114,6 @@ function getDimensions(fundingSource : string) : {| width : number, height : num
 }
 
 function initCheckout({ props, components, serviceData, payment, config, restart: fullRestart } : InitOptions) : PaymentFlowInstance {
-    if (checkoutOpen) {
-        throw new Error(`Checkout already rendered`);
-    }
-
     const { Checkout } = components;
     const { sessionID, buttonSessionID, createOrder, onApprove, onCancel,
         onShippingChange, locale, commit, onError, vault, clientAccessToken,
@@ -254,7 +247,6 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                 } : null,
 
             onClose: () => {
-                checkoutOpen = false;
                 if (doApproveOnClose) {
                     // eslint-disable-next-line no-use-before-define
                     return onApprove({ forceRestAPI: true }, { restart }).catch(noop);
@@ -295,7 +287,6 @@ function initCheckout({ props, components, serviceData, payment, config, restart
     let instance;
 
     const close = () => {
-        checkoutOpen = false;
         return ZalgoPromise.try(() => {
             if (instance) {
                 forceClosed = true;
@@ -306,11 +297,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
 
     const start = memoize(() => {
         instance = init();
-        return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context).catch(err => {
-            if (checkoutOpen) {
-                throw err;
-            }
-        });
+        return instance.renderTo(getRenderWindow(), TARGET_ELEMENT.BODY, context);
     });
 
     const restart = memoize(() : ZalgoPromise<void> => {
