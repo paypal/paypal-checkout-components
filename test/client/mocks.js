@@ -797,8 +797,6 @@ type NativeMockWebSocket = {|
 |};
 
 export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : () => ?string |}) : NativeMockWebSocket {
-    let props;
-
     let getPropsRequestID;
     let onInitRequestID;
     let onApproveRequestID;
@@ -825,7 +823,6 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
                 if (requestUID !== getPropsRequestID) {
                     throw new Error(`Request uid doest not match for getProps response`);
                 }
-                props = messageData;
             }
 
             if (messageType === 'response' && messageName === 'onApprove') {
@@ -890,10 +887,6 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     };
 
     const onApprove = () => {
-        if (!props) {
-            // throw new Error(`Can not approve without getting props`);
-        }
-
         onApproveRequestID = uniqueID();
 
         return send(JSON.stringify({
@@ -912,10 +905,6 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     };
 
     const onCancel = () => {
-        if (!props) {
-            // throw new Error(`Can not approve without getting props`);
-        }
-
         onCancelRequestID = uniqueID();
 
         return send(JSON.stringify({
@@ -1171,6 +1160,7 @@ function mockFirebase({ handler } : {| handler : ({| data : Object |}) => void |
                                 listeners[path] = listeners[path] || [];
                                 listeners[path].push((...args) => {
                                     if (!firebaseOffline) {
+                                        hasCalls = true;
                                         onHandler(...args);
                                     }
                                 });
@@ -1209,9 +1199,6 @@ function mockFirebase({ handler } : {| handler : ({| data : Object |}) => void |
 }
 
 export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionUID : string, extraHandler? : Function |}) : NativeMockWebSocket {
-    let props;
-
-    let getPropsRequestID;
     let onInitRequestID;
     let onApproveRequestID;
     let onCancelRequestID;
@@ -1286,13 +1273,6 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
                     }));
                 }
 
-                if (messageType === 'response' && messageName === 'getProps') {
-                    if (requestUID !== getPropsRequestID) {
-                        throw new Error(`Request uid doest not match for getProps response`);
-                    }
-                    props = messageData;
-                }
-
                 if (messageType === 'response' && messageName === 'onApprove') {
                     if (requestUID !== onApproveRequestID) {
                         throw new Error(`Request uid doest not match for onApprove response`);
@@ -1360,10 +1340,6 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
 
 
     const onApprove = ({ payerID }) => {
-        if (!props) {
-            // throw new Error(`Can not approve without getting props`);
-        }
-
         onApproveRequestID = `${ uniqueID()  }_onApprove`;
         waitingForResponse.push(onApproveRequestID);
 
@@ -1383,10 +1359,6 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
     };
 
     const onCancel = () => {
-        if (!props) {
-            // throw new Error(`Can not approve without getting props`);
-        }
-
         onCancelRequestID = `${ uniqueID()  }_onCancel`;
         waitingForResponse.push(onCancelRequestID);
 
@@ -1425,10 +1397,6 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
     };
 
     const onShippingChange = () => {
-        if (!props) {
-            // throw new Error(`Can not approve without getting props`);
-        }
-
         onShippingChangeRequestID = `${ uniqueID()  }_onShippingChange`;
         waitingForResponse.push(onShippingChangeRequestID);
 
@@ -1478,8 +1446,7 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
             message_type:       'request',
             message_name:       'onApprove',
             message_data:       {
-                orderID: props.orderID,
-                payerID: 'XXYYZZ123456'
+
             }
         }));
     };
