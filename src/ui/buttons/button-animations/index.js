@@ -3,21 +3,24 @@
 import { type Personalization } from '../props';
 
 import { setupDivideLogoAnimation } from './divide-logo-animation';
-import  { type ButtonAnimationOutputParams, type ButtonAnimationEmptyOutput } from './types';
+import { type ButtonAnimationOutputParams } from './types';
 
 
-export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | ButtonAnimationEmptyOutput {
-    const buttonAnimation = (personalization && personalization.buttonAnimation) || null;
-    const animationId = (buttonAnimation && buttonAnimation.id) || '';
-
-    if (animationId && animationId === 'run-divide-logo-animation') {
-        const animationLabelText = (buttonAnimation && buttonAnimation.text) || 'Safe and easy way to pay';
-        const configuration =  setupDivideLogoAnimation(animationLabelText);
-        return configuration;
+export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | Object {
+    if (!personalization) {
+        return {};
     }
-    return {
-        animationContainerClass: null,
-        animationScript:         null,
-        animationComponent:      null
-    };
+
+    const {
+        buttonAnimation: {
+            id: animationId = '',
+            text: animationLabelText = 'Safe and easy way to pay'
+        } = {}
+    } = personalization;
+
+    if (animationId === 'run-divide-logo-animation') {
+        return setupDivideLogoAnimation(animationLabelText);
+    }
+
+    return {};
 }

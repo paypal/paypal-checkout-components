@@ -46,7 +46,8 @@ export type LabelOptions = {|
     personalization : ?Personalization,
     nonce : ?string,
     tagline : ?boolean,
-    content : ?ContentType
+    content : ?ContentType,
+    buttonAnimationComponent : ?ChildType | null
 |};
 
 export type WalletLabelOptions = {|

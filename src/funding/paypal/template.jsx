@@ -156,6 +156,16 @@ export function Label(opts : LabelOptions) : ChildType {
     );
 }
 
+export function AnimatedLabel(opts : LabelOptions) : ChildType {
+    return (
+        <Fragment>
+            <BasicLabel { ...opts } />
+            { opts.buttonAnimationComponent }
+            <ButtonPersonalization { ...opts } />
+        </Fragment>
+    );
+}
+
 export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     const { logoColor, instrument, locale, content, commit } = opts;
 

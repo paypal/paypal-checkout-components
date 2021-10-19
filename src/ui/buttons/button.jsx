@@ -11,6 +11,7 @@ import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../ty
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
 
+import { getButtonAnimation } from './button-animations';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
@@ -96,6 +97,16 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     
     const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content }) : (fundingConfig.labelText || fundingSource);
 
+    // Only personalize the paypal button
+    const buttonAnimation = fundingSource === FUNDING.PAYPAL
+        ? getButtonAnimation(personalization)
+        : {};
+
+    const {
+        buttonAnimationContainerClass = '',
+        buttonAnimationComponent = null
+    } = buttonAnimation;
+
     const logoNode = (
         <Logo
             label={ label }
@@ -127,6 +138,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
+            buttonAnimationComponent={ buttonAnimationComponent }
         />
     );
 
@@ -170,7 +182,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ CLASS.TEXT_COLOR }-${ textColor }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
                 `${ isWallet ? CLASS.WALLET : '' }`,
-                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`
+                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`,
+                `${ buttonAnimationContainerClass }`
             ].join(' ') }
         >
             <div

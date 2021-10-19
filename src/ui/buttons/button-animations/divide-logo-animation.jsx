@@ -1,12 +1,12 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType, type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import type { ButtonAnimationOutputParams, LabelOptions, ResizeButtonAnimationDomElementPositions, ButtonSizes } from './types';
+import type { ButtonAnimationOutputParams, LabelOptions, ButtonSizes } from './types';
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
@@ -39,7 +39,8 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
     );
 }
 
-const getPositionsOfElementsForAnimation = function(document, configuration) : ResizeButtonAnimationDomElementPositions | null {
+// Returns label container if the button sizes match
+const getValidLabelContainer = function(document, configuration) : ElementNode | null {
     const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
     const { large, huge } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -56,9 +57,7 @@ const getPositionsOfElementsForAnimation = function(document, configuration) : R
         return null;
     }
 
-    return {
-        paypalLabelContainerElement
-    };
+    return paypalLabelContainerElement;
 };
 
 function animationConfiguration () : ButtonSizes {
@@ -76,9 +75,9 @@ function animationConfiguration () : ButtonSizes {
 }
 
 export function createDivideLogoAnimation() : Function {
-    return (params, cssClasses) : void => {
-        const { paypalLabelContainerElement } = params;
+    return (paypalLabelContainerElement, cssClasses) : void => {
         const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
+        // The 44.5% is eyeballed, not sure if/underwhat circumstances that could become inaccurate
         const animations = `
             .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
                 animation: 3s divide-logo-animation-left-side 2s infinite alternate;
@@ -140,20 +139,19 @@ export function createDivideLogoAnimation() : Function {
 }
 
 export function setupDivideLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
-    let animationScript = '';
     const animationProps = { animationLabelText };
     const animationFn = createDivideLogoAnimation();
     const animationConfig = animationConfiguration();
-    animationScript = `
-        const elementPositionsForAnimation = ${ getPositionsOfElementsForAnimation.toString() }( document, ${ JSON.stringify(animationConfig) })
-        if (elementPositionsForAnimation) {
+    const buttonAnimationScript = `
+        const labelContainer = ${ getValidLabelContainer.toString() }( document, ${ JSON.stringify(animationConfig) })
+        if (labelContainer) {
             const animation = ${ animationFn.toString() }
-            animation(elementPositionsForAnimation, ${ JSON.stringify(animationConfig.cssClasses) })
+            animation(labelContainer, ${ JSON.stringify(animationConfig.cssClasses) })
         }
     `;
     return {
-        animationContainerClass: ANIMATION.CONTAINER,
-        animationScript,
-        animationComponent:      (<LabelForDivideLogoAnimation { ...animationProps } />)
+        buttonAnimationContainerClass: ANIMATION.CONTAINER,
+        buttonAnimationScript,
+        buttonAnimationComponent:      (<LabelForDivideLogoAnimation { ...animationProps } />)
     };
 }

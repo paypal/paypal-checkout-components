@@ -3,7 +3,7 @@
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 
-function getComponentScript() : () => void {
+export function getComponentScript() : () => void {
 
     /* istanbul ignore next */
     return () => {
