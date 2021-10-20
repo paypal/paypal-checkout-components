@@ -7,7 +7,7 @@ import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ProxyWindow } from 'post-robot/src';
 
 import { getNativeEligibility, onLsatUpgradeCalled } from '../../api';
-import { getLogger, isAndroidChrome, unresolvedPromise, getStorageState, getPostRobot, postRobotOnceProxy, onCloseProxyWindow } from '../../lib';
+import { getLogger, isAndroidChrome, unresolvedPromise, getStorageState, toProxyWindow, postRobotOnceProxy, onCloseProxyWindow } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../../constants';
 import type { ButtonProps, ServiceData, Config, Components } from '../../button/props';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
@@ -175,7 +175,7 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
 
                 let nativePopupWinProxy;
                 if (win) {
-                    nativePopupWinProxy = getPostRobot().toProxyWindow(win);
+                    nativePopupWinProxy = toProxyWindow(win);
                     nativePopupWinProxy.setLocation(url);
 
                 } else {

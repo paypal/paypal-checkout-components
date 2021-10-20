@@ -9,7 +9,7 @@ import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import type { ProxyWindow } from 'post-robot/src';
 
 import { updateButtonClientConfig, onLsatUpgradeCalled } from '../../api';
-import { getLogger, isAndroidChrome } from '../../lib';
+import { getLogger, isAndroidChrome, toProxyWindow } from '../../lib';
 import { FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../../constants';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
 import { checkout } from '../checkout';
@@ -51,13 +51,20 @@ function initNative({ props, components, config, payment, serviceData, restart }
 
     const fallbackToWebCheckout = (fallbackWin? : ?(CrossDomainWindowType | ProxyWindow)) => {
         didFallback = true;
-        const checkoutPayment = { ...payment, win: fallbackWin, isClick: false, isNativeFallback: true };
-        const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData, restart });
 
-        return ZalgoPromise.all([
-            destroy(),
-            instance.start()
-        ]).then(noop);
+        return ZalgoPromise.try(() => {
+            return fallbackWin ? toProxyWindow(fallbackWin).isClosed() : true;
+        }).then(winClosedOrNotPassed => {
+            const win = winClosedOrNotPassed ? null : fallbackWin;
+
+            const checkoutPayment = { ...payment, win, isClick: false, isNativeFallback: true };
+            const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData, restart });
+
+            return ZalgoPromise.all([
+                destroy(),
+                instance.start()
+            ]).then(noop);
+        });
     };
 
     const onInitCallback = () => {

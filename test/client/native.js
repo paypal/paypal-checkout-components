@@ -1,14 +1,15 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
-import { wrapPromise, parseQuery, uniqueID } from 'belter/src';
+import { wrapPromise, parseQuery, uniqueID, noop } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
+import { isWindowClosed } from 'cross-domain-utils/src';
 
-import { promiseNoop, getStorageState } from '../../src/lib';
+import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getMockWindowOpen,
-    mockFunction, getNativeFirebaseMock, getGraphQLApiMock } from './mocks';
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, setupMocks } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
 const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
@@ -176,38 +177,59 @@ const mockOnApprove = ({ expect, orderID, payerID }) => {
     }));
 };
 
-const mockWebCheckout = ({ expect, orderID, mockWindow, approve = true }) => {
-    return new ZalgoPromise(resolve => {
-        mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+const mockWebCheckout = ({ expect, orderID, mockWindow, approve = true, onComplete = noop }) => {
+    const checkoutMock = mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
+        if (mockWindow) {
+            if (!checkoutProps.window) {
+                throw new Error(`Expected window to be passed in checkout props`);
+            }
 
             if (checkoutProps.window.getWindow() !== mockWindow.getWindow()) {
                 throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
             }
 
-            const checkoutInstance = CheckoutOriginal(checkoutProps);
+            if (isWindowClosed(checkoutProps.window.getWindow())) {
+                throw new Error(`Window passed in props is closed`);
+            }
+        } else {
+            if (checkoutProps.window) {
+                throw new Error(`Expected no window to be passed in checkout props`);
+            }
+        }
 
-            mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async () => {
-                return checkoutProps.createOrder().then(id => {
-                    if (id !== orderID) {
-                        throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
-                    }
+        const checkoutInstance = CheckoutOriginal(checkoutProps);
 
+        const renderToMock = mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async () => {
+            return checkoutProps.createOrder().then(id => {
+                if (id !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                }
+                
+                return ZalgoPromise.try(() => {
                     if (approve) {
-                        mockWindow.expectClose();
-                        checkoutProps.onApprove({
+                        if (mockWindow) {
+                            mockWindow.expectClose();
+                        }
+                        
+                        return checkoutProps.onApprove({
                             orderID
                         });
                     }
-
-                    resolve({
+                }).then(() => {
+                    checkoutMock.cancel();
+                    renderToMock.cancel();
+                    
+                    return onComplete({
                         props: checkoutProps
                     });
                 });
-            }));
-
-            return checkoutInstance;
+            });
         }));
-    });
+
+        return checkoutInstance;
+    }));
+
+    return checkoutMock;
 };
 
 const setupNativeButton = () => {
@@ -1520,11 +1542,15 @@ describe('native ios/safari cases', () => {
                 }
             });
 
-            mockWebCheckout({ expect, orderID, mockWindow, approve: false }).then(expect('postCheckout', ({ props }) => {
-                mockWindow.reset();
-                appInstalled = true;
-                return props.restart();
-            }));
+            mockWebCheckout({
+                expect, orderID, mockWindow,
+                approve:    false,
+                onComplete: expect('onComplete', ({ props }) => {
+                    mockWindow.reset();
+                    appInstalled = true;
+                    return props.restart();
+                })
+            });
 
             createButtonHTML();
 
@@ -1978,6 +2004,7 @@ describe('native android/chrome cases', () => {
             window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
             mockOnApprove({ expect, orderID, payerID: null });
+            mockWebCheckout({ expect, orderID, mockWindow: null });
 
             createButtonHTML();
 
@@ -2036,6 +2063,7 @@ describe('native android/chrome cases', () => {
             window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
             mockOnApprove({ expect, orderID, payerID: null });
+            mockWebCheckout({ expect, orderID, mockWindow: null });
 
             createButtonHTML();
 
@@ -2591,16 +2619,15 @@ describe('native android/chrome cases', () => {
             const mockWindow = getMockWindowOpen({
                 expectedUrl:   EXPECTED_POPUP_URL,
                 expectedQuery: EXPECTED_POPUP_QUERY_PARAMS,
-                expectClose:        true,
                 onOpen:        () => {
-                    sendRedirectMessage({ mockWindow, expect, hash: 'fallback' }).then(({ query: redirectQuery }) => {
+                    sendRedirectMessage({ mockWindow, expect }).then(({ query: redirectQuery }) => {
                         mockWindow.close();
 
                         if (mockWebSocketServer) {
                             mockWebSocketServer.done();
                         }
 
-                        const { expect: expectSocket, onInit, onFallbackOptOut } = getNativeFirebaseMock({
+                        const { expect: expectSocket, onInit, onFallback } = getNativeFirebaseMock({
                             sessionUID: redirectQuery.sessionUID
                         });
 
@@ -2609,7 +2636,10 @@ describe('native android/chrome cases', () => {
                         return ZalgoPromise.delay(100).then(() => {
                             return onInit();
                         }).then(() => {
-                            return onFallbackOptOut();
+                            return onFallback({
+                                type:                 'native_opt_out',
+                                skip_native_duration: 604800000
+                            });
                         });
                     });
                 }
@@ -2620,6 +2650,7 @@ describe('native android/chrome cases', () => {
             window.xprops.onCancel = avoid(POST_MESSAGE.ON_CANCEL);
             window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
+            const webCheckoutMock = mockWebCheckout({ expect, orderID, mockWindow: null });
             mockOnApprove({ expect, orderID, payerID: null });
 
             createButtonHTML();
@@ -2630,27 +2661,31 @@ describe('native android/chrome cases', () => {
             await clickButton(FUNDING.PAYPAL);
             await window.xprops.onApprove.await();
 
-            if (mockWebSocketServer) {
-                mockWebSocketServer.done();
-            }
+            webCheckoutMock.cancel();
+            mockWindow.done();
 
-            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
-                if (data.orderID !== orderID) {
-                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
-                }
-            }));
+            await setupMocks();
+            createButtonHTML();
+
+            mockCreateOrder({ expect, orderID });
+
+            window.xprops.onCancel = avoid(POST_MESSAGE.ON_CANCEL);
+            window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
+
+            mockOnApprove({ expect, orderID, payerID: null });
+
+            await setupNativeButton();
 
             // Second click should use the web flow
             await clickButton(FUNDING.PAYPAL);
             await window.xprops.onApprove.await();
 
+            if (mockWebSocketServer) {
+                mockWebSocketServer.done();
+            }
+
             gqlMock.done();
             mockWindow.done();
-
-            // Reset nativeOptOutLifetime
-            getStorageState(state => {
-                state.nativeOptOutLifetime = 0;
-            });
         });
     });
 
@@ -2907,11 +2942,15 @@ describe('native android/chrome cases', () => {
                 }
             });
 
-            mockWebCheckout({ expect, orderID, mockWindow, approve: false }).then(expect('postCheckout', ({ props }) => {
-                mockWindow.reset();
-                appInstalled = true;
-                return props.restart();
-            }));
+            mockWebCheckout({
+                expect, orderID, mockWindow,
+                approve:    false,
+                onComplete: expect('onComplete', ({ props }) => {
+                    mockWindow.reset();
+                    appInstalled = true;
+                    return props.restart();
+                })
+            });
 
             createButtonHTML();
 

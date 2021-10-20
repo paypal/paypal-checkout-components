@@ -2,16 +2,11 @@
 /* eslint require-await: off, max-nested-callbacks: off */
 
 import { INTENT, FUNDING } from '@paypal/sdk-constants/src';
-import { wrapPromise, noop } from 'belter/src';
+import { wrapPromise } from 'belter/src';
 
 import { mockSetupButton, generateOrderID, mockAsyncProp, createButtonHTML, DEFAULT_FUNDING_ELIGIBILITY, clickButton, mockFunction } from './mocks';
 
 describe('error cases', () => {
-
-    beforeEach(() => {
-        // eslint-disable-next-line unicorn/prefer-add-event-listener
-        window.onerror = noop;
-    });
 
     it('should call xprops.onError for any onApprove error', async () => {
         return await wrapPromise(async ({ expect, expectError }) => {

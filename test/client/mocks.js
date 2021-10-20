@@ -18,6 +18,13 @@ import { triggerKeyPress } from './util';
 
 export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
 
+beforeEach(() => {
+    // eslint-disable-next-line unicorn/prefer-add-event-listener
+    window.onerror = noop;
+    localStorage.clear();
+    sessionStorage.clear();
+});
+
 export function promiseNoop() : ZalgoPromise<void> {
     return ZalgoPromise.resolve();
 }
@@ -791,9 +798,7 @@ type NativeMockWebSocket = {|
     onCancel : () => ZalgoPromise<void>,
     onError : () => ZalgoPromise<void>,
     onShippingChange : () => ZalgoPromise<void>,
-    onFallback : () => ZalgoPromise<void>,
-    fallback : ({| buyerAccessToken : string |}) => ZalgoPromise<void>,
-    onFallbackOptOut : () => ZalgoPromise<void>
+    onFallback : (opts? : {| type : string, skip_native_duration : number |}) => ZalgoPromise<void>
 |};
 
 export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : () => ?string |}) : NativeMockWebSocket {
@@ -803,6 +808,7 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
     let onCancelRequestID;
     let onErrorRequestID;
     let onShippingChangeRequestID;
+    let onFallbackRequestID;
 
     const { send, expect } = mockWebSocket({
         uri:     'wss://127.0.0.1/paypal/native',
@@ -958,26 +964,24 @@ export function getNativeWebSocketMock({ getSessionUID } : {| getSessionUID : ()
         }));
     };
 
-    const onFallback = () => {
-        onShippingChangeRequestID = uniqueID();
+    const onFallback = (data) => {
+        onFallbackRequestID = uniqueID();
 
         return send(JSON.stringify({
             session_uid:        getSessionUID(),
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
-            request_uid:        onShippingChangeRequestID,
+            request_uid:        onFallbackRequestID,
             message_uid:        uniqueID(),
             message_type:       'request',
-            message_name:       'onShippingChange',
-            message_data:       {
-
-            }
+            message_name:       'onFallback',
+            message_data:       data
         }));
     };
 
     return {
-        expect, onInit, onApprove, onCancel, onError, onShippingChange, onFallback, fallback: promiseNoop, onFallbackOptOut: promiseNoop
+        expect, onInit, onApprove, onCancel, onError, onShippingChange, onFallback
     };
 }
 
@@ -1204,7 +1208,7 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
     let onCancelRequestID;
     let onErrorRequestID;
     let onShippingChangeRequestID;
-    let fallbackRequestID;
+    let onFallbackRequestID;
 
     const received = {};
     const waitingForResponse = [];
@@ -1415,59 +1419,20 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
         }));
     };
 
-    const fallback = ({ buyerAccessToken } : {| buyerAccessToken : string |}) => {
-        fallbackRequestID = `${ uniqueID() }_fallback`;
-        waitingForResponse.push(onErrorRequestID);
+    const onFallback = (data = {}) => {
+        onFallbackRequestID = `${ uniqueID()  }_onFallback`;
+        waitingForResponse.push(onFallbackRequestID);
 
         return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
             session_uid:        sessionUID,
             source_app:         'paypal_native_checkout_sdk',
             source_app_version: '1.2.3',
             target_app:         'paypal_smart_payment_buttons',
-            request_uid:        fallbackRequestID,
-            message_uid:        uniqueID(),
-            message_type:       'request',
-            message_name:       'fallback',
-            message_data:       { buyerAccessToken }
-        }));
-    };
-
-    const onFallback = () => {
-        onApproveRequestID = `${ uniqueID()  }_onApprove`;
-        waitingForResponse.push(onApproveRequestID);
-
-        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        sessionUID,
-            source_app:         'paypal_native_checkout_sdk',
-            source_app_version: '1.2.3',
-            target_app:         'paypal_smart_payment_buttons',
-            request_uid:        onApproveRequestID,
-            message_uid:        uniqueID(),
-            message_type:       'request',
-            message_name:       'onApprove',
-            message_data:       {
-
-            }
-        }));
-    };
-
-    const onFallbackOptOut = () => {
-        fallbackRequestID = `${ uniqueID()  }_fallback`;
-        waitingForResponse.push(fallbackRequestID);
-
-        return send(`users/${ sessionUID }/messages/${ uniqueID() }`, JSON.stringify({
-            session_uid:        sessionUID,
-            source_app:         'paypal_native_checkout_sdk',
-            source_app_version: '1.2.3',
-            target_app:         'paypal_smart_payment_buttons',
-            request_uid:        fallbackRequestID,
+            request_uid:        onFallbackRequestID,
             message_uid:        uniqueID(),
             message_type:       'request',
             message_name:       'onFallback',
-            message_data:       {
-                type:                 'native_opt_out',
-                skip_native_duration: 604800000
-            }
+            message_data:       data
         }));
     };
 
@@ -1490,7 +1455,7 @@ export function getNativeFirebaseMock({ sessionUID, extraHandler } : {| sessionU
     };
 
     return {
-        expect, onInit, onApprove, onCancel, onError, onShippingChange, fallback, onFallback, onFallbackOptOut
+        expect, onInit, onApprove, onCancel, onError, onShippingChange, onFallback
     };
 }
 
