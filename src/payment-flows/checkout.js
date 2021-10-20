@@ -247,7 +247,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                 } : null,
 
             onClose: () => {
-                if (doApproveOnClose) {
+                if (doApproveOnClose && !approved) {
                     // eslint-disable-next-line no-use-before-define
                     return onApprove({ forceRestAPI: true }, { restart }).catch(noop);
                 }

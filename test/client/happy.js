@@ -569,6 +569,103 @@ describe('happy cases', () => {
         });
     });
 
+    it('should render a button, click the button, and render checkout, then call onApprove prop once', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            const fundingSource = FUNDING.OXXO;
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            let onApprovePropCalls = 0;
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            let approveExpected = false;
+            let approveCallbackCalled = false;
+            let onCloseCallbackCalled = false;
+
+            window.xprops.onCancel = avoid('onCancel');
+            
+            // This should returned from second call to onApprove callback
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', async(data) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (!approveExpected) {
+                    throw new Error('Approve prop was not expected to be called');
+                }
+                onApprovePropCalls += 1;
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                // Call onApprove callback twice -- once with 'approveOnClose: true' and once without
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    // Returns onApprove prop
+                    if (approveCallbackCalled === true) {
+                        return onApproveOriginal({ ...data, payerID }, actions);
+                    }
+                    approveCallbackCalled = true;
+                    // Sets doApproveOnClose flag equal to true
+                    return onApproveOriginal({ ...data, approveOnClose: true, payerID }, actions);
+                }));
+
+                // Determine if onClose callback was called
+                mockFunction(props, 'onClose', expect('onClose', ({ original: onCloseOriginal }) => {
+                    onCloseCallbackCalled = true;
+                    // Calling onClose callback
+                    return onCloseOriginal();
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+                        // Calling the onApprove callback
+                        props.onApprove(...args);
+                        if (onApprovePropCalls > 0) {
+                            throw new Error('onApprove prop is already called but it was only supposed to be called after second onApprove callback');
+                        }
+                        approveExpected = true;
+                        // Calling the onApprove callback again
+                        return props.onApprove(...args);
+                        
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            const fundingEligibility = {
+                oxxo: {
+                    eligible: true
+                }
+            };
+
+            createButtonHTML({ fundingEligibility });
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility });
+
+            await clickButton(fundingSource);
+
+            if (onApprovePropCalls === 0) {
+                throw new Error('onApprove was not called');
+            }
+
+            if (!onCloseCallbackCalled) {
+                throw new Error('onClose was not called');
+            }
+
+            if (onApprovePropCalls > 1) {
+                throw new Error(`Expected onApprove to be called once but it was called more than once`);
+            }
+        });
+    });
 
     it('should render PayPal button, click the button, and onApprove should be only called once', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
