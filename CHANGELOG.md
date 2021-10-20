@@ -1,3 +1,9 @@
+## <small>5.0.186 (2021-10-20)</small>
+
+* Revert "Add animation experiment for logo and label text (#1738)" (#1774) ([57327cc](https://github.com/paypal/paypal-checkout-components/commit/57327cc)), closes [#1738](https://github.com/paypal/paypal-checkout-components/issues/1738) [#1774](https://github.com/paypal/paypal-checkout-components/issues/1774)
+
+
+
 ## <small>5.0.185 (2021-10-14)</small>
 
 * chore: hardcode bundlemon public key (#1770) ([35211a4](https://github.com/paypal/paypal-checkout-components/commit/35211a4)), closes [#1770](https://github.com/paypal/paypal-checkout-components/issues/1770)
