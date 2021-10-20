@@ -14,14 +14,16 @@ export const ANIMATION = {
 };
 
 export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : ChildType {
+    // experimentName must match elmo experiment name
     const config = {
-        labelText:  animationLabelText,
-        labelClass:  ANIMATION.LABEL_CONTAINER
+        labelText:      animationLabelText,
+        labelClass:     ANIMATION.LABEL_CONTAINER,
+        experimentName: 'Varied_Button_Design'
     };
    
     return (
         <Fragment>
-            <div class={ config.labelClass } data-experiment="Varied_Button_Design"> <span>{config.labelText}</span></div>
+            <div class={ config.labelClass } data-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
             <style innerHTML={ `
                 .${ CLASS.DOM_READY } .${ ANIMATION.CONTAINER } img.${ LOGO_CLASS.LOGO }{
                     position: relative;
