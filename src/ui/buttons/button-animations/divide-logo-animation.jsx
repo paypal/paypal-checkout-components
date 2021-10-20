@@ -44,9 +44,9 @@ const getValidLabelContainer = function(document, configuration) : ElementNode |
     const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
     const { large, huge } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
-    const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
+    const animationContainer = (document?.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     // get the label container element having into account the animation container to force specificity in css
-    const paypalLabelContainerElement = (animationContainer && animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`)) || null;
+    const paypalLabelContainerElement = (animationContainer?.querySelector(`.${ PAYPAL_BUTTON_LABEL }`)) || null;
 
     if (!animationContainer) {
         return null;
