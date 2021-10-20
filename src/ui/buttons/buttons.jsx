@@ -11,7 +11,7 @@ import { determineEligibleFunding, isWalletFundingEligible } from '../../funding
 import { ValidationError } from '../../lib';
 
 import { getButtonAnimation } from './button-animations';
-import { ButtonAnimationScriptWrapper } from './button-animations/script';
+import { ButtonAnimationExperimentScriptWrapper } from './button-animations/script';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
@@ -194,7 +194,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
             {
                 buttonAnimationScript
-                    ? <ButtonAnimationScriptWrapper
+                    ? <ButtonAnimationExperimentScriptWrapper
                         nonce={ nonce }
                         buttonAnimation={ buttonAnimationScript }
                     />

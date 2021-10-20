@@ -7,7 +7,7 @@ import { FUNDING_BRAND_LABEL } from '@paypal/sdk-constants/src';
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
-import { Logo, AnimatedLabel, Label, WalletLabel, Tag } from './template';
+import { Logo, Label, WalletLabel, Tag } from './template';
 
 export function getPayPalConfig() : FundingSourceConfig {
     return {
@@ -43,11 +43,7 @@ export function getPayPalConfig() : FundingSourceConfig {
         labelText: `${ FUNDING_BRAND_LABEL.PAYPAL }`,
 
         Logo,
-        Label: (opts) => {
-            return opts.buttonAnimationComponent
-                ? AnimatedLabel(opts)
-                : Label(opts);
-        },
+        Label,
         WalletLabel,
         Tag
     };

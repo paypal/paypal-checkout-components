@@ -21,7 +21,7 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
    
     return (
         <Fragment>
-            <div class={ config.labelClass }> <span class="test">{config.labelText}</span></div>
+            <div class={ config.labelClass }> <span>{config.labelText}</span></div>
             <style innerHTML={ `
                 .${ CLASS.DOM_READY } .${ ANIMATION.CONTAINER } img.${ LOGO_CLASS.LOGO }{
                     position: relative;

@@ -10,7 +10,7 @@ type ScriptProps = {|
     buttonAnimation : string
 |};
 
-export function ButtonAnimationScriptWrapper({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
+export function ButtonAnimationExperimentScriptWrapper({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
 
     const scripts = `
         const scriptFns = ${ getComponentScript().toString() };
