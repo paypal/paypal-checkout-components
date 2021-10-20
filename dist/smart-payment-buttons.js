@@ -4728,7 +4728,7 @@ window.spb = function(modules) {
             }
             if (xprops.createSubscription) {
                 if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createOrder");
-                if (xprops.createOrder) throw new Error("Do not pass both createSubscription and createBillingAgreement");
+                if (xprops.createBillingAgreement) throw new Error("Do not pass both createSubscription and createBillingAgreement");
                 if (!xprops.vault) throw new Error("Must pass vault=true to sdk to use createSubscription");
             }
             if ("tokenize" === intent) {

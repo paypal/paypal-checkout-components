@@ -67,7 +67,7 @@ export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| f
             throw new Error(`Do not pass both createSubscription and createOrder`);
         }
 
-        if (xprops.createOrder) {
+        if (xprops.createBillingAgreement) {
             throw new Error(`Do not pass both createSubscription and createBillingAgreement`);
         }
 
