@@ -132,6 +132,7 @@ export function CardExpiry(
     return (
         <input
             name={ name }
+            inputmode='numeric'
             ref={ ref }
             type={ type }
             className={ className }
