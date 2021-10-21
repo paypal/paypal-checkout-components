@@ -129,15 +129,19 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     const { firebase: firebaseConfig } = config;
     const { merchantID } = serviceData;
 
-    if (!canUsePopupAppSwitch({ fundingSource }) && !canUseNativeQRCode({ fundingSource })) {
-        return false;
-    }
-    
-    if (onShippingChange && !isNativeOptedIn({ props })) {
+    if (!firebaseConfig) {
         return false;
     }
 
-    if (createBillingAgreement || createSubscription) {
+    if (!canUsePopupAppSwitch({ fundingSource }) && !canUseNativeQRCode({ fundingSource })) {
+        return false;
+    }
+
+    if (isNativeOptedIn({ props })) {
+        return true;
+    }
+
+    if (isNativeOptOut()) {
         return false;
     }
 
@@ -145,16 +149,12 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
         return false;
     }
 
-    if (!firebaseConfig) {
+    if (onShippingChange) {
         return false;
     }
 
-    if (isNativeOptOut()) {
+    if (createBillingAgreement || createSubscription) {
         return false;
-    }
-
-    if (isNativeOptedIn({ props })) {
-        return true;
     }
 
     if (env === ENV.LOCAL || env === ENV.STAGE) {
