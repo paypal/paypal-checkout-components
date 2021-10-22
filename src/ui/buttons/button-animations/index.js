@@ -18,6 +18,10 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
         } = {}
     } = personalization;
 
+    if (animationId === 'control') {
+        return {};
+    }
+
     if (animationId === 'run-divide-logo-animation') {
         return setupDivideLogoAnimation(animationLabelText);
     }
