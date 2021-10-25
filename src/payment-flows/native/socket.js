@@ -10,6 +10,8 @@ import { getLogger } from '../../lib';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CUSTOM_KEY } from '../../constants';
 import { type OnShippingChangeData } from '../../props/onShippingChange';
 
+import type { NativeFallbackOptions } from './eligibility';
+
 const SOURCE_APP = 'paypal_smart_payment_buttons';
 const TARGET_APP = 'paypal_native_checkout';
 
@@ -88,11 +90,7 @@ type ConnectNativeOptions = {|
             buttonSessionID : string
         |}>,
         onFallback : ({|
-            data? : {|
-                type? : string,
-                skip_native_duration? : number,
-                fallback_reason? : string
-            |}
+            data? : NativeFallbackOptions
         |}) => ZalgoPromise<{|
             buttonSessionID : string
         |}>

@@ -7,7 +7,7 @@ import { getPostRobot } from '../../lib';
 
 import { MESSAGE } from './constants';
 
-type NativeFallbackOptions = {|
+type SetupNativeFallbackOptions = {|
     parentDomain : string
 |};
 
@@ -15,7 +15,7 @@ type NativeFallback = {|
     destroy : () => ZalgoPromise<void>
 |};
 
-export function setupNativeFallback({ parentDomain = window.location.origin } : NativeFallbackOptions) : NativeFallback {
+export function setupNativeFallback({ parentDomain = window.location.origin } : SetupNativeFallbackOptions) : NativeFallback {
     if (!window.opener) {
         throw new Error(`Expected window to have opener`);
     }

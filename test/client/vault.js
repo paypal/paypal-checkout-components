@@ -5,7 +5,8 @@ import { wrapPromise } from 'belter/src';
 import { FUNDING, INTENT } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock, clickButton, getGraphQLApiMock, generateOrderID, mockMenu, clickMenu } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, getValidatePaymentMethodApiMock,
+    clickButton, getGraphQLApiMock, generateOrderID, mockMenu, clickMenu, getMockWindowOpen } from './mocks';
 
 describe('vault cases', () => {
 
@@ -901,7 +902,8 @@ describe('vault cases', () => {
                 }
             };
 
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
             
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {
@@ -996,7 +998,8 @@ describe('vault cases', () => {
                 }
             };
 
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
 
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {
@@ -1351,7 +1354,8 @@ describe('vault cases', () => {
                 })
             }).expectCalls();
 
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
             
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {

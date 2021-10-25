@@ -7,7 +7,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, destroyElement, noop, uniqueID, parseQuery, once } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import { isWindowClosed, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { isWindowClosed, isSameDomain, getDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { ProxyWindow } from 'post-robot/src/serialize/window';
 
 import type { ZoidComponentInstance, MenuFlowProps } from '../../src/types';
@@ -15,6 +15,8 @@ import { setupButton, setupCard, submitCardFields } from '../../src';
 import { loadFirebaseSDK, clearLsatState } from '../../src/api';
 
 import { triggerKeyPress } from './util';
+
+window.mockDomain = 'mock://www.paypal.com';
 
 export const MOCK_BUYER_ACCESS_TOKEN = 'abc123xxxyyyzzz456';
 
@@ -97,7 +99,22 @@ export function setupMocks() {
                 renderTo: () => {
                     props.onAuth({ accessToken: MOCK_BUYER_ACCESS_TOKEN });
 
-                    return props.createOrder().then(orderID => {
+                    return ZalgoPromise.try(() => {
+                        if (props.window) {
+                            return ProxyWindow.toProxyWindow(props.window, {
+                                send: () => {
+                                    throw new Error(`Can not send post message for proxy window in test`);
+                                }
+                            }).awaitWindow().then(win => {
+                                if (!isSameDomain(win)) {
+                                    // $FlowFixMe
+                                    throw new Error(`Expected window passed to renderTo to be on same domain - expected ${ getDomain(window) } but got ${ getDomain(win) }`);
+                                }
+                            });
+                        }
+                    }).then(() => {
+                        return props.createOrder();
+                    }).then(orderID => {
                         return ZalgoPromise.delay(50).then(() => {
                             return props.onApprove({
                                 orderID,
@@ -1727,6 +1744,8 @@ export function getMockWindowOpen({ expectedUrl, times = 1, appSwitch = false, e
             },
             set location(loc : string) {
                 ZalgoPromise.delay(5).then(() => {
+                    // $FlowFixMe
+                    newWin.mockDomain = (new URL(loc).origin).replace(/^https?:/, 'mock:'); // eslint-disable-line compat/compat
                     currentUrl = loc;
                     onLoad(currentUrl);
                 });

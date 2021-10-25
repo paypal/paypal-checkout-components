@@ -49,7 +49,7 @@ function initNative({ props, components, config, payment, serviceData, restart }
         return clean.all();
     });
 
-    const fallbackToWebCheckout = (fallbackWin? : ?(CrossDomainWindowType | ProxyWindow)) => {
+    const fallbackToWebCheckout = (fallbackWin? : ?(CrossDomainWindowType | ProxyWindow)) : ZalgoPromise<void> => {
         didFallback = true;
 
         return ZalgoPromise.try(() => {
@@ -167,7 +167,18 @@ function initNative({ props, components, config, payment, serviceData, restart }
         });
     };
 
-    const onFallbackCallback = (opts? : {| win? : CrossDomainWindowType | ProxyWindow, fallbackOptions? : NativeFallbackOptions |}) => {
+    const onCloseCallback = () => {
+        return ZalgoPromise.delay(1000).then(() => {
+            
+            if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
+                return ZalgoPromise.try(() => {
+                    return destroy();
+                });
+            }
+        }).then(noop);
+    };
+
+    const fallback = (opts? : {| win? : CrossDomainWindowType | ProxyWindow, fallbackOptions? : NativeFallbackOptions |}) => {
         const { win, fallbackOptions = getDefaultNativeFallbackOptions() } = opts || {};
         
         return ZalgoPromise.try(() => {
@@ -182,20 +193,8 @@ function initNative({ props, components, config, payment, serviceData, restart }
                     [FPTI_CUSTOM_KEY.TRANSITION_REASON]: fallback_reason || ''
                 }).flush();
 
-            fallbackToWebCheckout(win);
-            return { buttonSessionID };
+            return fallbackToWebCheckout(win);
         });
-    };
-
-    const onCloseCallback = () => {
-        return ZalgoPromise.delay(1000).then(() => {
-            
-            if (!approved && !cancelled && !didFallback && !isAndroidChrome()) {
-                return ZalgoPromise.try(() => {
-                    return destroy();
-                });
-            }
-        }).then(noop);
     };
 
     const sessionUID = uniqueID();
@@ -210,14 +209,13 @@ function initNative({ props, components, config, payment, serviceData, restart }
     }
 
     const flow = initFlow({
-        payment, props, serviceData, config, components, clean, sessionUID,
+        payment, props, serviceData, config, components, clean, sessionUID, fallback,
         callbacks: {
             onInit:            onInitCallback,
             onApprove:         onApproveCallback,
             onCancel:          onCancelCallback,
             onError:           onErrorCallback,
             onShippingChange:  onShippingChangeCallback,
-            onFallback:        onFallbackCallback,
             onClose:           onCloseCallback,
             onDestroy:         destroy
         }

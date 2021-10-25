@@ -83,6 +83,10 @@ type NativeQRCodeOptions = {|
     components : Components,
     sessionUID : string,
     clean : CleanupType,
+    fallback : (opts? : {|
+        win? : CrossDomainWindowType | ProxyWindow,
+        fallbackOptions? : NativeFallbackOptions
+    |}) => ZalgoPromise<void>,
     callbacks : {|
         onInit : () => ZalgoPromise<{|
             buttonSessionID : string
@@ -111,12 +115,6 @@ type NativeQRCodeOptions = {|
         |}) => ZalgoPromise<{|
             resolved : boolean
         |}>,
-        onFallback : (opts? : {|
-            win? : CrossDomainWindowType | ProxyWindow,
-            fallbackOptions? : NativeFallbackOptions
-        |}) => ZalgoPromise<{|
-            buttonSessionID : string
-        |}>,
         onClose : () => ZalgoPromise<void>,
         onDestroy : () => ZalgoPromise<void>
     |}
@@ -127,11 +125,11 @@ type NativeQRCode = {|
     start : () => ZalgoPromise<void>
 |};
 
-export function initNativeQRCode({ props, serviceData, config, components, payment, clean, callbacks, sessionUID } : NativeQRCodeOptions) : NativeQRCode {
-    const { createOrder, onClick } = props;
+export function initNativeQRCode({ props, serviceData, config, components, payment, clean, fallback, callbacks, sessionUID } : NativeQRCodeOptions) : NativeQRCode {
+    const { buttonSessionID, createOrder, onClick } = props;
     const { QRCode } = components;
     const { fundingSource } = payment;
-    const { onInit, onApprove, onCancel, onError, onFallback, onClose, onDestroy, onShippingChange } = callbacks;
+    const { onInit, onApprove, onCancel, onError, onClose, onDestroy, onShippingChange } = callbacks;
 
     const qrCodeRenderTarget = window.xprops.getParent();
     const pageUrl = window.xprops.getPageUrl();
@@ -202,7 +200,7 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
                 }
 
                 if (!eligible) {
-                    return onFallback().then(noop);
+                    return fallback().then(noop);
                 }
 
                 return createOrder().then((orderID) => {
@@ -266,12 +264,14 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
                         });
                     };
 
-                    const onFallbackQR = ({ data }) => {
+                    const onFallbackQR = ({ data: fallbackOptions }) => {
                         return updateQRCodeComponentState({
                             state:     QRCODE_STATE.ERROR,
                             errorText: 'The authorization was canceled'
                         }).then(() => {
-                            return onFallback({ fallbackOptions: data });
+                            return fallback({ fallbackOptions });
+                        }).then(() => {
+                            return { buttonSessionID };
                         });
                     };
 

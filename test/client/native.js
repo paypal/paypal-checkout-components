@@ -671,33 +671,40 @@ describe('native ios/safari cases', () => {
             let mockWebSocketServer;
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:   EXPECTED_POPUP_URL,
-                expectedQuery: EXPECTED_POPUP_QUERY_PARAMS,
-                onOpen:        () => {
-                    sendRedirectMessage({ mockWindow, expect }).then(({ query: redirectQuery }) => {
+                onOpen:        ({ url }) => {
+                    if (url.indexOf(EXPECTED_POPUP_URL) === 0) {
+                        sendRedirectMessage({ mockWindow, expect }).then(({ query: redirectQuery }) => {
 
-                        if (mockWebSocketServer) {
-                            mockWebSocketServer.done();
-                        }
+                            if (mockWebSocketServer) {
+                                mockWebSocketServer.done();
+                            }
 
-                        const { expect: expectSocket, onInit } = getNativeFirebaseMock({
-                            sessionUID: redirectQuery.sessionUID
-                        });
-
-                        mockWebSocketServer = expectSocket();
-
-                        return ZalgoPromise.try(() => {
-                            return mockWindow.send({
-                                name: POST_MESSAGE.DETECT_APP_SWITCH
+                            const { expect: expectSocket, onInit } = getNativeFirebaseMock({
+                                sessionUID: redirectQuery.sessionUID
                             });
-                        }).then(() => {
-                            return onInit();
-                        }).then(() => {
-                            return mockWindow.send({
-                                name: 'onFallback'
+
+                            mockWebSocketServer = expectSocket();
+
+                            return ZalgoPromise.try(() => {
+                                return mockWindow.send({
+                                    name: POST_MESSAGE.DETECT_APP_SWITCH
+                                });
+                            }).then(() => {
+                                return onInit();
+                            }).then(() => {
+                                mockWindow.reset();
+                                return mockWindow.send({
+                                    name: 'onFallback'
+                                });
                             });
                         });
-                    });
+                    } else if (url.indexOf(EXPECTED_NATIVE_FALLBACK_URL) === 0) {
+                        mockWindow.send({
+                            name: POST_MESSAGE.DETECT_WEB_SWITCH
+                        });
+                    } else {
+                        throw new Error(`Unexpected url: ${ url }`);
+                    }
                 }
             });
 
@@ -736,21 +743,27 @@ describe('native ios/safari cases', () => {
             const gqlMock = getFirebaseGraphQLMock({ expect, sessionToken });
 
             const mockWindow = getMockWindowOpen({
-                expectedUrl:   EXPECTED_POPUP_URL,
-                expectedQuery: EXPECTED_POPUP_QUERY_PARAMS,
-                onOpen:        () => {
-                    sendRedirectMessage({ mockWindow, expect }).then(() => {
-
-                        return ZalgoPromise.try(() => {
-                            return mockWindow.send({
-                                name: POST_MESSAGE.DETECT_APP_SWITCH
-                            });
-                        }).then(() => {
-                            return mockWindow.send({
-                                name: 'onFallback'
+                onOpen:        ({ url }) => {
+                    if (url.indexOf(EXPECTED_POPUP_URL) === 0) {
+                        sendRedirectMessage({ mockWindow, expect }).then(() => {
+                            return ZalgoPromise.try(() => {
+                                return mockWindow.send({
+                                    name: POST_MESSAGE.DETECT_APP_SWITCH
+                                });
+                            }).then(() => {
+                                mockWindow.reset();
+                                return mockWindow.send({
+                                    name: 'onFallback'
+                                });
                             });
                         });
-                    });
+                    } else if (url.indexOf(EXPECTED_NATIVE_FALLBACK_URL) === 0) {
+                        mockWindow.send({
+                            name: POST_MESSAGE.DETECT_WEB_SWITCH
+                        });
+                    } else {
+                        throw new Error(`Unexpected url: ${ url }`);
+                    }
                 }
             });
 

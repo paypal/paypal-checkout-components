@@ -5,7 +5,8 @@ import { wrapPromise, uniqueID } from 'belter/src';
 import { FUNDING, INTENT, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
-import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock, generateOrderID, clickMenu, mockMenu } from './mocks';
+import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock,
+    generateOrderID, clickMenu, mockMenu, getMockWindowOpen } from './mocks';
 
 describe('wallet cases', () => {
 
@@ -1026,8 +1027,9 @@ describe('wallet cases', () => {
                     }
                 }
             }).expectCalls();
-            
-            const win = {};
+
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
             
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {
@@ -1164,7 +1166,8 @@ describe('wallet cases', () => {
                 }
             }).expectCalls();
             
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
             
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {
@@ -1273,7 +1276,8 @@ describe('wallet cases', () => {
                 }
             };
 
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
 
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {
@@ -1375,7 +1379,8 @@ describe('wallet cases', () => {
                 }
             };
 
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
 
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {
@@ -1512,7 +1517,8 @@ describe('wallet cases', () => {
                 }
             }).expectCalls();
 
-            const win = {};
+            getMockWindowOpen({ expectImmediateUrl: false });
+            const win = window.open();
 
             const Checkout = window.paypal.Checkout;
             window.paypal.Checkout = expect('Checkout', (props) => {

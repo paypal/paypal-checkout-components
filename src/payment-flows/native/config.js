@@ -27,7 +27,7 @@ export const NATIVE_DOMAIN : EnvConfig = {
 // Popup domain needs to be different than native domain for app switch to work on iOS
 export const HISTORY_NATIVE_POPUP_DOMAIN : EnvConfig = {
     [ ENV.TEST ]:       'https://history.paypal.com',
-    [ ENV.LOCAL ]:      getDomain(),
+    [ ENV.LOCAL ]:      'http://localhost:8001',
     [ ENV.STAGE ]:      'https://history.paypal.com',
     [ ENV.SANDBOX ]:    'https://history.paypal.com',
     [ ENV.PRODUCTION ]: 'https://history.paypal.com'
@@ -35,7 +35,7 @@ export const HISTORY_NATIVE_POPUP_DOMAIN : EnvConfig = {
 
 export const MOBILE_NATIVE_POPUP_DOMAIN : EnvConfig = {
     [ ENV.TEST ]:       'https://mobile.paypal.com',
-    [ ENV.LOCAL ]:      getDomain(),
+    [ ENV.LOCAL ]:      'http://localhost:8001',
     [ ENV.STAGE ]:      'https://mobile.paypal.com',
     [ ENV.SANDBOX ]:    'https://mobile.paypal.com',
     [ ENV.PRODUCTION ]: 'https://mobile.paypal.com'

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { stringifyError, noop, once, type CleanupType } from 'belter/src';
+import { stringifyError, noop, once, popup, type CleanupType } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
@@ -14,7 +14,7 @@ import { type OnShippingChangeData } from '../../props/onShippingChange';
 import type { Payment } from '../types';
 
 
-import { isNativeOptedIn, type NativeFallbackOptions } from './eligibility';
+import { isNativeOptedIn, setNativeOptOut, type NativeFallbackOptions } from './eligibility';
 import { getNativeUrl, getNativePopupUrl, getNativeDomain, getNativePopupDomain, getNativeFallbackUrl } from './url';
 import { connectNative } from './socket';
 
@@ -112,6 +112,10 @@ type NativePopupOptions = {|
     components : Components,
     sessionUID : string,
     clean : CleanupType,
+    fallback : (opts? : {|
+        win? : CrossDomainWindowType | ProxyWindow,
+        fallbackOptions? : NativeFallbackOptions
+    |}) => ZalgoPromise<void>,
     callbacks : {|
         onInit : () => ZalgoPromise<{|
             buttonSessionID : string
@@ -140,12 +144,6 @@ type NativePopupOptions = {|
         |}) => ZalgoPromise<{|
             resolved : boolean
         |}>,
-        onFallback : (opts? : {|
-            win? : CrossDomainWindowType | ProxyWindow,
-            fallbackOptions? : NativeFallbackOptions
-        |}) => ZalgoPromise<{|
-            buttonSessionID : string
-        |}>,
         onClose : () => ZalgoPromise<void>,
         onDestroy : () => ZalgoPromise<void>
     |}
@@ -156,15 +154,35 @@ type NativePopup = {|
     start : () => ZalgoPromise<void>
 |};
 
-export function initNativePopup({ payment, props, serviceData, config, sessionUID, callbacks, clean } : NativePopupOptions) : NativePopup {
-    const { onClick, createOrder } = props;
+export function initNativePopup({ payment, props, serviceData, config, sessionUID, fallback, callbacks, clean } : NativePopupOptions) : NativePopup {
+    const { buttonSessionID, onClick, createOrder } = props;
     const { firebase: firebaseConfig } = config;
     const { fundingSource, win } = payment;
-    const { onInit, onApprove, onCancel, onError, onFallback, onClose, onDestroy, onShippingChange } = callbacks;
+    const { onInit, onApprove, onCancel, onError, onClose, onDestroy, onShippingChange } = callbacks;
 
     if (!firebaseConfig) {
         throw new Error(`Can not load popup without firebase config`);
     }
+
+    const getNativePopupProxyWindow = (url : string) : ProxyWindow => {
+        let proxyWin;
+
+        if (win) {
+            const nativePopupWinProxy = toProxyWindow(win);
+            nativePopupWinProxy.setLocation(url);
+            proxyWin = nativePopupWinProxy;
+        } else {
+            proxyWin = toProxyWindow(popup(url));
+        }
+
+        getLogger().info(`native_attempt_appswitch_popup_shown`)
+            .track({
+                [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
+            }).flush();
+
+        return proxyWin;
+    };
 
     let nativePopupPromise;
 
@@ -172,35 +190,12 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
         click: () => {
             nativePopupPromise = new ZalgoPromise((resolve, reject) => {
                 const url = getNativePopupUrl({ props, serviceData, fundingSource });
-
-                let nativePopupWinProxy;
-                if (win) {
-                    nativePopupWinProxy = toProxyWindow(win);
-                    nativePopupWinProxy.setLocation(url);
-
-                } else {
-                    const popup = window.open(url);
-                    if (!popup) {
-                        throw new Error(`Expected native popup to have opened`);
-                    }
-                    nativePopupWinProxy = paypal.postRobot.toProxyWindow(popup);
-                }
+                const nativePopupDomain = getNativePopupDomain({ props });
+                const nativePopupWinProxy = getNativePopupProxyWindow(url);
 
                 const cleanupPopupWin = clean.register(() => {
                     return nativePopupWinProxy.close();
                 });
-
-                const nativePopupDomain = getNativePopupDomain({ props });
-
-                getLogger().info(`native_attempt_appswitch_popup_shown`)
-                    .track({
-                        [FPTI_KEY.STATE]:      FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_POPUP_SHOWN
-                    }).flush();
-
-                const redirectListenerTimeout = setTimeout(() => {
-                    getLogger().info(`native_popup_load_timeout`).flush();
-                }, 5 * 1000);
 
                 const validatePromise = ZalgoPromise.try(() => {
                     return onClick ? onClick({ fundingSource }) : true;
@@ -223,15 +218,35 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                     return unresolvedPromise();
                 });
 
-                const fallback = (fallbackOptions? : NativeFallbackOptions) : ZalgoPromise<{| buttonSessionID : string |}> => {
+                const handleFallback = (fallbackOptions? : NativeFallbackOptions) : ZalgoPromise<{| buttonSessionID : string |}> => {
                     cleanupPopupWin.cancel();
-                    return onFallback({
+                    return fallback({
                         win: nativePopupWinProxy,
                         fallbackOptions
+                    }).then(() => {
+                        return { buttonSessionID };
                     });
                 };
 
-                const detectAppSwitch = once(() : ZalgoPromise<void> => {
+                const changeDomainAndAwaitFallback = ({ pageUrl, stickinessID, fallbackOptions } : {| pageUrl : string, stickinessID : string, fallbackOptions? : NativeFallbackOptions |}) => {
+                    return nativePopupWinProxy.isClosed().then(isClosed => {
+                        if (isClosed) {
+                            return handleFallback(fallbackOptions);
+                        }
+
+                        if (fallbackOptions) {
+                            setNativeOptOut(fallbackOptions);
+                        }
+
+                        return orderPromise.then(orderID => {
+                            nativePopupWinProxy.setLocation(getNativeFallbackUrl({
+                                props, serviceData, config, fundingSource, sessionUID, pageUrl, orderID, stickinessID
+                            }));
+                        });
+                    });
+                };
+
+                const onDetectAppSwitch = once(() : ZalgoPromise<void> => {
                     return ZalgoPromise.try(() => {
                         resolve();
                         onLsatUpgradeCalled();
@@ -269,11 +284,7 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                     });
                 });
 
-                const appSwitchError = once((err) => {
-                    reject(err);
-                });
-
-                const detectPossibleAppSwitch = once(() : ZalgoPromise<void> => {
+                const onDetectPossibleAppSwitch = once(({ pageUrl, stickinessID } : {| pageUrl : string, stickinessID : string |}) : ZalgoPromise<void> => {
                     return ZalgoPromise.try(() => {
                         onLsatUpgradeCalled();
 
@@ -285,28 +296,31 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                             config, sessionUID,
                             callbacks: {
                                 onInit: () => {
-                                    detectAppSwitch();
+                                    onDetectAppSwitch();
                                     return onInit();
                                 },
                                 onApprove: ({ data }) => {
-                                    detectAppSwitch();
+                                    onDetectAppSwitch();
                                     return onApprove({ data });
                                 },
                                 onCancel: () => {
-                                    detectAppSwitch();
+                                    onDetectAppSwitch();
                                     return onCancel();
                                 },
                                 onShippingChange: ({ data }) => {
-                                    detectAppSwitch();
+                                    onDetectAppSwitch();
                                     return onShippingChange({ data });
                                 },
                                 onError: ({ data }) => {
-                                    appSwitchError(new Error(data.message));
+                                    onDetectAppSwitch();
+                                    reject(new Error(data.message));
                                     return onError({ data });
                                 },
                                 onFallback: ({ data: fallbackOptions }) => {
-                                    detectAppSwitch();
-                                    return fallback(fallbackOptions);
+                                    onDetectAppSwitch();
+                                    return changeDomainAndAwaitFallback({ pageUrl, stickinessID, fallbackOptions }).then(() => {
+                                        return { buttonSessionID };
+                                    });
                                 }
                             }
                         });
@@ -315,7 +329,7 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                     }).catch(reject);
                 });
 
-                const detectWebSwitch = once(() : ZalgoPromise<void> => {
+                const onDetectWebSwitch = once(() : ZalgoPromise<void> => {
                     return ZalgoPromise.try(() => {
                         getStorageState(state => {
                             const { lastAppSwitchTime = 0, lastWebSwitchTime = 0 } = state;
@@ -348,16 +362,17 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                             [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_DETECT_WEB_SWITCH
                         }).flush();
 
-                        return fallback().then(noop);
+                        return handleFallback().then(noop);
                     }).then(resolve, reject);
                 });
+
 
                 const closeListener = onCloseProxyWindow(nativePopupWinProxy, () => {
                     getLogger().info(`native_popup_closed`).track({
                         [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
                         [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.NATIVE_POPUP_CLOSED
                     }).flush();
-                    appSwitchError(new Error(`Native popup closed`));
+                    reject(new Error(`Native popup closed`));
                     onClose();
                 }, 500);
 
@@ -371,7 +386,6 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                 };
 
                 const awaitRedirectListener = postRobotOnceProxy(POST_MESSAGE.AWAIT_REDIRECT, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data: { app: appDetect, pageUrl, sfvc, stickinessID } }) => {
-                    clearTimeout(redirectListenerTimeout);
                     getLogger().info(`native_post_message_await_redirect`).flush();
                     logDetectedApp(appDetect);
 
@@ -379,6 +393,70 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                         return {
                             [FPTI_KEY.STICKINESS_ID]: stickinessID
                         };
+                    });
+
+                    const onDetectPossibleAppSwitchListener = postRobotOnceProxy(POST_MESSAGE.DETECT_POSSIBLE_APP_SWITCH, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, () => {
+                        getLogger().info(`native_post_message_detect_possible_app_switch`).flush();
+                        return onDetectPossibleAppSwitch({ pageUrl, stickinessID });
+                    });
+
+                    const onDetectWebSwitchListener = postRobotOnceProxy(POST_MESSAGE.DETECT_WEB_SWITCH, { proxyWin: nativePopupWinProxy, domain: getNativeDomain({ props }) }, () => {
+                        getLogger().info(`native_post_message_detect_web_switch`).flush();
+                        return onDetectWebSwitch();
+                    });
+
+                    const onApproveListener = postRobotOnceProxy(POST_MESSAGE.ON_APPROVE, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data }) => {
+                        onDetectAppSwitch();
+                        onApprove({ data });
+                        closePopup('onApprove');
+                    });
+
+                    const onCancelListener = postRobotOnceProxy(POST_MESSAGE.ON_CANCEL, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, () => {
+                        onDetectAppSwitch();
+                        onCancel();
+                        closePopup('onCancel');
+                    });
+
+                    const onFallbackListener = postRobotOnceProxy(POST_MESSAGE.ON_FALLBACK, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data: fallbackOptions }) => {
+                        onDetectAppSwitch();
+                        getLogger().info(`native_message_onfallback`)
+                            .track({
+                                [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
+                            }).flush();
+                        changeDomainAndAwaitFallback({ pageUrl, stickinessID, fallbackOptions });
+                    });
+
+                    const onCompleteListener = postRobotOnceProxy(POST_MESSAGE.ON_COMPLETE, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, () => {
+                        onDetectAppSwitch();
+                        getLogger().info(`native_post_message_on_complete`)
+                            .track({
+                                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
+                            }).flush();
+                        closePopup('onComplete');
+                    });
+
+                    const onErrorListener = postRobotOnceProxy(POST_MESSAGE.ON_ERROR, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data }) => {
+                        onError({ data });
+                        closePopup('onError');
+                        reject(new Error(data.message));
+                    });
+
+                    window.addEventListener('pagehide', () => closePopup('pagehide'));
+                    window.addEventListener('unload', () => closePopup('unload'));
+
+                    clean.register(() => {
+                        return ZalgoPromise.all([
+                            awaitRedirectListener.cancel(),
+                            onDetectPossibleAppSwitchListener.cancel(),
+                            onApproveListener.cancel(),
+                            onCancelListener.cancel(),
+                            onFallbackListener.cancel(),
+                            onCompleteListener.cancel(),
+                            onErrorListener.cancel(),
+                            onDetectWebSwitchListener.cancel(),
+                            closeListener.cancel()
+                        ]).then(noop);
                     });
 
                     return ZalgoPromise.hash({
@@ -423,7 +501,7 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
 
                             if (isAndroidChrome()) {
                                 closeListener.cancel();
-                                const appSwitchCloseListener = onCloseProxyWindow(nativePopupWinProxy, () => detectPossibleAppSwitch(), 50);
+                                const appSwitchCloseListener = onCloseProxyWindow(nativePopupWinProxy, () => onDetectPossibleAppSwitch({ pageUrl, stickinessID }), 50);
                                 setTimeout(appSwitchCloseListener.cancel, 1000);
                             }
 
@@ -455,7 +533,7 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                         });
                     }).catch(err => {
                         nativePopupWinProxy.close();
-                        appSwitchError(err);
+                        reject(err);
 
                         return onDestroy().then(() => {
                             return onError({ data: { message: stringifyError(err) } });
@@ -466,70 +544,6 @@ export function initNativePopup({ payment, props, serviceData, config, sessionUI
                             };
                         });
                     });
-                });
-
-                const detectPossibleAppSwitchListener = postRobotOnceProxy(POST_MESSAGE.DETECT_POSSIBLE_APP_SWITCH, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, () => {
-                    getLogger().info(`native_post_message_detect_possible_app_switch`).flush();
-                    return detectPossibleAppSwitch();
-                });
-
-                const detectWebSwitchListener = postRobotOnceProxy(POST_MESSAGE.DETECT_WEB_SWITCH, { proxyWin: nativePopupWinProxy, domain: getNativeDomain({ props }) }, () => {
-                    getLogger().info(`native_post_message_detect_web_switch`).flush();
-                    return detectWebSwitch();
-                });
-
-                const onApproveListener = postRobotOnceProxy(POST_MESSAGE.ON_APPROVE, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data }) => {
-                    detectAppSwitch();
-                    onApprove({ data });
-                    closePopup('onApprove');
-                });
-
-                const onCancelListener = postRobotOnceProxy(POST_MESSAGE.ON_CANCEL, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, () => {
-                    detectAppSwitch();
-                    onCancel();
-                    closePopup('onCancel');
-                });
-
-                const onFallbackListener = postRobotOnceProxy(POST_MESSAGE.ON_FALLBACK, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data: fallbackOptions }) => {
-                    detectAppSwitch();
-                    getLogger().info(`native_message_onfallback`)
-                        .track({
-                            [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.NATIVE_ON_FALLBACK
-                        }).flush();
-                    fallback(fallbackOptions);
-                });
-
-                const onCompleteListener = postRobotOnceProxy(POST_MESSAGE.ON_COMPLETE, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, () => {
-                    detectAppSwitch();
-                    getLogger().info(`native_post_message_on_complete`)
-                        .track({
-                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                            [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_ON_COMPLETE
-                        }).flush();
-                    closePopup('onComplete');
-                });
-
-                const onErrorListener = postRobotOnceProxy(POST_MESSAGE.ON_ERROR, { proxyWin: nativePopupWinProxy, domain: nativePopupDomain }, ({ data }) => {
-                    onError({ data });
-                    closePopup('onError');
-                    appSwitchError(new Error(data.message));
-                });
-
-                window.addEventListener('pagehide', () => closePopup('pagehide'));
-                window.addEventListener('unload', () => closePopup('unload'));
-
-                clean.register(() => {
-                    return ZalgoPromise.all([
-                        awaitRedirectListener.cancel(),
-                        detectPossibleAppSwitchListener.cancel(),
-                        onApproveListener.cancel(),
-                        onCancelListener.cancel(),
-                        onFallbackListener.cancel(),
-                        onCompleteListener.cancel(),
-                        onErrorListener.cancel(),
-                        detectWebSwitchListener.cancel(),
-                        closeListener.cancel()
-                    ]).then(noop);
                 });
             });
         },
