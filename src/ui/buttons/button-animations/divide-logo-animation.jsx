@@ -1,16 +1,17 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ChildType, type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import type { ButtonAnimationOutputParams, LabelOptions, ButtonSizes } from './types';
+import type { ButtonAnimationOutputParams, LabelOptions, ButtonSizes, DivideLogoAnimationProps } from './types';
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
-    CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation')
+    CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation'),
+    LOGO:            ('paypal-logo' : 'paypal-logo')
 };
 
 export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : ChildType {
@@ -42,24 +43,34 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
 }
 
 // Returns label container if the button sizes match
-const getValidLabelContainer = function(document, configuration) : ElementNode | null {
+const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
     const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
-    const { large, huge } = configuration;
+    const { large } = configuration;
+
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
-    // get the label container element having into account the animation container to force specificity in css
-    const paypalLabelContainerElement = (animationContainer && animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`)) || null;
-
     if (!animationContainer) {
         return null;
     }
 
+    // return null if animation should not be played for the button size
     const animationContainerWidth = animationContainer.offsetWidth;
-    if (animationContainerWidth < large.min  || animationContainerWidth > huge.max) {
+    if (animationContainerWidth < large.min) {
         return null;
     }
 
-    return paypalLabelContainerElement;
+    // get the label container that animation will be applied to
+    const paypalLabelContainerElement = animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
+    // get starting position for element so it doesn't jump when animation begins
+    const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ ANIMATION.LOGO }`)) || null;
+    const paypalLogoStartingLeftPosition = paypalLogoElement
+        ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }%`
+        : '44.5%';
+
+    return {
+        paypalLabelContainerElement,
+        paypalLogoStartingLeftPosition
+    };
 };
 
 function animationConfiguration () : ButtonSizes {
@@ -77,9 +88,9 @@ function animationConfiguration () : ButtonSizes {
 }
 
 export function createDivideLogoAnimation() : Function {
-    return (paypalLabelContainerElement, cssClasses) : void => {
+    return (animationProps, cssClasses) : void => {
         const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
-        // The 44.5% is eyeballed, not sure if/underwhat circumstances that could become inaccurate
+        const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
         const animations = `
             .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
                 animation: 3s divide-logo-animation-left-side 2s infinite alternate;
@@ -92,11 +103,11 @@ export function createDivideLogoAnimation() : Function {
             @keyframes divide-logo-animation-left-side {
                 0% {
                     position: fixed;
-                    left: 44.5%;
+                    left: ${ paypalLogoStartingLeftPosition };
                 }
                 33% {
                     position: fixed;
-                    left: 44.5%;
+                    left: ${ paypalLogoStartingLeftPosition };
                 }
                 66% {
                     position: fixed;
@@ -145,10 +156,10 @@ export function setupDivideLogoAnimation (animationLabelText : string) : ButtonA
     const animationFn = createDivideLogoAnimation();
     const animationConfig = animationConfiguration();
     const buttonAnimationScript = `
-        const labelContainer = ${ getValidLabelContainer.toString() }( document, ${ JSON.stringify(animationConfig) })
-        if (labelContainer) {
+        const animationProps = ${ getAnimationProps.toString() }( document, ${ JSON.stringify(animationConfig) });
+        if (animationProps.paypalLabelContainerElement && animationProps.paypalLogoStartingLeftPosition) {
             const animation = ${ animationFn.toString() }
-            animation(labelContainer, ${ JSON.stringify(animationConfig.cssClasses) })
+            animation(animationProps, ${ JSON.stringify(animationConfig.cssClasses) })
         }
     `;
     return {
