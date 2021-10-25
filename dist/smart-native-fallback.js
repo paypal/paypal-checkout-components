@@ -380,9 +380,21 @@
             return ZalgoPromise;
         }();
         var IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
+        function getActualProtocol(win) {
+            void 0 === win && (win = window);
+            return win.location.protocol;
+        }
+        function getProtocol(win) {
+            void 0 === win && (win = window);
+            if (win.mockDomain) {
+                var protocol = win.mockDomain.split("//")[0];
+                if (protocol) return protocol;
+            }
+            return getActualProtocol(win);
+        }
         function isAboutProtocol(win) {
             void 0 === win && (win = window);
-            return "about:" === win.location.protocol;
+            return "about:" === getProtocol(win);
         }
         function canReadFromWindow(win) {
             try {
@@ -394,7 +406,7 @@
             void 0 === win && (win = window);
             var location = win.location;
             if (!location) throw new Error("Can not read window location");
-            var protocol = location.protocol;
+            var protocol = getActualProtocol(win);
             if (!protocol) throw new Error("Can not read window protocol");
             if ("file:" === protocol) return "file://";
             if ("about:" === protocol) {
@@ -445,6 +457,12 @@
                     } catch (err) {}
                     try {
                         if (isAboutProtocol(win) && canReadFromWindow()) return !0;
+                    } catch (err) {}
+                    try {
+                        if (function(win) {
+                            void 0 === win && (win = window);
+                            return "mock:" === getProtocol(win);
+                        }(win) && canReadFromWindow()) return !0;
                     } catch (err) {}
                     try {
                         if (getActualDomain(win) === getActualDomain(window)) return !0;
