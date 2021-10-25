@@ -213,19 +213,20 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
         });
     }
 
-    if (!contact.administrativeArea) {
-        errors.push({
-            code:           'shippingContactInvalid',
-            contactField:   'administrativeArea',
-            message:        'State is invalid'
-        });
-    }
     const country_code : ?$Values<typeof COUNTRY> = contact.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
     if (!country_code) {
         errors.push({
             code:           'shippingContactInvalid',
             contactField:   'countryCode',
             message:        'Country code is invalid'
+        });
+    }
+
+    if (country_code === COUNTRY.US && !contact.administrativeArea) {
+        errors.push({
+            code:           'shippingContactInvalid',
+            contactField:   'administrativeArea',
+            message:        'State is invalid'
         });
     }
 
