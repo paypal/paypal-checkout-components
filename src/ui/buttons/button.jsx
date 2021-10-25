@@ -10,11 +10,12 @@ import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
+import { AnimatedExperimentLabel } from '../../funding/paypal/template';
 
+import { getButtonAnimation } from './button-animations';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
-import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from './button-animations/types';
 
 type IndividualButtonProps = {|
     style : ButtonStyle,
@@ -37,13 +38,14 @@ type IndividualButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
-    instrument : ?WalletInstrument,
-    buttonAnimation : ?ButtonAnimationOutputParams | ButtonAnimationEmptyOutput | null
+    instrument : ?WalletInstrument
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, buttonAnimation } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
+
     const fundingConfig = getFundingConfig()[fundingSource];
+
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
     }
@@ -95,6 +97,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     const { layout, shape } = style;
     
     const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content }) : (fundingConfig.labelText || fundingSource);
+
     const logoNode = (
         <Logo
             label={ label }
@@ -111,7 +114,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     let labelNode = (
         <Label
-            buttonAnimation={ buttonAnimation }
             i={ i }
             logo={ logoNode }
             label={ label }
@@ -129,6 +131,39 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             content={ content }
         />
     );
+
+    // Only apply animation to the paypal button
+    const buttonAnimation = fundingSource === FUNDING.PAYPAL
+        ? getButtonAnimation(personalization)
+        : {};
+
+    const {
+        buttonAnimationContainerClass = '',
+        buttonAnimationComponent = null
+    } = buttonAnimation;
+
+    if (buttonAnimationComponent) {
+        labelNode = (
+            <AnimatedExperimentLabel
+                i={ i }
+                logo={ logoNode }
+                label={ label }
+                nonce={ nonce }
+                locale={ locale }
+                logoColor={ logoColor }
+                period={ period }
+                layout={ layout }
+                multiple={ multiple }
+                fundingEligibility={ fundingEligibility }
+                onClick={ clickHandler }
+                onKeyPress={ keypressHandler }
+                personalization={ personalization }
+                tagline={ tagline }
+                content={ content }
+                buttonAnimationComponent={ buttonAnimationComponent }
+            />
+        );
+    }
 
     let isWallet = false;
 
@@ -156,30 +191,24 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     }
 
     const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument });
-    const cssClasses = [
-        CLASS.BUTTON_ROW,
-        `${ CLASS.NUMBER }-${ i }`,
-        `${ CLASS.LAYOUT }-${ layout }`,
-        `${ CLASS.SHAPE }-${ shape }`,
-        `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
-        `${ CLASS.ENV }-${ env }`,
-        `${ CLASS.COLOR }-${ color }`,
-        `${ CLASS.TEXT_COLOR }-${ textColor }`,
-        `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`
-    ];
 
-    if (isWallet) {
-        cssClasses.push(CLASS.WALLET);
-    }
-    if (shouldShowWalletMenu) {
-        cssClasses.push(CLASS.WALLET_MENU);
-    }
-    if (buttonAnimation && buttonAnimation.animationContainerClass) {
-        cssClasses.push(buttonAnimation.animationContainerClass);
-    }
-    
     return (
-        <div class={ cssClasses.join(' ') }>
+        <div
+            class={ [
+                CLASS.BUTTON_ROW,
+                `${ CLASS.NUMBER }-${ i }`,
+                `${ CLASS.LAYOUT }-${ layout }`,
+                `${ CLASS.SHAPE }-${ shape }`,
+                `${ CLASS.NUMBER }-${ multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE }`,
+                `${ CLASS.ENV }-${ env }`,
+                `${ CLASS.COLOR }-${ color }`,
+                `${ CLASS.TEXT_COLOR }-${ textColor }`,
+                `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
+                `${ isWallet ? CLASS.WALLET : '' }`,
+                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`,
+                `${ buttonAnimationContainerClass }`
+            ].join(' ') }
+        >
             <div
                 role='button'
                 { ...{
@@ -206,9 +235,11 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 onKeyPress={ keypressHandler }
                 tabindex='0'
                 aria-label={ labelText }>
+
                 <div class={ CLASS.BUTTON_LABEL }>
                     { labelNode }
                 </div>
+
                 <Spinner />
             </div>
 

@@ -1,5 +1,6 @@
 /* @flow */
 /** @jsx node */
+
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { noop } from 'belter/src';
@@ -10,6 +11,7 @@ import { determineEligibleFunding, isWalletFundingEligible } from '../../funding
 import { ValidationError } from '../../lib';
 
 import { getButtonAnimation } from './button-animations';
+import { ButtonAnimationExperimentScriptWrapper } from './button-animations/script';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
@@ -117,7 +119,9 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
-    const buttonAnimation = getButtonAnimation(personalization);
+    
+    const { buttonAnimationScript = '' } = getButtonAnimation(personalization);
+
     return (
         <div class={ [
             CLASS.CONTAINER,
@@ -137,7 +141,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 fundingSources.map((source, i) => (
                     <Button
-                        buttonAnimation={ source && source === FUNDING.PAYPAL ? buttonAnimation : null }
                         content={ content }
                         i={ i }
                         style={ style }
@@ -189,10 +192,16 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                     /> : null
             }
 
-            <Script
-                buttonAnimation={ buttonAnimation.animationScript || '' }
-                nonce={ nonce }
-            />
+            {
+                buttonAnimationScript
+                    ? <ButtonAnimationExperimentScriptWrapper
+                        nonce={ nonce }
+                        buttonAnimation={ buttonAnimationScript }
+                    />
+                    : <Script
+                        nonce={ nonce }
+                    />
+            }
         </div>
     );
 }

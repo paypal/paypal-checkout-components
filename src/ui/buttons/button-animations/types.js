@@ -1,10 +1,10 @@
 /* @flow */
-import { type ChildType, type ElementNode } from 'jsx-pragmatic/src';
+import { type ChildType } from 'jsx-pragmatic/src';
 
 export type ButtonAnimationOutputParams ={|
-    animationContainerClass : string,
-    animationScript : string,
-    animationComponent : ChildType | null
+    buttonAnimationContainerClass : string,
+    buttonAnimationScript : string,
+    buttonAnimationComponent : ChildType | null
 |};
 
 export type ButtonSizeProperties = {|
@@ -33,25 +33,4 @@ export type ButtonAnimation = {|
 
 export type LabelOptions = {|
     animationLabelText : string
-|};
-
-export type ButtonAnimationEmptyOutput ={|
-    animationContainerClass : null,
-    animationScript : null,
-    animationComponent : null
-|};
-
-export type ResizeButtonAnimationDomElementPositions = {|
-    logoTranslateXPosition : number,
-    initialTranslateXTextPosition : number,
-    textYposition : number,
-    finalTranslateXTextPosition : number,
-    paypalLabelContainerElement : ElementNode
-|};
-
-export type labelNextToLogoAnimation = {|
-    logoTranslateXPosition : number,
-    textYposition : number,
-    paypalLabelContainerElement : ElementNode,
-    finalTranslateXTextPosition : number
 |};
