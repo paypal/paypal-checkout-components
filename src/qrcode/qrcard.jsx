@@ -90,10 +90,13 @@ function QRCard({
 
     const frontView = (
         <div id="front-view" className="card">
+            <p id="fee-disclaimer">
+                No fees no matter how you pay
+            </p>
             <div id="instructions">
                 <InstructionIcon stylingClass="instruction-icon" />
                 <span>
-                    To pay, scan the QR code with <br />your Venmo app
+                    To pay, scan the QR code with your Venmo app
                 </span>
             </div>
             <QRCodeElement svgString={ svgString } />

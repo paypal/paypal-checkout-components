@@ -175,6 +175,7 @@ export const cardStyle : string = `
         z-index: 2;
         transform: rotateY(0deg);
         justify-content: flex-end;
+        width: 462px;
     }
     #front-view > svg,
     #front-view > img {
@@ -182,29 +183,39 @@ export const cardStyle : string = `
     }
     #front-view > img + img { 
         padding-top: 12px;
-        padding-bottom: 12px; 
+        padding-bottom: 32px; 
     }
     #qr-code {
         min-width: 160px;
         min-height: 160px;
         width: calc(100% - 32px);
+        max-width: 250px;
     }
     #instructions {
         background-color: #FFFF;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         box-sizing: border-box;
-        padding: 16px;
+        margin-top: 16px;
         display: flex;
         align-items: center;
         font-size: 14px;
         line-height: 16px;
+        max-width: 250px;
         width: 100%;
     }
     .instruction-icon {
         min-width: 68px;
         min-height: 46px;
         margin-right: 16px;
+    }
+    #fee-disclaimer{
+        margin: 0;
+        padding-top: 32px;
+        padding-left: 16px;
+        padding-right: 16px;
+        font-size: 20px;
+        color: #2F3033;
     }
     #back-view {
         position: absolute;
