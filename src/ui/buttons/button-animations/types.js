@@ -1,5 +1,5 @@
 /* @flow */
-import { type ChildType } from 'jsx-pragmatic/src';
+import { type ChildType, type ElementNode } from 'jsx-pragmatic/src';
 
 export type ButtonAnimationOutputParams ={|
     buttonAnimationContainerClass : string,
@@ -12,7 +12,7 @@ export type ButtonSizeProperties = {|
     max? : number
 |};
 
-type ButtonAnimationCss ={|
+type ButtonAnimationCss = {|
     DOM_READY : string,
     ANIMATION_CONTAINER : string,
     PAYPAL_LOGO : string,
@@ -33,4 +33,9 @@ export type ButtonAnimation = {|
 
 export type LabelOptions = {|
     animationLabelText : string
+|};
+
+export type DivideLogoAnimationProps = {|
+    paypalLabelContainerElement : ElementNode,
+    paypalLogoStartingLeftPosition : string
 |};
