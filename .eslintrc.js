@@ -16,6 +16,11 @@ module.exports = {
         '__SMART_BUTTONS__': true,
         'paypal': true
     },
-
+    'overrides': [{
+        'files': ['**/*.test.js'],
+        'env': {
+          'jest': true
+        }
+    }],
     'ignorePatterns': ['node-qrcode.js']    
 };

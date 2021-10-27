@@ -5,7 +5,7 @@ import { noop } from 'belter';
 import { compileLocalSmartQRCodeClientScript, getSmartQRCodeClientScript } from './script';
 
 // $FlowFixMe
-jest.setTimeout(30000); // eslint-disable-line no-undef
+jest.setTimeout(30000);
 
 const cache = {
     // eslint-disable-next-line no-unused-vars

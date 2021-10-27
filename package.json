@@ -11,7 +11,13 @@
     "url": "https://github.com/paypal/paypal-smart-payment-buttons"
   },
   "jest": {
-    "coverageDirectory": "./server-coverage/"
+    "coverageDirectory": "./server-coverage/",
+    "transformIgnorePatterns": [
+      "node_modules/(?!@paypal|beaver-logger|belter|zalgo-promise|cross-domain-utils|cross-domain-safe-weakmap|get-browser-fingerprint)"
+    ],
+    "globals": {
+      "__DEBUG__": true
+    }
   },
   "files": [
     "dist",
@@ -32,7 +38,7 @@
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
     "babel": "babel server --ignore=node_modules --out-dir server && babel webpack.config.js globals.js --out-dir .",
     "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
-    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow check && npm run karma && npm run jest; fi;",
+    "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow check && npm run karma && npm run jest:server && npm run jest:client; fi;",
     "build": "npm run test && npm run webpack",
     "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
     "release": "npm run build-commit && grabthar-release",
@@ -46,7 +52,8 @@
     "clean": "rimraf dist coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
-    "jest": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --runInBand",
+    "jest:server": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --runInBand",
+    "jest:client": "jest src/ --collectCoverage --collectCoverageFrom='src/' --no-cache --runInBand",
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
     "postpublish": "git clean -f && git checkout .",
