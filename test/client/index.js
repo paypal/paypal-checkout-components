@@ -27,6 +27,7 @@ import './smart-fields';
 import './popup';
 import './applepay';
 import './applepay-utils';
+import './exports';
 import './card-fields';
 
 beforeEach(() => {

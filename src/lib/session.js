@@ -32,3 +32,11 @@ export function getSessionState<T>(handler : (state : Object) => T) : T {
 export function getStickinessID() : string {
     return (hashStr(getBrowserFingerprint().toString()) % 100).toString();
 }
+
+let buyerAccessToken;
+export function getBuyerAccessToken() : ?string {
+    return buyerAccessToken;
+}
+export function setBuyerAccessToken(token : ?string) : void {
+    buyerAccessToken = token;
+}

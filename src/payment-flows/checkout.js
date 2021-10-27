@@ -9,7 +9,7 @@ import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
 import { exchangeAccessTokenForAuthCode, getConnectURL, updateButtonClientConfig, getSmartWallet, loadFraudnet  } from '../api';
 import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, APM_LIST } from '../constants';
-import { unresolvedPromise, getLogger } from '../lib';
+import { unresolvedPromise, getLogger, setBuyerAccessToken } from '../lib';
 import { openPopup } from '../ui';
 import { FUNDING_SKIP_LOGIN } from '../config';
 
@@ -218,6 +218,8 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                 }
                 approved = true;
                 getLogger().info(`spb_onapprove_access_token_${ buyerAccessToken ? 'present' : 'not_present' }`).flush();
+
+                setBuyerAccessToken(buyerAccessToken);
 
                 // eslint-disable-next-line no-use-before-define
                 return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart })

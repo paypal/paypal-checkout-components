@@ -5,16 +5,19 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { querySelectorAll } from 'belter/src';
 
 import { DATA_ATTRIBUTES } from '../constants';
+import { upgradeFacilitatorAccessToken } from '../api';
+import { getLogger, getBuyerAccessToken } from '../lib';
 
 import type { ButtonProps } from './props';
 
 type ExportsProps = {|
-props : ButtonProps,
-    isEnabled : () => boolean
+    props : ButtonProps,
+    isEnabled : () => boolean,
+    facilitatorAccessToken : string
 |};
 
-export function setupExports({ props, isEnabled } : ExportsProps)  {
-    const { createOrder, onApprove, onError, onCancel, onClick, fundingSource, commit, intent, currency } = props;
+export function setupExports({ props, isEnabled, facilitatorAccessToken } : ExportsProps)  {
+    const { createOrder, onApprove, onError, onCancel, onClick, commit, intent, fundingSource, currency } = props;
 
     const fundingSources = querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`).map(el => {
         return el.getAttribute(DATA_ATTRIBUTES.FUNDING_SOURCE);
@@ -50,7 +53,8 @@ export function setupExports({ props, isEnabled } : ExportsProps)  {
                 },
                 onApprove: (merchantData) => {
                     const data = {
-                        payerID: merchantData.payerID
+                        payerID:      merchantData.payerID,
+                        forceRestAPI: true
                     };
 
                     const actions = {
@@ -62,7 +66,20 @@ export function setupExports({ props, isEnabled } : ExportsProps)  {
                     return onApprove(data, actions);
                 },
                 onCancel,
-                onError
+                onError,
+                upgradeFacilitatorAccessToken: ({ facilitatorAccessToken: merchantAccessToken, orderID }) => {
+                    const buyerAccessToken = getBuyerAccessToken();
+                    
+                    if (!buyerAccessToken) {
+                        getLogger().error('lsat_upgrade_error', { err: 'buyer access token not found' });
+                        throw new Error('Buyer access token not found');
+                    }
+
+                    return upgradeFacilitatorAccessToken(merchantAccessToken, { buyerAccessToken, orderID });
+                },
+                getFacilitatorAccessToken: () => {
+                    return facilitatorAccessToken;
+                }
             };
         }
     };
