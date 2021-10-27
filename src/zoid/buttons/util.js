@@ -246,7 +246,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
     }
 }
 
-export function getButtonSize({ props, container }) : string | void {
+export function getButtonSize(props : ButtonProps, container : string | HTMLElement | void) : string | void {
     let containerWidth = 0;
 
     if (container && typeof container !== 'string') {
@@ -254,7 +254,10 @@ export function getButtonSize({ props, container }) : string | void {
     }
 
     if (container && typeof container === 'string') {
-        containerWidth = document.querySelector(container).offsetWidth;
+        const containerElement = document.querySelector(container);
+        containerWidth = containerElement
+            ? containerElement.offsetWidth
+            : 0;
     }
 
     const layout = props?.style?.layout || BUTTON_LAYOUT.HORIZONTAL;
