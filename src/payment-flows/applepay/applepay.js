@@ -159,6 +159,17 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         value:         shippingMethod.amount
                     }
                 };
+            } else {
+                // $FlowFixMe
+                data.selected_shipping_option = {
+                    label:  'Shipping',
+                    // $FlowFixMe
+                    type:   currentShippingMethod?.identifier,
+                    amount: {
+                        currency_code: currency,
+                        value:         currentShippingAmount
+                    }
+                };
             }
 
             const actions = {
@@ -196,7 +207,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             }
                         } = updatedOrder.checkoutSession;
 
-                        currentShippingAmount = currentShippingMethod?.amount || '0.00';
+                        currentShippingAmount = currentShippingMethod?.amount || currentShippingAmount || '0.00';
                         currentTaxAmount = updatedTaxValue === '0.00' ? currentTaxAmount : updatedTaxValue;
                         currentSubtotalAmount = updatedSubtotalValue === '0.00' ? currentSubtotalAmount : updatedSubtotalValue;
                         currentTotalAmount = updatedTotalValue;

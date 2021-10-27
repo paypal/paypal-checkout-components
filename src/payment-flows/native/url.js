@@ -19,7 +19,7 @@ import { NATIVE_DOMAIN, HISTORY_NATIVE_POPUP_DOMAIN, MOBILE_NATIVE_POPUP_DOMAIN,
 export function getNativeDomain({ props } : {| props : ButtonProps |}) : string {
     const { env } = props;
 
-    if (env === ENV.SANDBOX && isNativeOptedIn({ props }) && !(window.xprops && window.xprops.useCorrectNativeSandboxDomain)) {
+    if (env === ENV.LOCAL || (env === ENV.SANDBOX && isNativeOptedIn({ props }) && !(window.xprops && window.xprops.useCorrectNativeSandboxDomain))) {
         return 'https://www.paypal.com';
     }
 

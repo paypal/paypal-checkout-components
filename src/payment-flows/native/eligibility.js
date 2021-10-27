@@ -185,21 +185,11 @@ export function isNativePaymentEligible({ props, payment } : IsPaymentEligibleOp
         return false;
     }
 
-    // For Venmo desktop, ignore failing eligibility if the given reasons are returned from NativeEligibility
+    // For Venmo desktop
     if (platform && platform === PLATFORM.DESKTOP) {
-        const eligibleReasons = [ 'isUserAgentEligible', 'isBrowserMobileAndroid' ];
-        const ineligibleReasons = nativeEligibilityResults && nativeEligibilityResults[fundingSource]?.ineligibilityReason?.split(',');
-
-        const eligible = ineligibleReasons?.every(reason => {
-            return reason ? eligibleReasons?.indexOf(reason) !== -1 : true;
-        });
-
-        if (
-            ineligibleReasons &&
-            !eligible
-        ) {
-            return false;
-        }
+        return nativeEligibilityResults && nativeEligibilityResults[fundingSource]
+            ? nativeEligibilityResults[fundingSource].eligibility
+            : false;
     }
     
     return true;
