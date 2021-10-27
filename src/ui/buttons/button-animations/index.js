@@ -7,7 +7,7 @@ import { type ButtonAnimationOutputParams } from './types';
 
 
 export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | Object {
-    if (!personalization || __WEB__) {
+    if (__WEB__ || !personalization ) {
         return {};
     }
 

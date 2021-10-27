@@ -10,8 +10,7 @@ import type { ButtonAnimationOutputParams, LabelOptions, ButtonSizes, DivideLogo
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
-    CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation'),
-    LOGO:            ('paypal-logo' : 'paypal-logo')
+    CONTAINER:       ('divide-logo-animation' : 'divide-logo-animation')
 };
 
 export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOptions) : ChildType {
@@ -44,7 +43,7 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
 
 // Returns label container if the button sizes match
 const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
-    const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
+    const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { large } = configuration;
 
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -62,7 +61,7 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
     // get the label container that animation will be applied to
     const paypalLabelContainerElement = animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
     // get starting position for element so it doesn't jump when animation begins
-    const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ ANIMATION.LOGO }`)) || null;
+    const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
     const paypalLogoStartingLeftPosition = paypalLogoElement
         ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }%`
         : '44.5%';
@@ -157,7 +156,7 @@ export function setupDivideLogoAnimation (animationLabelText : string) : ButtonA
     const animationConfig = animationConfiguration();
     const buttonAnimationScript = `
         const animationProps = ${ getAnimationProps.toString() }( document, ${ JSON.stringify(animationConfig) });
-        if (animationProps.paypalLabelContainerElement && animationProps.paypalLogoStartingLeftPosition) {
+        if (animationProps && animationProps.paypalLabelContainerElement && animationProps.paypalLogoStartingLeftPosition) {
             const animation = ${ animationFn.toString() }
             animation(animationProps, ${ JSON.stringify(animationConfig.cssClasses) })
         }

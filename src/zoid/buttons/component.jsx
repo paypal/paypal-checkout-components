@@ -472,7 +472,9 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             buttonSize: {
                 type:       'string',
                 required:   false,
-                value:      getButtonSize,
+                value:      ({ props, container }) => {
+                    return getButtonSize(props, container);
+                },
                 queryParam: true
             },
 
