@@ -23,7 +23,7 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
    
     return (
         <Fragment>
-            <div class={ config.labelClass } data-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
+            <div class={ config.labelClass } data-animation-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
             <style innerHTML={ `
                 .${ CLASS.DOM_READY } .${ ANIMATION.CONTAINER } img.${ LOGO_CLASS.LOGO }{
                     position: relative;
@@ -151,7 +151,7 @@ export function createDivideLogoAnimation() : Function {
 }
 
 export function setupDivideLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
-    const animationProps = { animationLabelText };
+    const animationData = { animationLabelText };
     const animationFn = createDivideLogoAnimation();
     const animationConfig = animationConfiguration();
     const buttonAnimationScript = `
@@ -164,6 +164,6 @@ export function setupDivideLogoAnimation (animationLabelText : string) : ButtonA
     return {
         buttonAnimationContainerClass: ANIMATION.CONTAINER,
         buttonAnimationScript,
-        buttonAnimationComponent:      (<LabelForDivideLogoAnimation { ...animationProps } />)
+        buttonAnimationComponent:      (<LabelForDivideLogoAnimation { ...animationData } />)
     };
 }
