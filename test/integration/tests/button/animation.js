@@ -1,8 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { once, wrapPromise } from 'belter/src';
-import { html } from 'jsx-pragmatic';
+import { once } from 'belter/src';
 
 import { createTestContainer, destroyTestContainer } from '../common';
 
@@ -17,66 +16,66 @@ describe('Tests for button animations and designs', () => {
             destroyTestContainer();
         });
 
-		it('should not apply animation in WEB', (done) => {
-			done = once(done);
+        it('should not apply animation in WEB', (done) => {
+            done = once(done);
 
-			const personalization = {
-				buttonAnimation: {
-					id: 'run-divide-logo-animation',
-					text: 'Safe and easy way to pay',
-					tracking: {
-						click: '',
-						impression: ''
-					}
-				}     
-			}
+            const personalization = {
+                buttonAnimation: {
+                    id:       'run-divide-logo-animation',
+                    text:     'Safe and easy way to pay',
+                    tracking: {
+                        click:      '',
+                        impression: ''
+                    }
+                }
+            };
 
 
-			window.paypal.Buttons({
+            window.paypal.Buttons({
 
-				style: {
-					shape: 'pill',
-					color: 'gold',
-					layout: 'vertical',
-					label: 'paypal'
-				},
+                style: {
+                    shape:  'pill',
+                    color:  'gold',
+                    layout: 'vertical',
+                    label:  'paypal'
+                },
 
-				personalization,
+                personalization,
 
-				test: {
-					onRender() {
-						const frame = document.querySelector('#testContainer iframe');
-						if (!frame) {
-							throw new Error(`Cannot find frame`);
-						}
-		
-						// $FlowFixMe
-						const win = frame.contentWindow;
-						const animationContainer = win.document.querySelector('.divide-logo-animation-label-container');
-						if (animationContainer) {
-							done(new Error('No personalization should be applied on __WEB__'))
-						}
-						done();
-					}
-				},
+                test: {
+                    onRender() {
+                        const frame = document.querySelector('#testContainer iframe');
+                        if (!frame) {
+                            throw new Error(`Cannot find frame`);
+                        }
 
-				createOrder() : string | ZalgoPromise<string> {
-					throw new Error('Expected createOrder to not be called');
-				},
+                        // $FlowFixMe
+                        const win = frame.contentWindow;
+                        const animationContainer = win.document.querySelector('.divide-logo-animation-label-container');
+                        if (animationContainer) {
+                            done(new Error('No personalization should be applied on __WEB__'));
+                        }
+                        done();
+                    }
+                },
 
-				onApprove() {
-					throw new Error('Expected onApprove to not be called');
-				},
+                createOrder() : string | ZalgoPromise<string> {
+                    throw new Error('Expected createOrder to not be called');
+                },
 
-				onCancel() {
-					throw new Error('Expected onCancel to not be called');
-				},
+                onApprove() {
+                    throw new Error('Expected onApprove to not be called');
+                },
 
-				onError: done
+                onCancel() {
+                    throw new Error('Expected onCancel to not be called');
+                },
 
-			}).render('#testContainer');
-		});
+                onError: done
 
-	});
+            }).render('#testContainer');
+        });
+
+    });
 
 });

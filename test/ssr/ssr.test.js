@@ -184,14 +184,14 @@ test(`Animation should be applied when there is valid personalization`, async ()
 
     const personalization = {
         buttonAnimation: {
-            id: 'run-divide-logo-animation',
-            text: 'Safe and easy way to pay',
+            id:       'run-divide-logo-animation',
+            text:     'Safe and easy way to pay',
             tracking: {
-                click: '',
+                click:      '',
                 impression: ''
             }
-        }     
-    }
+        }
+    };
 
     const buttonHTML = Buttons({
         locale:          { country: 'US', lang: 'en' },
@@ -206,7 +206,7 @@ test(`Animation should be applied when there is valid personalization`, async ()
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationContainer = buttonHTML.match('divide-logo-animation');
+    const animationContainer = buttonHTML.match('data-animation-experiment');
     const animationScript = buttonHTML.match('divide-logo-animation-left-side');
 
     if (!animationContainer || !animationScript) {
@@ -222,14 +222,14 @@ test(`Animation should not be applied when there is invalid animation id`, async
 
     const personalization = {
         buttonAnimation: {
-            id: 'control',
-            text: '',
+            id:       'control',
+            text:     '',
             tracking: {
-                click: '',
+                click:      '',
                 impression: ''
             }
-        }     
-    }
+        }
+    };
 
     const buttonHTML = Buttons({
         locale:          { country: 'US', lang: 'en' },
