@@ -4,7 +4,7 @@
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { values, destroyElement, noop, uniqueID, parseQuery, once } from 'belter/src';
+import { values, destroyElement, noop, uniqueID, parseQuery, once, getBody } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { isWindowClosed, isSameDomain, getDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
@@ -215,7 +215,14 @@ export function setupMocks() {
                     send: () => {
                         throw new Error(`Can not send post message for proxy window in test`);
                     }
-                })
+                }),
+            ProxyWindow: () => {
+                return new ProxyWindow({
+                    send: () => {
+                        throw new Error(`Can not send post message for proxy window in test`);
+                    }
+                });
+            }
         }
     };
 
@@ -1591,6 +1598,13 @@ export function getPostRobotMock() : PostRobotMock {
                     throw new Error(`Can not send post message for proxy window in test`);
                 }
             });
+        },
+        ProxyWindow: () => {
+            return new ProxyWindow({
+                send: () => {
+                    throw new Error(`Can not send post message for proxy window in test`);
+                }
+            });
         }
     };
 
@@ -1664,7 +1678,7 @@ type MockWindowOptions = {|
     |}) => void
 |};
 
-type MockWindow = {|
+export type MockWindow = {|
     getWindow : () => ?CrossDomainWindowType,
     getOpts : () => {| [string] : string |},
     send : ({| name : string, data? : mixed |}) => ZalgoPromise<Object>,
@@ -1958,6 +1972,30 @@ const ensureWindowOpenOnClick = () => {
         return windowOpen.apply(this, arguments);
     };
 };
+
+export function runOnClick<T>(handler : () => T) : T {
+    const testButton = document.createElement('button');
+    getBody().appendChild(testButton);
+    let didError = false;
+    let result;
+    let error;
+    testButton.addEventListener('click', () => {
+        try {
+            result = handler();
+        } catch (err) {
+            didError = true;
+            error = err;
+        }
+    });
+    testButton.click();
+    destroyElement(testButton);
+    if (didError) {
+        throw error;
+    } else {
+        // $FlowFixMe
+        return result;
+    }
+}
 
 ensureWindowOpenOnClick();
 

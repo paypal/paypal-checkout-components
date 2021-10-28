@@ -9,7 +9,7 @@ import { isWindowClosed } from 'cross-domain-utils/src';
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getMockWindowOpen,
-    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, setupMocks } from './mocks';
+    mockFunction, getNativeFirebaseMock, getGraphQLApiMock, setupMocks, runOnClick, type MockWindow } from './mocks';
 
 const IOS_SAFARI_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A356 Safari/604.1';
 const ANDROID_CHROME_USER_AGENT = 'Mozilla/5.0 (Linux; Android 8.0.0; Nexus 5X Build/OPR4.170623.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36';
@@ -177,18 +177,32 @@ const mockOnApprove = ({ expect, orderID, payerID }) => {
     }));
 };
 
-const mockWebCheckout = ({ expect, orderID, mockWindow, approve = true, onComplete = noop }) => {
+type MockWebCheckoutOptions = {|
+    expect : Function,
+    orderID : string,
+    payerID? : string,
+    mockWindow? : MockWindow,
+    approve? : boolean,
+    onComplete? : ({| props : Object |}) => void | ZalgoPromise<void>
+|};
+
+const CUSTOM_WINDOW_SUPPORTED = false;
+
+const mockWebCheckout = ({ expect, orderID, payerID, mockWindow, approve = true, onComplete = noop } : MockWebCheckoutOptions) => {
     const checkoutMock = mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ checkoutProps ] }) => {
         if (mockWindow) {
             if (!checkoutProps.window) {
                 throw new Error(`Expected window to be passed in checkout props`);
             }
 
-            if (checkoutProps.window.getWindow() !== mockWindow.getWindow()) {
+            const actualMockWindow = mockWindow.getWindow();
+            const actualPropWindow = checkoutProps.window.getWindow();
+
+            if (actualMockWindow && actualPropWindow !== actualMockWindow) {
                 throw new Error(`Expected win passed to checkout to match win sent in onLoad`);
             }
 
-            if (isWindowClosed(checkoutProps.window.getWindow())) {
+            if (actualPropWindow && isWindowClosed(actualPropWindow)) {
                 throw new Error(`Window passed in props is closed`);
             }
         } else {
@@ -212,7 +226,8 @@ const mockWebCheckout = ({ expect, orderID, mockWindow, approve = true, onComple
                         }
                         
                         return checkoutProps.onApprove({
-                            orderID
+                            orderID,
+                            payerID
                         });
                     }
                 }).then(() => {
@@ -1429,8 +1444,6 @@ describe('native ios/safari cases', () => {
 
             mockOnApprove({ expect, orderID, payerID });
 
-            createButtonHTML();
-
             let mockWebSocketServer;
 
             const mockWindow = getMockWindowOpen({
@@ -1466,24 +1479,32 @@ describe('native ios/safari cases', () => {
                 }
             });
 
-            window.open('about:blank');
+            if (!CUSTOM_WINDOW_SUPPORTED) {
+                mockWebCheckout({ expect, orderID, payerID, mockWindow });
+            }
+
+            const proxyWin = new window.paypal.postRobot.ProxyWindow();
 
             window.xprops.getPrerenderDetails = () => {
-                const win = mockWindow.getWindow();
-
-                if (!win) {
-                    throw new Error(`Mock window not open`);
-                }
-
                 return ZalgoPromise.resolve({
-                    win:           window.paypal.postRobot.toProxyWindow(win),
+                    win:           proxyWin,
                     fundingSource: FUNDING.PAYPAL
                 });
             };
 
+            createButtonHTML();
             await setupNativeButton();
 
             await clickButton(FUNDING.PAYPAL);
+
+            runOnClick(() => {
+                const win = window.open('about:blank');
+                proxyWin.setWindow(win, {
+                    send: () => {
+                        throw new Error(`Send not available in mock mode`);
+                    }
+                });
+            });
 
             await window.xprops.onApprove.await();
 
@@ -2017,7 +2038,7 @@ describe('native android/chrome cases', () => {
             window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
             mockOnApprove({ expect, orderID, payerID: null });
-            mockWebCheckout({ expect, orderID, mockWindow: null });
+            mockWebCheckout({ expect, orderID });
 
             createButtonHTML();
 
@@ -2076,7 +2097,7 @@ describe('native android/chrome cases', () => {
             window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
             mockOnApprove({ expect, orderID, payerID: null });
-            mockWebCheckout({ expect, orderID, mockWindow: null });
+            mockWebCheckout({ expect, orderID });
 
             createButtonHTML();
 
@@ -2663,7 +2684,7 @@ describe('native android/chrome cases', () => {
             window.xprops.onCancel = avoid(POST_MESSAGE.ON_CANCEL);
             window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
-            const webCheckoutMock = mockWebCheckout({ expect, orderID, mockWindow: null });
+            const webCheckoutMock = mockWebCheckout({ expect, orderID });
             mockOnApprove({ expect, orderID, payerID: null });
 
             createButtonHTML();
@@ -2831,9 +2852,13 @@ describe('native android/chrome cases', () => {
             const sessionToken = uniqueID();
             const orderID = uniqueID();
             const payerID = uniqueID();
-            
 
             const gqlMock = getFirebaseGraphQLMock({ expect, sessionToken });
+
+            mockCreateOrder({ expect, orderID });
+
+            window.xprops.onCancel = avoid(POST_MESSAGE.ON_CANCEL);
+            window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
 
             let mockWebSocketServer;
 
@@ -2865,38 +2890,39 @@ describe('native android/chrome cases', () => {
                 }
             });
 
-            window.open('about:blank');
+            if (!CUSTOM_WINDOW_SUPPORTED) {
+                mockWebCheckout({ expect, orderID, payerID, mockWindow });
+            }
+
+            const proxyWin = new window.paypal.postRobot.ProxyWindow();
 
             window.xprops.getPrerenderDetails = () => {
-                const win = mockWindow.getWindow();
-
-                if (!win) {
-                    throw new Error(`Mock window not open`);
-                }
-
                 return ZalgoPromise.resolve({
-                    win:           window.paypal.postRobot.toProxyWindow(win),
+                    win:           proxyWin,
                     fundingSource: FUNDING.PAYPAL
                 });
             };
 
-            mockCreateOrder({ expect, orderID });
-
-            window.xprops.onCancel = avoid(POST_MESSAGE.ON_CANCEL);
-            window.xprops.onError = avoid(POST_MESSAGE.ON_ERROR);
-
-            mockOnApprove({ expect, orderID, payerID });
-
             createButtonHTML();
-
             await setupNativeButton();
 
             await clickButton(FUNDING.PAYPAL);
+
+            runOnClick(() => {
+                const win = window.open('about:blank');
+                proxyWin.setWindow(win, {
+                    send: () => {
+                        throw new Error(`Send not available in mock mode`);
+                    }
+                });
+            });
+
             await window.xprops.onApprove.await();
 
             if (mockWebSocketServer) {
                 mockWebSocketServer.done();
             }
+            
             gqlMock.done();
             mockWindow.done();
         });

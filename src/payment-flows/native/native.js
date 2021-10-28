@@ -28,7 +28,7 @@ function setupNative({ props, serviceData } : SetupOptions) : ZalgoPromise<void>
 
 function initNative({ props, components, config, payment, serviceData, restart } : InitOptions) : PaymentFlowInstance {
     const { onApprove, onCancel, onError, buttonSessionID, onShippingChange } = props;
-    const { fundingSource } = payment;
+    const { fundingSource, win } = payment;
     const { firebase: firebaseConfig } = config;
 
     if (!firebaseConfig) {
@@ -55,9 +55,9 @@ function initNative({ props, components, config, payment, serviceData, restart }
         return ZalgoPromise.try(() => {
             return fallbackWin ? toProxyWindow(fallbackWin).isClosed() : true;
         }).then(winClosedOrNotPassed => {
-            const win = winClosedOrNotPassed ? null : fallbackWin;
+            const actualFallbackWin = winClosedOrNotPassed ? null : fallbackWin;
 
-            const checkoutPayment = { ...payment, win, isClick: false, isNativeFallback: true };
+            const checkoutPayment = { ...payment, win: actualFallbackWin, isClick: false };
             const instance = checkout.init({ props, components, payment: checkoutPayment, config, serviceData, restart });
 
             return ZalgoPromise.all([
@@ -179,7 +179,7 @@ function initNative({ props, components, config, payment, serviceData, restart }
     };
 
     const fallback = (opts? : {| win? : CrossDomainWindowType | ProxyWindow, fallbackOptions? : NativeFallbackOptions |}) => {
-        const { win, fallbackOptions = getDefaultNativeFallbackOptions() } = opts || {};
+        const { win: fallbackWin, fallbackOptions = getDefaultNativeFallbackOptions() } = opts || {};
         
         return ZalgoPromise.try(() => {
 
@@ -193,16 +193,16 @@ function initNative({ props, components, config, payment, serviceData, restart }
                     [FPTI_CUSTOM_KEY.TRANSITION_REASON]: fallback_reason || ''
                 }).flush();
 
-            return fallbackToWebCheckout(win);
+            return fallbackToWebCheckout(fallbackWin);
         });
     };
 
     const sessionUID = uniqueID();
     let initFlow;
 
-    if (canUsePopupAppSwitch({ fundingSource })) {
+    if (canUsePopupAppSwitch({ fundingSource, win })) {
         initFlow = initNativePopup;
-    } else if (canUseNativeQRCode({ fundingSource })) {
+    } else if (canUseNativeQRCode({ fundingSource, win })) {
         initFlow = initNativeQRCode;
     } else {
         throw new Error(`No valid native payment flow found`);

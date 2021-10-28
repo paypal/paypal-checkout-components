@@ -3,9 +3,11 @@
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { supportsPopups, isIos, isAndroid } from 'belter/src';
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import type { ProxyWindow } from 'post-robot/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
-import { enableAmplitude, getStorageState, isIOSSafari, isAndroidChrome } from '../../lib';
+import { enableAmplitude, getStorageState, isIOSSafari, isAndroidChrome, toProxyWindow } from '../../lib';
 import { LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../../constants';
 import type { ButtonProps, ServiceData } from '../../button/props';
 import type { IsEligibleOptions, IsPaymentEligibleOptions } from '../types';
@@ -100,7 +102,7 @@ export function prefetchNativeEligibility({ props, serviceData } : PrefetchNativ
     });
 }
 
-export function canUsePopupAppSwitch({ fundingSource } : {| fundingSource : ?$Values<typeof FUNDING> |}) : boolean {
+export function canUsePopupAppSwitch({ fundingSource, win } : {| fundingSource : ?$Values<typeof FUNDING>, win? : ?(ProxyWindow | CrossDomainWindowType) |}) : boolean {
     if (!isIOSSafari() && !isAndroidChrome()) {
         return false;
     }
@@ -109,15 +111,23 @@ export function canUsePopupAppSwitch({ fundingSource } : {| fundingSource : ?$Va
         return false;
     }
 
+    if (win && !toProxyWindow(win).getWindow()) {
+        return false;
+    }
+
     return true;
 }
 
-export function canUseNativeQRCode({ fundingSource } : {| fundingSource : ?$Values<typeof FUNDING> |}) : boolean {
+export function canUseNativeQRCode({ fundingSource, win } : {| fundingSource : ?$Values<typeof FUNDING>, win? : ?(ProxyWindow | CrossDomainWindowType) |}) : boolean {
     if (isIos() || isAndroid()) {
         return false;
     }
 
     if (fundingSource && fundingSource !== FUNDING.VENMO) {
+        return false;
+    }
+
+    if (win) {
         return false;
     }
 
@@ -175,13 +185,13 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
 export function isNativePaymentEligible({ props, payment } : IsPaymentEligibleOptions) : boolean {
 
     const { platform } = props;
-    const { fundingSource } = payment;
+    const { fundingSource, win } = payment;
 
     if (!NATIVE_CHECKOUT_URI[fundingSource] || !NATIVE_CHECKOUT_POPUP_URI[fundingSource] || !NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) {
         return false;
     }
 
-    if (!canUsePopupAppSwitch({ fundingSource }) && !canUseNativeQRCode({ fundingSource })) {
+    if (!canUsePopupAppSwitch({ fundingSource, win }) && !canUseNativeQRCode({ fundingSource, win })) {
         return false;
     }
 
@@ -190,6 +200,10 @@ export function isNativePaymentEligible({ props, payment } : IsPaymentEligibleOp
         return nativeEligibilityResults && nativeEligibilityResults[fundingSource]
             ? nativeEligibilityResults[fundingSource].eligibility
             : false;
+    }
+
+    if (win && !toProxyWindow(win).getWindow()) {
+        return false;
     }
     
     return true;

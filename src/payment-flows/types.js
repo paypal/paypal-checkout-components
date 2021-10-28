@@ -30,8 +30,7 @@ export type Payment = {|
     buyerAccessToken? : ?string,
     venmoPayloadID? : string,
     buyerIntent : $Values<typeof BUYER_INTENT>,
-    createAccessToken? : () => ZalgoPromise<?string>,
-    isNativeFallback? : boolean
+    createAccessToken? : () => ZalgoPromise<?string>
 |};
 
 export type SetupOptions = {|
