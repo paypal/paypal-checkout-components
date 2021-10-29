@@ -72,7 +72,7 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
     };
 };
 
-export function createAnimation(animationProps, cssClasses) : Function {
+function createAnimation(animationProps, cssClasses) : Function {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
     const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
     const animations = `
