@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import type { ButtonAnimationOutputParams, LabelOptions, ButtonSizes, DivideLogoAnimationProps } from './types';
+import type { ButtonAnimationOutputParams, LabelOptions, DivideLogoAnimationProps } from './types';
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('divide-logo-animation-label-container' : 'divide-logo-animation-label-container'),
@@ -72,8 +72,53 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
     };
 };
 
-function animationConfiguration () : ButtonSizes {
-    return {
+export function createAnimation(animationProps, cssClasses) : Function {
+    const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
+    const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
+    const animations = `
+        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
+            animation: 3s divide-logo-animation-left-side 2s infinite alternate;
+        }
+        
+        .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
+            animation: 3s divide-logo-animation-right-side 2s infinite alternate;
+        }
+
+        @keyframes divide-logo-animation-left-side {
+            0%,33% {
+                position: fixed;
+                left: ${ paypalLogoStartingLeftPosition }%;
+            }
+            66%,100% {
+                position: fixed;
+                left: 0%;
+            }
+        }
+        
+        @keyframes divide-logo-animation-right-side {
+            0%,33%{
+                opacity: 0;
+                position: fixed;
+                right: 45%;
+            }
+            66%,100% {
+                opacity: 1;
+                position: fixed;
+                right: 0%;
+            }
+        }
+    `;
+
+    if (paypalLabelContainerElement) {
+        const style = document.createElement('style');
+        paypalLabelContainerElement.appendChild(style);
+        style.appendChild(document.createTextNode(animations));
+    }
+}
+
+export function setupDivideLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
+    const animationData = { animationLabelText };
+    const animationConfig = {
         large:      { min: BUTTON_SIZE_STYLE.large.minWidth },
         huge:       { max: BUTTON_SIZE_STYLE.huge.maxWidth },
         cssClasses: {
@@ -84,80 +129,10 @@ function animationConfiguration () : ButtonSizes {
             PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
         }
     };
-}
-
-export function createDivideLogoAnimation() : Function {
-    return (animationProps, cssClasses) : void => {
-        const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
-        const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
-        const animations = `
-            .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
-                animation: 3s divide-logo-animation-left-side 2s infinite alternate;
-            }
-            
-            .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
-                animation: 3s divide-logo-animation-right-side 2s infinite alternate;
-            }
-
-            @keyframes divide-logo-animation-left-side {
-                0% {
-                    position: fixed;
-                    left: ${ paypalLogoStartingLeftPosition };
-                }
-                33% {
-                    position: fixed;
-                    left: ${ paypalLogoStartingLeftPosition };
-                }
-                66% {
-                    position: fixed;
-                    left: 0%;
-                }
-                100% {
-                    position: fixed;
-                    left: 0%;
-                }
-            }
-            
-            @keyframes divide-logo-animation-right-side {
-                0%{
-                    opacity: 0;
-                    position: fixed;
-                    right: 45%;
-                }
-                33%{
-                    opacity: 0;
-                    position: fixed;
-                    right: 45%;
-                }
-                66% {
-                    opacity: 1;
-                    position: fixed;
-                    right: 0%;
-                }
-                100% {
-                    opacity: 1;
-                    position: fixed;
-                    right: 0%;
-                }
-            }
-        `;
-
-        if (paypalLabelContainerElement) {
-            const style = document.createElement('style');
-            paypalLabelContainerElement.appendChild(style);
-            style.appendChild(document.createTextNode(animations));
-        }
-    };
-}
-
-export function setupDivideLogoAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
-    const animationData = { animationLabelText };
-    const animationFn = createDivideLogoAnimation();
-    const animationConfig = animationConfiguration();
     const buttonAnimationScript = `
         const animationProps = ${ getAnimationProps.toString() }( document, ${ JSON.stringify(animationConfig) });
         if (animationProps && animationProps.paypalLabelContainerElement && animationProps.paypalLogoStartingLeftPosition) {
-            const animation = ${ animationFn.toString() }
+            const animation = ${ createAnimation.toString() }
             animation(animationProps, ${ JSON.stringify(animationConfig.cssClasses) })
         }
     `;
