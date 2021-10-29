@@ -62,8 +62,8 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
     // get starting position for element so it doesn't jump when animation begins
     const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
     const paypalLogoStartingLeftPosition = paypalLogoElement
-        ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }%`
-        : '44.5%';
+        ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }`
+        : '44.5';
 
     return {
         paypalLabelContainerElement,
@@ -78,6 +78,7 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
             animation: 2s move-logo-to-left-side 2s infinite alternate;
             position:fixed;
+            left: ${ paypalLogoStartingLeftPosition }%;
         }
         
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
@@ -86,10 +87,10 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
 
         @keyframes move-logo-to-left-side {
             0% {
-                left: ${ paypalLogoStartingLeftPosition };
+                left: ${ paypalLogoStartingLeftPosition }%;
             }
             33% {
-                left: ${ paypalLogoStartingLeftPosition };
+                left: ${ paypalLogoStartingLeftPosition }%;
             }
             90% {
                 left: 0%;
@@ -104,11 +105,11 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         @keyframes divide-logo-animation-right-side {
             0%,33%,66%{
                 opacity: 0;
-                right: 15%;
+                right: ${ paypalLogoStartingLeftPosition / 2 }%;
             }
             90%, 100% {
                 opacity: 1;                    
-                right: 15%;
+                right: ${ paypalLogoStartingLeftPosition / 2 }%;
             }
         }
     `;
