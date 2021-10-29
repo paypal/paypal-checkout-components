@@ -44,10 +44,16 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
 // Returns label container if the button sizes match
 const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
     const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
-
+    const { tiny, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!animationContainer) {
+        return null;
+    }
+
+    // return null if animation should not be played for the button size
+    const animationContainerWidth = animationContainer.offsetWidth;
+    if (animationContainerWidth < tiny.min || animationContainerWidth > medium.max) {
         return null;
     }
 
@@ -117,8 +123,8 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
 export function setupFadeOutLogoAndShowLabelAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
     const animationProps = { animationLabelText };
     const animationConfig = {
-        large:      { min: BUTTON_SIZE_STYLE.large.minWidth },
-        huge:       { max: BUTTON_SIZE_STYLE.huge.maxWidth },
+        tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth },
+        medium:     { max: BUTTON_SIZE_STYLE.medium.maxWidth },
         cssClasses: {
             DOM_READY:                  CLASS.DOM_READY,
             ANIMATION_CONTAINER:        ANIMATION.CONTAINER,
