@@ -30,22 +30,48 @@ const POST_MESSAGE = {
 };
 
 type AppDetect = {|
+    id? : string,
     installed : boolean,
-    [ string ] : string
+    version? : string
 |};
 
 function logDetectedApp(app : AppDetect) {
     if (app) {
+        let logMessage = 'native_app';
         Object.keys(app).forEach(key => {
-            getLogger().info(`native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }`, { [key]: app[key] })
-                .track({
-                    [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_INSTALLED,
-                    [FPTI_CUSTOM_KEY.INFO_MSG]: `native_app_${ app.installed ? 'installed' : 'not_installed' }_${ key }: ${ app[key].toString() }`
-                })
-                .flush();
+            logMessage += `_${ String(app[key]) }`;
         });
+
+        getLogger().info(logMessage)
+            .track({
+                [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.NATIVE_APP_INSTALLED,
+                [FPTI_CUSTOM_KEY.INFO_MSG]: logMessage
+            })
+            .flush();
     }
+}
+
+type AppEligibleOptions = {|
+    fundingSource : $Values<typeof FUNDING>,
+    appDetect : AppDetect
+|};
+function isDetectedAppEligible({ fundingSource, appDetect } : AppEligibleOptions) : boolean {
+    if (appDetect === null) {
+        return true;
+    }
+
+    if (fundingSource === FUNDING.PAYPAL) {
+        if (appDetect.installed && appDetect.version?.indexOf('8.5') !== -1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if (fundingSource === FUNDING.VENMO) {
+        return true;
+    }
+
+    return true;
 }
 
 type EligibilityOptions = {|
@@ -57,7 +83,6 @@ type EligibilityOptions = {|
     stickinessID : string,
     appDetect : AppDetect
 |};
-
 function getEligibility({ fundingSource, props, serviceData, sfvc, validatePromise, stickinessID, appDetect } : EligibilityOptions) : ZalgoPromise<boolean> {
     const { createOrder, onShippingChange, vault, platform, clientID, currency, buttonSessionID, enableFunding, merchantDomain } = props;
     const { buyerCountry, cookies, merchantID } = serviceData;
@@ -68,7 +93,7 @@ function getEligibility({ fundingSource, props, serviceData, sfvc, validatePromi
             return false;
         }
 
-        if (appDetect && !appDetect.installed) {
+        if (!isDetectedAppEligible({ fundingSource, appDetect })) {
             return false;
         }
 
