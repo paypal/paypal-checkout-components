@@ -43,7 +43,7 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
 
 // Returns label container if the button sizes match
 const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
-    const { ANIMATION_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
+    const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { tiny, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
@@ -54,6 +54,8 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
     // return null if animation should not be played for the button size
     const animationContainerWidth = animationContainer.offsetWidth;
     if (animationContainerWidth < tiny.min || animationContainerWidth > medium.max) {
+        // remove label element from dom
+        animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove()
         return null;
     }
 
@@ -88,17 +90,10 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         }
 
         @keyframes move-logo-to-left-side {
-            0% {
+            0%,33% {
                 left: ${ paypalLogoStartingLeftPosition }%;
             }
-            33% {
-                left: ${ paypalLogoStartingLeftPosition }%;
-            }
-            90% {
-                left: 0%;
-                opacity:0;
-            }
-            100% {
+            90%,100% {
                 left: 0%;
                 opacity:0;
             }
