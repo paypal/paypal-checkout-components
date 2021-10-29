@@ -83,6 +83,8 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
             animation: 2s divide-logo-animation-right-side 2s infinite alternate;
+            text-align: center;
+            width: 100%;
         }
 
         @keyframes move-logo-to-left-side {
@@ -105,11 +107,9 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         @keyframes divide-logo-animation-right-side {
             0%,33%,66%{
                 opacity: 0;
-                right: ${ paypalLogoStartingLeftPosition / 2 }%;
             }
             90%, 100% {
                 opacity: 1;                    
-                right: ${ paypalLogoStartingLeftPosition / 2 }%;
             }
         }
     `;
