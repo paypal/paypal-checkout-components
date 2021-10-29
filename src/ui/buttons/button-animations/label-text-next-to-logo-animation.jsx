@@ -16,7 +16,7 @@ export const ANIMATION = {
 function ComponentForAnimation({ animationLabelText } : LabelOptions) : ChildType {
     return (
         <Fragment>
-            <span class={ ANIMATION.ELEMENT }>{animationLabelText}</span>
+            <span data-animation-experiment="Varied_Button_Design" class={ ANIMATION.ELEMENT }>{animationLabelText}</span>
             <style innerHTML={ `
                 .${ CLASS.DOM_READY } .${ ANIMATION.CONTAINER } img.${ LOGO_CLASS.LOGO }{
                     position: relative;
