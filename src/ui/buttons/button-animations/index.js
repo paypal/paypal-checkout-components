@@ -8,7 +8,8 @@ import { type ButtonAnimationOutputParams } from './types';
 
 
 export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | Object {
-    if (!personalization || __WEB__) {
+    // Only show animations for SSR
+    if (__WEB__ || !personalization) {
         return {};
     }
 
@@ -18,10 +19,6 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
             text: animationLabelText = 'Safe and easy way to pay'
         } = {}
     } = personalization;
-
-    if (animationId === 'control') {
-        return {};
-    }
 
     if (animationId === 'run-divide-logo-animation') {
         return setupDivideLogoAnimation(animationLabelText);
