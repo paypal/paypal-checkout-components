@@ -3186,6 +3186,10 @@ window.spb = function(modules) {
         function isStorageStateFresh() {
             return getSDKStorage().isStateFresh();
         }
+        var session_buyerAccessToken;
+        function setBuyerAccessToken(token) {
+            session_buyerAccessToken = token;
+        }
         function getPostRobot() {
             var paypal = function() {
                 if (!window.paypal) throw new Error("paypal not found");
@@ -3383,6 +3387,27 @@ window.spb = function(modules) {
         var getLsatUpgradeError = function() {
             return lsatUpgradeError;
         };
+        function auth_upgradeFacilitatorAccessToken(facilitatorAccessToken, _ref3) {
+            var _headers;
+            var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
+            onLsatUpgradeCalled();
+            return callGraphQL({
+                name: "UpgradeFacilitatorAccessToken",
+                headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
+                _headers["paypal-client-context"] = orderID, _headers),
+                query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
+                variables: {
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    buyerAccessToken: buyerAccessToken,
+                    orderID: orderID
+                }
+            }).then(src_util_noop).catch((function(err) {
+                !function(err) {
+                    lsatUpgradeError = err;
+                }(err);
+                throw err;
+            }));
+        }
         function isProcessorDeclineError(err) {
             var _err$response, _err$response$body, _err$response$body$da, _err$response$body$da2;
             return Boolean(null == err || null == (_err$response = err.response) || null == (_err$response$body = _err$response.body) || null == (_err$response$body$da = _err$response$body.data) || null == (_err$response$body$da2 = _err$response$body$da.details) ? void 0 : _err$response$body$da2.some((function(detail) {
@@ -3467,7 +3492,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.71", _headers15);
+            _headers15["x-app-version"] = "5.0.72", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -4679,27 +4704,7 @@ window.spb = function(modules) {
                     logger_getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
                     return promise_ZalgoPromise.try((function() {
                         if (accessToken) return upgradeLSAT ? createOrder().then((function(orderID) {
-                            return createSubscription ? accessToken : function(facilitatorAccessToken, _ref3) {
-                                var _headers;
-                                var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;
-                                onLsatUpgradeCalled();
-                                return callGraphQL({
-                                    name: "UpgradeFacilitatorAccessToken",
-                                    headers: (_headers = {}, _headers["x-paypal-internal-euat"] = buyerAccessToken, 
-                                    _headers["paypal-client-context"] = orderID, _headers),
-                                    query: "\n            mutation UpgradeFacilitatorAccessToken(\n                $orderID: String!\n                $buyerAccessToken: String!\n                $facilitatorAccessToken: String!\n            ) {\n                upgradeLowScopeAccessToken(\n                    token: $orderID\n                    buyerAccessToken: $buyerAccessToken\n                    merchantLSAT: $facilitatorAccessToken\n                )\n            }\n        ",
-                                    variables: {
-                                        facilitatorAccessToken: facilitatorAccessToken,
-                                        buyerAccessToken: buyerAccessToken,
-                                        orderID: orderID
-                                    }
-                                }).then(src_util_noop).catch((function(err) {
-                                    !function(err) {
-                                        lsatUpgradeError = err;
-                                    }(err);
-                                    throw err;
-                                }));
-                            }(facilitatorAccessToken, {
+                            return createSubscription ? accessToken : auth_upgradeFacilitatorAccessToken(facilitatorAccessToken, {
                                 buyerAccessToken: accessToken,
                                 orderID: orderID
                             });
@@ -5011,6 +5016,16 @@ window.spb = function(modules) {
                                             value: shippingMethod.amount
                                         }
                                     };
+                                } else {
+                                    var _currentShippingMetho4;
+                                    data.selected_shipping_option = {
+                                        label: "Shipping",
+                                        type: null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.identifier,
+                                        amount: {
+                                            currency_code: currency,
+                                            value: currentShippingAmount
+                                        }
+                                    };
                                 }
                                 var actions = {
                                     resolve: function() {
@@ -5028,9 +5043,9 @@ window.spb = function(modules) {
                                     currentShippingContact = shippingContact;
                                     shippingMethod && (currentShippingMethod = shippingMethod);
                                     return order_getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
-                                        var _currentShippingMetho4, _currentShippingMetho5;
+                                        var _currentShippingMetho5, _currentShippingMetho6;
                                         var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedSubtotalValue = _updatedOrder$checkou.subtotal.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
-                                        currentShippingAmount = (null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.amount) || "0.00";
+                                        currentShippingAmount = (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.amount) || currentShippingAmount || "0.00";
                                         currentTotalAmount = updatedTotalValue;
                                         var update = {
                                             newTotal: {
@@ -5044,7 +5059,7 @@ window.spb = function(modules) {
                                                 label: "Sales Tax",
                                                 amount: currentTaxAmount = "0.00" === updatedTaxValue ? currentTaxAmount : updatedTaxValue
                                             }, {
-                                                label: (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.label) || "Shipping",
+                                                label: (null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.label) || "Shipping",
                                                 amount: currentShippingAmount
                                             } ]
                                         };
@@ -5210,9 +5225,9 @@ window.spb = function(modules) {
                                                     amount: currentTaxAmount
                                                 });
                                                 if (shippingValue && shippingValue.length) {
-                                                    var _currentShippingMetho6;
+                                                    var _currentShippingMetho7;
                                                     update.newLineItems.push({
-                                                        label: (null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.label) || "Shipping",
+                                                        label: (null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.label) || "Shipping",
                                                         amount: currentShippingAmount
                                                     });
                                                 }
@@ -5244,9 +5259,9 @@ window.spb = function(modules) {
                                                         amount: currentTaxAmount
                                                     });
                                                     if (shippingValue && shippingValue.length) {
-                                                        var _currentShippingMetho7;
+                                                        var _currentShippingMetho8;
                                                         update.newLineItems.push({
-                                                            label: (null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.label) || "Shipping",
+                                                            label: (null == (_currentShippingMetho8 = currentShippingMethod) ? void 0 : _currentShippingMetho8.label) || "Shipping",
                                                             amount: currentShippingAmount
                                                         });
                                                     }
@@ -5744,6 +5759,7 @@ window.spb = function(modules) {
                             if (void 0 === _ref7$approveOnClose || !_ref7$approveOnClose) {
                                 approved = !0;
                                 logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
+                                setBuyerAccessToken(buyerAccessToken);
                                 return _onApprove({
                                     payerID: payerID,
                                     paymentID: paymentID,
@@ -6908,12 +6924,12 @@ window.spb = function(modules) {
         }
         var nativeEligibilityResults;
         function canUsePopupAppSwitch(_ref4) {
-            var fundingSource = _ref4.fundingSource;
-            return !(!isIOSSafari() && !isAndroidChrome() || fundingSource && "paypal" !== fundingSource && "venmo" !== fundingSource);
+            var fundingSource = _ref4.fundingSource, win = _ref4.win;
+            return !(!isIOSSafari() && !isAndroidChrome() || fundingSource && "paypal" !== fundingSource && "venmo" !== fundingSource || win && !toProxyWindow(win).getWindow());
         }
         function canUseNativeQRCode(_ref5) {
-            var fundingSource = _ref5.fundingSource;
-            return !(isIos() || isAndroid() || fundingSource && "venmo" !== fundingSource);
+            var fundingSource = _ref5.fundingSource, win = _ref5.win;
+            return !(isIos() || isAndroid() || fundingSource && "venmo" !== fundingSource || win);
         }
         function setNativeOptOut(fallbackOptions) {
             var type = fallbackOptions.type;
@@ -6932,9 +6948,9 @@ window.spb = function(modules) {
         function getNativeDomain(_ref) {
             var props = _ref.props;
             var env = props.env;
-            return "sandbox" !== env || !isNativeOptedIn({
+            return "local" !== env && ("sandbox" !== env || !isNativeOptedIn({
                 props: props
-            }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
+            }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain) ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
         }
         function getNativePopupDomain(_ref2) {
             var props = _ref2.props;
@@ -7654,13 +7670,24 @@ window.spb = function(modules) {
                 }
             };
         }
-        function popup_getEligibility(_ref) {
-            var fundingSource = _ref.fundingSource, props = _ref.props, serviceData = _ref.serviceData, sfvc = _ref.sfvc, validatePromise = _ref.validatePromise, stickinessID = _ref.stickinessID, appDetect = _ref.appDetect;
+        function popup_getEligibility(_ref2) {
+            var fundingSource = _ref2.fundingSource, props = _ref2.props, serviceData = _ref2.serviceData, sfvc = _ref2.sfvc, validatePromise = _ref2.validatePromise, stickinessID = _ref2.stickinessID, appDetect = _ref2.appDetect;
             var createOrder = props.createOrder, vault = props.vault, platform = props.platform, clientID = props.clientID, currency = props.currency, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
             var buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies, merchantID = serviceData.merchantID;
             var shippingCallbackEnabled = Boolean(props.onShippingChange);
             return validatePromise.then((function(valid) {
-                return !!valid && !(appDetect && !appDetect.installed) && (!!isNativeOptedIn({
+                return !!valid && !!function(_ref) {
+                    var appDetect = _ref.appDetect;
+                    if (null === appDetect) return !0;
+                    if ("paypal" === _ref.fundingSource) {
+                        var _appDetect$version;
+                        return !(!appDetect.installed || -1 === (null == (_appDetect$version = appDetect.version) ? void 0 : _appDetect$version.indexOf("8.5")));
+                    }
+                    return !0;
+                }({
+                    fundingSource: fundingSource,
+                    appDetect: appDetect
+                }) && (!!isNativeOptedIn({
                     props: props
                 }) || !sfvc && createOrder().then((function(orderID) {
                     return getNativeEligibility({
@@ -7694,8 +7721,8 @@ window.spb = function(modules) {
                 })));
             }));
         }
-        function initNativePopup(_ref2) {
-            var payment = _ref2.payment, props = _ref2.props, serviceData = _ref2.serviceData, config = _ref2.config, sessionUID = _ref2.sessionUID, fallback = _ref2.fallback, callbacks = _ref2.callbacks, clean = _ref2.clean;
+        function initNativePopup(_ref3) {
+            var payment = _ref3.payment, props = _ref3.props, serviceData = _ref3.serviceData, config = _ref3.config, sessionUID = _ref3.sessionUID, fallback = _ref3.fallback, callbacks = _ref3.callbacks, clean = _ref3.clean;
             var buttonSessionID = props.buttonSessionID, onClick = props.onClick, createOrder = props.createOrder;
             var fundingSource = payment.fundingSource, win = payment.win;
             var _onInit = callbacks.onInit, _onApprove = callbacks.onApprove, _onCancel = callbacks.onCancel, _onError = callbacks.onError, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, _onShippingChange = callbacks.onShippingChange;
@@ -7783,8 +7810,8 @@ window.spb = function(modules) {
                                 };
                             }));
                         };
-                        var changeDomainAndAwaitFallback = function(_ref3) {
-                            var pageUrl = _ref3.pageUrl, stickinessID = _ref3.stickinessID, fallbackOptions = _ref3.fallbackOptions;
+                        var changeDomainAndAwaitFallback = function(_ref4) {
+                            var pageUrl = _ref4.pageUrl, stickinessID = _ref4.stickinessID, fallbackOptions = _ref4.fallbackOptions;
                             return nativePopupWinProxy.isClosed().then((function(isClosed) {
                                 if (isClosed) return handleFallback(fallbackOptions);
                                 fallbackOptions && setNativeOptOut(fallbackOptions);
@@ -7827,8 +7854,8 @@ window.spb = function(modules) {
                                 }));
                             }));
                         }));
-                        var onDetectPossibleAppSwitch = once((function(_ref4) {
-                            var pageUrl = _ref4.pageUrl, stickinessID = _ref4.stickinessID;
+                        var onDetectPossibleAppSwitch = once((function(_ref5) {
+                            var pageUrl = _ref5.pageUrl, stickinessID = _ref5.stickinessID;
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$track6;
                                 onLsatUpgradeCalled();
@@ -7842,8 +7869,8 @@ window.spb = function(modules) {
                                             onDetectAppSwitch();
                                             return _onInit();
                                         },
-                                        onApprove: function(_ref5) {
-                                            var data = _ref5.data;
+                                        onApprove: function(_ref6) {
+                                            var data = _ref6.data;
                                             onDetectAppSwitch();
                                             return _onApprove({
                                                 data: data
@@ -7853,23 +7880,23 @@ window.spb = function(modules) {
                                             onDetectAppSwitch();
                                             return _onCancel();
                                         },
-                                        onShippingChange: function(_ref6) {
-                                            var data = _ref6.data;
+                                        onShippingChange: function(_ref7) {
+                                            var data = _ref7.data;
                                             onDetectAppSwitch();
                                             return _onShippingChange({
                                                 data: data
                                             });
                                         },
-                                        onError: function(_ref7) {
-                                            var data = _ref7.data;
+                                        onError: function(_ref8) {
+                                            var data = _ref8.data;
                                             onDetectAppSwitch();
                                             reject(new Error(data.message));
                                             return _onError({
                                                 data: data
                                             });
                                         },
-                                        onFallback: function(_ref8) {
-                                            var fallbackOptions = _ref8.data;
+                                        onFallback: function(_ref9) {
+                                            var fallbackOptions = _ref9.data;
                                             onDetectAppSwitch();
                                             return changeDomainAndAwaitFallback({
                                                 pageUrl: pageUrl,
@@ -7929,21 +7956,24 @@ window.spb = function(modules) {
                         var awaitRedirectListener = postRobotOnceProxy("awaitRedirect", {
                             proxyWin: nativePopupWinProxy,
                             domain: nativePopupDomain
-                        }, (function(_ref9) {
-                            var _ref9$data = _ref9.data, appDetect = _ref9$data.app, pageUrl = _ref9$data.pageUrl, sfvc = _ref9$data.sfvc, stickinessID = _ref9$data.stickinessID;
+                        }, (function(_ref10) {
+                            var _ref10$data = _ref10.data, appDetect = _ref10$data.app, pageUrl = _ref10$data.pageUrl, sfvc = _ref10$data.sfvc, stickinessID = _ref10$data.stickinessID;
                             logger_getLogger().info("native_post_message_await_redirect").flush();
-                            (app = appDetect) && Object.keys(app).forEach((function(key) {
-                                var _getLogger$info, _getLogger$info$track;
-                                logger_getLogger().info("native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key, (_getLogger$info = {}, 
-                                _getLogger$info[key] = app[key], _getLogger$info)).track((_getLogger$info$track = {}, 
-                                _getLogger$info$track.state_name = "smart_button", _getLogger$info$track.transition_name = "native_app_installed", 
-                                _getLogger$info$track.info_msg = "native_app_" + (app.installed ? "installed" : "not_installed") + "_" + key + ": " + app[key].toString(), 
-                                _getLogger$info$track)).flush();
-                            }));
-                            var app;
+                            !function(app) {
+                                if (app) {
+                                    var _getLogger$info$track;
+                                    var logMessage = "native_app";
+                                    Object.keys(app).forEach((function(key) {
+                                        logMessage += "_" + String(app[key]);
+                                    }));
+                                    logger_getLogger().info(logMessage).track((_getLogger$info$track = {}, _getLogger$info$track.state_name = "smart_button", 
+                                    _getLogger$info$track.transition_name = "native_app_installed", _getLogger$info$track.info_msg = logMessage, 
+                                    _getLogger$info$track)).flush();
+                                }
+                            }(appDetect);
                             logger_getLogger().addTrackingBuilder((function() {
-                                var _ref10;
-                                return (_ref10 = {}).stickiness_id = stickinessID, _ref10;
+                                var _ref11;
+                                return (_ref11 = {}).stickiness_id = stickinessID, _ref11;
                             }));
                             var onDetectPossibleAppSwitchListener = postRobotOnceProxy("detectAppSwitch", {
                                 proxyWin: nativePopupWinProxy,
@@ -7967,8 +7997,8 @@ window.spb = function(modules) {
                             var onApproveListener = postRobotOnceProxy("onApprove", {
                                 proxyWin: nativePopupWinProxy,
                                 domain: nativePopupDomain
-                            }, (function(_ref11) {
-                                var data = _ref11.data;
+                            }, (function(_ref12) {
+                                var data = _ref12.data;
                                 onDetectAppSwitch();
                                 _onApprove({
                                     data: data
@@ -7986,9 +8016,9 @@ window.spb = function(modules) {
                             var onFallbackListener = postRobotOnceProxy("onFallback", {
                                 proxyWin: nativePopupWinProxy,
                                 domain: nativePopupDomain
-                            }, (function(_ref12) {
+                            }, (function(_ref13) {
                                 var _getLogger$info$track10;
-                                var fallbackOptions = _ref12.data;
+                                var fallbackOptions = _ref13.data;
                                 onDetectAppSwitch();
                                 logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track10 = {}, 
                                 _getLogger$info$track10.transition_name = "native_onfallback", _getLogger$info$track10)).flush();
@@ -8012,8 +8042,8 @@ window.spb = function(modules) {
                             var onErrorListener = postRobotOnceProxy("onError", {
                                 proxyWin: nativePopupWinProxy,
                                 domain: nativePopupDomain
-                            }, (function(_ref13) {
-                                var data = _ref13.data;
+                            }, (function(_ref14) {
+                                var data = _ref14.data;
                                 _onError({
                                     data: data
                                 });
@@ -8040,9 +8070,9 @@ window.spb = function(modules) {
                                     stickinessID: stickinessID,
                                     appDetect: appDetect
                                 })
-                            }).then((function(_ref14) {
-                                var eligible = _ref14.eligible;
-                                if (!_ref14.valid) {
+                            }).then((function(_ref15) {
+                                var eligible = _ref15.eligible;
+                                if (!_ref15.valid) {
                                     closeListener.cancel();
                                     nativePopupWinProxy.close();
                                     return onDestroy().then((function() {
@@ -8292,7 +8322,7 @@ window.spb = function(modules) {
                                     });
                                     return callGraphQL({
                                         name: "approvePaymentWithNonce",
-                                        query: "\n            mutation ApprovePaymentWithNonce(\n                $orderID : String!\n                $clientID : String!\n                $paymentMethodToken: String!\n                $branded: Boolean!\n                $buttonSessionID: String\n            ) {\n                approvePaymentWithNonce(\n                    token: $orderID\n                    clientID: $clientID\n                    paymentMethodNonce: $paymentMethodToken\n                    branded: $branded\n                    buttonSessionID: $buttonSessionID\n                ) {\n                    buyer {\n                        userId\n                    }\n                }\n            }\n        ",
+                                        query: "\n            mutation ApprovePaymentWithNonce(\n                $orderID : String!\n                $clientID : String!\n                $paymentMethodToken: String!\n                $branded: Boolean!\n                $buttonSessionID: String\n            ) {\n                approvePaymentWithNonce(\n                    token: $orderID\n                    clientID: $clientID\n                    paymentMethodNonce: $paymentMethodToken\n                    branded: $branded\n                    buttonSessionID: $buttonSessionID\n                ) {\n                    buyer {\n                        userId\n                        auth {\n                            accessToken\n                        }\n                    }\n                }\n            }\n        ",
                                         variables: {
                                             orderID: orderID,
                                             clientID: clientID,
@@ -8303,8 +8333,10 @@ window.spb = function(modules) {
                                         headers: (_headers23 = {}, _headers23["paypal-client-context"] = orderID, _headers23["paypal-client-metadata-id"] = clientMetadataID, 
                                         _headers23)
                                     }).then((function(_ref24) {
+                                        var _approvePaymentWithNo, _approvePaymentWithNo2, _approvePaymentWithNo3;
                                         var approvePaymentWithNonce = _ref24.approvePaymentWithNonce;
-                                        logger_getLogger().info("pay_with_paymentMethodToken", JSON.stringify(approvePaymentWithNonce));
+                                        logger_getLogger().info("pay_with_paymentMethodNonce", null == approvePaymentWithNonce || null == (_approvePaymentWithNo = approvePaymentWithNonce.buyer) ? void 0 : _approvePaymentWithNo.userId);
+                                        setBuyerAccessToken(null == approvePaymentWithNonce || null == (_approvePaymentWithNo2 = approvePaymentWithNonce.buyer) || null == (_approvePaymentWithNo3 = _approvePaymentWithNo2.auth) ? void 0 : _approvePaymentWithNo3.accessToken);
                                         return {
                                             payerID: approvePaymentWithNonce.buyer.userId
                                         };
@@ -8449,9 +8481,7 @@ window.spb = function(modules) {
                     fundingSource: fundingSource
                 }) && !canUseNativeQRCode({
                     fundingSource: fundingSource
-                }) || !isNativeOptedIn({
-                    props: props
-                }) && (function() {
+                }) || function() {
                     var now = Date.now();
                     var optOutLifetime = 0;
                     getStorageState((function(state) {
@@ -8459,32 +8489,26 @@ window.spb = function(modules) {
                         nativeOptOutLifetime && "number" == typeof nativeOptOutLifetime && (optOutLifetime = nativeOptOutLifetime);
                     }));
                     return optOutLifetime > now;
-                }() || !supportsPopups() || onShippingChange || createBillingAgreement || createSubscription || "local" === env || "stage" === env || merchantID.length > 1 || -1 !== LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID)));
+                }() || !isNativeOptedIn({
+                    props: props
+                }) && (!supportsPopups() || onShippingChange || createBillingAgreement || createSubscription || "local" === env || "stage" === env || merchantID.length > 1 || -1 !== LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID)));
             },
             isPaymentEligible: function(_ref7) {
+                var payment = _ref7.payment;
                 var platform = _ref7.props.platform;
-                var fundingSource = _ref7.payment.fundingSource;
-                if (!NATIVE_CHECKOUT_URI[fundingSource] || !NATIVE_CHECKOUT_POPUP_URI[fundingSource] || !NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) return !1;
-                if (!canUsePopupAppSwitch({
-                    fundingSource: fundingSource
+                var fundingSource = payment.fundingSource, win = payment.win;
+                return !!(NATIVE_CHECKOUT_URI[fundingSource] && NATIVE_CHECKOUT_POPUP_URI[fundingSource] && NATIVE_CHECKOUT_FALLBACK_URI[fundingSource]) && !(!canUsePopupAppSwitch({
+                    fundingSource: fundingSource,
+                    win: win
                 }) && !canUseNativeQRCode({
-                    fundingSource: fundingSource
-                })) return !1;
-                if (platform && "desktop" === platform) {
-                    var _nativeEligibilityRes, _nativeEligibilityRes2;
-                    var eligibleReasons = [ "isUserAgentEligible", "isBrowserMobileAndroid" ];
-                    var ineligibleReasons = nativeEligibilityResults && (null == (_nativeEligibilityRes = nativeEligibilityResults[fundingSource]) || null == (_nativeEligibilityRes2 = _nativeEligibilityRes.ineligibilityReason) ? void 0 : _nativeEligibilityRes2.split(","));
-                    var eligible = null == ineligibleReasons ? void 0 : ineligibleReasons.every((function(reason) {
-                        return !reason || -1 !== (null == eligibleReasons ? void 0 : eligibleReasons.indexOf(reason));
-                    }));
-                    if (ineligibleReasons && !eligible) return !1;
-                }
-                return !0;
+                    fundingSource: fundingSource,
+                    win: win
+                })) && (platform && "desktop" === platform ? !(!nativeEligibilityResults || !nativeEligibilityResults[fundingSource]) && nativeEligibilityResults[fundingSource].eligibility : !(win && !toProxyWindow(win).getWindow()));
             },
             init: function(_ref2) {
                 var props = _ref2.props, components = _ref2.components, config = _ref2.config, payment = _ref2.payment, serviceData = _ref2.serviceData, restart = _ref2.restart;
                 var onApprove = props.onApprove, onCancel = props.onCancel, onError = props.onError, buttonSessionID = props.buttonSessionID, onShippingChange = props.onShippingChange;
-                var fundingSource = payment.fundingSource;
+                var fundingSource = payment.fundingSource, win = payment.win;
                 if (!config.firebase) throw new Error("Can not run native flow without firebase config");
                 native_clean && native_clean.all();
                 native_clean = cleanup();
@@ -8501,8 +8525,7 @@ window.spb = function(modules) {
                     })).then((function(winClosedOrNotPassed) {
                         var checkoutPayment = _extends({}, payment, {
                             win: winClosedOrNotPassed ? null : fallbackWin,
-                            isClick: !1,
-                            isNativeFallback: !0
+                            isClick: !1
                         });
                         var instance = checkout.init({
                             props: props,
@@ -8518,10 +8541,12 @@ window.spb = function(modules) {
                 var sessionUID = uniqueID();
                 var initFlow;
                 if (canUsePopupAppSwitch({
-                    fundingSource: fundingSource
+                    fundingSource: fundingSource,
+                    win: win
                 })) initFlow = initNativePopup; else {
                     if (!canUseNativeQRCode({
-                        fundingSource: fundingSource
+                        fundingSource: fundingSource,
+                        win: win
                     })) throw new Error("No valid native payment flow found");
                     initFlow = initNativeQRCode;
                 }
@@ -8534,7 +8559,7 @@ window.spb = function(modules) {
                     clean: native_clean,
                     sessionUID: sessionUID,
                     fallback: function(opts) {
-                        var _ref6 = opts || {}, win = _ref6.win, _ref6$fallbackOptions = _ref6.fallbackOptions, fallbackOptions = void 0 === _ref6$fallbackOptions ? {} : _ref6$fallbackOptions;
+                        var _ref6 = opts || {}, fallbackWin = _ref6.win, _ref6$fallbackOptions = _ref6.fallbackOptions, fallbackOptions = void 0 === _ref6$fallbackOptions ? {} : _ref6$fallbackOptions;
                         return promise_ZalgoPromise.try((function() {
                             var _getLogger$info$track6;
                             var result = setNativeOptOut(fallbackOptions);
@@ -8542,7 +8567,7 @@ window.spb = function(modules) {
                             logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track6 = {}, 
                             _getLogger$info$track6.transition_name = "native_onfallback", _getLogger$info$track6.transition_type = result ? "native_opt_out" : "native_fallback", 
                             _getLogger$info$track6.transition_reason = fallback_reason || "", _getLogger$info$track6)).flush();
-                            return fallbackToWebCheckout(win);
+                            return fallbackToWebCheckout(fallbackWin);
                         }));
                     },
                     callbacks: {
@@ -9552,7 +9577,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.71", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.72", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
@@ -9659,8 +9684,8 @@ window.spb = function(modules) {
                 components: components
             });
             var setupExportsTask = function(_ref) {
-                var props = _ref.props, isEnabled = _ref.isEnabled;
-                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, onClick = props.onClick, fundingSource = props.fundingSource, commit = props.commit, intent = props.intent, currency = props.currency;
+                var props = _ref.props, isEnabled = _ref.isEnabled, facilitatorAccessToken = _ref.facilitatorAccessToken;
+                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, onClick = props.onClick, commit = props.commit, intent = props.intent, fundingSource = props.fundingSource, currency = props.currency;
                 var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                     return el.getAttribute("data-funding-source");
                 })).filter(Boolean);
@@ -9689,7 +9714,8 @@ window.spb = function(modules) {
                             },
                             onApprove: function(merchantData) {
                                 return _onApprove({
-                                    payerID: merchantData.payerID
+                                    payerID: merchantData.payerID,
+                                    forceRestAPI: !0
                                 }, {
                                     restart: function() {
                                         throw new Error("Action unimplemented");
@@ -9697,13 +9723,31 @@ window.spb = function(modules) {
                                 });
                             },
                             onCancel: onCancel,
-                            onError: onError
+                            onError: onError,
+                            upgradeFacilitatorAccessToken: function(_ref3) {
+                                var merchantAccessToken = _ref3.facilitatorAccessToken, orderID = _ref3.orderID;
+                                var buyerAccessToken = session_buyerAccessToken;
+                                if (!buyerAccessToken) {
+                                    logger_getLogger().error("lsat_upgrade_error", {
+                                        err: "buyer access token not found"
+                                    });
+                                    throw new Error("Buyer access token not found");
+                                }
+                                return auth_upgradeFacilitatorAccessToken(merchantAccessToken, {
+                                    buyerAccessToken: buyerAccessToken,
+                                    orderID: orderID
+                                });
+                            },
+                            getFacilitatorAccessToken: function() {
+                                return facilitatorAccessToken;
+                            }
                         };
                     }
                 };
             }({
                 props: props,
-                isEnabled: isEnabled
+                isEnabled: isEnabled,
+                facilitatorAccessToken: facilitatorAccessToken
             });
             var validatePropsTask = setupButtonLogsTask.then((function() {
                 return function(_ref2) {
