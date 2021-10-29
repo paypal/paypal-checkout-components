@@ -121,7 +121,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     );
     
     const { buttonAnimationScript = '' } = getButtonAnimation(personalization);
-
+        console.log("buttonAnimationScript ",buttonAnimationScript)
     return (
         <div class={ [
             CLASS.CONTAINER,

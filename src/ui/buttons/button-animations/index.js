@@ -3,6 +3,7 @@
 import { type Personalization } from '../props';
 
 import { setupDivideLogoAnimation } from './divide-logo-animation';
+import { setupFadeOutLogoAndShowLabelAnimation } from './fadeout-logo-show-label-text';
 import { type ButtonAnimationOutputParams } from './types';
 
 
@@ -21,6 +22,9 @@ export function getButtonAnimation(personalization : ?Personalization) : ButtonA
 
     if (animationId === 'run-divide-logo-animation') {
         return setupDivideLogoAnimation(animationLabelText);
+    }
+    if (animationId === 'run-fadeout-logo-show-label-text') {
+        return setupFadeOutLogoAndShowLabelAnimation(animationLabelText);
     }
 
     return {};
