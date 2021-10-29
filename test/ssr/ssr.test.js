@@ -177,3 +177,78 @@ test(`Button renderer should export DEFAULT_PROPS`, async () => {
         throw new Error(`Expected DEFAULT_PROPS.PLATFORM to be exported`);
     }
 });
+
+test(`Animation should be applied when there is valid personalization`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonAnimation: {
+            id:       'run-divide-logo-animation',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const animationContainer = buttonHTML.match('data-animation-experiment');
+    const animationScript = buttonHTML.match('divide-logo-animation-left-side');
+
+    if (!animationContainer || !animationScript) {
+        throw new Error('Expected animation to applied in script and container');
+    }
+
+    
+});
+
+test(`Animation should not be applied when there is invalid animation id`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonAnimation: {
+            id:       'control',
+            text:     '',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const animationSignal = buttonHTML.match('data-animation-experiment');
+
+    if (animationSignal) {
+        throw new Error('Expected animation to applied in script and container');
+    }
+
+    
+});

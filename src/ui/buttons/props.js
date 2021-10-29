@@ -163,6 +163,14 @@ export type Personalization = {|
             impression : string,
             click : string
         |}
+    |},
+    buttonAnimation? : {|
+        id : string,
+        text : string,
+        tracking : {|
+            impression : string,
+            click : string
+        |}
     |}
 |};
 
@@ -298,7 +306,8 @@ export type ButtonProps = {|
     supportedNativeBrowser : boolean,
     applePaySupport : boolean,
     applePay : ApplePaySessionConfigRequest,
-    meta : {||}
+    meta : {||},
+    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type

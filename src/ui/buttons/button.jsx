@@ -10,7 +10,9 @@ import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
+import { AnimatedExperimentLabel } from '../../funding/paypal/template';
 
+import { getButtonAnimation } from './button-animations';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
@@ -130,6 +132,39 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         />
     );
 
+    // Only apply animation to the paypal button
+    const buttonAnimation = fundingSource === FUNDING.PAYPAL
+        ? getButtonAnimation(personalization)
+        : {};
+
+    const {
+        buttonAnimationContainerClass = '',
+        buttonAnimationComponent = null
+    } = buttonAnimation;
+
+    if (buttonAnimationComponent) {
+        labelNode = (
+            <AnimatedExperimentLabel
+                i={ i }
+                logo={ logoNode }
+                label={ label }
+                nonce={ nonce }
+                locale={ locale }
+                logoColor={ logoColor }
+                period={ period }
+                layout={ layout }
+                multiple={ multiple }
+                fundingEligibility={ fundingEligibility }
+                onClick={ clickHandler }
+                onKeyPress={ keypressHandler }
+                personalization={ personalization }
+                tagline={ tagline }
+                content={ content }
+                buttonAnimationComponent={ buttonAnimationComponent }
+            />
+        );
+    }
+
     let isWallet = false;
 
     if (
@@ -170,7 +205,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ CLASS.TEXT_COLOR }-${ textColor }`,
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
                 `${ isWallet ? CLASS.WALLET : '' }`,
-                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`
+                `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`,
+                `${ buttonAnimationContainerClass }`
             ].join(' ') }
         >
             <div

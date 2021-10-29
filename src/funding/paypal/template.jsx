@@ -5,7 +5,14 @@ import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
-import { type LogoOptions, type LabelOptions, type WalletLabelOptions, type TagOptions, BasicLabel } from '../common';
+import {
+    type LogoOptions,
+    type LabelOptions,
+    type AnimatedExperimentLabelOptions,
+    type WalletLabelOptions,
+    type TagOptions,
+    BasicLabel
+} from '../common';
 import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
 import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
@@ -152,6 +159,22 @@ export function Label(opts : LabelOptions) : ChildType {
         <Fragment>
             <BasicLabel { ...opts } />
             <ButtonPersonalization { ...opts } />
+        </Fragment>
+    );
+}
+
+export function AnimatedExperimentLabel(opts : AnimatedExperimentLabelOptions) : ChildType {
+    const { buttonAnimationComponent } = opts;
+    delete opts.buttonAnimationComponent;
+    // $FlowFixMe
+    const basicLabel = (<BasicLabel { ...opts } />);
+    // $FlowFixMe
+    const buttonPersonalization = (<ButtonPersonalization { ...opts } />);
+    return (
+        <Fragment>
+            { basicLabel }
+            { buttonAnimationComponent }
+            { buttonPersonalization }
         </Fragment>
     );
 }

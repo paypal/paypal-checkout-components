@@ -10,6 +10,8 @@ import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constant
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 import { ValidationError } from '../../lib';
 
+import { getButtonAnimation } from './button-animations';
+import { ButtonAnimationExperimentScriptWrapper } from './button-animations/script';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
@@ -117,6 +119,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
+    
+    const { buttonAnimationScript = '' } = getButtonAnimation(personalization);
 
     return (
         <div class={ [
@@ -188,9 +192,16 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                     /> : null
             }
 
-            <Script
-                nonce={ nonce }
-            />
+            {
+                buttonAnimationScript
+                    ? <ButtonAnimationExperimentScriptWrapper
+                        nonce={ nonce }
+                        buttonAnimation={ buttonAnimationScript }
+                    />
+                    : <Script
+                        nonce={ nonce }
+                    />
+            }
         </div>
     );
 }

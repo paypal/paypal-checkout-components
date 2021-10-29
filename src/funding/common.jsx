@@ -49,6 +49,26 @@ export type LabelOptions = {|
     content : ?ContentType
 |};
 
+export type AnimatedExperimentLabelOptions = {|
+    i : number,
+    logo : ChildType,
+    label : ?$Values<typeof BUTTON_LABEL>,
+    locale : LocaleType,
+    logoColor : $Values<typeof LOGO_COLOR>,
+    multiple : boolean,
+    period? : number,
+    fundingEligibility : FundingEligibilityType,
+    optional? : boolean,
+    onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
+    onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
+    layout : $Values<typeof BUTTON_LAYOUT>,
+    personalization : ?Personalization,
+    nonce : ?string,
+    tagline : ?boolean,
+    content : ?ContentType,
+    buttonAnimationComponent : ?ChildType
+|};
+
 export type WalletLabelOptions = {|
     locale : LocaleType,
     logoColor : $Values<typeof LOGO_COLOR>,
