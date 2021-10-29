@@ -129,6 +129,7 @@ const sendRedirectMessage = ({ mockWindow, expect, redirect = true, url = EXPECT
     return mockWindow.send({
         name:   'awaitRedirect',
         data:   {
+            app:      null,
             redirect: true,
             pageUrl:  `${ window.location.href }#${ hash }`
         }

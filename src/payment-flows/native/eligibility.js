@@ -147,12 +147,12 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
         return false;
     }
 
-    if (isNativeOptedIn({ props })) {
-        return true;
-    }
-
     if (isNativeOptOut()) {
         return false;
+    }
+    
+    if (isNativeOptedIn({ props })) {
+        return true;
     }
 
     if (!supportsPopups()) {
