@@ -1,5 +1,4 @@
 /* @flow */
-
 import './happy';
 import './props';
 import './validation';

@@ -216,6 +216,40 @@ test(`Animation should be applied when there is valid personalization`, async ()
     
 });
 
+test(`Animation for adding label text next to logo should be applied when there is valid personalization`, async () => {
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonAnimation: {
+            id:       'run-add-label-text-next-to-logo-animation',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+    const animationContainer = buttonHTML.match('data-animation-experiment');
+    const animationScript = buttonHTML.match('label-next-to-logo-animation-element');
+
+    if (!animationContainer || !animationScript) {
+        throw new Error('Expected animation to be applied in script and container');
+    }
+});
+
 test(`Animation should not be applied when there is invalid animation id`, async () => {
 
     const { Buttons } = await getButtonScript();
