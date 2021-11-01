@@ -7,12 +7,11 @@ import { setupFadeOutLogoAndShowLabelAnimation } from './fadeout-logo-show-label
 import type { ButtonAnimationIds, ButtonAnimationOutputParams } from './types';
 
 
-function setupAnimation(animationId, animationLabelText) : Function | null {
+function setupAnimation(animationId : string, animationLabelText : string) : ButtonAnimationOutputParams | null {
     const animationIds : ButtonAnimationIds = {
         'run-divide-logo-animation':        setupDivideLogoAnimation,
         'alternate-slide-logo-animation':   setupFadeOutLogoAndShowLabelAnimation
     };
-
     return (animationIds[animationId] && animationIds[animationId](animationLabelText)) || null;
 }
 

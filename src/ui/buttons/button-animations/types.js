@@ -8,7 +8,8 @@ export type ButtonAnimationOutputParams ={|
 |};
 
 export type ButtonAnimationIds = {|
-    animationId? : Function
+    'run-divide-logo-animation' : Function,
+    'alternate-slide-logo-animation' : Function
 |};
 
 export type ButtonSizeProperties = {|
