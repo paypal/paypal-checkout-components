@@ -91,7 +91,6 @@ export function setupLabelTextNextToLogoAnimation (animationLabelText : string) 
     };
     const buttonAnimationScript = `
         const animationContainerElement = ${ getValidLabelContainer.toString() }( document, ${ JSON.stringify(animationConfig) })
-        console.log("animationContainerElement ",animationContainerElement)
         if (animationContainerElement) {
             const animation = ${ createAnimation.toString() }
             animation(animationContainerElement, ${ JSON.stringify(animationConfig.cssStyles) })
