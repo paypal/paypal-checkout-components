@@ -7,6 +7,10 @@ export type ButtonAnimationOutputParams ={|
     buttonAnimationComponent : ChildType | null
 |};
 
+export type ButtonAnimationIds = {|
+    animationId? : Function
+|};
+
 export type ButtonSizeProperties = {|
     min? : number,
     max? : number
