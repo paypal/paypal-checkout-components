@@ -23,7 +23,7 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
    
     return (
         <Fragment>
-            <div class={ config.labelClass } data-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
+            <div class={ config.labelClass } data-animation-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
             <style innerHTML={ `
                 .${ CLASS.DOM_READY } .${ ANIMATION.CONTAINER } img.${ LOGO_CLASS.LOGO }{
                     position: relative;
