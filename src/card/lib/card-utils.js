@@ -6,6 +6,7 @@ import luhn10 from 'card-validator/src/luhn-10';
 
 import type { CardType, CardNavigation, InputState, FieldValidity, FieldStyle, InputEvent } from '../types';
 import { CARD_ERRORS, FIELD_STYLE, VALIDATOR_TO_TYPE_MAP, DEFAULT_CARD_TYPE } from '../constants';
+import { getActiveElement } from '../../lib/dom';
 
 // Add additional supported card types
 creditCardType.addCard({
@@ -156,7 +157,7 @@ export function maskDate(date : string, prevMask? : string = '') : string {
     }
 
     date = removeDateMask(date);
-    
+
     if (date.length < 2) {
         const first = date[0];
         if (parseInt(first, 10) > 1) {
@@ -290,7 +291,7 @@ export function setErrors({ isNumberValid, isCvvValid, isExpiryValid } : {| isNu
     if (!isCvvValid) {
         errors.push(CARD_ERRORS.INVALID_CVV);
     }
-    
+
     return errors;
 }
 
@@ -326,7 +327,7 @@ export function goToPreviousField(ref : {| current : {| base : HTMLInputElement 
 // Navigate between fields using the arrow keys and/or the backspace
 export function navigateOnKeyDown(event : InputEvent, navigation : CardNavigation) : void {
     const { target: { value, selectionStart, selectionEnd }, key } = event;
-    
+
     if (selectionStart === 0 && (value.length === 0 || value.length !== selectionEnd)  && [ 'Backspace', 'ArrowLeft' ].includes(key)) {
         navigation.previous();
     }
@@ -348,4 +349,56 @@ export function convertDateFormat(date : string) : string {
     }
 
     return formattedDate;
+}
+
+
+// Safari (both iOS and Desktop) has an unconvential behavior,
+// where it won't let an iframe that includes an input get
+// focus programatically from outisde of the input.
+// Big props to the devs at Stripe that figured out
+// you run this selection range hack to force the focus back
+// onto the input.
+function applyFocusWorkaroundForSafari (input : HTMLInputElement) {
+    const inputIsEmptyInitially = input.value === '';
+
+    // Safari can't set selection if the input is empty
+    if (inputIsEmptyInitially) {
+        input.value = ' ';
+    }
+
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    input.setSelectionRange(0, 0);
+    input.setSelectionRange(start, end);
+
+    if (inputIsEmptyInitially) {
+        input.value = '';
+    }
+}
+
+export function autoFocusOnFirstInput(input? : HTMLInputElement) {
+    if (!input) {
+        return;
+    }
+
+    window.addEventListener('focus', () => {
+        // the set timeout is required here, because in some browsers (Firefox, for instance)
+        // when tabbing backward into the iframe, it will have the html element focussed
+        // initially, but then passes focus to the input
+        setTimeout(() => {
+            const activeEl = getActiveElement();
+
+            if (activeEl !== document.body && activeEl !== document.documentElement) {
+                return;
+            }
+
+            applyFocusWorkaroundForSafari(input);
+
+            // for Safari, setting the selection range is enough to give
+            // it focus, but Firefox requires an explicit focus call.
+            // Also, just calling `focus` on Safari does not work at all
+            input.focus();
+        }, 1);
+    });
 }

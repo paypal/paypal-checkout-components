@@ -41,10 +41,11 @@ type CardFieldProps = {|
     cspNonce : string,
     onChange : ({| value : Card, valid : boolean, errors : [$Values<typeof CARD_ERRORS>] | [] |}) => void,
     styleObject : CardStyle,
-    placeholder : {| number? : string, expiry? : string, cvv? : string  |}
+    placeholder : {| number? : string, expiry? : string, cvv? : string  |},
+    autoFocusRef : (mixed) => void
 |};
 
-export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = {} } : CardFieldProps) : mixed {
+export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef } : CardFieldProps) : mixed {
     const [ number, setNumber ] = useState('');
     const [ cvv, setCvv ] = useState('');
     const [ expiry, setExpiry ] = useState('');
@@ -65,6 +66,10 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
     const cardExpiryNavivation : CardNavigation = { next: goToNextField(cvvRef), previous: goToPreviousField(numberRef) };
     const cardCvvNavivation : CardNavigation = { next:     () =>  noop, previous: goToPreviousField(expiryRef) };
 
+    useEffect(() => {
+        autoFocusRef(numberRef);
+    }, []);
+   
     useEffect(() => {
 
         const valid = Boolean(numberValidity.isValid && cvvValidity.isValid && expiryValidity.isValid);

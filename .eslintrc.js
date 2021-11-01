@@ -20,7 +20,10 @@ module.exports = {
         'files': ['**/*.test.js'],
         'env': {
           'jest': true
+        },
+        'globals': {
+            'JestMockFn': false
         }
     }],
-    'ignorePatterns': ['node-qrcode.js']    
+    'ignorePatterns': ['node-qrcode.js']
 };

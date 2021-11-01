@@ -5,7 +5,7 @@ import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
 import { getBody } from '../../lib';
-import { setupExports } from '../lib';
+import { setupExports, autoFocusOnFirstInput } from '../lib';
 import { CARD_FIELD_TYPE_TO_FRAME_NAME, CARD_FIELD_TYPE } from '../constants';
 import { submitCardFields } from '../interface';
 import { getCardProps, type CardProps } from '../props';
@@ -24,6 +24,8 @@ function Page({ cspNonce, props } : PageProps) : mixed {
     const [ fieldValue, setFieldValue ] = useState();
     const [ fieldValid, setFieldValid ] = useState(false);
     const [ fieldErrors, setFieldErrors ] = useState([]);
+    const [ mainRef, setRef ] = useState();
+
 
     const getFieldValue = () => {
         return fieldValue;
@@ -39,6 +41,10 @@ function Page({ cspNonce, props } : PageProps) : mixed {
             errors: fieldErrors
         });
     }, [ fieldValid, fieldErrors ]);
+
+    useEffect(() => {
+        autoFocusOnFirstInput(mainRef);
+    }, [ mainRef ]);
 
     useEffect(() => {
         setupExports({
@@ -94,6 +100,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                         onChange={ onFieldChange }
                         styleObject={ style }
                         placeholder={ placeholder }
+                        autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }
 

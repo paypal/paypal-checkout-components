@@ -9,3 +9,12 @@ export function getNonce() : string {
     }
     return nonce;
 }
+
+// this is admittedly a bit silly, but it makes testing
+// things where the activeElement matters much easier,
+// since we can just mock this function instead of
+// overriding properties on the document and polluting
+// other tests
+export function getActiveElement () : null | HTMLElement {
+    return document.activeElement;
+}
