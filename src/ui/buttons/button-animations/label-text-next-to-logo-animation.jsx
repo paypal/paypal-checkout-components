@@ -71,7 +71,6 @@ const createAnimation = function (animationContainerElement, cssClasses) : void 
 
     const style = document.createElement('style');
     animationContainerElement.appendChild(style);
-    style.type = 'text/css';
     style.appendChild(document.createTextNode(animations));
 };
 

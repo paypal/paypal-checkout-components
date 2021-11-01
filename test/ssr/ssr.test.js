@@ -246,7 +246,7 @@ test(`Animation for adding label text next to logo should be applied when there 
     const animationScript = buttonHTML.match('label-next-to-logo-animation-element');
 
     if (!animationContainer || !animationScript) {
-        throw new Error('Expected animation to applied in script and container');
+        throw new Error('Expected animation to be applied in script and container');
     }
 });
 
