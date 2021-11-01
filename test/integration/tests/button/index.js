@@ -1,5 +1,4 @@
 /* @flow */
-
 import './happy';
 import './props';
 import './validation';
@@ -17,3 +16,4 @@ import './clone';
 import './renderOrder';
 import './nonce';
 import './eligibility';
+import './animation';

@@ -9,7 +9,8 @@ export type ButtonAnimationOutputParams ={|
 
 export type ButtonAnimationIds = {|
     'run-divide-logo-animation' : Function,
-    'alternate-slide-logo-animation' : Function
+    'alternate-slide-logo-animation' : Function,
+    'run-add-label-text-next-to-logo-animation' : Function
 |};
 
 export type ButtonSizeProperties = {|

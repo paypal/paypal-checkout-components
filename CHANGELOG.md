@@ -1,3 +1,9 @@
+## <small>5.0.187 (2021-11-01)</small>
+
+* Add experiment for the "label-text-next-to-logo-animation" (#1767) ([5a51f09](https://github.com/paypal/paypal-checkout-components/commit/5a51f09)), closes [#1767](https://github.com/paypal/paypal-checkout-components/issues/1767)
+
+
+
 ## <small>5.0.186 (2021-10-20)</small>
 
 * Revert "Add animation experiment for logo and label text (#1738)" (#1774) ([57327cc](https://github.com/paypal/paypal-checkout-components/commit/57327cc)), closes [#1738](https://github.com/paypal/paypal-checkout-components/issues/1738) [#1774](https://github.com/paypal/paypal-checkout-components/issues/1774)
