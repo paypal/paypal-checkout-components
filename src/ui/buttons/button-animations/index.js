@@ -4,10 +4,11 @@ import { type Personalization } from '../props';
 
 import { setupDivideLogoAnimation } from './divide-logo-animation';
 import { setupFadeOutLogoAndShowLabelAnimation } from './fadeout-logo-show-label-text';
-import { type ButtonAnimationOutputParams } from './types';
+import type { ButtonAnimationIds, ButtonAnimationOutputParams } from './types';
+
 
 function setupAnimation(animationId, animationLabelText) : Function | null {
-    const animationIds = {
+    const animationIds : ButtonAnimationIds = {
         'run-divide-logo-animation':        setupDivideLogoAnimation,
         'alternate-slide-logo-animation':   setupFadeOutLogoAndShowLabelAnimation
     };
