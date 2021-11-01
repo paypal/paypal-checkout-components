@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import type { ButtonAnimationOutputParams, LabelOptions, ButtonSizes, DivideLogoAnimationProps } from './types';
+import type { ButtonAnimationOutputParams, LabelOptions, DivideLogoAnimationProps } from './types';
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('fadeout-logo-show-label-animation-container' : 'fadeout-logo-show-label-animation-container'),
@@ -55,7 +55,7 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
     const animationContainerWidth = animationContainer.offsetWidth;
     if (animationContainerWidth < tiny.min || animationContainerWidth > medium.max) {
         // remove label element from dom
-        animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove()
+        animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
         return null;
     }
 
