@@ -49,6 +49,6 @@ export type DivideLogoAnimationProps = {|
 export type AnimationProps = {|
     labelFontSize? : number,
     paypalLabelContainerElement : ElementNode,
-    paypalLogoStartingLeftPosition : string,
+    paypalLogoStartingLeftPosition : string
 |};
 
