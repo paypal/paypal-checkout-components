@@ -6,7 +6,7 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import type { ButtonAnimationOutputParams, LabelOptions, DivideLogoAnimationProps } from './types';
+import type { ButtonAnimationOutputParams, LabelOptions, AnimationProps } from './types';
 
 export const ANIMATION = {
     LABEL_CONTAINER: ('fadeout-logo-show-label-animation-container' : 'fadeout-logo-show-label-animation-container'),
@@ -34,7 +34,6 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
                     opacity: 0; 
                     color: #142C8E;
                     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                    font-size: 10px;
                 }
             ` } />;
         </Fragment>
@@ -42,9 +41,10 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
 }
 
 // Returns label container if the button sizes match
-const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
+const getAnimationProps = function(document, configuration) : AnimationProps | null {
+    let labelFontSize = 10;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
-    const { tiny, medium } = configuration;
+    const { tiny, small, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!animationContainer) {
@@ -59,6 +59,10 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
         return null;
     }
 
+    if (animationContainerWidth >= small.max) {
+        labelFontSize = 12;
+    }
+
     // get the label container that animation will be applied to
     const paypalLabelContainerElement = animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
     // get starting position for element so it doesn't jump when animation begins
@@ -68,6 +72,7 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
         : '44.5';
 
     return {
+        labelFontSize,
         paypalLabelContainerElement,
         paypalLogoStartingLeftPosition
     };
@@ -75,7 +80,7 @@ const getAnimationProps = function(document, configuration) : DivideLogoAnimatio
 
 const createAnimation = function (animationProps, cssClasses) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
-    const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
+    const { paypalLabelContainerElement, paypalLogoStartingLeftPosition, labelFontSize } = animationProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
             animation: 2s move-logo-to-left-side 2s infinite alternate;
@@ -87,6 +92,7 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
             animation: 2s divide-logo-animation-right-side 2s infinite alternate;
             text-align: center;
             width: 100%;
+            font-size: ${ labelFontSize }px;
         }
 
         @keyframes move-logo-to-left-side {
@@ -119,7 +125,8 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
 export function setupFadeOutLogoAndShowLabelAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
     const animationProps = { animationLabelText };
     const animationConfig = {
-        tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth },
+        tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth   },
+        small:      { max: BUTTON_SIZE_STYLE.small.maxWidth   },
         medium:     { max: BUTTON_SIZE_STYLE.medium.maxWidth },
         cssClasses: {
             DOM_READY:                  CLASS.DOM_READY,
