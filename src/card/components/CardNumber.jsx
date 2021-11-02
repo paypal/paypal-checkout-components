@@ -132,11 +132,7 @@ export function CardNumber(
 
         const maskedValue = maskCard(inputValue);
         const newState = { ...inputState, maskedInputValue: maskedValue };
-        
-        if (isValid) {
-            // Timeout needed to wait for the 4 digit mask replacement when the input is valid
-            setTimeout(() => moveCursor(event.target, maskedValue.length));
-        } else {
+        if (!isValid) {
             newState.isPossibleValid = true;
         }
 

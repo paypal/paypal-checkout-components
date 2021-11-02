@@ -133,7 +133,10 @@ export function maskCard(number : string, cardType? : CardType) : string {
 // Return the last 4 digits of a valid card number
 export function maskValidCard(number : string) : string {
     const trimmedValue = removeSpaces(number);
-    return trimmedValue.slice(-4);
+    const lastFour = trimmedValue.slice(-4);
+    const maskedNumber = number.replace(/\d/g, '•').slice(0, -4);
+
+    return maskedNumber + lastFour;
 }
 
 export function removeDateMask(date : string) : string {
