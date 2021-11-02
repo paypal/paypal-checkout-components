@@ -8,16 +8,28 @@ import { BUTTON_SIZE_STYLE } from '../config';
 
 import type { ButtonAnimationOutputParams, LabelOptions, DivideLogoAnimationProps } from './types';
 
-export const ANIMATION = {
+export const ANIMATION_CLASSES = {
     LABEL_CONTAINER: ('fadeout-logo-show-label-animation-container' : 'fadeout-logo-show-label-animation-container'),
     CONTAINER:       ('fadeout-logo-show-label-animation' : 'fadeout-logo-show-label-animation')
 };
 
-export function AnimationComponent({ animationLabelText } : LabelOptions) : ChildType {
+export const animationConfig = (ANIMATION) => ({
+    tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth },
+    medium:     { max: BUTTON_SIZE_STYLE.medium.maxWidth },
+    cssClasses: {
+        DOM_READY:                  CLASS.DOM_READY,
+        ANIMATION_CONTAINER:        ANIMATION.CONTAINER,
+        PAYPAL_LOGO:                LOGO_CLASS.LOGO,
+        ANIMATION_LABEL_CONTAINER:  ANIMATION.LABEL_CONTAINER,
+        PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
+    }
+});
+
+export function AnimationComponent({ animationLabelText, cssClasses } : LabelOptions) : ChildType {
     // experimentName must match elmo experiment name
     const config = {
         labelText:      animationLabelText,
-        labelClass:     ANIMATION.LABEL_CONTAINER,
+        labelClass:     cssClasses.LABEL_CONTAINER,
         experimentName: 'Varied_Button_Design'
     };
    
@@ -25,11 +37,11 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
         <Fragment>
             <div class={ config.labelClass } data-animation-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
             <style innerHTML={ `
-                .${ CLASS.DOM_READY } .${ ANIMATION.CONTAINER } img.${ LOGO_CLASS.LOGO }{
+                .${ CLASS.DOM_READY } .${ cssClasses.CONTAINER } img.${ LOGO_CLASS.LOGO }{
                     position: relative;
                 }
                 
-                .${ ANIMATION.CONTAINER } .${ ANIMATION.LABEL_CONTAINER } {
+                .${ cssClasses.CONTAINER } .${ cssClasses.LABEL_CONTAINER } {
                     position: fixed;
                     opacity: 0; 
                     color: #142C8E;
@@ -42,7 +54,7 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
 }
 
 // Returns label container if the button sizes match
-const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
+export const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { tiny, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -117,27 +129,16 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
 };
 
 export function setupFadeOutLogoAndShowLabelAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
-    const animationProps = { animationLabelText };
-    const animationConfig = {
-        tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth },
-        medium:     { max: BUTTON_SIZE_STYLE.medium.maxWidth },
-        cssClasses: {
-            DOM_READY:                  CLASS.DOM_READY,
-            ANIMATION_CONTAINER:        ANIMATION.CONTAINER,
-            PAYPAL_LOGO:                LOGO_CLASS.LOGO,
-            ANIMATION_LABEL_CONTAINER:  ANIMATION.LABEL_CONTAINER,
-            PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
-        }
-    };
+    const animationProps = { animationLabelText, cssClasses: ANIMATION_CLASSES  };
     const buttonAnimationScript = `
-        const animationProps = ${ getAnimationProps.toString() }( document, ${ JSON.stringify(animationConfig) });
+        const animationProps = ${ getAnimationProps.toString() }( document, ${ JSON.stringify(animationConfig(ANIMATION_CLASSES)) });
         if (animationProps && animationProps.paypalLabelContainerElement && animationProps.paypalLogoStartingLeftPosition) {
             const animation = ${ createAnimation.toString() }
             animation(animationProps, ${ JSON.stringify(animationConfig.cssClasses) })
         }
     `;
     return {
-        buttonAnimationContainerClass: ANIMATION.CONTAINER,
+        buttonAnimationContainerClass: ANIMATION_CLASSES.CONTAINER,
         buttonAnimationScript,
         buttonAnimationComponent:      (<AnimationComponent { ...animationProps } />)
     };
