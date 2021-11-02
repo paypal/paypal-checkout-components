@@ -43,7 +43,7 @@ export type LabelOptions = {|
 
 export type DivideLogoAnimationProps = {|
     paypalLabelContainerElement : ElementNode,
-    paypalLogoStartingLeftPosition : string,
+    paypalLogoStartingLeftPosition : string
 |};
 
 export type AnimationProps = {|
