@@ -148,7 +148,7 @@ export function removeDateMask(date : string) : string {
 export function maskDate(date : string, prevMask? : string = '') : string {
     assertString(date);
 
-    if (prevMask && prevMask.includes('/')) {
+    if (prevMask && prevMask.indexOf('/') > -1) {
         const [ month ] = removeSpaces(prevMask).split('/');
         if (month.length < 2) {
             return prevMask;
@@ -191,7 +191,7 @@ export function filterStyles(rawStyles : {| |} = {}) : FieldStyle {
     return Object.keys(rawStyles).reduce((acc : {|  |}, key : string) => {
         if (typeof rawStyles[key] === 'object') {
             acc[key] = rawStyles[key];
-        } else if (camelKey.includes(key) || dashKey.includes(key)) {
+        } else if (camelKey.indexOf(key) > -1 || dashKey.indexOf(key) > -1) {
             acc[key] = rawStyles[key];
         }
         return acc;
@@ -331,11 +331,11 @@ export function goToPreviousField(ref : {| current : {| base : HTMLInputElement 
 export function navigateOnKeyDown(event : InputEvent, navigation : CardNavigation) : void {
     const { target: { value, selectionStart, selectionEnd }, key } = event;
 
-    if (selectionStart === 0 && (value.length === 0 || value.length !== selectionEnd)  && [ 'Backspace', 'ArrowLeft' ].includes(key)) {
+    if (selectionStart === 0 && (value.length === 0 || value.length !== selectionEnd)  && [ 'Backspace', 'ArrowLeft' ].indexOf(key) > -1) {
         navigation.previous();
     }
 
-    if (selectionStart === value.length && [ 'ArrowRight' ].includes(key)) {
+    if (selectionStart === value.length && [ 'ArrowRight' ].indexOf(key) > -1) {
         navigation.next();
     }
 }
