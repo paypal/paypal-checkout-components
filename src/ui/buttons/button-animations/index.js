@@ -13,7 +13,7 @@ function setupAnimation(animationId : string, animationLabelText : string) : But
         'alternate-slide-logo-animation':            setupFadeOutLogoAndShowLabelAnimation,
         'run-add-label-text-next-to-logo-animation': setupLabelTextNextToLogoAnimation
     };
-    return (animationIds[animationId] && animationIds[animationId](animationLabelText)) || null;
+    return (animationIds[animationId] && animationIds[animationId](animationLabelText));
 }
 
 export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | Object {
