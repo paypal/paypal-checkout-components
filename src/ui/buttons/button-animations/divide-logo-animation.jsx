@@ -34,7 +34,13 @@ export function LabelForDivideLogoAnimation({ animationLabelText } : LabelOption
                     opacity: 0; 
                     color: #142C8E;
                     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                    font-size: 16px;
+                    font-size: 14px;
+                }
+
+                .${ ANIMATION.CONTAINER } .${ ANIMATION.LABEL_CONTAINER } span {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
                 }
             ` } />;
         </Fragment>
