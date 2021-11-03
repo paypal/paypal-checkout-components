@@ -15,14 +15,13 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY } = cssClasses;
     const { paypalLabelContainerElement } = animationProps;
     const animations = `
-        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ LOGO_CLASS } {
-            opacity: 1;
+        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ LOGO_CLASS.LOGO } {
             animation-name: reverse-logo;
             animation-duration: 2s;
             animation-play-state: revert;
         }
         
-        .${ DOM_READY } .${ ANIMATION_CONTAINER }:hover img.${ LOGO_CLASS } {
+        .${ DOM_READY } .${ ANIMATION_CONTAINER }:hover img.${ LOGO_CLASS.LOGO } {
             animation-name: move-logo-to-left-side;
             animation-duration: 2s;
             animation-fill-mode: forwards;
