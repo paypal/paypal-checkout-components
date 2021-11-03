@@ -5,7 +5,7 @@ import { type Personalization } from '../props';
 import { setupDivideLogoAnimation } from './divide-logo-animation';
 import { setupFadeOutLogoAndShowLabelAnimation } from './fadeout-logo-show-label-text';
 import { setupLabelTextNextToLogoAnimation } from './label-text-next-to-logo-animation';
-import { setupFadeOutLogoAndShowLabelOnHoverAnimation } from './setup-fadeout-logo-show-label-text-hover';
+import { setupFadeOutLogoAndShowLabelOnHoverAnimation } from './fadeout-logo-show-label-text-hover';
 import type { ButtonAnimationIds, ButtonAnimationOutputParams } from './types';
 
 function setupAnimation(animationId : string, animationLabelText : string) : ButtonAnimationOutputParams | null {
