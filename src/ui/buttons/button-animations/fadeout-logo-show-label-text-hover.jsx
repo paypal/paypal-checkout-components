@@ -12,61 +12,62 @@ export const ANIMATION_CLASSES = {
 };
 
 const createAnimation = function (animationProps, cssClasses) : void | null {
-    const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, PAYPAL_LOGO } = cssClasses;
+    const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY } = cssClasses;
     const { paypalLabelContainerElement } = animationProps;
     const animations = `
-    .${ ANIMATION_CONTAINER } img.paypal-logo {
-        position: fixed;
-        transform: translateX(-17px);
-        opacity:1;
-    }
-
-    .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER }  {
-        position: fixed;
-        transform: translateX(17px);
-        opacity:0;
-    }
-
-    .${ ANIMATION_CONTAINER }:hover img.paypal-logo {
-        animation: move-logo-to-left-side 1s ease-in forwards;
-    }
-
-    .${ ANIMATION_CONTAINER }:hover .${ ANIMATION_LABEL_CONTAINER }  {
-        animation: show-text 1s ease-in forwards;
-    }
-
-     @keyframes move-logo-to-left-side {
-        0%,10%{
-         opacity:1;
-        }
-
-        40%{
-         opacity:0;   
-         transform: translateX(-34px);
+        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ LOGO_CLASS } {
+            opacity: 1;
+            animation-name: reverse-logo;
+            animation-duration: 2s;
+            animation-play-state: revert;
         }
         
-        80%,100%{
-          opacity:0;
-          transform: translateX(-34px);
-        }
-    }
-
-     @keyframes show-text {
-        0%,10%{
-         
-         opacity:0;
+        .${ DOM_READY } .${ ANIMATION_CONTAINER }:hover img.${ LOGO_CLASS } {
+            animation-name: move-logo-to-left-side;
+            animation-duration: 2s;
+            animation-fill-mode: forwards;
+            animation-play-state: running;
         }
 
-        40%{
-       
-         opacity:1;   
+        .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER }  {
+            position: fixed;
+            width:  100%;
+            text-align: center;
+            opacity: 0;
+            top: 0
+        }
+
+        .${ ANIMATION_CONTAINER }:hover .${ ANIMATION_LABEL_CONTAINER }  {
+            animation: show-text 3s ease-in forwards;
         }
         
-        80%,100%{
-        
-          opacity:1;
+        @keyframes reverse-logo {
+            from {
+              opacity:   0;
+              transform: translateX(-50%);
+            }
+            to{
+               opacity: 1;
+               background-color:initial;
+               transform: translateX(0%)
+            }
         }
-    }
+        
+         @keyframes move-logo-to-left-side {
+            38%,100%{
+              opacity:0;
+              transform: translateX(-50%);
+            }
+        }
+        
+         @keyframes show-text {
+            0%,10%{
+                opacity: 0;
+            }
+            
+            40%,80%,100%{
+              opacity: 1;
+            }
     `;
 
     if (paypalLabelContainerElement) {
