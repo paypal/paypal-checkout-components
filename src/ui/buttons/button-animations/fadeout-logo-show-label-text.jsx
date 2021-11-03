@@ -34,6 +34,7 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
                     opacity: 0; 
                     color: #142C8E;
                     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    padding-top: 1px;
                 }
             ` } />;
         </Fragment>
@@ -42,7 +43,7 @@ export function AnimationComponent({ animationLabelText } : LabelOptions) : Chil
 
 // Returns label container if the button sizes match
 const getAnimationProps = function(document, configuration) : AnimationProps | null {
-    let labelFontSize = 10;
+    let labelFontSize = 8;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { tiny, small, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -53,14 +54,14 @@ const getAnimationProps = function(document, configuration) : AnimationProps | n
 
     // return null if animation should not be played for the button size
     const animationContainerWidth = animationContainer.offsetWidth;
-    if (animationContainerWidth < tiny.min || animationContainerWidth > medium.max) {
+    if (animationContainerWidth < tiny.min || animationContainerWidth >= medium.max) {
         // remove label element from dom
         animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
         return null;
     }
 
     if (animationContainerWidth >= small.max) {
-        labelFontSize = 12;
+        labelFontSize = 11;
     }
 
     // get the label container that animation will be applied to
