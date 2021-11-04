@@ -40,30 +40,18 @@ function isAndroidAppInstalled(appId : string) : ZalgoPromise<?AndroidApp> {
 
 function isAndroidPayPalAppInstalled() : ZalgoPromise<?AndroidApp> {
     return isAndroidAppInstalled(ANDROID_PAYPAL_APP_ID).then(app => {
-        if (app) {
-            return { ...app };
-        }
-
-        return null;
+        return app ? { ...app } : null;
     });
 }
 
 function isAndroidVenmoAppInstalled({ env }) : ZalgoPromise<?AndroidApp> {
     if (env === ENV.PRODUCTION) {
         return isAndroidAppInstalled(ANDROID_VENMO_APP_ID).then(app => {
-            if (app) {
-                return { ...app };
-            }
-
-            return null;
+            return app ? { ...app } : null;
         });
     } else {
         return isAndroidAppInstalled(ANDROID_VENMO_DEBUG_APP_ID).then(app => {
-            if (app) {
-                return { ...app };
-            }
-
-            return null;
+            return app ? { ...app } : null;
         });
     }
 }
