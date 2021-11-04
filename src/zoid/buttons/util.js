@@ -5,7 +5,7 @@ import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligib
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
-import { BUTTON_FLOW, CLASS } from '../../constants';
+import { BUTTON_FLOW } from '../../constants';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
 import { determineEligibleFunding } from '../../funding';
 
@@ -22,29 +22,6 @@ export function determineFlow(props : DetermineFlowOptions) : $Values<typeof BUT
         return BUTTON_FLOW.SUBSCRIPTION_SETUP;
     } else {
         return BUTTON_FLOW.PURCHASE;
-    }
-}
-
-export function supportsQRPay(funding : $Values<typeof FUNDING>) : boolean {
-    if (funding === FUNDING.VENMO && !isDevice()) {
-        return true;
-    }
-
-    return false;
-}
-
-// eslint-disable-next-line no-undef
-export function showButtonLoading (fundingSource : $Values<typeof FUNDING>, event : SyntheticInputEvent<HTMLInputElement>) : void {
-    const buttonElement = event.target.ownerDocument.querySelector(`[data-funding-source="${ fundingSource }"]`);
-    if (buttonElement) {
-        const spinner = buttonElement.querySelector(`.${ CLASS.SPINNER }`);
-        const label = buttonElement.querySelector(`.${ CLASS.BUTTON_LABEL }`);
-        if (spinner) {
-            spinner.setAttribute('style', 'display:block !important');
-        }
-        if (label) {
-            label.setAttribute('style', 'display:none;');
-        }
     }
 }
 

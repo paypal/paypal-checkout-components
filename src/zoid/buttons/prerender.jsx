@@ -13,8 +13,6 @@ import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
 
-import { supportsQRPay, showButtonLoading } from './util';
-
 type PrerenderedButtonsProps = {|
     nonce : ?string,
     props : ZoidProps<ButtonProps>,
@@ -43,17 +41,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.CHOSEN_FUNDING]:      fundingSource
         }).flush();
 
-        
-        if (supportsQRPay(fundingSource)) {
-            showButtonLoading(
-                fundingSource,
-                // $FlowFixMe[prop-missing]
-                // $FlowFixMe[incompatible-call]
-                event
-            );
-            onRenderCheckout({ fundingSource, card });
-
-        } else if (fundingSource === FUNDING.VENMO) {
+        if (fundingSource === FUNDING.VENMO) {
             // wait for button to load
         } else if (supportsPopups()) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
