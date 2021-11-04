@@ -56,13 +56,25 @@ type AppEligibleOptions = {|
     fundingSource : $Values<typeof FUNDING>,
     appDetect : AppDetect
 |};
+
+function versionIsEligible({ version } : {| version : ?string |}) : boolean {
+    if (!version) {
+        return false;
+    }
+
+    const num = version.split('.');
+    const v = parseInt(num.join(''), 10);
+
+    return v > 850;
+}
+
 function isDetectedAppEligible({ fundingSource, appDetect } : AppEligibleOptions) : boolean {
     if (appDetect === null) {
         return true;
     }
 
     if (fundingSource === FUNDING.PAYPAL) {
-        if (appDetect.installed && appDetect.version?.indexOf('8.5') !== -1) {
+        if (appDetect.installed && versionIsEligible({ version: appDetect?.version })) {
             return true;
         } else {
             return false;
@@ -93,12 +105,12 @@ function getEligibility({ fundingSource, props, serviceData, sfvc, validatePromi
             return false;
         }
 
-        if (!isDetectedAppEligible({ fundingSource, appDetect })) {
-            return false;
-        }
-
         if (isNativeOptedIn({ props })) {
             return true;
+        }
+
+        if (!isDetectedAppEligible({ fundingSource, appDetect })) {
+            return false;
         }
 
         if (sfvc) {

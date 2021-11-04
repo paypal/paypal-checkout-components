@@ -146,6 +146,7 @@ export const FPTI_TRANSITION = {
     NATIVE_POPUP_NO_OPENER:                 ('popup_no_opener' : 'popup_no_opener'),
     NATIVE_POPUP_ANDROID_APP_ERROR:         ('native_popup_android_app_installed_error' : 'native_popup_android_app_installed_error'),
     NATIVE_POPUP_FALLBACK:                  ('popup_fallback' : 'popup_fallback'),
+    NATIVE_FALLBACK_RETRY_VENMO_APP_SWITCH: ('native_fallback_retry_venmo_app_switch', 'native_fallback_retry_venmo_app_switch'),
     NATIVE_POPUP_SHOWN:                     ('popup_shown' : 'popup_shown'),
     NATIVE_ON_APPROVE:                      ('native_onapprove' : 'native_onapprove'),
     NATIVE_ON_APPROVE_ERROR:                ('native_onapprove_error' : 'native_onapprove_error'),

@@ -7,14 +7,10 @@ import { ENV, FUNDING, FPTI_KEY, COUNTRY } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../../types';
 import { FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY, FPTI_TRANSITION } from '../../constants';
-import {  setupNativeLogger } from '../lib';
+import {  isAppInstalled, setupNativeLogger } from '../lib';
 import { isIOSSafari, getStorageID, getPostRobot, getSDKVersion } from '../../lib';
 
 import { MESSAGE, HASH, EVENT } from './constants';
-
-const ANDROID_PAYPAL_APP_ID = 'com.paypal.android.p2pmobile';
-const ANDROID_VENMO_APP_ID  = 'com.venmo';
-const ANDROID_VENMO_DEBUG_APP_ID = 'com.venmo.fifa';
 
 export type NativePopupOptions = {|
     parentDomain : string,
@@ -31,70 +27,6 @@ export type NativePopupOptions = {|
 type NativePopup = {|
     destroy : () => ZalgoPromise<void>
 |};
-
-type AndroidApp = {|
-    id? : string,
-    version? : string
-|};
-
-function isAndroidAppInstalled(appId : string) : ZalgoPromise<?AndroidApp> {
-    // assume true unless we can prove false
-    if (window.navigator && window.navigator.getInstalledRelatedApps) {
-        return window.navigator.getInstalledRelatedApps()
-            .then(apps => {
-                if (apps && apps.length) {
-                    const foundApp = apps.find(app => app.id === appId);
-                    if (foundApp) {
-                        const id = foundApp.id;
-                        const version = foundApp.version;
-
-                        return ZalgoPromise.resolve({ id, installed: true, version });
-                    } else {
-                        return ZalgoPromise.resolve({ installed: false });
-                    }
-                }
-                
-                return ZalgoPromise.resolve(null);
-            });
-    }
-
-    return ZalgoPromise.resolve(null);
-}
-
-function isAndroidPayPalAppInstalled() : ZalgoPromise<?AndroidApp> {
-    return isAndroidAppInstalled(ANDROID_PAYPAL_APP_ID).then(app => {
-        return { ...app };
-    });
-}
-
-function isAndroidVenmoAppInstalled({ env }) : ZalgoPromise<?AndroidApp> {
-    if (env === ENV.PRODUCTION) {
-        return isAndroidAppInstalled(ANDROID_VENMO_APP_ID).then(app => {
-            return { ...app };
-        });
-    } else {
-        return isAndroidAppInstalled(ANDROID_VENMO_DEBUG_APP_ID).then(app => {
-            return { ...app };
-        });
-    }
-}
-
-function isAppInstalled({ fundingSource, env } : {| fundingSource : $Values<typeof FUNDING>, env : $Values<typeof ENV> |}) : ZalgoPromise<?AndroidApp> {
-    if (isIOSSafari()) {
-        return ZalgoPromise.resolve(null);
-    }
-
-    switch (fundingSource) {
-    case FUNDING.PAYPAL:
-        return isAndroidPayPalAppInstalled();
-
-    case FUNDING.VENMO:
-        return isAndroidVenmoAppInstalled({ env });
-
-    default:
-        return ZalgoPromise.reject(`App detection not supported for ${ fundingSource } apps.`);
-    }
-}
 
 export function setupNativePopup({ parentDomain, env, sessionID, buttonSessionID, sdkCorrelationID,
     clientID, fundingSource, locale, buyerCountry } : NativePopupOptions) : NativePopup {
