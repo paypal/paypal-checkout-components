@@ -3492,7 +3492,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.72", _headers15);
+            _headers15["x-app-version"] = "5.0.73", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -6948,9 +6948,9 @@ window.spb = function(modules) {
         function getNativeDomain(_ref) {
             var props = _ref.props;
             var env = props.env;
-            return "local" !== env && ("sandbox" !== env || !isNativeOptedIn({
+            return "sandbox" !== env || !isNativeOptedIn({
                 props: props
-            }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain) ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
+            }) || window.xprops && window.xprops.useCorrectNativeSandboxDomain ? NATIVE_DOMAIN[env] : "https://www.paypal.com";
         }
         function getNativePopupDomain(_ref2) {
             var props = _ref2.props;
@@ -7670,26 +7670,28 @@ window.spb = function(modules) {
                 }
             };
         }
-        function popup_getEligibility(_ref2) {
-            var fundingSource = _ref2.fundingSource, props = _ref2.props, serviceData = _ref2.serviceData, sfvc = _ref2.sfvc, validatePromise = _ref2.validatePromise, stickinessID = _ref2.stickinessID, appDetect = _ref2.appDetect;
+        function popup_getEligibility(_ref3) {
+            var fundingSource = _ref3.fundingSource, props = _ref3.props, serviceData = _ref3.serviceData, sfvc = _ref3.sfvc, validatePromise = _ref3.validatePromise, stickinessID = _ref3.stickinessID, appDetect = _ref3.appDetect;
             var createOrder = props.createOrder, vault = props.vault, platform = props.platform, clientID = props.clientID, currency = props.currency, buttonSessionID = props.buttonSessionID, enableFunding = props.enableFunding, merchantDomain = props.merchantDomain;
             var buyerCountry = serviceData.buyerCountry, cookies = serviceData.cookies, merchantID = serviceData.merchantID;
             var shippingCallbackEnabled = Boolean(props.onShippingChange);
             return validatePromise.then((function(valid) {
-                return !!valid && !!function(_ref) {
-                    var appDetect = _ref.appDetect;
-                    if (null === appDetect) return !0;
-                    if ("paypal" === _ref.fundingSource) {
-                        var _appDetect$version;
-                        return !(!appDetect.installed || -1 === (null == (_appDetect$version = appDetect.version) ? void 0 : _appDetect$version.indexOf("8.5")));
-                    }
-                    return !0;
+                return !!valid && (!!isNativeOptedIn({
+                    props: props
+                }) || !!function(_ref2) {
+                    var appDetect = _ref2.appDetect;
+                    return null === appDetect || "paypal" !== _ref2.fundingSource || !(!appDetect.installed || !function(_ref) {
+                        var version = _ref.version;
+                        if (!version) return !1;
+                        var num = version.split(".");
+                        return parseInt(num.join(""), 10) > 850;
+                    }({
+                        version: null == appDetect ? void 0 : appDetect.version
+                    }));
                 }({
                     fundingSource: fundingSource,
                     appDetect: appDetect
-                }) && (!!isNativeOptedIn({
-                    props: props
-                }) || !sfvc && createOrder().then((function(orderID) {
+                }) && !sfvc && createOrder().then((function(orderID) {
                     return getNativeEligibility({
                         vault: vault,
                         platform: platform,
@@ -7721,8 +7723,8 @@ window.spb = function(modules) {
                 })));
             }));
         }
-        function initNativePopup(_ref3) {
-            var payment = _ref3.payment, props = _ref3.props, serviceData = _ref3.serviceData, config = _ref3.config, sessionUID = _ref3.sessionUID, fallback = _ref3.fallback, callbacks = _ref3.callbacks, clean = _ref3.clean;
+        function initNativePopup(_ref4) {
+            var payment = _ref4.payment, props = _ref4.props, serviceData = _ref4.serviceData, config = _ref4.config, sessionUID = _ref4.sessionUID, fallback = _ref4.fallback, callbacks = _ref4.callbacks, clean = _ref4.clean;
             var buttonSessionID = props.buttonSessionID, onClick = props.onClick, createOrder = props.createOrder;
             var fundingSource = payment.fundingSource, win = payment.win;
             var _onInit = callbacks.onInit, _onApprove = callbacks.onApprove, _onCancel = callbacks.onCancel, _onError = callbacks.onError, onClose = callbacks.onClose, onDestroy = callbacks.onDestroy, _onShippingChange = callbacks.onShippingChange;
@@ -7810,8 +7812,8 @@ window.spb = function(modules) {
                                 };
                             }));
                         };
-                        var changeDomainAndAwaitFallback = function(_ref4) {
-                            var pageUrl = _ref4.pageUrl, stickinessID = _ref4.stickinessID, fallbackOptions = _ref4.fallbackOptions;
+                        var changeDomainAndAwaitFallback = function(_ref5) {
+                            var pageUrl = _ref5.pageUrl, stickinessID = _ref5.stickinessID, fallbackOptions = _ref5.fallbackOptions;
                             return nativePopupWinProxy.isClosed().then((function(isClosed) {
                                 if (isClosed) return handleFallback(fallbackOptions);
                                 fallbackOptions && setNativeOptOut(fallbackOptions);
@@ -7854,8 +7856,8 @@ window.spb = function(modules) {
                                 }));
                             }));
                         }));
-                        var onDetectPossibleAppSwitch = once((function(_ref5) {
-                            var pageUrl = _ref5.pageUrl, stickinessID = _ref5.stickinessID;
+                        var onDetectPossibleAppSwitch = once((function(_ref6) {
+                            var pageUrl = _ref6.pageUrl, stickinessID = _ref6.stickinessID;
                             return promise_ZalgoPromise.try((function() {
                                 var _getLogger$info$track6;
                                 onLsatUpgradeCalled();
@@ -7869,8 +7871,8 @@ window.spb = function(modules) {
                                             onDetectAppSwitch();
                                             return _onInit();
                                         },
-                                        onApprove: function(_ref6) {
-                                            var data = _ref6.data;
+                                        onApprove: function(_ref7) {
+                                            var data = _ref7.data;
                                             onDetectAppSwitch();
                                             return _onApprove({
                                                 data: data
@@ -7880,23 +7882,23 @@ window.spb = function(modules) {
                                             onDetectAppSwitch();
                                             return _onCancel();
                                         },
-                                        onShippingChange: function(_ref7) {
-                                            var data = _ref7.data;
+                                        onShippingChange: function(_ref8) {
+                                            var data = _ref8.data;
                                             onDetectAppSwitch();
                                             return _onShippingChange({
                                                 data: data
                                             });
                                         },
-                                        onError: function(_ref8) {
-                                            var data = _ref8.data;
+                                        onError: function(_ref9) {
+                                            var data = _ref9.data;
                                             onDetectAppSwitch();
                                             reject(new Error(data.message));
                                             return _onError({
                                                 data: data
                                             });
                                         },
-                                        onFallback: function(_ref9) {
-                                            var fallbackOptions = _ref9.data;
+                                        onFallback: function(_ref10) {
+                                            var fallbackOptions = _ref10.data;
                                             onDetectAppSwitch();
                                             return changeDomainAndAwaitFallback({
                                                 pageUrl: pageUrl,
@@ -7956,8 +7958,8 @@ window.spb = function(modules) {
                         var awaitRedirectListener = postRobotOnceProxy("awaitRedirect", {
                             proxyWin: nativePopupWinProxy,
                             domain: nativePopupDomain
-                        }, (function(_ref10) {
-                            var _ref10$data = _ref10.data, appDetect = _ref10$data.app, pageUrl = _ref10$data.pageUrl, sfvc = _ref10$data.sfvc, stickinessID = _ref10$data.stickinessID;
+                        }, (function(_ref11) {
+                            var _ref11$data = _ref11.data, appDetect = _ref11$data.app, pageUrl = _ref11$data.pageUrl, sfvc = _ref11$data.sfvc, stickinessID = _ref11$data.stickinessID;
                             logger_getLogger().info("native_post_message_await_redirect").flush();
                             !function(app) {
                                 if (app) {
@@ -7972,8 +7974,8 @@ window.spb = function(modules) {
                                 }
                             }(appDetect);
                             logger_getLogger().addTrackingBuilder((function() {
-                                var _ref11;
-                                return (_ref11 = {}).stickiness_id = stickinessID, _ref11;
+                                var _ref12;
+                                return (_ref12 = {}).stickiness_id = stickinessID, _ref12;
                             }));
                             var onDetectPossibleAppSwitchListener = postRobotOnceProxy("detectAppSwitch", {
                                 proxyWin: nativePopupWinProxy,
@@ -7997,8 +7999,8 @@ window.spb = function(modules) {
                             var onApproveListener = postRobotOnceProxy("onApprove", {
                                 proxyWin: nativePopupWinProxy,
                                 domain: nativePopupDomain
-                            }, (function(_ref12) {
-                                var data = _ref12.data;
+                            }, (function(_ref13) {
+                                var data = _ref13.data;
                                 onDetectAppSwitch();
                                 _onApprove({
                                     data: data
@@ -8016,9 +8018,9 @@ window.spb = function(modules) {
                             var onFallbackListener = postRobotOnceProxy("onFallback", {
                                 proxyWin: nativePopupWinProxy,
                                 domain: nativePopupDomain
-                            }, (function(_ref13) {
+                            }, (function(_ref14) {
                                 var _getLogger$info$track10;
-                                var fallbackOptions = _ref13.data;
+                                var fallbackOptions = _ref14.data;
                                 onDetectAppSwitch();
                                 logger_getLogger().info("native_message_onfallback").track((_getLogger$info$track10 = {}, 
                                 _getLogger$info$track10.transition_name = "native_onfallback", _getLogger$info$track10)).flush();
@@ -8042,8 +8044,8 @@ window.spb = function(modules) {
                             var onErrorListener = postRobotOnceProxy("onError", {
                                 proxyWin: nativePopupWinProxy,
                                 domain: nativePopupDomain
-                            }, (function(_ref14) {
-                                var data = _ref14.data;
+                            }, (function(_ref15) {
+                                var data = _ref15.data;
                                 _onError({
                                     data: data
                                 });
@@ -8070,9 +8072,9 @@ window.spb = function(modules) {
                                     stickinessID: stickinessID,
                                     appDetect: appDetect
                                 })
-                            }).then((function(_ref15) {
-                                var eligible = _ref15.eligible;
-                                if (!_ref15.valid) {
+                            }).then((function(_ref16) {
+                                var eligible = _ref16.eligible;
+                                if (!_ref16.valid) {
                                     closeListener.cancel();
                                     nativePopupWinProxy.close();
                                     return onDestroy().then((function() {
@@ -9577,7 +9579,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.72", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.73", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 

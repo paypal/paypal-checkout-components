@@ -6432,7 +6432,7 @@ window.smartCard = function(modules) {
             var camelKey = Object.keys(FIELD_STYLE);
             var dashKey = Object(belter.values)(FIELD_STYLE);
             return Object.keys(rawStyles).reduce((function(acc, key) {
-                ("object" == typeof rawStyles[key] || camelKey.includes(key) || dashKey.includes(key)) && (acc[key] = rawStyles[key]);
+                ("object" == typeof rawStyles[key] || camelKey.indexOf(key) > -1 || dashKey.indexOf(key) > -1) && (acc[key] = rawStyles[key]);
                 return acc;
             }), {});
         }(style);
@@ -6482,8 +6482,8 @@ window.smartCard = function(modules) {
     }
     function navigateOnKeyDown(event, navigation) {
         var _event$target = event.target, value = _event$target.value, selectionStart = _event$target.selectionStart, key = event.key;
-        0 !== selectionStart || 0 !== value.length && value.length === _event$target.selectionEnd || ![ "Backspace", "ArrowLeft" ].includes(key) || navigation.previous();
-        selectionStart === value.length && [ "ArrowRight" ].includes(key) && navigation.next();
+        0 === selectionStart && (0 === value.length || value.length !== _event$target.selectionEnd) && [ "Backspace", "ArrowLeft" ].indexOf(key) > -1 && navigation.previous();
+        selectionStart === value.length && [ "ArrowRight" ].indexOf(key) > -1 && navigation.next();
     }
     var sdk_constants = __webpack_require__(2);
     function callRestAPI(_ref) {
@@ -8137,14 +8137,14 @@ window.smartCard = function(modules) {
                 var newState = _extends({}, inputState, {
                     maskedInputValue: maskedValue
                 });
-                isValid ? setTimeout((function() {
-                    return moveCursor(event.target, maskedValue.length);
-                })) : newState.isPossibleValid = !0;
+                isValid || (newState.isPossibleValid = !0);
                 setInputState(_extends({}, newState));
             },
             onBlur: function(event) {
                 var newState = _extends({}, inputState);
-                isValid ? newState.maskedInputValue = removeSpaces(maskedInputValue).slice(-4) : newState.isPossibleValid = !1;
+                isValid ? newState.maskedInputValue = (lastFour = removeSpaces(number = maskedInputValue).slice(-4), 
+                number.replace(/\d/g, "•").slice(0, -4) + lastFour) : newState.isPossibleValid = !1;
+                var number, lastFour;
                 "function" == typeof onBlur && onBlur(event);
                 setInputState(_extends({}, newState, {
                     contentPasted: !1
@@ -8212,7 +8212,7 @@ window.smartCard = function(modules) {
                 var mask = function(date, prevMask) {
                     void 0 === prevMask && (prevMask = "");
                     assertString(date);
-                    if (prevMask && prevMask.includes("/") && removeSpaces(prevMask).split("/")[0].length < 2) return prevMask;
+                    if (prevMask && prevMask.indexOf("/") > -1 && removeSpaces(prevMask).split("/")[0].length < 2) return prevMask;
                     if ("/" === date.trim().slice(-1)) return date.slice(0, 2);
                     if ((date = removeDateMask(date)).length < 2) {
                         var first = date[0];
@@ -8318,7 +8318,7 @@ window.smartCard = function(modules) {
     }
     function CardField(_ref) {
         var _placeholder$number, _placeholder$expiry, _placeholder$cvv;
-        var cspNonce = _ref.cspNonce, onChange = _ref.onChange, _ref$styleObject = _ref.styleObject, styleObject = void 0 === _ref$styleObject ? {} : _ref$styleObject, _ref$placeholder = _ref.placeholder, placeholder = void 0 === _ref$placeholder ? {} : _ref$placeholder;
+        var cspNonce = _ref.cspNonce, onChange = _ref.onChange, _ref$styleObject = _ref.styleObject, styleObject = void 0 === _ref$styleObject ? {} : _ref$styleObject, _ref$placeholder = _ref.placeholder, placeholder = void 0 === _ref$placeholder ? {} : _ref$placeholder, autoFocusRef = _ref.autoFocusRef;
         var _useState = hooks_module_l(""), number = _useState[0], setNumber = _useState[1];
         var _useState2 = hooks_module_l(""), cvv = _useState2[0], setCvv = _useState2[1];
         var _useState3 = hooks_module_l(""), expiry = _useState3[0], setExpiry = _useState3[1];
@@ -8348,6 +8348,9 @@ window.smartCard = function(modules) {
             },
             previous: goToPreviousField(expiryRef)
         };
+        hooks_module_y((function() {
+            autoFocusRef(numberRef);
+        }), []);
         hooks_module_y((function() {
             var valid = Boolean(numberValidity.isValid && cvvValidity.isValid && expiryValidity.isValid);
             setIsValid(valid);
@@ -8539,6 +8542,7 @@ window.smartCard = function(modules) {
         var _useState = hooks_module_l(), fieldValue = _useState[0], setFieldValue = _useState[1];
         var _useState2 = hooks_module_l(!1), fieldValid = _useState2[0], setFieldValid = _useState2[1];
         var _useState3 = hooks_module_l([]), fieldErrors = _useState3[0], setFieldErrors = _useState3[1];
+        var _useState4 = hooks_module_l(), mainRef = _useState4[0], setRef = _useState4[1];
         var getFieldValue = function() {
             return fieldValue;
         };
@@ -8551,6 +8555,26 @@ window.smartCard = function(modules) {
                 errors: fieldErrors
             });
         }), [ fieldValid, fieldErrors ]);
+        hooks_module_y((function() {
+            (input = mainRef) && window.addEventListener("focus", (function() {
+                setTimeout((function() {
+                    var activeEl = document.activeElement;
+                    if (activeEl === document.body || activeEl === document.documentElement) {
+                        !function(input) {
+                            var inputIsEmptyInitially = "" === input.value;
+                            inputIsEmptyInitially && (input.value = " ");
+                            var start = input.selectionStart;
+                            var end = input.selectionEnd;
+                            input.setSelectionRange(0, 0);
+                            input.setSelectionRange(start, end);
+                            inputIsEmptyInitially && (input.value = "");
+                        }(input);
+                        input.focus();
+                    }
+                }), 1);
+            }));
+            var input;
+        }), [ mainRef ]);
         hooks_module_y((function() {
             !function(_ref) {
                 window.exports = {
@@ -8583,7 +8607,10 @@ window.smartCard = function(modules) {
             cspNonce: cspNonce,
             onChange: onFieldChange,
             styleObject: style,
-            placeholder: placeholder
+            placeholder: placeholder,
+            autoFocusRef: function(ref) {
+                return setRef(ref.current.base);
+            }
         }) : null, "number" === type ? v(CardNumberField, {
             cspNonce: cspNonce,
             onChange: onFieldChange,

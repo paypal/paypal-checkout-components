@@ -68,15 +68,6 @@
         __webpack_require__.d(__webpack_exports__, "NativePopup", (function() {
             return NativePopup;
         }));
-        function _extends() {
-            return (_extends = Object.assign || function(target) {
-                for (var i = 1; i < arguments.length; i++) {
-                    var source = arguments[i];
-                    for (var key in source) ({}).hasOwnProperty.call(source, key) && (target[key] = source[key]);
-                }
-                return target;
-            }).apply(this, arguments);
-        }
         var iPhoneScreenHeightMatrix = {
             926: {
                 device: "iPhone 12 Pro Max",
@@ -206,6 +197,15 @@
                 return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
             }
             return !1;
+        }
+        function _extends() {
+            return (_extends = Object.assign || function(target) {
+                for (var i = 1; i < arguments.length; i++) {
+                    var source = arguments[i];
+                    for (var key in source) ({}).hasOwnProperty.call(source, key) && (target[key] = source[key]);
+                }
+                return target;
+            }).apply(this, arguments);
         }
         function utils_isPromise(item) {
             try {
@@ -1465,9 +1465,9 @@
                 return promise_ZalgoPromise.resolve(null);
             })) : promise_ZalgoPromise.resolve(null);
         }
-        function setupNativePopup(_ref3) {
+        function setupNativePopup(_ref) {
             var _logger$info$track;
-            var parentDomain = _ref3.parentDomain, env = _ref3.env, buttonSessionID = _ref3.buttonSessionID, fundingSource = _ref3.fundingSource, locale = _ref3.locale, buyerCountry = _ref3.buyerCountry;
+            var parentDomain = _ref.parentDomain, env = _ref.env, buttonSessionID = _ref.buttonSessionID, fundingSource = _ref.fundingSource, locale = _ref.locale, buyerCountry = _ref.buyerCountry;
             var logger = function(_ref) {
                 var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, sdkCorrelationID = _ref.sdkCorrelationID, clientID = _ref.clientID, fundingSource = _ref.fundingSource, sdkVersion = _ref.sdkVersion, locale = _ref.locale, buyerCountry = _ref.buyerCountry;
                 var logger = getLogger();
@@ -1533,7 +1533,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.72", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.73", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -1569,10 +1569,10 @@
                 return logger;
             }({
                 env: env,
-                sessionID: _ref3.sessionID,
+                sessionID: _ref.sessionID,
                 buttonSessionID: buttonSessionID,
-                sdkCorrelationID: _ref3.sdkCorrelationID,
-                clientID: _ref3.clientID,
+                sdkCorrelationID: _ref.sdkCorrelationID,
+                clientID: _ref.clientID,
                 fundingSource: fundingSource,
                 sdkVersion: getPayPal().version,
                 locale: locale,
@@ -1752,8 +1752,8 @@
                 void 0 === payload && (payload = {});
                 return postRobot.send(opener, event, payload, {
                     domain: parentDomain
-                }).then((function(_ref4) {
-                    return _ref4.data;
+                }).then((function(_ref2) {
+                    return _ref2.data;
                 }));
             };
             var handleHash = function() {
@@ -1834,13 +1834,13 @@
                     pageUrl: pageUrl,
                     sfvc: sfvc = !!sfvc || !0 === sfvcOrSafari,
                     stickinessID: stickinessID
-                }).then((function(_ref5) {
-                    var _ref5$redirect = _ref5.redirect, redirectUrl = _ref5.redirectUrl, orderID = _ref5.orderID, _ref5$appSwitch = _ref5.appSwitch, appSwitch = void 0 === _ref5$appSwitch || _ref5$appSwitch;
-                    if (void 0 === _ref5$redirect || _ref5$redirect) {
+                }).then((function(_ref3) {
+                    var _ref3$redirect = _ref3.redirect, redirectUrl = _ref3.redirectUrl, orderID = _ref3.orderID, _ref3$appSwitch = _ref3.appSwitch, appSwitch = void 0 === _ref3$appSwitch || _ref3$appSwitch;
+                    if (void 0 === _ref3$redirect || _ref3$redirect) {
                         orderID && logger.addTrackingBuilder((function() {
-                            var _ref6;
-                            return (_ref6 = {}).context_type = "EC-Token", _ref6.context_id = orderID, _ref6.token = orderID, 
-                            _ref6;
+                            var _ref4;
+                            return (_ref4 = {}).context_type = "EC-Token", _ref4.context_id = orderID, _ref4.token = orderID, 
+                            _ref4;
                         }));
                         replaceHash(appSwitch ? "appswitch" : "webswitch");
                         window.location.replace(redirectUrl);
