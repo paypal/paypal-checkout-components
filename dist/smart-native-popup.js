@@ -1533,7 +1533,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.73", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.74", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -1589,14 +1589,14 @@
                 switch (fundingSource) {
                   case "paypal":
                     return isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
-                        return _extends({}, app);
+                        return app ? _extends({}, app) : null;
                     }));
 
                   case "venmo":
                     return "production" === env ? isAndroidAppInstalled("com.venmo").then((function(app) {
-                        return _extends({}, app);
+                        return app ? _extends({}, app) : null;
                     })) : isAndroidAppInstalled("com.venmo.fifa").then((function(app) {
-                        return _extends({}, app);
+                        return app ? _extends({}, app) : null;
                     }));
 
                   default:
