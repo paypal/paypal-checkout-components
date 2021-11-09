@@ -76,9 +76,17 @@ function QRCard({
                 [FPTI_CUSTOM_KEY.DESKTOP_EXIT_SURVEY_REASON]:   survey.reason
             }).flush();
             close();
-        } else {
-            survey.enable();
         }
+
+        /**
+         * Survey will be reused in the future.  Supressing the enablement on the close button.
+         *
+         *  } else {
+         *       survey.enable();
+         *  }
+         */
+
+        return close();
     };
 
     const errorMessage = (
