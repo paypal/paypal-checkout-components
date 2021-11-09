@@ -3131,7 +3131,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.74", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.75", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
@@ -3370,7 +3370,8 @@
                     _logger$info$track.context_id = window.xprops.orderID, _logger$info$track.transition_name = "desktop_exit_survey_selection_submitted", 
                     _logger$info$track.desktop_exit_survey_reason = survey.reason, _logger$info$track)).flush();
                     close();
-                } else survey.enable();
+                }
+                return close();
             };
             var errorMessage = v(ErrorMessage, {
                 message: errorText,

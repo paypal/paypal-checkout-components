@@ -1462,8 +1462,12 @@
                         installed: !1
                     });
                 }
-                return promise_ZalgoPromise.resolve(null);
-            })) : promise_ZalgoPromise.resolve(null);
+                return promise_ZalgoPromise.resolve({
+                    installed: !1
+                });
+            })) : promise_ZalgoPromise.resolve({
+                installed: !1
+            });
         }
         function setupNativePopup(_ref) {
             var _logger$info$track;
@@ -1533,7 +1537,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.74", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.75", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -1589,14 +1593,14 @@
                 switch (fundingSource) {
                   case "paypal":
                     return isAndroidAppInstalled("com.paypal.android.p2pmobile").then((function(app) {
-                        return app ? _extends({}, app) : null;
+                        return _extends({}, app);
                     }));
 
                   case "venmo":
                     return "production" === env ? isAndroidAppInstalled("com.venmo").then((function(app) {
-                        return app ? _extends({}, app) : null;
+                        return _extends({}, app);
                     })) : isAndroidAppInstalled("com.venmo.fifa").then((function(app) {
-                        return app ? _extends({}, app) : null;
+                        return _extends({}, app);
                     }));
 
                   default:

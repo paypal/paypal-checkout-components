@@ -3492,7 +3492,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.74", _headers15);
+            _headers15["x-app-version"] = "5.0.75", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -8476,10 +8476,12 @@ window.spb = function(modules) {
                 var _ref3, props, serviceData, clientID, currency, env, buttonSessionID, enableFunding, merchantDomain, merchantID, buyerCountry, cookies;
             },
             isEligible: function(_ref6) {
-                var props = _ref6.props;
-                var clientID = props.clientID, fundingSource = props.fundingSource, onShippingChange = props.onShippingChange, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, env = props.env;
-                var merchantID = _ref6.serviceData.merchantID;
-                return !(!_ref6.config.firebase || !canUsePopupAppSwitch({
+                var _fundingEligibility$v;
+                var props = _ref6.props, serviceData = _ref6.serviceData;
+                var clientID = props.clientID, fundingSource = props.fundingSource, onShippingChange = props.onShippingChange, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, env = props.env, platform = props.platform;
+                var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility;
+                var isVenmoEligible = null == fundingEligibility || null == (_fundingEligibility$v = fundingEligibility.venmo) ? void 0 : _fundingEligibility$v.eligible;
+                return !(!_ref6.config.firebase || platform && "desktop" === platform && !isVenmoEligible || !canUsePopupAppSwitch({
                     fundingSource: fundingSource
                 }) && !canUseNativeQRCode({
                     fundingSource: fundingSource
@@ -9579,7 +9581,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.74", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.75", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
