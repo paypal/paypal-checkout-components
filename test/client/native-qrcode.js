@@ -8,7 +8,13 @@ import { FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
 import { promiseNoop } from '../../src/lib';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton,
-    getNativeFirebaseMock, getGraphQLApiMock, mockFunction, generateOrderID } from './mocks';
+    getNativeFirebaseMock, getGraphQLApiMock, mockFunction, generateOrderID, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';
+
+const fundingEligibility = {
+    [ FUNDING.VENMO ]: {
+        eligible: true
+    }
+};
 
 describe('native qrcode cases', () => {
 
@@ -82,15 +88,10 @@ describe('native qrcode cases', () => {
                 }
             }));
 
-            const fundingEligibility = {
-                venmo: {
-                    eligible: true
-                }
-            };
-
             createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({
+                fundingEligibility,
                 eligibility: {
                     cardFields: false,
                     native:     true
@@ -125,15 +126,10 @@ describe('native qrcode cases', () => {
             window.xprops.onCancel = mockAsyncProp(avoid('onCancel', promiseNoop));
             window.xprops.onApprove = mockAsyncProp(avoid('onApprove', promiseNoop));
 
-            const fundingEligibility = {
-                venmo: {
-                    eligible: true
-                }
-            };
-
             createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({
+                fundingEligibility,
                 eligibility: {
                     cardFields: false,
                     native:     true
@@ -193,15 +189,10 @@ describe('native qrcode cases', () => {
                 }
             }));
 
-            const fundingEligibility = {
-                venmo: {
-                    eligible: true
-                }
-            };
-
             createButtonHTML({ fundingEligibility });
 
             await mockSetupButton({
+                fundingEligibility,
                 eligibility: {
                     cardFields: false,
                     native:     true
@@ -264,16 +255,11 @@ describe('native qrcode cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
                 }));
-    
-                const fundingEligibility = {
-                    venmo: {
-                        eligible: true
-                    }
-                };
-    
+        
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
+                    fundingEligibility,
                     eligibility: {
                         cardFields: false,
                         native:     true
@@ -374,16 +360,11 @@ describe('native qrcode cases', () => {
                         throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
                     }
                 }));
-    
-                const fundingEligibility = {
-                    venmo: {
-                        eligible: true
-                    }
-                };
-    
+        
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
+                    fundingEligibility,
                     eligibility: {
                         cardFields: false,
                         native:     true
@@ -477,16 +458,11 @@ describe('native qrcode cases', () => {
     
                 window.xprops.onCancel = avoid('onCancel');
                 window.xprops.onApprove = avoid('onApprove');
-
-                const fundingEligibility = {
-                    venmo: {
-                        eligible: true
-                    }
-                };
     
                 createButtonHTML({ fundingEligibility });
     
                 await mockSetupButton({
+                    fundingEligibility,
                     eligibility: {
                         cardFields: false,
                         native:     true
@@ -503,5 +479,57 @@ describe('native qrcode cases', () => {
             });
         });
 
+        it('should render a button with createOrder, click the button, and render checkout but not call GraphQL for non-Venmo', async () => {
+            return await wrapPromise(async ({ expect, avoid }) => {
+                window.xprops.platform = PLATFORM.DESKTOP;
+                delete window.xprops.onClick;
+    
+                const QRCode = window.paypal.QRCode;
+                mockFunction(window.paypal, 'QRCode', avoid('QRCode', QRCode));
+    
+                const gqlMock = getGraphQLApiMock({
+                    extraHandler: avoid('firebaseGQLCall')
+                });
+    
+                const orderID = generateOrderID();
+                const payerID = 'AAABBBCCC';
+    
+                window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                    return ZalgoPromise.try(() => {
+                        return orderID;
+                    });
+                }), 50);
+    
+                window.xprops.onCancel = avoid('onCancel');
+    
+                window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data) => {
+                    if (data.orderID !== orderID) {
+                        throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                    }
+    
+                    if (data.payerID !== payerID) {
+                        throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                    }
+                }));
+        
+                createButtonHTML({ fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+    
+                const eligibility = {
+                    cardFields: false,
+                    native:     true
+                };
+
+                // Use default fundingEligibility which is PayPal only
+                await mockSetupButton({
+                    fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY,
+                    eligibility
+                });
+
+                await clickButton(FUNDING.PAYPAL);
+                await window.xprops.onApprove.await();
+    
+                gqlMock.done();
+            });
+        });
     });
 });

@@ -135,11 +135,17 @@ export function canUseNativeQRCode({ fundingSource, win } : {| fundingSource : ?
 }
 
 export function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
-    const { clientID, fundingSource, onShippingChange, createBillingAgreement, createSubscription, env } = props;
+    const { clientID, fundingSource, onShippingChange, createBillingAgreement, createSubscription, env, platform } = props;
     const { firebase: firebaseConfig } = config;
-    const { merchantID } = serviceData;
+    const { merchantID, fundingEligibility } = serviceData;
+    const isVenmoEligible = fundingEligibility?.venmo?.eligible;
 
     if (!firebaseConfig) {
+        return false;
+    }
+
+    // If Desktop and venmo not eligible, native payment flow is not eligible
+    if (platform && platform === PLATFORM.DESKTOP && !isVenmoEligible) {
         return false;
     }
 
