@@ -63,7 +63,24 @@ test(`Button should render with ssr, with zh_Hant locale option`, async () => {
     const { Buttons } = await getButtonScript();
 
     const buttonHTML = Buttons({
-        locale:          { country: 'HK', lang: 'zh_Hant' },
+        locale:          { country: 'HK', lang: 'zh' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+});
+
+test(`Button should render with ssr, with en_HK locale option`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'HK', lang: 'en' },
         platform:        'desktop',
         sessionID:       'xyz',
         buttonSessionID: 'abc',
