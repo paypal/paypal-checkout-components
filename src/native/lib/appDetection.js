@@ -11,10 +11,11 @@ const ANDROID_VENMO_DEBUG_APP_ID = 'com.venmo.fifa';
 
 type AndroidApp = {|
     id? : string,
+    installed : boolean,
     version? : string
 |};
 
-function isAndroidAppInstalled(appId : string) : ZalgoPromise<?AndroidApp> {
+function isAndroidAppInstalled(appId : string) : ZalgoPromise<AndroidApp> {
     // assume true unless we can prove false
     if (window.navigator && window.navigator.getInstalledRelatedApps) {
         return window.navigator.getInstalledRelatedApps()
@@ -31,27 +32,27 @@ function isAndroidAppInstalled(appId : string) : ZalgoPromise<?AndroidApp> {
                     }
                 }
                 
-                return ZalgoPromise.resolve(null);
+                return ZalgoPromise.resolve({ installed: false });
             });
     }
 
-    return ZalgoPromise.resolve(null);
+    return ZalgoPromise.resolve({ installed: false });
 }
 
 function isAndroidPayPalAppInstalled() : ZalgoPromise<?AndroidApp> {
     return isAndroidAppInstalled(ANDROID_PAYPAL_APP_ID).then(app => {
-        return app ? { ...app } : null;
+        return { ...app };
     });
 }
 
 function isAndroidVenmoAppInstalled({ env }) : ZalgoPromise<?AndroidApp> {
     if (env === ENV.PRODUCTION) {
         return isAndroidAppInstalled(ANDROID_VENMO_APP_ID).then(app => {
-            return app ? { ...app } : null;
+            return { ...app };
         });
     } else {
         return isAndroidAppInstalled(ANDROID_VENMO_DEBUG_APP_ID).then(app => {
-            return app ? { ...app } : null;
+            return { ...app };
         });
     }
 }

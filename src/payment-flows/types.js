@@ -275,4 +275,3 @@ type ApplePaySessionConfig = {|
 |};
 
 export type XApplePaySessionConfigRequest = (version : number, request : Object) => ZalgoPromise<ApplePaySessionConfig>;
-
