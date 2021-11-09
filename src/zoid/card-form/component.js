@@ -2,6 +2,7 @@
 /* @jsx jsxDom */
 /* eslint max-lines: 0 */
 
+import { LANG } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import type { CrossDomainWindowType } from 'cross-domain-utils/src';
@@ -9,6 +10,7 @@ import { inlineMemoize } from 'belter/src';
 import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard, getPayPalDomain } from '@paypal/sdk-client/src';
 
 import { getSessionID } from '../../lib';
+
 
 type CardProps = {|
     client : {
@@ -89,7 +91,8 @@ export function getCardFormComponent() : CardFormComponent {
                     queryParam:    'locale.x',
                     allowDelegate: true,
                     queryValue({ value }) : string {
-                        const { lang, country } = value;
+                        let { lang, country } = value;
+                        lang = lang === LANG.ZH_HANT ? LANG.ZH : lang;
                         return `${ lang }_${ country }`;
                     },
                     value: getLocale
