@@ -43,7 +43,8 @@ export type ContentType = {|
 
 export type Experiment = {|
     enableVenmo? : boolean,
-    disablePaylater? : boolean
+    disablePaylater? : boolean,
+    enableVenmoAppLabel? : boolean
 |};
 
 export type Requires = {|

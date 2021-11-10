@@ -135,6 +135,12 @@ export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>
     };
 }
 
+export function getVenmoAppLabelExperiment() : EligibilityExperiment  {
+    return {
+        enableVenmoAppLabel: true
+    };
+}
+
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
         experiment = getVenmoExperiment(), applePaySupport, supportsPopups = userAgentSupportsPopups(),
