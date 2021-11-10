@@ -3,7 +3,7 @@
 import { node, Fragment } from 'jsx-pragmatic/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
-import { animationConfig, AnimationComponent, getAnimationProps } from './fadeout-logo-show-label-text';
+import { animationConfig, AnimationComponent } from './fadeout-logo-show-label-text';
 import type { ButtonAnimationOutputParams } from './types';
 
 export const ANIMATION_CLASSES = {
@@ -11,16 +11,54 @@ export const ANIMATION_CLASSES = {
     CONTAINER:       ('hover-slide-logo-animation' : 'hover-slide-logo-animation')
 };
 
+// Returns label container if the button sizes match
+export const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
+    const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
+    const { tiny, medium } = configuration;
+    // get the animation main container to force specificity( in css ) and make sure we are running the right animation
+    const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
+    if (!animationContainer) {
+        return null;
+    }
+
+    // return null if animation should not be played for the button size
+    const animationContainerWidth = animationContainer.offsetWidth;
+    if (animationContainerWidth < tiny.min || animationContainerWidth > medium.max) {
+        // remove label element from dom
+        animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
+        return null;
+    }
+
+    // get the label container that animation will be applied to
+    const paypalLabelContainerElement = animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
+    // get starting position for element so it doesn't jump when animation begins
+    const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
+    // active reverse logo animation on mouser out
+    animationContainer.addEventListener('mouseleave', () => {
+        paypalLogoElement.style.animationName = 'reverse-logo';
+        paypalLogoElement.style.animationDuration = '2s';
+        paypalLogoElement.style.animationPlayState = 'running';
+    }, false);
+    // active animation from center to left on mouse enter
+    animationContainer.addEventListener('mouseenter', () => {
+        paypalLogoElement.style.animationName = 'move-logo-to-left-side';
+        paypalLogoElement.style.animationPlayState = 'running';
+    }, false);
+
+    const paypalLogoStartingLeftPosition = paypalLogoElement
+        ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }`
+        : '44.5';
+
+    return {
+        paypalLabelContainerElement,
+        paypalLogoStartingLeftPosition
+    };
+};
+
 const createAnimation = function (animationProps, cssClasses) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY } = cssClasses;
     const { paypalLabelContainerElement } = animationProps;
     const animations = `
-        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ LOGO_CLASS.LOGO } {
-            animation-name: reverse-logo;
-            animation-duration: 2s;
-            animation-play-state: revert;
-        }
-        
         .${ DOM_READY } .${ ANIMATION_CONTAINER }:hover img.${ LOGO_CLASS.LOGO } {
             animation-name: move-logo-to-left-side;
             animation-duration: 2s;
@@ -41,11 +79,11 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         }
         
         @keyframes reverse-logo {
-            from {
-              opacity:   0;
-              transform: translateX(-50%);
+            0%{
+                opacity:   0;
+                transform: translateX(-50%);
             }
-            to{
+            100%{
                opacity: 1;
                background-color:initial;
                transform: translateX(0%)
