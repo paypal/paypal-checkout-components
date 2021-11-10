@@ -303,3 +303,32 @@ test(`Animation should not be applied when there is invalid animation id`, async
 
     
 });
+
+test(`Animation should not be applied when buttonAnimation is null`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonAnimation: null
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const animationSignal = buttonHTML.match('data-animation-experiment');
+
+    if (animationSignal) {
+        throw new Error('Expected animation to applied in script and container');
+    }
+    
+});

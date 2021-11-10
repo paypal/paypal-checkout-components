@@ -8,8 +8,14 @@ import { type ButtonAnimationOutputParams } from './types';
 
 
 export function getButtonAnimation(personalization : ?Personalization) : ButtonAnimationOutputParams | Object {
-    // Only show animations for SSR
-    if (__WEB__ || !personalization) {
+
+    // check valid personalization
+    if (
+        __WEB__
+        || !personalization
+        || typeof personalization !== 'object'
+        || !personalization.buttonAnimation
+    )  {
         return {};
     }
 
