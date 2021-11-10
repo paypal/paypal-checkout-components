@@ -256,9 +256,8 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
                     };
 
                     const onCancelQR = () => {
-                        return updateQRCodeComponentState({
-                            state:     QRCODE_STATE.ERROR,
-                            errorText: 'The authorization was canceled'
+                        return ZalgoPromise.try(() => {
+                            return closeQRCode('onCancel');
                         }).then(() => {
                             return onCancel();
                         });

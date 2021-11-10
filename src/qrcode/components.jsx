@@ -189,7 +189,7 @@ export const cardStyle : string = `
         min-width: 160px;
         min-height: 160px;
         width: calc(100% - 32px);
-        max-width: 250px;
+        max-width: 325px;
     }
     #instructions {
         background-color: #FFFF;
