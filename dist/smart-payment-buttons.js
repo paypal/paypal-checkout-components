@@ -3492,7 +3492,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.75", _headers15);
+            _headers15["x-app-version"] = "5.0.76", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7601,6 +7601,15 @@ window.spb = function(modules) {
                                     onEscapePath: onEscapePath
                                 }, newState));
                             }
+                            var closeQRCode = function(event) {
+                                onQRClose(event);
+                                return promise_ZalgoPromise.delay(2e3).then((function() {
+                                    return promise_ZalgoPromise.try((function() {
+                                        qrCodeComponentInstance.close();
+                                        return onDestroy();
+                                    }));
+                                })).then(src_util_noop);
+                            };
                             var connection = connectNative({
                                 config: config,
                                 sessionUID: sessionUID,
@@ -7616,24 +7625,15 @@ window.spb = function(modules) {
                                         return updateQRCodeComponentState({
                                             state: "qr_authorized"
                                         }).then((function() {
-                                            return function(event) {
-                                                onQRClose("onApprove");
-                                                return promise_ZalgoPromise.delay(2e3).then((function() {
-                                                    return promise_ZalgoPromise.try((function() {
-                                                        qrCodeComponentInstance.close();
-                                                        return onDestroy();
-                                                    }));
-                                                })).then(src_util_noop);
-                                            }().then((function() {
+                                            return closeQRCode("onApprove").then((function() {
                                                 return onApprove(res);
                                             }));
                                         }));
                                     },
                                     onCancel: function() {
-                                        return updateQRCodeComponentState({
-                                            state: "qr_error",
-                                            errorText: "The authorization was canceled"
-                                        }).then((function() {
+                                        return promise_ZalgoPromise.try((function() {
+                                            return closeQRCode("onCancel");
+                                        })).then((function() {
                                             return onCancel();
                                         }));
                                     },
@@ -9581,7 +9581,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.75", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.76", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
