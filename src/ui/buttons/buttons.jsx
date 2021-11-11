@@ -110,7 +110,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        fundingSources = fundingSources.filter(src => src !== FUNDING.CARD).concat([ FUNDING.CARD ]);
+        fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
@@ -169,12 +169,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource)
                     ? <TagLine
-                        fundingSource={ fundingSources[0] }
-                        style={ style }
-                        locale={ locale }
-                        multiple={ multiple }
-                        nonce={ nonce }
-                        personalization={ personalization }
+                            fundingSource={ fundingSources[0] }
+                            style={ style }
+                            locale={ locale }
+                            multiple={ multiple }
+                            nonce={ nonce }
+                            personalization={ personalization }
                     /> : null
             }
 
@@ -187,19 +187,19 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
                     ? <PoweredByPayPal
-                        locale={ locale }
-                        nonce={ nonce }
+                            locale={ locale }
+                            nonce={ nonce }
                     /> : null
             }
 
             {
                 buttonAnimationScript
                     ? <ButtonAnimationExperimentScriptWrapper
-                        nonce={ nonce }
-                        buttonAnimation={ buttonAnimationScript }
+                            nonce={ nonce }
+                            buttonAnimation={ buttonAnimationScript }
                     />
                     : <Script
-                        nonce={ nonce }
+                            nonce={ nonce }
                     />
             }
         </div>
