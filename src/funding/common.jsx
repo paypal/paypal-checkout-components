@@ -66,7 +66,7 @@ export type AnimatedExperimentLabelOptions = {|
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
-    buttonAnimationComponent : ?ChildType
+    buttonDesignComponent : ?ChildType
 |};
 
 export type WalletLabelOptions = {|

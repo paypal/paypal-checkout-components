@@ -164,9 +164,8 @@ export function Label(opts : LabelOptions) : ChildType {
 }
 
 export function AnimatedExperimentLabel(opts : AnimatedExperimentLabelOptions) : ChildType {
-    const { buttonAnimationComponent } = opts;
-    // eslint-disable-next-line react/destructuring-assignment
-    delete opts.buttonAnimationComponent;
+    const { buttonDesignComponent } = opts;
+    delete opts.buttonDesignComponent;
     // $FlowFixMe
     const basicLabel = (<BasicLabel { ...opts } />);
     // $FlowFixMe
@@ -174,7 +173,7 @@ export function AnimatedExperimentLabel(opts : AnimatedExperimentLabelOptions) :
     return (
         <Fragment>
             { basicLabel }
-            { buttonAnimationComponent }
+            { buttonDesignComponent }
             { buttonPersonalization }
         </Fragment>
     );
