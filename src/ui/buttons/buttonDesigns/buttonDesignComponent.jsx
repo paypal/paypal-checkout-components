@@ -4,13 +4,14 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 
 import { CLASS } from '../../../constants';
+
 import { type LabelOptions } from './types';
 
 export function ButtonDesignComponent({ designLabelText } : LabelOptions) : ChildType {
-  return (
-      <Fragment>
-          <div class={ 'personalized-label-container' } data-animation-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
-          <style innerHTML={ `
+    return (
+        <Fragment>
+            <div class={ 'personalized-label-container' } data-animation-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
+            <style innerHTML={ `
               .${ CLASS.DOM_READY } .personalized-design-container img.${ LOGO_CLASS.LOGO }{
                   position: relative;
               }
@@ -29,6 +30,6 @@ export function ButtonDesignComponent({ designLabelText } : LabelOptions) : Chil
                   justify-content: space-around;
               }
           ` } />;
-      </Fragment>
-  );
+        </Fragment>
+    );
 }

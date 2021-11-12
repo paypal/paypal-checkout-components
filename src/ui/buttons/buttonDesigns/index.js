@@ -7,18 +7,7 @@ import { ButtonDesignComponent } from './buttonDesignComponent';
 import { type ButtonDesignOutputParams } from './types';
 
 
-export function getButtonDesign(p : ?Personalization) : ButtonDesignOutputParams | Object {
-
-    const personalization = {
-        buttonAnimation: {
-            id:       'run-divide-logo-animation',
-            text:     'Safe and easy way to pay',
-            tracking: {
-                click:      '',
-                impression: ''
-            }
-        }
-    };
+export function getButtonDesign(personalization : ?Personalization) : ButtonDesignOutputParams | Object {
 
     // check valid personalization
     if (
@@ -52,9 +41,9 @@ export function getButtonDesign(p : ?Personalization) : ButtonDesignOutputParams
         const designProps = { designLabelText };
         return {
             buttonDesignContainerClass: 'personalized-design-container',
-            buttonDesignScript:         buttonDesignScript,
+            buttonDesignScript,
             buttonDesignComponent:      ButtonDesignComponent(designProps)
-        }
+        };
     }
 
     return {};

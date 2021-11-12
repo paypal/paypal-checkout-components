@@ -29,7 +29,7 @@ const getValidDesignProps = function (document, configuration) : ElementNode | n
         return null;
     }
 
-    const paypalLabelContainerElement = (designContainer && designContainer.querySelector(`.${ PAYPAL_LABEL_CONTAINER }`)) || null;   
+    const paypalLabelContainerElement = (designContainer && designContainer.querySelector(`.${ PAYPAL_LABEL_CONTAINER }`)) || null;
 
     return paypalLabelContainerElement;
 };

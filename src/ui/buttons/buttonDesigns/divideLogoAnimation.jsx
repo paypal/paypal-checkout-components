@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { type ElementNode } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
@@ -12,8 +13,8 @@ type DivideLogoAnimationProps = {|
 
 
 const DESIGN_CONFIG = {
-    min:      BUTTON_SIZE_STYLE.large.minWidth,
-    max:      BUTTON_SIZE_STYLE.huge.maxWidth,
+    min:                            BUTTON_SIZE_STYLE.large.minWidth,
+    max:                            BUTTON_SIZE_STYLE.huge.maxWidth,
     cssUtilClasses: {
         DOM_READY:                  CLASS.DOM_READY,
         PAYPAL_LOGO:                LOGO_CLASS.LOGO,
@@ -41,7 +42,7 @@ const getValidDesignProps = function(document, configuration) : DivideLogoAnimat
     if (!paypalLabelContainerElement) {
         return null;
     }
-    
+
     // get starting position for element so it doesn't flicker when animation begins
     const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
     const paypalLogoStartingLeftPosition = paypalLogoElement

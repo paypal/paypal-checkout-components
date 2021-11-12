@@ -7,15 +7,15 @@ import { getComponentScript } from '../script';
 
 type ScriptProps = {|
     nonce : ?string,
-    buttonAnimation : string
+    buttonDesignScript : string
 |};
 
-export function ButtonAnimationExperimentScriptWrapper({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
+export function ButtonDesignExperimentScriptWrapper({ nonce, buttonDesignScript } : ScriptProps) : ElementNode {
 
     const scripts = `
         const scriptFns = ${ getComponentScript().toString() };
         scriptFns();
-        function onDomLoad(){ ${ buttonAnimation } };
+        function onDomLoad(){ ${ buttonDesignScript } };
         document.addEventListener('DOMContentLoaded', onDomLoad);
     `;
     return (
