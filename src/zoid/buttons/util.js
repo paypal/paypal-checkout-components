@@ -137,7 +137,7 @@ export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>
 
 export function getVenmoAppLabelExperiment() : EligibilityExperiment  {
     return {
-        enableVenmoAppLabel: true
+        enableVenmoAppLabel: false
     };
 }
 
