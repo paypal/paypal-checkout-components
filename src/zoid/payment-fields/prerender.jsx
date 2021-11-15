@@ -19,35 +19,12 @@ export function PaymentFieldsPrerender({ nonce } : PrerenderedPaymentFieldsProps
                             margin: 0;
                             width: 100%;
                             height: 100%;
-                            background: transparent;
+                            background: rgba(240,240,240,0.5);
                         }
 
                         body {
-                            background: transparent;
                             position: relative;
                             overflow: hidden;
-                        }
-
-                        body::after {
-                            content: "";
-                            display: block;
-                            background-color: transparent;
-                            overflow: hidden;
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            width: 100%;
-                            height: 100%;
-                            transform: translateX(0);
-                        }
-
-                        @keyframes loading-placeholder {
-                            0% {
-                                transform: translateX(-150%);
-                            }
-                            100% {
-                                transform: translateX(150%);
-                            }
                         }
                     ` }
                 />
