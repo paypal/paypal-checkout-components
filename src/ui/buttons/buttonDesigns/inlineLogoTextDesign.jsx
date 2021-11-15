@@ -1,12 +1,18 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType, type ElementNode } from 'jsx-pragmatic/src';
 
 import { BUTTON_SIZE_STYLE } from '../config';
 import { CLASS } from '../../../constants';
 
-const DESIGN_CONFIG = {
+import { type ContentOptions } from './types';
+
+type InlineLogoTextProps = {|
+    paypalLabelContainerElement : ElementNode
+|};
+
+export const INLINE_LOGO_TEXT_CONFIG = {
     cssUtilClasses: {
         PAYPAL_LABEL_CONTAINER: CLASS.BUTTON_LABEL,
         PAYPAL_LOGO:            LOGO_CLASS.LOGO,
@@ -16,7 +22,7 @@ const DESIGN_CONFIG = {
     max:                        BUTTON_SIZE_STYLE.huge.maxWidth
 };
 
-const getValidDesignProps = function (document, configuration) : ElementNode | null {
+export const getValidInlineLogoTextProps = function (document : Object, configuration : Object) : InlineLogoTextProps | null {
     const { PAYPAL_LABEL_CONTAINER } = configuration.cssUtilClasses;
 
     const designContainer = (document && document.querySelector('.personalized-design-container')) || null;
@@ -31,11 +37,14 @@ const getValidDesignProps = function (document, configuration) : ElementNode | n
 
     const paypalLabelContainerElement = (designContainer && designContainer.querySelector(`.${ PAYPAL_LABEL_CONTAINER }`)) || null;
 
-    return paypalLabelContainerElement;
+    return {
+        paypalLabelContainerElement
+    };
 };
 
-const getInlineLabelTextDesign = function (designContainerElement, cssUtilClasses) : void {
+export const getInlineLabelTextDesign = function (designProps : InlineLogoTextProps, cssUtilClasses : Object) : void {
     const { DOM_READY, PAYPAL_LOGO } = cssUtilClasses;
+    const { paypalLabelContainerElement: designContainerElement } = designProps;
     const designCss = `
         .${ DOM_READY } .personalized-design-container img.${ PAYPAL_LOGO }{
             position: fixed;
@@ -56,14 +65,29 @@ const getInlineLabelTextDesign = function (designContainerElement, cssUtilClasse
     }
 };
 
+export function InlineLogoTextComponent({ designLabelText } : ContentOptions) : ChildType {
+    return (
+        <Fragment>
+            <div class={ 'personalized-label-container' } data-animation-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
+            <style innerHTML={ `
+              .${ CLASS.DOM_READY } .personalized-design-container img.${ LOGO_CLASS.LOGO }{
+                  position: relative;
+              }
+              
+              .personalized-design-container .personalized-label-container {
+                  position: absolute;
+                  opacity: 0; 
+                  color: #142C8E;
+                  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                  font-size: 14px;
+              }
 
-export function getInlineLabelTextScript() : string {
-    const buttonDesignScript = `
-        const designContainerElement = ${ getValidDesignProps.toString() }( document, ${ JSON.stringify(DESIGN_CONFIG) })
-        if (designContainerElement) {
-            const applyDesign = ${ getInlineLabelTextDesign.toString() }
-            applyDesign(designContainerElement, ${ JSON.stringify(DESIGN_CONFIG.cssUtilClasses) })
-        }
-    `;
-    return buttonDesignScript;
+              .personalized-design-container .personalized-label-container span {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-around;
+              }
+          ` } />;
+        </Fragment>
+    );
 }

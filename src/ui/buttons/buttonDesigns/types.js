@@ -8,6 +8,6 @@ export type ButtonDesignOutputParams ={|
 
 |};
 
-export type LabelOptions = {|
+export type ContentOptions = {|
     designLabelText : string
 |};

@@ -22,3 +22,14 @@ export function ButtonDesignExperimentScriptWrapper({ nonce, buttonDesignScript 
         <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts }})()` } />
     );
 }
+
+export function getDesignScript(designFn : Function, getValidDesignProps : Function, designConfig : Object) : string {
+    const buttonDesignScript = `
+        const designProps = ${ getValidDesignProps.toString() }( document, ${ JSON.stringify(designConfig) })
+        if (designProps) {
+            const applyDesign = ${ designFn.toString() }
+            applyDesign(designProps, ${ JSON.stringify(designConfig.cssUtilClasses) })
+        }
+    `;
+    return buttonDesignScript;
+}

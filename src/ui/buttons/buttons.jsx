@@ -11,7 +11,7 @@ import { determineEligibleFunding, isWalletFundingEligible } from '../../funding
 import { ValidationError } from '../../lib';
 
 import { getButtonDesign } from './buttonDesigns';
-import { ButtonDesignExperimentScriptWrapper } from './buttonDesigns/designScriptWrapper';
+import { ButtonDesignExperimentScriptWrapper } from './buttonDesigns/script';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
