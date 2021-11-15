@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ChildType, type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
@@ -9,7 +9,7 @@ import { BUTTON_SIZE_STYLE } from '../config';
 import { type ContentOptions } from './types';
 
 type DivideLogoAnimationProps = {|
-    paypalLabelContainerElement : ElementNode,
+    paypalLabelContainerElement : Object,
     paypalLogoStartingLeftPosition : string
 |};
 
@@ -122,7 +122,7 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
 export function DivideLogoTextComponent({ designLabelText } : ContentOptions) : ChildType {
     return (
         <Fragment>
-            <div class={ 'personalized-label-container' } data-animation-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
+            <div class={ 'personalized-label-container' } data-design-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
             <style innerHTML={ `
               .${ CLASS.DOM_READY } .personalized-design-container img.${ LOGO_CLASS.LOGO }{
                   position: relative;

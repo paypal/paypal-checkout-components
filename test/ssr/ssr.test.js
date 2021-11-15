@@ -195,12 +195,12 @@ test(`Button renderer should export DEFAULT_PROPS`, async () => {
     }
 });
 
-test(`Animation should be applied when there is valid personalization`, async () => {
+test(`Design should be applied when there is valid personalization`, async () => {
 
     const { Buttons } = await getButtonScript();
 
     const personalization = {
-        buttonAnimation: {
+        buttonDesign: {
             id:       'run-divide-logo-animation',
             text:     'Safe and easy way to pay',
             tracking: {
@@ -223,21 +223,21 @@ test(`Animation should be applied when there is valid personalization`, async ()
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationContainer = buttonHTML.match('data-animation-experiment');
-    const animationScript = buttonHTML.match('divide-logo-animation-left-side');
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('divide-logo-animation-left-side');
 
-    if (!animationContainer || !animationScript) {
+    if (!designContainer || !designScript) {
         throw new Error('Expected animation to applied in script and container');
     }
 
     
 });
 
-test(`Animation for adding label text next to logo should be applied when there is valid personalization`, async () => {
+test(`Design for adding label text next to logo should be applied when there is valid personalization`, async () => {
     const { Buttons } = await getButtonScript();
 
     const personalization = {
-        buttonAnimation: {
+        buttonDesign: {
             id:       'run-add-label-text-next-to-logo-animation',
             text:     'Safe and easy way to pay',
             tracking: {
@@ -259,20 +259,20 @@ test(`Animation for adding label text next to logo should be applied when there 
     if (!buttonHTML || typeof buttonHTML !== 'string') {
         throw new Error(`Expected html to be a non-empty string`);
     }
-    const animationContainer = buttonHTML.match('data-animation-experiment');
-    const animationScript = buttonHTML.match('label-next-to-logo-animation-element');
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
 
-    if (!animationContainer || !animationScript) {
-        throw new Error('Expected animation to be applied in script and container');
+    if (!designContainer || !designScript) {
+        throw new Error('Expected design to be applied in script and container');
     }
 });
 
-test(`Animation should not be applied when there is invalid animation id`, async () => {
+test(`Design should not be applied when there is invalid design id`, async () => {
 
     const { Buttons } = await getButtonScript();
 
     const personalization = {
-        buttonAnimation: {
+        buttonDesign: {
             id:       'control',
             text:     '',
             tracking: {
@@ -295,10 +295,10 @@ test(`Animation should not be applied when there is invalid animation id`, async
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationSignal = buttonHTML.match('data-animation-experiment');
+    const designSignal = buttonHTML.match('data-design-experiment');
 
-    if (animationSignal) {
-        throw new Error('Expected animation to applied in script and container');
+    if (designSignal) {
+        throw new Error('Expected design to be applied in script and container');
     }
 
     
@@ -325,10 +325,10 @@ test(`Animation should not be applied when buttonAnimation is null`, async () =>
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationSignal = buttonHTML.match('data-animation-experiment');
+    const animationSignal = buttonHTML.match('data-design-experiment');
 
     if (animationSignal) {
-        throw new Error('Expected animation to applied in script and container');
+        throw new Error('Expected design to be applied in script and container');
     }
     
 });

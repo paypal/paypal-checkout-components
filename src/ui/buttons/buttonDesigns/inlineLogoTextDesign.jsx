@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ChildType, type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { BUTTON_SIZE_STYLE } from '../config';
 import { CLASS } from '../../../constants';
@@ -9,7 +9,7 @@ import { CLASS } from '../../../constants';
 import { type ContentOptions } from './types';
 
 type InlineLogoTextProps = {|
-    paypalLabelContainerElement : ElementNode
+    paypalLabelContainerElement : Object
 |};
 
 export const INLINE_LOGO_TEXT_CONFIG = {
@@ -68,7 +68,7 @@ export const getInlineLabelTextDesign = function (designProps : InlineLogoTextPr
 export function InlineLogoTextComponent({ designLabelText } : ContentOptions) : ChildType {
     return (
         <Fragment>
-            <div class={ 'personalized-label-container' } data-animation-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
+            <div class={ 'personalized-label-container' } data-design-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
             <style innerHTML={ `
               .${ CLASS.DOM_READY } .personalized-design-container img.${ LOGO_CLASS.LOGO }{
                   position: relative;
