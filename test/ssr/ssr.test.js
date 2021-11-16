@@ -267,13 +267,13 @@ test(`Design for adding label text next to logo should be applied when there is 
     }
 });
 
-test(`Design should not be applied when there is invalid design id`, async () => {
+test(`Tag should be applied with no design for control`, async () => {
 
     const { Buttons } = await getButtonScript();
 
     const personalization = {
         buttonDesign: {
-            id:       'control',
+            id:       'large-button-design-control',
             text:     '',
             tracking: {
                 click:      '',
@@ -296,9 +296,10 @@ test(`Design should not be applied when there is invalid design id`, async () =>
     }
 
     const designSignal = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
 
-    if (designSignal) {
-        throw new Error('Expected design to be applied in script and container');
+    if (!designSignal || designScript) {
+        throw new Error('Expected to find a data-design-experiment tag but no script');
     }
 
     

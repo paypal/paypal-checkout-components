@@ -129,7 +129,7 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
 export function DivideLogoTextComponent({ designLabelText } : ContentOptions) : ChildType {
     return (
         <Fragment>
-            <div class={ 'personalized-label-container' } data-design-experiment="104519"> <span>{designLabelText}</span></div>
+            <div class={ 'personalized-label-container' } data-design-experiment='104519'> <span>{designLabelText}</span></div>
             <style innerHTML={ `
               .${ CLASS.DOM_READY } .personalized-design-container img.${ LOGO_CLASS.LOGO }{
                   position: relative;

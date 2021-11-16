@@ -5,6 +5,7 @@ import { type Personalization } from '../props';
 
 import { getDesignScript } from './script';
 import { type ButtonDesignOutputParams } from './types';
+import { ControlDesignComponent } from './control';
 import {
     getDivideLogoAnimation,
     getDivideLogoProps,
@@ -33,6 +34,11 @@ const DESIGN_MAP : Object = {
     }
 };
 
+const CONTROL_MAP : Object = {
+    'large-button-design-control': '104519',
+    'small-button-design-control': '104530'
+};
+
 export function getButtonDesign(personalization : ?Personalization) : ButtonDesignOutputParams | Object {
 
     // check valid personalization
@@ -52,6 +58,17 @@ export function getButtonDesign(personalization : ?Personalization) : ButtonDesi
         } = {}
     } = personalization;
 
+    // Return fragment with data-design-experiment tag for logging
+    if (CONTROL_MAP[designId]) {
+        const buttonDesignComponent : ChildType = ControlDesignComponent(CONTROL_MAP[designId]);
+
+        return {
+            buttonDesignContainerClass: '',
+            buttonDesignScript:         '',
+            buttonDesignComponent
+        };
+    }
+    
     if (!DESIGN_MAP[designId]) {
         return {};
     }
@@ -66,6 +83,7 @@ export function getButtonDesign(personalization : ?Personalization) : ButtonDesi
     const designContent = { designLabelText };
     const buttonDesignScript : string = getDesignScript(designFn, getValidDesignProps, designConfig);
     const buttonDesignComponent : ChildType = ButtonDesignComponent(designContent);
+
     return {
         buttonDesignContainerClass: 'personalized-design-container',
         buttonDesignScript,
