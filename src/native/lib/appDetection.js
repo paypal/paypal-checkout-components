@@ -2,8 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { ENV, FUNDING } from '@paypal/sdk-constants/src';
-
-import { isIOSSafari } from '../../lib';
+import { isIos } from 'belter';
 
 const ANDROID_PAYPAL_APP_ID = 'com.paypal.android.p2pmobile';
 const ANDROID_VENMO_APP_ID  = 'com.venmo';
@@ -58,7 +57,7 @@ function isAndroidVenmoAppInstalled({ env }) : ZalgoPromise<?AndroidApp> {
 }
 
 export function isAppInstalled({ fundingSource, env } : {| fundingSource : $Values<typeof FUNDING>, env : $Values<typeof ENV> |}) : ZalgoPromise<?AndroidApp> {
-    if (isIOSSafari()) {
+    if (isIos()) {
         return ZalgoPromise.resolve(null);
     }
 
