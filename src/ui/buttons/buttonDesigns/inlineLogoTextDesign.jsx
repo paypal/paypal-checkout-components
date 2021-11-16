@@ -9,7 +9,8 @@ import { CLASS } from '../../../constants';
 import { type ContentOptions } from './types';
 
 type InlineLogoTextProps = {|
-    paypalLabelContainerElement : Object
+    paypalLabelContainerElement : Object,
+    designContainer : Object
 |};
 
 export const INLINE_LOGO_TEXT_CONFIG = {
@@ -44,13 +45,26 @@ export const getValidInlineLogoTextProps = function (document : Object, configur
     }
 
     return {
-        paypalLabelContainerElement
+        paypalLabelContainerElement,
+        designContainer
     };
 };
 
-export const getInlineLabelTextDesign = function (designProps : InlineLogoTextProps, cssUtilClasses : Object) : void {
-    const { DOM_READY, PAYPAL_LOGO } = cssUtilClasses;
-    const { paypalLabelContainerElement: designContainerElement } = designProps;
+export const getInlineLabelTextDesign = function (designProps : InlineLogoTextProps, configuration : Object) : void {
+    const {
+        min,
+        max,
+        cssUtilClasses: {
+            DOM_READY,
+            PAYPAL_LOGO
+        }
+    } = configuration;
+
+    const {
+        paypalLabelContainerElement,
+        designContainer
+    } = designProps;
+
     const designCss = `
         .${ DOM_READY } .personalized-design-container img.${ PAYPAL_LOGO }{
             position: fixed;
@@ -64,14 +78,18 @@ export const getInlineLabelTextDesign = function (designProps : InlineLogoTextPr
         }
     `;
 
-    if (designContainerElement) {
+    if (paypalLabelContainerElement) {
         const style = document.createElement('style');
-        designContainerElement.appendChild(style);
+        paypalLabelContainerElement.appendChild(style);
         style.appendChild(document.createTextNode(designCss));
 
         window.addEventListener('resize', () => {
-            if (designContainerElement.contains(style)) {
-                designContainerElement.removeChild(style);
+            // Remove animation if size limit broken
+            if (
+                (designContainer.offsetWidth > max || designContainer.offsetWidth < min)
+                && paypalLabelContainerElement.contains(style)
+            ) {
+                paypalLabelContainerElement.removeChild(style);
             }
         });
     }

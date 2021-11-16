@@ -28,7 +28,7 @@ export function getDesignScript(designFn : Function, getValidDesignProps : Funct
         const designProps = ${ getValidDesignProps.toString() }( document, ${ JSON.stringify(designConfig) })
         if (designProps) {
             const applyDesign = ${ designFn.toString() }
-            applyDesign(designProps, ${ JSON.stringify(designConfig.cssUtilClasses) })
+            applyDesign(designProps, ${ JSON.stringify(designConfig) })
         }
     `;
     return buttonDesignScript;

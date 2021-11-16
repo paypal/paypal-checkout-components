@@ -10,7 +10,8 @@ import { type ContentOptions } from './types';
 
 type DivideLogoAnimationProps = {|
     paypalLabelContainerElement : Object,
-    paypalLogoStartingLeftPosition : string
+    paypalLogoStartingLeftPosition : string,
+    designContainer : Object
 |};
 
 
@@ -53,13 +54,27 @@ export const getDivideLogoProps = function (document : Object, configuration : O
 
     return {
         paypalLabelContainerElement,
-        paypalLogoStartingLeftPosition
+        paypalLogoStartingLeftPosition,
+        designContainer
     };
 };
 
-export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, cssUtilClasses : Object) : void {
-    const { DOM_READY, PAYPAL_LOGO } = cssUtilClasses;
-    const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = designProps;
+export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, configuration : Object) : void {
+    const {
+        min,
+        max,
+        cssUtilClasses: {
+            DOM_READY,
+            PAYPAL_LOGO
+        }
+    } = configuration;
+
+    const {
+        paypalLabelContainerElement,
+        paypalLogoStartingLeftPosition,
+        designContainer
+    } = designProps;
+
     const designCss = `
         .${ DOM_READY } .personalized-design-container img.${ PAYPAL_LOGO }{
             animation: 3s divide-logo-animation-left-side 2s infinite alternate;
@@ -119,7 +134,11 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
 
         
         window.addEventListener('resize', () => {
-            if (paypalLabelContainerElement.contains(style)) {
+            // Remove animation if size limit broken
+            if (
+                (designContainer.offsetWidth > max || designContainer.offsetWidth < min)
+                && paypalLabelContainerElement.contains(style)
+            ) {
                 paypalLabelContainerElement.removeChild(style);
             }
         });
