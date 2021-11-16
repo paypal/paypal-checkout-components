@@ -25,17 +25,23 @@ export const INLINE_LOGO_TEXT_CONFIG = {
 export const getValidInlineLogoTextProps = function (document : Object, configuration : Object) : InlineLogoTextProps | null {
     const { PAYPAL_LABEL_CONTAINER } = configuration.cssUtilClasses;
 
+
     const designContainer = (document && document.querySelector('.personalized-design-container')) || null;
     if (!designContainer) {
         return null;
     }
      
+    // Return null if design does not apply to button size
     const designContainerWidth = designContainer.offsetWidth;
     if (designContainerWidth < configuration.min || designContainerWidth > configuration.max) {
         return null;
     }
 
+    // Return null if label element is not valid
     const paypalLabelContainerElement = (designContainer && designContainer.querySelector(`.${ PAYPAL_LABEL_CONTAINER }`)) || null;
+    if (!paypalLabelContainerElement) {
+        return null;
+    }
 
     return {
         paypalLabelContainerElement
@@ -62,13 +68,19 @@ export const getInlineLabelTextDesign = function (designProps : InlineLogoTextPr
         const style = document.createElement('style');
         designContainerElement.appendChild(style);
         style.appendChild(document.createTextNode(designCss));
+
+        window.addEventListener('resize', () => {
+            if (designContainerElement.contains(style)) {
+                designContainerElement.removeChild(style);
+            }
+        });
     }
 };
 
 export function InlineLogoTextComponent({ designLabelText } : ContentOptions) : ChildType {
     return (
         <Fragment>
-            <div class={ 'personalized-label-container' } data-design-experiment="Varied_Button_Design"> <span>{designLabelText}</span></div>
+            <div class={ 'personalized-label-container' } data-design-experiment="104519"> <span>{designLabelText}</span></div>
             <style innerHTML={ `
               .${ CLASS.DOM_READY } .personalized-design-container img.${ LOGO_CLASS.LOGO }{
                   position: relative;
