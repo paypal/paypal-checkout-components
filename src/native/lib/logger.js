@@ -30,7 +30,8 @@ export function setupNativeLogger({ env, sessionID, buttonSessionID, sdkCorrelat
     logger.addPayloadBuilder(() => {
         return {
             buttonSessionID,
-            [AMPLITUDE_KEY.USER_ID]: buttonSessionID
+            [AMPLITUDE_KEY.USER_ID]: buttonSessionID,
+            [AMPLITUDE_KEY.TIME]:    Date.now().toString()
         };
     });
 
