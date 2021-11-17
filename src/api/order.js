@@ -846,8 +846,8 @@ export function payWithPaymentMethodToken({ orderID, paymentMethodToken, clientI
 type TokenizeCardOptions = {|
     card : {|
         number : string,
-        cvv : string,
-        expiry : string
+        cvv? : string,
+        expiry? : string
     |}
 |};
 
@@ -872,13 +872,13 @@ type ApproveCardPaymentOptions = {|
     clientID : string,
     card : {|
         cardNumber : string,
-        expirationDate : string,
-        cvv : string,
-        postalCode : string
+        expirationDate? : string,
+        securityCode? : string,
+        postalCode? : string
     |}
 |};
 
-export function approveCardPayment({ card, orderID, clientID } : ApproveCardPaymentOptions) : ZalgoPromise<void> {
+export function approveCardPayment({ card, orderID, clientID, branded } : ApproveCardPaymentOptions) : ZalgoPromise<void> {
     return callGraphQL({
         name:    'ProcessPayment',
         query: `
@@ -890,14 +890,15 @@ export function approveCardPayment({ card, orderID, clientID } : ApproveCardPaym
             ) {
                 processPayment(
                     clientID: $clientID
-                    paymentMethod: { type: CREDIT_CARD, card: $card }
+                    paymentMethod: { type: CARD, card: $card }
                     branded: $branded
-                    token: $orderID
+                    orderID: $orderID
                     buttonSessionID: "f7r7367r4"
                 )
             }
         `,
-        variables: { orderID, clientID, card, branded: true }
+        variables:         { orderID, clientID, card, branded },
+        returnErrorObject: true
     }).then((gqlResult) => {
         if (!gqlResult) {
             throw new Error('Error on GraphQL ProcessPayment mutation');

@@ -7,8 +7,8 @@ export type SetupCardOptions = {|
 
 export type Card = {|
     number : string,
-    cvv : string,
-    expiry : string
+    cvv? : string,
+    expiry? : string
 |};
 
 export type FieldStyle = {|
@@ -104,7 +104,7 @@ export type CardCvvChangeEvent = {|
 
 export type FieldValidity = {|
     isValid : boolean,
-    isPossibleValid : boolean
+    isPotentiallyValid : boolean
 |};
 
 export type CardNavigation = {|
@@ -118,7 +118,7 @@ export type InputState = {|
     cursorStart : number,
     cursorEnd : number,
     keyStrokeCount : number,
-    isPossibleValid : boolean,
+    isPotentiallyValid : boolean,
     isValid : boolean,
     contentPasted? : boolean
 |};

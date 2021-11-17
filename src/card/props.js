@@ -23,7 +23,7 @@ export type CardExport = ({|
 |}) => ZalgoPromise<void>;
 
 export type OnChange = ({|
-    valid : boolean,
+    isValid : boolean,
     errors : [$Values<typeof CARD_ERRORS>] | []
 |}) => ZalgoPromise<void>;
 

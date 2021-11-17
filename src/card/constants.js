@@ -13,6 +13,23 @@ export const CARD_FIELD_TYPE = {
     EXPIRY: 'expiry'
 };
 
+export const GQL_ERRORS = {
+    '/payment_source/card/number': {
+        'VALIDATION_ERROR':           ('INVALID_NUMBER' : 'INVALID_NUMBER'),
+        'MISSING_REQUIRED_PARAMETER': ('MISSING_NUMBER' : 'MISSING_NUMBER')
+    },
+    '/payment_source/card/expiry': {
+        'INVALID_PARAMETER_SYNTAX':   ('INVALID_EXPIRATION_DATE_FORMAT' : 'INVALID_EXPIRATION_DATE_FORMAT'),
+        'INVALID_STRING_LENGTH':      ('INVALID_EXPIRATION_DATE_LENGTH' : 'INVALID_EXPIRATION_DATE_LENGTH'),
+        'CARD_EXPIRED':               ('CARD_EXPIRED' : 'CARD_EXPIRED'),
+        'MISSING_REQUIRED_PARAMETER': ('MISSING_EXPIRATION_DATE' : 'MISSING_EXPIRATION_DATE')
+    },
+    '/payment_source/card/security_code': {
+        'VALIDATION_ERROR':           ('INVALID_SECURITY_CODE' : 'INVALID_SECURITY_CODE')
+    },
+    'TRANSACTION_REFUSED': ('TRANSACTION_REJECTED' : 'TRANSACTION_REJECTED')
+};
+
 export const CARD_ERRORS = {
     INVALID_NUMBER:       ('INVALID_NUMBER' : 'INVALID_NUMBER'),
     INVALID_EXPIRY:       ('INVALID_EXPIRY' : 'INVALID_EXPIRY'),
@@ -108,6 +125,7 @@ export const DEFAULT_INPUT_STYLE : FieldStyle = {
     border:     'none',
     background: 'transparent',
     height:     '100%',
+    width:      '100%',
     fontFamily: 'monospace',
     fontSize:   '50vh',
     display:    'inline-block'

@@ -2,7 +2,14 @@
 
 import { getActiveElement } from '../../lib/dom';
 
-import { autoFocusOnFirstInput, maskValidCard } from './card-utils';
+import {
+    autoFocusOnFirstInput,
+    maskValidCard,
+    formatDate,
+    parseGQLErrors,
+    styleToString,
+    getStyles
+} from './card-utils';
 
 jest.mock('../../lib/dom');
 
@@ -128,5 +135,280 @@ describe('card utils', () => {
             expect(maskValidCard('')).toBe('');
         });
     });
+
+    describe('formatDate', () => {
+        it('format valid number sequence', () => {
+            const masked = formatDate('1022');
+
+            expect(masked).toBe('10 / 22');
+        });
+
+        it('add slash at the end of a valid month', () => {
+            const masked = formatDate('10');
+
+            expect(masked).toBe('10 / ');
+        });
+
+        it('format number by adding a slash to separate the month from the year', () => {
+            const masked = formatDate('22');
+
+            expect(masked).toBe('02 / 2');
+        });
+
+        it('returns prevMask if it is valid', () => {
+            const masked = formatDate('22');
+
+            expect(masked).toBe('02 / 2');
+        });
+
+        it('returns only the month section when the string finished with slash', () => {
+            const masked = formatDate('12 /');
+
+            expect(masked).toBe('12');
+        });
+
+    });
+
+    describe('parseGQLErrors', () => {
+        it('should parse an invalid card number error', () => {
+            const gqlError = {
+                path:    [
+                    'processPayment'
+                ],
+                data:  [
+                    {
+                        code:    'UNPROCESSABLE_ENTITY',
+                        details: [
+                            {
+                                'field':       '/payment_source/card/number',
+                                'location':    'body',
+                                'issue':       'VALIDATION_ERROR',
+                                'description': 'Invalid card number'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const { parsedErrors, errors, errorsMap } = parseGQLErrors(gqlError);
+
+            expect(parsedErrors.length).toBe(1);
+            expect(parsedErrors[0]).toBe('INVALID_NUMBER');
+
+            expect(errors.length).toBe(1);
+            expect(errors[0]?.issue).toBe('VALIDATION_ERROR');
+
+            expect(errorsMap.number).not.toEqual(undefined);
+            expect(errorsMap.number.length).toBe(1);
+        });
+
+        it('should parse an invalid expiry syntax error', () => {
+            const gqlError = {
+                path:    [
+                    'processPayment'
+                ],
+                data: [
+                    {
+                        code:    'INVALID_REQUEST',
+                        details: [
+                            {
+                                field:       '/payment_source/card/expiry',
+                                value:       '22-01',
+                                location:    'body',
+                                issue:       'INVALID_PARAMETER_SYNTAX',
+                                description: 'The value of a field does not conform to the expected format.'
+                            },
+                            {
+                                field:       '/payment_source/card/expiry',
+                                value:       '22-01',
+                                location:    'body',
+                                issue:       'INVALID_STRING_LENGTH',
+                                description: 'The value of a field is either too short or too long.'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const { parsedErrors, errors, errorsMap } = parseGQLErrors(gqlError);
+
+            expect(parsedErrors.length).toBe(2);
+            expect(parsedErrors[0]).toBe('INVALID_EXPIRATION_DATE_FORMAT');
+            expect(parsedErrors[1]).toBe('INVALID_EXPIRATION_DATE_LENGTH');
+
+            expect(errors.length).toBe(2);
+            expect(errors[0]?.issue).toBe('INVALID_PARAMETER_SYNTAX');
+            expect(errors[1]?.issue).toBe('INVALID_STRING_LENGTH');
+
+            expect(errorsMap.expiry).not.toEqual(undefined);
+            expect(errorsMap.expiry.length).toBe(2);
+        });
+
+        it('should parse an expired card error', () => {
+            const gqlError = {
+                path:    [
+                    'processPayment'
+                ],
+                data: [
+                    {
+                        code:    'UNPROCESSABLE_ENTITY',
+                        details: [
+                            {
+                                field:       '/payment_source/card/expiry',
+                                location:    'body',
+                                issue:       'CARD_EXPIRED',
+                                description: 'The card is expired.'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const { parsedErrors, errors, errorsMap } = parseGQLErrors(gqlError);
+
+            expect(parsedErrors.length).toBe(1);
+            expect(parsedErrors[0]).toBe('CARD_EXPIRED');
+
+            expect(errors.length).toBe(1);
+            expect(errors[0]?.issue).toBe('CARD_EXPIRED');
+
+            expect(errorsMap.expiry).not.toEqual(undefined);
+            expect(errorsMap.expiry.length).toBe(1);
+        });
+
+        it('should parse a missing required field error', () => {
+            const gqlError = {
+                path:    [
+                    'processPayment'
+                ],
+                data: [
+                    {
+                        code:    'INVALID_REQUEST',
+                        details: [
+                            {
+                                field:       '/payment_source/card/number',
+                                value:       '',
+                                location:    'body',
+                                issue:       'MISSING_REQUIRED_PARAMETER',
+                                description: 'A required field / parameter is missing.'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const { parsedErrors, errors, errorsMap } = parseGQLErrors(gqlError);
+
+            expect(parsedErrors.length).toBe(1);
+            expect(parsedErrors[0]).toBe('MISSING_NUMBER');
+
+            expect(errors.length).toBe(1);
+            expect(errors[0]?.issue).toBe('MISSING_REQUIRED_PARAMETER');
+
+            expect(errorsMap.number).not.toEqual(undefined);
+            expect(errorsMap.number.length).toBe(1);
+        });
+
+        it('should parse refused transaction error', () => {
+            const gqlError = {
+                path:    [
+                    'processPayment'
+                ],
+                data: [
+                    {
+                        code:    'UNPROCESSABLE_ENTITY',
+                        details: [
+                            {
+                                issue:       'TRANSACTION_REFUSED',
+                                description: 'The request was refused.'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const { parsedErrors, errors, errorsMap } = parseGQLErrors(gqlError);
+
+            expect(parsedErrors.length).toBe(1);
+            expect(parsedErrors[0]).toBe('TRANSACTION_REJECTED');
+
+            expect(errors.length).toBe(1);
+            expect(errors[0]?.issue).toBe('TRANSACTION_REFUSED');
+
+            expect(Object.keys(errorsMap).length).toEqual(0);
+        });
+
+        it('should return errors for unhandled (not defined on the constants) cases', () => {
+            const gqlError = {
+                path:    [
+                    'processPayment'
+                ],
+                data: [
+                    {
+                        code:    'INVALID_REQUEST',
+                        details: [
+                            {
+                                issue:       'PERMISSION_DENIED',
+                                description: 'You do not have permission to access or perform operations on this resource.'
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const { parsedErrors, errors, errorsMap } = parseGQLErrors(gqlError);
+
+            expect(parsedErrors.length).toBe(1);
+            expect(parsedErrors[0]).toBe('PERMISSION_DENIED: You do not have permission to access or perform operations on this resource.');
+
+            expect(errors.length).toBe(1);
+            expect(errors[0]?.issue).toBe('PERMISSION_DENIED');
+
+            expect(Object.keys(errorsMap).length).toEqual(0);
+        });
+    });
+
+    describe('styleToString', () => {
+
+        it('should stringify a style object into a valid style string', () => {
+
+            const objectStyle = {
+                height:     '60px',
+                padding:    '10px',
+                fontSize:   '18px',
+                fontFamily: '"Open Sans", sans-serif',
+                transition: 'all 0.5s ease-out'
+            };
+            const stringStyle = styleToString(objectStyle);
+
+            expect(stringStyle).toBe('  height : 60px ;  padding : 10px ;  font-size : 18px ;  font-family : "Open Sans", sans-serif ;  transition : all 0.5s ease-out ;');
+        });
+
+    });
+
+    describe('getStyles', () => {
+        it('should separate nested sub-styles into their own style objects', () => {
+            const objectStyle = {
+                'height':          '60px',
+                'padding':         '10px',
+                'fontSize':        '18px',
+                'fontFamily':      '"Open Sans", sans-serif',
+                'transition':        'all 0.5s ease-out',
+                'input.invalid': {
+                    color: 'red'
+                }
+            };
+
+            const [ generalStyle, inputStyle ] = getStyles(objectStyle);
+
+            expect(Object.keys(generalStyle).length).toBe(1);
+            expect(generalStyle['input.invalid'].color).toBe('red');
+
+            expect(Object.keys(inputStyle).length).toBe(5);
+            expect(inputStyle.height).toBe('60px');
+
+        });
+    });
+
 });
 

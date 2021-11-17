@@ -201,6 +201,54 @@ export function setupMocks() {
                         });
                     });
                 },
+                NumberField: () => {
+                    return {
+                        render: () => {
+                            return props.createOrder().then(orderID => {
+                                return ZalgoPromise.delay(50).then(() => {
+                                    return props.onApprove({
+                                        orderID,
+                                        payerID: 'AAABBBCCC'
+                                    }).catch(err => {
+                                        return props.onError(err);
+                                    });
+                                });
+                            });
+                        }
+                    };
+                },
+                ExpiryField: () => {
+                    return {
+                        render: () => {
+                            return props.createOrder().then(orderID => {
+                                return ZalgoPromise.delay(50).then(() => {
+                                    return props.onApprove({
+                                        orderID,
+                                        payerID: 'AAABBBCCC'
+                                    }).catch(err => {
+                                        return props.onError(err);
+                                    });
+                                });
+                            });
+                        }
+                    };
+                },
+                CVVField: () => {
+                    return {
+                        render: () => {
+                            return props.createOrder().then(orderID => {
+                                return ZalgoPromise.delay(50).then(() => {
+                                    return props.onApprove({
+                                        orderID,
+                                        payerID: 'AAABBBCCC'
+                                    }).catch(err => {
+                                        return props.onError(err);
+                                    });
+                                });
+                            });
+                        }
+                    };
+                },
                 submit: () => {
                     return submitCardFields({ facilitatorAccessToken: 'ABCDEF12345' });
                 }
@@ -409,10 +457,10 @@ export function createButtonHTML({ fundingEligibility = DEFAULT_FUNDING_ELIGIBIL
     body.innerHTML += buttons.join('\n');
 }
 
-export function createCardFieldsContainerHTML() : mixed {
+export function createCardFieldsContainerHTML(type : string = 'single') : mixed {
     const fields = [];
 
-    fields.push(`<div id="card-fields-container"></div>`);
+    fields.push(`<div id="card-fields-${ type }-container"></div>`);
 
     const body = document.body;
 
@@ -422,7 +470,7 @@ export function createCardFieldsContainerHTML() : mixed {
     
     body.innerHTML += fields.join('\n');
 
-    return document.querySelector('#card-fields-container');
+    return document.querySelector(`#card-fields-${ type }-container`);
 }
 
 type MockEndpoint = {|
@@ -1510,10 +1558,11 @@ export async function mockSetupCardFields() : Promise<void> {
     });
 }
 
-export function setCardFieldsValues({ number, expiry, cvv } : {| number : string, expiry : string, cvv : string |}) : mixed {
-    const numberInput = document.getElementsByName('number')[0];
-    const expiryInput = document.getElementsByName('expiry')[0];
-    const cvvInput = document.getElementsByName('cvv')[0];
+export function setCardFieldsValues({ number, expiry, cvv } : {| number? : string, expiry? : string, cvv? : string |}) : mixed {
+    
+    const numberInput = number ? document.getElementsByName('number')[0] : null;
+    const expiryInput = expiry ? document.getElementsByName('expiry')[0] : null;
+    const cvvInput = cvv ? document.getElementsByName('cvv')[0] : null;
 
     const inputEvent = new Event('input', { bubbles: true });
     const pasteEvent = new Event('paste', { bubbles: true });
@@ -2004,9 +2053,19 @@ type SmartFieldsMock = {|
     done : () => void
 |};
 
+type CardFieldsMock = {|
+    done : () => void
+|};
+
 type MockFieldsOptions = {|
     fundingSource : string,
     isValid : () => boolean
+|};
+
+type MockCardFieldsOptions = {|
+    name : string,
+    isFieldValid : () => boolean,
+    getFieldValue : () => string
 |};
 
 export function renderSmartFieldsMock({
@@ -2021,6 +2080,31 @@ export function renderSmartFieldsMock({
                 fundingSource,
                 isValid,
                 confirm
+            }
+        }
+    ];
+
+    const done = () => {
+        delete window.frames;
+    };
+
+    return {
+        done
+    };
+}
+
+export function renderCardFieldMock({
+    name,
+    isFieldValid,
+    getFieldValue
+} : MockCardFieldsOptions) : CardFieldsMock {
+    window.frames = [
+        {
+            ...window,
+            exports: {
+                name,
+                isFieldValid,
+                getFieldValue
             }
         }
     ];

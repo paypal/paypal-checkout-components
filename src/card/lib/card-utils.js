@@ -3,9 +3,10 @@
 import { camelToDasherize, noop, values } from 'belter';
 import creditCardType from 'credit-card-type';
 import luhn10 from 'card-validator/src/luhn-10';
+import cardValidator from 'card-validator';
 
-import type { CardType, CardNavigation, InputState, FieldValidity, FieldStyle, InputEvent } from '../types';
-import { CARD_ERRORS, FIELD_STYLE, VALIDATOR_TO_TYPE_MAP, DEFAULT_CARD_TYPE } from '../constants';
+import type { CardType, CardNavigation, InputState, FieldValidity, FieldStyle, InputEvent, Card } from '../types';
+import { CARD_ERRORS, FIELD_STYLE, VALIDATOR_TO_TYPE_MAP, DEFAULT_CARD_TYPE, GQL_ERRORS, CARD_FIELD_TYPE } from '../constants';
 import { getActiveElement } from '../../lib/dom';
 
 // Add additional supported card types
@@ -63,16 +64,16 @@ export const defaultNavigation : CardNavigation = {
 };
 
 export const defaultInputState : InputState = {
-    inputValue:       '',
-    maskedInputValue: '',
-    cursorStart:      0,
-    cursorEnd:        0,
-    keyStrokeCount:   0,
-    isPossibleValid:  true,
-    isValid:          false
+    inputValue:         '',
+    maskedInputValue:   '',
+    cursorStart:        0,
+    cursorEnd:          0,
+    keyStrokeCount:     0,
+    isPotentiallyValid:  true,
+    isValid:            false
 };
 
-export const initFieldValidity : FieldValidity = { isValid: false, isPossibleValid: true };
+export const initFieldValidity : FieldValidity = { isValid: false, isPotentiallyValid: true };
 
 export function splice(str : string, idx : number, insert : string) : string {
     return str.slice(0, idx) + insert + str.slice(idx);
@@ -144,14 +145,14 @@ export function removeDateMask(date : string) : string {
 }
 
 
-// Mask date
-export function maskDate(date : string, prevMask? : string = '') : string {
+// Format expiry date
+export function formatDate(date : string, prevFormat? : string = '') : string {
     assertString(date);
 
-    if (prevMask && prevMask.indexOf('/') > -1) {
-        const [ month ] = removeSpaces(prevMask).split('/');
+    if (prevFormat && prevFormat.includes('/')) {
+        const [ month ] = removeSpaces(prevFormat).split('/');
         if (month.length < 2) {
-            return prevMask;
+            return prevFormat;
         }
     }
 
@@ -181,17 +182,16 @@ export function maskDate(date : string, prevMask? : string = '') : string {
 
 }
 
-
-// $FlowFixMe
-export function filterStyles(rawStyles : {| |} = {}) : FieldStyle {
+// Removed invalid and/or unsupported style props
+export function filterStyles(rawStyles : Object = {}) : FieldStyle {
     const camelKey = Object.keys(FIELD_STYLE);
     const dashKey = values(FIELD_STYLE);
 
     // $FlowFixMe
-    return Object.keys(rawStyles).reduce((acc : {|  |}, key : string) => {
+    return Object.keys(rawStyles).reduce((acc : Object, key : string) => {
         if (typeof rawStyles[key] === 'object') {
             acc[key] = rawStyles[key];
-        } else if (camelKey.indexOf(key) > -1 || dashKey.indexOf(key) > -1) {
+        } else if (camelKey.includes(key) || dashKey.includes(key)) {
             acc[key] = rawStyles[key];
         }
         return acc;
@@ -199,16 +199,16 @@ export function filterStyles(rawStyles : {| |} = {}) : FieldStyle {
 
 }
 
-// eslint-disable-next-line flowtype/require-exact-type
-export function styleToString(style : {  } = { }) : string {
-    // $FlowFixMe
+// Converts style object to valid style string
+export function styleToString(style : Object = { }) : string {
     const filteredStyles = filterStyles(style);
     return Object.keys(filteredStyles).reduce((acc : string, key : string) => (
         `${ acc }  ${ camelToDasherize(key) } ${ typeof style[key] === 'object' ? `{ ${ styleToString(style[key]) } }` : `: ${ style[key] } ;` }`
     ), '');
 }
 
-export function getStyles(style : {| |}) : [mixed, mixed] {
+// Destructures nested style objects
+export function getStyles(style : Object) : [Object, Object] {
     // $FlowFixMe
     return Object.keys(style).reduce((acc : [{| |}, {| |}], key : string) => {
         if (typeof style[key] === 'object') {
@@ -229,21 +229,23 @@ export function checkForNonDigits(value : string) : boolean {
     return (/\D/g).test(removeSpaces(value));
 }
 
-export function getCvvLength(cardType : CardType) : number {
-    const { code } = cardType;
+export function getCvvLength(cardType? : CardType) : number {
+    if (cardType && typeof cardType === 'object') {
+        const { code } = cardType;
 
-    if (typeof code === 'object') {
-        const { size } = code;
+        if (typeof code === 'object') {
+            const { size } = code;
 
-        if (typeof size === 'number') {
-            return size;
+            if (typeof size === 'number') {
+                return size;
+            }
         }
     }
 
     return 3;
 }
 
-export function checkCardNumber(value : string, cardType : CardType) : {| isValid : boolean, isPossibleValid : boolean |} {
+export function checkCardNumber(value : string, cardType : CardType) : {| isValid : boolean, isPotentiallyValid : boolean |} {
     const trimmedValue = removeSpaces(value);
     const { lengths } = cardType;
 
@@ -253,46 +255,63 @@ export function checkCardNumber(value : string, cardType : CardType) : {| isVali
     const maxLength = Math.max.apply(null, lengths);
 
     return {
-        isValid:         validLength && validLuhn,
-        isPossibleValid: validLength || trimmedValue.length < maxLength
+        isValid:            validLength && validLuhn,
+        isPotentiallyValid: validLength || trimmedValue.length < maxLength
     };
 }
 
-export function checkCVV(value : string, cardType : CardType) : {| isValid : boolean, isPossibleValid : boolean |} {
+export function checkCVV(value : string, cardType : CardType) : {| isValid : boolean, isPotentiallyValid : boolean |} {
     let isValid = false;
     if (value.length === getCvvLength(cardType)) {
         isValid = true;
     }
     return {
         isValid,
-        isPossibleValid: true
+        isPotentiallyValid: true
     };
 }
 
-export function checkExpiry(value : string) : {| isValid : boolean, isPossibleValid : boolean |} {
-    let isValid = false;
-    if (value.replace(/\s|\//g, '').length === 4) {
-        isValid = true;
-    }
+export function checkExpiry(value : string) : {| isValid : boolean, isPotentiallyValid : boolean |} {
+    const { expirationDate } = cardValidator;
+    const { isValid } = expirationDate(value);
+
     return {
         isValid,
-        isPossibleValid: true
+        isPotentiallyValid: true
     };
 }
 
-export function setErrors({ isNumberValid, isCvvValid, isExpiryValid } : {| isNumberValid : boolean, isCvvValid : boolean, isExpiryValid : boolean |}) : [$Values<typeof CARD_ERRORS>] | [] {
+export function setErrors({ isNumberValid, isCvvValid, isExpiryValid, gqlErrorsObject = {} } : {| isNumberValid? : boolean, isCvvValid? : boolean, isExpiryValid? : boolean, gqlErrorsObject? : {| field : string, errors : [] |} |}) : [$Values<typeof CARD_ERRORS>] | [] {
     const errors = [];
 
-    if (!isNumberValid) {
-        errors.push(CARD_ERRORS.INVALID_NUMBER);
+    const { field, errors: gqlErrors } = gqlErrorsObject;
+
+    if (typeof isNumberValid === 'boolean' && !isNumberValid) {
+
+        if (field === CARD_FIELD_TYPE.NUMBER && gqlErrors.length) {
+            errors.push(...gqlErrors);
+        } else {
+            errors.push(CARD_ERRORS.INVALID_NUMBER);
+        }
     }
 
-    if (!isExpiryValid) {
-        errors.push(CARD_ERRORS.INVALID_EXPIRY);
+    if (typeof isExpiryValid === 'boolean' && !isExpiryValid) {
+
+        if (field === CARD_FIELD_TYPE.EXPIRY  && gqlErrors.length) {
+            errors.push(...gqlErrors);
+        } else {
+            errors.push(CARD_ERRORS.INVALID_EXPIRY);
+        }
+
     }
 
-    if (!isCvvValid) {
-        errors.push(CARD_ERRORS.INVALID_CVV);
+    if (typeof isCvvValid === 'boolean' &&  !isCvvValid) {
+
+        if (field === CARD_FIELD_TYPE.CVV  && gqlErrors.length) {
+            errors.push(...gqlErrors);
+        } else {
+            errors.push(CARD_ERRORS.INVALID_CVV);
+        }
     }
 
     return errors;
@@ -331,11 +350,11 @@ export function goToPreviousField(ref : {| current : {| base : HTMLInputElement 
 export function navigateOnKeyDown(event : InputEvent, navigation : CardNavigation) : void {
     const { target: { value, selectionStart, selectionEnd }, key } = event;
 
-    if (selectionStart === 0 && (value.length === 0 || value.length !== selectionEnd)  && [ 'Backspace', 'ArrowLeft' ].indexOf(key) > -1) {
+    if (selectionStart === 0 && (value.length === 0 || value.length !== selectionEnd)  && [ 'Backspace', 'ArrowLeft' ].includes(key)) {
         navigation.previous();
     }
 
-    if (selectionStart === value.length && [ 'ArrowRight' ].indexOf(key) > -1) {
+    if (selectionStart === value.length && [ 'ArrowRight' ].includes(key)) {
         navigation.next();
     }
 }
@@ -404,4 +423,64 @@ export function autoFocusOnFirstInput(input? : HTMLInputElement) {
             input.focus();
         }, 1);
     });
+}
+
+// Function that returns the field value in the correct format
+export function formatFieldValue(value : string | Card) : string | Card {
+    let newValue;
+    // Single card field case
+    if (typeof value === 'object') {
+        newValue = { ...value };
+    // Individual field case
+    } else {
+        newValue = value;
+    }
+    return newValue;
+}
+
+// Parse errors from ProcessPayment GQL mutation
+export function parseGQLErrors(errorsObject : Object) : {| parsedErrors : $ReadOnlyArray<string>, errors : $ReadOnlyArray<Object>, errorsMap : Object |} {
+    const { data } = errorsObject;
+
+    const parsedErrors = [];
+    const errors = [];
+    const errorsMap = {};
+
+    if (Array.isArray(data) && data.length) {
+        data.forEach(e => {
+            const { details } = e;
+
+            if (Array.isArray(details) && details.length) {
+                details.forEach(d => {
+                    errors.push(d);
+                    
+                    let parsedError;
+                    if (d.field && d.issue && d.description) {
+                        parsedError = GQL_ERRORS[d.field][d.issue] ?? `${ d.issue }: ${ d.description }`;
+                        const field  = d.field.split('/').pop();
+
+                        if (!errorsMap[field]) {
+                            errorsMap[field] = [];
+                        }
+                        
+                        errorsMap[field].push(parsedError);
+
+                    } else if (d.issue && d.description) {
+                        parsedError = GQL_ERRORS[d.issue] ?? `${ d.issue }: ${ d.description }`;
+                    }
+                    
+                    if (parsedError) {
+                        parsedErrors.push(parsedError);
+                    }
+                    
+                });
+            }
+        });
+    }
+
+    return {
+        errors,
+        parsedErrors,
+        errorsMap
+    };
 }
