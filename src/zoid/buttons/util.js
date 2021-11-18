@@ -189,9 +189,10 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                 listeners.paymentauthorized({ payment });
             };
 
-            session.addEventListener('cancel', () => {
+            // eslint-disable-next-line unicorn/prefer-add-event-listener
+            session.oncancel = () => {
                 listeners.cancel();
-            });
+            };
 
             return {
                 addEventListener: (name, handler) => {

@@ -110,7 +110,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
+        // eslint-disable-next-line unicorn/prefer-spread
+        fundingSources = fundingSources.filter(src => src !== FUNDING.CARD).concat([ FUNDING.CARD ]);
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
@@ -119,7 +120,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
-    
+
     const { buttonAnimationScript = '' } = getButtonAnimation(personalization);
 
     return (
