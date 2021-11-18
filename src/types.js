@@ -132,6 +132,7 @@ export type QRCodeProps = {|
     errorText? : string,
     orderID : string,
     onClose? : () => ZalgoPromise<void>,
+    onCancel? : () => ZalgoPromise<void>,
     onEscapePath? : (win : CrossDomainWindowType,
     selectedFundingSource : $Values<typeof FUNDING>) => ZalgoPromise<void>
 |};

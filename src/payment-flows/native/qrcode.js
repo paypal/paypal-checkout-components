@@ -206,12 +206,23 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
                 return createOrder().then((orderID) => {
                     const url = getNativeUrl({ props, serviceData, config, fundingSource, sessionUID, orderID, stickinessID, pageUrl });
 
+                    const cancelModal = () => {
+                        return ZalgoPromise.try(() => {
+                            return onCancel();
+                        }).then(() => {
+                            // eslint-disable-next-line no-use-before-define
+                            qrCodeComponentInstance.close();
+                            return onDestroy();
+                        });
+                    };
+
                     const qrCodeComponentInstance = QRCode({
                         cspNonce:     config.cspNonce,
                         qrPath:       url,
                         state:        QRCODE_STATE.DEFAULT,
                         orderID,
                         onClose:      onQRClose,
+                        onCancel:     cancelModal,
                         onEscapePath
                     });
 
@@ -224,6 +235,7 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
                             qrPath:       url,
                             orderID,
                             onClose:      onQRClose,
+                            onCancel:     cancelModal,
                             onEscapePath,
                             ...newState
                         });
@@ -257,9 +269,11 @@ export function initNativeQRCode({ props, serviceData, config, components, payme
 
                     const onCancelQR = () => {
                         return ZalgoPromise.try(() => {
+                            return onCancel();
+                        }).then(() => {
                             return closeQRCode('onCancel');
                         }).then(() => {
-                            return onCancel();
+                            return { buttonSessionID };
                         });
                     };
 

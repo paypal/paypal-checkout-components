@@ -50,7 +50,7 @@ function QRCard({
     svgString : string
 |}) : mixed {
 
-    const { state, errorText, setState, close } = useXProps();
+    const { state, errorText, setState, close, onCancel: cancel } = useXProps();
     const survey = useSurvey();
     const isError = () => {
         return state === QRCODE_STATE.ERROR;
@@ -66,7 +66,7 @@ function QRCard({
 
     const onCloseClick = () => {
         if (state !== QRCODE_STATE.DEFAULT) {
-            close();
+            cancel();
         } else if (survey.isEnabled) {
             logger.info(`VenmoDesktopPay_qrcode_survey`).track({
                 [FPTI_KEY.STATE]:                               FPTI_STATE.BUTTON,
@@ -75,7 +75,7 @@ function QRCard({
                 [FPTI_KEY.TRANSITION]:                          `${ FPTI_TRANSITION.QR_SURVEY }`,
                 [FPTI_CUSTOM_KEY.DESKTOP_EXIT_SURVEY_REASON]:   survey.reason
             }).flush();
-            close();
+            cancel();
         }
 
         /**
@@ -86,7 +86,7 @@ function QRCard({
          *  }
          */
 
-        return close();
+        return cancel();
     };
 
     const errorMessage = (
