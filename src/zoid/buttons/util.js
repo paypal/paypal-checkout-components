@@ -227,3 +227,11 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
         return undefined;
     }
 }
+
+export function getButtonsExperiments (fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
+    return {
+        ...getVenmoExperiment(),
+        ...getNoPaylaterExperiment(fundingSource),
+        ...getVenmoAppLabelExperiment()
+    }
+}

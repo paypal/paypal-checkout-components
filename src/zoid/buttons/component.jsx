@@ -20,7 +20,7 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons, getVenmoAppLabelExperiment } from './util';
+     createNoPaylaterExperiment, getRenderedButtons, getButtonsExperiments } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -69,11 +69,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = {
-                    ...getVenmoExperiment(),
-                    ...getNoPaylaterExperiment(fundingSource),
-                    ...getVenmoAppLabelExperiment()
-                },
+                experiment = getButtonsExperiments(fundingSource),
                 createBillingAgreement, createSubscription
             } = props;
 
@@ -384,11 +380,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: true,
                 value:      ({ props }) => {
                     const { fundingSource } = props;
-                    const experimentTreatments = {
-                        ...getVenmoExperiment(),
-                        ...getNoPaylaterExperiment(fundingSource),
-                        ...getVenmoAppLabelExperiment()
-                    };
+                    const experimentTreatments = getButtonsExperiments(fundingSource);
                     return experimentTreatments;
                 }
             },
