@@ -20,7 +20,7 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-     createNoPaylaterExperiment, getRenderedButtons, getButtonsExperiments } from './util';
+    createNoPaylaterExperiment, getRenderedButtons, getButtonsExperiments } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 

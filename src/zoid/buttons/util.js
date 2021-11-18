@@ -233,5 +233,5 @@ export function getButtonsExperiments (fundingSource : ?$Values<typeof FUNDING>)
         ...getVenmoExperiment(),
         ...getNoPaylaterExperiment(fundingSource),
         ...getVenmoAppLabelExperiment()
-    }
+    };
 }
