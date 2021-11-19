@@ -54,7 +54,7 @@
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
     "jest:server": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --runInBand",
-    "jest:client": "jest src/ --collectCoverage --collectCoverageFrom='src/' --no-cache --runInBand",
+    "jest:client": "jest src/ --collectCoverage --collectCoverageFrom='src/' --no-cache --runInBand --env=jsdom",
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
     "postpublish": "git clean -f && git checkout .",
@@ -93,7 +93,7 @@
     "express": "^4.16.3",
     "flow-bin": "0.155.0",
     "grabthar-release": "^1.0.8",
-    "grumbler-scripts": "^3.0.83",
+    "grumbler-scripts": "^5.0.0",
     "post-robot": "^10.0.13",
     "sync-browser-mocks": "^2.0.8",
     "webpack-mem-compile": "^1.0.2"
