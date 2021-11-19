@@ -305,6 +305,44 @@ test(`Tag should be applied with no design for control`, async () => {
     
 });
 
+test(`Tag should be applied with no design for control`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'not-a-real-design',
+            text:     '',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const designSignal = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (designSignal || designScript) {
+        throw new Error('Expected not to find a data-design-experiment tag and no script');
+    }
+
+    
+});
+
 test(`Animation should not be applied when buttonAnimation is null`, async () => {
 
     const { Buttons } = await getButtonScript();

@@ -110,7 +110,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        // eslint-disable-next-line unicorn/prefer-spread
         fundingSources = fundingSources.filter(src => src !== FUNDING.CARD).concat([ FUNDING.CARD ]);
     }
 
@@ -170,12 +169,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource)
                     ? <TagLine
-                            fundingSource={ fundingSources[0] }
-                            style={ style }
-                            locale={ locale }
-                            multiple={ multiple }
-                            nonce={ nonce }
-                            personalization={ personalization }
+                        fundingSource={ fundingSources[0] }
+                        style={ style }
+                        locale={ locale }
+                        multiple={ multiple }
+                        nonce={ nonce }
+                        personalization={ personalization }
                     /> : null
             }
 
@@ -188,8 +187,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
                     ? <PoweredByPayPal
-                            locale={ locale }
-                            nonce={ nonce }
+                        locale={ locale }
+                        nonce={ nonce }
                     /> : null
             }
 
@@ -200,7 +199,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         buttonDesignScript={ buttonDesignScript }
                     />
                     : <Script
-                            nonce={ nonce }
+                        nonce={ nonce }
                     />
             }
         </div>

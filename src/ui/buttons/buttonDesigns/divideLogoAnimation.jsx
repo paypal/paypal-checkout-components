@@ -48,9 +48,10 @@ export const getDivideLogoProps = function (document : Object, configuration : O
 
     // get starting position for element so it doesn't flicker when animation begins
     const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
-    const paypalLogoStartingLeftPosition = paypalLogoElement
-        ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }%`
-        : '44.5%';
+    if (!paypalLogoElement) {
+        return null;
+    }
+    const paypalLogoStartingLeftPosition = `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }%`;
 
     return {
         paypalLabelContainerElement,

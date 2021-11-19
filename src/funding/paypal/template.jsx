@@ -164,12 +164,11 @@ export function Label(opts : LabelOptions) : ChildType {
 }
 
 export function AnimatedExperimentLabel(opts : AnimatedExperimentLabelOptions) : ChildType {
-    const { buttonDesignComponent } = opts;
-    delete opts.buttonDesignComponent;
+    const { buttonDesignComponent, ...updatedOpts } = opts;
     // $FlowFixMe
-    const basicLabel = (<BasicLabel { ...opts } />);
+    const basicLabel = (<BasicLabel { ...updatedOpts } />);
     // $FlowFixMe
-    const buttonPersonalization = (<ButtonPersonalization { ...opts } />);
+    const buttonPersonalization = (<ButtonPersonalization { ...updatedOpts } />);
     return (
         <Fragment>
             { basicLabel }
