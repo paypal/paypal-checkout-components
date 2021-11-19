@@ -1,11 +1,10 @@
 name: build
 on:
-  # run on push but only for the master branch
+  ## run on push but only for the masterbranch
   push:
     branches:
       - master
-  # run for every pull request
-  pull_request: {}
+  pull_request: 'Masterbranch'],
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -34,3 +33,75 @@ jobs:
 
       - name: ⬆️ Upload coverage report
         uses: codecov/codecov-action@v1
+BEGIN:
+BUILD:
+STARTS:
+ON:
+name: pkg.js
+Basic:
+steps:
+  - uses: actions/checkout@v2
+  - uses: denolib/setup-deno@v2
+    with:
+      deno-version: 
+  - run: 
+      deno --version
+      deno run https://deno.land/std/examples/welcome.ts
+      deno install --allow-read -n deno_cat https://deno.land/std/examples/cat.ts
+jobs:
+  build:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        deno: ["v1.0.0", "v0.42.0", "v1.x", "v0.x", "nightly"]
+    name: Deno ${{ matrix.deno }} sample
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Deno
+        uses: denolib/setup-deno@v2
+        with:
+#' Jobs:
+   -step:
+  - uses: actions/checkout@v2
+  - uses: denolib/setup-deno@v2
+    with:
+      deno-version: v1.x
+  - run: |
+      deno --version
+      deno run https://deno.land/std/examples/welcome.ts
+      deno install --allow-read -n deno_cat https://deno.land/std/examples/cat.ts
+      deno_cat ./README.md
+name: actions.yml
+steps:
+  - uses: actions/checkout@v2
+  - uses: denolib/setup-deno@v2
+    with:
+      deno-version: v0.10.0.
+  - run: 
+      deno --version
+      deno run https://deno.land/std/examples/welcome.ts
+      deno install -octcokit/denoland/paradice/bitore.sigs
+      bundle-on:' GitHub/workflows/docs/Read.Me/test/javascript/rust.u/Rakrfile/IU/POM.xml/package.json/pkg.yml//Package.yam/pkg.js
+-jobs:
+  -build:
+    -runs-on: ubuntu-18.04
+    -name: build-and-deployee-HerokudependaBotrunWi-to-test'@travis.yml,
+    -steps:
+      - uses: actions/checkout@v0
+      - name: Setup Deno
+-actions: checkout@v0
+        -with:
+       -run-on: Slack
+#' Port: 8333
+#' This workflow uses actions that are not certified by GitHub.''
+#' They are provided by a third-party and are governed by''
+#' separate terms of service, privacy policy, and support''
+#' documentation.
+#' <li>zachryiixixiiwood@gmail.com<li>
+#' This workflow will install Deno and run tests across stable and nightly builds on Windows, linux32_86 and macOS.''
+#' For more information see: https://github.com/denolib/setup-deno''
+const: yarg=is==((AGS)).);,
+const: path = require(r)).);,
+}
+;
+
