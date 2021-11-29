@@ -195,12 +195,12 @@ test(`Button renderer should export DEFAULT_PROPS`, async () => {
     }
 });
 
-test(`Animation should be applied when there is valid personalization`, async () => {
+test(`Design should be applied when there is valid personalization`, async () => {
 
     const { Buttons } = await getButtonScript();
 
     const personalization = {
-        buttonAnimation: {
+        buttonDesign: {
             id:       'run-divide-logo-animation',
             text:     'Safe and easy way to pay',
             tracking: {
@@ -223,22 +223,22 @@ test(`Animation should be applied when there is valid personalization`, async ()
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationContainer = buttonHTML.match('data-animation-experiment');
-    const animationScript = buttonHTML.match('divide-logo-animation-left-side');
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('divide-logo-animation-left-side');
 
-    if (!animationContainer || !animationScript) {
+    if (!designContainer || !designScript) {
         throw new Error('Expected animation to applied in script and container');
     }
 
     
 });
 
-test(`Animation for adding label text next to logo should be applied when there is valid personalization`, async () => {
+test(`Design for adding label text next to logo should be applied when there is valid personalization`, async () => {
     const { Buttons } = await getButtonScript();
 
     const personalization = {
-        buttonAnimation: {
-            id:       'run-add-label-text-next-to-logo-animation',
+        buttonDesign: {
+            id:       'run-add-label-text-next-to-logo-design',
             text:     'Safe and easy way to pay',
             tracking: {
                 click:      '',
@@ -259,21 +259,21 @@ test(`Animation for adding label text next to logo should be applied when there 
     if (!buttonHTML || typeof buttonHTML !== 'string') {
         throw new Error(`Expected html to be a non-empty string`);
     }
-    const animationContainer = buttonHTML.match('data-animation-experiment');
-    const animationScript = buttonHTML.match('label-next-to-logo-animation-element');
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
 
-    if (!animationContainer || !animationScript) {
-        throw new Error('Expected animation to be applied in script and container');
+    if (!designContainer || !designScript) {
+        throw new Error('Expected design to be applied in script and container');
     }
 });
 
-test(`Animation should not be applied when there is invalid animation id`, async () => {
+test(`Tag should be applied with no design for control`, async () => {
 
     const { Buttons } = await getButtonScript();
 
     const personalization = {
-        buttonAnimation: {
-            id:       'control',
+        buttonDesign: {
+            id:       'large-button-design-control',
             text:     '',
             tracking: {
                 click:      '',
@@ -295,10 +295,49 @@ test(`Animation should not be applied when there is invalid animation id`, async
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationSignal = buttonHTML.match('data-animation-experiment');
+    const designSignal = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
 
-    if (animationSignal) {
-        throw new Error('Expected animation to applied in script and container');
+    if (!designSignal || designScript) {
+        throw new Error('Expected to find a data-design-experiment tag but no script');
+    }
+
+    
+});
+
+test(`Tag should be applied with no design for control`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'not-a-real-design',
+            text:     '',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const designSignal = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (designSignal || designScript) {
+        throw new Error('Expected not to find a data-design-experiment tag and no script');
     }
 
     
@@ -325,10 +364,10 @@ test(`Animation should not be applied when buttonAnimation is null`, async () =>
         throw new Error(`Expected html to be a non-empty string`);
     }
 
-    const animationSignal = buttonHTML.match('data-animation-experiment');
+    const animationSignal = buttonHTML.match('data-design-experiment');
 
     if (animationSignal) {
-        throw new Error('Expected animation to applied in script and container');
+        throw new Error('Expected design to be applied in script and container');
     }
     
 });
