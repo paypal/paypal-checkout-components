@@ -8,7 +8,7 @@ import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import {
     type LogoOptions,
     type LabelOptions,
-    type AnimatedExperimentLabelOptions,
+    type DesignExperimentLabelOptions,
     type WalletLabelOptions,
     type TagOptions,
     BasicLabel
@@ -163,7 +163,7 @@ export function Label(opts : LabelOptions) : ChildType {
     );
 }
 
-export function AnimatedExperimentLabel(opts : AnimatedExperimentLabelOptions) : ChildType {
+export function DesignExperimentLabel(opts : DesignExperimentLabelOptions) : ChildType {
     const { buttonDesignComponent, ...updatedOpts } = opts;
     const basicLabel = (<BasicLabel { ...updatedOpts } />);
     const buttonPersonalization = (<ButtonPersonalization { ...updatedOpts } />);

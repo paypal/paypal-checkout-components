@@ -49,7 +49,7 @@ export type LabelOptions = {|
     content : ?ContentType
 |};
 
-export type AnimatedExperimentLabelOptions = {|
+export type DesignExperimentLabelOptions = {|
     i : number,
     logo : ChildType,
     label : ?$Values<typeof BUTTON_LABEL>,

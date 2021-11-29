@@ -238,7 +238,7 @@ test(`Design for adding label text next to logo should be applied when there is 
 
     const personalization = {
         buttonDesign: {
-            id:       'run-add-label-text-next-to-logo-animation',
+            id:       'run-add-label-text-next-to-logo-design',
             text:     'Safe and easy way to pay',
             tracking: {
                 click:      '',

@@ -10,7 +10,7 @@ import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import { AnimatedExperimentLabel } from '../../funding/paypal/template';
+import { DesignExperimentLabel } from '../../funding/paypal/template';
 
 import { getButtonDesign } from './buttonDesigns';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
@@ -144,7 +144,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     if (buttonDesignComponent) {
         labelNode = (
-            <AnimatedExperimentLabel
+            <DesignExperimentLabel
                 i={ i }
                 logo={ logoNode }
                 label={ label }

@@ -26,7 +26,7 @@ const DESIGN_MAP : Object = {
         designConfig:          DIVIDE_LOGO_CONFIG,
         ButtonDesignComponent: DivideLogoTextComponent
     },
-    'run-add-label-text-next-to-logo-animation': {
+    'run-add-label-text-next-to-logo-design': {
         designFn:              getInlineLabelTextDesign,
         getValidDesignProps:   getValidInlineLogoTextProps,
         designConfig:          INLINE_LOGO_TEXT_CONFIG,
