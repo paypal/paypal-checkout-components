@@ -228,7 +228,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
     }
 }
 
-export function getButtonsExperiments (fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
+export function getButtonExperiments (fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
     return {
         ...getVenmoExperiment(),
         ...getNoPaylaterExperiment(fundingSource),
