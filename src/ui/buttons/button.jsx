@@ -10,9 +10,9 @@ import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
-import { AnimatedExperimentLabel } from '../../funding/paypal/template';
+import { DesignExperimentLabel } from '../../funding/paypal/template';
 
-import { getButtonAnimation } from './button-animations';
+import { getButtonDesign } from './buttonDesigns';
 import type { ButtonStyle, Personalization, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
@@ -133,18 +133,18 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     );
 
     // Only apply animation to the paypal button
-    const buttonAnimation = fundingSource === FUNDING.PAYPAL
-        ? getButtonAnimation(personalization)
+    const buttonDesign = fundingSource === FUNDING.PAYPAL
+        ? getButtonDesign(personalization)
         : {};
 
     const {
-        buttonAnimationContainerClass = '',
-        buttonAnimationComponent = null
-    } = buttonAnimation;
+        buttonDesignContainerClass = '',
+        buttonDesignComponent = null
+    } = buttonDesign;
 
-    if (buttonAnimationComponent) {
+    if (buttonDesignComponent) {
         labelNode = (
-            <AnimatedExperimentLabel
+            <DesignExperimentLabel
                 i={ i }
                 logo={ logoNode }
                 label={ label }
@@ -160,7 +160,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 personalization={ personalization }
                 tagline={ tagline }
                 content={ content }
-                buttonAnimationComponent={ buttonAnimationComponent }
+                buttonDesignComponent={ buttonDesignComponent }
             />
         );
     }
@@ -206,7 +206,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 `${ LOGO_CLASS.LOGO_COLOR }-${ logoColor }`,
                 `${ isWallet ? CLASS.WALLET : '' }`,
                 `${ shouldShowWalletMenu ? CLASS.WALLET_MENU : '' }`,
-                `${ buttonAnimationContainerClass }`
+                `${ buttonDesignContainerClass }`
             ].join(' ') }
         >
             <div

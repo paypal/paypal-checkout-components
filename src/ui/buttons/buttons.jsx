@@ -10,8 +10,8 @@ import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constant
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 import { ValidationError } from '../../lib';
 
-import { getButtonAnimation } from './button-animations';
-import { ButtonAnimationExperimentScriptWrapper } from './button-animations/script';
+import { getButtonDesign } from './buttonDesigns';
+import { ButtonDesignExperimentScriptWrapper } from './buttonDesigns/script';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
@@ -110,7 +110,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        fundingSources = fundingSources.filter(src => src !== FUNDING.CARD).concat([ FUNDING.CARD ]);
+        fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
@@ -119,8 +119,9 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
-    
-    const { buttonAnimationScript = '' } = getButtonAnimation(personalization);
+
+    const { buttonDesignScript = '' } = getButtonDesign(personalization);
+
     return (
         <div class={ [
             CLASS.CONTAINER,
@@ -192,10 +193,10 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                buttonAnimationScript
-                    ? <ButtonAnimationExperimentScriptWrapper
+                buttonDesignScript
+                    ? <ButtonDesignExperimentScriptWrapper
                         nonce={ nonce }
-                        buttonAnimation={ buttonAnimationScript }
+                        buttonDesignScript={ buttonDesignScript }
                     />
                     : <Script
                         nonce={ nonce }

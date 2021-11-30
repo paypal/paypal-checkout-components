@@ -1,3 +1,15 @@
+## <small>5.0.189 (2021-11-16)</small>
+
+* Revert "paymentfields prerender bg update (#1791)" ([02558c5](https://github.com/paypal/paypal-checkout-components/commit/02558c5)), closes [#1791](https://github.com/paypal/paypal-checkout-components/issues/1791)
+
+
+
+## <small>5.0.188 (2021-11-10)</small>
+
+* fix bug w/ server render of button animations (#1790) ([c665f73](https://github.com/paypal/paypal-checkout-components/commit/c665f73)), closes [#1790](https://github.com/paypal/paypal-checkout-components/issues/1790)
+
+
+
 ## <small>5.0.187 (2021-11-01)</small>
 
 * Add experiment for the "label-text-next-to-logo-animation" (#1767) ([5a51f09](https://github.com/paypal/paypal-checkout-components/commit/5a51f09)), closes [#1767](https://github.com/paypal/paypal-checkout-components/issues/1767)
