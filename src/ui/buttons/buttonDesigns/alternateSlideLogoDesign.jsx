@@ -15,8 +15,8 @@ type AnimationProps = {|
 
 
 export const FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG = {
-    tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth },
-    medium:     { max: BUTTON_SIZE_STYLE.medium.maxWidth },
+    min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
+    max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
     cssClasses: {
         DOM_READY:                  CLASS.DOM_READY,
         ANIMATION_CONTAINER:        'personalized-design-container',
@@ -53,7 +53,7 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
 // Returns label container if the button sizes match
 export const getAlternateSlideLogoProps = function(document : Object, configuration : Object) : AnimationProps | null {
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
-    const { tiny, medium } = configuration;
+    const { min, max } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!animationContainer) {
@@ -62,7 +62,7 @@ export const getAlternateSlideLogoProps = function(document : Object, configurat
 
     // return null if animation should not be played for the button size
     const animationContainerWidth = animationContainer.offsetWidth;
-    if (animationContainerWidth < tiny.min || animationContainerWidth > medium.max) {
+    if (animationContainerWidth < min || animationContainerWidth > max) {
         // remove label element from dom
         animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
         return null;
