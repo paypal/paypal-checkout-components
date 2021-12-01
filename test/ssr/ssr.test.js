@@ -292,8 +292,6 @@ test(`Design for alternate slide logo should be applied when there is valid pers
     if (!buttonHTML || typeof buttonHTML !== 'string') {
         throw new Error(`Expected html to be a non-empty string`);
     }
-    // eslint-disable-next-line no-console
-    console.log('match', buttonHTML.match('data-design-experiment'));
     const designContainer = buttonHTML.match('data-design-experiment');
     const designScript = buttonHTML.match('.personalized-design-container');
 
