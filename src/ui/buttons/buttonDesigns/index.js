@@ -18,7 +18,6 @@ import {
     INLINE_LOGO_TEXT_CONFIG,
     InlineLogoTextComponent
 } from './inlineLogoTextDesign';
-
 import {
     getFadeoutLogoShowLabelTextAnimation,
     getFadeoutLogoShowLabelTextProps,
