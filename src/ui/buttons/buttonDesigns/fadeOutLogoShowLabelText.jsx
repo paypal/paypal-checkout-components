@@ -81,13 +81,13 @@ export function getFadeoutLogoShowLabelTextAnimation (animationProps, animationC
     const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
-            animation: 4s move-logo-to-left-side 2s infinite alternate;
+            animation: 4s move-logo-to-left-side 1s infinite alternate;
             position:fixed;
             left: ${ paypalLogoStartingLeftPosition }%;
         }
         
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
-            animation: 4s divide-logo-animation-right-side 2s infinite alternate;
+            animation: 4s divide-logo-animation-right-side 1s infinite alternate;
             text-align: center;
             width: 100%;
         }

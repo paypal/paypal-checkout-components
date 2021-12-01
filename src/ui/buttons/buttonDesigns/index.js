@@ -95,7 +95,6 @@ export function getButtonDesign(personalization : ?Personalization) : ButtonDesi
     const designContent = { designLabelText };
     const buttonDesignScript : string = getDesignScript(designFn, getValidDesignProps, designConfig);
     const buttonDesignComponent : ChildType = ButtonDesignComponent(designContent);
-   
     return {
         buttonDesignContainerClass: 'personalized-design-container',
         buttonDesignScript,
