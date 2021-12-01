@@ -14,7 +14,7 @@ type AnimationProps = {|
 |};
 
 
-export const FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG = {
+export const ALTERNATE_SLIDE_LOGO_CONFIG = {
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
     max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
     cssClasses: {
@@ -27,8 +27,8 @@ export const FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG = {
 };
 
 export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions) : ChildType {
-    const CONTAINER_CLASS = FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG.cssClasses.ANIMATION_CONTAINER;
-    const LABEL_CLASS = FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
+    const CONTAINER_CLASS = ALTERNATE_SLIDE_LOGO_CONFIG.cssClasses.ANIMATION_CONTAINER;
+    const LABEL_CLASS = ALTERNATE_SLIDE_LOGO_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
    
     return (
         <Fragment>
