@@ -6,42 +6,33 @@ import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
-import type { ButtonAnimationOutputParams, LabelOptions, DivideLogoAnimationProps } from './types';
+import type {  LabelOptions, DivideLogoAnimationProps } from './types';
 
-export const ANIMATION_CLASSES = {
-    LABEL_CONTAINER: ('fadeout-logo-show-label-animation-container' : 'fadeout-logo-show-label-animation-container'),
-    CONTAINER:       ('fadeout-logo-show-label-animation' : 'fadeout-logo-show-label-animation')
-};
-
-export const animationConfig = (ANIMATION) => ({
+export const FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG = {
     tiny:       { min: BUTTON_SIZE_STYLE.tiny.minWidth },
     medium:     { max: BUTTON_SIZE_STYLE.medium.maxWidth },
     cssClasses: {
         DOM_READY:                  CLASS.DOM_READY,
-        ANIMATION_CONTAINER:        ANIMATION.CONTAINER,
+        ANIMATION_CONTAINER:        'personalized-design-container',
         PAYPAL_LOGO:                LOGO_CLASS.LOGO,
-        ANIMATION_LABEL_CONTAINER:  ANIMATION.LABEL_CONTAINER,
+        ANIMATION_LABEL_CONTAINER:  'personalized-label-container',
         PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
     }
-});
+};
 
-export function AnimationComponent({ animationLabelText, cssClasses } : LabelOptions) : ChildType {
-    // experimentName must match elmo experiment name
-    const config = {
-        labelText:      animationLabelText,
-        labelClass:     cssClasses.LABEL_CONTAINER,
-        experimentName: 'Varied_Button_Design'
-    };
+export function FadeoutLogoShowLabelTextComponent({ designLabelText } : LabelOptions) : ChildType {
+    const CONTAINER_CLASS = FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG.cssClasses.ANIMATION_CONTAINER;
+    const LABEL_CLASS = FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
    
     return (
         <Fragment>
-            <div class={ config.labelClass } data-animation-experiment={ config.experimentName }> <span>{config.labelText}</span></div>
+            <div class={ LABEL_CLASS } data-design-experiment='104519'> <span>{designLabelText}</span></div>
             <style innerHTML={ `
-                .${ CLASS.DOM_READY } .${ cssClasses.CONTAINER } img.${ LOGO_CLASS.LOGO }{
+                .${ CLASS.DOM_READY } .${ CONTAINER_CLASS } img.${ LOGO_CLASS.LOGO }{
                     position: relative;
                 }
                 
-                .${ cssClasses.CONTAINER } .${ cssClasses.LABEL_CONTAINER } {
+                .${ CONTAINER_CLASS } .${ LABEL_CLASS } {
                     position: fixed;
                     opacity: 0; 
                     color: #142C8E;
@@ -54,7 +45,7 @@ export function AnimationComponent({ animationLabelText, cssClasses } : LabelOpt
 }
 
 // Returns label container if the button sizes match
-export const getAnimationProps = function(document, configuration) : DivideLogoAnimationProps | null {
+export const getFadeoutLogoShowLabelTextProps = function(document, configuration) : DivideLogoAnimationProps | null {
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { tiny, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -85,25 +76,26 @@ export const getAnimationProps = function(document, configuration) : DivideLogoA
     };
 };
 
-const createAnimation = function (animationProps, cssClasses) : void | null {
-    const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = cssClasses;
+export function getFadeoutLogoShowLabelTextAnimation (animationProps, animationConfig) : void | null {
+    const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = animationConfig.cssClasses;
     const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = animationProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
-            animation: 2s move-logo-to-left-side 2s infinite alternate;
+            animation: 4s move-logo-to-left-side 2s infinite alternate;
             position:fixed;
             left: ${ paypalLogoStartingLeftPosition }%;
         }
         
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
-            animation: 2s divide-logo-animation-right-side 2s infinite alternate;
+            animation: 4s divide-logo-animation-right-side 2s infinite alternate;
             text-align: center;
             width: 100%;
         }
 
         @keyframes move-logo-to-left-side {
-            0%,33% {
+            0%,33%,66% {
                 left: ${ paypalLogoStartingLeftPosition }%;
+                opacity: 1;
             }
             90%,100% {
                 left: 0%;
@@ -126,20 +118,4 @@ const createAnimation = function (animationProps, cssClasses) : void | null {
         paypalLabelContainerElement.appendChild(style);
         style.appendChild(document.createTextNode(animations));
     }
-};
-
-export function setupFadeOutLogoAndShowLabelAnimation (animationLabelText : string) : ButtonAnimationOutputParams {
-    const animationProps = { animationLabelText, cssClasses: ANIMATION_CLASSES  };
-    const buttonAnimationScript = `
-        const animationProps = ${ getAnimationProps.toString() }( document, ${ JSON.stringify(animationConfig(ANIMATION_CLASSES)) });
-        if (animationProps && animationProps.paypalLabelContainerElement && animationProps.paypalLogoStartingLeftPosition) {
-            const animation = ${ createAnimation.toString() }
-            animation(animationProps, ${ JSON.stringify(animationConfig.cssClasses) })
-        }
-    `;
-    return {
-        buttonAnimationContainerClass: ANIMATION_CLASSES.CONTAINER,
-        buttonAnimationScript,
-        buttonAnimationComponent:      (<AnimationComponent { ...animationProps } />)
-    };
 }
