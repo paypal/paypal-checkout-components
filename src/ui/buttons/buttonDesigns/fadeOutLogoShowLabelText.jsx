@@ -26,7 +26,7 @@ export function FadeoutLogoShowLabelTextComponent({ designLabelText } : LabelOpt
    
     return (
         <Fragment>
-            <div class={ LABEL_CLASS } data-design-experiment='104519'> <span>{designLabelText}</span></div>
+            <div class={ LABEL_CLASS } data-design-experiment='104530'> <span>{designLabelText}</span></div>
             <style innerHTML={ `
                 .${ CLASS.DOM_READY } .${ CONTAINER_CLASS } img.${ LOGO_CLASS.LOGO }{
                     position: relative;

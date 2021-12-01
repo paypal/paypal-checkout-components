@@ -19,6 +19,13 @@ import {
     InlineLogoTextComponent
 } from './inlineLogoTextDesign';
 
+import {
+    getFadeoutLogoShowLabelTextAnimation,
+    getFadeoutLogoShowLabelTextProps,
+    FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG,
+    FadeoutLogoShowLabelTextComponent
+} from './fadeOutLogoShowLabelText';
+
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
         designFn:              getDivideLogoAnimation,
@@ -31,6 +38,12 @@ const DESIGN_MAP : Object = {
         getValidDesignProps:   getValidInlineLogoTextProps,
         designConfig:          INLINE_LOGO_TEXT_CONFIG,
         ButtonDesignComponent: InlineLogoTextComponent
+    },
+    'run-fadeout-logo-show-label-text-design': {
+        designFn:              getFadeoutLogoShowLabelTextAnimation,
+        getValidDesignProps:   getFadeoutLogoShowLabelTextProps,
+        designConfig:          FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG,
+        ButtonDesignComponent: FadeoutLogoShowLabelTextComponent
     }
 };
 
@@ -40,7 +53,6 @@ const CONTROL_MAP : Object = {
 };
 
 export function getButtonDesign(personalization : ?Personalization) : ButtonDesignOutputParams | Object {
-
     // check valid personalization
     if (
         __WEB__
@@ -83,7 +95,7 @@ export function getButtonDesign(personalization : ?Personalization) : ButtonDesi
     const designContent = { designLabelText };
     const buttonDesignScript : string = getDesignScript(designFn, getValidDesignProps, designConfig);
     const buttonDesignComponent : ChildType = ButtonDesignComponent(designContent);
-
+   
     return {
         buttonDesignContainerClass: 'personalized-design-container',
         buttonDesignScript,
