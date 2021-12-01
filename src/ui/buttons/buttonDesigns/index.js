@@ -21,7 +21,7 @@ import {
 import {
     getAlternateSlideLogoAnimation,
     getAlternateSlideLogoProps,
-    FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG,
+    ALTERNATE_SLIDE_LOGO_CONFIG,
     AlternateSlideLogoComponent
 } from './alternateSlideLogoDesign';
 
@@ -41,7 +41,7 @@ const DESIGN_MAP : Object = {
     'alternate-slide-logo-animation': {
         designFn:              getAlternateSlideLogoAnimation,
         getValidDesignProps:   getAlternateSlideLogoProps,
-        designConfig:          FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG,
+        designConfig:          ALTERNATE_SLIDE_LOGO_CONFIG,
         ButtonDesignComponent: AlternateSlideLogoComponent
     }
 };
