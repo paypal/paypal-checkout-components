@@ -169,12 +169,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource)
                     ? <TagLine
-                        fundingSource={ fundingSources[0] }
-                        style={ style }
-                        locale={ locale }
-                        multiple={ multiple }
-                        nonce={ nonce }
-                        personalization={ personalization }
+                            fundingSource={ fundingSources[0] }
+                            style={ style }
+                            locale={ locale }
+                            multiple={ multiple }
+                            nonce={ nonce }
+                            personalization={ personalization }
                     /> : null
             }
 
@@ -187,19 +187,19 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
                     ? <PoweredByPayPal
-                        locale={ locale }
-                        nonce={ nonce }
+                            locale={ locale }
+                            nonce={ nonce }
                     /> : null
             }
 
             {
                 buttonDesignScript
                     ? <ButtonDesignExperimentScriptWrapper
-                        nonce={ nonce }
-                        buttonDesignScript={ buttonDesignScript }
+                            nonce={ nonce }
+                            buttonDesignScript={ buttonDesignScript }
                     />
                     : <Script
-                        nonce={ nonce }
+                            nonce={ nonce }
                     />
             }
         </div>
