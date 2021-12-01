@@ -19,11 +19,11 @@ import {
     InlineLogoTextComponent
 } from './inlineLogoTextDesign';
 import {
-    getFadeoutLogoShowLabelTextAnimation,
-    getFadeoutLogoShowLabelTextProps,
+    getAlternateSlideLogoAnimation,
+    getAlternateSlideLogoProps,
     FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG,
-    FadeoutLogoShowLabelTextComponent
-} from './fadeOutLogoShowLabelText';
+    AlternateSlideLogoComponent
+} from './alternateSlideLogoDesign';
 
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
@@ -38,11 +38,11 @@ const DESIGN_MAP : Object = {
         designConfig:          INLINE_LOGO_TEXT_CONFIG,
         ButtonDesignComponent: InlineLogoTextComponent
     },
-    'run-fadeout-logo-show-label-text-design': {
-        designFn:              getFadeoutLogoShowLabelTextAnimation,
-        getValidDesignProps:   getFadeoutLogoShowLabelTextProps,
+    'alternate-slide-logo-animation': {
+        designFn:              getAlternateSlideLogoAnimation,
+        getValidDesignProps:   getAlternateSlideLogoProps,
         designConfig:          FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG,
-        ButtonDesignComponent: FadeoutLogoShowLabelTextComponent
+        ButtonDesignComponent: AlternateSlideLogoComponent
     }
 };
 

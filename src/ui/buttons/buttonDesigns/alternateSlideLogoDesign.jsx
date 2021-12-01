@@ -26,7 +26,7 @@ export const FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG = {
     }
 };
 
-export function FadeoutLogoShowLabelTextComponent({ designLabelText } : ContentOptions) : ChildType {
+export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions) : ChildType {
     const CONTAINER_CLASS = FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG.cssClasses.ANIMATION_CONTAINER;
     const LABEL_CLASS = FADEOUT_LOGO_SHOW_LABEL_TEXT_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
    
@@ -51,7 +51,7 @@ export function FadeoutLogoShowLabelTextComponent({ designLabelText } : ContentO
 }
 
 // Returns label container if the button sizes match
-export const getFadeoutLogoShowLabelTextProps = function(document : Object, configuration : Object) : AnimationProps | null {
+export const getAlternateSlideLogoProps = function(document : Object, configuration : Object) : AnimationProps | null {
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { tiny, medium } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -82,7 +82,7 @@ export const getFadeoutLogoShowLabelTextProps = function(document : Object, conf
     };
 };
 
-export function getFadeoutLogoShowLabelTextAnimation (designProps : AnimationProps, configuration : Object) : void | null {
+export function getAlternateSlideLogoAnimation (designProps : AnimationProps, configuration : Object) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
     const { paypalLabelContainerElement, paypalLogoStartingLeftPosition } = designProps;
     const animations = `
