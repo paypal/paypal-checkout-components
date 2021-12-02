@@ -80,7 +80,7 @@ export const getHoverSlideLogoAnimation = function (animationProps : AnimationPr
             width:  100%;
             text-align: center;
             top: 0;
-            font-size: ${ labelTextFontSize };
+            font-size: ${ labelTextFontSize }px;
         }
 
         .${ ANIMATION_CONTAINER }:hover .${ ANIMATION_LABEL_CONTAINER }  {
