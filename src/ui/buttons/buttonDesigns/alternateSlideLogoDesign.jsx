@@ -56,7 +56,6 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
 // Returns label container if the button sizes match
 export const getAlternateSlideLogoProps = function(document : Object, configuration : Object) : AnimationProps | null {
     let paypalLogoStartingLeftPosition = null;
-    let labelTextFontSize = 8;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
     const { min, max, smalMax } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -84,9 +83,7 @@ export const getAlternateSlideLogoProps = function(document : Object, configurat
         return null;
     }
     // increase font-size for medium button sizes
-    if  (animationContainerWidth >= smalMax)  {
-        labelTextFontSize = 11;
-    }
+    const labelTextFontSize = animationContainerWidth >= smalMax ? 11  : 8;
    
     return {
         designContainer,
