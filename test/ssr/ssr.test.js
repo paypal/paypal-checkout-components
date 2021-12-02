@@ -300,6 +300,40 @@ test(`Design for alternate slide logo should be applied when there is valid pers
     }
 });
 
+test(`Design for hover slide logo should be applied when there is valid personalization`, async () => {
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'hover-slide-logo-animation',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (!designContainer || !designScript) {
+        throw new Error('Expected design to be applied in script and container');
+    }
+});
+
 test(`Tag should be applied with no design for control`, async () => {
 
     const { Buttons } = await getButtonScript();
