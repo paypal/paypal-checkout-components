@@ -12,9 +12,8 @@ type AnimationProps = {|
     paypalLabelContainerElement : Object,
     paypalLogoStartingLeftPosition : string,
     designContainer : Object,
-    labelTextFontSize : String
+    labelTextFontSize : number
 |};
-
 
 export const ALTERNATE_SLIDE_LOGO_CONFIG = {
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,

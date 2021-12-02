@@ -26,7 +26,7 @@ import {
 } from './alternateSlideLogoDesign';
 import {
     getHoverSlideLogoAnimation,
-    getHoverSlideLogoProps,
+    getHoverSlideLogoProps
 } from './hoverSlideLogoDesign';
 
 const DESIGN_MAP : Object = {
