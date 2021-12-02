@@ -12,7 +12,7 @@ type AnimationProps = {|
     paypalLabelContainerElement : Object,
     paypalLogoStartingLeftPosition : string,
     designContainer : Object,
-    labelTextFontSize : String
+    labelTextFontSize : number
 |};
 
 
