@@ -24,6 +24,10 @@ import {
     ALTERNATE_SLIDE_LOGO_CONFIG,
     AlternateSlideLogoComponent
 } from './alternateSlideLogoDesign';
+import {
+    getHoverSlideLogoAnimation,
+    getHoverSlideLogoProps,
+} from './hoverSlideLogoDesign';
 
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
@@ -41,6 +45,12 @@ const DESIGN_MAP : Object = {
     'alternate-slide-logo-animation': {
         designFn:              getAlternateSlideLogoAnimation,
         getValidDesignProps:   getAlternateSlideLogoProps,
+        designConfig:          ALTERNATE_SLIDE_LOGO_CONFIG,
+        ButtonDesignComponent: AlternateSlideLogoComponent
+    },
+    'hover-slide-logo-animation': {
+        designFn:              getHoverSlideLogoAnimation,
+        getValidDesignProps:   getHoverSlideLogoProps,
         designConfig:          ALTERNATE_SLIDE_LOGO_CONFIG,
         ButtonDesignComponent: AlternateSlideLogoComponent
     }
