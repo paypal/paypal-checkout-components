@@ -142,7 +142,9 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
             ) {
                 paypalLabelContainerElement.removeChild(style);
             } else {
-                if (!paypalLabelContainerElement.contains(style)) {
+                // enable animation again if size is between the expected range
+                if ((designContainer.offsetWidth < max && designContainer.offsetWidth > min)
+                    && !paypalLabelContainerElement.contains(style)) {
                     paypalLabelContainerElement.appendChild(style);
                 }
             }
