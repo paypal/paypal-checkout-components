@@ -11,12 +11,14 @@ import type {  ContentOptions } from './types';
 type AnimationProps = {|
     paypalLabelContainerElement : Object,
     paypalLogoStartingLeftPosition : string,
-    designContainer : Object
+    designContainer : Object,
+    labelTextFontSize : String
 |};
 
 
 export const ALTERNATE_SLIDE_LOGO_CONFIG = {
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
+    smalMax:                        BUTTON_SIZE_STYLE.small.maxWidth,
     max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
     cssClasses: {
         DOM_READY:                  CLASS.DOM_READY,
@@ -44,7 +46,7 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
                     opacity: 0; 
                     color: #142C8E;
                     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                    font-size: 10px;
+                    padding-top: 1px;
                 }
             ` } />;
         </Fragment>
@@ -53,8 +55,10 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
 
 // Returns label container if the button sizes match
 export const getAlternateSlideLogoProps = function(document : Object, configuration : Object) : AnimationProps | null {
+    let paypalLogoStartingLeftPosition = null;
+    let labelTextFontSize = 8;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
-    const { min, max } = configuration;
+    const { min, max, smalMax } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const designContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!designContainer) {
@@ -73,21 +77,29 @@ export const getAlternateSlideLogoProps = function(document : Object, configurat
     const paypalLabelContainerElement = designContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
     // get starting position for element so it doesn't jump when animation begins
     const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
-    const paypalLogoStartingLeftPosition = paypalLogoElement
-        ? `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }`
-        : '44.5';
-
+    
+    if (paypalLogoElement && paypalLabelContainerElement) {
+        paypalLogoStartingLeftPosition = `${ (paypalLogoElement.offsetLeft / paypalLabelContainerElement.offsetWidth) * 100 }`;
+    } else {
+        return null;
+    }
+    // increase font-size for medium button sizes
+    if  (animationContainerWidth >= smalMax)  {
+        labelTextFontSize = 11;
+    }
+   
     return {
         designContainer,
         paypalLabelContainerElement,
-        paypalLogoStartingLeftPosition
+        paypalLogoStartingLeftPosition,
+        labelTextFontSize
     };
 };
 
 export function getAlternateSlideLogoAnimation (designProps : AnimationProps, configuration : Object) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
     const { max, min } = configuration;
-    const { designContainer, paypalLabelContainerElement, paypalLogoStartingLeftPosition } = designProps;
+    const { designContainer, paypalLabelContainerElement, paypalLogoStartingLeftPosition, labelTextFontSize } = designProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
             animation: 4s move-logo-to-left-side 1s infinite alternate;
@@ -99,6 +111,7 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
             animation: 4s divide-logo-animation-right-side 1s infinite alternate;
             text-align: center;
             width: 100%;
+            font-size: ${ labelTextFontSize }px;
         }
 
         @keyframes move-logo-to-left-side {
