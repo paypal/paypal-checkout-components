@@ -9,5 +9,6 @@ export type ButtonDesignOutputParams ={|
 |};
 
 export type ContentOptions = {|
-    designLabelText : string
+    designLabelText : string,
+    logoColor? : string
 |};

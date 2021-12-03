@@ -18,6 +18,12 @@ import {
     INLINE_LOGO_TEXT_CONFIG,
     InlineLogoTextComponent
 } from './inlineLogoTextDesign';
+import {
+    getSwitchLogoAndShowLabelAnimation,
+    getSwitchLogoAndShowLabelProps,
+    SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
+    SwitchLogoAndShowLabelTextComponent
+} from './switch-logo-and-show-label-text';
 
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
@@ -31,6 +37,12 @@ const DESIGN_MAP : Object = {
         getValidDesignProps:   getValidInlineLogoTextProps,
         designConfig:          INLINE_LOGO_TEXT_CONFIG,
         ButtonDesignComponent: InlineLogoTextComponent
+    },
+    'run-switch-logo-show-label-text-design': {
+        designFn:              getSwitchLogoAndShowLabelAnimation,
+        getValidDesignProps:   getSwitchLogoAndShowLabelProps,
+        designConfig:          SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
+        ButtonDesignComponent: SwitchLogoAndShowLabelTextComponent
     }
 };
 
@@ -39,8 +51,7 @@ const CONTROL_MAP : Object = {
     'small-button-design-control': '104530'
 };
 
-export function getButtonDesign(personalization : ?Personalization) : ButtonDesignOutputParams | Object {
-
+export function getButtonDesign(personalization : ?Personalization, logoColor? : string) : ButtonDesignOutputParams | Object {
     // check valid personalization
     if (
         __WEB__
@@ -80,7 +91,7 @@ export function getButtonDesign(personalization : ?Personalization) : ButtonDesi
         ButtonDesignComponent
     } = DESIGN_MAP[designId];
 
-    const designContent = { designLabelText };
+    const designContent = { designLabelText, logoColor };
     const buttonDesignScript : string = getDesignScript(designFn, getValidDesignProps, designConfig);
     const buttonDesignComponent : ChildType = ButtonDesignComponent(designContent);
 
