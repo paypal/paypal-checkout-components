@@ -20,7 +20,8 @@ const CARD_FIELD_TYPE = {
     SINGLE: 'single',
     NUMBER: 'number',
     CVV:    'cvv',
-    EXPIRY: 'expiry'
+    EXPIRY: 'expiry',
+    NAME:   'name'
 };
 
 type CardFieldsProps = {|
@@ -66,7 +67,8 @@ type CardFieldsExports = {|
 type CardFieldsChildren = {|
     NumberField : CardFieldComponent,
     CVVField : CardFieldComponent,
-    ExpiryField : CardFieldComponent
+    ExpiryField : CardFieldComponent,
+    NameField : CardFieldComponent
 |};
 
 const url = () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__ }`;
@@ -240,6 +242,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
     const NumberField = genericCardField(CARD_FIELD_TYPE.NUMBER);
     const CVVField = genericCardField(CARD_FIELD_TYPE.CVV);
     const ExpiryField = genericCardField(CARD_FIELD_TYPE.EXPIRY);
+    const NameField = genericCardField(CARD_FIELD_TYPE.NAME);
 
     const CardFields = create({
         tag: 'paypal-card-fields',
@@ -267,7 +270,8 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             return {
                 NumberField,
                 CVVField,
-                ExpiryField
+                ExpiryField,
+                NameField
             };
         },
 
