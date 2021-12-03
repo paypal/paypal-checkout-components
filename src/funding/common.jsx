@@ -47,7 +47,7 @@ export type LabelOptions = {|
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
-    experiment : ?Experiment
+    experiment? : Experiment
 |};
 
 export type AnimatedExperimentLabelOptions = {|
