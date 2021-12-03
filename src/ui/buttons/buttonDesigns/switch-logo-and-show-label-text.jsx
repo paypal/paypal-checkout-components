@@ -81,9 +81,9 @@ export const getSwitchLogoAndShowLabelProps = function(document : Object, config
     };
 };
 
-export const getSwitchLogoAndShowLabelAnimation = function (designProps : AnimationProps , configuration : Object) : void | null {
+export const getSwitchLogoAndShowLabelAnimation = function (designProps : AnimationProps, configuration : Object) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
-    const { paypalLabelContainerElement, labelFontSize } = designProps ;
+    const { paypalLabelContainerElement, labelFontSize } = designProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }-paypal{
             animation: 4s move-logo-to-left-side 0.5s infinite alternate;

@@ -1,5 +1,6 @@
 /* @flow */
 import { type ChildType } from 'jsx-pragmatic/src';
+import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 export type ButtonDesignOutputParams ={|
     buttonDesignContainerClass : string,
@@ -10,5 +11,5 @@ export type ButtonDesignOutputParams ={|
 
 export type ContentOptions = {|
     designLabelText : string,
-    logoColor? : string
+    logoColor? : $Values<typeof LOGO_COLOR>
 |};
