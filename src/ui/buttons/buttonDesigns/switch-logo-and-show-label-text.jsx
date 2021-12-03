@@ -9,6 +9,7 @@ import { BUTTON_SIZE_STYLE } from '../config';
 import type { ContentOptions } from './types';
 
 export const SWITCH_LOGO_AND_SHOW_LABEL_CONFIG = {
+    runOnce:                        false,
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
     smallMax:                       BUTTON_SIZE_STYLE.small.maxWidth,
     mediumMax:                      BUTTON_SIZE_STYLE.medium.maxWidth,
@@ -55,45 +56,49 @@ export const getSwitchLogoAndShowLabelProps = function(document : Object, config
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
     const { min, smallMax, mediumMax } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
-    const animationContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
-    if (!animationContainer) {
+    const designContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
+    if (!designContainer) {
         return null;
     }
 
     // return null if animation should not be played for the button size
-    const animationContainerWidth = animationContainer.offsetWidth;
+    const designContainerWidth = designContainer.offsetWidth;
     
-    if (animationContainerWidth < min || animationContainerWidth >= mediumMax) {
+    if (designContainerWidth < min || designContainerWidth >= mediumMax) {
         // remove label element from dom
-        animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
+        designContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
         return null;
     }
 
-    if (animationContainerWidth >= smallMax) {
+    if (designContainerWidth >= smallMax) {
         labelFontSize = 11;
     }
 
     // get the label container that animation will be applied to
-    const paypalLabelContainerElement = animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
+    const paypalLabelContainerElement = designContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
     return {
+        designContainer,
         labelFontSize,
         paypalLabelContainerElement
     };
 };
 
 export const getSwitchLogoAndShowLabelAnimation = function (designProps : AnimationProps, configuration : Object) : void | null {
+    const { min, mediumMax, runOnce } = configuration;
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
-    const { paypalLabelContainerElement, labelFontSize } = designProps;
+    const { designContainer, paypalLabelContainerElement, labelFontSize } = designProps;
+    const timesToRunAnimation = runOnce ? '2' : 'infinite';
+    
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }-paypal{
-            animation: 4s move-logo-to-left-side 0.5s infinite alternate;
+            animation: 4s move-logo-to-left-side 0.5s ${ timesToRunAnimation } alternate;
             position:fixed;
             transform:translateX(-50%);
         }
 
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
             position: fixed;
-            animation: 4s divide-logo-animation-right-side 0.5s infinite alternate;
+            animation: 4s divide-logo-animation-right-side 0.5s ${ timesToRunAnimation } alternate;
             text-align: center;
             width: 100%;
             font-size: ${ labelFontSize }px;
@@ -101,7 +106,7 @@ export const getSwitchLogoAndShowLabelAnimation = function (designProps : Animat
         }
 
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ LOGO_CLASS.LOGO }-pp{
-            animation: 4s move-small-paypal 0.5s infinite alternate;
+            animation: 4s move-small-paypal 0.5s ${ timesToRunAnimation } alternate;
             padding-right: 6px;
         }
 
@@ -140,5 +145,20 @@ export const getSwitchLogoAndShowLabelAnimation = function (designProps : Animat
         const style = document.createElement('style');
         paypalLabelContainerElement.appendChild(style);
         style.appendChild(document.createTextNode(animations));
+        window.addEventListener('resize', () => {
+            // Remove animation if size limit broken
+            if (
+                (designContainer.offsetWidth > mediumMax || designContainer.offsetWidth < min)
+                && paypalLabelContainerElement.contains(style)
+            ) {
+                paypalLabelContainerElement.removeChild(style);
+            } else {
+                // enable animation again if size is between the expected range
+                if ((designContainer.offsetWidth < mediumMax && designContainer.offsetWidth > min)
+                    && !paypalLabelContainerElement.contains(style)) {
+                    paypalLabelContainerElement.appendChild(style);
+                }
+            }
+        });
     }
 };

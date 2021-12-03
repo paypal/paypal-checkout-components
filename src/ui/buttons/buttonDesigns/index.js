@@ -43,6 +43,12 @@ const DESIGN_MAP : Object = {
         getValidDesignProps:   getSwitchLogoAndShowLabelProps,
         designConfig:          SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
         ButtonDesignComponent: SwitchLogoAndShowLabelTextComponent
+    },
+    'run-switch-logo-show-label-text-once-design': {
+        designFn:              getSwitchLogoAndShowLabelAnimation,
+        getValidDesignProps:   getSwitchLogoAndShowLabelProps,
+        designConfig:          { ...SWITCH_LOGO_AND_SHOW_LABEL_CONFIG, runOnce: true },
+        ButtonDesignComponent: SwitchLogoAndShowLabelTextComponent
     }
 };
 
