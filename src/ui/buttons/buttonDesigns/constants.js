@@ -6,6 +6,7 @@ import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';
 
 export const DESIGN_SMALL_BUTTON_CONFIG = {
+    runOnce:                        false,
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
     smallMax:                       BUTTON_SIZE_STYLE.small.maxWidth,
     mediumMax:                      BUTTON_SIZE_STYLE.medium.maxWidth,

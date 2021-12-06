@@ -132,8 +132,6 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
         const style = document.createElement('style');
         paypalLabelContainerElement.appendChild(style);
         style.appendChild(document.createTextNode(designCss));
-
-        
         window.addEventListener('resize', () => {
             // Remove animation if size limit broken
             if (

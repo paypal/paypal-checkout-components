@@ -61,6 +61,12 @@ const DESIGN_MAP : Object = {
         getValidDesignProps:   resizeButtonShowLabelTextProps,
         designConfig:          DESIGN_SMALL_BUTTON_CONFIG,
         ButtonDesignComponent: resizeButtonShowLabelTextComponent
+    },
+    'run-resize-button-and-show-label-once-design': {
+        designFn:              resizeButtonShowLabelTextAnimation,
+        getValidDesignProps:   resizeButtonShowLabelTextProps,
+        designConfig:          { ...DESIGN_SMALL_BUTTON_CONFIG, runOnce: true },
+        ButtonDesignComponent: resizeButtonShowLabelTextComponent
     }
 };
 
