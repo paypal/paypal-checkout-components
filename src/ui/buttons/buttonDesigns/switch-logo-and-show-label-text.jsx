@@ -52,7 +52,7 @@ export function SwitchLogoAndShowLabelTextComponent({ designLabelText, logoColor
 
 // Returns label container if the button sizes match
 export const getSwitchLogoAndShowLabelProps = function(document : Object, configuration : Object) : AnimationProps | null {
-    let labelFontSize = 8;
+    
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
     const { min, smallMax, mediumMax } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
@@ -69,10 +69,7 @@ export const getSwitchLogoAndShowLabelProps = function(document : Object, config
         animationContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
         return null;
     }
-
-    if (animationContainerWidth >= smallMax) {
-        labelFontSize = 11;
-    }
+    const labelFontSize = animationContainerWidth >= smallMax ? 11 : 8;
 
     // get the label container that animation will be applied to
     const paypalLabelContainerElement = animationContainer.querySelector(`.${ PAYPAL_BUTTON_LABEL }`) || null;
