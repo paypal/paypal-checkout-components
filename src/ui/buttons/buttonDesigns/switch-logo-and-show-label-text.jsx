@@ -23,6 +23,7 @@ export const SWITCH_LOGO_AND_SHOW_LABEL_CONFIG = {
 };
 
 type AnimationProps = {|
+    designContainer : Object,
     paypalLabelContainerElement : Object,
     labelFontSize : number
 |};
