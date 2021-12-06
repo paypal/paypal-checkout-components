@@ -117,7 +117,7 @@ export const resizeButtonShowLabelTextAnimation = function (designProps : Animat
             position: fixed;
             animation: 4s show-text 1s ${ timesToRunAnimation } alternate;
             font-size: ${ labelFontSize }px;
-            padding-top: 1%;
+            padding-top: 1px;
             right: 0%;
             width: 80%;
             text-align: center;
