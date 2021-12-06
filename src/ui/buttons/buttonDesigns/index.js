@@ -25,7 +25,7 @@ import {
     SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
     SwitchLogoAndShowLabelTextComponent
 } from './switch-logo-and-show-label-text';
-import{
+import {
     resizeButtonShowLabelTextComponent,
     resizeButtonShowLabelTextProps,
     resizeButtonShowLabelTextAnimation

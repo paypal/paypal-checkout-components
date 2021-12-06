@@ -12,7 +12,7 @@ type AnimationProps = {|
     labelFontSize : number,
     marginLabelContainer : number,
     buttonHeight : number,
-    topPositionBlueLayer: string
+    topPositionBlueLayer : string
 |};
 
 export function resizeButtonShowLabelTextComponent({ designLabelText, logoColor } : ContentOptions) : ChildType {
