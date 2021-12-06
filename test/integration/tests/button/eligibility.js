@@ -26,7 +26,7 @@ describe('venmo button eligibility', () => {
         window.localStorage.removeItem('enable_venmo_ios');
     });
 
-    it('should render venmo button for desktop when eligibility is true', () => {
+    it('should render venmo button for desktop when eligibility is true and the default label', () => {
         return wrapPromise(({ expect, avoid }) => {
             window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
             window.localStorage.setItem('enable_venmo_desktop', true);
@@ -35,9 +35,49 @@ describe('venmo button eligibility', () => {
             const instance = window.paypal.Buttons({
                 test: {
                     onRender: expect('onRender', ({ xprops, fundingSources }) => {
-                        const { experiment: { enableVenmo } } = xprops;
+                        const { experiment: { enableVenmo, enableVenmoAppLabel } } = xprops;
                         if (!enableVenmo) {
                             throw new Error(`Expected venmo experiment to be eligible: ${ JSON.stringify(xprops.experiment) }`);
+                        }
+
+                        if (enableVenmoAppLabel) {
+                            throw new Error(`Expected enableVenmoAppLabel experiment to not be eligible: ${ JSON.stringify(xprops.experiment) }`);
+                        }
+
+                        if (!fundingSources.includes(FUNDING.VENMO)) {
+                            throw new Error(`Venmo is missing from the list of funding sources: ${ fundingSources }`);
+                        }
+
+                        mockEligibility.cancel();
+                    })
+                },
+
+                onApprove: avoid('onApprove'),
+                onCancel:  avoid('onCancel'),
+                onError:   avoid('onError')
+            });
+
+            return instance.render('#testContainer');
+        });
+    });
+
+    it('should render venmo button for desktop when eligibility is true and the app label', () => {
+        return wrapPromise(({ expect, avoid }) => {
+            window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
+            window.localStorage.setItem('enable_venmo_desktop', true);
+            window.localStorage.setItem('enable_venmo_app_label', true);
+            const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO], 'eligible', true);
+
+            const instance = window.paypal.Buttons({
+                test: {
+                    onRender: expect('onRender', ({ xprops, fundingSources }) => {
+                        const { experiment: { enableVenmo, enableVenmoAppLabel } } = xprops;
+                        if (!enableVenmo) {
+                            throw new Error(`Expected venmo experiment to be eligible: ${ JSON.stringify(xprops.experiment) }`);
+                        }
+
+                        if (!enableVenmoAppLabel) {
+                            throw new Error(`Expected enableVenmoAppLabel experiment to be eligible: ${ JSON.stringify(xprops.experiment) }`);
                         }
 
                         if (!fundingSources.includes(FUNDING.VENMO)) {
