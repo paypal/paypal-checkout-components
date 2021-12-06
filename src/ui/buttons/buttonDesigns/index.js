@@ -5,6 +5,7 @@ import { type Personalization } from '../props';
 
 import { getDesignScript } from './script';
 import { type ButtonDesignOutputParams } from './types';
+import { DESIGN_SMALL_BUTTON_CONFIG } from './constants';
 import { ControlDesignComponent } from './control';
 import {
     getDivideLogoAnimation,
@@ -24,6 +25,11 @@ import {
     SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
     SwitchLogoAndShowLabelTextComponent
 } from './switch-logo-and-show-label-text';
+import{
+    resizeButtonShowLabelTextComponent,
+    resizeButtonShowLabelTextProps,
+    resizeButtonShowLabelTextAnimation
+} from './resizeButtonShowLabelText';
 
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
@@ -49,6 +55,12 @@ const DESIGN_MAP : Object = {
         getValidDesignProps:   getSwitchLogoAndShowLabelProps,
         designConfig:          { ...SWITCH_LOGO_AND_SHOW_LABEL_CONFIG, runOnce: true },
         ButtonDesignComponent: SwitchLogoAndShowLabelTextComponent
+    },
+    'run-resize-button-and-show-label-design': {
+        designFn:              resizeButtonShowLabelTextAnimation,
+        getValidDesignProps:   resizeButtonShowLabelTextProps,
+        designConfig:          DESIGN_SMALL_BUTTON_CONFIG,
+        ButtonDesignComponent: resizeButtonShowLabelTextComponent
     }
 };
 
