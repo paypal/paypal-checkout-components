@@ -9,6 +9,7 @@ import { BUTTON_SIZE_STYLE } from '../config';
 import type { ContentOptions } from './types';
 
 export const SWITCH_LOGO_AND_SHOW_LABEL_CONFIG = {
+    runOnce:                        false,
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
     smallMax:                       BUTTON_SIZE_STYLE.small.maxWidth,
     mediumMax:                      BUTTON_SIZE_STYLE.medium.maxWidth,
@@ -82,26 +83,32 @@ export const getSwitchLogoAndShowLabelProps = function(document : Object, config
 };
 
 export const getSwitchLogoAndShowLabelAnimation = function (designProps : AnimationProps, configuration : Object) : void | null {
+    const { runOnce } = configuration;
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
     const { paypalLabelContainerElement, labelFontSize } = designProps;
+    const timesToRunAnimation = runOnce ? '2' : 'infinite';
+
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }-paypal{
-            animation: 4s move-logo-to-left-side 0.5s infinite alternate;
+            animation: 4s move-logo-to-left-side 0.5s ${ timesToRunAnimation } alternate;
             position:fixed;
             transform:translateX(-50%);
         }
 
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
             position: fixed;
-            animation: 4s divide-logo-animation-right-side 0.5s infinite alternate;
+            animation: 4s divide-logo-animation-right-side 0.5s ${ timesToRunAnimation } alternate;
             text-align: center;
             width: 100%;
             font-size: ${ labelFontSize }px;
+        }
+
+        .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } span {
             padding-top: 1px;
         }
 
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ LOGO_CLASS.LOGO }-pp{
-            animation: 4s move-small-paypal 0.5s infinite alternate;
+            animation: 4s move-small-paypal 0.5s ${ timesToRunAnimation } alternate;
             padding-right: 6px;
         }
 
