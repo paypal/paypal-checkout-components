@@ -113,6 +113,7 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
 
     const playOnHover = runOnce ? ':hover' : '';
     const animationPropertiesOnHover = `
+        animation-duration: 2s;
         animation-fill-mode: forwards;
     `;
     const keyFramesOnHover = `
@@ -126,6 +127,7 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
         }
     `;
     const animationPropertiesWithoutHover = `
+        animation-duration: 3s;
         animation-iteration-count: infinite;
         animation-direction: alternate;
     `;
@@ -141,13 +143,11 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
        
         .${ DOM_READY } .${ ANIMATION_CONTAINER }${ playOnHover } img.${ PAYPAL_LOGO } {
             animation-name: move-logo-to-left-side;
-            animation-duration: 2s;
             ${ animationProperties }
         }
         
         .${ ANIMATION_CONTAINER }${ playOnHover } .${ ANIMATION_LABEL_CONTAINER } {
             animation-name: divide-logo-animation-right-side;
-            animation-duration: 2s;
             ${ animationProperties }
             text-align: center;
             width: 100%;
