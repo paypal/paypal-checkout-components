@@ -26,8 +26,6 @@ export const CLASS = {
     SPACE: ('paypal-button-space' : 'paypal-button-space'),
     CARD:  ('paypal-button-card' : 'paypal-button-card'),
 
-    PERSONALIZATION_TEXT: ('paypal-personalization-text' : 'paypal-personalization-text'),
-    
     VAULT_LABEL:  ('paypal-vault-label' : 'paypal-vault-label'),
     VAULT_HEADER: ('paypal-vault-header' : 'paypal-vault-header'),
 

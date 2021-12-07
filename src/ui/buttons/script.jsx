@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
+import type { Personalization } from '@paypal/sdk-client/src';
 
 function getComponentScript() : () => void {
     /* istanbul ignore next */
@@ -164,17 +165,20 @@ function getComponentScript() : () => void {
 
 type ScriptProps = {|
     nonce : ?string,
-    buttonAnimation : string
+    personalizations? : ?$ReadOnlyArray<Personalization>
 |};
 
-export function Script({ nonce, buttonAnimation } : ScriptProps) : ElementNode {
+export function Script({ nonce, personalizations = [] } : ScriptProps) : ElementNode {
     const scripts = `
         const scriptFns = ${ getComponentScript().toString() };
         scriptFns();
-        function onDomLoad(){ ${ buttonAnimation } };
-        document.addEventListener('DOMContentLoaded', onDomLoad);
     `;
+
+    const personalizationScripts = personalizations?.reduce(
+        (prev, curr) => prev + (curr?.treatment?.js || '')
+        , ''
+    );
     return (
-        <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts }})()` } />
+        <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts } ${ personalizationScripts || '' }})()` } />
     );
 }

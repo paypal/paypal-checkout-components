@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import type { FundingEligibilityType } from '@paypal/sdk-client/src';
+import type { FundingEligibilityType, Personalization } from '@paypal/sdk-client/src';
 import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
@@ -11,7 +11,7 @@ import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../ty
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
 
-import type { ButtonStyle, Personalization, OnShippingChange } from './props';
+import type { ButtonStyle, OnShippingChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
 import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from './button-animations/types';
@@ -29,7 +29,7 @@ type IndividualButtonProps = {|
     i : number,
     nonce : string,
     userIDToken : ?string,
-    personalization : ?Personalization,
+    personalizations : ?$ReadOnlyArray<Personalization>,
     content : ?ContentType,
     tagline : ?boolean,
     commit : boolean,
@@ -42,7 +42,7 @@ type IndividualButtonProps = {|
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, buttonAnimation } : IndividualButtonProps) : ElementNode {
+    userIDToken, onClick = noop, content, tagline, commit, experiment, instrument, buttonAnimation } : IndividualButtonProps) : ElementNode {
     const fundingConfig = getFundingConfig()[fundingSource];
     if (!fundingConfig) {
         throw new Error(`Can not find funding config for ${ fundingSource }`);
@@ -124,7 +124,6 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             fundingEligibility={ fundingEligibility }
             onClick={ clickHandler }
             onKeyPress={ keypressHandler }
-            personalization={ personalization }
             tagline={ tagline }
             content={ content }
         />

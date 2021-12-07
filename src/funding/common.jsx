@@ -9,7 +9,6 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import type { ContentType, WalletInstrument, Experiment, Requires, Wallet } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW, TEXT_COLOR } from '../constants';
-import type { Personalization } from '../ui/buttons/props';
 import type { ButtonAnimationOutputParams, ButtonAnimationEmptyOutput } from '../ui/buttons/button-animations/types';
 
 import { componentContent } from './content';
@@ -44,7 +43,6 @@ export type LabelOptions = {|
     onClick : (event : Event, ...args: $ReadOnlyArray<mixed>) => void,
     onKeyPress? : (event : KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
     layout : $Values<typeof BUTTON_LAYOUT>,
-    personalization : ?Personalization,
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
@@ -66,7 +64,9 @@ export type WalletLabelOptions = {|
 
 export type TagOptions = {|
     locale : LocaleType,
-    multiple : boolean
+    multiple : boolean,
+    label : string,
+    nonce : string
 |};
 
 export type FundingSourceConfig = {|

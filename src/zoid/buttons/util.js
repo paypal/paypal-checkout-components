@@ -1,8 +1,9 @@
 /* @flow */
 import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
+import { FUNDING, COUNTRY, CURRENCY } from '@paypal/sdk-constants/src';
+import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents, fetchPersonalizations, type Extra, type Personalization, type MLContext } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
+import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
 import { BUTTON_FLOW, CLASS } from '../../constants';
@@ -243,4 +244,36 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
     } catch (e) {
         return undefined;
     }
+}
+
+export function getPersonalizations({ props, buyerCountry, currency } : {| props? : ButtonProps, buyerCountry : ?$Values<typeof COUNTRY>, currency : ?$Values<typeof CURRENCY> |}) : ZalgoPromise<$ReadOnlyArray<Personalization>> {
+    if (!buyerCountry || !currency) {
+        return ZalgoPromise.reject();
+    }
+
+    const mlContext : MLContext = {
+        userAgent: window.navigator?.userAgent || '',
+        buyerCountry,
+        locale:    props?.locale,
+        clientId:  props?.clientID || '',
+        buyerIp:   '',
+        currency,
+        cookies:   window.document?.cookie || ''
+    };
+
+    const extra : Extra = {
+        commit:          props?.commit || false,
+        intent:          props?.intent,
+        vault:           props?.vault,
+        buttonSessionID: props?.buttonSessionID,
+        renderedButtons: [],
+        label:           props?.style?.label,
+        period:          props?.style?.period,
+        taglineEnabled:  true,
+        layout:          props?.style?.layout,
+        buttonSize:      ''
+    };
+
+    return fetchPersonalizations({ mlContext, eligibility: props.fundingEligibility, extra })
+        .then(experiments => experiments);
 }

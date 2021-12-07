@@ -20,12 +20,19 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons } from './util';
+    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons, getPersonalizations } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
+    let personalizations;
+
+    getPersonalizations({ buyerCountry: getBuyerCountry(), currency: getCurrency() }).then(experiments => {
+        personalizations = experiments;
+    });
+
     const queriedEligibleFunding = [];
+    
     return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
@@ -389,6 +396,13 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     };
                     return experimentTreatments;
                 }
+            },
+
+            personalizations: {
+                type:       'object',
+                queryParam: false,
+                required:   false,
+                value:      personalizations
             },
 
             flow: {

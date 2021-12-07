@@ -97,7 +97,7 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
-        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalizations, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
@@ -117,7 +117,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         flow === BUTTON_FLOW.PURCHASE &&
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
-    const buttonAnimation = getButtonAnimation(personalization);
+    const buttonAnimation = getButtonAnimation(personalizations);
     return (
         <div class={ [
             CLASS.CONTAINER,
@@ -132,6 +132,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                 nonce={ nonce }
                 style={ style }
                 fundingEligibility={ fundingEligibility }
+                personalizations={ personalizations }
             />
 
             {
@@ -152,7 +153,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         onShippingChange={ onShippingChange }
                         onClick={ onClick }
                         userIDToken={ userIDToken }
-                        personalization={ personalization }
+                        personalizations={ personalizations }
                         tagline={ tagline }
                         commit={ commit }
                         experiment={ experiment }
@@ -171,7 +172,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         locale={ locale }
                         multiple={ multiple }
                         nonce={ nonce }
-                        personalization={ personalization }
                     /> : null
             }
 
@@ -190,7 +190,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             <Script
-                buttonAnimation={ buttonAnimation.animationScript || '' }
+                personalizations={ personalizations }
                 nonce={ nonce }
             />
         </div>

@@ -1,16 +1,13 @@
-/* eslint-disable max-lines, eslint-comments/disable-enable-pair  */
 /* @flow */
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
-import { type OrderCreateRequest, type FundingEligibilityType,
-    type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
+import type { OrderCreateRequest, FundingEligibilityType,
+    OrderGetResponse, OrderCaptureResponse, OrderAuthorizeResponse, Personalization } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
-import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
-import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
 import type { ContentType, Wallet, Experiment } from '../../types';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';
@@ -142,38 +139,6 @@ export type ButtonStyleInputs = {|
     height? : number | void
 |};
 
-type PersonalizationComponentProps = {|
-   logoColor : $Values<typeof LOGO_COLOR>,
-   period : ?number
-|};
-
-export type Personalization = {|
-    buttonText? : {|
-        text : string,
-        Component : ?ComponentFunctionType<PersonalizationComponentProps>,
-        tracking : {|
-            impression : string,
-            click : string
-        |}
-    |},
-    tagline? : {|
-        text : string,
-        Component : ?ComponentFunctionType<PersonalizationComponentProps>,
-        tracking : {|
-            impression : string,
-            click : string
-        |}
-    |},
-    buttonAnimation? : {|
-        id : string,
-        text : string,
-        tracking : {|
-            impression : string,
-            click : string
-        |}
-    |}
-|};
-
 export type ApplePayErrorCode = 'shippingContactInvalid' | 'billingContactInvalid' | 'addressUnserviceable' | 'unknown';
 export type ApplePayContactField = 'phoneNumber' | 'emailAddress' | 'givenName' | 'familyName' | 'phoneticGivenName' | 'phoneticFamilyName' | 'addressLines' | 'subLocality' | 'locality' | 'postalCode' | 'subAdministrativeArea' | 'administrativeArea' | 'country' | 'countryCode';
 
@@ -250,7 +215,7 @@ export type RenderButtonProps = {|
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
-    personalization : ?Personalization,
+    personalizations : ?$ReadOnlyArray<Personalization>,
     clientAccessToken : ?string,
     content? : ContentType,
     flow : $Values<typeof BUTTON_FLOW>,
@@ -295,6 +260,7 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
+    personalizations? : ?$ReadOnlyArray<Personalization>,
     clientAccessToken? : ?string,
     nonce : string,
     userIDToken : ?string,
@@ -329,7 +295,7 @@ export type ButtonPropsInputs = {
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
-    personalization? : Personalization,
+    personalizations? : ?$ReadOnlyArray<Personalization>,
     clientAccessToken? : ?string,
     wallet? : ?Wallet,
     csp : {|
@@ -475,7 +441,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         components = [ COMPONENTS.BUTTONS ],
         nonce,
         onShippingChange,
-        personalization,
+        personalizations,
         clientAccessToken,
         content,
         wallet,
@@ -528,6 +494,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(props, style);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalizations, content, wallet, flow,
         experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser };
 }
