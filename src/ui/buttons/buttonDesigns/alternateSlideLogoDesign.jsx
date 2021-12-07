@@ -97,13 +97,21 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
     const { designContainer, paypalLabelContainerElement, paypalLogoStartingLeftPosition, labelTextFontSize } = designProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
-            animation: 2s move-logo-to-left-side 2s infinite alternate;
+            animation-name: move-logo-to-left-side;
+            animation-duration: 2s;
+            animation-delay: 2s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
             position:fixed;
             left: ${ paypalLogoStartingLeftPosition }%;
         }
         
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
-            animation: 2s divide-logo-animation-right-side 2s infinite alternate;
+            animation-name: divide-logo-animation-right-side;
+            animation-duration: 2s;
+            animation-delay: 2s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
             text-align: center;
             width: 100%;
             color: #142C8E;
