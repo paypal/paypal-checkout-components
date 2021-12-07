@@ -6,7 +6,7 @@ import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
-import { BUTTON_FLOW, CLASS } from '../../constants';
+import { BUTTON_FLOW } from '../../constants';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
 import { determineEligibleFunding } from '../../funding';
 
@@ -23,29 +23,6 @@ export function determineFlow(props : DetermineFlowOptions) : $Values<typeof BUT
         return BUTTON_FLOW.SUBSCRIPTION_SETUP;
     } else {
         return BUTTON_FLOW.PURCHASE;
-    }
-}
-
-export function supportsQRPay(funding : $Values<typeof FUNDING>) : boolean {
-    if (funding === FUNDING.VENMO && !isDevice()) {
-        return true;
-    }
-
-    return false;
-}
-
-// eslint-disable-next-line no-undef
-export function showButtonLoading (fundingSource : $Values<typeof FUNDING>, event : SyntheticInputEvent<HTMLInputElement>) : void {
-    const buttonElement = event.target.ownerDocument.querySelector(`[data-funding-source="${ fundingSource }"]`);
-    if (buttonElement) {
-        const spinner = buttonElement.querySelector(`.${ CLASS.SPINNER }`);
-        const label = buttonElement.querySelector(`.${ CLASS.BUTTON_LABEL }`);
-        if (spinner) {
-            spinner.setAttribute('style', 'display:block !important');
-        }
-        if (label) {
-            label.setAttribute('style', 'display:none;');
-        }
     }
 }
 
@@ -145,7 +122,7 @@ export function createNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDI
         return;
     }
 
-    return createExperiment('disable_paylater', 10);
+    return createExperiment('disable_paylater', 0);
 }
 
 export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
@@ -213,6 +190,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                 listeners.paymentauthorized({ payment });
             };
 
+            // eslint-disable-next-line unicorn/prefer-add-event-listener
             session.oncancel = () => {
                 listeners.cancel();
             };

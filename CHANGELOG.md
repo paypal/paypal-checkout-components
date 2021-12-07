@@ -1,3 +1,27 @@
+## <small>5.0.189 (2021-11-16)</small>
+
+* Revert "paymentfields prerender bg update (#1791)" ([02558c5](https://github.com/paypal/paypal-checkout-components/commit/02558c5)), closes [#1791](https://github.com/paypal/paypal-checkout-components/issues/1791)
+
+
+
+## <small>5.0.188 (2021-11-10)</small>
+
+* fix bug w/ server render of button animations (#1790) ([c665f73](https://github.com/paypal/paypal-checkout-components/commit/c665f73)), closes [#1790](https://github.com/paypal/paypal-checkout-components/issues/1790)
+
+
+
+## <small>5.0.187 (2021-11-01)</small>
+
+* Add experiment for the "label-text-next-to-logo-animation" (#1767) ([5a51f09](https://github.com/paypal/paypal-checkout-components/commit/5a51f09)), closes [#1767](https://github.com/paypal/paypal-checkout-components/issues/1767)
+
+
+
+## <small>5.0.186 (2021-10-20)</small>
+
+* Revert "Add animation experiment for logo and label text (#1738)" (#1774) ([57327cc](https://github.com/paypal/paypal-checkout-components/commit/57327cc)), closes [#1738](https://github.com/paypal/paypal-checkout-components/issues/1738) [#1774](https://github.com/paypal/paypal-checkout-components/issues/1774)
+
+
+
 ## <small>5.0.185 (2021-10-14)</small>
 
 * chore: hardcode bundlemon public key (#1770) ([35211a4](https://github.com/paypal/paypal-checkout-components/commit/35211a4)), closes [#1770](https://github.com/paypal/paypal-checkout-components/issues/1770)

@@ -75,6 +75,23 @@ test(`Button should render with ssr, with zh_Hant locale option`, async () => {
     }
 });
 
+test(`Button should render with ssr, with en_HK locale option`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'HK', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+});
+
 test(`Button should fail to render with ssr, with invalid style option`, async () => {
 
     const { Buttons } = await getButtonScript();
@@ -176,4 +193,181 @@ test(`Button renderer should export DEFAULT_PROPS`, async () => {
     if (!DEFAULT_PROPS.hasOwnProperty('PLATFORM')) {
         throw new Error(`Expected DEFAULT_PROPS.PLATFORM to be exported`);
     }
+});
+
+test(`Design should be applied when there is valid personalization`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'run-divide-logo-animation',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('divide-logo-animation-left-side');
+
+    if (!designContainer || !designScript) {
+        throw new Error('Expected animation to applied in script and container');
+    }
+
+    
+});
+
+test(`Design for adding label text next to logo should be applied when there is valid personalization`, async () => {
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'run-add-label-text-next-to-logo-design',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (!designContainer || !designScript) {
+        throw new Error('Expected design to be applied in script and container');
+    }
+});
+
+test(`Tag should be applied with no design for control`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'large-button-design-control',
+            text:     '',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const designSignal = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (!designSignal || designScript) {
+        throw new Error('Expected to find a data-design-experiment tag but no script');
+    }
+
+    
+});
+
+test(`Tag should be applied with no design for control`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'not-a-real-design',
+            text:     '',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const designSignal = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (designSignal || designScript) {
+        throw new Error('Expected not to find a data-design-experiment tag and no script');
+    }
+
+    
+});
+
+test(`Animation should not be applied when buttonAnimation is null`, async () => {
+
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonAnimation: null
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+
+    const animationSignal = buttonHTML.match('data-design-experiment');
+
+    if (animationSignal) {
+        throw new Error('Expected design to be applied in script and container');
+    }
+    
 });

@@ -4,9 +4,11 @@
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import type { Personalization } from '@paypal/sdk-client/src';
 
-function getComponentScript() : () => void {
+export function getComponentScript() : () => void {
+
     /* istanbul ignore next */
     return () => {
+
         const ATTRIBUTE = {
             OPTIONAL: 'optional'
         };
@@ -156,6 +158,7 @@ function getComponentScript() : () => void {
             toggleOptionals();
             setDomReady();
         };
+
         toggleOptionals();
         document.addEventListener('DOMContentLoaded', load);
         window.addEventListener('load', load);

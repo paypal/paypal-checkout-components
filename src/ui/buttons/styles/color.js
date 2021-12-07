@@ -30,8 +30,10 @@ export const buttonColorStyle = `
         background: #ffc439;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:hover {
-        filter: brightness(0.95);
+    @media (hover:hover) {
+        .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:hover {
+            filter: brightness(0.95);
+        }
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.GOLD }:focus {
@@ -60,8 +62,10 @@ export const buttonColorStyle = `
         background: #008CFF;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:hover {
-        filter: brightness(0.95);
+    @media (hover:hover) {
+        .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:hover {
+            filter: brightness(0.95);
+        }
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.BLUE }:focus {
@@ -85,8 +89,10 @@ export const buttonColorStyle = `
         background: #eee;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:hover {
-        filter: brightness(0.95);
+    @media (hover:hover) {
+        .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:hover {
+            filter: brightness(0.95);
+        }
     }
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.SILVER }:focus {
@@ -163,9 +169,12 @@ export const buttonColorStyle = `
         border: 1px solid #555;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:hover {
-        filter: brightness(0.95);
+    @media (hover:hover) {
+        .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:hover {
+            filter: brightness(0.95);
+        }
     }
+    
 
     .${ CLASS.BUTTON }.${ CLASS.COLOR }-${ BUTTON_COLOR.WHITE }:focus {
         outline: none;
