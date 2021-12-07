@@ -44,9 +44,7 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
                 .${ CONTAINER_CLASS } .${ LABEL_CLASS } {
                     position: fixed;
                     opacity: 0; 
-                    color: #142C8E;
-                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-                    padding-top: 1px;
+                    
                 }
             ` } />;
         </Fragment>
@@ -99,22 +97,24 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
     const { designContainer, paypalLabelContainerElement, paypalLogoStartingLeftPosition, labelTextFontSize } = designProps;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
-            animation: 4s move-logo-to-left-side 1s infinite alternate;
+            animation: 2s move-logo-to-left-side 2s infinite alternate;
             position:fixed;
             left: ${ paypalLogoStartingLeftPosition }%;
         }
         
         .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
-            animation: 4s divide-logo-animation-right-side 1s infinite alternate;
+            animation: 2s divide-logo-animation-right-side 2s infinite alternate;
             text-align: center;
             width: 100%;
+            color: #142C8E;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding-top: 1px;
             font-size: ${ labelTextFontSize }px;
         }
 
         @keyframes move-logo-to-left-side {
-            0%,33%,66% {
+            0%,33% {
                 left: ${ paypalLogoStartingLeftPosition }%;
-                opacity: 1;
             }
             90%,100% {
                 left: 0%;
