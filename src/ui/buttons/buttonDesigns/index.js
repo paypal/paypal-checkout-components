@@ -41,7 +41,13 @@ const DESIGN_MAP : Object = {
     'alternate-slide-logo-animation': {
         designFn:              getAlternateSlideLogoAnimation,
         getValidDesignProps:   getAlternateSlideLogoProps,
-        designConfig:          ALTERNATE_SLIDE_LOGO_CONFIG,
+        designConfig:          { ...ALTERNATE_SLIDE_LOGO_CONFIG, runOnce: false },
+        ButtonDesignComponent: AlternateSlideLogoComponent
+    },
+    'alternate-slide-logo-hover-animation': {
+        designFn:              getAlternateSlideLogoAnimation,
+        getValidDesignProps:   getAlternateSlideLogoProps,
+        designConfig:          { ...ALTERNATE_SLIDE_LOGO_CONFIG, runOnce: true },
         ButtonDesignComponent: AlternateSlideLogoComponent
     }
 };

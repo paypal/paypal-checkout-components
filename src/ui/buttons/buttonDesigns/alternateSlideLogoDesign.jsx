@@ -15,8 +15,8 @@ type AnimationProps = {|
     labelTextFontSize : number
 |};
 
-
 export const ALTERNATE_SLIDE_LOGO_CONFIG = {
+    runOnce:                        false,
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
     smalMax:                        BUTTON_SIZE_STYLE.small.maxWidth,
     max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
@@ -55,7 +55,7 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
 export const getAlternateSlideLogoProps = function(document : Object, configuration : Object) : AnimationProps | null {
     let paypalLogoStartingLeftPosition = null;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
-    const { min, max, smalMax } = configuration;
+    const { min, max, smalMax, runOnce } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const designContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!designContainer) {
@@ -82,6 +82,21 @@ export const getAlternateSlideLogoProps = function(document : Object, configurat
     }
     // increase font-size for medium button sizes
     const labelTextFontSize = animationContainerWidth >= smalMax ? 11  : 8;
+
+    if (runOnce) {
+        // enable reverse logo animation on mouser out
+        designContainer.addEventListener('mouseleave', () => {
+            paypalLogoElement.style.animationName = 'reverse-logo';
+            paypalLogoElement.style.animationDuration = '1s';
+            paypalLogoElement.style.animationPlayState = 'running';
+        }, false);
+    
+        // enable animation from center to left on mouse enter
+        designContainer.addEventListener('mouseenter', () => {
+            paypalLogoElement.style.animationName = 'move-logo-to-left-side';
+            paypalLogoElement.style.animationPlayState = 'running';
+        }, false);
+    }
    
     return {
         designContainer,
@@ -93,31 +108,64 @@ export const getAlternateSlideLogoProps = function(document : Object, configurat
 
 export function getAlternateSlideLogoAnimation (designProps : AnimationProps, configuration : Object) : void | null {
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
-    const { max, min } = configuration;
+    const { max, min, runOnce } = configuration;
     const { designContainer, paypalLabelContainerElement, paypalLogoStartingLeftPosition, labelTextFontSize } = designProps;
+
+    const playOnHover = runOnce ? ':hover' : '';
+    const animationPropertiesOnHover = `
+        animation-fill-mode: forwards;
+    `;
+    const keyFramesOnHover = `
+        0%,33%{
+            opacity: 0;
+        }
+    `;
+    const keyframesWithoutHover = `
+        0%,33%,66%{
+            opacity: 0;
+        }
+    `;
+    const animationPropertiesWithoutHover = `
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    `;
+    
+    const animationProperties =  playOnHover ? animationPropertiesOnHover : animationPropertiesWithoutHover;
+    const animationKeyFrames = playOnHover ? keyFramesOnHover : keyframesWithoutHover;
+
     const animations = `
-        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }{
-            animation-name: move-logo-to-left-side;
-            animation-duration: 2s;
-            animation-delay: 2s;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
+        .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO } {
             position:fixed;
             left: ${ paypalLogoStartingLeftPosition }%;
         }
+       
+        .${ DOM_READY } .${ ANIMATION_CONTAINER }${ playOnHover } img.${ PAYPAL_LOGO } {
+            animation-name: move-logo-to-left-side;
+            animation-duration: 2s;
+            ${ animationProperties }
+        }
         
-        .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL_CONTAINER } {
+        .${ ANIMATION_CONTAINER }${ playOnHover } .${ ANIMATION_LABEL_CONTAINER } {
             animation-name: divide-logo-animation-right-side;
             animation-duration: 2s;
-            animation-delay: 2s;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
+            ${ animationProperties }
             text-align: center;
             width: 100%;
             color: #142C8E;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             padding-top: 1px;
             font-size: ${ labelTextFontSize }px;
+        }
+
+        @keyframes reverse-logo {
+            0%{
+                opacity:   0;
+                left: 0px;
+            }
+            100%{
+               opacity: 1;
+               left: ${ paypalLogoStartingLeftPosition }%;
+            }
         }
 
         @keyframes move-logo-to-left-side {
@@ -131,9 +179,7 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
         }
         
         @keyframes divide-logo-animation-right-side {
-            0%,33%,66%{
-                opacity: 0;
-            }
+            ${ animationKeyFrames }
             90%, 100% {
                 opacity: 1;                    
             }
