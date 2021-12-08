@@ -116,16 +116,6 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
         animation-duration: 2s;
         animation-fill-mode: forwards;
     `;
-    const keyFramesOnHover = `
-        0%,33%{
-            opacity: 0;
-        }
-    `;
-    const keyframesWithoutHover = `
-        0%,33%,66%{
-            opacity: 0;
-        }
-    `;
     const animationPropertiesWithoutHover = `
         animation-duration: 3s;
         animation-iteration-count: infinite;
@@ -133,7 +123,6 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
     `;
     
     const animationProperties =  playOnHover ? animationPropertiesOnHover : animationPropertiesWithoutHover;
-    const animationKeyFrames = playOnHover ? keyFramesOnHover : keyframesWithoutHover;
 
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO } {
@@ -179,7 +168,9 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
         }
         
         @keyframes divide-logo-animation-right-side {
-            ${ animationKeyFrames }
+            0%, 33% ${ !runOnce ? ',66%' : ''  }{
+                opacity: 0;
+            }
             90%, 100% {
                 opacity: 1;                    
             }
