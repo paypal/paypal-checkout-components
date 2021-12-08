@@ -192,6 +192,7 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                 listeners.paymentauthorized({ payment });
             };
 
+            // eslint-disable-next-line unicorn/prefer-add-event-listener
             session.oncancel = () => {
                 listeners.cancel();
             };
