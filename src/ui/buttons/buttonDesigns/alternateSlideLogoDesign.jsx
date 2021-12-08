@@ -1,11 +1,10 @@
 /* @flow */
 /** @jsx node */
-import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
-import { BUTTON_SIZE_STYLE } from '../config';
 
+import { DESIGN_CONFIG } from './constants';
 import type {  ContentOptions } from './types';
 
 type AnimationProps = {|
@@ -15,29 +14,16 @@ type AnimationProps = {|
     labelTextFontSize : number
 |};
 
-export const ALTERNATE_SLIDE_LOGO_CONFIG = {
-    runOnce:                        false,
-    min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
-    smalMax:                        BUTTON_SIZE_STYLE.small.maxWidth,
-    max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
-    cssClasses: {
-        DOM_READY:                  CLASS.DOM_READY,
-        ANIMATION_CONTAINER:        'personalized-design-container',
-        PAYPAL_LOGO:                LOGO_CLASS.LOGO,
-        ANIMATION_LABEL_CONTAINER:  'personalized-label-container',
-        PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
-    }
-};
-
 export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions) : ChildType {
-    const CONTAINER_CLASS = ALTERNATE_SLIDE_LOGO_CONFIG.cssClasses.ANIMATION_CONTAINER;
-    const LABEL_CLASS = ALTERNATE_SLIDE_LOGO_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
+    const CONTAINER_CLASS = DESIGN_CONFIG.cssClasses.ANIMATION_CONTAINER;
+    const LABEL_CLASS = DESIGN_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
+    const PAYPAL_LOGO = DESIGN_CONFIG.cssClasses.PAYPAL_LOGO;
    
     return (
         <Fragment>
             <div class={ LABEL_CLASS } data-design-experiment='104530'> <span>{designLabelText}</span></div>
             <style innerHTML={ `
-                .${ CLASS.DOM_READY } .${ CONTAINER_CLASS } img.${ LOGO_CLASS.LOGO }{
+                .${ CLASS.DOM_READY } .${ CONTAINER_CLASS } img.${ PAYPAL_LOGO }{
                     position: relative;
                 }
                 
@@ -122,7 +108,7 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
         animation-direction: alternate;
     `;
     
-    const animationProperties =  playOnHover ? animationPropertiesOnHover : animationPropertiesWithoutHover;
+    const animationProperties =  runOnce ? animationPropertiesOnHover : animationPropertiesWithoutHover;
 
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO } {
@@ -190,8 +176,10 @@ export function getAlternateSlideLogoAnimation (designProps : AnimationProps, co
                 paypalLabelContainerElement.removeChild(style);
             } else {
                 // enable animation again if size is between the expected range
-                if ((designContainer.offsetWidth < max && designContainer.offsetWidth > min)
-                    && !paypalLabelContainerElement.contains(style)) {
+                if (
+                    (designContainer.offsetWidth < max && designContainer.offsetWidth > min)
+                    && !paypalLabelContainerElement.contains(style)
+                ) {
                     paypalLabelContainerElement.appendChild(style);
                 }
             }

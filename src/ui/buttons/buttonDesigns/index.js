@@ -6,6 +6,7 @@ import { type Personalization } from '../props';
 import { getDesignScript } from './script';
 import { type ButtonDesignOutputParams } from './types';
 import { ControlDesignComponent } from './control';
+import { DESIGN_CONFIG } from './constants';
 import {
     getDivideLogoAnimation,
     getDivideLogoProps,
@@ -21,7 +22,6 @@ import {
 import {
     getAlternateSlideLogoAnimation,
     getAlternateSlideLogoProps,
-    ALTERNATE_SLIDE_LOGO_CONFIG,
     AlternateSlideLogoComponent
 } from './alternateSlideLogoDesign';
 
@@ -41,13 +41,13 @@ const DESIGN_MAP : Object = {
     'alternate-slide-logo-animation': {
         designFn:              getAlternateSlideLogoAnimation,
         getValidDesignProps:   getAlternateSlideLogoProps,
-        designConfig:          { ...ALTERNATE_SLIDE_LOGO_CONFIG, runOnce: false },
+        designConfig:          { ...DESIGN_CONFIG, runOnce: false },
         ButtonDesignComponent: AlternateSlideLogoComponent
     },
     'alternate-slide-logo-hover-animation': {
         designFn:              getAlternateSlideLogoAnimation,
         getValidDesignProps:   getAlternateSlideLogoProps,
-        designConfig:          { ...ALTERNATE_SLIDE_LOGO_CONFIG, runOnce: true },
+        designConfig:          { ...DESIGN_CONFIG, runOnce: true },
         ButtonDesignComponent: AlternateSlideLogoComponent
     }
 };
