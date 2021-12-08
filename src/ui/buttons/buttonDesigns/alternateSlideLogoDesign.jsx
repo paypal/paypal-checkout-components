@@ -41,7 +41,7 @@ export function AlternateSlideLogoComponent({ designLabelText } : ContentOptions
 export const getAlternateSlideLogoProps = function(document : Object, configuration : Object) : AnimationProps | null {
     let paypalLogoStartingLeftPosition = null;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssClasses;
-    const { min, max, smalMax, runOnce } = configuration;
+    const { min, max, smallMax, runOnce } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const designContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!designContainer) {
@@ -67,7 +67,7 @@ export const getAlternateSlideLogoProps = function(document : Object, configurat
         return null;
     }
     // increase font-size for medium button sizes
-    const labelTextFontSize = animationContainerWidth >= smalMax ? 11  : 8;
+    const labelTextFontSize = animationContainerWidth >= smallMax ? 11  : 8;
 
     if (runOnce) {
         // enable reverse logo animation on mouser out

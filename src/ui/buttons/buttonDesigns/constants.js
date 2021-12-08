@@ -8,7 +8,7 @@ import { CLASS } from '../../../constants';
 export const DESIGN_CONFIG = {
     runOnce:                        false,
     min:                            BUTTON_SIZE_STYLE.tiny.minWidth,
-    smalMax:                        BUTTON_SIZE_STYLE.small.maxWidth,
+    smallMax:                       BUTTON_SIZE_STYLE.small.maxWidth,
     max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
     cssClasses: {
         DOM_READY:                  CLASS.DOM_READY,
