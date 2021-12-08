@@ -15,9 +15,7 @@ import { getFundingConfig, isFundingEligible } from '../../funding';
 
 import { BUTTON_SIZE_STYLE } from './config';
 
-export type CreateOrderData = {|
-
-|} | {||};
+export type CreateOrderData = {||};
 
 export type CreateOrderActions = {|
     order : {|

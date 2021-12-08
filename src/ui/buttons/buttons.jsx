@@ -10,8 +10,6 @@ import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constant
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 import { ValidationError } from '../../lib';
 
-import { getButtonDesign } from './buttonDesigns';
-import { ButtonDesignExperimentScriptWrapper } from './buttonDesigns/script';
 import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
@@ -120,8 +118,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         ((__WEB__ && userIDToken) || Object.keys(instruments).length)
     );
 
-    const buttonAnimation = getButtonAnimation(personalizations);
-
     return (
         <div class={ [
             CLASS.CONTAINER,
@@ -187,8 +183,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
                     ? <PoweredByPayPal
-                            locale={ locale }
-                            nonce={ nonce }
+                        locale={ locale }
+                        nonce={ nonce }
                     /> : null
             }
 

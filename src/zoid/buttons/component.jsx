@@ -27,12 +27,12 @@ export type ButtonsComponent = ZoidComponent<ButtonProps>;
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     let personalizations;
 
-    getPersonalizations({ buyerCountry: getBuyerCountry(), currency: getCurrency() }).then(experiments => {
+    getPersonalizations().then(experiments => {
         personalizations = experiments;
     });
 
     const queriedEligibleFunding = [];
-    
+
     return create({
         tag:  'paypal-buttons',
         url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__BUTTONS__ }`,
@@ -399,7 +399,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             },
 
             personalizations: {
-                type:       'object',
+                type:       'array',
+                bodyParam:  true,
                 queryParam: false,
                 required:   false,
                 value:      personalizations
