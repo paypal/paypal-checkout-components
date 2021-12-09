@@ -73,6 +73,33 @@ export function getFundingEligibility(query : string, { accessToken, clientID, m
     });
 }
 
+export function getGuestEnabledStatus(merchantID : $ReadOnlyArray<string>) : ZalgoPromise<FundingEligibilityType> {
+    return callGraphQL({
+        name:  'GetFundingEligibility',
+        query: `
+            query GetFundingEligibility(
+                $merchantID:[ String ]
+            ) {
+            fundingEligibility(
+                merchantId: $merchantID
+            ) {
+                card {
+                    guestEnabled
+                }
+            }
+          }
+        `,
+        variables: {
+            merchantID
+        }
+    }).then((gqlResult) => {
+        if (!gqlResult || !gqlResult.fundingEligibility) {
+            throw new Error(`GraphQL fundingEligibility returned no fundingEligibility object`);
+        }
+        return gqlResult && gqlResult.fundingEligibility && gqlResult.fundingEligibility.card && gqlResult.fundingEligibility.card.guestEnabled;
+    });
+}
+
 type NativeEligibilityOptions = {|
     clientID : string,
     buyerCountry : ?$Values<typeof COUNTRY>,

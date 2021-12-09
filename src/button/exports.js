@@ -5,7 +5,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { querySelectorAll } from 'belter/src';
 
 import { DATA_ATTRIBUTES } from '../constants';
-import { upgradeFacilitatorAccessToken } from '../api';
+import { upgradeFacilitatorAccessToken, getGuestEnabledStatus } from '../api';
 import { getLogger, getBuyerAccessToken } from '../lib';
 
 import type { ButtonProps } from './props';
@@ -13,10 +13,12 @@ import type { ButtonProps } from './props';
 type ExportsProps = {|
     props : ButtonProps,
     isEnabled : () => boolean,
-    facilitatorAccessToken : string
+    facilitatorAccessToken : string,
+    fundingEligibility : Object,
+    merchantID : $ReadOnlyArray<string>
 |};
 
-export function setupExports({ props, isEnabled, facilitatorAccessToken } : ExportsProps)  {
+export function setupExports({ props, isEnabled, facilitatorAccessToken, fundingEligibility, merchantID } : ExportsProps)  {
     const { createOrder, onApprove, onError, onCancel, onClick, commit, intent, fundingSource, currency } = props;
 
     const fundingSources = querySelectorAll(`[${ DATA_ATTRIBUTES.FUNDING_SOURCE }]`).map(el => {
@@ -30,6 +32,9 @@ export function setupExports({ props, isEnabled, facilitatorAccessToken } : Expo
             currency,
             intent
         },
+        currency,
+        intent,
+        isGuestEnabled: () => { return fundingEligibility?.card?.hasOwnProperty('guestEnabled') ? fundingEligibility.card.guestEnabled : getGuestEnabledStatus(merchantID); },
         paymentSession: () => {
             return {
                 getAvailableFundingSources: () => fundingSources,

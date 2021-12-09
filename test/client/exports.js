@@ -249,4 +249,100 @@ describe('exports cases', () => {
             gqlMock.done();
         });
     });
+
+    it('should return guestEnabled status from exports.isGuestEnabled()', async () => {
+        const guestEnabled = true;
+
+        await mockSetupButton({
+            fundingEligibility: {
+                card: {
+                    guestEnabled
+                }
+            }
+        });
+
+        let guestEnabledStatus;
+        try {
+            guestEnabledStatus = await window.exports.isGuestEnabled();
+        } catch {
+            throw new Error('Failed to get guestEnabled status');
+        }
+
+        if (guestEnabledStatus !== guestEnabled) {
+            throw new Error(`Expected guestEnabled status to be ${ String(guestEnabled) }, but got ${ guestEnabledStatus }`);
+        }
+    });
+
+    it('should return guestEnabled status from exports.isGuestEnabled() if missing on fundingEligibility', async () => {
+        const guestEnabled = true;
+
+        const gqlMock = getGraphQLApiMock({
+            extraHandler: ({ data }) => {
+                if (data.query.includes('query GetFundingEligibility')) {
+                    if (!data.variables.merchantID) {
+                        throw new Error(`We haven't received the merchantID`);
+                    }
+
+                    return {
+                        data: {
+                            fundingEligibility: {
+                                card: {
+                                    guestEnabled
+                                }
+                            }
+                        }
+                    };
+                }
+            }
+        }).expectCalls();
+
+        await mockSetupButton();
+
+        let guestEnabledStatus;
+        try {
+            guestEnabledStatus = await window.exports.isGuestEnabled();
+        } catch {
+            throw new Error('Failed to get guestEnabled status');
+        }
+
+        if (guestEnabledStatus !== guestEnabled) {
+            throw new Error(`Expected guestEnabled status to be ${ String(guestEnabled) }, but got ${ guestEnabledStatus }`);
+        }
+
+        gqlMock.done();
+    });
+
+    it('should throw error from exports.isGuestEnabled() if missing guestEnabled status', async () => {
+        const gqlMock = getGraphQLApiMock({
+            extraHandler: ({ data }) => {
+                if (data.query.includes('query GetFundingEligibility')) {
+                    if (!data.variables.merchantID) {
+                        throw new Error(`We haven't received the merchantID`);
+                    }
+
+                    return {
+                        data: undefined
+                    };
+                }
+            }
+        }).expectCalls();
+
+        await mockSetupButton();
+
+        let guestEnabledStatus;
+        try {
+            guestEnabledStatus = await window.exports.isGuestEnabled();
+        } catch (err) {
+            const message = 'GraphQL fundingEligibility returned no fundingEligibility object';
+            if (err.message !== message) {
+                throw new Error(`Expected ${ err.message } to be ${ message }`);
+            }
+        }
+
+        if (guestEnabledStatus !== undefined) {
+            throw new Error(`Expected guestEnabled status to be undefined, but got ${ guestEnabledStatus }`);
+        }
+
+        gqlMock.done();
+    });
 });
