@@ -3,7 +3,7 @@
 import { PPLogo } from '@paypal/sdk-logos/src';
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
-import { DESIGN_SMALL_BUTTON_CONFIG } from './constants';
+import { DESIGN_CONFIG } from './constants';
 import type { ContentOptions } from './types';
 
 type AnimationProps = {|
@@ -15,10 +15,10 @@ type AnimationProps = {|
     topPositionBlueLayer : string
 |};
 
-export function resizeButtonShowLabelTextComponent({ designLabelText, logoColor } : ContentOptions) : ChildType {
+export function revealBlueTaglinelayerComponent({ designLabelText, logoColor } : ContentOptions) : ChildType {
     // experimentName must match elmo experiment name
-    const ANIMATION_LABEL = DESIGN_SMALL_BUTTON_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
-    const ANIMATION_CONTAINER = DESIGN_SMALL_BUTTON_CONFIG.cssClasses.ANIMATION_CONTAINER;
+    const ANIMATION_LABEL = DESIGN_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
+    const ANIMATION_CONTAINER = DESIGN_CONFIG.cssClasses.ANIMATION_CONTAINER;
     return (
         <Fragment>
             <PPLogo logoColor={ logoColor } />
@@ -31,7 +31,7 @@ export function resizeButtonShowLabelTextComponent({ designLabelText, logoColor 
                         position: fixed;
                         opacity: 0;
                     }
-                    .${ DESIGN_SMALL_BUTTON_CONFIG.cssClasses.DOM_READY } .${ ANIMATION_CONTAINER } img.${ DESIGN_SMALL_BUTTON_CONFIG.cssClasses.PAYPAL_LOGO }-pp{
+                    .${ DESIGN_CONFIG.cssClasses.DOM_READY } .${ ANIMATION_CONTAINER } img.${ DESIGN_CONFIG.cssClasses.PAYPAL_LOGO }-pp{
                         position: fixed;
                         opacity:0;
                     }
@@ -46,10 +46,10 @@ export function resizeButtonShowLabelTextComponent({ designLabelText, logoColor 
 }
 
 // Returns label container if the button sizes match
-export const resizeButtonShowLabelTextProps = function(document : Object, configuration : Object) : AnimationProps | null {
+export const revealBlueTaglinelayerProps = function(document : Object, configuration : Object) : AnimationProps | null {
     let labelFontSize = 8;
     const { ANIMATION_CONTAINER, ANIMATION_LABEL_CONTAINER, PAYPAL_BUTTON_LABEL } = configuration.cssClasses;
-    const { min, smallMax, mediumMax } = configuration;
+    const { min, smallMax, max } = configuration;
     // get the animation main container to force specificity( in css ) and make sure we are running the right animation
     const designContainer = (document && document.querySelector(`.${ ANIMATION_CONTAINER }`)) || null;
     if (!designContainer) {
@@ -58,16 +58,16 @@ export const resizeButtonShowLabelTextProps = function(document : Object, config
 
     // return null if animation should not be played for the button size
     const designContainerWidth = designContainer.offsetWidth;
-    if (designContainerWidth < min || designContainerWidth > mediumMax) {
+    if (designContainerWidth < min || designContainerWidth > max) {
         // remove label element from dom
         designContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`).remove();
         return null;
     }
 
-    const topPositionBlueLayer = designContainerWidth === mediumMax ? '26%' : '25%';
+    const topPositionBlueLayer = designContainerWidth === max ? '26%' : '25%';
 
     if (designContainerWidth >= smallMax) {
-        labelFontSize =  designContainerWidth === mediumMax ? 12 : 11;
+        labelFontSize =  designContainerWidth === max ? 12 : 11;
     }
     
     let buttonHeight = designContainer.offsetHeight;
@@ -89,8 +89,8 @@ export const resizeButtonShowLabelTextProps = function(document : Object, config
     };
 };
 
-export const resizeButtonShowLabelTextAnimation = function (designProps : AnimationProps, configuration : Object) : void | null {
-    const { mediumMax, min, runOnce } = configuration;
+export const revealBlueTaglineLayerAnimation = function (designProps : AnimationProps, configuration : Object) : void | null {
+    const { max, min, runOnce } = configuration;
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
     const { buttonHeight, designContainer, paypalLabelContainerElement, labelFontSize, marginLabelContainer, topPositionBlueLayer } = designProps;
     const timesToRunAnimation = runOnce ? '2' : 'infinite';
@@ -179,13 +179,13 @@ export const resizeButtonShowLabelTextAnimation = function (designProps : Animat
         window.addEventListener('resize', () => {
             // Remove animation if size limit broken
             if (
-                (designContainer.offsetWidth > mediumMax || designContainer.offsetWidth < min)
+                (designContainer.offsetWidth > max || designContainer.offsetWidth < min)
                 && paypalLabelContainerElement.contains(style)
             ) {
                 paypalLabelContainerElement.removeChild(style);
             } else {
                 // enable animation again if size is between the expected range
-                if ((designContainer.offsetWidth <= mediumMax && designContainer.offsetWidth > min)
+                if ((designContainer.offsetWidth <= max && designContainer.offsetWidth > min)
                     && !paypalLabelContainerElement.contains(style)) {
                     paypalLabelContainerElement.appendChild(style);
                 }
