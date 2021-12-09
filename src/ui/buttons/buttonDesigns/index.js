@@ -6,6 +6,7 @@ import { type Personalization } from '../props';
 import { getDesignScript } from './script';
 import { type ButtonDesignOutputParams } from './types';
 import { ControlDesignComponent } from './control';
+import { DESIGN_CONFIG } from './constants';
 import {
     getDivideLogoAnimation,
     getDivideLogoProps,
@@ -21,9 +22,13 @@ import {
 import {
     getSwitchLogoAndShowLabelAnimation,
     getSwitchLogoAndShowLabelProps,
-    SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
     SwitchLogoAndShowLabelTextComponent
 } from './switch-logo-and-show-label-text';
+import {
+    getAlternateSlideLogoAnimation,
+    getAlternateSlideLogoProps,
+    AlternateSlideLogoComponent
+} from './alternateSlideLogoDesign';
 
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
@@ -38,16 +43,28 @@ const DESIGN_MAP : Object = {
         designConfig:          INLINE_LOGO_TEXT_CONFIG,
         ButtonDesignComponent: InlineLogoTextComponent
     },
+    'alternate-slide-logo-animation': {
+        designFn:              getAlternateSlideLogoAnimation,
+        getValidDesignProps:   getAlternateSlideLogoProps,
+        designConfig:          DESIGN_CONFIG,
+        ButtonDesignComponent: AlternateSlideLogoComponent
+    },
+    'alternate-slide-logo-hover-animation': {
+        designFn:              getAlternateSlideLogoAnimation,
+        getValidDesignProps:   getAlternateSlideLogoProps,
+        designConfig:          { ...DESIGN_CONFIG, runOnce: true },
+        ButtonDesignComponent: AlternateSlideLogoComponent
+    },
     'run-switch-logo-show-label-text-design': {
         designFn:              getSwitchLogoAndShowLabelAnimation,
         getValidDesignProps:   getSwitchLogoAndShowLabelProps,
-        designConfig:          SWITCH_LOGO_AND_SHOW_LABEL_CONFIG,
+        designConfig:          DESIGN_CONFIG,
         ButtonDesignComponent: SwitchLogoAndShowLabelTextComponent
     },
     'run-switch-logo-show-label-text-once-design': {
         designFn:              getSwitchLogoAndShowLabelAnimation,
         getValidDesignProps:   getSwitchLogoAndShowLabelProps,
-        designConfig:          { ...SWITCH_LOGO_AND_SHOW_LABEL_CONFIG, runOnce: true },
+        designConfig:          { ...DESIGN_CONFIG, runOnce: true },
         ButtonDesignComponent: SwitchLogoAndShowLabelTextComponent
     }
 };
@@ -100,7 +117,6 @@ export function getButtonDesign(personalization : ?Personalization, logoColor? :
     const designContent = { designLabelText, logoColor };
     const buttonDesignScript : string = getDesignScript(designFn, getValidDesignProps, designConfig);
     const buttonDesignComponent : ChildType = ButtonDesignComponent(designContent);
-
     return {
         buttonDesignContainerClass: 'personalized-design-container',
         buttonDesignScript,
