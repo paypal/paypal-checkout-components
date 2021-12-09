@@ -94,7 +94,7 @@ export const revealBlueTaglineLayerAnimation = function (designProps : Animation
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
     const { buttonHeight, designContainer, paypalLabelContainerElement, labelFontSize, marginLabelContainer, topPositionBlueLayer } = designProps;
     const timesToRunAnimation = runOnce ? '2' : 'infinite';
-    const blueLayerPosition = Math.round(parseFloat(marginLabelContainer)) + 1;
+    const initialBlueLayer = Math.round(parseFloat(marginLabelContainer)) + 1;
     const animations = `
         .${ DOM_READY } .${ ANIMATION_CONTAINER } img.${ PAYPAL_LOGO }-paypal{
             animation: 4s move-logo-to-left-side 1s ${ timesToRunAnimation } alternate;
@@ -108,7 +108,7 @@ export const revealBlueTaglineLayerAnimation = function (designProps : Animation
             background-color: rgb(43,114,235);
             position: fixed;
             transform: translateY(-${ topPositionBlueLayer });
-            right: -${ blueLayerPosition }px;
+            right: -${ initialBlueLayer }px;
             border-radius: 9px 3px 3px 9px;
             animation: 4s resize-blue-layer 1s ${ timesToRunAnimation } alternate;
         }
