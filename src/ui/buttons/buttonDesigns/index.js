@@ -23,7 +23,7 @@ import {
     getSwitchLogoAndShowLabelAnimation,
     getSwitchLogoAndShowLabelProps,
     SwitchLogoAndShowLabelTextComponent
-} from './switch-logo-and-show-label-text';
+} from './switchLogoAndShowLabelText';
 import {
     getAlternateSlideLogoAnimation,
     getAlternateSlideLogoProps,
