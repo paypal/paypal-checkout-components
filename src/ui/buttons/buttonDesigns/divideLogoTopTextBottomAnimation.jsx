@@ -75,7 +75,7 @@ export const getLogoTopTextBottomProps = function(document : Object, configurati
 
     // get correct configuration according to the button size (small or medium)
     if (paypalLogoElement && paypalButtonContainerElement) {
-        animationConfig = animationContainerWidth < smallMax ? 
+        animationConfig = animationContainerWidth < smallMax ?
             { paypalLogoTopPosition: 25, labelTextFontSize: 7 } : { paypalLogoTopPosition: 30, labelTextFontSize: 9 };
     } else {
         return null;
