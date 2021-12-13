@@ -371,3 +371,71 @@ test(`Animation should not be applied when buttonAnimation is null`, async () =>
     }
     
 });
+
+test(`Animation PP logo top and text bottom should be applied when there is valid personalization`, async () => {
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'run-divide-logo-top-text-bottom-animation',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (!designContainer || !designScript) {
+        throw new Error('Expected design to be applied in script and container');
+    }
+});
+
+test(`Animation PP logo top and text bottom should be applied one time when there is valid personalization`, async () => {
+    const { Buttons } = await getButtonScript();
+
+    const personalization = {
+        buttonDesign: {
+            id:       'run-divide-logo-top-text-bottom-once-animation',
+            text:     'Safe and easy way to pay',
+            tracking: {
+                click:      '',
+                impression: ''
+            }
+        }
+    };
+
+    const buttonHTML = Buttons({
+        locale:          { country: 'US', lang: 'en' },
+        platform:        'desktop',
+        sessionID:       'xyz',
+        buttonSessionID: 'abc',
+        personalization,
+        fundingEligibility
+    }).render(html());
+
+    if (!buttonHTML || typeof buttonHTML !== 'string') {
+        throw new Error(`Expected html to be a non-empty string`);
+    }
+    const designContainer = buttonHTML.match('data-design-experiment');
+    const designScript = buttonHTML.match('.personalized-design-container');
+
+    if (!designContainer || !designScript) {
+        throw new Error('Expected design to be applied in script and container');
+    }
+});
