@@ -18,6 +18,12 @@ import {
     INLINE_LOGO_TEXT_CONFIG,
     InlineLogoTextComponent
 } from './inlineLogoTextDesign';
+import {
+    getLogoTopTextBottomAnimation,
+    getLogoTopTextBottomProps,
+    LOGO_TOP_TEXT_BOTTOM_CONFIG,
+    LogoTopTextBottomComponent
+} from './divideLogoTopTextBottomAnimation';
 
 const DESIGN_MAP : Object = {
     'run-divide-logo-animation': {
@@ -31,6 +37,18 @@ const DESIGN_MAP : Object = {
         getValidDesignProps:   getValidInlineLogoTextProps,
         designConfig:          INLINE_LOGO_TEXT_CONFIG,
         ButtonDesignComponent: InlineLogoTextComponent
+    },
+    'run-divide-logo-top-text-bottom-animation': {
+        designFn:              getLogoTopTextBottomAnimation,
+        getValidDesignProps:   getLogoTopTextBottomProps,
+        designConfig:          { ...LOGO_TOP_TEXT_BOTTOM_CONFIG, runOnce: false },
+        ButtonDesignComponent: LogoTopTextBottomComponent
+    },
+    'run-divide-logo-top-text-bottom-once-animation': {
+        designFn:              getLogoTopTextBottomAnimation,
+        getValidDesignProps:   getLogoTopTextBottomProps,
+        designConfig:          { ...LOGO_TOP_TEXT_BOTTOM_CONFIG, runOnce: true },
+        ButtonDesignComponent: LogoTopTextBottomComponent
     }
 };
 
