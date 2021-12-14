@@ -8,7 +8,7 @@ import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import {
     type LogoOptions,
     type LabelOptions,
-    type AnimatedExperimentLabelOptions,
+    type DesignExperimentLabelOptions,
     type WalletLabelOptions,
     type TagOptions,
     BasicLabel
@@ -59,7 +59,7 @@ function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
     if (__TEST__) {
         return null;
     }
-    
+
     const { tagline } = opts;
 
     const personalizationText = !tagline && getPersonalizationText(opts);
@@ -126,7 +126,7 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
     }
 
     const { nonce, tagline, label } = opts;
-    
+
     if (tagline || !label) {
         return;
     }
@@ -149,7 +149,7 @@ function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
                 getButtonPersonalizationStyle(opts)
             }
         </Fragment>
-        
+
     );
 }
 
@@ -163,17 +163,14 @@ export function Label(opts : LabelOptions) : ChildType {
     );
 }
 
-export function AnimatedExperimentLabel(opts : AnimatedExperimentLabelOptions) : ChildType {
-    const { buttonAnimationComponent } = opts;
-    delete opts.buttonAnimationComponent;
-    // $FlowFixMe
-    const basicLabel = (<BasicLabel { ...opts } />);
-    // $FlowFixMe
-    const buttonPersonalization = (<ButtonPersonalization { ...opts } />);
+export function DesignExperimentLabel(opts : DesignExperimentLabelOptions) : ChildType {
+    const { buttonDesignComponent, ...updatedOpts } = opts;
+    const basicLabel = (<BasicLabel { ...updatedOpts } />);
+    const buttonPersonalization = (<ButtonPersonalization { ...updatedOpts } />);
     return (
         <Fragment>
             { basicLabel }
-            { buttonAnimationComponent }
+            { buttonDesignComponent }
             { buttonPersonalization }
         </Fragment>
     );
@@ -277,12 +274,12 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
             logo = <CreditMark />;
 
             label = content && content.credit;
-        
+
         } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
             logo = <PayPalMark />;
 
             label = content && content.balance;
-        
+
         } else if (instrument.label) {
             label = instrument.label;
         }
@@ -342,7 +339,7 @@ export function Tag({ multiple, locale: { lang } } : TagOptions) : ?ChildType {
     if (__WEB__) {
         return null;
     }
-    
+
     const { DualTag, SaferTag } = componentContent[lang];
 
     return (multiple && DualTag)
