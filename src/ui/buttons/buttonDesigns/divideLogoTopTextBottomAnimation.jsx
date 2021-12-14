@@ -4,8 +4,8 @@ import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
-import { DESIGN_CONFIG } from './constants';
 
+import { DESIGN_CONFIG } from './constants';
 import type {  ContentOptions } from './types';
 
 type AnimationProps = {|
