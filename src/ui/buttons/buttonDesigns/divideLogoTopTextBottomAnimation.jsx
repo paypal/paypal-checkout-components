@@ -4,7 +4,7 @@ import { LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
-import { BUTTON_SIZE_STYLE } from '../config';
+import { DESIGN_CONFIG } from './constants';
 
 import type {  ContentOptions } from './types';
 
@@ -14,23 +14,9 @@ type AnimationProps = {|
     designContainer : Object
 |};
 
-export const LOGO_TOP_TEXT_BOTTOM_CONFIG = {
-    runOnce:                        false,
-    min:                            BUTTON_SIZE_STYLE.small.minWidth,
-    smallMax:                       BUTTON_SIZE_STYLE.small.maxWidth,
-    max:                            BUTTON_SIZE_STYLE.medium.maxWidth,
-    cssClasses: {
-        DOM_READY:                  CLASS.DOM_READY,
-        ANIMATION_CONTAINER:        'personalized-design-container',
-        PAYPAL_LOGO:                LOGO_CLASS.LOGO,
-        ANIMATION_LABEL_CONTAINER:  'personalized-label-container',
-        PAYPAL_BUTTON:              CLASS.BUTTON
-    }
-};
-
 export function LogoTopTextBottomComponent({ designLabelText } : ContentOptions) : ChildType {
-    const CONTAINER_CLASS = LOGO_TOP_TEXT_BOTTOM_CONFIG.cssClasses.ANIMATION_CONTAINER;
-    const LABEL_CLASS = LOGO_TOP_TEXT_BOTTOM_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
+    const CONTAINER_CLASS = DESIGN_CONFIG.cssClasses.ANIMATION_CONTAINER;
+    const LABEL_CLASS = DESIGN_CONFIG.cssClasses.ANIMATION_LABEL_CONTAINER;
 
     return (
         <Fragment>
