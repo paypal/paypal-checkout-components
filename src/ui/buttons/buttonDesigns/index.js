@@ -6,6 +6,7 @@ import { type Personalization } from '../props';
 import { getDesignScript } from './script';
 import { type ButtonDesignOutputParams } from './types';
 import { ControlDesignComponent } from './control';
+import { DESIGN_CONFIG } from './constants';
 import {
     getDivideLogoAnimation,
     getDivideLogoProps,
@@ -21,7 +22,6 @@ import {
 import {
     getLogoTopTextBottomAnimation,
     getLogoTopTextBottomProps,
-    LOGO_TOP_TEXT_BOTTOM_CONFIG,
     LogoTopTextBottomComponent
 } from './divideLogoTopTextBottomAnimation';
 
@@ -41,13 +41,13 @@ const DESIGN_MAP : Object = {
     'run-divide-logo-top-text-bottom-animation': {
         designFn:              getLogoTopTextBottomAnimation,
         getValidDesignProps:   getLogoTopTextBottomProps,
-        designConfig:          { ...LOGO_TOP_TEXT_BOTTOM_CONFIG, runOnce: false },
+        designConfig:          { ...DESIGN_CONFIG, runOnce: false },
         ButtonDesignComponent: LogoTopTextBottomComponent
     },
     'run-divide-logo-top-text-bottom-once-animation': {
         designFn:              getLogoTopTextBottomAnimation,
         getValidDesignProps:   getLogoTopTextBottomProps,
-        designConfig:          { ...LOGO_TOP_TEXT_BOTTOM_CONFIG, runOnce: true },
+        designConfig:          { ...DESIGN_CONFIG, runOnce: true },
         ButtonDesignComponent: LogoTopTextBottomComponent
     }
 };
