@@ -38,7 +38,7 @@ export function revealBlueTaglinelayerComponent({ designLabelText, logoColor } :
                     .${ ANIMATION_CONTAINER } .${ ANIMATION_LABEL } {
                         opacity: 0; 
                         color: white;
-                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                       
                     }
                 ` } />
         </Fragment>
@@ -92,7 +92,7 @@ export const revealBlueTaglinelayerProps = function(document : Object, configura
 export const revealBlueTaglineLayerAnimation = function (designProps : AnimationProps, configuration : Object) : void | null {
     const { max, min, runOnce } = configuration;
     const { ANIMATION_LABEL_CONTAINER, ANIMATION_CONTAINER, DOM_READY, PAYPAL_LOGO } = configuration.cssClasses;
-    const { buttonHeight, designContainer, paypalLabelContainerElement, labelFontSize, marginLabelContainer, topPositionBlueLayer } = designProps;
+    const { buttonHeight, designContainer, paypalLabelContainerElement, labelFontSize, marginLabelContainer, spanById, topPositionBlueLayer } = designProps;
     const timesToRunAnimation = runOnce ? '2' : 'infinite';
     const initialBlueLayer = Math.round(parseFloat(marginLabelContainer)) + 1;
     const animations = `
@@ -118,6 +118,7 @@ export const revealBlueTaglineLayerAnimation = function (designProps : Animation
             animation: 4s show-text 1s ${ timesToRunAnimation } alternate;
             font-size: ${ labelFontSize }px;
             padding-top: 1px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             right: 0%;
             width: 80%;
             text-align: center;
@@ -176,6 +177,18 @@ export const revealBlueTaglineLayerAnimation = function (designProps : Animation
         const style = document.createElement('style');
         paypalLabelContainerElement.appendChild(style);
         style.appendChild(document.createTextNode(animations));
+
+        const labelTextContainerElement = designContainer.querySelector(`.${ ANIMATION_LABEL_CONTAINER }`) || null;
+        const labelContainerWidth = labelTextContainerElement.offsetWidth || null;
+        const labelContainerScroll = labelTextContainerElement.scrollWidth || null;
+        // split text in multiple lines when label text overflows container
+        if (
+            (labelContainerScroll && labelContainerWidth) &&
+            (labelContainerScroll > labelContainerWidth)
+        ) {
+            labelTextContainerElement.style.whiteSpace = 'break-spaces';
+            labelTextContainerElement.style.lineHeight = '7px';
+        }
         window.addEventListener('resize', () => {
             // Remove animation if size limit broken
             if (
