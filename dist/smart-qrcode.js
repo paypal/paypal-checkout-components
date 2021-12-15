@@ -2432,6 +2432,29 @@
                 return body.data;
             }));
         }
+        memoize((function(orderID) {
+            var _headers21;
+            return callGraphQL({
+                name: "GetCheckoutDetails",
+                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+                variables: {
+                    orderID: orderID
+                },
+                headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
+            });
+        }));
+        memoize((function(config) {
+            return promise_ZalgoPromise.try((function() {
+                if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
+                    return promise_ZalgoPromise.all([ loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js"), loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-database.js") ]);
+                }));
+            })).then((function() {
+                var firebase = window.firebase;
+                if (!firebase) throw new Error("Firebase failed to load");
+                firebase.initializeApp(config);
+                return firebase;
+            }));
+        }));
         var _FRAUDNET_URL;
         var FRAUDNET_URL = ((_FRAUDNET_URL = {}).local = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
         _FRAUDNET_URL.stage = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
@@ -2463,29 +2486,6 @@
                 var body = util_getBody();
                 body.appendChild(configScript);
                 body.appendChild(fraudnetScript);
-            }));
-        }));
-        memoize((function(orderID) {
-            var _headers21;
-            return callGraphQL({
-                name: "GetCheckoutDetails",
-                query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
-                variables: {
-                    orderID: orderID
-                },
-                headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
-            });
-        }));
-        memoize((function(config) {
-            return promise_ZalgoPromise.try((function() {
-                if (!window.firebase || !window.firebase.auth || !window.firebase.database) return loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-app.js").then((function() {
-                    return promise_ZalgoPromise.all([ loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-auth.js"), loadScript("https://www.paypalobjects.com/checkout/js/lib/firebase-database.js") ]);
-                }));
-            })).then((function() {
-                var firebase = window.firebase;
-                if (!firebase) throw new Error("Firebase failed to load");
-                firebase.initializeApp(config);
-                return firebase;
             }));
         }));
         memoize((function(_ref) {

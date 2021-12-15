@@ -6992,39 +6992,6 @@ window.smartCard = function(modules) {
     var getLsatUpgradeError = function() {
         return lsatUpgradeError;
     };
-    var _FRAUDNET_URL;
-    var FRAUDNET_URL = ((_FRAUDNET_URL = {}).local = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
-    _FRAUDNET_URL.stage = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
-    _FRAUDNET_URL.sandbox = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL.production = "https://c.paypal.com/da/r/fb.js", 
-    _FRAUDNET_URL.test = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL);
-    memoize((function(_ref) {
-        var env = _ref.env, clientMetadataID = _ref.clientMetadataID, cspNonce = _ref.cspNonce, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 1e3 : _ref$timeout;
-        return new promise_ZalgoPromise((function(resolve) {
-            var config = {
-                f: clientMetadataID,
-                s: "SMART_PAYMENT_BUTTONS",
-                cb1: "fnCallback"
-            };
-            "sandbox" === env && (config.sandbox = !0);
-            var configScript = document.createElement("script");
-            configScript.setAttribute("nonce", cspNonce || "");
-            configScript.setAttribute("type", "application/json");
-            configScript.setAttribute("id", "fconfig");
-            configScript.setAttribute("fncls", "fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99");
-            configScript.textContent = JSON.stringify(config);
-            var fraudnetScript = document.createElement("script");
-            fraudnetScript.setAttribute("nonce", cspNonce || "");
-            fraudnetScript.setAttribute("src", FRAUDNET_URL[env]);
-            fraudnetScript.addEventListener("error", (function() {
-                return resolve();
-            }));
-            window.fnCallback = resolve;
-            setTimeout(resolve, timeout);
-            var body = util_getBody();
-            body.appendChild(configScript);
-            body.appendChild(fraudnetScript);
-        }));
-    }));
     function isProcessorDeclineError(err) {
         var _err$response, _err$response$body, _err$response$body$da, _err$response$body$da2;
         return Boolean(null == err || null == (_err$response = err.response) || null == (_err$response$body = _err$response.body) || null == (_err$response$body$da = _err$response$body.data) || null == (_err$response$body$da2 = _err$response$body$da.details) ? void 0 : _err$response$body$da2.some((function(detail) {
@@ -7180,6 +7147,39 @@ window.smartCard = function(modules) {
             if (!firebase) throw new Error("Firebase failed to load");
             firebase.initializeApp(config);
             return firebase;
+        }));
+    }));
+    var _FRAUDNET_URL;
+    var FRAUDNET_URL = ((_FRAUDNET_URL = {}).local = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
+    _FRAUDNET_URL.stage = "https://www.stage2d0107.stage.paypal.com/FDRegression/fb.js", 
+    _FRAUDNET_URL.sandbox = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL.production = "https://c.paypal.com/da/r/fb.js", 
+    _FRAUDNET_URL.test = "https://c.paypal.com/da/r/fb.js", _FRAUDNET_URL);
+    memoize((function(_ref) {
+        var env = _ref.env, clientMetadataID = _ref.clientMetadataID, cspNonce = _ref.cspNonce, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 1e3 : _ref$timeout;
+        return new promise_ZalgoPromise((function(resolve) {
+            var config = {
+                f: clientMetadataID,
+                s: "SMART_PAYMENT_BUTTONS",
+                cb1: "fnCallback"
+            };
+            "sandbox" === env && (config.sandbox = !0);
+            var configScript = document.createElement("script");
+            configScript.setAttribute("nonce", cspNonce || "");
+            configScript.setAttribute("type", "application/json");
+            configScript.setAttribute("id", "fconfig");
+            configScript.setAttribute("fncls", "fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99");
+            configScript.textContent = JSON.stringify(config);
+            var fraudnetScript = document.createElement("script");
+            fraudnetScript.setAttribute("nonce", cspNonce || "");
+            fraudnetScript.setAttribute("src", FRAUDNET_URL[env]);
+            fraudnetScript.addEventListener("error", (function() {
+                return resolve();
+            }));
+            window.fnCallback = resolve;
+            setTimeout(resolve, timeout);
+            var body = util_getBody();
+            body.appendChild(configScript);
+            body.appendChild(fraudnetScript);
         }));
     }));
     memoize((function(_ref) {
