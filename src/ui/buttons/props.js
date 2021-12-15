@@ -3,11 +3,12 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { values, uniqueID } from 'belter/src';
 import type { OrderCreateRequest, FundingEligibilityType,
-    OrderGetResponse, OrderCaptureResponse, OrderAuthorizeResponse, Personalization } from '@paypal/sdk-client/src';
+    OrderGetResponse, OrderCaptureResponse, OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
+import { type Personalization } from '@paypal/personalization/src';
 
 import type { ContentType, Wallet, Experiment } from '../../types';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';

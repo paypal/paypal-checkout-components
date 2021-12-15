@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
-import type { Personalization } from '@paypal/sdk-client/src';
+import type { Personalization } from '@paypal/personalization/src';
 
 export function getComponentScript() : () => void {
 
