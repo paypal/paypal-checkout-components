@@ -86,6 +86,7 @@ describe('venmo button eligibility', () => {
             return instance.render('#testContainer');
         });
     });
+  
 
     it('should render venmo button for mobile when eligibility is true', () => {
         return wrapPromise(({ expect, avoid }) => {
@@ -136,6 +137,35 @@ describe('venmo button eligibility', () => {
                         }
 
                         mockEligibility.cancel();
+                    })
+                },
+
+                onApprove: avoid('onApprove'),
+                onCancel:  avoid('onCancel'),
+                onError:   avoid('onError')
+            });
+
+            return instance.render('#testContainer');
+        });
+    });
+
+    it.only('should not render venmo button for mobile when user agent is not Chrome on android or safari in iOS', () => {
+        return wrapPromise(({ expect, avoid }) => {
+            window.navigator.mockUserAgent = 'Mozilla/5.0 (Linux; Android 11; SAMSUNG SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/15.0 Chrome/90.0.4430.210 Mobile Safari/537.36';
+
+            const instance = window.paypal.Buttons({
+                test: {
+                    onRender: expect('onRender', ({ xprops, fundingSources }) => {
+                        const { experiment: { enableVenmo } } = xprops;
+                        if (enableVenmo) {
+                            throw new Error(`Expected venmo experiment to be ineligible: ${ JSON.stringify(xprops.experiment) }`);
+                        }
+
+                        if (fundingSources.includes(FUNDING.VENMO)) {
+                            throw new Error(`Venmo shound not be rendered`);
+                        }
+
+                        // mockEligibility.cancel();
                     })
                 },
 
