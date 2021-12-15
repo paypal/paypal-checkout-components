@@ -3,9 +3,10 @@ import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, 
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getLocale, getClientID, getIntent, getCommit, getVault, getDisableFunding,
     getMerchantID, getCurrency, getBuyerCountry, getPlatform, getComponents, getEnableFunding,
-    fetchPersonalizations, getFundingEligibility, createExperiment, type Extra, type Personalization, type MLContext  } from '@paypal/sdk-client/src';
+    getFundingEligibility, createExperiment } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
+import { fetchPersonalizations, type Extra, type MLContext, type Personalization } from '@paypal/personalization/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
 import { BUTTON_FLOW } from '../../constants';

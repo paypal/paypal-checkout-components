@@ -12,6 +12,7 @@ import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
+import { eligiblePersonalizations } from '@paypal/personalization/src';
 
 import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -403,7 +404,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 bodyParam:  true,
                 queryParam: false,
                 required:   false,
-                value:      personalizations
+                value:      ({ props }) => {
+                    const { style } = props;
+                    return eligiblePersonalizations({ personalizations, props: { style } });
+                }
             },
 
             flow: {

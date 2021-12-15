@@ -82,6 +82,7 @@
     "dependencies": {
         "@paypal/common-components": "^1.0.16",
         "@paypal/funding-components": "^1.0.17",
+        "@paypal/personalization": "^1.0.3",
         "@paypal/sdk-client": "^4.0.156",
         "@paypal/sdk-constants": "^1.0.107",
         "@paypal/sdk-logos": "^1.0.26",
@@ -89,7 +90,7 @@
         "cross-domain-utils": "^2.0.1",
         "jsx-pragmatic": "^2",
         "post-robot": "^10.0.0",
-        "zalgo-promise": "^1.0.10",
+        "zalgo-promise": "^1.0.48",
         "zoid": "^9.0.0"
     }
 }
