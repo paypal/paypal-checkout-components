@@ -29,7 +29,6 @@ module.exports = {
         'react/display-name': 'off',
         'react/require-default-props': 'off',
         'react/forbid-component-props': 'off',
-        'react/no-unused-prop-types': 'off',
-        'react/jsx-indent-props': 'warn'
+        'react/no-unused-prop-types': 'off'
     }
 };

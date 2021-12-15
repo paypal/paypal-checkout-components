@@ -164,8 +164,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource)
-                    ? <TagLine
+                (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource) ?
+                    <TagLine
                         fundingSource={ fundingSources[0] }
                         style={ style }
                         locale={ locale }
@@ -181,8 +181,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1)
-                    ? <PoweredByPayPal
+                (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1) ?
+                    <PoweredByPayPal
                         locale={ locale }
                         nonce={ nonce }
                     /> : null
