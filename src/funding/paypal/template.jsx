@@ -190,9 +190,9 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function Tag({ multiple, locale: { lang } } : TagOptions) : ?ChildType {
-    if (__WEB__) {
-        return null;
-    }
+    // if (__WEB__) {
+    //     return null;
+    // }
 
     const { DualTag, SaferTag } = componentContent[lang];
 

@@ -181,6 +181,7 @@ export function Script({ nonce, personalizations = [] } : ScriptProps) : Element
         (prev, curr) => prev + (curr?.treatment?.js || '')
         , ''
     );
+
     return (
         <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts } ${ personalizationScripts || '' }})()` } />
     );

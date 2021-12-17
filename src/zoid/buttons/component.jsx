@@ -29,6 +29,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     let personalizations;
 
     getPersonalizations().then(experiments => {
+        getLogger().info('personalizations', { experiments: JSON.stringify(experiments) }).flush();
         personalizations = experiments;
     });
 
