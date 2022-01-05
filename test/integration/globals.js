@@ -74,6 +74,9 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     boleto: {
         eligible: false
     },
+    multiblanco: {
+        eligible: false
+    },
     maxima: {
         eligible: false
     },
