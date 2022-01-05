@@ -406,8 +406,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: false,
                 required:   false,
                 value:      ({ props }) => {
-                    const { style } = props;
-                    return eligiblePersonalizations({ personalizations, props: { style } });
+                    const { style: {
+                        tagline
+                    } } = props;
+                    return eligiblePersonalizations({ personalizations, props: { style: { tagline } } });
                 }
             },
 
