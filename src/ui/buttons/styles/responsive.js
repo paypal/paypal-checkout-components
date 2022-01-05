@@ -22,10 +22,13 @@ export function buttonResponsiveStyle({ height, fundingEligibility } : {| height
         const minDualWidth = Math.max(Math.round(buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)), MIN_SPLIT_BUTTON_WIDTH);
 
         const { paylater } = fundingEligibility;
-        const isInGerman = paylater?.products?.paylater?.variant === 'DE';
+        const shouldResizeLabel =
+            paylater?.products?.paylater?.variant === 'DE' ||
+            paylater?.products?.payIn3?.variant === 'IT' ||
+            paylater?.products?.payIn3?.variant === 'ES';
 
-        const textPercPercentage = isInGerman ? 32 : 36;
-        const labelPercPercentage = isInGerman ? 32 : 35;
+        const textPercPercentage = shouldResizeLabel ? 32 : 36;
+        const labelPercPercentage = shouldResizeLabel ? 32 : 35;
         const smallerLabelHeight = max(roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2), 12);
 
         const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
@@ -199,7 +202,7 @@ export function buttonResponsiveStyle({ height, fundingEligibility } : {| height
                     display: block;
                 }
             }
-        
+
         `;
 
     }).join('\n');

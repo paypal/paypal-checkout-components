@@ -105,6 +105,52 @@ describe(`paylater button text`, () => {
         });
     });
 
+    it(`should display Paga in 3 rate label when payIn3 product is eligible and variant is IT`, () => {
+        const fundingSource = FUNDING.PAYLATER;
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'products', {
+            payIn3: {
+                eligible: true,
+                variant:  'IT'
+            }
+        });
+
+        const button = window.paypal.Buttons({
+            fundingSource
+        });
+
+        if (!button.isEligible()) {
+            throw new Error(`Expected paylater to be eligible`);
+        }
+
+        return button.render('#testContainer').then(() => {
+            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Paga in 3 rate');
+        });
+    });
+
+    it(`should display Paga en 3 plazos label when payIn3 product is eligible and variant is ES`, () => {
+        const fundingSource = FUNDING.PAYLATER;
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);
+        mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'products', {
+            payIn3: {
+                eligible: true,
+                variant:  'ES'
+            }
+        });
+
+        const button = window.paypal.Buttons({
+            fundingSource
+        });
+
+        if (!button.isEligible()) {
+            throw new Error(`Expected paylater to be eligible`);
+        }
+
+        return button.render('#testContainer').then(() => {
+            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Paga en 3 plazos');
+        });
+    });
+
     it(`should fallback to Pay Later button text if unable to retrieve products`, () => {
         const fundingSource = FUNDING.PAYLATER;
         mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', true);

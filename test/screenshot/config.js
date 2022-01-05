@@ -994,6 +994,58 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
+    button: {
+        style: {
+            layout: 'horizontal',
+            label:  'pay'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        [FUNDING.PAYPAL]: {
+            eligible: true
+        },
+        [FUNDING.PAYLATER]: {
+            eligible: true,
+            products: {
+                paylater: {
+                    eligible: true,
+                    variant:  'IT'
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    button: {
+        style: {
+            layout: 'horizontal',
+            label:  'pay'
+        }
+    },
+    container: {
+        width: 300
+    },
+    fundingEligibility: {
+        [FUNDING.PAYPAL]: {
+            eligible: true
+        },
+        [FUNDING.PAYLATER]: {
+            eligible: true,
+            products: {
+                paylater: {
+                    eligible: true,
+                    variant:  'ES'
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
     diffThreshold: 1000,
     container:     {
         width: 240
