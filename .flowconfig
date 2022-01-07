@@ -4,6 +4,7 @@
 .*/node_modules/npm
 .*/node_modules/jsonlint
 .*/node_modules/**/test
+.*/node_modules/resolve
 .*/dist/module
 .*/flow-typed/npm/puppeteer_v1.20.x.js
 [include]
