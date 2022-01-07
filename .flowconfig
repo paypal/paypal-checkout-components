@@ -5,6 +5,7 @@
 .*/node_modules/eslint-plugin-compat
 .*/node_modules/jsonlint
 .*/node_modules/flowgen
+.*/node_modules/resolve
 .*/dist/module
 [include]
 [libs]
