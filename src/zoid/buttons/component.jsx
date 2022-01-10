@@ -5,7 +5,7 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupDisabled } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
@@ -295,6 +295,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'string',
                 required:   false,
                 value:      getPartnerAttributionID
+            },
+
+            merchantRequestedPopupDisabled: {
+                type:       'boolean',
+                required:   false,
+                value:      getMerchantRequestedPopupDisabled
             },
 
             enableThreeDomainSecure: {
