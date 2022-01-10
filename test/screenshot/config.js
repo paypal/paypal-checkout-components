@@ -53,7 +53,8 @@ type ButtonConfig = {|
             period? : number,
             layout? : string,
             height? : number,
-            tagline? : boolean
+            tagline? : boolean,
+            menuPlacement? : string
         |},
         content? : {| [string] : string |}
     |}
@@ -999,6 +1000,59 @@ buttonConfigs.push({
     },
     button: {
         fundingSource: 'paypal'
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    label:    'foo2@bar2.com',
+                    oneClick: true,
+                    tokenID:  '123456'
+                }
+            ]
+        },
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc1234',
+                    vendor:  'visa'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        },
+        card: {
+            eligible: true,
+            vendors:  {
+                visa: {
+                    eligible: true
+                },
+                mastercard: {
+                    eligible: true
+                },
+                amex: {
+                    eligible: true
+                }
+            }
+        }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 300
+    },
+    button: {
+        fundingSource: 'paypal',
+        style:         {
+            menuPlacement: 'above'
+        }
     },
     wallet: {
         paypal: {

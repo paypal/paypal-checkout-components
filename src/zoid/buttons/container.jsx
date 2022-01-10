@@ -6,7 +6,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { EVENT, type RenderOptionsType } from 'zoid/src';
 import { getVersion } from '@paypal/sdk-client/src';
 
-import { BUTTON_SIZE, ATTRIBUTE } from '../../constants';
+import { BUTTON_SIZE, ATTRIBUTE, MENU_PLACEMENT } from '../../constants';
 import { BUTTON_SIZE_STYLE, MINIMUM_SIZE, MAXIMUM_SIZE } from '../../ui/buttons/config';
 import { type ButtonProps } from '../../ui/buttons/props';
 
@@ -54,7 +54,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
 
     // $FlowFixMe
     const { style, nonce } = props;
-    const { label, layout, height: buttonHeight } = style;
+    const { label, layout, height: buttonHeight, menuPlacement } = style;
 
     let minimumSize = MINIMUM_SIZE[layout];
     const maximumSize = MAXIMUM_SIZE[layout];
@@ -132,7 +132,7 @@ export function containerTemplate({ uid, props, tag, context, frame, prerenderFr
                     #${ uid } > .${ CLASS.SMART_MENU } {
                         position: absolute;
                         z-index: 300;
-                        top: 0;
+                        ${ menuPlacement === MENU_PLACEMENT.ABOVE ? 'bottom: 100%;' : 'top: 0;' }
                         left: 0;
                         width: 100%;
                     }
