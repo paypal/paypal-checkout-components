@@ -28,10 +28,13 @@ export type ButtonsComponent = ZoidComponent<ButtonProps>;
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     let personalizations;
 
-    getPersonalizations().then(experiments => {
-        getLogger().info('personalizations', { experiments: JSON.stringify(experiments) }).flush();
-        personalizations = experiments;
-    });
+    // get server-side eligible personalizations
+    if (!__WEB__) {
+        getPersonalizations().then(experiments => {
+            getLogger().info('personalizations', { experiments: JSON.stringify(experiments) }).flush();
+            personalizations = experiments;
+        });
+    }
 
     const queriedEligibleFunding = [];
 
@@ -406,9 +409,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: false,
                 required:   false,
                 value:      ({ props }) => {
-                    const { style: {
-                        tagline
-                    } } = props;
+                    const {
+                        style: {
+                            tagline
+                        }
+                    } = props;
+
                     return eligiblePersonalizations({ personalizations, props: { style: { tagline } } });
                 }
             },
