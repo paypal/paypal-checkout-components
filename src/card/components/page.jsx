@@ -124,51 +124,51 @@ function Page({ cspNonce, props } : PageProps) : mixed {
             {
                 (type === CARD_FIELD_TYPE.SINGLE)
                     ? <CardField
-                        gqlErrorsObject={ fieldGQLErrors.singleField }
-                        cspNonce={ cspNonce }
-                        onChange={ onFieldChange }
-                        styleObject={ style }
-                        placeholder={ placeholder }
-                        autoFocusRef={ (ref) => setRef(ref.current.base) }
+                            gqlErrorsObject={ fieldGQLErrors.singleField }
+                            cspNonce={ cspNonce }
+                            onChange={ onFieldChange }
+                            styleObject={ style }
+                            placeholder={ placeholder }
+                            autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }
 
             {
                 (type === CARD_FIELD_TYPE.NUMBER)
                     ? <CardNumberField
-                        ref={ mainRef }
-                        gqlErrors={ fieldGQLErrors.numberField }
-                        cspNonce={ cspNonce }
-                        onChange={ onFieldChange }
-                        styleObject={ style }
-                        placeholder={ placeholder }
-                        autoFocusRef={ (ref) => setRef(ref.current.base) }
+                            ref={ mainRef }
+                            gqlErrors={ fieldGQLErrors.numberField }
+                            cspNonce={ cspNonce }
+                            onChange={ onFieldChange }
+                            styleObject={ style }
+                            placeholder={ placeholder }
+                            autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }
 
             {
                 (type === CARD_FIELD_TYPE.CVV)
                     ? <CardCVVField
-                        ref={ mainRef }
-                        gqlErrors={ fieldGQLErrors.cvvField }
-                        cspNonce={ cspNonce }
-                        onChange={ onFieldChange }
-                        styleObject={ style }
-                        placeholder={ placeholder }
-                        autoFocusRef={ (ref) => setRef(ref.current.base) }
+                            ref={ mainRef }
+                            gqlErrors={ fieldGQLErrors.cvvField }
+                            cspNonce={ cspNonce }
+                            onChange={ onFieldChange }
+                            styleObject={ style }
+                            placeholder={ placeholder }
+                            autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }
 
             {
                 (type === CARD_FIELD_TYPE.EXPIRY)
                     ? <CardExpiryField
-                        ref={ mainRef }
-                        gqlErrors={ fieldGQLErrors.expiryField }
-                        cspNonce={ cspNonce }
-                        onChange={ onFieldChange }
-                        styleObject={ style }
-                        placeholder={ placeholder }
-                        autoFocusRef={ (ref) => setRef(ref.current.base) }
+                            ref={ mainRef }
+                            gqlErrors={ fieldGQLErrors.expiryField }
+                            cspNonce={ cspNonce }
+                            onChange={ onFieldChange }
+                            styleObject={ style }
+                            placeholder={ placeholder }
+                            autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }
         </Fragment>
