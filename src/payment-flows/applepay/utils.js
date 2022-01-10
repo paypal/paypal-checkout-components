@@ -181,7 +181,7 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
         });
     }
 
-    if (selectedShippingMethod && selectedShippingMethod.type === 'PICKUP') {
+    if (!selectedShippingMethod || (selectedShippingMethod && selectedShippingMethod.type === 'PICKUP')) {
         result.requiredShippingContactFields = [];
     }
 
