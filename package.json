@@ -63,7 +63,7 @@
         "babel-core": "^7.0.0-bridge.0",
         "bundlemon": "^1.1.0",
         "conventional-changelog-cli": "^2.0.34",
-        "flow-bin": "0.155.0",
+        "flow-bin": "0.169.0",
         "fs-extra": "^10.0.0",
         "grumbler-scripts": "^5.0.1",
         "imagemagick": "^0.1.3",
