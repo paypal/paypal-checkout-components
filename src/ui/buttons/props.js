@@ -297,6 +297,7 @@ export type ButtonProps = {|
     onShippingChange : ?OnShippingChange,
     clientAccessToken? : ?string,
     nonce : string,
+    merchantRequestedPopupDisabled : ?boolean,
     userIDToken : ?string,
     flow : $Values<typeof BUTTON_FLOW>,
     experiment : Experiment,
