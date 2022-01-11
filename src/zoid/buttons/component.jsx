@@ -21,7 +21,7 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons, getButtonSize } from './util';
+    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -393,15 +393,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 }
             },
 
-            buttonSize: {
-                 type:       'string',
-                 required:   false,
-                 value:      ({ props, container }) => {
-                     return getButtonSize(props, container);
-                 },
-                 queryParam: false
-             },
-
             personalizations: {
                 type:       'array',
                 bodyParam:  true,
@@ -411,13 +402,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     const {
                         style: {
                             tagline
-                        },
-                        buttonSize,
-                        renderedButtons
+                        }
                     } = props;
 
                     const personalizations = adaptPersonalizationToExperiments(__PERSONALIZATIONS__);
-                    return eligiblePersonalizations({ personalizations, props: { style: { tagline }, buttonSize, renderedButtons } });
+                    return eligiblePersonalizations({ personalizations, props: { style: { tagline } } });
                 }
             },
 
