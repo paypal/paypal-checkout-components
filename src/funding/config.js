@@ -29,6 +29,7 @@ import { getOxxoConfig } from './oxxo';
 import { getBoletoConfig } from './boleto';
 import { getMaximaConfig } from './maxima';
 import { getMercadopagoConfig } from './mercadopago';
+import { getMultiblancoConfig } from './multiblanco';
 
 export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
     return inlineMemoize(getFundingConfig, () => {
@@ -57,7 +58,8 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.OXXO ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.oxxo !== 'undefined'           && __FUNDING_ELIGIBILITY__.oxxo.eligible)) ? getOxxoConfig() : null,
             [ FUNDING.BOLETO ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.boleto !== 'undefined'         && __FUNDING_ELIGIBILITY__.boleto.eligible)) ? getBoletoConfig() : null,
             [ FUNDING.MAXIMA ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.maxima !== 'undefined'         && __FUNDING_ELIGIBILITY__.maxima.eligible)) ? getMaximaConfig() : null,
-            [ FUNDING.MERCADOPAGO ]:    (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.mercadopago !== 'undefined'    && __FUNDING_ELIGIBILITY__.mercadopago.eligible)) ? getMercadopagoConfig() : null
+            [ FUNDING.MERCADOPAGO ]:    (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.mercadopago !== 'undefined'    && __FUNDING_ELIGIBILITY__.mercadopago.eligible)) ? getMercadopagoConfig() : null,
+            [ FUNDING.MULTIBLANCO ]:    (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.multiblanco !== 'undefined'    && __FUNDING_ELIGIBILITY__.multiblanco.eligible)) ? getMultiblancoConfig() : null
         };
     });
 }
