@@ -6,7 +6,6 @@ import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
-import { type Personalization } from '@paypal/personalization/src';
 
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
 import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
@@ -29,7 +28,6 @@ type IndividualButtonProps = {|
     i : number,
     nonce : string,
     userIDToken : ?string,
-    personalizations : ?$ReadOnlyArray<Personalization>,
     content : ?ContentType,
     tagline : ?boolean,
     commit : boolean,
