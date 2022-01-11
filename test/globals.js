@@ -1,5 +1,17 @@
 /* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
+const personalizations = {
+    tagline: {
+        text:           'Shop now. Pay over time',
+        tracking:   {
+            impression: '',
+            click:      ''
+        }
+    },
+    buttonText:         null,
+    buttonAnimation:    null
+};
+
 const fundingEligibility = {
     bancontact: {
         eligible: false
@@ -119,6 +131,7 @@ function getTestGlobals(productionGlobals) {
         },
 
         __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
+        __PERSONALIZATIONS__:    () => `${ JSON.stringify(personalizations)}`,
 
         __PROTOCOL__:          'http',
         __PORT__:              8000,

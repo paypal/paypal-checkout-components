@@ -12,7 +12,7 @@ import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
-import { eligiblePersonalizations } from '@paypal/personalization/src';
+import { adaptPersonalizationToExperiments, eligiblePersonalizations } from '@paypal/personalization/src';
 
 import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -21,21 +21,11 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons, getPersonalizations } from './util';
+    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
-    let personalizations;
-
-    // get server-side eligible personalizations
-    if (!__WEB__) {
-        getPersonalizations().then(experiments => {
-            getLogger().info('personalizations', { experiments: JSON.stringify(experiments) }).flush();
-            personalizations = experiments;
-        });
-    }
-
     const queriedEligibleFunding = [];
 
     return create({
@@ -415,6 +405,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         }
                     } = props;
 
+                    const personalizations = adaptPersonalizationToExperiments(__PERSONALIZATIONS__);
                     return eligiblePersonalizations({ personalizations, props: { style: { tagline } } });
                 }
             },
