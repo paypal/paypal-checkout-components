@@ -272,7 +272,8 @@ export type ButtonProps = {|
     applePaySupport : boolean,
     applePay : ApplePaySessionConfigRequest,
     meta : {||},
-    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>
+    renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    buttonSize : $Values<typeof BUTTON_SIZE>
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type

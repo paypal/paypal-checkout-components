@@ -1,5 +1,5 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getLocale, getClientID, getIntent, getCommit, getVault, getDisableFunding,
     getMerchantID, getCurrency, getBuyerCountry, getPlatform, getComponents, getEnableFunding,
@@ -9,9 +9,10 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { type Personalization } from '@paypal/personalization/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
-import { BUTTON_FLOW } from '../../constants';
+import { BUTTON_FLOW, BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
 import { determineEligibleFunding } from '../../funding';
+import { BUTTON_SIZE_STYLE } from '../../ui/buttons/config';
 
 type DetermineFlowOptions = {|
     createBillingAgreement : CreateBillingAgreement,
@@ -226,3 +227,55 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
         return undefined;
     }
 }
+
+export function getButtonSize(props : ButtonProps, container : string | HTMLElement | void) : $Values<typeof BUTTON_SIZE> | void {
+     let containerWidth = 0;
+
+     if (container && typeof container !== 'string') {
+         containerWidth =  container ? getElement(container)?.offsetWidth : null;
+     }
+
+     if (container && typeof container === 'string') {
+         const containerElement = document.querySelector(container);
+         containerWidth = containerElement
+             ? containerElement.offsetWidth
+             : 0;
+     }
+
+     const layout = props?.style?.layout || BUTTON_LAYOUT.HORIZONTAL;
+     const numButtonsRendered = props?.renderedButtons?.length || 1;
+     const {
+         tiny,
+         small,
+         medium,
+         large,
+         huge
+     } = BUTTON_SIZE_STYLE;
+
+     if (containerWidth) {
+         let buttonWidth = Math.min(containerWidth, 750);
+         if (layout === BUTTON_LAYOUT.HORIZONTAL && numButtonsRendered === 2) {
+             buttonWidth = (buttonWidth - 8) / 2;
+         }
+
+         if (tiny.minWidth <= buttonWidth && buttonWidth <= tiny.maxWidth) {
+             return BUTTON_SIZE.TINY;
+         }
+
+         if (small.minWidth < buttonWidth && buttonWidth <= small.maxWidth) {
+             return BUTTON_SIZE.SMALL;
+         }
+
+         if (medium.minWidth < buttonWidth && buttonWidth <= medium.maxWidth) {
+             return BUTTON_SIZE.MEDIUM;
+         }
+
+         if (large.minWidth < buttonWidth && buttonWidth <= large.maxWidth) {
+             return BUTTON_SIZE.LARGE;
+         }
+
+         if (huge.minWidth < buttonWidth) {
+             return BUTTON_SIZE.HUGE;
+         }
+     }
+ }
