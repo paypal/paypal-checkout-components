@@ -715,6 +715,13 @@ const buttonConfigs = [
 
             {
                 layout: `vertical`,
+                label:  `multiblanco`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
                 label:  `maxima`,
                 commit: true,
                 valid:  false
