@@ -4,7 +4,7 @@
 import type { WebpackConfig } from 'grumbler-scripts/config/types';
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
 
-import { getTestGlobals, fundingEligibility } from './test/globals';
+import { getTestGlobals, fundingEligibility, personalizations } from './test/globals';
 import globals from './globals';
 
 const testGlobals = getTestGlobals(globals);
@@ -21,7 +21,8 @@ const CHECK_SIZE_CONFIG : WebpackConfig = getWebpackConfig({
     analyze:    true,
     vars:       {
         ...testGlobals,
-        __FUNDING_ELIGIBILITY__: fundingEligibility
+        __FUNDING_ELIGIBILITY__: fundingEligibility,
+        __PERSONALIZATIONS__:    personalizations
     }
 });
 
@@ -33,7 +34,8 @@ const CHECK_SIZE_MIN_CONFIG : WebpackConfig = getWebpackConfig({
     analyze:    true,
     vars:       {
         ...testGlobals,
-        __FUNDING_ELIGIBILITY__: fundingEligibility
+        __FUNDING_ELIGIBILITY__: fundingEligibility,
+        __PERSONALIZATIONS__:    personalizations
     }
 });
 

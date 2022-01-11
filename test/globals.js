@@ -131,7 +131,7 @@ function getTestGlobals(productionGlobals) {
         },
 
         __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
-        __PERSONALIZATIONS__:    () => `${ JSON.stringify(personalizations)}`,
+        __PERSONALIZATIONS__:    () => `${ JSON.stringify(personalizations) }`,
 
         __PROTOCOL__:          'http',
         __PORT__:              8000,
@@ -162,5 +162,6 @@ function getTestGlobals(productionGlobals) {
 
 module.exports = {
     fundingEligibility,
+    personalizations,
     getTestGlobals
 };

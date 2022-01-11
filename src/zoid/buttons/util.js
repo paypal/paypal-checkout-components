@@ -6,7 +6,7 @@ import { getLocale, getClientID, getIntent, getCommit, getVault, getDisableFundi
     getFundingEligibility, createExperiment } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { fetchPersonalizations, type Extra, type MLContext, type Personalization } from '@paypal/personalization/src';
+import { type Personalization } from '@paypal/personalization/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
 import { BUTTON_FLOW } from '../../constants';
@@ -225,26 +225,4 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
     } catch (e) {
         return undefined;
     }
-}
-
-export function getPersonalizations() : ZalgoPromise<$ReadOnlyArray<Personalization>> {
-    const mlContext : MLContext = {
-        buyerCountry: getBuyerCountry() || 'US',
-        locale:       getLocale(),
-        clientId:     getClientID(),
-        currency:     getCurrency(),
-        cookies:      window.document?.cookie || '',
-        userAgent:    window.navigator?.userAgent || ''
-    };
-
-    const extra : Extra = {
-        commit:          getCommit(),
-        intent:          getIntent(),
-        vault:           getVault(),
-        merchantID:      getMerchantID(),
-        taglineEnabled:  true
-    };
-
-    return fetchPersonalizations({ mlContext, eligibility: getRefinedFundingEligibility(), extra })
-        .then(experiments => experiments);
 }
