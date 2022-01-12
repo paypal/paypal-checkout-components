@@ -1,3 +1,9 @@
+## <small>5.0.190 (2022-01-11)</small>
+
+* Add card holder name field (#1809) ([d892b09](https://github.com/paypal/paypal-checkout-components/commit/d892b09)), closes [#1809](https://github.com/paypal/paypal-checkout-components/issues/1809)
+
+
+
 ## <small>5.0.189 (2021-11-16)</small>
 
 * Revert "paymentfields prerender bg update (#1791)" ([02558c5](https://github.com/paypal/paypal-checkout-components/commit/02558c5)), closes [#1791](https://github.com/paypal/paypal-checkout-components/issues/1791)
