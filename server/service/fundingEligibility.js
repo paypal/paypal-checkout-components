@@ -76,6 +76,7 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
 
     const getPayLaterProductsQuery = () => {
         return {
+            payIn3:   getPayLaterProductQuery(),
             payIn4:   getPayLaterProductQuery(),
             paylater: getPayLaterProductQuery()
         };
