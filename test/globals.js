@@ -77,6 +77,9 @@ const fundingEligibility = {
     boleto: {
         eligible: false
     },
+    multiblanco: {
+        eligible: false
+    },
     maxima: {
         eligible: false
     },
