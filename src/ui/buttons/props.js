@@ -393,7 +393,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource),
         height,
         period,
-        menuDirection = MENU_PLACEMENT.BELOW
+        menuPlacement = MENU_PLACEMENT.BELOW
     } = style;
 
     // $FlowFixMe
