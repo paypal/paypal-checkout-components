@@ -104,11 +104,11 @@ window.spb = function(modules) {
         }([ function(E, N, S) {
             "use strict";
             S.r(N), S.d(N, "DEFAULT_COUNTRY", (function() {
-                return a;
-            })), S.d(N, "DEFAULT_CURRENCY", (function() {
-                return u;
-            })), S.d(N, "DEFAULT_INTENT", (function() {
                 return C;
+            })), S.d(N, "DEFAULT_CURRENCY", (function() {
+                return a;
+            })), S.d(N, "DEFAULT_INTENT", (function() {
+                return u;
             })), S.d(N, "DEFAULT_COMMIT", (function() {
                 return L;
             })), S.d(N, "DEFAULT_SALE_COMMIT", (function() {
@@ -116,9 +116,9 @@ window.spb = function(modules) {
             })), S.d(N, "DEFAULT_NONSALE_COMMIT", (function() {
                 return P;
             })), S.d(N, "DEFAULT_VAULT", (function() {
-                return U;
-            })), S.d(N, "DEFAULT_COMPONENTS", (function() {
                 return c;
+            })), S.d(N, "DEFAULT_COMPONENTS", (function() {
+                return U;
             })), S.d(N, "DEFAULT_DEBUG", (function() {
                 return G;
             })), S.d(N, "ENV", (function() {
@@ -164,9 +164,9 @@ window.spb = function(modules) {
             })), S.d(N, "SDK_PATH", (function() {
                 return F;
             })), S.d(N, "SDK_SETTINGS", (function() {
-                return D;
-            })), S.d(N, "SDK_QUERY_KEYS", (function() {
                 return _;
+            })), S.d(N, "SDK_QUERY_KEYS", (function() {
+                return D;
             })), S.d(N, "COMPONENTS", (function() {
                 return H;
             })), S.d(N, "DEBUG", (function() {
@@ -747,7 +747,7 @@ window.spb = function(modules) {
                 XAF: "XAF",
                 XCD: "XCD",
                 YER: "YER"
-            }, F = "/sdk/js", D = {
+            }, F = "/sdk/js", _ = {
                 NAMESPACE: "data-namespace",
                 CLIENT_TOKEN: "data-client-token",
                 MERCHANT_ID: "data-merchant-id",
@@ -763,7 +763,7 @@ window.spb = function(modules) {
                 PAGE_TYPE: "data-page-type",
                 USER_EXPERIENCE_FLOW: "data-user-experience-flow",
                 DATA_POPUPS_DISABLED: "data-popups-disabled"
-            }, _ = {
+            }, D = {
                 COMPONENTS: "components",
                 ENV: "env",
                 DEBUG: "debug",
@@ -805,7 +805,7 @@ window.spb = function(modules) {
                 SEARCH_RESULTS: "search-results",
                 PRODUCT_DETAILS: "product-details",
                 MINI_CART: "mini-cart"
-            }, Z = 10, a = R.US, u = r.USD, C = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, U = A.FALSE, c = H.BUTTONS, G = I.FALSE, s = {
+            }, Z = 10, C = R.US, a = r.USD, u = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, c = A.FALSE, U = H.BUTTONS, G = I.FALSE, s = {
                 LOCAL: "local",
                 STAGE: "stage",
                 SANDBOX: "sandbox",
@@ -874,7 +874,8 @@ window.spb = function(modules) {
                 STICKINESS_ID: "stickiness_id",
                 TIMESTAMP: "t",
                 OPTION_SELECTED: "optsel",
-                USER_IDENTITY_METHOD: "user_identity_method"
+                USER_IDENTITY_METHOD: "user_identity_method",
+                FIELDS_COMPONENT_SESSION_ID: "fields_component_session_id"
             }, f = {
                 COMMIT: "commit",
                 CONTINUE: "continue"
@@ -909,7 +910,8 @@ window.spb = function(modules) {
                 OXXO: "oxxo",
                 BOLETO: "boleto",
                 WECHATPAY: "wechatpay",
-                MERCADOPAGO: "mercadopago"
+                MERCADOPAGO: "mercadopago",
+                MULTIBLANCO: "multiblanco"
             }, y = {
                 PAYPAL: "PayPal",
                 CREDIT: "PayPal Credit"
@@ -1038,6 +1040,9 @@ window.spb = function(modules) {
             }));
             __webpack_require__.d(__webpack_exports__, "isIos", (function() {
                 return isIos;
+            }));
+            __webpack_require__.d(__webpack_exports__, "isIOS14", (function() {
+                return isIOS14;
             }));
             __webpack_require__.d(__webpack_exports__, "isGoogleSearchApp", (function() {
                 return isGoogleSearchApp;
@@ -1564,12 +1569,15 @@ window.spb = function(modules) {
             __webpack_require__.d(__webpack_exports__, "UID_HASH_LENGTH", (function() {
                 return UID_HASH_LENGTH;
             }));
-            __webpack_require__.d(__webpack_exports__, "iPhoneScreenHeightMatrix", (function() {
-                return iPhoneScreenHeightMatrix;
+            __webpack_require__.d(__webpack_exports__, "iOS14", (function() {
+                return iOS14;
             }));
-            var iPhoneScreenHeightMatrix = {
+            __webpack_require__.d(__webpack_exports__, "iOS15", (function() {
+                return iOS15;
+            }));
+            var iOS14 = {
                 926: {
-                    device: "iPhone 12 Pro Max",
+                    device: "iPhone 12/13 Pro Max",
                     textSizeHeights: [ 752, 748, 744, 738 ],
                     zoomHeight: {
                         1.15: [ 752, 747, 744, 738 ],
@@ -1678,6 +1686,32 @@ window.spb = function(modules) {
                     }
                 }
             };
+            var iOS15 = {
+                926: {
+                    device: "iPhone 12/13 Pro Max",
+                    textSizeHeights: [ 752, 748, 744, 738 ]
+                },
+                896: {
+                    device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
+                    textSizeHeights: [ 721, 717, 713, 707 ]
+                },
+                844: {
+                    device: "iPhone 12/13, iPhone 12/13 Pro",
+                    textSizeHeights: [ 670, 666, 662, 656 ]
+                },
+                812: {
+                    device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
+                    textSizeHeights: [ 641, 637, 633, 627 ]
+                },
+                736: {
+                    device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
+                    textSizeHeights: [ 628, 624, 620, 614 ]
+                },
+                667: {
+                    device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
+                    textSizeHeights: [ 559, 555, 551, 545 ]
+                }
+            };
             function getUserAgent() {
                 return window.navigator.mockUserAgent || window.navigator.userAgent;
             }
@@ -1725,6 +1759,10 @@ window.spb = function(modules) {
                 void 0 === ua && (ua = getUserAgent());
                 return /iPhone|iPod|iPad/.test(ua);
             }
+            function isIOS14(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /iPhone.*OS.*(1)?(?:(1)[0-4]| [0-9])_/.test(ua);
+            }
             function isGoogleSearchApp(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /\bGSA\b/.test(ua);
@@ -1740,12 +1778,12 @@ window.spb = function(modules) {
             function isSFVC(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
-                    var device = iPhoneScreenHeightMatrix[window.outerHeight];
-                    if (!device) return !1;
+                    var device = null;
+                    if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                     var computedHeight = Math.round(height * scale);
-                    return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                    return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
                 }
                 return !1;
             }
@@ -1753,7 +1791,7 @@ window.spb = function(modules) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
                     var sfvc = isSFVC(ua);
-                    var device = iPhoneScreenHeightMatrix[window.outerHeight];
+                    var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
@@ -1804,11 +1842,11 @@ window.spb = function(modules) {
             }
             function isChrome(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return /Chrome|Chromium|CriOS/.test(ua);
+                return /Chrome|Chromium|CriOS/.test(ua) && !/SamsungBrowser|Silk|EdgA/.test(ua);
             }
             function isSafari(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return /Safari/.test(ua) && !isChrome(ua);
+                return /Safari/.test(ua) && !isChrome(ua) && !/Silk|FxiOS|EdgiOS/.test(ua);
             }
             function isApplePaySupported() {
                 try {
@@ -2041,6 +2079,10 @@ window.spb = function(modules) {
                     if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
                     return Promise.resolve(this);
                 };
+                _proto.lazy = function() {
+                    this.errorHandled = !0;
+                    return this;
+                };
                 ZalgoPromise.resolve = function(value) {
                     return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
                         return value.then(resolve, reject);
@@ -2146,9 +2188,21 @@ window.spb = function(modules) {
                 return ZalgoPromise;
             }();
             var IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
+            function getActualProtocol(win) {
+                void 0 === win && (win = window);
+                return win.location.protocol;
+            }
+            function getProtocol(win) {
+                void 0 === win && (win = window);
+                if (win.mockDomain) {
+                    var protocol = win.mockDomain.split("//")[0];
+                    if (protocol) return protocol;
+                }
+                return getActualProtocol(win);
+            }
             function isAboutProtocol(win) {
                 void 0 === win && (win = window);
-                return "about:" === win.location.protocol;
+                return "about:" === getProtocol(win);
             }
             function canReadFromWindow(win) {
                 try {
@@ -2160,7 +2214,7 @@ window.spb = function(modules) {
                 void 0 === win && (win = window);
                 var location = win.location;
                 if (!location) throw new Error("Can not read window location");
-                var protocol = location.protocol;
+                var protocol = getActualProtocol(win);
                 if (!protocol) throw new Error("Can not read window protocol");
                 if ("file:" === protocol) return "file://";
                 if ("about:" === protocol) {
@@ -2192,6 +2246,12 @@ window.spb = function(modules) {
                     } catch (err) {}
                     try {
                         if (isAboutProtocol(win) && canReadFromWindow()) return !0;
+                    } catch (err) {}
+                    try {
+                        if (function(win) {
+                            void 0 === win && (win = window);
+                            return "mock:" === getProtocol(win);
+                        }(win) && canReadFromWindow()) return !0;
                     } catch (err) {}
                     try {
                         if (getActualDomain(win) === getActualDomain(window)) return !0;
@@ -4925,7 +4985,7 @@ window.spb = function(modules) {
         }
         function isChrome(ua) {
             void 0 === ua && (ua = getUserAgent());
-            return /Chrome|Chromium|CriOS/.test(ua);
+            return /Chrome|Chromium|CriOS/.test(ua) && !/SamsungBrowser|Silk|EdgA/.test(ua);
         }
         function _setPrototypeOf(o, p) {
             return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
@@ -6743,7 +6803,7 @@ window.spb = function(modules) {
         function isIOSSafari() {
             return isIos() && function(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return /Safari/.test(ua) && !isChrome(ua);
+                return /Safari/.test(ua) && !isChrome(ua) && !/Silk|FxiOS|EdgiOS/.test(ua);
             }();
         }
         function isAndroidChrome() {
@@ -7108,7 +7168,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.77", _headers15);
+            _headers15["x-app-version"] = "5.0.78", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -8777,7 +8837,7 @@ window.spb = function(modules) {
                                                 label: "Shipping",
                                                 amount: shippingValue
                                             });
-                                            selectedShippingMethod && "PICKUP" === selectedShippingMethod.type && (result.requiredShippingContactFields = []);
+                                            (!selectedShippingMethod || selectedShippingMethod && "PICKUP" === selectedShippingMethod.type) && (result.requiredShippingContactFields = []);
                                             return result;
                                         }(country, order);
                                         var _order$checkoutSessio = order.checkoutSession.cart.amounts, shippingValue = _order$checkoutSessio.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio.tax.currencyValue, subtotalValue = _order$checkoutSessio.subtotal.currencyValue;
@@ -13356,7 +13416,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.77", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.78", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 

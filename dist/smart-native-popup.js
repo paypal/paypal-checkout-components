@@ -159,6 +159,9 @@
             __webpack_require__.d(__webpack_exports__, "isIos", (function() {
                 return isIos;
             }));
+            __webpack_require__.d(__webpack_exports__, "isIOS14", (function() {
+                return isIOS14;
+            }));
             __webpack_require__.d(__webpack_exports__, "isGoogleSearchApp", (function() {
                 return isGoogleSearchApp;
             }));
@@ -684,12 +687,15 @@
             __webpack_require__.d(__webpack_exports__, "UID_HASH_LENGTH", (function() {
                 return UID_HASH_LENGTH;
             }));
-            __webpack_require__.d(__webpack_exports__, "iPhoneScreenHeightMatrix", (function() {
-                return iPhoneScreenHeightMatrix;
+            __webpack_require__.d(__webpack_exports__, "iOS14", (function() {
+                return iOS14;
             }));
-            var iPhoneScreenHeightMatrix = {
+            __webpack_require__.d(__webpack_exports__, "iOS15", (function() {
+                return iOS15;
+            }));
+            var iOS14 = {
                 926: {
-                    device: "iPhone 12 Pro Max",
+                    device: "iPhone 12/13 Pro Max",
                     textSizeHeights: [ 752, 748, 744, 738 ],
                     zoomHeight: {
                         1.15: [ 752, 747, 744, 738 ],
@@ -798,6 +804,32 @@
                     }
                 }
             };
+            var iOS15 = {
+                926: {
+                    device: "iPhone 12/13 Pro Max",
+                    textSizeHeights: [ 752, 748, 744, 738 ]
+                },
+                896: {
+                    device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
+                    textSizeHeights: [ 721, 717, 713, 707 ]
+                },
+                844: {
+                    device: "iPhone 12/13, iPhone 12/13 Pro",
+                    textSizeHeights: [ 670, 666, 662, 656 ]
+                },
+                812: {
+                    device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
+                    textSizeHeights: [ 641, 637, 633, 627 ]
+                },
+                736: {
+                    device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
+                    textSizeHeights: [ 628, 624, 620, 614 ]
+                },
+                667: {
+                    device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
+                    textSizeHeights: [ 559, 555, 551, 545 ]
+                }
+            };
             function getUserAgent() {
                 return window.navigator.mockUserAgent || window.navigator.userAgent;
             }
@@ -845,6 +877,10 @@
                 void 0 === ua && (ua = getUserAgent());
                 return /iPhone|iPod|iPad/.test(ua);
             }
+            function isIOS14(ua) {
+                void 0 === ua && (ua = getUserAgent());
+                return /iPhone.*OS.*(1)?(?:(1)[0-4]| [0-9])_/.test(ua);
+            }
             function isGoogleSearchApp(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 return /\bGSA\b/.test(ua);
@@ -860,12 +896,12 @@
             function isSFVC(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
-                    var device = iPhoneScreenHeightMatrix[window.outerHeight];
-                    if (!device) return !1;
+                    var device = null;
+                    if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                     var computedHeight = Math.round(height * scale);
-                    return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                    return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
                 }
                 return !1;
             }
@@ -873,7 +909,7 @@
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
                     var sfvc = isSFVC(ua);
-                    var device = iPhoneScreenHeightMatrix[window.outerHeight];
+                    var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
@@ -924,11 +960,11 @@
             }
             function isChrome(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return /Chrome|Chromium|CriOS/.test(ua);
+                return /Chrome|Chromium|CriOS/.test(ua) && !/SamsungBrowser|Silk|EdgA/.test(ua);
             }
             function isSafari(ua) {
                 void 0 === ua && (ua = getUserAgent());
-                return /Safari/.test(ua) && !isChrome(ua);
+                return /Safari/.test(ua) && !isChrome(ua) && !/Silk|FxiOS|EdgiOS/.test(ua);
             }
             function isApplePaySupported() {
                 try {
@@ -1161,6 +1197,10 @@
                     if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
                     return Promise.resolve(this);
                 };
+                _proto.lazy = function() {
+                    this.errorHandled = !0;
+                    return this;
+                };
                 ZalgoPromise.resolve = function(value) {
                     return value instanceof ZalgoPromise ? value : utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
                         return value.then(resolve, reject);
@@ -1266,9 +1306,21 @@
                 return ZalgoPromise;
             }();
             var IE_WIN_ACCESS_ERROR = "Call was rejected by callee.\r\n";
+            function getActualProtocol(win) {
+                void 0 === win && (win = window);
+                return win.location.protocol;
+            }
+            function getProtocol(win) {
+                void 0 === win && (win = window);
+                if (win.mockDomain) {
+                    var protocol = win.mockDomain.split("//")[0];
+                    if (protocol) return protocol;
+                }
+                return getActualProtocol(win);
+            }
             function isAboutProtocol(win) {
                 void 0 === win && (win = window);
-                return "about:" === win.location.protocol;
+                return "about:" === getProtocol(win);
             }
             function canReadFromWindow(win) {
                 try {
@@ -1280,7 +1332,7 @@
                 void 0 === win && (win = window);
                 var location = win.location;
                 if (!location) throw new Error("Can not read window location");
-                var protocol = location.protocol;
+                var protocol = getActualProtocol(win);
                 if (!protocol) throw new Error("Can not read window protocol");
                 if ("file:" === protocol) return "file://";
                 if ("about:" === protocol) {
@@ -1312,6 +1364,12 @@
                     } catch (err) {}
                     try {
                         if (isAboutProtocol(win) && canReadFromWindow()) return !0;
+                    } catch (err) {}
+                    try {
+                        if (function(win) {
+                            void 0 === win && (win = window);
+                            return "mock:" === getProtocol(win);
+                        }(win) && canReadFromWindow()) return !0;
                     } catch (err) {}
                     try {
                         if (getActualDomain(win) === getActualDomain(window)) return !0;
@@ -3347,9 +3405,9 @@
         __webpack_require__.d(__webpack_exports__, "NativePopup", (function() {
             return NativePopup;
         }));
-        var iPhoneScreenHeightMatrix = {
+        var iOS14 = {
             926: {
-                device: "iPhone 12 Pro Max",
+                device: "iPhone 12/13 Pro Max",
                 textSizeHeights: [ 752, 748, 744, 738 ],
                 zoomHeight: {
                     1.15: [ 752, 747, 744, 738 ],
@@ -3458,6 +3516,32 @@
                 }
             }
         };
+        var iOS15 = {
+            926: {
+                device: "iPhone 12/13 Pro Max",
+                textSizeHeights: [ 752, 748, 744, 738 ]
+            },
+            896: {
+                device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
+                textSizeHeights: [ 721, 717, 713, 707 ]
+            },
+            844: {
+                device: "iPhone 12/13, iPhone 12/13 Pro",
+                textSizeHeights: [ 670, 666, 662, 656 ]
+            },
+            812: {
+                device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
+                textSizeHeights: [ 641, 637, 633, 627 ]
+            },
+            736: {
+                device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
+                textSizeHeights: [ 628, 624, 620, 614 ]
+            },
+            667: {
+                device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
+                textSizeHeights: [ 559, 555, 551, 545 ]
+            }
+        };
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
         }
@@ -3465,15 +3549,19 @@
             void 0 === ua && (ua = getUserAgent());
             return /iPhone|iPod|iPad/.test(ua);
         }
+        function isIOS14(ua) {
+            void 0 === ua && (ua = getUserAgent());
+            return /iPhone.*OS.*(1)?(?:(1)[0-4]| [0-9])_/.test(ua);
+        }
         function isSFVC(ua) {
             void 0 === ua && (ua = getUserAgent());
             if (isIos(ua)) {
-                var device = iPhoneScreenHeightMatrix[window.outerHeight];
-                if (!device) return !1;
+                var device = null;
+                if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                 var height = window.innerHeight;
                 var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                 var computedHeight = Math.round(height * scale);
-                return scale > 1 && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
             }
             return !1;
         }
@@ -4719,8 +4807,8 @@
                 void 0 === ua && (ua = getUserAgent());
                 return /Safari/.test(ua) && !function(ua) {
                     void 0 === ua && (ua = getUserAgent());
-                    return /Chrome|Chromium|CriOS/.test(ua);
-                }(ua);
+                    return /Chrome|Chromium|CriOS/.test(ua) && !/SamsungBrowser|Silk|EdgA/.test(ua);
+                }(ua) && !/Silk|FxiOS|EdgiOS/.test(ua);
             }();
         }
         function getPayPal() {
@@ -4817,7 +4905,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.77", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.78", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -4901,7 +4989,7 @@
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
                     var sfvc = isSFVC(ua);
-                    var device = iPhoneScreenHeightMatrix[window.outerHeight];
+                    var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;

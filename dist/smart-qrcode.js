@@ -2886,6 +2886,17 @@
             tertiary: "#009EE3",
             quaternary: "#009EE3"
         };
+        var multiblanco_logo_LOGO_COLORS;
+        (multiblanco_logo_LOGO_COLORS = {}).default = {
+            primary: "#373535",
+            secondary: "#1866AB"
+        }, multiblanco_logo_LOGO_COLORS.white = {
+            primary: "#ffffff",
+            secondary: "#ffffff"
+        }, multiblanco_logo_LOGO_COLORS.black = {
+            primary: "#373535",
+            secondary: "#1866AB"
+        };
         function ErrorMessage(_ref) {
             var resetFunc = _ref.resetFunc;
             return v("div", {
@@ -3135,7 +3146,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.77", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.78", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
