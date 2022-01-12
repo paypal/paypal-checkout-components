@@ -8,6 +8,11 @@ describe('dom utils', () => {
             const input1 = document.createElement('input');
             const input2 = document.createElement('input');
 
+            // $FlowIssue - we know body exists as this runs in jsdom
+            document.body.appendChild(input1);
+            // $FlowIssue - we know body exists as this runs in jsdom
+            document.body.appendChild(input2);
+
             input1.focus();
 
             expect(getActiveElement()).toBe(input1);
