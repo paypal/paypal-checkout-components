@@ -225,17 +225,17 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
 }
 
 export function getButtonSize(props : ButtonProps, container : string | HTMLElement | void) : string | void {
-    let containerWidth = 0;
-
-    if (container && typeof container !== 'string') {
-        containerWidth = container ? getElement(container)?.offsetWidth : null;
+    if (!container) {
+        return;
     }
 
-    if (container && typeof container === 'string') {
+    let containerWidth = 0;
+
+    if (typeof container === 'string') {
         const containerElement = document.querySelector(container);
-        containerWidth = containerElement
-            ? containerElement.offsetWidth
-            : 0;
+        containerWidth = containerElement?.offsetWidth || 0;
+    } else {
+        containerWidth = getElement(container)?.offsetWidth;
     }
 
     const layout = props?.style?.layout || BUTTON_LAYOUT.HORIZONTAL;
@@ -250,8 +250,9 @@ export function getButtonSize(props : ButtonProps, container : string | HTMLElem
 
     if (containerWidth) {
         let buttonWidth = Math.min(containerWidth, 750);
+        const spaceBetweenHorizontalButtons = 8;
         if (layout === BUTTON_LAYOUT.HORIZONTAL && numButtonsRendered === 2) {
-            buttonWidth = (buttonWidth - 8) / 2;
+            buttonWidth = (buttonWidth - spaceBetweenHorizontalButtons) / 2;
         }
 
         if (tiny.minWidth <= buttonWidth && buttonWidth <= tiny.maxWidth) {
