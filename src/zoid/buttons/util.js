@@ -228,7 +228,7 @@ export function getButtonSize(props : ButtonProps, container : string | HTMLElem
     let containerWidth = 0;
 
     if (container && typeof container !== 'string') {
-        containerWidth =  container ? getElement(container)?.offsetWidth : null;
+        containerWidth = container ? getElement(container)?.offsetWidth : null;
     }
 
     if (container && typeof container === 'string') {
