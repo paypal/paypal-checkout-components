@@ -13,7 +13,7 @@ import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
 import type { ContentType, Wallet, Experiment } from '../../types';
-import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW } from '../../constants';
+import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW, MENU_PLACEMENT } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
 
 import { BUTTON_SIZE_STYLE } from './config';
@@ -128,6 +128,7 @@ export type ButtonStyle = {|
     shape : $Values<typeof BUTTON_SHAPE>,
     tagline : boolean,
     layout : $Values<typeof BUTTON_LAYOUT>,
+    menuPlacement : $Values<typeof MENU_PLACEMENT>,
     period? : number,
     height? : number
 |};
@@ -391,7 +392,8 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         shape = fundingConfig.shapes[0],
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource),
         height,
-        period
+        period,
+        menuPlacement = MENU_PLACEMENT.BELOW
     } = style;
 
     // $FlowFixMe
@@ -437,7 +439,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         }
     }
 
-    return { label, layout, color, shape, tagline, height, period };
+    return { label, layout, color, shape, tagline, height, period, menuPlacement };
 }
 
 const COUNTRIES = values(COUNTRY);
