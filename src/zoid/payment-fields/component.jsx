@@ -4,7 +4,7 @@
 
 import { node, dom } from 'jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID,
-    getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale } from '@paypal/sdk-client/src';
+    getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale, getPartnerAttributionID } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, uniqueID } from 'belter/src';
 
@@ -149,6 +149,12 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                 sessionState: {
                     type:  'object',
                     value: () => sessionState
+                },
+
+                partnerAttributionID: {
+                    type:       'string',
+                    required:   false,
+                    value:      getPartnerAttributionID
                 }
             }
         });
