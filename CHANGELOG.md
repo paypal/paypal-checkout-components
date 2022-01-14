@@ -1,3 +1,9 @@
+## <small>5.0.192 (2022-01-14)</small>
+
+* Revert "Add button size query param prop (#1836)" (#1840) ([e014242](https://github.com/paypal/paypal-checkout-components/commit/e014242)), closes [#1836](https://github.com/paypal/paypal-checkout-components/issues/1836) [#1840](https://github.com/paypal/paypal-checkout-components/issues/1840)
+
+
+
 ## <small>5.0.191 (2022-01-14)</small>
 
 * Add button size query param prop (#1836) ([f743611](https://github.com/paypal/paypal-checkout-components/commit/f743611)), closes [#1836](https://github.com/paypal/paypal-checkout-components/issues/1836)
