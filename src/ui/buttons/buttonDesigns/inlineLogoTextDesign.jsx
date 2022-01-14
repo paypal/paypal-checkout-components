@@ -90,11 +90,6 @@ export const getInlineLabelTextDesign = function (designProps : InlineLogoTextPr
                 && paypalLabelContainerElement.contains(style)
             ) {
                 paypalLabelContainerElement.removeChild(style);
-            } else if (
-                (designContainer.offsetWidth <= max || designContainer.offsetWidth >= min)
-                && !paypalLabelContainerElement.contains(style)
-            ) {
-                paypalLabelContainerElement.appendChild(style);
             }
         });
     }
