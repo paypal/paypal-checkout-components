@@ -45,10 +45,11 @@ type CardFieldProps = {|
     styleObject : CardStyle,
     placeholder : {| number? : string, expiry? : string, cvv? : string  |},
     autoFocusRef : (mixed) => void,
+    autocomplete? : string,
     gqlErrorsObject : {| field : string, errors : [] |}
 |};
 
-export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = {}, gqlErrorsObject = {}, autoFocusRef } : CardFieldProps) : mixed {
+export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = {}, gqlErrorsObject = {}, autoFocusRef, autocomplete } : CardFieldProps) : mixed {
     const [ number, setNumber ] : [ string, (string) => string ] = useState('');
     const [ cvv, setCvv ] : [ string, (string) => string ] = useState('');
     const [ expiry, setExpiry ] : [ string, (string) => string ] = useState('');
@@ -132,6 +133,7 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
 
             <CardNumber
                 ref={ numberRef }
+                autocomplete={ autocomplete }
                 navigation={ cardNumberNavivation }
                 type='text'
                 // eslint-disable-next-line react/forbid-component-props
@@ -147,6 +149,7 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
 
             <CardExpiry
                 ref={ expiryRef }
+                autocomplete={ autocomplete }
                 navigation={ cardExpiryNavivation }
                 type='text'
                 // eslint-disable-next-line react/forbid-component-props
@@ -162,6 +165,7 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
 
             <CardCVV
                 ref={ cvvRef }
+                autocomplete={ autocomplete }
                 navigation={ cardCvvNavivation }
                 type='text'
                 cardType={ cardType }
@@ -185,10 +189,11 @@ type CardNumberFieldProps = {|
     styleObject : CardStyle,
     placeholder : {| number? : string, expiry? : string, cvv? : string  |},
     autoFocusRef : (mixed) => void,
+    autocomplete? : string,
     gqlErrors : []
 |};
 
-export function CardNumberField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef, gqlErrors = [] } : CardNumberFieldProps) : mixed {
+export function CardNumberField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef, autocomplete, gqlErrors = [] } : CardNumberFieldProps) : mixed {
     const [ number, setNumber ] : [ string, (string) => string ] = useState('');
     const [ numberValidity, setNumberValidity ] : [ FieldValidity, (FieldValidity) => FieldValidity ] = useState(initFieldValidity);
     const [ generalStyle, inputStyle ] = getStyles(styleObject);
@@ -222,6 +227,7 @@ export function CardNumberField({ cspNonce, onChange, styleObject = {}, placehol
             <CardNumber
                 ref={ numberRef }
                 type='text'
+                autocomplete={ autocomplete }
                 // eslint-disable-next-line react/forbid-component-props
                 className={ `number ${ numberValidity.isPotentiallyValid || numberValidity.isValid ? 'valid' : 'invalid' }` }
                 // eslint-disable-next-line react/forbid-component-props
@@ -241,10 +247,11 @@ type CardExpiryFieldProps = {|
     styleObject : CardStyle,
     placeholder : {| number? : string, expiry? : string, cvv? : string  |},
     autoFocusRef : (mixed) => void,
+    autocomplete? : string,
     gqlErrors : []
 |};
 
-export function CardExpiryField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef, gqlErrors = [] } : CardExpiryFieldProps) : mixed {
+export function CardExpiryField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef, autocomplete, gqlErrors = [] } : CardExpiryFieldProps) : mixed {
     const [ expiry, setExpiry ] : [ string, (string) => string ] = useState('');
     const [ expiryValidity, setExpiryValidity ] : [ FieldValidity, (FieldValidity) => FieldValidity ] = useState(initFieldValidity);
     const [ generalStyle, inputStyle ] = getStyles(styleObject);
@@ -279,6 +286,7 @@ export function CardExpiryField({ cspNonce, onChange, styleObject = {}, placehol
             <CardExpiry
                 ref={ expiryRef }
                 type='text'
+                autocomplete={ autocomplete }
                 // eslint-disable-next-line react/forbid-component-props
                 className={ `expiry ${ expiryValidity.isPotentiallyValid || expiryValidity.isValid ? 'valid' : 'invalid' }` }
                 // eslint-disable-next-line react/forbid-component-props
@@ -297,10 +305,11 @@ type CardCvvFieldProps = {|
     styleObject : CardStyle,
     placeholder : {| number? : string, expiry? : string, cvv? : string  |},
     autoFocusRef : (mixed) => void,
+    autocomplete? : string,
     gqlErrors : []
 |};
 
-export function CardCVVField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef, gqlErrors = [] } : CardCvvFieldProps) : mixed {
+export function CardCVVField({ cspNonce, onChange, styleObject = {}, placeholder = {}, autoFocusRef, autocomplete, gqlErrors = [] } : CardCvvFieldProps) : mixed {
     const [ cvv, setCvv ] : [ string, (string) => string ] = useState('');
     const [ cvvValidity, setCvvValidity ] : [ FieldValidity, (FieldValidity) => FieldValidity ] = useState(initFieldValidity);
     const [ generalStyle, inputStyle ] = getStyles(styleObject);
@@ -335,6 +344,7 @@ export function CardCVVField({ cspNonce, onChange, styleObject = {}, placeholder
             <CardCVV
                 ref={ cvvRef }
                 type='text'
+                autocomplete={ autocomplete }
                 // eslint-disable-next-line react/forbid-component-props
                 className={ `cvv ${ cvvValidity.isPotentiallyValid || cvvValidity.isValid ? 'valid' : 'invalid' }` }
                 // eslint-disable-next-line react/forbid-component-props

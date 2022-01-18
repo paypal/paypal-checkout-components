@@ -9,6 +9,7 @@ import type { CardType, CardCvvChangeEvent, CardNavigation, FieldValidity, Input
 
 type CardCvvProps = {|
     name : string,
+    autocomplete? : string,
     ref : () => void,
     type : string,
     state? : InputState,
@@ -29,6 +30,7 @@ type CardCvvProps = {|
 export function CardCVV(
     {
         name = 'cvv',
+        autocomplete = 'cc-csc',
         navigation = defaultNavigation,
         allowNavigation = false,
         state,
@@ -103,6 +105,7 @@ export function CardCVV(
     return (
         <input
             name={ name }
+            autocomplete={ autocomplete }
             inputmode='numeric'
             ref={ ref }
             type={ type }

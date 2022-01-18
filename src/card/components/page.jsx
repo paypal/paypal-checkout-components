@@ -19,14 +19,18 @@ type PageProps = {|
 |};
 
 function Page({ cspNonce, props } : PageProps) : mixed {
-    const { facilitatorAccessToken, style, placeholder, type, onChange, export: xport } = props;
+    const { facilitatorAccessToken, style, disableAutocomplete, placeholder, type, onChange, export: xport } = props;
 
     const [ fieldValue, setFieldValue ] = useState();
     const [ fieldValid, setFieldValid ] = useState(false);
     const [ fieldErrors, setFieldErrors ] = useState([]);
     const [ mainRef, setRef ] = useState();
-
     const [ fieldGQLErrors, setFieldGQLErrors ] = useState({ singleField: {}, numberField: [], expiryField: [], cvvField: [] });
+
+    let autocomplete;
+    if (disableAutocomplete) {
+        autocomplete = 'off';
+    }
 
     const getFieldValue = () => {
         return fieldValue;
@@ -126,6 +130,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                     ? <CardField
                             gqlErrorsObject={ fieldGQLErrors.singleField }
                             cspNonce={ cspNonce }
+                            autocomplete={ autocomplete }
                             onChange={ onFieldChange }
                             styleObject={ style }
                             placeholder={ placeholder }
@@ -139,6 +144,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                             ref={ mainRef }
                             gqlErrors={ fieldGQLErrors.numberField }
                             cspNonce={ cspNonce }
+                            autocomplete={ autocomplete }
                             onChange={ onFieldChange }
                             styleObject={ style }
                             placeholder={ placeholder }
@@ -152,6 +158,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                             ref={ mainRef }
                             gqlErrors={ fieldGQLErrors.cvvField }
                             cspNonce={ cspNonce }
+                            autocomplete={ autocomplete }
                             onChange={ onFieldChange }
                             styleObject={ style }
                             placeholder={ placeholder }
@@ -165,6 +172,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                             ref={ mainRef }
                             gqlErrors={ fieldGQLErrors.expiryField }
                             cspNonce={ cspNonce }
+                            autocomplete={ autocomplete }
                             onChange={ onFieldChange }
                             styleObject={ style }
                             placeholder={ placeholder }

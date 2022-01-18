@@ -18,6 +18,7 @@ import type { CardExpiryChangeEvent, CardNavigation, FieldValidity, InputState, 
 
 type CardExpiryProps = {|
     name : string,
+    autocomplete? : string,
     ref : () => void,
     type : string,
     state? : InputState,
@@ -37,6 +38,7 @@ type CardExpiryProps = {|
 export function CardExpiry(
     {
         name = 'expiry',
+        autocomplete = 'cc-exp',
         navigation = defaultNavigation,
         state,
         ref,
@@ -137,6 +139,7 @@ export function CardExpiry(
     return (
         <input
             name={ name }
+            autocomplete={ autocomplete }
             inputmode='numeric'
             ref={ ref }
             type={ type }

@@ -35,6 +35,7 @@ function validateNavigation({ allowNavigation,  inputState } : {| allowNavigatio
 
 type CardNumberProps = {|
     name : string,
+    autocomplete? : string,
     ref : () => void,
     type : string,
     state? : InputState,
@@ -53,6 +54,7 @@ type CardNumberProps = {|
 export function CardNumber(
     {
         name = 'number',
+        autocomplete = 'cc-number',
         navigation = defaultNavigation,
         allowNavigation = false,
         state,
@@ -174,6 +176,7 @@ export function CardNumber(
     return (
         <input
             name={ name }
+            autocomplete={ autocomplete }
             inputmode='numeric'
             ref={ ref }
             type={ type }

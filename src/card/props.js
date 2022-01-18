@@ -54,7 +54,8 @@ export type CardProps = {|
     fundingEligibility : FundingEligibilityType,
     export : CardExport,
     onChange : OnChange,
-    facilitatorAccessToken : string
+    facilitatorAccessToken : string,
+    disableAutocomplete? : boolean
 |};
 
 type GetCardPropsOptions = {|

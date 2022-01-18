@@ -72,6 +72,7 @@ export type XProps = {|
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     enableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
+    disableAutocomplete? : boolean,
     getQueriedEligibleFunding? : GetQueriedEligibleFunding,
     storageID? : string,
     stageHost : ?string,
@@ -131,6 +132,7 @@ export type Props = {|
     disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     enableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
+    disableAutocomplete? : boolean,
     getQueriedEligibleFunding : GetQueriedEligibleFunding,
 
     stageHost : ?string,
@@ -202,6 +204,7 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
         enableFunding,
         disableFunding,
         disableCard,
+        disableAutocomplete,
         wallet,
         paymentMethodNonce,
         paymentMethodToken = paymentMethodNonce,
@@ -266,6 +269,7 @@ export function getProps({ facilitatorAccessToken, branded } : {| facilitatorAcc
         enableFunding,
         disableFunding,
         disableCard,
+        disableAutocomplete,
         getQueriedEligibleFunding,
 
         amount,

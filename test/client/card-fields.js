@@ -135,7 +135,7 @@ describe('card fields cases', () => {
                 const container = createCardFieldsContainerHTML();
 
                 await mockSetupCardFields();
-            
+
                 const card = window.paypal.CardFields(window.xprops);
                 card.render(container);
 
@@ -249,7 +249,7 @@ describe('card fields cases', () => {
                 const container = createCardFieldsContainerHTML();
 
                 await mockSetupCardFields();
-            
+
                 const card = window.paypal.CardFields(window.xprops);
                 card.render(container);
                 await wait();
@@ -347,7 +347,7 @@ describe('card fields cases', () => {
                 const container = createCardFieldsContainerHTML();
 
                 await mockSetupCardFields();
-            
+
                 const card = window.paypal.CardFields(window.xprops);
                 card.render(container);
                 await wait();
@@ -395,7 +395,7 @@ describe('card fields cases', () => {
                     const cardFieldInstance = CardFieldOriginal(props);
 
                     mockFunction(cardFieldInstance, 'NumberField', expect('NumberField', ({ original: NumberFieldToOriginal, args: numberArgs }) => {
-                        
+
                         const numberFieldToOriginal = NumberFieldToOriginal(...numberArgs);
 
                         mockFunction(numberFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
@@ -410,11 +410,11 @@ describe('card fields cases', () => {
                         }));
 
                         return numberFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'ExpiryField', expect('ExpiryField', ({ original: ExpiryFieldToOriginal, args: expiryArgs }) => {
-                        
+
                         const expiryFieldToOriginal = ExpiryFieldToOriginal(...expiryArgs);
 
                         mockFunction(expiryFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
@@ -429,11 +429,11 @@ describe('card fields cases', () => {
                         }));
 
                         return expiryFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'CVVField', expect('CVVField', ({ original: CVVFieldToOriginal, args: cvvArgs }) => {
-                        
+
                         const cVVFieldToOriginal = CVVFieldToOriginal(...cvvArgs);
 
                         mockFunction(cVVFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
@@ -448,12 +448,12 @@ describe('card fields cases', () => {
                         }));
 
                         return cVVFieldToOriginal;
-                        
+
                     }));
 
                     return cardFieldInstance;
                 }));
-                
+
 
                 const numberContainer = createCardFieldsContainerHTML('number');
                 const expiryContainer = createCardFieldsContainerHTML('expiry');
@@ -464,7 +464,7 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.NUMBER;
                 await mockSetupCardFields();
                 cardFields.NumberField(window.xprops).render(numberContainer);
-                
+
                 window.xprops.type = CARD_FIELD_TYPE.EXPIRY;
                 await mockSetupCardFields();
                 cardFields.ExpiryField(window.xprops).render(expiryContainer);
@@ -508,7 +508,7 @@ describe('card fields cases', () => {
                     const cardFieldInstance = CardFieldOriginal(props);
 
                     mockFunction(cardFieldInstance, 'NumberField', expect('NumberField', ({ original: NumberFieldToOriginal, args: numberArgs }) => {
-                        
+
                         const numberFieldToOriginal = NumberFieldToOriginal(...numberArgs);
 
                         mockFunction(numberFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
@@ -523,11 +523,11 @@ describe('card fields cases', () => {
                         }));
 
                         return numberFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'ExpiryField', expect('ExpiryField', ({ original: ExpiryFieldToOriginal, args: expiryArgs }) => {
-                        
+
                         const expiryFieldToOriginal = ExpiryFieldToOriginal(...expiryArgs);
 
                         mockFunction(expiryFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
@@ -542,11 +542,11 @@ describe('card fields cases', () => {
                         }));
 
                         return expiryFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'CVVField', expect('CVVField', ({ original: CVVFieldToOriginal, args: cvvArgs }) => {
-                        
+
                         const cVVFieldToOriginal = CVVFieldToOriginal(...cvvArgs);
 
                         mockFunction(cVVFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
@@ -561,7 +561,7 @@ describe('card fields cases', () => {
                         }));
 
                         return cVVFieldToOriginal;
-                        
+
                     }));
 
 
@@ -582,7 +582,7 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.NUMBER;
                 await mockSetupCardFields();
                 cardFields.NumberField(window.xprops).render(numberContainer);
-                
+
                 window.xprops.type = CARD_FIELD_TYPE.EXPIRY;
                 await mockSetupCardFields();
                 cardFields.ExpiryField(window.xprops).render(expiryContainer);
@@ -693,11 +693,11 @@ describe('card fields cases', () => {
                                 return renderToOriginal(...args);
                             });
                         }));
-                        
+
                         renderCardFieldMock({ name: 'card-number-field', isFieldValid: () => true, getFieldValue: () => cardNumber });
                         setCardFieldsValues({ number: cardNumber });
                         return numberFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'ExpiryField', expect('ExpiryField', ({ original: ExpiryFieldToOriginal, args: expiryArgs }) => {
@@ -714,11 +714,11 @@ describe('card fields cases', () => {
                                 return renderToOriginal(...args);
                             });
                         }));
-                        
+
                         renderCardFieldMock({ name: 'card-expiry-field', isFieldValid: () => true, getFieldValue: () => cardExpiry });
                         setCardFieldsValues({ expiry: cardExpiry });
                         return expiryFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'CVVField', expect('CVVField', ({ original: CvvFieldToOriginal, args: cvvArgs }) => {
@@ -739,11 +739,11 @@ describe('card fields cases', () => {
                                 return renderToOriginal(...args);
                             });
                         }));
-                        
+
                         renderCardFieldMock({ name: 'card-cvv-field', isFieldValid: () => true, getFieldValue: () => cardCvv });
                         setCardFieldsValues({ cvv: cardCvv });
                         return cVVFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
@@ -764,7 +764,7 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.NUMBER;
                 await mockSetupCardFields();
                 cardFields.NumberField(window.xprops).render(numberContainer);
-                
+
                 window.xprops.type = CARD_FIELD_TYPE.EXPIRY;
                 await mockSetupCardFields();
                 cardFields.ExpiryField(window.xprops).render(expiryContainer);
@@ -772,7 +772,7 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.CVV;
                 await mockSetupCardFields();
                 cardFields.CVVField(window.xprops).render(cvvContainer);
-            
+
                 await wait();
                 gqlMock.done();
 
@@ -878,11 +878,11 @@ describe('card fields cases', () => {
                                 return renderToOriginal(...args);
                             });
                         }));
-                        
+
                         renderCardFieldMock({ name: 'card-number-field', isFieldValid: () => true, getFieldValue: () => cardNumber });
                         setCardFieldsValues({ number: cardNumber });
                         return numberFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'ExpiryField', expect('ExpiryField', ({ original: ExpiryFieldToOriginal, args: expiryArgs }) => {
@@ -899,11 +899,11 @@ describe('card fields cases', () => {
                                 return renderToOriginal(...args);
                             });
                         }));
-                        
+
                         renderCardFieldMock({ name: 'card-expiry-field', isFieldValid: () => true, getFieldValue: () => cardExpiry });
                         setCardFieldsValues({ expiry: cardExpiry });
                         return expiryFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(cardFieldInstance, 'CVVField', expect('CVVField', ({ original: CvvFieldToOriginal, args: cvvArgs }) => {
@@ -920,11 +920,11 @@ describe('card fields cases', () => {
                                 return renderToOriginal(...args);
                             });
                         }));
-                        
+
                         renderCardFieldMock({ name: 'card-cvv-field', isFieldValid: () => true, getFieldValue: () => cardCvv });
                         setCardFieldsValues({ cvv: cardCvv });
                         return cVVFieldToOriginal;
-                        
+
                     }));
 
                     mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
@@ -952,7 +952,7 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.NUMBER;
                 await mockSetupCardFields();
                 cardFields.NumberField(window.xprops).render(numberContainer);
-                
+
                 window.xprops.type = CARD_FIELD_TYPE.EXPIRY;
                 await mockSetupCardFields();
                 cardFields.ExpiryField(window.xprops).render(expiryContainer);
@@ -960,7 +960,7 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.CVV;
                 await mockSetupCardFields();
                 cardFields.CVVField(window.xprops).render(cvvContainer);
-            
+
                 await wait();
                 gqlMock.done();
 
@@ -971,4 +971,70 @@ describe('card fields cases', () => {
     });
 
 
+    it('includes autocomplete attributes', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            window.xprops.type = CARD_FIELD_TYPE.SINGLE;
+
+            const container = createCardFieldsContainerHTML();
+
+            mockFunction(window.paypal, 'CardFields', expect('CardFields', ({ original: CardFieldOriginal, args: [ props ] }) => {
+                const cardFieldInstance = CardFieldOriginal(props);
+                const numberInput = document.getElementsByName('number')[0];
+                const expiryInput = document.getElementsByName('expiry')[0];
+                const cvvInput = document.getElementsByName('cvv')[0];
+
+                if (numberInput.getAttribute('autocomplete') !== 'cc-number') {
+                    throw new Error('Card Number autocomplete is not set to "cc-number"');
+                }
+
+                if (expiryInput.getAttribute('autocomplete') !== 'cc-exp') {
+                    throw new Error('Card Expiry autocomplete is not set to "cc-exp"');
+                }
+
+                if (cvvInput.getAttribute('autocomplete') !== 'cc-csc') {
+                    throw new Error('Card CVV autocomplete is not set to "cc-csc"');
+                }
+                return cardFieldInstance;
+            }));
+
+            await mockSetupCardFields();
+
+            const card = window.paypal.CardFields(window.xprops);
+            card.render(container);
+        });
+    });
+
+    it('should turn autocomplete off on fields with `disableAutocomplete`', async () => {
+        return await wrapPromise(async ({ expect }) => {
+            window.xprops.disableAutocomplete = true;
+            window.xprops.type = CARD_FIELD_TYPE.SINGLE;
+
+            const container = createCardFieldsContainerHTML();
+
+            mockFunction(window.paypal, 'CardFields', expect('CardFields', ({ original: CardFieldOriginal, args: [ props ] }) => {
+                const cardFieldInstance = CardFieldOriginal(props);
+                const numberInput = document.getElementsByName('number')[0];
+                const expiryInput = document.getElementsByName('expiry')[0];
+                const cvvInput = document.getElementsByName('cvv')[0];
+
+                if (numberInput.getAttribute('autocomplete') !== 'off') {
+                    throw new Error('Card Number autocomplete is not set to "off"');
+                }
+
+                if (expiryInput.getAttribute('autocomplete') !== 'off') {
+                    throw new Error('Card Expiry autocomplete is not set to "off"');
+                }
+
+                if (cvvInput.getAttribute('autocomplete') !== 'off') {
+                    throw new Error('Card CVV autocomplete is not set to "off"');
+                }
+                return cardFieldInstance;
+            }));
+
+            await mockSetupCardFields();
+
+            const card = window.paypal.CardFields(window.xprops);
+            card.render(container);
+        });
+    });
 });
