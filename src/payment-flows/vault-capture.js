@@ -68,7 +68,7 @@ type ThreeDomainSecureProps = {|
 |};
 
 function handleThreeDomainSecure({ ThreeDomainSecure, createOrder, getParent } : ThreeDomainSecureProps) : ZalgoPromise<void> {
-    
+
     const promise = new ZalgoPromise();
     const instance = ThreeDomainSecure({
         createOrder,
@@ -97,6 +97,16 @@ function handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, 
         }
 
         if (status !== 200) {
+
+            const hasDescriptiveErrorCode = Array.isArray(body.details);
+            if (hasDescriptiveErrorCode) {
+                const details = body.details && body.details[0];
+                const { issue = '' } = details || {};
+                if (issue.trim().length !== 0) {
+                    throw new Error(`Validate payment failed with issue: ${ issue }`);
+                }
+            }
+
             throw new Error(`Validate payment failed with status: ${ status }`);
         }
     });
@@ -173,7 +183,7 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
         return createOrder().then(orderID => {
             return loadFraudnet({ env, clientMetadataID, cspNonce }).catch(noop).then(() => {
                 const installmentsEligible = isVaultCaptureInstallmentsEligible({ props, serviceData });
-            
+
                 getLogger()
                     .info(installmentsEligible ? 'vault_merchant_installments_eligible' : 'vault_merchant_installments_ineligible')
                     .track({
@@ -248,7 +258,7 @@ function setupVaultMenu({ props, payment, serviceData, components, config, resta
                 [FPTI_KEY.TRANSITION]:      FPTI_TRANSITION.CLICK_CHOOSE_FUNDING,
                 [FPTI_KEY.OPTION_SELECTED]: FPTI_MENU_OPTION.CHOOSE_FUNDING
             }).flush();
-            
+
             return ZalgoPromise.try(() => {
                 return updateMenuClientConfig();
             }).then(() => {
