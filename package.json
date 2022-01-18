@@ -14,6 +14,7 @@
         "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size",
         "build": "npm run test && npm run webpack",
         "release": "./scripts/publish.sh",
+        "release:alpha": "./scripts/publish.sh alpha",
         "release:patch": "./scripts/publish.sh patch",
         "release:minor": "./scripts/publish.sh minor",
         "release:major": "./scripts/publish.sh major",
