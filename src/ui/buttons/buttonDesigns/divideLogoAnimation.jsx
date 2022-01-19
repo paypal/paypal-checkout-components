@@ -141,6 +141,11 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
                 && paypalLabelContainerElement.contains(style)
             ) {
                 paypalLabelContainerElement.removeChild(style);
+            } else if (
+                (designContainer.offsetWidth <= max || designContainer.offsetWidth >= min)
+                && !paypalLabelContainerElement.contains(style)
+            ) {
+                paypalLabelContainerElement.appendChild(style);
             }
         });
     }
