@@ -19,7 +19,6 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
-
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
     createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments } from './util';
 
