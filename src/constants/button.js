@@ -56,3 +56,8 @@ export const BUTTON_FLOW = {
     BILLING_SETUP:      ('billing_setup' : 'billing_setup'),
     SUBSCRIPTION_SETUP: ('subscription_setup' : 'subscription_setup')
 };
+
+export const MENU_PLACEMENT = {
+    ABOVE:   ('above' : 'above'),
+    BELOW: ('below' : 'below')
+};

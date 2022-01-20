@@ -19,8 +19,9 @@ import { isFundingEligible } from '../../funding';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
+
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    createNoPaylaterExperiment, getRenderedButtons, getButtonExperiments } from './util';
+    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -347,6 +348,15 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'string',
                 value:      getStageHost,
                 required:   false
+            },
+
+            buttonSize: {
+                type:       'string',
+                required:   false,
+                value:      ({ props, container }) => {
+                    return getButtonSize(props, container);
+                },
+                queryParam: true
             },
 
             apiStageHost: {
