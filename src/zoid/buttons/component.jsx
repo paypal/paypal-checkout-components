@@ -12,7 +12,7 @@ import { create, type ZoidComponent } from 'zoid/src';
 import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
-import { adaptPersonalizationToExperiments, eligiblePersonalizations } from '@paypal/personalization/src';
+import { eligiblePersonalizations } from '@paypal/personalization/src';
 
 import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
@@ -21,12 +21,18 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons } from './util';
+    getVenmoExperiment, createNoPaylaterExperiment, getNoPaylaterExperiment, getRenderedButtons, getPersonalizations } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
     const queriedEligibleFunding = [];
+
+    let personalizations = __PERSONALIZATIONS__ || null;
+    
+    getPersonalizations(personalizations).then(experiments => {
+        personalizations = experiments;
+    });
 
     return create({
         tag:  'paypal-buttons',
@@ -405,7 +411,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         }
                     } = props;
 
-                    const personalizations = adaptPersonalizationToExperiments(__PERSONALIZATIONS__);
                     return eligiblePersonalizations({ personalizations, props: { style: { tagline } } });
                 }
             },

@@ -2,10 +2,27 @@
 
 const personalizations = {
     tagline: {
-        text:           'Shop now. Pay over time',
+        treatments: {
+            '["AND", ["EQ", "timeOfDay", "afternoon"], ["EQ", "age", 40]]': {
+                tag0: 0.93,
+                tag1: 0.05,
+                tag2: 0.02
+            },
+            '["AND", ["EQ", "timeOfDay", "evening"], ["EQ", "timezone", "Eastern"]]': {
+                tag0: 0.86,
+                tag1: 0.1,
+                tag2: 0.04
+            },
+            '["TRUE"]': {
+                tag0: 0.34,
+                tag1: 0.33,
+                tag2: 0.33
+            }
+        },
         tracking:   {
-            impression: '',
-            click:      ''
+            context:   '',
+            treatment: '',
+            metric:    ''
         }
     },
     buttonText:         null,
@@ -131,7 +148,7 @@ function getTestGlobals(productionGlobals) {
         },
 
         __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
-        __PERSONALIZATIONS__:    () => `${ JSON.stringify(personalizations) }`,
+        __PERSONALIZATIONS__:    () => `window.__TEST_PERSONALIZATIONS__ || ${ JSON.stringify(personalizations) }`,
 
         __PROTOCOL__:          'http',
         __PORT__:              8000,

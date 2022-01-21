@@ -1,5 +1,34 @@
 /* @flow */
 
+window.__TEST_PERSONALIZATIONS__ = {
+    tagline: {
+        treatments: {
+            '["AND", ["EQ", "timeOfDay", "afternoon"], ["EQ", "age", 40]]': {
+                tag0: 0.93,
+                tag1: 0.05,
+                tag2: 0.02
+            },
+            '["AND", ["EQ", "timeOfDay", "evening"], ["EQ", "timezone", "Eastern"]]': {
+                tag0: 0.86,
+                tag1: 0.1,
+                tag2: 0.04
+            },
+            '["TRUE"]': {
+                tag0: 0.34,
+                tag1: 0.33,
+                tag2: 0.33
+            }
+        },
+        tracking:   {
+            context:   '',
+            treatment: '',
+            metric:    ''
+        }
+    },
+    buttonText:         null,
+    buttonAnimation:    null
+};
+
 window.__TEST_FUNDING_ELIGIBILITY__ = {
     bancontact: {
         eligible: false

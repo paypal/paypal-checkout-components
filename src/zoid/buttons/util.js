@@ -1,18 +1,17 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet } from 'belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { getLocale, getClientID, getIntent, getCommit, getVault, getDisableFunding,
     getMerchantID, getCurrency, getBuyerCountry, getPlatform, getComponents, getEnableFunding,
     getFundingEligibility, createExperiment } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
-import { type Personalization } from '@paypal/personalization/src';
+import { adaptClientPersonalizationToExperiments, fetchPersonalizations, type Extra, type MLContext, type Personalization } from '@paypal/personalization/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
-import { BUTTON_FLOW, BUTTON_SIZE, BUTTON_LAYOUT } from '../../constants';
+import { BUTTON_FLOW } from '../../constants';
 import type { ApplePaySessionConfigRequest, CreateBillingAgreement, CreateSubscription, ButtonProps } from '../../ui/buttons/props';
 import { determineEligibleFunding } from '../../funding';
-import { BUTTON_SIZE_STYLE } from '../../ui/buttons/config';
 
 type DetermineFlowOptions = {|
     createBillingAgreement : CreateBillingAgreement,
@@ -226,4 +225,30 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
     } catch (e) {
         return undefined;
     }
+}
+
+export function getPersonalizations(personalizations : Object) : ZalgoPromise<$ReadOnlyArray<Personalization>> {
+    if (personalizations) {
+        return adaptClientPersonalizationToExperiments({ context: null, personalizations });
+    }
+
+    const mlContext : MLContext = {
+        buyerCountry: getBuyerCountry() || 'US',
+        locale:       getLocale(),
+        clientId:     getClientID(),
+        currency:     getCurrency(),
+        cookies:      window.document?.cookie || '',
+        userAgent:    window.navigator?.userAgent || ''
+    };
+
+    const extra : Extra = {
+        commit:          getCommit(),
+        intent:          getIntent(),
+        vault:           getVault(),
+        merchantID:      getMerchantID(),
+        taglineEnabled:  true
+    };
+
+    return fetchPersonalizations({ mlContext, eligibility: getRefinedFundingEligibility(), extra })
+        .then(experiments => experiments);
 }
