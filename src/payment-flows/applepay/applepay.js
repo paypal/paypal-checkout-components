@@ -418,8 +418,10 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             }
                             
                             // For some reason country code comes back as lowercase from Apple
-                            applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
-                            applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
+                            if (applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode) {
+                                applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
+                                applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
+                            }
 
                             // call graphQL mutation passing in token, billingContact and shippingContact
                             approveApplePayPayment(orderID, clientID, applePayPayment)
