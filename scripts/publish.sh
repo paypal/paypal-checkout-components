@@ -7,7 +7,7 @@ current_branch=$( git rev-parse --abbrev-ref HEAD )
 
 if [ "$current_branch" != "$default_branch" ]
 then
-  release=prerelease
+  release='prerelease --preid=alpha'
 fi
 
 # Running `npm version` will run through the other version lifecycle scripts
