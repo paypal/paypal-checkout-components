@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, FUNDING, FPTI_KEY } from '@paypal/sdk-constants';
+import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 import { node } from 'jsx-pragmatic';
 import { LOGO_COLOR, PPLogo, PayPalLogo } from '@paypal/sdk-logos';
@@ -53,7 +54,8 @@ const PERSONALIZATION_QUERY = `
         $taglineEnabled: Boolean,
         $renderedButtons: [FundingButtonType]
         $layout: ButtonLayouts
-        $buttonSize: ButtonSizes
+        $buttonSize: ButtonSizes,
+        $creditRiskVerified: Boolean
     ) {
         checkoutCustomization(
             clientId: $clientID,
@@ -73,7 +75,8 @@ const PERSONALIZATION_QUERY = `
             taglineEnabled: $taglineEnabled,
             renderedButtons: $renderedButtons
             layout: $layout
-            buttonSize: $buttonSize
+            buttonSize: $buttonSize,
+            creditRiskVerified: $creditRiskVerified
         ) {
             tagline {
                 text
@@ -117,7 +120,8 @@ export type PersonalizationOptions = {|
     personalizationEnabled : boolean,
     renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
     layout? : string,
-    buttonSize? : string
+    buttonSize? : string,
+    fundingEligibility : FundingEligibilityType
 |};
 
 function getDefaultPersonalization() : Personalization {
@@ -148,8 +152,8 @@ function contentToJSX(content : string) : ComponentFunctionType<PersonalizationC
 }
 
 export async function resolvePersonalization(req : ExpressRequest, gqlBatch : GraphQLBatchCall, personalizationOptions : PersonalizationOptions) : Promise<Personalization> {
-    let { logger, clientID, locale, buyerCountry, buttonSessionID, currency, intent, commit,
-        vault, label, period, tagline, personalizationEnabled, renderedButtons, layout, buttonSize } = personalizationOptions;
+    let { logger, clientID, locale, buyerCountry, buttonSessionID, currency, intent, commit, vault, label,
+        period, tagline, personalizationEnabled, renderedButtons, layout, buttonSize, fundingEligibility } = personalizationOptions;
 
     if (!personalizationEnabled) {
         return getDefaultPersonalization();
@@ -158,6 +162,7 @@ export async function resolvePersonalization(req : ExpressRequest, gqlBatch : Gr
     const ip = req.ip;
     const cookies = req.get('cookie') || '';
     const userAgent = req.get('user-agent') || '';
+    const creditRiskVerified = fundingEligibility && fundingEligibility.credit?.eligible;
 
     intent = intent ? intent.toUpperCase() : intent;
     label = label ? label.toUpperCase() : label;
@@ -180,7 +185,8 @@ export async function resolvePersonalization(req : ExpressRequest, gqlBatch : Gr
         taglineEnabled,
         renderedButtons,
         layout,
-        buttonSize
+        buttonSize,
+        creditRiskVerified
     };
 
     // Fix enum checking errors for strings on graphql by only sending truthy variables

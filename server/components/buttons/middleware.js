@@ -113,6 +113,7 @@ export function getButtonMiddleware({
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
                 disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableFunding
             });
+            const fundingEligibility = await fundingEligibilityPromise;
 
             const walletPromise = resolveWallet(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault, amount,
@@ -122,7 +123,7 @@ export function getButtonMiddleware({
             const personalizationEnabled = getPersonalizationEnabled(req);
             const personalizationPromise = resolvePersonalization(req, gqlBatch, {
                 logger, clientID, buyerCountry, locale, buttonSessionID, currency, intent, commit,
-                vault, label, period, tagline, personalizationEnabled, renderedButtons, layout, buttonSize
+                vault, label, period, tagline, personalizationEnabled, renderedButtons, layout, buttonSize, fundingEligibility
             });
 
             gqlBatch.flush();
@@ -141,7 +142,6 @@ export function getButtonMiddleware({
 
             const render = await renderPromise;
             const client = await clientPromise;
-            const fundingEligibility = await fundingEligibilityPromise;
             const merchantID = await merchantIDPromise;
             const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const wallet = await walletPromise;
