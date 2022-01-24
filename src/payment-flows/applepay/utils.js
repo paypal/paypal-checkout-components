@@ -160,21 +160,21 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
         }
     };
 
-    if (subtotalValue && subtotalValue.length) {
+    if (subtotalValue && parseFloat(subtotalValue).toFixed(2) !== '0.00') {
         result.lineItems.push({
             label:  'Subtotal',
             amount: subtotalValue
         });
     }
 
-    if (taxValue && taxValue.length) {
+    if (taxValue && parseFloat(taxValue).toFixed(2) !== '0.00') {
         result.lineItems.push({
             label:  'Sales Tax',
             amount: taxValue
         });
     }
 
-    if (shippingValue && shippingValue.length) {
+    if (shippingValue && parseFloat(shippingValue).toFixed(2) !== '0.00') {
         result.lineItems.push({
             label:  'Shipping',
             amount: shippingValue

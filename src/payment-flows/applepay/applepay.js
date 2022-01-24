@@ -8,7 +8,7 @@ import { ZalgoPromise } from 'zalgo-promise/src';
 import { getDetailedOrderInfo, approveApplePayPayment, getApplePayMerchantSession } from '../../api';
 import { getLogger, promiseNoop, unresolvedPromise } from '../../lib';
 import { FPTI_CUSTOM_KEY, FPTI_STATE, FPTI_TRANSITION } from '../../constants';
-import type { ApplePayPaymentContact, ApplePayShippingMethod, ApplePayShippingMethodUpdate, ApplePayShippingContactUpdate, PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from '../types';
+import type { ApplePayLineItem, ApplePayPaymentContact, ApplePayShippingMethod, ApplePayShippingMethodUpdate, ApplePayShippingContactUpdate, PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from '../types';
 
 import { createApplePayRequest, isJSON, validateShippingContact } from './utils';
 
@@ -75,6 +75,34 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
         });
     }
 
+    // eslint-disable-next-line flowtype/no-mutable-array
+    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel } : {| subtotal : string, tax : string, shipping : string, shippingLabel : ?string |}) : Array<ApplePayLineItem> {
+        const newLineItems = [];
+
+        if (subtotal && (parseFloat(subtotal).toFixed(2) !== '0.00')) {
+            newLineItems.push({
+                label:  'Subtotal',
+                amount: subtotal
+            });
+        }
+        
+        if (tax && (parseFloat(tax).toFixed(2) !== '0.00')) {
+            newLineItems.push({
+                label:  'Sales Tax',
+                amount: tax
+            });
+        }
+
+        if (shipping && (parseFloat(shipping).toFixed(2) !== '0.00')) {
+            newLineItems.push({
+                label:  shippingLabel || 'Shipping',
+                amount: shipping
+            });
+        }
+
+        return newLineItems;
+    }
+
     function initApplePaySession() : ZalgoPromise<void> {
         let currentTotalAmount;
         let currentSubtotalAmount;
@@ -90,21 +118,16 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         label:  'Total',
                         amount: currentTotalAmount
                     },
-                    newLineItems: [
-                        {
-                            label:  'Subtotal',
-                            amount: currentSubtotalAmount
-                        },
-                        {
-                            label:  'Sales Tax',
-                            amount: currentTaxAmount
-                        },
-                        {
-                            label:  currentShippingMethod?.label || 'Shipping',
-                            amount: currentShippingAmount
-                        }
-                    ]
+                    newLineItems: []
                 };
+                update.newLineItems = updateNewLineItems(
+                    {
+                        shipping:       currentShippingAmount,
+                        subtotal:       currentSubtotalAmount,
+                        tax:            currentTaxAmount,
+                        shippingLabel:  currentShippingMethod?.label
+                    }
+                );
 
                 // $FlowFixMe
                 return ZalgoPromise.resolve(update);
@@ -119,21 +142,16 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         label:  'Total',
                         amount: currentTotalAmount
                     },
-                    newLineItems: [
-                        {
-                            label:  'Subtotal',
-                            amount: currentSubtotalAmount
-                        },
-                        {
-                            label:  'Sales Tax',
-                            amount: currentTaxAmount
-                        },
-                        {
-                            label:  currentShippingMethod?.label || 'Shipping',
-                            amount: currentShippingAmount
-                        }
-                    ]
+                    newLineItems: []
                 };
+                update.newLineItems = updateNewLineItems(
+                    {
+                        shipping:       currentShippingAmount,
+                        subtotal:       currentSubtotalAmount,
+                        tax:            currentTaxAmount,
+                        shippingLabel:  currentShippingMethod?.label
+                    }
+                );
 
                 // $FlowFixMe
                 return ZalgoPromise.resolve(update);
@@ -217,21 +235,16 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 label:  'Total',
                                 amount: updatedTotalValue
                             },
-                            newLineItems: [
-                                {
-                                    label:  'Subtotal',
-                                    amount: currentSubtotalAmount
-                                },
-                                {
-                                    label:  'Sales Tax',
-                                    amount: currentTaxAmount
-                                },
-                                {
-                                    label:  currentShippingMethod?.label || 'Shipping',
-                                    amount: currentShippingAmount
-                                }
-                            ]
+                            newLineItems: []
                         };
+                        update.newLineItems = updateNewLineItems(
+                            {
+                                shipping:       currentShippingAmount,
+                                subtotal:       currentSubtotalAmount,
+                                tax:            currentTaxAmount,
+                                shippingLabel:  currentShippingMethod?.label
+                            }
+                        );
 
                         // $FlowFixMe
                         return ZalgoPromise.resolve(update);
@@ -330,27 +343,14 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 },
                                 newLineItems: []
                             };
-
-                            if (subtotalValue && subtotalValue.length) {
-                                update.newLineItems.push({
-                                    label:  'Subtotal',
-                                    amount: currentSubtotalAmount
-                                });
-                            }
-                    
-                            if (taxValue && taxValue.length) {
-                                update.newLineItems.push({
-                                    label:  'Sales Tax',
-                                    amount: currentTaxAmount
-                                });
-                            }
-
-                            if (shippingValue && shippingValue.length) {
-                                update.newLineItems.push({
-                                    label:  currentShippingMethod?.label || 'Shipping',
-                                    amount: currentShippingAmount
-                                });
-                            }
+                            update.newLineItems = updateNewLineItems(
+                                {
+                                    shipping:       currentShippingAmount,
+                                    subtotal:       currentSubtotalAmount,
+                                    tax:            currentTaxAmount,
+                                    shippingLabel:  currentShippingMethod?.label
+                                }
+                            );
 
                             completePaymentMethodSelection(update);
                         }
@@ -372,27 +372,15 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                         },
                                         newLineItems: []
                                     };
+                                    update.newLineItems = updateNewLineItems(
+                                        {
+                                            shipping:       currentShippingAmount,
+                                            subtotal:       currentSubtotalAmount,
+                                            tax:            currentTaxAmount,
+                                            shippingLabel:  shippingMethod?.label
+                                        }
+                                    );
 
-                                    if (subtotalValue && subtotalValue.length) {
-                                        update.newLineItems.push({
-                                            label:  'Subtotal',
-                                            amount: currentSubtotalAmount
-                                        });
-                                    }
-                                    
-                                    if (taxValue && taxValue.length) {
-                                        update.newLineItems.push({
-                                            label:  'Sales Tax',
-                                            amount: currentTaxAmount
-                                        });
-                                    }
-
-                                    if (shippingValue && shippingValue.length) {
-                                        update.newLineItems.push({
-                                            label:  currentShippingMethod?.label || 'Shipping',
-                                            amount: currentShippingAmount
-                                        });
-                                    }
                                     completeShippingMethodSelection(update);
                                 });
                         }
