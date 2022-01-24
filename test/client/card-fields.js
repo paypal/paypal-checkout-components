@@ -623,8 +623,6 @@ describe('card fields cases', () => {
                 const cardExpiry = '01/2022';
                 const cardCvv = '123';
 
-                renderCardFieldMock({ name: 'card-cvv-field', isFieldValid: () => true, getFieldValue: () => cardCvv });
-
                 const gqlMock = getGraphQLApiMock({
                     extraHandler: ({ data }) => {
                         if (!data.variables.orderID) {
@@ -808,8 +806,6 @@ describe('card fields cases', () => {
                 const cardExpiry = '01/20';
                 const cardCvv = '12';
 
-                renderCardFieldMock({ name: 'card-cvv-field', isFieldValid: () => true, getFieldValue: () => cardCvv });
-
                 const gqlMock = getGraphQLApiMock({
                     extraHandler: ({ data }) => {
                         if (!data.variables.orderID) {
@@ -964,6 +960,157 @@ describe('card fields cases', () => {
                 await wait();
                 gqlMock.done();
 
+            });
+
+        });
+
+        it('should render multi card fields with createOrder and optional cardholder name field', async () => {
+
+            return await wrapPromise(async ({ expect }) => {
+
+                const orderID = generateOrderID();
+
+                window.xprops.intent = INTENT.CAPTURE;
+                window.xprops.style = {
+                    'height':          '60px',
+                    'padding':         '10px',
+                    'fontSize':        '18px',
+                    'fontFamily':      '"Open Sans", sans-serif',
+                    'transition':      'all 0.5s ease-out',
+                    'input.invalid': {
+                        color: 'red'
+                    }
+                };
+                window.xprops.placeholder = {
+                    number: 'Card number',
+                    expiry: 'MM/YY',
+                    cvv:    'CVV'
+                };
+
+                const cardNumber = '5555555555554444';
+                const cardExpiry = '01/2022';
+                const cardCvv = '123';
+                const cardName = 'John Doe';
+
+                window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                    return ZalgoPromise.try(() => {
+                        return orderID;
+                    });
+                }));
+
+                mockFunction(window.paypal, 'CardFields', expect('CardFields', ({ original: CardFieldOriginal, args: [ props ] }) => {
+
+                    const cardFieldInstance = CardFieldOriginal(props);
+
+                    mockFunction(cardFieldInstance, 'NumberField', expect('NumberField', ({ original: NumberFieldToOriginal, args: numberArgs }) => {
+                        
+                        const numberFieldToOriginal = NumberFieldToOriginal(...numberArgs);
+
+                        mockFunction(numberFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
+                            return props.createOrder().then(id => {
+
+                                if (id !== orderID) {
+                                    throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                                }
+
+                                return renderToOriginal(...args);
+                            });
+                        }));
+
+                        renderCardFieldMock({ name: 'card-number-field', isFieldValid: () => true, getFieldValue: () => cardNumber });
+                        setCardFieldsValues({ number: cardNumber });
+                        return numberFieldToOriginal;
+                        
+                    }));
+
+                    mockFunction(cardFieldInstance, 'ExpiryField', expect('ExpiryField', ({ original: ExpiryFieldToOriginal, args: expiryArgs }) => {
+                        
+                        const expiryFieldToOriginal = ExpiryFieldToOriginal(...expiryArgs);
+
+                        mockFunction(expiryFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
+                            return props.createOrder().then(id => {
+
+                                if (id !== orderID) {
+                                    throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                                }
+
+                                return renderToOriginal(...args);
+                            });
+                        }));
+
+                        renderCardFieldMock({ name: 'card-expiry-field', isFieldValid: () => true, getFieldValue: () => cardExpiry });
+                        setCardFieldsValues({ expiry: cardExpiry });
+                        return expiryFieldToOriginal;
+                        
+                    }));
+
+                    mockFunction(cardFieldInstance, 'CVVField', expect('CVVField', ({ original: CVVFieldToOriginal, args: cvvArgs }) => {
+                        
+                        const cVVFieldToOriginal = CVVFieldToOriginal(...cvvArgs);
+
+                        mockFunction(cVVFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
+                            return props.createOrder().then(id => {
+
+                                if (id !== orderID) {
+                                    throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                                }
+
+                                return renderToOriginal(...args);
+                            });
+                        }));
+
+                        renderCardFieldMock({ name: 'card-cvv-field', isFieldValid: () => true, getFieldValue: () => cardCvv });
+                        setCardFieldsValues({ cvv: cardCvv });
+                        return cVVFieldToOriginal;
+                        
+                    }));
+
+                    mockFunction(cardFieldInstance, 'NameField', expect('NameField', ({ original: NameFieldToOriginal, args: nameArgs }) => {
+                        
+                        const nameFieldToOriginal = NameFieldToOriginal(...nameArgs);
+
+                        mockFunction(nameFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
+                            return props.createOrder().then(id => {
+
+                                if (id !== orderID) {
+                                    throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                                }
+
+                                return renderToOriginal(...args);
+                            });
+                        }));
+
+                        renderCardFieldMock({ name: 'card-name-field', isFieldValid: () => true, getFieldValue: () => cardName });
+                        setCardFieldsValues({ name: cardName });
+                        return nameFieldToOriginal;
+                        
+                    }));
+                    return cardFieldInstance;
+                }));
+                
+
+                const numberContainer = createCardFieldsContainerHTML('number');
+                const expiryContainer = createCardFieldsContainerHTML('expiry');
+                const cvvContainer = createCardFieldsContainerHTML('cvv');
+                const nameContainer = createCardFieldsContainerHTML('name');
+
+                const cardFields = window.paypal.CardFields(window.xprops);
+
+                window.xprops.type = CARD_FIELD_TYPE.NUMBER;
+                await mockSetupCardFields();
+                cardFields.NumberField(window.xprops).render(numberContainer);
+                
+                window.xprops.type = CARD_FIELD_TYPE.EXPIRY;
+                await mockSetupCardFields();
+                cardFields.ExpiryField(window.xprops).render(expiryContainer);
+
+                window.xprops.type = CARD_FIELD_TYPE.CVV;
+                await mockSetupCardFields();
+                cardFields.CVVField(window.xprops).render(cvvContainer);
+
+                window.xprops.type = CARD_FIELD_TYPE.NAME;
+                await mockSetupCardFields();
+                cardFields.NameField(window.xprops).render(nameContainer);
             });
 
         });

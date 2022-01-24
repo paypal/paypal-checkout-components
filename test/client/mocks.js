@@ -249,6 +249,22 @@ export function setupMocks() {
                         }
                     };
                 },
+                NameField: () => {
+                    return {
+                        render: () => {
+                            return props.createOrder().then(orderID => {
+                                return ZalgoPromise.delay(50).then(() => {
+                                    return props.onApprove({
+                                        orderID,
+                                        payerID: 'AAABBBCCC'
+                                    }).catch(err => {
+                                        return props.onError(err);
+                                    });
+                                });
+                            });
+                        }
+                    };
+                },
                 submit: () => {
                     return submitCardFields({ facilitatorAccessToken: 'ABCDEF12345' });
                 }
@@ -1558,11 +1574,12 @@ export async function mockSetupCardFields() : Promise<void> {
     });
 }
 
-export function setCardFieldsValues({ number, expiry, cvv } : {| number? : string, expiry? : string, cvv? : string |}) : mixed {
+export function setCardFieldsValues({ number, expiry, cvv, name } : {| number? : string, expiry? : string, cvv? : string, name? : string |}) : mixed {
     
     const numberInput = number ? document.getElementsByName('number')[0] : null;
     const expiryInput = expiry ? document.getElementsByName('expiry')[0] : null;
     const cvvInput = cvv ? document.getElementsByName('cvv')[0] : null;
+    const nameInput = name ? document.getElementsByName('name')[0] : null;
 
     const inputEvent = new Event('input', { bubbles: true });
     const pasteEvent = new Event('paste', { bubbles: true });
@@ -1598,6 +1615,16 @@ export function setCardFieldsValues({ number, expiry, cvv } : {| number? : strin
         cvvInput.dispatchEvent(inputEvent);
         cvvInput.dispatchEvent(keydownEvent);
         cvvInput.dispatchEvent(blurEvent);
+    }
+
+    if (nameInput) {
+        nameInput.dispatchEvent(focusEvent);
+        // $FlowFixMe
+        nameInput.value = name;
+        nameInput.dispatchEvent(pasteEvent);
+        nameInput.dispatchEvent(inputEvent);
+        nameInput.dispatchEvent(keydownEvent);
+        nameInput.dispatchEvent(blurEvent);
     }
 }
 

@@ -851,7 +851,8 @@ type TokenizeCardOptions = {|
     card : {|
         number : string,
         cvv? : string,
-        expiry? : string
+        expiry? : string,
+        name? : string
     |}
 |};
 
@@ -878,7 +879,9 @@ type ApproveCardPaymentOptions = {|
         cardNumber : string,
         expirationDate? : string,
         securityCode? : string,
-        postalCode? : string
+        postalCode? : string,
+        name? : string,
+        billingAddress? : string
     |}
 |};
 

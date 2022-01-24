@@ -8,7 +8,8 @@ import {
     formatDate,
     parseGQLErrors,
     styleToString,
-    getStyles
+    getStyles,
+    filterExtraFields
 } from './card-utils';
 
 jest.mock('../../lib/dom');
@@ -410,5 +411,28 @@ describe('card utils', () => {
         });
     });
 
-});
+    describe('filterExtraFields', () => {
 
+        it('should return empty object for invalid data', () => {
+            const extraFields = filterExtraFields(123);
+            
+            expect(typeof extraFields).toBe('object');
+            expect(Object.keys(extraFields).length).toBe(0);
+            
+        });
+
+        it('should check for valid object with valid props', () => {
+            const extraData = {
+                billingAddress: 'Av. test, 12324',
+                cardHolderName: 'Joe Dow'
+            };
+
+            const extraFields = filterExtraFields(extraData);
+
+            expect(Object.keys(extraFields).length).toBe(1);
+            expect(extraFields.billingAddress).toBe('Av. test, 12324');
+
+        });
+    });
+
+});

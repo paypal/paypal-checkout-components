@@ -5,13 +5,13 @@ import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
 import { getBody } from '../../lib';
-import { setupExports, formatFieldValue, autoFocusOnFirstInput } from '../lib';
+import { setupExports, formatFieldValue, autoFocusOnFirstInput, filterExtraFields } from '../lib';
 import { CARD_FIELD_TYPE_TO_FRAME_NAME, CARD_FIELD_TYPE } from '../constants';
 import { submitCardFields } from '../interface';
 import { getCardProps, type CardProps } from '../props';
 import type { SetupCardOptions } from '../types';
 
-import { CardField, CardNumberField, CardCVVField, CardExpiryField } from './fields';
+import { CardField, CardNumberField, CardCVVField, CardExpiryField, CardNameField } from './fields';
 
 type PageProps = {|
     cspNonce : string,
@@ -47,19 +47,30 @@ function Page({ cspNonce, props } : PageProps) : mixed {
 
         if (type === CARD_FIELD_TYPE.SINGLE) {
             errorObject.singleField = { ...errorData };
-        } else if (type === CARD_FIELD_TYPE.NUMBER && errors && errors.length) {
-            errorObject.numberField = [ ...errors ];
-        } else if (type === CARD_FIELD_TYPE.EXPIRY && errors && errors.length) {
-            errorObject.expiryField = [ ...errors ];
-        } else if (type === CARD_FIELD_TYPE.CVV && errors && errors.length) {
-            errorObject.cvvField = [ ...errors ];
+        } else if (errors && errors.length) {
+            switch (type) {
+            case CARD_FIELD_TYPE.NUMBER:
+                errorObject.numberField = [ ...errors ];
+                break;
+            case CARD_FIELD_TYPE.EXPIRY:
+                errorObject.expiryField = [ ...errors ];
+                break;
+            case CARD_FIELD_TYPE.CVV:
+                errorObject.cvvField = [ ...errors ];
+                break;
+            case CARD_FIELD_TYPE.NAME:
+                errorObject.nameField = [ ...errors ];
+                break;
+            default:
+                break;
+            }
         }
 
         setFieldGQLErrors(errorObject);
     };
 
     const resetGQLErrors = () => {
-        setFieldGQLErrors({ singleField: {}, numberField: [], expiryField: [], cvvField: [] });
+        setFieldGQLErrors({ singleField: {}, numberField: [], expiryField: [], cvvField: [], nameField: [] });
     };
 
     useEffect(() => {
@@ -83,8 +94,9 @@ function Page({ cspNonce, props } : PageProps) : mixed {
         });
 
         xport({
-            submit: () => {
-                return submitCardFields({ facilitatorAccessToken });
+            submit: (extraData) => {
+                const extraFields = filterExtraFields(extraData);
+                return submitCardFields({ facilitatorAccessToken, extraFields });
             }
         });
     }, [ fieldValid, fieldValue ]);
@@ -179,6 +191,19 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                             autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }
+
+            {
+                (type === CARD_FIELD_TYPE.NAME)
+                    ? <CardNameField
+                            ref={ mainRef }
+                            gqlErrors={ fieldGQLErrors.nameField }
+                            cspNonce={ cspNonce }
+                            onChange={ onFieldChange }
+                            styleObject={ style }
+                            placeholder={ placeholder }
+                            autoFocusRef={ (ref) => setRef(ref.current.base) }
+                    /> : null
+            }
         </Fragment>
     );
 }
@@ -190,4 +215,3 @@ export function setupCard({ cspNonce, facilitatorAccessToken } : SetupCardOption
 
     render(<Page cspNonce={ cspNonce } props={ props } />, getBody());
 }
- 

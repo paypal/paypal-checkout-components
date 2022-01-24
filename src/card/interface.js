@@ -10,7 +10,7 @@ import { tokenizeCard, approveCardPayment } from '../api';
 import { getLogger } from '../lib';
 
 import { getCardProps } from './props';
-import type { Card } from './types';
+import type { Card, ExtraFields } from './types';
 import { type CardExports, type ExportsOptions, parseGQLErrors } from './lib';
 
 function getExportsByFrameName<T>(name : $Values<typeof FRAME_NAME>) : ?CardExports<T> {
@@ -32,18 +32,20 @@ function getExportsByFrameName<T>(name : $Values<typeof FRAME_NAME>) : ?CardExpo
 }
 
 
-function getCardFrames() : {| cardFrame : ?ExportsOptions,  cardNumberFrame : ?ExportsOptions, cardCVVFrame : ?ExportsOptions, cardExpiryFrame : ?ExportsOptions |} {
+function getCardFrames() : {| cardFrame : ?ExportsOptions,  cardNumberFrame : ?ExportsOptions, cardCVVFrame : ?ExportsOptions, cardExpiryFrame : ?ExportsOptions, cardNameFrame : ?ExportsOptions |} {
 
     const cardFrame = getExportsByFrameName(FRAME_NAME.CARD_FIELD);
     const cardNumberFrame = getExportsByFrameName(FRAME_NAME.CARD_NUMBER_FIELD);
     const cardCVVFrame = getExportsByFrameName(FRAME_NAME.CARD_CVV_FIELD);
     const cardExpiryFrame = getExportsByFrameName(FRAME_NAME.CARD_EXPIRY_FIELD);
+    const cardNameFrame = getExportsByFrameName(FRAME_NAME.CARD_NAME_FIELD);
 
     return {
         cardFrame,
         cardNumberFrame,
         cardCVVFrame,
-        cardExpiryFrame
+        cardExpiryFrame,
+        cardNameFrame
     };
 }
 
@@ -65,17 +67,19 @@ export function getCardFields() : ?Card {
         return cardFrame.getFieldValue();
     }
 
-    const { cardNumberFrame, cardCVVFrame, cardExpiryFrame } = getCardFrames();
+    const { cardNumberFrame, cardCVVFrame, cardExpiryFrame, cardNameFrame } = getCardFrames();
 
     if (
         cardNumberFrame && cardNumberFrame.isFieldValid() &&
         cardCVVFrame && cardCVVFrame.isFieldValid() &&
-        cardExpiryFrame && cardExpiryFrame.isFieldValid()
+        cardExpiryFrame && cardExpiryFrame.isFieldValid() &&
+        (cardNameFrame ? cardNameFrame.isFieldValid() : true)
     ) {
         return {
             number: cardNumberFrame.getFieldValue(),
             cvv:    cardCVVFrame.getFieldValue(),
-            expiry: cardExpiryFrame.getFieldValue()
+            expiry: cardExpiryFrame.getFieldValue(),
+            name:   cardNameFrame?.getFieldValue() || ''
         };
     }
 
@@ -139,10 +143,22 @@ export function resetGQLErrors() : void {
 }
 
 type SubmitCardFieldsOptions = {|
-    facilitatorAccessToken : string
+    facilitatorAccessToken : string,
+    extraFields? : {|
+        billingAddress? : string
+    |}
 |};
 
-export function submitCardFields({ facilitatorAccessToken } : SubmitCardFieldsOptions) : ZalgoPromise<void> {
+type CardValues = {|
+    cardNumber : string,
+    expirationDate? : string,
+    securityCode? : string,
+    postalCode? : string,
+    name? : string,
+    ...ExtraFields
+|};
+
+export function submitCardFields({ facilitatorAccessToken, extraFields } : SubmitCardFieldsOptions) : ZalgoPromise<void> {
     const { intent, branded, vault, createOrder, onApprove, clientID } = getCardProps({ facilitatorAccessToken });
 
     resetGQLErrors();
@@ -171,11 +187,16 @@ export function submitCardFields({ facilitatorAccessToken } : SubmitCardFieldsOp
         if (intent === INTENT.CAPTURE || intent === INTENT.AUTHORIZE) {
             return createOrder().then(orderID => {
 
-                const cardObject = {
+                const cardObject : CardValues = {
                     cardNumber:     card.number,
                     expirationDate: card.expiry,
-                    securityCode:   card.cvv
+                    securityCode:   card.cvv,
+                    ...extraFields
                 };
+
+                if (card.name) {
+                    cardObject.name = card.name;
+                }
 
                 return approveCardPayment({ card: cardObject, orderID, vault, branded, clientID }).catch((error) => {
 

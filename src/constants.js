@@ -233,7 +233,8 @@ export const FRAME_NAME = {
     CARD_FIELD:        'card-field',
     CARD_NUMBER_FIELD: 'card-number-field',
     CARD_CVV_FIELD:    'card-cvv-field',
-    CARD_EXPIRY_FIELD: 'card-expiry-field'
+    CARD_EXPIRY_FIELD: 'card-expiry-field',
+    CARD_NAME_FIELD:   'card-name-field'
 };
 
 export const AMPLITUDE_KEY = {
