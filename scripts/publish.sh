@@ -10,6 +10,8 @@ then
   release='alpha'
 fi
 
+export release
+
 # Running `npm version` will run through the other version lifecycle scripts
 
 if [ "$release" = 'patch' ]
@@ -18,5 +20,3 @@ then
 else
   npm version prerelease --preid=$release
 fi
-
-export release
