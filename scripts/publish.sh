@@ -2,8 +2,8 @@
 
 # determine patch or alpha release based on current branch, then run through the other version lifecycle scripts
 release='patch';
-default_branch=$( git remote show origin | sed -n '/HEAD branch/s/.*: //p' );
 current_branch=$( git rev-parse --abbrev-ref HEAD );
+default_branch=$( git remote show origin | sed -n '/HEAD branch/s/.*: //p' );
 
 if [ "$current_branch" != "$default_branch" ]
 then
