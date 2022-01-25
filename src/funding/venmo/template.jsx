@@ -3,10 +3,37 @@
 import { node, Style, type ChildType } from 'jsx-pragmatic/src';
 import { VenmoLogo } from '@paypal/sdk-logos/src';
 
-import { type WalletLabelOptions } from '../common';
+import {
+    type WalletLabelOptions,
+    type LabelOptions,
+    BasicLabel
+} from '../common';
 import { Text, Space } from '../../ui/text';
 
 import css from './style.scoped.scss';
+ 
+export function AppLabel(opts : LabelOptions) : ChildType {
+    const { logoColor } = opts;
+
+    const AppLogo : ChildType = (
+        <Style css={ css }>
+            <VenmoLogo logoColor={ logoColor } />
+            <Text className={ [ 'app-label' ] }>
+                App
+            </Text>
+        </Style>
+    );
+
+    return (
+        <BasicLabel { ...opts } logo={ AppLogo } />
+    );
+}
+
+export function Label(opts : LabelOptions) : ChildType {
+    return (
+        <BasicLabel { ...opts } />
+    );
+}
 
 export function  WalletLabel({ ...props } : WalletLabelOptions) : ChildType {
     const { instrument, logoColor } = props;

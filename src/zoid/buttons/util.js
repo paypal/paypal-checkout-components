@@ -1,7 +1,7 @@
 /* @flow */
 import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement } from 'belter/src';
-import { FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents } from '@paypal/sdk-client/src';
+import { ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
@@ -136,6 +136,14 @@ export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>
     };
 }
 
+export function getVenmoAppLabelExperiment() : EligibilityExperiment  {
+    const isEnvForTest = getEnv() === ENV.LOCAL || getEnv() === ENV.TEST || getEnv() === ENV.STAGE;
+    const isEnabledForTest = isEnvForTest ? window.localStorage.getItem('enable_venmo_app_label') : false;
+    return {
+        enableVenmoAppLabel: isEnabledForTest
+    };
+}
+
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
     const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
         experiment = getVenmoExperiment(), applePaySupport, supportsPopups = userAgentSupportsPopups(),
@@ -224,7 +232,15 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
     }
 }
 
-export function getButtonSize(props : ButtonProps, container : string | HTMLElement | void) : string | void {
+export function getButtonExperiments (fundingSource : ?$Values<typeof FUNDING>) : EligibilityExperiment {
+    return {
+        ...getVenmoExperiment(),
+        ...getNoPaylaterExperiment(fundingSource),
+        ...getVenmoAppLabelExperiment()
+    };
+}
+
+export function getButtonSize (props : ButtonProps, container : string | HTMLElement | void) : string | void {
     if (!container) {
         return;
     }

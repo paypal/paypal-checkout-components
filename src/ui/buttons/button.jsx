@@ -129,6 +129,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
+            experiment={ experiment }
         />
     );
 
