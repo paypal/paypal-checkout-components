@@ -1,7 +1,12 @@
 #/bin/sh
 
-# Publish and push!
+# Push and publish!
 git push;
 git push --tags;
-git push git@github.com:paypal/paypal-checkout-components.git master;
-npm publish;
+
+if [ "$release" = 'alpha' ]
+then
+  npm publish --tag $release
+else
+  npm publish
+fi
