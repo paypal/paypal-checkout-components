@@ -1,22 +1,22 @@
 #!/bin/sh
 
 # determine patch or alpha release based on current branch
-release='patch'
-default_branch=$( git remote show origin | sed -n '/HEAD branch/s/.*: //p' )
-current_branch=$( git rev-parse --abbrev-ref HEAD )
+release='patch';
+default_branch=$( git remote show origin | sed -n '/HEAD branch/s/.*: //p' );
+current_branch=$( git rev-parse --abbrev-ref HEAD );
 
 if [ "$current_branch" != "$default_branch" ]
 then
-  release='alpha'
+  release='alpha';
 fi
 
-export release
+export release;
 
 # Running `npm version` will run through the other version lifecycle scripts
 
 if [ "$release" = 'patch' ]
 then
-  npm version $release
+  npm version $release;
 else
-  npm version prerelease --preid=$release
+  npm version prerelease --preid=$release;
 fi

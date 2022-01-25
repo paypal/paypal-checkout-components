@@ -6,7 +6,7 @@ git push --tags;
 
 if [ "$release" = 'alpha' ]
 then
-  npm publish --tag $release
+  npm publish --tag $release;
 else
-  npm publish
+  npm publish;
 fi
