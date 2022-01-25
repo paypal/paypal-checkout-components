@@ -18,5 +18,5 @@ if [ "$release" = 'patch' ]
 then
   npm version $release;
 else
-  npm version prerelease --preid=$release;
+  npm --no-git-tag-version version prerelease --preid=$release;
 fi
