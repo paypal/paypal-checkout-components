@@ -229,7 +229,6 @@ const getMerchantID = () => {
 };
 
 const getPersonalizationEnabled = () => true;
-const isFundingSourceBranded = () => Promise.resolve(true);
 
 const getInstanceLocationInformation = () => {
     return {
@@ -281,7 +280,6 @@ const buttonMiddleware = getButtonMiddleware({
     content,
     tracking,
     getPersonalizationEnabled,
-    isFundingSourceBranded,
     getInstanceLocationInformation,
     getSDKLocationInformation
 });

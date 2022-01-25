@@ -1,43 +1,26 @@
 /* @flow */
 
 import { html } from 'jsx-pragmatic';
-import { COUNTRY, LANG, FUNDING, FPTI_KEY } from '@paypal/sdk-constants';
+import { COUNTRY, LANG, FPTI_KEY } from '@paypal/sdk-constants';
 import { stringifyError, noop } from 'belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
-    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest } from '../../lib';
+    graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest, getDefaultExperiments, type GetExperimentsParams, type GetExperimentsType } from '../../lib';
 import { resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
 import { EXPERIMENT_TIMEOUT, TIMEOUT_ERROR_MESSAGE, FPTI_STATE } from '../../config';
 import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, InstanceLocationInformation, SDKLocationInformation } from '../../types';
-import type { ContentType, Wallet } from '../../../src/types';
+import type { ContentType } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { getButtonParams, getButtonPreflightParams } from './params';
 import { buttonStyle } from './style';
 import { setRootTransaction } from './instrumentation';
 
-type InlineGuestElmoParams = {|
-    merchantID : string,
-    buttonSessionID : string,
-    locale : {|
-        lang : $Values<typeof COUNTRY>,
-        country : $Values<typeof LANG>
-    |},
-    buyerCountry : $Values<typeof COUNTRY>
-|};
-
-type BrandedFundingSourceElmoParam = {|
-    clientID : string,
-    fundingSource : ?$Values<typeof FUNDING>,
-    wallet : Wallet
-|};
-
 type ButtonMiddlewareOptions = {|
     logger : LoggerType,
     graphQL : GraphQL,
     getAccessToken : (ExpressRequest, string) => Promise<string>,
     getMerchantID : (ExpressRequest, string) => Promise<string>,
-    getInlineGuestExperiment? : (req : ExpressRequest, params : InlineGuestElmoParams) => Promise<boolean>,
     cache : CacheType,
     firebaseConfig? : FirebaseConfig,
     content : {
@@ -48,15 +31,15 @@ type ButtonMiddlewareOptions = {|
     tracking : (ExpressRequest) => void,
     getPersonalizationEnabled : (ExpressRequest) => boolean,
     cdn? : boolean,
-    isFundingSourceBranded : (req : ExpressRequest, params : BrandedFundingSourceElmoParam) => Promise<boolean>,
     getInstanceLocationInformation : () => InstanceLocationInformation,
-    getSDKLocationInformation : (req : ExpressRequest, env : string) => Promise<SDKLocationInformation>
+    getSDKLocationInformation : (req : ExpressRequest, env : string) => Promise<SDKLocationInformation>,
+    getExperiments? : (req : ExpressRequest, params : GetExperimentsParams) => Promise<GetExperimentsType>
 |};
 
 export function getButtonMiddleware({
     logger = defaultLogger, content: smartContent, graphQL, getAccessToken, cdn = !isLocalOrTest(),
-    getMerchantID, cache, getInlineGuestExperiment = () => Promise.resolve(false), firebaseConfig, tracking,
-    getPersonalizationEnabled = () => false, isFundingSourceBranded, getInstanceLocationInformation, getSDKLocationInformation
+    getMerchantID, cache, firebaseConfig, tracking,
+    getPersonalizationEnabled = () => false, getInstanceLocationInformation, getSDKLocationInformation, getExperiments = getDefaultExperiments
 } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
 
@@ -93,22 +76,6 @@ export function getButtonMiddleware({
             const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
             const renderPromise = getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache, useLocal, locationInformation, sdkLocationInformation });
 
-            const isCardFieldsExperimentEnabledPromise = promiseTimeout(
-                merchantIDPromise.then(merchantID =>
-                    getInlineGuestExperiment(req, { merchantID: merchantID[0], locale, buttonSessionID, buyerCountry })),
-                EXPERIMENT_TIMEOUT
-            ).catch((err) => {
-                if (err.message && err.message.includes(TIMEOUT_ERROR_MESSAGE)) {
-                    logger.track(req, {
-                        [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
-                        [FPTI_KEY.TRANSITION]:      'is_card_fields_experiment_enabled_promise_timeout',
-                        [FPTI_KEY.CONTEXT_ID]:      buttonSessionID,
-                        [FPTI_KEY.CONTEXT_TYPE]:    'button_session_id',
-                        [FPTI_KEY.FEED]:            'payments_sdk'
-                    }, {});
-                }
-            });
-
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
                 disableFunding, disableCard, clientAccessToken, buyerCountry, basicFundingEligibility, enableFunding
@@ -143,21 +110,45 @@ export function getButtonMiddleware({
             const render = await renderPromise;
             const client = await clientPromise;
             const merchantID = await merchantIDPromise;
-            const isCardFieldsExperimentEnabled = await isCardFieldsExperimentEnabledPromise;
             const wallet = await walletPromise;
             const personalization = await personalizationPromise;
-            const brandedDefault = await isFundingSourceBranded(req, { clientID, fundingSource, wallet });
+
+            const getExperimentsPromise = promiseTimeout(getExperiments(req, { buttonSessionID, clientID, fundingSource, wallet, merchantID: merchantID[0], locale, buyerCountry  }), EXPERIMENT_TIMEOUT)
+                .catch((err) => {
+                    if (err.message && err.message.includes(TIMEOUT_ERROR_MESSAGE)) {
+                        logger.track(req, {
+                            [FPTI_KEY.STATE]:           FPTI_STATE.BUTTON,
+                            [FPTI_KEY.TRANSITION]:      'get_experiments_promise_timeout',
+                            [FPTI_KEY.CONTEXT_ID]:      buttonSessionID,
+                            [FPTI_KEY.CONTEXT_TYPE]:    'button_session_id',
+                            [FPTI_KEY.FEED]:            'payments_sdk'
+                        }, {});
+                    }
+                    return getDefaultExperiments();
+                });
+            const experiments = await getExperimentsPromise;
 
             const eligibility = {
-                cardFields: isCardFieldsExperimentEnabled
+                cardFields: experiments.isCardFieldsExperimentEnabled
             };
 
             logger.info(req, `button_render_version_${ render.version }`);
             logger.info(req, `button_client_version_${ client.version }`);
 
             const buttonProps = {
-                ...params, nonce: cspNonce, csp: { nonce: cspNonce },
-                fundingEligibility, content, wallet, personalization
+                ...params,
+                nonce: cspNonce,
+                csp:   {
+                    nonce: cspNonce
+                },
+                fundingEligibility,
+                content,
+                wallet,
+                personalization,
+                experiment: {
+                    ...params.experiment,
+                    ...experiments
+                }
             };
 
             try {
@@ -174,7 +165,7 @@ export function getButtonMiddleware({
             const setupParams = {
                 fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, correlationID,
                 firebaseConfig, facilitatorAccessToken, eligibility, content, cookies, personalization,
-                brandedDefault
+                brandedDefault: experiments.isFundingSourceBranded
             };
 
             const pageHTML = `
