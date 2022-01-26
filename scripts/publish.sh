@@ -12,6 +12,6 @@ then
   npm --no-git-tag-version version prerelease --preid=$release;
 else
   npm version $release;
-fi
+fi;
 
 export release;

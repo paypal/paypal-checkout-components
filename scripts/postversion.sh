@@ -9,4 +9,4 @@ then
 else
   git push --tags;
   npm publish;
-fi
+fi;
