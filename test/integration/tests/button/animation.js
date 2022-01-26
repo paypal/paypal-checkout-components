@@ -20,7 +20,7 @@ describe('Tests for button animations and designs', () => {
             done = once(done);
 
             const personalization = {
-                buttonAnimation: {
+                buttonDesign: {
                     id:       'run-divide-logo-animation',
                     text:     'Safe and easy way to pay',
                     tracking: {
@@ -90,7 +90,7 @@ describe('Tests for button animations and designs', () => {
             done = once(done);
 
             const personalization = {
-                buttonAnimation: {
+                buttonDesign: {
                     id:       'run-add-label-text-next-to-logo-animation',
                     text:     'Safe and easy way to pay',
                     tracking: {

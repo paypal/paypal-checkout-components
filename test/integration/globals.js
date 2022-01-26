@@ -26,7 +26,18 @@ window.__TEST_PERSONALIZATIONS__ = {
         }
     },
     buttonText:         null,
-    buttonAnimation:    null
+    buttonDesign: {
+        treatments: {
+            '["TRUE"]': {
+                divideLogoAnimation: 1
+            }
+        },
+        tracking:   {
+            context:   '',
+            treatment: '',
+            metric:    ''
+        }
+    }
 };
 
 window.__TEST_FUNDING_ELIGIBILITY__ = {

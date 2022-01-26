@@ -26,7 +26,18 @@ const personalizations = {
         }
     },
     buttonText:         null,
-    buttonAnimation:    null
+    buttonDesign: {
+        treatments: {
+            '["TRUE"]': {
+                divideLogoAnimation: 1
+            }
+        },
+        tracking:   {
+            context:   '',
+            treatment: '',
+            metric:    ''
+        }
+    }
 };
 
 const fundingEligibility = {
