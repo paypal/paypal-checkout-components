@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# determine patch or alpha release based on current branch, then run through the other version lifecycle scripts
+# Determine the type of release, then run through the other version lifecycle scripts
 release=${1-'patch'};
 
 current_branch=$( git rev-parse --abbrev-ref HEAD );
