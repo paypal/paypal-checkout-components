@@ -577,6 +577,10 @@ export const config = {
             disable_venmo: true
         },
 
+        'disneycruise.disney.go.com': {
+            disable_venmo: true
+        },
+
         'disneyland.disney.go.com': {
             disable_venmo: true
         },
