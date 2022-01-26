@@ -1,3 +1,9 @@
+## <small>5.0.194 (2022-01-26)</small>
+
+* adding partnerattributionid to payment fields (#1841) ([fb26a01](https://github.com/paypal/paypal-checkout-components/commit/fb26a01)), closes [#1841](https://github.com/paypal/paypal-checkout-components/issues/1841)
+
+
+
 ## <small>5.0.193 (2022-01-19)</small>
 
 * Revert "Revert "Add button size query param prop (#1836)" (#1840)" (#1846) ([83f31d7](https://github.com/paypal/paypal-checkout-components/commit/83f31d7)), closes [#1836](https://github.com/paypal/paypal-checkout-components/issues/1836) [#1840](https://github.com/paypal/paypal-checkout-components/issues/1840) [#1846](https://github.com/paypal/paypal-checkout-components/issues/1846)
