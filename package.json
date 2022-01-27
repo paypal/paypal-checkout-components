@@ -72,6 +72,8 @@
         "mocketeer": "^0.3.1",
         "pixelmatch": "^5.2.1",
         "pngjs": "^6.0.0",
+        "prettier": "^2.5.1",
+        "prettier-plugin-sh": "^0.8.1",
         "puppeteer": "^1.20.0",
         "serve": "^13.0.0",
         "sync-browser-mocks": "^2.0.8"
