@@ -3,7 +3,7 @@
 # Publish and push!
 git push;
 git push --tags;
-git push git@github.com:paypal/paypal-checkout.git v4;
+git push https://github.com/paypal/paypal-checkout-components.git v4;
 npm publish;
 
 # publish to cdnx after verifying a successful publish to the public npm registry
