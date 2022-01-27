@@ -762,7 +762,7 @@ window.spb = function(modules) {
                 CLIENT_METADATA_ID: "data-client-metadata-id",
                 PAGE_TYPE: "data-page-type",
                 USER_EXPERIENCE_FLOW: "data-user-experience-flow",
-                DATA_POPUPS_DISABLED: "data-popups-disabled"
+                POPUPS_DISABLED: "data-popups-disabled"
             }, D = {
                 COMPONENTS: "components",
                 ENV: "env",
@@ -1569,16 +1569,14 @@ window.spb = function(modules) {
             __webpack_require__.d(__webpack_exports__, "UID_HASH_LENGTH", (function() {
                 return UID_HASH_LENGTH;
             }));
-            __webpack_require__.d(__webpack_exports__, "iOS14", (function() {
-                return iOS14;
+            __webpack_require__.d(__webpack_exports__, "sfvcScreens", (function() {
+                return sfvcScreens;
             }));
-            __webpack_require__.d(__webpack_exports__, "iOS15", (function() {
-                return iOS15;
-            }));
-            var iOS14 = {
+            var sfvcScreens = {
                 926: {
                     device: "iPhone 12/13 Pro Max",
                     textSizeHeights: [ 752, 748, 744, 738 ],
+                    textSizeHeightsNoTabs: [ 860, 858, 856, 854 ],
                     zoomHeight: {
                         1.15: [ 752, 747, 744, 738 ],
                         1.25: [ 753, 748, 744, 738 ],
@@ -1597,6 +1595,7 @@ window.spb = function(modules) {
                 896: {
                     device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
                     textSizeHeights: [ 721, 717, 713, 707 ],
+                    textSizeHeightsNoTabs: [ 829, 827, 825, 823 ],
                     zoomHeight: {
                         1.15: [ 721, 716, 713, 707 ],
                         1.25: [ 721, 718, 713, 708 ],
@@ -1614,6 +1613,7 @@ window.spb = function(modules) {
                 844: {
                     device: "iPhone 12, iPhone 12 Pro",
                     textSizeHeights: [ 670, 666, 662, 656 ],
+                    textSizeHeightsNoTabs: [ 778, 776, 774, 772 ],
                     zoomHeight: {
                         1.15: [ 670, 666, 662 ],
                         1.25: [ 670, 666, 663, 656 ],
@@ -1634,6 +1634,7 @@ window.spb = function(modules) {
                 812: {
                     device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
                     textSizeHeights: [ 641, 637, 633, 627 ],
+                    textSizeHeightsNoTabs: [ 749, 747, 745, 743 ],
                     zoomHeight: {
                         1.15: [ 641, 637, 633, 627 ],
                         1.25: [ 641, 638, 633, 628 ],
@@ -1651,6 +1652,7 @@ window.spb = function(modules) {
                 736: {
                     device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
                     textSizeHeights: [ 628, 624, 620, 614 ],
+                    textSizeHeightsNoTabs: [ 736, 734, 732, 730 ],
                     zoomHeight: {
                         1.15: [ 628, 624, 620, 614 ],
                         1.25: [ 628, 624, 620, 614 ],
@@ -1669,6 +1671,7 @@ window.spb = function(modules) {
                 667: {
                     device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
                     textSizeHeights: [ 559, 555, 551, 545 ],
+                    textSizeHeightsNoTabs: [ 667, 665, 663, 661 ],
                     zoomHeight: {
                         1.15: [ 559, 555, 551, 545 ],
                         1.25: [ 559, 555, 551, 545 ],
@@ -1684,32 +1687,6 @@ window.spb = function(modules) {
                         2.5: [ 545 ],
                         3: [ 552 ]
                     }
-                }
-            };
-            var iOS15 = {
-                926: {
-                    device: "iPhone 12/13 Pro Max",
-                    textSizeHeights: [ 752, 748, 744, 738 ]
-                },
-                896: {
-                    device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
-                    textSizeHeights: [ 721, 717, 713, 707 ]
-                },
-                844: {
-                    device: "iPhone 12/13, iPhone 12/13 Pro",
-                    textSizeHeights: [ 670, 666, 662, 656 ]
-                },
-                812: {
-                    device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
-                    textSizeHeights: [ 641, 637, 633, 627 ]
-                },
-                736: {
-                    device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
-                    textSizeHeights: [ 628, 624, 620, 614 ]
-                },
-                667: {
-                    device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
-                    textSizeHeights: [ 559, 555, 551, 545 ]
                 }
             };
             function getUserAgent() {
@@ -1778,12 +1755,15 @@ window.spb = function(modules) {
             function isSFVC(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
-                    var device = null;
-                    if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                     var computedHeight = Math.round(height * scale);
-                    return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                    var device = null;
+                    if (isIOS14(ua)) device = sfvcScreens[window.outerHeight]; else {
+                        if (1 !== scale) return !0;
+                        device = sfvcScreens[window.outerHeight];
+                    }
+                    return !!device && (scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight) || -1 !== device.textSizeHeightsNoTabs.indexOf(computedHeight));
                 }
                 return !1;
             }
@@ -1791,7 +1771,7 @@ window.spb = function(modules) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
                     var sfvc = isSFVC(ua);
-                    var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
+                    var device = isIOS14(ua) ? sfvcScreens[window.outerHeight] : null;
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
@@ -2588,7 +2568,7 @@ window.spb = function(modules) {
             function serializeArgs(args) {
                 try {
                     return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : val;
+                        return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
                     }));
                 } catch (err) {
                     throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -2616,7 +2596,12 @@ window.spb = function(modules) {
                     }
                     var cache;
                     cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-                    var cacheKey = serializeArgs(args);
+                    var cacheKey;
+                    try {
+                        cacheKey = serializeArgs(args);
+                    } catch (_unused) {
+                        return method.apply(this, arguments);
+                    }
                     var cacheResult = cache[cacheKey];
                     if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                         delete cache[cacheKey];
@@ -5807,7 +5792,7 @@ window.spb = function(modules) {
                             objectIDs.set(obj, uid);
                         }
                         return uid;
-                    }(val) + "]" : val;
+                    }(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
                 }));
             } catch (err) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -5835,7 +5820,12 @@ window.spb = function(modules) {
                 }
                 var cache;
                 cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-                var cacheKey = serializeArgs(args);
+                var cacheKey;
+                try {
+                    cacheKey = serializeArgs(args);
+                } catch (_unused) {
+                    return method.apply(this, arguments);
+                }
                 var cacheResult = cache[cacheKey];
                 if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                     delete cache[cacheKey];
@@ -7168,7 +7158,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.78", _headers15);
+            _headers15["x-app-version"] = "5.0.79", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7560,7 +7550,7 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
             var xprops = window.xprops;
-            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow, allowBillingPayments = xprops.allowBillingPayments;
             var onInit = function(_ref) {
@@ -8428,6 +8418,7 @@ window.spb = function(modules) {
                 enableFunding: enableFunding,
                 disableFunding: disableFunding,
                 disableCard: disableCard,
+                disableAutocomplete: disableAutocomplete,
                 getQueriedEligibleFunding: getQueriedEligibleFunding,
                 amount: amount,
                 userIDToken: userIDToken,
@@ -8595,11 +8586,28 @@ window.spb = function(modules) {
                         return onError(error);
                     }));
                 }
+                function updateNewLineItems(_ref4) {
+                    var subtotal = _ref4.subtotal, tax = _ref4.tax, shipping = _ref4.shipping, shippingLabel = _ref4.shippingLabel;
+                    var newLineItems = [];
+                    subtotal && "0.00" !== parseFloat(subtotal).toFixed(2) && newLineItems.push({
+                        label: "Subtotal",
+                        amount: subtotal
+                    });
+                    tax && "0.00" !== parseFloat(tax).toFixed(2) && newLineItems.push({
+                        label: "Sales Tax",
+                        amount: tax
+                    });
+                    shipping && "0.00" !== parseFloat(shipping).toFixed(2) && newLineItems.push({
+                        label: shippingLabel || "Shipping",
+                        amount: shipping
+                    });
+                    return newLineItems;
+                }
                 return {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
-                            return onShippingChangeCallback = function(_ref4) {
-                                var orderID = _ref4.orderID, shippingContact = _ref4.shippingContact, _ref4$shippingMethod = _ref4.shippingMethod, shippingMethod = void 0 === _ref4$shippingMethod ? null : _ref4$shippingMethod;
+                            return onShippingChangeCallback = function(_ref5) {
+                                var orderID = _ref5.orderID, shippingContact = _ref5.shippingContact, _ref5$shippingMethod = _ref5.shippingMethod, shippingMethod = void 0 === _ref5$shippingMethod ? null : _ref5$shippingMethod;
                                 if (!onShippingChange) {
                                     var _currentShippingMetho;
                                     var update = {
@@ -8607,17 +8615,14 @@ window.spb = function(modules) {
                                             label: "Total",
                                             amount: currentTotalAmount
                                         },
-                                        newLineItems: [ {
-                                            label: "Subtotal",
-                                            amount: currentSubtotalAmount
-                                        }, {
-                                            label: "Sales Tax",
-                                            amount: currentTaxAmount
-                                        }, {
-                                            label: (null == (_currentShippingMetho = currentShippingMethod) ? void 0 : _currentShippingMetho.label) || "Shipping",
-                                            amount: currentShippingAmount
-                                        } ]
+                                        newLineItems: []
                                     };
+                                    update.newLineItems = updateNewLineItems({
+                                        shipping: currentShippingAmount,
+                                        subtotal: currentSubtotalAmount,
+                                        tax: currentTaxAmount,
+                                        shippingLabel: null == (_currentShippingMetho = currentShippingMethod) ? void 0 : _currentShippingMetho.label
+                                    });
                                     return promise_ZalgoPromise.resolve(update);
                                 }
                                 var _validateShippingCont = function(contact) {
@@ -8661,17 +8666,14 @@ window.spb = function(modules) {
                                             label: "Total",
                                             amount: currentTotalAmount
                                         },
-                                        newLineItems: [ {
-                                            label: "Subtotal",
-                                            amount: currentSubtotalAmount
-                                        }, {
-                                            label: "Sales Tax",
-                                            amount: currentTaxAmount
-                                        }, {
-                                            label: (null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.label) || "Shipping",
-                                            amount: currentShippingAmount
-                                        } ]
+                                        newLineItems: []
                                     };
+                                    _update.newLineItems = updateNewLineItems({
+                                        shipping: currentShippingAmount,
+                                        subtotal: currentSubtotalAmount,
+                                        tax: currentTaxAmount,
+                                        shippingLabel: null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.label
+                                    });
                                     return promise_ZalgoPromise.resolve(_update);
                                 }
                                 var data = {
@@ -8728,17 +8730,14 @@ window.spb = function(modules) {
                                                 label: "Total",
                                                 amount: updatedTotalValue
                                             },
-                                            newLineItems: [ {
-                                                label: "Subtotal",
-                                                amount: currentSubtotalAmount = "0.00" === updatedSubtotalValue ? currentSubtotalAmount : updatedSubtotalValue
-                                            }, {
-                                                label: "Sales Tax",
-                                                amount: currentTaxAmount = "0.00" === updatedTaxValue ? currentTaxAmount : updatedTaxValue
-                                            }, {
-                                                label: (null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.label) || "Shipping",
-                                                amount: currentShippingAmount
-                                            } ]
+                                            newLineItems: []
                                         };
+                                        update.newLineItems = updateNewLineItems({
+                                            shipping: currentShippingAmount,
+                                            subtotal: currentSubtotalAmount = "0.00" === updatedSubtotalValue ? currentSubtotalAmount : updatedSubtotalValue,
+                                            tax: currentTaxAmount = "0.00" === updatedTaxValue ? currentTaxAmount : updatedTaxValue,
+                                            shippingLabel: null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.label
+                                        });
                                         return promise_ZalgoPromise.resolve(update);
                                     }));
                                 }));
@@ -8825,31 +8824,31 @@ window.spb = function(modules) {
                                                     type: "final"
                                                 }
                                             };
-                                            subtotalValue && subtotalValue.length && result.lineItems.push({
+                                            subtotalValue && "0.00" !== parseFloat(subtotalValue).toFixed(2) && result.lineItems.push({
                                                 label: "Subtotal",
                                                 amount: subtotalValue
                                             });
-                                            taxValue && taxValue.length && result.lineItems.push({
+                                            taxValue && "0.00" !== parseFloat(taxValue).toFixed(2) && result.lineItems.push({
                                                 label: "Sales Tax",
                                                 amount: taxValue
                                             });
-                                            shippingValue && shippingValue.length && result.lineItems.push({
+                                            shippingValue && "0.00" !== parseFloat(shippingValue).toFixed(2) && result.lineItems.push({
                                                 label: "Shipping",
                                                 amount: shippingValue
                                             });
                                             (!selectedShippingMethod || selectedShippingMethod && "PICKUP" === selectedShippingMethod.type) && (result.requiredShippingContactFields = []);
                                             return result;
                                         }(country, order);
-                                        var _order$checkoutSessio = order.checkoutSession.cart.amounts, shippingValue = _order$checkoutSessio.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio.tax.currencyValue, subtotalValue = _order$checkoutSessio.subtotal.currencyValue;
-                                        currentShippingAmount = shippingValue;
+                                        var _order$checkoutSessio = order.checkoutSession.cart.amounts;
+                                        currentShippingAmount = _order$checkoutSessio.shippingAndHandling.currencyValue;
                                         currentShippingMethod = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0] : null;
-                                        currentTaxAmount = taxValue;
-                                        currentSubtotalAmount = subtotalValue;
+                                        currentTaxAmount = _order$checkoutSessio.tax.currencyValue;
+                                        currentSubtotalAmount = _order$checkoutSessio.subtotal.currencyValue;
                                         currentTotalAmount = _order$checkoutSessio.total.currencyValue;
                                         return applePay(4, applePayRequest).then((function(response) {
                                             var begin = response.begin, addEventListener = response.addEventListener, completeMerchantValidation = response.completeMerchantValidation, completeShippingContactSelection = response.completeShippingContactSelection, completePaymentMethodSelection = response.completePaymentMethodSelection, completeShippingMethodSelection = response.completeShippingMethodSelection, completePayment = response.completePayment;
-                                            promise_ZalgoPromise.all([ addEventListener("validatemerchant", (function(_ref5) {
-                                                var validationURL = _ref5.validationURL;
+                                            promise_ZalgoPromise.all([ addEventListener("validatemerchant", (function(_ref6) {
+                                                var validationURL = _ref6.validationURL;
                                                 logApplePayEvent("validatemerchant", {
                                                     validationURL: validationURL
                                                 });
@@ -8883,8 +8882,9 @@ window.spb = function(modules) {
                                                 })).catch((function(err) {
                                                     handleApplePayError("applepay_merchant_validation_error", err);
                                                 }));
-                                            })), addEventListener("paymentmethodselected", (function(_ref6) {
-                                                logApplePayEvent("paymentmethodselected", _ref6.paymentMethod);
+                                            })), addEventListener("paymentmethodselected", (function(_ref7) {
+                                                var _currentShippingMetho7;
+                                                logApplePayEvent("paymentmethodselected", _ref7.paymentMethod);
                                                 var update = {
                                                     newTotal: {
                                                         label: "Total",
@@ -8892,24 +8892,15 @@ window.spb = function(modules) {
                                                     },
                                                     newLineItems: []
                                                 };
-                                                subtotalValue && subtotalValue.length && update.newLineItems.push({
-                                                    label: "Subtotal",
-                                                    amount: currentSubtotalAmount
+                                                update.newLineItems = updateNewLineItems({
+                                                    shipping: currentShippingAmount,
+                                                    subtotal: currentSubtotalAmount,
+                                                    tax: currentTaxAmount,
+                                                    shippingLabel: null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.label
                                                 });
-                                                taxValue && taxValue.length && update.newLineItems.push({
-                                                    label: "Sales Tax",
-                                                    amount: currentTaxAmount
-                                                });
-                                                if (shippingValue && shippingValue.length) {
-                                                    var _currentShippingMetho7;
-                                                    update.newLineItems.push({
-                                                        label: (null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.label) || "Shipping",
-                                                        amount: currentShippingAmount
-                                                    });
-                                                }
                                                 completePaymentMethodSelection(update);
-                                            })), addEventListener("shippingmethodselected", (function(_ref7) {
-                                                var shippingMethod = _ref7.shippingMethod;
+                                            })), addEventListener("shippingmethodselected", (function(_ref8) {
+                                                var shippingMethod = _ref8.shippingMethod;
                                                 logApplePayEvent("shippingmethodselected");
                                                 onShippingChangeCallback({
                                                     orderID: orderID,
@@ -8926,25 +8917,16 @@ window.spb = function(modules) {
                                                         },
                                                         newLineItems: []
                                                     };
-                                                    subtotalValue && subtotalValue.length && update.newLineItems.push({
-                                                        label: "Subtotal",
-                                                        amount: currentSubtotalAmount
+                                                    update.newLineItems = updateNewLineItems({
+                                                        shipping: currentShippingAmount,
+                                                        subtotal: currentSubtotalAmount,
+                                                        tax: currentTaxAmount,
+                                                        shippingLabel: null == shippingMethod ? void 0 : shippingMethod.label
                                                     });
-                                                    taxValue && taxValue.length && update.newLineItems.push({
-                                                        label: "Sales Tax",
-                                                        amount: currentTaxAmount
-                                                    });
-                                                    if (shippingValue && shippingValue.length) {
-                                                        var _currentShippingMetho8;
-                                                        update.newLineItems.push({
-                                                            label: (null == (_currentShippingMetho8 = currentShippingMethod) ? void 0 : _currentShippingMetho8.label) || "Shipping",
-                                                            amount: currentShippingAmount
-                                                        });
-                                                    }
                                                     completeShippingMethodSelection(update);
                                                 }));
-                                            })), addEventListener("shippingcontactselected", (function(_ref8) {
-                                                var shippingContact = _ref8.shippingContact;
+                                            })), addEventListener("shippingcontactselected", (function(_ref9) {
+                                                var shippingContact = _ref9.shippingContact;
                                                 logApplePayEvent("shippingcontactselected", shippingContact);
                                                 onShippingChangeCallback({
                                                     orderID: orderID,
@@ -8955,12 +8937,14 @@ window.spb = function(modules) {
                                                 })).catch((function(err) {
                                                     handleApplePayError("shippingContactSelected", err);
                                                 }));
-                                            })), addEventListener("paymentauthorized", (function(_ref9) {
-                                                var applePayPayment = _ref9.payment;
+                                            })), addEventListener("paymentauthorized", (function(_ref10) {
+                                                var applePayPayment = _ref10.payment;
                                                 logApplePayEvent("paymentauthorized");
                                                 if (!applePayPayment) throw new Error("No payment received from Apple.");
-                                                applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
-                                                applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
+                                                if (applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode) {
+                                                    applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
+                                                    applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
+                                                }
                                                 (function(orderID, clientID, applePayPayment) {
                                                     return callGraphQL({
                                                         name: "ApproveApplePayPayment",
@@ -9757,7 +9741,8 @@ window.spb = function(modules) {
             TRANSACTION_REFUSED: "TRANSACTION_REJECTED"
         };
         (_CARD_FIELD_TYPE_TO_F = {}).single = "card-field", _CARD_FIELD_TYPE_TO_F.number = "card-number-field", 
-        _CARD_FIELD_TYPE_TO_F.cvv = "card-cvv-field", _CARD_FIELD_TYPE_TO_F.expiry = "card-expiry-field";
+        _CARD_FIELD_TYPE_TO_F.cvv = "card-cvv-field", _CARD_FIELD_TYPE_TO_F.expiry = "card-expiry-field", 
+        _CARD_FIELD_TYPE_TO_F.name = "card-name-field";
         (_VALIDATOR_TO_TYPE_MA = {})[dist.types.AMERICAN_EXPRESS] = "AMEX", _VALIDATOR_TO_TYPE_MA[dist.types.DINERS_CLUB] = "DINERS", 
         _VALIDATOR_TO_TYPE_MA[dist.types.DISCOVER] = "DISCOVER", _VALIDATOR_TO_TYPE_MA[dist.types.ELO] = "ELO", 
         _VALIDATOR_TO_TYPE_MA[dist.types.HIPER] = "HIPER", _VALIDATOR_TO_TYPE_MA[dist.types.HIPERCARD] = "HIPERCARD", 
@@ -9826,7 +9811,8 @@ window.spb = function(modules) {
                 cardFrame: getExportsByFrameName("card-field"),
                 cardNumberFrame: getExportsByFrameName("card-number-field"),
                 cardCVVFrame: getExportsByFrameName("card-cvv-field"),
-                cardExpiryFrame: getExportsByFrameName("card-expiry-field")
+                cardExpiryFrame: getExportsByFrameName("card-expiry-field"),
+                cardNameFrame: getExportsByFrameName("card-name-field")
             };
         }
         function hasCardFields() {
@@ -9836,11 +9822,12 @@ window.spb = function(modules) {
         function getCardFields() {
             var cardFrame = getExportsByFrameName("card-field");
             if (cardFrame && cardFrame.isFieldValid()) return cardFrame.getFieldValue();
-            var _getCardFrames2 = getCardFrames(), cardNumberFrame = _getCardFrames2.cardNumberFrame, cardCVVFrame = _getCardFrames2.cardCVVFrame, cardExpiryFrame = _getCardFrames2.cardExpiryFrame;
-            if (cardNumberFrame && cardNumberFrame.isFieldValid() && cardCVVFrame && cardCVVFrame.isFieldValid() && cardExpiryFrame && cardExpiryFrame.isFieldValid()) return {
+            var _getCardFrames2 = getCardFrames(), cardNumberFrame = _getCardFrames2.cardNumberFrame, cardCVVFrame = _getCardFrames2.cardCVVFrame, cardExpiryFrame = _getCardFrames2.cardExpiryFrame, cardNameFrame = _getCardFrames2.cardNameFrame;
+            if (cardNumberFrame && cardNumberFrame.isFieldValid() && cardCVVFrame && cardCVVFrame.isFieldValid() && cardExpiryFrame && cardExpiryFrame.isFieldValid() && (!cardNameFrame || cardNameFrame.isFieldValid())) return {
                 number: cardNumberFrame.getFieldValue(),
                 cvv: cardCVVFrame.getFieldValue(),
-                expiry: cardExpiryFrame.getFieldValue()
+                expiry: cardExpiryFrame.getFieldValue(),
+                name: (null == cardNameFrame ? void 0 : cardNameFrame.getFieldValue()) || ""
             };
             throw new Error("Card fields not available to submit");
         }
@@ -9863,6 +9850,7 @@ window.spb = function(modules) {
                     },
                     start: function() {
                         return function(_ref) {
+                            var extraFields = _ref.extraFields;
                             var _getCardProps = function(_ref) {
                                 var _fundingEligibility$c, _fundingEligibility$c2;
                                 var facilitatorAccessToken = _ref.facilitatorAccessToken;
@@ -9918,12 +9906,14 @@ window.spb = function(modules) {
                                             restart: restart
                                         });
                                     })) : intent === sdk_constants.INTENT.CAPTURE || intent === sdk_constants.INTENT.AUTHORIZE ? createOrder().then((function(orderID) {
+                                        var cardObject = _extends({
+                                            cardNumber: card.number,
+                                            expirationDate: card.expiry,
+                                            securityCode: card.cvv
+                                        }, extraFields);
+                                        card.name && (cardObject.name = card.name);
                                         return (_ref26 = {
-                                            card: {
-                                                cardNumber: card.number,
-                                                expirationDate: card.expiry,
-                                                securityCode: card.cvv
-                                            },
+                                            card: cardObject,
                                             orderID: orderID,
                                             vault: vault,
                                             branded: branded,
@@ -10054,15 +10044,15 @@ window.spb = function(modules) {
                 var payment = _ref2.payment;
                 return !(payment.win || !payment.paymentMethodID || window.innerWidth < 250 && "paypal" === payment.fundingSource);
             },
-            init: function(_ref7) {
-                var props = _ref7.props, components = _ref7.components, payment = _ref7.payment, serviceData = _ref7.serviceData, config = _ref7.config;
+            init: function(_ref8) {
+                var props = _ref8.props, components = _ref8.components, payment = _ref8.payment, serviceData = _ref8.serviceData, config = _ref8.config;
                 var createOrder = props.createOrder, onApprove = props.onApprove, clientAccessToken = props.clientAccessToken, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, getParent = props.getParent, userIDToken = props.userIDToken, clientID = props.clientID, env = props.env;
                 var ThreeDomainSecure = components.ThreeDomainSecure, Installments = components.Installments;
                 var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
                 var facilitatorAccessToken = serviceData.facilitatorAccessToken, buyerCountry = serviceData.buyerCountry;
                 var cspNonce = config.cspNonce;
-                var clientMetadataID = function(_ref6) {
-                    var props = _ref6.props;
+                var clientMetadataID = function(_ref7) {
+                    var props = _ref7.props;
                     return props.clientMetadataID || props.sessionID;
                 }({
                     props: props
@@ -10092,9 +10082,9 @@ window.spb = function(modules) {
                             installmentPlan: installmentPlan
                         }),
                         requireShipping: shippingRequired(orderID)
-                    }).then((function(_ref8) {
-                        var validate = _ref8.validate;
-                        if (_ref8.requireShipping) {
+                    }).then((function(_ref9) {
+                        var validate = _ref9.validate;
+                        if (_ref9.requireShipping) {
                             if ("paypal" !== fundingSource) throw new Error("Shipping address requested for " + fundingSource + " payment");
                             return function() {
                                 logger_getLogger().info("web_checkout_fallback").flush();
@@ -10139,7 +10129,13 @@ window.spb = function(modules) {
                                     createOrder: createOrder,
                                     getParent: getParent
                                 });
-                                if (200 !== status) throw new Error("Validate payment failed with status: " + status);
+                                if (200 !== status) {
+                                    if (Array.isArray(body.details)) {
+                                        var _ref6$issue = (body.details && body.details[0] || {}).issue, issue = void 0 === _ref6$issue ? "" : _ref6$issue;
+                                        if (0 !== issue.trim().length) throw new Error("Validate payment failed with issue: " + issue);
+                                    }
+                                    throw new Error("Validate payment failed with status: " + status);
+                                }
                             }));
                         }({
                             ThreeDomainSecure: ThreeDomainSecure,
@@ -10339,8 +10335,8 @@ window.spb = function(modules) {
                     }
                 };
             },
-            setupMenu: function(_ref9) {
-                var props = _ref9.props, payment = _ref9.payment, serviceData = _ref9.serviceData, components = _ref9.components, config = _ref9.config, restart = _ref9.restart;
+            setupMenu: function(_ref10) {
+                var props = _ref10.props, payment = _ref10.payment, serviceData = _ref10.serviceData, components = _ref10.components, config = _ref10.config, restart = _ref10.restart;
                 var clientAccessToken = props.clientAccessToken, createOrder = props.createOrder, enableThreeDomainSecure = props.enableThreeDomainSecure, partnerAttributionID = props.partnerAttributionID, sessionID = props.sessionID, clientMetadataID = props.clientMetadataID, userIDToken = props.userIDToken;
                 var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID, button = payment.button;
                 var content = serviceData.content, facilitatorAccessToken = serviceData.facilitatorAccessToken;
@@ -10356,22 +10352,22 @@ window.spb = function(modules) {
                         });
                     }));
                 };
-                var loadCheckout = function(_ref10) {
+                var loadCheckout = function(_ref11) {
                     return checkout.init({
                         props: props,
                         components: components,
                         serviceData: serviceData,
                         config: config,
-                        payment: _ref10.payment,
+                        payment: _ref11.payment,
                         restart: restart
                     }).start();
                 };
                 if ("paypal" === fundingSource) return [ {
                     label: content.payWithDifferentMethod,
                     popup: POPUP_OPTIONS,
-                    onSelect: function(_ref11) {
+                    onSelect: function(_ref12) {
                         var _getLogger$info$track2;
-                        var win = _ref11.win;
+                        var win = _ref12.win;
                         logger_getLogger().info("click_choose_funding").track((_getLogger$info$track2 = {}, 
                         _getLogger$info$track2.transition_name = "process_click_pay_with_different_payment_method", 
                         _getLogger$info$track2.optsel = "pay_with_different_payment_method", _getLogger$info$track2)).flush();
@@ -10403,9 +10399,9 @@ window.spb = function(modules) {
                 }, {
                     label: content.payWithDifferentAccount,
                     popup: POPUP_OPTIONS,
-                    onSelect: function(_ref12) {
+                    onSelect: function(_ref13) {
                         var _getLogger$info$track3;
-                        var win = _ref12.win;
+                        var win = _ref13.win;
                         logger_getLogger().info("click_choose_account").track((_getLogger$info$track3 = {}, 
                         _getLogger$info$track3.transition_name = "process_click_pay_with_different_account", 
                         _getLogger$info$track3.optsel = "pay_with_different_account", _getLogger$info$track3)).flush();
@@ -10451,10 +10447,10 @@ window.spb = function(modules) {
                 } ];
                 throw new Error("Can not render menu for " + fundingSource);
             },
-            updateFlowClientConfig: function(_ref13) {
+            updateFlowClientConfig: function(_ref14) {
                 return updateButtonClientConfig({
-                    fundingSource: _ref13.payment.fundingSource,
-                    orderID: _ref13.orderID,
+                    fundingSource: _ref14.payment.fundingSource,
+                    orderID: _ref14.orderID,
                     inline: !0
                 });
             },
@@ -13416,7 +13412,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.78", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.79", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 

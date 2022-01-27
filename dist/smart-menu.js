@@ -333,10 +333,7 @@ window.spb = function(modules) {
         !l.__s && hooks_module_k(i.__H, o) && (i.__ = r, i.__H = o, hooks_module_u.__H.__h.push(i));
     }
     function hooks_module_x() {
-        var t;
-        for (hooks_module_i.sort((function(n, t) {
-            return n.__v.__b - t.__v.__b;
-        })); t = hooks_module_i.pop(); ) if (t.__P) try {
+        for (var t; t = hooks_module_i.shift(); ) if (t.__P) try {
             t.__H.__h.forEach(hooks_module_g), t.__H.__h.forEach(hooks_module_j), t.__H.__h = [];
         } catch (u) {
             t.__H.__h = [], l.__e(u, t.__v);
@@ -1103,7 +1100,7 @@ window.spb = function(modules) {
                         objectIDs.set(obj, uid);
                     }
                     return uid;
-                }(val) + "]" : val;
+                }(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
             }));
         } catch (err) {
             throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -1131,7 +1128,12 @@ window.spb = function(modules) {
             }
             var cache;
             cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-            var cacheKey = serializeArgs(args);
+            var cacheKey;
+            try {
+                cacheKey = serializeArgs(args);
+            } catch (_unused) {
+                return method.apply(this, arguments);
+            }
             var cacheResult = cache[cacheKey];
             if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                 delete cache[cacheKey];

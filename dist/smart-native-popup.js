@@ -687,16 +687,14 @@
             __webpack_require__.d(__webpack_exports__, "UID_HASH_LENGTH", (function() {
                 return UID_HASH_LENGTH;
             }));
-            __webpack_require__.d(__webpack_exports__, "iOS14", (function() {
-                return iOS14;
+            __webpack_require__.d(__webpack_exports__, "sfvcScreens", (function() {
+                return sfvcScreens;
             }));
-            __webpack_require__.d(__webpack_exports__, "iOS15", (function() {
-                return iOS15;
-            }));
-            var iOS14 = {
+            var sfvcScreens = {
                 926: {
                     device: "iPhone 12/13 Pro Max",
                     textSizeHeights: [ 752, 748, 744, 738 ],
+                    textSizeHeightsNoTabs: [ 860, 858, 856, 854 ],
                     zoomHeight: {
                         1.15: [ 752, 747, 744, 738 ],
                         1.25: [ 753, 748, 744, 738 ],
@@ -715,6 +713,7 @@
                 896: {
                     device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
                     textSizeHeights: [ 721, 717, 713, 707 ],
+                    textSizeHeightsNoTabs: [ 829, 827, 825, 823 ],
                     zoomHeight: {
                         1.15: [ 721, 716, 713, 707 ],
                         1.25: [ 721, 718, 713, 708 ],
@@ -732,6 +731,7 @@
                 844: {
                     device: "iPhone 12, iPhone 12 Pro",
                     textSizeHeights: [ 670, 666, 662, 656 ],
+                    textSizeHeightsNoTabs: [ 778, 776, 774, 772 ],
                     zoomHeight: {
                         1.15: [ 670, 666, 662 ],
                         1.25: [ 670, 666, 663, 656 ],
@@ -752,6 +752,7 @@
                 812: {
                     device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
                     textSizeHeights: [ 641, 637, 633, 627 ],
+                    textSizeHeightsNoTabs: [ 749, 747, 745, 743 ],
                     zoomHeight: {
                         1.15: [ 641, 637, 633, 627 ],
                         1.25: [ 641, 638, 633, 628 ],
@@ -769,6 +770,7 @@
                 736: {
                     device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
                     textSizeHeights: [ 628, 624, 620, 614 ],
+                    textSizeHeightsNoTabs: [ 736, 734, 732, 730 ],
                     zoomHeight: {
                         1.15: [ 628, 624, 620, 614 ],
                         1.25: [ 628, 624, 620, 614 ],
@@ -787,6 +789,7 @@
                 667: {
                     device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
                     textSizeHeights: [ 559, 555, 551, 545 ],
+                    textSizeHeightsNoTabs: [ 667, 665, 663, 661 ],
                     zoomHeight: {
                         1.15: [ 559, 555, 551, 545 ],
                         1.25: [ 559, 555, 551, 545 ],
@@ -802,32 +805,6 @@
                         2.5: [ 545 ],
                         3: [ 552 ]
                     }
-                }
-            };
-            var iOS15 = {
-                926: {
-                    device: "iPhone 12/13 Pro Max",
-                    textSizeHeights: [ 752, 748, 744, 738 ]
-                },
-                896: {
-                    device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
-                    textSizeHeights: [ 721, 717, 713, 707 ]
-                },
-                844: {
-                    device: "iPhone 12/13, iPhone 12/13 Pro",
-                    textSizeHeights: [ 670, 666, 662, 656 ]
-                },
-                812: {
-                    device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
-                    textSizeHeights: [ 641, 637, 633, 627 ]
-                },
-                736: {
-                    device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
-                    textSizeHeights: [ 628, 624, 620, 614 ]
-                },
-                667: {
-                    device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
-                    textSizeHeights: [ 559, 555, 551, 545 ]
                 }
             };
             function getUserAgent() {
@@ -896,12 +873,15 @@
             function isSFVC(ua) {
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
-                    var device = null;
-                    if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                     var computedHeight = Math.round(height * scale);
-                    return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                    var device = null;
+                    if (isIOS14(ua)) device = sfvcScreens[window.outerHeight]; else {
+                        if (1 !== scale) return !0;
+                        device = sfvcScreens[window.outerHeight];
+                    }
+                    return !!device && (scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight) || -1 !== device.textSizeHeightsNoTabs.indexOf(computedHeight));
                 }
                 return !1;
             }
@@ -909,7 +889,7 @@
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
                     var sfvc = isSFVC(ua);
-                    var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
+                    var device = isIOS14(ua) ? sfvcScreens[window.outerHeight] : null;
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
@@ -1706,7 +1686,7 @@
             function serializeArgs(args) {
                 try {
                     return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : val;
+                        return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
                     }));
                 } catch (err) {
                     throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -1734,7 +1714,12 @@
                     }
                     var cache;
                     cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-                    var cacheKey = serializeArgs(args);
+                    var cacheKey;
+                    try {
+                        cacheKey = serializeArgs(args);
+                    } catch (_unused) {
+                        return method.apply(this, arguments);
+                    }
                     var cacheResult = cache[cacheKey];
                     if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                         delete cache[cacheKey];
@@ -3405,10 +3390,11 @@
         __webpack_require__.d(__webpack_exports__, "NativePopup", (function() {
             return NativePopup;
         }));
-        var iOS14 = {
+        var sfvcScreens = {
             926: {
                 device: "iPhone 12/13 Pro Max",
                 textSizeHeights: [ 752, 748, 744, 738 ],
+                textSizeHeightsNoTabs: [ 860, 858, 856, 854 ],
                 zoomHeight: {
                     1.15: [ 752, 747, 744, 738 ],
                     1.25: [ 753, 748, 744, 738 ],
@@ -3427,6 +3413,7 @@
             896: {
                 device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
                 textSizeHeights: [ 721, 717, 713, 707 ],
+                textSizeHeightsNoTabs: [ 829, 827, 825, 823 ],
                 zoomHeight: {
                     1.15: [ 721, 716, 713, 707 ],
                     1.25: [ 721, 718, 713, 708 ],
@@ -3444,6 +3431,7 @@
             844: {
                 device: "iPhone 12, iPhone 12 Pro",
                 textSizeHeights: [ 670, 666, 662, 656 ],
+                textSizeHeightsNoTabs: [ 778, 776, 774, 772 ],
                 zoomHeight: {
                     1.15: [ 670, 666, 662 ],
                     1.25: [ 670, 666, 663, 656 ],
@@ -3464,6 +3452,7 @@
             812: {
                 device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
                 textSizeHeights: [ 641, 637, 633, 627 ],
+                textSizeHeightsNoTabs: [ 749, 747, 745, 743 ],
                 zoomHeight: {
                     1.15: [ 641, 637, 633, 627 ],
                     1.25: [ 641, 638, 633, 628 ],
@@ -3481,6 +3470,7 @@
             736: {
                 device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
                 textSizeHeights: [ 628, 624, 620, 614 ],
+                textSizeHeightsNoTabs: [ 736, 734, 732, 730 ],
                 zoomHeight: {
                     1.15: [ 628, 624, 620, 614 ],
                     1.25: [ 628, 624, 620, 614 ],
@@ -3499,6 +3489,7 @@
             667: {
                 device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
                 textSizeHeights: [ 559, 555, 551, 545 ],
+                textSizeHeightsNoTabs: [ 667, 665, 663, 661 ],
                 zoomHeight: {
                     1.15: [ 559, 555, 551, 545 ],
                     1.25: [ 559, 555, 551, 545 ],
@@ -3516,32 +3507,6 @@
                 }
             }
         };
-        var iOS15 = {
-            926: {
-                device: "iPhone 12/13 Pro Max",
-                textSizeHeights: [ 752, 748, 744, 738 ]
-            },
-            896: {
-                device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
-                textSizeHeights: [ 721, 717, 713, 707 ]
-            },
-            844: {
-                device: "iPhone 12/13, iPhone 12/13 Pro",
-                textSizeHeights: [ 670, 666, 662, 656 ]
-            },
-            812: {
-                device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
-                textSizeHeights: [ 641, 637, 633, 627 ]
-            },
-            736: {
-                device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
-                textSizeHeights: [ 628, 624, 620, 614 ]
-            },
-            667: {
-                device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
-                textSizeHeights: [ 559, 555, 551, 545 ]
-            }
-        };
         function getUserAgent() {
             return window.navigator.mockUserAgent || window.navigator.userAgent;
         }
@@ -3556,12 +3521,15 @@
         function isSFVC(ua) {
             void 0 === ua && (ua = getUserAgent());
             if (isIos(ua)) {
-                var device = null;
-                if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                 var height = window.innerHeight;
                 var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                 var computedHeight = Math.round(height * scale);
-                return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                var device = null;
+                if (isIOS14(ua)) device = sfvcScreens[window.outerHeight]; else {
+                    if (1 !== scale) return !0;
+                    device = sfvcScreens[window.outerHeight];
+                }
+                return !!device && (scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight) || -1 !== device.textSizeHeightsNoTabs.indexOf(computedHeight));
             }
             return !1;
         }
@@ -4229,7 +4197,7 @@
                             objectIDs.set(obj, uid);
                         }
                         return uid;
-                    }(val) + "]" : val;
+                    }(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
                 }));
             } catch (err) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -4257,7 +4225,12 @@
                 }
                 var cache;
                 cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-                var cacheKey = serializeArgs(args);
+                var cacheKey;
+                try {
+                    cacheKey = serializeArgs(args);
+                } catch (_unused) {
+                    return method.apply(this, arguments);
+                }
                 var cacheResult = cache[cacheKey];
                 if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                     delete cache[cacheKey];
@@ -4905,7 +4878,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.78", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.79", 
                     _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
@@ -4989,7 +4962,7 @@
                 void 0 === ua && (ua = getUserAgent());
                 if (isIos(ua)) {
                     var sfvc = isSFVC(ua);
-                    var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
+                    var device = isIOS14(ua) ? sfvcScreens[window.outerHeight] : null;
                     if (!device) return !1;
                     var height = window.innerHeight;
                     var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;

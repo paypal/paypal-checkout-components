@@ -903,16 +903,14 @@ window.smartCard = function(modules) {
         __webpack_require__.d(__webpack_exports__, "UID_HASH_LENGTH", (function() {
             return UID_HASH_LENGTH;
         }));
-        __webpack_require__.d(__webpack_exports__, "iOS14", (function() {
-            return iOS14;
+        __webpack_require__.d(__webpack_exports__, "sfvcScreens", (function() {
+            return sfvcScreens;
         }));
-        __webpack_require__.d(__webpack_exports__, "iOS15", (function() {
-            return iOS15;
-        }));
-        var iOS14 = {
+        var sfvcScreens = {
             926: {
                 device: "iPhone 12/13 Pro Max",
                 textSizeHeights: [ 752, 748, 744, 738 ],
+                textSizeHeightsNoTabs: [ 860, 858, 856, 854 ],
                 zoomHeight: {
                     1.15: [ 752, 747, 744, 738 ],
                     1.25: [ 753, 748, 744, 738 ],
@@ -931,6 +929,7 @@ window.smartCard = function(modules) {
             896: {
                 device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
                 textSizeHeights: [ 721, 717, 713, 707 ],
+                textSizeHeightsNoTabs: [ 829, 827, 825, 823 ],
                 zoomHeight: {
                     1.15: [ 721, 716, 713, 707 ],
                     1.25: [ 721, 718, 713, 708 ],
@@ -948,6 +947,7 @@ window.smartCard = function(modules) {
             844: {
                 device: "iPhone 12, iPhone 12 Pro",
                 textSizeHeights: [ 670, 666, 662, 656 ],
+                textSizeHeightsNoTabs: [ 778, 776, 774, 772 ],
                 zoomHeight: {
                     1.15: [ 670, 666, 662 ],
                     1.25: [ 670, 666, 663, 656 ],
@@ -968,6 +968,7 @@ window.smartCard = function(modules) {
             812: {
                 device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12 Mini",
                 textSizeHeights: [ 641, 637, 633, 627 ],
+                textSizeHeightsNoTabs: [ 749, 747, 745, 743 ],
                 zoomHeight: {
                     1.15: [ 641, 637, 633, 627 ],
                     1.25: [ 641, 638, 633, 628 ],
@@ -985,6 +986,7 @@ window.smartCard = function(modules) {
             736: {
                 device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
                 textSizeHeights: [ 628, 624, 620, 614 ],
+                textSizeHeightsNoTabs: [ 736, 734, 732, 730 ],
                 zoomHeight: {
                     1.15: [ 628, 624, 620, 614 ],
                     1.25: [ 628, 624, 620, 614 ],
@@ -1003,6 +1005,7 @@ window.smartCard = function(modules) {
             667: {
                 device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
                 textSizeHeights: [ 559, 555, 551, 545 ],
+                textSizeHeightsNoTabs: [ 667, 665, 663, 661 ],
                 zoomHeight: {
                     1.15: [ 559, 555, 551, 545 ],
                     1.25: [ 559, 555, 551, 545 ],
@@ -1018,32 +1021,6 @@ window.smartCard = function(modules) {
                     2.5: [ 545 ],
                     3: [ 552 ]
                 }
-            }
-        };
-        var iOS15 = {
-            926: {
-                device: "iPhone 12/13 Pro Max",
-                textSizeHeights: [ 752, 748, 744, 738 ]
-            },
-            896: {
-                device: "iPhone XS Max, iPhone 11 Pro Max, iPhone XR, iPhone 11",
-                textSizeHeights: [ 721, 717, 713, 707 ]
-            },
-            844: {
-                device: "iPhone 12/13, iPhone 12/13 Pro",
-                textSizeHeights: [ 670, 666, 662, 656 ]
-            },
-            812: {
-                device: "iPhone X, iPhone XS, iPhone 11 Pro, iPhone 12/13 Mini",
-                textSizeHeights: [ 641, 637, 633, 627 ]
-            },
-            736: {
-                device: "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus, iPhone 8 Plus",
-                textSizeHeights: [ 628, 624, 620, 614 ]
-            },
-            667: {
-                device: "iPhone 6, iPhone 6S, iPhone 7, iPhone 8,  iPhone SE2",
-                textSizeHeights: [ 559, 555, 551, 545 ]
             }
         };
         function getUserAgent() {
@@ -1112,12 +1089,15 @@ window.smartCard = function(modules) {
         function isSFVC(ua) {
             void 0 === ua && (ua = getUserAgent());
             if (isIos(ua)) {
-                var device = null;
-                if (!(device = isIOS14(ua) ? iOS14[window.outerHeight] : 0 !== window.pageYOffset ? null : iOS15[window.outerHeight])) return !1;
                 var height = window.innerHeight;
                 var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
                 var computedHeight = Math.round(height * scale);
-                return scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight);
+                var device = null;
+                if (isIOS14(ua)) device = sfvcScreens[window.outerHeight]; else {
+                    if (1 !== scale) return !0;
+                    device = sfvcScreens[window.outerHeight];
+                }
+                return !!device && (scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight) || -1 !== device.textSizeHeightsNoTabs.indexOf(computedHeight));
             }
             return !1;
         }
@@ -1125,7 +1105,7 @@ window.smartCard = function(modules) {
             void 0 === ua && (ua = getUserAgent());
             if (isIos(ua)) {
                 var sfvc = isSFVC(ua);
-                var device = isIOS14(ua) ? iOS14[window.outerHeight] : null;
+                var device = isIOS14(ua) ? sfvcScreens[window.outerHeight] : null;
                 if (!device) return !1;
                 var height = window.innerHeight;
                 var scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
@@ -1922,7 +1902,7 @@ window.smartCard = function(modules) {
         function serializeArgs(args) {
             try {
                 return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                    return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : val;
+                    return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
                 }));
             } catch (err) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -1950,7 +1930,12 @@ window.smartCard = function(modules) {
                 }
                 var cache;
                 cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-                var cacheKey = serializeArgs(args);
+                var cacheKey;
+                try {
+                    cacheKey = serializeArgs(args);
+                } catch (_unused) {
+                    return method.apply(this, arguments);
+                }
                 var cacheResult = cache[cacheKey];
                 if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                     delete cache[cacheKey];
@@ -4715,7 +4700,7 @@ window.smartCard = function(modules) {
             CLIENT_METADATA_ID: "data-client-metadata-id",
             PAGE_TYPE: "data-page-type",
             USER_EXPERIENCE_FLOW: "data-user-experience-flow",
-            DATA_POPUPS_DISABLED: "data-popups-disabled"
+            POPUPS_DISABLED: "data-popups-disabled"
         }, D = {
             COMPONENTS: "components",
             ENV: "env",
@@ -4909,6 +4894,9 @@ window.smartCard = function(modules) {
     }));
     __webpack_require__.d(__webpack_exports__, "CardCVVField", (function() {
         return CardCVVField;
+    }));
+    __webpack_require__.d(__webpack_exports__, "CardNameField", (function() {
+        return CardNameField;
     }));
     __webpack_require__.d(__webpack_exports__, "hasCardFields", (function() {
         return hasCardFields;
@@ -5215,10 +5203,7 @@ window.smartCard = function(modules) {
         }), []);
     }
     function hooks_module_x() {
-        var t;
-        for (hooks_module_i.sort((function(n, t) {
-            return n.__v.__b - t.__v.__b;
-        })); t = hooks_module_i.pop(); ) if (t.__P) try {
+        for (var t; t = hooks_module_i.shift(); ) if (t.__P) try {
             t.__H.__h.forEach(hooks_module_g), t.__H.__h.forEach(hooks_module_j), t.__H.__h = [];
         } catch (u) {
             t.__H.__h = [], l.__e(u, t.__v);
@@ -5994,7 +5979,7 @@ window.smartCard = function(modules) {
                         objectIDs.set(obj, uid);
                     }
                     return uid;
-                }(val) + "]" : val;
+                }(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
             }));
         } catch (err) {
             throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -6022,7 +6007,12 @@ window.smartCard = function(modules) {
             }
             var cache;
             cache = thisNamespace ? (thisCache = thisCache || new weakmap_CrossDomainSafeWeakMap).getOrSet(this, getEmptyObject) : simpleCache = simpleCache || {};
-            var cacheKey = serializeArgs(args);
+            var cacheKey;
+            try {
+                cacheKey = serializeArgs(args);
+            } catch (_unused) {
+                return method.apply(this, arguments);
+            }
             var cacheResult = cache[cacheKey];
             if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
                 delete cache[cacheKey];
@@ -6627,7 +6617,8 @@ window.smartCard = function(modules) {
     };
     var CARD_FIELD_TYPE_TO_FRAME_NAME = ((_CARD_FIELD_TYPE_TO_F = {}).single = "card-field", 
     _CARD_FIELD_TYPE_TO_F.number = "card-number-field", _CARD_FIELD_TYPE_TO_F.cvv = "card-cvv-field", 
-    _CARD_FIELD_TYPE_TO_F.expiry = "card-expiry-field", _CARD_FIELD_TYPE_TO_F);
+    _CARD_FIELD_TYPE_TO_F.expiry = "card-expiry-field", _CARD_FIELD_TYPE_TO_F.name = "card-name-field", 
+    _CARD_FIELD_TYPE_TO_F);
     var FIELD_STYLE = {
         height: "height",
         width: "width",
@@ -6717,6 +6708,7 @@ window.smartCard = function(modules) {
             width: "20vw"
         }
     };
+    var VALID_EXTRA_FIELDS = [ "billingAddress" ];
     dist_default.a.addCard({
         code: {
             name: "CVV",
@@ -6854,12 +6846,13 @@ window.smartCard = function(modules) {
         return 3;
     }
     function setErrors(_ref) {
-        var isNumberValid = _ref.isNumberValid, isCvvValid = _ref.isCvvValid, isExpiryValid = _ref.isExpiryValid, _ref$gqlErrorsObject = _ref.gqlErrorsObject, gqlErrorsObject = void 0 === _ref$gqlErrorsObject ? {} : _ref$gqlErrorsObject;
+        var isCvvValid = _ref.isCvvValid, isExpiryValid = _ref.isExpiryValid, isNameValid = _ref.isNameValid, _ref$gqlErrorsObject = _ref.gqlErrorsObject, gqlErrorsObject = void 0 === _ref$gqlErrorsObject ? {} : _ref$gqlErrorsObject;
         var errors = [];
         var field = gqlErrorsObject.field, gqlErrors = gqlErrorsObject.errors;
-        "boolean" != typeof isNumberValid || isNumberValid || ("number" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_NUMBER"));
-        "boolean" != typeof isExpiryValid || isExpiryValid || ("expiry" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_EXPIRY"));
-        "boolean" != typeof isCvvValid || isCvvValid || ("cvv" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_CVV"));
+        !1 === _ref.isNumberValid && ("number" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_NUMBER"));
+        !1 === isExpiryValid && ("expiry" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_EXPIRY"));
+        !1 === isCvvValid && ("cvv" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_CVV"));
+        !1 === isNameValid && ("name" === field && gqlErrors.length ? errors.push.apply(errors, gqlErrors) : errors.push("INVALID_NAME"));
         return errors;
     }
     function moveCursor(element, start, end) {
@@ -7413,7 +7406,7 @@ window.smartCard = function(modules) {
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
         var xprops = window.xprops;
-        var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+        var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
             return promise_ZalgoPromise.resolve([]);
         } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow, allowBillingPayments = xprops.allowBillingPayments;
         var onInit = function(_ref) {
@@ -8301,6 +8294,7 @@ window.smartCard = function(modules) {
             enableFunding: enableFunding,
             disableFunding: disableFunding,
             disableCard: disableCard,
+            disableAutocomplete: disableAutocomplete,
             getQueriedEligibleFunding: getQueriedEligibleFunding,
             amount: amount,
             userIDToken: userIDToken,
@@ -8386,7 +8380,8 @@ window.smartCard = function(modules) {
             cardFrame: getExportsByFrameName("card-field"),
             cardNumberFrame: getExportsByFrameName("card-number-field"),
             cardCVVFrame: getExportsByFrameName("card-cvv-field"),
-            cardExpiryFrame: getExportsByFrameName("card-expiry-field")
+            cardExpiryFrame: getExportsByFrameName("card-expiry-field"),
+            cardNameFrame: getExportsByFrameName("card-name-field")
         };
     }
     function hasCardFields() {
@@ -8396,11 +8391,12 @@ window.smartCard = function(modules) {
     function getCardFields() {
         var cardFrame = getExportsByFrameName("card-field");
         if (cardFrame && cardFrame.isFieldValid()) return cardFrame.getFieldValue();
-        var _getCardFrames2 = getCardFrames(), cardNumberFrame = _getCardFrames2.cardNumberFrame, cardCVVFrame = _getCardFrames2.cardCVVFrame, cardExpiryFrame = _getCardFrames2.cardExpiryFrame;
-        if (cardNumberFrame && cardNumberFrame.isFieldValid() && cardCVVFrame && cardCVVFrame.isFieldValid() && cardExpiryFrame && cardExpiryFrame.isFieldValid()) return {
+        var _getCardFrames2 = getCardFrames(), cardNumberFrame = _getCardFrames2.cardNumberFrame, cardCVVFrame = _getCardFrames2.cardCVVFrame, cardExpiryFrame = _getCardFrames2.cardExpiryFrame, cardNameFrame = _getCardFrames2.cardNameFrame;
+        if (cardNumberFrame && cardNumberFrame.isFieldValid() && cardCVVFrame && cardCVVFrame.isFieldValid() && cardExpiryFrame && cardExpiryFrame.isFieldValid() && (!cardNameFrame || cardNameFrame.isFieldValid())) return {
             number: cardNumberFrame.getFieldValue(),
             cvv: cardCVVFrame.getFieldValue(),
-            expiry: cardExpiryFrame.getFieldValue()
+            expiry: cardExpiryFrame.getFieldValue(),
+            name: (null == cardNameFrame ? void 0 : cardNameFrame.getFieldValue()) || ""
         };
         throw new Error("Card fields not available to submit");
     }
@@ -8447,6 +8443,7 @@ window.smartCard = function(modules) {
         cardCVVFrame && cardCVVFrame.resetGQLErrors();
     }
     function submitCardFields(_ref) {
+        var extraFields = _ref.extraFields;
         var _getCardProps = getCardProps({
             facilitatorAccessToken: _ref.facilitatorAccessToken
         }), intent = _getCardProps.intent, branded = _getCardProps.branded, vault = _getCardProps.vault, createOrder = _getCardProps.createOrder, onApprove = _getCardProps.onApprove, clientID = _getCardProps.clientID;
@@ -8477,12 +8474,14 @@ window.smartCard = function(modules) {
                         restart: restart
                     });
                 })) : intent === sdk_constants.INTENT.CAPTURE || intent === sdk_constants.INTENT.AUTHORIZE ? createOrder().then((function(orderID) {
+                    var cardObject = _extends({
+                        cardNumber: card.number,
+                        expirationDate: card.expiry,
+                        securityCode: card.cvv
+                    }, extraFields);
+                    card.name && (cardObject.name = card.name);
                     return (_ref26 = {
-                        card: {
-                            cardNumber: card.number,
-                            expirationDate: card.expiry,
-                            securityCode: card.cvv
-                        },
+                        card: cardObject,
                         orderID: orderID,
                         vault: vault,
                         branded: branded,
@@ -8550,7 +8549,7 @@ window.smartCard = function(modules) {
         }));
     }
     function CardNumber(_ref2) {
-        var _ref2$name = _ref2.name, name = void 0 === _ref2$name ? "number" : _ref2$name, _ref2$navigation = _ref2.navigation, navigation = void 0 === _ref2$navigation ? defaultNavigation : _ref2$navigation, _ref2$allowNavigation = _ref2.allowNavigation, allowNavigation = void 0 !== _ref2$allowNavigation && _ref2$allowNavigation, state = _ref2.state, ref = _ref2.ref, type = _ref2.type, className = _ref2.className, placeholder = _ref2.placeholder, style = _ref2.style, maxLength = _ref2.maxLength, onChange = _ref2.onChange, onFocus = _ref2.onFocus, onBlur = _ref2.onBlur, onValidityChange = _ref2.onValidityChange;
+        var _ref2$name = _ref2.name, name = void 0 === _ref2$name ? "number" : _ref2$name, _ref2$autocomplete = _ref2.autocomplete, autocomplete = void 0 === _ref2$autocomplete ? "cc-number" : _ref2$autocomplete, _ref2$navigation = _ref2.navigation, navigation = void 0 === _ref2$navigation ? defaultNavigation : _ref2$navigation, _ref2$allowNavigation = _ref2.allowNavigation, allowNavigation = void 0 !== _ref2$allowNavigation && _ref2$allowNavigation, state = _ref2.state, ref = _ref2.ref, type = _ref2.type, className = _ref2.className, placeholder = _ref2.placeholder, style = _ref2.style, maxLength = _ref2.maxLength, onChange = _ref2.onChange, onFocus = _ref2.onFocus, onBlur = _ref2.onBlur, onValidityChange = _ref2.onValidityChange;
         var _useState = hooks_module_l(DEFAULT_CARD_TYPE), cardType = _useState[0], setCardType = _useState[1];
         var _useState2 = hooks_module_l(_extends({}, defaultInputState, state)), inputState = _useState2[0], setInputState = _useState2[1];
         var inputValue = inputState.inputValue, maskedInputValue = inputState.maskedInputValue, cursorStart = inputState.cursorStart, cursorEnd = inputState.cursorEnd, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid, contentPasted = inputState.contentPasted;
@@ -8587,6 +8586,7 @@ window.smartCard = function(modules) {
         }), [ isValid, isPotentiallyValid ]);
         return v("input", {
             name: name,
+            autocomplete: autocomplete,
             inputmode: "numeric",
             ref: ref,
             type: type,
@@ -8670,7 +8670,7 @@ window.smartCard = function(modules) {
         });
     }
     function CardExpiry(_ref) {
-        var _ref$name = _ref.name, name = void 0 === _ref$name ? "expiry" : _ref$name, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation;
+        var _ref$name = _ref.name, name = void 0 === _ref$name ? "expiry" : _ref$name, _ref$autocomplete = _ref.autocomplete, autocomplete = void 0 === _ref$autocomplete ? "cc-exp" : _ref$autocomplete, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation;
         var _useState = hooks_module_l(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
         var maskedInputValue = inputState.maskedInputValue, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid, contentPasted = inputState.contentPasted;
         hooks_module_y((function() {
@@ -8691,6 +8691,7 @@ window.smartCard = function(modules) {
         }), [ isValid, isPotentiallyValid ]);
         return v("input", {
             name: name,
+            autocomplete: autocomplete,
             inputmode: "numeric",
             ref: ref,
             type: type,
@@ -8771,7 +8772,7 @@ window.smartCard = function(modules) {
         });
     }
     function CardCVV(_ref) {
-        var _ref$name = _ref.name, name = void 0 === _ref$name ? "cvv" : _ref$name, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange, cardType = _ref.cardType;
+        var _ref$name = _ref.name, name = void 0 === _ref$name ? "cvv" : _ref$name, _ref$autocomplete = _ref.autocomplete, autocomplete = void 0 === _ref$autocomplete ? "cc-csc" : _ref$autocomplete, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange, cardType = _ref.cardType;
         var _useState = hooks_module_l(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
         var inputValue = inputState.inputValue, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid;
         hooks_module_y((function() {
@@ -8796,6 +8797,7 @@ window.smartCard = function(modules) {
         }), [ isValid, isPotentiallyValid ]);
         return v("input", {
             name: name,
+            autocomplete: autocomplete,
             inputmode: "numeric",
             ref: ref,
             type: type,
@@ -8837,9 +8839,76 @@ window.smartCard = function(modules) {
             }
         });
     }
+    function CardName(_ref) {
+        var _ref$name = _ref.name, name = void 0 === _ref$name ? "name" : _ref$name, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange;
+        var _useState = hooks_module_l(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
+        var inputValue = inputState.inputValue, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid;
+        hooks_module_y((function() {
+            var validity = function(value) {
+                var isValid = !1;
+                value.length >= 1 && value.length <= 255 && (isValid = !0);
+                return {
+                    isValid: isValid,
+                    isPotentiallyValid: !0
+                };
+            }(inputValue);
+            setInputState((function(newState) {
+                return _extends({}, newState, validity);
+            }));
+        }), [ inputValue ]);
+        hooks_module_y((function() {
+            "function" == typeof onValidityChange && onValidityChange({
+                isValid: isValid,
+                isPotentiallyValid: isPotentiallyValid
+            });
+            allowNavigation && inputValue && isValid && navigation.next();
+        }), [ isValid, isPotentiallyValid ]);
+        return v("input", {
+            name: name,
+            inputmode: "text",
+            ref: ref,
+            type: type,
+            className: className,
+            placeholder: placeholder,
+            value: inputValue,
+            style: style,
+            maxLength: maxLength,
+            onKeyDown: function(event) {
+                allowNavigation && navigateOnKeyDown(event, navigation);
+            },
+            onInput: function(event) {
+                var value = event.target.value;
+                setInputState(_extends({}, inputState, {
+                    inputValue: value,
+                    maskedInputValue: value,
+                    keyStrokeCount: keyStrokeCount + 1
+                }));
+                onChange({
+                    event: event,
+                    cardName: value
+                });
+            },
+            onFocus: function(event) {
+                "function" == typeof onFocus && onFocus(event);
+                isValid || setInputState((function(newState) {
+                    return _extends({}, newState, {
+                        isPotentiallyValid: !0
+                    });
+                }));
+            },
+            onBlur: function(event) {
+                "function" == typeof onBlur && onBlur(event);
+                isValid || setInputState((function(newState) {
+                    return _extends({}, newState, {
+                        isPotentiallyValid: !1
+                    });
+                }));
+            }
+        });
+    }
     function CardField(_ref) {
         var _placeholder$number, _placeholder$expiry, _placeholder$cvv;
-        var cspNonce = _ref.cspNonce, onChange = _ref.onChange, _ref$styleObject = _ref.styleObject, styleObject = void 0 === _ref$styleObject ? {} : _ref$styleObject, _ref$placeholder = _ref.placeholder, placeholder = void 0 === _ref$placeholder ? {} : _ref$placeholder, _ref$gqlErrorsObject = _ref.gqlErrorsObject, gqlErrorsObject = void 0 === _ref$gqlErrorsObject ? {} : _ref$gqlErrorsObject, autoFocusRef = _ref.autoFocusRef;
+        var cspNonce = _ref.cspNonce, onChange = _ref.onChange, _ref$styleObject = _ref.styleObject, styleObject = void 0 === _ref$styleObject ? {} : _ref$styleObject, _ref$placeholder = _ref.placeholder, placeholder = void 0 === _ref$placeholder ? {} : _ref$placeholder, _ref$gqlErrorsObject = _ref.gqlErrorsObject, gqlErrorsObject = void 0 === _ref$gqlErrorsObject ? {} : _ref$gqlErrorsObject, autoFocusRef = _ref.autoFocusRef, autocomplete = _ref.autocomplete;
         var _useState = hooks_module_l(""), number = _useState[0], setNumber = _useState[1];
         var _useState2 = hooks_module_l(""), cvv = _useState2[0], setCvv = _useState2[1];
         var _useState3 = hooks_module_l(""), expiry = _useState3[0], setExpiry = _useState3[1];
@@ -8910,6 +8979,7 @@ window.smartCard = function(modules) {
             nonce: cspNonce
         }, styleToString(composedStyles)), v(CardNumber, {
             ref: numberRef,
+            autocomplete: autocomplete,
             navigation: cardNumberNavivation,
             type: "text",
             className: "number " + (numberValidity.isPotentiallyValid || numberValidity.isValid ? "valid" : "invalid"),
@@ -8927,6 +8997,7 @@ window.smartCard = function(modules) {
             }
         }), v(CardExpiry, {
             ref: expiryRef,
+            autocomplete: autocomplete,
             navigation: cardExpiryNavivation,
             type: "text",
             className: "expiry " + (expiryValidity.isPotentiallyValid || expiryValidity.isValid ? "valid" : "invalid"),
@@ -8942,6 +9013,7 @@ window.smartCard = function(modules) {
             }
         }), v(CardCVV, {
             ref: cvvRef,
+            autocomplete: autocomplete,
             navigation: cardCvvNavivation,
             type: "text",
             cardType: cardType,
@@ -8960,7 +9032,7 @@ window.smartCard = function(modules) {
     }
     function CardNumberField(_ref5) {
         var _placeholder$number2;
-        var cspNonce = _ref5.cspNonce, onChange = _ref5.onChange, _ref5$styleObject = _ref5.styleObject, styleObject = void 0 === _ref5$styleObject ? {} : _ref5$styleObject, _ref5$placeholder = _ref5.placeholder, placeholder = void 0 === _ref5$placeholder ? {} : _ref5$placeholder, autoFocusRef = _ref5.autoFocusRef, _ref5$gqlErrors = _ref5.gqlErrors, gqlErrors = void 0 === _ref5$gqlErrors ? [] : _ref5$gqlErrors;
+        var cspNonce = _ref5.cspNonce, onChange = _ref5.onChange, _ref5$styleObject = _ref5.styleObject, styleObject = void 0 === _ref5$styleObject ? {} : _ref5$styleObject, _ref5$placeholder = _ref5.placeholder, placeholder = void 0 === _ref5$placeholder ? {} : _ref5$placeholder, autoFocusRef = _ref5.autoFocusRef, autocomplete = _ref5.autocomplete, _ref5$gqlErrors = _ref5.gqlErrors, gqlErrors = void 0 === _ref5$gqlErrors ? [] : _ref5$gqlErrors;
         var _useState9 = hooks_module_l(""), number = _useState9[0], setNumber = _useState9[1];
         var _useState10 = hooks_module_l(initFieldValidity), numberValidity = _useState10[0], setNumberValidity = _useState10[1];
         var _getStyles2 = getStyles(styleObject), generalStyle = _getStyles2[0], inputStyle = _getStyles2[1];
@@ -8997,6 +9069,7 @@ window.smartCard = function(modules) {
         }, styleToString(composedStyles)), v(CardNumber, {
             ref: numberRef,
             type: "text",
+            autocomplete: autocomplete,
             className: "number " + (numberValidity.isPotentiallyValid || numberValidity.isValid ? "valid" : "invalid"),
             style: inputStyle,
             placeholder: null != (_placeholder$number2 = placeholder.number) ? _placeholder$number2 : "Card number",
@@ -9011,7 +9084,7 @@ window.smartCard = function(modules) {
     }
     function CardExpiryField(_ref7) {
         var _placeholder$expiry2;
-        var cspNonce = _ref7.cspNonce, onChange = _ref7.onChange, _ref7$styleObject = _ref7.styleObject, styleObject = void 0 === _ref7$styleObject ? {} : _ref7$styleObject, _ref7$placeholder = _ref7.placeholder, placeholder = void 0 === _ref7$placeholder ? {} : _ref7$placeholder, autoFocusRef = _ref7.autoFocusRef, _ref7$gqlErrors = _ref7.gqlErrors, gqlErrors = void 0 === _ref7$gqlErrors ? [] : _ref7$gqlErrors;
+        var cspNonce = _ref7.cspNonce, onChange = _ref7.onChange, _ref7$styleObject = _ref7.styleObject, styleObject = void 0 === _ref7$styleObject ? {} : _ref7$styleObject, _ref7$placeholder = _ref7.placeholder, placeholder = void 0 === _ref7$placeholder ? {} : _ref7$placeholder, autoFocusRef = _ref7.autoFocusRef, autocomplete = _ref7.autocomplete, _ref7$gqlErrors = _ref7.gqlErrors, gqlErrors = void 0 === _ref7$gqlErrors ? [] : _ref7$gqlErrors;
         var _useState11 = hooks_module_l(""), expiry = _useState11[0], setExpiry = _useState11[1];
         var _useState12 = hooks_module_l(initFieldValidity), expiryValidity = _useState12[0], setExpiryValidity = _useState12[1];
         var _getStyles3 = getStyles(styleObject), generalStyle = _getStyles3[0], inputStyle = _getStyles3[1];
@@ -9044,6 +9117,7 @@ window.smartCard = function(modules) {
         }, styleToString(composedStyles)), v(CardExpiry, {
             ref: expiryRef,
             type: "text",
+            autocomplete: autocomplete,
             className: "expiry " + (expiryValidity.isPotentiallyValid || expiryValidity.isValid ? "valid" : "invalid"),
             style: inputStyle,
             placeholder: null != (_placeholder$expiry2 = placeholder.expiry) ? _placeholder$expiry2 : "MM/YY",
@@ -9058,7 +9132,7 @@ window.smartCard = function(modules) {
     }
     function CardCVVField(_ref9) {
         var _placeholder$cvv2;
-        var cspNonce = _ref9.cspNonce, onChange = _ref9.onChange, _ref9$styleObject = _ref9.styleObject, styleObject = void 0 === _ref9$styleObject ? {} : _ref9$styleObject, _ref9$placeholder = _ref9.placeholder, placeholder = void 0 === _ref9$placeholder ? {} : _ref9$placeholder, autoFocusRef = _ref9.autoFocusRef, _ref9$gqlErrors = _ref9.gqlErrors, gqlErrors = void 0 === _ref9$gqlErrors ? [] : _ref9$gqlErrors;
+        var cspNonce = _ref9.cspNonce, onChange = _ref9.onChange, _ref9$styleObject = _ref9.styleObject, styleObject = void 0 === _ref9$styleObject ? {} : _ref9$styleObject, _ref9$placeholder = _ref9.placeholder, placeholder = void 0 === _ref9$placeholder ? {} : _ref9$placeholder, autoFocusRef = _ref9.autoFocusRef, autocomplete = _ref9.autocomplete, _ref9$gqlErrors = _ref9.gqlErrors, gqlErrors = void 0 === _ref9$gqlErrors ? [] : _ref9$gqlErrors;
         var _useState13 = hooks_module_l(""), cvv = _useState13[0], setCvv = _useState13[1];
         var _useState14 = hooks_module_l(initFieldValidity), cvvValidity = _useState14[0], setCvvValidity = _useState14[1];
         var _getStyles4 = getStyles(styleObject), generalStyle = _getStyles4[0], inputStyle = _getStyles4[1];
@@ -9091,6 +9165,7 @@ window.smartCard = function(modules) {
         }, styleToString(composedStyles)), v(CardCVV, {
             ref: cvvRef,
             type: "text",
+            autocomplete: autocomplete,
             className: "cvv " + (cvvValidity.isPotentiallyValid || cvvValidity.isValid ? "valid" : "invalid"),
             style: inputStyle,
             placeholder: null != (_placeholder$cvv2 = placeholder.cvv) ? _placeholder$cvv2 : "CVV",
@@ -9103,9 +9178,56 @@ window.smartCard = function(modules) {
             }
         }));
     }
+    function CardNameField(_ref11) {
+        var _placeholder$name;
+        var cspNonce = _ref11.cspNonce, onChange = _ref11.onChange, _ref11$styleObject = _ref11.styleObject, styleObject = void 0 === _ref11$styleObject ? {} : _ref11$styleObject, _ref11$placeholder = _ref11.placeholder, placeholder = void 0 === _ref11$placeholder ? {} : _ref11$placeholder, autoFocusRef = _ref11.autoFocusRef, _ref11$gqlErrors = _ref11.gqlErrors, gqlErrors = void 0 === _ref11$gqlErrors ? [] : _ref11$gqlErrors;
+        var _useState15 = hooks_module_l(""), name = _useState15[0], setName = _useState15[1];
+        var _useState16 = hooks_module_l(initFieldValidity), nameValidity = _useState16[0], setNameValidity = _useState16[1];
+        var _getStyles5 = getStyles(styleObject), generalStyle = _getStyles5[0], inputStyle = _getStyles5[1];
+        var nameRef = hooks_module_s();
+        var composedStyles = _extends({}, {
+            input: DEFAULT_INPUT_STYLE
+        }, generalStyle);
+        var isValid = nameValidity.isValid, isPotentiallyValid = nameValidity.isPotentiallyValid;
+        hooks_module_y((function() {
+            autoFocusRef(nameRef);
+        }), []);
+        hooks_module_y((function() {
+            gqlErrors.length > 0 && setNameValidity({
+                isPotentiallyValid: !1,
+                isValid: !1
+            });
+        }), [ gqlErrors ]);
+        hooks_module_y((function() {
+            var errors = setErrors({
+                isNameValid: nameValidity.isValid
+            });
+            onChange({
+                value: name,
+                valid: nameValidity.isValid,
+                errors: errors
+            });
+        }), [ name, isValid, isPotentiallyValid ]);
+        return v(preact_module_d, null, v("style", {
+            nonce: cspNonce
+        }, styleToString(composedStyles)), v(CardName, {
+            ref: nameRef,
+            type: "text",
+            className: "name " + (nameValidity.isPotentiallyValid || nameValidity.isValid ? "valid" : "invalid"),
+            style: inputStyle,
+            placeholder: null != (_placeholder$name = placeholder.name) ? _placeholder$name : "Cardholder name",
+            maxLength: "255",
+            onChange: function(_ref12) {
+                return setName(_ref12.cardName);
+            },
+            onValidityChange: function(validity) {
+                return setNameValidity(validity);
+            }
+        }));
+    }
     function Page(_ref) {
         var cspNonce = _ref.cspNonce, props = _ref.props;
-        var facilitatorAccessToken = props.facilitatorAccessToken, style = props.style, placeholder = props.placeholder, type = props.type, onChange = props.onChange, xport = props.export;
+        var facilitatorAccessToken = props.facilitatorAccessToken, style = props.style, disableAutocomplete = props.disableAutocomplete, placeholder = props.placeholder, type = props.type, onChange = props.onChange, xport = props.export;
         var _useState = hooks_module_l(), fieldValue = _useState[0], setFieldValue = _useState[1];
         var _useState2 = hooks_module_l(!1), fieldValid = _useState2[0], setFieldValid = _useState2[1];
         var _useState3 = hooks_module_l([]), fieldErrors = _useState3[0], setFieldErrors = _useState3[1];
@@ -9116,6 +9238,8 @@ window.smartCard = function(modules) {
             expiryField: [],
             cvvField: []
         }), fieldGQLErrors = _useState5[0], setFieldGQLErrors = _useState5[1];
+        var autocomplete;
+        disableAutocomplete && (autocomplete = "off");
         var getFieldValue = function() {
             return fieldValue;
         };
@@ -9125,7 +9249,22 @@ window.smartCard = function(modules) {
         var setGqlErrors = function(errorData) {
             var errors = errorData.errors;
             var errorObject = _extends({}, fieldGQLErrors);
-            "single" === type ? errorObject.singleField = _extends({}, errorData) : "number" === type && errors && errors.length ? errorObject.numberField = [].concat(errors) : "expiry" === type && errors && errors.length ? errorObject.expiryField = [].concat(errors) : "cvv" === type && errors && errors.length && (errorObject.cvvField = [].concat(errors));
+            if ("single" === type) errorObject.singleField = _extends({}, errorData); else if (errors && errors.length) switch (type) {
+              case "number":
+                errorObject.numberField = [].concat(errors);
+                break;
+
+              case "expiry":
+                errorObject.expiryField = [].concat(errors);
+                break;
+
+              case "cvv":
+                errorObject.cvvField = [].concat(errors);
+                break;
+
+              case "name":
+                errorObject.nameField = [].concat(errors);
+            }
             setFieldGQLErrors(errorObject);
         };
         var resetGQLErrors = function() {
@@ -9133,7 +9272,8 @@ window.smartCard = function(modules) {
                 singleField: {},
                 numberField: [],
                 expiryField: [],
-                cvvField: []
+                cvvField: [],
+                nameField: []
             });
         };
         hooks_module_y((function() {
@@ -9179,9 +9319,16 @@ window.smartCard = function(modules) {
                 resetGQLErrors: resetGQLErrors
             });
             xport({
-                submit: function() {
+                submit: function(extraData) {
+                    var extraFields = function(extraData) {
+                        return !extraData || "object" != typeof extraData || Array.isArray(extraData) ? {} : Object.keys(extraData).reduce((function(acc, key) {
+                            VALID_EXTRA_FIELDS.includes(key) && (acc[key] = extraData[key]);
+                            return acc;
+                        }), {});
+                    }(extraData);
                     return submitCardFields({
-                        facilitatorAccessToken: facilitatorAccessToken
+                        facilitatorAccessToken: facilitatorAccessToken,
+                        extraFields: extraFields
                     });
                 }
             });
@@ -9200,6 +9347,7 @@ window.smartCard = function(modules) {
         }, "\n                    * {\n                        box-sizing: border-box;\n                    }\n\n                    html, body {\n                        margin: 0;\n                        padding: 0;\n                        height: 100%;\n                    }\n\n                    body {\n                        display: inline-block;\n                        width: 100%;\n                        font-size: 100%;\n                        font-family: monospace;\n                    }\n\n                    *:focus {\n                        outline: none;\n                    }\n                "), "single" === type ? v(CardField, {
             gqlErrorsObject: fieldGQLErrors.singleField,
             cspNonce: cspNonce,
+            autocomplete: autocomplete,
             onChange: onFieldChange,
             styleObject: style,
             placeholder: placeholder,
@@ -9210,6 +9358,7 @@ window.smartCard = function(modules) {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.numberField,
             cspNonce: cspNonce,
+            autocomplete: autocomplete,
             onChange: onFieldChange,
             styleObject: style,
             placeholder: placeholder,
@@ -9220,6 +9369,7 @@ window.smartCard = function(modules) {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.cvvField,
             cspNonce: cspNonce,
+            autocomplete: autocomplete,
             onChange: onFieldChange,
             styleObject: style,
             placeholder: placeholder,
@@ -9229,6 +9379,17 @@ window.smartCard = function(modules) {
         }) : null, "expiry" === type ? v(CardExpiryField, {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.expiryField,
+            cspNonce: cspNonce,
+            autocomplete: autocomplete,
+            onChange: onFieldChange,
+            styleObject: style,
+            placeholder: placeholder,
+            autoFocusRef: function(ref) {
+                return setRef(ref.current.base);
+            }
+        }) : null, "name" === type ? v(CardNameField, {
+            ref: mainRef,
+            gqlErrors: fieldGQLErrors.nameField,
             cspNonce: cspNonce,
             onChange: onFieldChange,
             styleObject: style,
