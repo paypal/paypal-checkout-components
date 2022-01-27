@@ -26,7 +26,8 @@
         "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
         "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
         "check-size": "npm run webpack-size && bundlemon && npm run delete-size",
-        "delete-size": "rm dist/size.* dist/report.html"
+        "delete-size": "rm dist/size.* dist/report.html",
+        "prettier-scripts": "npx prettier --write ./scripts/"
     },
     "files": [
         "src/",
