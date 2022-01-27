@@ -3,10 +3,10 @@
 # Push and publish!
 git push;
 
-if [ "$release" = 'alpha' ]
+if [ "$tag" = 'alpha' ]
 then
-  npm publish --tag $release;
+  npm publish --tag $tag;
 else
   git push --tags;
-  npm publish;
+  npm publish --tag $tag;
 fi;
