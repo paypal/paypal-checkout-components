@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Determine the type of release, then run through the other version lifecycle scripts
+# This script will determine the type of release based on the git branch. When the default branch is used, it will be a `patch` that's published to npm under the `latest` dist-tag. Any other branch will be a `prelease` that's published to npm under the `alpha` dist-tag.
 bump='patch';
 tag='latest';
 
