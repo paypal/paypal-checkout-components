@@ -1,12 +1,11 @@
 #!/bin/sh
 
 # Push and publish!
-git push;
+git push
 
-if [ "$tag" = 'alpha' ]
-then
-  npm publish --tag $tag;
+if [ "$tag" = 'alpha' ]; then
+  npm publish --tag $tag
 else
-  git push --tags;
-  npm publish --tag $tag;
-fi;
+  git push --tags
+  npm publish --tag $tag
+fi
