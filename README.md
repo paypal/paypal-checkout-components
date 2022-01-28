@@ -12,7 +12,7 @@
 [version-badge]: https://img.shields.io/npm/v/@paypal/smart-payment-buttons.svg?style=flat-square
 [package]: https://www.npmjs.com/package/@paypal/smart-payment-buttons
 [license-badge]: https://img.shields.io/npm/l/@paypal/smart-payment-buttons.svg?style=flat-square
-[license]: https://github.com/paypal/paypal-smart-payment-buttons/blob/master/LICENSE
+[license]: https://github.com/paypal/paypal-smart-payment-buttons/blob/main/LICENSE
 
 Smart Payment Buttons application, including:
 
@@ -23,7 +23,7 @@ Please note: this repo is **not intended as a public entry point into the smart 
 
 - Smart Payment Buttons developer docs: https://developer.paypal.com/docs/checkout/
 - PayPal JavaScript SDK repo (PayPal JavaScript SDK): https://github.com/paypal/paypal-checkout-components
-- Smart Payment Buttons Framework examples: https://github.com/paypal/paypal-checkout-components/tree/master/demo
+- Smart Payment Buttons Framework examples: https://github.com/paypal/paypal-checkout-components/tree/main/demo
 - Smart Payment Buttons Issues: https://github.com/paypal/paypal-checkout-components/issues
 
 ## Development
