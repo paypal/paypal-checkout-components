@@ -348,7 +348,7 @@ export function getOnApproveOrder({ intent, onApprove = getDefaultOnApproveOrder
 
             if (!billingToken && !clientAccessToken && !vault) {
                 if (!payerID && branded) {
-                    getLogger().error('onapprove_payerid_not_present_for_branded_standalone_button', { orderID }).flush();
+                    getLogger().warn('onapprove_payerid_not_present_for_branded_standalone_button', { orderID }).flush();
                 }
             }
 

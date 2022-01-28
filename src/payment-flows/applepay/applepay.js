@@ -408,6 +408,9 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             // For some reason country code comes back as lowercase from Apple
                             if (applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode) {
                                 applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
+                            }
+
+                            if (applePayPayment.billingContact && applePayPayment.billingContact.countryCode) {
                                 applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
                             }
 
