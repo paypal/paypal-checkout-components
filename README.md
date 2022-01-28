@@ -12,7 +12,7 @@
 [version-badge]: https://img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square
 [package]: https://www.npmjs.com/package/@paypal/checkout-components
 [license-badge]: https://img.shields.io/npm/l/@paypal/checkout-components.svg?style=flat-square
-[license]: https://github.com/paypal/paypal-checkout-components/blob/master/LICENSE
+[license]: https://github.com/paypal/paypal-checkout-components/blob/main/LICENSE
 
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
 [zoid](https://github.com/krakenjs/zoid).
@@ -73,7 +73,7 @@ npm run lint -- --fix
 # attempt to automatically fix any problems
 ```
 
-Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/krakenjs/grumbler-scripts/blob/master/config/.eslintrc-browser.js).
+Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/krakenjs/grumbler-scripts/blob/main/config/.eslintrc-browser.js).
 
 ### flow
 
