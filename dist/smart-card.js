@@ -7729,7 +7729,7 @@ window.smartCard = function(modules) {
                         getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                         _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                         _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                        billingToken || clientAccessToken || vault || !payerID && branded && getLogger().error("onapprove_payerid_not_present_for_branded_standalone_button", {
+                        billingToken || clientAccessToken || vault || !payerID && branded && getLogger().warn("onapprove_payerid_not_present_for_branded_standalone_button", {
                             orderID: orderID
                         }).flush();
                         return getSupplementalOrderInfo(orderID).then((function(supplementalData) {

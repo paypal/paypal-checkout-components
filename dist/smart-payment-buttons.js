@@ -7158,7 +7158,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.79", _headers15);
+            _headers15["x-app-version"] = "5.0.80", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7873,7 +7873,7 @@ window.spb = function(modules) {
                             logger_getLogger().info("button_approve").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_approve", 
                             _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                             _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
-                            billingToken || clientAccessToken || vault || !payerID && branded && logger_getLogger().error("onapprove_payerid_not_present_for_branded_standalone_button", {
+                            billingToken || clientAccessToken || vault || !payerID && branded && logger_getLogger().warn("onapprove_payerid_not_present_for_branded_standalone_button", {
                                 orderID: orderID
                             }).flush();
                             return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
@@ -8941,10 +8941,8 @@ window.spb = function(modules) {
                                                 var applePayPayment = _ref10.payment;
                                                 logApplePayEvent("paymentauthorized");
                                                 if (!applePayPayment) throw new Error("No payment received from Apple.");
-                                                if (applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode) {
-                                                    applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
-                                                    applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
-                                                }
+                                                applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode && (applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase());
+                                                applePayPayment.billingContact && applePayPayment.billingContact.countryCode && (applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase());
                                                 (function(orderID, clientID, applePayPayment) {
                                                     return callGraphQL({
                                                         name: "ApproveApplePayPayment",
@@ -13412,7 +13410,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.79", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.80", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
