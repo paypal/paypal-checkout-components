@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/user/bin/bash
 
 # Set up ci server with dependencies
 sudo apt-get update
