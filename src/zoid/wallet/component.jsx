@@ -7,7 +7,7 @@ import {
     getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
     getClientAccessToken, getUserIDToken, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID,
     getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault,
-    getMerchantID, getCSPNonce, getDebug, getMerchantRequestedPopupDisabled
+    getMerchantID, getCSPNonce, getDebug, getMerchantRequestedPopupsDisabled
 } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
@@ -134,10 +134,10 @@ export function getWalletComponent() : WalletComponent {
                     value:     getPartnerAttributionID
                 },
 
-                merchantRequestedPopupDisabled: {
+                merchantRequestedPopupsDisabled: {
                     type:       'boolean',
                     required:   false,
-                    value:      getMerchantRequestedPopupDisabled
+                    value:      getMerchantRequestedPopupsDisabled
                 },
 
                 correlationID: {
