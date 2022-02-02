@@ -43,7 +43,7 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
 
         if (fundingSource === FUNDING.VENMO) {
             // wait for button to load
-        } else if (supportsPopups()) {
+        } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
             if (!win || win.closed) {
                 win = assertSameDomain(popup('', {

@@ -3,10 +3,12 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from 'jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
+import {
+    getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
     getClientAccessToken, getUserIDToken, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID,
     getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault,
-    getMerchantID, getCSPNonce, getDebug } from '@paypal/sdk-client/src';
+    getMerchantID, getCSPNonce, getDebug, getMerchantRequestedPopupsDisabled
+} from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from 'zoid/src';
 import { inlineMemoize, memoize, uniqueID } from 'belter/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
@@ -130,6 +132,12 @@ export function getWalletComponent() : WalletComponent {
                     type:       'string',
                     required:   false,
                     value:     getPartnerAttributionID
+                },
+
+                merchantRequestedPopupsDisabled: {
+                    type:       'boolean',
+                    required:   false,
+                    value:      getMerchantRequestedPopupsDisabled
                 },
 
                 correlationID: {
