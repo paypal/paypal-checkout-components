@@ -91,7 +91,14 @@ for (const config of buttonConfigs) {
             }
 
             if (options.userAgent) {
+                const screenHeight = 667;
+
                 window.navigator.mockUserAgent = options.userAgent;
+                window.outerHeight = screenHeight;
+                window.innerHeight = 553;
+                window.screen = {
+                    screenHeight
+                };
             }
 
             const renderPromise = window.paypal.Buttons(options.button || {}).render(container);

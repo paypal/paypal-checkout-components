@@ -61,7 +61,14 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 done = once(done);
 
                 if (userAgent) {
+                    const screenHeight = 667;
+
                     window.navigator.mockUserAgent = userAgent;
+                    window.outerHeight = screenHeight;
+                    window.innerHeight = 553;
+                    window.screen = {
+                        screenHeight
+                    };
                 }
 
                 const orderID = generateOrderID();
