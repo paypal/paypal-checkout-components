@@ -26,32 +26,32 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
         const cases = [
 
-            {
-                source:   FUNDING.CARD,
-                fragment: 'checkouturl=true'
-            },
+            // {
+            //     source:   FUNDING.CARD,
+            //     fragment: 'checkouturl=true'
+            // },
 
             {
                 source:    FUNDING.VENMO,
                 fragment:  'checkouturl=true',
-                userAgent: IPHONE6_USER_AGENT
+                // userAgent: IPHONE6_USER_AGENT
             },
 
-            {
-                source:   FUNDING.CREDIT,
-                fragment: 'checkouturl=true'
-            },
+            // {
+            //     source:   FUNDING.CREDIT,
+            //     fragment: 'checkouturl=true'
+            // },
 
-            {
-                source:   FUNDING.IDEAL,
-                fragment: 'checkouturl=true',
-                commit:   true
-            },
+            // {
+            //     source:   FUNDING.IDEAL,
+            //     fragment: 'checkouturl=true',
+            //     commit:   true
+            // },
 
-            {
-                source:   FUNDING.SEPA,
-                fragment: 'checkouturl=true'
-            }
+            // {
+            //     source:   FUNDING.SEPA,
+            //     fragment: 'checkouturl=true'
+            // }
 
         ];
 
