@@ -34,8 +34,8 @@ for (const flow of [ 'popup', 'iframe' ]) {
             {
                 source:    FUNDING.VENMO,
                 fragment:  'checkouturl=true',
-                // userAgent: IPHONE6_USER_AGENT
-            },
+                userAgent: IPHONE6_USER_AGENT
+            }
 
             // {
             //     source:   FUNDING.CREDIT,
