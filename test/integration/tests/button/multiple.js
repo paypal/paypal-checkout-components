@@ -26,32 +26,32 @@ for (const flow of [ 'popup', 'iframe' ]) {
 
         const cases = [
 
-            // {
-            //     source:   FUNDING.CARD,
-            //     fragment: 'checkouturl=true'
-            // },
+            {
+                source:   FUNDING.CARD,
+                fragment: 'checkouturl=true'
+            },
 
             {
                 source:    FUNDING.VENMO,
                 fragment:  'checkouturl=true',
                 userAgent: IPHONE6_USER_AGENT
+            },
+
+            {
+                source:   FUNDING.CREDIT,
+                fragment: 'checkouturl=true'
+            },
+
+            {
+                source:   FUNDING.IDEAL,
+                fragment: 'checkouturl=true',
+                commit:   true
+            },
+
+            {
+                source:   FUNDING.SEPA,
+                fragment: 'checkouturl=true'
             }
-
-            // {
-            //     source:   FUNDING.CREDIT,
-            //     fragment: 'checkouturl=true'
-            // },
-
-            // {
-            //     source:   FUNDING.IDEAL,
-            //     fragment: 'checkouturl=true',
-            //     commit:   true
-            // },
-
-            // {
-            //     source:   FUNDING.SEPA,
-            //     fragment: 'checkouturl=true'
-            // }
 
         ];
 
@@ -61,7 +61,14 @@ for (const flow of [ 'popup', 'iframe' ]) {
                 done = once(done);
 
                 if (userAgent) {
+                    const height = 667;
+
                     window.navigator.mockUserAgent = userAgent;
+                    window.outerHeight = height;
+                    window.innerHeight = 553;
+                    window.screen = {
+                        height
+                    };
                 }
 
                 const orderID = generateOrderID();
