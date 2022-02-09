@@ -1,3 +1,9 @@
+## <small>5.0.195 (2022-02-09)</small>
+
+* Fix failing venmo test (#1867) ([1705795](https://github.com/paypal/paypal-checkout-components/commit/1705795)), closes [#1867](https://github.com/paypal/paypal-checkout-components/issues/1867)
+
+
+
 ## <small>5.0.194 (2022-01-26)</small>
 
 * adding partnerattributionid to payment fields (#1841) ([fb26a01](https://github.com/paypal/paypal-checkout-components/commit/fb26a01)), closes [#1841](https://github.com/paypal/paypal-checkout-components/issues/1841)
