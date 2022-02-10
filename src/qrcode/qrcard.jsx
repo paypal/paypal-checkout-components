@@ -117,9 +117,10 @@ function QRCard({
     );
 
     const displaySurvey = survey.isEnabled && state === QRCODE_STATE.DEFAULT;
+    const displayEscapePath = !survey.isEnabled && state === QRCODE_STATE.DEFAULT;
 
     const content = displaySurvey ? surveyElement : frontView;
-    const escapePathFooter = !survey.isEnabled && (
+    const escapePathFooter = displayEscapePath && (
         <p className="escape-path">Don&apos;t have the app? Pay with <span className="escape-path__link" onClick={ () => handleClick(FUNDING.PAYPAL) }>PayPal</span> or <span className="escape-path__link" onClick={ () => handleClick(FUNDING.CARD) }>Credit/Debit card</span></p>
     );
 
