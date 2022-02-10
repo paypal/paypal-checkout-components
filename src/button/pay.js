@@ -6,7 +6,7 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { applepay, checkout, cardField, cardForm, native, brandedVaultCard, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { getLogger, sendBeacon } from '../lib';
-import { FPTI_TRANSITION, BUYER_INTENT, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
+import { AMPLITUDE_KEY, FPTI_TRANSITION, BUYER_INTENT, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
 import { updateButtonClientConfig } from '../api';
 import { getConfirmOrder } from '../props/confirmOrder';
 import { enableVaultSetup } from '../middleware';
@@ -94,10 +94,12 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             .info(`button_click_instrument_${ instrumentType || 'default' }`)
             .addTrackingBuilder(() => {
                 return {
-                    [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
-                    [FPTI_KEY.CONTEXT_TYPE]:   FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
-                    [FPTI_KEY.CONTEXT_ID]:     buttonSessionID,
-                    [FPTI_KEY.TOKEN]:          null
+                    [FPTI_KEY.CHOSEN_FUNDING]:     fundingSource,
+                    [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
+                    [FPTI_KEY.CONTEXT_ID]:         buttonSessionID,
+                    [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                    [AMPLITUDE_KEY.USER_ID]:       buttonSessionID,
+                    [FPTI_KEY.TOKEN]:              null
                 };
             })
             .track({
