@@ -113,7 +113,7 @@ function getEligibility({ fundingSource, props, serviceData, sfvc, validatePromi
             return false;
         }
 
-        if (sfvc) {
+        if (sfvc && fundingSource !== FUNDING.VENMO) {
             return false;
         }
 
