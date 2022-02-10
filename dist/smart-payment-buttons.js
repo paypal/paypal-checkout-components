@@ -1170,9 +1170,6 @@ window.spb = function(modules) {
             __webpack_require__.d(__webpack_exports__, "appendChild", (function() {
                 return appendChild;
             }));
-            __webpack_require__.d(__webpack_exports__, "isElement", (function() {
-                return isElement;
-            }));
             __webpack_require__.d(__webpack_exports__, "getElementSafe", (function() {
                 return getElementSafe;
             }));
@@ -1298,6 +1295,9 @@ window.spb = function(modules) {
             }));
             __webpack_require__.d(__webpack_exports__, "getStorage", (function() {
                 return getStorage;
+            }));
+            __webpack_require__.d(__webpack_exports__, "isElement", (function() {
+                return isElement;
             }));
             __webpack_require__.d(__webpack_exports__, "getFunctionName", (function() {
                 return getFunctionName;
@@ -1763,7 +1763,7 @@ window.spb = function(modules) {
                         if (1 !== scale) return !0;
                         device = sfvcScreens[window.outerHeight];
                     }
-                    return !!device && (scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight) || -1 !== device.textSizeHeightsNoTabs.indexOf(computedHeight));
+                    return !device || (scale > 1 && device.zoomHeight && device.zoomHeight[scale] ? -1 !== device.zoomHeight[scale].indexOf(computedHeight) : -1 !== device.textSizeHeights.indexOf(computedHeight) || -1 !== device.textSizeHeightsNoTabs.indexOf(computedHeight));
                 }
                 return !1;
             }
@@ -2517,6 +2517,13 @@ window.spb = function(modules) {
                     return _setPrototypeOf(Wrapper, Class);
                 })(Class);
             }
+            function isElement(element) {
+                var passed = !1;
+                try {
+                    (element instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument) && (passed = !0);
+                } catch (_) {}
+                return passed;
+            }
             function getFunctionName(fn) {
                 return fn.name || fn.__name__ || fn.displayName || "anonymous";
             }
@@ -2568,7 +2575,7 @@ window.spb = function(modules) {
             function serializeArgs(args) {
                 try {
                     return JSON.stringify([].slice.call(args), (function(subkey, val) {
-                        return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
+                        return "function" == typeof val ? "memoize[" + getObjectID(val) + "]" : isElement(val) ? {} : val;
                     }));
                 } catch (err) {
                     throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -3397,9 +3404,6 @@ window.spb = function(modules) {
             }
             function appendChild(container, child) {
                 container.appendChild(child);
-            }
-            function isElement(element) {
-                return element instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument;
             }
             function getElementSafe(id, doc) {
                 void 0 === doc && (doc = document);
@@ -5792,7 +5796,13 @@ window.spb = function(modules) {
                             objectIDs.set(obj, uid);
                         }
                         return uid;
-                    }(val) + "]" : "undefined" != typeof window && val instanceof window.Element || null !== val && "object" == typeof val && 1 === val.nodeType && "object" == typeof val.style && "object" == typeof val.ownerDocument ? {} : val;
+                    }(val) + "]" : function(element) {
+                        var passed = !1;
+                        try {
+                            (element instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument) && (passed = !0);
+                        } catch (_) {}
+                        return passed;
+                    }(val) ? {} : val;
                 }));
             } catch (err) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
@@ -7158,7 +7168,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.80", _headers15);
+            _headers15["x-app-version"] = "5.0.81", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -8946,7 +8956,7 @@ window.spb = function(modules) {
                                                 (function(orderID, clientID, applePayPayment) {
                                                     return callGraphQL({
                                                         name: "ApproveApplePayPayment",
-                                                        query: "\n            mutation ApproveApplePayPayment(\n                $token: ApplePayPaymentToken!\n                $orderID: String!\n                $clientID : String!\n                $billingContact: ApplePayPaymentContact!\n                $shippingContact: ApplePayPaymentContact!\n            ) {\n                approveApplePayPayment(\n                    token: $token\n                    orderID: $orderID\n                    clientID: $clientID\n                    billingContact: $billingContact\n                    shippingContact: $shippingContact\n                )\n            }\n        ",
+                                                        query: "\n            mutation ApproveApplePayPayment(\n                $token: ApplePayPaymentToken!\n                $orderID: String!\n                $clientID : String!\n                $billingContact: ApplePayPaymentContact!\n                $shippingContact: ApplePayPaymentContact\n            ) {\n                approveApplePayPayment(\n                    token: $token\n                    orderID: $orderID\n                    clientID: $clientID\n                    billingContact: $billingContact\n                    shippingContact: $shippingContact\n                )\n            }\n        ",
                                                         variables: {
                                                             token: applePayPayment.token,
                                                             orderID: orderID,
@@ -11520,7 +11530,7 @@ window.spb = function(modules) {
                 }({
                     fundingSource: fundingSource,
                     appDetect: appDetect
-                }) && !sfvc && createOrder().then((function(orderID) {
+                }) && (!sfvc || "venmo" === fundingSource) && createOrder().then((function(orderID) {
                     return getNativeEligibility({
                         vault: vault,
                         platform: platform,
@@ -12611,7 +12621,8 @@ window.spb = function(modules) {
                 })).info("button_click").info("button_click_pay_flow_" + name).info("button_click_fundingsource_" + fundingSource).info("button_click_instrument_" + (instrumentType || "default")).addTrackingBuilder((function() {
                     var _ref5;
                     return (_ref5 = {}).selected_payment_method = fundingSource, _ref5.context_type = "button_session_id", 
-                    _ref5.context_id = buttonSessionID, _ref5.token = null, _ref5;
+                    _ref5.context_id = buttonSessionID, _ref5.button_session_id = buttonSessionID, _ref5.user_id = buttonSessionID, 
+                    _ref5.token = null, _ref5;
                 })).track((_getLogger$addPayload = {}, _getLogger$addPayload.transition_name = "process_button_click", 
                 _getLogger$addPayload.chosen_fi_type = instrumentType, _getLogger$addPayload.payment_flow = name, 
                 _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload.info_msg = enableNativeCheckout ? "tester" : "", 
@@ -13410,7 +13421,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.80", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.81", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
