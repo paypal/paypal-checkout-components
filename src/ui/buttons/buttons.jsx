@@ -189,6 +189,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
             <Script
                 personalizations={ personalizations }
+                style={ style }
                 nonce={ nonce }
             />
         </div>

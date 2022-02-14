@@ -29,7 +29,25 @@ const personalizations = {
     buttonDesign: {
         treatments: {
             '["TRUE"]': {
-                divideLogoAnimation: 1
+                divideLogoAnimation:     1,
+                inlineLogoMessageDesign: 0
+            }
+        },
+        tracking:   {
+            context:   '',
+            treatment: '',
+            metric:    ''
+        }
+    },
+    smallButtonDesign: {
+        treatments: {
+            '["TRUE"]': {
+                revealMessageTabAnimation:      1,
+                fadeMessageAnimation:           0,
+                halfLogoMessageAnimation:       0,
+                stackLogoMessageAnimation:      0,
+                alternateLogoMessageAnimation:  0,
+                hoverAlternateMessageAnimation: 0
             }
         },
         tracking:   {

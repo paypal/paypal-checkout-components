@@ -4,6 +4,8 @@
 import { node, type ElementNode } from 'jsx-pragmatic/src';
 import type { Personalization } from '@paypal/personalization/src';
 
+import { type ButtonStyleInputs } from './props';
+
 export function getComponentScript() : () => void {
 
     /* istanbul ignore next */
@@ -168,10 +170,11 @@ export function getComponentScript() : () => void {
 
 type ScriptProps = {|
     nonce : ?string,
-    personalizations? : ?$ReadOnlyArray<Personalization>
+    personalizations? : ?$ReadOnlyArray<Personalization>,
+    style? : ButtonStyleInputs | void
 |};
 
-export function Script({ nonce, personalizations = [] } : ScriptProps) : ElementNode {
+export function Script({ nonce, personalizations = [], style = {} } : ScriptProps) : ElementNode {
     const scripts = `
         const scriptFns = ${ getComponentScript().toString() };
         scriptFns();
@@ -182,7 +185,12 @@ export function Script({ nonce, personalizations = [] } : ScriptProps) : Element
         , ''
     );
 
+    const buttonStyle = `{
+        color: '${ style.color || 'gold' }',
+        shape: '${ style.shape || 'rect' }'
+    }`;
+
     return (
-        <script nonce={ nonce } innerHTML={  `(function(){ ${ scripts } ${ personalizationScripts || '' }})()` } />
+        <script nonce={ nonce } innerHTML={  `(function(__STYLE__){ ${ scripts } ${ personalizationScripts || '' }})(${ buttonStyle })` } />
     );
 }

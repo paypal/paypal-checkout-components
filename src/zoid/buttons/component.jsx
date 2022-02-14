@@ -410,8 +410,16 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             tagline
                         }
                     } = props;
+            
 
-                    return eligiblePersonalizations({ personalizations, props: { style: { tagline } } });
+                    return eligiblePersonalizations({
+                        personalizations,
+                        props: {
+                            style: {
+                                tagline
+                            }
+                        }
+                    });
                 }
             },
 
