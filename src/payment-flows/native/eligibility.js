@@ -137,7 +137,7 @@ export function canUseNativeQRCode({ fundingSource, win } : {| fundingSource : ?
 export function isNativeEligible({ props, config, serviceData } : IsEligibleOptions) : boolean {
     const { clientID, fundingSource, onShippingChange, createBillingAgreement, createSubscription, env, platform } = props;
     const { firebase: firebaseConfig } = config;
-    const { merchantID, fundingEligibility } = serviceData;
+    const { cookies, merchantID, fundingEligibility } = serviceData;
     const isVenmoEligible = fundingEligibility?.venmo?.eligible;
 
     if (!firebaseConfig) {
@@ -159,6 +159,10 @@ export function isNativeEligible({ props, config, serviceData } : IsEligibleOpti
     
     if (isNativeOptedIn({ props })) {
         return true;
+    }
+
+    if (!cookies && fundingSource === FUNDING.PAYPAL) {
+        return false;
     }
 
     if (!supportsPopups()) {

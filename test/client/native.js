@@ -253,7 +253,8 @@ const setupNativeButton = () => {
         eligibility: {
             cardFields: false,
             native:     true
-        }
+        },
+        cookies: 's@paypal.com'
     });
 };
 
