@@ -11,9 +11,9 @@ if [ "$current_branch" != "$default_branch" ]
 then
   bump='prerelease';
   tag='alpha';
+  export tag;
   npm --no-git-tag-version version $bump --preid=$tag;
 else
+  export tag;
   npm version $bump;
 fi;
-
-export tag;
