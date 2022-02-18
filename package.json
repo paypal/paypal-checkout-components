@@ -77,13 +77,13 @@
         "sync-browser-mocks": "^2.0.8"
     },
     "dependencies": {
+        "@krakenjs/cross-domain-utils": "^3.0.2",
         "@paypal/common-components": "^1.0.16",
         "@paypal/funding-components": "^1.0.17",
         "@paypal/sdk-client": "^4.0.156",
         "@paypal/sdk-constants": "^1.0.107",
         "@paypal/sdk-logos": "^1.0.26",
         "belter": "^1.0.2",
-        "cross-domain-utils": "^2.0.1",
         "jsx-pragmatic": "^2",
         "post-robot": "^10.0.0",
         "zalgo-promise": "^1.0.10",

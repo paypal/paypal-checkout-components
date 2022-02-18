@@ -5,7 +5,7 @@
 import { LANG } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { inlineMemoize } from 'belter/src';
 import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard, getPayPalDomain } from '@paypal/sdk-client/src';
 
