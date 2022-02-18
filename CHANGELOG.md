@@ -1,3 +1,9 @@
+## <small>5.0.196 (2022-02-18)</small>
+
+* use new kraken org prefix for cross-domain-utils (#1875) ([0672f8f](https://github.com/paypal/paypal-checkout-components/commit/0672f8f)), closes [#1875](https://github.com/paypal/paypal-checkout-components/issues/1875)
+
+
+
 ## <small>5.0.195 (2022-02-09)</small>
 
 * Fix failing venmo test (#1867) ([1705795](https://github.com/paypal/paypal-checkout-components/commit/1705795)), closes [#1867](https://github.com/paypal/paypal-checkout-components/issues/1867)
