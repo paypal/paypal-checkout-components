@@ -4,7 +4,7 @@
 import { node, dom, type ChildType } from 'jsx-pragmatic/src';
 import { FUNDING, CARD, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { popup, supportsPopups, writeElementToWindow } from 'belter/src';
-import { assertSameDomain, type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 import { getLogger } from '@paypal/sdk-client/src';
 import type { ZoidProps } from 'zoid/src';

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { isSameDomain } from '@krakenjs/cross-domain-utils/src';
+import { isSameDomain } from 'cross-domain-utils/src';
 import { supportsPopups } from 'belter/src';
 import { isPayPalDomain } from '@paypal/sdk-client/src';
 

@@ -7,7 +7,7 @@ import { type OrderCreateRequest, type FundingEligibilityType,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
 import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
-import { type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import { type CrossDomainWindowType } from 'cross-domain-utils/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
