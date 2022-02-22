@@ -1,5 +1,5 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement } from 'belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled } from 'belter/src';
 import { ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
@@ -138,7 +138,13 @@ export function getNoPaylaterExperiment(fundingSource : ?$Values<typeof FUNDING>
 
 export function getVenmoAppLabelExperiment() : EligibilityExperiment  {
     const isEnvForTest = getEnv() === ENV.LOCAL || getEnv() === ENV.TEST || getEnv() === ENV.STAGE;
-    const isEnabledForTest = isEnvForTest ? window.localStorage.getItem('enable_venmo_app_label') : false;
+
+    let isEnabledForTest = false;
+
+    if (isLocalStorageEnabled() && isEnvForTest) {
+        isEnabledForTest = window.localStorage.getItem('enable_venmo_app_label');
+    }
+
     return {
         enableVenmoAppLabel: isEnabledForTest
     };
