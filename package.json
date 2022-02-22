@@ -96,6 +96,6 @@
         "zoid": "^9.0.0"
     },
     "lint-staged": {
-        "*./scripts/": "prettier --write"
+        "*.sh": "prettier --write"
     }
 }
