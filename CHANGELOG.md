@@ -1,3 +1,9 @@
+## <small>5.0.198 (2022-02-22)</small>
+
+* chore(release): 5.0.197 🎉 ([47eecc1](https://github.com/paypal/paypal-checkout-components/commit/47eecc1))
+
+
+
 ## <small>5.0.197 (2022-02-22)</small>
 
 * Revert "use new kraken org prefix for cross-domain-utils (#1875)" (#1879) ([35f3860](https://github.com/paypal/paypal-checkout-components/commit/35f3860)), closes [#1875](https://github.com/paypal/paypal-checkout-components/issues/1875) [#1879](https://github.com/paypal/paypal-checkout-components/issues/1879)
