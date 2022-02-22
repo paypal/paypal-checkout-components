@@ -5,7 +5,7 @@
 import { node, dom } from 'jsx-pragmatic/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import type { CrossDomainWindowType } from 'cross-domain-utils/src';
 import { memoize, uniqueID } from 'belter/src';
 import { getLocale, getEnv, getSDKMeta, getDisableCard, getPayPalDomain, getClientID, getDebug, getCurrency, getIntent,
     getCommit, getVault } from '@paypal/sdk-client/src';

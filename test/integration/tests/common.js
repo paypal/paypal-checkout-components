@@ -3,7 +3,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
-import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
 import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from '@paypal/sdk-client/src';
 import { extendUrl, getElement, uniqueID, createElement, destroyElement, stringify } from 'belter/src';
 import { SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
