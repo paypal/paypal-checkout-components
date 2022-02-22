@@ -1,3 +1,9 @@
+## <small>5.0.197 (2022-02-22)</small>
+
+* Revert "use new kraken org prefix for cross-domain-utils (#1875)" (#1879) ([35f3860](https://github.com/paypal/paypal-checkout-components/commit/35f3860)), closes [#1875](https://github.com/paypal/paypal-checkout-components/issues/1875) [#1879](https://github.com/paypal/paypal-checkout-components/issues/1879)
+
+
+
 ## <small>5.0.196 (2022-02-18)</small>
 
 * use new kraken org prefix for cross-domain-utils (#1875) ([0672f8f](https://github.com/paypal/paypal-checkout-components/commit/0672f8f)), closes [#1875](https://github.com/paypal/paypal-checkout-components/issues/1875)
