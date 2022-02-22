@@ -7,13 +7,12 @@ tag='latest'
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
 
-if [ "$current_branch" != "$default_branch" ]
-then
-  bump='prerelease';
-  tag='alpha';
-  export tag;
-  npm --no-git-tag-version version $bump --preid=$tag;
+if [ "$current_branch" != "$default_branch" ]; then
+  bump='prerelease'
+  tag='alpha'
+  export tag
+  npm --no-git-tag-version version $bump --preid=$tag
 else
-  export tag;
-  npm version $bump;
-fi;
+  export tag
+  npm version $bump
+fi
