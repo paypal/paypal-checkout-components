@@ -2,8 +2,10 @@
 /** @jsx node */
 
 import { node, type ElementNode } from 'jsx-pragmatic/src';
-import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
-import { noop } from 'belter/src';
+import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { noop, isLocalStorageEnabled } from 'belter/src';
+import { getLogger } from '@paypal/sdk-client/src';
+
 
 import type { Wallet, WalletInstrument } from '../../types';
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constants';
@@ -99,8 +101,17 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
-        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser, buttonSessionID } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
+
+    if (!isLocalStorageEnabled()) {
+        getLogger().info('localstoage_inaccessible_possible_private_browsing').track({
+            [ FPTI_KEY.BUTTON_SESSION_UID ]: buttonSessionID,
+            [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
+            [ FPTI_KEY.CONTEXT_ID ]:         buttonSessionID,
+            [ FPTI_KEY.TRANSITION ]:         'localstoage_inaccessible_possible_private_browsing'
+        }).flush();
+    }
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
