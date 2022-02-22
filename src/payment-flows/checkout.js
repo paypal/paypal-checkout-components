@@ -91,12 +91,20 @@ function isConnectEligible({ connect, vault, fundingSource, createBillingAgreeme
     return true;
 }
 
-function getContext({ win, isClick } : {| win : ?(CrossDomainWindowType | ProxyWindow), isClick : ?boolean |}) : $Values<typeof CONTEXT> {
-    if (win) {
+function getContext({ win, isClick, merchantRequestedPopupsDisabled } : {| win : ?(CrossDomainWindowType | ProxyWindow), isClick : ?boolean, merchantRequestedPopupsDisabled : ?boolean |}) : $Values<typeof CONTEXT> {
+
+    const popupSupported = supportsPopups();
+    getLogger().info('spb_decide_context', {
+        merchantRequestedPopupsDisabled: Boolean(merchantRequestedPopupsDisabled),
+        isClick:                         Boolean(isClick),
+        popupSupported:                  Boolean(popupSupported)
+    });
+
+    if (!merchantRequestedPopupsDisabled && win) {
         return CONTEXT.POPUP;
     }
 
-    if (isClick && supportsPopups()) {
+    if (!merchantRequestedPopupsDisabled && isClick && popupSupported) {
         return CONTEXT.POPUP;
     }
 
@@ -120,13 +128,13 @@ function initCheckout({ props, components, serviceData, payment, config, restart
         createBillingAgreement, createSubscription, onClick, amount,
         clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
         currency, enableFunding, stickinessID,
-        standaloneFundingSource, branded, paymentMethodToken, allowBillingPayments } = props;
+        standaloneFundingSource, branded, paymentMethodToken, allowBillingPayments, merchantRequestedPopupsDisabled } = props;
     let { button, win, fundingSource, card, isClick, buyerAccessToken = serviceData.buyerAccessToken,
         venmoPayloadID, buyerIntent } = payment;
     const { buyerCountry, sdkMeta, merchantID } = serviceData;
     const { cspNonce } = config;
 
-    let context = getContext({ win, isClick });
+    let context = getContext({ win, isClick, merchantRequestedPopupsDisabled });
     const connectEligible = isConnectEligible({ connect, createBillingAgreement, createSubscription, vault, fundingSource });
 
     let approved = false;
@@ -312,7 +320,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
 
     const click = () => {
         return ZalgoPromise.try(() => {
-            if (!win && supportsPopups()) {
+            if (!merchantRequestedPopupsDisabled && !win && supportsPopups()) {
                 try {
                     const { width, height } = getDimensions(fundingSource);
                     win = openPopup({ width, height });
