@@ -50,7 +50,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
                     [ FPTI_KEY.CONTEXT_ID ]:         buttonSessionID,
                     [ FPTI_KEY.TRANSITION ]:         'localstorage_inaccessible_possible_private_browsing'
-                }).flush();
+                });
             }
 
             return (
