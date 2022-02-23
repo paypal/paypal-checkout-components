@@ -790,63 +790,6 @@ export function updateButtonClientConfig({ orderID, fundingSource, inline = fals
     });
 }
 
-type PayWithPaymentMethodTokenOptions = {|
-    orderID : string,
-    paymentMethodToken : string,
-    clientID : string,
-    branded : boolean,
-    buttonSessionID : string,
-    clientMetadataID : string
-|};
-
-export function payWithPaymentMethodToken({ orderID, paymentMethodToken, clientID, branded, buttonSessionID, clientMetadataID } : PayWithPaymentMethodTokenOptions) : ZalgoPromise<ApproveData> {
-    getLogger().info(`pay_with_payment_method_token_input_params`, { orderID, paymentMethodToken, clientID, branded, buttonSessionID });
-    return callGraphQL({
-        name:  'approvePaymentWithNonce',
-        query: `
-            mutation ApprovePaymentWithNonce(
-                $orderID : String!
-                $clientID : String!
-                $paymentMethodToken: String!
-                $branded: Boolean!
-                $buttonSessionID: String
-            ) {
-                approvePaymentWithNonce(
-                    token: $orderID
-                    clientID: $clientID
-                    paymentMethodNonce: $paymentMethodToken
-                    branded: $branded
-                    buttonSessionID: $buttonSessionID
-                ) {
-                    buyer {
-                        userId
-                        auth {
-                            accessToken
-                        }
-                    }
-                }
-            }
-        `,
-        variables: {
-            orderID,
-            clientID,
-            paymentMethodToken,
-            branded,
-            buttonSessionID
-        },
-        headers: {
-            [ HEADERS.CLIENT_CONTEXT ]:     orderID,
-            [ HEADERS.CLIENT_METADATA_ID ]: clientMetadataID
-        }
-    }).then(({ approvePaymentWithNonce }) => {
-        getLogger().info('pay_with_paymentMethodNonce', approvePaymentWithNonce?.buyer?.userId);
-        setBuyerAccessToken(approvePaymentWithNonce?.buyer?.auth?.accessToken);
-        return {
-            payerID: approvePaymentWithNonce.buyer.userId
-        };
-    });
-}
-
 type TokenizeCardOptions = {|
     card : {|
         number : string,

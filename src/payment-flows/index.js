@@ -8,5 +8,4 @@ export * from './vault-capture';
 export * from './wallet-capture';
 export * from './native';
 export * from './popup-bridge';
-export * from './branded-vault-card';
 export * from './types';
