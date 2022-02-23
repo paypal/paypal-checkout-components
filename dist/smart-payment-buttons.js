@@ -6862,9 +6862,6 @@ window.spb = function(modules) {
             return getSDKStorage().isStateFresh();
         }
         var session_buyerAccessToken;
-        function setBuyerAccessToken(token) {
-            session_buyerAccessToken = token;
-        }
         function getPostRobot() {
             var paypal = function() {
                 if (!window.paypal) throw new Error("paypal not found");
@@ -7168,7 +7165,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.81", _headers15);
+            _headers15["x-app-version"] = "5.0.82", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7560,7 +7557,7 @@ window.spb = function(modules) {
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
             var xprops = window.xprops;
-            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, merchantRequestedPopupsDisabled = xprops.merchantRequestedPopupsDisabled, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow, allowBillingPayments = xprops.allowBillingPayments;
             var onInit = function(_ref) {
@@ -8418,6 +8415,7 @@ window.spb = function(modules) {
                 currency: currency,
                 intent: intent,
                 wallet: wallet,
+                merchantRequestedPopupsDisabled: merchantRequestedPopupsDisabled,
                 getPopupBridge: getPopupBridge,
                 getPrerenderDetails: getPrerenderDetails,
                 getPageUrl: getPageUrl,
@@ -9285,15 +9283,24 @@ window.spb = function(modules) {
             init: function initCheckout(_ref5) {
                 var props = _ref5.props, components = _ref5.components, serviceData = _ref5.serviceData, payment = _ref5.payment, config = _ref5.config, fullRestart = _ref5.restart;
                 var Checkout = components.Checkout;
-                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded, paymentMethodToken = props.paymentMethodToken, allowBillingPayments = props.allowBillingPayments;
+                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded, paymentMethodToken = props.paymentMethodToken, allowBillingPayments = props.allowBillingPayments, merchantRequestedPopupsDisabled = props.merchantRequestedPopupsDisabled;
                 var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
                 var buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta, merchantID = serviceData.merchantID;
                 var cspNonce = config.cspNonce;
-                var context = (_ref4 = {
+                var context = function(_ref4) {
+                    var win = _ref4.win, isClick = _ref4.isClick, merchantRequestedPopupsDisabled = _ref4.merchantRequestedPopupsDisabled;
+                    var popupSupported = supportsPopups();
+                    logger_getLogger().info("spb_decide_context", {
+                        merchantRequestedPopupsDisabled: Boolean(merchantRequestedPopupsDisabled),
+                        isClick: Boolean(isClick),
+                        popupSupported: Boolean(popupSupported)
+                    });
+                    return !merchantRequestedPopupsDisabled && win || !merchantRequestedPopupsDisabled && isClick && popupSupported ? "popup" : "iframe";
+                }({
                     win: win,
-                    isClick: payment.isClick
-                }).win || _ref4.isClick && supportsPopups() ? "popup" : "iframe";
-                var _ref4;
+                    isClick: payment.isClick,
+                    merchantRequestedPopupsDisabled: merchantRequestedPopupsDisabled
+                });
                 var connectEligible = function(_ref3) {
                     var fundingSource = _ref3.fundingSource;
                     return !(!_ref3.connect || _ref3.vault || "paypal" !== fundingSource && "credit" !== fundingSource || _ref3.createBillingAgreement || _ref3.createSubscription);
@@ -9427,7 +9434,7 @@ window.spb = function(modules) {
                             if (void 0 === _ref7$approveOnClose || !_ref7$approveOnClose) {
                                 approved = !0;
                                 logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
-                                setBuyerAccessToken(buyerAccessToken);
+                                session_buyerAccessToken = buyerAccessToken;
                                 return _onApprove({
                                     payerID: payerID,
                                     paymentID: paymentID,
@@ -9517,7 +9524,7 @@ window.spb = function(modules) {
                 return {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
-                            if (!win && supportsPopups()) try {
+                            if (!merchantRequestedPopupsDisabled && !win && supportsPopups()) try {
                                 var _getDimensions = getDimensions(fundingSource);
                                 win = function(_ref) {
                                     var _ref$closeOnUnload = _ref.closeOnUnload;
@@ -9895,8 +9902,8 @@ window.spb = function(modules) {
                                     var restart = function() {
                                         throw new Error("Restart not implemented for card fields flow");
                                     };
-                                    return intent === sdk_constants.INTENT.TOKENIZE ? function(_ref25) {
-                                        var card = _ref25.card;
+                                    return intent === sdk_constants.INTENT.TOKENIZE ? function(_ref23) {
+                                        var card = _ref23.card;
                                         return promise_ZalgoPromise.try((function() {
                                             console.info("Card Tokenize GQL mutation not yet implemented", {
                                                 card: card
@@ -9920,7 +9927,7 @@ window.spb = function(modules) {
                                             securityCode: card.cvv
                                         }, extraFields);
                                         card.name && (cardObject.name = card.name);
-                                        return (_ref26 = {
+                                        return (_ref24 = {
                                             card: cardObject,
                                             orderID: orderID,
                                             vault: vault,
@@ -9930,10 +9937,10 @@ window.spb = function(modules) {
                                             name: "ProcessPayment",
                                             query: '\n            mutation ProcessPayment(\n                $orderID: String!\n                $clientID: String!\n                $card: CardInput!\n                $branded: Boolean!\n            ) {\n                processPayment(\n                    clientID: $clientID\n                    paymentMethod: { type: CARD, card: $card }\n                    branded: $branded\n                    orderID: $orderID\n                    buttonSessionID: "f7r7367r4"\n                )\n            }\n        ',
                                             variables: {
-                                                orderID: _ref26.orderID,
-                                                clientID: _ref26.clientID,
-                                                card: _ref26.card,
-                                                branded: _ref26.branded
+                                                orderID: _ref24.orderID,
+                                                clientID: _ref24.clientID,
+                                                card: _ref24.card,
+                                                branded: _ref24.branded
                                             },
                                             returnErrorObject: !0
                                         }).then((function(gqlResult) {
@@ -10010,7 +10017,7 @@ window.spb = function(modules) {
                                                 errors: errors
                                             };
                                         }));
-                                        var _ref26;
+                                        var _ref24;
                                     })).then((function() {
                                         return onApprove({
                                             payerID: uniqueID(),
@@ -12023,10 +12030,6 @@ window.spb = function(modules) {
         }
         var native_clean;
         var parentPopupBridge;
-        function branded_vault_card_getClientMetadataID(_ref) {
-            var props = _ref.props;
-            return props.clientMetadataID || props.sessionID;
-        }
         function isValidMerchantIDs(merchantIDs, payees) {
             if (merchantIDs.length !== payees.length) return !1;
             var merchantEmails = [];
@@ -12076,145 +12079,7 @@ window.spb = function(modules) {
             newMenu.renderTo(window.xprops.getParent(), "#" + containerUID + " #smart-menu");
             return menu_menu = newMenu;
         }
-        var PAYMENT_FLOWS = [ {
-            name: "nonce",
-            setup: function(_ref2) {
-                var props = _ref2.props;
-                var env = props.env;
-                var cspNonce = _ref2.config.cspNonce;
-                var clientMetadataID = branded_vault_card_getClientMetadataID({
-                    props: props
-                });
-                loadFraudnet({
-                    env: env,
-                    clientMetadataID: clientMetadataID,
-                    cspNonce: cspNonce
-                }).catch(src_util_noop);
-            },
-            isEligible: function(_ref3) {
-                var _wallet$card;
-                var props = _ref3.props;
-                var paymentMethodToken = props.paymentMethodToken, branded = props.branded;
-                var wallet = _ref3.serviceData.wallet;
-                var instrument = null == wallet || null == (_wallet$card = wallet.card) ? void 0 : _wallet$card.instruments.filter((function(_ref4) {
-                    return _ref4.tokenID === paymentMethodToken;
-                }))[0];
-                return !!(paymentMethodToken && wallet && instrument && branded && 0 !== wallet.card.instruments.length && wallet.card.instruments.some((function(item) {
-                    return item.tokenID && item.branded;
-                })));
-            },
-            isPaymentEligible: function(_ref5) {
-                var _wallet$card2;
-                var payment = _ref5.payment;
-                var branded = _ref5.props.branded;
-                var wallet = _ref5.serviceData.wallet;
-                var fundingSource = payment.fundingSource, paymentMethodID = payment.paymentMethodID;
-                var instrument = null == wallet || null == (_wallet$card2 = wallet.card) ? void 0 : _wallet$card2.instruments.filter((function(_ref6) {
-                    return _ref6.tokenID === paymentMethodID;
-                }))[0];
-                return !!instrument && "card" === fundingSource && !(!branded || !instrument.branded) && !(null == instrument || !instrument.tokenID);
-            },
-            init: function(_ref8) {
-                var _wallet$card3;
-                var props = _ref8.props, components = _ref8.components, payment = _ref8.payment, serviceData = _ref8.serviceData, config = _ref8.config, fullRestart = _ref8.restart;
-                var createOrder = props.createOrder, onApprove = props.onApprove, clientID = props.clientID, branded = props.branded, buttonSessionID = props.buttonSessionID;
-                var wallet = serviceData.wallet;
-                var paymentMethodID = payment.paymentMethodID;
-                var clientMetadataID = branded_vault_card_getClientMetadataID({
-                    props: props
-                });
-                var instrument = null == wallet || null == (_wallet$card3 = wallet.card) ? void 0 : _wallet$card3.instruments.filter((function(_ref9) {
-                    return _ref9.tokenID === paymentMethodID;
-                }))[0];
-                var paymentMethodToken = null == instrument ? void 0 : instrument.tokenID;
-                if (!paymentMethodToken) {
-                    logger_getLogger().info("branded_vault_card_payment_failed");
-                    throw new Error("PAY_WITH_DIFFERENT_CARD");
-                }
-                var restart = function() {
-                    return function() {
-                        logger_getLogger().info("web_checkout_fallback").flush();
-                        return checkout.init({
-                            props: props,
-                            components: components,
-                            serviceData: serviceData,
-                            payment: payment,
-                            config: config,
-                            restart: fullRestart
-                        });
-                    }().start();
-                };
-                return {
-                    start: function() {
-                        return createOrder().then((function(orderID) {
-                            return function(_ref7) {
-                                var orderID = _ref7.orderID, paymentMethodToken = _ref7.paymentMethodToken, clientID = _ref7.clientID, branded = _ref7.branded, buttonSessionID = _ref7.buttonSessionID, clientMetadataID = _ref7.clientMetadataID;
-                                logger_getLogger().info("branded_vault_card_payment_initiated");
-                                if (!branded) throw new Error("Expected payment to be branded");
-                                return function(_ref23) {
-                                    var _headers23;
-                                    var orderID = _ref23.orderID, paymentMethodToken = _ref23.paymentMethodToken, clientID = _ref23.clientID, branded = _ref23.branded, buttonSessionID = _ref23.buttonSessionID, clientMetadataID = _ref23.clientMetadataID;
-                                    logger_getLogger().info("pay_with_payment_method_token_input_params", {
-                                        orderID: orderID,
-                                        paymentMethodToken: paymentMethodToken,
-                                        clientID: clientID,
-                                        branded: branded,
-                                        buttonSessionID: buttonSessionID
-                                    });
-                                    return callGraphQL({
-                                        name: "approvePaymentWithNonce",
-                                        query: "\n            mutation ApprovePaymentWithNonce(\n                $orderID : String!\n                $clientID : String!\n                $paymentMethodToken: String!\n                $branded: Boolean!\n                $buttonSessionID: String\n            ) {\n                approvePaymentWithNonce(\n                    token: $orderID\n                    clientID: $clientID\n                    paymentMethodNonce: $paymentMethodToken\n                    branded: $branded\n                    buttonSessionID: $buttonSessionID\n                ) {\n                    buyer {\n                        userId\n                        auth {\n                            accessToken\n                        }\n                    }\n                }\n            }\n        ",
-                                        variables: {
-                                            orderID: orderID,
-                                            clientID: clientID,
-                                            paymentMethodToken: paymentMethodToken,
-                                            branded: branded,
-                                            buttonSessionID: buttonSessionID
-                                        },
-                                        headers: (_headers23 = {}, _headers23["paypal-client-context"] = orderID, _headers23["paypal-client-metadata-id"] = clientMetadataID, 
-                                        _headers23)
-                                    }).then((function(_ref24) {
-                                        var _approvePaymentWithNo, _approvePaymentWithNo2, _approvePaymentWithNo3;
-                                        var approvePaymentWithNonce = _ref24.approvePaymentWithNonce;
-                                        logger_getLogger().info("pay_with_paymentMethodNonce", null == approvePaymentWithNonce || null == (_approvePaymentWithNo = approvePaymentWithNonce.buyer) ? void 0 : _approvePaymentWithNo.userId);
-                                        setBuyerAccessToken(null == approvePaymentWithNonce || null == (_approvePaymentWithNo2 = approvePaymentWithNonce.buyer) || null == (_approvePaymentWithNo3 = _approvePaymentWithNo2.auth) ? void 0 : _approvePaymentWithNo3.accessToken);
-                                        return {
-                                            payerID: approvePaymentWithNonce.buyer.userId
-                                        };
-                                    }));
-                                }({
-                                    orderID: orderID,
-                                    paymentMethodToken: paymentMethodToken,
-                                    clientID: clientID,
-                                    branded: branded,
-                                    buttonSessionID: buttonSessionID,
-                                    clientMetadataID: clientMetadataID
-                                }).catch((function(error) {
-                                    logger_getLogger().info("branded_vault_card_payment_failed");
-                                    error.code = "PAY_WITH_DIFFERENT_CARD";
-                                    throw error;
-                                }));
-                            }({
-                                orderID: orderID,
-                                paymentMethodToken: paymentMethodToken,
-                                clientID: clientID,
-                                branded: branded,
-                                buttonSessionID: buttonSessionID,
-                                clientMetadataID: clientMetadataID
-                            }).then((function(_ref10) {
-                                return onApprove({
-                                    payerID: _ref10.payerID
-                                }, {
-                                    restart: restart
-                                });
-                            }));
-                        }));
-                    },
-                    close: promiseNoop
-                };
-            },
-            inline: !0
-        }, vaultCapture, walletCapture, cardField, cardForm, {
+        var PAYMENT_FLOWS = [ vaultCapture, walletCapture, cardField, cardForm, {
             name: "popup_bridge",
             setup: function(_ref) {
                 var props = _ref.props;
@@ -12318,7 +12183,7 @@ window.spb = function(modules) {
                 var _fundingEligibility$v;
                 var props = _ref6.props, serviceData = _ref6.serviceData;
                 var clientID = props.clientID, fundingSource = props.fundingSource, onShippingChange = props.onShippingChange, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, env = props.env, platform = props.platform;
-                var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility;
+                var cookies = serviceData.cookies, merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility;
                 var isVenmoEligible = null == fundingEligibility || null == (_fundingEligibility$v = fundingEligibility.venmo) ? void 0 : _fundingEligibility$v.eligible;
                 return !(!_ref6.config.firebase || platform && "desktop" === platform && !isVenmoEligible || !canUsePopupAppSwitch({
                     fundingSource: fundingSource
@@ -12334,7 +12199,7 @@ window.spb = function(modules) {
                     return optOutLifetime > now;
                 }() || !isNativeOptedIn({
                     props: props
-                }) && (!supportsPopups() || onShippingChange || createBillingAgreement || createSubscription || "local" === env || "stage" === env || merchantID.length > 1 || -1 !== LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID)));
+                }) && (!cookies && "paypal" === fundingSource || !supportsPopups() || onShippingChange || createBillingAgreement || createSubscription || "local" === env || "stage" === env || merchantID.length > 1 || -1 !== LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID)));
             },
             isPaymentEligible: function(_ref7) {
                 var payment = _ref7.payment;
@@ -13421,7 +13286,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.81", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.82", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
