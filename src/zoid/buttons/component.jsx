@@ -9,7 +9,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop } from 'belter/src';
+import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop, isLocalStorageEnabled } from 'belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from 'jsx-pragmatic/src';
 
@@ -42,6 +42,17 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         logger: getLogger(),
 
         prerenderTemplate: ({ state, props, doc }) => {
+            const { buttonSessionID } = props;
+            
+            if (!isLocalStorageEnabled()) {
+                getLogger().info('localstoage_inaccessible_possible_private_browsing').track({
+                    [ FPTI_KEY.BUTTON_SESSION_UID ]: buttonSessionID,
+                    [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id',
+                    [ FPTI_KEY.CONTEXT_ID ]:         buttonSessionID,
+                    [ FPTI_KEY.TRANSITION ]:         'localstorage_inaccessible_possible_private_browsing'
+                });
+            }
+
             return (
                 <PrerenderedButtons
                     nonce={ props.nonce }
