@@ -1,3 +1,9 @@
+## <small>5.0.199 (2022-02-23)</small>
+
+* chore(deps): update dependency karma to v6 [security] (#1876) ([0d1c628](https://github.com/paypal/paypal-checkout-components/commit/0d1c628)), closes [#1876](https://github.com/paypal/paypal-checkout-components/issues/1876)
+
+
+
 ## <small>5.0.198 (2022-02-22)</small>
 
 * chore(release): 5.0.197 🎉 ([47eecc1](https://github.com/paypal/paypal-checkout-components/commit/47eecc1))
