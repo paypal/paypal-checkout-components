@@ -1,3 +1,9 @@
+## <small>5.0.200 (2022-02-24)</small>
+
+* fix(typo): Update FPTI event tracking name (#1881) ([1e2fd45](https://github.com/paypal/paypal-checkout-components/commit/1e2fd45)), closes [#1881](https://github.com/paypal/paypal-checkout-components/issues/1881)
+
+
+
 ## <small>5.0.199 (2022-02-23)</small>
 
 * chore(deps): update dependency karma to v6 [security] (#1876) ([0d1c628](https://github.com/paypal/paypal-checkout-components/commit/0d1c628)), closes [#1876](https://github.com/paypal/paypal-checkout-components/issues/1876)
