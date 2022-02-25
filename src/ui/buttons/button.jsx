@@ -96,7 +96,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     const { layout, shape } = style;
     
-    const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content }) : (fundingConfig.labelText || fundingSource);
+    const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
 
     const logoNode = (
         <Logo

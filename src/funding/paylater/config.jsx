@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx node */
 
+import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { node, Style } from 'jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
@@ -10,6 +11,46 @@ import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Text, Space } from '../../ui/text';
 
 import css from './style.scoped.scss';
+
+function getLabelText(fundingEligibility : FundingEligibilityType) : ?string {
+    const { paylater } = fundingEligibility;
+
+    let labelText;
+
+    if (
+        paylater?.products?.paylater?.eligible &&
+        paylater?.products?.paylater?.variant === 'DE'
+    ) {
+        labelText = 'Später Bezahlen';
+    }
+
+    if (
+        paylater?.products?.payIn3?.eligible &&
+        paylater?.products?.payIn3?.variant === 'ES'
+    ) {
+        labelText = 'Paga en 3 plazos';
+    }
+
+    if (
+        paylater?.products?.payIn3?.eligible &&
+        paylater?.products?.payIn3?.variant === 'IT'
+    ) {
+        labelText = 'Paga in 3 rate';
+    }
+
+    if (paylater?.products?.payIn4?.eligible) {
+        labelText = 'Pay in 4';
+    }
+
+    if (
+        paylater?.products?.payIn4?.eligible &&
+        paylater?.products?.payIn4?.variant === 'FR'
+    ) {
+        labelText = '4X PayPal';
+    }
+
+    return labelText;
+}
 
 export function getPaylaterConfig() : FundingSourceConfig {
     return {
@@ -34,47 +75,11 @@ export function getPaylaterConfig() : FundingSourceConfig {
         Label: ({ logo }) => logo,
 
         Logo: ({ logoColor, nonce, fundingEligibility }) => {
-            const { paylater } = fundingEligibility;
-
-            let label = <Text>Pay Later</Text>;
-
-            if (
-                paylater?.products?.paylater?.eligible &&
-                paylater?.products?.paylater?.variant === 'DE'
-            ) {
-                label = <Text>Später Bezahlen</Text>;
-            }
-
-            if (
-                paylater?.products?.payIn3?.eligible &&
-                paylater?.products?.payIn3?.variant === 'ES'
-            ) {
-                label = <Text>Paga en 3 plazos</Text>;
-            }
-
-            if (
-                paylater?.products?.payIn3?.eligible &&
-                paylater?.products?.payIn3?.variant === 'IT'
-            ) {
-                label = <Text>Paga in 3 rate</Text>;
-            }
-
-            if (paylater?.products?.payIn4?.eligible) {
-                label = <Text>Pay in 4</Text>;
-            }
-
-            if (
-                paylater?.products?.payIn4?.eligible &&
-                paylater?.products?.payIn4?.variant === 'FR'
-            ) {
-                label = <Text>4X PayPal</Text>;
-            }
-
             return (
                 <Style css={ css } nonce={ nonce }>
                     <PPLogo logoColor={ logoColor } />
                     <Space />
-                    { label }
+                    <Text>{ getLabelText(fundingEligibility) || 'Pay Later' }</Text>
                 </Style>
             );
         },
@@ -104,6 +109,8 @@ export function getPaylaterConfig() : FundingSourceConfig {
             [BUTTON_COLOR.WHITE]:  LOGO_COLOR.BLUE
         },
         
-        labelText: `${ FUNDING.PAYPAL } ${ FUNDING.PAYLATER }`
+        labelText: ({ fundingEligibility }) => {
+            return (fundingEligibility && getLabelText(fundingEligibility)) || `${ FUNDING.PAYPAL } ${ FUNDING.PAYLATER }`;
+        }
     };
 }

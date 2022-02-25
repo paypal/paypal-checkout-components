@@ -118,7 +118,7 @@ export type FundingSourceConfig = {|
     secondaryVaultColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof BUTTON_COLOR> },
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
-    labelText? : string | (({| content : ?ContentType |}) => string),
+    labelText? : string | (({| content : ?ContentType, fundingEligibility : ?FundingEligibilityType |}) => string),
     showWalletMenu : ({| instrument : WalletInstrument |}) => boolean
 |};
 

@@ -34,6 +34,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Pay in 4');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'Pay in 4');
         });
     });
 
@@ -56,6 +57,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Pay Later');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'paypal paylater');
         });
     });
 
@@ -79,6 +81,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Später Bezahlen');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'Später Bezahlen');
         });
     });
 
@@ -102,6 +105,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, '4X PayPal');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), '4X PayPal');
         });
     });
 
@@ -125,6 +129,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Paga in 3 rate');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'Paga in 3 rate');
         });
     });
 
@@ -148,6 +153,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Paga en 3 plazos');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'Paga en 3 plazos');
         });
     });
 
@@ -166,6 +172,7 @@ describe(`paylater button text`, () => {
 
         return button.render('#testContainer').then(() => {
             assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Pay Later');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'paypal paylater');
         });
     });
 });
