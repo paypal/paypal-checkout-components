@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { type RenderOptionsType } from 'zoid/src';
-import { node, dom } from 'jsx-pragmatic/src';
+import { type RenderOptionsType } from '@krakenjs/zoid/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 import { SpinnerPage } from '@paypal/common-components/src';
 
 import { type QRCodeProps } from './types';

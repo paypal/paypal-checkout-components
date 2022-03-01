@@ -1,6 +1,6 @@
 /* @flow */
 
-import { once } from 'post-robot/src';
+import { once } from '@krakenjs/post-robot/src';
 
 import { WEBVIEW_USER_AGENT } from '../common';
 

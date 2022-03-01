@@ -1,7 +1,7 @@
 /* @flow */
 
-import { isSameDomain } from 'cross-domain-utils/src';
-import { supportsPopups } from 'belter/src';
+import { isSameDomain } from '@krakenjs/cross-domain-utils/src';
+import { supportsPopups } from '@krakenjs/belter/src';
 import { isPayPalDomain } from '@paypal/sdk-client/src';
 
 export function allowIframe() : boolean {

@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ElementNode } from '@krakenjs/jsx-pragmatic/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
-import { noop } from 'belter/src';
+import { noop } from '@krakenjs/belter/src';
 
 import type { Wallet, WalletInstrument } from '../../types';
 import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW, EXPERIENCE } from '../../constants';

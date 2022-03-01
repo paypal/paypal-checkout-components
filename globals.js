@@ -1,7 +1,7 @@
 /* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
-const postRobotGlobals = require('post-robot/globals');
-const zoidGlobals = require('zoid/globals');
+const postRobotGlobals = require('@krakenjs/post-robot/globals');
+const zoidGlobals = require('@krakenjs/zoid/globals');
 
 module.exports = {
 

@@ -7,11 +7,11 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
     getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, type ZoidComponent } from 'zoid/src';
-import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop, isLocalStorageEnabled } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { create, type ZoidComponent } from '@krakenjs/zoid/src';
+import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop, isLocalStorageEnabled } from '@krakenjs/belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
-import { node, dom } from 'jsx-pragmatic/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 
 import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';

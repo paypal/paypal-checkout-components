@@ -1,11 +1,11 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
-import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from 'cross-domain-utils/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { $mockEndpoint, patchXmlHttpRequest } from '@krakenjs/sync-browser-mocks/src/xhr';
+import { isWindowClosed, type CrossDomainWindowType, type SameDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { getPayPalLoggerUrl, getAuthAPIUrl, getOrderAPIUrl } from '@paypal/sdk-client/src';
-import { extendUrl, getElement, uniqueID, createElement, destroyElement, stringify } from 'belter/src';
+import { extendUrl, getElement, uniqueID, createElement, destroyElement, stringify } from '@krakenjs/belter/src';
 import { SDK_QUERY_KEYS } from '@paypal/sdk-constants/src';
 
 export function onHashChange() : ZalgoPromise<string> {

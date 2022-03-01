@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { getElement, createElement, once } from 'belter/src';
+import { getElement, createElement, once } from '@krakenjs/belter/src';
 
 import { createTestContainer, destroyTestContainer, onElementResize } from '../common';
 

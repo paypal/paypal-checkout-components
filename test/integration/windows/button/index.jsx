@@ -1,10 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { noop, supportsPopups, getElement, memoize } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { node, dom } from 'jsx-pragmatic/src';
-import { CONTEXT } from 'zoid/src';
+import { noop, supportsPopups, getElement, memoize } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import { CONTEXT } from '@krakenjs/zoid/src';
 
 import { Buttons as ButtonsTemplate } from '../../../../src/ui/buttons';
 import { getElements, errorOnWindowOpen, generateOrderID } from '../../tests/common';

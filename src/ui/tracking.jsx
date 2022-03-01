@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 
 export function TrackingBeacon({ url, nonce } : {| url : string, nonce : ?string |}) : ChildType {
     return (

@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { send } from 'post-robot/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { send } from '@krakenjs/post-robot/src';
 
 import { generateOrderID } from '../../tests/common';
 

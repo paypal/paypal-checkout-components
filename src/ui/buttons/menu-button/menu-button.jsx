@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType, Style } from 'jsx-pragmatic/src';
+import { node, type ChildType, Style } from '@krakenjs/jsx-pragmatic/src';
 
 import { ATTRIBUTE, TEXT_COLOR } from '../../../constants';
 import { Chevron } from '../../chevron';

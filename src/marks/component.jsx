@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { node, dom } from 'jsx-pragmatic/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { getElement, isDevice, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups } from 'belter/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { getElement, isDevice, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups } from '@krakenjs/belter/src';
 import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { getRememberedFunding } from '@paypal/funding-components/src';
 import { getComponents, getFundingEligibility, getEnv } from '@paypal/sdk-client/src';

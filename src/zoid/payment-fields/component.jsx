@@ -2,11 +2,11 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { node, dom } from 'jsx-pragmatic/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID,
     getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale, getPartnerAttributionID } from '@paypal/sdk-client/src';
-import { create, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize, uniqueID } from 'belter/src';
+import { create, type ZoidComponent } from '@krakenjs/zoid/src';
+import { inlineMemoize, uniqueID } from '@krakenjs/belter/src';
 
 import { storageState, sessionState } from '../../lib';
 

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { getSDKMeta } from '@paypal/sdk-client/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 export function fixCreditRedirect() {
 

@@ -2,11 +2,11 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { node, dom } from 'jsx-pragmatic/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, type ZoidComponent } from 'zoid/src';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { memoize, uniqueID } from 'belter/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { create, type ZoidComponent } from '@krakenjs/zoid/src';
+import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import { memoize, uniqueID } from '@krakenjs/belter/src';
 import { getLocale, getEnv, getSDKMeta, getDisableCard, getPayPalDomain, getClientID, getDebug, getCurrency, getIntent,
     getCommit, getVault } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';

@@ -1,8 +1,8 @@
 /* @flow */
 /** @jsx node */
 
-import { inlineMemoize, uniqueID } from 'belter/src';
-import { create, type ZoidComponent } from 'zoid/src';
+import { inlineMemoize, uniqueID } from '@krakenjs/belter/src';
+import { create, type ZoidComponent } from '@krakenjs/zoid/src';
 import { getLogger, getPayPalDomainRegex, getPayPalDomain, getCSPNonce, getSDKMeta, getDebug, getEnv, getSessionID, getLocale, getClientID, getCorrelationID, getBuyerCountry } from '@paypal/sdk-client/src';
 
 import { containerTemplate } from './container';

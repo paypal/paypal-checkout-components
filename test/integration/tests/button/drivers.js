@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { once } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { once } from '@krakenjs/belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, WEBVIEW_USER_AGENT } from '../common';
 

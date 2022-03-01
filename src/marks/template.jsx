@@ -2,9 +2,9 @@
 /** @jsx node */
 
 import { FUNDING, ENV } from '@paypal/sdk-constants/src';
-import { node, type ChildNodeType, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ChildNodeType, type ElementNode } from '@krakenjs/jsx-pragmatic/src';
 import { getLocale, type FundingEligibilityType } from '@paypal/sdk-client/src';
-import { toPx } from 'belter/src';
+import { toPx } from '@krakenjs/belter/src';
 
 import type { Experiment } from '../types';
 import { getFundingConfig } from '../funding';
