@@ -1,3 +1,9 @@
+## <small>5.0.201 (2022-03-02)</small>
+
+* fix(DTUPSTREAM-351): Issue related to one click experience inside of our animation (#1884) ([4653ae6](https://github.com/paypal/paypal-checkout-components/commit/4653ae6)), closes [#1884](https://github.com/paypal/paypal-checkout-components/issues/1884)
+
+
+
 ## <small>5.0.200 (2022-02-24)</small>
 
 * fix(typo): Update FPTI event tracking name (#1881) ([1e2fd45](https://github.com/paypal/paypal-checkout-components/commit/1e2fd45)), closes [#1881](https://github.com/paypal/paypal-checkout-components/issues/1881)
