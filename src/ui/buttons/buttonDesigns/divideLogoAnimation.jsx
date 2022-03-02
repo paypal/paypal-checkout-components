@@ -22,7 +22,7 @@ export const DIVIDE_LOGO_CONFIG = {
         DOM_READY:                  CLASS.DOM_READY,
         PAYPAL_LOGO:                LOGO_CLASS.LOGO,
         PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL,
-        PAYPAL_LOGO_PP:             CLASS.LOGO_PP,
+        PAYPAL_LOGO_PP:             CLASS.LOGO_PP
     }
 };
 
