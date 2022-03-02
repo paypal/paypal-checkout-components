@@ -5,6 +5,7 @@ export const CLASS = {
     BUTTON_ROW:   ('paypal-button-row' : 'paypal-button-row'),
     BUTTON:       ('paypal-button' : 'paypal-button'),
     BUTTON_LABEL: ('paypal-button-label-container' : 'paypal-button-label-container'),
+    LOGO_PP:      ('paypal-logo-pp' : 'paypal-logo-pp'),
 
     LABEL:       ('paypal-button-label' : 'paypal-button-label'),
     COLOR:       ('paypal-button-color' : 'paypal-button-color'),
