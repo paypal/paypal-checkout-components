@@ -21,13 +21,14 @@ export const DIVIDE_LOGO_CONFIG = {
     cssUtilClasses: {
         DOM_READY:                  CLASS.DOM_READY,
         PAYPAL_LOGO:                LOGO_CLASS.LOGO,
-        PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL
+        PAYPAL_BUTTON_LABEL:        CLASS.BUTTON_LABEL,
+        PAYPAL_LOGO_PP:             CLASS.LOGO_PP
     }
 };
 
 // Returns props necessary to render the animation as long as they are valid
 export const getDivideLogoProps = function (document : Object, configuration : Object) : DivideLogoAnimationProps | null {
-    const { PAYPAL_BUTTON_LABEL, PAYPAL_LOGO } = configuration.cssUtilClasses;
+    const { PAYPAL_BUTTON_LABEL, PAYPAL_LOGO, PAYPAL_LOGO_PP } = configuration.cssUtilClasses;
 
     const designContainer = (document && document.querySelector('.personalized-design-container')) || null;
     if (!designContainer) {
@@ -47,7 +48,7 @@ export const getDivideLogoProps = function (document : Object, configuration : O
     }
 
     // get starting position for element so it doesn't flicker when animation begins
-    const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }`)) || null;
+    const paypalLogoElement = (paypalLabelContainerElement && paypalLabelContainerElement.querySelector(`.${ PAYPAL_LOGO }.${ PAYPAL_LOGO_PP }`)) || null;
     if (!paypalLogoElement) {
         return null;
     }
@@ -66,7 +67,8 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
         max,
         cssUtilClasses: {
             DOM_READY,
-            PAYPAL_LOGO
+            PAYPAL_LOGO,
+            PAYPAL_LOGO_PP
         }
     } = configuration;
 
@@ -77,7 +79,7 @@ export function getDivideLogoAnimation(designProps : DivideLogoAnimationProps, c
     } = designProps;
 
     const designCss = `
-        .${ DOM_READY } .personalized-design-container img.${ PAYPAL_LOGO }{
+        .${ DOM_READY } .personalized-design-container img.${ PAYPAL_LOGO }.${ PAYPAL_LOGO_PP }{
             animation: 3s divide-logo-animation-left-side 2s infinite alternate;
         }
         
