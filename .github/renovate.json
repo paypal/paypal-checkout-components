@@ -13,6 +13,7 @@
   "labels": [
     ":christmas_tree: dependencies"
   ],
+  "ignoreDeps": ["flow-bin"],
   "packageRules": [
     {
       "packagePatterns": "^babel",
