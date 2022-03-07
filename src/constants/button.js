@@ -46,6 +46,10 @@ export const BUTTON_LAYOUT = {
     VERTICAL:   ('vertical' : 'vertical')
 };
 
+export const BUTTON_BRANDING = {
+    light: ('light' : 'light')
+};
+
 export const BUTTON_NUMBER = {
     SINGLE:   ('single' : 'single'),
     MULTIPLE: ('multiple' : 'multiple')
