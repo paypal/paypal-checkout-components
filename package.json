@@ -3,6 +3,10 @@
     "version": "5.0.201",
     "description": "PayPal Checkout components, for integrating checkout products.",
     "main": "index.js",
+    "engines": {
+        "node": ">=14.13.1",
+        "npm": ">=6"
+    },
     "scripts": {
         "dev": "babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
         "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",

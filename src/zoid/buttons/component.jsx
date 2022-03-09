@@ -597,6 +597,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      applePaySession
             },
 
+            inlinexo: {
+                queryParam: true,
+                required:   false,
+                type:       'boolean'
+            },
+
             // allowBillingPayments prop is used by Honey Extension to render the one-click button
             // with payment methods & to use the payment methods instead of the Billing Agreement
             allowBillingPayments: {
