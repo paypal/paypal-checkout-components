@@ -1,12 +1,12 @@
 /* @flow */
 /** @jsx node */
 
-import { MultiblancoLogo } from '@paypal/sdk-logos/src';
+import { MultibancoLogo } from '@paypal/sdk-logos/src';
 
 import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
-export function getMultiblancoConfig() : FundingSourceConfig {
+export function getMultibancoConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
@@ -16,6 +16,6 @@ export function getMultiblancoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => MultiblancoLogo({ logoColor, optional })
+        Logo: ({ logoColor, optional }) => MultibancoLogo({ logoColor, optional })
     };
 }

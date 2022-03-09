@@ -715,7 +715,7 @@ const buttonConfigs = [
 
             {
                 layout: `vertical`,
-                label:  `multiblanco`,
+                label:  `multibanco`,
                 commit: true,
                 valid:  false
             },
