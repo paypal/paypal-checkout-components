@@ -348,7 +348,8 @@ export type ButtonPropsInputs = {
     applePay : ApplePaySessionConfigRequest,
     applePaySupport : boolean,
     supportsPopups : boolean,
-    supportedNativeBrowser : boolean
+    supportedNativeBrowser : boolean,
+    inlinexo : boolean | void
 };
 
 export const DEFAULT_STYLE = {
