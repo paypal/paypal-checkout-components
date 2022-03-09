@@ -229,6 +229,11 @@ export function getCheckoutComponent() : CheckoutComponent {
                 test: {
                     type:    'object',
                     default: () => (window.__test__ || { action: 'checkout' })
+                },
+                inlinexo: {
+                    type:       'boolean',
+                    required:   false,
+                    queryParam: true
                 }
             },
         
