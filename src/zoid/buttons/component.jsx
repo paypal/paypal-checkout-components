@@ -489,6 +489,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      ({ props }) => getRenderedButtons(props)
             },
 
+            localTime: {
+                type:       'string',
+                queryParam: true,
+                value:      () => new Date().toString()
+            },
+
             csp: {
                 type:     'object',
                 required: false,
