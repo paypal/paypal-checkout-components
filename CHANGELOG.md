@@ -1,3 +1,9 @@
+## <small>5.0.202 (2022-03-10)</small>
+
+* chore: rename multibanco apm (#1889) ([e989c70](https://github.com/paypal/paypal-checkout-components/commit/e989c70)), closes [#1889](https://github.com/paypal/paypal-checkout-components/issues/1889)
+
+
+
 ## <small>5.0.201 (2022-03-02)</small>
 
 * fix(DTUPSTREAM-351): Issue related to one click experience inside of our animation (#1884) ([4653ae6](https://github.com/paypal/paypal-checkout-components/commit/4653ae6)), closes [#1884](https://github.com/paypal/paypal-checkout-components/issues/1884)
