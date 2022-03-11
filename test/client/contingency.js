@@ -98,6 +98,90 @@ describe('contingency cases', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+    
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and fails due to DUPLICATE_INVOICE_ID', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = generateOrderID();
+            const payerID = 'YYYYYYYYYY';
+            const accessToken = MOCK_BUYER_ACCESS_TOKEN;
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            const onApprove = expect('onApprove', async (data, actions) => {
+
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (data.payerID !== payerID) {
+                    throw new Error(`Expected payerID to be ${ payerID }, got ${ data.payerID }`);
+                }
+
+                const captureOrderMock = getRestfulCaptureOrderApiMock({
+                    status: 422,
+                    data:   {
+                        name: 'UNPROCESSABLE_ENTITY',
+                        data: {
+                            details: [
+                                {
+                                    issue: 'DUPLICATE_INVOICE_ID'
+                                }
+                            ]
+                        }
+                    }
+                });
+
+                captureOrderMock.expectCalls();
+                actions.order.capture();
+                captureOrderMock.done();
+            });
+            
+            const onError = (err) => {
+                if (err.response.body.data.details[0].issue !== 'DUPLICATE_INVOICE_ID') {
+                    throw new Error(`Expected errors to match, got ${ err.data.details[0].issue } expected to be: DUPLICATE_INVOICE_ID`);
+                }
+            };
+
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', (data, actions) => onApprove(data, actions)));
+            window.xprops.onError = mockAsyncProp(expect('onError', (err) => {
+                onError(err);
+            }));
+
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                props.onAuth({ accessToken });
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
 
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.capture and auto restart with PAYER_ACTION_REQUIRED', async () => {
         return await wrapPromise(async ({ expect }) => {
@@ -136,6 +220,7 @@ describe('contingency cases', () => {
                     await actions.order.capture();
                     captureOrderMock2.done();
                 });
+
                 const captureOrderMock = getRestfulCaptureOrderApiMock({
                     status: 400,
                     data:   {
