@@ -34,7 +34,7 @@ jobs:
           git config --global user.name ${{ github.actor }}
 
       - name: Activate npm dist tags
-        run: npm run activate -- ${{ github.event.inputs.version }}
+        run: npm run activate --LOCAL_VERSION=${{ github.event.inputs.version }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
