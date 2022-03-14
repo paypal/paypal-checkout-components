@@ -171,4 +171,33 @@ describe(`paypal button component props`, () => {
         });
     });
 
+    it('should render a button and get the localTime prop', () => {
+        return ZalgoPromise.try(() => {
+            return wrapPromise(({ expect, avoid }) => {
+                let onRender = ({ xprops }) => {
+                    const queriedLocalTime = xprops.localTime;
+                    if (!JSON.stringify(queriedLocalTime)) {
+                        throw new Error(`Expected ${ queriedLocalTime } to be queried, got empty`);
+                    }
+                };
+
+                const instance = window.paypal.Buttons({
+                    test: {
+                        action:   'checkout',
+                        onRender: (...args) => onRender(...args)
+                    },
+
+                    onApprove: avoid('onApprove'),
+                    onCancel:  avoid('onCancel')
+
+                });
+
+                if (instance.isEligible()) {
+                    onRender = expect('onRender', onRender);
+                    return instance.render('#testContainer');
+                }
+            });
+        });
+    });
+
 });
