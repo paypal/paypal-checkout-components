@@ -311,7 +311,8 @@ export type ButtonProps = {|
     applePay : ApplePaySessionConfigRequest,
     meta : {||},
     renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
-    inlinexo : boolean | void
+    inlinexo : boolean | void,
+    localTime: string
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
