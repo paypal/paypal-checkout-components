@@ -4072,9 +4072,9 @@ window.smartCard = function(modules) {
         })), S.d(N, "FPTI_KEY", (function() {
             return p;
         })), S.d(N, "FPTI_USER_ACTION", (function() {
-            return f;
-        })), S.d(N, "FPTI_DATA_SOURCE", (function() {
             return l;
+        })), S.d(N, "FPTI_DATA_SOURCE", (function() {
+            return f;
         })), S.d(N, "FPTI_FEED", (function() {
             return Y;
         })), S.d(N, "FPTI_SDK_NAME", (function() {
@@ -4082,9 +4082,9 @@ window.smartCard = function(modules) {
         })), S.d(N, "FUNDING", (function() {
             return m;
         })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
-            return y;
-        })), S.d(N, "CARD", (function() {
             return b;
+        })), S.d(N, "CARD", (function() {
+            return y;
         })), S.d(N, "WALLET_INSTRUMENT", (function() {
             return W;
         })), S.d(N, "FUNDING_PRODUCTS", (function() {
@@ -4818,10 +4818,10 @@ window.smartCard = function(modules) {
             OPTION_SELECTED: "optsel",
             USER_IDENTITY_METHOD: "user_identity_method",
             FIELDS_COMPONENT_SESSION_ID: "fields_component_session_id"
-        }, f = {
+        }, l = {
             COMMIT: "commit",
             CONTINUE: "continue"
-        }, l = {
+        }, f = {
             PAYMENTS_SDK: "checkout"
         }, Y = {
             PAYMENTS_SDK: "payments_sdk"
@@ -4853,11 +4853,12 @@ window.smartCard = function(modules) {
             BOLETO: "boleto",
             WECHATPAY: "wechatpay",
             MERCADOPAGO: "mercadopago",
-            MULTIBLANCO: "multiblanco"
-        }, y = {
+            MULTIBLANCO: "multiblanco",
+            MULTIBANCO: "multibanco"
+        }, b = {
             PAYPAL: "PayPal",
             CREDIT: "PayPal Credit"
-        }, b = {
+        }, y = {
             VISA: "visa",
             MASTERCARD: "mastercard",
             AMEX: "amex",
@@ -7061,6 +7062,12 @@ window.smartCard = function(modules) {
             return "INSTRUMENT_DECLINED" === detail.issue || "PAYER_ACTION_REQUIRED" === detail.issue;
         })));
     }
+    function isUnprocessableEntityError(err) {
+        var _err$response2, _err$response2$body, _err$response2$body$d, _err$response2$body$d2;
+        return Boolean(null == err || null == (_err$response2 = err.response) || null == (_err$response2$body = _err$response2.body) || null == (_err$response2$body$d = _err$response2$body.data) || null == (_err$response2$body$d2 = _err$response2$body$d.details) ? void 0 : _err$response2$body$d2.some((function(detail) {
+            return "DUPLICATE_INVOICE_ID" === detail.issue;
+        })));
+    }
     function patchOrder(orderID, data, _ref8) {
         var _headers13;
         var facilitatorAccessToken = _ref8.facilitatorAccessToken, buyerAccessToken = _ref8.buyerAccessToken, partnerAttributionID = _ref8.partnerAttributionID, _ref8$forceRestAPI = _ref8.forceRestAPI, forceRestAPI = void 0 !== _ref8$forceRestAPI && _ref8$forceRestAPI;
@@ -7408,7 +7415,8 @@ window.smartCard = function(modules) {
         }).flush();
         return dom_redirect(url, window.top);
     };
-    var onApprove_handleProcessorError = function(err, restart) {
+    var onApprove_handleProcessorError = function(err, restart, onError) {
+        if (isUnprocessableEntityError(err)) return onError(err).then(unresolvedPromise);
         if (isProcessorDeclineError(err)) return restart().then(unresolvedPromise);
         throw err;
     };
@@ -7752,9 +7760,9 @@ window.smartCard = function(modules) {
                                 authCode: authCode
                             };
                             var actions = function(_ref3) {
-                                var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI;
+                                var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI, onError = _ref3.onError;
                                 var order = function(_ref) {
-                                    var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
+                                    var intent = _ref.intent, orderID = _ref.orderID, restart = _ref.restart, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI, onError = _ref.onError;
                                     var get = memoize((function() {
                                         return function(orderID, _ref2) {
                                             var _headers4;
@@ -7846,7 +7854,7 @@ window.smartCard = function(modules) {
                                                         orderID: orderID,
                                                         err: stringifyError(err)
                                                     });
-                                                    if (isProcessorDeclineError(err)) throw err;
+                                                    if (isProcessorDeclineError(err) || isUnprocessableEntityError(err)) throw err;
                                                     return callSmartAPI({
                                                         accessToken: buyerAccessToken,
                                                         method: "post",
@@ -7888,7 +7896,7 @@ window.smartCard = function(modules) {
                                             partnerAttributionID: partnerAttributionID,
                                             forceRestAPI: forceRestAPI
                                         }).finally(get.reset).finally(capture.reset).catch((function(err) {
-                                            return onApprove_handleProcessorError(err, restart);
+                                            return onApprove_handleProcessorError(err, restart, onError);
                                         }));
                                     }));
                                     var authorize = memoize((function() {
@@ -7960,7 +7968,7 @@ window.smartCard = function(modules) {
                                             partnerAttributionID: partnerAttributionID,
                                             forceRestAPI: forceRestAPI
                                         }).finally(get.reset).finally(authorize.reset).catch((function(err) {
-                                            return onApprove_handleProcessorError(err, restart);
+                                            return onApprove_handleProcessorError(err, restart, onError);
                                         }));
                                     }));
                                     return {
@@ -7988,10 +7996,11 @@ window.smartCard = function(modules) {
                                     facilitatorAccessToken: facilitatorAccessToken,
                                     buyerAccessToken: buyerAccessToken,
                                     partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
+                                    forceRestAPI: forceRestAPI,
+                                    onError: onError
                                 });
                                 !function(_ref2) {
-                                    var intent = _ref2.intent, paymentID = _ref2.paymentID, payerID = _ref2.payerID, restart = _ref2.restart, facilitatorAccessToken = _ref2.facilitatorAccessToken, buyerAccessToken = _ref2.buyerAccessToken, partnerAttributionID = _ref2.partnerAttributionID;
+                                    var intent = _ref2.intent, paymentID = _ref2.paymentID, payerID = _ref2.payerID, restart = _ref2.restart, facilitatorAccessToken = _ref2.facilitatorAccessToken, buyerAccessToken = _ref2.buyerAccessToken, partnerAttributionID = _ref2.partnerAttributionID, onError = _ref2.onError;
                                     if (paymentID) {
                                         var get = memoize((function() {
                                             return function(paymentID, _ref4) {
@@ -8030,7 +8039,7 @@ window.smartCard = function(modules) {
                                                 buyerAccessToken: buyerAccessToken,
                                                 partnerAttributionID: partnerAttributionID
                                             }).finally(get.reset).finally(execute.reset).catch((function(err) {
-                                                return onApprove_handleProcessorError(err, restart);
+                                                return onApprove_handleProcessorError(err, restart, onError);
                                             }));
                                         }));
                                     }
@@ -8043,7 +8052,8 @@ window.smartCard = function(modules) {
                                     facilitatorAccessToken: facilitatorAccessToken,
                                     buyerAccessToken: buyerAccessToken,
                                     partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
+                                    forceRestAPI: forceRestAPI,
+                                    onError: onError
                                 });
                                 return {
                                     order: order,
@@ -8060,7 +8070,8 @@ window.smartCard = function(modules) {
                                 facilitatorAccessToken: facilitatorAccessToken,
                                 buyerAccessToken: buyerAccessToken,
                                 partnerAttributionID: partnerAttributionID,
-                                forceRestAPI: forceRestAPI
+                                forceRestAPI: forceRestAPI,
+                                onError: onError
                             });
                             return onApprove(data, actions).catch((function(err) {
                                 return promise_ZalgoPromise.try((function() {

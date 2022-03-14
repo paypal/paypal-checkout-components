@@ -2905,6 +2905,17 @@
             primary: "#373535",
             secondary: "#1866AB"
         };
+        var multibanco_logo_LOGO_COLORS;
+        (multibanco_logo_LOGO_COLORS = {}).default = {
+            primary: "#373535",
+            secondary: "#1866AB"
+        }, multibanco_logo_LOGO_COLORS.white = {
+            primary: "#ffffff",
+            secondary: "#ffffff"
+        }, multibanco_logo_LOGO_COLORS.black = {
+            primary: "#373535",
+            secondary: "#1866AB"
+        };
         function ErrorMessage(_ref) {
             var resetFunc = _ref.resetFunc;
             return v("div", {
@@ -3154,7 +3165,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.84", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.85", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
