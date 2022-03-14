@@ -312,7 +312,7 @@ export type ButtonProps = {|
     meta : {||},
     renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
     inlinexo : boolean | void,
-    localTime: string
+    localTime : string
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
