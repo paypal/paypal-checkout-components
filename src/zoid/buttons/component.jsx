@@ -597,7 +597,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      applePaySession
             },
 
-            inlinexo: {
+            inline: {
                 queryParam: true,
                 required:   false,
                 type:       'boolean'

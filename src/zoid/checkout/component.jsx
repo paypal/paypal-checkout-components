@@ -50,7 +50,7 @@ export function getCheckoutComponent() : CheckoutComponent {
             },
 
             containerTemplate: ({ context, close, focus, doc, event, frame, prerenderFrame, props }) => {
-                const { nonce, locale: { lang } } = props;
+                const { nonce, locale: { lang }, inline } = props;
                 const content = containerContent[lang];
                 return (
                     <Overlay
@@ -62,6 +62,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                         prerenderFrame={ prerenderFrame }
                         content={ content }
                         nonce={ nonce }
+                        fullScreen={ inline === true }
                     />
                 ).render(dom({ doc }));
             },
@@ -230,10 +231,12 @@ export function getCheckoutComponent() : CheckoutComponent {
                     type:    'object',
                     default: () => (window.__test__ || { action: 'checkout' })
                 },
-                inlinexo: {
-                    type:       'boolean',
-                    required:   false,
-                    queryParam: true
+
+                inline: {
+                    type:           'boolean',
+                    required:       false,
+                    queryParam:     true,
+                    allowDelegate:  true
                 }
             },
         
