@@ -38,5 +38,6 @@ export type CheckoutPropsType = {|
     nonce : string,
     csp : {|
         nonce : string
-    |}
+    |},
+    inline : boolean
 |};
