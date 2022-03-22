@@ -6,7 +6,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { getBody } from '../lib';
-import { QRCODE_STATE, FPTI_CUSTOM_KEY, FPTI_TRANSITION, FPTI_STATE, FPTI_CONTEXT_TYPE } from '../constants';
+import { QRCODE_STATE, FPTI_CUSTOM_KEY, FPTI_TRANSITION, FPTI_STATE, FPTI_CONTEXT_TYPE, VQRC_EXPERIMENT, VQRC_VARIANT } from '../constants';
 import { openPopup } from '../ui';
 import { CHECKOUT_POPUP_DIMENSIONS } from '../payment-flows/checkout';
 
@@ -18,7 +18,9 @@ import {
     VenmoMark,
     AuthMark,
     cardStyle,
-    debugging_nextStateMap
+    debugging_nextStateMap,
+    PaypalIcon,
+    DetailedInstructions
 } from './components';
 import { setupNativeQRLogger } from './lib/logger';
 import { Survey, useSurvey } from './survey';
@@ -44,10 +46,19 @@ function useXProps<T>() : T {
     };
 }
 
+function getVariant(experiment : string) : string {
+    if (experiment === VQRC_EXPERIMENT.B || experiment === VQRC_EXPERIMENT.A) {
+        return VQRC_VARIANT.LIGHT;
+    }
+    return VQRC_VARIANT.DARK;
+}
+
 function QRCard({
-    svgString
+    svgString,
+    qrcRedesignExperiment
 } : {|
-    svgString : string
+    svgString : string,
+    qrcRedesignExperiment : string
 |}) : mixed {
 
     const { state, errorText, setState, close, onCancel: cancel } = useXProps();
@@ -55,6 +66,7 @@ function QRCard({
     const isError = () => {
         return state === QRCODE_STATE.ERROR;
     };
+    const variant = getVariant(qrcRedesignExperiment);
 
     const handleClick = (selectedFundingSource : $Values<typeof FUNDING>) => {
         window.xprops.hide();
@@ -101,14 +113,18 @@ function QRCard({
             <p id="fee-disclaimer">
                 No fees no matter how you pay
             </p>
-            <div id="instructions">
-                <InstructionIcon stylingClass="instruction-icon" />
-                <span>
-                    To pay, scan the QR code with your Venmo app
-                </span>
-            </div>
-            <QRCodeElement svgString={ svgString } />
-            <Logo />
+            { qrcRedesignExperiment === VQRC_EXPERIMENT.CTRL ?
+                <div id="instructions">
+                    <InstructionIcon stylingClass="instruction-icon" />
+                    <span>
+                        To pay, scan the QR code with your Venmo app
+                    </span>
+                </div> : null}
+            <DetailedInstructions showInstructions={ qrcRedesignExperiment !== VQRC_EXPERIMENT.CTRL }>
+                <QRCodeElement svgString={ svgString } />
+                <Logo />
+                { qrcRedesignExperiment === VQRC_EXPERIMENT.B ? <div id="powered-logo"><span>Powered by </span><PaypalIcon /></div> : null}
+            </DetailedInstructions>
         </div>
     );
     
@@ -121,14 +137,14 @@ function QRCard({
 
     const content = displaySurvey ? surveyElement : frontView;
     const escapePathFooter = displayEscapePath && (
-        <p className="escape-path">Don&apos;t have the app? Pay with <span className="escape-path__link" onClick={ () => handleClick(FUNDING.PAYPAL) }>PayPal</span> or <span className="escape-path__link" onClick={ () => handleClick(FUNDING.CARD) }>Credit/Debit card</span></p>
+        <p className={ `escape-path ${ variant } ` }>Don&apos;t have the app? Pay with <span className="escape-path__link" onClick={ () => handleClick(FUNDING.PAYPAL) }>PayPal</span> or <span className="escape-path__link" onClick={ () => handleClick(FUNDING.CARD) }>Credit/Debit card</span></p>
     );
 
     return (
         <Fragment>
             <style nonce={ window.xprops.cspNonce }> { cardStyle } </style>
-            <a href="#" id="close" aria-label="close" role="button" onClick={ onCloseClick } />
-            <div id="view-boxes" className={ state }>
+            <a href="#" className={ variant } id="close" aria-label="close" role="button" onClick={ onCloseClick } />
+            <div id="view-boxes" className={ ` ${ state } ${ variant } ` }>
                 { isError() ? errorMessage : content }
                 <div className="card" id="back-view" >
                     <span className="mark">
@@ -159,16 +175,19 @@ function QRCard({
 }
 
 type RenderQRCodeOptions = {|
-    svgString : string
+    svgString : string,
+    qrcRedesignExperiment : string
 |};
 
 export function renderQRCode({
-    svgString
+    svgString,
+    qrcRedesignExperiment
 } : RenderQRCodeOptions) {
     logger = setupNativeQRLogger();
     render(
         <QRCard
             svgString={ svgString }
+            qrcRedesignExperiment={ qrcRedesignExperiment }
         />,
         getBody()
     );
