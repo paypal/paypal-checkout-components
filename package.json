@@ -70,6 +70,7 @@
   },
   "alias": {},
   "dependencies": {
+    "@krakenjs/grabthar": "^5.0.0",
     "@paypal/checkout-components": "^5.0.167",
     "@paypal/common-components": "^1.0.16",
     "@paypal/installments": "^1.0.0",
@@ -83,7 +84,6 @@
     "credit-card-type": "^9.1.0",
     "cross-domain-utils": "^2.0.16",
     "get-browser-fingerprint": "^1.1.0",
-    "grabthar": "^4",
     "jsx-pragmatic": "^2",
     "module-alias": "^2.2.2",
     "preact": "^10",
