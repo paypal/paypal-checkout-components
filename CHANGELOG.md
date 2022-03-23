@@ -1,3 +1,9 @@
+## <small>5.0.203 (2022-03-23)</small>
+
+* Change inlinexo to inline (#1894) ([d9a9096](https://github.com/paypal/paypal-checkout-components/commit/d9a9096)), closes [#1894](https://github.com/paypal/paypal-checkout-components/issues/1894)
+
+
+
 ## <small>5.0.202 (2022-03-10)</small>
 
 * chore: rename multibanco apm (#1889) ([e989c70](https://github.com/paypal/paypal-checkout-components/commit/e989c70)), closes [#1889](https://github.com/paypal/paypal-checkout-components/issues/1889)
