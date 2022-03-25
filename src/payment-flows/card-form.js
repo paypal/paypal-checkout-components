@@ -17,9 +17,13 @@ function setupCardForm() {
 let cardFormOpen = false;
 
 function isCardFormEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange } = props;
+    const { vault, onShippingChange, inline } = props;
     const { eligibility } = serviceData;
 
+    if (inline) {
+        return false;
+    }
+    
     if (vault) {
         return false;
     }

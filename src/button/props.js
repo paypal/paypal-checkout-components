@@ -30,6 +30,7 @@ export type ButtonXProps = {|
     ...XProps,
 
     style : ButtonStyle,
+    inline : boolean,
     buttonSessionID : string
 |};
 
@@ -37,6 +38,7 @@ export type ButtonProps = {|
     ...Props,
 
     style : ButtonStyle,
+    inlinexo : boolean,
     buttonSessionID : string
 |};
 
@@ -47,6 +49,7 @@ export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| f
         buttonSessionID,
         style,
         branded,
+        inline,
         intent
     } = xprops;
 
@@ -100,7 +103,8 @@ export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| f
         ...getProps({ facilitatorAccessToken, branded }),
         style,
         buttonSessionID,
-        branded
+        branded,
+        inlinexo: inline
     };
 }
 

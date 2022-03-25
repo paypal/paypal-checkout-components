@@ -37,6 +37,7 @@ export type CardXProps = {|
     fundingEligibility : FundingEligibilityType,
     onChange : OnChange,
     export : CardExport,
+    inline : boolean,
     parent? : {|
         props : XProps,
         export : CardExport
@@ -51,6 +52,7 @@ export type CardProps = {|
     style : CardStyle,
     placeholder : CardPlaceholder,
     cardSessionID : string,
+    inlinexo : boolean,
     fundingEligibility : FundingEligibilityType,
     export : CardExport,
     onChange : OnChange,
@@ -74,6 +76,7 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         onChange,
         branded = fundingEligibility?.card?.branded ?? true,
         parent,
+        inline,
         export: xport
     } = xprops;
 
@@ -88,7 +91,8 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         cardSessionID,
         fundingEligibility,
         onChange,
-        export: parent ? parent.export : xport,
+        inlinexo: inline,
+        export:   parent ? parent.export : xport,
         facilitatorAccessToken
     };
 }
