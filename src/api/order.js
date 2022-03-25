@@ -687,21 +687,21 @@ export type DetailedOrderInfo = {|
         cart : {|
             amounts : {|
                 shippingAndHandling : {|
-                    currencyFormatSymbolISOCurrency : string,
                     currencyValue : string,
-                    currencyCode : $Values<typeof CURRENCY>
+                    currencySymbol : string,
+                    currencyFormat : string
                 |},
 
                 tax : {|
-                    currencyFormatSymbolISOCurrency : string,
                     currencyValue : string,
-                    currencyCode : $Values<typeof CURRENCY>
+                    currencySymbol : string,
+                    currencyFormat : string
                 |},
 
                 subtotal : {|
-                    currencyFormatSymbolISOCurrency : string,
                     currencyValue : string,
-                    currencyCode : $Values<typeof CURRENCY>
+                    currencySymbol : string,
+                    currencyFormat : string
                 |},
 
                 total : {|
