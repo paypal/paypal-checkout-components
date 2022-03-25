@@ -232,7 +232,7 @@ export function getCheckoutComponent() : CheckoutComponent {
                     default: () => (window.__test__ || { action: 'checkout' })
                 },
 
-                inline: {
+                inlinexo: {
                     type:           'boolean',
                     required:       false,
                     queryParam:     true,
