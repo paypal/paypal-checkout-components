@@ -1,3 +1,9 @@
+## <small>5.0.204 (2022-03-25)</small>
+
+* Keep inlinexo internally (#1895) ([302376e](https://github.com/paypal/paypal-checkout-components/commit/302376e)), closes [#1895](https://github.com/paypal/paypal-checkout-components/issues/1895)
+
+
+
 ## <small>5.0.203 (2022-03-23)</small>
 
 * Change inlinexo to inline (#1894) ([d9a9096](https://github.com/paypal/paypal-checkout-components/commit/d9a9096)), closes [#1894](https://github.com/paypal/paypal-checkout-components/issues/1894)
