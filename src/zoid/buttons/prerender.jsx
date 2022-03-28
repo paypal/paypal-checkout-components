@@ -12,6 +12,7 @@ import type { ZoidProps } from '@krakenjs/zoid/src';
 import { DEFAULT_POPUP_SIZE } from '../checkout';
 import { Buttons } from '../../ui';
 import { type ButtonProps } from '../../ui/buttons/props';
+import { logCPLPhase, triggerInitialCPLEvent } from '../../lib';
 
 type PrerenderedButtonsProps = {|
     nonce : ?string,
@@ -66,7 +67,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             onRenderCheckout({ fundingSource, card });
         }
     };
-
+    logCPLPhase(props.buttonSessionID, 'first_render', 'comp');
+    triggerInitialCPLEvent(props.buttonSessionID);
     return (
         <html>
             <body>

@@ -13,4 +13,11 @@ export const ATTRIBUTE = {
     PAY_NOW:           ('data-pay-now' : 'data-pay-now')
 };
 
+export const FPTI_CPL_KEY = {
+    PAGE_NAME:              ('page_name' : 'page_name'),
+    CPL_COMP_METRICS:       ('cpl_comp_metrics' : 'cpl_comp_metrics'),
+    CPL_CHUNK_METRICS:      ('cpl_chunk_metrics' : 'cpl_chunk_metrics'),
+    CPL_QUERY_METRICS:      ('cpl_query_metrics' : 'cpl_query_metrics')
+};
+
 export const DEFAULT = ('default' : 'default');
