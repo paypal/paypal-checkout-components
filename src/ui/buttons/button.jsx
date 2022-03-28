@@ -221,6 +221,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 } }
                 class={ [
                     CLASS.BUTTON,
+                    style.custom ? CLASS.CUSTOM : '',
                     `${ CLASS.NUMBER }-${ i }`,
                     `${ CLASS.LAYOUT }-${ layout }`,
                     `${ CLASS.SHAPE }-${ shape }`,

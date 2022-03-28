@@ -12,7 +12,7 @@ import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 import type { ComponentFunctionType } from 'jsx-pragmatic/src';
 
-import type { ContentType, Wallet, Experiment } from '../../types';
+import type { ContentType, CustomStyle, Wallet, Experiment } from '../../types';
 import { BUTTON_LABEL, BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE, BUTTON_SIZE, BUTTON_FLOW, MENU_PLACEMENT } from '../../constants';
 import { getFundingConfig, isFundingEligible } from '../../funding';
 
@@ -130,7 +130,8 @@ export type ButtonStyle = {|
     layout : $Values<typeof BUTTON_LAYOUT>,
     menuPlacement : $Values<typeof MENU_PLACEMENT>,
     period? : number,
-    height? : number
+    height? : number,
+    custom? : CustomStyle
 |};
 
 export type ButtonStyleInputs = {|
@@ -140,7 +141,8 @@ export type ButtonStyleInputs = {|
     tagline? : boolean | void,
     layout? : $Values<typeof BUTTON_LAYOUT> | void,
     period? : number | void,
-    height? : number | void
+    height? : number | void,
+    custom? : CustomStyle
 |};
 
 type PersonalizationComponentProps = {|

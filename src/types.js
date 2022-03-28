@@ -53,6 +53,10 @@ export type Requires = {|
     native? : boolean
 |};
 
+export type CustomStyle = {|
+    [string] : string
+|};
+
 export type LazyExport<T> = {|
     __get__ : () => T
 |};

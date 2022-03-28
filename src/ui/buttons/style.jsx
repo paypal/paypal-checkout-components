@@ -15,8 +15,8 @@ type StyleProps = {|
 
 export function Style({ style, nonce, fundingEligibility } : StyleProps) : ElementNode {
 
-    const { height } = style;
-    const css = componentStyle({ height, fundingEligibility });
+    const { custom, height } = style;
+    const css = componentStyle({ custom, height, fundingEligibility });
 
     return (
         <style nonce={ nonce } innerHTML={ css } />
