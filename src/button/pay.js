@@ -109,6 +109,18 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 [FPTI_CUSTOM_KEY.INFO_MSG]: enableNativeCheckout ? 'tester' : ''
             }).flush();
 
+        const loggingPromise =  ZalgoPromise.try(() => {
+            return window.xprops.sessionState.get(`__confirm_${ fundingSource }_payload__`).then(confirmPayload => {
+                const fieldsSessionID = confirmPayload ? confirmPayload.payment_source[fundingSource].metadata.fieldsSessionID : '';
+                getLogger()
+                    .addTrackingBuilder(() => {
+                        return {
+                            [FPTI_KEY.FIELDS_COMPONENT_SESSION_ID]: fieldsSessionID
+                        };
+                    });
+            });
+        });
+
         const clickPromise = click ? ZalgoPromise.try(click) : ZalgoPromise.resolve();
         clickPromise.catch(noop);
 
@@ -171,6 +183,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             });
 
             return ZalgoPromise.all([
+                loggingPromise,
                 updateClientConfigPromise,
                 clickPromise,
                 vaultPromise,
