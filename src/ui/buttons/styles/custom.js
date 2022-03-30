@@ -8,8 +8,10 @@ export const customStyle = ({ custom } : {| custom? : CustomStyle |}) : string =
         return '';
     }
 
-    let style = Object.keys(custom).reduce((acc, key) => {
-        acc += `${ key }: ${ custom[key] };`;
+    const { css } = custom || {};
+
+    let style = Object.keys(css).reduce((acc, key) => {
+        acc += `${ key }: ${ css[key] };`;
         return acc;
     }, '');
     style = `.${ CLASS.BUTTON }.${ CLASS.CUSTOM } { ${ style } } `;

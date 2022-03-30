@@ -399,7 +399,8 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         tagline = (layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource),
         height,
         period,
-        menuPlacement = MENU_PLACEMENT.BELOW
+        menuPlacement = MENU_PLACEMENT.BELOW,
+        custom
     } = style;
 
     // $FlowFixMe
@@ -445,7 +446,7 @@ export function normalizeButtonStyle(props : ?ButtonPropsInputs, style : ButtonS
         }
     }
 
-    return { label, layout, color, shape, tagline, height, period, menuPlacement };
+    return { custom, label, layout, color, shape, tagline, height, period, menuPlacement };
 }
 
 const COUNTRIES = values(COUNTRY);
