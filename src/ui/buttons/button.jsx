@@ -195,7 +195,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     }
 
     const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument });
-console.log(`fundingSource: ${fundingSource}, color: ${color}`);
+
     return (
         <div
             class={ [
