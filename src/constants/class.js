@@ -38,5 +38,7 @@ export const CLASS = {
 
     HIDDEN:  ('hidden' : 'hidden'),
 
-    IMMEDIATE: ('immediate' : 'immediate')
+    IMMEDIATE: ('immediate' : 'immediate'),
+
+    CUSTOM: ('custom' : 'custom')
 };

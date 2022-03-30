@@ -7,7 +7,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { PLATFORM, type LocaleType, COUNTRY, CARD, COMPONENTS, FUNDING, ENV } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-import type { ContentType, WalletInstrument, Experiment, Requires, Wallet } from '../types';
+import type { ContentType, CustomStyle, WalletInstrument, Experiment, Requires, Wallet } from '../types';
 import { BUTTON_COLOR, BUTTON_SHAPE, BUTTON_LAYOUT, DEFAULT, BUTTON_LABEL, BUTTON_FLOW, TEXT_COLOR } from '../constants';
 import type { Personalization } from '../ui/buttons/props';
 
@@ -47,7 +47,8 @@ export type LabelOptions = {|
     nonce : ?string,
     tagline : ?boolean,
     content : ?ContentType,
-    experiment? : Experiment
+    experiment? : Experiment,
+    custom? : ?CustomStyle
 |};
 
 export type DesignExperimentLabelOptions = {|

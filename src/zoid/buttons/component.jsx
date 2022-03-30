@@ -600,7 +600,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             inline: {
                 queryParam: true,
                 required:   false,
-                type:       'boolean'
+                type:       'boolean',
+                value:      ({ props }) => {
+                    const { style: { custom }, fundingEligibility } = props;
+                    return custom && fundingEligibility[FUNDING.CARD]?.eligible;
+                }
             },
 
             // allowBillingPayments prop is used by Honey Extension to render the one-click button

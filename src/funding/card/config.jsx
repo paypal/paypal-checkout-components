@@ -121,7 +121,15 @@ export function getCardConfig() : FundingSourceConfig {
             );
         },
 
-        Label: ({ logo, locale, content }) => {
+        Label: ({ logo, locale, content, custom }) => {
+            if (custom && custom.label) {
+                return (
+                    <Fragment>
+                        <Text>{ custom.label }</Text>
+                        <Space />
+                    </Fragment>
+                );
+            }
             const { lang } = locale;
             const isRTL = isRTLLanguage(lang);
             return (

@@ -38,11 +38,12 @@ type IndividualButtonProps = {|
     flow : $Values<typeof BUTTON_FLOW>,
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
-    instrument : ?WalletInstrument
+    instrument : ?WalletInstrument,
+    inline? : boolean
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, inline } : IndividualButtonProps) : ElementNode {
 
     const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -94,9 +95,9 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         }
     };
 
-    const { layout, shape } = style;
+    const { custom, layout, shape } = style;
     
-    const labelText =  typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
+    const labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
 
     const logoNode = (
         <Logo
@@ -129,6 +130,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
+            custom={ inline ? custom : null }
             experiment={ experiment }
         />
     );
@@ -221,6 +223,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 } }
                 class={ [
                     CLASS.BUTTON,
+                    inline && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
                     `${ CLASS.NUMBER }-${ i }`,
                     `${ CLASS.LAYOUT }-${ layout }`,
                     `${ CLASS.SHAPE }-${ shape }`,
