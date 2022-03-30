@@ -111,4 +111,32 @@ describe('paypal button color', () => {
 
         }).render('#testContainer');
     });
+
+    it('should allow custom styling for inlinexo', (done) => {
+        const style = {
+            custom: {
+                label: 'Checkout',
+                css:   {
+                    background: 'white',
+                    height:     '24px'
+                }
+            }
+        };
+        const expected = JSON.stringify(style);
+        done = once(done);
+        window.paypal.Buttons({
+            style,
+            test: {
+                onRender() {
+                    if (JSON.stringify(style) !== expected) {
+                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ expected }`));
+                    }
+                    done();
+                }
+            },
+
+            onError: done
+
+        }).render('#testContainer');
+    });
 });
