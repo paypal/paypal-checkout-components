@@ -8,7 +8,7 @@ import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { noop, preventClickFocus, isBrowser, isElement } from 'belter/src';
 
 import type { ContentType, Wallet, Experiment, WalletInstrument } from '../../types';
-import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
+import { ATTRIBUTE, CLASS, BUTTON_COLOR, BUTTON_NUMBER, EXPERIENCE, TEXT_COLOR, BUTTON_FLOW } from '../../constants';
 import { getFundingConfig } from '../../funding';
 import { DesignExperimentLabel } from '../../funding/paypal/template';
 
@@ -39,13 +39,13 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    inline? : boolean,
     experience? : string
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, inline } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience } : IndividualButtonProps) : ElementNode {
 
+    const inline = experience === EXPERIENCE.INLINE;
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {

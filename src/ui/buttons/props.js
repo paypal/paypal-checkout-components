@@ -264,7 +264,6 @@ export type RenderButtonProps = {|
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    inline : boolean | void,
     experience : string
 |};
 
@@ -314,7 +313,6 @@ export type ButtonProps = {|
     applePay : ApplePaySessionConfigRequest,
     meta : {||},
     renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
-    inline : boolean | void,
     experience : string
 |};
 
@@ -353,7 +351,6 @@ export type ButtonPropsInputs = {
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    inline : boolean | void,
     experience : string
 };
 
@@ -500,7 +497,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         applePaySupport = false,
         supportsPopups = false,
         supportedNativeBrowser = false,
-        inline = false,
         experience = ''
     } = props;
 

@@ -598,16 +598,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      applePaySession
             },
 
-            inline: {
-                queryParam: true,
-                required:   false,
-                type:       'boolean',
-                value:      ({ props }) => {
-                    const { style: { custom }, fundingEligibility } = props;
-                    return custom && fundingEligibility[FUNDING.CARD]?.eligible;
-                }
-            },
-
             experience: {
                 queryParam: true,
                 required:   false,
