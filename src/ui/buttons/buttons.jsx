@@ -167,7 +167,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         flow={ flow }
                         vault={ vault }
                         instrument={ instruments[source] }
-                        inline={ inline }
+                        experience={ experience }
                     />
                 ))
             }
