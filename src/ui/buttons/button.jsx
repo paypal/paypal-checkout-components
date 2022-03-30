@@ -97,14 +97,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     const { custom, layout, shape } = style;
     
-    let labelText = (fundingConfig.labelText || fundingSource);
-    if (typeof fundingConfig.labelText === 'function') {
-        labelText = fundingConfig.labelText({ content, fundingEligibility });
-    }
-
-    if (inline && fundingSource === FUNDING.CARD) {
-        labelText = custom?.label || 'Checkout';
-    }
+    const labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
 
     const logoNode = (
         <Logo
