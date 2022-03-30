@@ -602,8 +602,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'boolean',
                 value:      ({ props }) => {
-                    const { clientID, style: { custom }, fundingEligibility } = props;
-                    return isInlineEligible({ clientID }) && custom && fundingEligibility[FUNDING.CARD]?.eligible;
+                    const { inline, style: { custom }, fundingEligibility } = props;
+                    return inline && custom && fundingEligibility[FUNDING.CARD]?.eligible);
                 }
             },
 
