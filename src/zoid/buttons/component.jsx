@@ -16,7 +16,7 @@ import { node, dom } from 'jsx-pragmatic/src';
 import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
-import { EXPERIENCE } from '../../constants/';
+import { EXPERIENCE } from '../../constants';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
@@ -613,8 +613,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { inline } = props;
-                    return inline ? EXPERIENCE.INLINE : '';
+                    const { style: { custom }, fundingEligibility } = props;
+                    const isInlineXO = (custom && (custom.label || custom.css)) && fundingEligibility[FUNDING.CARD]?.eligible;
+
+                    return isInlineXO ? EXPERIENCE.INLINE : '';
                 }
             },
 
