@@ -20,7 +20,7 @@ import { isFundingEligible } from '../../funding';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments } from './util';
+    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments, isInlineEligible } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -602,8 +602,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'boolean',
                 value:      ({ props }) => {
-                    const { style: { custom }, inline, fundingEligibility } = props;
-                    return inline && custom && fundingEligibility[FUNDING.CARD]?.eligible;
+                    const { clientID, style: { custom }, fundingEligibility } = props;
+                    return isInlineEligible({ clientID }) && custom && fundingEligibility[FUNDING.CARD]?.eligible;
                 }
             },
 

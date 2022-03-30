@@ -298,3 +298,11 @@ export function getButtonSize (props : ButtonProps, container : string | HTMLEle
         }
     }
 }
+
+export function isInlineEligible({ clientID } : {| clientID : string |}) : boolean {
+    const inlineAllowList = [
+        'AYLa6UCw47Baut1LJ3TojVJBDe8ZkzAutZjWP7fVOCafaJ8em97GrHFW7EJXKcMjGcueM-R_AFa-cadq', // test app
+        'AZ4oOpMmgJ3zzqD5quh97IHZnuabU1vwRxfnVKe0CqvZOd6Nfcr-qr_sBKCnRJxODfhSd8IQ2qfL-2aZ'  // test app
+    ];
+    return inlineAllowList.indexOf(clientID) !== -1;
+}
