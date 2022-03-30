@@ -61,3 +61,7 @@ export const MENU_PLACEMENT = {
     ABOVE:   ('above' : 'above'),
     BELOW: ('below' : 'below')
 };
+
+export const EXPERIENCE = {
+    INLINE: ('inline' : 'inline')
+};

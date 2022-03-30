@@ -110,7 +110,11 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
+        if (inline) {
+            fundingSources = [ FUNDING.CARD, ...fundingSources.filter(src => src !== FUNDING.CARD) ];
+        } else {
+            fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
+        }
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
@@ -142,7 +146,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                 fundingSources.map((source, i) => (
                     <Button
                         content={ content }
-                        i={ i }
+                        i={ inline && i === 0 ? fundingSources.length - 1 : i - 1 }
                         style={ style }
                         merchantFundingSource={ fundingSource }
                         fundingSource={ source }

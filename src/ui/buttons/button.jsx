@@ -39,7 +39,8 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    inline? : boolean
+    inline? : boolean,
+    experience? : string
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
@@ -194,11 +195,12 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     }
 
     const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument });
-
+console.log(`fundingSource: ${fundingSource}, color: ${color}`);
     return (
         <div
             class={ [
                 CLASS.BUTTON_ROW,
+                inline && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
                 `${ CLASS.NUMBER }-${ i }`,
                 `${ CLASS.LAYOUT }-${ layout }`,
                 `${ CLASS.SHAPE }-${ shape }`,
