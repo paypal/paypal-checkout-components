@@ -1,3 +1,13 @@
+## <small>5.0.205 (2022-03-30)</small>
+
+* Custom Styling for InlineXO (#1901) ([53ddb88](https://github.com/paypal/paypal-checkout-components/commit/53ddb88)), closes [#1901](https://github.com/paypal/paypal-checkout-components/issues/1901)
+* Keep inlinexo internally (#1895) ([302376e](https://github.com/paypal/paypal-checkout-components/commit/302376e)), closes [#1895](https://github.com/paypal/paypal-checkout-components/issues/1895)
+* tech(CSS): Revert Venmo bold styling (#1891) ([854825f](https://github.com/paypal/paypal-checkout-components/commit/854825f)), closes [#1891](https://github.com/paypal/paypal-checkout-components/issues/1891)
+* chore(deps): update codecov/codecov-action action to v2 (#1900) ([d0b0990](https://github.com/paypal/paypal-checkout-components/commit/d0b0990)), closes [#1900](https://github.com/paypal/paypal-checkout-components/issues/1900)
+* chore(release): 5.0.204 🎉 ([0c6c8d3](https://github.com/paypal/paypal-checkout-components/commit/0c6c8d3))
+
+
+
 ## <small>5.0.204 (2022-03-25)</small>
 
 * Keep inlinexo internally (#1895) ([302376e](https://github.com/paypal/paypal-checkout-components/commit/302376e)), closes [#1895](https://github.com/paypal/paypal-checkout-components/issues/1895)
