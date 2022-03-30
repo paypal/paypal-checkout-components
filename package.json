@@ -49,7 +49,6 @@
     "release": "npm run build-commit && grabthar-release",
     "release:cli": "rm -rf node_modules && npm i && npm run build-commit && grabthar-release",
     "postrelease": "npm run cdnify -- --commitonly",
-    "release:pre": "npm run build-commit && grabthar-release --DIST_TAG=alpha --BUMP=prerelease",
     "deploy": "npm run cdnify",
     "activate:cli": "CDN='https://www.paypalobjects.com' grabthar-activate",
     "activate": "grabthar-activate --CDNIFY=false",
