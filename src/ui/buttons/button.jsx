@@ -45,7 +45,7 @@ type IndividualButtonProps = {|
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience } : IndividualButtonProps) : ElementNode {
 
-    const inline = experience === EXPERIENCE.INLINE;
+    const inlineExperience = experience === EXPERIENCE.INLINE;
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -131,7 +131,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
-            custom={ inline ? custom : null }
+            custom={ inlineExperience ? custom : null }
             experiment={ experiment }
         />
     );
@@ -200,7 +200,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         <div
             class={ [
                 CLASS.BUTTON_ROW,
-                inline && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
+                inlineExperience && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
                 `${ CLASS.NUMBER }-${ i }`,
                 `${ CLASS.LAYOUT }-${ layout }`,
                 `${ CLASS.SHAPE }-${ shape }`,
@@ -225,7 +225,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 } }
                 class={ [
                     CLASS.BUTTON,
-                    inline && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
+                    inlineExperience && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
                     `${ CLASS.NUMBER }-${ i }`,
                     `${ CLASS.LAYOUT }-${ layout }`,
                     `${ CLASS.SHAPE }-${ shape }`,

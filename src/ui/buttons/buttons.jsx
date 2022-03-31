@@ -102,7 +102,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
         supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
-    const inline = experience === EXPERIENCE.INLINE;
+    const inlineExperience = experience === EXPERIENCE.INLINE;
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
@@ -112,7 +112,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        if (inline) {
+        if (inlineExperience) {
             fundingSources = [ FUNDING.CARD, ...fundingSources.filter(src => src !== FUNDING.CARD) ];
         } else {
             fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
@@ -128,7 +128,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
     const { buttonDesignScript = '' } = getButtonDesign(personalization);
     const index = (i) => {
-        if (!inline) {
+        if (!inlineExperience) {
             return i;
         }
 
