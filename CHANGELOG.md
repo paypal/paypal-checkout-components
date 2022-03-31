@@ -1,3 +1,10 @@
+## <small>5.0.206 (2022-03-31)</small>
+
+* Update Styling for Inline XO (#1904) ([d800838](https://github.com/paypal/paypal-checkout-components/commit/d800838)), closes [#1904](https://github.com/paypal/paypal-checkout-components/issues/1904)
+* chore: update codecov action (#1903) ([1a7f8a7](https://github.com/paypal/paypal-checkout-components/commit/1a7f8a7)), closes [#1903](https://github.com/paypal/paypal-checkout-components/issues/1903)
+
+
+
 ## <small>5.0.205 (2022-03-30)</small>
 
 * Custom Styling for InlineXO (#1901) ([53ddb88](https://github.com/paypal/paypal-checkout-components/commit/53ddb88)), closes [#1901](https://github.com/paypal/paypal-checkout-components/issues/1901)
