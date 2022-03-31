@@ -6,7 +6,7 @@ import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { noop } from 'belter/src';
 
 import type { Wallet, WalletInstrument } from '../../types';
-import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW } from '../../constants';
+import { CLASS, BUTTON_NUMBER, BUTTON_LAYOUT, BUTTON_FLOW, EXPERIENCE } from '../../constants';
 import { determineEligibleFunding, isWalletFundingEligible } from '../../funding';
 import { ValidationError } from '../../lib';
 
@@ -97,10 +97,12 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 }
 
 export function Buttons(props : ButtonsProps) : ElementNode {
-    const { onClick = noop, inline } = props;
+    const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
-        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport, supportsPopups, supportedNativeBrowser } = normalizeButtonProps(props);
+        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
+        supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
     const { layout, shape, tagline } = style;
+    const inlineExperience = experience === EXPERIENCE.INLINE;
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
@@ -110,7 +112,11 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     }
 
     if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-        fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
+        if (inlineExperience) {
+            fundingSources = [ FUNDING.CARD, ...fundingSources.filter(src => src !== FUNDING.CARD) ];
+        } else {
+            fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
+        }
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
@@ -121,6 +127,18 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     );
 
     const { buttonDesignScript = '' } = getButtonDesign(personalization);
+    const index = (i) => {
+        if (!inlineExperience) {
+            return i;
+        }
+
+        // InlineXO: Need to change color indexing because we bring Cards to the top
+        if (i === 0) {
+            return fundingSources.length - 1;
+        } else {
+            return i - 1;
+        }
+    };
 
     return (
         <div class={ [
@@ -142,7 +160,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                 fundingSources.map((source, i) => (
                     <Button
                         content={ content }
-                        i={ i }
+                        i={ index(i) }
                         style={ style }
                         merchantFundingSource={ fundingSource }
                         fundingSource={ source }
@@ -162,7 +180,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         flow={ flow }
                         vault={ vault }
                         instrument={ instruments[source] }
-                        inline={ inline }
+                        experience={ experience }
                     />
                 ))
             }

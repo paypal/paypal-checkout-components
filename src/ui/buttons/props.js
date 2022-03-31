@@ -264,7 +264,7 @@ export type RenderButtonProps = {|
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    inline : boolean | void
+    experience : string
 |};
 
 export type PrerenderDetails = {|
@@ -313,7 +313,7 @@ export type ButtonProps = {|
     applePay : ApplePaySessionConfigRequest,
     meta : {||},
     renderedButtons : $ReadOnlyArray<$Values<typeof FUNDING>>,
-    inline : boolean | void
+    experience : string
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -351,7 +351,7 @@ export type ButtonPropsInputs = {
     applePaySupport : boolean,
     supportsPopups : boolean,
     supportedNativeBrowser : boolean,
-    inline : boolean | void
+    experience : string
 };
 
 export const DEFAULT_STYLE = {
@@ -497,7 +497,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         applePaySupport = false,
         supportsPopups = false,
         supportedNativeBrowser = false,
-        inline = false
+        experience = ''
     } = props;
 
     const { country, lang } = locale;
@@ -540,5 +540,5 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
         buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
-        experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser, inline };
+        experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser, experience };
 }
