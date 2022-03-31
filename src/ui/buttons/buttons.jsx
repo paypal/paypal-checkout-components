@@ -132,6 +132,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             return i;
         }
 
+        // InlineXO: Need to change color indexing because we bring Cards to the top
         if (i === 0) {
             return fundingSources.length - 1;
         } else {
