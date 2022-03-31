@@ -127,6 +127,17 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     );
 
     const { buttonDesignScript = '' } = getButtonDesign(personalization);
+    const index = (i) => {
+        if (!inline) {
+            return i;
+        }
+
+        if (i === 0) {
+            return fundingSources.length - 1;
+        } else {
+            return i - 1;
+        }
+    };
 
     return (
         <div class={ [
@@ -148,7 +159,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                 fundingSources.map((source, i) => (
                     <Button
                         content={ content }
-                        i={ inline && i === 0 ? fundingSources.length - 1 : i - 1 }
+                        i={ index(i) }
                         style={ style }
                         merchantFundingSource={ fundingSource }
                         fundingSource={ source }
