@@ -2,6 +2,8 @@
 
 import { COUNTRY, FUNDING, CARD, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import type { InstallmentsFlowType } from '@paypal/installments/src/types';
+import type { CustomStyle } from '@paypal/checkout-components/src/types';
+import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import type { ContentType, ProxyWindow, Wallet, CheckoutFlowType, CardFormFlowType,
     ThreeDomainSecureFlowType, MenuFlowType, PersonalizationType, QRCodeType } from '../types';
@@ -23,14 +25,14 @@ export type ButtonStyle = {|
     color : string,
     shape : string,
     label : string,
-    tagline : boolean | void
+    tagline : boolean | void,
+    custom? : CustomStyle
 |};
 
 export type ButtonXProps = {|
     ...XProps,
 
     style : ButtonStyle,
-    inline : boolean,
     buttonSessionID : string
 |};
 
@@ -49,7 +51,7 @@ export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| f
         buttonSessionID,
         style,
         branded,
-        inline,
+        experience,
         intent
     } = xprops;
 
@@ -104,7 +106,7 @@ export function getButtonProps({ facilitatorAccessToken, brandedDefault } : {| f
         style,
         buttonSessionID,
         branded,
-        inlinexo: inline
+        inlinexo: experience === EXPERIENCE.INLINE
     };
 }
 

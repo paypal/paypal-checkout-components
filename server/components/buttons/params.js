@@ -2,6 +2,7 @@
 /* eslint max-depth: off */
 
 import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
+import type { CustomStyle } from '@paypal/checkout-components/src/types';
 import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY,
     COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS, SDK_QUERY_KEYS, ERROR_CODE } from '@paypal/sdk-constants';
 import { values, constHas } from 'belter';
@@ -16,7 +17,8 @@ type StyleType = {|
     label? : string,
     period? : ?number,
     tagline? : boolean | string,
-    layout? : string
+    layout? : string,
+    custom? : CustomStyle
 |};
 
 type ButtonInputParams = {|
@@ -56,7 +58,8 @@ type Style = {|
     label : string,
     period : ?number,
     tagline? : boolean | string,
-    layout? : string
+    layout? : string,
+    custom? : CustomStyle
 |};
 
 type ButtonParams = {|
@@ -302,10 +305,11 @@ function getStyle(params : ButtonInputParams) : Style {
         label = 'paypal',
         period,
         tagline,
-        layout = ''
+        layout = '',
+        custom
     } = params.style || {};
 
-    return { label, period, tagline, layout };
+    return { custom, label, period, tagline, layout };
 }
 
 export function getButtonParams(params : ButtonInputParams, req : ExpressRequest, res : ExpressResponse) : ButtonParams {

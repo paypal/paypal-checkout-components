@@ -2,6 +2,7 @@
 
 import type { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import type { ProxyWindow } from '../types';
 import { getProps, type XProps, type Props } from '../props/props';
@@ -37,7 +38,6 @@ export type CardXProps = {|
     fundingEligibility : FundingEligibilityType,
     onChange : OnChange,
     export : CardExport,
-    inline : boolean,
     parent? : {|
         props : XProps,
         export : CardExport
@@ -76,7 +76,7 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         onChange,
         branded = fundingEligibility?.card?.branded ?? true,
         parent,
-        inline,
+        experience,
         export: xport
     } = xprops;
 
@@ -91,7 +91,7 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         cardSessionID,
         fundingEligibility,
         onChange,
-        inlinexo: inline,
+        inlinexo: experience === EXPERIENCE.INLINE,
         export:   parent ? parent.export : xport,
         facilitatorAccessToken
     };

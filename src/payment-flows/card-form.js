@@ -3,6 +3,7 @@
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { memoize, querySelectorAll, debounce, noop } from 'belter/src';
+import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import { DATA_ATTRIBUTES } from '../constants';
 import { unresolvedPromise, promiseNoop } from '../lib';
@@ -17,10 +18,10 @@ function setupCardForm() {
 let cardFormOpen = false;
 
 function isCardFormEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange, inline } = props;
+    const { vault, onShippingChange, experience } = props;
     const { eligibility } = serviceData;
 
-    if (inline) {
+    if (experience === EXPERIENCE.INLINE) {
         return false;
     }
     
