@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, Style, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, Style, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
 import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 

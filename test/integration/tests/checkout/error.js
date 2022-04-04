@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { once, uniqueID } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { once, uniqueID } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, assert, WEBVIEW_USER_AGENT, runOnClick } from '../common';

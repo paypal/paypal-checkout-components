@@ -3,9 +3,9 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
-import { create, EVENT, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize, destroyElement, toCSS } from 'belter/src';
-import { node, dom } from 'jsx-pragmatic/src';
+import { create, EVENT, type ZoidComponent } from '@krakenjs/zoid/src';
+import { inlineMemoize, destroyElement, toCSS } from '@krakenjs/belter/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 
 import { type ModalProps } from './props';
 

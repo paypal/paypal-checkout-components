@@ -2,7 +2,7 @@
 /** @jsx node */
 /** @jsxFrag Fragment */
 
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 import { LANG } from '@paypal/sdk-constants/src';
 import { PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 

@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { CONTEXT } from 'zoid/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { CONTEXT } from '@krakenjs/zoid/src';
 
 import { runOnClick } from '../../tests/common';
 

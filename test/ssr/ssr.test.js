@@ -2,7 +2,7 @@
 /* eslint no-restricted-globals: 0, promise/no-native: 0 */
 
 import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
-import { html, ElementNode } from 'jsx-pragmatic';
+import { html, ElementNode } from '@krakenjs/jsx-pragmatic';
 import { ERROR_CODE } from '@paypal/sdk-constants';
 
 import { webpackCompileToString } from '../screenshot/lib/compile';
@@ -230,7 +230,7 @@ test(`Design should be applied when there is valid personalization`, async () =>
         throw new Error('Expected animation to applied in script and container');
     }
 
-    
+
 });
 
 test(`Design for adding label text next to logo should be applied when there is valid personalization`, async () => {
@@ -302,7 +302,7 @@ test(`Tag should be applied with no design for control`, async () => {
         throw new Error('Expected to find a data-design-experiment tag but no script');
     }
 
-    
+
 });
 
 test(`Tag should be applied with no design for control`, async () => {
@@ -340,7 +340,7 @@ test(`Tag should be applied with no design for control`, async () => {
         throw new Error('Expected not to find a data-design-experiment tag and no script');
     }
 
-    
+
 });
 
 test(`Animation should not be applied when buttonAnimation is null`, async () => {
@@ -369,5 +369,5 @@ test(`Animation should not be applied when buttonAnimation is null`, async () =>
     if (animationSignal) {
         throw new Error('Expected design to be applied in script and container');
     }
-    
+
 });

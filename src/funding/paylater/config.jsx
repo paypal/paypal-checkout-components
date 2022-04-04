@@ -3,7 +3,7 @@
 
 import type { FundingEligibilityType } from '@paypal/sdk-client/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { node, Style } from 'jsx-pragmatic/src';
+import { node, Style } from '@krakenjs/jsx-pragmatic/src';
 import { PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';

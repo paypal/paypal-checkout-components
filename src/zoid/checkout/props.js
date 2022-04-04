@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING, ENV, type LocaleType } from '@paypal/sdk-constants/src';
 
 export type OnApproveData = {|

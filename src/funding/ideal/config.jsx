@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { IdealLogo } from '@paypal/sdk-logos/src';
-import { Fragment, node } from 'jsx-pragmatic/src';
+import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 
 import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';

@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise, uniqueID } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { wrapPromise, uniqueID } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 describe(`paypal checkout component validation`, () => {

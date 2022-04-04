@@ -1,5 +1,5 @@
 /* @flow */
-import { type ChildType } from 'jsx-pragmatic/src';
+import { type ChildType } from '@krakenjs/jsx-pragmatic/src';
 
 import { type Personalization } from '../props';
 

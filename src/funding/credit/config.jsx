@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { COUNTRY, FUNDING_BRAND_LABEL } from '@paypal/sdk-constants/src';
-import { node, Fragment } from 'jsx-pragmatic/src';
+import { node, Fragment } from '@krakenjs/jsx-pragmatic/src';
 import { CreditLogo, PPLogo, PayPalLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT, BUTTON_FLOW } from '../../constants';

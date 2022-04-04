@@ -3,8 +3,8 @@
 /* eslint max-lines: 0 */
 
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
-import { create, type ZoidComponent } from 'zoid/src';
-import { inlineMemoize } from 'belter/src';
+import { create, type ZoidComponent } from '@krakenjs/zoid/src';
+import { inlineMemoize } from '@krakenjs/belter/src';
 
 import { type MenuProps } from './props';
 

@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise, uniqueID, noop } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { wrapPromise, uniqueID, noop } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import { generateOrderID, runOnClick,

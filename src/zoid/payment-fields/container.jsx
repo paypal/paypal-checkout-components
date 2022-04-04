@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { destroyElement, toCSS, type EventEmitterType } from 'belter/src';
-import { node, type ChildType } from 'jsx-pragmatic/src';
-import { EVENT } from 'zoid/src';
+import { destroyElement, toCSS, type EventEmitterType } from '@krakenjs/belter/src';
+import { node, type ChildType } from '@krakenjs/jsx-pragmatic/src';
+import { EVENT } from '@krakenjs/zoid/src';
 
 const CLASS = {
     VISIBLE:         'visible',

@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
-import { node, Fragment, type ElementNode } from 'jsx-pragmatic/src';
+import { node, Fragment, type ElementNode } from '@krakenjs/jsx-pragmatic/src';
 
 import { CLASS } from '../../constants';
 import { getFundingConfig } from '../../funding';

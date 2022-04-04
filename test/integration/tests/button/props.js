@@ -1,9 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT } from '../common';
 

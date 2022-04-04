@@ -1,6 +1,6 @@
 /* @flow */
 
-import { max, perc, roundUp } from 'belter/src';
+import { max, perc, roundUp } from '@krakenjs/belter/src';
 import { FUNDING, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
 import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from '../../../constants';

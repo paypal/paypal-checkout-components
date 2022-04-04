@@ -1,6 +1,6 @@
 /* @flow */
 /** @jsx node */
-import { node, Style, type ChildType } from 'jsx-pragmatic/src';
+import { node, Style, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 import { VenmoLogo } from '@paypal/sdk-logos/src';
 
 import {

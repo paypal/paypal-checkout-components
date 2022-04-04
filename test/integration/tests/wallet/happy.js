@@ -1,6 +1,6 @@
 /* @flow */
 
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 
 
 import { createTestContainer, destroyTestContainer, generateOrderID } from '../common';

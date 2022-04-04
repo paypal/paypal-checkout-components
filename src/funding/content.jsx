@@ -3,7 +3,7 @@
 /** @jsx node */
 /** @jsxFrag Fragment */
 
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 import { LANG } from '@paypal/sdk-constants/src';
 
 import { Text } from '../ui/text';

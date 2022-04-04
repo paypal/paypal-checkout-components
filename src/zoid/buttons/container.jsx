@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { values, destroyElement, toCSS } from 'belter/src';
-import { node, dom } from 'jsx-pragmatic/src';
-import { EVENT, type RenderOptionsType } from 'zoid/src';
+import { values, destroyElement, toCSS } from '@krakenjs/belter/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import { EVENT, type RenderOptionsType } from '@krakenjs/zoid/src';
 import { getVersion } from '@paypal/sdk-client/src';
 
 import { BUTTON_SIZE, ATTRIBUTE, MENU_PLACEMENT } from '../../constants';

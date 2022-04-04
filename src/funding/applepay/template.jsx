@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Style, type ChildType } from 'jsx-pragmatic/src';
+import { node, Style, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 import { ApplePayMark } from '@paypal/sdk-logos/src';
 
 import css from './style.scoped.scss';

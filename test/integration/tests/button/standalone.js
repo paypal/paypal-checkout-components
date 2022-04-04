@@ -2,7 +2,7 @@
 /* eslint max-lines: 0 */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 import { SUPPORTED_FUNDING_SOURCES } from '@paypal/funding-components/src';
 
 import { createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, WEBVIEW_USER_AGENT, mockProp } from '../common';

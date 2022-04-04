@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { wrapPromise, createElement, getElement, once } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { wrapPromise, createElement, getElement, once } from '@krakenjs/belter/src';
 import { SDK_QUERY_KEYS, QUERY_BOOL } from '@paypal/sdk-constants/src';
 import { insertMockSDKScript } from '@paypal/sdk-client/src';
 

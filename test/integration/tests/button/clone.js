@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 
 import { createTestContainer, destroyTestContainer, WEBVIEW_USER_AGENT } from '../common';
 

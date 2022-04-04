@@ -1,7 +1,7 @@
 /* @flow */
 
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { inlineMemoize } from 'belter/src';
+import { inlineMemoize } from '@krakenjs/belter/src';
 
 import { type FundingSourceConfig } from './common';
 import { getPayPalConfig } from './paypal';

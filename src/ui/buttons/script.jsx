@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ElementNode } from 'jsx-pragmatic/src';
+import { node, type ElementNode } from '@krakenjs/jsx-pragmatic/src';
 
 export function getComponentScript() : () => void {
 

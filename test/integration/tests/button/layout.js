@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { once } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { once } from '@krakenjs/belter/src';
 
 import { createTestContainer, destroyTestContainer } from '../common';
 

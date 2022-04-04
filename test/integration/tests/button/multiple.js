@@ -1,10 +1,10 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { rememberFunding } from '@paypal/funding-components/src';
-import { once } from 'belter/src';
+import { once } from '@krakenjs/belter/src';
 
 import { generateOrderID, createTestContainer, destroyTestContainer, IPHONE6_USER_AGENT, assert, mockProp, WEBVIEW_USER_AGENT } from '../common';
 

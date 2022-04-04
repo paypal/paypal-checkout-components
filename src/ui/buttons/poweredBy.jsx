@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType } from 'jsx-pragmatic/src';
+import { node, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 import { type LocaleType } from '@paypal/sdk-constants/src';
 import { LOGO_COLOR, LOGO_CLASS } from '@paypal/sdk-logos/src';
 

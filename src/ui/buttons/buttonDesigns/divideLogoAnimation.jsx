@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 import { LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { node, Fragment, type ChildType } from 'jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 
 import { CLASS } from '../../../constants';
 import { BUTTON_SIZE_STYLE } from '../config';

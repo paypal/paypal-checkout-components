@@ -1,7 +1,7 @@
 /* @flow */
 
 import { isPayPalDomain } from '@paypal/sdk-client/src';
-import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from 'zoid/src';
+import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from '@krakenjs/zoid/src';
 
 import type { LazyExport, LazyProtectedExport } from '../types';
 import { allowIframe as _allowIframe } from '../lib';

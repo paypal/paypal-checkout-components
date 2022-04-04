@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment } from 'jsx-pragmatic/src';
+import { node, Fragment } from '@krakenjs/jsx-pragmatic/src';
 import { CARD, COUNTRY, COMPONENTS, FUNDING } from '@paypal/sdk-constants/src';
 import { GlyphCard } from '@paypal/sdk-logos/src';
 

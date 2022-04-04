@@ -18,7 +18,7 @@ if ! git diff-index --quiet --cached HEAD; then
 fi
 
 # Re-install just the basics
-modules='zoid post-robot zalgo-promise beaver-logger cross-domain-safe-weakmap cross-domain-utils belter paypal-braintree-web-client grumbler-scripts paypal-sdk-constants'
+modules='@krakenjs/zoid @krakenjs/post-robot @krakenjs/zalgo-promise @krakenjs/beaver-logger @krakenjs/cross-domain-safe-weakmap @krakenjs/cross-domain-utils @krakenjs/belter paypal-braintree-web-client grumbler-scripts @paypal/sdk-constants'
 
 for module in $modules; do
   rm -rf "node_modules/$module"

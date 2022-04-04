@@ -55,7 +55,7 @@ const WEBPACK_CONFIG_BUTTON_RENDER : WebpackConfig = getWebpackConfig({
 
 const WEBPACK_CONFIG_JSX_PRAGMATIC : WebpackConfig = getWebpackConfig({
     context:       __dirname,
-    entry:         'jsx-pragmatic',
+    entry:         '@krakenjs/jsx-pragmatic',
     filename:      'jsx-pragmatic.js',
     modulename:    'jsx',
     debug:         true,

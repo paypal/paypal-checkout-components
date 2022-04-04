@@ -2,14 +2,14 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { node, dom } from 'jsx-pragmatic/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 import {
     getPayPalDomainRegex, getLogger, getLocale,
     getEnv, getClientID, getCommit, getSDKMeta, getCSPNonce, getBuyerCountry, getVersion, getPayPalDomain, getClientMetadataID
 } from '@paypal/sdk-client/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { create, CONTEXT, type ZoidComponent, EVENT } from 'zoid/src';
-import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { create, CONTEXT, type ZoidComponent, EVENT } from '@krakenjs/zoid/src';
+import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { SpinnerPage, Overlay } from '@paypal/common-components/src';
 

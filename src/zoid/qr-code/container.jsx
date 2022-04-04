@@ -1,9 +1,9 @@
 /* @flow */
 /** @jsx node */
 
-import { destroyElement, type EventEmitterType } from 'belter/src';
-import { EVENT, type RenderOptionsType } from 'zoid/src';
-import { node, dom, type ChildType } from 'jsx-pragmatic/src';
+import { destroyElement, type EventEmitterType } from '@krakenjs/belter/src';
+import { EVENT, type RenderOptionsType } from '@krakenjs/zoid/src';
+import { node, dom, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 
 import { type QRCodeProps } from './types';
 
