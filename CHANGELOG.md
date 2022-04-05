@@ -1,3 +1,9 @@
+## <small>5.0.207 (2022-04-05)</small>
+
+* chore: update packages to krakenjs scope (#1885) ([fd1bb83](https://github.com/paypal/paypal-checkout-components/commit/fd1bb83)), closes [#1885](https://github.com/paypal/paypal-checkout-components/issues/1885)
+
+
+
 ## <small>5.0.206 (2022-03-31)</small>
 
 * Update Styling for Inline XO (#1904) ([d800838](https://github.com/paypal/paypal-checkout-components/commit/d800838)), closes [#1904](https://github.com/paypal/paypal-checkout-components/issues/1904)
