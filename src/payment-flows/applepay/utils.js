@@ -25,6 +25,10 @@ const validNetworks : ValidNetworks = {
     jcb:            'jcb'
 };
 
+export function isZeroAmount(value : string) : boolean {
+    return parseFloat(value).toFixed(2) === '0.00';
+}
+
 function getSupportedNetworksFromIssuers(issuers : $ReadOnlyArray<string>) : $ReadOnlyArray<ApplePaySupportedNetworks> {
     if (!issuers || (issuers && issuers.length === 0)) {
         return [];
@@ -160,21 +164,23 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
         }
     };
 
-    if (subtotalValue && parseFloat(subtotalValue).toFixed(2) !== '0.00') {
+    if (subtotalValue && !isZeroAmount(subtotalValue)) {
         result.lineItems.push({
             label:  'Subtotal',
             amount: subtotalValue
         });
     }
 
-    if (taxValue && parseFloat(taxValue).toFixed(2) !== '0.00') {
+    if (taxValue && !isZeroAmount(taxValue)) {
         result.lineItems.push({
             label:  'Sales Tax',
             amount: taxValue
         });
     }
 
-    if (shippingValue && parseFloat(shippingValue).toFixed(2) !== '0.00') {
+    const isPickup = selectedShippingMethod && selectedShippingMethod.type === 'PICKUP';
+
+    if (shippingValue && (!isZeroAmount(shippingValue) || isPickup)) {
         result.lineItems.push({
             label:  'Shipping',
             amount: shippingValue

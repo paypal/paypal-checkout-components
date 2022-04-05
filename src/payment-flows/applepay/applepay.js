@@ -10,7 +10,7 @@ import { getLogger, promiseNoop, unresolvedPromise } from '../../lib';
 import { FPTI_CUSTOM_KEY, FPTI_STATE, FPTI_TRANSITION } from '../../constants';
 import type { ApplePayLineItem, ApplePayPaymentContact, ApplePayShippingMethod, ApplePayShippingMethodUpdate, ApplePayShippingContactUpdate, PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from '../types';
 
-import { createApplePayRequest, isJSON, validateShippingContact } from './utils';
+import { createApplePayRequest, isJSON, validateShippingContact, isZeroAmount } from './utils';
 
 const SUPPORTED_VERSION = 4;
 
@@ -76,24 +76,26 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
     }
 
     // eslint-disable-next-line flowtype/no-mutable-array
-    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel } : {| subtotal : string, tax : string, shipping : string, shippingLabel : ?string |}) : Array<ApplePayLineItem> {
+    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel, shippingIdentifier } : {| subtotal : string, tax : string, shipping : string, shippingLabel : ?string, shippingIdentifier : ?string |}) : Array<ApplePayLineItem> {
         const newLineItems = [];
 
-        if (subtotal && (parseFloat(subtotal).toFixed(2) !== '0.00')) {
+        if (subtotal && !isZeroAmount(subtotal)) {
             newLineItems.push({
                 label:  'Subtotal',
                 amount: subtotal
             });
         }
         
-        if (tax && (parseFloat(tax).toFixed(2) !== '0.00')) {
+        if (tax && !isZeroAmount(tax)) {
             newLineItems.push({
                 label:  'Sales Tax',
                 amount: tax
             });
         }
 
-        if (shipping && (parseFloat(shipping).toFixed(2) !== '0.00')) {
+        const isPickup = shippingIdentifier === 'PICKUP';
+
+        if ((shipping && !isZeroAmount(shipping)) || isPickup) {
             newLineItems.push({
                 label:  shippingLabel || 'Shipping',
                 amount: shipping
@@ -112,6 +114,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
         let currentShippingMethod;
 
         const onShippingChangeCallback = <T>({ orderID, shippingContact, shippingMethod = null } : {| orderID : string, shippingContact : ApplePayPaymentContact, shippingMethod? : ?ApplePayShippingMethod |}) : ZalgoPromise<T> => {
+
             if (!onShippingChange) {
                 const update = {
                     newTotal: {
@@ -120,12 +123,14 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     },
                     newLineItems: []
                 };
+
                 update.newLineItems = updateNewLineItems(
                     {
-                        shipping:       currentShippingAmount,
-                        subtotal:       currentSubtotalAmount,
-                        tax:            currentTaxAmount,
-                        shippingLabel:  currentShippingMethod?.label
+                        shipping:           currentShippingAmount,
+                        subtotal:           currentSubtotalAmount,
+                        tax:                currentTaxAmount,
+                        shippingLabel:      currentShippingMethod?.label,
+                        shippingIdentifier: currentShippingMethod?.identifier
                     }
                 );
 
@@ -146,10 +151,11 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                 };
                 update.newLineItems = updateNewLineItems(
                     {
-                        shipping:       currentShippingAmount,
-                        subtotal:       currentSubtotalAmount,
-                        tax:            currentTaxAmount,
-                        shippingLabel:  currentShippingMethod?.label
+                        shipping:           currentShippingAmount,
+                        subtotal:           currentSubtotalAmount,
+                        tax:                currentTaxAmount,
+                        shippingLabel:      currentShippingMethod?.label,
+                        shippingIdentifier: currentShippingMethod?.identifier
                     }
                 );
 
@@ -239,10 +245,11 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         };
                         update.newLineItems = updateNewLineItems(
                             {
-                                shipping:       currentShippingAmount,
-                                subtotal:       currentSubtotalAmount,
-                                tax:            currentTaxAmount,
-                                shippingLabel:  currentShippingMethod?.label
+                                shipping:           currentShippingAmount,
+                                subtotal:           currentSubtotalAmount,
+                                tax:                currentTaxAmount,
+                                shippingLabel:      currentShippingMethod?.label,
+                                shippingIdentifier: currentShippingMethod?.identifier
                             }
                         );
 
@@ -345,10 +352,11 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             };
                             update.newLineItems = updateNewLineItems(
                                 {
-                                    shipping:       currentShippingAmount,
-                                    subtotal:       currentSubtotalAmount,
-                                    tax:            currentTaxAmount,
-                                    shippingLabel:  currentShippingMethod?.label
+                                    shipping:           currentShippingAmount,
+                                    subtotal:           currentSubtotalAmount,
+                                    tax:                currentTaxAmount,
+                                    shippingLabel:      currentShippingMethod?.label,
+                                    shippingIdentifier: currentShippingMethod?.identifier
                                 }
                             );
 
@@ -374,10 +382,11 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                     };
                                     update.newLineItems = updateNewLineItems(
                                         {
-                                            shipping:       currentShippingAmount,
-                                            subtotal:       currentSubtotalAmount,
-                                            tax:            currentTaxAmount,
-                                            shippingLabel:  shippingMethod?.label
+                                            shipping:           currentShippingAmount,
+                                            subtotal:           currentSubtotalAmount,
+                                            tax:                currentTaxAmount,
+                                            shippingLabel:      shippingMethod?.label,
+                                            shippingIdentifier: currentShippingMethod?.identifier
                                         }
                                     );
 
