@@ -191,6 +191,11 @@ export function getCheckoutComponent() : CheckoutComponent {
                     type:     'function',
                     alias:    'onAuthorize'
                 },
+                
+                onComplete: {
+                    type:     'function',
+                    required: false
+                },
         
                 onShippingChange: {
                     type:     'function',

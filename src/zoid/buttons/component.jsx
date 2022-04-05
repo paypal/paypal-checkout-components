@@ -203,6 +203,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required: false
             },
 
+            onComplete: {
+                type:     'function',
+                required: false
+            },
+
             onShippingChange: {
                 type:       'function',
                 required:   false,
