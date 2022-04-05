@@ -103,6 +103,11 @@ export function getCardFormComponent() : CardFormComponent {
                     alias: 'onAuthorize'
                 },
 
+                onComplete: {
+                    type:     'function',
+                    required: false
+                },
+
                 onAuth: {
                     type:       'function',
                     required:   false,

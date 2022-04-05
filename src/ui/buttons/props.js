@@ -36,6 +36,8 @@ export type OnApproveData = {|
     paymentID? : string
 |};
 
+export type OnCompleteData = {||};
+
 export type CreateBillingAgreement = () => ZalgoPromise<string> | string;
 
 export type CreateSubscriptionRequest = {||};
@@ -65,7 +67,12 @@ export type OnApproveActions = {|
     |}
 |};
 
+export type OnCompleteActions = {|
+    redirect : (string, CrossDomainWindowType) => ZalgoPromise<void>
+|};
+
 export type OnApprove = (data : OnApproveData, actions : OnApproveActions) => ZalgoPromise<void> | void;
+export type OnComplete = (data : OnCompleteData, actions : OnCompleteActions) => ZalgoPromise<void> | void;
 
 type OnShippingChangeAddress = {|
     city : string,
@@ -283,6 +290,7 @@ export type ButtonProps = {|
     createSubscription : CreateSubscription,
     oncancel : OnCancel,
     onApprove : OnApprove,
+    onComplete : OnComplete,
     onClick : OnClick,
     getPrerenderDetails : GetPrerenderDetails,
     style : ButtonStyle,

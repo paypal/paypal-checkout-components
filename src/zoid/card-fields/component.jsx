@@ -47,6 +47,7 @@ type CardFieldsProps = {|
 
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
+    onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>
 |};
 
@@ -163,6 +164,12 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     type:     'function',
                     required: false,
                     value:      ({ props }) => props.parent.props.onApprove
+                },
+
+                onComplete: {
+                    type:     'function',
+                    required: false,
+                    value:      ({ props }) => props.parent.props.onComplete
                 },
 
                 onCancel: {
@@ -332,6 +339,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
 
             onApprove: {
+                type:     'function',
+                required: false
+            },
+
+            onComplete: {
                 type:     'function',
                 required: false
             },
