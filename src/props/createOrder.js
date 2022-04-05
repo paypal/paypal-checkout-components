@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from 'zalgo-promise/src';
 import { memoize, getQueryParam, stringifyError } from 'belter/src';
-import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY } from '@paypal/sdk-constants/src';
+import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY, FUNDING } from '@paypal/sdk-constants/src';
 import { getDomain } from 'cross-domain-utils/src';
 
 import { createOrderID, billingTokenToOrderID, subscriptionIdToCartId, createPaymentToken } from '../api';
@@ -13,7 +13,9 @@ import { ENABLE_PAYMENT_API } from '../config';
 import type { CreateSubscription } from './createSubscription';
 import type { CreateBillingAgreement } from './createBillingAgreement';
 
-export type XCreateOrderDataType = {||};
+export type XCreateOrderDataType = {|
+    paymentSource : $Values<typeof FUNDING> | null
+|};
 
 type OrderActions = {|
     create : (Object) => ZalgoPromise<string>
@@ -32,9 +34,8 @@ export type XCreateOrder = (XCreateOrderDataType, XCreateOrderActionsType) => Za
 
 export type CreateOrder = () => ZalgoPromise<string>;
 
-export function buildXCreateOrderData() : XCreateOrderDataType {
-    // $FlowFixMe
-    return {};
+export function buildXCreateOrderData({ paymentSource } : {| paymentSource : $Values<typeof FUNDING> | null |}) : XCreateOrderDataType {
+    return { paymentSource };
 }
 
 type OrderOptions = {|
@@ -155,11 +156,12 @@ type CreateOrderXProps = {|
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
     merchantID : $ReadOnlyArray<string>,
-    partnerAttributionID : ?string
+    partnerAttributionID : ?string,
+    paymentSource : $Values<typeof FUNDING> | null
 |};
 
-export function getCreateOrder({ createOrder, intent, currency, merchantID, partnerAttributionID } : CreateOrderXProps, { facilitatorAccessToken, createBillingAgreement, createSubscription } : {| facilitatorAccessToken : string, createBillingAgreement? : ?CreateBillingAgreement, createSubscription? : ?CreateSubscription |}) : CreateOrder {
-    const data = buildXCreateOrderData();
+export function getCreateOrder({ createOrder, intent, currency, merchantID, partnerAttributionID, paymentSource } : CreateOrderXProps, { facilitatorAccessToken, createBillingAgreement, createSubscription } : {| facilitatorAccessToken : string, createBillingAgreement? : ?CreateBillingAgreement, createSubscription? : ?CreateSubscription |}) : CreateOrder {
+    const data = buildXCreateOrderData({ paymentSource });
     const actions = buildXCreateOrderActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID });
 
     return memoize(() => {

@@ -80,7 +80,7 @@ export function getCardProps({ facilitatorAccessToken } : GetCardPropsOptions) :
         export: xport
     } = xprops;
 
-    const props = getProps({ facilitatorAccessToken, branded });
+    const props = getProps({ facilitatorAccessToken, branded, paymentSource: null });
 
     return {
         ...props,
