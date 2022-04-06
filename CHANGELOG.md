@@ -1,3 +1,9 @@
+## <small>5.0.208 (2022-04-06)</small>
+
+* onComplete (#1906) ([426178d](https://github.com/paypal/paypal-checkout-components/commit/426178d)), closes [#1906](https://github.com/paypal/paypal-checkout-components/issues/1906)
+
+
+
 ## <small>5.0.207 (2022-04-05)</small>
 
 * chore: update packages to krakenjs scope (#1885) ([fd1bb83](https://github.com/paypal/paypal-checkout-components/commit/fd1bb83)), closes [#1885](https://github.com/paypal/paypal-checkout-components/issues/1885)
