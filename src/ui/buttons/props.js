@@ -208,7 +208,7 @@ export type ApplePayShippingMethod = {|
 |};
 
 export type ApplePayShippingContactUpdate = {|
-    errors? : $ReadOnlyArray<ApplePayErrorCode>,
+    errors? : $ReadOnlyArray<ApplePayError>,
     newShippingMethods? : $ReadOnlyArray<ApplePayShippingMethod>,
     newTotal : ApplePayLineItem,
     newLineItems? : $ReadOnlyArray<ApplePayLineItem>
