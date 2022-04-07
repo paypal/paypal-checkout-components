@@ -47,6 +47,7 @@
     "build": "npm run test && npm run webpack",
     "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
     "release": "npm run build-commit && grabthar-release",
+    "release:dry-run": "DRY_RUN=true grabthar-release",
     "release:cli": "rm -rf node_modules && npm i && npm run build-commit && grabthar-release",
     "postrelease": "npm run cdnify -- --commitonly",
     "deploy": "npm run cdnify",
@@ -60,7 +61,7 @@
     "jest:client": "jest src/ --collectCoverage --collectCoverageFrom='src/' --no-cache --runInBand --env=jsdom",
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
-    "postpublish": "git clean -f && git checkout .",
+    "postpublish": "if [ ! $DRY_RUN ] || [ \"$DRY_RUN\" != 'true' ]; then git clean -f && git checkout .; fi;",
     "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com",
     "postinstall": "npm_config_registry=https://npm.paypal.com npm install @paypalcorp/web --no-save --proxy='null' --https-proxy='null' || echo 'Unable to install cdnx cli tools'"
   },
