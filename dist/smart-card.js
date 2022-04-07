@@ -4072,9 +4072,9 @@ window.smartCard = function(modules) {
         })), S.d(N, "FPTI_KEY", (function() {
             return p;
         })), S.d(N, "FPTI_USER_ACTION", (function() {
-            return l;
-        })), S.d(N, "FPTI_DATA_SOURCE", (function() {
             return f;
+        })), S.d(N, "FPTI_DATA_SOURCE", (function() {
+            return l;
         })), S.d(N, "FPTI_FEED", (function() {
             return Y;
         })), S.d(N, "FPTI_SDK_NAME", (function() {
@@ -4082,9 +4082,9 @@ window.smartCard = function(modules) {
         })), S.d(N, "FUNDING", (function() {
             return m;
         })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
-            return b;
-        })), S.d(N, "CARD", (function() {
             return y;
+        })), S.d(N, "CARD", (function() {
+            return b;
         })), S.d(N, "WALLET_INSTRUMENT", (function() {
             return W;
         })), S.d(N, "FUNDING_PRODUCTS", (function() {
@@ -4818,10 +4818,10 @@ window.smartCard = function(modules) {
             OPTION_SELECTED: "optsel",
             USER_IDENTITY_METHOD: "user_identity_method",
             FIELDS_COMPONENT_SESSION_ID: "fields_component_session_id"
-        }, l = {
+        }, f = {
             COMMIT: "commit",
             CONTINUE: "continue"
-        }, f = {
+        }, l = {
             PAYMENTS_SDK: "checkout"
         }, Y = {
             PAYMENTS_SDK: "payments_sdk"
@@ -4853,12 +4853,11 @@ window.smartCard = function(modules) {
             BOLETO: "boleto",
             WECHATPAY: "wechatpay",
             MERCADOPAGO: "mercadopago",
-            MULTIBLANCO: "multiblanco",
             MULTIBANCO: "multibanco"
-        }, b = {
+        }, y = {
             PAYPAL: "PayPal",
             CREDIT: "PayPal Credit"
-        }, y = {
+        }, b = {
             VISA: "visa",
             MASTERCARD: "mastercard",
             AMEX: "amex",
@@ -5040,7 +5039,7 @@ window.smartCard = function(modules) {
         } else if ("o" === l[0] && "n" === l[1]) o = l !== (l = l.replace(/Capture$/, "")), 
         l = l.toLowerCase() in n ? l.toLowerCase().slice(2) : l.slice(2), n.l || (n.l = {}), 
         n.l[l + o] = u, u ? i || n.addEventListener(l, o ? T : I, o) : n.removeEventListener(l, o ? T : I, o); else if ("dangerouslySetInnerHTML" !== l) {
-            if (t) l = l.replace(/xlink[H:h]/, "h").replace(/sName$/, "s"); else if ("href" !== l && "list" !== l && "form" !== l && "tabIndex" !== l && "download" !== l && l in n) try {
+            if (t) l = l.replace(/xlink(H|:h)/, "h").replace(/sName$/, "s"); else if ("href" !== l && "list" !== l && "form" !== l && "tabIndex" !== l && "download" !== l && l in n) try {
                 n[l] = null == u ? "" : u;
                 break n;
             } catch (n) {}
@@ -5156,11 +5155,11 @@ window.smartCard = function(modules) {
         return this.constructor(n, u);
     }
     n = c.slice, l = {
-        __e: function(n, l) {
-            for (var u, i, t; l = l.__; ) if ((u = l.__c) && !u.__) try {
-                if ((i = u.constructor) && null != i.getDerivedStateFromError && (u.setState(i.getDerivedStateFromError(n)), 
-                t = u.__d), null != u.componentDidCatch && (u.componentDidCatch(n), t = u.__d), 
-                t) return u.__E = u;
+        __e: function(n, l, u, i) {
+            for (var t, o, r; l = l.__; ) if ((t = l.__c) && !t.__) try {
+                if ((o = t.constructor) && null != o.getDerivedStateFromError && (t.setState(o.getDerivedStateFromError(n)), 
+                r = t.__d), null != t.componentDidCatch && (t.componentDidCatch(n, i || {}), r = t.__d), 
+                r) return t.__E = t;
             } catch (l) {
                 n = l;
             }
@@ -5176,7 +5175,7 @@ window.smartCard = function(modules) {
     }, _.prototype.render = preact_module_d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
     g.__r = 0;
     var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o = 0, hooks_module_i = [], hooks_module_c = l.__b, hooks_module_f = l.__r, hooks_module_e = l.diffed, hooks_module_a = l.__c, hooks_module_v = l.unmount;
-    function hooks_module_m(t, r) {
+    function hooks_module_l(t, r) {
         l.__h && l.__h(hooks_module_u, t, hooks_module_o || r), hooks_module_o = 0;
         var i = hooks_module_u.__H || (hooks_module_u.__H = {
             __: [],
@@ -5184,9 +5183,9 @@ window.smartCard = function(modules) {
         });
         return t >= i.__.length && i.__.push({}), i.__[t];
     }
-    function hooks_module_l(n) {
+    function hooks_module_m(n) {
         return hooks_module_o = 1, function(n, r, o) {
-            var i = hooks_module_m(hooks_module_t++, 2);
+            var i = hooks_module_l(hooks_module_t++, 2);
             return i.t = n, i.__c || (i.__ = [ hooks_module_w(void 0, r), function(n) {
                 var t = i.t(i.__[0], n);
                 i.__[0] !== t && (i.__ = [ t, i.__[1] ], i.__c.setState({}));
@@ -5194,12 +5193,12 @@ window.smartCard = function(modules) {
         }(hooks_module_w, n);
     }
     function hooks_module_y(r, o) {
-        var i = hooks_module_m(hooks_module_t++, 3);
+        var i = hooks_module_l(hooks_module_t++, 3);
         !l.__s && hooks_module_k(i.__H, o) && (i.__ = r, i.__H = o, hooks_module_u.__H.__h.push(i));
     }
-    function hooks_module_s(n) {
+    function hooks_module_h(n) {
         return hooks_module_o = 5, function(n, u) {
-            var r = hooks_module_m(hooks_module_t++, 7);
+            var r = hooks_module_l(hooks_module_t++, 7);
             return hooks_module_k(r.__H, u) && (r.__ = n(), r.__H = u, r.__h = n), r.__;
         }((function() {
             return {
@@ -7275,14 +7274,16 @@ window.smartCard = function(modules) {
             return _ref2.smartWallet;
         }));
     }));
-    function getCreateOrder(_ref4, _ref5) {
-        var createOrder = _ref4.createOrder, currency = _ref4.currency;
-        var createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription;
-        var data = {};
-        var actions = function(_ref3) {
-            var facilitatorAccessToken = _ref3.facilitatorAccessToken, intent = _ref3.intent, currency = _ref3.currency, merchantID = _ref3.merchantID, partnerAttributionID = _ref3.partnerAttributionID;
-            var order = function(_ref) {
-                var facilitatorAccessToken = _ref.facilitatorAccessToken, intent = _ref.intent, currency = _ref.currency, merchantID = _ref.merchantID, partnerAttributionID = _ref.partnerAttributionID;
+    function getCreateOrder(_ref5, _ref6) {
+        var createOrder = _ref5.createOrder, currency = _ref5.currency;
+        var createBillingAgreement = _ref6.createBillingAgreement, createSubscription = _ref6.createSubscription;
+        var data = {
+            paymentSource: _ref5.paymentSource
+        };
+        var actions = function(_ref4) {
+            var facilitatorAccessToken = _ref4.facilitatorAccessToken, intent = _ref4.intent, currency = _ref4.currency, merchantID = _ref4.merchantID, partnerAttributionID = _ref4.partnerAttributionID;
+            var order = function(_ref2) {
+                var facilitatorAccessToken = _ref2.facilitatorAccessToken, intent = _ref2.intent, currency = _ref2.currency, merchantID = _ref2.merchantID, partnerAttributionID = _ref2.partnerAttributionID;
                 return {
                     create: function(data) {
                         var order = _extends({}, data);
@@ -7343,8 +7344,8 @@ window.smartCard = function(modules) {
                 merchantID: merchantID,
                 partnerAttributionID: partnerAttributionID
             });
-            !function(_ref2) {
-                var facilitatorAccessToken = _ref2.facilitatorAccessToken, intent = _ref2.intent, currency = _ref2.currency, merchantID = _ref2.merchantID, partnerAttributionID = _ref2.partnerAttributionID;
+            !function(_ref3) {
+                var facilitatorAccessToken = _ref3.facilitatorAccessToken, intent = _ref3.intent, currency = _ref3.currency, merchantID = _ref3.merchantID, partnerAttributionID = _ref3.partnerAttributionID;
             }({
                 facilitatorAccessToken: facilitatorAccessToken,
                 intent: intent,
@@ -7357,11 +7358,11 @@ window.smartCard = function(modules) {
                 payment: null
             };
         }({
-            facilitatorAccessToken: _ref5.facilitatorAccessToken,
-            intent: _ref4.intent,
+            facilitatorAccessToken: _ref6.facilitatorAccessToken,
+            intent: _ref5.intent,
             currency: currency,
-            merchantID: _ref4.merchantID,
-            partnerAttributionID: _ref4.partnerAttributionID
+            merchantID: _ref5.merchantID,
+            partnerAttributionID: _ref5.partnerAttributionID
         });
         return memoize((function() {
             var queryOrderID = parseQuery(window.location.search.slice(1)).orderID;
@@ -7391,9 +7392,9 @@ window.smartCard = function(modules) {
                         token: orderID
                     };
                 })).addTrackingBuilder((function() {
-                    var _ref6;
-                    return (_ref6 = {}).context_type = "EC-Token", _ref6.context_id = orderID, _ref6.token = orderID, 
-                    _ref6;
+                    var _ref7;
+                    return (_ref7 = {}).context_type = "EC-Token", _ref7.context_id = orderID, _ref7.token = orderID, 
+                    _ref7;
                 })).track((_getLogger$addPayload = {}, _getLogger$addPayload.state_name = "smart_button", 
                 _getLogger$addPayload.transition_name = "process_receive_order", _getLogger$addPayload.context_type = "EC-Token", 
                 _getLogger$addPayload.context_id = orderID, _getLogger$addPayload.token = orderID, 
@@ -7422,9 +7423,9 @@ window.smartCard = function(modules) {
     };
     var _excluded = [ "buyerAccessToken", "forceRestAPI" ];
     function getProps(_ref) {
-        var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
+        var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded, paymentSource = _ref.paymentSource;
         var xprops = window.xprops;
-        var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, merchantRequestedPopupsDisabled = xprops.merchantRequestedPopupsDisabled, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+        var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, merchantRequestedPopupsDisabled = xprops.merchantRequestedPopupsDisabled, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, _xprops$experience = xprops.experience, experience = void 0 === _xprops$experience ? "" : _xprops$experience, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
             return promise_ZalgoPromise.resolve([]);
         } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow, allowBillingPayments = xprops.allowBillingPayments;
         var onInit = function(_ref) {
@@ -7487,20 +7488,26 @@ window.smartCard = function(modules) {
             onClick: xprops.onClick
         });
         var stickinessID = storageID && getSDKStorage().isStateFresh() ? storageID : getSDKStorage().getID();
-        var createBillingAgreement = function(_ref) {
-            var createBillingAgreement = _ref.createBillingAgreement;
+        var createBillingAgreement = function(_ref2) {
+            var createBillingAgreement = _ref2.createBillingAgreement, paymentSource = _ref2.paymentSource;
             if (createBillingAgreement) return function() {
-                return createBillingAgreement({}, {}).then((function(billingToken) {
+                return createBillingAgreement((_ref = {
+                    paymentSource: paymentSource
+                }, {
+                    paymentSource: _ref.paymentSource
+                }), {}).then((function(billingToken) {
                     if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
                     return billingToken;
                 }));
+                var _ref;
             };
         }({
-            createBillingAgreement: xprops.createBillingAgreement
+            createBillingAgreement: xprops.createBillingAgreement,
+            paymentSource: paymentSource
         });
-        var createSubscription = function(_ref2, _ref3) {
-            var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
-            var facilitatorAccessToken = _ref3.facilitatorAccessToken;
+        var createSubscription = function(_ref3, _ref4) {
+            var createSubscription = _ref3.createSubscription, partnerAttributionID = _ref3.partnerAttributionID, merchantID = _ref3.merchantID, clientID = _ref3.clientID, paymentSource = _ref3.paymentSource;
+            var facilitatorAccessToken = _ref4.facilitatorAccessToken;
             if (createSubscription) {
                 if (merchantID && merchantID[0]) {
                     getLogger().info("src_props_subscriptions_recreate_access_token_cache");
@@ -7509,8 +7516,12 @@ window.smartCard = function(modules) {
                     });
                 }
                 return function() {
-                    return createSubscription({}, function(_ref) {
-                        var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID, merchantID = _ref.merchantID, clientID = _ref.clientID;
+                    return createSubscription((_ref = {
+                        paymentSource: paymentSource
+                    }, {
+                        paymentSource: _ref.paymentSource
+                    }), function(_ref2) {
+                        var facilitatorAccessToken = _ref2.facilitatorAccessToken, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
                         return {
                             subscription: {
                                 create: function(data) {
@@ -7567,13 +7578,15 @@ window.smartCard = function(modules) {
                         if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
                         return subscriptionID;
                     }));
+                    var _ref;
                 };
             }
         }({
             createSubscription: xprops.createSubscription,
             partnerAttributionID: partnerAttributionID,
             merchantID: merchantID,
-            clientID: clientID
+            clientID: clientID,
+            paymentSource: paymentSource
         }, {
             facilitatorAccessToken: facilitatorAccessToken
         });
@@ -7582,7 +7595,8 @@ window.smartCard = function(modules) {
             currency: currency,
             intent: intent,
             merchantID: merchantID,
-            partnerAttributionID: partnerAttributionID
+            partnerAttributionID: partnerAttributionID,
+            paymentSource: paymentSource
         }, {
             facilitatorAccessToken: facilitatorAccessToken,
             createBillingAgreement: createBillingAgreement,
@@ -7611,11 +7625,11 @@ window.smartCard = function(modules) {
             onError: xprops.onError
         });
         var onApprove = function(_ref19) {
-            var intent = _ref19.intent, createSubscription = _ref19.createSubscription, onApprove = _ref19.onApprove, partnerAttributionID = _ref19.partnerAttributionID, onError = _ref19.onError, clientAccessToken = _ref19.clientAccessToken, vault = _ref19.vault, clientID = _ref19.clientID, facilitatorAccessToken = _ref19.facilitatorAccessToken, branded = _ref19.branded, createOrder = _ref19.createOrder;
+            var intent = _ref19.intent, createSubscription = _ref19.createSubscription, onApprove = _ref19.onApprove, partnerAttributionID = _ref19.partnerAttributionID, onError = _ref19.onError, clientAccessToken = _ref19.clientAccessToken, vault = _ref19.vault, clientID = _ref19.clientID, facilitatorAccessToken = _ref19.facilitatorAccessToken, branded = _ref19.branded, createOrder = _ref19.createOrder, paymentSource = _ref19.paymentSource;
             if (_ref19.createBillingAgreement) return function(_ref10) {
                 var _ref10$onApprove = _ref10.onApprove, onApprove = void 0 === _ref10$onApprove ? function() {
                     throw new Error("Expected onApprove");
-                } : _ref10$onApprove, onError = _ref10.onError, facilitatorAccessToken = _ref10.facilitatorAccessToken, createOrder = _ref10.createOrder;
+                } : _ref10$onApprove, onError = _ref10.onError, facilitatorAccessToken = _ref10.facilitatorAccessToken, createOrder = _ref10.createOrder, paymentSource = _ref10.paymentSource;
                 if (!onApprove) throw new Error("Expected onApprove");
                 return memoize((function(_ref11, _ref12) {
                     var payerID = _ref11.payerID, paymentID = _ref11.paymentID, billingToken = _ref11.billingToken;
@@ -7631,7 +7645,8 @@ window.smartCard = function(modules) {
                                 payerID: payerID,
                                 paymentID: paymentID = paymentID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId,
                                 billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
-                                facilitatorAccessToken: facilitatorAccessToken
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                paymentSource: paymentSource
                             }, {
                                 restart: restart,
                                 redirect: onApprove_redirect
@@ -7649,12 +7664,13 @@ window.smartCard = function(modules) {
                 onApprove: onApprove,
                 onError: onError,
                 facilitatorAccessToken: facilitatorAccessToken,
-                createOrder: createOrder
+                createOrder: createOrder,
+                paymentSource: paymentSource
             });
             if ("subscription" === intent || createSubscription) return function(_ref16) {
                 var _ref16$onApprove = _ref16.onApprove, onApprove = void 0 === _ref16$onApprove ? function() {
                     throw new Error("Expected onApprove");
-                } : _ref16$onApprove, onError = _ref16.onError, facilitatorAccessToken = _ref16.facilitatorAccessToken, createOrder = _ref16.createOrder;
+                } : _ref16$onApprove, onError = _ref16.onError, facilitatorAccessToken = _ref16.facilitatorAccessToken, createOrder = _ref16.createOrder, paymentSource = _ref16.paymentSource;
                 if (!onApprove) throw new Error("Expected onApprove");
                 return memoize((function(_ref17, _ref18) {
                     var payerID = _ref17.payerID, subscriptionID = _ref17.subscriptionID, buyerAccessToken = _ref17.buyerAccessToken;
@@ -7669,7 +7685,8 @@ window.smartCard = function(modules) {
                             orderID: orderID,
                             payerID: payerID,
                             subscriptionID: subscriptionID,
-                            facilitatorAccessToken: facilitatorAccessToken
+                            facilitatorAccessToken: facilitatorAccessToken,
+                            paymentSource: paymentSource
                         };
                         var actions = function(_ref6) {
                             var restart = _ref6.restart, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken;
@@ -7727,7 +7744,8 @@ window.smartCard = function(modules) {
                 onApprove: onApprove,
                 onError: onError,
                 facilitatorAccessToken: facilitatorAccessToken,
-                createOrder: createOrder
+                createOrder: createOrder,
+                paymentSource: paymentSource
             });
             if ("capture" === intent || "authorize" === intent || "order" === intent) return function(_ref7) {
                 var intent = _ref7.intent, _ref7$onApprove = _ref7.onApprove, onApprove = void 0 === _ref7$onApprove ? function(intent) {
@@ -7736,7 +7754,7 @@ window.smartCard = function(modules) {
                         if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                         throw new Error("Unsupported intent for auto-capture: " + intent);
                     };
-                }(intent) : _ref7$onApprove, partnerAttributionID = _ref7.partnerAttributionID, onError = _ref7.onError, clientAccessToken = _ref7.clientAccessToken, vault = _ref7.vault, clientID = _ref7.clientID, facilitatorAccessToken = _ref7.facilitatorAccessToken, branded = _ref7.branded, createOrder = _ref7.createOrder;
+                }(intent) : _ref7$onApprove, partnerAttributionID = _ref7.partnerAttributionID, onError = _ref7.onError, clientAccessToken = _ref7.clientAccessToken, vault = _ref7.vault, clientID = _ref7.clientID, facilitatorAccessToken = _ref7.facilitatorAccessToken, branded = _ref7.branded, createOrder = _ref7.createOrder, paymentSource = _ref7.paymentSource;
                 if (!onApprove) throw new Error("Expected onApprove");
                 var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID);
                 return memoize((function(_ref8, _ref9) {
@@ -7757,7 +7775,8 @@ window.smartCard = function(modules) {
                                 paymentID: paymentID = paymentID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId,
                                 billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
                                 facilitatorAccessToken: facilitatorAccessToken,
-                                authCode: authCode
+                                authCode: authCode,
+                                paymentSource: paymentSource
                             };
                             var actions = function(_ref3) {
                                 var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI, onError = _ref3.onError;
@@ -8093,12 +8112,13 @@ window.smartCard = function(modules) {
                 clientID: clientID,
                 facilitatorAccessToken: facilitatorAccessToken,
                 branded: branded,
-                createOrder: createOrder
+                createOrder: createOrder,
+                paymentSource: paymentSource
             });
             if ("tokenize" === intent) return function(_ref13) {
                 var _ref13$onApprove = _ref13.onApprove, onApprove = void 0 === _ref13$onApprove ? function() {
                     throw new Error("Expected onApprove");
-                } : _ref13$onApprove, onError = _ref13.onError, facilitatorAccessToken = _ref13.facilitatorAccessToken;
+                } : _ref13$onApprove, onError = _ref13.onError, facilitatorAccessToken = _ref13.facilitatorAccessToken, paymentSource = _ref13.paymentSource;
                 if (!onApprove) throw new Error("Expected onApprove");
                 return memoize((function(_ref14, _ref15) {
                     var _getLogger$info$track3;
@@ -8109,7 +8129,8 @@ window.smartCard = function(modules) {
                     _getLogger$info$track3)).flush();
                     return onApprove({
                         facilitatorAccessToken: facilitatorAccessToken,
-                        paymentMethodToken: paymentMethodToken
+                        paymentMethodToken: paymentMethodToken,
+                        paymentSource: paymentSource
                     }, {
                         restart: restart,
                         redirect: onApprove_redirect
@@ -8124,7 +8145,8 @@ window.smartCard = function(modules) {
             }({
                 onApprove: onApprove,
                 onError: onError,
-                facilitatorAccessToken: facilitatorAccessToken
+                facilitatorAccessToken: facilitatorAccessToken,
+                paymentSource: paymentSource
             });
             throw new Error("Unsupported intent: " + intent);
         }({
@@ -8139,7 +8161,8 @@ window.smartCard = function(modules) {
             clientID: clientID,
             facilitatorAccessToken: facilitatorAccessToken,
             branded: branded,
-            createOrder: createOrder
+            createOrder: createOrder,
+            paymentSource: paymentSource
         });
         var onCancel = function(_ref2, _ref3) {
             var _ref2$onCancel = _ref2.onCancel, onCancel = void 0 === _ref2$onCancel ? promiseNoop : _ref2$onCancel, onError = _ref2.onError;
@@ -8323,6 +8346,7 @@ window.smartCard = function(modules) {
             enableThreeDomainSecure: enableThreeDomainSecure,
             enableNativeCheckout: enableNativeCheckout,
             enableVaultInstallments: enableVaultInstallments,
+            experience: experience,
             onClick: onClick,
             onInit: onInit,
             onError: onError,
@@ -8348,10 +8372,11 @@ window.smartCard = function(modules) {
         var _fundingEligibility$c, _fundingEligibility$c2;
         var facilitatorAccessToken = _ref.facilitatorAccessToken;
         var xprops = window.xprops;
-        var type = xprops.type, cardSessionID = xprops.cardSessionID, style = xprops.style, placeholder = xprops.placeholder, fundingEligibility = xprops.fundingEligibility, onChange = xprops.onChange, _xprops$branded = xprops.branded, branded = void 0 === _xprops$branded ? null == (_fundingEligibility$c = null == fundingEligibility || null == (_fundingEligibility$c2 = fundingEligibility.card) ? void 0 : _fundingEligibility$c2.branded) || _fundingEligibility$c : _xprops$branded, parent = xprops.parent, xport = xprops.export;
+        var type = xprops.type, cardSessionID = xprops.cardSessionID, style = xprops.style, placeholder = xprops.placeholder, fundingEligibility = xprops.fundingEligibility, onChange = xprops.onChange, _xprops$branded = xprops.branded, branded = void 0 === _xprops$branded ? null == (_fundingEligibility$c = null == fundingEligibility || null == (_fundingEligibility$c2 = fundingEligibility.card) ? void 0 : _fundingEligibility$c2.branded) || _fundingEligibility$c : _xprops$branded, parent = xprops.parent, experience = xprops.experience, xport = xprops.export;
         return _extends({}, getProps({
             facilitatorAccessToken: facilitatorAccessToken,
-            branded: branded
+            branded: branded,
+            paymentSource: null
         }), {
             type: type,
             branded: branded,
@@ -8360,6 +8385,7 @@ window.smartCard = function(modules) {
             cardSessionID: cardSessionID,
             fundingEligibility: fundingEligibility,
             onChange: onChange,
+            inlinexo: "inline" === experience,
             export: parent ? parent.export : xport,
             facilitatorAccessToken: facilitatorAccessToken
         });
@@ -8572,8 +8598,8 @@ window.smartCard = function(modules) {
     }
     function CardNumber(_ref2) {
         var _ref2$name = _ref2.name, name = void 0 === _ref2$name ? "number" : _ref2$name, _ref2$autocomplete = _ref2.autocomplete, autocomplete = void 0 === _ref2$autocomplete ? "cc-number" : _ref2$autocomplete, _ref2$navigation = _ref2.navigation, navigation = void 0 === _ref2$navigation ? defaultNavigation : _ref2$navigation, _ref2$allowNavigation = _ref2.allowNavigation, allowNavigation = void 0 !== _ref2$allowNavigation && _ref2$allowNavigation, state = _ref2.state, ref = _ref2.ref, type = _ref2.type, className = _ref2.className, placeholder = _ref2.placeholder, style = _ref2.style, maxLength = _ref2.maxLength, onChange = _ref2.onChange, onFocus = _ref2.onFocus, onBlur = _ref2.onBlur, onValidityChange = _ref2.onValidityChange;
-        var _useState = hooks_module_l(DEFAULT_CARD_TYPE), cardType = _useState[0], setCardType = _useState[1];
-        var _useState2 = hooks_module_l(_extends({}, defaultInputState, state)), inputState = _useState2[0], setInputState = _useState2[1];
+        var _useState = hooks_module_m(DEFAULT_CARD_TYPE), cardType = _useState[0], setCardType = _useState[1];
+        var _useState2 = hooks_module_m(_extends({}, defaultInputState, state)), inputState = _useState2[0], setInputState = _useState2[1];
         var inputValue = inputState.inputValue, maskedInputValue = inputState.maskedInputValue, cursorStart = inputState.cursorStart, cursorEnd = inputState.cursorEnd, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid, contentPasted = inputState.contentPasted;
         hooks_module_y((function() {
             var validity = function(value, cardType) {
@@ -8693,7 +8719,7 @@ window.smartCard = function(modules) {
     }
     function CardExpiry(_ref) {
         var _ref$name = _ref.name, name = void 0 === _ref$name ? "expiry" : _ref$name, _ref$autocomplete = _ref.autocomplete, autocomplete = void 0 === _ref$autocomplete ? "cc-exp" : _ref$autocomplete, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation;
-        var _useState = hooks_module_l(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
+        var _useState = hooks_module_m(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
         var maskedInputValue = inputState.maskedInputValue, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid, contentPasted = inputState.contentPasted;
         hooks_module_y((function() {
             var validity = {
@@ -8795,7 +8821,7 @@ window.smartCard = function(modules) {
     }
     function CardCVV(_ref) {
         var _ref$name = _ref.name, name = void 0 === _ref$name ? "cvv" : _ref$name, _ref$autocomplete = _ref.autocomplete, autocomplete = void 0 === _ref$autocomplete ? "cc-csc" : _ref$autocomplete, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange, cardType = _ref.cardType;
-        var _useState = hooks_module_l(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
+        var _useState = hooks_module_m(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
         var inputValue = inputState.inputValue, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid;
         hooks_module_y((function() {
             var validity = function(value, cardType) {
@@ -8863,7 +8889,7 @@ window.smartCard = function(modules) {
     }
     function CardName(_ref) {
         var _ref$name = _ref.name, name = void 0 === _ref$name ? "name" : _ref$name, _ref$navigation = _ref.navigation, navigation = void 0 === _ref$navigation ? defaultNavigation : _ref$navigation, _ref$allowNavigation = _ref.allowNavigation, allowNavigation = void 0 !== _ref$allowNavigation && _ref$allowNavigation, ref = _ref.ref, type = _ref.type, className = _ref.className, placeholder = _ref.placeholder, style = _ref.style, maxLength = _ref.maxLength, onChange = _ref.onChange, onFocus = _ref.onFocus, onBlur = _ref.onBlur, onValidityChange = _ref.onValidityChange;
-        var _useState = hooks_module_l(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
+        var _useState = hooks_module_m(_extends({}, defaultInputState, _ref.state)), inputState = _useState[0], setInputState = _useState[1];
         var inputValue = inputState.inputValue, keyStrokeCount = inputState.keyStrokeCount, isValid = inputState.isValid, isPotentiallyValid = inputState.isPotentiallyValid;
         hooks_module_y((function() {
             var validity = function(value) {
@@ -8931,18 +8957,18 @@ window.smartCard = function(modules) {
     function CardField(_ref) {
         var _placeholder$number, _placeholder$expiry, _placeholder$cvv;
         var cspNonce = _ref.cspNonce, onChange = _ref.onChange, _ref$styleObject = _ref.styleObject, styleObject = void 0 === _ref$styleObject ? {} : _ref$styleObject, _ref$placeholder = _ref.placeholder, placeholder = void 0 === _ref$placeholder ? {} : _ref$placeholder, _ref$gqlErrorsObject = _ref.gqlErrorsObject, gqlErrorsObject = void 0 === _ref$gqlErrorsObject ? {} : _ref$gqlErrorsObject, autoFocusRef = _ref.autoFocusRef, autocomplete = _ref.autocomplete;
-        var _useState = hooks_module_l(""), number = _useState[0], setNumber = _useState[1];
-        var _useState2 = hooks_module_l(""), cvv = _useState2[0], setCvv = _useState2[1];
-        var _useState3 = hooks_module_l(""), expiry = _useState3[0], setExpiry = _useState3[1];
-        var _useState4 = hooks_module_l(!0), isValid = _useState4[0], setIsValid = _useState4[1];
-        var _useState5 = hooks_module_l(initFieldValidity), numberValidity = _useState5[0], setNumberValidity = _useState5[1];
-        var _useState6 = hooks_module_l(initFieldValidity), expiryValidity = _useState6[0], setExpiryValidity = _useState6[1];
-        var _useState7 = hooks_module_l(initFieldValidity), cvvValidity = _useState7[0], setCvvValidity = _useState7[1];
-        var _useState8 = hooks_module_l(DEFAULT_CARD_TYPE), cardType = _useState8[0], setCardType = _useState8[1];
+        var _useState = hooks_module_m(""), number = _useState[0], setNumber = _useState[1];
+        var _useState2 = hooks_module_m(""), cvv = _useState2[0], setCvv = _useState2[1];
+        var _useState3 = hooks_module_m(""), expiry = _useState3[0], setExpiry = _useState3[1];
+        var _useState4 = hooks_module_m(!0), isValid = _useState4[0], setIsValid = _useState4[1];
+        var _useState5 = hooks_module_m(initFieldValidity), numberValidity = _useState5[0], setNumberValidity = _useState5[1];
+        var _useState6 = hooks_module_m(initFieldValidity), expiryValidity = _useState6[0], setExpiryValidity = _useState6[1];
+        var _useState7 = hooks_module_m(initFieldValidity), cvvValidity = _useState7[0], setCvvValidity = _useState7[1];
+        var _useState8 = hooks_module_m(DEFAULT_CARD_TYPE), cardType = _useState8[0], setCardType = _useState8[1];
         var _getStyles = getStyles(styleObject), generalStyle = _getStyles[0], inputStyle = _getStyles[1];
-        var numberRef = hooks_module_s();
-        var expiryRef = hooks_module_s();
-        var cvvRef = hooks_module_s();
+        var numberRef = hooks_module_h();
+        var expiryRef = hooks_module_h();
+        var cvvRef = hooks_module_h();
         var composedStyles = _extends({}, DEFAULT_STYLE, generalStyle);
         var cardNumberNavivation = {
             next: goToNextField(expiryRef),
@@ -9055,10 +9081,10 @@ window.smartCard = function(modules) {
     function CardNumberField(_ref5) {
         var _placeholder$number2;
         var cspNonce = _ref5.cspNonce, onChange = _ref5.onChange, _ref5$styleObject = _ref5.styleObject, styleObject = void 0 === _ref5$styleObject ? {} : _ref5$styleObject, _ref5$placeholder = _ref5.placeholder, placeholder = void 0 === _ref5$placeholder ? {} : _ref5$placeholder, autoFocusRef = _ref5.autoFocusRef, autocomplete = _ref5.autocomplete, _ref5$gqlErrors = _ref5.gqlErrors, gqlErrors = void 0 === _ref5$gqlErrors ? [] : _ref5$gqlErrors;
-        var _useState9 = hooks_module_l(""), number = _useState9[0], setNumber = _useState9[1];
-        var _useState10 = hooks_module_l(initFieldValidity), numberValidity = _useState10[0], setNumberValidity = _useState10[1];
+        var _useState9 = hooks_module_m(""), number = _useState9[0], setNumber = _useState9[1];
+        var _useState10 = hooks_module_m(initFieldValidity), numberValidity = _useState10[0], setNumberValidity = _useState10[1];
         var _getStyles2 = getStyles(styleObject), generalStyle = _getStyles2[0], inputStyle = _getStyles2[1];
-        var numberRef = hooks_module_s();
+        var numberRef = hooks_module_h();
         var composedStyles = _extends({}, {
             input: DEFAULT_INPUT_STYLE
         }, generalStyle);
@@ -9107,10 +9133,10 @@ window.smartCard = function(modules) {
     function CardExpiryField(_ref7) {
         var _placeholder$expiry2;
         var cspNonce = _ref7.cspNonce, onChange = _ref7.onChange, _ref7$styleObject = _ref7.styleObject, styleObject = void 0 === _ref7$styleObject ? {} : _ref7$styleObject, _ref7$placeholder = _ref7.placeholder, placeholder = void 0 === _ref7$placeholder ? {} : _ref7$placeholder, autoFocusRef = _ref7.autoFocusRef, autocomplete = _ref7.autocomplete, _ref7$gqlErrors = _ref7.gqlErrors, gqlErrors = void 0 === _ref7$gqlErrors ? [] : _ref7$gqlErrors;
-        var _useState11 = hooks_module_l(""), expiry = _useState11[0], setExpiry = _useState11[1];
-        var _useState12 = hooks_module_l(initFieldValidity), expiryValidity = _useState12[0], setExpiryValidity = _useState12[1];
+        var _useState11 = hooks_module_m(""), expiry = _useState11[0], setExpiry = _useState11[1];
+        var _useState12 = hooks_module_m(initFieldValidity), expiryValidity = _useState12[0], setExpiryValidity = _useState12[1];
         var _getStyles3 = getStyles(styleObject), generalStyle = _getStyles3[0], inputStyle = _getStyles3[1];
-        var expiryRef = hooks_module_s();
+        var expiryRef = hooks_module_h();
         var composedStyles = _extends({}, {
             input: DEFAULT_INPUT_STYLE
         }, generalStyle);
@@ -9155,10 +9181,10 @@ window.smartCard = function(modules) {
     function CardCVVField(_ref9) {
         var _placeholder$cvv2;
         var cspNonce = _ref9.cspNonce, onChange = _ref9.onChange, _ref9$styleObject = _ref9.styleObject, styleObject = void 0 === _ref9$styleObject ? {} : _ref9$styleObject, _ref9$placeholder = _ref9.placeholder, placeholder = void 0 === _ref9$placeholder ? {} : _ref9$placeholder, autoFocusRef = _ref9.autoFocusRef, autocomplete = _ref9.autocomplete, _ref9$gqlErrors = _ref9.gqlErrors, gqlErrors = void 0 === _ref9$gqlErrors ? [] : _ref9$gqlErrors;
-        var _useState13 = hooks_module_l(""), cvv = _useState13[0], setCvv = _useState13[1];
-        var _useState14 = hooks_module_l(initFieldValidity), cvvValidity = _useState14[0], setCvvValidity = _useState14[1];
+        var _useState13 = hooks_module_m(""), cvv = _useState13[0], setCvv = _useState13[1];
+        var _useState14 = hooks_module_m(initFieldValidity), cvvValidity = _useState14[0], setCvvValidity = _useState14[1];
         var _getStyles4 = getStyles(styleObject), generalStyle = _getStyles4[0], inputStyle = _getStyles4[1];
-        var cvvRef = hooks_module_s();
+        var cvvRef = hooks_module_h();
         var composedStyles = _extends({}, {
             input: DEFAULT_INPUT_STYLE
         }, generalStyle);
@@ -9203,10 +9229,10 @@ window.smartCard = function(modules) {
     function CardNameField(_ref11) {
         var _placeholder$name;
         var cspNonce = _ref11.cspNonce, onChange = _ref11.onChange, _ref11$styleObject = _ref11.styleObject, styleObject = void 0 === _ref11$styleObject ? {} : _ref11$styleObject, _ref11$placeholder = _ref11.placeholder, placeholder = void 0 === _ref11$placeholder ? {} : _ref11$placeholder, autoFocusRef = _ref11.autoFocusRef, _ref11$gqlErrors = _ref11.gqlErrors, gqlErrors = void 0 === _ref11$gqlErrors ? [] : _ref11$gqlErrors;
-        var _useState15 = hooks_module_l(""), name = _useState15[0], setName = _useState15[1];
-        var _useState16 = hooks_module_l(initFieldValidity), nameValidity = _useState16[0], setNameValidity = _useState16[1];
+        var _useState15 = hooks_module_m(""), name = _useState15[0], setName = _useState15[1];
+        var _useState16 = hooks_module_m(initFieldValidity), nameValidity = _useState16[0], setNameValidity = _useState16[1];
         var _getStyles5 = getStyles(styleObject), generalStyle = _getStyles5[0], inputStyle = _getStyles5[1];
-        var nameRef = hooks_module_s();
+        var nameRef = hooks_module_h();
         var composedStyles = _extends({}, {
             input: DEFAULT_INPUT_STYLE
         }, generalStyle);
@@ -9250,11 +9276,11 @@ window.smartCard = function(modules) {
     function Page(_ref) {
         var cspNonce = _ref.cspNonce, props = _ref.props;
         var facilitatorAccessToken = props.facilitatorAccessToken, style = props.style, disableAutocomplete = props.disableAutocomplete, placeholder = props.placeholder, type = props.type, onChange = props.onChange, xport = props.export;
-        var _useState = hooks_module_l(), fieldValue = _useState[0], setFieldValue = _useState[1];
-        var _useState2 = hooks_module_l(!1), fieldValid = _useState2[0], setFieldValid = _useState2[1];
-        var _useState3 = hooks_module_l([]), fieldErrors = _useState3[0], setFieldErrors = _useState3[1];
-        var _useState4 = hooks_module_l(), mainRef = _useState4[0], setRef = _useState4[1];
-        var _useState5 = hooks_module_l({
+        var _useState = hooks_module_m(), fieldValue = _useState[0], setFieldValue = _useState[1];
+        var _useState2 = hooks_module_m(!1), fieldValid = _useState2[0], setFieldValid = _useState2[1];
+        var _useState3 = hooks_module_m([]), fieldErrors = _useState3[0], setFieldErrors = _useState3[1];
+        var _useState4 = hooks_module_m(), mainRef = _useState4[0], setRef = _useState4[1];
+        var _useState5 = hooks_module_m({
             singleField: {},
             numberField: [],
             expiryField: [],

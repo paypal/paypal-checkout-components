@@ -57,894 +57,7 @@ window.spb = function(modules) {
     __webpack_require__.p = "";
     return __webpack_require__(__webpack_require__.s = "./src/button/index.js");
 }({
-    "./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js": function(module, exports, __webpack_require__) {
-        "undefined" != typeof self && self, module.exports = function(E) {
-            var N = {};
-            function S(R) {
-                if (N[R]) return N[R].exports;
-                var t = N[R] = {
-                    i: R,
-                    l: !1,
-                    exports: {}
-                };
-                return E[R].call(t.exports, t, t.exports, S), t.l = !0, t.exports;
-            }
-            return S.m = E, S.c = N, S.d = function(E, N, R) {
-                S.o(E, N) || Object.defineProperty(E, N, {
-                    enumerable: !0,
-                    get: R
-                });
-            }, S.r = function(E) {
-                "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(E, Symbol.toStringTag, {
-                    value: "Module"
-                }), Object.defineProperty(E, "__esModule", {
-                    value: !0
-                });
-            }, S.t = function(E, N) {
-                if (1 & N && (E = S(E)), 8 & N) return E;
-                if (4 & N && "object" == typeof E && E && E.__esModule) return E;
-                var R = Object.create(null);
-                if (S.r(R), Object.defineProperty(R, "default", {
-                    enumerable: !0,
-                    value: E
-                }), 2 & N && "string" != typeof E) for (var t in E) S.d(R, t, function(N) {
-                    return E[N];
-                }.bind(null, t));
-                return R;
-            }, S.n = function(E) {
-                var N = E && E.__esModule ? function() {
-                    return E.default;
-                } : function() {
-                    return E;
-                };
-                return S.d(N, "a", N), N;
-            }, S.o = function(E, N) {
-                return {}.hasOwnProperty.call(E, N);
-            }, S.p = "", S(S.s = 0);
-        }([ function(E, N, S) {
-            "use strict";
-            S.r(N), S.d(N, "DEFAULT_COUNTRY", (function() {
-                return C;
-            })), S.d(N, "DEFAULT_CURRENCY", (function() {
-                return a;
-            })), S.d(N, "DEFAULT_INTENT", (function() {
-                return u;
-            })), S.d(N, "DEFAULT_COMMIT", (function() {
-                return L;
-            })), S.d(N, "DEFAULT_SALE_COMMIT", (function() {
-                return d;
-            })), S.d(N, "DEFAULT_NONSALE_COMMIT", (function() {
-                return P;
-            })), S.d(N, "DEFAULT_VAULT", (function() {
-                return c;
-            })), S.d(N, "DEFAULT_COMPONENTS", (function() {
-                return U;
-            })), S.d(N, "DEFAULT_DEBUG", (function() {
-                return G;
-            })), S.d(N, "ENV", (function() {
-                return s;
-            })), S.d(N, "MOBILE_ENV", (function() {
-                return B;
-            })), S.d(N, "ERROR_CODE", (function() {
-                return K;
-            })), S.d(N, "FPTI_KEY", (function() {
-                return p;
-            })), S.d(N, "FPTI_USER_ACTION", (function() {
-                return l;
-            })), S.d(N, "FPTI_DATA_SOURCE", (function() {
-                return f;
-            })), S.d(N, "FPTI_FEED", (function() {
-                return Y;
-            })), S.d(N, "FPTI_SDK_NAME", (function() {
-                return V;
-            })), S.d(N, "FUNDING", (function() {
-                return m;
-            })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
-                return b;
-            })), S.d(N, "CARD", (function() {
-                return y;
-            })), S.d(N, "WALLET_INSTRUMENT", (function() {
-                return W;
-            })), S.d(N, "FUNDING_PRODUCTS", (function() {
-                return J;
-            })), S.d(N, "COUNTRY", (function() {
-                return R;
-            })), S.d(N, "LANG", (function() {
-                return t;
-            })), S.d(N, "COUNTRY_LANGS", (function() {
-                return T;
-            })), S.d(N, "INTENT", (function() {
-                return e;
-            })), S.d(N, "COMMIT", (function() {
-                return n;
-            })), S.d(N, "VAULT", (function() {
-                return A;
-            })), S.d(N, "CURRENCY", (function() {
-                return r;
-            })), S.d(N, "SDK_PATH", (function() {
-                return F;
-            })), S.d(N, "SDK_SETTINGS", (function() {
-                return _;
-            })), S.d(N, "SDK_QUERY_KEYS", (function() {
-                return D;
-            })), S.d(N, "COMPONENTS", (function() {
-                return H;
-            })), S.d(N, "DEBUG", (function() {
-                return I;
-            })), S.d(N, "QUERY_BOOL", (function() {
-                return o;
-            })), S.d(N, "UNKNOWN", (function() {
-                return O;
-            })), S.d(N, "PROTOCOL", (function() {
-                return i;
-            })), S.d(N, "PAGE_TYPES", (function() {
-                return M;
-            })), S.d(N, "MERCHANT_ID_MAX", (function() {
-                return Z;
-            })), S.d(N, "PLATFORM", (function() {
-                return h;
-            })), S.d(N, "TYPES", (function() {
-                return k;
-            }));
-            var R = {
-                AD: "AD",
-                AE: "AE",
-                AG: "AG",
-                AI: "AI",
-                AL: "AL",
-                AM: "AM",
-                AN: "AN",
-                AO: "AO",
-                AR: "AR",
-                AT: "AT",
-                AU: "AU",
-                AW: "AW",
-                AZ: "AZ",
-                BA: "BA",
-                BB: "BB",
-                BE: "BE",
-                BF: "BF",
-                BG: "BG",
-                BH: "BH",
-                BI: "BI",
-                BJ: "BJ",
-                BM: "BM",
-                BN: "BN",
-                BO: "BO",
-                BR: "BR",
-                BS: "BS",
-                BT: "BT",
-                BW: "BW",
-                BY: "BY",
-                BZ: "BZ",
-                CA: "CA",
-                CD: "CD",
-                CG: "CG",
-                CH: "CH",
-                CI: "CI",
-                CK: "CK",
-                CL: "CL",
-                CM: "CM",
-                CN: "CN",
-                CO: "CO",
-                CR: "CR",
-                CV: "CV",
-                CY: "CY",
-                CZ: "CZ",
-                DE: "DE",
-                DJ: "DJ",
-                DK: "DK",
-                DM: "DM",
-                DO: "DO",
-                DZ: "DZ",
-                EC: "EC",
-                EE: "EE",
-                EG: "EG",
-                ER: "ER",
-                ES: "ES",
-                ET: "ET",
-                FI: "FI",
-                FJ: "FJ",
-                FK: "FK",
-                FM: "FM",
-                FO: "FO",
-                FR: "FR",
-                GA: "GA",
-                GB: "GB",
-                GD: "GD",
-                GE: "GE",
-                GF: "GF",
-                GI: "GI",
-                GL: "GL",
-                GM: "GM",
-                GN: "GN",
-                GP: "GP",
-                GR: "GR",
-                GT: "GT",
-                GW: "GW",
-                GY: "GY",
-                HK: "HK",
-                HN: "HN",
-                HR: "HR",
-                HU: "HU",
-                ID: "ID",
-                IE: "IE",
-                IL: "IL",
-                IN: "IN",
-                IS: "IS",
-                IT: "IT",
-                JM: "JM",
-                JO: "JO",
-                JP: "JP",
-                KE: "KE",
-                KG: "KG",
-                KH: "KH",
-                KI: "KI",
-                KM: "KM",
-                KN: "KN",
-                KR: "KR",
-                KW: "KW",
-                KY: "KY",
-                KZ: "KZ",
-                LA: "LA",
-                LC: "LC",
-                LI: "LI",
-                LK: "LK",
-                LS: "LS",
-                LT: "LT",
-                LU: "LU",
-                LV: "LV",
-                MA: "MA",
-                MC: "MC",
-                MD: "MD",
-                ME: "ME",
-                MG: "MG",
-                MH: "MH",
-                MK: "MK",
-                ML: "ML",
-                MN: "MN",
-                MQ: "MQ",
-                MR: "MR",
-                MS: "MS",
-                MT: "MT",
-                MU: "MU",
-                MV: "MV",
-                MW: "MW",
-                MX: "MX",
-                MY: "MY",
-                MZ: "MZ",
-                NA: "NA",
-                NC: "NC",
-                NE: "NE",
-                NF: "NF",
-                NG: "NG",
-                NI: "NI",
-                NL: "NL",
-                NO: "NO",
-                NP: "NP",
-                NR: "NR",
-                NU: "NU",
-                NZ: "NZ",
-                OM: "OM",
-                PA: "PA",
-                PE: "PE",
-                PF: "PF",
-                PG: "PG",
-                PH: "PH",
-                PL: "PL",
-                PM: "PM",
-                PN: "PN",
-                PT: "PT",
-                PW: "PW",
-                PY: "PY",
-                QA: "QA",
-                RE: "RE",
-                RO: "RO",
-                RS: "RS",
-                RU: "RU",
-                RW: "RW",
-                SA: "SA",
-                SB: "SB",
-                SC: "SC",
-                SE: "SE",
-                SG: "SG",
-                SH: "SH",
-                SI: "SI",
-                SJ: "SJ",
-                SK: "SK",
-                SL: "SL",
-                SM: "SM",
-                SN: "SN",
-                SO: "SO",
-                SR: "SR",
-                ST: "ST",
-                SV: "SV",
-                SZ: "SZ",
-                TC: "TC",
-                TD: "TD",
-                TG: "TG",
-                TH: "TH",
-                TJ: "TJ",
-                TM: "TM",
-                TN: "TN",
-                TO: "TO",
-                TR: "TR",
-                TT: "TT",
-                TV: "TV",
-                TW: "TW",
-                TZ: "TZ",
-                UA: "UA",
-                UG: "UG",
-                US: "US",
-                UY: "UY",
-                VA: "VA",
-                VC: "VC",
-                VE: "VE",
-                VG: "VG",
-                VN: "VN",
-                VU: "VU",
-                WF: "WF",
-                WS: "WS",
-                YE: "YE",
-                YT: "YT",
-                ZA: "ZA",
-                ZM: "ZM",
-                ZW: "ZW"
-            }, t = {
-                AR: "ar",
-                BG: "bg",
-                CS: "cs",
-                DA: "da",
-                DE: "de",
-                EL: "el",
-                EN: "en",
-                ES: "es",
-                ET: "et",
-                FI: "fi",
-                FR: "fr",
-                HE: "he",
-                HU: "hu",
-                ID: "id",
-                IT: "it",
-                JA: "ja",
-                KO: "ko",
-                LT: "lt",
-                LV: "lv",
-                MS: "ms",
-                NL: "nl",
-                NO: "no",
-                PL: "pl",
-                PT: "pt",
-                RO: "ro",
-                RU: "ru",
-                SI: "si",
-                SK: "sk",
-                SL: "sl",
-                SQ: "sq",
-                SV: "sv",
-                TH: "th",
-                TL: "tl",
-                TR: "tr",
-                VI: "vi",
-                ZH: "zh",
-                ZH_HANT: "zh_Hant"
-            }, T = {
-                AD: [ t.EN, t.FR, t.ES, t.ZH ],
-                AE: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
-                AG: [ t.EN, t.FR, t.ES, t.ZH ],
-                AI: [ t.EN, t.FR, t.ES, t.ZH ],
-                AL: [ t.SQ, t.EN ],
-                AM: [ t.EN, t.FR, t.ES, t.ZH ],
-                AN: [ t.EN, t.FR, t.ES, t.ZH ],
-                AO: [ t.EN, t.FR, t.ES, t.ZH ],
-                AR: [ t.ES, t.EN ],
-                AT: [ t.DE, t.EN ],
-                AU: [ t.EN ],
-                AW: [ t.EN, t.FR, t.ES, t.ZH ],
-                AZ: [ t.EN, t.FR, t.ES, t.ZH ],
-                BA: [ t.EN ],
-                BB: [ t.EN, t.FR, t.ES, t.ZH ],
-                BE: [ t.EN, t.NL, t.FR ],
-                BF: [ t.FR, t.EN, t.ES, t.ZH ],
-                BG: [ t.BG, t.EN ],
-                BH: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                BI: [ t.FR, t.EN, t.ES, t.ZH ],
-                BJ: [ t.FR, t.EN, t.ES, t.ZH ],
-                BM: [ t.EN, t.FR, t.ES, t.ZH ],
-                BN: [ t.MS, t.EN ],
-                BO: [ t.ES, t.EN, t.FR, t.ZH ],
-                BR: [ t.PT, t.EN ],
-                BS: [ t.EN, t.FR, t.ES, t.ZH ],
-                BT: [ t.EN ],
-                BW: [ t.EN, t.FR, t.ES, t.ZH ],
-                BY: [ t.EN ],
-                BZ: [ t.EN, t.ES, t.FR, t.ZH ],
-                CA: [ t.EN, t.FR ],
-                CD: [ t.FR, t.EN, t.ES, t.ZH ],
-                CG: [ t.EN, t.FR, t.ES, t.ZH ],
-                CH: [ t.DE, t.FR, t.EN ],
-                CI: [ t.FR, t.EN ],
-                CK: [ t.EN, t.FR, t.ES, t.ZH ],
-                CL: [ t.ES, t.EN, t.FR, t.ZH ],
-                CM: [ t.FR, t.EN ],
-                CN: [ t.ZH ],
-                CO: [ t.ES, t.EN, t.FR, t.ZH ],
-                CR: [ t.ES, t.EN, t.FR, t.ZH ],
-                CV: [ t.EN, t.FR, t.ES, t.ZH ],
-                CY: [ t.EN ],
-                CZ: [ t.CS, t.EN ],
-                DE: [ t.DE, t.EN ],
-                DJ: [ t.FR, t.EN, t.ES, t.ZH ],
-                DK: [ t.DA, t.EN ],
-                DM: [ t.EN, t.FR, t.ES, t.ZH ],
-                DO: [ t.ES, t.EN, t.FR, t.ZH ],
-                DZ: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                EC: [ t.ES, t.EN, t.FR, t.ZH ],
-                EE: [ t.ET, t.EN, t.RU ],
-                EG: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                ER: [ t.EN, t.FR, t.ES, t.ZH ],
-                ES: [ t.ES, t.EN ],
-                ET: [ t.EN, t.FR, t.ES, t.ZH ],
-                FI: [ t.FI, t.EN ],
-                FJ: [ t.EN, t.FR, t.ES, t.ZH ],
-                FK: [ t.EN, t.FR, t.ES, t.ZH ],
-                FM: [ t.EN ],
-                FO: [ t.DA, t.EN, t.FR, t.ES, t.ZH ],
-                FR: [ t.FR, t.EN ],
-                GA: [ t.FR, t.EN, t.ES, t.ZH ],
-                GB: [ t.EN ],
-                GD: [ t.EN, t.FR, t.ES, t.ZH ],
-                GE: [ t.EN, t.FR, t.ES, t.ZH ],
-                GF: [ t.EN, t.FR, t.ES, t.ZH ],
-                GI: [ t.EN, t.FR, t.ES, t.ZH ],
-                GL: [ t.DA, t.EN, t.FR, t.ES, t.ZH ],
-                GM: [ t.EN, t.FR, t.ES, t.ZH ],
-                GN: [ t.FR, t.EN, t.ES, t.ZH ],
-                GP: [ t.EN, t.FR, t.ES, t.ZH ],
-                GR: [ t.EL, t.EN ],
-                GT: [ t.ES, t.EN, t.FR, t.ZH ],
-                GW: [ t.EN, t.FR, t.ES, t.ZH ],
-                GY: [ t.EN, t.FR, t.ES, t.ZH ],
-                HK: [ t.EN, t.ZH_HANT, t.ZH ],
-                HN: [ t.ES, t.EN, t.FR, t.ZH ],
-                HR: [ t.EN ],
-                HU: [ t.HU, t.EN ],
-                ID: [ t.ID, t.EN ],
-                IE: [ t.EN, t.FR, t.ES, t.ZH ],
-                IL: [ t.HE, t.EN ],
-                IN: [ t.EN ],
-                IS: [ t.EN ],
-                IT: [ t.IT, t.EN ],
-                JM: [ t.EN, t.ES, t.FR, t.ZH ],
-                JO: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                JP: [ t.JA, t.EN ],
-                KE: [ t.EN, t.FR, t.ES, t.ZH ],
-                KG: [ t.EN, t.FR, t.ES, t.ZH ],
-                KH: [ t.EN ],
-                KI: [ t.EN, t.FR, t.ES, t.ZH ],
-                KM: [ t.FR, t.EN, t.ES, t.ZH ],
-                KN: [ t.EN, t.FR, t.ES, t.ZH ],
-                KR: [ t.KO, t.EN ],
-                KW: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                KY: [ t.EN, t.FR, t.ES, t.ZH ],
-                KZ: [ t.EN, t.FR, t.ES, t.ZH ],
-                LA: [ t.EN ],
-                LC: [ t.EN, t.FR, t.ES, t.ZH ],
-                LI: [ t.EN, t.FR, t.ES, t.ZH ],
-                LK: [ t.SI, t.EN ],
-                LS: [ t.EN, t.FR, t.ES, t.ZH ],
-                LT: [ t.LT, t.EN, t.RU, t.ZH ],
-                LU: [ t.EN, t.DE, t.FR, t.ES, t.ZH ],
-                LV: [ t.LV, t.EN, t.RU ],
-                MA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                MC: [ t.FR, t.EN ],
-                MD: [ t.EN ],
-                ME: [ t.EN ],
-                MG: [ t.EN, t.FR, t.ES, t.ZH ],
-                MH: [ t.EN, t.FR, t.ES, t.ZH ],
-                MK: [ t.EN ],
-                ML: [ t.FR, t.EN, t.ES, t.ZH ],
-                MN: [ t.EN ],
-                MQ: [ t.EN, t.FR, t.ES, t.ZH ],
-                MR: [ t.EN, t.FR, t.ES, t.ZH ],
-                MS: [ t.EN, t.FR, t.ES, t.ZH ],
-                MT: [ t.EN ],
-                MU: [ t.EN, t.FR, t.ES, t.ZH ],
-                MV: [ t.EN ],
-                MW: [ t.EN, t.FR, t.ES, t.ZH ],
-                MX: [ t.ES, t.EN ],
-                MY: [ t.MS, t.EN ],
-                MZ: [ t.EN, t.FR, t.ES, t.ZH ],
-                NA: [ t.EN, t.FR, t.ES, t.ZH ],
-                NC: [ t.EN, t.FR, t.ES, t.ZH ],
-                NE: [ t.FR, t.EN, t.ES, t.ZH ],
-                NF: [ t.EN, t.FR, t.ES, t.ZH ],
-                NG: [ t.EN ],
-                NI: [ t.ES, t.EN, t.FR, t.ZH ],
-                NL: [ t.NL, t.EN ],
-                NO: [ t.NO, t.EN ],
-                NP: [ t.EN ],
-                NR: [ t.EN, t.FR, t.ES, t.ZH ],
-                NU: [ t.EN, t.FR, t.ES, t.ZH ],
-                NZ: [ t.EN, t.FR, t.ES, t.ZH ],
-                OM: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                PA: [ t.ES, t.EN, t.FR, t.ZH ],
-                PE: [ t.ES, t.EN, t.FR, t.ZH ],
-                PF: [ t.EN, t.FR, t.ES, t.ZH ],
-                PG: [ t.EN, t.FR, t.ES, t.ZH ],
-                PH: [ t.TL, t.EN ],
-                PL: [ t.PL, t.EN ],
-                PM: [ t.EN, t.FR, t.ES, t.ZH ],
-                PN: [ t.EN, t.FR, t.ES, t.ZH ],
-                PT: [ t.PT, t.EN ],
-                PW: [ t.EN, t.FR, t.ES, t.ZH ],
-                PY: [ t.ES, t.EN ],
-                QA: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
-                RE: [ t.EN, t.FR, t.ES, t.ZH ],
-                RO: [ t.RO, t.EN ],
-                RS: [ t.EN, t.FR, t.ES, t.ZH ],
-                RU: [ t.RU, t.EN ],
-                RW: [ t.FR, t.EN, t.ES, t.ZH ],
-                SA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                SB: [ t.EN, t.FR, t.ES, t.ZH ],
-                SC: [ t.FR, t.EN, t.ES, t.ZH ],
-                SE: [ t.SV, t.EN ],
-                SG: [ t.EN ],
-                SH: [ t.EN, t.FR, t.ES, t.ZH ],
-                SI: [ t.SL, t.EN ],
-                SJ: [ t.EN, t.FR, t.ES, t.ZH ],
-                SK: [ t.SK, t.EN ],
-                SL: [ t.EN, t.FR, t.ES, t.ZH ],
-                SM: [ t.EN, t.FR, t.ES, t.ZH ],
-                SN: [ t.FR, t.EN, t.ES, t.ZH ],
-                SO: [ t.EN, t.FR, t.ES, t.ZH ],
-                SR: [ t.EN, t.FR, t.ES, t.ZH ],
-                ST: [ t.EN, t.FR, t.ES, t.ZH ],
-                SV: [ t.ES, t.EN, t.FR, t.ZH ],
-                SZ: [ t.EN, t.FR, t.ES, t.ZH ],
-                TC: [ t.EN, t.FR, t.ES, t.ZH ],
-                TD: [ t.FR, t.EN, t.ES, t.ZH ],
-                TG: [ t.FR, t.EN, t.ES, t.ZH ],
-                TH: [ t.TH, t.EN ],
-                TJ: [ t.EN, t.FR, t.ES, t.ZH ],
-                TM: [ t.EN, t.FR, t.ES, t.ZH ],
-                TN: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                TO: [ t.EN ],
-                TR: [ t.TR, t.EN ],
-                TT: [ t.EN, t.FR, t.ES, t.ZH ],
-                TV: [ t.EN, t.FR, t.ES, t.ZH ],
-                TW: [ t.ZH_HANT, t.ZH, t.EN ],
-                TZ: [ t.EN, t.FR, t.ES, t.ZH ],
-                UA: [ t.EN, t.RU, t.FR, t.ES, t.ZH ],
-                UG: [ t.EN, t.FR, t.ES, t.ZH ],
-                US: [ t.EN, t.FR, t.ES, t.ZH ],
-                UY: [ t.ES, t.EN, t.FR, t.ZH ],
-                VA: [ t.EN, t.FR, t.ES, t.ZH ],
-                VC: [ t.EN, t.FR, t.ES, t.ZH ],
-                VE: [ t.ES, t.EN, t.FR, t.ZH ],
-                VG: [ t.EN, t.FR, t.ES, t.ZH ],
-                VN: [ t.VI, t.EN ],
-                VU: [ t.EN, t.FR, t.ES, t.ZH ],
-                WF: [ t.EN, t.FR, t.ES, t.ZH ],
-                WS: [ t.EN ],
-                YE: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
-                YT: [ t.EN, t.FR, t.ES, t.ZH ],
-                ZA: [ t.EN, t.FR, t.ES, t.ZH ],
-                ZM: [ t.EN, t.FR, t.ES, t.ZH ],
-                ZW: [ t.EN ]
-            }, e = {
-                CAPTURE: "capture",
-                AUTHORIZE: "authorize",
-                ORDER: "order",
-                TOKENIZE: "tokenize",
-                SUBSCRIPTION: "subscription"
-            }, n = {
-                TRUE: !0,
-                FALSE: !1
-            }, A = {
-                TRUE: !0,
-                FALSE: !1
-            }, r = {
-                AED: "AED",
-                ALL: "ALL",
-                ANG: "ANG",
-                AOA: "AOA",
-                AUD: "AUD",
-                AWG: "AWG",
-                BAM: "BAM",
-                BBD: "BBD",
-                BGN: "BGN",
-                BIF: "BIF",
-                BMD: "BMD",
-                BND: "BND",
-                BOB: "BOB",
-                BRL: "BRL",
-                BSD: "BSD",
-                BTN: "BTN",
-                CAD: "CAD",
-                CDF: "CDF",
-                CHF: "CHF",
-                CLP: "CLP",
-                COP: "COP",
-                CRC: "CRC",
-                CVE: "CVE",
-                CZK: "CZK",
-                DJF: "DJF",
-                DKK: "DKK",
-                DOP: "DOP",
-                DZD: "DZD",
-                EGP: "EGP",
-                ETB: "ETB",
-                EUR: "EUR",
-                FJD: "FJD",
-                FKP: "FKP",
-                GBP: "GBP",
-                GIP: "GIP",
-                GMD: "GMD",
-                GNF: "GNF",
-                GTQ: "GTQ",
-                GYD: "GYD",
-                HKD: "HKD",
-                HNL: "HNL",
-                HRK: "HRK",
-                HUF: "HUF",
-                IDR: "IDR",
-                ILS: "ILS",
-                INR: "INR",
-                ISK: "ISK",
-                JMD: "JMD",
-                JPY: "JPY",
-                KES: "KES",
-                KMF: "KMF",
-                KRW: "KRW",
-                KYD: "KYD",
-                LAK: "LAK",
-                LKR: "LKR",
-                MDL: "MDL",
-                MGA: "MGA",
-                MKD: "MKD",
-                MNT: "MNT",
-                MRO: "MRO",
-                MUR: "MUR",
-                MVR: "MVR",
-                MXN: "MXN",
-                MYR: "MYR",
-                NAD: "NAD",
-                NIO: "NIO",
-                NOK: "NOK",
-                NPR: "NPR",
-                NZD: "NZD",
-                PEN: "PEN",
-                PGK: "PGK",
-                PHP: "PHP",
-                PLN: "PLN",
-                PYG: "PYG",
-                QAR: "QAR",
-                RON: "RON",
-                RSD: "RSD",
-                RUB: "RUB",
-                SAR: "SAR",
-                SBD: "SBD",
-                SCR: "SCR",
-                SEK: "SEK",
-                SGD: "SGD",
-                SHP: "SHP",
-                SLL: "SLL",
-                SOS: "SOS",
-                SRD: "SRD",
-                SZL: "SZL",
-                THB: "THB",
-                TJS: "TJS",
-                TOP: "TOP",
-                TTD: "TTD",
-                TWD: "TWD",
-                TZS: "TZS",
-                USD: "USD",
-                UYU: "UYU",
-                VND: "VND",
-                VUV: "VUV",
-                WST: "WST",
-                XAF: "XAF",
-                XCD: "XCD",
-                YER: "YER"
-            }, F = "/sdk/js", _ = {
-                NAMESPACE: "data-namespace",
-                CLIENT_TOKEN: "data-client-token",
-                MERCHANT_ID: "data-merchant-id",
-                PARTNER_ATTRIBUTION_ID: "data-partner-attribution-id",
-                STAGE_HOST: "data-stage-host",
-                API_STAGE_HOST: "data-api-stage-host",
-                CSP_NONCE: "data-csp-nonce",
-                ENABLE_3DS: "data-enable-3ds",
-                SDK_INTEGRATION_SOURCE: "data-sdk-integration-source",
-                USER_ID_TOKEN: "data-user-id-token",
-                AMOUNT: "data-amount",
-                CLIENT_METADATA_ID: "data-client-metadata-id",
-                PAGE_TYPE: "data-page-type",
-                USER_EXPERIENCE_FLOW: "data-user-experience-flow",
-                POPUPS_DISABLED: "data-popups-disabled"
-            }, D = {
-                COMPONENTS: "components",
-                ENV: "env",
-                DEBUG: "debug",
-                CACHEBUST: "cachebust",
-                CLIENT_ID: "client-id",
-                MERCHANT_ID: "merchant-id",
-                LOCALE: "locale",
-                CURRENCY: "currency",
-                INTENT: "intent",
-                COMMIT: "commit",
-                VAULT: "vault",
-                BUYER_COUNTRY: "buyer-country",
-                ENABLE_FUNDING: "enable-funding",
-                DISABLE_FUNDING: "disable-funding",
-                DISABLE_CARD: "disable-card",
-                INTEGRATION_DATE: "integration-date",
-                STAGE_HOST: "stage-host",
-                STAGE_ALIAS: "stage-alias",
-                CDN_REGISTRY: "cdn-registry",
-                VERSION: "version"
-            }, H = {
-                BUTTONS: "buttons",
-                HOSTED_FIELDS: "hosted-fields"
-            }, I = {
-                TRUE: !0,
-                FALSE: !1
-            }, o = {
-                TRUE: "true",
-                FALSE: "false"
-            }, O = "unknown", i = {
-                HTTP: "http",
-                HTTPS: "https"
-            }, M = {
-                HOME: "home",
-                PRODUCT: "product",
-                CART: "cart",
-                CHECKOUT: "checkout",
-                PRODUCT_LISTING: "product-listing",
-                SEARCH_RESULTS: "search-results",
-                PRODUCT_DETAILS: "product-details",
-                MINI_CART: "mini-cart"
-            }, Z = 10, C = R.US, a = r.USD, u = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, c = A.FALSE, U = H.BUTTONS, G = I.FALSE, s = {
-                LOCAL: "local",
-                STAGE: "stage",
-                SANDBOX: "sandbox",
-                PRODUCTION: "production",
-                TEST: "test"
-            }, B = {
-                ANDROID: "android",
-                IOS: "iOS"
-            }, K = {
-                VALIDATION_ERROR: "validation_error"
-            }, p = {
-                FEED: "feed_name",
-                STATE: "state_name",
-                TRANSITION: "transition_name",
-                BUTTON_TYPE: "button_type",
-                SESSION_UID: "page_session_id",
-                BUTTON_SESSION_UID: "button_session_id",
-                TOKEN: "token",
-                CONTEXT_ID: "context_id",
-                CONTEXT_TYPE: "context_type",
-                REFERER: "referer_url",
-                MERCHANT_DOMAIN: "merchant_domain",
-                PAY_ID: "pay_id",
-                SELLER_ID: "seller_id",
-                CLIENT_ID: "client_id",
-                DATA_SOURCE: "serverside_data_source",
-                BUTTON_SOURCE: "button_source",
-                ERROR_CODE: "ext_error_code",
-                ERROR_DESC: "ext_error_desc",
-                PAGE_LOAD_TIME: "page_load_time",
-                EXPERIMENT_NAME: "pxp_exp_id",
-                TREATMENT_NAME: "pxp_trtmnt_id",
-                TRANSITION_TIME: "transition_time",
-                FUNDING_LIST: "eligible_payment_methods",
-                FUNDING_COUNT: "eligible_payment_count",
-                CHOSEN_FUNDING: "selected_payment_method",
-                BUTTON_LAYOUT: "button_layout",
-                VERSION: "checkoutjs_version",
-                LOCALE: "locale",
-                BUYER_COUNTRY: "buyer_cntry",
-                INTEGRATION_IDENTIFIER: "integration_identifier",
-                PARTNER_ATTRIBUTION_ID: "bn_code",
-                PAGE_TYPE: "pp_placement",
-                SDK_NAME: "sdk_name",
-                SDK_VERSION: "sdk_version",
-                SDK_ENVIRONMENT: "sdk_environment",
-                MOBILE_APP_VERSION: "mobile_app_version",
-                MOBILE_BUNDLE_IDENTIFIER: "mapv",
-                USER_AGENT: "user_agent",
-                USER_ACTION: "user_action",
-                CONTEXT_CORRID: "context_correlation_id",
-                SDK_CACHE: "sdk_cache",
-                SDK_LOAD_TIME: "sdk_load_time",
-                IS_VAULT: "is_vault",
-                DISABLE_FUNDING: "disable_funding",
-                DISABLE_CARD: "disable_card",
-                RESPONSE_DURATION: "response_duration",
-                SDK_INTEGRATION_SOURCE: "sdk_integration_source",
-                PAYMENT_FLOW: "payment_flow",
-                BUTTON_VERSION: "button_version",
-                FI_LIST: "fi_list",
-                CHOSEN_FI_TYPE: "chosen_fi_type",
-                SELECTED_FI: "merchant_selected_funding_source",
-                POTENTIAL_PAYMENT_METHODS: "potential_payment_methods",
-                PAY_NOW: "pay_now",
-                STICKINESS_ID: "stickiness_id",
-                TIMESTAMP: "t",
-                OPTION_SELECTED: "optsel",
-                USER_IDENTITY_METHOD: "user_identity_method",
-                FIELDS_COMPONENT_SESSION_ID: "fields_component_session_id"
-            }, l = {
-                COMMIT: "commit",
-                CONTINUE: "continue"
-            }, f = {
-                PAYMENTS_SDK: "checkout"
-            }, Y = {
-                PAYMENTS_SDK: "payments_sdk"
-            }, V = {
-                PAYMENTS_SDK: "payments_sdk"
-            }, m = {
-                PAYPAL: "paypal",
-                VENMO: "venmo",
-                APPLEPAY: "applepay",
-                ITAU: "itau",
-                CREDIT: "credit",
-                PAYLATER: "paylater",
-                CARD: "card",
-                IDEAL: "ideal",
-                SEPA: "sepa",
-                BANCONTACT: "bancontact",
-                GIROPAY: "giropay",
-                SOFORT: "sofort",
-                EPS: "eps",
-                MYBANK: "mybank",
-                P24: "p24",
-                VERKKOPANKKI: "verkkopankki",
-                PAYU: "payu",
-                BLIK: "blik",
-                TRUSTLY: "trustly",
-                ZIMPLER: "zimpler",
-                MAXIMA: "maxima",
-                OXXO: "oxxo",
-                BOLETO: "boleto",
-                WECHATPAY: "wechatpay",
-                MERCADOPAGO: "mercadopago",
-                MULTIBLANCO: "multiblanco",
-                MULTIBANCO: "multibanco"
-            }, b = {
-                PAYPAL: "PayPal",
-                CREDIT: "PayPal Credit"
-            }, y = {
-                VISA: "visa",
-                MASTERCARD: "mastercard",
-                AMEX: "amex",
-                DISCOVER: "discover",
-                HIPER: "hiper",
-                ELO: "elo",
-                JCB: "jcb",
-                CUP: "cup"
-            }, W = {
-                BALANCE: "balance",
-                CARD: "card",
-                BANK: "bank",
-                CREDIT: "credit"
-            }, J = {
-                PAY_IN_3: "payIn3",
-                PAY_IN_4: "payIn4",
-                PAYLATER: "paylater",
-                CREDIT: "credit"
-            }, h = {
-                DESKTOP: "desktop",
-                MOBILE: "mobile"
-            }, k = !0;
-        } ]);
-    },
-    "./node_modules/@paypal/sdk-constants/index.js": function(module, exports, __webpack_require__) {
-        module.exports = __webpack_require__("./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js");
-    },
-    "./node_modules/belter/dist/belter.js": function(module, exports, __webpack_require__) {
+    "./node_modules/@krakenjs/belter/dist/belter.js": function(module, exports, __webpack_require__) {
         "undefined" != typeof self && self, module.exports = function(modules) {
             var installedModules = {};
             function __webpack_require__(moduleId) {
@@ -4269,8 +3382,894 @@ window.spb = function(modules) {
             }
         } ]);
     },
-    "./node_modules/belter/index.js": function(module, exports, __webpack_require__) {
-        module.exports = __webpack_require__("./node_modules/belter/dist/belter.js");
+    "./node_modules/@krakenjs/belter/index.js": function(module, exports, __webpack_require__) {
+        module.exports = __webpack_require__("./node_modules/@krakenjs/belter/dist/belter.js");
+    },
+    "./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js": function(module, exports, __webpack_require__) {
+        "undefined" != typeof self && self, module.exports = function(E) {
+            var N = {};
+            function S(R) {
+                if (N[R]) return N[R].exports;
+                var t = N[R] = {
+                    i: R,
+                    l: !1,
+                    exports: {}
+                };
+                return E[R].call(t.exports, t, t.exports, S), t.l = !0, t.exports;
+            }
+            return S.m = E, S.c = N, S.d = function(E, N, R) {
+                S.o(E, N) || Object.defineProperty(E, N, {
+                    enumerable: !0,
+                    get: R
+                });
+            }, S.r = function(E) {
+                "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(E, Symbol.toStringTag, {
+                    value: "Module"
+                }), Object.defineProperty(E, "__esModule", {
+                    value: !0
+                });
+            }, S.t = function(E, N) {
+                if (1 & N && (E = S(E)), 8 & N) return E;
+                if (4 & N && "object" == typeof E && E && E.__esModule) return E;
+                var R = Object.create(null);
+                if (S.r(R), Object.defineProperty(R, "default", {
+                    enumerable: !0,
+                    value: E
+                }), 2 & N && "string" != typeof E) for (var t in E) S.d(R, t, function(N) {
+                    return E[N];
+                }.bind(null, t));
+                return R;
+            }, S.n = function(E) {
+                var N = E && E.__esModule ? function() {
+                    return E.default;
+                } : function() {
+                    return E;
+                };
+                return S.d(N, "a", N), N;
+            }, S.o = function(E, N) {
+                return {}.hasOwnProperty.call(E, N);
+            }, S.p = "", S(S.s = 0);
+        }([ function(E, N, S) {
+            "use strict";
+            S.r(N), S.d(N, "DEFAULT_COUNTRY", (function() {
+                return C;
+            })), S.d(N, "DEFAULT_CURRENCY", (function() {
+                return a;
+            })), S.d(N, "DEFAULT_INTENT", (function() {
+                return u;
+            })), S.d(N, "DEFAULT_COMMIT", (function() {
+                return L;
+            })), S.d(N, "DEFAULT_SALE_COMMIT", (function() {
+                return d;
+            })), S.d(N, "DEFAULT_NONSALE_COMMIT", (function() {
+                return P;
+            })), S.d(N, "DEFAULT_VAULT", (function() {
+                return c;
+            })), S.d(N, "DEFAULT_COMPONENTS", (function() {
+                return U;
+            })), S.d(N, "DEFAULT_DEBUG", (function() {
+                return G;
+            })), S.d(N, "ENV", (function() {
+                return s;
+            })), S.d(N, "MOBILE_ENV", (function() {
+                return B;
+            })), S.d(N, "ERROR_CODE", (function() {
+                return K;
+            })), S.d(N, "FPTI_KEY", (function() {
+                return p;
+            })), S.d(N, "FPTI_USER_ACTION", (function() {
+                return f;
+            })), S.d(N, "FPTI_DATA_SOURCE", (function() {
+                return l;
+            })), S.d(N, "FPTI_FEED", (function() {
+                return Y;
+            })), S.d(N, "FPTI_SDK_NAME", (function() {
+                return V;
+            })), S.d(N, "FUNDING", (function() {
+                return m;
+            })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
+                return y;
+            })), S.d(N, "CARD", (function() {
+                return b;
+            })), S.d(N, "WALLET_INSTRUMENT", (function() {
+                return W;
+            })), S.d(N, "FUNDING_PRODUCTS", (function() {
+                return J;
+            })), S.d(N, "COUNTRY", (function() {
+                return R;
+            })), S.d(N, "LANG", (function() {
+                return t;
+            })), S.d(N, "COUNTRY_LANGS", (function() {
+                return T;
+            })), S.d(N, "INTENT", (function() {
+                return e;
+            })), S.d(N, "COMMIT", (function() {
+                return n;
+            })), S.d(N, "VAULT", (function() {
+                return A;
+            })), S.d(N, "CURRENCY", (function() {
+                return r;
+            })), S.d(N, "SDK_PATH", (function() {
+                return F;
+            })), S.d(N, "SDK_SETTINGS", (function() {
+                return _;
+            })), S.d(N, "SDK_QUERY_KEYS", (function() {
+                return D;
+            })), S.d(N, "COMPONENTS", (function() {
+                return H;
+            })), S.d(N, "DEBUG", (function() {
+                return I;
+            })), S.d(N, "QUERY_BOOL", (function() {
+                return o;
+            })), S.d(N, "UNKNOWN", (function() {
+                return O;
+            })), S.d(N, "PROTOCOL", (function() {
+                return i;
+            })), S.d(N, "PAGE_TYPES", (function() {
+                return M;
+            })), S.d(N, "MERCHANT_ID_MAX", (function() {
+                return Z;
+            })), S.d(N, "PLATFORM", (function() {
+                return h;
+            })), S.d(N, "TYPES", (function() {
+                return k;
+            }));
+            var R = {
+                AD: "AD",
+                AE: "AE",
+                AG: "AG",
+                AI: "AI",
+                AL: "AL",
+                AM: "AM",
+                AN: "AN",
+                AO: "AO",
+                AR: "AR",
+                AT: "AT",
+                AU: "AU",
+                AW: "AW",
+                AZ: "AZ",
+                BA: "BA",
+                BB: "BB",
+                BE: "BE",
+                BF: "BF",
+                BG: "BG",
+                BH: "BH",
+                BI: "BI",
+                BJ: "BJ",
+                BM: "BM",
+                BN: "BN",
+                BO: "BO",
+                BR: "BR",
+                BS: "BS",
+                BT: "BT",
+                BW: "BW",
+                BY: "BY",
+                BZ: "BZ",
+                CA: "CA",
+                CD: "CD",
+                CG: "CG",
+                CH: "CH",
+                CI: "CI",
+                CK: "CK",
+                CL: "CL",
+                CM: "CM",
+                CN: "CN",
+                CO: "CO",
+                CR: "CR",
+                CV: "CV",
+                CY: "CY",
+                CZ: "CZ",
+                DE: "DE",
+                DJ: "DJ",
+                DK: "DK",
+                DM: "DM",
+                DO: "DO",
+                DZ: "DZ",
+                EC: "EC",
+                EE: "EE",
+                EG: "EG",
+                ER: "ER",
+                ES: "ES",
+                ET: "ET",
+                FI: "FI",
+                FJ: "FJ",
+                FK: "FK",
+                FM: "FM",
+                FO: "FO",
+                FR: "FR",
+                GA: "GA",
+                GB: "GB",
+                GD: "GD",
+                GE: "GE",
+                GF: "GF",
+                GI: "GI",
+                GL: "GL",
+                GM: "GM",
+                GN: "GN",
+                GP: "GP",
+                GR: "GR",
+                GT: "GT",
+                GW: "GW",
+                GY: "GY",
+                HK: "HK",
+                HN: "HN",
+                HR: "HR",
+                HU: "HU",
+                ID: "ID",
+                IE: "IE",
+                IL: "IL",
+                IN: "IN",
+                IS: "IS",
+                IT: "IT",
+                JM: "JM",
+                JO: "JO",
+                JP: "JP",
+                KE: "KE",
+                KG: "KG",
+                KH: "KH",
+                KI: "KI",
+                KM: "KM",
+                KN: "KN",
+                KR: "KR",
+                KW: "KW",
+                KY: "KY",
+                KZ: "KZ",
+                LA: "LA",
+                LC: "LC",
+                LI: "LI",
+                LK: "LK",
+                LS: "LS",
+                LT: "LT",
+                LU: "LU",
+                LV: "LV",
+                MA: "MA",
+                MC: "MC",
+                MD: "MD",
+                ME: "ME",
+                MG: "MG",
+                MH: "MH",
+                MK: "MK",
+                ML: "ML",
+                MN: "MN",
+                MQ: "MQ",
+                MR: "MR",
+                MS: "MS",
+                MT: "MT",
+                MU: "MU",
+                MV: "MV",
+                MW: "MW",
+                MX: "MX",
+                MY: "MY",
+                MZ: "MZ",
+                NA: "NA",
+                NC: "NC",
+                NE: "NE",
+                NF: "NF",
+                NG: "NG",
+                NI: "NI",
+                NL: "NL",
+                NO: "NO",
+                NP: "NP",
+                NR: "NR",
+                NU: "NU",
+                NZ: "NZ",
+                OM: "OM",
+                PA: "PA",
+                PE: "PE",
+                PF: "PF",
+                PG: "PG",
+                PH: "PH",
+                PL: "PL",
+                PM: "PM",
+                PN: "PN",
+                PT: "PT",
+                PW: "PW",
+                PY: "PY",
+                QA: "QA",
+                RE: "RE",
+                RO: "RO",
+                RS: "RS",
+                RU: "RU",
+                RW: "RW",
+                SA: "SA",
+                SB: "SB",
+                SC: "SC",
+                SE: "SE",
+                SG: "SG",
+                SH: "SH",
+                SI: "SI",
+                SJ: "SJ",
+                SK: "SK",
+                SL: "SL",
+                SM: "SM",
+                SN: "SN",
+                SO: "SO",
+                SR: "SR",
+                ST: "ST",
+                SV: "SV",
+                SZ: "SZ",
+                TC: "TC",
+                TD: "TD",
+                TG: "TG",
+                TH: "TH",
+                TJ: "TJ",
+                TM: "TM",
+                TN: "TN",
+                TO: "TO",
+                TR: "TR",
+                TT: "TT",
+                TV: "TV",
+                TW: "TW",
+                TZ: "TZ",
+                UA: "UA",
+                UG: "UG",
+                US: "US",
+                UY: "UY",
+                VA: "VA",
+                VC: "VC",
+                VE: "VE",
+                VG: "VG",
+                VN: "VN",
+                VU: "VU",
+                WF: "WF",
+                WS: "WS",
+                YE: "YE",
+                YT: "YT",
+                ZA: "ZA",
+                ZM: "ZM",
+                ZW: "ZW"
+            }, t = {
+                AR: "ar",
+                BG: "bg",
+                CS: "cs",
+                DA: "da",
+                DE: "de",
+                EL: "el",
+                EN: "en",
+                ES: "es",
+                ET: "et",
+                FI: "fi",
+                FR: "fr",
+                HE: "he",
+                HU: "hu",
+                ID: "id",
+                IT: "it",
+                JA: "ja",
+                KO: "ko",
+                LT: "lt",
+                LV: "lv",
+                MS: "ms",
+                NL: "nl",
+                NO: "no",
+                PL: "pl",
+                PT: "pt",
+                RO: "ro",
+                RU: "ru",
+                SI: "si",
+                SK: "sk",
+                SL: "sl",
+                SQ: "sq",
+                SV: "sv",
+                TH: "th",
+                TL: "tl",
+                TR: "tr",
+                VI: "vi",
+                ZH: "zh",
+                ZH_HANT: "zh_Hant"
+            }, T = {
+                AD: [ t.EN, t.FR, t.ES, t.ZH ],
+                AE: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
+                AG: [ t.EN, t.FR, t.ES, t.ZH ],
+                AI: [ t.EN, t.FR, t.ES, t.ZH ],
+                AL: [ t.SQ, t.EN ],
+                AM: [ t.EN, t.FR, t.ES, t.ZH ],
+                AN: [ t.EN, t.FR, t.ES, t.ZH ],
+                AO: [ t.EN, t.FR, t.ES, t.ZH ],
+                AR: [ t.ES, t.EN ],
+                AT: [ t.DE, t.EN ],
+                AU: [ t.EN ],
+                AW: [ t.EN, t.FR, t.ES, t.ZH ],
+                AZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                BA: [ t.EN ],
+                BB: [ t.EN, t.FR, t.ES, t.ZH ],
+                BE: [ t.EN, t.NL, t.FR ],
+                BF: [ t.FR, t.EN, t.ES, t.ZH ],
+                BG: [ t.BG, t.EN ],
+                BH: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                BI: [ t.FR, t.EN, t.ES, t.ZH ],
+                BJ: [ t.FR, t.EN, t.ES, t.ZH ],
+                BM: [ t.EN, t.FR, t.ES, t.ZH ],
+                BN: [ t.MS, t.EN ],
+                BO: [ t.ES, t.EN, t.FR, t.ZH ],
+                BR: [ t.PT, t.EN ],
+                BS: [ t.EN, t.FR, t.ES, t.ZH ],
+                BT: [ t.EN ],
+                BW: [ t.EN, t.FR, t.ES, t.ZH ],
+                BY: [ t.EN ],
+                BZ: [ t.EN, t.ES, t.FR, t.ZH ],
+                CA: [ t.EN, t.FR ],
+                CD: [ t.FR, t.EN, t.ES, t.ZH ],
+                CG: [ t.EN, t.FR, t.ES, t.ZH ],
+                CH: [ t.DE, t.FR, t.EN ],
+                CI: [ t.FR, t.EN ],
+                CK: [ t.EN, t.FR, t.ES, t.ZH ],
+                CL: [ t.ES, t.EN, t.FR, t.ZH ],
+                CM: [ t.FR, t.EN ],
+                CN: [ t.ZH ],
+                CO: [ t.ES, t.EN, t.FR, t.ZH ],
+                CR: [ t.ES, t.EN, t.FR, t.ZH ],
+                CV: [ t.EN, t.FR, t.ES, t.ZH ],
+                CY: [ t.EN ],
+                CZ: [ t.CS, t.EN ],
+                DE: [ t.DE, t.EN ],
+                DJ: [ t.FR, t.EN, t.ES, t.ZH ],
+                DK: [ t.DA, t.EN ],
+                DM: [ t.EN, t.FR, t.ES, t.ZH ],
+                DO: [ t.ES, t.EN, t.FR, t.ZH ],
+                DZ: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                EC: [ t.ES, t.EN, t.FR, t.ZH ],
+                EE: [ t.ET, t.EN, t.RU ],
+                EG: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                ER: [ t.EN, t.FR, t.ES, t.ZH ],
+                ES: [ t.ES, t.EN ],
+                ET: [ t.EN, t.FR, t.ES, t.ZH ],
+                FI: [ t.FI, t.EN ],
+                FJ: [ t.EN, t.FR, t.ES, t.ZH ],
+                FK: [ t.EN, t.FR, t.ES, t.ZH ],
+                FM: [ t.EN ],
+                FO: [ t.DA, t.EN, t.FR, t.ES, t.ZH ],
+                FR: [ t.FR, t.EN ],
+                GA: [ t.FR, t.EN, t.ES, t.ZH ],
+                GB: [ t.EN ],
+                GD: [ t.EN, t.FR, t.ES, t.ZH ],
+                GE: [ t.EN, t.FR, t.ES, t.ZH ],
+                GF: [ t.EN, t.FR, t.ES, t.ZH ],
+                GI: [ t.EN, t.FR, t.ES, t.ZH ],
+                GL: [ t.DA, t.EN, t.FR, t.ES, t.ZH ],
+                GM: [ t.EN, t.FR, t.ES, t.ZH ],
+                GN: [ t.FR, t.EN, t.ES, t.ZH ],
+                GP: [ t.EN, t.FR, t.ES, t.ZH ],
+                GR: [ t.EL, t.EN ],
+                GT: [ t.ES, t.EN, t.FR, t.ZH ],
+                GW: [ t.EN, t.FR, t.ES, t.ZH ],
+                GY: [ t.EN, t.FR, t.ES, t.ZH ],
+                HK: [ t.EN, t.ZH_HANT, t.ZH ],
+                HN: [ t.ES, t.EN, t.FR, t.ZH ],
+                HR: [ t.EN ],
+                HU: [ t.HU, t.EN ],
+                ID: [ t.ID, t.EN ],
+                IE: [ t.EN, t.FR, t.ES, t.ZH ],
+                IL: [ t.HE, t.EN ],
+                IN: [ t.EN ],
+                IS: [ t.EN ],
+                IT: [ t.IT, t.EN ],
+                JM: [ t.EN, t.ES, t.FR, t.ZH ],
+                JO: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                JP: [ t.JA, t.EN ],
+                KE: [ t.EN, t.FR, t.ES, t.ZH ],
+                KG: [ t.EN, t.FR, t.ES, t.ZH ],
+                KH: [ t.EN ],
+                KI: [ t.EN, t.FR, t.ES, t.ZH ],
+                KM: [ t.FR, t.EN, t.ES, t.ZH ],
+                KN: [ t.EN, t.FR, t.ES, t.ZH ],
+                KR: [ t.KO, t.EN ],
+                KW: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                KY: [ t.EN, t.FR, t.ES, t.ZH ],
+                KZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                LA: [ t.EN ],
+                LC: [ t.EN, t.FR, t.ES, t.ZH ],
+                LI: [ t.EN, t.FR, t.ES, t.ZH ],
+                LK: [ t.SI, t.EN ],
+                LS: [ t.EN, t.FR, t.ES, t.ZH ],
+                LT: [ t.LT, t.EN, t.RU, t.ZH ],
+                LU: [ t.EN, t.DE, t.FR, t.ES, t.ZH ],
+                LV: [ t.LV, t.EN, t.RU ],
+                MA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                MC: [ t.FR, t.EN ],
+                MD: [ t.EN ],
+                ME: [ t.EN ],
+                MG: [ t.EN, t.FR, t.ES, t.ZH ],
+                MH: [ t.EN, t.FR, t.ES, t.ZH ],
+                MK: [ t.EN ],
+                ML: [ t.FR, t.EN, t.ES, t.ZH ],
+                MN: [ t.EN ],
+                MQ: [ t.EN, t.FR, t.ES, t.ZH ],
+                MR: [ t.EN, t.FR, t.ES, t.ZH ],
+                MS: [ t.EN, t.FR, t.ES, t.ZH ],
+                MT: [ t.EN ],
+                MU: [ t.EN, t.FR, t.ES, t.ZH ],
+                MV: [ t.EN ],
+                MW: [ t.EN, t.FR, t.ES, t.ZH ],
+                MX: [ t.ES, t.EN ],
+                MY: [ t.MS, t.EN ],
+                MZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                NA: [ t.EN, t.FR, t.ES, t.ZH ],
+                NC: [ t.EN, t.FR, t.ES, t.ZH ],
+                NE: [ t.FR, t.EN, t.ES, t.ZH ],
+                NF: [ t.EN, t.FR, t.ES, t.ZH ],
+                NG: [ t.EN ],
+                NI: [ t.ES, t.EN, t.FR, t.ZH ],
+                NL: [ t.NL, t.EN ],
+                NO: [ t.NO, t.EN ],
+                NP: [ t.EN ],
+                NR: [ t.EN, t.FR, t.ES, t.ZH ],
+                NU: [ t.EN, t.FR, t.ES, t.ZH ],
+                NZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                OM: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                PA: [ t.ES, t.EN, t.FR, t.ZH ],
+                PE: [ t.ES, t.EN, t.FR, t.ZH ],
+                PF: [ t.EN, t.FR, t.ES, t.ZH ],
+                PG: [ t.EN, t.FR, t.ES, t.ZH ],
+                PH: [ t.TL, t.EN ],
+                PL: [ t.PL, t.EN ],
+                PM: [ t.EN, t.FR, t.ES, t.ZH ],
+                PN: [ t.EN, t.FR, t.ES, t.ZH ],
+                PT: [ t.PT, t.EN ],
+                PW: [ t.EN, t.FR, t.ES, t.ZH ],
+                PY: [ t.ES, t.EN ],
+                QA: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
+                RE: [ t.EN, t.FR, t.ES, t.ZH ],
+                RO: [ t.RO, t.EN ],
+                RS: [ t.EN, t.FR, t.ES, t.ZH ],
+                RU: [ t.RU, t.EN ],
+                RW: [ t.FR, t.EN, t.ES, t.ZH ],
+                SA: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                SB: [ t.EN, t.FR, t.ES, t.ZH ],
+                SC: [ t.FR, t.EN, t.ES, t.ZH ],
+                SE: [ t.SV, t.EN ],
+                SG: [ t.EN ],
+                SH: [ t.EN, t.FR, t.ES, t.ZH ],
+                SI: [ t.SL, t.EN ],
+                SJ: [ t.EN, t.FR, t.ES, t.ZH ],
+                SK: [ t.SK, t.EN ],
+                SL: [ t.EN, t.FR, t.ES, t.ZH ],
+                SM: [ t.EN, t.FR, t.ES, t.ZH ],
+                SN: [ t.FR, t.EN, t.ES, t.ZH ],
+                SO: [ t.EN, t.FR, t.ES, t.ZH ],
+                SR: [ t.EN, t.FR, t.ES, t.ZH ],
+                ST: [ t.EN, t.FR, t.ES, t.ZH ],
+                SV: [ t.ES, t.EN, t.FR, t.ZH ],
+                SZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                TC: [ t.EN, t.FR, t.ES, t.ZH ],
+                TD: [ t.FR, t.EN, t.ES, t.ZH ],
+                TG: [ t.FR, t.EN, t.ES, t.ZH ],
+                TH: [ t.TH, t.EN ],
+                TJ: [ t.EN, t.FR, t.ES, t.ZH ],
+                TM: [ t.EN, t.FR, t.ES, t.ZH ],
+                TN: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                TO: [ t.EN ],
+                TR: [ t.TR, t.EN ],
+                TT: [ t.EN, t.FR, t.ES, t.ZH ],
+                TV: [ t.EN, t.FR, t.ES, t.ZH ],
+                TW: [ t.ZH_HANT, t.ZH, t.EN ],
+                TZ: [ t.EN, t.FR, t.ES, t.ZH ],
+                UA: [ t.EN, t.RU, t.FR, t.ES, t.ZH ],
+                UG: [ t.EN, t.FR, t.ES, t.ZH ],
+                US: [ t.EN, t.FR, t.ES, t.ZH ],
+                UY: [ t.ES, t.EN, t.FR, t.ZH ],
+                VA: [ t.EN, t.FR, t.ES, t.ZH ],
+                VC: [ t.EN, t.FR, t.ES, t.ZH ],
+                VE: [ t.ES, t.EN, t.FR, t.ZH ],
+                VG: [ t.EN, t.FR, t.ES, t.ZH ],
+                VN: [ t.VI, t.EN ],
+                VU: [ t.EN, t.FR, t.ES, t.ZH ],
+                WF: [ t.EN, t.FR, t.ES, t.ZH ],
+                WS: [ t.EN ],
+                YE: [ t.AR, t.EN, t.FR, t.ES, t.ZH ],
+                YT: [ t.EN, t.FR, t.ES, t.ZH ],
+                ZA: [ t.EN, t.FR, t.ES, t.ZH ],
+                ZM: [ t.EN, t.FR, t.ES, t.ZH ],
+                ZW: [ t.EN ]
+            }, e = {
+                CAPTURE: "capture",
+                AUTHORIZE: "authorize",
+                ORDER: "order",
+                TOKENIZE: "tokenize",
+                SUBSCRIPTION: "subscription"
+            }, n = {
+                TRUE: !0,
+                FALSE: !1
+            }, A = {
+                TRUE: !0,
+                FALSE: !1
+            }, r = {
+                AED: "AED",
+                ALL: "ALL",
+                ANG: "ANG",
+                AOA: "AOA",
+                AUD: "AUD",
+                AWG: "AWG",
+                BAM: "BAM",
+                BBD: "BBD",
+                BGN: "BGN",
+                BIF: "BIF",
+                BMD: "BMD",
+                BND: "BND",
+                BOB: "BOB",
+                BRL: "BRL",
+                BSD: "BSD",
+                BTN: "BTN",
+                CAD: "CAD",
+                CDF: "CDF",
+                CHF: "CHF",
+                CLP: "CLP",
+                COP: "COP",
+                CRC: "CRC",
+                CVE: "CVE",
+                CZK: "CZK",
+                DJF: "DJF",
+                DKK: "DKK",
+                DOP: "DOP",
+                DZD: "DZD",
+                EGP: "EGP",
+                ETB: "ETB",
+                EUR: "EUR",
+                FJD: "FJD",
+                FKP: "FKP",
+                GBP: "GBP",
+                GIP: "GIP",
+                GMD: "GMD",
+                GNF: "GNF",
+                GTQ: "GTQ",
+                GYD: "GYD",
+                HKD: "HKD",
+                HNL: "HNL",
+                HRK: "HRK",
+                HUF: "HUF",
+                IDR: "IDR",
+                ILS: "ILS",
+                INR: "INR",
+                ISK: "ISK",
+                JMD: "JMD",
+                JPY: "JPY",
+                KES: "KES",
+                KMF: "KMF",
+                KRW: "KRW",
+                KYD: "KYD",
+                LAK: "LAK",
+                LKR: "LKR",
+                MDL: "MDL",
+                MGA: "MGA",
+                MKD: "MKD",
+                MNT: "MNT",
+                MRO: "MRO",
+                MUR: "MUR",
+                MVR: "MVR",
+                MXN: "MXN",
+                MYR: "MYR",
+                NAD: "NAD",
+                NIO: "NIO",
+                NOK: "NOK",
+                NPR: "NPR",
+                NZD: "NZD",
+                PEN: "PEN",
+                PGK: "PGK",
+                PHP: "PHP",
+                PLN: "PLN",
+                PYG: "PYG",
+                QAR: "QAR",
+                RON: "RON",
+                RSD: "RSD",
+                RUB: "RUB",
+                SAR: "SAR",
+                SBD: "SBD",
+                SCR: "SCR",
+                SEK: "SEK",
+                SGD: "SGD",
+                SHP: "SHP",
+                SLL: "SLL",
+                SOS: "SOS",
+                SRD: "SRD",
+                SZL: "SZL",
+                THB: "THB",
+                TJS: "TJS",
+                TOP: "TOP",
+                TTD: "TTD",
+                TWD: "TWD",
+                TZS: "TZS",
+                USD: "USD",
+                UYU: "UYU",
+                VND: "VND",
+                VUV: "VUV",
+                WST: "WST",
+                XAF: "XAF",
+                XCD: "XCD",
+                YER: "YER"
+            }, F = "/sdk/js", _ = {
+                NAMESPACE: "data-namespace",
+                CLIENT_TOKEN: "data-client-token",
+                MERCHANT_ID: "data-merchant-id",
+                PARTNER_ATTRIBUTION_ID: "data-partner-attribution-id",
+                STAGE_HOST: "data-stage-host",
+                API_STAGE_HOST: "data-api-stage-host",
+                CSP_NONCE: "data-csp-nonce",
+                ENABLE_3DS: "data-enable-3ds",
+                SDK_INTEGRATION_SOURCE: "data-sdk-integration-source",
+                USER_ID_TOKEN: "data-user-id-token",
+                AMOUNT: "data-amount",
+                CLIENT_METADATA_ID: "data-client-metadata-id",
+                PAGE_TYPE: "data-page-type",
+                USER_EXPERIENCE_FLOW: "data-user-experience-flow",
+                POPUPS_DISABLED: "data-popups-disabled"
+            }, D = {
+                COMPONENTS: "components",
+                ENV: "env",
+                DEBUG: "debug",
+                CACHEBUST: "cachebust",
+                CLIENT_ID: "client-id",
+                MERCHANT_ID: "merchant-id",
+                LOCALE: "locale",
+                CURRENCY: "currency",
+                INTENT: "intent",
+                COMMIT: "commit",
+                VAULT: "vault",
+                BUYER_COUNTRY: "buyer-country",
+                ENABLE_FUNDING: "enable-funding",
+                DISABLE_FUNDING: "disable-funding",
+                DISABLE_CARD: "disable-card",
+                INTEGRATION_DATE: "integration-date",
+                STAGE_HOST: "stage-host",
+                STAGE_ALIAS: "stage-alias",
+                CDN_REGISTRY: "cdn-registry",
+                VERSION: "version"
+            }, H = {
+                BUTTONS: "buttons",
+                HOSTED_FIELDS: "hosted-fields"
+            }, I = {
+                TRUE: !0,
+                FALSE: !1
+            }, o = {
+                TRUE: "true",
+                FALSE: "false"
+            }, O = "unknown", i = {
+                HTTP: "http",
+                HTTPS: "https"
+            }, M = {
+                HOME: "home",
+                PRODUCT: "product",
+                CART: "cart",
+                CHECKOUT: "checkout",
+                PRODUCT_LISTING: "product-listing",
+                SEARCH_RESULTS: "search-results",
+                PRODUCT_DETAILS: "product-details",
+                MINI_CART: "mini-cart"
+            }, Z = 10, C = R.US, a = r.USD, u = e.CAPTURE, L = n.TRUE, d = n.TRUE, P = n.TRUE, c = A.FALSE, U = H.BUTTONS, G = I.FALSE, s = {
+                LOCAL: "local",
+                STAGE: "stage",
+                SANDBOX: "sandbox",
+                PRODUCTION: "production",
+                TEST: "test"
+            }, B = {
+                ANDROID: "android",
+                IOS: "iOS"
+            }, K = {
+                VALIDATION_ERROR: "validation_error"
+            }, p = {
+                FEED: "feed_name",
+                STATE: "state_name",
+                TRANSITION: "transition_name",
+                BUTTON_TYPE: "button_type",
+                SESSION_UID: "page_session_id",
+                BUTTON_SESSION_UID: "button_session_id",
+                TOKEN: "token",
+                CONTEXT_ID: "context_id",
+                CONTEXT_TYPE: "context_type",
+                REFERER: "referer_url",
+                MERCHANT_DOMAIN: "merchant_domain",
+                PAY_ID: "pay_id",
+                SELLER_ID: "seller_id",
+                CLIENT_ID: "client_id",
+                DATA_SOURCE: "serverside_data_source",
+                BUTTON_SOURCE: "button_source",
+                ERROR_CODE: "ext_error_code",
+                ERROR_DESC: "ext_error_desc",
+                PAGE_LOAD_TIME: "page_load_time",
+                EXPERIMENT_NAME: "pxp_exp_id",
+                TREATMENT_NAME: "pxp_trtmnt_id",
+                TRANSITION_TIME: "transition_time",
+                FUNDING_LIST: "eligible_payment_methods",
+                FUNDING_COUNT: "eligible_payment_count",
+                CHOSEN_FUNDING: "selected_payment_method",
+                BUTTON_LAYOUT: "button_layout",
+                VERSION: "checkoutjs_version",
+                LOCALE: "locale",
+                BUYER_COUNTRY: "buyer_cntry",
+                INTEGRATION_IDENTIFIER: "integration_identifier",
+                PARTNER_ATTRIBUTION_ID: "bn_code",
+                PAGE_TYPE: "pp_placement",
+                SDK_NAME: "sdk_name",
+                SDK_VERSION: "sdk_version",
+                SDK_ENVIRONMENT: "sdk_environment",
+                MOBILE_APP_VERSION: "mobile_app_version",
+                MOBILE_BUNDLE_IDENTIFIER: "mapv",
+                USER_AGENT: "user_agent",
+                USER_ACTION: "user_action",
+                CONTEXT_CORRID: "context_correlation_id",
+                SDK_CACHE: "sdk_cache",
+                SDK_LOAD_TIME: "sdk_load_time",
+                IS_VAULT: "is_vault",
+                DISABLE_FUNDING: "disable_funding",
+                DISABLE_CARD: "disable_card",
+                RESPONSE_DURATION: "response_duration",
+                SDK_INTEGRATION_SOURCE: "sdk_integration_source",
+                PAYMENT_FLOW: "payment_flow",
+                BUTTON_VERSION: "button_version",
+                FI_LIST: "fi_list",
+                CHOSEN_FI_TYPE: "chosen_fi_type",
+                SELECTED_FI: "merchant_selected_funding_source",
+                POTENTIAL_PAYMENT_METHODS: "potential_payment_methods",
+                PAY_NOW: "pay_now",
+                STICKINESS_ID: "stickiness_id",
+                TIMESTAMP: "t",
+                OPTION_SELECTED: "optsel",
+                USER_IDENTITY_METHOD: "user_identity_method",
+                FIELDS_COMPONENT_SESSION_ID: "fields_component_session_id"
+            }, f = {
+                COMMIT: "commit",
+                CONTINUE: "continue"
+            }, l = {
+                PAYMENTS_SDK: "checkout"
+            }, Y = {
+                PAYMENTS_SDK: "payments_sdk"
+            }, V = {
+                PAYMENTS_SDK: "payments_sdk"
+            }, m = {
+                PAYPAL: "paypal",
+                VENMO: "venmo",
+                APPLEPAY: "applepay",
+                ITAU: "itau",
+                CREDIT: "credit",
+                PAYLATER: "paylater",
+                CARD: "card",
+                IDEAL: "ideal",
+                SEPA: "sepa",
+                BANCONTACT: "bancontact",
+                GIROPAY: "giropay",
+                SOFORT: "sofort",
+                EPS: "eps",
+                MYBANK: "mybank",
+                P24: "p24",
+                VERKKOPANKKI: "verkkopankki",
+                PAYU: "payu",
+                BLIK: "blik",
+                TRUSTLY: "trustly",
+                ZIMPLER: "zimpler",
+                MAXIMA: "maxima",
+                OXXO: "oxxo",
+                BOLETO: "boleto",
+                WECHATPAY: "wechatpay",
+                MERCADOPAGO: "mercadopago",
+                MULTIBANCO: "multibanco"
+            }, y = {
+                PAYPAL: "PayPal",
+                CREDIT: "PayPal Credit"
+            }, b = {
+                VISA: "visa",
+                MASTERCARD: "mastercard",
+                AMEX: "amex",
+                DISCOVER: "discover",
+                HIPER: "hiper",
+                ELO: "elo",
+                JCB: "jcb",
+                CUP: "cup"
+            }, W = {
+                BALANCE: "balance",
+                CARD: "card",
+                BANK: "bank",
+                CREDIT: "credit"
+            }, J = {
+                PAY_IN_3: "payIn3",
+                PAY_IN_4: "payIn4",
+                PAYLATER: "paylater",
+                CREDIT: "credit"
+            }, h = {
+                DESKTOP: "desktop",
+                MOBILE: "mobile"
+            }, k = !0;
+        } ]);
+    },
+    "./node_modules/@paypal/sdk-constants/index.js": function(module, exports, __webpack_require__) {
+        module.exports = __webpack_require__("./node_modules/@paypal/sdk-constants/dist/paypal-sdk-constants.js");
     },
     "./node_modules/card-validator/dist/card-number.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -6542,216 +6541,6 @@ window.spb = function(modules) {
         var extendIfDefined = function(target, source) {
             for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
         };
-        function Logger(_ref) {
-            var url = _ref.url, prefix = _ref.prefix, _ref$logLevel = _ref.logLevel, logLevel = void 0 === _ref$logLevel ? "debug" : _ref$logLevel, _ref$transport = _ref.transport, transport = void 0 === _ref$transport ? function(httpWin) {
-                void 0 === httpWin && (httpWin = window);
-                var win = isSameDomain(httpWin) ? assertSameDomain(httpWin) : window;
-                return function(_ref) {
-                    var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-                    return promise_ZalgoPromise.try((function() {
-                        var beaconResult = !1;
-                        (function(_ref) {
-                            var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
-                            var hasHeaders = headers && Object.keys(headers).length;
-                            return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
-                        })({
-                            headers: headers,
-                            enableSendBeacon: enableSendBeacon
-                        }) && (beaconResult = function(url) {
-                            return "https://api2.amplitude.com/2/httpapi" === url;
-                        }(url) ? sendBeacon({
-                            win: win,
-                            url: url,
-                            data: json,
-                            useBlob: !1
-                        }) : sendBeacon({
-                            win: win,
-                            url: url,
-                            data: json,
-                            useBlob: !0
-                        }));
-                        return beaconResult || request({
-                            win: win,
-                            url: url,
-                            method: method,
-                            headers: headers,
-                            json: json
-                        });
-                    })).then(src_util_noop);
-                };
-            }() : _ref$transport, amplitudeApiKey = _ref.amplitudeApiKey, _ref$flushInterval = _ref.flushInterval, flushInterval = void 0 === _ref$flushInterval ? 6e4 : _ref$flushInterval, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
-            var events = [];
-            var tracking = [];
-            var payloadBuilders = [];
-            var metaBuilders = [];
-            var trackingBuilders = [];
-            var headerBuilders = [];
-            function print(level, event, payload) {
-                if (dom_isBrowser() && window.console && window.console.log && !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
-                    var args = [ event ];
-                    args.push(payload);
-                    (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
-                    try {
-                        window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
-                    } catch (err) {}
-                }
-            }
-            function immediateFlush() {
-                return promise_ZalgoPromise.try((function() {
-                    if (dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
-                        var meta = {};
-                        for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, metaBuilders[_i2])(meta));
-                        var headers = {};
-                        for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
-                        headerBuilders[_i4])(headers));
-                        var res;
-                        url && (res = transport({
-                            method: "POST",
-                            url: url,
-                            headers: headers,
-                            json: {
-                                events: events,
-                                meta: meta,
-                                tracking: tracking
-                            },
-                            enableSendBeacon: enableSendBeacon
-                        }).catch(src_util_noop));
-                        amplitudeApiKey && transport({
-                            method: "POST",
-                            url: "https://api2.amplitude.com/2/httpapi",
-                            headers: {},
-                            json: {
-                                api_key: amplitudeApiKey,
-                                events: tracking.map((function(payload) {
-                                    return _extends({
-                                        event_type: payload.transition_name || "event",
-                                        event_properties: payload
-                                    }, payload);
-                                }))
-                            },
-                            enableSendBeacon: enableSendBeacon
-                        }).catch(src_util_noop);
-                        events = [];
-                        tracking = [];
-                        return promise_ZalgoPromise.resolve(res).then(src_util_noop);
-                    }
-                }));
-            }
-            var flush = function(method, delay) {
-                void 0 === delay && (delay = 50);
-                var promise;
-                var timeout;
-                return setFunctionName((function() {
-                    timeout && clearTimeout(timeout);
-                    var localPromise = promise = promise || new promise_ZalgoPromise;
-                    timeout = setTimeout((function() {
-                        promise = null;
-                        timeout = null;
-                        promise_ZalgoPromise.try(method).then((function(result) {
-                            localPromise.resolve(result);
-                        }), (function(err) {
-                            localPromise.reject(err);
-                        }));
-                    }), delay);
-                    return localPromise;
-                }), getFunctionName(method) + "::promiseDebounced");
-            }(immediateFlush);
-            function log(level, event, payload) {
-                void 0 === payload && (payload = {});
-                if (!dom_isBrowser()) return logger;
-                prefix && (event = prefix + "_" + event);
-                var logPayload = _extends({}, objFilter(payload), {
-                    timestamp: Date.now().toString()
-                });
-                for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
-                payloadBuilders[_i6])(logPayload));
-                !function(level, event, payload) {
-                    events.push({
-                        level: level,
-                        event: event,
-                        payload: payload
-                    });
-                    -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
-                }(level, event, logPayload);
-                print(level, event, logPayload);
-                return logger;
-            }
-            function addBuilder(builders, builder) {
-                builders.push(builder);
-                return logger;
-            }
-            dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
-                setTimeout((function() {
-                    method();
-                    loop();
-                }), time);
-            }());
-            var method, time;
-            if ("object" == typeof window) {
-                window.addEventListener("beforeunload", (function() {
-                    immediateFlush();
-                }));
-                window.addEventListener("unload", (function() {
-                    immediateFlush();
-                }));
-                window.addEventListener("pagehide", (function() {
-                    immediateFlush();
-                }));
-            }
-            var logger = {
-                debug: function(event, payload) {
-                    return log("debug", event, payload);
-                },
-                info: function(event, payload) {
-                    return log("info", event, payload);
-                },
-                warn: function(event, payload) {
-                    return log("warn", event, payload);
-                },
-                error: function(event, payload) {
-                    return log("error", event, payload);
-                },
-                track: function(payload) {
-                    void 0 === payload && (payload = {});
-                    if (!dom_isBrowser()) return logger;
-                    var trackingPayload = objFilter(payload);
-                    for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
-                    trackingBuilders[_i8])(trackingPayload));
-                    print("debug", "track", trackingPayload);
-                    tracking.push(trackingPayload);
-                    return logger;
-                },
-                flush: flush,
-                immediateFlush: immediateFlush,
-                addPayloadBuilder: function(builder) {
-                    return addBuilder(payloadBuilders, builder);
-                },
-                addMetaBuilder: function(builder) {
-                    return addBuilder(metaBuilders, builder);
-                },
-                addTrackingBuilder: function(builder) {
-                    return addBuilder(trackingBuilders, builder);
-                },
-                addHeaderBuilder: function(builder) {
-                    return addBuilder(headerBuilders, builder);
-                },
-                setTransport: function(newTransport) {
-                    transport = newTransport;
-                    return logger;
-                },
-                configure: function(opts) {
-                    opts.url && (url = opts.url);
-                    opts.prefix && (prefix = opts.prefix);
-                    opts.logLevel && (logLevel = opts.logLevel);
-                    opts.transport && (transport = opts.transport);
-                    opts.amplitudeApiKey && (amplitudeApiKey = opts.amplitudeApiKey);
-                    opts.flushInterval && (flushInterval = opts.flushInterval);
-                    opts.enableSendBeacon && (enableSendBeacon = opts.enableSendBeacon);
-                    return logger;
-                }
-            };
-            return logger;
-        }
         var _FUNDING_SKIP_LOGIN, _AMPLITUDE_API_KEY;
         var ORDERS_API_URL = "/v2/checkout/orders";
         var FUNDING_SKIP_LOGIN = ((_FUNDING_SKIP_LOGIN = {}).paypal = "paypal", _FUNDING_SKIP_LOGIN.paylater = "paypal", 
@@ -6764,7 +6553,216 @@ window.spb = function(modules) {
         var SANDBOX_ORDER_VALIDATION_WHITELIST = [ "AcFUr3vhIePYLOXXuZzdvFL5th99W0Uygya9lqfjN3XCx-W2dGlr6A9mqiIZAHAMng1g0_haL2LitLAl", "ASmWKJfGIEy4BmvwWA3PpAX-uOdz0EYCQ89Y-oLww8LgaqqHtXEcB4dfxr88kmcp3no-efNznSFDcVjg", "AY-UBQDZ53U9-lrZ-7RGWIn-CLhVJEaZI9HsWcqqApUx_CET1nlkkNow0HpLb-y0kTUuyIA3uwbME6Dd" ];
         function logger_getLogger() {
             return inlineMemoize(logger_getLogger, (function() {
-                return Logger({
+                return function(_ref) {
+                    var url = _ref.url, prefix = _ref.prefix, _ref$logLevel = _ref.logLevel, logLevel = void 0 === _ref$logLevel ? "debug" : _ref$logLevel, _ref$transport = _ref.transport, transport = void 0 === _ref$transport ? function(httpWin) {
+                        void 0 === httpWin && (httpWin = window);
+                        var win = isSameDomain(httpWin) ? assertSameDomain(httpWin) : window;
+                        return function(_ref) {
+                            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+                            return promise_ZalgoPromise.try((function() {
+                                var beaconResult = !1;
+                                (function(_ref) {
+                                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                                    var hasHeaders = headers && Object.keys(headers).length;
+                                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                                })({
+                                    headers: headers,
+                                    enableSendBeacon: enableSendBeacon
+                                }) && (beaconResult = function(url) {
+                                    return "https://api2.amplitude.com/2/httpapi" === url;
+                                }(url) ? sendBeacon({
+                                    win: win,
+                                    url: url,
+                                    data: json,
+                                    useBlob: !1
+                                }) : sendBeacon({
+                                    win: win,
+                                    url: url,
+                                    data: json,
+                                    useBlob: !0
+                                }));
+                                return beaconResult || request({
+                                    win: win,
+                                    url: url,
+                                    method: method,
+                                    headers: headers,
+                                    json: json
+                                });
+                            })).then(src_util_noop);
+                        };
+                    }() : _ref$transport, amplitudeApiKey = _ref.amplitudeApiKey, _ref$flushInterval = _ref.flushInterval, flushInterval = void 0 === _ref$flushInterval ? 6e4 : _ref$flushInterval, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+                    var events = [];
+                    var tracking = [];
+                    var payloadBuilders = [];
+                    var metaBuilders = [];
+                    var trackingBuilders = [];
+                    var headerBuilders = [];
+                    function print(level, event, payload) {
+                        if (dom_isBrowser() && window.console && window.console.log && !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
+                            var args = [ event ];
+                            args.push(payload);
+                            (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                            try {
+                                window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                            } catch (err) {}
+                        }
+                    }
+                    function immediateFlush() {
+                        return promise_ZalgoPromise.try((function() {
+                            if (dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
+                                var meta = {};
+                                for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, metaBuilders[_i2])(meta));
+                                var headers = {};
+                                for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
+                                headerBuilders[_i4])(headers));
+                                var res;
+                                url && (res = transport({
+                                    method: "POST",
+                                    url: url,
+                                    headers: headers,
+                                    json: {
+                                        events: events,
+                                        meta: meta,
+                                        tracking: tracking
+                                    },
+                                    enableSendBeacon: enableSendBeacon
+                                }).catch(src_util_noop));
+                                amplitudeApiKey && transport({
+                                    method: "POST",
+                                    url: "https://api2.amplitude.com/2/httpapi",
+                                    headers: {},
+                                    json: {
+                                        api_key: amplitudeApiKey,
+                                        events: tracking.map((function(payload) {
+                                            return _extends({
+                                                event_type: payload.transition_name || "event",
+                                                event_properties: payload
+                                            }, payload);
+                                        }))
+                                    },
+                                    enableSendBeacon: enableSendBeacon
+                                }).catch(src_util_noop);
+                                events = [];
+                                tracking = [];
+                                return promise_ZalgoPromise.resolve(res).then(src_util_noop);
+                            }
+                        }));
+                    }
+                    var flush = function(method, delay) {
+                        void 0 === delay && (delay = 50);
+                        var promise;
+                        var timeout;
+                        return setFunctionName((function() {
+                            timeout && clearTimeout(timeout);
+                            var localPromise = promise = promise || new promise_ZalgoPromise;
+                            timeout = setTimeout((function() {
+                                promise = null;
+                                timeout = null;
+                                promise_ZalgoPromise.try(method).then((function(result) {
+                                    localPromise.resolve(result);
+                                }), (function(err) {
+                                    localPromise.reject(err);
+                                }));
+                            }), delay);
+                            return localPromise;
+                        }), getFunctionName(method) + "::promiseDebounced");
+                    }(immediateFlush);
+                    function log(level, event, payload) {
+                        void 0 === payload && (payload = {});
+                        if (!dom_isBrowser()) return logger;
+                        prefix && (event = prefix + "_" + event);
+                        var logPayload = _extends({}, objFilter(payload), {
+                            timestamp: Date.now().toString()
+                        });
+                        for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
+                        payloadBuilders[_i6])(logPayload));
+                        !function(level, event, payload) {
+                            events.push({
+                                level: level,
+                                event: event,
+                                payload: payload
+                            });
+                            -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
+                        }(level, event, logPayload);
+                        print(level, event, logPayload);
+                        return logger;
+                    }
+                    function addBuilder(builders, builder) {
+                        builders.push(builder);
+                        return logger;
+                    }
+                    dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
+                        setTimeout((function() {
+                            method();
+                            loop();
+                        }), time);
+                    }());
+                    var method, time;
+                    if ("object" == typeof window) {
+                        window.addEventListener("beforeunload", (function() {
+                            immediateFlush();
+                        }));
+                        window.addEventListener("unload", (function() {
+                            immediateFlush();
+                        }));
+                        window.addEventListener("pagehide", (function() {
+                            immediateFlush();
+                        }));
+                    }
+                    var logger = {
+                        debug: function(event, payload) {
+                            return log("debug", event, payload);
+                        },
+                        info: function(event, payload) {
+                            return log("info", event, payload);
+                        },
+                        warn: function(event, payload) {
+                            return log("warn", event, payload);
+                        },
+                        error: function(event, payload) {
+                            return log("error", event, payload);
+                        },
+                        track: function(payload) {
+                            void 0 === payload && (payload = {});
+                            if (!dom_isBrowser()) return logger;
+                            var trackingPayload = objFilter(payload);
+                            for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
+                            trackingBuilders[_i8])(trackingPayload));
+                            print("debug", "track", trackingPayload);
+                            tracking.push(trackingPayload);
+                            return logger;
+                        },
+                        flush: flush,
+                        immediateFlush: immediateFlush,
+                        addPayloadBuilder: function(builder) {
+                            return addBuilder(payloadBuilders, builder);
+                        },
+                        addMetaBuilder: function(builder) {
+                            return addBuilder(metaBuilders, builder);
+                        },
+                        addTrackingBuilder: function(builder) {
+                            return addBuilder(trackingBuilders, builder);
+                        },
+                        addHeaderBuilder: function(builder) {
+                            return addBuilder(headerBuilders, builder);
+                        },
+                        setTransport: function(newTransport) {
+                            transport = newTransport;
+                            return logger;
+                        },
+                        configure: function(opts) {
+                            opts.url && (url = opts.url);
+                            opts.prefix && (prefix = opts.prefix);
+                            opts.logLevel && (logLevel = opts.logLevel);
+                            opts.transport && (transport = opts.transport);
+                            opts.amplitudeApiKey && (amplitudeApiKey = opts.amplitudeApiKey);
+                            opts.flushInterval && (flushInterval = opts.flushInterval);
+                            opts.enableSendBeacon && (enableSendBeacon = opts.enableSendBeacon);
+                            return logger;
+                        }
+                    };
+                    return logger;
+                }({
                     url: "/xoplatform/logger/api/logger",
                     enableSendBeacon: !0
                 });
@@ -7172,7 +7170,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.90", _headers15);
+            _headers15["x-app-version"] = "5.0.91", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7416,14 +7414,16 @@ window.spb = function(modules) {
                 return gqlResult.mobileSDKEligibility;
             }));
         }
-        function getCreateOrder(_ref4, _ref5) {
-            var createOrder = _ref4.createOrder, currency = _ref4.currency;
-            var createBillingAgreement = _ref5.createBillingAgreement, createSubscription = _ref5.createSubscription;
-            var data = {};
-            var actions = function(_ref3) {
-                var facilitatorAccessToken = _ref3.facilitatorAccessToken, intent = _ref3.intent, currency = _ref3.currency, merchantID = _ref3.merchantID, partnerAttributionID = _ref3.partnerAttributionID;
-                var order = function(_ref) {
-                    var facilitatorAccessToken = _ref.facilitatorAccessToken, intent = _ref.intent, currency = _ref.currency, merchantID = _ref.merchantID, partnerAttributionID = _ref.partnerAttributionID;
+        function getCreateOrder(_ref5, _ref6) {
+            var createOrder = _ref5.createOrder, currency = _ref5.currency;
+            var createBillingAgreement = _ref6.createBillingAgreement, createSubscription = _ref6.createSubscription;
+            var data = {
+                paymentSource: _ref5.paymentSource
+            };
+            var actions = function(_ref4) {
+                var facilitatorAccessToken = _ref4.facilitatorAccessToken, intent = _ref4.intent, currency = _ref4.currency, merchantID = _ref4.merchantID, partnerAttributionID = _ref4.partnerAttributionID;
+                var order = function(_ref2) {
+                    var facilitatorAccessToken = _ref2.facilitatorAccessToken, intent = _ref2.intent, currency = _ref2.currency, merchantID = _ref2.merchantID, partnerAttributionID = _ref2.partnerAttributionID;
                     return {
                         create: function(data) {
                             var order = _extends({}, data);
@@ -7484,8 +7484,8 @@ window.spb = function(modules) {
                     merchantID: merchantID,
                     partnerAttributionID: partnerAttributionID
                 });
-                !function(_ref2) {
-                    var facilitatorAccessToken = _ref2.facilitatorAccessToken, intent = _ref2.intent, currency = _ref2.currency, merchantID = _ref2.merchantID, partnerAttributionID = _ref2.partnerAttributionID;
+                !function(_ref3) {
+                    var facilitatorAccessToken = _ref3.facilitatorAccessToken, intent = _ref3.intent, currency = _ref3.currency, merchantID = _ref3.merchantID, partnerAttributionID = _ref3.partnerAttributionID;
                 }({
                     facilitatorAccessToken: facilitatorAccessToken,
                     intent: intent,
@@ -7498,11 +7498,11 @@ window.spb = function(modules) {
                     payment: null
                 };
             }({
-                facilitatorAccessToken: _ref5.facilitatorAccessToken,
-                intent: _ref4.intent,
+                facilitatorAccessToken: _ref6.facilitatorAccessToken,
+                intent: _ref5.intent,
                 currency: currency,
-                merchantID: _ref4.merchantID,
-                partnerAttributionID: _ref4.partnerAttributionID
+                merchantID: _ref5.merchantID,
+                partnerAttributionID: _ref5.partnerAttributionID
             });
             return memoize((function() {
                 var queryOrderID = parseQuery(window.location.search.slice(1)).orderID;
@@ -7532,9 +7532,9 @@ window.spb = function(modules) {
                             token: orderID
                         };
                     })).addTrackingBuilder((function() {
-                        var _ref6;
-                        return (_ref6 = {}).context_type = "EC-Token", _ref6.context_id = orderID, _ref6.token = orderID, 
-                        _ref6;
+                        var _ref7;
+                        return (_ref7 = {}).context_type = "EC-Token", _ref7.context_id = orderID, _ref7.token = orderID, 
+                        _ref7;
                     })).track((_getLogger$addPayload = {}, _getLogger$addPayload.state_name = "smart_button", 
                     _getLogger$addPayload.transition_name = "process_receive_order", _getLogger$addPayload.context_type = "EC-Token", 
                     _getLogger$addPayload.context_id = orderID, _getLogger$addPayload.token = orderID, 
@@ -7563,9 +7563,9 @@ window.spb = function(modules) {
         };
         var _excluded = [ "buyerAccessToken", "forceRestAPI" ];
         function getProps(_ref) {
-            var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded;
+            var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded, paymentSource = _ref.paymentSource;
             var xprops = window.xprops;
-            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, merchantRequestedPopupsDisabled = xprops.merchantRequestedPopupsDisabled, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
+            var uid = xprops.uid, env = xprops.env, _xprops$vault = xprops.vault, vault = void 0 !== _xprops$vault && _xprops$vault, commit = xprops.commit, locale = xprops.locale, platform = xprops.platform, sessionID = xprops.sessionID, clientID = xprops.clientID, partnerAttributionID = xprops.partnerAttributionID, merchantRequestedPopupsDisabled = xprops.merchantRequestedPopupsDisabled, clientMetadataID = xprops.clientMetadataID, sdkCorrelationID = xprops.sdkCorrelationID, getParentDomain = xprops.getParentDomain, clientAccessToken = xprops.clientAccessToken, getPopupBridge = xprops.getPopupBridge, getPrerenderDetails = xprops.getPrerenderDetails, getPageUrl = xprops.getPageUrl, enableThreeDomainSecure = xprops.enableThreeDomainSecure, enableVaultInstallments = xprops.enableVaultInstallments, _xprops$enableNativeC = xprops.enableNativeCheckout, enableNativeCheckout = void 0 !== _xprops$enableNativeC && _xprops$enableNativeC, _xprops$experience = xprops.experience, experience = void 0 === _xprops$experience ? "" : _xprops$experience, rememberFunding = xprops.remember, stageHost = xprops.stageHost, apiStageHost = xprops.apiStageHost, getParent = xprops.getParent, fundingSource = xprops.fundingSource, currency = xprops.currency, connect = xprops.connect, intent = xprops.intent, merchantID = xprops.merchantID, amount = xprops.amount, userIDToken = xprops.userIDToken, enableFunding = xprops.enableFunding, disableFunding = xprops.disableFunding, disableCard = xprops.disableCard, disableAutocomplete = xprops.disableAutocomplete, wallet = xprops.wallet, _xprops$paymentMethod = xprops.paymentMethodToken, paymentMethodToken = void 0 === _xprops$paymentMethod ? xprops.paymentMethodNonce : _xprops$paymentMethod, _xprops$getQueriedEli = xprops.getQueriedEligibleFunding, getQueriedEligibleFunding = void 0 === _xprops$getQueriedEli ? function() {
                 return promise_ZalgoPromise.resolve([]);
             } : _xprops$getQueriedEli, storageID = xprops.storageID, applePay = xprops.applePay, userExperienceFlow = xprops.userExperienceFlow, allowBillingPayments = xprops.allowBillingPayments;
             var onInit = function(_ref) {
@@ -7628,20 +7628,26 @@ window.spb = function(modules) {
                 onClick: xprops.onClick
             });
             var stickinessID = storageID && isStorageStateFresh() ? storageID : getStorageID();
-            var createBillingAgreement = function(_ref) {
-                var createBillingAgreement = _ref.createBillingAgreement;
+            var createBillingAgreement = function(_ref2) {
+                var createBillingAgreement = _ref2.createBillingAgreement, paymentSource = _ref2.paymentSource;
                 if (createBillingAgreement) return function() {
-                    return createBillingAgreement({}, {}).then((function(billingToken) {
+                    return createBillingAgreement((_ref = {
+                        paymentSource: paymentSource
+                    }, {
+                        paymentSource: _ref.paymentSource
+                    }), {}).then((function(billingToken) {
                         if (!billingToken || "string" != typeof billingToken) throw new Error("Expected a billing token to be passed to createBillingAgreement");
                         return billingToken;
                     }));
+                    var _ref;
                 };
             }({
-                createBillingAgreement: xprops.createBillingAgreement
+                createBillingAgreement: xprops.createBillingAgreement,
+                paymentSource: paymentSource
             });
-            var createSubscription = function(_ref2, _ref3) {
-                var createSubscription = _ref2.createSubscription, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
-                var facilitatorAccessToken = _ref3.facilitatorAccessToken;
+            var createSubscription = function(_ref3, _ref4) {
+                var createSubscription = _ref3.createSubscription, partnerAttributionID = _ref3.partnerAttributionID, merchantID = _ref3.merchantID, clientID = _ref3.clientID, paymentSource = _ref3.paymentSource;
+                var facilitatorAccessToken = _ref4.facilitatorAccessToken;
                 if (createSubscription) {
                     if (merchantID && merchantID[0]) {
                         logger_getLogger().info("src_props_subscriptions_recreate_access_token_cache");
@@ -7650,8 +7656,12 @@ window.spb = function(modules) {
                         });
                     }
                     return function() {
-                        return createSubscription({}, function(_ref) {
-                            var facilitatorAccessToken = _ref.facilitatorAccessToken, partnerAttributionID = _ref.partnerAttributionID, merchantID = _ref.merchantID, clientID = _ref.clientID;
+                        return createSubscription((_ref = {
+                            paymentSource: paymentSource
+                        }, {
+                            paymentSource: _ref.paymentSource
+                        }), function(_ref2) {
+                            var facilitatorAccessToken = _ref2.facilitatorAccessToken, partnerAttributionID = _ref2.partnerAttributionID, merchantID = _ref2.merchantID, clientID = _ref2.clientID;
                             return {
                                 subscription: {
                                     create: function(data) {
@@ -7708,13 +7718,15 @@ window.spb = function(modules) {
                             if (!subscriptionID || "string" != typeof subscriptionID) throw new Error("Expected an subscription id to be passed to createSubscription");
                             return subscriptionID;
                         }));
+                        var _ref;
                     };
                 }
             }({
                 createSubscription: xprops.createSubscription,
                 partnerAttributionID: partnerAttributionID,
                 merchantID: merchantID,
-                clientID: clientID
+                clientID: clientID,
+                paymentSource: paymentSource
             }, {
                 facilitatorAccessToken: facilitatorAccessToken
             });
@@ -7723,7 +7735,8 @@ window.spb = function(modules) {
                 currency: currency,
                 intent: intent,
                 merchantID: merchantID,
-                partnerAttributionID: partnerAttributionID
+                partnerAttributionID: partnerAttributionID,
+                paymentSource: paymentSource
             }, {
                 facilitatorAccessToken: facilitatorAccessToken,
                 createBillingAgreement: createBillingAgreement,
@@ -7752,11 +7765,11 @@ window.spb = function(modules) {
                 onError: xprops.onError
             });
             var onApprove = function(_ref19) {
-                var intent = _ref19.intent, createSubscription = _ref19.createSubscription, onApprove = _ref19.onApprove, partnerAttributionID = _ref19.partnerAttributionID, onError = _ref19.onError, clientAccessToken = _ref19.clientAccessToken, vault = _ref19.vault, clientID = _ref19.clientID, facilitatorAccessToken = _ref19.facilitatorAccessToken, branded = _ref19.branded, createOrder = _ref19.createOrder;
+                var intent = _ref19.intent, createSubscription = _ref19.createSubscription, onApprove = _ref19.onApprove, partnerAttributionID = _ref19.partnerAttributionID, onError = _ref19.onError, clientAccessToken = _ref19.clientAccessToken, vault = _ref19.vault, clientID = _ref19.clientID, facilitatorAccessToken = _ref19.facilitatorAccessToken, branded = _ref19.branded, createOrder = _ref19.createOrder, paymentSource = _ref19.paymentSource;
                 if (_ref19.createBillingAgreement) return function(_ref10) {
                     var _ref10$onApprove = _ref10.onApprove, onApprove = void 0 === _ref10$onApprove ? function() {
                         throw new Error("Expected onApprove");
-                    } : _ref10$onApprove, onError = _ref10.onError, facilitatorAccessToken = _ref10.facilitatorAccessToken, createOrder = _ref10.createOrder;
+                    } : _ref10$onApprove, onError = _ref10.onError, facilitatorAccessToken = _ref10.facilitatorAccessToken, createOrder = _ref10.createOrder, paymentSource = _ref10.paymentSource;
                     if (!onApprove) throw new Error("Expected onApprove");
                     return memoize((function(_ref11, _ref12) {
                         var payerID = _ref11.payerID, paymentID = _ref11.paymentID, billingToken = _ref11.billingToken;
@@ -7772,7 +7785,8 @@ window.spb = function(modules) {
                                     payerID: payerID,
                                     paymentID: paymentID = paymentID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId,
                                     billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
-                                    facilitatorAccessToken: facilitatorAccessToken
+                                    facilitatorAccessToken: facilitatorAccessToken,
+                                    paymentSource: paymentSource
                                 }, {
                                     restart: restart,
                                     redirect: onApprove_redirect
@@ -7790,12 +7804,13 @@ window.spb = function(modules) {
                     onApprove: onApprove,
                     onError: onError,
                     facilitatorAccessToken: facilitatorAccessToken,
-                    createOrder: createOrder
+                    createOrder: createOrder,
+                    paymentSource: paymentSource
                 });
                 if ("subscription" === intent || createSubscription) return function(_ref16) {
                     var _ref16$onApprove = _ref16.onApprove, onApprove = void 0 === _ref16$onApprove ? function() {
                         throw new Error("Expected onApprove");
-                    } : _ref16$onApprove, onError = _ref16.onError, facilitatorAccessToken = _ref16.facilitatorAccessToken, createOrder = _ref16.createOrder;
+                    } : _ref16$onApprove, onError = _ref16.onError, facilitatorAccessToken = _ref16.facilitatorAccessToken, createOrder = _ref16.createOrder, paymentSource = _ref16.paymentSource;
                     if (!onApprove) throw new Error("Expected onApprove");
                     return memoize((function(_ref17, _ref18) {
                         var payerID = _ref17.payerID, subscriptionID = _ref17.subscriptionID, buyerAccessToken = _ref17.buyerAccessToken;
@@ -7810,7 +7825,8 @@ window.spb = function(modules) {
                                 orderID: orderID,
                                 payerID: payerID,
                                 subscriptionID: subscriptionID,
-                                facilitatorAccessToken: facilitatorAccessToken
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                paymentSource: paymentSource
                             };
                             var actions = function(_ref6) {
                                 var restart = _ref6.restart, subscriptionID = _ref6.subscriptionID, buyerAccessToken = _ref6.buyerAccessToken;
@@ -7868,7 +7884,8 @@ window.spb = function(modules) {
                     onApprove: onApprove,
                     onError: onError,
                     facilitatorAccessToken: facilitatorAccessToken,
-                    createOrder: createOrder
+                    createOrder: createOrder,
+                    paymentSource: paymentSource
                 });
                 if ("capture" === intent || "authorize" === intent || "order" === intent) return function(_ref7) {
                     var intent = _ref7.intent, _ref7$onApprove = _ref7.onApprove, onApprove = void 0 === _ref7$onApprove ? function(intent) {
@@ -7877,7 +7894,7 @@ window.spb = function(modules) {
                             if ("authorize" === intent) return actions.order.authorize().then(src_util_noop);
                             throw new Error("Unsupported intent for auto-capture: " + intent);
                         };
-                    }(intent) : _ref7$onApprove, partnerAttributionID = _ref7.partnerAttributionID, onError = _ref7.onError, clientAccessToken = _ref7.clientAccessToken, vault = _ref7.vault, clientID = _ref7.clientID, facilitatorAccessToken = _ref7.facilitatorAccessToken, branded = _ref7.branded, createOrder = _ref7.createOrder;
+                    }(intent) : _ref7$onApprove, partnerAttributionID = _ref7.partnerAttributionID, onError = _ref7.onError, clientAccessToken = _ref7.clientAccessToken, vault = _ref7.vault, clientID = _ref7.clientID, facilitatorAccessToken = _ref7.facilitatorAccessToken, branded = _ref7.branded, createOrder = _ref7.createOrder, paymentSource = _ref7.paymentSource;
                     if (!onApprove) throw new Error("Expected onApprove");
                     var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID);
                     return memoize((function(_ref8, _ref9) {
@@ -7898,7 +7915,8 @@ window.spb = function(modules) {
                                     paymentID: paymentID = paymentID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId,
                                     billingToken: billingToken = billingToken || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken,
                                     facilitatorAccessToken: facilitatorAccessToken,
-                                    authCode: authCode
+                                    authCode: authCode,
+                                    paymentSource: paymentSource
                                 };
                                 var actions = function(_ref3) {
                                     var intent = _ref3.intent, orderID = _ref3.orderID, paymentID = _ref3.paymentID, payerID = _ref3.payerID, restart = _ref3.restart, facilitatorAccessToken = _ref3.facilitatorAccessToken, buyerAccessToken = _ref3.buyerAccessToken, partnerAttributionID = _ref3.partnerAttributionID, forceRestAPI = _ref3.forceRestAPI, onError = _ref3.onError;
@@ -8234,12 +8252,13 @@ window.spb = function(modules) {
                     clientID: clientID,
                     facilitatorAccessToken: facilitatorAccessToken,
                     branded: branded,
-                    createOrder: createOrder
+                    createOrder: createOrder,
+                    paymentSource: paymentSource
                 });
                 if ("tokenize" === intent) return function(_ref13) {
                     var _ref13$onApprove = _ref13.onApprove, onApprove = void 0 === _ref13$onApprove ? function() {
                         throw new Error("Expected onApprove");
-                    } : _ref13$onApprove, onError = _ref13.onError, facilitatorAccessToken = _ref13.facilitatorAccessToken;
+                    } : _ref13$onApprove, onError = _ref13.onError, facilitatorAccessToken = _ref13.facilitatorAccessToken, paymentSource = _ref13.paymentSource;
                     if (!onApprove) throw new Error("Expected onApprove");
                     return memoize((function(_ref14, _ref15) {
                         var _getLogger$info$track3;
@@ -8250,7 +8269,8 @@ window.spb = function(modules) {
                         _getLogger$info$track3)).flush();
                         return onApprove({
                             facilitatorAccessToken: facilitatorAccessToken,
-                            paymentMethodToken: paymentMethodToken
+                            paymentMethodToken: paymentMethodToken,
+                            paymentSource: paymentSource
                         }, {
                             restart: restart,
                             redirect: onApprove_redirect
@@ -8265,7 +8285,8 @@ window.spb = function(modules) {
                 }({
                     onApprove: onApprove,
                     onError: onError,
-                    facilitatorAccessToken: facilitatorAccessToken
+                    facilitatorAccessToken: facilitatorAccessToken,
+                    paymentSource: paymentSource
                 });
                 throw new Error("Unsupported intent: " + intent);
             }({
@@ -8280,7 +8301,8 @@ window.spb = function(modules) {
                 clientID: clientID,
                 facilitatorAccessToken: facilitatorAccessToken,
                 branded: branded,
-                createOrder: createOrder
+                createOrder: createOrder,
+                paymentSource: paymentSource
             });
             var onCancel = function(_ref2, _ref3) {
                 var _ref2$onCancel = _ref2.onCancel, onCancel = void 0 === _ref2$onCancel ? promiseNoop : _ref2$onCancel, onError = _ref2.onError;
@@ -8444,6 +8466,7 @@ window.spb = function(modules) {
                 enableThreeDomainSecure: enableThreeDomainSecure,
                 enableNativeCheckout: enableNativeCheckout,
                 enableVaultInstallments: enableVaultInstallments,
+                experience: experience,
                 onClick: onClick,
                 onInit: onInit,
                 onError: onError,
@@ -8468,9 +8491,9 @@ window.spb = function(modules) {
         var button_props_TYPES = !0;
         function getButtonProps(_ref) {
             var _branded;
-            var facilitatorAccessToken = _ref.facilitatorAccessToken;
+            var facilitatorAccessToken = _ref.facilitatorAccessToken, paymentSource = _ref.paymentSource;
             var xprops = window.xprops;
-            var buttonSessionID = xprops.buttonSessionID, style = xprops.style, branded = xprops.branded, intent = xprops.intent;
+            var buttonSessionID = xprops.buttonSessionID, style = xprops.style, branded = xprops.branded, experience = xprops.experience, intent = xprops.intent;
             branded = null != (_branded = branded) ? _branded : _ref.brandedDefault;
             if (xprops.createBillingAgreement) {
                 if (xprops.createOrder) throw new Error("Do not pass both createBillingAgreement and createOrder");
@@ -8491,11 +8514,13 @@ window.spb = function(modules) {
             }
             return _extends({}, getProps({
                 facilitatorAccessToken: facilitatorAccessToken,
-                branded: branded
+                branded: branded,
+                paymentSource: paymentSource
             }), {
                 style: style,
                 buttonSessionID: buttonSessionID,
-                branded: branded
+                branded: branded,
+                inlinexo: "inline" === experience
             });
         }
         function getComponents() {
@@ -8553,6 +8578,9 @@ window.spb = function(modules) {
             maestro: "maestro",
             jcb: "jcb"
         };
+        function isZeroAmount(value) {
+            return "0.00" === parseFloat(value).toFixed(2);
+        }
         var applepay_clean;
         var applepay = {
             name: "applepay",
@@ -8606,17 +8634,18 @@ window.spb = function(modules) {
                     }));
                 }
                 function updateNewLineItems(_ref4) {
-                    var subtotal = _ref4.subtotal, tax = _ref4.tax, shipping = _ref4.shipping, shippingLabel = _ref4.shippingLabel;
+                    var subtotal = _ref4.subtotal, tax = _ref4.tax, shipping = _ref4.shipping, shippingLabel = _ref4.shippingLabel, shippingIdentifier = _ref4.shippingIdentifier;
                     var newLineItems = [];
-                    subtotal && "0.00" !== parseFloat(subtotal).toFixed(2) && newLineItems.push({
+                    subtotal && !isZeroAmount(subtotal) && newLineItems.push({
                         label: "Subtotal",
                         amount: subtotal
                     });
-                    tax && "0.00" !== parseFloat(tax).toFixed(2) && newLineItems.push({
+                    tax && !isZeroAmount(tax) && newLineItems.push({
                         label: "Sales Tax",
                         amount: tax
                     });
-                    shipping && "0.00" !== parseFloat(shipping).toFixed(2) && newLineItems.push({
+                    var isPickup = "PICKUP" === shippingIdentifier;
+                    (shipping && !isZeroAmount(shipping) || isPickup) && newLineItems.push({
                         label: shippingLabel || "Shipping",
                         amount: shipping
                     });
@@ -8628,7 +8657,7 @@ window.spb = function(modules) {
                             return onShippingChangeCallback = function(_ref5) {
                                 var orderID = _ref5.orderID, shippingContact = _ref5.shippingContact, _ref5$shippingMethod = _ref5.shippingMethod, shippingMethod = void 0 === _ref5$shippingMethod ? null : _ref5$shippingMethod;
                                 if (!onShippingChange) {
-                                    var _currentShippingMetho;
+                                    var _currentShippingMetho, _currentShippingMetho2;
                                     var update = {
                                         newTotal: {
                                             label: "Total",
@@ -8640,7 +8669,8 @@ window.spb = function(modules) {
                                         shipping: currentShippingAmount,
                                         subtotal: currentSubtotalAmount,
                                         tax: currentTaxAmount,
-                                        shippingLabel: null == (_currentShippingMetho = currentShippingMethod) ? void 0 : _currentShippingMetho.label
+                                        shippingLabel: null == (_currentShippingMetho = currentShippingMethod) ? void 0 : _currentShippingMetho.label,
+                                        shippingIdentifier: null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.identifier
                                     });
                                     return promise_ZalgoPromise.resolve(update);
                                 }
@@ -8678,7 +8708,7 @@ window.spb = function(modules) {
                                     };
                                 }(shippingContact), errors = _validateShippingCont.errors, shipping_address = _validateShippingCont.shipping_address;
                                 if (errors && errors.length) {
-                                    var _currentShippingMetho2;
+                                    var _currentShippingMetho3, _currentShippingMetho4;
                                     var _update = {
                                         errors: errors,
                                         newTotal: {
@@ -8691,7 +8721,8 @@ window.spb = function(modules) {
                                         shipping: currentShippingAmount,
                                         subtotal: currentSubtotalAmount,
                                         tax: currentTaxAmount,
-                                        shippingLabel: null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.label
+                                        shippingLabel: null == (_currentShippingMetho3 = currentShippingMethod) ? void 0 : _currentShippingMetho3.label,
+                                        shippingIdentifier: null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.identifier
                                     });
                                     return promise_ZalgoPromise.resolve(_update);
                                 }
@@ -8704,9 +8735,9 @@ window.spb = function(modules) {
                                     shipping_address: shipping_address
                                 };
                                 if (shippingMethod) {
-                                    var _currentShippingMetho3;
+                                    var _currentShippingMetho5;
                                     data.selected_shipping_option = {
-                                        label: shippingMethod.label || (null == (_currentShippingMetho3 = currentShippingMethod) ? void 0 : _currentShippingMetho3.label) || "Shipping",
+                                        label: shippingMethod.label || (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.label) || "Shipping",
                                         type: shippingMethod.identifier,
                                         amount: {
                                             currency_code: currency,
@@ -8714,10 +8745,10 @@ window.spb = function(modules) {
                                         }
                                     };
                                 } else {
-                                    var _currentShippingMetho4;
+                                    var _currentShippingMetho6;
                                     data.selected_shipping_option = {
                                         label: "Shipping",
-                                        type: null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.identifier,
+                                        type: null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.identifier,
                                         amount: {
                                             currency_code: currency,
                                             value: currentShippingAmount
@@ -8740,9 +8771,9 @@ window.spb = function(modules) {
                                     currentShippingContact = shippingContact;
                                     shippingMethod && (currentShippingMethod = shippingMethod);
                                     return order_getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
-                                        var _currentShippingMetho5, _currentShippingMetho6;
+                                        var _currentShippingMetho7, _currentShippingMetho8, _currentShippingMetho9;
                                         var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedSubtotalValue = _updatedOrder$checkou.subtotal.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
-                                        currentShippingAmount = (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.amount) || currentShippingAmount || "0.00";
+                                        currentShippingAmount = (null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.amount) || currentShippingAmount || "0.00";
                                         currentTotalAmount = updatedTotalValue;
                                         var update = {
                                             newTotal: {
@@ -8755,7 +8786,8 @@ window.spb = function(modules) {
                                             shipping: currentShippingAmount,
                                             subtotal: currentSubtotalAmount = "0.00" === updatedSubtotalValue ? currentSubtotalAmount : updatedSubtotalValue,
                                             tax: currentTaxAmount = "0.00" === updatedTaxValue ? currentTaxAmount : updatedTaxValue,
-                                            shippingLabel: null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.label
+                                            shippingLabel: null == (_currentShippingMetho8 = currentShippingMethod) ? void 0 : _currentShippingMetho8.label,
+                                            shippingIdentifier: null == (_currentShippingMetho9 = currentShippingMethod) ? void 0 : _currentShippingMetho9.identifier
                                         });
                                         return promise_ZalgoPromise.resolve(update);
                                     }));
@@ -8843,15 +8875,16 @@ window.spb = function(modules) {
                                                     type: "final"
                                                 }
                                             };
-                                            subtotalValue && "0.00" !== parseFloat(subtotalValue).toFixed(2) && result.lineItems.push({
+                                            subtotalValue && !isZeroAmount(subtotalValue) && result.lineItems.push({
                                                 label: "Subtotal",
                                                 amount: subtotalValue
                                             });
-                                            taxValue && "0.00" !== parseFloat(taxValue).toFixed(2) && result.lineItems.push({
+                                            taxValue && !isZeroAmount(taxValue) && result.lineItems.push({
                                                 label: "Sales Tax",
                                                 amount: taxValue
                                             });
-                                            shippingValue && "0.00" !== parseFloat(shippingValue).toFixed(2) && result.lineItems.push({
+                                            var isPickup = selectedShippingMethod && "PICKUP" === selectedShippingMethod.type;
+                                            !shippingValue || isZeroAmount(shippingValue) && !isPickup || result.lineItems.push({
                                                 label: "Shipping",
                                                 amount: shippingValue
                                             });
@@ -8902,7 +8935,7 @@ window.spb = function(modules) {
                                                     handleApplePayError("applepay_merchant_validation_error", err);
                                                 }));
                                             })), addEventListener("paymentmethodselected", (function(_ref7) {
-                                                var _currentShippingMetho7;
+                                                var _currentShippingMetho10, _currentShippingMetho11;
                                                 logApplePayEvent("paymentmethodselected", _ref7.paymentMethod);
                                                 var update = {
                                                     newTotal: {
@@ -8915,7 +8948,8 @@ window.spb = function(modules) {
                                                     shipping: currentShippingAmount,
                                                     subtotal: currentSubtotalAmount,
                                                     tax: currentTaxAmount,
-                                                    shippingLabel: null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.label
+                                                    shippingLabel: null == (_currentShippingMetho10 = currentShippingMethod) ? void 0 : _currentShippingMetho10.label,
+                                                    shippingIdentifier: null == (_currentShippingMetho11 = currentShippingMethod) ? void 0 : _currentShippingMetho11.identifier
                                                 });
                                                 completePaymentMethodSelection(update);
                                             })), addEventListener("shippingmethodselected", (function(_ref8) {
@@ -8929,6 +8963,7 @@ window.spb = function(modules) {
                                                     currentShippingMethod = shippingMethod;
                                                     completeShippingMethodSelection(update);
                                                 })).catch((function() {
+                                                    var _currentShippingMetho12;
                                                     var update = {
                                                         newTotal: {
                                                             label: "Total",
@@ -8940,7 +8975,8 @@ window.spb = function(modules) {
                                                         shipping: currentShippingAmount,
                                                         subtotal: currentSubtotalAmount,
                                                         tax: currentTaxAmount,
-                                                        shippingLabel: null == shippingMethod ? void 0 : shippingMethod.label
+                                                        shippingLabel: null == shippingMethod ? void 0 : shippingMethod.label,
+                                                        shippingIdentifier: null == (_currentShippingMetho12 = currentShippingMethod) ? void 0 : _currentShippingMetho12.identifier
                                                     });
                                                     completeShippingMethodSelection(update);
                                                 }));
@@ -9294,7 +9330,7 @@ window.spb = function(modules) {
             init: function initCheckout(_ref5) {
                 var props = _ref5.props, components = _ref5.components, serviceData = _ref5.serviceData, payment = _ref5.payment, config = _ref5.config, fullRestart = _ref5.restart;
                 var Checkout = components.Checkout;
-                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded, paymentMethodToken = props.paymentMethodToken, allowBillingPayments = props.allowBillingPayments, merchantRequestedPopupsDisabled = props.merchantRequestedPopupsDisabled;
+                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded, paymentMethodToken = props.paymentMethodToken, allowBillingPayments = props.allowBillingPayments, merchantRequestedPopupsDisabled = props.merchantRequestedPopupsDisabled, inlinexo = props.inlinexo;
                 var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
                 var buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta, merchantID = serviceData.merchantID;
                 var cspNonce = config.cspNonce;
@@ -9342,6 +9378,7 @@ window.spb = function(modules) {
                         stickinessID: stickinessID,
                         clientAccessToken: clientAccessToken,
                         venmoPayloadID: venmoPayloadID,
+                        inlinexo: inlinexo,
                         createAuthCode: function() {
                             return promise_ZalgoPromise.try((function() {
                                 var fundingSkipLogin = FUNDING_SKIP_LOGIN[fundingSource];
@@ -9535,7 +9572,7 @@ window.spb = function(modules) {
                 return {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
-                            if (!merchantRequestedPopupsDisabled && !win && supportsPopups()) try {
+                            if (inlinexo && "card" === fundingSource) context = "iframe"; else if (!merchantRequestedPopupsDisabled && !win && supportsPopups()) try {
                                 var _getDimensions = getDimensions(fundingSource);
                                 win = function(_ref) {
                                     var _ref$closeOnUnload = _ref.closeOnUnload;
@@ -9596,9 +9633,892 @@ window.spb = function(modules) {
                 }));
             }
         };
+        function src_utils_isPromise(item) {
+            try {
+                if (!item) return !1;
+                if ("undefined" != typeof Promise && item instanceof Promise) return !0;
+                if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
+                if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
+                var _toString = {}.toString;
+                if (_toString) {
+                    var name = _toString.call(item);
+                    if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
+                }
+                if ("function" == typeof item.then) return !0;
+            } catch (err) {
+                return !1;
+            }
+            return !1;
+        }
+        var exceptions_dispatchedErrors = [];
+        var exceptions_possiblyUnhandledPromiseHandlers = [];
+        var flush_activeCount = 0;
+        var flush_flushPromise;
+        function flush_flushActive() {
+            if (!flush_activeCount && flush_flushPromise) {
+                var promise = flush_flushPromise;
+                flush_flushPromise = null;
+                promise.resolve();
+            }
+        }
+        function flush_startActive() {
+            flush_activeCount += 1;
+        }
+        function flush_endActive() {
+            flush_activeCount -= 1;
+            flush_flushActive();
+        }
+        var src_promise_ZalgoPromise = function() {
+            function ZalgoPromise(handler) {
+                var _this = this;
+                this.resolved = void 0;
+                this.rejected = void 0;
+                this.errorHandled = void 0;
+                this.value = void 0;
+                this.error = void 0;
+                this.handlers = void 0;
+                this.dispatching = void 0;
+                this.stack = void 0;
+                this.resolved = !1;
+                this.rejected = !1;
+                this.errorHandled = !1;
+                this.handlers = [];
+                if (handler) {
+                    var _result;
+                    var _error;
+                    var resolved = !1;
+                    var rejected = !1;
+                    var isAsync = !1;
+                    flush_startActive();
+                    try {
+                        handler((function(res) {
+                            if (isAsync) _this.resolve(res); else {
+                                resolved = !0;
+                                _result = res;
+                            }
+                        }), (function(err) {
+                            if (isAsync) _this.reject(err); else {
+                                rejected = !0;
+                                _error = err;
+                            }
+                        }));
+                    } catch (err) {
+                        flush_endActive();
+                        this.reject(err);
+                        return;
+                    }
+                    flush_endActive();
+                    isAsync = !0;
+                    resolved ? this.resolve(_result) : rejected && this.reject(_error);
+                }
+                try {
+                    throw new Error("ZalgoPromise");
+                } catch (err) {
+                    this.stack = err.stack;
+                }
+            }
+            var _proto = ZalgoPromise.prototype;
+            _proto.resolve = function(result) {
+                if (this.resolved || this.rejected) return this;
+                if (src_utils_isPromise(result)) throw new Error("Can not resolve promise with another promise");
+                this.resolved = !0;
+                this.value = result;
+                this.dispatch();
+                return this;
+            };
+            _proto.reject = function(error) {
+                var _this2 = this;
+                if (this.resolved || this.rejected) return this;
+                if (src_utils_isPromise(error)) throw new Error("Can not reject promise with another promise");
+                if (!error) {
+                    var _err = error && "function" == typeof error.toString ? error.toString() : {}.toString.call(error);
+                    error = new Error("Expected reject to be called with Error, got " + _err);
+                }
+                this.rejected = !0;
+                this.error = error;
+                this.errorHandled || setTimeout((function() {
+                    _this2.errorHandled || function(err, promise) {
+                        if (-1 === exceptions_dispatchedErrors.indexOf(err)) {
+                            exceptions_dispatchedErrors.push(err);
+                            setTimeout((function() {
+                                throw new Error((err.stack || err.toString()) + "\n\nFrom promise:\n\n" + promise.stack);
+                            }), 1);
+                            for (var j = 0; j < exceptions_possiblyUnhandledPromiseHandlers.length; j++) exceptions_possiblyUnhandledPromiseHandlers[j](err, promise);
+                        }
+                    }(error, _this2);
+                }), 1);
+                this.dispatch();
+                return this;
+            };
+            _proto.asyncReject = function(error) {
+                this.errorHandled = !0;
+                this.reject(error);
+                return this;
+            };
+            _proto.dispatch = function() {
+                var resolved = this.resolved, rejected = this.rejected, handlers = this.handlers;
+                if (!this.dispatching && (resolved || rejected)) {
+                    this.dispatching = !0;
+                    flush_startActive();
+                    var chain = function(firstPromise, secondPromise) {
+                        return firstPromise.then((function(res) {
+                            secondPromise.resolve(res);
+                        }), (function(err) {
+                            secondPromise.reject(err);
+                        }));
+                    };
+                    for (var i = 0; i < handlers.length; i++) {
+                        var _handlers$i = handlers[i], onSuccess = _handlers$i.onSuccess, onError = _handlers$i.onError, promise = _handlers$i.promise;
+                        var _result2 = void 0;
+                        if (resolved) try {
+                            _result2 = onSuccess ? onSuccess(this.value) : this.value;
+                        } catch (err) {
+                            promise.reject(err);
+                            continue;
+                        } else if (rejected) {
+                            if (!onError) {
+                                promise.reject(this.error);
+                                continue;
+                            }
+                            try {
+                                _result2 = onError(this.error);
+                            } catch (err) {
+                                promise.reject(err);
+                                continue;
+                            }
+                        }
+                        if (_result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected)) {
+                            var promiseResult = _result2;
+                            promiseResult.resolved ? promise.resolve(promiseResult.value) : promise.reject(promiseResult.error);
+                            promiseResult.errorHandled = !0;
+                        } else src_utils_isPromise(_result2) ? _result2 instanceof ZalgoPromise && (_result2.resolved || _result2.rejected) ? _result2.resolved ? promise.resolve(_result2.value) : promise.reject(_result2.error) : chain(_result2, promise) : promise.resolve(_result2);
+                    }
+                    handlers.length = 0;
+                    this.dispatching = !1;
+                    flush_endActive();
+                }
+            };
+            _proto.then = function(onSuccess, onError) {
+                if (onSuccess && "function" != typeof onSuccess && !onSuccess.call) throw new Error("Promise.then expected a function for success handler");
+                if (onError && "function" != typeof onError && !onError.call) throw new Error("Promise.then expected a function for error handler");
+                var promise = new ZalgoPromise;
+                this.handlers.push({
+                    promise: promise,
+                    onSuccess: onSuccess,
+                    onError: onError
+                });
+                this.errorHandled = !0;
+                this.dispatch();
+                return promise;
+            };
+            _proto.catch = function(onError) {
+                return this.then(void 0, onError);
+            };
+            _proto.finally = function(onFinally) {
+                if (onFinally && "function" != typeof onFinally && !onFinally.call) throw new Error("Promise.finally expected a function");
+                return this.then((function(result) {
+                    return ZalgoPromise.try(onFinally).then((function() {
+                        return result;
+                    }));
+                }), (function(err) {
+                    return ZalgoPromise.try(onFinally).then((function() {
+                        throw err;
+                    }));
+                }));
+            };
+            _proto.timeout = function(time, err) {
+                var _this3 = this;
+                if (this.resolved || this.rejected) return this;
+                var timeout = setTimeout((function() {
+                    _this3.resolved || _this3.rejected || _this3.reject(err || new Error("Promise timed out after " + time + "ms"));
+                }), time);
+                return this.then((function(result) {
+                    clearTimeout(timeout);
+                    return result;
+                }));
+            };
+            _proto.toPromise = function() {
+                if ("undefined" == typeof Promise) throw new TypeError("Could not find Promise");
+                return Promise.resolve(this);
+            };
+            _proto.lazy = function() {
+                this.errorHandled = !0;
+                return this;
+            };
+            ZalgoPromise.resolve = function(value) {
+                return value instanceof ZalgoPromise ? value : src_utils_isPromise(value) ? new ZalgoPromise((function(resolve, reject) {
+                    return value.then(resolve, reject);
+                })) : (new ZalgoPromise).resolve(value);
+            };
+            ZalgoPromise.reject = function(error) {
+                return (new ZalgoPromise).reject(error);
+            };
+            ZalgoPromise.asyncReject = function(error) {
+                return (new ZalgoPromise).asyncReject(error);
+            };
+            ZalgoPromise.all = function(promises) {
+                var promise = new ZalgoPromise;
+                var count = promises.length;
+                var results = [].slice();
+                if (!count) {
+                    promise.resolve(results);
+                    return promise;
+                }
+                var chain = function(i, firstPromise, secondPromise) {
+                    return firstPromise.then((function(res) {
+                        results[i] = res;
+                        0 == (count -= 1) && promise.resolve(results);
+                    }), (function(err) {
+                        secondPromise.reject(err);
+                    }));
+                };
+                for (var i = 0; i < promises.length; i++) {
+                    var prom = promises[i];
+                    if (prom instanceof ZalgoPromise) {
+                        if (prom.resolved) {
+                            results[i] = prom.value;
+                            count -= 1;
+                            continue;
+                        }
+                    } else if (!src_utils_isPromise(prom)) {
+                        results[i] = prom;
+                        count -= 1;
+                        continue;
+                    }
+                    chain(i, ZalgoPromise.resolve(prom), promise);
+                }
+                0 === count && promise.resolve(results);
+                return promise;
+            };
+            ZalgoPromise.hash = function(promises) {
+                var result = {};
+                var awaitPromises = [];
+                var _loop = function(key) {
+                    if (promises.hasOwnProperty(key)) {
+                        var value = promises[key];
+                        src_utils_isPromise(value) ? awaitPromises.push(value.then((function(res) {
+                            result[key] = res;
+                        }))) : result[key] = value;
+                    }
+                };
+                for (var key in promises) _loop(key);
+                return ZalgoPromise.all(awaitPromises).then((function() {
+                    return result;
+                }));
+            };
+            ZalgoPromise.map = function(items, method) {
+                return ZalgoPromise.all(items.map(method));
+            };
+            ZalgoPromise.onPossiblyUnhandledException = function(handler) {
+                return function(handler) {
+                    exceptions_possiblyUnhandledPromiseHandlers.push(handler);
+                    return {
+                        cancel: function() {
+                            exceptions_possiblyUnhandledPromiseHandlers.splice(exceptions_possiblyUnhandledPromiseHandlers.indexOf(handler), 1);
+                        }
+                    };
+                }(handler);
+            };
+            ZalgoPromise.try = function(method, context, args) {
+                if (method && "function" != typeof method && !method.call) throw new Error("Promise.try expected a function");
+                var result;
+                flush_startActive();
+                try {
+                    result = method.apply(context, args || []);
+                } catch (err) {
+                    flush_endActive();
+                    return ZalgoPromise.reject(err);
+                }
+                flush_endActive();
+                return ZalgoPromise.resolve(result);
+            };
+            ZalgoPromise.delay = function(_delay) {
+                return new ZalgoPromise((function(resolve) {
+                    setTimeout(resolve, _delay);
+                }));
+            };
+            ZalgoPromise.isPromise = function(value) {
+                return !!(value && value instanceof ZalgoPromise) || src_utils_isPromise(value);
+            };
+            ZalgoPromise.flush = function() {
+                return function(Zalgo) {
+                    var promise = flush_flushPromise = flush_flushPromise || new Zalgo;
+                    flush_flushActive();
+                    return promise;
+                }(ZalgoPromise);
+            };
+            return ZalgoPromise;
+        }();
+        function utils_getActualProtocol(win) {
+            void 0 === win && (win = window);
+            return win.location.protocol;
+        }
+        function utils_getProtocol(win) {
+            void 0 === win && (win = window);
+            if (win.mockDomain) {
+                var protocol = win.mockDomain.split("//")[0];
+                if (protocol) return protocol;
+            }
+            return utils_getActualProtocol(win);
+        }
+        function utils_isAboutProtocol(win) {
+            void 0 === win && (win = window);
+            return "about:" === utils_getProtocol(win);
+        }
+        function utils_canReadFromWindow(win) {
+            try {
+                return !0;
+            } catch (err) {}
+            return !1;
+        }
+        function utils_getActualDomain(win) {
+            void 0 === win && (win = window);
+            var location = win.location;
+            if (!location) throw new Error("Can not read window location");
+            var protocol = utils_getActualProtocol(win);
+            if (!protocol) throw new Error("Can not read window protocol");
+            if ("file:" === protocol) return "file://";
+            if ("about:" === protocol) {
+                var parent = function(win) {
+                    void 0 === win && (win = window);
+                    if (win) try {
+                        if (win.parent && win.parent !== win) return win.parent;
+                    } catch (err) {}
+                }(win);
+                return parent && utils_canReadFromWindow() ? utils_getActualDomain(parent) : "about://";
+            }
+            var host = location.host;
+            if (!host) throw new Error("Can not read window host");
+            return protocol + "//" + host;
+        }
+        function utils_getDomain(win) {
+            void 0 === win && (win = window);
+            var domain = utils_getActualDomain(win);
+            return domain && win.mockDomain && 0 === win.mockDomain.indexOf("mock:") ? win.mockDomain : domain;
+        }
+        function utils_isSameDomain(win) {
+            if (!function(win) {
+                try {
+                    if (win === window) return !0;
+                } catch (err) {}
+                try {
+                    var desc = Object.getOwnPropertyDescriptor(win, "location");
+                    if (desc && !1 === desc.enumerable) return !1;
+                } catch (err) {}
+                try {
+                    if (utils_isAboutProtocol(win) && utils_canReadFromWindow()) return !0;
+                } catch (err) {}
+                try {
+                    if (function(win) {
+                        void 0 === win && (win = window);
+                        return "mock:" === utils_getProtocol(win);
+                    }(win) && utils_canReadFromWindow()) return !0;
+                } catch (err) {}
+                try {
+                    if (utils_getActualDomain(win) === utils_getActualDomain(window)) return !0;
+                } catch (err) {}
+                return !1;
+            }(win)) return !1;
+            try {
+                if (win === window) return !0;
+                if (utils_isAboutProtocol(win) && utils_canReadFromWindow()) return !0;
+                if (utils_getDomain(window) === utils_getDomain(win)) return !0;
+            } catch (err) {}
+            return !1;
+        }
+        var utils_iframeWindows = [];
+        var utils_iframeFrames = [];
+        function utils_isWindowClosed(win, allowMock) {
+            void 0 === allowMock && (allowMock = !0);
+            try {
+                if (win === window) return !1;
+            } catch (err) {
+                return !0;
+            }
+            try {
+                if (!win) return !0;
+            } catch (err) {
+                return !0;
+            }
+            try {
+                if (win.closed) return !0;
+            } catch (err) {
+                return !err || "Call was rejected by callee.\r\n" !== err.message;
+            }
+            if (allowMock && utils_isSameDomain(win)) try {
+                if (win.mockclosed) return !0;
+            } catch (err) {}
+            try {
+                if (!win.parent || !win.top) return !0;
+            } catch (err) {}
+            var iframeIndex = function(collection, item) {
+                for (var i = 0; i < collection.length; i++) try {
+                    if (collection[i] === item) return i;
+                } catch (err) {}
+                return -1;
+            }(utils_iframeWindows, win);
+            if (-1 !== iframeIndex) {
+                var frame = utils_iframeFrames[iframeIndex];
+                if (frame && function(frame) {
+                    if (!frame.contentWindow) return !0;
+                    if (!frame.parentNode) return !0;
+                    var doc = frame.ownerDocument;
+                    if (doc && doc.documentElement && !doc.documentElement.contains(frame)) {
+                        var parent = frame;
+                        for (;parent.parentNode && parent.parentNode !== parent; ) parent = parent.parentNode;
+                        if (!parent.host || !doc.documentElement.contains(parent.host)) return !0;
+                    }
+                    return !1;
+                }(frame)) return !0;
+            }
+            return !1;
+        }
+        function utils_isWindow(obj) {
+            try {
+                if (obj === window) return !0;
+            } catch (err) {
+                if (err && "Call was rejected by callee.\r\n" === err.message) return !0;
+            }
+            try {
+                if ("[object Window]" === {}.toString.call(obj)) return !0;
+            } catch (err) {
+                if (err && "Call was rejected by callee.\r\n" === err.message) return !0;
+            }
+            try {
+                if (window.Window && obj instanceof window.Window) return !0;
+            } catch (err) {
+                if (err && "Call was rejected by callee.\r\n" === err.message) return !0;
+            }
+            try {
+                if (obj && obj.self === obj) return !0;
+            } catch (err) {
+                if (err && "Call was rejected by callee.\r\n" === err.message) return !0;
+            }
+            try {
+                if (obj && obj.parent === obj) return !0;
+            } catch (err) {
+                if (err && "Call was rejected by callee.\r\n" === err.message) return !0;
+            }
+            try {
+                if (obj && obj.top === obj) return !0;
+            } catch (err) {
+                if (err && "Call was rejected by callee.\r\n" === err.message) return !0;
+            }
+            try {
+                if (obj && "__unlikely_value__" === obj.__cross_domain_utils_window_check__) return !1;
+            } catch (err) {
+                return !0;
+            }
+            try {
+                if ("postMessage" in obj && "self" in obj && "location" in obj) return !0;
+            } catch (err) {}
+            return !1;
+        }
+        function src_util_safeIndexOf(collection, item) {
+            for (var i = 0; i < collection.length; i++) try {
+                if (collection[i] === item) return i;
+            } catch (err) {}
+            return -1;
+        }
+        var src_weakmap_CrossDomainSafeWeakMap = function() {
+            function CrossDomainSafeWeakMap() {
+                this.name = void 0;
+                this.weakmap = void 0;
+                this.keys = void 0;
+                this.values = void 0;
+                this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__";
+                if (function() {
+                    if ("undefined" == typeof WeakMap) return !1;
+                    if (void 0 === Object.freeze) return !1;
+                    try {
+                        var testWeakMap = new WeakMap;
+                        var testKey = {};
+                        Object.freeze(testKey);
+                        testWeakMap.set(testKey, "__testvalue__");
+                        return "__testvalue__" === testWeakMap.get(testKey);
+                    } catch (err) {
+                        return !1;
+                    }
+                }()) try {
+                    this.weakmap = new WeakMap;
+                } catch (err) {}
+                this.keys = [];
+                this.values = [];
+            }
+            var _proto = CrossDomainSafeWeakMap.prototype;
+            _proto._cleanupClosedWindows = function() {
+                var weakmap = this.weakmap;
+                var keys = this.keys;
+                for (var i = 0; i < keys.length; i++) {
+                    var value = keys[i];
+                    if (utils_isWindow(value) && utils_isWindowClosed(value)) {
+                        if (weakmap) try {
+                            weakmap.delete(value);
+                        } catch (err) {}
+                        keys.splice(i, 1);
+                        this.values.splice(i, 1);
+                        i -= 1;
+                    }
+                }
+            };
+            _proto.isSafeToReadWrite = function(key) {
+                return !utils_isWindow(key);
+            };
+            _proto.set = function(key, value) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    weakmap.set(key, value);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) try {
+                    var name = this.name;
+                    var entry = key[name];
+                    entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
+                        value: [ key, value ],
+                        writable: !0
+                    });
+                    return;
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                var keys = this.keys;
+                var values = this.values;
+                var index = src_util_safeIndexOf(keys, key);
+                if (-1 === index) {
+                    keys.push(key);
+                    values.push(value);
+                } else values[index] = value;
+            };
+            _proto.get = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    if (weakmap.has(key)) return weakmap.get(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) try {
+                    var entry = key[this.name];
+                    return entry && entry[0] === key ? entry[1] : void 0;
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                var index = src_util_safeIndexOf(this.keys, key);
+                if (-1 !== index) return this.values[index];
+            };
+            _proto.delete = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    weakmap.delete(key);
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) try {
+                    var entry = key[this.name];
+                    entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                var keys = this.keys;
+                var index = src_util_safeIndexOf(keys, key);
+                if (-1 !== index) {
+                    keys.splice(index, 1);
+                    this.values.splice(index, 1);
+                }
+            };
+            _proto.has = function(key) {
+                if (!key) throw new Error("WeakMap expected key");
+                var weakmap = this.weakmap;
+                if (weakmap) try {
+                    if (weakmap.has(key)) return !0;
+                } catch (err) {
+                    delete this.weakmap;
+                }
+                if (this.isSafeToReadWrite(key)) try {
+                    var entry = key[this.name];
+                    return !(!entry || entry[0] !== key);
+                } catch (err) {}
+                this._cleanupClosedWindows();
+                return -1 !== src_util_safeIndexOf(this.keys, key);
+            };
+            _proto.getOrSet = function(key, getter) {
+                if (this.has(key)) return this.get(key);
+                var value = getter();
+                this.set(key, value);
+                return value;
+            };
+            return CrossDomainSafeWeakMap;
+        }();
+        function util_getFunctionName(fn) {
+            return fn.name || fn.__name__ || fn.displayName || "anonymous";
+        }
+        function util_setFunctionName(fn, name) {
+            try {
+                delete fn.name;
+                fn.name = name;
+            } catch (err) {}
+            fn.__name__ = fn.displayName = name;
+            return fn;
+        }
+        function src_util_uniqueID() {
+            var chars = "0123456789abcdef";
+            return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
+                return chars.charAt(Math.floor(Math.random() * chars.length));
+            })) + "_" + function(str) {
+                if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                    return String.fromCharCode(parseInt(p1, 16));
+                }))).replace(/[=]/g, "");
+                if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64").replace(/[=]/g, "");
+                throw new Error("Can not find window.btoa or Buffer");
+            }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        }
+        var util_objectIDs;
+        function util_serializeArgs(args) {
+            try {
+                return JSON.stringify([].slice.call(args), (function(subkey, val) {
+                    return "function" == typeof val ? "memoize[" + function(obj) {
+                        util_objectIDs = util_objectIDs || new src_weakmap_CrossDomainSafeWeakMap;
+                        if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+                        var uid = util_objectIDs.get(obj);
+                        if (!uid) {
+                            uid = typeof obj + ":" + src_util_uniqueID();
+                            util_objectIDs.set(obj, uid);
+                        }
+                        return uid;
+                    }(val) + "]" : function(element) {
+                        var passed = !1;
+                        try {
+                            (element instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument) && (passed = !0);
+                        } catch (_) {}
+                        return passed;
+                    }(val) ? {} : val;
+                }));
+            } catch (err) {
+                throw new Error("Arguments not serializable -- can not be used to memoize");
+            }
+        }
+        function util_getEmptyObject() {
+            return {};
+        }
+        var util_memoizeGlobalIndex = 0;
+        var util_memoizeGlobalIndexValidFrom = 0;
+        function util_memoize(method, options) {
+            void 0 === options && (options = {});
+            var _options$thisNamespac = options.thisNamespace, thisNamespace = void 0 !== _options$thisNamespac && _options$thisNamespac, cacheTime = options.time;
+            var simpleCache;
+            var thisCache;
+            var memoizeIndex = util_memoizeGlobalIndex;
+            util_memoizeGlobalIndex += 1;
+            var memoizedFunction = function() {
+                for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
+                if (memoizeIndex < util_memoizeGlobalIndexValidFrom) {
+                    simpleCache = null;
+                    thisCache = null;
+                    memoizeIndex = util_memoizeGlobalIndex;
+                    util_memoizeGlobalIndex += 1;
+                }
+                var cache;
+                cache = thisNamespace ? (thisCache = thisCache || new src_weakmap_CrossDomainSafeWeakMap).getOrSet(this, util_getEmptyObject) : simpleCache = simpleCache || {};
+                var cacheKey;
+                try {
+                    cacheKey = util_serializeArgs(args);
+                } catch (_unused) {
+                    return method.apply(this, arguments);
+                }
+                var cacheResult = cache[cacheKey];
+                if (cacheResult && cacheTime && Date.now() - cacheResult.time < cacheTime) {
+                    delete cache[cacheKey];
+                    cacheResult = null;
+                }
+                if (cacheResult) return cacheResult.value;
+                var time = Date.now();
+                var value = method.apply(this, arguments);
+                cache[cacheKey] = {
+                    time: time,
+                    value: value
+                };
+                return value;
+            };
+            memoizedFunction.reset = function() {
+                simpleCache = null;
+                thisCache = null;
+            };
+            return util_setFunctionName(memoizedFunction, (options.name || util_getFunctionName(method)) + "::memoized");
+        }
+        util_memoize.clear = function() {
+            util_memoizeGlobalIndexValidFrom = util_memoizeGlobalIndex;
+        };
+        function belter_src_util_noop() {}
+        function util_stringifyError(err, level) {
+            void 0 === level && (level = 1);
+            if (level >= 3) return "stringifyError stack overflow";
+            try {
+                if (!err) return "<unknown error: " + {}.toString.call(err) + ">";
+                if ("string" == typeof err) return err;
+                if (err instanceof Error) {
+                    var stack = err && err.stack;
+                    var message = err && err.message;
+                    if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                    if (stack) return stack;
+                    if (message) return message;
+                }
+                return err && err.toString && "function" == typeof err.toString ? err.toString() : {}.toString.call(err);
+            } catch (newErr) {
+                return "Error while stringifying error: " + util_stringifyError(newErr, level + 1);
+            }
+        }
+        util_memoize((function(obj) {
+            if (Object.values) return Object.values(obj);
+            var result = [];
+            for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
+            return result;
+        }));
+        function util_objFilter(obj, filter) {
+            void 0 === filter && (filter = Boolean);
+            var result = {};
+            for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
+            return result;
+        }
+        Error;
+        function dom_isDocumentReady() {
+            return Boolean(document.body) && "complete" === document.readyState;
+        }
+        function dom_isDocumentInteractive() {
+            return Boolean(document.body) && "interactive" === document.readyState;
+        }
+        util_memoize((function() {
+            return new src_promise_ZalgoPromise((function(resolve) {
+                if (dom_isDocumentReady() || dom_isDocumentInteractive()) return resolve();
+                var interval = setInterval((function() {
+                    if (dom_isDocumentReady() || dom_isDocumentInteractive()) {
+                        clearInterval(interval);
+                        return resolve();
+                    }
+                }), 10);
+            }));
+        }));
+        function src_dom_isBrowser() {
+            return "undefined" != typeof window && void 0 !== window.location;
+        }
+        function dom_querySelectorAll(selector, doc) {
+            void 0 === doc && (doc = window.document);
+            return [].slice.call(doc.querySelectorAll(selector));
+        }
+        var dom_currentScript = "undefined" != typeof document ? document.currentScript : null;
+        var dom_getCurrentScript = util_memoize((function() {
+            if (dom_currentScript) return dom_currentScript;
+            if (dom_currentScript = function() {
+                try {
+                    var stack = function() {
+                        try {
+                            throw new Error("_");
+                        } catch (err) {
+                            return err.stack || "";
+                        }
+                    }();
+                    var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
+                    var scriptLocation = stackDetails && stackDetails[1];
+                    if (!scriptLocation) return;
+                    for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
+                        var script = _Array$prototype$slic2[_i22];
+                        if (script.src && script.src === scriptLocation) return script;
+                    }
+                } catch (err) {}
+            }()) return dom_currentScript;
+            throw new Error("Can not determine current script");
+        }));
+        var dom_currentUID = src_util_uniqueID();
+        util_memoize((function() {
+            var script;
+            try {
+                script = dom_getCurrentScript();
+            } catch (err) {
+                return dom_currentUID;
+            }
+            var uid = script.getAttribute("data-uid");
+            if (uid && "string" == typeof uid) return uid;
+            if ((uid = script.getAttribute("data-uid-auto")) && "string" == typeof uid) return uid;
+            if (script.src) {
+                var hashedString = function(str) {
+                    var hash = "";
+                    for (var i = 0; i < str.length; i++) {
+                        var total = str[i].charCodeAt(0) * i;
+                        str[i + 1] && (total += str[i + 1].charCodeAt(0) * (i - 1));
+                        hash += String.fromCharCode(97 + Math.abs(total) % 26);
+                    }
+                    return hash;
+                }(JSON.stringify({
+                    src: script.src,
+                    dataset: script.dataset
+                }));
+                uid = "uid_" + hashedString.slice(hashedString.length - 30);
+            } else uid = src_util_uniqueID();
+            script.setAttribute("data-uid-auto", uid);
+            return uid;
+        }));
+        var src_http_headerBuilders = [];
+        function http_request(_ref) {
+            var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+            return new src_promise_ZalgoPromise((function(resolve, reject) {
+                if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                var normalizedHeaders = {};
+                for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                    var _key2 = _Object$keys2[_i4];
+                    normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                }
+                json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
+                normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
+                for (var _i6 = 0; _i6 < src_http_headerBuilders.length; _i6++) {
+                    var builtHeaders = (0, src_http_headerBuilders[_i6])();
+                    for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                        var _key3 = _Object$keys4[_i8];
+                        normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                    }
+                }
+                var xhr = new win.XMLHttpRequest;
+                xhr.addEventListener("load", (function() {
+                    var responseHeaders = function(rawHeaders) {
+                        void 0 === rawHeaders && (rawHeaders = "");
+                        var result = {};
+                        for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                            result[_key.toLowerCase()] = values.join(":").trim();
+                        }
+                        return result;
+                    }(this.getAllResponseHeaders());
+                    if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+                    var contentType = responseHeaders["content-type"];
+                    var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
+                    var responseBody = this.responseText;
+                    try {
+                        responseBody = JSON.parse(responseBody);
+                    } catch (err) {
+                        if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
+                    }
+                    return resolve({
+                        status: this.status,
+                        headers: responseHeaders,
+                        body: responseBody
+                    });
+                }), !1);
+                xhr.addEventListener("error", (function(evt) {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+                }), !1);
+                xhr.open(method, url, !0);
+                for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
+                    return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                })).join("&"));
+                xhr.timeout = timeout;
+                xhr.ontimeout = function() {
+                    reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                };
+                xhr.send(body);
+            }));
+        }
         var cardFormOpen = !1;
         function highlightCard(card) {
-            card && querySelectorAll("[data-card]").forEach((function(el) {
+            card && dom_querySelectorAll("[data-card]").forEach((function(el) {
                 el.style.opacity = el.getAttribute("data-card") === card ? "1" : "0.1";
             }));
         }
@@ -9619,7 +10539,7 @@ window.spb = function(modules) {
             setup: function() {},
             isEligible: function(_ref) {
                 var props = _ref.props;
-                return !props.vault && !props.onShippingChange && _ref.serviceData.eligibility.cardForm;
+                return "inline" !== props.experience && !props.vault && !props.onShippingChange && _ref.serviceData.eligibility.cardForm;
             },
             isPaymentEligible: function(_ref2) {
                 var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
@@ -9639,7 +10559,7 @@ window.spb = function(modules) {
                         close: promiseNoop
                     };
                 }
-                var restart = memoize((function() {
+                var restart = util_memoize((function() {
                     return checkout.init({
                         props: props,
                         components: components,
@@ -9666,7 +10586,7 @@ window.spb = function(modules) {
                                 buyerAccessToken: buyerAccessToken
                             }, {
                                 restart: restart
-                            }).catch(src_util_noop);
+                            }).catch(belter_src_util_noop);
                         }));
                     },
                     onAuth: function(_ref7) {
@@ -9698,7 +10618,7 @@ window.spb = function(modules) {
                 var close = function() {
                     !function() {
                         var buttonsContainer = card_form_getElements().buttonsContainer;
-                        querySelectorAll("[data-card]").forEach((function(el) {
+                        dom_querySelectorAll("[data-card]").forEach((function(el) {
                             el.style.opacity = "1";
                         }));
                         window.removeEventListener("resize", resizeListener);
@@ -9724,13 +10644,13 @@ window.spb = function(modules) {
                             resizeListener = function(method, time) {
                                 void 0 === time && (time = 100);
                                 var timeout;
-                                return setFunctionName((function() {
+                                return util_setFunctionName((function() {
                                     var _arguments3 = arguments, _this3 = this;
                                     clearTimeout(timeout);
                                     timeout = setTimeout((function() {
                                         return method.apply(_this3, _arguments3);
                                     }), time);
-                                }), getFunctionName(method) + "::debounced");
+                                }), util_getFunctionName(method) + "::debounced");
                             }((function() {
                                 buttonsContainer.style.transitionDuration = "0s";
                                 recalculateMargin();
@@ -9777,7 +10697,7 @@ window.spb = function(modules) {
         _VALIDATOR_TO_TYPE_MA[dist.types.VISA] = "VISA", _VALIDATOR_TO_TYPE_MA["cb-nationale"] = "CB_NATIONALE", 
         _VALIDATOR_TO_TYPE_MA.cetelem = "CETELEM", _VALIDATOR_TO_TYPE_MA.cofidis = "COFIDIS", 
         _VALIDATOR_TO_TYPE_MA.cofinoga = "COFINOGA";
-        __webpack_require__("./node_modules/belter/index.js");
+        __webpack_require__("./node_modules/@krakenjs/belter/index.js");
         __webpack_require__("./node_modules/card-validator/src/luhn-10.js");
         __webpack_require__("./node_modules/card-validator/dist/index.js");
         dist_default.a.addCard({
@@ -9881,10 +10801,11 @@ window.spb = function(modules) {
                                 var _fundingEligibility$c, _fundingEligibility$c2;
                                 var facilitatorAccessToken = _ref.facilitatorAccessToken;
                                 var xprops = window.xprops;
-                                var type = xprops.type, cardSessionID = xprops.cardSessionID, style = xprops.style, placeholder = xprops.placeholder, fundingEligibility = xprops.fundingEligibility, onChange = xprops.onChange, _xprops$branded = xprops.branded, branded = void 0 === _xprops$branded ? null == (_fundingEligibility$c = null == fundingEligibility || null == (_fundingEligibility$c2 = fundingEligibility.card) ? void 0 : _fundingEligibility$c2.branded) || _fundingEligibility$c : _xprops$branded, parent = xprops.parent, xport = xprops.export;
+                                var type = xprops.type, cardSessionID = xprops.cardSessionID, style = xprops.style, placeholder = xprops.placeholder, fundingEligibility = xprops.fundingEligibility, onChange = xprops.onChange, _xprops$branded = xprops.branded, branded = void 0 === _xprops$branded ? null == (_fundingEligibility$c = null == fundingEligibility || null == (_fundingEligibility$c2 = fundingEligibility.card) ? void 0 : _fundingEligibility$c2.branded) || _fundingEligibility$c : _xprops$branded, parent = xprops.parent, experience = xprops.experience, xport = xprops.export;
                                 return _extends({}, getProps({
                                     facilitatorAccessToken: facilitatorAccessToken,
-                                    branded: branded
+                                    branded: branded,
+                                    paymentSource: null
                                 }), {
                                     type: type,
                                     branded: branded,
@@ -9893,6 +10814,7 @@ window.spb = function(modules) {
                                     cardSessionID: cardSessionID,
                                     fundingEligibility: fundingEligibility,
                                     onChange: onChange,
+                                    inlinexo: "inline" === experience,
                                     export: parent ? parent.export : xport,
                                     facilitatorAccessToken: facilitatorAccessToken
                                 });
@@ -10049,12 +10971,252 @@ window.spb = function(modules) {
             inline: !0,
             spinner: !0
         };
-        function lib_logger_getLogger() {
-            return inlineMemoize(lib_logger_getLogger, (function() {
-                return Logger({
-                    url: "/xoplatform/logger/api/logger"
+        var config_AUTO_FLUSH_LEVEL = [ "warn", "error" ];
+        var config_LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
+        var src_util_sendBeacon = function(_ref2) {
+            var _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+            try {
+                var json = JSON.stringify(data);
+                if (!win.navigator.sendBeacon) throw new Error("No sendBeacon available");
+                if (useBlob) {
+                    var blob = new Blob([ json ], {
+                        type: "application/json"
+                    });
+                    return win.navigator.sendBeacon(url, blob);
+                }
+                return win.navigator.sendBeacon(url, json);
+            } catch (e) {
+                return !1;
+            }
+        };
+        var util_extendIfDefined = function(target, source) {
+            for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
+        };
+        function logger_Logger(_ref) {
+            var url = _ref.url, prefix = _ref.prefix, _ref$logLevel = _ref.logLevel, logLevel = void 0 === _ref$logLevel ? "debug" : _ref$logLevel, _ref$transport = _ref.transport, transport = void 0 === _ref$transport ? function(httpWin) {
+                void 0 === httpWin && (httpWin = window);
+                var win = utils_isSameDomain(httpWin) ? function(win) {
+                    if (!utils_isSameDomain(win)) throw new Error("Expected window to be same domain");
+                    return win;
+                }(httpWin) : window;
+                return function(_ref) {
+                    var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+                    return src_promise_ZalgoPromise.try((function() {
+                        var beaconResult = !1;
+                        (function(_ref) {
+                            var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                            var hasHeaders = headers && Object.keys(headers).length;
+                            return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                        })({
+                            headers: headers,
+                            enableSendBeacon: enableSendBeacon
+                        }) && (beaconResult = function(url) {
+                            return "https://api2.amplitude.com/2/httpapi" === url;
+                        }(url) ? src_util_sendBeacon({
+                            win: win,
+                            url: url,
+                            data: json,
+                            useBlob: !1
+                        }) : src_util_sendBeacon({
+                            win: win,
+                            url: url,
+                            data: json,
+                            useBlob: !0
+                        }));
+                        return beaconResult || http_request({
+                            win: win,
+                            url: url,
+                            method: method,
+                            headers: headers,
+                            json: json
+                        });
+                    })).then(belter_src_util_noop);
+                };
+            }() : _ref$transport, amplitudeApiKey = _ref.amplitudeApiKey, _ref$flushInterval = _ref.flushInterval, flushInterval = void 0 === _ref$flushInterval ? 6e4 : _ref$flushInterval, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+            var events = [];
+            var tracking = [];
+            var payloadBuilders = [];
+            var metaBuilders = [];
+            var trackingBuilders = [];
+            var headerBuilders = [];
+            function print(level, event, payload) {
+                if (src_dom_isBrowser() && window.console && window.console.log && !(config_LOG_LEVEL_PRIORITY.indexOf(level) > config_LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
+                    var args = [ event ];
+                    args.push(payload);
+                    (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                    try {
+                        window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                    } catch (err) {}
+                }
+            }
+            function immediateFlush() {
+                return src_promise_ZalgoPromise.try((function() {
+                    if (src_dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
+                        var meta = {};
+                        for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) util_extendIfDefined(meta, (0, 
+                        metaBuilders[_i2])(meta));
+                        var headers = {};
+                        for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) util_extendIfDefined(headers, (0, 
+                        headerBuilders[_i4])(headers));
+                        var res;
+                        url && (res = transport({
+                            method: "POST",
+                            url: url,
+                            headers: headers,
+                            json: {
+                                events: events,
+                                meta: meta,
+                                tracking: tracking
+                            },
+                            enableSendBeacon: enableSendBeacon
+                        }).catch(belter_src_util_noop));
+                        amplitudeApiKey && transport({
+                            method: "POST",
+                            url: "https://api2.amplitude.com/2/httpapi",
+                            headers: {},
+                            json: {
+                                api_key: amplitudeApiKey,
+                                events: tracking.map((function(payload) {
+                                    return _extends({
+                                        event_type: payload.transition_name || "event",
+                                        event_properties: payload
+                                    }, payload);
+                                }))
+                            },
+                            enableSendBeacon: enableSendBeacon
+                        }).catch(belter_src_util_noop);
+                        events = [];
+                        tracking = [];
+                        return src_promise_ZalgoPromise.resolve(res).then(belter_src_util_noop);
+                    }
+                }));
+            }
+            var flush = function(method, delay) {
+                void 0 === delay && (delay = 50);
+                var promise;
+                var timeout;
+                return util_setFunctionName((function() {
+                    timeout && clearTimeout(timeout);
+                    var localPromise = promise = promise || new src_promise_ZalgoPromise;
+                    timeout = setTimeout((function() {
+                        promise = null;
+                        timeout = null;
+                        src_promise_ZalgoPromise.try(method).then((function(result) {
+                            localPromise.resolve(result);
+                        }), (function(err) {
+                            localPromise.reject(err);
+                        }));
+                    }), delay);
+                    return localPromise;
+                }), util_getFunctionName(method) + "::promiseDebounced");
+            }(immediateFlush);
+            function log(level, event, payload) {
+                void 0 === payload && (payload = {});
+                if (!src_dom_isBrowser()) return logger;
+                prefix && (event = prefix + "_" + event);
+                var logPayload = _extends({}, util_objFilter(payload), {
+                    timestamp: Date.now().toString()
                 });
-            }));
+                for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) util_extendIfDefined(logPayload, (0, 
+                payloadBuilders[_i6])(logPayload));
+                !function(level, event, payload) {
+                    events.push({
+                        level: level,
+                        event: event,
+                        payload: payload
+                    });
+                    -1 !== config_AUTO_FLUSH_LEVEL.indexOf(level) && flush();
+                }(level, event, logPayload);
+                print(level, event, logPayload);
+                return logger;
+            }
+            function addBuilder(builders, builder) {
+                builders.push(builder);
+                return logger;
+            }
+            src_dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
+                setTimeout((function() {
+                    method();
+                    loop();
+                }), time);
+            }());
+            var method, time;
+            if ("object" == typeof window) {
+                window.addEventListener("beforeunload", (function() {
+                    immediateFlush();
+                }));
+                window.addEventListener("unload", (function() {
+                    immediateFlush();
+                }));
+                window.addEventListener("pagehide", (function() {
+                    immediateFlush();
+                }));
+            }
+            var logger = {
+                debug: function(event, payload) {
+                    return log("debug", event, payload);
+                },
+                info: function(event, payload) {
+                    return log("info", event, payload);
+                },
+                warn: function(event, payload) {
+                    return log("warn", event, payload);
+                },
+                error: function(event, payload) {
+                    return log("error", event, payload);
+                },
+                track: function(payload) {
+                    void 0 === payload && (payload = {});
+                    if (!src_dom_isBrowser()) return logger;
+                    var trackingPayload = util_objFilter(payload);
+                    for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) util_extendIfDefined(trackingPayload, (0, 
+                    trackingBuilders[_i8])(trackingPayload));
+                    print("debug", "track", trackingPayload);
+                    tracking.push(trackingPayload);
+                    return logger;
+                },
+                flush: flush,
+                immediateFlush: immediateFlush,
+                addPayloadBuilder: function(builder) {
+                    return addBuilder(payloadBuilders, builder);
+                },
+                addMetaBuilder: function(builder) {
+                    return addBuilder(metaBuilders, builder);
+                },
+                addTrackingBuilder: function(builder) {
+                    return addBuilder(trackingBuilders, builder);
+                },
+                addHeaderBuilder: function(builder) {
+                    return addBuilder(headerBuilders, builder);
+                },
+                setTransport: function(newTransport) {
+                    transport = newTransport;
+                    return logger;
+                },
+                configure: function(opts) {
+                    opts.url && (url = opts.url);
+                    opts.prefix && (prefix = opts.prefix);
+                    opts.logLevel && (logLevel = opts.logLevel);
+                    opts.transport && (transport = opts.transport);
+                    opts.amplitudeApiKey && (amplitudeApiKey = opts.amplitudeApiKey);
+                    opts.flushInterval && (flushInterval = opts.flushInterval);
+                    opts.enableSendBeacon && (enableSendBeacon = opts.enableSendBeacon);
+                    return logger;
+                }
+            };
+            return logger;
+        }
+        function lib_logger_getLogger() {
+            return function(method, logic, args) {
+                void 0 === args && (args = []);
+                var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+                var key = util_serializeArgs(args);
+                return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
+                    return logger_Logger({
+                        url: "/xoplatform/logger/api/logger"
+                    });
+                }.apply(void 0, args);
+            }(lib_logger_getLogger);
         }
         var POPUP_OPTIONS = {
             width: 500,
@@ -10201,7 +11363,7 @@ window.spb = function(modules) {
                                             var _headers;
                                             return function(_ref) {
                                                 var _ref$variables = _ref.variables, _ref$headers = _ref.headers;
-                                                return request({
+                                                return http_request({
                                                     url: "/graphql?" + _ref.name,
                                                     method: "POST",
                                                     json: {
@@ -10278,7 +11440,7 @@ window.spb = function(modules) {
                                                                 term: selectedInstallment.term,
                                                                 interval_duration: selectedInstallment.intervalDuration
                                                             });
-                                                            return promise_ZalgoPromise.try((function() {
+                                                            return src_promise_ZalgoPromise.try((function() {
                                                                 return _onPay(orderID, installmentPlan);
                                                             })).finally((function() {
                                                                 !function(button) {
@@ -10306,7 +11468,7 @@ window.spb = function(modules) {
                                                         var _Installments = Installments({
                                                             clientID: clientID
                                                         }), renderTo = _Installments.renderTo, updateProps = _Installments.updateProps, show = _Installments.show, close = _Installments.close;
-                                                        var render = memoize((function() {
+                                                        var render = util_memoize((function() {
                                                             return renderTo(window.xprops.getParent(), "#installments-modal");
                                                         }));
                                                         render();
@@ -10329,13 +11491,13 @@ window.spb = function(modules) {
                                             }
                                             throw new Error("Installments fetch returns null");
                                         })).catch((function(err) {
-                                            return promise_ZalgoPromise.try((function() {
+                                            return src_promise_ZalgoPromise.try((function() {
                                                 var _getLogger$error$trac;
                                                 getLogger().error("installment_fetch_error", {
-                                                    err: stringifyError(err)
+                                                    err: util_stringifyError(err)
                                                 }).track((_getLogger$error$trac = {}, _getLogger$error$trac.transition_name = "installments_error", 
                                                 _getLogger$error$trac.context_type = "EC-Token", _getLogger$error$trac.token = orderID, 
-                                                _getLogger$error$trac.context_id = orderID, _getLogger$error$trac.err = stringifyError(err), 
+                                                _getLogger$error$trac.context_id = orderID, _getLogger$error$trac.err = util_stringifyError(err), 
                                                 _getLogger$error$trac)).flush();
                                                 return _onPay(orderID);
                                             }));
@@ -12503,6 +13665,15 @@ window.spb = function(modules) {
                 _getLogger$addPayload.chosen_fi_type = instrumentType, _getLogger$addPayload.payment_flow = name, 
                 _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload.info_msg = enableNativeCheckout ? "tester" : "", 
                 _getLogger$addPayload)).flush();
+                var loggingPromise = promise_ZalgoPromise.try((function() {
+                    return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmPayload) {
+                        var fieldsSessionID = confirmPayload ? confirmPayload.payment_source[fundingSource].metadata.fieldsSessionID : "";
+                        logger_getLogger().addTrackingBuilder((function() {
+                            var _ref6;
+                            return (_ref6 = {}).fields_component_session_id = fieldsSessionID, _ref6;
+                        }));
+                    }));
+                }));
                 var clickPromise = click ? promise_ZalgoPromise.try(click) : promise_ZalgoPromise.resolve();
                 clickPromise.catch(src_util_noop);
                 return promise_ZalgoPromise.try((function() {
@@ -12905,7 +14076,7 @@ window.spb = function(modules) {
                                 });
                             }));
                         }));
-                        return promise_ZalgoPromise.all([ updateClientConfigPromise, clickPromise, vaultPromise, validateOrderPromise, startPromise, confirmOrderPromise ]).catch((function(err) {
+                        return promise_ZalgoPromise.all([ loggingPromise, updateClientConfigPromise, clickPromise, vaultPromise, validateOrderPromise, startPromise, confirmOrderPromise ]).catch((function(err) {
                             return promise_ZalgoPromise.try(close).then((function() {
                                 throw err;
                             }));
@@ -12944,7 +14115,8 @@ window.spb = function(modules) {
             var merchantID = serviceData.merchantID, buyerCountry = serviceData.buyerCountry;
             var props = getButtonProps({
                 facilitatorAccessToken: facilitatorAccessToken,
-                brandedDefault: brandedDefault
+                brandedDefault: brandedDefault,
+                paymentSource: null
             });
             var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, onShippingChange = props.onShippingChange, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID;
             var config = getConfig({
@@ -13020,11 +14192,11 @@ window.spb = function(modules) {
                         instrumentID: instrumentID,
                         instrumentType: instrumentType
                     };
-                }(button);
+                }(button), paymentFundingSource = _getSelectedFunding.fundingSource;
                 var payment = {
                     button: button,
                     menuToggle: menuToggle,
-                    fundingSource: _getSelectedFunding.fundingSource,
+                    fundingSource: paymentFundingSource,
                     card: _getSelectedFunding.card,
                     paymentMethodID: _getSelectedFunding.paymentMethodID,
                     instrumentID: _getSelectedFunding.instrumentID,
@@ -13049,7 +14221,8 @@ window.spb = function(modules) {
                     event.stopPropagation();
                     var paymentProps = getButtonProps({
                         facilitatorAccessToken: facilitatorAccessToken,
-                        brandedDefault: brandedDefault
+                        brandedDefault: brandedDefault,
+                        paymentSource: paymentFundingSource
                     });
                     var payPromise = initiatePayment({
                         payment: payment,
@@ -13083,8 +14256,8 @@ window.spb = function(modules) {
                         var menuPromise = function(_ref2) {
                             var payment = _ref2.payment;
                             return promise_ZalgoPromise.try((function() {
-                                if (!paymentProcessing) return isEnabled() ? function(_ref6) {
-                                    var payment = _ref6.payment, serviceData = _ref6.serviceData, config = _ref6.config, components = _ref6.components, props = _ref6.props;
+                                if (!paymentProcessing) return isEnabled() ? function(_ref7) {
+                                    var payment = _ref7.payment, serviceData = _ref7.serviceData, config = _ref7.config, components = _ref7.components, props = _ref7.props;
                                     return promise_ZalgoPromise.try((function() {
                                         var _getLogger$info$info$;
                                         var fundingSource = payment.fundingSource, button = payment.button;
@@ -13105,9 +14278,9 @@ window.spb = function(modules) {
                                             serviceData: serviceData,
                                             components: components,
                                             config: config,
-                                            restart: function(_ref7) {
+                                            restart: function(_ref8) {
                                                 return initiatePaymentFlow({
-                                                    payment: _ref7.payment,
+                                                    payment: _ref8.payment,
                                                     serviceData: serviceData,
                                                     config: config,
                                                     components: components,
@@ -13210,7 +14383,8 @@ window.spb = function(modules) {
                         if (!button) throw new Error("Can not find button element");
                         var paymentProps = getButtonProps({
                             facilitatorAccessToken: facilitatorAccessToken,
-                            brandedDefault: brandedDefault
+                            brandedDefault: brandedDefault,
+                            paymentSource: paymentFundingSource
                         });
                         var payPromise = initiatePayment({
                             payment: {
@@ -13297,7 +14471,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.90", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.91", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 

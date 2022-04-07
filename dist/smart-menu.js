@@ -175,7 +175,7 @@ window.spb = function(modules) {
         } else if ("o" === l[0] && "n" === l[1]) o = l !== (l = l.replace(/Capture$/, "")), 
         l = l.toLowerCase() in n ? l.toLowerCase().slice(2) : l.slice(2), n.l || (n.l = {}), 
         n.l[l + o] = u, u ? i || n.addEventListener(l, o ? T : I, o) : n.removeEventListener(l, o ? T : I, o); else if ("dangerouslySetInnerHTML" !== l) {
-            if (t) l = l.replace(/xlink[H:h]/, "h").replace(/sName$/, "s"); else if ("href" !== l && "list" !== l && "form" !== l && "tabIndex" !== l && "download" !== l && l in n) try {
+            if (t) l = l.replace(/xlink(H|:h)/, "h").replace(/sName$/, "s"); else if ("href" !== l && "list" !== l && "form" !== l && "tabIndex" !== l && "download" !== l && l in n) try {
                 n[l] = null == u ? "" : u;
                 break n;
             } catch (n) {}
@@ -291,11 +291,11 @@ window.spb = function(modules) {
         return this.constructor(n, u);
     }
     n = c.slice, l = {
-        __e: function(n, l) {
-            for (var u, i, t; l = l.__; ) if ((u = l.__c) && !u.__) try {
-                if ((i = u.constructor) && null != i.getDerivedStateFromError && (u.setState(i.getDerivedStateFromError(n)), 
-                t = u.__d), null != u.componentDidCatch && (u.componentDidCatch(n), t = u.__d), 
-                t) return u.__E = u;
+        __e: function(n, l, u, i) {
+            for (var t, o, r; l = l.__; ) if ((t = l.__c) && !t.__) try {
+                if ((o = t.constructor) && null != o.getDerivedStateFromError && (t.setState(o.getDerivedStateFromError(n)), 
+                r = t.__d), null != t.componentDidCatch && (t.componentDidCatch(n, i || {}), r = t.__d), 
+                r) return t.__E = t;
             } catch (l) {
                 n = l;
             }
@@ -311,7 +311,7 @@ window.spb = function(modules) {
     }, _.prototype.render = d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
     g.__r = 0;
     var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o = 0, hooks_module_i = [], hooks_module_c = l.__b, hooks_module_f = l.__r, hooks_module_e = l.diffed, hooks_module_a = l.__c, hooks_module_v = l.unmount;
-    function hooks_module_m(t, r) {
+    function hooks_module_l(t, r) {
         l.__h && l.__h(hooks_module_u, t, hooks_module_o || r), hooks_module_o = 0;
         var i = hooks_module_u.__H || (hooks_module_u.__H = {
             __: [],
@@ -319,9 +319,9 @@ window.spb = function(modules) {
         });
         return t >= i.__.length && i.__.push({}), i.__[t];
     }
-    function hooks_module_l(n) {
+    function hooks_module_m(n) {
         return hooks_module_o = 1, function(n, r, o) {
-            var i = hooks_module_m(hooks_module_t++, 2);
+            var i = hooks_module_l(hooks_module_t++, 2);
             return i.t = n, i.__c || (i.__ = [ hooks_module_w(void 0, r), function(n) {
                 var t = i.t(i.__[0], n);
                 i.__[0] !== t && (i.__ = [ t, i.__[1] ], i.__c.setState({}));
@@ -329,7 +329,7 @@ window.spb = function(modules) {
         }(hooks_module_w, n);
     }
     function hooks_module_y(r, o) {
-        var i = hooks_module_m(hooks_module_t++, 3);
+        var i = hooks_module_l(hooks_module_t++, 3);
         !l.__s && hooks_module_k(i.__H, o) && (i.__ = r, i.__H = o, hooks_module_u.__H.__h.push(i));
     }
     function hooks_module_x() {
@@ -1517,7 +1517,7 @@ window.spb = function(modules) {
         var autoFocus = function(_temp) {
             var _ref = void 0 === _temp ? {} : _temp, _ref$onFocus = _ref.onFocus, onFocus = void 0 === _ref$onFocus ? src_util_noop : _ref$onFocus, _ref$onFocusFail = _ref.onFocusFail, onFocusFail = void 0 === _ref$onFocusFail ? src_util_noop : _ref$onFocusFail;
             var ref = (hooks_module_o = 5, function(n, u) {
-                var r = hooks_module_m(hooks_module_t++, 7);
+                var r = hooks_module_l(hooks_module_t++, 7);
                 return hooks_module_k(r.__H, u) && (r.__ = {
                     current: void 0
                 }, r.__H = u, r.__h = n), r.__;
@@ -1625,7 +1625,7 @@ window.spb = function(modules) {
     function Page(_ref) {
         var cspNonce = _ref.cspNonce;
         var _useXProps = function() {
-            var _useState = hooks_module_l(window.xprops), xprops = _useState[0], setXProps = _useState[1];
+            var _useState = hooks_module_m(window.xprops), xprops = _useState[0], setXProps = _useState[1];
             hooks_module_y((function() {
                 return xprops.onProps((function(newProps) {
                     setXProps(_extends({}, newProps));
@@ -1633,8 +1633,8 @@ window.spb = function(modules) {
             }), []);
             return _extends({}, xprops);
         }(), choices = _useXProps.choices, onChoose = _useXProps.onChoose, verticalOffset = _useXProps.verticalOffset, hide = _useXProps.hide, _useXProps$onBlur = _useXProps.onBlur, onBlur = void 0 === _useXProps$onBlur ? src_util_noop : _useXProps$onBlur, _useXProps$onFocus = _useXProps.onFocus, onFocus = void 0 === _useXProps$onFocus ? src_util_noop : _useXProps$onFocus, _useXProps$onFocusFai = _useXProps.onFocusFail, onFocusFail = void 0 === _useXProps$onFocusFai ? src_util_noop : _useXProps$onFocusFai;
-        var _useState = hooks_module_l(!1), opaque = _useState[0], setOpaque = _useState[1];
-        var _useState2 = hooks_module_l(!1), visible = _useState2[0], setVisible = _useState2[1];
+        var _useState = hooks_module_m(!1), opaque = _useState[0], setOpaque = _useState[1];
+        var _useState2 = hooks_module_m(!1), visible = _useState2[0], setVisible = _useState2[1];
         hooks_module_y((function() {
             var hasChoices = Boolean(choices && choices.length);
             setOpaque(hasChoices);
