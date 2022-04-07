@@ -1,6 +1,6 @@
 /* @flow */
-import { wrapPromise, uniqueID } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { wrapPromise, uniqueID } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING, CARD, INTENT, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
 import { getBuyerAccessToken, setBuyerAccessToken } from '../../src/lib/session';

@@ -1,8 +1,8 @@
 /* @flow */
 
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { request } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { request } from '@krakenjs/belter/src';
 
 import { GRAPHQL_URI } from '../config';
 import { FPTI_CUSTOM_KEY, FPTI_TRANSITION, HEADERS, SMART_PAYMENT_BUTTONS, STATUS_CODES } from '../constants';

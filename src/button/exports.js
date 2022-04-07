@@ -1,8 +1,8 @@
 /* @flow */
 
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { querySelectorAll } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { querySelectorAll } from '@krakenjs/belter/src';
 
 import { DATA_ATTRIBUTES } from '../constants';
 import { upgradeFacilitatorAccessToken, getGuestEnabledStatus } from '../api';

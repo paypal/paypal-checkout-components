@@ -2,7 +2,7 @@
 /** @jsx h */
 
 import { h, Fragment } from 'preact';
-import { noop } from 'belter';
+import { noop } from '@krakenjs/belter';
 import { useState, useEffect, useRef } from 'preact/hooks';
 
 import {

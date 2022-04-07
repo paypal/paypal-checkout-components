@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-nested-callbacks: off */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, redirect as redir, noop } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { memoize, redirect as redir, noop } from '@krakenjs/belter/src';
 import { INTENT, SDK_QUERY_KEYS, FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
 
 import { type OrderResponse, type PaymentResponse, getOrder, captureOrder, authorizeOrder, patchOrder,
@@ -348,7 +348,7 @@ export function getOnApproveOrder({ intent, onApprove = getDefaultOnApproveOrder
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
-    
+
     const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
     return memoize(({ payerID, paymentID, billingToken, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
@@ -453,7 +453,7 @@ export function getOnApproveTokenize({ onApprove = getDefaultOnApproveTokenize()
     if (!onApprove) {
         throw new Error(`Expected onApprove`);
     }
-    
+
     return memoize(({ paymentMethodToken } : OnApproveData, { restart } : OnApproveActions) => {
         if (!paymentMethodToken) {
             throw new Error(`Payment method token required for tokenize onApprove`);
@@ -475,7 +475,7 @@ export function getOnApproveTokenize({ onApprove = getDefaultOnApproveTokenize()
                 throw err;
             });
         });
-        
+
     });
 }
 

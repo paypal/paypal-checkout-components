@@ -3,12 +3,12 @@
 
 import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
 import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { values, destroyElement, noop, uniqueID, parseQuery, once, getBody } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { values, destroyElement, noop, uniqueID, parseQuery, once, getBody } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 import { INTENT, CURRENCY, CARD, PLATFORM, COUNTRY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import { isWindowClosed, isSameDomain, getDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
-import { ProxyWindow } from 'post-robot/src/serialize/window';
+import { isWindowClosed, isSameDomain, getDomain, type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import { ProxyWindow } from '@krakenjs/post-robot/src/serialize/window';
 
 import type { ZoidComponentInstance, MenuFlowProps } from '../../src/types';
 import { setupButton, setupCard, submitCardFields } from '../../src';

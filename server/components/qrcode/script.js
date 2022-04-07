@@ -3,7 +3,7 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
 
-import { noop } from 'belter';
+import { noop } from '@krakenjs/belter';
 import { ENV } from '@paypal/sdk-constants';
 
 import type { CacheType, InstanceLocationInformation } from '../../types';

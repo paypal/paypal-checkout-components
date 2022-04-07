@@ -1,7 +1,7 @@
 /* @flow */
 
-import { noop, stringifyError } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { noop, stringifyError } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { applepay, checkout, cardField, cardForm, native, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';

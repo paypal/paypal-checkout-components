@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { PAYMENTS_API_URL } from '../config';

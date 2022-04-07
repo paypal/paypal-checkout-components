@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx h */
 
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { h, Fragment } from 'preact';
 
 import { openPopup } from '../ui';

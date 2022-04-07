@@ -14,7 +14,7 @@
     "coverageDirectory": "./server-coverage/",
     "restoreMocks": true,
     "transformIgnorePatterns": [
-      "node_modules/(?!@paypal|beaver-logger|belter|zalgo-promise|cross-domain-utils|cross-domain-safe-weakmap|get-browser-fingerprint)"
+      "node_modules/(?!(@paypal|@krakenjs|get-browser-fingerprint))"
     ],
     "globals": {
       "__DEBUG__": true
@@ -70,6 +70,11 @@
   "alias": {},
   "dependencies": {
     "@krakenjs/grabthar": "^5.0.0",
+    "@krakenjs/belter": "^2.0.0",
+    "@krakenjs/cross-domain-utils": "^3.0.0",
+    "@krakenjs/jsx-pragmatic": "^3.0.0",
+    "@krakenjs/post-robot": "^11.0.0",
+    "@krakenjs/zalgo-promise": "^2.0.0",
     "@paypal/checkout-components": "^5.0.167",
     "@paypal/common-components": "^1.0.16",
     "@paypal/installments": "^1.0.0",
@@ -78,18 +83,14 @@
     "@paypal/sdk-logos": "^1.0.26",
     "@paypal/sdk-release": "^5.0.138",
     "beaver-logger": "^4.0.32",
-    "belter": "^1.0.19",
     "card-validator": "^8.1.1",
     "credit-card-type": "^9.1.0",
-    "cross-domain-utils": "^2.0.16",
     "get-browser-fingerprint": "^1.1.0",
-    "jsx-pragmatic": "^2",
     "module-alias": "^2.2.2",
     "preact": "^10",
     "preact-render-to-string": "^5.1.4",
     "strict-merge": "^1.0.1",
-    "typed-graphqlify": "^2.2.3",
-    "zalgo-promise": "^1.0.28"
+    "typed-graphqlify": "^2.2.3"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
@@ -97,7 +98,6 @@
     "flow-bin": "0.155.0",
     "@krakenjs/grabthar-release": "^2.0.0",
     "grumbler-scripts": "^5.0.1",
-    "post-robot": "^10.0.13",
     "sync-browser-mocks": "^2.0.8",
     "webpack-mem-compile": "^1.0.2"
   },

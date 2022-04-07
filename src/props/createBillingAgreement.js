@@ -1,8 +1,7 @@
 /* @flow */
 
-import { type ZalgoPromise } from 'zalgo-promise/src';
+import { type ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-
 
 export type XCreateBillingAgreementDataType = {|
     paymentSource : $Values<typeof FUNDING> | null

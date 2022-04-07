@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 export const POPUP_BRIDGE_OPTYPE = {
     PAYMENT: ('payment' : 'payment'),

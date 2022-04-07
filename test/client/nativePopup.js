@@ -2,8 +2,8 @@
 /* eslint max-nested-callbacks: off, max-lines: off */
 
 import { ENV, FUNDING, COUNTRY, LANG, PLATFORM } from '@paypal/sdk-constants/src';
-import { wrapPromise, uniqueID } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { wrapPromise, uniqueID } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { setupNativePopup } from '../../src/native/popup';
 

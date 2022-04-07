@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { stringifyError } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { stringifyError } from '@krakenjs/belter/src';
 import { COUNTRY, CURRENCY, FUNDING, CARD, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
 import { enableVault, getFundingEligibility } from '../api';

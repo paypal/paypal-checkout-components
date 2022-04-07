@@ -1,8 +1,8 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { ENV, FUNDING } from '@paypal/sdk-constants/src';
-import { isIos } from 'belter';
+import { isIos } from '@krakenjs/belter';
 
 const ANDROID_PAYPAL_APP_ID = 'com.paypal.android.p2pmobile';
 const ANDROID_VENMO_APP_ID  = 'com.venmo';

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { noop } from 'belter';
+import { noop } from '@krakenjs/belter';
 
 import { compileLocalSmartQRCodeClientScript, getSmartQRCodeClientScript } from './script';
 

@@ -1,9 +1,9 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { CURRENCY, FPTI_KEY, FUNDING, WALLET_INSTRUMENT, INTENT } from '@paypal/sdk-constants/src';
-import { request, noop, memoize, uniqueID, stringifyError } from 'belter/src';
+import { request, noop, memoize, uniqueID, stringifyError } from '@krakenjs/belter/src';
 
 import { SMART_API_URI, ORDERS_API_URL, VALIDATE_PAYMENT_METHOD_API } from '../config';
 import { getLogger, setBuyerAccessToken } from '../lib';

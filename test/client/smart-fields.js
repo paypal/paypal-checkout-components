@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint  max-nested-callbacks: off */
 /* eslint  max-lines: off */
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants';
 
 import type { SmartFields } from '../../src/types';

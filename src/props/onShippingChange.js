@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { COUNTRY, CURRENCY, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { patchOrder, type OrderResponse } from '../api';

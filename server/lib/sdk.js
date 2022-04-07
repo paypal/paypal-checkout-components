@@ -1,7 +1,7 @@
 /* @flow */
 
 import { unpackSDKMeta } from '@paypal/sdk-client';
-import { undotify } from 'belter';
+import { undotify } from '@krakenjs/belter';
 import { ERROR_CODE } from '@paypal/sdk-constants';
 
 import type { ExpressRequest, ExpressResponse, LoggerType, CacheType, InstanceLocationInformation } from '../types';

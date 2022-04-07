@@ -1,8 +1,8 @@
 /* @flow */
 
-import { isIEIntranet, getPageRenderTime, querySelectorAll } from 'belter/src';
+import { isIEIntranet, getPageRenderTime, querySelectorAll } from '@krakenjs/belter/src';
 import { FPTI_KEY, ENV, FUNDING, FPTI_USER_ACTION, COUNTRY } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import type { LocaleType } from '../types';
 import { getLogger, setupLogger, isStorageStateFresh, isIOSSafari, isAndroidChrome } from '../lib';

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { useState, useEffect, useRef } from 'preact/hooks';
-import { noop } from 'belter/src';
+import { noop } from '@krakenjs/belter/src';
 
 export function useXProps<T>() : T {
     const [ xprops, setXProps ] = useState(window.xprops);

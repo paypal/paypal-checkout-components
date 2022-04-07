@@ -1,9 +1,9 @@
 /* @flow */
 /* eslint max-lines: off, max-nested-callbacks: off */
 
-import { cleanup, memoize, stringifyError, stringifyErrorMessage, noop } from 'belter/src';
+import { cleanup, memoize, stringifyError, stringifyErrorMessage, noop } from '@krakenjs/belter/src';
 import { FPTI_KEY, FUNDING } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { getDetailedOrderInfo, approveApplePayPayment, getApplePayMerchantSession } from '../../api';
 import { getLogger, promiseNoop, unresolvedPromise } from '../../lib';

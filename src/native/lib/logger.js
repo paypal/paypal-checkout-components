@@ -1,9 +1,9 @@
 /* @flow */
 
-import { isIEIntranet, getPageRenderTime } from 'belter/src';
-import { type LoggerType } from 'beaver-logger/src';
+import { isIEIntranet, getPageRenderTime } from '@krakenjs/belter/src';
+import { type LoggerType } from '@krakenjs/beaver-logger/src';
 import { FPTI_KEY, ENV, FUNDING, COUNTRY } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import type { LocaleType } from '../../types';
 import { enableAmplitude, getLogger, setupLogger } from '../../lib';

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { regexMap, noop } from 'belter';
+import { regexMap, noop } from '@krakenjs/belter';
 import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';

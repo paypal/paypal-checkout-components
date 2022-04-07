@@ -1,6 +1,6 @@
 /* @flow */
 
-import { noop } from 'belter';
+import { noop } from '@krakenjs/belter';
 
 import { getQRCodeMiddleware, cancelWatchers } from '../../server';
 

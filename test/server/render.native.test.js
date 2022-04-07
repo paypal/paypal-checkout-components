@@ -1,6 +1,6 @@
 /* @flow */
 
-import { noop } from 'belter';
+import { noop } from '@krakenjs/belter';
 import { FUNDING } from '@paypal/sdk-constants';
 
 import { getNativePopupMiddleware, getNativeFallbackMiddleware, cancelWatchers } from '../../server';

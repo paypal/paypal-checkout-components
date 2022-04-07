@@ -5,7 +5,7 @@ import type { FundingEligibilityType } from '@paypal/sdk-constants/src/types';
 import type { CustomStyle } from '@paypal/checkout-components/src/types';
 import { ENV, COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, DEFAULT_COUNTRY,
     COUNTRY_LANGS, PLATFORM, FUNDING_PRODUCTS, SDK_QUERY_KEYS, ERROR_CODE } from '@paypal/sdk-constants';
-import { values, constHas } from 'belter';
+import { values, constHas } from '@krakenjs/belter';
 
 import { HTTP_HEADER } from '../../config';
 import type { ExpressRequest, ExpressResponse, LocaleType, RiskData } from '../../types';

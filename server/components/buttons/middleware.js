@@ -1,8 +1,8 @@
 /* @flow */
 
-import { html } from 'jsx-pragmatic';
+import { html } from '@krakenjs/jsx-pragmatic';
 import { COUNTRY, LANG, FPTI_KEY } from '@paypal/sdk-constants';
-import { stringifyError, noop } from 'belter';
+import { stringifyError, noop } from '@krakenjs/belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest, getDefaultExperiments, type GetExperimentsParams, type GetExperimentsType } from '../../lib';

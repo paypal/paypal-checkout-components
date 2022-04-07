@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint unicorn/prefer-add-event-listener: off, max-lines: off */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { uniqueID, noop, memoize, stringifyError, type Memoized } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { uniqueID, noop, memoize, stringifyError, type Memoized } from '@krakenjs/belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { FIREBASE_SCRIPTS } from '../config';

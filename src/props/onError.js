@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { dedupeErrors, noop } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { dedupeErrors, noop } from '@krakenjs/belter/src';
 
 export type XOnError = (mixed) => ZalgoPromise<void>;
 export type OnError = (mixed) => ZalgoPromise<void>;

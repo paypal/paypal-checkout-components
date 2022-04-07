@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ENV, FUNDING } from '@paypal/sdk-constants/src';
-import { getDomain } from 'cross-domain-utils/src';
+import { getDomain } from '@krakenjs/cross-domain-utils/src';
 
 type EnvConfig = {|
     [ $Values<typeof ENV> ] : string

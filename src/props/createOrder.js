@@ -1,9 +1,9 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, getQueryParam, stringifyError } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { memoize, getQueryParam, stringifyError } from '@krakenjs/belter/src';
 import { FPTI_KEY, SDK_QUERY_KEYS, INTENT, CURRENCY, FUNDING } from '@paypal/sdk-constants/src';
-import { getDomain } from 'cross-domain-utils/src';
+import { getDomain } from '@krakenjs/cross-domain-utils/src';
 
 import { createOrderID, billingTokenToOrderID, subscriptionIdToCartId, createPaymentToken } from '../api';
 import { FPTI_STATE, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
@@ -48,22 +48,22 @@ type OrderOptions = {|
 
 export function buildOrderActions({ facilitatorAccessToken, intent, currency, merchantID, partnerAttributionID } : OrderOptions) : OrderActions {
     const create = (data) => {
-    
+
         let order : Object = { ...data };
-    
+
         if (order.intent && order.intent.toLowerCase() !== intent) {
             throw new Error(`Unexpected intent: ${ order.intent } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.INTENT }=${ order.intent.toLowerCase() } in the paypal script tag.`);
         }
 
         order = { ...order, intent: intent.toUpperCase() };
-    
+
         order.purchase_units = order.purchase_units.map(unit => {
             if (unit.amount.currency_code && unit.amount.currency_code !== currency) {
                 throw new Error(`Unexpected currency: ${ unit.amount.currency_code } passed to order.create. Please ensure you are passing /sdk/js?${ SDK_QUERY_KEYS.CURRENCY }=${ unit.amount.currency_code } in the paypal script tag.`);
             }
 
             let payee = unit.payee;
-    
+
             if (merchantID && merchantID.length === 1 && merchantID[0]) {
                 const payeeID = merchantID[0];
 
@@ -79,10 +79,10 @@ export function buildOrderActions({ facilitatorAccessToken, intent, currency, me
                     };
                 }
             }
-    
+
             return { ...unit, payee, amount: { ...unit.amount, currency_code: currency } };
         });
-    
+
         order.application_context = order.application_context || {};
 
         return createOrderID(order, { facilitatorAccessToken, partnerAttributionID, forceRestAPI: false });
@@ -199,7 +199,7 @@ export function getCreateOrder({ createOrder, intent, currency, merchantID, part
             if (!orderID || typeof orderID !== 'string') {
                 throw new Error(`Expected an order id to be passed`);
             }
-    
+
             if (orderID.indexOf('PAY-') === 0 || orderID.indexOf('PAYID-') === 0) {
                 throw new Error(`Do not pass PAY-XXX or PAYID-XXX directly into createOrder. Pass the EC-XXX token instead`);
             }
@@ -228,7 +228,7 @@ export function getCreateOrder({ createOrder, intent, currency, merchantID, part
                     [FPTI_KEY.RESPONSE_DURATION]:  duration.toString()
                 })
                 .flush();
-    
+
             return orderID;
         });
     });

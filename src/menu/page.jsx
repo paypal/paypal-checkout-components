@@ -3,8 +3,8 @@
 
 import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-import { noop } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { noop } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { getBody } from '../lib';
 

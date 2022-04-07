@@ -1,8 +1,8 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { CURRENCY, COUNTRY, INTENT, FUNDING, CARD, PLATFORM, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import { getUserAgent } from 'belter/src';
+import { getUserAgent } from '@krakenjs/belter/src';
 
 import { HEADERS } from '../constants';
 

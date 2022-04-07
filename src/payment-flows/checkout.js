@@ -1,9 +1,9 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError } from '@krakenjs/belter/src';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
-import { getParent, getTop, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { getParent, getTop, type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';

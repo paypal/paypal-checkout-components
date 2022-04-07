@@ -1,6 +1,6 @@
 /* @flow */
 
-import { camelToDasherize, noop, values } from 'belter';
+import { camelToDasherize, noop, values } from '@krakenjs/belter';
 import creditCardType from 'credit-card-type';
 import luhn10 from 'card-validator/src/luhn-10';
 import cardValidator from 'card-validator';

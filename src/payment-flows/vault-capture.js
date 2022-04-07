@@ -1,9 +1,9 @@
 /* @flow */
 
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
-import { destroyElement, noop } from 'belter/src';
+import { destroyElement, noop } from '@krakenjs/belter/src';
 import { initiateInstallments } from '@paypal/installments/src/interface';
 
 import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';

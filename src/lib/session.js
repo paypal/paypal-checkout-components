@@ -1,6 +1,6 @@
 /* @flow */
 
-import { hashStr, getStorage, type Storage } from 'belter/src';
+import { hashStr, getStorage, type Storage } from '@krakenjs/belter/src';
 import getBrowserFingerprint from 'get-browser-fingerprint';
 
 function getSDKStorage() : Storage {

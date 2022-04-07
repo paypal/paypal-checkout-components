@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { stringifyError } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { stringifyError } from '@krakenjs/belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { confirmOrderAPI, type ConfirmData } from '../api';

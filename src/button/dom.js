@@ -1,7 +1,7 @@
 /* @flow */
 
 import { FUNDING, CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
-import { querySelectorAll } from 'belter/src';
+import { querySelectorAll } from '@krakenjs/belter/src';
 
 import { DATA_ATTRIBUTES, CLASS } from '../constants';
 

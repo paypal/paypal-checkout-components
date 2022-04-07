@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx h */
 
-import { preact } from 'jsx-pragmatic';
+import { preact } from '@krakenjs/jsx-pragmatic';
 import { h } from 'preact';
 import { VenmoLogo, PayPalLogo, PPLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
@@ -145,7 +145,7 @@ export const cardStyle : string = `
     * {
         box-sizing: border-box;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        text-transform: none;        
+        text-transform: none;
     }
     html, body {
         display: flex;
@@ -169,7 +169,7 @@ export const cardStyle : string = `
     #error-view .error-message,
     #error-view .reset-button {
         color: #FFFFFF;
-        text-align: center;        
+        text-align: center;
         line-height: 16px;
     }
     #error-view .error-message {
@@ -178,7 +178,7 @@ export const cardStyle : string = `
     }
     #error-view .reset-button {
         cursor: pointer;
-        border: 0; 
+        border: 0;
         border-radius: 24px;
         padding: 12px;
         background: ${ VENMO_BLUE };
@@ -186,7 +186,7 @@ export const cardStyle : string = `
         font-weight: 700;
         width: 300px;
     }
-    .card, 
+    .card,
     #error-view {
         display: inline-flex;
         align-items: center;
@@ -269,12 +269,12 @@ export const cardStyle : string = `
     #front-view > img {
         padding: 16px 16px 0px;
     }
-    #front-view > img + img { 
+    #front-view > img + img {
         padding-top: 12px;
-        padding-bottom: 32px; 
+        padding-bottom: 32px;
     }
     #view-boxes.${ VQRC_VARIANT.LIGHT } #front-view > img + img {
-        padding-bottom: 16px; 
+        padding-bottom: 16px;
     }
     #qr-code {
         min-width: 160px;
@@ -322,7 +322,7 @@ export const cardStyle : string = `
         line-height: 16px;
         text-align: center;
         color: #FFFFFF;
-    }    
+    }
     #back-view .auth-message,
     #back-view .success-message {
         position: absolute;
@@ -428,7 +428,7 @@ export const cardStyle : string = `
         margin: auto;
         margin-top: 8px;
     }
-    
+
     #survey .answers {
         width: 400px;
         font-size: 16px;
@@ -465,7 +465,7 @@ export const cardStyle : string = `
         border: solid 1px black;
         border-radius: 50%;
     }
-    .escape-path {    
+    .escape-path {
         background-color: white;
         color: #2F3033;
         width: 100%;
@@ -521,11 +521,11 @@ export const cardStyle : string = `
     }
     .detailed-instructions .instruction__description {
         margin: 0;
-        margin-top: 6px;    
+        margin-top: 6px;
         max-width: 174px;
         line-height: 20px;
         font-size: 16px;
-    }  
+    }
     .detailed-instructions .instructions-container {
         display: flex;
         flex-direction: column;
@@ -537,7 +537,7 @@ export const cardStyle : string = `
     .detailed-instructions .qr-code-container {
         display: flex;
         flex-direction: column;
-        align-items: center;   
+        align-items: center;
         row-gap: 15px;
     }
     .detailed-instructions #qr-code {

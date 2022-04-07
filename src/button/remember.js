@@ -1,7 +1,7 @@
 /* @flow */
 
 import { FUNDING, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import type { RememberFunding } from '../props';
 

@@ -1,9 +1,9 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { INTENT } from '@paypal/sdk-constants';
-import { getAllFramesInWindow, isSameDomain } from 'cross-domain-utils/src';
-import { uniqueID } from 'belter/src';
+import { getAllFramesInWindow, isSameDomain } from '@krakenjs/cross-domain-utils/src';
+import { uniqueID } from '@krakenjs/belter/src';
 
 import { FRAME_NAME } from '../constants';
 import { tokenizeCard, approveCardPayment } from '../api';

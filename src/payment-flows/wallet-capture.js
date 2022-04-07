@@ -1,7 +1,7 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { stringifyError, noop } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { stringifyError, noop } from '@krakenjs/belter/src';
 import { FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { MenuChoices, Wallet, WalletInstrument } from '../types';

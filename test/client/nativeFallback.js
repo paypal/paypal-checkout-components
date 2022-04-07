@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-nested-callbacks: off, max-lines: off */
 
-import { wrapPromise } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { wrapPromise } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { setupNativeFallback } from '../../src/native/fallback';
 

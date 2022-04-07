@@ -1,10 +1,10 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
-import type { ProxyWindow } from 'post-robot/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import type { ProxyWindow } from '@krakenjs/post-robot/src';
 // eslint-disable-next-line no-duplicate-imports
-import typeof { send, once, on, toProxyWindow as toProxyWindowType } from 'post-robot/src';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
+import typeof { send, once, on, toProxyWindow as toProxyWindowType } from '@krakenjs/post-robot/src';
+import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 
 type PostRobot = {|
     send : send,

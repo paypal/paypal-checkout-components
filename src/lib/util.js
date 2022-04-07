@@ -1,10 +1,10 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { noop, experiment, isAndroid, isIos, isChrome, isSafari, type Experiment } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { noop, experiment, isAndroid, isIos, isChrome, isSafari, type Experiment } from '@krakenjs/belter/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
-import type { ProxyWindow } from 'post-robot/src';
-import { onCloseWindow } from 'cross-domain-utils/src';
+import type { ProxyWindow } from '@krakenjs/post-robot/src';
+import { onCloseWindow } from '@krakenjs/cross-domain-utils/src';
 
 import { FPTI_STATE, FPTI_TRANSITION } from '../constants';
 

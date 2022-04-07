@@ -1,7 +1,7 @@
 /* @flow */
 
-import { cleanup } from 'belter/src';
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import { cleanup } from '@krakenjs/belter/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { getPostRobot } from '../../lib';
 

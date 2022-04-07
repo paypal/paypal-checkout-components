@@ -1,9 +1,9 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
-import { wrapPromise, uniqueID } from 'belter/src';
+import { wrapPromise, uniqueID } from '@krakenjs/belter/src';
 import { FUNDING, INTENT, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock,
     generateOrderID, clickMenu, mockMenu, getMockWindowOpen } from './mocks';

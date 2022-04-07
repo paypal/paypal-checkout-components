@@ -1,10 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { node, dom } from 'jsx-pragmatic/src';
-import { popup, writeElementToWindow } from 'belter/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import { popup, writeElementToWindow } from '@krakenjs/belter/src';
 import { SpinnerPage } from '@paypal/common-components/src/ui';
-import { assertSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
+import { assertSameDomain, type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 
 import { getNonce } from '../lib';
 

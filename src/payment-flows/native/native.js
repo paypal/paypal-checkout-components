@@ -2,11 +2,11 @@
 /* eslint max-lines: off, max-nested-callbacks: off */
 
 import { uniqueID, memoize, stringifyError,
-    stringifyErrorMessage, cleanup, noop } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+    stringifyErrorMessage, cleanup, noop } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
-import { type CrossDomainWindowType } from 'cross-domain-utils/src';
-import type { ProxyWindow } from 'post-robot/src';
+import { type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import type { ProxyWindow } from '@krakenjs/post-robot/src';
 
 import { updateButtonClientConfig, onLsatUpgradeCalled } from '../../api';
 import { getLogger, isAndroidChrome, toProxyWindow } from '../../lib';

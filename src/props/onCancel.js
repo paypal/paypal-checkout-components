@@ -1,7 +1,7 @@
 /* @flow */
 
-import { memoize, redirect as redir } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { memoize, redirect as redir } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { getLogger, promiseNoop } from '../lib';

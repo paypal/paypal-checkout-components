@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-console: off */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { INTENT, SDK_QUERY_KEYS, CURRENCY, ENV, FPTI_KEY, SDK_SETTINGS, VAULT } from '@paypal/sdk-constants/src';
 
 import type { CreateBillingAgreement, CreateSubscription } from '../props';

@@ -1,8 +1,8 @@
 /* @flow */
 
-import { onClick as onElementClick, querySelectorAll, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from 'belter/src';
+import { onClick as onElementClick, querySelectorAll, noop, stringifyErrorMessage, stringifyError, preventClickFocus } from '@krakenjs/belter/src';
 import { COUNTRY, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import type { ContentType, Wallet, PersonalizationType } from '../types';
 import { getLogger, getSmartFieldsByFundingSource } from '../lib';

@@ -1,7 +1,7 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
-import { request } from 'belter/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { request } from '@krakenjs/belter/src';
 
 import { CREATE_SUBSCRIPTIONS_API_URL, SMART_API_URI } from '../config';
 import { getLogger } from '../lib';

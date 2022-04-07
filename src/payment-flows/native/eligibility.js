@@ -1,10 +1,10 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { ENV, FUNDING, PLATFORM } from '@paypal/sdk-constants/src';
-import { supportsPopups, isIos, isAndroid } from 'belter/src';
-import type { CrossDomainWindowType } from 'cross-domain-utils/src';
-import type { ProxyWindow } from 'post-robot/src';
+import { supportsPopups, isIos, isAndroid } from '@krakenjs/belter/src';
+import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
+import type { ProxyWindow } from '@krakenjs/post-robot/src';
 
 import { type NativeEligibility, getNativeEligibility } from '../../api';
 import { enableAmplitude, getStorageState, isIOSSafari, isAndroidChrome, toProxyWindow } from '../../lib';

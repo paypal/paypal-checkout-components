@@ -1,7 +1,7 @@
 /* @flow */
 
 import { FUNDING } from '@paypal/sdk-constants';
-import { html } from 'jsx-pragmatic';
+import { html } from '@krakenjs/jsx-pragmatic';
 
 import { htmlResponse, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
     type GraphQL, isLocalOrTest } from '../../lib';
@@ -101,7 +101,7 @@ export function getNativeFallbackMiddleware({
             const client = await getNativeFallbackClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
 
             const setupParams = {
-                
+
             };
 
             const pageHTML = `

@@ -1,8 +1,8 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { ENV } from '@paypal/sdk-constants/src';
-import { memoize, type Memoized } from 'belter/src';
+import { memoize, type Memoized } from '@krakenjs/belter/src';
 
 import { getBody } from '../lib';
 

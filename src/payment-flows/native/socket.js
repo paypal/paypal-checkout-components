@@ -1,7 +1,7 @@
 /* @flow */
 
-import { memoize, stringifyError, noop } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { memoize, stringifyError, noop } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import type { Config } from '../../button/props';

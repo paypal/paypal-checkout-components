@@ -1,8 +1,8 @@
 /* @flow */
 
-import { Logger, type LoggerType } from 'beaver-logger/src';
-import { noop, stringifyError, stringifyErrorMessage, inlineMemoize, isAndroid, isIos } from 'belter/src';
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { Logger, type LoggerType } from '@krakenjs/beaver-logger/src';
+import { noop, stringifyError, stringifyErrorMessage, inlineMemoize, isAndroid, isIos } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY, FPTI_FEED, FPTI_DATA_SOURCE, FPTI_SDK_NAME, ENV, COUNTRY, MOBILE_ENV, FUNDING } from '@paypal/sdk-constants/src';
 
 import type { LocaleType } from '../types';

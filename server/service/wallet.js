@@ -2,7 +2,7 @@
 
 import { COUNTRY, CURRENCY, INTENT, COMMIT, VAULT, CARD, FUNDING, WALLET_INSTRUMENT, FPTI_KEY } from '@paypal/sdk-constants';
 import { params, types, query } from 'typed-graphqlify';
-import { values } from 'belter';
+import { values } from '@krakenjs/belter';
 
 import type { ExpressRequest, LoggerType } from '../types';
 import type { Wallet } from '../../src/types';

@@ -1,7 +1,7 @@
 /* @flow */
 
 import { FUNDING } from '@paypal/sdk-constants';
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 
 import { promiseNoop } from '../../src/lib';
 

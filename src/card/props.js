@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { ZalgoPromise } from 'zalgo-promise/src';
+import type { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING, CARD, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 

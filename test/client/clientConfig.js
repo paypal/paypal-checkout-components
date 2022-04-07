@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock, DEFAULT_FUNDING_ELIGIBILITY } from './mocks';

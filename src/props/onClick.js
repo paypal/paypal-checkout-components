@@ -1,8 +1,8 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
-import { memoize } from 'belter/src';
+import { memoize } from '@krakenjs/belter/src';
 
 export type XOnClickDataType = {|
     fundingSource : $Values<typeof FUNDING>

@@ -11,7 +11,7 @@
 [libs]
 flow-typed
 node_modules/grumbler-scripts/declarations.js
-node_modules/post-robot/src/declarations.js
+node_modules/@krakenjs/post-robot/src/declarations.js
 src/declarations.js
 test/declarations.js
 [options]

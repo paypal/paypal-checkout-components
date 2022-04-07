@@ -1,6 +1,6 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import type { MenuChoices, MenuFlowType, MenuComponentInstance } from '../types';
 import type { Payment } from '../payment-flows';

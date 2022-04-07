@@ -1,8 +1,8 @@
 /* @flow */
 
-import { ZalgoPromise } from 'zalgo-promise/src';
-import { getDomain } from 'cross-domain-utils/src';
-import { extendUrl } from 'belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { getDomain } from '@krakenjs/cross-domain-utils/src';
+import { extendUrl } from '@krakenjs/belter/src';
 
 import { WEB_CHECKOUT_URI } from '../config';
 import { promiseNoop } from '../lib';

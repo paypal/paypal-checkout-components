@@ -1,5 +1,5 @@
 /* @flow */
-import { getAllFramesInWindow, isSameDomain } from 'cross-domain-utils/src';
+import { getAllFramesInWindow, isSameDomain } from '@krakenjs/cross-domain-utils/src';
 
 import type { SmartFields } from '../types';
 import { FRAME_NAME } from '../constants';
