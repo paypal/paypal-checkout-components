@@ -1,4 +1,4 @@
-name: publish to npm
+name: publish dry-run
 # manually run this action using the GitHub UI
 # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
 on: workflow_dispatch
@@ -28,8 +28,8 @@ jobs:
           git config --global user.email ${{ github.actor }}@users.noreply.github.com
           git config --global user.name ${{ github.actor }}
 
-      - name: Publish to npm
-        run: npm run release
+      - name: Publish dry-run
+        run: npm run release:dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
