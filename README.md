@@ -73,7 +73,7 @@ npm run lint -- --fix
 # attempt to automatically fix any problems
 ```
 
-Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/krakenjs/grumbler-scripts/blob/main/config/.eslintrc-browser.js).
+Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/krakenjs/@krakenjs/grumbler-scripts/blob/main/config/.eslintrc-browser.js).
 
 ### flow
 
