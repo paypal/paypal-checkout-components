@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FUNDING, CARD } from '@paypal/sdk-constants/src';
-import { memoize, querySelectorAll, debounce, noop } from 'belter/src';
+import { memoize, querySelectorAll, debounce, noop } from '@krakenjs/belter/src';
 import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import { DATA_ATTRIBUTES } from '../constants';

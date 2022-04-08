@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint require-await: off, max-nested-callbacks: off */
 
-import { wrapPromise } from 'belter/src';
+import { wrapPromise } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 
 import {
