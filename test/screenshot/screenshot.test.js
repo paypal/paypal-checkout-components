@@ -2,7 +2,7 @@
 /* eslint no-restricted-globals: off, no-console: off, no-process-exit: off, no-process-env: off, unicorn/no-process-exit: off */
 
 import fs from 'fs-extra';
-import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
+import { getWebpackConfig } from '@krakenjs/grumbler-scripts/config/webpack.config';
 
 import { getTestGlobals } from '../globals';
 import globals from '../../globals';

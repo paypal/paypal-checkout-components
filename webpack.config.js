@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint import/no-nodejs-modules: off, import/no-default-export: off */
 
-import type { WebpackConfig } from 'grumbler-scripts/config/types';
-import { getWebpackConfig } from 'grumbler-scripts/config/webpack.config';
+import type { WebpackConfig } from '@krakenjs/grumbler-scripts/config/types';
+import { getWebpackConfig } from '@krakenjs/grumbler-scripts/config/webpack.config';
 
 import { getTestGlobals } from './test/globals';
 import globals from './globals';
