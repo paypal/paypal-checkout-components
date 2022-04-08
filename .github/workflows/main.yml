@@ -33,13 +33,13 @@ jobs:
         run: npm run build
 
       - name: ⬆️ Upload karma coverage report
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           directory: ./coverage/karma
           flags: karma
 
       - name: ⬆️ Upload jest coverage report
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           directory: ./coverage/jest
           flags: jest
