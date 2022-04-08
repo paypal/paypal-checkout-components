@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint max-lines: off, no-restricted-globals: off, promise/no-native: off */
 
-import { $mockEndpoint, patchXmlHttpRequest } from 'sync-browser-mocks/src/xhr';
-import { mockWebSocket, patchWebSocket } from 'sync-browser-mocks/src/webSocket';
+import { $mockEndpoint, patchXmlHttpRequest } from '@krakenjs/sync-browser-mocks/src/xhr';
+import { mockWebSocket, patchWebSocket } from '@krakenjs/sync-browser-mocks/src/webSocket';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { values, destroyElement, noop, uniqueID, parseQuery, once, getBody } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants';

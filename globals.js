@@ -1,6 +1,6 @@
 /* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
-import { getNextVersion } from 'grumbler-scripts/config/webpack.config';
+import { getNextVersion } from '@krakenjs/grumbler-scripts/config/webpack.config';
 
 import pkg from './package.json';
 

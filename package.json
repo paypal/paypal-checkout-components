@@ -94,13 +94,13 @@
     "typed-graphqlify": "^2.2.3"
   },
   "devDependencies": {
+    "@krakenjs/grabthar-release": "^2.0.0",
+    "@krakenjs/grumbler-scripts": "^6.0.2",
+    "@krakenjs/sync-browser-mocks": "^3.0.0",
+    "@krakenjs/webpack-mem-compile": "^2.0.1",
     "babel-core": "^7.0.0-bridge.0",
     "express": "^4.16.3",
-    "flow-bin": "0.155.0",
-    "@krakenjs/grabthar-release": "^2.0.0",
-    "grumbler-scripts": "^5.0.1",
-    "sync-browser-mocks": "^2.0.8",
-    "webpack-mem-compile": "^1.0.2"
+    "flow-bin": "0.155.0"
   },
   "license": "Apache-2.0"
 }
