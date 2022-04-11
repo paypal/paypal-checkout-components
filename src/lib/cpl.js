@@ -68,6 +68,7 @@ const triggerCPLLatencyMetricsFPTI = (buttonId : string) => {
     const cplLatencyMetrics = {
         [FPTI_KEY.STATE]:                 'CPL_LATENCY_METRICS',
         [FPTI_KEY.TRANSITION]:            'process_client_metrics',
+        [FPTI_KEY.CONTEXT_ID]:            buttonId,
         [FPTI_CPL_KEY.PAGE_NAME]:         `main:xo:paypal-components:smart-payment-buttons`,
         [FPTI_CPL_KEY.CPL_COMP_METRICS]:  JSON.stringify(cplPhases?.[buttonId]?.comp || {}),
         [FPTI_CPL_KEY.CPL_QUERY_METRICS]: JSON.stringify(cplPhases?.[buttonId]?.query || {}),
