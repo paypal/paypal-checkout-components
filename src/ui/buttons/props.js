@@ -184,18 +184,15 @@ export type Personalization = {|
     |}
 |};
 
-export type ApplePayErrorCode = 'shippingContactInvalid' | 'billingContactInvalid' | 'addressUnserviceable' | 'unknown';
-export type ApplePayContactField = 'phoneNumber' | 'emailAddress' | 'givenName' | 'familyName' | 'phoneticGivenName' | 'phoneticFamilyName' | 'addressLines' | 'subLocality' | 'locality' | 'postalCode' | 'subAdministrativeArea' | 'administrativeArea' | 'country' | 'countryCode';
-
+// https://developer.apple.com/documentation/apple_pay_on_the_web/applepayerror/2970147-applepayerror
 export type ApplePayError = {|
-    code : ApplePayErrorCode,
-    contactField : ApplePayContactField,
-    message : string
+    code : string, // https://developer.apple.com/documentation/apple_pay_on_the_web/applepayerrorcode
+    contactField : string, // https://developer.apple.com/documentation/apple_pay_on_the_web/applepayerrorcontactfield
+    message : string // custom error message
 |};
 
-export type ApplePayLineItemType = 'final' | 'pending';
 export type ApplePayLineItem = {|
-    type? : ApplePayLineItemType,
+    type? : string, // 'final' | 'pending'
     label? : string,
     amount? : string
 |};
