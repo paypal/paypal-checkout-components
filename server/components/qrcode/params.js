@@ -10,8 +10,7 @@ type ParamsType = {|
     qrPath : string,
     demo? : boolean,
     locale? : LocaleType,
-    debug? : boolean,
-    buttonSessionID : string
+    debug? : boolean
 |};
 
 type RequestParams = {|
@@ -20,8 +19,7 @@ type RequestParams = {|
     qrPath : string,
     demo : boolean,
     locale : LocaleType,
-    debug : boolean,
-    buttonSessionID : string
+    debug : boolean
 |};
 
 export function getParams(params : ParamsType, req : ExpressRequest, res : ExpressResponse) : RequestParams {
@@ -30,8 +28,7 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         qrPath,
         demo,
         locale = {},
-        debug = false,
-        buttonSessionID
+        debug = false
     } = params;
 
     const {
@@ -47,7 +44,6 @@ export function getParams(params : ParamsType, req : ExpressRequest, res : Expre
         qrPath,
         demo:   Boolean(demo),
         debug:  Boolean(debug),
-        locale: { country, lang },
-        buttonSessionID
+        locale: { country, lang }
     };
 }

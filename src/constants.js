@@ -252,17 +252,6 @@ export const QRCODE_STATE = {
     DEFAULT:    'qr_default'
 };
 
-export const VQRC_EXPERIMENT = {
-    CTRL: 'Ctrl_Venmo_QRC_Redesign',
-    A:    'Trmt_Venmo_QRC_RedesignA',
-    B:    'Trmt_Venmo_QRC_RedesignB'
-};
-
-export const VQRC_VARIANT = {
-    DARK:     'DARK',
-    LIGHT:    'LIGHT'
-};
-
 export const LSAT_UPGRADE_EXCLUDED_MERCHANTS = [
     'AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz',
     'Aco-yrRKihknb5vDBbDOdtYywjYMEPaM7mQg6kev8VDAz01lLA88J4oAUnF4UV9F_InqkqX7K62_jOjx',
