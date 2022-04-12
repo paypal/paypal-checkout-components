@@ -4,6 +4,8 @@
 // $FlowFixMe[toplevel-library-import]
 import { FUNDING } from '@paypal/sdk-constants/src';
 
+import { type InlineXOEligibilityType } from './types';
+
 declare var __PAYPAL_CHECKOUT__ : {|
     __REMEMBERED_FUNDING__ : $ReadOnlyArray<$Values<typeof FUNDING>>,
     __URI__ : {|
@@ -20,4 +22,4 @@ declare var __PAYPAL_CHECKOUT__ : {|
     |}
 |};
 
-declare var __INLINE_CHECKOUT_ELIGIBILITY__;
+declare var __INLINE_CHECKOUT_ELIGIBILITY__ : InlineXOEligibilityType;
