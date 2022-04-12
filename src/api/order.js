@@ -126,10 +126,9 @@ export function isProcessorDeclineError(err : mixed) : boolean {
     }));
 }
 
-
 export function isUnprocessableEntityError(err : mixed) : boolean {
     // $FlowFixMe
-    return Boolean(err?.response?.body?.data?.details?.some(detail => {
+    return Boolean(err?.response?.body?.details?.some(detail => {
         return detail.issue === ORDER_API_ERROR.DUPLICATE_INVOICE_ID;
     }));
 }
