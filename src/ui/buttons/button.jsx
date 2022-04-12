@@ -215,7 +215,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             ].join(' ') }
         >
             <div
-                role='button'
+                role='link'
                 { ...{
                     [ ATTRIBUTE.BUTTON ]:            true,
                     [ ATTRIBUTE.FUNDING_SOURCE ]:    fundingSource,
