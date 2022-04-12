@@ -1,5 +1,10 @@
 /* eslint import/no-commonjs: off, flowtype/require-valid-file-annotation: off, flowtype/require-return-type: off */
 
+const inlineCheckoutEligibility = {
+    eligible:            true,
+    ineligibilityReason: ''
+};
+
 const fundingEligibility = {
     bancontact: {
         eligible: false
@@ -121,7 +126,8 @@ function getTestGlobals(productionGlobals) {
             }
         },
 
-        __FUNDING_ELIGIBILITY__: () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
+        __FUNDING_ELIGIBILITY__:         () => `window.__TEST_FUNDING_ELIGIBILITY__ || ${ JSON.stringify(fundingEligibility) }`,
+        __INLINE_CHECKOUT_ELIGIBILITY__: () => `window.__TEST_INLINE_CHECKOUT_ELIGIBILITY__ || ${ JSON.stringify(inlineCheckoutEligibility) }`,
 
         __PROTOCOL__:          'http',
         __PORT__:              8000,
@@ -152,5 +158,6 @@ function getTestGlobals(productionGlobals) {
 
 module.exports = {
     fundingEligibility,
+    inlineCheckoutEligibility,
     getTestGlobals
 };

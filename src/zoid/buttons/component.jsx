@@ -5,7 +5,7 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled, getPageType } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, type ZoidComponent } from '@krakenjs/zoid/src';
@@ -21,7 +21,7 @@ import { EXPERIENCE } from '../../constants';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments } from './util';
+    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -608,10 +608,26 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { style: { custom }, fundingEligibility } = props;
-                    const isInlineXO = (custom && (custom.label || custom.css)) && fundingEligibility[FUNDING.CARD]?.eligible;
+                    const { buyerCountry, commit, createBillingAgreement, currency, disableFunding, fundingEligibility, merchantID, style: { layout }, vault } = props || {};
+                    
+                    let pageType;
+                    try {
+                        pageType = getPageType() || '';
+                    } catch (e) {
+                        pageType = '';
+                    }
 
-                    return isInlineXO ? EXPERIENCE.INLINE : '';
+                    return __INLINE_CHECKOUT_ELIGIBILITY__ &&  isInlineXOEligible({ props: {
+                        buyerCountry,
+                        commit,
+                        createBillingAgreement,
+                        currency,
+                        disableFunding,
+                        fundingEligibility,
+                        layout,
+                        merchantID,
+                        vault
+                    }, pageType }) ? EXPERIENCE.INLINE : '';
                 }
             },
 

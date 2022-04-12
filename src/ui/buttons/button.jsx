@@ -131,7 +131,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
-            custom={ inlineExperience ? custom : null }
+            custom={ inlineExperience && custom ? custom : null }
             experiment={ experiment }
         />
     );
@@ -200,7 +200,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         <div
             class={ [
                 CLASS.BUTTON_ROW,
-                inlineExperience && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
+                inlineExperience && custom ? CLASS.CUSTOM : '',
                 `${ CLASS.NUMBER }-${ i }`,
                 `${ CLASS.LAYOUT }-${ layout }`,
                 `${ CLASS.SHAPE }-${ shape }`,
@@ -225,7 +225,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 } }
                 class={ [
                     CLASS.BUTTON,
-                    inlineExperience && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : '',
+                    inlineExperience && custom ? CLASS.CUSTOM : '',
                     `${ CLASS.NUMBER }-${ i }`,
                     `${ CLASS.LAYOUT }-${ layout }`,
                     `${ CLASS.SHAPE }-${ shape }`,

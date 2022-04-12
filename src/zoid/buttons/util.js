@@ -1,7 +1,7 @@
 /* @flow */
 import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled } from '@krakenjs/belter/src';
-import { ENV, FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv } from '@paypal/sdk-client/src';
+import { COUNTRY, CURRENCY, ENV, FUNDING } from '@paypal/sdk-constants/src';
+import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
@@ -295,4 +295,32 @@ export function getButtonSize (props : ButtonProps, container : string | HTMLEle
             return BUTTON_SIZE.HUGE;
         }
     }
+}
+
+type InlineCheckoutEligibilityProps = {|
+    buyerCountry : ?$Values<typeof COUNTRY>,
+    commit : boolean,
+    createBillingAgreement? : Function,
+    currency : string,
+    disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
+    fundingEligibility : FundingEligibilityType,
+    layout : $Values<typeof BUTTON_LAYOUT>,
+    merchantID? : $ReadOnlyArray<string>,
+    vault : boolean
+|};
+
+export function isInlineXOEligible({ props, pageType = '' } : {| props : InlineCheckoutEligibilityProps, pageType : ?string |}) : boolean {
+    const { buyerCountry, commit, currency, createBillingAgreement, disableFunding, fundingEligibility, layout, merchantID, vault } = props;
+    return (
+        buyerCountry === COUNTRY.US &&
+        commit === true &&
+        !createBillingAgreement &&
+        currency === CURRENCY.USD &&
+        (disableFunding?.length > 0 && disableFunding[0].indexOf(FUNDING.CARD) !== -1) &&
+        (fundingEligibility?.card?.eligible || false) &&
+        layout === BUTTON_LAYOUT.VERTICAL &&
+        !(merchantID && merchantID.length > 0) &&
+        vault === false &&
+        ((pageType && pageType.length > 0) || false)
+    );
 }
