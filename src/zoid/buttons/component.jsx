@@ -608,7 +608,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { buyerCountry, commit, createBillingAgreement, currency, disableFunding, fundingEligibility, merchantID, style: { layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding, fundingEligibility, locale, merchantID, style: { layout }, vault } = props || {};
                     
                     let pageType;
                     try {
@@ -616,15 +616,17 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     } catch (e) {
                         pageType = '';
                     }
-
-                    return __INLINE_CHECKOUT_ELIGIBILITY__ &&  isInlineXOEligible({ props: {
-                        buyerCountry,
+                    const inlineCheckoutEligibility = __INLINE_CHECKOUT_ELIGIBILITY__ || {
+                        eligible: false
+                    };
+                    return inlineCheckoutEligibility &&  isInlineXOEligible({ props: {
                         commit,
                         createBillingAgreement,
                         currency,
                         disableFunding,
                         fundingEligibility,
                         layout,
+                        locale,
                         merchantID,
                         vault
                     }, pageType }) ? EXPERIENCE.INLINE : '';

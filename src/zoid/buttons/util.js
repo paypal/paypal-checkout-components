@@ -1,7 +1,7 @@
 /* @flow */
 import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled } from '@krakenjs/belter/src';
-import { COUNTRY, CURRENCY, ENV, FUNDING } from '@paypal/sdk-constants/src';
-import { getEnableFunding, getDisableFunding, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv, type FundingEligibilityType } from '@paypal/sdk-client/src';
+import { COUNTRY, CURRENCY, ENV, FPTI_KEY, FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
+import { getEnableFunding, getDisableFunding, getLogger, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import type { Experiment as EligibilityExperiment } from '../../types';
@@ -298,29 +298,40 @@ export function getButtonSize (props : ButtonProps, container : string | HTMLEle
 }
 
 type InlineCheckoutEligibilityProps = {|
-    buyerCountry : ?$Values<typeof COUNTRY>,
     commit : boolean,
     createBillingAgreement? : Function,
     currency : string,
     disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     fundingEligibility : FundingEligibilityType,
     layout : $Values<typeof BUTTON_LAYOUT>,
+    locale : LocaleType,
     merchantID? : $ReadOnlyArray<string>,
     vault : boolean
 |};
 
 export function isInlineXOEligible({ props, pageType = '' } : {| props : InlineCheckoutEligibilityProps, pageType : ?string |}) : boolean {
-    const { buyerCountry, commit, currency, createBillingAgreement, disableFunding, fundingEligibility, layout, merchantID, vault } = props;
-    return (
-        buyerCountry === COUNTRY.US &&
+    const { commit, currency, createBillingAgreement, disableFunding, fundingEligibility, layout, locale, merchantID, vault } = props;
+
+    const isEligible = (
+        locale.country === COUNTRY.US &&
         commit === true &&
         !createBillingAgreement &&
         currency === CURRENCY.USD &&
-        (disableFunding?.length > 0 && disableFunding[0].indexOf(FUNDING.CARD) !== -1) &&
+        (disableFunding?.indexOf(FUNDING.CARD) === -1) &&
         (fundingEligibility?.card?.eligible || false) &&
         layout === BUTTON_LAYOUT.VERTICAL &&
-        !(merchantID && merchantID.length > 0) &&
+        merchantID?.length === 0 &&
         vault === false &&
         ((pageType && pageType.length > 0) || false)
     );
+
+    getLogger()
+        .info('isInlineXOEligible props', { props: JSON.stringify(props) })
+        .info('isInlineXOEligible pageType', { pageType })
+        .info('isInlineXOEligible eligible', { eligible: String(isEligible) })
+        .track({
+            [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(isEligible) }`
+        }).flush();
+
+    return isEligible;
 }
