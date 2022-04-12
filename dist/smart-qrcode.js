@@ -2557,13 +2557,6 @@
                 class: "paypal-logo paypal-logo-" + name + " " + (logoColor ? "paypal-logo-color-" + logoColor : "")
             }));
         }
-        function getLogoColors(name, logoColorMap, logoColor) {
-            var colors;
-            logoColor && (colors = logoColorMap[logoColor]);
-            colors || (colors = logoColorMap.default);
-            if (!colors) throw new Error("No " + (logoColor || "default") + " logo available for " + name);
-            return colors;
-        }
         var _LOGO_COLORS;
         (_LOGO_COLORS = {}).default = {
             primary: "#ffffff",
@@ -2676,9 +2669,8 @@
             primary: "#d03238",
             secondary: "#b3b1b1"
         };
-        var paypal_logo_excluded = [ "logoColor" ], logo_excluded2 = [ "logoColor" ];
         var _PAYPAL_LOGO_COLORS, _PP_LOGO_COLORS;
-        var PAYPAL_LOGO_COLORS = ((_PAYPAL_LOGO_COLORS = {}).default = {
+        (_PAYPAL_LOGO_COLORS = {}).default = {
             primary: "#003087",
             secondary: "#009cde"
         }, _PAYPAL_LOGO_COLORS.blue = {
@@ -2693,8 +2685,8 @@
         }, _PAYPAL_LOGO_COLORS.monochrome = {
             primary: "#000000",
             secondary: "#000000"
-        }, _PAYPAL_LOGO_COLORS);
-        var PP_LOGO_COLORS = ((_PP_LOGO_COLORS = {}).default = {
+        };
+        (_PP_LOGO_COLORS = {}).default = {
             primary: "#009cde",
             secondary: "#012169",
             tertiary: "#003087"
@@ -2712,7 +2704,7 @@
             primary: "#808080",
             secondary: "#000000",
             tertiary: "#1a1a1a"
-        }, _PP_LOGO_COLORS);
+        };
         var sepa_logo_LOGO_COLORS;
         (sepa_logo_LOGO_COLORS = {}).default = {
             main: "#005DA0",
@@ -2936,8 +2928,13 @@
             return (_ref = {
                 logoColor: "default"
             }, _ref$logoColor = _ref.logoColor, logoColor = void 0 === _ref$logoColor ? "default" : _ref$logoColor, 
-            props = _objectWithoutPropertiesLoose(_ref, venmo_logo_excluded), primary = getLogoColors("sofort", logos_venmo_logo_LOGO_COLORS, logoColor).primary, 
-            node_node(SVGLogo, _extends({}, props, {
+            props = _objectWithoutPropertiesLoose(_ref, venmo_logo_excluded), primary = function(name, logoColorMap, logoColor) {
+                var colors;
+                logoColor && (colors = logoColorMap[logoColor]);
+                colors || (colors = logoColorMap.default);
+                if (!colors) throw new Error("No " + (logoColor || "default") + " logo available for sofort");
+                return colors;
+            }(0, logos_venmo_logo_LOGO_COLORS, logoColor).primary, node_node(SVGLogo, _extends({}, props, {
                 name: "venmo",
                 logoColor: logoColor,
                 render: function() {
@@ -3033,178 +3030,6 @@
                 d: "M43.4999 43.4991L14.4999 32.9995",
                 stroke: "#2F3033"
             }));
-        }
-        function DetailedInstructions(_ref4) {
-            var children = _ref4.children;
-            return _ref4.showInstructions ? v("section", {
-                className: "detailed-instructions"
-            }, v("div", {
-                className: "instructions-container"
-            }, v("div", {
-                className: "instruction"
-            }, v(MobileIcon, null), v("div", null, v("p", {
-                className: "instruction__title"
-            }, "Scan"), v("p", {
-                className: "instruction__description"
-            }, "Scan QR code with your Venmo App or camera"))), v("div", {
-                className: "instruction"
-            }, v(CompleteIcon, null), v("div", null, v("p", {
-                className: "instruction__title"
-            }, "Complete"), v("p", {
-                className: "instruction__description"
-            }, "Confirm payment in the Venmo app")))), v("div", {
-                className: "qr-code-container"
-            }, children)) : children;
-        }
-        function PaypalIcon() {
-            return v("span", {
-                id: "paypal-icon"
-            }, (_ref2 = {
-                logoColor: "default"
-            }, _ref2$logoColor = _ref2.logoColor, logoColor = void 0 === _ref2$logoColor ? "default" : _ref2$logoColor, 
-            props = _objectWithoutPropertiesLoose(_ref2, logo_excluded2), _getLogoColors2 = getLogoColors("pp", PP_LOGO_COLORS, logoColor), 
-            primary = _getLogoColors2.primary, secondary = _getLogoColors2.secondary, tertiary = _getLogoColors2.tertiary, 
-            _getLogoColors2$prima = _getLogoColors2.primaryOpacity, primaryOpacity = void 0 === _getLogoColors2$prima ? "1" : _getLogoColors2$prima, 
-            _getLogoColors2$secon = _getLogoColors2.secondaryOpacity, secondaryOpacity = void 0 === _getLogoColors2$secon ? "1" : _getLogoColors2$secon, 
-            _getLogoColors2$terti = _getLogoColors2.tertiaryOpacity, tertiaryOpacity = void 0 === _getLogoColors2$terti ? "1" : _getLogoColors2$terti, 
-            node_node(SVGLogo, _extends({}, props, {
-                name: "pp",
-                alt: "PP",
-                role: "presentation",
-                logoColor: logoColor,
-                render: function() {
-                    return node_node("svg", {
-                        width: "24",
-                        height: "32",
-                        viewBox: "0 0 24 32",
-                        preserveAspectRatio: "xMinYMin meet",
-                        xmlns: "http://www.w3.org/2000/svg"
-                    }, node_node("path", {
-                        fill: primary,
-                        opacity: primaryOpacity,
-                        d: "M 20.924 7.157 C 21.204 5.057 20.924 3.657 19.801 2.357 C 18.583 0.957 16.43 0.257 13.716 0.257 L 5.758 0.257 C 5.29 0.257 4.729 0.757 4.634 1.257 L 1.358 23.457 C 1.358 23.857 1.639 24.357 2.107 24.357 L 6.975 24.357 L 6.694 26.557 C 6.6 26.957 6.881 27.257 7.255 27.257 L 11.375 27.257 C 11.844 27.257 12.311 26.957 12.405 26.457 L 12.405 26.157 L 13.247 20.957 L 13.247 20.757 C 13.341 20.257 13.809 19.857 14.277 19.857 L 14.84 19.857 C 18.864 19.857 21.954 18.157 22.89 13.157 C 23.358 11.057 23.172 9.357 22.048 8.157 C 21.767 7.757 21.298 7.457 20.924 7.157 L 20.924 7.157"
-                    }), node_node("path", {
-                        fill: secondary,
-                        opacity: secondaryOpacity,
-                        d: "M 20.924 7.157 C 21.204 5.057 20.924 3.657 19.801 2.357 C 18.583 0.957 16.43 0.257 13.716 0.257 L 5.758 0.257 C 5.29 0.257 4.729 0.757 4.634 1.257 L 1.358 23.457 C 1.358 23.857 1.639 24.357 2.107 24.357 L 6.975 24.357 L 8.286 16.057 L 8.192 16.357 C 8.286 15.757 8.754 15.357 9.315 15.357 L 11.655 15.357 C 16.243 15.357 19.801 13.357 20.924 7.757 C 20.831 7.457 20.924 7.357 20.924 7.157"
-                    }), node_node("path", {
-                        fill: tertiary,
-                        opacity: tertiaryOpacity,
-                        d: "M 9.504 7.157 C 9.596 6.857 9.784 6.557 10.065 6.357 C 10.251 6.357 10.345 6.257 10.532 6.257 L 16.711 6.257 C 17.461 6.257 18.208 6.357 18.772 6.457 C 18.958 6.457 19.146 6.457 19.333 6.557 C 19.52 6.657 19.707 6.657 19.801 6.757 C 19.894 6.757 19.987 6.757 20.082 6.757 C 20.362 6.857 20.643 7.057 20.924 7.157 C 21.204 5.057 20.924 3.657 19.801 2.257 C 18.677 0.857 16.525 0.257 13.809 0.257 L 5.758 0.257 C 5.29 0.257 4.729 0.657 4.634 1.257 L 1.358 23.457 C 1.358 23.857 1.639 24.357 2.107 24.357 L 6.975 24.357 L 8.286 16.057 L 9.504 7.157 Z"
-                    }));
-                }
-            }))).render(Object(jsx_pragmatic.preact)({
-                Preact: {
-                    h: v
-                }
-            })), function(_ref) {
-                var _ref$logoColor = _ref.logoColor, logoColor = void 0 === _ref$logoColor ? "default" : _ref$logoColor, props = _objectWithoutPropertiesLoose(_ref, paypal_logo_excluded);
-                var _getLogoColors = getLogoColors("paypal", PAYPAL_LOGO_COLORS, logoColor), primary = _getLogoColors.primary, secondary = _getLogoColors.secondary;
-                return node_node(SVGLogo, _extends({}, props, {
-                    name: "paypal",
-                    alt: "PayPal",
-                    role: "presentation",
-                    logoColor: logoColor,
-                    render: function() {
-                        return node_node("svg", {
-                            width: "101px",
-                            height: "32",
-                            viewBox: "0 0 101 32",
-                            preserveAspectRatio: "xMinYMin meet",
-                            xmlns: "http://www.w3.org/2000/svg"
-                        }, node_node("path", {
-                            fill: primary,
-                            d: "M 12.237 2.8 L 4.437 2.8 C 3.937 2.8 3.437 3.2 3.337 3.7 L 0.237 23.7 C 0.137 24.1 0.437 24.4 0.837 24.4 L 4.537 24.4 C 5.037 24.4 5.537 24 5.637 23.5 L 6.437 18.1 C 6.537 17.6 6.937 17.2 7.537 17.2 L 10.037 17.2 C 15.137 17.2 18.137 14.7 18.937 9.8 C 19.237 7.7 18.937 6 17.937 4.8 C 16.837 3.5 14.837 2.8 12.237 2.8 Z M 13.137 10.1 C 12.737 12.9 10.537 12.9 8.537 12.9 L 7.337 12.9 L 8.137 7.7 C 8.137 7.4 8.437 7.2 8.737 7.2 L 9.237 7.2 C 10.637 7.2 11.937 7.2 12.637 8 C 13.137 8.4 13.337 9.1 13.137 10.1 Z"
-                        }), node_node("path", {
-                            fill: primary,
-                            d: "M 35.437 10 L 31.737 10 C 31.437 10 31.137 10.2 31.137 10.5 L 30.937 11.5 L 30.637 11.1 C 29.837 9.9 28.037 9.5 26.237 9.5 C 22.137 9.5 18.637 12.6 17.937 17 C 17.537 19.2 18.037 21.3 19.337 22.7 C 20.437 24 22.137 24.6 24.037 24.6 C 27.337 24.6 29.237 22.5 29.237 22.5 L 29.037 23.5 C 28.937 23.9 29.237 24.3 29.637 24.3 L 33.037 24.3 C 33.537 24.3 34.037 23.9 34.137 23.4 L 36.137 10.6 C 36.237 10.4 35.837 10 35.437 10 Z M 30.337 17.2 C 29.937 19.3 28.337 20.8 26.137 20.8 C 25.037 20.8 24.237 20.5 23.637 19.8 C 23.037 19.1 22.837 18.2 23.037 17.2 C 23.337 15.1 25.137 13.6 27.237 13.6 C 28.337 13.6 29.137 14 29.737 14.6 C 30.237 15.3 30.437 16.2 30.337 17.2 Z"
-                        }), node_node("path", {
-                            fill: primary,
-                            d: "M 55.337 10 L 51.637 10 C 51.237 10 50.937 10.2 50.737 10.5 L 45.537 18.1 L 43.337 10.8 C 43.237 10.3 42.737 10 42.337 10 L 38.637 10 C 38.237 10 37.837 10.4 38.037 10.9 L 42.137 23 L 38.237 28.4 C 37.937 28.8 38.237 29.4 38.737 29.4 L 42.437 29.4 C 42.837 29.4 43.137 29.2 43.337 28.9 L 55.837 10.9 C 56.137 10.6 55.837 10 55.337 10 Z"
-                        }), node_node("path", {
-                            fill: secondary,
-                            d: "M 67.737 2.8 L 59.937 2.8 C 59.437 2.8 58.937 3.2 58.837 3.7 L 55.737 23.6 C 55.637 24 55.937 24.3 56.337 24.3 L 60.337 24.3 C 60.737 24.3 61.037 24 61.037 23.7 L 61.937 18 C 62.037 17.5 62.437 17.1 63.037 17.1 L 65.537 17.1 C 70.637 17.1 73.637 14.6 74.437 9.7 C 74.737 7.6 74.437 5.9 73.437 4.7 C 72.237 3.5 70.337 2.8 67.737 2.8 Z M 68.637 10.1 C 68.237 12.9 66.037 12.9 64.037 12.9 L 62.837 12.9 L 63.637 7.7 C 63.637 7.4 63.937 7.2 64.237 7.2 L 64.737 7.2 C 66.137 7.2 67.437 7.2 68.137 8 C 68.637 8.4 68.737 9.1 68.637 10.1 Z"
-                        }), node_node("path", {
-                            fill: secondary,
-                            d: "M 90.937 10 L 87.237 10 C 86.937 10 86.637 10.2 86.637 10.5 L 86.437 11.5 L 86.137 11.1 C 85.337 9.9 83.537 9.5 81.737 9.5 C 77.637 9.5 74.137 12.6 73.437 17 C 73.037 19.2 73.537 21.3 74.837 22.7 C 75.937 24 77.637 24.6 79.537 24.6 C 82.837 24.6 84.737 22.5 84.737 22.5 L 84.537 23.5 C 84.437 23.9 84.737 24.3 85.137 24.3 L 88.537 24.3 C 89.037 24.3 89.537 23.9 89.637 23.4 L 91.637 10.6 C 91.637 10.4 91.337 10 90.937 10 Z M 85.737 17.2 C 85.337 19.3 83.737 20.8 81.537 20.8 C 80.437 20.8 79.637 20.5 79.037 19.8 C 78.437 19.1 78.237 18.2 78.437 17.2 C 78.737 15.1 80.537 13.6 82.637 13.6 C 83.737 13.6 84.537 14 85.137 14.6 C 85.737 15.3 85.937 16.2 85.737 17.2 Z"
-                        }), node_node("path", {
-                            fill: secondary,
-                            d: "M 95.337 3.3 L 92.137 23.6 C 92.037 24 92.337 24.3 92.737 24.3 L 95.937 24.3 C 96.437 24.3 96.937 23.9 97.037 23.4 L 100.237 3.5 C 100.337 3.1 100.037 2.8 99.637 2.8 L 96.037 2.8 C 95.637 2.8 95.437 3 95.337 3.3 Z"
-                        }));
-                    }
-                }));
-            }({
-                logoColor: "default"
-            }).render(Object(jsx_pragmatic.preact)({
-                Preact: {
-                    h: v
-                }
-            })));
-            var _ref2, _ref2$logoColor, logoColor, props, _getLogoColors2, primary, secondary, tertiary, _getLogoColors2$prima, primaryOpacity, _getLogoColors2$secon, secondaryOpacity, _getLogoColors2$terti, tertiaryOpacity;
-        }
-        function MobileIcon() {
-            return v("svg", {
-                width: "59",
-                height: "102",
-                viewBox: "0 0 59 102",
-                fill: "none",
-                xmlns: "http://www.w3.org/2000/svg"
-            }, v("path", {
-                "fill-rule": "evenodd",
-                "clip-rule": "evenodd",
-                d: "M50.4182 0H8.58182C3.84221 0 0 3.92484 0 8.76638V93.1427C0 97.9843 3.84221 101.909 8.58182 101.909H50.4182C55.1578 101.909 59 97.9843 59 93.1427V8.76638C59 3.92484 55.1578 0 50.4182 0ZM29.5018 94.1296C27.132 94.1296 25.2109 92.1672 25.2109 89.7465C25.2109 87.3257 27.132 85.3633 29.5018 85.3633C31.8716 85.3633 33.7928 87.3257 33.7928 89.7465C33.7928 92.1672 31.8716 94.1296 29.5018 94.1296ZM6.4375 79.5544H52.5648V11.7246H6.4375V79.5544Z",
-                fill: "#888C94"
-            }), v("path", {
-                "fill-rule": "evenodd",
-                "clip-rule": "evenodd",
-                d: "M43.5795 27.0918H34.7717C32.9475 27.0918 31.4688 28.6476 31.4688 30.5669V39.8337C31.4688 41.7529 32.9475 43.3087 34.7717 43.3087H43.5795C45.4037 43.3087 46.8825 41.7529 46.8825 39.8337V30.5669C46.8825 28.6476 45.4037 27.0918 43.5795 27.0918ZM33.6699 30.5626C33.6699 29.9229 34.1628 29.4043 34.7709 29.4043H43.5787C44.1868 29.4043 44.6797 29.9229 44.6797 30.5626V39.8295C44.6797 40.4692 44.1868 40.9878 43.5787 40.9878H34.7709C34.1628 40.9878 33.6699 40.4692 33.6699 39.8295V30.5626ZM16.0566 32.7266C16.0566 32.1754 16.5035 31.7285 17.0547 31.7285H21.6644C22.2157 31.7285 22.6625 32.1754 22.6625 32.7266V37.6805C22.6625 38.2318 22.2157 38.6786 21.6644 38.6786H17.0547C16.5035 38.6786 16.0566 38.2318 16.0566 37.6805V32.7266ZM35.8721 32.7266C35.8721 32.1754 36.3189 31.7285 36.8702 31.7285H41.4798C42.0311 31.7285 42.4779 32.1754 42.4779 32.7266V37.6805C42.4779 38.2318 42.0311 38.6786 41.4798 38.6786H36.8702C36.3189 38.6786 35.8721 38.2318 35.8721 37.6805V32.7266ZM32.4669 47.9473C31.9156 47.9473 31.4688 48.3941 31.4688 48.9454V51.5826C31.4688 52.1338 31.9156 52.5807 32.4669 52.5807H34.8746C35.4258 52.5807 35.8727 52.1338 35.8727 51.5826V48.9454C35.8727 48.3941 35.4258 47.9473 34.8746 47.9473H32.4669ZM31.4688 60.5235C31.4688 59.9723 31.9156 59.5254 32.4669 59.5254H34.8746C35.4258 59.5254 35.8727 59.9723 35.8727 60.5235V63.1607C35.8727 63.7119 35.4258 64.1588 34.8746 64.1588H32.4669C31.9156 64.1588 31.4688 63.7119 31.4688 63.1607V60.5235ZM43.4756 47.9473C42.9244 47.9473 42.4775 48.3941 42.4775 48.9454V51.5826C42.4775 52.1338 42.9244 52.5807 43.4756 52.5807H45.8834C46.4346 52.5807 46.8815 52.1338 46.8815 51.5826V48.9454C46.8815 48.3941 46.4346 47.9473 45.8834 47.9473H43.4756ZM42.4775 60.5235C42.4775 59.9723 42.9244 59.5254 43.4756 59.5254H45.8834C46.4346 59.5254 46.8815 59.9723 46.8815 60.5235V63.1607C46.8815 63.7119 46.4346 64.1588 45.8834 64.1588H43.4756C42.9244 64.1588 42.4775 63.7119 42.4775 63.1607V60.5235ZM37.9708 53.7324C37.4195 53.7324 36.9727 54.1793 36.9727 54.7305V57.3677C36.9727 57.919 37.4195 58.3658 37.9708 58.3658H40.3785C40.9297 58.3658 41.3766 57.919 41.3766 57.3677V54.7305C41.3766 54.1793 40.9297 53.7324 40.3785 53.7324H37.9708ZM16.0566 53.5762C16.0566 53.025 16.5035 52.5781 17.0547 52.5781H21.6644C22.2157 52.5781 22.6625 53.025 22.6625 53.5762V58.5301C22.6625 59.0814 22.2157 59.5282 21.6644 59.5282H17.0547C16.5035 59.5282 16.0566 59.0814 16.0566 58.5301V53.5762ZM14.9543 47.9453H23.7621C25.5863 47.9453 27.0651 49.5011 27.0651 51.4204V60.6872C27.0651 62.6064 25.5863 64.1622 23.7621 64.1622H14.9543C13.1301 64.1622 11.6514 62.6064 11.6514 60.6872V51.4204C11.6514 49.5011 13.1301 47.9453 14.9543 47.9453ZM14.9555 50.2578C14.3474 50.2578 13.8545 50.7764 13.8545 51.4162V60.683C13.8545 61.3227 14.3474 61.8413 14.9555 61.8413H23.7633C24.3714 61.8413 24.8643 61.3227 24.8643 60.683V51.4162C24.8643 50.7764 24.3714 50.2578 23.7633 50.2578H14.9555ZM14.9543 27.0918H23.7621C25.5863 27.0918 27.0651 28.6476 27.0651 30.5669V39.8337C27.0651 41.7529 25.5863 43.3087 23.7621 43.3087H14.9543C13.1301 43.3087 11.6514 41.7529 11.6514 39.8337V30.5669C11.6514 28.6476 13.1301 27.0918 14.9543 27.0918ZM14.9555 29.4043C14.3474 29.4043 13.8545 29.9229 13.8545 30.5626V39.8295C13.8545 40.4692 14.3474 40.9878 14.9555 40.9878H23.7633C24.3714 40.9878 24.8643 40.4692 24.8643 39.8295V30.5626C24.8643 29.9229 24.3714 29.4043 23.7633 29.4043H14.9555Z",
-                fill: "#008CFF"
-            }));
-        }
-        function CompleteIcon() {
-            return v("svg", {
-                width: "60",
-                height: "54",
-                viewBox: "0 0 60 54",
-                fill: "none",
-                xmlns: "http://www.w3.org/2000/svg"
-            }, v("rect", {
-                width: "49",
-                height: "49",
-                rx: "4",
-                fill: "#008CFF"
-            }), v("rect", {
-                width: "28.6829",
-                height: "28.6829",
-                transform: "translate(10.7559 9.56055)",
-                fill: "#008CFF"
-            }), v("path", {
-                d: "M36.1448 10.6348C37.1104 12.2242 37.546 13.8613 37.546 15.929C37.546 22.5247 31.8956 31.0926 27.3096 37.1091H16.8353L12.6348 12.0792L21.8062 11.2114L24.027 29.0219C26.1022 25.6528 28.6631 20.3586 28.6631 16.7491C28.6631 14.7732 28.3234 13.4277 27.7924 12.3196L36.1448 10.6348Z",
-                fill: "white"
-            }), v("rect", {
-                x: "34",
-                y: "28",
-                width: "25",
-                height: "25",
-                rx: "12.5",
-                fill: "#148572",
-                stroke: "#888C94"
-            }), v("g", {
-                "clip-path": "url(#clip0_17708_55964)"
-            }, v("path", {
-                d: "M44.0904 45.4739C43.6142 44.9977 43.6142 44.2255 44.0904 43.7493L50.795 37.0447C51.2712 36.5684 52.0434 36.5684 52.5196 37.0447C52.9959 37.5209 52.9959 38.2931 52.5196 38.7693L45.8151 45.4739C45.3388 45.9502 44.5667 45.9502 44.0904 45.4739Z",
-                fill: "white"
-            }), v("path", {
-                d: "M45.8314 45.4739C45.3552 45.9502 44.583 45.9502 44.1068 45.4739L41.0886 42.4558C40.6124 41.9795 40.6124 41.2074 41.0886 40.7311C41.5649 40.2549 42.337 40.2549 42.8133 40.7311L45.8314 43.7493C46.3077 44.2255 46.3077 44.9977 45.8314 45.4739Z",
-                fill: "white"
-            })), v("defs", null, v("clipPath", {
-                id: "clip0_17708_55964"
-            }, v("rect", {
-                width: "12.1951",
-                height: "12.1951",
-                fill: "white",
-                transform: "translate(40.707 34.707)"
-            }))));
         }
         function VenmoMark() {
             return v("svg", {
@@ -3329,7 +3154,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.94", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.95", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
@@ -3448,7 +3273,7 @@
         }
         var qrcard_logger;
         function QRCard(_ref) {
-            var svgString = _ref.svgString, qrcRedesignExperiment = _ref.qrcRedesignExperiment;
+            var svgString = _ref.svgString;
             var _useXProps = function() {
                 var _useState = hooks_module_m(window.xprops), xprops = _useState[0], setXProps = _useState[1];
                 r = function() {
@@ -3492,8 +3317,6 @@
                     }
                 });
             }();
-            var variant = "Trmt_Venmo_QRC_RedesignB" === (experiment = qrcRedesignExperiment) || "Trmt_Venmo_QRC_RedesignA" === experiment ? "LIGHT" : "DARK";
-            var experiment;
             var handleClick = function(selectedFundingSource) {
                 window.xprops.hide();
                 var win = function(_ref) {
@@ -3584,24 +3407,20 @@
                 className: "card"
             }, v("p", {
                 id: "fee-disclaimer"
-            }, "No fees no matter how you pay"), "Ctrl_Venmo_QRC_Redesign" === qrcRedesignExperiment ? v("div", {
+            }, "No fees no matter how you pay"), v("div", {
                 id: "instructions"
             }, v(InstructionIcon, {
                 stylingClass: "instruction-icon"
-            }), v("span", null, "To pay, scan the QR code with your Venmo app")) : null, v(DetailedInstructions, {
-                showInstructions: "Ctrl_Venmo_QRC_Redesign" !== qrcRedesignExperiment
-            }, v(QRCodeElement, {
+            }), v("span", null, "To pay, scan the QR code with your Venmo app")), v(QRCodeElement, {
                 svgString: svgString
-            }), v(Logo, null), "Trmt_Venmo_QRC_RedesignB" === qrcRedesignExperiment ? v("div", {
-                id: "powered-logo"
-            }, v("span", null, "Powered by "), v(PaypalIcon, null)) : null));
+            }), v(Logo, null));
             var surveyElement = v(Survey, {
                 survey: survey,
                 onCloseClick: onCloseClick
             });
             var content = survey.isEnabled && "qr_default" === state ? surveyElement : frontView;
             var escapePathFooter = !survey.isEnabled && "qr_default" === state && v("p", {
-                className: "escape-path " + variant + " "
+                className: "escape-path"
             }, "Don't have the app? Pay with ", v("span", {
                 className: "escape-path__link",
                 onClick: function() {
@@ -3615,16 +3434,15 @@
             }, "Credit/Debit card"));
             return v(d, null, v("style", {
                 nonce: window.xprops.cspNonce
-            }, " ", '\n    * {\n        box-sizing: border-box;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n    }\n    html, body {\n        display: flex;\n        position: fixed;\n        width: 100%;\n        height: 100%;\n        top: 0;\n        left: 0;\n        align-items: center;\n        justify-content: center;\n    }\n    body {\n        flex-direction: column;\n    }\n    #error-view {\n        width: 100%;\n        height: 100%;\n        padding: 1.5em;\n        justify-content: center;\n    }\n    #error-view .error-message,\n    #error-view .reset-button {\n        color: #FFFFFF;\n        text-align: center;\n        line-height: 16px;\n    }\n    #error-view .error-message {\n        margin-bottom: 2em;\n        word-break: break-word;\n    }\n    #error-view .reset-button {\n        cursor: pointer;\n        border: 0;\n        border-radius: 24px;\n        padding: 12px;\n        background: #3D93CE;\n        line-height: 24px;\n        font-weight: 700;\n        width: 300px;\n    }\n    .card,\n    #error-view {\n        display: inline-flex;\n        align-items: center;\n        flex-direction: column;\n    }\n    .card {\n        border-radius: 8px;\n        min-width: 280px;\n        min-height: 320px;\n        backface-visibility: hidden;\n        -webkit-backface-visibility: hidden;\n        transition: transform 1s;\n        transform-style: preserve-3d;\n    }\n    .card * {\n        box-sizing: content-box;\n    }\n    #view-boxes {\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        height: 100%;\n        width: 100%;\n        border-radius: 8px;\n    }\n    #view-boxes.LIGHT #front-view {\n        border: none;\n        width: 100%;\n        height: 100%;\n        padding-right: 55px;\n        padding-left: 55px;\n        justify-content: center;\n    }\n    #view-boxes.LIGHT {\n        background-color: white;\n    }\n    #view-boxes.qr_default {\n        border-bottom-left-radius: 0;\n        border-bottom-right-radius: 0;\n    }\n    #view-boxes.LIGHT .auth-message,\n    #view-boxes.LIGHT .success-message,\n    #view-boxes.LIGHT .error-message {\n        color: #2F3033;\n    }\n    #view-boxes.qr_scanned #front-view,\n    #view-boxes.qr_authorized #front-view {\n        transform: rotateY(180deg);\n        position: absolute;\n    }\n    #view-boxes #back-view {width: 320px;}\n    #view-boxes.qr_scanned #back-view,\n    #view-boxes.qr_authorized #back-view {\n        transform: rotateY(0deg);\n        position: relative;\n    }\n    #view-boxes #back-view #success-mark,\n    #view-boxes #back-view .success-message {\n        opacity: 0;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark,\n    #view-boxes.qr_authorized #back-view .success-message {\n        opacity: 1;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark {\n        transform: rotate(720deg);\n    }\n    #view-boxes.qr_authorized #back-view .auth-message {\n        opacity: 0;\n    }\n    #front-view {\n        background-color: white;\n        border: 1px solid #888C94;\n        z-index: 2;\n        transform: rotateY(0deg);\n        justify-content: flex-end;\n        width: 462px;\n    }\n    #front-view > svg,\n    #front-view > img {\n        padding: 16px 16px 0px;\n    }\n    #front-view > img + img {\n        padding-top: 12px;\n        padding-bottom: 32px;\n    }\n    #view-boxes.LIGHT #front-view > img + img {\n        padding-bottom: 16px;\n    }\n    #qr-code {\n        min-width: 160px;\n        min-height: 160px;\n        width: calc(100% - 32px);\n        max-width: 325px;\n    }\n    #instructions {\n        background-color: #FFFF;\n        border-top-left-radius: 8px;\n        border-top-right-radius: 8px;\n        box-sizing: border-box;\n        margin-top: 16px;\n        display: flex;\n        align-items: center;\n        font-size: 14px;\n        line-height: 16px;\n        max-width: 250px;\n        width: 100%;\n    }\n    .instruction-icon {\n        min-width: 68px;\n        min-height: 46px;\n        margin-right: 16px;\n    }\n    #fee-disclaimer{\n        margin: 0;\n        padding-top: 32px;\n        padding-left: 16px;\n        padding-right: 16px;\n        font-size: 20px;\n        color: #2F3033;\n    }\n    #view-boxes.LIGHT #fee-disclaimer {\n        font-size: 36px;\n        line-height: 40px;\n        padding: 0;\n    }\n    #back-view {\n        position: absolute;\n        transform: rotateY(-180deg);\n        background-color: #3D93CE;\n        justify-content: center;\n        font-size: 18px;\n        line-height: 16px;\n        text-align: center;\n        color: #FFFFFF;\n    }\n    #back-view .auth-message,\n    #back-view .success-message {\n        position: absolute;\n        bottom: -30px;\n        white-space: nowrap;\n        transition: opacity 500ms;\n    }\n    #back-view .mark {\n        position: relative ;\n    }\n    #venmo-mark{\n        width: 50%;\n    }\n    #success-mark {\n        position: absolute;\n        left: 50%;\n        bottom: -10%;\n        transition: transform 500ms, opacity 500ms;\n        transition-delay: 350ms;\n    }\n    #close {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n        z-index: 10;\n    }\n    #close:hover {\n        opacity: 1;\n    }\n    #close:before, #close:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 20px;\n        width: 2px;\n        background-color: #FFF;\n    }\n    #close:before {\n        transform: rotate(45deg);\n    }\n    #close:after {\n        transform: rotate(-45deg);\n    }\n    #close.LIGHT:before, #close.LIGHT:after {\n        background-color: #6B6E76;\n    }\n    #survey {\n        background: #FFFFFF;\n        height: 542px;\n        width: 500px;\n        border-radius: 8px;\n    }\n    #survey h1 {\n        width: 423px;\n        font-weight: 500;\n        font-size: 24px;\n        line-height: 32px;\n        text-align: center;\n        margin: auto;\n        margin-top: 30px;\n    }\n    #survey button {\n        display: block;\n        margin: auto;\n        border: none;\n        font-family: sans-serif;\n        cursor: pointer;\n        font-weight: bold;\n    }\n    #survey button.continue-button {\n        margin-top: 40px;\n        min-height: 48px;\n        width:  335px;\n        background: #0074DE;\n        height: 24px;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        color: #FFFFFF;\n        border-radius: 24px;\n        display: block;\n    }\n    #survey button.leave-button {\n        margin-top: 10px;\n        height: 48px;\n        width:  335px;\n        color: #0074DE;\n        background: none;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        display: block;\n    }\n    #survey .message {\n        width: 333px;\n        font-family: sans-serif;\n        font-size: 16px;\n        line-height: 20px;\n        text-align: center;\n        margin: auto;\n        margin-top: 8px;\n    }\n\n    #survey .answers {\n        width: 400px;\n        font-size: 16px;\n        line-height: 20px;\n        margin: auto;\n        cursor: pointer;\n    }\n    #survey .answers .answer {\n        margin-top: 28px;\n        display: flex;\n        align-items: center;\n    }\n    #survey label {\n        font-family: sans-serif;\n        font-size: 16px;\n        cursor: pointer;\n        display: flex;\n        align-items: center;\n    }\n    #survey .answers svg{\n        margin-right: 8px;\n        min-width: 40px;\n    }\n    #survey .answers input{\n        display: none;\n    }\n    #survey .answers input:focus::after {\n        content: "";\n        min-width: 44px;\n        height: 44px;\n        position: absolute;\n        top: -2px;\n        left: -2px;\n        border: solid 1px black;\n        border-radius: 50%;\n    }\n    .escape-path {\n        background-color: white;\n        color: #2F3033;\n        width: 100%;\n        text-align: center;\n        padding: 1rem;\n        margin: 0;\n        border-bottom-left-radius: 16px;\n        border-bottom-right-radius: 16px;\n    }\n    .escape-path.LIGHT {\n        background: #e5e5e5;\n        color: #2F3033;\n    }\n    .escape-path__link {\n        font-weight: 600;\n        color: #008CFF;\n    }\n    .escape-path__link:hover {\n        cursor: pointer;\n    }\n    #powered-logo {\n        display: flex;\n        align-items: center;\n    }\n    #powered-logo span {\n        height: 16px;\n    }\n    #powered-logo img {\n        height: 16px;\n    }\n    #powered-logo #paypal-icon {\n        margin-left: 2px;\n        margin-bottom: -1px;\n    }\n    .detailed-instructions {\n        display: grid;\n        grid-template-columns: 1fr 1fr;\n        margin-top: 36px;\n        grid-gap: 28px;\n    }\n    .detailed-instructions .instruction {\n        display: grid;\n        grid-template-columns: 1fr 3fr;\n        grid-gap: 25px;\n        align-items: center;\n    }\n    .detailed-instructions .instruction:not(:first) {\n        margin-top: 34px;\n    }\n    .detailed-instructions .instruction__title {\n        margin: 0;\n        font-weight: bold;\n    }\n    .detailed-instructions .instruction__description {\n        margin: 0;\n        margin-top: 6px;\n        max-width: 174px;\n        line-height: 20px;\n        font-size: 16px;\n    }\n    .detailed-instructions .instructions-container {\n        display: flex;\n        flex-direction: column;\n        row-gap: 34px;\n        height: 291px;\n        align-items: center;\n        justify-content: center;\n    }\n    .detailed-instructions .qr-code-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        row-gap: 15px;\n    }\n    .detailed-instructions #qr-code {\n        width: 100%;\n        min-height: 350px;\n        min-width: 350px;\n    }\n    ', " "), v("a", {
+            }, " ", '\n    * {\n        box-sizing: border-box;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n    }\n    html, body {\n        display: flex;\n        position: fixed;\n        width: 100%;\n        height: 100%;\n        top: 0;\n        left: 0;\n        align-items: center;\n        justify-content: center;\n    }\n    body {\n        flex-direction: column;\n    }\n    #error-view {\n        width: 100%;\n        height: 100%;\n        padding: 1.5em;\n        justify-content: center;\n    }\n    #error-view .error-message,\n    #error-view .reset-button {\n        color: #FFFFFF;\n        text-align: center;\n        line-height: 16px;\n    }\n    #error-view .error-message {\n        margin-bottom: 2em;\n        word-break: break-word;\n    }\n    #error-view .reset-button {\n        cursor: pointer;\n        border: 0;\n        border-radius: 24px;\n        padding: 12px;\n        background: #3D93CE;\n        line-height: 24px;\n        font-weight: 700;\n        width: 300px;\n    }\n    .card,\n    #error-view {\n        display: inline-flex;\n        align-items: center;\n        flex-direction: column;\n    }\n    .card {\n        border-radius: 8px;\n        min-width: 280px;\n        min-height: 320px;\n        backface-visibility: hidden;\n        -webkit-backface-visibility: hidden;\n        transition: transform 1s;\n        transform-style: preserve-3d;\n    }\n    .card * {\n        box-sizing: content-box;\n    }\n    #view-boxes {\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        height: 100%;\n        width: 100%;\n    }\n    #view-boxes.qr_scanned #front-view,\n    #view-boxes.qr_authorized #front-view {\n        transform: rotateY(180deg);\n        position: absolute;\n    }\n    #view-boxes #back-view {width: 320px;}\n    #view-boxes.qr_scanned #back-view,\n    #view-boxes.qr_authorized #back-view {\n        transform: rotateY(0deg);\n        position: relative;\n    }\n    #view-boxes #back-view #success-mark,\n    #view-boxes #back-view .success-message {\n        opacity: 0;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark,\n    #view-boxes.qr_authorized #back-view .success-message {\n        opacity: 1;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark {\n        transform: rotate(720deg);\n    }\n    #view-boxes.qr_authorized #back-view .auth-message {\n        opacity: 0;\n    }\n    #front-view {\n        background-color: white;\n        border: 1px solid #888C94;\n        z-index: 2;\n        transform: rotateY(0deg);\n        justify-content: flex-end;\n        width: 462px;\n    }\n    #front-view > svg,\n    #front-view > img {\n        padding: 16px 16px 0px;\n    }\n    #front-view > img + img {\n        padding-top: 12px;\n        padding-bottom: 32px;\n    }\n    #qr-code {\n        min-width: 160px;\n        min-height: 160px;\n        width: calc(100% - 32px);\n        max-width: 325px;\n    }\n    #instructions {\n        background-color: #FFFF;\n        border-top-left-radius: 8px;\n        border-top-right-radius: 8px;\n        box-sizing: border-box;\n        margin-top: 16px;\n        display: flex;\n        align-items: center;\n        font-size: 14px;\n        line-height: 16px;\n        max-width: 250px;\n        width: 100%;\n    }\n    .instruction-icon {\n        min-width: 68px;\n        min-height: 46px;\n        margin-right: 16px;\n    }\n    #fee-disclaimer{\n        margin: 0;\n        padding-top: 32px;\n        padding-left: 16px;\n        padding-right: 16px;\n        font-size: 20px;\n        color: #2F3033;\n    }\n    #back-view {\n        position: absolute;\n        transform: rotateY(-180deg);\n        background-color: #3D93CE;\n        justify-content: center;\n        font-size: 18px;\n        line-height: 16px;\n        text-align: center;\n        color: #FFFFFF;\n    }\n    #back-view .auth-message,\n    #back-view .success-message {\n        position: absolute;\n        bottom: -30px;\n        white-space: nowrap;\n        transition: opacity 500ms;\n    }\n    #back-view .mark {\n        position: relative ;\n    }\n    #venmo-mark{\n        width: 50%;\n    }\n    #success-mark {\n        position: absolute;\n        left: 50%;\n        bottom: -10%;\n        transition: transform 500ms, opacity 500ms;\n        transition-delay: 350ms;\n    }\n    #close {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n        z-index: 10;\n    }\n    #close:hover {\n        opacity: 1;\n    }\n    #close:before, #close:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 20px;\n        width: 2px;\n        background-color: #FFF;\n    }\n    #close:before {\n        transform: rotate(45deg);\n    }\n    #close:after {\n        transform: rotate(-45deg);\n    }\n    #survey {\n        background: #FFFFFF;\n        height: 542px;\n        width: 500px;\n        border-radius: 8px;\n    }\n    #survey h1 {\n        width: 423px;\n        font-weight: 500;\n        font-size: 24px;\n        line-height: 32px;\n        text-align: center;\n        margin: auto;\n        margin-top: 30px;\n    }\n    #survey button {\n        display: block;\n        margin: auto;\n        border: none;\n        font-family: sans-serif;\n        cursor: pointer;\n        font-weight: bold;\n    }\n    #survey button.continue-button {\n        margin-top: 40px;\n        min-height: 48px;\n        width:  335px;\n        background: #0074DE;\n        height: 24px;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        color: #FFFFFF;\n        border-radius: 24px;\n        display: block;\n    }\n    #survey button.leave-button {\n        margin-top: 10px;\n        height: 48px;\n        width:  335px;\n        color: #0074DE;\n        background: none;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        display: block;\n    }\n    #survey .message {\n        width: 333px;\n        font-family: sans-serif;\n        font-size: 16px;\n        line-height: 20px;\n        text-align: center;\n        margin: auto;\n        margin-top: 8px;\n    }\n\n    #survey .answers {\n        width: 400px;\n        font-size: 16px;\n        line-height: 20px;\n        margin: auto;\n        cursor: pointer;\n    }\n    #survey .answers .answer {\n        margin-top: 28px;\n        display: flex;\n        align-items: center;\n    }\n    #survey label {\n        font-family: sans-serif;\n        font-size: 16px;\n        cursor: pointer;\n        display: flex;\n        align-items: center;\n    }\n    #survey .answers svg{\n        margin-right: 8px;\n        min-width: 40px;\n    }\n    #survey .answers input{\n        display: none;\n    }\n    #survey .answers input:focus::after {\n        content: "";\n        min-width: 44px;\n        height: 44px;\n        position: absolute;\n        top: -2px;\n        left: -2px;\n        border: solid 1px black;\n        border-radius: 50%;\n    }\n    .escape-path {\n        background-color: white;\n        color: #2F3033;\n        width: 100%;\n        text-align: center;\n        padding: 1rem;\n        margin: 0;\n        border-bottom-left-radius: 16px;\n        border-bottom-right-radius: 16px;\n    }\n    .escape-path__link {\n        font-weight: 600;\n        color: #008CFF;\n    }\n    .escape-path__link:hover {\n        cursor: pointer;\n    }\n    ', " "), v("a", {
                 href: "#",
-                className: variant,
                 id: "close",
                 "aria-label": "close",
                 role: "button",
                 onClick: onCloseClick
             }), v("div", {
                 id: "view-boxes",
-                className: " " + state + " " + variant + " "
+                className: state
             }, "qr_error" === state ? errorMessage : content, v("div", {
                 className: "card",
                 id: "back-view"
@@ -3648,11 +3466,10 @@
             }, "Next State")), escapePathFooter);
         }
         function renderQRCode(_ref2) {
-            var svgString = _ref2.svgString, qrcRedesignExperiment = _ref2.qrcRedesignExperiment;
+            var svgString = _ref2.svgString;
             qrcard_logger = setupNativeQRLogger();
             u = v(QRCard, {
-                svgString: svgString,
-                qrcRedesignExperiment: qrcRedesignExperiment
+                svgString: svgString
             }), i = util_getBody(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), r || e, e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
             z(f, u);
             var u, i, r, f;

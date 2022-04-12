@@ -7062,8 +7062,8 @@ window.smartCard = function(modules) {
         })));
     }
     function isUnprocessableEntityError(err) {
-        var _err$response2, _err$response2$body, _err$response2$body$d, _err$response2$body$d2;
-        return Boolean(null == err || null == (_err$response2 = err.response) || null == (_err$response2$body = _err$response2.body) || null == (_err$response2$body$d = _err$response2$body.data) || null == (_err$response2$body$d2 = _err$response2$body$d.details) ? void 0 : _err$response2$body$d2.some((function(detail) {
+        var _err$response2, _err$response2$body, _err$response2$body$d;
+        return Boolean(null == err || null == (_err$response2 = err.response) || null == (_err$response2$body = _err$response2.body) || null == (_err$response2$body$d = _err$response2$body.details) ? void 0 : _err$response2$body$d.some((function(detail) {
             return "DUPLICATE_INVOICE_ID" === detail.issue;
         })));
     }
@@ -7417,7 +7417,10 @@ window.smartCard = function(modules) {
         return dom_redirect(url, window.top);
     };
     var onApprove_handleProcessorError = function(err, restart, onError) {
-        if (isUnprocessableEntityError(err)) return onError(err).then(unresolvedPromise);
+        if (isUnprocessableEntityError(err)) {
+            err && err.response && (err.message = JSON.stringify(err.response) || err.message);
+            return onError(err).then(unresolvedPromise);
+        }
         if (isProcessorDeclineError(err)) return restart().then(unresolvedPromise);
         throw err;
     };

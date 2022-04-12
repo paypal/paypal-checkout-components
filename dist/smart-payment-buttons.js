@@ -7087,8 +7087,8 @@ window.spb = function(modules) {
             })));
         }
         function isUnprocessableEntityError(err) {
-            var _err$response2, _err$response2$body, _err$response2$body$d, _err$response2$body$d2;
-            return Boolean(null == err || null == (_err$response2 = err.response) || null == (_err$response2$body = _err$response2.body) || null == (_err$response2$body$d = _err$response2$body.data) || null == (_err$response2$body$d2 = _err$response2$body$d.details) ? void 0 : _err$response2$body$d2.some((function(detail) {
+            var _err$response2, _err$response2$body, _err$response2$body$d;
+            return Boolean(null == err || null == (_err$response2 = err.response) || null == (_err$response2$body = _err$response2.body) || null == (_err$response2$body$d = _err$response2$body.details) ? void 0 : _err$response2$body$d.some((function(detail) {
                 return "DUPLICATE_INVOICE_ID" === detail.issue;
             })));
         }
@@ -7170,7 +7170,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.94", _headers15);
+            _headers15["x-app-version"] = "5.0.95", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7557,7 +7557,10 @@ window.spb = function(modules) {
             return dom_redirect(url, window.top);
         };
         var onApprove_handleProcessorError = function(err, restart, onError) {
-            if (isUnprocessableEntityError(err)) return onError(err).then(unresolvedPromise);
+            if (isUnprocessableEntityError(err)) {
+                err && err.response && (err.message = JSON.stringify(err.response) || err.message);
+                return onError(err).then(unresolvedPromise);
+            }
             if (isProcessorDeclineError(err)) return restart().then(unresolvedPromise);
             throw err;
         };
@@ -14467,7 +14470,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.94", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.95", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
