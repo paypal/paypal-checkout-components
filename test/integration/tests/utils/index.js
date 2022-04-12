@@ -119,12 +119,4 @@ describe('isInlineXOEligible', () => {
             throw new Error(`Expected merchantID to not be set to be ineligible.`);
         }
     });
-   
-    it('should be ineligible if page type is not set', () => {
-        pageType = null;
-
-        if (isInlineXOEligible({ props, pageType })) {
-            throw new Error(`Expected page type not set to be ineligible.`);
-        }
-    });
 });

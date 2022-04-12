@@ -321,8 +321,7 @@ export function isInlineXOEligible({ props, pageType = '' } : {| props : InlineC
         (fundingEligibility?.card?.eligible || false) &&
         layout === BUTTON_LAYOUT.VERTICAL &&
         merchantID?.length === 0 &&
-        vault === false &&
-        ((pageType && pageType.length > 0) || false)
+        vault === false
     );
 
     getLogger()
