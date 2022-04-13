@@ -46,7 +46,7 @@ describe('isInlineXOEligible', () => {
 
     it('should be eligible if satisfies requirements above', () => {
         if (!isInlineXOEligible({ props })) {
-            throw new Error(`Expected ${ JSON.stringify(props) } and page type, ${ pageType || 'UNKNOW' }, to be eligible.`);
+            throw new Error(`Expected ${ JSON.stringify(props) } to be eligible.`);
         }
     });
    
