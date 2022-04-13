@@ -5,7 +5,7 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled, getPageType } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, type ZoidComponent } from '@krakenjs/zoid/src';
@@ -611,13 +611,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 type:       'string',
                 value:      ({ props }) => {
                     const { commit, createBillingAgreement, currency, disableFunding, fundingEligibility, locale, merchantID, style: { layout }, vault } = props || {};
-                    
-                    let pageType;
-                    try {
-                        pageType = getPageType() || '';
-                    } catch (e) {
-                        pageType = '';
-                    }
+
                     const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
                     };
@@ -631,7 +625,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         locale,
                         merchantID,
                         vault
-                    }, pageType }) ? EXPERIENCE.INLINE : '';
+                    } }) ? EXPERIENCE.INLINE : '';
                 }
             },
 

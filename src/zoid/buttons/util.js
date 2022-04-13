@@ -309,7 +309,7 @@ type InlineCheckoutEligibilityProps = {|
     vault : boolean
 |};
 
-export function isInlineXOEligible({ props, pageType = '' } : {| props : InlineCheckoutEligibilityProps, pageType : ?string |}) : boolean {
+export function isInlineXOEligible({ props } : {| props : InlineCheckoutEligibilityProps |}) : boolean {
     const { commit, currency, createBillingAgreement, disableFunding, fundingEligibility, layout, locale, merchantID, vault } = props;
 
     const isEligible = (
@@ -326,7 +326,6 @@ export function isInlineXOEligible({ props, pageType = '' } : {| props : InlineC
 
     getLogger()
         .info('isInlineXOEligible props', { props: JSON.stringify(props) })
-        .info('isInlineXOEligible pageType', { pageType })
         .info('isInlineXOEligible eligible', { eligible: String(isEligible) })
         .track({
             [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(isEligible) }`
