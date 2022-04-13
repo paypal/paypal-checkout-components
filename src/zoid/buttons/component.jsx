@@ -610,7 +610,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { commit, createBillingAgreement, currency, disableFunding, fundingEligibility, locale, merchantID, style: { layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, vault } = props || {};
 
                     const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
