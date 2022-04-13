@@ -1,3 +1,20 @@
+## <small>5.0.209 (2022-04-13)</small>
+
+* add nvmrc and set node engines <16 (#1905) ([3994d01](https://github.com/paypal/paypal-checkout-components/commit/3994d01)), closes [#1905](https://github.com/paypal/paypal-checkout-components/issues/1905)
+* Apple Pay error types update (#1917) ([2b03b88](https://github.com/paypal/paypal-checkout-components/commit/2b03b88)), closes [#1917](https://github.com/paypal/paypal-checkout-components/issues/1917)
+* Inline XO Global Usage (#1918) ([c25af86](https://github.com/paypal/paypal-checkout-components/commit/c25af86)), closes [#1918](https://github.com/paypal/paypal-checkout-components/issues/1918)
+* chore: complete move to @krakenjs/grumbler-scripts (#1911) ([0ad8eac](https://github.com/paypal/paypal-checkout-components/commit/0ad8eac)), closes [#1911](https://github.com/paypal/paypal-checkout-components/issues/1911)
+* chore(deps): update actions/checkout action to v3 (#1897) ([ba10a1e](https://github.com/paypal/paypal-checkout-components/commit/ba10a1e)), closes [#1897](https://github.com/paypal/paypal-checkout-components/issues/1897)
+* chore(deps): update actions/setup-node action to v3 (#1898) ([bb0d479](https://github.com/paypal/paypal-checkout-components/commit/bb0d479)), closes [#1898](https://github.com/paypal/paypal-checkout-components/issues/1898)
+* chore(deps): update codecov/codecov-action action to v3 (#1912) ([1061c93](https://github.com/paypal/paypal-checkout-components/commit/1061c93)), closes [#1912](https://github.com/paypal/paypal-checkout-components/issues/1912)
+* chore(deps): update dependency angular.js to v1.8.3 (#1908) ([46ed85a](https://github.com/paypal/paypal-checkout-components/commit/46ed85a)), closes [#1908](https://github.com/paypal/paypal-checkout-components/issues/1908)
+* chore(deps): update dependency prettier-plugin-sh to ^0.10.0 (#1910) ([8394203](https://github.com/paypal/paypal-checkout-components/commit/8394203)), closes [#1910](https://github.com/paypal/paypal-checkout-components/issues/1910)
+* chore(deps): update lock-threads github action (#1914) ([2fd000e](https://github.com/paypal/paypal-checkout-components/commit/2fd000e)), closes [#1914](https://github.com/paypal/paypal-checkout-components/issues/1914)
+* chore(deps): use grumbler-scripts from krakenjs scope (#1909) ([4a824ca](https://github.com/paypal/paypal-checkout-components/commit/4a824ca)), closes [#1909](https://github.com/paypal/paypal-checkout-components/issues/1909)
+* fix: update applpay errors (#1907) ([cb6f7c9](https://github.com/paypal/paypal-checkout-components/commit/cb6f7c9)), closes [#1907](https://github.com/paypal/paypal-checkout-components/issues/1907)
+
+
+
 ## <small>5.0.208 (2022-04-06)</small>
 
 * onComplete (#1906) ([426178d](https://github.com/paypal/paypal-checkout-components/commit/426178d)), closes [#1906](https://github.com/paypal/paypal-checkout-components/issues/1906)
