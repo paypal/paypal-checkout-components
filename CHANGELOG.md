@@ -1,3 +1,9 @@
+## <small>5.0.210 (2022-04-13)</small>
+
+* Revert "Inline XO Global Usage (#1918)" (#1919) ([5e13ffd](https://github.com/paypal/paypal-checkout-components/commit/5e13ffd)), closes [#1918](https://github.com/paypal/paypal-checkout-components/issues/1918) [#1919](https://github.com/paypal/paypal-checkout-components/issues/1919)
+
+
+
 ## <small>5.0.209 (2022-04-13)</small>
 
 * add nvmrc and set node engines <16 (#1905) ([3994d01](https://github.com/paypal/paypal-checkout-components/commit/3994d01)), closes [#1905](https://github.com/paypal/paypal-checkout-components/issues/1905)
