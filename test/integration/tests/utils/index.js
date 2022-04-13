@@ -21,7 +21,6 @@ import { isInlineXOEligible } from '../../../../src/zoid/buttons/util';
  */
 describe('isInlineXOEligible', () => {
     let props;
-    let pageType = '';
 
     beforeEach(() => {
         props = {
@@ -43,12 +42,10 @@ describe('isInlineXOEligible', () => {
             locale: { country: COUNTRY.US, lang: 'en' },
             vault:  false
         };
-
-        pageType = 'CHECKOUT';
     });
 
     it('should be eligible if satisfies requirements above', () => {
-        if (!isInlineXOEligible({ props, pageType })) {
+        if (!isInlineXOEligible({ props })) {
             throw new Error(`Expected ${ JSON.stringify(props) } and page type, ${ pageType || 'UNKNOW' }, to be eligible.`);
         }
     });
@@ -56,7 +53,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if locale.country is not US', () => {
         props.locale.country = COUNTRY.DE;
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected buyerCountry, ${ COUNTRY.DE } to be ineligible.`);
         }
     });
@@ -64,7 +61,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if commit is false', () => {
         props.commit = false;
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected commit=false to be ineligible.`);
         }
     });
@@ -72,7 +69,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if currency is not USD', () => {
         props.currency = CURRENCY.CAD;
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected currency=CAD to be ineligible.`);
         }
     });
@@ -80,7 +77,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if disableFunding is CARD', () => {
         props.disableFunding = [ FUNDING.CARD ];
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected diableFunding=[CARD] to be ineligible.`);
         }
     });
@@ -91,7 +88,7 @@ describe('isInlineXOEligible', () => {
             card.eligible = false;
         }
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected fundingEligibility[CARD].eligible = false to be ineligible.`);
         }
     });
@@ -99,7 +96,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if layout is horizontal', () => {
         props.layout = BUTTON_LAYOUT.HORIZONTAL;
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected layout=horizontal to be ineligible.`);
         }
     });
@@ -107,7 +104,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if vault is false', () => {
         props.vault = false;
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected vault=false to be ineligible.`);
         }
     });
@@ -115,7 +112,7 @@ describe('isInlineXOEligible', () => {
     it('should be ineligible if merchantID is set', () => {
         props.merchantID = [ 'ABC123' ];
 
-        if (isInlineXOEligible({ props, pageType })) {
+        if (isInlineXOEligible({ props })) {
             throw new Error(`Expected merchantID to not be set to be ineligible.`);
         }
     });
