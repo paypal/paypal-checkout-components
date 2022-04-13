@@ -17,11 +17,13 @@ import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 import { EXPERIENCE } from '../../constants';
+import { type InlineXOEligibilityType } from '../../types';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
     createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
+    
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -616,7 +618,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     } catch (e) {
                         pageType = '';
                     }
-                    const inlineCheckoutEligibility = __INLINE_CHECKOUT_ELIGIBILITY__ || {
+                    const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
                     };
                     return inlineCheckoutEligibility &&  isInlineXOEligible({ props: {
