@@ -44,9 +44,8 @@ type IndividualButtonProps = {|
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience } : IndividualButtonProps) : ElementNode {
-    
-    const { custom, layout, shape } = style;
-    const inlineExperience = experience === EXPERIENCE.INLINE && custom;
+
+    const inlineExperience = experience === EXPERIENCE.INLINE;
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -96,6 +95,8 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             preventClickFocus(el);
         }
     };
+
+    const { custom, layout, shape } = style;
     
     const labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
 
