@@ -67,8 +67,3 @@ export type LazyExport<T> = {|
 export type LazyProtectedExport<T> = {|
     __get__ : () => ?T
 |};
-
-export type InlineXOEligibilityType = {|
-    eligible : boolean,
-    ineligibilityReason : string
-|};

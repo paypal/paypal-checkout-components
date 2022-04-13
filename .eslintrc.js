@@ -18,8 +18,7 @@ module.exports = {
         '__HOST__': true,
         '__PATH__': true,
         '__COMPONENTS__': true,
-        '__FUNDING_ELIGIBILITY__': true,
-        '__INLINE_CHECKOUT_ELIGIBILITY__': true
+        '__FUNDING_ELIGIBILITY__': true
     },
 
     'rules': {
