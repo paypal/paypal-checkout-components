@@ -1,3 +1,9 @@
+## <small>5.0.211 (2022-04-14)</small>
+
+* PPPLMER-106170: changes to update checkout button role as link as per suggested by accessibility (#1 ([a1849cd](https://github.com/paypal/paypal-checkout-components/commit/a1849cd)), closes [#1916](https://github.com/paypal/paypal-checkout-components/issues/1916)
+
+
+
 ## <small>5.0.210 (2022-04-13)</small>
 
 * Revert "Inline XO Global Usage (#1918)" (#1919) ([5e13ffd](https://github.com/paypal/paypal-checkout-components/commit/5e13ffd)), closes [#1918](https://github.com/paypal/paypal-checkout-components/issues/1918) [#1919](https://github.com/paypal/paypal-checkout-components/issues/1919)
