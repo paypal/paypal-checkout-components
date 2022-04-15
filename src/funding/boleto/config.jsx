@@ -10,6 +10,8 @@ export function getBoletoConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
+        automatic: false,
+
         shippingChange: false,
 
         layouts: [
