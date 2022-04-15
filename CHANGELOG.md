@@ -1,3 +1,9 @@
+## <small>5.0.212 (2022-04-15)</small>
+
+* chore: remove non-instant apms (unbranded flow only) from vertical stack (#1921) ([659b720](https://github.com/paypal/paypal-checkout-components/commit/659b720)), closes [#1921](https://github.com/paypal/paypal-checkout-components/issues/1921)
+
+
+
 ## <small>5.0.211 (2022-04-14)</small>
 
 * PPPLMER-106170: changes to update checkout button role as link as per suggested by accessibility (#1 ([a1849cd](https://github.com/paypal/paypal-checkout-components/commit/a1849cd)), closes [#1916](https://github.com/paypal/paypal-checkout-components/issues/1916)
