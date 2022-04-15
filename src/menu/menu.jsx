@@ -3,8 +3,10 @@
 
 import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { h, Fragment } from 'preact';
+import { stringifyError } from 'belter/src';
 
 import { openPopup } from '../ui';
+import { getLogger } from '../lib';
 
 import { useAutoFocus } from './hooks';
 
@@ -32,10 +34,14 @@ export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFoc
         let win;
 
         if (choice.popup) {
-            win = openPopup({
-                width:  choice.popup.width,
-                height: choice.popup.height
-            });
+            try {
+                win = openPopup({
+                    width:  choice.popup.width,
+                    height: choice.popup.height
+                });
+            } catch (err) {
+                getLogger().warn('menu_popup_open_error', { err: stringifyError(err) });
+            }
         }
 
         return choice.onSelect({ win });
