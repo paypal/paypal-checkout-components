@@ -105,8 +105,6 @@ type ButtonOptions = {|
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
     stage? : string,
     stageUrl? : string,
-    localhostUrl? : string,
-    checkoutUri? : string,
     authCode? : string,
     enableNativeCheckout? : boolean
 |};
