@@ -78,7 +78,7 @@ type ConfigOptions = {|
     authCode? : ?string
 |};
 
-function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, state, logLevel, merchantID, authCode } : ConfigOptions = {}) {
+function configure({ env, stage, stageUrl, apiStage, state, logLevel, merchantID, authCode } : ConfigOptions = {}) {
 
     if (env) {
         if (!config.paypalUrls[env]) {
@@ -136,11 +136,6 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
         config.apiStage = apiStage;
     }
 
-    checkoutUri = checkoutUri || (Button.xprops && Button.xprops.checkoutUri) || (Checkout.xprops && Checkout.xprops.checkoutUri);
-    if (checkoutUri) {
-        config.checkoutUri = checkoutUri;
-    }
-
     if (state) {
         delete config.state;
         config.state = state;
@@ -196,8 +191,6 @@ if (currentScript) {
         stage:              currentScript.getAttribute('data-stage'),
         apiStage:           currentScript.getAttribute('data-api-stage'),
         stageUrl:           currentScript.getAttribute('data-stage-url'),
-        localhostUrl:       isPayPalDomain() ? currentScript.getAttribute('data-localhost-url') : undefined,
-        checkoutUri:        isPayPalDomain() ? currentScript.getAttribute('data-checkout-uri') : undefined,
         state:              currentScript.getAttribute('data-state'),
         logLevel:           currentScript.getAttribute('data-log-level'),
         merchantID:         currentScript.getAttribute('data-merchant-id'),

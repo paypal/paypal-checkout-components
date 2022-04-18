@@ -355,30 +355,6 @@ export const Button : Component<ButtonOptions> = create({
             }
         },
 
-        localhostUrl: {
-            type:       'string',
-            required:   false,
-            queryParam: true,
-
-            def(props) : ?string {
-                const env = props.env || config.env;
-
-                if (env === ENV.LOCAL) {
-                    return config.localhostUrl;
-                }
-            }
-        },
-
-        checkoutUri: {
-            type:       'string',
-            required:   false,
-            queryParam: true,
-
-            def() : ?string {
-                return config.checkoutUri;
-            }
-        },
-
         braintree: {
             type:     'object',
             required: false,
