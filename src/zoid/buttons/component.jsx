@@ -615,7 +615,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
                     };
-                    return inlineCheckoutEligibility &&  isInlineXOEligible({ props: {
+                    return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && isInlineXOEligible({ props: {
                         commit,
                         createBillingAgreement,
                         currency,
