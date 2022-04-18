@@ -2,8 +2,6 @@
 import { getLogger } from '@paypal/sdk-client/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { FPTI_CPL_KEY } from '../constants';
-
 /* To Track time spent in each phase(cdn download, chunks download, etc)
     logCPLPhase('first_interactable_render')
     logCPLPhase('html_body', 'comp', true);
