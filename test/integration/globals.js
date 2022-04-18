@@ -1,5 +1,10 @@
 /* @flow */
 
+window.__TEST_INLINE_CHECKOUT_ELIGIBILITY = {
+    eligible:            true,
+    ineligibilityReason: ''
+};
+
 window.__TEST_FUNDING_ELIGIBILITY__ = {
     bancontact: {
         eligible: false

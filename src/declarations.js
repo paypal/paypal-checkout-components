@@ -19,3 +19,8 @@ declare var __PAYPAL_CHECKOUT__ : {|
         __PAYMENT_FIELDS__ : string
     |}
 |};
+
+declare var __INLINE_CHECKOUT_ELIGIBILITY__ : {|
+    eligible : boolean,
+    ineligibilityReason : string
+|};
