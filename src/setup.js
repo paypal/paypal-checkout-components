@@ -136,12 +136,10 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
         config.apiStage = apiStage;
     }
 
-    localhostUrl = localhostUrl || (Button.xprops && Button.xprops.localhostUrl) || (Checkout.xprops && Checkout.xprops.localhostUrl);
     if (localhostUrl) {
         config.localhostUrl = localhostUrl;
     }
 
-    checkoutUri = checkoutUri || (Button.xprops && Button.xprops.checkoutUri) || (Checkout.xprops && Checkout.xprops.checkoutUri);
     if (checkoutUri) {
         config.checkoutUri = checkoutUri;
     }
