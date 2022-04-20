@@ -1,6 +1,6 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
-import { wrapPromise, noop } from 'belter/src';
+import { wrapPromise, noop } from '@krakenjs/belter/src';
 
 import { setupMenu } from '../../src/menu';
 

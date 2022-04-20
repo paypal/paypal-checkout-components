@@ -3,7 +3,7 @@
 
 import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { h, Fragment } from 'preact';
-import { stringifyError } from 'belter/src';
+import { stringifyError } from '@krakenjs/belter/src';
 
 import { openPopup } from '../ui';
 import { getLogger } from '../lib';
@@ -65,17 +65,17 @@ export function Menu({ choices, onBlur, cspNonce, verticalOffset, onFocus, onFoc
                         margin-top: ${ verticalOffset }px;
                         overflow: hidden;
                     }
-                    
+
                     .menu-item {
                         border-top: 2px solid rgba(230, 230, 230, 0.5);;
                         color: #0070ba;
                         cursor: pointer;
                     }
-                    
+
                     .menu-item:first-child {
                         border-top: none;
                     }
-                    
+
                     .menu-item:hover {
                         background: #fcfcfc;
                         text-decoration: underline;
