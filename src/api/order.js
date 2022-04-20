@@ -682,6 +682,11 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
 
 export type DetailedOrderInfo = {|
     checkoutSession : {|
+        flags : {|
+            isShippingAddressRequired : boolean,
+            isDigitalGoodsIntegration : boolean,
+            isChangeShippingAddressAllowed : boolean
+        |},
         allowedCardIssuers : $ReadOnlyArray<string>,
         cart : {|
             amounts : {|
@@ -723,6 +728,11 @@ export const getDetailedOrderInfo : GetDetailedOrderInfo = (orderID, country) =>
         query: `
             query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {
                 checkoutSession(token: $orderID) {
+                    flags{
+                        isShippingAddressRequired,
+                        isDigitalGoodsIntegration,
+                        isChangeShippingAddressAllowed
+                    }
                     allowedCardIssuers(country: $country)
                     cart {
                         amounts {

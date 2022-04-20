@@ -8,6 +8,11 @@ const SUPPORTED_VERSION = 4;
 jest.mock('../../../api', () => ({
     getDetailedOrderInfo:       jest.fn().mockResolvedValue({
         checkoutSession: {
+            flags: {
+                isShippingAddressRequired:      true,
+                isDigitalGoodsIntegration:      false,
+                isChangeShippingAddressAllowed: false
+            },
             allowedCardIssuers: [
                 'MASTER_CARD',
                 'DISCOVER',

@@ -109,6 +109,9 @@ function getMerchantCapabilities(supportedNetworks : $ReadOnlyArray<ApplePaySupp
 
 export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, order : DetailedOrderInfo) : ApplePayPaymentRequest {
     const {
+        flags: {
+            isShippingAddressRequired
+        },
         allowedCardIssuers,
         cart: {
             amounts: {
@@ -148,12 +151,12 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
             'name',
             'phone'
         ],
-        requiredShippingContactFields: [
+        requiredShippingContactFields: isShippingAddressRequired ? [
             'postalAddress',
             'name',
             'phone',
             'email'
-        ],
+        ] : [],
         shippingContact: shippingContact && shippingContact.givenName ? shippingContact : {},
         shippingMethods: applePayShippingMethods && applePayShippingMethods.length ? applePayShippingMethods : [],
         lineItems:       [],
@@ -185,10 +188,6 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
             label:  'Shipping',
             amount: shippingValue
         });
-    }
-
-    if (!selectedShippingMethod || (selectedShippingMethod && selectedShippingMethod.type === 'PICKUP')) {
-        result.requiredShippingContactFields = [];
     }
 
     return result;

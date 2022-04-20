@@ -8,6 +8,11 @@ const SUPPORTED_VERSION = 4;
 jest.mock('../../../api', () => ({
     getDetailedOrderInfo:       jest.fn().mockResolvedValue({
         checkoutSession: {
+            flags: {
+                isShippingAddressRequired:      false,
+                isDigitalGoodsIntegration:      false,
+                isChangeShippingAddressAllowed: false
+            },
             allowedCardIssuers: [
                 'MASTER_CARD',
                 'DISCOVER',
@@ -70,7 +75,7 @@ jest.mock('../../../lib', () => ({
     })
 }));
 
-describe('initApplePay - no shipping', () => {
+describe('initApplePay - no shipping but has tax', () => {
     
     test('it should handle click and trigger session begin', async () => {
         window.ApplePaySession = {
@@ -92,15 +97,12 @@ describe('initApplePay - no shipping', () => {
         const completeShippingMethodSelection = jest.fn();
         const completePayment = jest.fn();
 
-        const onShippingChange = jest.fn().mockResolvedValue({});
-        
         const props = {
             createOrder:      jest.fn().mockResolvedValue('mock-orderID'),
             onApprove:        jest.fn(),
             onCancel:         jest.fn(),
             onError:          jest.fn(),
             onClick:          jest.fn().mockResolvedValue(true),
-            onShippingChange,
             applePay:         jest.fn().mockResolvedValue({
                 begin,
                 addEventListener,
