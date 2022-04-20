@@ -127,7 +127,9 @@ function buildFundingEligibilityQuery(basicFundingEligibility : FundingEligibili
         [ FUNDING.OXXO ]:        getBasicFundingEligibilityQuery(),
         [ FUNDING.MAXIMA ]:      getBasicFundingEligibilityQuery(),
         [ FUNDING.BOLETO ]:      getBasicFundingEligibilityQuery(),
-        [ FUNDING.MERCADOPAGO ]: getBasicFundingEligibilityQuery()
+        [ FUNDING.MERCADOPAGO ]: getBasicFundingEligibilityQuery(),
+        [ FUNDING.MULTIBANCO ]:  getBasicFundingEligibilityQuery()
+
     };
 
     return buildQuery({
