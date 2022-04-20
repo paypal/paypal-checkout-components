@@ -55,7 +55,8 @@ function getShippingContactFromAddress(shippingAddress : ?ShippingAddress) : App
             locality:           '',
             administrativeArea: '',
             postalCode:         '',
-            country:            ''
+            country:            '',
+            countryCode:        ''
         };
     }
 
@@ -71,7 +72,8 @@ function getShippingContactFromAddress(shippingAddress : ?ShippingAddress) : App
         locality:           city,
         administrativeArea: state,
         postalCode,
-        country
+        country,
+        countryCode:        country
     };
 }
 
