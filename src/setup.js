@@ -137,7 +137,7 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
     }
 
     if (localhostUrl) {
-        config.localhostUrl = localhostUrl;
+        // localhostUrl is not configurable and hardcoded to localhost.paypal.com
     }
 
     if (checkoutUri) {
