@@ -104,7 +104,6 @@ type ButtonOptions = {|
     meta : Object,
     validate? : ({ enable : () => ZalgoPromise<void>, disable : () => ZalgoPromise<void> }) => void,
     stage? : string,
-    stageUrl? : string,
     authCode? : string,
     enableNativeCheckout? : boolean
 |};
@@ -336,20 +335,6 @@ export const Button : Component<ButtonOptions> = create({
             required: false,
             def:      () => {
                 return true;
-            }
-        },
-
-        stageUrl: {
-            type:       'string',
-            required:   false,
-            queryParam: true,
-
-            def(props) : ?string {
-                const env = props.env || config.env;
-
-                if (env === ENV.STAGE || env === ENV.LOCAL) {
-                    return config.stageUrl;
-                }
             }
         },
 
