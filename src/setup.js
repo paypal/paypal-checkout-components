@@ -114,14 +114,6 @@ function configure({ env, stage, stageUrl, apiStage, localhostUrl, checkoutUri, 
         delete config.stageUrl;
         // $FlowFixMe
         config.stageUrl = stageUrl;
-    } else if (Button.xprops && Button.xprops.stageUrl) {
-        delete config.stageUrl;
-        // $FlowFixMe
-        config.stageUrl = Button.xprops.stageUrl;
-    } else if (Checkout.xprops && Checkout.xprops.stageUrl) {
-        delete config.stageUrl;
-        // $FlowFixMe
-        config.stageUrl = Checkout.xprops.stageUrl;
     }
 
     authCode = authCode || (Button.xprops && Button.xprops.authCode) || (Checkout.xprops && Checkout.xprops.authCode);
@@ -198,7 +190,7 @@ if (currentScript) {
         env:                currentScript.getAttribute('data-env'),
         stage:              currentScript.getAttribute('data-stage'),
         apiStage:           currentScript.getAttribute('data-api-stage'),
-        stageUrl:           currentScript.getAttribute('data-stage-url'),
+        stageUrl:           isPayPalDomain() ? currentScript.getAttribute('data-stage-url') : undefined,
         localhostUrl:       isPayPalDomain() ? currentScript.getAttribute('data-localhost-url') : undefined,
         checkoutUri:        isPayPalDomain() ? currentScript.getAttribute('data-checkout-uri') : undefined,
         state:              currentScript.getAttribute('data-state'),
