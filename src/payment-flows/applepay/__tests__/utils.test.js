@@ -2,7 +2,9 @@
 import {
     createApplePayRequest,
     isJSON,
-    validateShippingContact
+    validateShippingContact,
+    getSupportedNetworksFromIssuers,
+    getApplePayShippingMethods
 } from '../utils';
 
 
@@ -347,3 +349,88 @@ describe('validateShippingContact', () => {
         });
     });
 });
+
+
+describe('getSupportedNetworksFromIssuers', () => {
+    test('should map issuer networks correctly', () => {
+        expect(getSupportedNetworksFromIssuers(
+            [
+                'MASTER_CARD',
+                'DISCOVER',
+                'VISA',
+                'AMEX',
+                'DINERS'
+            ]
+        )).toEqual([
+            'masterCard',
+            'discover',
+            'visa',
+            'amex'
+        ]);
+    });
+
+    test('should handle undefined', () => {
+        expect(getSupportedNetworksFromIssuers(undefined)).toEqual([]);
+    });
+});
+
+
+describe('getApplePayShippingMethods', () => {
+    test('should map shipping methods from paypal to apple format', () => {
+        expect(getApplePayShippingMethods(
+            [
+                {
+                    amount: {
+                        'currencyCode':  'USD',
+                        'currencyValue': '0.02'
+                    },
+                    label:    '1-3 Day Shipping',
+                    selected: false,
+                    type:     'SHIPPING'
+                },
+                {
+                    amount: {
+                        currencyCode:  'USD',
+                        currencyValue: '0.01'
+                    },
+                    label:    '4-7 Day Shipping',
+                    selected: true,
+                    type:     'SHIPPING'
+                },
+                {
+                    amount: {
+                        currencyCode:   'USD',
+                        currencyValue: '0.00'
+                    },
+                    label:    'Pick up in Store',
+                    selected: false,
+                    type:     'PICKUP'
+                }
+            ]
+        )).toEqual([
+            {
+                amount:     '0.01',
+                detail:     '',
+                identifier: 'SHIPPING',
+                label:      '4-7 Day Shipping'
+            },
+            {
+                amount:     '0.02',
+                detail:     '',
+                identifier: 'SHIPPING',
+                label:      '1-3 Day Shipping'
+            },
+            {
+                amount:     '0.00',
+                detail:     '',
+                identifier: 'PICKUP',
+                label:      'Pick up in Store'
+            }
+        ]);
+    });
+
+    test('should handle undefined', () => {
+        expect(getApplePayShippingMethods(undefined)).toEqual([]);
+    });
+});
+

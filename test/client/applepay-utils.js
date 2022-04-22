@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint require-await: off, max-lines: off, max-nested-callbacks: off */
 
-import { isJSON, validateShippingContact } from '../../src/payment-flows/applepay/utils';
+import { isJSON, validateShippingContact, getSupportedNetworksFromIssuers, getApplePayShippingMethods, getMerchantCapabilities } from '../../src/payment-flows/applepay/utils';
 import { promiseNoop } from '../../src/lib';
 
 describe('Apple Pay Flow Utils', () => {
@@ -62,11 +62,124 @@ describe('Apple Pay Flow Utils', () => {
                 administrativeArea: '',
                 postalCode:         '',
                 country:            'United States',
+                countryCode:        'US'
+            };
+            const { errors } = validateShippingContact(shippingContact);
+            if (!errors && !errors.length) {
+                throw new Error(`Expected errors but got ${ JSON.stringify(errors) }.`);
+            }
+        });
+
+        it('should invalidate shipping contact when missing required fields inc countryCode', () => {
+            const shippingContact = {
+                givenName:    'Jimmy',
+                familyName:   'Bob',
+                addressLines: [
+                    '1 Police Plaza'
+                ],
+                locality:           '',
+                administrativeArea: '',
+                postalCode:         '',
+                country:            'United States',
                 countryCode:        ''
             };
             const { errors } = validateShippingContact(shippingContact);
             if (!errors && !errors.length) {
                 throw new Error(`Expected errors but got ${ JSON.stringify(errors) }.`);
+            }
+        });
+    });
+
+    describe('getSupportedNetworksFromIssuers', () => {
+        it('should map correctly', () => {
+            if (getSupportedNetworksFromIssuers(
+                [
+                    'MASTER_CARD',
+                    'DISCOVER',
+                    'VISA',
+                    'AMEX',
+                    'DINERS'
+                ]
+            ).join('') !== [
+                'masterCard',
+                'discover',
+                'visa',
+                'amex'
+            ].join('')) {
+                throw new Error('card networks not mapped correctly');
+            }
+        });
+    });
+
+    describe('getApplePayShippingMethods', () => {
+        it('should map correctly', () => {
+
+            if (getApplePayShippingMethods(
+                [
+                    {
+                        amount: {
+                            'currencyCode':  'USD',
+                            'currencyValue': '0.02'
+                        },
+                        label:    '1-3 Day Shipping',
+                        selected: false,
+                        type:     'SHIPPING'
+                    },
+                    {
+                        amount: {
+                            currencyCode:  'USD',
+                            currencyValue: '0.01'
+                        },
+                        label:    '4-7 Day Shipping',
+                        selected: true,
+                        type:     'SHIPPING'
+                    },
+                    {
+                        amount: {
+                            currencyCode:   'USD',
+                            currencyValue: '0.00'
+                        },
+                        label:    'Pick up in Store',
+                        selected: false,
+                        type:     'PICKUP'
+                    }
+                ]
+            ).join() !== [
+                {
+                    amount:     '0.01',
+                    detail:     '',
+                    identifier: 'SHIPPING',
+                    label:      '4-7 Day Shipping'
+                },
+                {
+                    amount:     '0.02',
+                    detail:     '',
+                    identifier: 'SHIPPING',
+                    label:      '1-3 Day Shipping'
+                },
+                {
+                    amount:     '0.00',
+                    detail:     '',
+                    identifier: 'PICKUP',
+                    label:      'Pick up in Store'
+                }
+            ].join()) {
+                throw new Error('shipping methods not mapped correctly');
+            }
+        });
+    });
+
+    describe('getMerchantCapabilities', () => {
+        it('should map correctly', () => {
+
+            if (getMerchantCapabilities(
+                [
+                    'chinaUnionPay'
+                ]
+            ).join() !== [
+                'supports3DS', 'supportsCredit', 'supportsDebit', 'supportsEMV'
+            ].join()) {
+                throw new Error('MerchantCapabilities not mapped correctly');
             }
         });
     });
