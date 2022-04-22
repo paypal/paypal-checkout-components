@@ -17,11 +17,13 @@ import { getSessionID, storageState, sessionState } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 import { EXPERIENCE } from '../../constants';
+import { type InlineXOEligibilityType } from '../../types';
 
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments } from './util';
+    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
+    
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -608,10 +610,22 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { style: { custom }, fundingEligibility } = props;
-                    const isInlineXO = (custom && (custom.label || custom.css)) && fundingEligibility[FUNDING.CARD]?.eligible;
+                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, vault } = props || {};
 
-                    return isInlineXO ? EXPERIENCE.INLINE : '';
+                    const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
+                        eligible: false
+                    };
+                    return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && isInlineXOEligible({ props: {
+                        commit,
+                        createBillingAgreement,
+                        currency,
+                        disableFunding,
+                        fundingEligibility,
+                        layout,
+                        locale,
+                        merchantID,
+                        vault
+                    } }) ? EXPERIENCE.INLINE : '';
                 }
             },
 

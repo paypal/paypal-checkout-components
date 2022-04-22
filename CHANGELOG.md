@@ -1,3 +1,9 @@
+## <small>5.0.213 (2022-04-18)</small>
+
+* Inline XO Global (#1924) ([b119c35](https://github.com/paypal/paypal-checkout-components/commit/b119c35)), closes [#1924](https://github.com/paypal/paypal-checkout-components/issues/1924)
+
+
+
 ## <small>5.0.212 (2022-04-15)</small>
 
 * chore: remove non-instant apms (unbranded flow only) from vertical stack (#1921) ([659b720](https://github.com/paypal/paypal-checkout-components/commit/659b720)), closes [#1921](https://github.com/paypal/paypal-checkout-components/issues/1921)

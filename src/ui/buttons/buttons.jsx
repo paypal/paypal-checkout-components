@@ -101,8 +101,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
         nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
         supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
-    const { layout, shape, tagline } = style;
-    const inlineExperience = experience === EXPERIENCE.INLINE;
+    const { custom, layout, shape, tagline } = style;
+    const inlineExperience = experience === EXPERIENCE.INLINE && custom;
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
