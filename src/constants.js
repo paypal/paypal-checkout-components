@@ -113,6 +113,7 @@ export const FPTI_TRANSITION = {
 
     CHECKOUT_SHIPPING_CHANGE: ('process_checkout_shipping_change' : 'process_checkout_shipping_change'),
     CHECKOUT_APPROVE:         ('process_checkout_approve' : 'process_checkout_approve'),
+    CHECKOUT_COMPLETE:        ('process_checkout_complete' : 'process_checkout_complete'),
     CHECKOUT_CANCEL:          ('process_checkout_cancel' : 'process_checkout_cancel'),
     CHECKOUT_ERROR:           ('process_checkout_error' : 'process_checkout_error'),
 
@@ -189,6 +190,7 @@ export const FPTI_BUTTON_TYPE = {
 
 export const FPTI_CUSTOM_KEY = {
     ERR_DESC:                   ('int_error_desc' : 'int_error_desc'),
+    EXPERIENCE:                 ('experience' : 'experience'),
     HONEY_DEVICE_ID:            ('honey_device_id' : 'honey_device_id'),
     HONEY_SESSION_ID:           ('honey_session_id' : 'honey_session_id'),
     INTEGRATION_ISSUE:          ('integration_issue' : 'integration_issue'),

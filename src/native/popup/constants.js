@@ -23,6 +23,7 @@ export const HASH = {
     CLOSED:             'closed',
     FALLBACK:           'fallback',
     ON_APPROVE:         'onApprove',
+    ON_COMPLETE:        'onComplete',
     ON_CANCEL:          'onCancel',
     ON_FALLBACK:        'fallback',
     ON_ERROR:           'onError',

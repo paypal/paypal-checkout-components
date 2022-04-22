@@ -17,6 +17,7 @@ import './vault';
 import './clientConfig';
 import './popupBridge';
 import './card';
+import './inlinexo';
 import './native';
 import './native-qrcode';
 import './nativePopup';

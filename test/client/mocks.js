@@ -116,6 +116,12 @@ export function setupMocks() {
                         return props.createOrder();
                     }).then(orderID => {
                         return ZalgoPromise.delay(50).then(() => {
+                            if (props.inlinexo) {
+                                return props.onComplete({ orderID })
+                                    .catch(err => {
+                                        return props.onError(err);
+                                    });
+                            }
                             return props.onApprove({
                                 orderID,
                                 payerID: 'AAABBBCCC'
@@ -309,12 +315,12 @@ export function setupMocks() {
             country: 'US',
             lang:    'en'
         },
-        onInit:    mockAsyncProp(noop),
-        onApprove: mockAsyncProp(noop),
-        onCancel:  mockAsyncProp(noop),
-        onChange:  mockAsyncProp(noop),
-        export:    mockAsyncProp(noop),
-        onError:   mockAsyncProp((err) => {
+        onInit:     mockAsyncProp(noop),
+        onApprove:  mockAsyncProp(noop),
+        onCancel:   mockAsyncProp(noop),
+        onChange:   mockAsyncProp(noop),
+        export:     mockAsyncProp(noop),
+        onError:    mockAsyncProp((err) => {
             throw err;
         }),
         remember:                 mockAsyncProp(noop),

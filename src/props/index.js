@@ -6,6 +6,7 @@ export * from './confirmOrder';
 export * from './createBillingAgreement';
 export * from './createSubscription';
 export * from './onApprove';
+export * from './onComplete';
 export * from './onInit';
 export * from './onCancel';
 export * from './onShippingChange';

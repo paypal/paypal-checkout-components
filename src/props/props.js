@@ -12,6 +12,7 @@ import { getStorageID, isStorageStateFresh } from '../lib';
 import { getOnInit } from './onInit';
 import { getCreateOrder } from './createOrder';
 import { getOnApprove } from './onApprove';
+import { getOnComplete } from './onComplete';
 import { getOnCancel } from './onCancel';
 import { getOnShippingChange } from './onShippingChange';
 import { getOnClick } from './onClick';
@@ -21,7 +22,7 @@ import { getOnAuth } from './onAuth';
 import { getOnError } from './onError';
 
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit,
-    XOnInit, OnApprove, XOnApprove, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError,
+    XOnInit, OnApprove, XOnApprove, OnComplete, XOnComplete, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError,
     OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding
 } from '.';
 
@@ -87,6 +88,7 @@ export type XProps = {|
 
     onInit : XOnInit,
     onApprove : ?XOnApprove,
+    onComplete? : ?XOnComplete,
     onCancel : XOnCancel,
     onClick : XOnClick,
     onError : XOnError,
@@ -158,6 +160,7 @@ export type Props = {|
     createSubscription : ?XCreateSubscription,
 
     onApprove : OnApprove,
+    onComplete : OnComplete,
 
     onCancel : OnCancel,
     onShippingChange : ?OnShippingChange,
@@ -241,6 +244,7 @@ export function getProps({ facilitatorAccessToken, branded, paymentSource } : {|
 
     const onError = getOnError({ onError: xprops.onError });
     const onApprove = getOnApprove({ onApprove: xprops.onApprove, createBillingAgreement, createSubscription, intent, onError, partnerAttributionID, clientAccessToken, vault, clientID, facilitatorAccessToken, branded, createOrder, paymentSource });
+    const onComplete = getOnComplete({ createOrder, onComplete: xprops.onComplete, onError: xprops.onError });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
     const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
     const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, createSubscription, clientID });
@@ -298,6 +302,7 @@ export function getProps({ facilitatorAccessToken, branded, paymentSource } : {|
         createBillingAgreement,
         createSubscription,
         onApprove,
+        onComplete,
         onCancel,
         onShippingChange,
 
