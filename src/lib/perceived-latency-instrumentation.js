@@ -8,7 +8,15 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
     logLatencyInstrumentationPhase('html_body', 'comp');
 */
 const latencyInstrumentationPhases = {};
-export const logLatencyInstrumentationPhase = (buttonID : string, phase : string, category : string, isStart : ?boolean) => {
+
+type LogLatencyInstrumentationPhaseParams = {|
+    buttonID : string,
+    phase : string,
+    category : string,
+    isStart? : boolean
+|};
+
+export const logLatencyInstrumentationPhase = ({ buttonID, phase, category, isStart } : LogLatencyInstrumentationPhaseParams) => {
     try {
         // to remove Query from phase
         phase = phase.replace(/Query/g, '');

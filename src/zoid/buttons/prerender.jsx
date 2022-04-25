@@ -67,7 +67,11 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             onRenderCheckout({ fundingSource, card });
         }
     };
-    logLatencyInstrumentationPhase(props.buttonSessionID, 'first_render', 'comp');
+    logLatencyInstrumentationPhase({
+        buttonID: props.buttonSessionID,
+        phase:    'first_render',
+        category: 'comp'
+    });
     triggerInitialLatencyInstrumentationEvent(props.buttonSessionID);
     return (
         <html>

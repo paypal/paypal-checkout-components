@@ -262,7 +262,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required: false,
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
-                    logLatencyInstrumentationPhase(props.buttonSessionID, 'first_render', 'comp', true);
+                    logLatencyInstrumentationPhase({
+                        buttonID: props.buttonSessionID,
+                        phase:    'first_render',
+                        category: 'comp',
+                        isStart:  true
+                    });
                     return (...args) => {
                         const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
