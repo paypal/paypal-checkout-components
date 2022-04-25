@@ -13,7 +13,7 @@ import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupp
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 
-import { getSessionID, storageState, sessionState, logCPLPhase } from '../../lib';
+import { getSessionID, storageState, sessionState, logLatencyInstrumentationPhase } from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 import { EXPERIENCE } from '../../constants';
@@ -262,7 +262,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required: false,
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
-                    logCPLPhase(props.buttonSessionID, 'first_render', 'comp', true);
+                    logLatencyInstrumentationPhase(props.buttonSessionID, 'first_render', 'comp', true);
                     return (...args) => {
                         const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
