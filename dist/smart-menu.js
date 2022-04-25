@@ -803,6 +803,10 @@ window.spb = function(modules) {
         } catch (err) {}
         return !1;
     }
+    function assertSameDomain(win) {
+        if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
+        return win;
+    }
     var iframeWindows = [];
     var iframeFrames = [];
     function isWindowClosed(win, allowMock) {
@@ -1075,6 +1079,17 @@ window.spb = function(modules) {
             return _setPrototypeOf(Wrapper, Class);
         })(Class);
     }
+    function getFunctionName(fn) {
+        return fn.name || fn.__name__ || fn.displayName || "anonymous";
+    }
+    function setFunctionName(fn, name) {
+        try {
+            delete fn.name;
+            fn.name = name;
+        } catch (err) {}
+        fn.__name__ = fn.displayName = name;
+        return fn;
+    }
     function uniqueID() {
         var chars = "0123456789abcdef";
         return "uid_" + "xxxxxxxxxx".replace(/./g, (function() {
@@ -1158,26 +1173,42 @@ window.spb = function(modules) {
             simpleCache = null;
             thisCache = null;
         };
-        return function(fn, name) {
-            try {
-                delete fn.name;
-                fn.name = name;
-            } catch (err) {}
-            fn.__name__ = fn.displayName = name;
-            return fn;
-        }(memoizedFunction, (options.name || (fn = method).name || fn.__name__ || fn.displayName || "anonymous") + "::memoized");
-        var fn;
+        return setFunctionName(memoizedFunction, (options.name || getFunctionName(method)) + "::memoized");
     }
     memoize.clear = function() {
         memoizeGlobalIndexValidFrom = memoizeGlobalIndex;
     };
     function src_util_noop() {}
+    function stringifyError(err, level) {
+        void 0 === level && (level = 1);
+        if (level >= 3) return "stringifyError stack overflow";
+        try {
+            if (!err) return "<unknown error: " + {}.toString.call(err) + ">";
+            if ("string" == typeof err) return err;
+            if (err instanceof Error) {
+                var stack = err && err.stack;
+                var message = err && err.message;
+                if (stack && message) return -1 !== stack.indexOf(message) ? stack : message + "\n" + stack;
+                if (stack) return stack;
+                if (message) return message;
+            }
+            return err && err.toString && "function" == typeof err.toString ? err.toString() : {}.toString.call(err);
+        } catch (newErr) {
+            return "Error while stringifying error: " + stringifyError(newErr, level + 1);
+        }
+    }
     memoize((function(obj) {
         if (Object.values) return Object.values(obj);
         var result = [];
         for (var key in obj) obj.hasOwnProperty(key) && result.push(obj[key]);
         return result;
     }));
+    function objFilter(obj, filter) {
+        void 0 === filter && (filter = Boolean);
+        var result = {};
+        for (var key in obj) obj.hasOwnProperty(key) && filter(obj[key], key) && (result[key] = obj[key]);
+        return result;
+    }
     function arrayFrom(item) {
         return [].slice.call(item);
     }
@@ -1211,6 +1242,9 @@ window.spb = function(modules) {
             }), 10);
         }));
     }));
+    function dom_isBrowser() {
+        return "undefined" != typeof window && void 0 !== window.location;
+    }
     var dom_PopupOpenError = function(_ExtendableError) {
         _inheritsLoose(PopupOpenError, _ExtendableError);
         function PopupOpenError() {
@@ -1270,12 +1304,314 @@ window.spb = function(modules) {
         script.setAttribute("data-uid-auto", uid);
         return uid;
     }));
+    var http_headerBuilders = [];
+    var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
+    var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
+    var sendBeacon = function(_ref2) {
+        var _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win, url = _ref2.url, data = _ref2.data, _ref2$useBlob = _ref2.useBlob, useBlob = void 0 === _ref2$useBlob || _ref2$useBlob;
+        try {
+            var json = JSON.stringify(data);
+            if (!win.navigator.sendBeacon) throw new Error("No sendBeacon available");
+            if (useBlob) {
+                var blob = new Blob([ json ], {
+                    type: "application/json"
+                });
+                return win.navigator.sendBeacon(url, blob);
+            }
+            return win.navigator.sendBeacon(url, json);
+        } catch (e) {
+            return !1;
+        }
+    };
+    var extendIfDefined = function(target, source) {
+        for (var key in source) source.hasOwnProperty(key) && (target[key] = source[key]);
+    };
     var _FUNDING_SKIP_LOGIN, _AMPLITUDE_API_KEY;
     (_FUNDING_SKIP_LOGIN = {}).paypal = "paypal", _FUNDING_SKIP_LOGIN.paylater = "paypal", 
     _FUNDING_SKIP_LOGIN.credit = "paypal";
     (_AMPLITUDE_API_KEY = {}).test = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.local = "a23fb4dfae56daf7c3212303b53a8527", 
     _AMPLITUDE_API_KEY.stage = "a23fb4dfae56daf7c3212303b53a8527", _AMPLITUDE_API_KEY.sandbox = "a23fb4dfae56daf7c3212303b53a8527", 
     _AMPLITUDE_API_KEY.production = "ce423f79daba95faeb0694186170605c";
+    function getLogger() {
+        return function(method, logic, args) {
+            void 0 === args && (args = []);
+            var cache = method.__inline_memoize_cache__ = method.__inline_memoize_cache__ || {};
+            var key = serializeArgs(args);
+            return cache.hasOwnProperty(key) ? cache[key] : cache[key] = function() {
+                return function(_ref) {
+                    var url = _ref.url, prefix = _ref.prefix, _ref$logLevel = _ref.logLevel, logLevel = void 0 === _ref$logLevel ? "warn" : _ref$logLevel, _ref$transport = _ref.transport, transport = void 0 === _ref$transport ? function(httpWin) {
+                        void 0 === httpWin && (httpWin = window);
+                        var win = isSameDomain(httpWin) ? assertSameDomain(httpWin) : window;
+                        return function(_ref) {
+                            var url = _ref.url, method = _ref.method, headers = _ref.headers, json = _ref.json, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+                            return promise_ZalgoPromise.try((function() {
+                                var beaconResult = !1;
+                                (function(_ref) {
+                                    var headers = _ref.headers, enableSendBeacon = _ref.enableSendBeacon;
+                                    var hasHeaders = headers && Object.keys(headers).length;
+                                    return !!(window && window.navigator.sendBeacon && !hasHeaders && enableSendBeacon && window.Blob);
+                                })({
+                                    headers: headers,
+                                    enableSendBeacon: enableSendBeacon
+                                }) && (beaconResult = function(url) {
+                                    return "https://api2.amplitude.com/2/httpapi" === url;
+                                }(url) ? sendBeacon({
+                                    win: win,
+                                    url: url,
+                                    data: json,
+                                    useBlob: !1
+                                }) : sendBeacon({
+                                    win: win,
+                                    url: url,
+                                    data: json,
+                                    useBlob: !0
+                                }));
+                                return beaconResult || function(_ref) {
+                                    var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+                                    return new promise_ZalgoPromise((function(resolve, reject) {
+                                        if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+                                        var normalizedHeaders = {};
+                                        for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                                            var _key2 = _Object$keys2[_i4];
+                                            normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+                                        }
+                                        json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
+                                        normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
+                                        for (var _i6 = 0; _i6 < http_headerBuilders.length; _i6++) {
+                                            var builtHeaders = (0, http_headerBuilders[_i6])();
+                                            for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                                                var _key3 = _Object$keys4[_i8];
+                                                normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                                            }
+                                        }
+                                        var xhr = new win.XMLHttpRequest;
+                                        xhr.addEventListener("load", (function() {
+                                            var responseHeaders = function(rawHeaders) {
+                                                void 0 === rawHeaders && (rawHeaders = "");
+                                                var result = {};
+                                                for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                                                    var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                                                    result[_key.toLowerCase()] = values.join(":").trim();
+                                                }
+                                                return result;
+                                            }(this.getAllResponseHeaders());
+                                            if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code."));
+                                            var contentType = responseHeaders["content-type"];
+                                            var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
+                                            var responseBody = this.responseText;
+                                            try {
+                                                responseBody = JSON.parse(responseBody);
+                                            } catch (err) {
+                                                if (isJSON) return reject(new Error("Invalid json: " + this.responseText + "."));
+                                            }
+                                            return resolve({
+                                                status: this.status,
+                                                headers: responseHeaders,
+                                                body: responseBody
+                                            });
+                                        }), !1);
+                                        xhr.addEventListener("error", (function(evt) {
+                                            reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + "."));
+                                        }), !1);
+                                        xhr.open(method, url, !0);
+                                        for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+                                        json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
+                                            return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+                                        })).join("&"));
+                                        xhr.timeout = timeout;
+                                        xhr.ontimeout = function() {
+                                            reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+                                        };
+                                        xhr.send(body);
+                                    }));
+                                }({
+                                    win: win,
+                                    url: url,
+                                    method: method,
+                                    headers: headers,
+                                    json: json
+                                });
+                            })).then(src_util_noop);
+                        };
+                    }() : _ref$transport, amplitudeApiKey = _ref.amplitudeApiKey, _ref$flushInterval = _ref.flushInterval, flushInterval = void 0 === _ref$flushInterval ? 6e4 : _ref$flushInterval, _ref$enableSendBeacon = _ref.enableSendBeacon, enableSendBeacon = void 0 !== _ref$enableSendBeacon && _ref$enableSendBeacon;
+                    var events = [];
+                    var tracking = [];
+                    var payloadBuilders = [];
+                    var metaBuilders = [];
+                    var trackingBuilders = [];
+                    var headerBuilders = [];
+                    function print(level, event, payload) {
+                        if (dom_isBrowser() && window.console && window.console.log && !(LOG_LEVEL_PRIORITY.indexOf(level) > LOG_LEVEL_PRIORITY.indexOf(logLevel))) {
+                            var args = [ event ];
+                            args.push(payload);
+                            (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                            try {
+                                window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                            } catch (err) {}
+                        }
+                    }
+                    function immediateFlush() {
+                        return promise_ZalgoPromise.try((function() {
+                            if (dom_isBrowser() && "file:" !== window.location.protocol && (events.length || tracking.length)) {
+                                var meta = {};
+                                for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) extendIfDefined(meta, (0, metaBuilders[_i2])(meta));
+                                var headers = {};
+                                for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) extendIfDefined(headers, (0, 
+                                headerBuilders[_i4])(headers));
+                                var res;
+                                url && (res = transport({
+                                    method: "POST",
+                                    url: url,
+                                    headers: headers,
+                                    json: {
+                                        events: events,
+                                        meta: meta,
+                                        tracking: tracking
+                                    },
+                                    enableSendBeacon: enableSendBeacon
+                                }).catch(src_util_noop));
+                                amplitudeApiKey && transport({
+                                    method: "POST",
+                                    url: "https://api2.amplitude.com/2/httpapi",
+                                    headers: {},
+                                    json: {
+                                        api_key: amplitudeApiKey,
+                                        events: tracking.map((function(payload) {
+                                            return _extends({
+                                                event_type: payload.transition_name || "event",
+                                                event_properties: payload
+                                            }, payload);
+                                        }))
+                                    },
+                                    enableSendBeacon: enableSendBeacon
+                                }).catch(src_util_noop);
+                                events = [];
+                                tracking = [];
+                                return promise_ZalgoPromise.resolve(res).then(src_util_noop);
+                            }
+                        }));
+                    }
+                    var flush = function(method, delay) {
+                        void 0 === delay && (delay = 50);
+                        var promise;
+                        var timeout;
+                        return setFunctionName((function() {
+                            timeout && clearTimeout(timeout);
+                            var localPromise = promise = promise || new promise_ZalgoPromise;
+                            timeout = setTimeout((function() {
+                                promise = null;
+                                timeout = null;
+                                promise_ZalgoPromise.try(method).then((function(result) {
+                                    localPromise.resolve(result);
+                                }), (function(err) {
+                                    localPromise.reject(err);
+                                }));
+                            }), delay);
+                            return localPromise;
+                        }), getFunctionName(method) + "::promiseDebounced");
+                    }(immediateFlush);
+                    function log(level, event, payload) {
+                        void 0 === payload && (payload = {});
+                        if (!dom_isBrowser()) return logger;
+                        prefix && (event = prefix + "_" + event);
+                        var logPayload = _extends({}, objFilter(payload), {
+                            timestamp: Date.now().toString()
+                        });
+                        for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) extendIfDefined(logPayload, (0, 
+                        payloadBuilders[_i6])(logPayload));
+                        !function(level, event, payload) {
+                            events.push({
+                                level: level,
+                                event: event,
+                                payload: payload
+                            });
+                            -1 !== AUTO_FLUSH_LEVEL.indexOf(level) && flush();
+                        }(level, event, logPayload);
+                        print(level, event, logPayload);
+                        return logger;
+                    }
+                    function addBuilder(builders, builder) {
+                        builders.push(builder);
+                        return logger;
+                    }
+                    dom_isBrowser() && (method = flush, time = flushInterval, function loop() {
+                        setTimeout((function() {
+                            method();
+                            loop();
+                        }), time);
+                    }());
+                    var method, time;
+                    if ("object" == typeof window) {
+                        window.addEventListener("beforeunload", (function() {
+                            immediateFlush();
+                        }));
+                        window.addEventListener("unload", (function() {
+                            immediateFlush();
+                        }));
+                        window.addEventListener("pagehide", (function() {
+                            immediateFlush();
+                        }));
+                    }
+                    var logger = {
+                        debug: function(event, payload) {
+                            return log("debug", event, payload);
+                        },
+                        info: function(event, payload) {
+                            return log("info", event, payload);
+                        },
+                        warn: function(event, payload) {
+                            return log("warn", event, payload);
+                        },
+                        error: function(event, payload) {
+                            return log("error", event, payload);
+                        },
+                        track: function(payload) {
+                            void 0 === payload && (payload = {});
+                            if (!dom_isBrowser()) return logger;
+                            var trackingPayload = objFilter(payload);
+                            for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) extendIfDefined(trackingPayload, (0, 
+                            trackingBuilders[_i8])(trackingPayload));
+                            print("debug", "track", trackingPayload);
+                            tracking.push(trackingPayload);
+                            return logger;
+                        },
+                        flush: flush,
+                        immediateFlush: immediateFlush,
+                        addPayloadBuilder: function(builder) {
+                            return addBuilder(payloadBuilders, builder);
+                        },
+                        addMetaBuilder: function(builder) {
+                            return addBuilder(metaBuilders, builder);
+                        },
+                        addTrackingBuilder: function(builder) {
+                            return addBuilder(trackingBuilders, builder);
+                        },
+                        addHeaderBuilder: function(builder) {
+                            return addBuilder(headerBuilders, builder);
+                        },
+                        setTransport: function(newTransport) {
+                            transport = newTransport;
+                            return logger;
+                        },
+                        configure: function(opts) {
+                            opts.url && (url = opts.url);
+                            opts.prefix && (prefix = opts.prefix);
+                            opts.logLevel && (logLevel = opts.logLevel);
+                            opts.transport && (transport = opts.transport);
+                            opts.amplitudeApiKey && (amplitudeApiKey = opts.amplitudeApiKey);
+                            opts.flushInterval && (flushInterval = opts.flushInterval);
+                            opts.enableSendBeacon && (enableSendBeacon = opts.enableSendBeacon);
+                            return logger;
+                        }
+                    };
+                    return logger;
+                }({
+                    url: "/xoplatform/logger/api/logger",
+                    enableSendBeacon: !0
+                });
+            }.apply(void 0, args);
+        }(getLogger);
+    }
     function getNonce() {
         var nonce = "";
         document.body && (nonce = document.body.getAttribute("data-nonce") || "");
@@ -1539,7 +1875,7 @@ window.spb = function(modules) {
         });
         return v(d, null, v("style", {
             nonce: cspNonce
-        }, '\n                    .menu {\n                        width: 100%;\n                        z-index: 5000;\n                        background: white;\n                        border-radius: 0 0 3px 3px;\n                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n                        letter-spacing: 0.5px;\n                        box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);\n                        outline-style: none;\n                        user-select: none;\n                        text-align: center;\n                        margin-top: ' + verticalOffset + "px;\n                        overflow: hidden;\n                    }\n                    \n                    .menu-item {\n                        border-top: 2px solid rgba(230, 230, 230, 0.5);;\n                        color: #0070ba;\n                        cursor: pointer;\n                    }\n                    \n                    .menu-item:first-child {\n                        border-top: none;\n                    }\n                    \n                    .menu-item:hover {\n                        background: #fcfcfc;\n                        text-decoration: underline;\n                    }\n\n                    @media screen and (min-width: 0px) {\n                        .menu-item {\n                            font-size: 11px;\n                            line-height: 14px;\n                            padding: 8px;\n                        }\n                    }\n\n                    @media screen and (min-width: 300px) {\n                        .menu-item {\n                            font-size: 14px;\n                            line-height: 18px;\n                            padding: 14px;\n                        }\n                    }\n\n                    @media screen and (min-width: 500px) {\n                        .menu-item {\n                            font-size: 18px;\n                            line-height: 21px;\n                            padding: 17px;\n                        }\n                    }\n                "), v("div", {
+        }, '\n                    .menu {\n                        width: 100%;\n                        z-index: 5000;\n                        background: white;\n                        border-radius: 0 0 3px 3px;\n                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n                        letter-spacing: 0.5px;\n                        box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);\n                        outline-style: none;\n                        user-select: none;\n                        text-align: center;\n                        margin-top: ' + verticalOffset + "px;\n                        overflow: hidden;\n                    }\n\n                    .menu-item {\n                        border-top: 2px solid rgba(230, 230, 230, 0.5);;\n                        color: #0070ba;\n                        cursor: pointer;\n                    }\n\n                    .menu-item:first-child {\n                        border-top: none;\n                    }\n\n                    .menu-item:hover {\n                        background: #fcfcfc;\n                        text-decoration: underline;\n                    }\n\n                    @media screen and (min-width: 0px) {\n                        .menu-item {\n                            font-size: 11px;\n                            line-height: 14px;\n                            padding: 8px;\n                        }\n                    }\n\n                    @media screen and (min-width: 300px) {\n                        .menu-item {\n                            font-size: 14px;\n                            line-height: 18px;\n                            padding: 14px;\n                        }\n                    }\n\n                    @media screen and (min-width: 500px) {\n                        .menu-item {\n                            font-size: 18px;\n                            line-height: 21px;\n                            padding: 17px;\n                        }\n                    }\n                "), v("div", {
             class: "menu",
             tabIndex: "0",
             onBlur: onBlur,
@@ -1550,70 +1886,73 @@ window.spb = function(modules) {
                 onClick: function() {
                     return function(choice) {
                         var win;
-                        choice.popup && (win = function(_ref) {
-                            var _ref$closeOnUnload = _ref.closeOnUnload;
-                            var win = function(win) {
-                                if (!isSameDomain(win)) throw new Error("Expected window to be same domain");
-                                return win;
-                            }(function(url, options) {
-                                var _options$closeOnUnloa = (options = options || {}).closeOnUnload, closeOnUnload = void 0 === _options$closeOnUnloa ? 1 : _options$closeOnUnloa, _options$name = options.name, name = void 0 === _options$name ? "" : _options$name, width = options.width, height = options.height;
-                                var top = 0;
-                                var left = 0;
-                                width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
-                                height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
-                                delete options.closeOnUnload;
-                                delete options.name;
-                                width && height && (options = _extends({
-                                    top: top,
-                                    left: left,
-                                    width: width,
-                                    height: height,
-                                    status: 1,
-                                    toolbar: 0,
-                                    menubar: 0,
-                                    resizable: 1,
-                                    scrollbars: 1
-                                }, options));
-                                var params = Object.keys(options).map((function(key) {
-                                    if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
-                                    var item;
-                                })).filter(Boolean).join(",");
-                                var win;
-                                try {
-                                    win = window.open("", name, params);
-                                } catch (err) {
-                                    throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
-                                }
-                                if (isWindowClosed(win)) {
-                                    var err;
-                                    throw new dom_PopupOpenError("Can not open popup window - blocked");
-                                }
-                                closeOnUnload && window.addEventListener("unload", (function() {
-                                    return win.close();
+                        if (choice.popup) try {
+                            win = function(_ref) {
+                                var _ref$closeOnUnload = _ref.closeOnUnload;
+                                var win = assertSameDomain(function(url, options) {
+                                    var _options$closeOnUnloa = (options = options || {}).closeOnUnload, closeOnUnload = void 0 === _options$closeOnUnloa ? 1 : _options$closeOnUnloa, _options$name = options.name, name = void 0 === _options$name ? "" : _options$name, width = options.width, height = options.height;
+                                    var top = 0;
+                                    var left = 0;
+                                    width && (window.outerWidth ? left = Math.round((window.outerWidth - width) / 2) + window.screenX : window.screen.width && (left = Math.round((window.screen.width - width) / 2)));
+                                    height && (window.outerHeight ? top = Math.round((window.outerHeight - height) / 2) + window.screenY : window.screen.height && (top = Math.round((window.screen.height - height) / 2)));
+                                    delete options.closeOnUnload;
+                                    delete options.name;
+                                    width && height && (options = _extends({
+                                        top: top,
+                                        left: left,
+                                        width: width,
+                                        height: height,
+                                        status: 1,
+                                        toolbar: 0,
+                                        menubar: 0,
+                                        resizable: 1,
+                                        scrollbars: 1
+                                    }, options));
+                                    var params = Object.keys(options).map((function(key) {
+                                        if (null != options[key]) return key + "=" + ("string" == typeof (item = options[key]) ? item : item && item.toString && "function" == typeof item.toString ? item.toString() : {}.toString.call(item));
+                                        var item;
+                                    })).filter(Boolean).join(",");
+                                    var win;
+                                    try {
+                                        win = window.open("", name, params);
+                                    } catch (err) {
+                                        throw new dom_PopupOpenError("Can not open popup window - " + (err.stack || err.message));
+                                    }
+                                    if (isWindowClosed(win)) {
+                                        var err;
+                                        throw new dom_PopupOpenError("Can not open popup window - blocked");
+                                    }
+                                    closeOnUnload && window.addEventListener("unload", (function() {
+                                        return win.close();
+                                    }));
+                                    return win;
+                                }(0, {
+                                    width: _ref.width,
+                                    height: _ref.height,
+                                    closeOnUnload: void 0 === _ref$closeOnUnload ? 1 : _ref$closeOnUnload
                                 }));
+                                var doc = win.document;
+                                !function(win, el) {
+                                    var tag = el.tagName.toLowerCase();
+                                    if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
+                                    var documentElement = win.document.documentElement;
+                                    for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
+                                    for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
+                                }(win, node_node(SpinnerPage, {
+                                    nonce: getNonce()
+                                }).render(dom({
+                                    doc: doc
+                                })));
                                 return win;
-                            }(0, {
-                                width: _ref.width,
-                                height: _ref.height,
-                                closeOnUnload: void 0 === _ref$closeOnUnload ? 1 : _ref$closeOnUnload
-                            }));
-                            var doc = win.document;
-                            !function(win, el) {
-                                var tag = el.tagName.toLowerCase();
-                                if ("html" !== tag) throw new Error("Expected element to be html, got " + tag);
-                                var documentElement = win.document.documentElement;
-                                for (var _i6 = 0, _arrayFrom2 = arrayFrom(documentElement.children); _i6 < _arrayFrom2.length; _i6++) documentElement.removeChild(_arrayFrom2[_i6]);
-                                for (var _i8 = 0, _arrayFrom4 = arrayFrom(el.children); _i8 < _arrayFrom4.length; _i8++) documentElement.appendChild(_arrayFrom4[_i8]);
-                            }(win, node_node(SpinnerPage, {
-                                nonce: getNonce()
-                            }).render(dom({
-                                doc: doc
-                            })));
-                            return win;
-                        }({
-                            width: choice.popup.width,
-                            height: choice.popup.height
-                        }));
+                            }({
+                                width: choice.popup.width,
+                                height: choice.popup.height
+                            });
+                        } catch (err) {
+                            getLogger().warn("menu_popup_open_error", {
+                                err: stringifyError(err)
+                            });
+                        }
                         return choice.onSelect({
                             win: win
                         });
@@ -1623,7 +1962,7 @@ window.spb = function(modules) {
         }))));
     }
     function Page(_ref) {
-        var cspNonce = _ref.cspNonce;
+        var cspNonce = _ref.cspNonce, _ref$pageVisible = _ref.pageVisible, pageVisible = void 0 !== _ref$pageVisible && _ref$pageVisible;
         var _useXProps = function() {
             var _useState = hooks_module_m(window.xprops), xprops = _useState[0], setXProps = _useState[1];
             hooks_module_y((function() {
@@ -1634,7 +1973,7 @@ window.spb = function(modules) {
             return _extends({}, xprops);
         }(), choices = _useXProps.choices, onChoose = _useXProps.onChoose, verticalOffset = _useXProps.verticalOffset, hide = _useXProps.hide, _useXProps$onBlur = _useXProps.onBlur, onBlur = void 0 === _useXProps$onBlur ? src_util_noop : _useXProps$onBlur, _useXProps$onFocus = _useXProps.onFocus, onFocus = void 0 === _useXProps$onFocus ? src_util_noop : _useXProps$onFocus, _useXProps$onFocusFai = _useXProps.onFocusFail, onFocusFail = void 0 === _useXProps$onFocusFai ? src_util_noop : _useXProps$onFocusFai;
         var _useState = hooks_module_m(!1), opaque = _useState[0], setOpaque = _useState[1];
-        var _useState2 = hooks_module_m(!1), visible = _useState2[0], setVisible = _useState2[1];
+        var _useState2 = hooks_module_m(pageVisible), visible = _useState2[0], setVisible = _useState2[1];
         hooks_module_y((function() {
             var hasChoices = Boolean(choices && choices.length);
             setOpaque(hasChoices);
@@ -1666,8 +2005,10 @@ window.spb = function(modules) {
         }) : null);
     }
     function setupMenu(_ref3) {
+        var _ref3$pageVisible = _ref3.pageVisible;
         u = v(Page, {
-            cspNonce: _ref3.cspNonce
+            cspNonce: _ref3.cspNonce,
+            pageVisible: void 0 !== _ref3$pageVisible && _ref3$pageVisible
         }), i = function() {
             var body = document.body;
             if (!body) throw new Error("Document body not found");

@@ -4888,7 +4888,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.95", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.96", 
                     _ref3.user_id = buttonSessionID, _ref3.time = Date.now().toString(), _ref3;
                 }));
                 (function() {
@@ -5180,7 +5180,8 @@
             replaceHash("loaded");
             handleHash();
             var stickinessID = getStorage({
-                name: "paypal"
+                name: "paypal",
+                lifetime: 36e5
             }).getID();
             var pageUrl = window.location.href.split("#")[0] + "#close";
             appInstalledPromise.then((function(app) {
