@@ -1,4 +1,4 @@
-/*! For license information please see checkout.4.0.335.js.LICENSE.txt */
+/*! For license information please see checkout.4.0.336.js.LICENSE.txt */
 !function(modules) {
     var installedModules = {};
     function __webpack_require__(moduleId) {
@@ -1193,6 +1193,1196 @@
     }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "F", (function() {
+        return isSupportedNativeBrowser;
+    }));
+    __webpack_require__.d(__webpack_exports__, "I", (function() {
+        return util.j;
+    }));
+    __webpack_require__.d(__webpack_exports__, "K", (function() {
+        return util.k;
+    }));
+    __webpack_require__.d(__webpack_exports__, "V", (function() {
+        return util.s;
+    }));
+    __webpack_require__.d(__webpack_exports__, "H", (function() {
+        return util.i;
+    }));
+    __webpack_require__.d(__webpack_exports__, "R", (function() {
+        return util.o;
+    }));
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
+        return util.c;
+    }));
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return util.a;
+    }));
+    __webpack_require__.d(__webpack_exports__, "T", (function() {
+        return util.q;
+    }));
+    __webpack_require__.d(__webpack_exports__, "U", (function() {
+        return util.r;
+    }));
+    __webpack_require__.d(__webpack_exports__, "M", (function() {
+        return util.l;
+    }));
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
+        return util.d;
+    }));
+    __webpack_require__.d(__webpack_exports__, "A", (function() {
+        return initLogger;
+    }));
+    __webpack_require__.d(__webpack_exports__, "S", (function() {
+        return setLogLevel;
+    }));
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
+        return getBrowser;
+    }));
+    __webpack_require__.d(__webpack_exports__, "C", (function() {
+        return isEligible;
+    }));
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
+        return checkRecognizedBrowser;
+    }));
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
+        return checkForCommonErrors;
+    }));
+    __webpack_require__.d(__webpack_exports__, "G", (function() {
+        return dom.i;
+    }));
+    __webpack_require__.d(__webpack_exports__, "n", (function() {
+        return dom.c;
+    }));
+    __webpack_require__.d(__webpack_exports__, "o", (function() {
+        return dom.d;
+    }));
+    __webpack_require__.d(__webpack_exports__, "J", (function() {
+        return dom.j;
+    }));
+    __webpack_require__.d(__webpack_exports__, "q", (function() {
+        return dom.f;
+    }));
+    __webpack_require__.d(__webpack_exports__, "W", (function() {
+        return dom.l;
+    }));
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
+        return dom.a;
+    }));
+    __webpack_require__.d(__webpack_exports__, "O", (function() {
+        return dom.k;
+    }));
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
+        return dom.b;
+    }));
+    __webpack_require__.d(__webpack_exports__, "B", (function() {
+        return dom.h;
+    }));
+    __webpack_require__.d(__webpack_exports__, "p", (function() {
+        return dom.e;
+    }));
+    __webpack_require__.d(__webpack_exports__, "t", (function() {
+        return dom.g;
+    }));
+    __webpack_require__.d(__webpack_exports__, "Q", (function() {
+        return request;
+    }));
+    __webpack_require__.d(__webpack_exports__, "z", (function() {
+        return getThrottle;
+    }));
+    __webpack_require__.d(__webpack_exports__, "u", (function() {
+        return getReturnToken;
+    }));
+    __webpack_require__.d(__webpack_exports__, "y", (function() {
+        return session.e;
+    }));
+    __webpack_require__.d(__webpack_exports__, "x", (function() {
+        return session.d;
+    }));
+    __webpack_require__.d(__webpack_exports__, "w", (function() {
+        return session.c;
+    }));
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
+        return session.a;
+    }));
+    __webpack_require__.d(__webpack_exports__, "L", (function() {
+        return openMetaFrame;
+    }));
+    __webpack_require__.d(__webpack_exports__, "r", (function() {
+        return getRememberedFunding;
+    }));
+    __webpack_require__.d(__webpack_exports__, "P", (function() {
+        return rememberFunding;
+    }));
+    __webpack_require__.d(__webpack_exports__, "D", (function() {
+        return isFundingRemembered;
+    }));
+    __webpack_require__.d(__webpack_exports__, "N", (function() {
+        return precacheRememberedFunding;
+    }));
+    __webpack_require__.d(__webpack_exports__, "s", (function() {
+        return getRenderedButtons;
+    }));
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
+        return getCurrentScript;
+    }));
+    __webpack_require__.d(__webpack_exports__, "v", (function() {
+        return getScriptVersion;
+    }));
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
+        return getCurrentScriptUrl;
+    }));
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
+        return getDomainSetting;
+    }));
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return security.a;
+    }));
+    __webpack_require__.d(__webpack_exports__, "E", (function() {
+        return security.b;
+    }));
+    var src = __webpack_require__(7);
+    var belter_src = __webpack_require__(11);
+    function isSupportedNativeBrowser() {
+        var userAgent = Object(belter_src.c)();
+        return !(!Object(belter_src.t)(userAgent) || Object(belter_src.n)() || (!Object(belter_src.l)() || !Object(belter_src.o)()) && (!Object(belter_src.f)() || !Object(belter_src.g)()));
+    }
+    var util = __webpack_require__(14);
+    var post_robot_src = __webpack_require__(15);
+    var client = __webpack_require__(4);
+    var config = __webpack_require__(5);
+    var constants = __webpack_require__(0);
+    var session = __webpack_require__(21);
+    var dom = __webpack_require__(26);
+    var security = __webpack_require__(27);
+    var PAGE_TYPES = {
+        HOME: "home",
+        PRODUCT: "product",
+        CART: "cart",
+        CHECKOUT: "checkout",
+        PRODUCT_LISTING: "product-listing",
+        SEARCH_RESULTS: "search-results",
+        PRODUCT_DETAILS: "product-details",
+        MINI_CART: "mini-cart"
+    };
+    var getCurrentScript = Object(util.i)((function() {
+        var localSDKUrl = config.a.localSDKUrl;
+        var scripts = [].slice.call(document.getElementsByTagName("script"));
+        for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+            var script = scripts[_i2];
+            if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
+            if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
+            if (config.a.env === constants.t.LOCAL && localSDKUrl && script.src === localSDKUrl) return script;
+        }
+        document.currentScript && Object(client.f)("current_script_not_recognized", {
+            src: document.currentScript.src
+        });
+    }));
+    function getScriptVersion() {
+        return "4.0.336";
+    }
+    function getCurrentScriptUrl() {
+        var script = getCurrentScript();
+        if (script && "string" == typeof script.src) {
+            var scriptUrl = script.src;
+            0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
+            0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
+            return scriptUrl;
+        }
+        return "https://www.paypalobjects.com/api/checkout.4.0.336.js";
+    }
+    function getDomainSetting(name, def) {
+        var hostname = window.xchild ? window.xchild.getParentDomain() : Object(src.h)();
+        if (config.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(config.a.domain_settings); _i4 < _Object$keys2.length; _i4++) {
+            var domain = _Object$keys2[_i4];
+            if (Object(util.b)(hostname, domain)) return config.a.domain_settings[domain][name];
+        }
+        return def;
+    }
+    function getRefererDomain() {
+        return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
+    }
+    var setupProxyLogTransport = Object(util.k)((function() {
+        Object(client.o)(function(name, win, originalMethod) {
+            if (win && Object(src.h)() === config.a.paypalDomain && !Object(src.v)(win)) {
+                win && Object(post_robot_src.send)(win, "proxy_log", {
+                    originalMethod: originalMethod
+                }).catch(util.j);
+                return originalMethod;
+            }
+            var methods = [];
+            Object(post_robot_src.on)("proxy_log", {
+                domain: config.a.paypal_domain_regex
+            }, (function(_ref) {
+                methods.push(_ref.data.originalMethod);
+            }));
+            return function() {
+                var _arguments = arguments, _this = this;
+                return (methods = methods.filter((function(method) {
+                    return !Object(src.z)(method.source);
+                }))).length ? methods[methods.length - 1].apply(this, arguments).catch((function() {
+                    return originalMethod.apply(_this, _arguments);
+                })) : originalMethod.apply(this, arguments);
+            };
+        }(0, Object(src.n)(window), Object(client.i)()));
+    }));
+    function initLogger() {
+        setupProxyLogTransport();
+        Object(client.c)((function() {
+            return {
+                referer: getRefererDomain(),
+                host: window.location.host,
+                path: window.location.pathname,
+                env: config.a.env,
+                country: config.a.locale.country,
+                lang: config.a.locale.lang,
+                uid: Object(session.c)(),
+                ver: "4.0.336"
+            };
+        }));
+        Object(client.a)((function() {
+            return {
+                "x-app-name": "checkoutjs"
+            };
+        }));
+        Object(client.b)((function() {
+            return {
+                state: config.a.state
+            };
+        }));
+        Object(client.d)((function(payload) {
+            var _ref;
+            void 0 === payload && (payload = {});
+            var sessionID = Object(session.c)();
+            var paymentToken = function() {
+                if (window.root && window.root.token) return window.root.token;
+                if (Object(security.b)()) {
+                    var queryToken = Object(dom.f)("token");
+                    if (queryToken) return queryToken;
+                }
+            }();
+            var buttonSessionID = payload[constants.u.KEY.BUTTON_SESSION_UID] || Object(session.a)();
+            var contextType;
+            var contextID;
+            if (paymentToken) {
+                contextType = constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN];
+                contextID = paymentToken;
+            } else if (buttonSessionID) {
+                contextType = constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID;
+                contextID = buttonSessionID;
+            } else {
+                contextType = payload[constants.u.KEY.CONTEXT_TYPE];
+                contextID = payload[constants.u.KEY.CONTEXT_ID];
+            }
+            return (_ref = {})[constants.u.KEY.FEED] = constants.u.FEED.CHECKOUTJS, _ref[constants.u.KEY.DATA_SOURCE] = constants.u.DATA_SOURCE.CHECKOUT, 
+            _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
+            _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
+            _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
+            _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.PAGE_TYPE] = function() {
+                var script = getCurrentScript();
+                if (script && script.hasAttribute("data-page-type")) {
+                    var pageType = script.getAttribute("data-page-type").toLowerCase();
+                    if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
+                    return pageType;
+                }
+                return "";
+            }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref[constants.u.KEY.TIMESTAMP] = Date.now().toString(), 
+            _ref;
+        }));
+        window.location.protocol !== src.a.FILE && Object(client.l)({
+            uri: config.a.loggerUrl,
+            heartbeat: !1,
+            logPerformance: !1,
+            prefix: "ppxo",
+            logLevel: "warn"
+        });
+    }
+    function setLogLevel(logLevel) {
+        if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
+        config.a.logLevel = logLevel;
+        client.e.logLevel = logLevel;
+        post_robot_src.CONFIG.LOG_LEVEL = logLevel;
+        window.LOG_LEVEL = logLevel;
+    }
+    var bowserCache = {};
+    function getBowser() {
+        var userAgent = Object(belter_src.c)();
+        if (bowserCache[userAgent]) return bowserCache[userAgent];
+        delete __webpack_require__.c[47];
+        var bowser = __webpack_require__(47);
+        bowserCache[userAgent] = bowser;
+        return bowser;
+    }
+    function getBrowser() {
+        var bowser = getBowser();
+        for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.SUPPORTED_BROWSERS); _i2 < _Object$keys2.length; _i2++) {
+            var browser = _Object$keys2[_i2];
+            if (bowser[browser]) return {
+                browser: browser,
+                version: bowser.version
+            };
+        }
+        return {};
+    }
+    var eligibilityResults = {};
+    function isEligible() {
+        if (Object(belter_src.k)()) return !1;
+        var userAgent = window.navigator.userAgent;
+        if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
+        var result = function() {
+            if (Object(belter_src.k)()) return !1;
+            var bowser = getBowser();
+            var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
+            return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
+        }();
+        eligibilityResults[userAgent] = result;
+        return result;
+    }
+    var checkRecognizedBrowser = Object(util.k)((function(state) {
+        if (!getBrowser().browser) {
+            var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
+            Object(client.k)("unrecognized_browser_" + state, {
+                name: name,
+                version: version,
+                mobile: mobile,
+                android: android,
+                ios: ios
+            });
+            Object(client.h)();
+        }
+    }));
+    function logWarn(err) {
+        if (window.console) {
+            if (window.console.warn) return window.console.warn(err);
+            if (window.console.log) return window.console.log(err);
+        }
+    }
+    function checkForCommonErrors() {
+        if ("[]" !== JSON.stringify([])) {
+            logWarn([].toJSON ? "Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js" : "JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
+            Object(client.q)("json_stringify_array_broken");
+        }
+        if ("{}" !== JSON.stringify({})) {
+            logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
+            Object(client.q)("json_stringify_object_broken");
+        }
+        Object(belter_src.k)() && Object(client.q)("ie_intranet_mode");
+        Object(belter_src.i)() && !Object(belter_src.j)() && Object(client.q)("ie_meta_compatibility_header_missing", {
+            message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
+        });
+        3 !== function(bar, baz, zomg) {}.bind({
+            a: 1
+        }).length && Object(client.q)("function_bind_arrity_overwritten");
+        window.opener && window.parent !== window && Object(client.q)("window_has_opener_and_parent");
+        window.name && 0 === window.name.indexOf("__prerender") && Object(client.q)("prerender_running_checkoutjs");
+        var context = {};
+        (function() {
+            return this;
+        }).bind(context)() !== context && Object(client.q)("function_bind_broken");
+        window.Window && window.constructor && window.Window !== window.constructor && Object(client.q)("window_constructor_does_not_match_window");
+        Object.assign && JSON.stringify({
+            a: 1,
+            b: 2,
+            c: 3
+        }) != JSON.stringify({
+            a: 1,
+            b: 2,
+            c: 3
+        }) && Object(client.q)("object_assign_broken");
+    }
+    var esm_extends = __webpack_require__(13);
+    var zalgo_promise_src = __webpack_require__(2);
+    var headerBuilders = [];
+    var corrids = [];
+    Object(client.c)((function() {
+        return {
+            prev_corr_ids: corrids.join(",")
+        };
+    }));
+    function request(_ref) {
+        var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
+        return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a((function(resolve, reject) {
+            if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
+            var normalizedHeaders = {};
+            for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
+                var _key2 = _Object$keys2[_i4];
+                normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
+            }
+            json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
+            normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
+            for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) {
+                var builtHeaders = (0, headerBuilders[_i6])();
+                for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
+                    var _key3 = _Object$keys4[_i8];
+                    normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
+                }
+            }
+            var xhr = new win.XMLHttpRequest;
+            xhr.addEventListener("load", (function() {
+                var responseHeaders = function(rawHeaders) {
+                    void 0 === rawHeaders && (rawHeaders = "");
+                    var result = {};
+                    for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
+                        var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                        result[_key.toLowerCase()] = values.join(":").trim();
+                    }
+                    return result;
+                }(this.getAllResponseHeaders());
+                var corrID = responseHeaders["paypal-debug-id"] || "unknown";
+                responseHeaders["paypal-debug-id"] && corrids.push(responseHeaders["paypal-debug-id"]);
+                if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code. Correlation id: " + corrID));
+                var contentType = responseHeaders["content-type"];
+                var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
+                var res = this.responseText;
+                try {
+                    res = JSON.parse(this.responseText);
+                } catch (err) {
+                    if (isJSON) return reject(new Error("Invalid json: " + this.responseText + ". Correlation id: " + corrID));
+                }
+                if (this.status >= 400) {
+                    var message = "Request to " + method.toLowerCase() + " " + url + " failed with " + this.status + " error. Correlation id: " + corrID;
+                    if (res) {
+                        "object" == typeof res && null !== res && (res = JSON.stringify(res, null, 4));
+                        message = message + "\n\n" + res + "\n";
+                    }
+                    return reject(new Error(message));
+                }
+                return resolve(res);
+            }), !1);
+            xhr.addEventListener("error", (function(evt) {
+                var corrID = this.getResponseHeader("paypal-debug-id");
+                reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
+            }), !1);
+            xhr.open(method, url, !0);
+            for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
+            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
+                return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
+            })).join("&"));
+            xhr.timeout = timeout;
+            xhr.ontimeout = function() {
+                reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
+            };
+            xhr.send(body);
+        }));
+    }
+    request.get = function(url, options) {
+        void 0 === options && (options = {});
+        return request(Object(esm_extends.a)({
+            method: "get",
+            url: url
+        }, options));
+    };
+    request.post = function(url, data, options) {
+        void 0 === options && (options = {});
+        return request(Object(esm_extends.a)({
+            method: "post",
+            url: url,
+            data: data
+        }, options));
+    };
+    request.addHeaderBuilder = function(method) {
+        headerBuilders.push(method);
+    };
+    __webpack_require__(33);
+    function getThrottle(name, sample, sticky) {
+        void 0 === sticky && (sticky = !0);
+        var uid = Object(session.e)();
+        var percentile = sticky ? function(name) {
+            return Object(session.f)((function(storage) {
+                storage.throttlePercentiles = storage.throttlePercentiles || {};
+                storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(100 * Math.random());
+                return storage.throttlePercentiles[name];
+            }));
+        }(name) : Math.floor(100 * Math.random());
+        var group;
+        var treatment = name + "_" + (group = percentile < sample ? "test" : sample >= 50 || sample <= percentile && percentile < 2 * sample ? "control" : "throttle");
+        var started = !1;
+        var forced = !1;
+        try {
+            window.localStorage && window.localStorage.getItem(name) && (forced = !0);
+        } catch (err) {}
+        return {
+            isEnabled: function() {
+                return "test" === group || forced;
+            },
+            isDisabled: function() {
+                return "test" !== group && !forced;
+            },
+            getTreatment: function() {
+                return treatment;
+            },
+            log: function(checkpointName, payload) {
+                var _extends2;
+                void 0 === payload && (payload = {});
+                if (!started) return this;
+                var checkpoint = name + "_" + treatment + "_" + checkpointName;
+                Object(client.k)(checkpoint, Object(esm_extends.a)({}, payload, {
+                    expuid: uid
+                }));
+                Object(client.p)(Object(esm_extends.a)(((_extends2 = {})[constants.u.KEY.EXPERIMENT_NAME] = name, 
+                _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
+                Object(client.h)();
+                return this;
+            },
+            logStart: function(payload) {
+                void 0 === payload && (payload = {});
+                started = !0;
+                return this.log("start", payload);
+            },
+            logComplete: function(payload) {
+                void 0 === payload && (payload = {});
+                return started ? this.log("complete", payload) : this;
+            }
+        };
+    }
+    function getReturnToken() {
+        var token = Object(util.g)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
+        var payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
+        if (token && payer) return token;
+    }
+    __webpack_require__(37);
+    var openMetaFrame = Object(util.i)((function(env) {
+        void 0 === env && (env = config.a.env);
+        return zalgo_promise_src.a.try((function() {
+            if (Object(belter_src.k)()) return {
+                iframeEligible: !1,
+                iframeEligibleReason: "ie_intranet",
+                rememberedFunding: []
+            };
+            var metaFrameUrl = config.a.metaFrameUrls[env];
+            var metaFrameDomain = config.a.paypalDomains[env];
+            return zalgo_promise_src.a.try((function() {
+                if (!post_robot_src.bridge) throw new Error("Opening meta window without bridge support is not currently supported");
+                var metaListener = Object(post_robot_src.once)("meta", {
+                    domain: metaFrameDomain
+                });
+                return post_robot_src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
+                    version: "4.0.336"
+                }), metaFrameDomain).then((function() {
+                    return metaListener;
+                })).then((function(_ref) {
+                    return _ref.data;
+                }));
+            }));
+        }));
+    }));
+    var button_props = __webpack_require__(29);
+    function getRememberedFunding(handler) {
+        void 0 === handler && (handler = util.e);
+        return Object(session.f)((function(storage) {
+            storage.rememberedFunding = storage.rememberedFunding || [];
+            return handler(storage.rememberedFunding);
+        }));
+    }
+    function hasRememberedFunding(source) {
+        return !!getRememberedFunding((function(rememberedFunding) {
+            return -1 !== rememberedFunding.indexOf(source);
+        })) || !!Object(session.d)((function(session) {
+            return session.recentlyCheckedRemembered;
+        }));
+    }
+    function getRememberedFundingPromises() {
+        return Object(session.b)((function(global) {
+            global.rememberFundingPromises = global.rememberFundingPromises || {};
+            return global.rememberFundingPromises;
+        }));
+    }
+    function getRememberedFundingPromise(source) {
+        var promises = getRememberedFundingPromises();
+        var promise = promises[source] = promises[source] || new zalgo_promise_src.a;
+        hasRememberedFunding(source) && promise.resolve(function(source) {
+            if (getRememberedFunding((function(rememberedFunding) {
+                return -1 !== rememberedFunding.indexOf(source);
+            }))) return !0;
+            if (Object(session.d)((function(session) {
+                return session.recentlyCheckedRemembered;
+            }))) return !1;
+            throw new Error("Can not find remembered funding result");
+        }(source));
+        return promise;
+    }
+    function rememberFunding(sources) {
+        getRememberedFunding((function(rememberedFunding) {
+            for (var _i4 = 0; _i4 < sources.length; _i4++) {
+                var source = sources[_i4];
+                source !== constants.v.VENMO && -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
+            }
+            !function() {
+                var promises = getRememberedFundingPromises();
+                var rememberedFunding = getRememberedFunding((function(sources) {
+                    return sources;
+                }));
+                for (var _i2 = 0, _Object$keys2 = Object.keys(promises); _i2 < _Object$keys2.length; _i2++) {
+                    var source = _Object$keys2[_i2];
+                    promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
+                }
+            }();
+        }));
+        Object(session.d)((function(session) {
+            session.recentlyCheckedRemembered = !0;
+        }));
+    }
+    function loadMeta() {
+        return openMetaFrame().then((function(_ref) {
+            rememberFunding(_ref.rememberedFunding || []);
+        }));
+    }
+    function isFundingRemembered(source) {
+        void 0 === source && (source = constants.v.PAYPAL);
+        return hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then((function() {
+            return getRememberedFundingPromise(source);
+        }));
+    }
+    function precacheRememberedFunding() {
+        return Object(session.d)((function(session) {
+            return session.recentlyCheckedRemembered;
+        })) ? zalgo_promise_src.a.resolve() : loadMeta();
+    }
+    function getRenderedButtons(props) {
+        return Object(button_props.a)(props).sources.toString();
+    }
+    __webpack_require__(1);
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
+        return getTransport;
+    }));
+    __webpack_require__.d(__webpack_exports__, "o", (function() {
+        return setTransport;
+    }));
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
+        return immediateFlush;
+    }));
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
+        return _flush;
+    }));
+    __webpack_require__.d(__webpack_exports__, "n", (function() {
+        return prefix;
+    }));
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
+        return debug;
+    }));
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
+        return info;
+    }));
+    __webpack_require__.d(__webpack_exports__, "q", (function() {
+        return warn;
+    }));
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
+        return error;
+    }));
+    __webpack_require__.d(__webpack_exports__, "p", (function() {
+        return _track;
+    }));
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
+        return init;
+    }));
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
+        return addPayloadBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return addMetaBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
+        return addTrackingBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return addHeaderBuilder;
+    }));
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
+        return config;
+    }));
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
+        return logLevels;
+    }));
+    var interface_namespaceObject = {};
+    __webpack_require__.r(interface_namespaceObject);
+    __webpack_require__.d(interface_namespaceObject, "buffer", (function() {
+        return buffer;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "tracking", (function() {
+        return tracking;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "getTransport", (function() {
+        return getTransport;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "setTransport", (function() {
+        return setTransport;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "print", (function() {
+        return print;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "immediateFlush", (function() {
+        return immediateFlush;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "flush", (function() {
+        return _flush;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "log", (function() {
+        return log;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "prefix", (function() {
+        return prefix;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "debug", (function() {
+        return debug;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "info", (function() {
+        return info;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "warn", (function() {
+        return warn;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "error", (function() {
+        return error;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "track", (function() {
+        return _track;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "init", (function() {
+        return init;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "startTransition", (function() {
+        return startTransition;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "endTransition", (function() {
+        return endTransition;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "transition", (function() {
+        return transition;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "payloadBuilders", (function() {
+        return payloadBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "metaBuilders", (function() {
+        return metaBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "trackingBuilders", (function() {
+        return trackingBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "headerBuilders", (function() {
+        return headerBuilders;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", (function() {
+        return addPayloadBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", (function() {
+        return addMetaBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", (function() {
+        return addTrackingBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", (function() {
+        return addHeaderBuilder;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "config", (function() {
+        return config;
+    }));
+    __webpack_require__.d(interface_namespaceObject, "logLevels", (function() {
+        return logLevels;
+    }));
+    var src = __webpack_require__(2);
+    function extend(dest, src, over) {
+        void 0 === over && (over = !0);
+        dest = dest || {};
+        src = src || {};
+        for (var i in src) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
+        return dest;
+    }
+    function uniqueID() {
+        var chars = "0123456789abcdef";
+        return "xxxxxxxxxx".replace(/./g, (function() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
+        }));
+    }
+    var payloadBuilders = [];
+    var metaBuilders = [];
+    var trackingBuilders = [];
+    var headerBuilders = [];
+    function addPayloadBuilder(builder) {
+        payloadBuilders.push(builder);
+    }
+    function addMetaBuilder(builder) {
+        metaBuilders.push(builder);
+    }
+    function addTrackingBuilder(builder) {
+        trackingBuilders.push(builder);
+    }
+    function addHeaderBuilder(builder) {
+        headerBuilders.push(builder);
+    }
+    var config = {
+        uri: "",
+        prefix: "",
+        initial_state_name: "init",
+        flushInterval: 6e5,
+        debounceInterval: 10,
+        sizeLimit: 300,
+        silent: !1,
+        heartbeat: !0,
+        heartbeatConsoleLog: !0,
+        heartbeatInterval: 5e3,
+        heartbeatTooBusy: !1,
+        heartbeatTooBusyThreshold: 1e4,
+        logLevel: "warn",
+        autoLog: [ "warn", "error" ],
+        logUnload: !0,
+        logPerformance: !0
+    };
+    var logLevels = [ "error", "warn", "info", "debug" ];
+    var buffer = [];
+    var tracking = [];
+    var logger_transport = function(headers, data, options) {
+        return function(method, url, headers, data, _temp) {
+            void 0 === headers && (headers = {});
+            void 0 === data && (data = {});
+            var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+            return new src.a((function(resolve) {
+                var XRequest = window.XMLHttpRequest || window.ActiveXObject;
+                if (window.XDomainRequest && !function(url) {
+                    var match = url.match(/https?:\/\/[^/]+/);
+                    return !match || match[0] === window.location.protocol + "//" + window.location.host;
+                }(url)) {
+                    if (!function(url) {
+                        return window.location.protocol === url.split("/")[0];
+                    }(url)) return resolve();
+                    XRequest = window.XDomainRequest;
+                }
+                var req = new XRequest("MSXML2.XMLHTTP.3.0");
+                req.open("post".toUpperCase(), url, !0);
+                if ("function" == typeof req.setRequestHeader) {
+                    req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    req.setRequestHeader("Content-type", "application/json");
+                    for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
+                }
+                fireAndForget ? resolve() : req.onreadystatechange = function() {
+                    req.readyState > 3 && resolve();
+                };
+                req.send(JSON.stringify(data).replace(/&/g, "%26"));
+            }));
+        }(0, config.uri, headers, data, options);
+    };
+    function getTransport() {
+        return logger_transport;
+    }
+    function setTransport(newTransport) {
+        logger_transport = newTransport;
+    }
+    var loaded = !1;
+    setTimeout((function() {
+        loaded = !0;
+    }), 1);
+    function print(level, event, payload) {
+        if ("undefined" != typeof window && window.console && window.console.log) {
+            if (!loaded) return setTimeout((function() {
+                return print(level, event, payload);
+            }), 1);
+            var logLevel = config.logLevel;
+            window.LOG_LEVEL && (logLevel = window.LOG_LEVEL);
+            if (!(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
+                payload = payload || {};
+                var args = [ event ];
+                Boolean(window.document.documentMode) && (payload = JSON.stringify(payload));
+                args.push(payload);
+                (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
+                try {
+                    window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
+                } catch (err) {}
+            }
+        }
+    }
+    function immediateFlush(_temp) {
+        var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
+        if ("undefined" != typeof window && config.uri && (buffer.length || tracking.length)) {
+            var meta = {};
+            for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) {
+                var builder = metaBuilders[_i2];
+                try {
+                    extend(meta, builder(meta), !1);
+                } catch (err) {
+                    console.error("Error in custom meta builder:", err.stack || err.toString());
+                }
+            }
+            var headers = {};
+            for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) {
+                var _builder = headerBuilders[_i4];
+                try {
+                    extend(headers, _builder(headers), !1);
+                } catch (err) {
+                    console.error("Error in custom header builder:", err.stack || err.toString());
+                }
+            }
+            var req = logger_transport(headers, {
+                events: buffer,
+                meta: meta,
+                tracking: tracking
+            }, {
+                fireAndForget: fireAndForget
+            });
+            buffer = [];
+            tracking = [];
+            return req;
+        }
+    }
+    var _flush = (method = immediateFlush, interval = config.debounceInterval, debounce = {}, 
+    function() {
+        var args = arguments;
+        if (debounce.timeout) {
+            clearTimeout(debounce.timeout);
+            delete debounce.timeout;
+        }
+        debounce.timeout = setTimeout((function() {
+            var resolver = debounce.resolver;
+            var rejector = debounce.rejector;
+            delete debounce.promise;
+            delete debounce.resolver;
+            delete debounce.rejector;
+            delete debounce.timeout;
+            return src.a.resolve().then((function() {
+                return method.apply(null, args);
+            })).then(resolver, rejector);
+        }), interval);
+        debounce.promise = debounce.promise || new src.a((function(resolver, rejector) {
+            debounce.resolver = resolver;
+            debounce.rejector = rejector;
+        }));
+        return debounce.promise;
+    });
+    var method, interval, debounce;
+    function enqueue(level, event, payload) {
+        buffer.push({
+            level: level,
+            event: event,
+            payload: payload
+        });
+        config.autoLog.indexOf(level) > -1 && _flush();
+    }
+    function log(level, event, payload) {
+        if ("undefined" != typeof window) {
+            config.prefix && (event = config.prefix + "_" + event);
+            "string" == typeof (payload = payload || {}) ? payload = {
+                message: payload
+            } : payload instanceof Error && (payload = {
+                error: payload.stack || payload.toString()
+            });
+            try {
+                JSON.stringify(payload);
+            } catch (err) {
+                return;
+            }
+            payload.timestamp = Date.now();
+            for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) {
+                var builder = payloadBuilders[_i6];
+                try {
+                    extend(payload, builder(payload), !1);
+                } catch (err) {
+                    console.error("Error in custom payload builder:", err.stack || err.toString());
+                }
+            }
+            config.silent || print(level, event, payload);
+            buffer.length === config.sizeLimit ? enqueue("info", "logger_max_buffer_length") : buffer.length < config.sizeLimit && enqueue(level, event, payload);
+        }
+    }
+    function prefix(name) {
+        return {
+            debug: function(event, payload) {
+                return log("debug", name + "_" + event, payload);
+            },
+            info: function(event, payload) {
+                return log("info", name + "_" + event, payload);
+            },
+            warn: function(event, payload) {
+                return log("warn", name + "_" + event, payload);
+            },
+            error: function(event, payload) {
+                return log("error", name + "_" + event, payload);
+            },
+            track: function(payload) {
+                return _track(payload);
+            },
+            flush: function() {
+                return _flush();
+            }
+        };
+    }
+    function debug(event, payload) {
+        return log("debug", event, payload);
+    }
+    function info(event, payload) {
+        return log("info", event, payload);
+    }
+    function warn(event, payload) {
+        return log("warn", event, payload);
+    }
+    function error(event, payload) {
+        return log("error", event, payload);
+    }
+    function _track(payload) {
+        if ("undefined" != typeof window && payload) {
+            try {
+                JSON.stringify(payload);
+            } catch (err) {
+                return;
+            }
+            for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
+                var builder = trackingBuilders[_i8];
+                try {
+                    extend(payload, builder(payload), !1);
+                } catch (err) {
+                    console.error("Error in custom tracking builder:", err.stack || err.toString());
+                }
+            }
+            print("debug", "tracking", payload);
+            tracking.push(payload);
+        }
+    }
+    var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
+    function now() {
+        return enablePerformance ? performance.now() : Date.now();
+    }
+    function timer(startTime) {
+        return {
+            startTime: startTime = void 0 !== startTime ? startTime : now(),
+            elapsed: function() {
+                return parseInt(now() - startTime, 10);
+            },
+            reset: function() {
+                startTime = now();
+            }
+        };
+    }
+    function reqStartElapsed() {
+        if (enablePerformance) {
+            var timing = window.performance.timing;
+            return parseInt(timing.connectEnd - timing.navigationStart, 10);
+        }
+    }
+    var clientTimer = timer();
+    var reqTimer = timer(reqStartElapsed());
+    var initiated = !1;
+    function init(conf) {
+        extend(config, conf || {});
+        if (!initiated) {
+            initiated = !0;
+            config.logPerformance && function() {
+                if (!enablePerformance) return info("no_performance_data");
+                addPayloadBuilder((function() {
+                    var payload = {};
+                    payload.client_elapsed = clientTimer.elapsed();
+                    enablePerformance && (payload.req_elapsed = reqTimer.elapsed());
+                    return payload;
+                }));
+                new src.a((function(resolve) {
+                    "undefined" != typeof document && "complete" === document.readyState && resolve();
+                    window.addEventListener("load", resolve);
+                })).then((function() {
+                    var timing = {};
+                    [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach((function(key) {
+                        timing[key] = parseInt(window.performance.timing[key], 10) || 0;
+                    }));
+                    var offset = timing.connectEnd - timing.navigationStart;
+                    timing.connectEnd && Object.keys(timing).forEach((function(name) {
+                        var time = timing[name];
+                        time && info("timing_" + name, {
+                            client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
+                            req_elapsed: parseInt(time - timing.connectEnd, 10)
+                        });
+                    }));
+                    info("timing", timing);
+                    info("memory", window.performance.memory);
+                    info("navigation", window.performance.navigation);
+                    window.performance.getEntries && window.performance.getEntries().forEach((function(resource) {
+                        [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
+                    }));
+                }));
+            }();
+            config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
+            function loop() {
+                setTimeout((function() {
+                    !function() {
+                        if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
+                            heartbeatCount += 1;
+                            var elapsed = heartBeatTimer.elapsed();
+                            var lag = elapsed - config.heartbeatInterval;
+                            var heartbeatPayload = {
+                                count: heartbeatCount,
+                                elapsed: elapsed
+                            };
+                            if (config.heartbeatTooBusy) {
+                                heartbeatPayload.lag = lag;
+                                lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload);
+                            }
+                            info("heartbeat", heartbeatPayload);
+                        }
+                    }();
+                    loop();
+                }), time);
+            }());
+            if (config.logUnload) {
+                window.addEventListener("beforeunload", (function() {
+                    info("window_beforeunload");
+                    immediateFlush({
+                        fireAndForget: !0
+                    });
+                }));
+                window.addEventListener("unload", (function() {
+                    info("window_unload");
+                    immediateFlush({
+                        fireAndForget: !0
+                    });
+                }));
+            }
+            config.flushInterval && setInterval(_flush, config.flushInterval);
+            if (window.beaverLogQueue) {
+                window.beaverLogQueue.forEach((function(payload) {
+                    log(payload.level, payload.event, payload);
+                }));
+                delete window.beaverLogQueue;
+            }
+        }
+        var heartBeatTimer, heartbeatCount, time;
+    }
+    var windowID = uniqueID();
+    var pageID = uniqueID();
+    var currentState = config.initial_state_name;
+    var startTime;
+    function startTransition() {
+        startTime = now();
+    }
+    function endTransition(toState) {
+        startTime = startTime || reqStartElapsed();
+        var currentTime = now();
+        var elapsedTime;
+        void 0 !== startTime && (elapsedTime = parseInt(currentTime - startTime, 0));
+        var transitionName = "transition_" + currentState + "_to_" + toState;
+        info(transitionName, {
+            duration: elapsedTime
+        });
+        _track({
+            transition: transitionName,
+            transition_time: elapsedTime
+        });
+        immediateFlush();
+        startTime = currentTime;
+        currentState = toState;
+        pageID = uniqueID();
+    }
+    function transition(toState) {
+        startTransition();
+        endTransition(toState);
+    }
+    addPayloadBuilder((function() {
+        return {
+            windowID: windowID,
+            pageID: pageID
+        };
+    }));
+    addMetaBuilder((function() {
+        return {
+            state: "ui_" + currentState
+        };
+    }));
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return config;
     }));
@@ -1200,9 +2390,9 @@
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
     var config = {
         locales: constants.A,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.335.js",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.336.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.335",
+        version: "4.0.336",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
         state: "checkoutjs",
@@ -2050,1196 +3240,6 @@
     };
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "F", (function() {
-        return isSupportedNativeBrowser;
-    }));
-    __webpack_require__.d(__webpack_exports__, "I", (function() {
-        return util.j;
-    }));
-    __webpack_require__.d(__webpack_exports__, "K", (function() {
-        return util.k;
-    }));
-    __webpack_require__.d(__webpack_exports__, "V", (function() {
-        return util.s;
-    }));
-    __webpack_require__.d(__webpack_exports__, "H", (function() {
-        return util.i;
-    }));
-    __webpack_require__.d(__webpack_exports__, "R", (function() {
-        return util.o;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return util.c;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return util.a;
-    }));
-    __webpack_require__.d(__webpack_exports__, "T", (function() {
-        return util.q;
-    }));
-    __webpack_require__.d(__webpack_exports__, "U", (function() {
-        return util.r;
-    }));
-    __webpack_require__.d(__webpack_exports__, "M", (function() {
-        return util.l;
-    }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return util.d;
-    }));
-    __webpack_require__.d(__webpack_exports__, "A", (function() {
-        return initLogger;
-    }));
-    __webpack_require__.d(__webpack_exports__, "S", (function() {
-        return setLogLevel;
-    }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return getBrowser;
-    }));
-    __webpack_require__.d(__webpack_exports__, "C", (function() {
-        return isEligible;
-    }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return checkRecognizedBrowser;
-    }));
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return checkForCommonErrors;
-    }));
-    __webpack_require__.d(__webpack_exports__, "G", (function() {
-        return dom.i;
-    }));
-    __webpack_require__.d(__webpack_exports__, "n", (function() {
-        return dom.c;
-    }));
-    __webpack_require__.d(__webpack_exports__, "o", (function() {
-        return dom.d;
-    }));
-    __webpack_require__.d(__webpack_exports__, "J", (function() {
-        return dom.j;
-    }));
-    __webpack_require__.d(__webpack_exports__, "q", (function() {
-        return dom.f;
-    }));
-    __webpack_require__.d(__webpack_exports__, "W", (function() {
-        return dom.l;
-    }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return dom.a;
-    }));
-    __webpack_require__.d(__webpack_exports__, "O", (function() {
-        return dom.k;
-    }));
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return dom.b;
-    }));
-    __webpack_require__.d(__webpack_exports__, "B", (function() {
-        return dom.h;
-    }));
-    __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return dom.e;
-    }));
-    __webpack_require__.d(__webpack_exports__, "t", (function() {
-        return dom.g;
-    }));
-    __webpack_require__.d(__webpack_exports__, "Q", (function() {
-        return request;
-    }));
-    __webpack_require__.d(__webpack_exports__, "z", (function() {
-        return getThrottle;
-    }));
-    __webpack_require__.d(__webpack_exports__, "u", (function() {
-        return getReturnToken;
-    }));
-    __webpack_require__.d(__webpack_exports__, "y", (function() {
-        return session.e;
-    }));
-    __webpack_require__.d(__webpack_exports__, "x", (function() {
-        return session.d;
-    }));
-    __webpack_require__.d(__webpack_exports__, "w", (function() {
-        return session.c;
-    }));
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return session.a;
-    }));
-    __webpack_require__.d(__webpack_exports__, "L", (function() {
-        return openMetaFrame;
-    }));
-    __webpack_require__.d(__webpack_exports__, "r", (function() {
-        return getRememberedFunding;
-    }));
-    __webpack_require__.d(__webpack_exports__, "P", (function() {
-        return rememberFunding;
-    }));
-    __webpack_require__.d(__webpack_exports__, "D", (function() {
-        return isFundingRemembered;
-    }));
-    __webpack_require__.d(__webpack_exports__, "N", (function() {
-        return precacheRememberedFunding;
-    }));
-    __webpack_require__.d(__webpack_exports__, "s", (function() {
-        return getRenderedButtons;
-    }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return getCurrentScript;
-    }));
-    __webpack_require__.d(__webpack_exports__, "v", (function() {
-        return getScriptVersion;
-    }));
-    __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return getCurrentScriptUrl;
-    }));
-    __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return getDomainSetting;
-    }));
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return security.a;
-    }));
-    __webpack_require__.d(__webpack_exports__, "E", (function() {
-        return security.b;
-    }));
-    var src = __webpack_require__(7);
-    var belter_src = __webpack_require__(11);
-    function isSupportedNativeBrowser() {
-        var userAgent = Object(belter_src.c)();
-        return !(!Object(belter_src.t)(userAgent) || Object(belter_src.n)() || (!Object(belter_src.l)() || !Object(belter_src.o)()) && (!Object(belter_src.f)() || !Object(belter_src.g)()));
-    }
-    var util = __webpack_require__(14);
-    var post_robot_src = __webpack_require__(15);
-    var client = __webpack_require__(5);
-    var config = __webpack_require__(3);
-    var constants = __webpack_require__(0);
-    var session = __webpack_require__(21);
-    var dom = __webpack_require__(26);
-    var security = __webpack_require__(27);
-    var PAGE_TYPES = {
-        HOME: "home",
-        PRODUCT: "product",
-        CART: "cart",
-        CHECKOUT: "checkout",
-        PRODUCT_LISTING: "product-listing",
-        SEARCH_RESULTS: "search-results",
-        PRODUCT_DETAILS: "product-details",
-        MINI_CART: "mini-cart"
-    };
-    var getCurrentScript = Object(util.i)((function() {
-        var localSDKUrl = config.a.localSDKUrl;
-        var scripts = [].slice.call(document.getElementsByTagName("script"));
-        for (var _i2 = 0; _i2 < scripts.length; _i2++) {
-            var script = scripts[_i2];
-            if (script.src && (script.src.replace(/^https?:/, "").split("?")[0] === config.a.scriptUrl || script.hasAttribute("data-paypal-checkout"))) return script;
-            if (script.src && -1 !== script.src.indexOf("paypal.checkout.v4.js")) return script;
-            if (config.a.env === constants.t.LOCAL && localSDKUrl && script.src === localSDKUrl) return script;
-        }
-        document.currentScript && Object(client.f)("current_script_not_recognized", {
-            src: document.currentScript.src
-        });
-    }));
-    function getScriptVersion() {
-        return "4.0.335";
-    }
-    function getCurrentScriptUrl() {
-        var script = getCurrentScript();
-        if (script && "string" == typeof script.src) {
-            var scriptUrl = script.src;
-            0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://"));
-            0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
-            return scriptUrl;
-        }
-        return "https://www.paypalobjects.com/api/checkout.4.0.335.js";
-    }
-    function getDomainSetting(name, def) {
-        var hostname = window.xchild ? window.xchild.getParentDomain() : Object(src.h)();
-        if (config.a.domain_settings) for (var _i4 = 0, _Object$keys2 = Object.keys(config.a.domain_settings); _i4 < _Object$keys2.length; _i4++) {
-            var domain = _Object$keys2[_i4];
-            if (Object(util.b)(hostname, domain)) return config.a.domain_settings[domain][name];
-        }
-        return def;
-    }
-    function getRefererDomain() {
-        return window.xchild && window.xchild.getParentDomain ? window.xchild.getParentDomain() : window.location.host;
-    }
-    var setupProxyLogTransport = Object(util.k)((function() {
-        Object(client.o)(function(name, win, originalMethod) {
-            if (win && Object(src.h)() === config.a.paypalDomain && !Object(src.v)(win)) {
-                win && Object(post_robot_src.send)(win, "proxy_log", {
-                    originalMethod: originalMethod
-                }).catch(util.j);
-                return originalMethod;
-            }
-            var methods = [];
-            Object(post_robot_src.on)("proxy_log", {
-                domain: config.a.paypal_domain_regex
-            }, (function(_ref) {
-                methods.push(_ref.data.originalMethod);
-            }));
-            return function() {
-                var _arguments = arguments, _this = this;
-                return (methods = methods.filter((function(method) {
-                    return !Object(src.z)(method.source);
-                }))).length ? methods[methods.length - 1].apply(this, arguments).catch((function() {
-                    return originalMethod.apply(_this, _arguments);
-                })) : originalMethod.apply(this, arguments);
-            };
-        }(0, Object(src.n)(window), Object(client.i)()));
-    }));
-    function initLogger() {
-        setupProxyLogTransport();
-        Object(client.c)((function() {
-            return {
-                referer: getRefererDomain(),
-                host: window.location.host,
-                path: window.location.pathname,
-                env: config.a.env,
-                country: config.a.locale.country,
-                lang: config.a.locale.lang,
-                uid: Object(session.c)(),
-                ver: "4.0.335"
-            };
-        }));
-        Object(client.a)((function() {
-            return {
-                "x-app-name": "checkoutjs"
-            };
-        }));
-        Object(client.b)((function() {
-            return {
-                state: config.a.state
-            };
-        }));
-        Object(client.d)((function(payload) {
-            var _ref;
-            void 0 === payload && (payload = {});
-            var sessionID = Object(session.c)();
-            var paymentToken = function() {
-                if (window.root && window.root.token) return window.root.token;
-                if (Object(security.b)()) {
-                    var queryToken = Object(dom.f)("token");
-                    if (queryToken) return queryToken;
-                }
-            }();
-            var buttonSessionID = payload[constants.u.KEY.BUTTON_SESSION_UID] || Object(session.a)();
-            var contextType;
-            var contextID;
-            if (paymentToken) {
-                contextType = constants.u.CONTEXT_TYPE[constants.C.EC_TOKEN];
-                contextID = paymentToken;
-            } else if (buttonSessionID) {
-                contextType = constants.u.CONTEXT_TYPE.BUTTON_SESSION_ID;
-                contextID = buttonSessionID;
-            } else {
-                contextType = payload[constants.u.KEY.CONTEXT_TYPE];
-                contextID = payload[constants.u.KEY.CONTEXT_ID];
-            }
-            return (_ref = {})[constants.u.KEY.FEED] = constants.u.FEED.CHECKOUTJS, _ref[constants.u.KEY.DATA_SOURCE] = constants.u.DATA_SOURCE.CHECKOUT, 
-            _ref[constants.u.KEY.CONTEXT_TYPE] = contextType, _ref[constants.u.KEY.CONTEXT_ID] = contextID, 
-            _ref[constants.u.KEY.SELLER_ID] = config.a.merchantID, _ref[constants.u.KEY.SESSION_UID] = sessionID, 
-            _ref[constants.u.KEY.BUTTON_SESSION_UID] = buttonSessionID, _ref[constants.u.KEY.VERSION] = config.a.version, 
-            _ref[constants.u.KEY.TOKEN] = paymentToken, _ref[constants.u.KEY.PAGE_TYPE] = function() {
-                var script = getCurrentScript();
-                if (script && script.hasAttribute("data-page-type")) {
-                    var pageType = script.getAttribute("data-page-type").toLowerCase();
-                    if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
-                    return pageType;
-                }
-                return "";
-            }(), _ref[constants.u.KEY.REFERER] = getRefererDomain(), _ref[constants.u.KEY.TIMESTAMP] = Date.now().toString(), 
-            _ref;
-        }));
-        window.location.protocol !== src.a.FILE && Object(client.l)({
-            uri: config.a.loggerUrl,
-            heartbeat: !1,
-            logPerformance: !1,
-            prefix: "ppxo",
-            logLevel: "warn"
-        });
-    }
-    function setLogLevel(logLevel) {
-        if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
-        config.a.logLevel = logLevel;
-        client.e.logLevel = logLevel;
-        post_robot_src.CONFIG.LOG_LEVEL = logLevel;
-        window.LOG_LEVEL = logLevel;
-    }
-    var bowserCache = {};
-    function getBowser() {
-        var userAgent = Object(belter_src.c)();
-        if (bowserCache[userAgent]) return bowserCache[userAgent];
-        delete __webpack_require__.c[47];
-        var bowser = __webpack_require__(47);
-        bowserCache[userAgent] = bowser;
-        return bowser;
-    }
-    function getBrowser() {
-        var bowser = getBowser();
-        for (var _i2 = 0, _Object$keys2 = Object.keys(config.a.SUPPORTED_BROWSERS); _i2 < _Object$keys2.length; _i2++) {
-            var browser = _Object$keys2[_i2];
-            if (bowser[browser]) return {
-                browser: browser,
-                version: bowser.version
-            };
-        }
-        return {};
-    }
-    var eligibilityResults = {};
-    function isEligible() {
-        if (Object(belter_src.k)()) return !1;
-        var userAgent = window.navigator.userAgent;
-        if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
-        var result = function() {
-            if (Object(belter_src.k)()) return !1;
-            var bowser = getBowser();
-            var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
-            return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
-        }();
-        eligibilityResults[userAgent] = result;
-        return result;
-    }
-    var checkRecognizedBrowser = Object(util.k)((function(state) {
-        if (!getBrowser().browser) {
-            var _getBowser = getBowser(), name = _getBowser.name, version = _getBowser.version, mobile = _getBowser.mobile, android = _getBowser.android, ios = _getBowser.ios;
-            Object(client.k)("unrecognized_browser_" + state, {
-                name: name,
-                version: version,
-                mobile: mobile,
-                android: android,
-                ios: ios
-            });
-            Object(client.h)();
-        }
-    }));
-    function logWarn(err) {
-        if (window.console) {
-            if (window.console.warn) return window.console.warn(err);
-            if (window.console.log) return window.console.log(err);
-        }
-    }
-    function checkForCommonErrors() {
-        if ("[]" !== JSON.stringify([])) {
-            logWarn([].toJSON ? "Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js" : "JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
-            Object(client.q)("json_stringify_array_broken");
-        }
-        if ("{}" !== JSON.stringify({})) {
-            logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
-            Object(client.q)("json_stringify_object_broken");
-        }
-        Object(belter_src.k)() && Object(client.q)("ie_intranet_mode");
-        Object(belter_src.i)() && !Object(belter_src.j)() && Object(client.q)("ie_meta_compatibility_header_missing", {
-            message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
-        });
-        3 !== function(bar, baz, zomg) {}.bind({
-            a: 1
-        }).length && Object(client.q)("function_bind_arrity_overwritten");
-        window.opener && window.parent !== window && Object(client.q)("window_has_opener_and_parent");
-        window.name && 0 === window.name.indexOf("__prerender") && Object(client.q)("prerender_running_checkoutjs");
-        var context = {};
-        (function() {
-            return this;
-        }).bind(context)() !== context && Object(client.q)("function_bind_broken");
-        window.Window && window.constructor && window.Window !== window.constructor && Object(client.q)("window_constructor_does_not_match_window");
-        Object.assign && JSON.stringify({
-            a: 1,
-            b: 2,
-            c: 3
-        }) != JSON.stringify({
-            a: 1,
-            b: 2,
-            c: 3
-        }) && Object(client.q)("object_assign_broken");
-    }
-    var esm_extends = __webpack_require__(13);
-    var zalgo_promise_src = __webpack_require__(2);
-    var headerBuilders = [];
-    var corrids = [];
-    Object(client.c)((function() {
-        return {
-            prev_corr_ids: corrids.join(",")
-        };
-    }));
-    function request(_ref) {
-        var url = _ref.url, _ref$method = _ref.method, method = void 0 === _ref$method ? "get" : _ref$method, _ref$headers = _ref.headers, headers = void 0 === _ref$headers ? {} : _ref$headers, json = _ref.json, data = _ref.data, body = _ref.body, _ref$win = _ref.win, win = void 0 === _ref$win ? window : _ref$win, _ref$timeout = _ref.timeout, timeout = void 0 === _ref$timeout ? 0 : _ref$timeout;
-        return "/demo/checkout/api/braintree/client-token/" === url ? zalgo_promise_src.a.resolve("eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9") : new zalgo_promise_src.a((function(resolve, reject) {
-            if (json && data || json && body || data && json) throw new Error("Only options.json or options.data or options.body should be passed");
-            var normalizedHeaders = {};
-            for (var _i4 = 0, _Object$keys2 = Object.keys(headers); _i4 < _Object$keys2.length; _i4++) {
-                var _key2 = _Object$keys2[_i4];
-                normalizedHeaders[_key2.toLowerCase()] = headers[_key2];
-            }
-            json ? normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/json" : (data || body) && (normalizedHeaders["content-type"] = normalizedHeaders["content-type"] || "application/x-www-form-urlencoded; charset=utf-8");
-            normalizedHeaders.accept = normalizedHeaders.accept || "application/json";
-            for (var _i6 = 0; _i6 < headerBuilders.length; _i6++) {
-                var builtHeaders = (0, headerBuilders[_i6])();
-                for (var _i8 = 0, _Object$keys4 = Object.keys(builtHeaders); _i8 < _Object$keys4.length; _i8++) {
-                    var _key3 = _Object$keys4[_i8];
-                    normalizedHeaders[_key3.toLowerCase()] = builtHeaders[_key3];
-                }
-            }
-            var xhr = new win.XMLHttpRequest;
-            xhr.addEventListener("load", (function() {
-                var responseHeaders = function(rawHeaders) {
-                    void 0 === rawHeaders && (rawHeaders = "");
-                    var result = {};
-                    for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
-                        var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
-                        result[_key.toLowerCase()] = values.join(":").trim();
-                    }
-                    return result;
-                }(this.getAllResponseHeaders());
-                var corrID = responseHeaders["paypal-debug-id"] || "unknown";
-                responseHeaders["paypal-debug-id"] && corrids.push(responseHeaders["paypal-debug-id"]);
-                if (!this.status) return reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: no response status code. Correlation id: " + corrID));
-                var contentType = responseHeaders["content-type"];
-                var isJSON = contentType && (0 === contentType.indexOf("application/json") || 0 === contentType.indexOf("text/json"));
-                var res = this.responseText;
-                try {
-                    res = JSON.parse(this.responseText);
-                } catch (err) {
-                    if (isJSON) return reject(new Error("Invalid json: " + this.responseText + ". Correlation id: " + corrID));
-                }
-                if (this.status >= 400) {
-                    var message = "Request to " + method.toLowerCase() + " " + url + " failed with " + this.status + " error. Correlation id: " + corrID;
-                    if (res) {
-                        "object" == typeof res && null !== res && (res = JSON.stringify(res, null, 4));
-                        message = message + "\n\n" + res + "\n";
-                    }
-                    return reject(new Error(message));
-                }
-                return resolve(res);
-            }), !1);
-            xhr.addEventListener("error", (function(evt) {
-                var corrID = this.getResponseHeader("paypal-debug-id");
-                reject(new Error("Request to " + method.toLowerCase() + " " + url + " failed: " + evt.toString() + ". Correlation id: " + corrID));
-            }), !1);
-            xhr.open(method, url, !0);
-            for (var _key4 in normalizedHeaders) normalizedHeaders.hasOwnProperty(_key4) && xhr.setRequestHeader(_key4, normalizedHeaders[_key4]);
-            json ? body = JSON.stringify(json) : data && (body = Object.keys(data).map((function(key) {
-                return encodeURIComponent(key) + "=" + (data ? encodeURIComponent(data[key]) : "");
-            })).join("&"));
-            xhr.timeout = timeout;
-            xhr.ontimeout = function() {
-                reject(new Error("Request to " + method.toLowerCase() + " " + url + " has timed out"));
-            };
-            xhr.send(body);
-        }));
-    }
-    request.get = function(url, options) {
-        void 0 === options && (options = {});
-        return request(Object(esm_extends.a)({
-            method: "get",
-            url: url
-        }, options));
-    };
-    request.post = function(url, data, options) {
-        void 0 === options && (options = {});
-        return request(Object(esm_extends.a)({
-            method: "post",
-            url: url,
-            data: data
-        }, options));
-    };
-    request.addHeaderBuilder = function(method) {
-        headerBuilders.push(method);
-    };
-    __webpack_require__(33);
-    function getThrottle(name, sample, sticky) {
-        void 0 === sticky && (sticky = !0);
-        var uid = Object(session.e)();
-        var percentile = sticky ? function(name) {
-            return Object(session.f)((function(storage) {
-                storage.throttlePercentiles = storage.throttlePercentiles || {};
-                storage.throttlePercentiles[name] = storage.throttlePercentiles[name] || Math.floor(100 * Math.random());
-                return storage.throttlePercentiles[name];
-            }));
-        }(name) : Math.floor(100 * Math.random());
-        var group;
-        var treatment = name + "_" + (group = percentile < sample ? "test" : sample >= 50 || sample <= percentile && percentile < 2 * sample ? "control" : "throttle");
-        var started = !1;
-        var forced = !1;
-        try {
-            window.localStorage && window.localStorage.getItem(name) && (forced = !0);
-        } catch (err) {}
-        return {
-            isEnabled: function() {
-                return "test" === group || forced;
-            },
-            isDisabled: function() {
-                return "test" !== group && !forced;
-            },
-            getTreatment: function() {
-                return treatment;
-            },
-            log: function(checkpointName, payload) {
-                var _extends2;
-                void 0 === payload && (payload = {});
-                if (!started) return this;
-                var checkpoint = name + "_" + treatment + "_" + checkpointName;
-                Object(client.k)(checkpoint, Object(esm_extends.a)({}, payload, {
-                    expuid: uid
-                }));
-                Object(client.p)(Object(esm_extends.a)(((_extends2 = {})[constants.u.KEY.EXPERIMENT_NAME] = name, 
-                _extends2[constants.u.KEY.TREATMENT_NAME] = treatment, _extends2), payload));
-                Object(client.h)();
-                return this;
-            },
-            logStart: function(payload) {
-                void 0 === payload && (payload = {});
-                started = !0;
-                return this.log("start", payload);
-            },
-            logComplete: function(payload) {
-                void 0 === payload && (payload = {});
-                return started ? this.log("complete", payload) : this;
-            }
-        };
-    }
-    function getReturnToken() {
-        var token = Object(util.g)(window.location.href, /token=((EC-)?[A-Z0-9]+)/);
-        var payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
-        if (token && payer) return token;
-    }
-    __webpack_require__(37);
-    var openMetaFrame = Object(util.i)((function(env) {
-        void 0 === env && (env = config.a.env);
-        return zalgo_promise_src.a.try((function() {
-            if (Object(belter_src.k)()) return {
-                iframeEligible: !1,
-                iframeEligibleReason: "ie_intranet",
-                rememberedFunding: []
-            };
-            var metaFrameUrl = config.a.metaFrameUrls[env];
-            var metaFrameDomain = config.a.paypalDomains[env];
-            return zalgo_promise_src.a.try((function() {
-                if (!post_robot_src.bridge) throw new Error("Opening meta window without bridge support is not currently supported");
-                var metaListener = Object(post_robot_src.once)("meta", {
-                    domain: metaFrameDomain
-                });
-                return post_robot_src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.335"
-                }), metaFrameDomain).then((function() {
-                    return metaListener;
-                })).then((function(_ref) {
-                    return _ref.data;
-                }));
-            }));
-        }));
-    }));
-    var button_props = __webpack_require__(29);
-    function getRememberedFunding(handler) {
-        void 0 === handler && (handler = util.e);
-        return Object(session.f)((function(storage) {
-            storage.rememberedFunding = storage.rememberedFunding || [];
-            return handler(storage.rememberedFunding);
-        }));
-    }
-    function hasRememberedFunding(source) {
-        return !!getRememberedFunding((function(rememberedFunding) {
-            return -1 !== rememberedFunding.indexOf(source);
-        })) || !!Object(session.d)((function(session) {
-            return session.recentlyCheckedRemembered;
-        }));
-    }
-    function getRememberedFundingPromises() {
-        return Object(session.b)((function(global) {
-            global.rememberFundingPromises = global.rememberFundingPromises || {};
-            return global.rememberFundingPromises;
-        }));
-    }
-    function getRememberedFundingPromise(source) {
-        var promises = getRememberedFundingPromises();
-        var promise = promises[source] = promises[source] || new zalgo_promise_src.a;
-        hasRememberedFunding(source) && promise.resolve(function(source) {
-            if (getRememberedFunding((function(rememberedFunding) {
-                return -1 !== rememberedFunding.indexOf(source);
-            }))) return !0;
-            if (Object(session.d)((function(session) {
-                return session.recentlyCheckedRemembered;
-            }))) return !1;
-            throw new Error("Can not find remembered funding result");
-        }(source));
-        return promise;
-    }
-    function rememberFunding(sources) {
-        getRememberedFunding((function(rememberedFunding) {
-            for (var _i4 = 0; _i4 < sources.length; _i4++) {
-                var source = sources[_i4];
-                source !== constants.v.VENMO && -1 === rememberedFunding.indexOf(source) && rememberedFunding.push(source);
-            }
-            !function() {
-                var promises = getRememberedFundingPromises();
-                var rememberedFunding = getRememberedFunding((function(sources) {
-                    return sources;
-                }));
-                for (var _i2 = 0, _Object$keys2 = Object.keys(promises); _i2 < _Object$keys2.length; _i2++) {
-                    var source = _Object$keys2[_i2];
-                    promises[source].resolve(-1 !== rememberedFunding.indexOf(source));
-                }
-            }();
-        }));
-        Object(session.d)((function(session) {
-            session.recentlyCheckedRemembered = !0;
-        }));
-    }
-    function loadMeta() {
-        return openMetaFrame().then((function(_ref) {
-            rememberFunding(_ref.rememberedFunding || []);
-        }));
-    }
-    function isFundingRemembered(source) {
-        void 0 === source && (source = constants.v.PAYPAL);
-        return hasRememberedFunding(source) ? getRememberedFundingPromise(source) : loadMeta().then((function() {
-            return getRememberedFundingPromise(source);
-        }));
-    }
-    function precacheRememberedFunding() {
-        return Object(session.d)((function(session) {
-            return session.recentlyCheckedRemembered;
-        })) ? zalgo_promise_src.a.resolve() : loadMeta();
-    }
-    function getRenderedButtons(props) {
-        return Object(button_props.a)(props).sources.toString();
-    }
-    __webpack_require__(1);
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
-        return getTransport;
-    }));
-    __webpack_require__.d(__webpack_exports__, "o", (function() {
-        return setTransport;
-    }));
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return immediateFlush;
-    }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
-        return _flush;
-    }));
-    __webpack_require__.d(__webpack_exports__, "n", (function() {
-        return prefix;
-    }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return debug;
-    }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return info;
-    }));
-    __webpack_require__.d(__webpack_exports__, "q", (function() {
-        return warn;
-    }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
-        return error;
-    }));
-    __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return _track;
-    }));
-    __webpack_require__.d(__webpack_exports__, "l", (function() {
-        return init;
-    }));
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
-        return addPayloadBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return addMetaBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
-        return addTrackingBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return addHeaderBuilder;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return config;
-    }));
-    __webpack_require__.d(__webpack_exports__, "m", (function() {
-        return logLevels;
-    }));
-    var interface_namespaceObject = {};
-    __webpack_require__.r(interface_namespaceObject);
-    __webpack_require__.d(interface_namespaceObject, "buffer", (function() {
-        return buffer;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "tracking", (function() {
-        return tracking;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "getTransport", (function() {
-        return getTransport;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "setTransport", (function() {
-        return setTransport;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "print", (function() {
-        return print;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "immediateFlush", (function() {
-        return immediateFlush;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "flush", (function() {
-        return _flush;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "log", (function() {
-        return log;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "prefix", (function() {
-        return prefix;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "debug", (function() {
-        return debug;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "info", (function() {
-        return info;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "warn", (function() {
-        return warn;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "error", (function() {
-        return error;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "track", (function() {
-        return _track;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "init", (function() {
-        return init;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "startTransition", (function() {
-        return startTransition;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "endTransition", (function() {
-        return endTransition;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "transition", (function() {
-        return transition;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "payloadBuilders", (function() {
-        return payloadBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "metaBuilders", (function() {
-        return metaBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "trackingBuilders", (function() {
-        return trackingBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "headerBuilders", (function() {
-        return headerBuilders;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addPayloadBuilder", (function() {
-        return addPayloadBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addMetaBuilder", (function() {
-        return addMetaBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addTrackingBuilder", (function() {
-        return addTrackingBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "addHeaderBuilder", (function() {
-        return addHeaderBuilder;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "config", (function() {
-        return config;
-    }));
-    __webpack_require__.d(interface_namespaceObject, "logLevels", (function() {
-        return logLevels;
-    }));
-    var src = __webpack_require__(2);
-    function extend(dest, src, over) {
-        void 0 === over && (over = !0);
-        dest = dest || {};
-        src = src || {};
-        for (var i in src) src.hasOwnProperty(i) && (!over && dest.hasOwnProperty(i) || (dest[i] = src[i]));
-        return dest;
-    }
-    function uniqueID() {
-        var chars = "0123456789abcdef";
-        return "xxxxxxxxxx".replace(/./g, (function() {
-            return chars.charAt(Math.floor(Math.random() * chars.length));
-        }));
-    }
-    var payloadBuilders = [];
-    var metaBuilders = [];
-    var trackingBuilders = [];
-    var headerBuilders = [];
-    function addPayloadBuilder(builder) {
-        payloadBuilders.push(builder);
-    }
-    function addMetaBuilder(builder) {
-        metaBuilders.push(builder);
-    }
-    function addTrackingBuilder(builder) {
-        trackingBuilders.push(builder);
-    }
-    function addHeaderBuilder(builder) {
-        headerBuilders.push(builder);
-    }
-    var config = {
-        uri: "",
-        prefix: "",
-        initial_state_name: "init",
-        flushInterval: 6e5,
-        debounceInterval: 10,
-        sizeLimit: 300,
-        silent: !1,
-        heartbeat: !0,
-        heartbeatConsoleLog: !0,
-        heartbeatInterval: 5e3,
-        heartbeatTooBusy: !1,
-        heartbeatTooBusyThreshold: 1e4,
-        logLevel: "warn",
-        autoLog: [ "warn", "error" ],
-        logUnload: !0,
-        logPerformance: !0
-    };
-    var logLevels = [ "error", "warn", "info", "debug" ];
-    var buffer = [];
-    var tracking = [];
-    var logger_transport = function(headers, data, options) {
-        return function(method, url, headers, data, _temp) {
-            void 0 === headers && (headers = {});
-            void 0 === data && (data = {});
-            var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-            return new src.a((function(resolve) {
-                var XRequest = window.XMLHttpRequest || window.ActiveXObject;
-                if (window.XDomainRequest && !function(url) {
-                    var match = url.match(/https?:\/\/[^/]+/);
-                    return !match || match[0] === window.location.protocol + "//" + window.location.host;
-                }(url)) {
-                    if (!function(url) {
-                        return window.location.protocol === url.split("/")[0];
-                    }(url)) return resolve();
-                    XRequest = window.XDomainRequest;
-                }
-                var req = new XRequest("MSXML2.XMLHTTP.3.0");
-                req.open("post".toUpperCase(), url, !0);
-                if ("function" == typeof req.setRequestHeader) {
-                    req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    req.setRequestHeader("Content-type", "application/json");
-                    for (var headerName in headers) headers.hasOwnProperty(headerName) && req.setRequestHeader(headerName, headers[headerName]);
-                }
-                fireAndForget ? resolve() : req.onreadystatechange = function() {
-                    req.readyState > 3 && resolve();
-                };
-                req.send(JSON.stringify(data).replace(/&/g, "%26"));
-            }));
-        }(0, config.uri, headers, data, options);
-    };
-    function getTransport() {
-        return logger_transport;
-    }
-    function setTransport(newTransport) {
-        logger_transport = newTransport;
-    }
-    var loaded = !1;
-    setTimeout((function() {
-        loaded = !0;
-    }), 1);
-    function print(level, event, payload) {
-        if ("undefined" != typeof window && window.console && window.console.log) {
-            if (!loaded) return setTimeout((function() {
-                return print(level, event, payload);
-            }), 1);
-            var logLevel = config.logLevel;
-            window.LOG_LEVEL && (logLevel = window.LOG_LEVEL);
-            if (!(logLevels.indexOf(level) > logLevels.indexOf(logLevel))) {
-                payload = payload || {};
-                var args = [ event ];
-                Boolean(window.document.documentMode) && (payload = JSON.stringify(payload));
-                args.push(payload);
-                (payload.error || payload.warning) && args.push("\n\n", payload.error || payload.warning);
-                try {
-                    window.console[level] && window.console[level].apply ? window.console[level].apply(window.console, args) : window.console.log && window.console.log.apply && window.console.log.apply(window.console, args);
-                } catch (err) {}
-            }
-        }
-    }
-    function immediateFlush(_temp) {
-        var _ref$fireAndForget = (void 0 === _temp ? {} : _temp).fireAndForget, fireAndForget = void 0 !== _ref$fireAndForget && _ref$fireAndForget;
-        if ("undefined" != typeof window && config.uri && (buffer.length || tracking.length)) {
-            var meta = {};
-            for (var _i2 = 0; _i2 < metaBuilders.length; _i2++) {
-                var builder = metaBuilders[_i2];
-                try {
-                    extend(meta, builder(meta), !1);
-                } catch (err) {
-                    console.error("Error in custom meta builder:", err.stack || err.toString());
-                }
-            }
-            var headers = {};
-            for (var _i4 = 0; _i4 < headerBuilders.length; _i4++) {
-                var _builder = headerBuilders[_i4];
-                try {
-                    extend(headers, _builder(headers), !1);
-                } catch (err) {
-                    console.error("Error in custom header builder:", err.stack || err.toString());
-                }
-            }
-            var req = logger_transport(headers, {
-                events: buffer,
-                meta: meta,
-                tracking: tracking
-            }, {
-                fireAndForget: fireAndForget
-            });
-            buffer = [];
-            tracking = [];
-            return req;
-        }
-    }
-    var _flush = (method = immediateFlush, interval = config.debounceInterval, debounce = {}, 
-    function() {
-        var args = arguments;
-        if (debounce.timeout) {
-            clearTimeout(debounce.timeout);
-            delete debounce.timeout;
-        }
-        debounce.timeout = setTimeout((function() {
-            var resolver = debounce.resolver;
-            var rejector = debounce.rejector;
-            delete debounce.promise;
-            delete debounce.resolver;
-            delete debounce.rejector;
-            delete debounce.timeout;
-            return src.a.resolve().then((function() {
-                return method.apply(null, args);
-            })).then(resolver, rejector);
-        }), interval);
-        debounce.promise = debounce.promise || new src.a((function(resolver, rejector) {
-            debounce.resolver = resolver;
-            debounce.rejector = rejector;
-        }));
-        return debounce.promise;
-    });
-    var method, interval, debounce;
-    function enqueue(level, event, payload) {
-        buffer.push({
-            level: level,
-            event: event,
-            payload: payload
-        });
-        config.autoLog.indexOf(level) > -1 && _flush();
-    }
-    function log(level, event, payload) {
-        if ("undefined" != typeof window) {
-            config.prefix && (event = config.prefix + "_" + event);
-            "string" == typeof (payload = payload || {}) ? payload = {
-                message: payload
-            } : payload instanceof Error && (payload = {
-                error: payload.stack || payload.toString()
-            });
-            try {
-                JSON.stringify(payload);
-            } catch (err) {
-                return;
-            }
-            payload.timestamp = Date.now();
-            for (var _i6 = 0; _i6 < payloadBuilders.length; _i6++) {
-                var builder = payloadBuilders[_i6];
-                try {
-                    extend(payload, builder(payload), !1);
-                } catch (err) {
-                    console.error("Error in custom payload builder:", err.stack || err.toString());
-                }
-            }
-            config.silent || print(level, event, payload);
-            buffer.length === config.sizeLimit ? enqueue("info", "logger_max_buffer_length") : buffer.length < config.sizeLimit && enqueue(level, event, payload);
-        }
-    }
-    function prefix(name) {
-        return {
-            debug: function(event, payload) {
-                return log("debug", name + "_" + event, payload);
-            },
-            info: function(event, payload) {
-                return log("info", name + "_" + event, payload);
-            },
-            warn: function(event, payload) {
-                return log("warn", name + "_" + event, payload);
-            },
-            error: function(event, payload) {
-                return log("error", name + "_" + event, payload);
-            },
-            track: function(payload) {
-                return _track(payload);
-            },
-            flush: function() {
-                return _flush();
-            }
-        };
-    }
-    function debug(event, payload) {
-        return log("debug", event, payload);
-    }
-    function info(event, payload) {
-        return log("info", event, payload);
-    }
-    function warn(event, payload) {
-        return log("warn", event, payload);
-    }
-    function error(event, payload) {
-        return log("error", event, payload);
-    }
-    function _track(payload) {
-        if ("undefined" != typeof window && payload) {
-            try {
-                JSON.stringify(payload);
-            } catch (err) {
-                return;
-            }
-            for (var _i8 = 0; _i8 < trackingBuilders.length; _i8++) {
-                var builder = trackingBuilders[_i8];
-                try {
-                    extend(payload, builder(payload), !1);
-                } catch (err) {
-                    console.error("Error in custom tracking builder:", err.stack || err.toString());
-                }
-            }
-            print("debug", "tracking", payload);
-            tracking.push(payload);
-        }
-    }
-    var enablePerformance = window && window.performance && performance.now && performance.timing && performance.timing.connectEnd && performance.timing.navigationStart && Math.abs(performance.now() - Date.now()) > 1e3 && performance.now() - (performance.timing.connectEnd - performance.timing.navigationStart) > 0;
-    function now() {
-        return enablePerformance ? performance.now() : Date.now();
-    }
-    function timer(startTime) {
-        return {
-            startTime: startTime = void 0 !== startTime ? startTime : now(),
-            elapsed: function() {
-                return parseInt(now() - startTime, 10);
-            },
-            reset: function() {
-                startTime = now();
-            }
-        };
-    }
-    function reqStartElapsed() {
-        if (enablePerformance) {
-            var timing = window.performance.timing;
-            return parseInt(timing.connectEnd - timing.navigationStart, 10);
-        }
-    }
-    var clientTimer = timer();
-    var reqTimer = timer(reqStartElapsed());
-    var initiated = !1;
-    function init(conf) {
-        extend(config, conf || {});
-        if (!initiated) {
-            initiated = !0;
-            config.logPerformance && function() {
-                if (!enablePerformance) return info("no_performance_data");
-                addPayloadBuilder((function() {
-                    var payload = {};
-                    payload.client_elapsed = clientTimer.elapsed();
-                    enablePerformance && (payload.req_elapsed = reqTimer.elapsed());
-                    return payload;
-                }));
-                new src.a((function(resolve) {
-                    "undefined" != typeof document && "complete" === document.readyState && resolve();
-                    window.addEventListener("load", resolve);
-                })).then((function() {
-                    var timing = {};
-                    [ "connectEnd", "connectStart", "domComplete", "domContentLoadedEventEnd", "domContentLoadedEventStart", "domInteractive", "domLoading", "domainLookupEnd", "domainLookupStart", "fetchStart", "loadEventEnd", "loadEventStart", "navigationStart", "redirectEnd", "redirectStart", "requestStart", "responseEnd", "responseStart", "secureConnectionStart", "unloadEventEnd", "unloadEventStart" ].forEach((function(key) {
-                        timing[key] = parseInt(window.performance.timing[key], 10) || 0;
-                    }));
-                    var offset = timing.connectEnd - timing.navigationStart;
-                    timing.connectEnd && Object.keys(timing).forEach((function(name) {
-                        var time = timing[name];
-                        time && info("timing_" + name, {
-                            client_elapsed: parseInt(time - timing.connectEnd - (clientTimer.startTime - offset), 10),
-                            req_elapsed: parseInt(time - timing.connectEnd, 10)
-                        });
-                    }));
-                    info("timing", timing);
-                    info("memory", window.performance.memory);
-                    info("navigation", window.performance.navigation);
-                    window.performance.getEntries && window.performance.getEntries().forEach((function(resource) {
-                        [ "link", "script", "img", "css" ].indexOf(resource.initiatorType) > -1 && info(resource.initiatorType, resource);
-                    }));
-                }));
-            }();
-            config.heartbeat && (heartBeatTimer = timer(), heartbeatCount = 0, time = config.heartbeatInterval, 
-            function loop() {
-                setTimeout((function() {
-                    !function() {
-                        if (!(config.heartbeatMaxThreshold && heartbeatCount > config.heartbeatMaxThreshold)) {
-                            heartbeatCount += 1;
-                            var elapsed = heartBeatTimer.elapsed();
-                            var lag = elapsed - config.heartbeatInterval;
-                            var heartbeatPayload = {
-                                count: heartbeatCount,
-                                elapsed: elapsed
-                            };
-                            if (config.heartbeatTooBusy) {
-                                heartbeatPayload.lag = lag;
-                                lag >= config.heartbeatTooBusyThreshold && info("toobusy", heartbeatPayload);
-                            }
-                            info("heartbeat", heartbeatPayload);
-                        }
-                    }();
-                    loop();
-                }), time);
-            }());
-            if (config.logUnload) {
-                window.addEventListener("beforeunload", (function() {
-                    info("window_beforeunload");
-                    immediateFlush({
-                        fireAndForget: !0
-                    });
-                }));
-                window.addEventListener("unload", (function() {
-                    info("window_unload");
-                    immediateFlush({
-                        fireAndForget: !0
-                    });
-                }));
-            }
-            config.flushInterval && setInterval(_flush, config.flushInterval);
-            if (window.beaverLogQueue) {
-                window.beaverLogQueue.forEach((function(payload) {
-                    log(payload.level, payload.event, payload);
-                }));
-                delete window.beaverLogQueue;
-            }
-        }
-        var heartBeatTimer, heartbeatCount, time;
-    }
-    var windowID = uniqueID();
-    var pageID = uniqueID();
-    var currentState = config.initial_state_name;
-    var startTime;
-    function startTransition() {
-        startTime = now();
-    }
-    function endTransition(toState) {
-        startTime = startTime || reqStartElapsed();
-        var currentTime = now();
-        var elapsedTime;
-        void 0 !== startTime && (elapsedTime = parseInt(currentTime - startTime, 0));
-        var transitionName = "transition_" + currentState + "_to_" + toState;
-        info(transitionName, {
-            duration: elapsedTime
-        });
-        _track({
-            transition: transitionName,
-            transition_time: elapsedTime
-        });
-        immediateFlush();
-        startTime = currentTime;
-        currentState = toState;
-        pageID = uniqueID();
-    }
-    function transition(toState) {
-        startTransition();
-        endTransition(toState);
-    }
-    addPayloadBuilder((function() {
-        return {
-            windowID: windowID,
-            pageID: pageID
-        };
-    }));
-    addMetaBuilder((function() {
-        return {
-            state: "ui_" + currentState
-        };
-    }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     __webpack_require__.d(__webpack_exports__, "d", (function() {
         return appendChild;
     }));
@@ -3396,7 +3396,7 @@
     var esm_extends = __webpack_require__(13);
     var src = __webpack_require__(7);
     var zalgo_promise_src = __webpack_require__(2);
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     var error = __webpack_require__(28);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
@@ -4087,7 +4087,7 @@
         descriptor.value.displayName = name + ":memoized";
     }
     var post_robot_src = __webpack_require__(15);
-    var client = __webpack_require__(5);
+    var client = __webpack_require__(4);
     function setLogLevel(logLevel) {
         if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
         client.e.logLevel = logLevel;
@@ -5119,7 +5119,7 @@
     __webpack_require__(13);
     var zalgo_promise_src = __webpack_require__(2);
     __webpack_require__(7);
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     __webpack_require__(25);
     __webpack_require__(34);
     function getFunctionName(fn) {
@@ -6390,7 +6390,7 @@
             }));
         }));
     }
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     global.a.responseListeners = global.a.responseListeners || {};
     global.a.requestListeners = global.a.requestListeners || {};
     global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {};
@@ -6889,7 +6889,7 @@
     __webpack_require__.d(__webpack_exports__, "k", (function() {
         return onChildWindowReady;
     }));
-    var src = __webpack_require__(18);
+    var src = __webpack_require__(17);
     var cross_domain_utils_src = __webpack_require__(7);
     var conf = __webpack_require__(10);
     function stringifyError(err, level) {
@@ -7178,15 +7178,156 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return weakmap_CrossDomainSafeWeakMap;
+    }));
+    var src = __webpack_require__(7);
+    function safeIndexOf(collection, item) {
+        for (var i = 0; i < collection.length; i++) try {
+            if (collection[i] === item) return i;
+        } catch (err) {}
+        return -1;
+    }
+    var weakmap_CrossDomainSafeWeakMap = function() {
+        function CrossDomainSafeWeakMap() {
+            this.name = void 0;
+            this.weakmap = void 0;
+            this.keys = void 0;
+            this.values = void 0;
+            this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__";
+            if (function() {
+                if ("undefined" == typeof WeakMap) return !1;
+                if (void 0 === Object.freeze) return !1;
+                try {
+                    var testWeakMap = new WeakMap;
+                    var testKey = {};
+                    Object.freeze(testKey);
+                    testWeakMap.set(testKey, "__testvalue__");
+                    return "__testvalue__" === testWeakMap.get(testKey);
+                } catch (err) {
+                    return !1;
+                }
+            }()) try {
+                this.weakmap = new WeakMap;
+            } catch (err) {}
+            this.keys = [];
+            this.values = [];
+        }
+        var _proto = CrossDomainSafeWeakMap.prototype;
+        _proto._cleanupClosedWindows = function() {
+            var weakmap = this.weakmap;
+            var keys = this.keys;
+            for (var i = 0; i < keys.length; i++) {
+                var value = keys[i];
+                if (Object(src.y)(value) && Object(src.z)(value)) {
+                    if (weakmap) try {
+                        weakmap.delete(value);
+                    } catch (err) {}
+                    keys.splice(i, 1);
+                    this.values.splice(i, 1);
+                    i -= 1;
+                }
+            }
+        };
+        _proto.isSafeToReadWrite = function(key) {
+            return !Object(src.y)(key);
+        };
+        _proto.set = function(key, value) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.set(key, value);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var name = this.name;
+                var entry = key[name];
+                entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
+                    value: [ key, value ],
+                    writable: !0
+                });
+                return;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys;
+            var values = this.values;
+            var index = safeIndexOf(keys, key);
+            if (-1 === index) {
+                keys.push(key);
+                values.push(value);
+            } else values[index] = value;
+        };
+        _proto.get = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return weakmap.get(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return entry && entry[0] === key ? entry[1] : void 0;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var index = safeIndexOf(this.keys, key);
+            if (-1 !== index) return this.values[index];
+        };
+        _proto.delete = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.delete(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys;
+            var index = safeIndexOf(keys, key);
+            if (-1 !== index) {
+                keys.splice(index, 1);
+                this.values.splice(index, 1);
+            }
+        };
+        _proto.has = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return !0;
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return !(!entry || entry[0] !== key);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            return -1 !== safeIndexOf(this.keys, key);
+        };
+        _proto.getOrSet = function(key, getter) {
+            if (this.has(key)) return this.get(key);
+            var value = getter();
+            this.set(key, value);
+            return value;
+        };
+        return CrossDomainSafeWeakMap;
+    }();
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return Checkout;
     }));
     var esm_extends = __webpack_require__(13);
     var src = __webpack_require__(2);
-    var beaver_logger_client = __webpack_require__(5);
+    var beaver_logger_client = __webpack_require__(4);
     var zoid_src = __webpack_require__(23);
     var belter_src = __webpack_require__(11);
-    var lib = __webpack_require__(4);
-    var config = __webpack_require__(3);
+    var lib = __webpack_require__(3);
+    var config = __webpack_require__(5);
     var constants = __webpack_require__(0);
     var post_robot_src = __webpack_require__(15);
     function match(str, pattern) {
@@ -7718,147 +7859,6 @@
             throw err;
         }));
     }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return weakmap_CrossDomainSafeWeakMap;
-    }));
-    var src = __webpack_require__(7);
-    function safeIndexOf(collection, item) {
-        for (var i = 0; i < collection.length; i++) try {
-            if (collection[i] === item) return i;
-        } catch (err) {}
-        return -1;
-    }
-    var weakmap_CrossDomainSafeWeakMap = function() {
-        function CrossDomainSafeWeakMap() {
-            this.name = void 0;
-            this.weakmap = void 0;
-            this.keys = void 0;
-            this.values = void 0;
-            this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__";
-            if (function() {
-                if ("undefined" == typeof WeakMap) return !1;
-                if (void 0 === Object.freeze) return !1;
-                try {
-                    var testWeakMap = new WeakMap;
-                    var testKey = {};
-                    Object.freeze(testKey);
-                    testWeakMap.set(testKey, "__testvalue__");
-                    return "__testvalue__" === testWeakMap.get(testKey);
-                } catch (err) {
-                    return !1;
-                }
-            }()) try {
-                this.weakmap = new WeakMap;
-            } catch (err) {}
-            this.keys = [];
-            this.values = [];
-        }
-        var _proto = CrossDomainSafeWeakMap.prototype;
-        _proto._cleanupClosedWindows = function() {
-            var weakmap = this.weakmap;
-            var keys = this.keys;
-            for (var i = 0; i < keys.length; i++) {
-                var value = keys[i];
-                if (Object(src.y)(value) && Object(src.z)(value)) {
-                    if (weakmap) try {
-                        weakmap.delete(value);
-                    } catch (err) {}
-                    keys.splice(i, 1);
-                    this.values.splice(i, 1);
-                    i -= 1;
-                }
-            }
-        };
-        _proto.isSafeToReadWrite = function(key) {
-            return !Object(src.y)(key);
-        };
-        _proto.set = function(key, value) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.set(key, value);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var name = this.name;
-                var entry = key[name];
-                entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
-                    value: [ key, value ],
-                    writable: !0
-                });
-                return;
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys;
-            var values = this.values;
-            var index = safeIndexOf(keys, key);
-            if (-1 === index) {
-                keys.push(key);
-                values.push(value);
-            } else values[index] = value;
-        };
-        _proto.get = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return weakmap.get(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return entry && entry[0] === key ? entry[1] : void 0;
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var index = safeIndexOf(this.keys, key);
-            if (-1 !== index) return this.values[index];
-        };
-        _proto.delete = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.delete(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys;
-            var index = safeIndexOf(keys, key);
-            if (-1 !== index) {
-                keys.splice(index, 1);
-                this.values.splice(index, 1);
-            }
-        };
-        _proto.has = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return !0;
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return !(!entry || entry[0] !== key);
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            return -1 !== safeIndexOf(this.keys, key);
-        };
-        _proto.getOrSet = function(key, getter) {
-            if (this.has(key)) return this.get(key);
-            var value = getter();
-            this.set(key, value);
-            return value;
-        };
-        return CrossDomainSafeWeakMap;
-    }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "b", (function() {
@@ -9140,7 +9140,7 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getGlobalState;
     }));
-    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
     var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
     var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
     var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
@@ -9396,7 +9396,7 @@
         return BaseComponent;
     }();
     var esm_extends = __webpack_require__(13);
-    var client = __webpack_require__(5);
+    var client = __webpack_require__(4);
     var belter_src = __webpack_require__(11);
     var base32 = __webpack_require__(39);
     var base32_default = __webpack_require__.n(base32);
@@ -11594,7 +11594,7 @@
         });
     };
     var zalgo_promise_src = __webpack_require__(2);
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     function needsBridgeForBrowser() {
         return !!Object(src.p)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !conf.a.ALLOW_POSTMESSAGE_POPUP;
     }
@@ -11899,11 +11899,11 @@
     __webpack_require__.d(__webpack_exports__, "g", (function() {
         return getResourceLoadTime;
     }));
-    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
     __webpack_require__(11);
     var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
-    var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
     var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
@@ -12100,7 +12100,7 @@
     }));
     var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-    var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
     function allowIframe() {
         if (!Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.t)()) return !0;
         var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.n)(window);
@@ -12489,7 +12489,7 @@
         return beacon;
     }));
     __webpack_require__(13);
-    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
     var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
     var BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl;
@@ -12497,7 +12497,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.335";
+            payload.version = "4.0.336";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -12657,7 +12657,7 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return determineUrl;
     }));
-    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
     var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
     function determineParameterFromToken(token) {
         return token && 0 === token.indexOf("BA-") ? "ba_token" : "token";
@@ -16819,18 +16819,18 @@
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
     var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.335" === window.paypal.version) {
+    if (window.paypal && "4.0.336" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.335"
+            version: "4.0.336"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.335) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.336) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.335" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.336" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.335"
+            version: "4.0.336"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.335");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.336");
     }
     try {
         var _interface = __webpack_require__(54);
@@ -17081,16 +17081,16 @@
     __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", (function() {
         return interface_ThreeDomainSecure;
     }));
-    var beaver_logger_client = __webpack_require__(5);
+    var beaver_logger_client = __webpack_require__(4);
     var src = __webpack_require__(23);
     var zalgo_promise_src = __webpack_require__(2);
     var post_robot_src = __webpack_require__(15);
-    var lib = __webpack_require__(4);
-    var src_checkout = __webpack_require__(17);
+    var lib = __webpack_require__(3);
+    var src_checkout = __webpack_require__(18);
     var esm_extends = __webpack_require__(13);
     var belter_src = __webpack_require__(11);
     var constants = __webpack_require__(0);
-    var config = __webpack_require__(3);
+    var config = __webpack_require__(5);
     var resources = __webpack_require__(19);
     var containerContent = __webpack_require__(38);
     var checkout_template = __webpack_require__(35);
@@ -24138,7 +24138,7 @@
                 logoColor: "blue"
             })));
         }(Object(button_props.a)(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.335", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.336", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24186,7 +24186,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.335", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.336", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24342,15 +24342,6 @@
                 required: !1,
                 def: function() {
                     return !0;
-                }
-            },
-            stageUrl: {
-                type: "string",
-                required: !1,
-                queryParam: !0,
-                def: function(props) {
-                    var env = props.env || config.a.env;
-                    if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
                 }
             },
             braintree: {
@@ -25359,12 +25350,6 @@
             if (stageUrl) {
                 delete config.a.stageUrl;
                 config.a.stageUrl = stageUrl;
-            } else if (component_Button.xprops && component_Button.xprops.stageUrl) {
-                delete config.a.stageUrl;
-                config.a.stageUrl = component_Button.xprops.stageUrl;
-            } else if (src_checkout.a.xprops && src_checkout.a.xprops.stageUrl) {
-                delete config.a.stageUrl;
-                config.a.stageUrl = src_checkout.a.xprops.stageUrl;
             }
             if (authCode = authCode || component_Button.xprops && component_Button.xprops.authCode || src_checkout.a.xprops && src_checkout.a.xprops.authCode) {
                 delete config.a.authCode;
@@ -25389,7 +25374,7 @@
         env: currentScript.getAttribute("data-env"),
         stage: currentScript.getAttribute("data-stage"),
         apiStage: currentScript.getAttribute("data-api-stage"),
-        stageUrl: currentScript.getAttribute("data-stage-url"),
+        stageUrl: Object(lib.E)() ? currentScript.getAttribute("data-stage-url") : void 0,
         localhostUrl: Object(lib.E)() ? currentScript.getAttribute("data-localhost-url") : void 0,
         checkoutUri: Object(lib.E)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
         state: currentScript.getAttribute("data-state"),
@@ -25426,7 +25411,7 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.335";
+    var interface_version = "4.0.336";
     var interface_checkout;
     var apps;
     var legacy = __webpack_require__(55);
@@ -25488,8 +25473,8 @@
     __webpack_require__.d(__webpack_exports__, "setup", (function() {
         return setup;
     }));
-    var client = __webpack_require__(5);
-    var lib = __webpack_require__(4);
+    var client = __webpack_require__(4);
+    var lib = __webpack_require__(3);
     var constants = __webpack_require__(0);
     var LOG_PREFIX = "paypal_legacy";
     var ATTRIBUTES = {
@@ -25506,8 +25491,8 @@
     var form_serialize = __webpack_require__(49);
     var form_serialize_default = __webpack_require__.n(form_serialize);
     var belter_src = __webpack_require__(11);
-    var checkout = __webpack_require__(17);
-    var config = __webpack_require__(3);
+    var checkout = __webpack_require__(18);
+    var config = __webpack_require__(5);
     var post_robot_src = __webpack_require__(15);
     function isLegacyEligible() {
         return !!Object(lib.C)() && !!Object(belter_src.t)() && !Object(belter_src.h)();

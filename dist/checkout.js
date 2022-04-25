@@ -1193,863 +1193,6 @@
     }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return config;
-    }));
-    var constants = __webpack_require__(0);
-    var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
-    var config = {
-        locales: constants.A,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.js",
-        paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.335",
-        cors: !0,
-        env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
-        state: "checkoutjs",
-        locale: {
-            country: constants.r.US,
-            lang: constants.y.EN
-        },
-        stage: "msmaster",
-        stageDomain: "qa.paypal.com",
-        get stageUrl() {
-            return "www." + config.stage + "." + config.stageDomain;
-        },
-        get apiStageUrl() {
-            return "www." + config.apiStage + "." + config.stageDomain;
-        },
-        get localSDKUrl() {
-            var scripts = [].slice.call(document.getElementsByTagName("script"));
-            for (var _i2 = 0; _i2 < scripts.length; _i2++) {
-                var script = scripts[_i2];
-                if (config.env === constants.t.LOCAL && script.src.match(/checkout(\.min)?\.js$/)) return script.src;
-            }
-        },
-        get localSDKDomain() {
-            var localSDKUrl = config.localSDKUrl;
-            if (localSDKUrl) return new URL(localSDKUrl).origin;
-        },
-        get localhostUrl() {
-            return config.localSDKDomain || "http://localhost.paypal.com:" + config.ports.default;
-        },
-        set localhostUrl(val) {
-            delete this.localhostUrl;
-            this.localhostUrl = val;
-        },
-        merchantID: "",
-        authCode: "",
-        logLevel: "warn",
-        throttles: {
-            v4_mobile_device: 0
-        },
-        domain_settings: {
-            "walmart.com": {
-                ie_full_page: !1,
-                allow_full_page_fallback: !0,
-                memoize_payment: !0,
-                force_bridge: !0,
-                log_authorize: !0
-            },
-            "ulta.com": {
-                disable_venmo: !0
-            },
-            "barnesandnoble.com": {
-                disable_venmo: !0
-            },
-            "bn.com": {
-                disable_venmo: !0
-            },
-            "agoratix.com": {
-                disable_venmo: !0
-            },
-            "tractorsupply.com": {
-                disable_venmo: !0
-            },
-            "etsy.com": {
-                ie_full_page: !1,
-                allow_full_page_fallback: !0,
-                memoize_payment: !0,
-                force_bridge: !0,
-                log_authorize: !0
-            },
-            "ticketmaster.com": {
-                disable_venmo: !0
-            },
-            "livenation.com": {
-                disable_venmo: !0
-            },
-            "frontgatetickets.com": {
-                disable_venmo: !0
-            },
-            "williams-sonoma.com": {
-                disable_venmo: !0
-            },
-            "westelm.com": {
-                disable_venmo: !0
-            },
-            "markandgraham.com": {
-                disable_venmo: !0
-            },
-            "potterybarn.com": {
-                disable_venmo: !0
-            },
-            "potterybarnkids.com": {
-                disable_venmo: !0
-            },
-            "pbteen.com": {
-                disable_venmo: !0
-            },
-            "beallsflorida.com": {
-                disable_venmo: !0
-            },
-            "therealreal.com": {
-                disable_venmo: !0
-            },
-            "liveaquaria.com": {
-                disable_venmo: !0
-            },
-            "drsfostersmith.com": {
-                disable_venmo: !0
-            },
-            "boxed.com": {
-                disable_venmo: !0
-            },
-            "bevisible.com": {
-                disable_venmo: !0
-            },
-            "moeller.org": {
-                disable_venmo: !0
-            },
-            "searshometownstores.com": {
-                disable_venmo: !0
-            },
-            "searshardwarestores.com": {
-                disable_venmo: !0
-            },
-            "searshomeapplianceshowroom.com": {
-                disable_venmo: !0
-            },
-            "barkshop.com": {
-                disable_venmo: !0
-            },
-            "vividseats.com": {
-                disable_venmo: !0
-            },
-            "getcargo.today": {
-                disable_venmo: !0
-            },
-            "smartdestinations.com": {
-                disable_venmo: !0
-            },
-            "philadelphiapass.com": {
-                disable_venmo: !0
-            },
-            "thesydneypass.com": {
-                disable_venmo: !0
-            },
-            "3secondlash.com": {
-                disable_venmo: !0
-            },
-            "newyorkpass.com": {
-                disable_venmo: !0
-            },
-            "dndbeyond.com": {
-                disable_venmo: !0
-            },
-            "app.zapbuy.it": {
-                disable_venmo: !0
-            },
-            "gamersaloon.com": {
-                disable_venmo: !0
-            },
-            "1800contacts.com": {
-                disable_venmo: !0
-            },
-            "shopchatters.ca": {
-                disable_venmo: !0
-            },
-            "shopguyswin.ca": {
-                disable_venmo: !0
-            },
-            "jjill.com": {
-                disable_venmo: !0
-            },
-            "qvc.com": {
-                disable_venmo: !0
-            },
-            "stelladot.com": {
-                disable_venmo: !0
-            },
-            "keepcollective.com": {
-                disable_venmo: !0
-            },
-            "everskin.com": {
-                disable_venmo: !0
-            },
-            "zulily.com": {
-                disable_venmo: !0
-            },
-            "freshly.com": {
-                disable_venmo: !0
-            },
-            "buypeticare.com": {
-                disable_venmo: !0
-            },
-            "getownzone.com": {
-                disable_venmo: !0
-            },
-            "uncommongoods.com": {
-                disable_venmo: !0
-            },
-            "onegold.com": {
-                disable_venmo: !0
-            },
-            "universitytees.com": {
-                disable_venmo: !0
-            },
-            "revolve.com": {
-                disable_venmo: !0
-            },
-            "functionofbeauty.com": {
-                disable_venmo: !0
-            },
-            "givebutter.com": {
-                disable_venmo: !0
-            },
-            "hausmart.com": {
-                disable_venmo: !0
-            },
-            "derbyjackpot.com": {
-                disable_venmo: !0
-            },
-            "ancestry.com": {
-                disable_venmo: !0
-            },
-            "boats.net": {
-                disable_venmo: !0
-            },
-            "partzilla.com": {
-                disable_venmo: !0
-            },
-            "firedog.com": {
-                disable_venmo: !0
-            },
-            "chick-fil-a.com": {
-                disable_venmo: !0
-            },
-            "roku.com": {
-                disable_venmo: !0
-            },
-            "barkbox.com": {
-                disable_venmo: !0
-            },
-            "neimanmarcus.com": {
-                disable_venmo: !0
-            },
-            "lastcall.com": {
-                disable_venmo: !0
-            },
-            "horchow.com": {
-                disable_venmo: !0
-            },
-            "bergdorfgoodman.com": {
-                disable_venmo: !0
-            },
-            "fwrd.com": {
-                disable_venmo: !0
-            },
-            "plunderdesign.com": {
-                disable_venmo: !0
-            },
-            "stitchfix.com": {
-                disable_venmo: !0
-            },
-            "revzilla.com": {
-                disable_venmo: !0
-            },
-            "cyclegear.com": {
-                disable_venmo: !0
-            },
-            "chegg.com": {
-                disable_venmo: !0
-            },
-            "youniqueproducts.com": {
-                disable_venmo: !0
-            },
-            "archives.com": {
-                disable_venmo: !0
-            },
-            "hautelook.com": {
-                disable_venmo: !0
-            },
-            "nordstromrack.com": {
-                disable_venmo: !0
-            },
-            "motherhoodcanada.ca": {
-                disable_venmo: !0
-            },
-            "atomtickets.com": {
-                disable_venmo: !0
-            },
-            "trademore.com": {
-                disable_venmo: !0
-            },
-            "lasheaseoffer.com": {
-                disable_venmo: !0
-            },
-            "rookie.paypalsixthman.com": {
-                disable_venmo: !0
-            },
-            "1800Contacts.com": {
-                disable_venmo: !0
-            },
-            "hulu.com": {
-                disable_venmo: !0
-            },
-            "grubhub.com": {
-                disable_venmo: !0
-            },
-            "eat24.com": {
-                disable_venmo: !0
-            },
-            "seamless.com": {
-                disable_venmo: !0
-            },
-            "freshfeetscrubber.com": {
-                disable_venmo: !0
-            },
-            "opensky.com": {
-                disable_venmo: !0
-            },
-            "dotandbo.com": {
-                disable_venmo: !0
-            },
-            "storenvy.com": {
-                disable_venmo: !0
-            },
-            "gemafina.com": {
-                disable_venmo: !0
-            },
-            "pickperfect.com": {
-                disable_venmo: !0
-            },
-            "55mulberry.com": {
-                disable_venmo: !0
-            },
-            "hollar.com": {
-                disable_venmo: !0
-            },
-            "bjs.com": {
-                disable_venmo: !0
-            },
-            "playsugarhouse.com": {
-                disable_venmo: !0
-            },
-            "lakeshorelearning.com": {
-                disable_venmo: !0
-            },
-            "llmhq.com": {
-                disable_venmo: !0
-            },
-            "gainful.com": {
-                disable_venmo: !0
-            },
-            "modaoperandi.com": {
-                disable_venmo: !0
-            },
-            "play.jackpocket.com": {
-                disable_venmo: !0
-            },
-            "crepeerase.com": {
-                disable_venmo: !0
-            },
-            "specificbeauty.com": {
-                disable_venmo: !0
-            },
-            "meaningfulbeauty.com": {
-                disable_venmo: !0
-            },
-            "smileactives.com ": {
-                disable_venmo: !0
-            },
-            "mally.com": {
-                disable_venmo: !0
-            },
-            "westmorebeauty.com": {
-                disable_venmo: !0
-            },
-            "subd.com": {
-                disable_venmo: !0
-            },
-            "seacalmskin.com": {
-                disable_venmo: !0
-            },
-            "whittier.edu": {
-                disable_venmo: !0
-            },
-            "curology.com": {
-                disable_venmo: !0
-            },
-            "monoprice.com": {
-                disable_venmo: !0
-            },
-            "dominos.com": {
-                disable_venmo: !0
-            },
-            "audiobooks.com": {
-                disable_venmo: !0
-            },
-            "1aauto.com": {
-                disable_venmo: !0
-            },
-            "greatwolf.com": {
-                disable_venmo: !0
-            },
-            "cvs.com": {
-                disable_venmo: !0
-            },
-            "gilt.com": {
-                disable_venmo: !0
-            },
-            "ruelala.com": {
-                disable_venmo: !0
-            },
-            "shopdisney.com": {
-                disable_venmo: !0
-            },
-            "disneycruise.disney.go.com": {
-                disable_venmo: !0
-            },
-            "disneyland.disney.go.com": {
-                disable_venmo: !0
-            },
-            "disneyworld.disney.go.com": {
-                disable_venmo: !0
-            },
-            "disneyaulani.com": {
-                disable_venmo: !0
-            },
-            "6abc.com": {
-                disable_venmo: !0
-            },
-            "abc30.com": {
-                disable_venmo: !0
-            },
-            "abc7.com": {
-                disable_venmo: !0
-            },
-            "abc7chicago.com": {
-                disable_venmo: !0
-            },
-            "abcnewsvideosource.com": {
-                disable_venmo: !0
-            },
-            "aetndigital.com": {
-                disable_venmo: !0
-            },
-            "araca.com.au": {
-                disable_venmo: !0
-            },
-            "disney.com": {
-                disable_venmo: !0
-            },
-            "espncustomercare.com": {
-                disable_venmo: !0
-            },
-            "makerstudios.com": {
-                disable_venmo: !0
-            },
-            "abc.org": {
-                disable_venmo: !0
-            },
-            "dclnews.com": {
-                disable_venmo: !0
-            },
-            "disneyanimation.com": {
-                disable_venmo: !0
-            },
-            "espncricinfo.com": {
-                disable_venmo: !0
-            },
-            "fort-pierce.net": {
-                disable_venmo: !0
-            },
-            "nationalgeographic.com": {
-                disable_venmo: !0
-            },
-            "nhl.tv": {
-                disable_venmo: !0
-            },
-            "pixar.com": {
-                disable_venmo: !0
-            },
-            "xgames.com": {
-                disable_venmo: !0
-            },
-            "espnwsummit.com": {
-                disable_venmo: !0
-            },
-            "plus.espn.com": {
-                disable_venmo: !0
-            },
-            "disneyplus.com": {
-                disable_venmo: !0
-            }
-        },
-        creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
-        customCountry: !1,
-        SUPPORTED_BROWSERS: {
-            msie: "11",
-            firefox: "43",
-            chrome: "41",
-            safari: "8",
-            opera: "23",
-            msedge: "14",
-            samsungBrowser: "2.1",
-            silk: "59.3",
-            ucbrowser: "10.0.0.488",
-            vivaldi: "1.91"
-        },
-        session_uid_lifetime: 3e5,
-        _apiStage: "",
-        get apiStage() {
-            return config._apiStage || config.stage;
-        },
-        set apiStage(value) {
-            config._apiStage = value;
-        },
-        ports: {
-            default: 8e3,
-            button: 8e3,
-            checkout: 8e3,
-            guest: 8001,
-            altpay: 3e3
-        },
-        get paypalUrls() {
-            var _ref;
-            return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://" + config.stageUrl, 
-            _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref[constants.t.PRODUCTION] = "https://www.paypal.com", 
-            _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
-            _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
-            _ref;
-        },
-        get paypalDomains() {
-            var _ref2;
-            return (_ref2 = {})[constants.t.LOCAL] = config.localhostUrl, _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
-            _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
-            _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
-            _ref2;
-        },
-        get wwwApiUrls() {
-            var _ref3;
-            return (_ref3 = {})[constants.t.LOCAL] = config.localSDKDomain || "https://" + config.stageUrl, 
-            _ref3[constants.t.STAGE] = "https://" + config.stageUrl, _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
-            _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
-            _ref3;
-        },
-        get corsApiUrls() {
-            var _ref4;
-            return (_ref4 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref4[constants.t.STAGE] = "https://" + config.apiStageUrl + ":12326", 
-            _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", 
-            _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
-            _ref4;
-        },
-        get apiUrls() {
-            var _ref5;
-            var domain = window.location.protocol + "//" + window.location.host;
-            var corsApiUrls = config.corsApiUrls;
-            var wwwApiUrls = config.wwwApiUrls;
-            return (_ref5 = {})[constants.t.LOCAL] = domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local, 
-            _ref5[constants.t.STAGE] = domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage, 
-            _ref5[constants.t.SANDBOX] = domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox, 
-            _ref5[constants.t.PRODUCTION] = domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production, 
-            _ref5[constants.t.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
-            _ref5;
-        },
-        get checkoutUri() {
-            return null;
-        },
-        set checkoutUri(val) {
-            delete this.checkoutUri;
-            this.checkoutUri = val;
-        },
-        get checkoutUris() {
-            var _ref7;
-            if (config.checkoutUri) {
-                var _ref6;
-                return (_ref6 = {})[constants.t.LOCAL] = config.checkoutUri, _ref6[constants.t.STAGE] = config.checkoutUri, 
-                _ref6[constants.t.SANDBOX] = config.checkoutUri, _ref6[constants.t.PRODUCTION] = config.checkoutUri, 
-                _ref6[constants.t.TEST] = config.checkoutUri, _ref6[constants.t.DEMO] = config.checkoutUri, 
-                _ref6;
-            }
-            return (_ref7 = {})[constants.t.LOCAL] = "/webapps/hermes", _ref7[constants.t.STAGE] = "/webapps/hermes", 
-            _ref7[constants.t.SANDBOX] = "/checkoutnow", _ref7[constants.t.PRODUCTION] = "/checkoutnow", 
-            _ref7[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
-            _ref7[constants.t.DEMO] = "/demo/dev/checkout.htm", _ref7;
-        },
-        altpayUris: (_altpayUris = {}, _altpayUris[constants.t.LOCAL] = "/latinumcheckout", 
-        _altpayUris[constants.t.STAGE] = "/latinumcheckout", _altpayUris[constants.t.SANDBOX] = "/latinumcheckout", 
-        _altpayUris[constants.t.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
-        _altpayUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _altpayUris),
-        guestUris: (_guestUris = {}, _guestUris[constants.t.LOCAL] = "/webapps/xoonboarding", 
-        _guestUris[constants.t.STAGE] = "/webapps/xoonboarding", _guestUris[constants.t.SANDBOX] = "/webapps/xoonboarding", 
-        _guestUris[constants.t.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
-        _guestUris[constants.t.DEMO] = "/demo/dev/guest.htm", _guestUris),
-        billingUris: (_billingUris = {}, _billingUris[constants.t.LOCAL] = "/webapps/hermes/agreements", 
-        _billingUris[constants.t.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.t.SANDBOX] = "/agreements/approve", 
-        _billingUris[constants.t.PRODUCTION] = "/agreements/approve", _billingUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
-        _billingUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _billingUris),
-        buttonUris: (_buttonUris = {}, _buttonUris[constants.t.LOCAL] = "/smart/button", 
-        _buttonUris[constants.t.STAGE] = "/smart/button", _buttonUris[constants.t.SANDBOX] = "/smart/button", 
-        _buttonUris[constants.t.PRODUCTION] = "/smart/button", _buttonUris[constants.t.TEST] = "/base/test/windows/button/index.htm", 
-        _buttonUris[constants.t.DEMO] = "/demo/dev/button.htm", _buttonUris),
-        inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants.t.LOCAL] = "/smart/card-fields", 
-        _inlinedCardFieldUris[constants.t.STAGE] = "/smart/card-fields", _inlinedCardFieldUris[constants.t.SANDBOX] = "/smart/card-fields", 
-        _inlinedCardFieldUris[constants.t.PRODUCTION] = "/smart/card-fields", _inlinedCardFieldUris[constants.t.TEST] = "/base/test/windows/card-fields/index.htm", 
-        _inlinedCardFieldUris[constants.t.DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
-        postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants.t.LOCAL] = "/webapps/hermes/component-meta", 
-        _postBridgeUris[constants.t.STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.SANDBOX] = "/webapps/hermes/component-meta", 
-        _postBridgeUris[constants.t.PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.TEST] = "/base/test/windows/component-meta/index.htm", 
-        _postBridgeUris[constants.t.DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
-        legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants.t.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-        _legacyCheckoutUris[constants.t.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-        _legacyCheckoutUris[constants.t.SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-        _legacyCheckoutUris[constants.t.PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
-        _legacyCheckoutUris[constants.t.TEST] = "#fallback", _legacyCheckoutUris),
-        buttonJSUrls: (_buttonJSUrls = {}, _buttonJSUrls[constants.t.LOCAL] = "https://www.paypalobjects.com/api/button.js", 
-        _buttonJSUrls[constants.t.STAGE] = "https://www.paypalobjects.com/api/button.js", 
-        _buttonJSUrls[constants.t.SANDBOX] = "https://www.paypalobjects.com/api/button.js", 
-        _buttonJSUrls[constants.t.PRODUCTION] = "https://www.paypalobjects.com/api/button.js", 
-        _buttonJSUrls[constants.t.TEST] = "/base/test/lib/button.js", _buttonJSUrls[constants.t.DEMO] = "https://www.paypalobjects.com/api/button.js", 
-        _buttonJSUrls),
-        get buttonJSUrl() {
-            return config.buttonJSUrls[config.env];
-        },
-        loginUri: "/signin/",
-        hermesLoggerUri: "/webapps/hermes/api/logger",
-        loggerUri: "/xoplatform/logger/api/logger",
-        loggerThrottlePercentage: 1,
-        pptmUri: "/tagmanager/pptm.js",
-        get postBridgeUri() {
-            return config.postBridgeUris[config.env] + "?xcomponent=1";
-        },
-        paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
-        authApiUri: "/v1/oauth2/token",
-        paymentApiUri: "/v1/payments/payment",
-        orderApiUri: "/v2/checkout/orders",
-        billingApiUri: "/v1/billing-agreements/agreement-tokens",
-        experienceApiUri: "/v1/payment-experience/web-profiles",
-        trackingApiUri: "/v1/risk/transaction-contexts",
-        get checkoutUrls() {
-            var _ref8;
-            var paypalUrls = config.paypalUrls;
-            return (_ref8 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
-            _ref8[constants.t.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref8[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
-            _ref8[constants.t.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
-            _ref8[constants.t.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref8[constants.t.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
-            _ref8;
-        },
-        get guestUrls() {
-            var _ref9;
-            var paypalUrls = config.paypalUrls;
-            return (_ref9 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
-            _ref9[constants.t.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref9[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
-            _ref9[constants.t.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
-            _ref9[constants.t.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref9[constants.t.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
-            _ref9;
-        },
-        get altpayUrls() {
-            var _ref10;
-            var paypalUrls = config.paypalUrls;
-            return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
-            _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
-            _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
-            _ref10[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
-            _ref10;
-        },
-        get billingUrls() {
-            var _ref11;
-            var paypalUrls = config.paypalUrls;
-            return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
-            _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
-            _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
-            _ref11[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref11[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
-            _ref11;
-        },
-        get buttonUrls() {
-            var _ref12;
-            var paypalUrls = config.paypalUrls;
-            return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
-            _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
-            _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
-            _ref12[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref12[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
-            _ref12;
-        },
-        get inlinedCardFieldUrls() {
-            var _ref13;
-            var paypalUrls = config.paypalUrls;
-            return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
-            _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
-            _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
-            _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
-            _ref13[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
-            _ref13[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
-            _ref13;
-        },
-        get loginUrls() {
-            var _ref14;
-            var paypalUrls = config.paypalUrls;
-            return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
-            _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
-            _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref14[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
-            _ref14;
-        },
-        get paymentsStandardUrls() {
-            var _ref15;
-            var paypalUrls = config.paypalUrls;
-            return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-            _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-            _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-            _ref15[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref15;
-        },
-        get metaFrameUrls() {
-            var _ref16;
-            var paypalUrls = config.paypalUrls;
-            return (_ref16 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-            _ref16[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
-            _ref16[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-            _ref16[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-            _ref16[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
-            _ref16[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
-            _ref16;
-        },
-        get legacyCheckoutUrls() {
-            var _ref17;
-            var paypalUrls = config.paypalUrls;
-            return (_ref17 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-            _ref17[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-            _ref17[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-            _ref17[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-            _ref17[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
-            _ref17;
-        },
-        get authApiUrls() {
-            var _ref18;
-            var apiUrls = config.apiUrls;
-            var authApiUri = config.authApiUri;
-            return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
-            _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-            _ref18[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref18;
-        },
-        get paymentApiUrls() {
-            var _ref19;
-            var apiUrls = config.apiUrls;
-            var paymentApiUri = config.paymentApiUri;
-            return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-            _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-            _ref19[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref19;
-        },
-        get orderApiUrls() {
-            var _ref20;
-            var apiUrls = config.apiUrls;
-            var orderApiUri = config.orderApiUri;
-            return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref20[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
-            _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
-            _ref20[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref20;
-        },
-        get billingApiUrls() {
-            var _ref21;
-            var apiUrls = config.apiUrls;
-            var billingApiUri = config.billingApiUri;
-            return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
-            _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-            _ref21[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref21;
-        },
-        get experienceApiUrls() {
-            var _ref22;
-            var apiUrls = config.apiUrls;
-            var experienceApiUri = config.experienceApiUri;
-            return (_ref22 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
-            _ref22[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref22[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
-            _ref22[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref22[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
-            _ref22;
-        },
-        get trackingApiUrls() {
-            var _ref23;
-            var apiUrls = config.apiUrls;
-            var trackingApiUri = config.trackingApiUri;
-            return (_ref23 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref23[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
-            _ref23[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref23[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
-            _ref23[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref23;
-        },
-        _paypalUrl: "",
-        get paypalUrl() {
-            return this._paypalUrl || config.paypalUrls[config.env];
-        },
-        set paypalUrl(value) {
-            this._paypalUrl = value;
-        },
-        get paypalDomain() {
-            return config.paypalDomains[config.env];
-        },
-        get corsApiUrl() {
-            return config.corsApiUrls[config.env];
-        },
-        get wwwApiUrl() {
-            return config.wwwApiUrls[config.env];
-        },
-        get apiUrl() {
-            var domain = window.location.protocol + "//" + window.location.host;
-            var wwwApiUrl = config.wwwApiUrl;
-            return domain === wwwApiUrl ? wwwApiUrl : config.corsApiUrl;
-        },
-        get checkoutUrl() {
-            return "" + config.paypalUrl + config.checkoutUris[config.env];
-        },
-        get billingUrl() {
-            return "" + config.paypalUrl + config.billingUris[config.env];
-        },
-        get buttonUrl() {
-            return "" + config.paypalUrl + config.buttonUris[config.env];
-        },
-        get legacyCheckoutUrl() {
-            return config.legacyCheckoutUrls[config.env];
-        },
-        get postBridgeUrl() {
-            return "" + config.paypalUrl + config.postBridgeUri;
-        },
-        get postBridgeDomain() {
-            return "" + config.paypalDomain;
-        },
-        get loggerUrl() {
-            var isTestExperiment = Math.random() < config.loggerThrottlePercentage;
-            return "" + config.paypalUrl + (isTestExperiment ? config.loggerUri : config.hermesLoggerUri);
-        },
-        get pptmUrl() {
-            return "" + config.paypalUrls[config.env] + config.pptmUri;
-        },
-        get authApiUrl() {
-            return "" + config.apiUrl + config.authApiUri;
-        },
-        get paymentApiUrl() {
-            return "" + config.apiUrl + config.paymentApiUri;
-        },
-        get orderApiUrl() {
-            return "" + config.apiUrl + config.orderApiUri;
-        },
-        get billingApiUrl() {
-            return "" + config.apiUrl + config.billingApiUri;
-        },
-        get experienceApiUrl() {
-            return "" + config.apiUrl + config.experienceApiUri;
-        },
-        defaultLocale: {
-            country: constants.r.US,
-            lang: constants.y.EN
-        }
-    };
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     __webpack_require__.d(__webpack_exports__, "F", (function() {
         return isSupportedNativeBrowser;
     }));
@@ -2205,8 +1348,8 @@
     }
     var util = __webpack_require__(14);
     var post_robot_src = __webpack_require__(15);
-    var client = __webpack_require__(5);
-    var config = __webpack_require__(3);
+    var client = __webpack_require__(4);
+    var config = __webpack_require__(5);
     var constants = __webpack_require__(0);
     var session = __webpack_require__(21);
     var dom = __webpack_require__(26);
@@ -2235,7 +1378,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.335";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.336";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -2245,7 +1388,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.335.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.336.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(src.h)();
@@ -2293,7 +1436,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.335"
+                ver: "4.0.336"
             };
         }));
         Object(client.a)((function() {
@@ -3240,6 +2383,863 @@
     }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return config;
+    }));
+    var constants = __webpack_require__(0);
+    var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
+    var config = {
+        locales: constants.A,
+        scriptUrl: "//www.paypalobjects.com/api/checkout.js",
+        paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+        version: "4.0.336",
+        cors: !0,
+        env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
+        state: "checkoutjs",
+        locale: {
+            country: constants.r.US,
+            lang: constants.y.EN
+        },
+        stage: "msmaster",
+        stageDomain: "qa.paypal.com",
+        get stageUrl() {
+            return "www." + config.stage + "." + config.stageDomain;
+        },
+        get apiStageUrl() {
+            return "www." + config.apiStage + "." + config.stageDomain;
+        },
+        get localSDKUrl() {
+            var scripts = [].slice.call(document.getElementsByTagName("script"));
+            for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+                var script = scripts[_i2];
+                if (config.env === constants.t.LOCAL && script.src.match(/checkout(\.min)?\.js$/)) return script.src;
+            }
+        },
+        get localSDKDomain() {
+            var localSDKUrl = config.localSDKUrl;
+            if (localSDKUrl) return new URL(localSDKUrl).origin;
+        },
+        get localhostUrl() {
+            return config.localSDKDomain || "http://localhost.paypal.com:" + config.ports.default;
+        },
+        set localhostUrl(val) {
+            delete this.localhostUrl;
+            this.localhostUrl = val;
+        },
+        merchantID: "",
+        authCode: "",
+        logLevel: "warn",
+        throttles: {
+            v4_mobile_device: 0
+        },
+        domain_settings: {
+            "walmart.com": {
+                ie_full_page: !1,
+                allow_full_page_fallback: !0,
+                memoize_payment: !0,
+                force_bridge: !0,
+                log_authorize: !0
+            },
+            "ulta.com": {
+                disable_venmo: !0
+            },
+            "barnesandnoble.com": {
+                disable_venmo: !0
+            },
+            "bn.com": {
+                disable_venmo: !0
+            },
+            "agoratix.com": {
+                disable_venmo: !0
+            },
+            "tractorsupply.com": {
+                disable_venmo: !0
+            },
+            "etsy.com": {
+                ie_full_page: !1,
+                allow_full_page_fallback: !0,
+                memoize_payment: !0,
+                force_bridge: !0,
+                log_authorize: !0
+            },
+            "ticketmaster.com": {
+                disable_venmo: !0
+            },
+            "livenation.com": {
+                disable_venmo: !0
+            },
+            "frontgatetickets.com": {
+                disable_venmo: !0
+            },
+            "williams-sonoma.com": {
+                disable_venmo: !0
+            },
+            "westelm.com": {
+                disable_venmo: !0
+            },
+            "markandgraham.com": {
+                disable_venmo: !0
+            },
+            "potterybarn.com": {
+                disable_venmo: !0
+            },
+            "potterybarnkids.com": {
+                disable_venmo: !0
+            },
+            "pbteen.com": {
+                disable_venmo: !0
+            },
+            "beallsflorida.com": {
+                disable_venmo: !0
+            },
+            "therealreal.com": {
+                disable_venmo: !0
+            },
+            "liveaquaria.com": {
+                disable_venmo: !0
+            },
+            "drsfostersmith.com": {
+                disable_venmo: !0
+            },
+            "boxed.com": {
+                disable_venmo: !0
+            },
+            "bevisible.com": {
+                disable_venmo: !0
+            },
+            "moeller.org": {
+                disable_venmo: !0
+            },
+            "searshometownstores.com": {
+                disable_venmo: !0
+            },
+            "searshardwarestores.com": {
+                disable_venmo: !0
+            },
+            "searshomeapplianceshowroom.com": {
+                disable_venmo: !0
+            },
+            "barkshop.com": {
+                disable_venmo: !0
+            },
+            "vividseats.com": {
+                disable_venmo: !0
+            },
+            "getcargo.today": {
+                disable_venmo: !0
+            },
+            "smartdestinations.com": {
+                disable_venmo: !0
+            },
+            "philadelphiapass.com": {
+                disable_venmo: !0
+            },
+            "thesydneypass.com": {
+                disable_venmo: !0
+            },
+            "3secondlash.com": {
+                disable_venmo: !0
+            },
+            "newyorkpass.com": {
+                disable_venmo: !0
+            },
+            "dndbeyond.com": {
+                disable_venmo: !0
+            },
+            "app.zapbuy.it": {
+                disable_venmo: !0
+            },
+            "gamersaloon.com": {
+                disable_venmo: !0
+            },
+            "1800contacts.com": {
+                disable_venmo: !0
+            },
+            "shopchatters.ca": {
+                disable_venmo: !0
+            },
+            "shopguyswin.ca": {
+                disable_venmo: !0
+            },
+            "jjill.com": {
+                disable_venmo: !0
+            },
+            "qvc.com": {
+                disable_venmo: !0
+            },
+            "stelladot.com": {
+                disable_venmo: !0
+            },
+            "keepcollective.com": {
+                disable_venmo: !0
+            },
+            "everskin.com": {
+                disable_venmo: !0
+            },
+            "zulily.com": {
+                disable_venmo: !0
+            },
+            "freshly.com": {
+                disable_venmo: !0
+            },
+            "buypeticare.com": {
+                disable_venmo: !0
+            },
+            "getownzone.com": {
+                disable_venmo: !0
+            },
+            "uncommongoods.com": {
+                disable_venmo: !0
+            },
+            "onegold.com": {
+                disable_venmo: !0
+            },
+            "universitytees.com": {
+                disable_venmo: !0
+            },
+            "revolve.com": {
+                disable_venmo: !0
+            },
+            "functionofbeauty.com": {
+                disable_venmo: !0
+            },
+            "givebutter.com": {
+                disable_venmo: !0
+            },
+            "hausmart.com": {
+                disable_venmo: !0
+            },
+            "derbyjackpot.com": {
+                disable_venmo: !0
+            },
+            "ancestry.com": {
+                disable_venmo: !0
+            },
+            "boats.net": {
+                disable_venmo: !0
+            },
+            "partzilla.com": {
+                disable_venmo: !0
+            },
+            "firedog.com": {
+                disable_venmo: !0
+            },
+            "chick-fil-a.com": {
+                disable_venmo: !0
+            },
+            "roku.com": {
+                disable_venmo: !0
+            },
+            "barkbox.com": {
+                disable_venmo: !0
+            },
+            "neimanmarcus.com": {
+                disable_venmo: !0
+            },
+            "lastcall.com": {
+                disable_venmo: !0
+            },
+            "horchow.com": {
+                disable_venmo: !0
+            },
+            "bergdorfgoodman.com": {
+                disable_venmo: !0
+            },
+            "fwrd.com": {
+                disable_venmo: !0
+            },
+            "plunderdesign.com": {
+                disable_venmo: !0
+            },
+            "stitchfix.com": {
+                disable_venmo: !0
+            },
+            "revzilla.com": {
+                disable_venmo: !0
+            },
+            "cyclegear.com": {
+                disable_venmo: !0
+            },
+            "chegg.com": {
+                disable_venmo: !0
+            },
+            "youniqueproducts.com": {
+                disable_venmo: !0
+            },
+            "archives.com": {
+                disable_venmo: !0
+            },
+            "hautelook.com": {
+                disable_venmo: !0
+            },
+            "nordstromrack.com": {
+                disable_venmo: !0
+            },
+            "motherhoodcanada.ca": {
+                disable_venmo: !0
+            },
+            "atomtickets.com": {
+                disable_venmo: !0
+            },
+            "trademore.com": {
+                disable_venmo: !0
+            },
+            "lasheaseoffer.com": {
+                disable_venmo: !0
+            },
+            "rookie.paypalsixthman.com": {
+                disable_venmo: !0
+            },
+            "1800Contacts.com": {
+                disable_venmo: !0
+            },
+            "hulu.com": {
+                disable_venmo: !0
+            },
+            "grubhub.com": {
+                disable_venmo: !0
+            },
+            "eat24.com": {
+                disable_venmo: !0
+            },
+            "seamless.com": {
+                disable_venmo: !0
+            },
+            "freshfeetscrubber.com": {
+                disable_venmo: !0
+            },
+            "opensky.com": {
+                disable_venmo: !0
+            },
+            "dotandbo.com": {
+                disable_venmo: !0
+            },
+            "storenvy.com": {
+                disable_venmo: !0
+            },
+            "gemafina.com": {
+                disable_venmo: !0
+            },
+            "pickperfect.com": {
+                disable_venmo: !0
+            },
+            "55mulberry.com": {
+                disable_venmo: !0
+            },
+            "hollar.com": {
+                disable_venmo: !0
+            },
+            "bjs.com": {
+                disable_venmo: !0
+            },
+            "playsugarhouse.com": {
+                disable_venmo: !0
+            },
+            "lakeshorelearning.com": {
+                disable_venmo: !0
+            },
+            "llmhq.com": {
+                disable_venmo: !0
+            },
+            "gainful.com": {
+                disable_venmo: !0
+            },
+            "modaoperandi.com": {
+                disable_venmo: !0
+            },
+            "play.jackpocket.com": {
+                disable_venmo: !0
+            },
+            "crepeerase.com": {
+                disable_venmo: !0
+            },
+            "specificbeauty.com": {
+                disable_venmo: !0
+            },
+            "meaningfulbeauty.com": {
+                disable_venmo: !0
+            },
+            "smileactives.com ": {
+                disable_venmo: !0
+            },
+            "mally.com": {
+                disable_venmo: !0
+            },
+            "westmorebeauty.com": {
+                disable_venmo: !0
+            },
+            "subd.com": {
+                disable_venmo: !0
+            },
+            "seacalmskin.com": {
+                disable_venmo: !0
+            },
+            "whittier.edu": {
+                disable_venmo: !0
+            },
+            "curology.com": {
+                disable_venmo: !0
+            },
+            "monoprice.com": {
+                disable_venmo: !0
+            },
+            "dominos.com": {
+                disable_venmo: !0
+            },
+            "audiobooks.com": {
+                disable_venmo: !0
+            },
+            "1aauto.com": {
+                disable_venmo: !0
+            },
+            "greatwolf.com": {
+                disable_venmo: !0
+            },
+            "cvs.com": {
+                disable_venmo: !0
+            },
+            "gilt.com": {
+                disable_venmo: !0
+            },
+            "ruelala.com": {
+                disable_venmo: !0
+            },
+            "shopdisney.com": {
+                disable_venmo: !0
+            },
+            "disneycruise.disney.go.com": {
+                disable_venmo: !0
+            },
+            "disneyland.disney.go.com": {
+                disable_venmo: !0
+            },
+            "disneyworld.disney.go.com": {
+                disable_venmo: !0
+            },
+            "disneyaulani.com": {
+                disable_venmo: !0
+            },
+            "6abc.com": {
+                disable_venmo: !0
+            },
+            "abc30.com": {
+                disable_venmo: !0
+            },
+            "abc7.com": {
+                disable_venmo: !0
+            },
+            "abc7chicago.com": {
+                disable_venmo: !0
+            },
+            "abcnewsvideosource.com": {
+                disable_venmo: !0
+            },
+            "aetndigital.com": {
+                disable_venmo: !0
+            },
+            "araca.com.au": {
+                disable_venmo: !0
+            },
+            "disney.com": {
+                disable_venmo: !0
+            },
+            "espncustomercare.com": {
+                disable_venmo: !0
+            },
+            "makerstudios.com": {
+                disable_venmo: !0
+            },
+            "abc.org": {
+                disable_venmo: !0
+            },
+            "dclnews.com": {
+                disable_venmo: !0
+            },
+            "disneyanimation.com": {
+                disable_venmo: !0
+            },
+            "espncricinfo.com": {
+                disable_venmo: !0
+            },
+            "fort-pierce.net": {
+                disable_venmo: !0
+            },
+            "nationalgeographic.com": {
+                disable_venmo: !0
+            },
+            "nhl.tv": {
+                disable_venmo: !0
+            },
+            "pixar.com": {
+                disable_venmo: !0
+            },
+            "xgames.com": {
+                disable_venmo: !0
+            },
+            "espnwsummit.com": {
+                disable_venmo: !0
+            },
+            "plus.espn.com": {
+                disable_venmo: !0
+            },
+            "disneyplus.com": {
+                disable_venmo: !0
+            }
+        },
+        creditTestDomains: [ "bluesuncorp.co.uk", "nationsphotolab.com", "plexusworldwide.com", "nshss.org", "bissell.com", "mobstub.com", "vuoriclothing.com", "tape4backup.com", "avivamiento.com", "rhododendron.org", "whiterabbitjapan.com", "atsracing.net", "thehilltopgallery.com", "weedtraqr.com", "worldpantry.com", "ciraconnect.com", "mymalls.com", "prowinch.com", "zodiacpoolsystems.com", "everlywell.com", "candlewarmers.com", "chop.edu", "incruises.com", "flikn.com", "didforsale.com", "mcc.org", "sygu.net", "merchbar.com", "eduinconline.com", "us.livebetterwith.com", "bakemeawish.com", "judolaunch.com", "eventcartel.com", "tapatalk.com", "telescope.com", "covenant.edu", "aquatruwater.com", "spingo.com", "usu.edu", "getcelerity.com", "brandless.com", "saberigniter.com", "euromodeltrains.com", "gofasttrader.com", "megamodzplanet.com", "draftanalyzer.com", "lovewithoutboundaries.com", "filterpop.com", "seekverify.com", "photoandgo.com", "sightseeingpass.com", "bigoanddukes.com", "thethirstyduck.com", "thebrushguys.com", "907delivery.com", "mauisails.com", "drive.net", "channelmax.net", "modernrebelco.com", "enchanteddiamonds.com", "ibabbleon.com", "fullgenomes.com", "conn-comp.com", "wingware.com", "paradigmgoods.com", "theneptunegroup.com", "kidzartworks.com", "unirealm.com", "ncfarmsinc.com", "oneofakindantiques.com", "servers4less.com", "stumpthespread.com", "marketwagon.com", "monsterhouseplans.com", "canterburychoral.org", "teacupnordic.org", "thethirstyduck.com", "medialoot.com", "theartistunion.com", "yourglamourzone.com", "breckstables.com", "mackephotography.com", "dsaj.org", "massluminosity.com", "tespa.org", "versatilearts.net", "yecup.org", "divinebusinessmanagement.com", "captivatebeautyservices.com", "class4me.com", "wcsonlineuniversity.com", "pvplive.com", "kyneteks.com", "rare-paper.com", "bpg.bpgsim.biz", "geodegallery.com", "way.com", "kringle.com", "talentedmrsalas.ph", "litcharts.com", "purpletreephotography.com", "apache.org", "neopackage.com", "globaldance.tv", "integral.studio", "airdoctorpro.com", "ivoryandiron.com", "yuengling.com", "averysbranchfarms.com", "amberreinink.com", "skinnymechocolate.com", "bmbl.net", "ncwatercolor.net", "astrograph.com", "localadventures.mx", "ripcurl.com", "worldfootbrakechallenge.com", "shespeakssales.com", "obrienguitars.com", "jadenikkolephoto.com", "americavoice.com", "cassiexie.com", "aamastateconvention.org", "rellesflorist.com", "passionnobby.com", "bodybyheidi.com", "roqos.com", "prijector.com", "maryswanson.net", "tsghobbies.com", "erinlaytonphotography.com", "darter.org", "fountainpenhospital.com", "myzestfullife.com", "pcog.org", "alisabethdesigns.com", "katiemathisphoto.com", "strictlybellaphotography.com", "maptools.com", "sites.google.com", "gallerr.com", "southfloridatrikke.com", "caviar.tv", "mintingmasters.com", "prospectorsguild.com", "inktale.com", "prettygirlgoods.com", "laceycahill.com", "daniellenowak.com", "t212.org", "scmsinc.com", "babypaloozanc.com", "tetrisonline.com", "grdd.net", "cdspg.info", "airshipapparel.com", "waft.com", "extendpets.com", "supplyhub.com", "hlbsusa.com", "jaderollerbeauty.com", "theparentingjunkie.com", "schagringas.com", "yourscribemate.com", "sportscollectibles.com", "thedivinenoise.com", "hometeamsonline.com", "trademarkpress.com", "destinationenglish.us", "jacquesflowers.com", "aliszhatchphotography.com", "rusticfoundry.com", "ahhhmassage.net", "frezzor.com", "mandelininc.com", "kayleejackson.com", "monkinstitute.org", "eddiebsbbq.com", "morningstarmediaservices.com", "kinevative.com", "orivet.com", "digitalprinthouse.net", "dynamicgenius.com", "allpartsusa.com", "flowersbydavid.net", "nwvoices.org", "leaptrade.com", "tulsaschoolpics.com", "alioth.io", "windowflair.com", "vitcom.net", "simplybeautifulfashions.com", "christinabenton.com", "fromthedaughter.com", "hometowngraphics.net", "fibanalysis.com", "creativejobscentral.com", "sandbox.gg", "jt-digitalmedia.com", "kodable.com", "birthingstone.com", "taranicholephoto.com", "hillyfieldsflorist.com", "charitynoelphoto.com", "auxdelicesfoods.com", "terilynnphotography.com", "folieadeuxevents.com", "karensfloral.com", "montgomerydiveclub.com", "rainbowplastics.com", "confettionthedancefloor.com", "vomozmedia.com", "neatmod.com", "getnaturafled.com", "callingpost.com", "iamfamily.org", "pedigreeonline.com", "typeboost.io", "in-n-outpetdoor.com", "nerdstockgc.com", "keiadmin.com", "createdbykaui.com", "aikophoto.com", "lonestar.ink", "stlfurs.com", "treasurelistings.com", "thecubicle.us", "redclaypaper.com", "blushhousemedia.com", "documentsanddesigns.com", "whitneyleighphotography.shootproof.com", "amaryllisday.com", "hermanproav.com", "felicemedia.com", "withloveplacenta.com", "store.brgadgets.co", "klowephoto.com", "spenceraustinconsulting.com", "sno-eagles.org", "dsatallahassee.org", "bakupages.com", "neswc.com", "josiebrooksphotography.com", "brisksale.com", "legalwhoosh.com", "jasmineeaster.com", "swatstudios.com", "facebook.com", "shakershell.com", "alexiswinslow.com", "mixeddimensions.com", "sweetpproductions.com", "lbeaphotography.com", "otlseatfillers.com", "jdtickets.com", "catholicar.com", "masque.com", "smalltownstudio.net", "goherbalife.com", "itzyourz.com", "magazinespeedloader.com", "dreammachines.io", "dallasdieteticalliance.org", "http:", "medair.org", "unbridledambition.com", "sarasprints.com", "wiperecord.com", "showmyrabbit.com", "cctrendsshop.com", "rachelalessandra.com", "otherworld-apothecary.com", "melissaannphoto.com", "girlceo.co", "seasidemexico.com", "telosid.com", "instin.com", "marinecorpsmustang.org", "lancityconnect.com", "hps1.org", "karenware.com", "livecurriculum.com", "spellingstars.com", "vektorfootball.com", "zaltv.com", "nebraskamayflower.org", "ethiopianspices.com", "immitranslate.com", "rafaelmagic.com.com", "bahc1.org", "newenamel.com", "bhchp.org", "buybulkamerica.com", "sourcepoint.com", "squarestripsports.com", "wix.com", "wilderootsphotography.com", "goodsalt.com", "systemongrid.com", "designmil.org", "freshtrendhq.com", "valisimofashions.com", "buyneatly.com", "getbeauty.us", "intellimidia.com" ],
+        customCountry: !1,
+        SUPPORTED_BROWSERS: {
+            msie: "11",
+            firefox: "43",
+            chrome: "41",
+            safari: "8",
+            opera: "23",
+            msedge: "14",
+            samsungBrowser: "2.1",
+            silk: "59.3",
+            ucbrowser: "10.0.0.488",
+            vivaldi: "1.91"
+        },
+        session_uid_lifetime: 3e5,
+        _apiStage: "",
+        get apiStage() {
+            return config._apiStage || config.stage;
+        },
+        set apiStage(value) {
+            config._apiStage = value;
+        },
+        ports: {
+            default: 8e3,
+            button: 8e3,
+            checkout: 8e3,
+            guest: 8001,
+            altpay: 3e3
+        },
+        get paypalUrls() {
+            var _ref;
+            return (_ref = {})[constants.t.LOCAL] = config.localhostUrl, _ref[constants.t.STAGE] = "https://" + config.stageUrl, 
+            _ref[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref[constants.t.PRODUCTION] = "https://www.paypal.com", 
+            _ref[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+            _ref[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+            _ref;
+        },
+        get paypalDomains() {
+            var _ref2;
+            return (_ref2 = {})[constants.t.LOCAL] = config.localhostUrl, _ref2[constants.t.STAGE] = "https://" + config.stageUrl, 
+            _ref2[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", _ref2[constants.t.PRODUCTION] = "https://www.paypal.com", 
+            _ref2[constants.t.TEST] = "mock://www.paypal.com", _ref2[constants.t.DEMO] = window.location.protocol + "//localhost.paypal.com:" + window.location.port, 
+            _ref2;
+        },
+        get wwwApiUrls() {
+            var _ref3;
+            return (_ref3 = {})[constants.t.LOCAL] = config.localSDKDomain || "https://" + config.stageUrl, 
+            _ref3[constants.t.STAGE] = "https://" + config.stageUrl, _ref3[constants.t.SANDBOX] = "https://www.sandbox.paypal.com", 
+            _ref3[constants.t.PRODUCTION] = "https://www.paypal.com", _ref3[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+            _ref3;
+        },
+        get corsApiUrls() {
+            var _ref4;
+            return (_ref4 = {})[constants.t.LOCAL] = "https://" + config.stageUrl, _ref4[constants.t.STAGE] = "https://" + config.apiStageUrl + ":12326", 
+            _ref4[constants.t.SANDBOX] = "https://cors.api.sandbox.paypal.com", _ref4[constants.t.PRODUCTION] = "https://cors.api.paypal.com", 
+            _ref4[constants.t.TEST] = window.location.protocol + "//" + window.location.host, 
+            _ref4;
+        },
+        get apiUrls() {
+            var _ref5;
+            var domain = window.location.protocol + "//" + window.location.host;
+            var corsApiUrls = config.corsApiUrls;
+            var wwwApiUrls = config.wwwApiUrls;
+            return (_ref5 = {})[constants.t.LOCAL] = domain === wwwApiUrls.local ? wwwApiUrls.local : corsApiUrls.local, 
+            _ref5[constants.t.STAGE] = domain === wwwApiUrls.stage ? wwwApiUrls.stage : corsApiUrls.stage, 
+            _ref5[constants.t.SANDBOX] = domain === wwwApiUrls.sandbox ? wwwApiUrls.sandbox : corsApiUrls.sandbox, 
+            _ref5[constants.t.PRODUCTION] = domain === wwwApiUrls.production ? wwwApiUrls.production : corsApiUrls.production, 
+            _ref5[constants.t.TEST] = domain === wwwApiUrls.test ? wwwApiUrls.test : corsApiUrls.test, 
+            _ref5;
+        },
+        get checkoutUri() {
+            return null;
+        },
+        set checkoutUri(val) {
+            delete this.checkoutUri;
+            this.checkoutUri = val;
+        },
+        get checkoutUris() {
+            var _ref7;
+            if (config.checkoutUri) {
+                var _ref6;
+                return (_ref6 = {})[constants.t.LOCAL] = config.checkoutUri, _ref6[constants.t.STAGE] = config.checkoutUri, 
+                _ref6[constants.t.SANDBOX] = config.checkoutUri, _ref6[constants.t.PRODUCTION] = config.checkoutUri, 
+                _ref6[constants.t.TEST] = config.checkoutUri, _ref6[constants.t.DEMO] = config.checkoutUri, 
+                _ref6;
+            }
+            return (_ref7 = {})[constants.t.LOCAL] = "/webapps/hermes", _ref7[constants.t.STAGE] = "/webapps/hermes", 
+            _ref7[constants.t.SANDBOX] = "/checkoutnow", _ref7[constants.t.PRODUCTION] = "/checkoutnow", 
+            _ref7[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+            _ref7[constants.t.DEMO] = "/demo/dev/checkout.htm", _ref7;
+        },
+        altpayUris: (_altpayUris = {}, _altpayUris[constants.t.LOCAL] = "/latinumcheckout", 
+        _altpayUris[constants.t.STAGE] = "/latinumcheckout", _altpayUris[constants.t.SANDBOX] = "/latinumcheckout", 
+        _altpayUris[constants.t.PRODUCTION] = "/latinumcheckout", _altpayUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?checkouturl=true", 
+        _altpayUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _altpayUris),
+        guestUris: (_guestUris = {}, _guestUris[constants.t.LOCAL] = "/webapps/xoonboarding", 
+        _guestUris[constants.t.STAGE] = "/webapps/xoonboarding", _guestUris[constants.t.SANDBOX] = "/webapps/xoonboarding", 
+        _guestUris[constants.t.PRODUCTION] = "/webapps/xoonboarding", _guestUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?guesturl=true", 
+        _guestUris[constants.t.DEMO] = "/demo/dev/guest.htm", _guestUris),
+        billingUris: (_billingUris = {}, _billingUris[constants.t.LOCAL] = "/webapps/hermes/agreements", 
+        _billingUris[constants.t.STAGE] = "/webapps/hermes/agreements", _billingUris[constants.t.SANDBOX] = "/agreements/approve", 
+        _billingUris[constants.t.PRODUCTION] = "/agreements/approve", _billingUris[constants.t.TEST] = "/base/test/windows/checkout/index.htm?billingurl=true", 
+        _billingUris[constants.t.DEMO] = "/demo/dev/checkout.htm", _billingUris),
+        buttonUris: (_buttonUris = {}, _buttonUris[constants.t.LOCAL] = "/smart/button", 
+        _buttonUris[constants.t.STAGE] = "/smart/button", _buttonUris[constants.t.SANDBOX] = "/smart/button", 
+        _buttonUris[constants.t.PRODUCTION] = "/smart/button", _buttonUris[constants.t.TEST] = "/base/test/windows/button/index.htm", 
+        _buttonUris[constants.t.DEMO] = "/demo/dev/button.htm", _buttonUris),
+        inlinedCardFieldUris: (_inlinedCardFieldUris = {}, _inlinedCardFieldUris[constants.t.LOCAL] = "/smart/card-fields", 
+        _inlinedCardFieldUris[constants.t.STAGE] = "/smart/card-fields", _inlinedCardFieldUris[constants.t.SANDBOX] = "/smart/card-fields", 
+        _inlinedCardFieldUris[constants.t.PRODUCTION] = "/smart/card-fields", _inlinedCardFieldUris[constants.t.TEST] = "/base/test/windows/card-fields/index.htm", 
+        _inlinedCardFieldUris[constants.t.DEMO] = "/demo/dev/card.htm", _inlinedCardFieldUris),
+        postBridgeUris: (_postBridgeUris = {}, _postBridgeUris[constants.t.LOCAL] = "/webapps/hermes/component-meta", 
+        _postBridgeUris[constants.t.STAGE] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.SANDBOX] = "/webapps/hermes/component-meta", 
+        _postBridgeUris[constants.t.PRODUCTION] = "/webapps/hermes/component-meta", _postBridgeUris[constants.t.TEST] = "/base/test/windows/component-meta/index.htm", 
+        _postBridgeUris[constants.t.DEMO] = "/demo/dev/bridge.htm", _postBridgeUris),
+        legacyCheckoutUris: (_legacyCheckoutUris = {}, _legacyCheckoutUris[constants.t.LOCAL] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+        _legacyCheckoutUris[constants.t.STAGE] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+        _legacyCheckoutUris[constants.t.SANDBOX] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+        _legacyCheckoutUris[constants.t.PRODUCTION] = "/cgi-bin/webscr?cmd=_express-checkout&xo_node_fallback=true", 
+        _legacyCheckoutUris[constants.t.TEST] = "#fallback", _legacyCheckoutUris),
+        buttonJSUrls: (_buttonJSUrls = {}, _buttonJSUrls[constants.t.LOCAL] = "https://www.paypalobjects.com/api/button.js", 
+        _buttonJSUrls[constants.t.STAGE] = "https://www.paypalobjects.com/api/button.js", 
+        _buttonJSUrls[constants.t.SANDBOX] = "https://www.paypalobjects.com/api/button.js", 
+        _buttonJSUrls[constants.t.PRODUCTION] = "https://www.paypalobjects.com/api/button.js", 
+        _buttonJSUrls[constants.t.TEST] = "/base/test/lib/button.js", _buttonJSUrls[constants.t.DEMO] = "https://www.paypalobjects.com/api/button.js", 
+        _buttonJSUrls),
+        get buttonJSUrl() {
+            return config.buttonJSUrls[config.env];
+        },
+        loginUri: "/signin/",
+        hermesLoggerUri: "/webapps/hermes/api/logger",
+        loggerUri: "/xoplatform/logger/api/logger",
+        loggerThrottlePercentage: 1,
+        pptmUri: "/tagmanager/pptm.js",
+        get postBridgeUri() {
+            return config.postBridgeUris[config.env] + "?xcomponent=1";
+        },
+        paymentStandardUri: "/webapps/xorouter?cmd=_s-xclick",
+        authApiUri: "/v1/oauth2/token",
+        paymentApiUri: "/v1/payments/payment",
+        orderApiUri: "/v2/checkout/orders",
+        billingApiUri: "/v1/billing-agreements/agreement-tokens",
+        experienceApiUri: "/v1/payment-experience/web-profiles",
+        trackingApiUri: "/v1/risk/transaction-contexts",
+        get checkoutUrls() {
+            var _ref8;
+            var paypalUrls = config.paypalUrls;
+            return (_ref8 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.checkoutUris.local.replace(":" + config.ports.default, ":" + config.ports.checkout), 
+            _ref8[constants.t.STAGE] = "" + paypalUrls.stage + config.checkoutUris.stage, _ref8[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.checkoutUris.sandbox, 
+            _ref8[constants.t.PRODUCTION] = "" + paypalUrls.production + config.checkoutUris.production, 
+            _ref8[constants.t.TEST] = "" + paypalUrls.test + config.checkoutUris.test, _ref8[constants.t.DEMO] = "" + paypalUrls.test + config.checkoutUris.demo, 
+            _ref8;
+        },
+        get guestUrls() {
+            var _ref9;
+            var paypalUrls = config.paypalUrls;
+            return (_ref9 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.guest) + config.guestUris.local, 
+            _ref9[constants.t.STAGE] = "" + paypalUrls.stage + config.guestUris.stage, _ref9[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.guestUris.sandbox, 
+            _ref9[constants.t.PRODUCTION] = "" + paypalUrls.production + config.guestUris.production, 
+            _ref9[constants.t.TEST] = "" + paypalUrls.test + config.guestUris.test, _ref9[constants.t.DEMO] = "" + paypalUrls.test + config.guestUris.demo, 
+            _ref9;
+        },
+        get altpayUrls() {
+            var _ref10;
+            var paypalUrls = config.paypalUrls;
+            return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+            _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+            _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+            _ref10[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
+            _ref10;
+        },
+        get billingUrls() {
+            var _ref11;
+            var paypalUrls = config.paypalUrls;
+            return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+            _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+            _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+            _ref11[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref11[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
+            _ref11;
+        },
+        get buttonUrls() {
+            var _ref12;
+            var paypalUrls = config.paypalUrls;
+            return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+            _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+            _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+            _ref12[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref12[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
+            _ref12;
+        },
+        get inlinedCardFieldUrls() {
+            var _ref13;
+            var paypalUrls = config.paypalUrls;
+            return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+            _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+            _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+            _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+            _ref13[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+            _ref13[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+            _ref13;
+        },
+        get loginUrls() {
+            var _ref14;
+            var paypalUrls = config.paypalUrls;
+            return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+            _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+            _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref14[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
+            _ref14;
+        },
+        get paymentsStandardUrls() {
+            var _ref15;
+            var paypalUrls = config.paypalUrls;
+            return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+            _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+            _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+            _ref15[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref15;
+        },
+        get metaFrameUrls() {
+            var _ref16;
+            var paypalUrls = config.paypalUrls;
+            return (_ref16 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+            _ref16[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+            _ref16[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+            _ref16[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+            _ref16[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+            _ref16[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+            _ref16;
+        },
+        get legacyCheckoutUrls() {
+            var _ref17;
+            var paypalUrls = config.paypalUrls;
+            return (_ref17 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+            _ref17[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+            _ref17[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+            _ref17[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+            _ref17[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
+            _ref17;
+        },
+        get authApiUrls() {
+            var _ref18;
+            var apiUrls = config.apiUrls;
+            var authApiUri = config.authApiUri;
+            return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
+            _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+            _ref18[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref18;
+        },
+        get paymentApiUrls() {
+            var _ref19;
+            var apiUrls = config.apiUrls;
+            var paymentApiUri = config.paymentApiUri;
+            return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+            _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+            _ref19[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref19;
+        },
+        get orderApiUrls() {
+            var _ref20;
+            var apiUrls = config.apiUrls;
+            var orderApiUri = config.orderApiUri;
+            return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref20[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
+            _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+            _ref20[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref20;
+        },
+        get billingApiUrls() {
+            var _ref21;
+            var apiUrls = config.apiUrls;
+            var billingApiUri = config.billingApiUri;
+            return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
+            _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+            _ref21[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref21;
+        },
+        get experienceApiUrls() {
+            var _ref22;
+            var apiUrls = config.apiUrls;
+            var experienceApiUri = config.experienceApiUri;
+            return (_ref22 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+            _ref22[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref22[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+            _ref22[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref22[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
+            _ref22;
+        },
+        get trackingApiUrls() {
+            var _ref23;
+            var apiUrls = config.apiUrls;
+            var trackingApiUri = config.trackingApiUri;
+            return (_ref23 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref23[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+            _ref23[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref23[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+            _ref23[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref23;
+        },
+        _paypalUrl: "",
+        get paypalUrl() {
+            return this._paypalUrl || config.paypalUrls[config.env];
+        },
+        set paypalUrl(value) {
+            this._paypalUrl = value;
+        },
+        get paypalDomain() {
+            return config.paypalDomains[config.env];
+        },
+        get corsApiUrl() {
+            return config.corsApiUrls[config.env];
+        },
+        get wwwApiUrl() {
+            return config.wwwApiUrls[config.env];
+        },
+        get apiUrl() {
+            var domain = window.location.protocol + "//" + window.location.host;
+            var wwwApiUrl = config.wwwApiUrl;
+            return domain === wwwApiUrl ? wwwApiUrl : config.corsApiUrl;
+        },
+        get checkoutUrl() {
+            return "" + config.paypalUrl + config.checkoutUris[config.env];
+        },
+        get billingUrl() {
+            return "" + config.paypalUrl + config.billingUris[config.env];
+        },
+        get buttonUrl() {
+            return "" + config.paypalUrl + config.buttonUris[config.env];
+        },
+        get legacyCheckoutUrl() {
+            return config.legacyCheckoutUrls[config.env];
+        },
+        get postBridgeUrl() {
+            return "" + config.paypalUrl + config.postBridgeUri;
+        },
+        get postBridgeDomain() {
+            return "" + config.paypalDomain;
+        },
+        get loggerUrl() {
+            var isTestExperiment = Math.random() < config.loggerThrottlePercentage;
+            return "" + config.paypalUrl + (isTestExperiment ? config.loggerUri : config.hermesLoggerUri);
+        },
+        get pptmUrl() {
+            return "" + config.paypalUrls[config.env] + config.pptmUri;
+        },
+        get authApiUrl() {
+            return "" + config.apiUrl + config.authApiUri;
+        },
+        get paymentApiUrl() {
+            return "" + config.apiUrl + config.paymentApiUri;
+        },
+        get orderApiUrl() {
+            return "" + config.apiUrl + config.orderApiUri;
+        },
+        get billingApiUrl() {
+            return "" + config.apiUrl + config.billingApiUri;
+        },
+        get experienceApiUrl() {
+            return "" + config.apiUrl + config.experienceApiUri;
+        },
+        defaultLocale: {
+            country: constants.r.US,
+            lang: constants.y.EN
+        }
+    };
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
     __webpack_require__.d(__webpack_exports__, "d", (function() {
         return appendChild;
     }));
@@ -3396,7 +3396,7 @@
     var esm_extends = __webpack_require__(13);
     var src = __webpack_require__(7);
     var zalgo_promise_src = __webpack_require__(2);
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     var error = __webpack_require__(27);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
@@ -4087,7 +4087,7 @@
         descriptor.value.displayName = name + ":memoized";
     }
     var post_robot_src = __webpack_require__(15);
-    var client = __webpack_require__(5);
+    var client = __webpack_require__(4);
     function setLogLevel(logLevel) {
         if (-1 === client.m.indexOf(logLevel)) throw new Error("Invalid logLevel: " + logLevel);
         client.e.logLevel = logLevel;
@@ -5119,7 +5119,7 @@
     __webpack_require__(13);
     var zalgo_promise_src = __webpack_require__(2);
     __webpack_require__(7);
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     __webpack_require__(25);
     __webpack_require__(34);
     function getFunctionName(fn) {
@@ -6390,7 +6390,7 @@
             }));
         }));
     }
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     global.a.responseListeners = global.a.responseListeners || {};
     global.a.requestListeners = global.a.requestListeners || {};
     global.a.WINDOW_WILDCARD = global.a.WINDOW_WILDCARD || new function() {};
@@ -6889,7 +6889,7 @@
     __webpack_require__.d(__webpack_exports__, "k", (function() {
         return onChildWindowReady;
     }));
-    var src = __webpack_require__(18);
+    var src = __webpack_require__(17);
     var cross_domain_utils_src = __webpack_require__(7);
     var conf = __webpack_require__(10);
     function stringifyError(err, level) {
@@ -7178,15 +7178,156 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "a", (function() {
+        return weakmap_CrossDomainSafeWeakMap;
+    }));
+    var src = __webpack_require__(7);
+    function safeIndexOf(collection, item) {
+        for (var i = 0; i < collection.length; i++) try {
+            if (collection[i] === item) return i;
+        } catch (err) {}
+        return -1;
+    }
+    var weakmap_CrossDomainSafeWeakMap = function() {
+        function CrossDomainSafeWeakMap() {
+            this.name = void 0;
+            this.weakmap = void 0;
+            this.keys = void 0;
+            this.values = void 0;
+            this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__";
+            if (function() {
+                if ("undefined" == typeof WeakMap) return !1;
+                if (void 0 === Object.freeze) return !1;
+                try {
+                    var testWeakMap = new WeakMap;
+                    var testKey = {};
+                    Object.freeze(testKey);
+                    testWeakMap.set(testKey, "__testvalue__");
+                    return "__testvalue__" === testWeakMap.get(testKey);
+                } catch (err) {
+                    return !1;
+                }
+            }()) try {
+                this.weakmap = new WeakMap;
+            } catch (err) {}
+            this.keys = [];
+            this.values = [];
+        }
+        var _proto = CrossDomainSafeWeakMap.prototype;
+        _proto._cleanupClosedWindows = function() {
+            var weakmap = this.weakmap;
+            var keys = this.keys;
+            for (var i = 0; i < keys.length; i++) {
+                var value = keys[i];
+                if (Object(src.y)(value) && Object(src.z)(value)) {
+                    if (weakmap) try {
+                        weakmap.delete(value);
+                    } catch (err) {}
+                    keys.splice(i, 1);
+                    this.values.splice(i, 1);
+                    i -= 1;
+                }
+            }
+        };
+        _proto.isSafeToReadWrite = function(key) {
+            return !Object(src.y)(key);
+        };
+        _proto.set = function(key, value) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.set(key, value);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var name = this.name;
+                var entry = key[name];
+                entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
+                    value: [ key, value ],
+                    writable: !0
+                });
+                return;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys;
+            var values = this.values;
+            var index = safeIndexOf(keys, key);
+            if (-1 === index) {
+                keys.push(key);
+                values.push(value);
+            } else values[index] = value;
+        };
+        _proto.get = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return weakmap.get(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return entry && entry[0] === key ? entry[1] : void 0;
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var index = safeIndexOf(this.keys, key);
+            if (-1 !== index) return this.values[index];
+        };
+        _proto.delete = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                weakmap.delete(key);
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            var keys = this.keys;
+            var index = safeIndexOf(keys, key);
+            if (-1 !== index) {
+                keys.splice(index, 1);
+                this.values.splice(index, 1);
+            }
+        };
+        _proto.has = function(key) {
+            if (!key) throw new Error("WeakMap expected key");
+            var weakmap = this.weakmap;
+            if (weakmap) try {
+                if (weakmap.has(key)) return !0;
+            } catch (err) {
+                delete this.weakmap;
+            }
+            if (this.isSafeToReadWrite(key)) try {
+                var entry = key[this.name];
+                return !(!entry || entry[0] !== key);
+            } catch (err) {}
+            this._cleanupClosedWindows();
+            return -1 !== safeIndexOf(this.keys, key);
+        };
+        _proto.getOrSet = function(key, getter) {
+            if (this.has(key)) return this.get(key);
+            var value = getter();
+            this.set(key, value);
+            return value;
+        };
+        return CrossDomainSafeWeakMap;
+    }();
+}, function(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+    __webpack_require__.d(__webpack_exports__, "a", (function() {
         return Checkout;
     }));
     var esm_extends = __webpack_require__(13);
     var src = __webpack_require__(2);
-    var beaver_logger_client = __webpack_require__(5);
+    var beaver_logger_client = __webpack_require__(4);
     var zoid_src = __webpack_require__(23);
     var belter_src = __webpack_require__(11);
-    var lib = __webpack_require__(4);
-    var config = __webpack_require__(3);
+    var lib = __webpack_require__(3);
+    var config = __webpack_require__(5);
     var constants = __webpack_require__(0);
     var post_robot_src = __webpack_require__(15);
     function match(str, pattern) {
@@ -7718,147 +7859,6 @@
             throw err;
         }));
     }));
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return weakmap_CrossDomainSafeWeakMap;
-    }));
-    var src = __webpack_require__(7);
-    function safeIndexOf(collection, item) {
-        for (var i = 0; i < collection.length; i++) try {
-            if (collection[i] === item) return i;
-        } catch (err) {}
-        return -1;
-    }
-    var weakmap_CrossDomainSafeWeakMap = function() {
-        function CrossDomainSafeWeakMap() {
-            this.name = void 0;
-            this.weakmap = void 0;
-            this.keys = void 0;
-            this.values = void 0;
-            this.name = "__weakmap_" + (1e9 * Math.random() >>> 0) + "__";
-            if (function() {
-                if ("undefined" == typeof WeakMap) return !1;
-                if (void 0 === Object.freeze) return !1;
-                try {
-                    var testWeakMap = new WeakMap;
-                    var testKey = {};
-                    Object.freeze(testKey);
-                    testWeakMap.set(testKey, "__testvalue__");
-                    return "__testvalue__" === testWeakMap.get(testKey);
-                } catch (err) {
-                    return !1;
-                }
-            }()) try {
-                this.weakmap = new WeakMap;
-            } catch (err) {}
-            this.keys = [];
-            this.values = [];
-        }
-        var _proto = CrossDomainSafeWeakMap.prototype;
-        _proto._cleanupClosedWindows = function() {
-            var weakmap = this.weakmap;
-            var keys = this.keys;
-            for (var i = 0; i < keys.length; i++) {
-                var value = keys[i];
-                if (Object(src.y)(value) && Object(src.z)(value)) {
-                    if (weakmap) try {
-                        weakmap.delete(value);
-                    } catch (err) {}
-                    keys.splice(i, 1);
-                    this.values.splice(i, 1);
-                    i -= 1;
-                }
-            }
-        };
-        _proto.isSafeToReadWrite = function(key) {
-            return !Object(src.y)(key);
-        };
-        _proto.set = function(key, value) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.set(key, value);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var name = this.name;
-                var entry = key[name];
-                entry && entry[0] === key ? entry[1] = value : Object.defineProperty(key, name, {
-                    value: [ key, value ],
-                    writable: !0
-                });
-                return;
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys;
-            var values = this.values;
-            var index = safeIndexOf(keys, key);
-            if (-1 === index) {
-                keys.push(key);
-                values.push(value);
-            } else values[index] = value;
-        };
-        _proto.get = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return weakmap.get(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return entry && entry[0] === key ? entry[1] : void 0;
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var index = safeIndexOf(this.keys, key);
-            if (-1 !== index) return this.values[index];
-        };
-        _proto.delete = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                weakmap.delete(key);
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                entry && entry[0] === key && (entry[0] = entry[1] = void 0);
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            var keys = this.keys;
-            var index = safeIndexOf(keys, key);
-            if (-1 !== index) {
-                keys.splice(index, 1);
-                this.values.splice(index, 1);
-            }
-        };
-        _proto.has = function(key) {
-            if (!key) throw new Error("WeakMap expected key");
-            var weakmap = this.weakmap;
-            if (weakmap) try {
-                if (weakmap.has(key)) return !0;
-            } catch (err) {
-                delete this.weakmap;
-            }
-            if (this.isSafeToReadWrite(key)) try {
-                var entry = key[this.name];
-                return !(!entry || entry[0] !== key);
-            } catch (err) {}
-            this._cleanupClosedWindows();
-            return -1 !== safeIndexOf(this.keys, key);
-        };
-        _proto.getOrSet = function(key, getter) {
-            if (this.has(key)) return this.get(key);
-            var value = getter();
-            this.set(key, value);
-            return value;
-        };
-        return CrossDomainSafeWeakMap;
-    }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "b", (function() {
@@ -9140,7 +9140,7 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getGlobalState;
     }));
-    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
     var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
     var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
     var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
@@ -9396,7 +9396,7 @@
         return BaseComponent;
     }();
     var esm_extends = __webpack_require__(13);
-    var client = __webpack_require__(5);
+    var client = __webpack_require__(4);
     var belter_src = __webpack_require__(11);
     var base32 = __webpack_require__(39);
     var base32_default = __webpack_require__.n(base32);
@@ -11594,7 +11594,7 @@
         });
     };
     var zalgo_promise_src = __webpack_require__(2);
-    var cross_domain_safe_weakmap_src = __webpack_require__(18);
+    var cross_domain_safe_weakmap_src = __webpack_require__(17);
     function needsBridgeForBrowser() {
         return !!Object(src.p)(window).match(/MSIE|trident|edge\/12|edge\/13/i) || !conf.a.ALLOW_POSTMESSAGE_POPUP;
     }
@@ -11899,11 +11899,11 @@
     __webpack_require__.d(__webpack_exports__, "g", (function() {
         return getResourceLoadTime;
     }));
-    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+    var beaver_logger_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
     __webpack_require__(11);
     var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(0);
-    var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
     var _util__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
@@ -12342,7 +12342,7 @@
     }));
     var cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-    var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
     function allowIframe() {
         if (!Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.t)()) return !0;
         var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.n)(window);
@@ -12489,7 +12489,7 @@
         return beacon;
     }));
     __webpack_require__(13);
-    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
     var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
     var _session__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
     var BEACON_URL = _config__WEBPACK_IMPORTED_MODULE_1__.a.loggerUrl;
@@ -12497,7 +12497,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.335";
+            payload.version = "4.0.336";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -12657,7 +12657,7 @@
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return determineUrl;
     }));
-    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+    var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
     var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
     function determineParameterFromToken(token) {
         return token && 0 === token.indexOf("BA-") ? "ba_token" : "token";
@@ -16818,18 +16818,18 @@
     var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(37);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
     __webpack_require__(30);
-    if (window.paypal && "4.0.335" === window.paypal.version) {
+    if (window.paypal && "4.0.336" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.335"
+            version: "4.0.336"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.335) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.336) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.335" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.336" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.335"
+            version: "4.0.336"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.335");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.336");
     }
     try {
         var _interface = __webpack_require__(54);
@@ -17080,16 +17080,16 @@
     __webpack_require__.d(interface_namespaceObject, "ThreeDomainSecure", (function() {
         return interface_ThreeDomainSecure;
     }));
-    var beaver_logger_client = __webpack_require__(5);
+    var beaver_logger_client = __webpack_require__(4);
     var src = __webpack_require__(23);
     var zalgo_promise_src = __webpack_require__(2);
     var post_robot_src = __webpack_require__(15);
-    var lib = __webpack_require__(4);
-    var src_checkout = __webpack_require__(17);
+    var lib = __webpack_require__(3);
+    var src_checkout = __webpack_require__(18);
     var esm_extends = __webpack_require__(13);
     var belter_src = __webpack_require__(11);
     var constants = __webpack_require__(0);
-    var config = __webpack_require__(3);
+    var config = __webpack_require__(5);
     var resources = __webpack_require__(19);
     var containerContent = __webpack_require__(38);
     var checkout_template = __webpack_require__(35);
@@ -24137,7 +24137,7 @@
                 logoColor: "blue"
             })));
         }(Object(button_props.a)(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.335", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.336", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24185,7 +24185,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.335", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.336", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24341,15 +24341,6 @@
                 required: !1,
                 def: function() {
                     return !0;
-                }
-            },
-            stageUrl: {
-                type: "string",
-                required: !1,
-                queryParam: !0,
-                def: function(props) {
-                    var env = props.env || config.a.env;
-                    if (env === constants.t.STAGE || env === constants.t.LOCAL) return config.a.stageUrl;
                 }
             },
             braintree: {
@@ -25358,12 +25349,6 @@
             if (stageUrl) {
                 delete config.a.stageUrl;
                 config.a.stageUrl = stageUrl;
-            } else if (component_Button.xprops && component_Button.xprops.stageUrl) {
-                delete config.a.stageUrl;
-                config.a.stageUrl = component_Button.xprops.stageUrl;
-            } else if (src_checkout.a.xprops && src_checkout.a.xprops.stageUrl) {
-                delete config.a.stageUrl;
-                config.a.stageUrl = src_checkout.a.xprops.stageUrl;
             }
             if (authCode = authCode || component_Button.xprops && component_Button.xprops.authCode || src_checkout.a.xprops && src_checkout.a.xprops.authCode) {
                 delete config.a.authCode;
@@ -25388,7 +25373,7 @@
         env: currentScript.getAttribute("data-env"),
         stage: currentScript.getAttribute("data-stage"),
         apiStage: currentScript.getAttribute("data-api-stage"),
-        stageUrl: currentScript.getAttribute("data-stage-url"),
+        stageUrl: Object(lib.E)() ? currentScript.getAttribute("data-stage-url") : void 0,
         localhostUrl: Object(lib.E)() ? currentScript.getAttribute("data-localhost-url") : void 0,
         checkoutUri: Object(lib.E)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
         state: currentScript.getAttribute("data-state"),
@@ -25425,7 +25410,7 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.335";
+    var interface_version = "4.0.336";
     var interface_checkout;
     var apps;
     var legacy = __webpack_require__(55);
@@ -25487,8 +25472,8 @@
     __webpack_require__.d(__webpack_exports__, "setup", (function() {
         return setup;
     }));
-    var client = __webpack_require__(5);
-    var lib = __webpack_require__(4);
+    var client = __webpack_require__(4);
+    var lib = __webpack_require__(3);
     var constants = __webpack_require__(0);
     var LOG_PREFIX = "paypal_legacy";
     var ATTRIBUTES = {
@@ -25505,8 +25490,8 @@
     var form_serialize = __webpack_require__(49);
     var form_serialize_default = __webpack_require__.n(form_serialize);
     var belter_src = __webpack_require__(11);
-    var checkout = __webpack_require__(17);
-    var config = __webpack_require__(3);
+    var checkout = __webpack_require__(18);
+    var config = __webpack_require__(5);
     var post_robot_src = __webpack_require__(15);
     function isLegacyEligible() {
         return !!Object(lib.C)() && !!Object(belter_src.t)() && !Object(belter_src.h)();
