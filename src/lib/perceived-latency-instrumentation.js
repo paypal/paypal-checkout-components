@@ -2,11 +2,6 @@
 import { getLogger } from '@paypal/sdk-client/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-/* To Track time spent in each phase(cdn download, chunks download, etc)
-    logLatencyInstrumentationPhase('first_interactable_render')
-    logLatencyInstrumentationPhase('html_body', 'comp', true);
-    logLatencyInstrumentationPhase('html_body', 'comp');
-*/
 const latencyInstrumentationPhases = {};
 
 type LogLatencyInstrumentationPhaseParams = {|
@@ -16,6 +11,19 @@ type LogLatencyInstrumentationPhaseParams = {|
     isStart? : boolean
 |};
 
+/* To Track time spent in each phase(cdn download, chunks download, etc)
+    logLatencyInstrumentationPhase({
+        buttonID: buttonId,
+        phase: 'html_body',
+        category: 'comp',
+        isStart: true
+    })
+    logLatencyInstrumentationPhase({
+        buttonID: buttonId,
+        phase: 'html_body',
+        category: 'comp'
+    })
+*/
 export const logLatencyInstrumentationPhase = ({ buttonID, phase, category, isStart } : LogLatencyInstrumentationPhaseParams) => {
     try {
         // to remove Query from phase
