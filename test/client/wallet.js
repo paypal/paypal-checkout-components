@@ -5,8 +5,10 @@ import { wrapPromise, uniqueID } from '@krakenjs/belter/src';
 import { FUNDING, INTENT, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
+import { getBuyerAccessToken } from '../../src/lib/session';
+
 import { mockSetupButton, mockAsyncProp, createButtonHTML, clickButton, getGraphQLApiMock,
-    generateOrderID, clickMenu, mockMenu, getMockWindowOpen } from './mocks';
+    generateOrderID, clickMenu, mockMenu, getMockWindowOpen, MOCK_BUYER_ACCESS_TOKEN } from './mocks';
 
 describe('wallet cases', () => {
 
@@ -2180,6 +2182,126 @@ describe('wallet cases', () => {
             });
 
             await clickButton(FUNDING.CARD);
+            gqlMock.done();
+        });
+    });
+
+    it('should store buyerAccessToken', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+            const payerID = uniqueID();
+            const accessToken = uniqueID();
+            const instrumentID = uniqueID();
+            const userIDToken = uniqueID();
+
+            window.xprops.userIDToken = userIDToken;
+
+            const gqlMock = getGraphQLApiMock({
+                extraHandler: ({ data }) => {
+                    if (data.query.includes('query GetSmartWallet')) {
+                        return {
+                            data: {
+                                smartWallet: {
+                                    [ FUNDING.PAYPAL ]: {
+                                        instruments: [
+                                            {
+                                                type:     WALLET_INSTRUMENT.CARD,
+                                                instrumentID,
+                                                accessToken,
+                                                oneClick: true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('query GetCheckoutDetails')) {
+                        return {
+                            data: {
+                                checkoutSession: {
+                                    cart: {
+                                        intent:  INTENT.CAPTURE,
+                                        amounts: {
+                                            total: {
+                                                currencyCode: 'USD'
+                                            }
+                                        },
+                                        shippingAddress: {
+                                            isFullAddress: false
+                                        }
+                                    },
+                                    flags: {
+                                        isChangeShippingAddressAllowed: false
+                                    },
+                                    payees: [
+                                        {
+                                            merchantId: 'XYZ12345',
+                                            email:      {
+                                                stringValue: 'xyz-us-b1@paypal.com'
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation OneClickApproveOrder')) {
+                        return {
+                            data: {
+                                oneClickPayment: {
+                                    userId: payerID,
+                                    auth:   {
+                                        accessToken: MOCK_BUYER_ACCESS_TOKEN
+                                    }
+                                }
+                            }
+                        };
+                    }
+
+                    if (data.query.includes('mutation UpgradeFacilitatorAccessToken')) {
+                        return {
+                            data: {
+                                upgradeLowScopeAccessToken: true
+                            }
+                        };
+                    }
+                }
+            }).expectCalls();
+            
+            const orderID = generateOrderID();
+
+            window.paypal.Menu = expect('Menu', mockMenu);
+            window.paypal.Checkout = avoid('Checkout', window.paypal.Checkout);
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return orderID;
+            }));
+
+            const wallet = {
+                [ FUNDING.PAYPAL ]: {
+                    instruments: [
+                        {
+                            type:     WALLET_INSTRUMENT.CARD,
+                            instrumentID,
+                            oneClick: true
+                        }
+                    ]
+                }
+            };
+
+            createButtonHTML({ wallet });
+            await mockSetupButton({
+                merchantID:           [ uniqueID() ],
+                wallet,
+                allowBillingPayments: true
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+            if (getBuyerAccessToken() !== MOCK_BUYER_ACCESS_TOKEN) {
+                throw new Error(`Expected buyerAccessToken to be stored`);
+            }
             gqlMock.done();
         });
     });

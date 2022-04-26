@@ -586,6 +586,9 @@ export function oneClickApproveOrder({ orderID, instrumentType, instrumentID, bu
                     selectedInstrumentId : $instrumentID
                 ) {
                     userId
+                    auth {
+                        accessToken
+                    }
                 }
             }
         `,
@@ -596,6 +599,7 @@ export function oneClickApproveOrder({ orderID, instrumentType, instrumentID, bu
             [HEADERS.CLIENT_METADATA_ID]: clientMetadataID || orderID
         }
     }).then(({ oneClickPayment }) => {
+        setBuyerAccessToken(oneClickPayment?.auth?.accessToken);
         return {
             payerID: oneClickPayment.userId
         };
