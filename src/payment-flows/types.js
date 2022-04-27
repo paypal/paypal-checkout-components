@@ -110,10 +110,10 @@ export type FundingOption = {|
 |};
 
 export type Shipping_Address = {|
-    city : string,
-    state : string,
-    country_code : $Values<typeof COUNTRY>,
-    postal_code : string
+    city : ?string,
+    state : ?string,
+    country_code : ?$Values<typeof COUNTRY>,
+    postal_code : ?string
 |};
 
 export type ShippingAddress = {|

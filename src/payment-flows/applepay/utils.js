@@ -199,10 +199,10 @@ type ShippingContactValidation = {|
     shipping_address : Shipping_Address
 |};
 
-export function validateShippingContact(contact : ApplePayPaymentContact) : ShippingContactValidation {
+export function validateShippingContact(contact : ?ApplePayPaymentContact) : ShippingContactValidation {
     const errors : Array<ApplePayError> = [];
 
-    if (!contact.locality) {
+    if (!contact?.locality) {
         errors.push({
             code:           'shippingContactInvalid',
             contactField:   'locality',
@@ -210,7 +210,7 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
         });
     }
 
-    const country_code : ?$Values<typeof COUNTRY> = contact.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
+    const country_code : ?$Values<typeof COUNTRY> = contact?.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
     if (!country_code) {
         errors.push({
             code:           'shippingContactInvalid',
@@ -219,7 +219,7 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
         });
     }
 
-    if (country_code === COUNTRY.US && !contact.administrativeArea) {
+    if (country_code === COUNTRY.US && !contact?.administrativeArea) {
         errors.push({
             code:           'shippingContactInvalid',
             contactField:   'administrativeArea',
@@ -227,7 +227,7 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
         });
     }
 
-    if (!contact.postalCode) {
+    if (!contact?.postalCode) {
         errors.push({
             code:           'shippingContactInvalid',
             contactField:   'postalCode',
@@ -236,12 +236,11 @@ export function validateShippingContact(contact : ApplePayPaymentContact) : Ship
     }
 
     const shipping_address = {
-        city:         contact.locality,
-        state:        contact.administrativeArea,
+        city:         contact?.locality,
+        state:        contact?.administrativeArea,
         country_code,
-        postal_code:  contact.postalCode
+        postal_code:  contact?.postalCode
     };
 
-    // $FlowFixMe
     return { errors, shipping_address };
 }

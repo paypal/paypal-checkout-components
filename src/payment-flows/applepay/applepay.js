@@ -76,8 +76,8 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
     }
 
     // eslint-disable-next-line flowtype/no-mutable-array
-    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel, shippingIdentifier } : {| subtotal : string, tax : string, shipping : string, shippingLabel : ?string, shippingIdentifier : ?string |}) : Array<ApplePayLineItem> {
-        const newLineItems = [];
+    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel, shippingIdentifier } : {| subtotal : ?string, tax : ?string, shipping : ?string, shippingLabel : ?string, shippingIdentifier : ?string |}) : Array<ApplePayLineItem> {
+        const newLineItems : Array<ApplePayLineItem> = [];
 
         if (subtotal && !isZeroAmount(subtotal)) {
             newLineItems.push({
@@ -98,7 +98,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
         if ((shipping && !isZeroAmount(shipping)) || isPickup) {
             newLineItems.push({
                 label:  shippingLabel || 'Shipping',
-                amount: shipping
+                amount: shipping || '0.00'
             });
         }
 
@@ -106,14 +106,14 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
     }
 
     function initApplePaySession() : ZalgoPromise<void> {
-        let currentTotalAmount;
-        let currentSubtotalAmount;
-        let currentTaxAmount;
-        let currentShippingAmount;
-        let currentShippingContact;
-        let currentShippingMethod;
+        let currentTotalAmount : ?string;
+        let currentSubtotalAmount : ?string;
+        let currentTaxAmount : ?string;
+        let currentShippingAmount : ?string;
+        let currentShippingContact : ?ApplePayPaymentContact;
+        let currentShippingMethod : ?ApplePayShippingMethod;
 
-        const onShippingChangeCallback = <T>({ orderID, shippingContact, shippingMethod = null } : {| orderID : string, shippingContact : ApplePayPaymentContact, shippingMethod? : ?ApplePayShippingMethod |}) : ZalgoPromise<T> => {
+        const onShippingChangeCallback = <T>({ orderID, shippingContact, shippingMethod = null } : {| orderID : string, shippingContact : ?ApplePayPaymentContact, shippingMethod? : ?ApplePayShippingMethod |}) : ZalgoPromise<T> => {
 
             if (!onShippingChange) {
                 const update = {
@@ -307,7 +307,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     } = order.checkoutSession;
  
                     currentShippingAmount = shippingValue;
-                    currentShippingMethod = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0] : null;
+                    currentShippingMethod = (applePayRequest.shippingMethods || []).find(() => true);
                     currentTaxAmount = taxValue;
                     currentSubtotalAmount = subtotalValue;
                     currentTotalAmount = totalValue;
@@ -346,7 +346,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             const update = {
                                 newTotal: {
                                     label:  'Total',
-                                    amount: currentTotalAmount
+                                    amount: currentTotalAmount || '0.00'
                                 },
                                 newLineItems: []
                             };
@@ -376,7 +376,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                     const update = {
                                         newTotal: {
                                             label:  'Total',
-                                            amount: currentTotalAmount
+                                            amount: currentTotalAmount || '0.00'
                                         },
                                         newLineItems: []
                                     };
