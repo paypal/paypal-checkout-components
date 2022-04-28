@@ -121,7 +121,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             /**
              * Version of the SDK used in first render.
              * This is passed to the `/smart/buttons` endpoint in order for the second render
-             * in order to be aware of what sdk to load during SSR of the buttons
+             *to be aware of what sdk version to load during SSR of the buttons
              */
             sdkVersion: {
                 type:        'string',
