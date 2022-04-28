@@ -122,10 +122,20 @@ export function getCardConfig() : FundingSourceConfig {
         },
 
         Label: ({ logo, locale, content, custom }) => {
-            if (custom && custom.label) {
+            if (custom) {
+                const validLabels = {
+                    checkout: 'Checkout'
+                };
+
+                let label = 'Checkout';
+
+                if (custom.label && typeof custom.label === 'string' && validLabels[custom.label.toLowerCase()]) {
+                    label = validLabels[custom.label];
+                }
+
                 return (
                     <Fragment>
-                        <Text>{ custom.label }</Text>
+                        <Text>{ label }</Text>
                         <Space />
                     </Fragment>
                 );
