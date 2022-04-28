@@ -5,7 +5,7 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled, getVersion } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, type ZoidComponent } from '@krakenjs/zoid/src';
@@ -118,6 +118,17 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
         },
 
         props: {
+            /**
+             * Version of the SDK used in first render.
+             * This is passed to the `/smart/buttons` endpoint in order for the second render
+             * to be aware of what sdk version to load during SSR of the buttons
+             */
+            sdkVersion: {
+                type:        'string',
+                queryParam:  true,
+                sendToChild: false,
+                value:       getVersion
+            },
             fundingSource: {
                 type:       'string',
                 queryParam: true,
