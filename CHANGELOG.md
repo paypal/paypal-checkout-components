@@ -1,3 +1,10 @@
+## <small>5.0.214 (2022-04-28)</small>
+
+* Update PR template with review section (#1927) ([bed80b4](https://github.com/paypal/paypal-checkout-components/commit/bed80b4)), closes [#1927](https://github.com/paypal/paypal-checkout-components/issues/1927)
+* Update styling for InlineXO (#1930) ([ade10be](https://github.com/paypal/paypal-checkout-components/commit/ade10be)), closes [#1930](https://github.com/paypal/paypal-checkout-components/issues/1930)
+
+
+
 ## <small>5.0.213 (2022-04-18)</small>
 
 * Inline XO Global (#1924) ([b119c35](https://github.com/paypal/paypal-checkout-components/commit/b119c35)), closes [#1924](https://github.com/paypal/paypal-checkout-components/issues/1924)
