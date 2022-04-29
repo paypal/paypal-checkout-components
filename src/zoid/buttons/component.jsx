@@ -13,7 +13,13 @@ import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupp
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 
-import { getSessionID, storageState, sessionState, logLatencyInstrumentationPhase } from '../../lib';
+import {
+    getSessionID,
+    storageState,
+    sessionState,
+    logLatencyInstrumentationPhase,
+    prepareInstrumentationPayload
+} from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 import { EXPERIENCE } from '../../constants';
@@ -54,7 +60,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 });
             }
 
-            return (
+            const prerenderResult =  (
                 <PrerenderedButtons
                     nonce={ props.nonce }
                     props={ props }
@@ -63,6 +69,29 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     } }
                 />
             ).render(dom({ doc }));
+
+            // CPL stands for Consumer Perceived Latency
+            logLatencyInstrumentationPhase({ buttonSessionID, phase: 'buttons-first-render-end' });
+            try {
+                const cplPhases = prepareInstrumentationPayload(buttonSessionID);
+                const cplLatencyMetrics = {
+                    [FPTI_KEY.STATE]:                 'CPL_LATENCY_METRICS',
+                    [FPTI_KEY.TRANSITION]:            'process_client_metrics',
+                    [FPTI_KEY.CONTEXT_ID]:            buttonSessionID,
+                    [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons',
+                    [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplPhases?.comp || {}),
+                    [FPTI_KEY.CPL_QUERY_METRICS]:     JSON.stringify(cplPhases?.query || {}),
+                    [FPTI_KEY.CPL_CHUNK_METRICS]:     JSON.stringify(cplPhases?.chunk || {})
+                };
+                getLogger().info('CPL_LATENCY_METRICS_FIRST_RENDER').track(cplLatencyMetrics).flush();
+            } catch (err) {
+                getLogger().info('button_render_CPL_instrumentation_log_error').track({
+                    err:      err.message || 'CPL_LOG_PHASE_ERROR',
+                    details:  err.details,
+                    stack:    JSON.stringify(err.stack || err)
+                });
+            }
+            return prerenderResult;
         },
 
         attributes: {
@@ -262,12 +291,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required: false,
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
-                    logLatencyInstrumentationPhase({
-                        buttonID: props.buttonSessionID,
-                        phase:    'first_render',
-                        category: 'comp',
-                        isStart:  true
-                    });
+                    logLatencyInstrumentationPhase({ buttonSessionID: props.buttonSessionID, phase: 'buttons-first-render' });
+
                     return (...args) => {
                         const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
