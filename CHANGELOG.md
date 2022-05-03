@@ -1,3 +1,11 @@
+## <small>5.0.215 (2022-05-03)</small>
+
+* Do not render Powered by PayPal for InlineXO (#1933) ([dde56d5](https://github.com/paypal/paypal-checkout-components/commit/dde56d5)), closes [#1933](https://github.com/paypal/paypal-checkout-components/issues/1933)
+* chore: pass version to /smart/buttons (#1931) ([5a05c2d](https://github.com/paypal/paypal-checkout-components/commit/5a05c2d)), closes [#1931](https://github.com/paypal/paypal-checkout-components/issues/1931)
+* chore(deps): update dependency @krakenjs/grumbler-scripts to v7 (#1926) ([736f026](https://github.com/paypal/paypal-checkout-components/commit/736f026)), closes [#1926](https://github.com/paypal/paypal-checkout-components/issues/1926)
+
+
+
 ## <small>5.0.214 (2022-04-28)</small>
 
 * Update PR template with review section (#1927) ([bed80b4](https://github.com/paypal/paypal-checkout-components/commit/bed80b4)), closes [#1927](https://github.com/paypal/paypal-checkout-components/issues/1927)
