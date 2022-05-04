@@ -4,11 +4,11 @@ import type { CustomStyle } from '../../../types';
 import { CLASS } from '../../../constants';
 
 export const customStyle = ({ custom } : {| custom? : CustomStyle |}) : string => {
-    if (!custom) {
+    const { css } = custom || {};
+    
+    if (!css) {
         return '';
     }
-
-    const { css } = custom || {};
 
     let heightStyle = '';
     let marginStyle = '';

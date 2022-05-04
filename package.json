@@ -1,6 +1,6 @@
 {
     "name": "@paypal/checkout-components",
-    "version": "5.0.213",
+    "version": "5.0.216",
     "description": "PayPal Checkout components, for integrating checkout products.",
     "main": "index.js",
     "engines": {
@@ -62,7 +62,7 @@
     "license": "Apache-2.0",
     "readmeFilename": "README.md",
     "devDependencies": {
-        "@krakenjs/grumbler-scripts": "^6.0.2",
+        "@krakenjs/grumbler-scripts": "^7.0.0",
         "@krakenjs/sync-browser-mocks": "^3.0.0",
         "babel-core": "^7.0.0-bridge.0",
         "bundlemon": "^1.1.0",
