@@ -41,8 +41,8 @@ export function PrerenderedButtons({ nonce, onRenderCheckout, props } : Prerende
             [ FPTI_KEY.TRANSITION ]:         'process_button_prerender_click',
             [ FPTI_KEY.CHOSEN_FUNDING]:      fundingSource
         }).flush();
-
-        if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY || props.experience === EXPERIENCE.INLINE) {
+console.log(`props: ${props.experience}`);
+        if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY || (fundingSource === FUNDING.CARD && props.experience === EXPERIENCE.INLINE)) {
             // wait for button to load
         } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {
             // remember the popup window to prevent showing a new popup window on every click in the prerender state
