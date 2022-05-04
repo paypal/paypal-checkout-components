@@ -127,10 +127,10 @@ export function getCardConfig() : FundingSourceConfig {
                     checkout: 'Checkout'
                 };
 
-                let label = 'Checkout';
+                let label = validLabels.checkout;
 
                 if (custom.label && typeof custom.label === 'string' && validLabels[custom.label.toLowerCase()]) {
-                    label = validLabels[custom.label];
+                    label = validLabels[custom.label.toLowerCase()];
                 }
 
                 return (
