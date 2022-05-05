@@ -147,9 +147,14 @@ describe('paypal button color', () => {
             }
         };
         const expectedStyle = {
-            'background-color': 'black',
-            'height': '48px',
-            'margin-bottom': '15px'
+            custom: {
+                label: 'Checkout',
+                css: {
+                    'background-color': 'black',
+                    'height': '48px',
+                    'margin-bottom': '15px'
+                }
+            }
         };
         const expected = JSON.stringify(expectedStyle);
         done = once(done);
