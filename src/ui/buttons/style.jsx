@@ -15,7 +15,7 @@ type StyleProps = {|
 
 export function Style({ style, nonce, fundingEligibility } : StyleProps) : ElementNode {
 
-    const { custom, height } = style;
+    const { custom = { label: undefined, css: undefined }, height } = style;
     const css = componentStyle({ custom, height, fundingEligibility });
 
     return (

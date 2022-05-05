@@ -11,7 +11,7 @@ import { buttonResponsiveStyle } from './responsive';
 import { buttonColorStyle } from './color';
 import { customStyle } from './custom';
 
-export function componentStyle({ custom, height, fundingEligibility } : {| custom? : CustomStyle, height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
+export function componentStyle({ custom, height, fundingEligibility } : {| custom? : ?CustomStyle, height? : ?number, fundingEligibility : FundingEligibilityType |}) : string {
     return `
         ${ pageStyle }
         ${ buttonStyle }
