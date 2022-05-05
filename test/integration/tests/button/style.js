@@ -146,7 +146,12 @@ describe('paypal button color', () => {
                 label: 'Checkout'
             }
         };
-        const expected = JSON.stringify(style);
+        const expectedStyle = {
+            'background-color': 'black',
+            'height': '48px',
+            'margin-bottom': '15px'
+        };
+        const expected = JSON.stringify(expectedStyle);
         done = once(done);
         window.paypal.Buttons({
             style,
