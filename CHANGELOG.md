@@ -1,3 +1,8 @@
+## <small>5.0.217 (2022-05-05)</small>
+
+
+
+
 ## <small>5.0.216 (2022-05-04)</small>
 
 * Prevent click prerender for inline experience (#1934) ([aefdc10](https://github.com/paypal/paypal-checkout-components/commit/aefdc10)), closes [#1934](https://github.com/paypal/paypal-checkout-components/issues/1934)
