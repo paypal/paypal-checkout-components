@@ -7,7 +7,8 @@ export type ExpressRequest = express$Request & {| // eslint-disable-line no-unde
     correlationId? : string,
     model? : {|
         rootTxn? : {|
-            name? : string
+            name? : string,
+            data : mixed
         |}
     |}
 |};

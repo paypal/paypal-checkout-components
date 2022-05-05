@@ -4,8 +4,13 @@ import { regexMap, noop } from '@krakenjs/belter';
 import { FUNDING } from '@paypal/sdk-constants';
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
+import { ROOT_TRANSACTION_NAME } from '../../server/components/buttons/constants';
 
-import { mockReq, mockRes, graphQL, getAccessToken, getMerchantID, mockContent, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation } from './mock';
+import {
+    mockReq, mockRes, graphQL, getAccessToken, getMerchantID,
+    mockContent, tracking, getPersonalizationEnabled,
+    getInstanceLocationInformation, getSDKLocationInformation
+} from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
     return regexMap(template, / data-funding-source="([^"]+)"/g, (result, group1) => group1);
@@ -321,4 +326,81 @@ test('should do a basic button render with post and succeed', async () => {
     if (!setupButtonParams.personalization.buttonText || !setupButtonParams.personalization.tagline) {
         throw new Error(`Expected personalization to be rendered, got: ${ JSON.stringify(setupButtonParams.personalization) }`);
     }
+});
+
+test('should find the req.model.rootTxn object in the req', async () => {
+    const buttonMiddleware = getButtonMiddleware({
+        graphQL, getAccessToken, getMerchantID,
+        content: mockContent, cache, logger, tracking,
+        getPersonalizationEnabled, getInstanceLocationInformation,
+        getSDKLocationInformation
+    });
+
+    const req = mockReq({
+        method: 'post',
+        body:   {
+            clientID: 'sandbox'
+        }
+    });
+    const res = mockRes();
+
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+
+    const { name, data } = req?.model?.rootTxn;
+
+    expect(name).toStrictEqual(ROOT_TRANSACTION_NAME.SMART_BUTTONS);
+    expect(data?.client_id).toStrictEqual('sandbox');
+    expect(data?.sdk_version).toStrictEqual('local');
+    expect(data?.smart_buttons_version).toStrictEqual('local');
+});
+
+test('should find the rootTxn name in the req model when is wallet', async () => {
+    const buttonMiddleware = getButtonMiddleware({
+        graphQL, getAccessToken, getMerchantID,
+        content: mockContent, cache, logger, tracking,
+        getPersonalizationEnabled, getInstanceLocationInformation,
+        getSDKLocationInformation
+    });
+
+    const req = mockReq({
+        method: 'post',
+        body:   {
+            clientID:    'sandbox',
+            userIDToken: 'mockUserIdToken'
+        }
+    });
+    const res = mockRes();
+
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+
+    const { name } = req?.model?.rootTxn;
+
+    expect(name).toStrictEqual(ROOT_TRANSACTION_NAME.SMART_BUTTONS_WALLET);
+});
+
+test('should find the req.model.rootTxn.name in the req model when is vault', async () => {
+    const buttonMiddleware = getButtonMiddleware({
+        graphQL, getAccessToken, getMerchantID,
+        content: mockContent, cache, logger, tracking,
+        getPersonalizationEnabled, getInstanceLocationInformation,
+        getSDKLocationInformation
+    });
+
+    const req = mockReq({
+        method: 'post',
+        body:   {
+            clientID:          'sandbox',
+            clientAccessToken: 'mockClientAccessToken'
+        }
+    });
+    const res = mockRes();
+
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+
+    const { name } = req?.model?.rootTxn;
+
+    expect(name).toStrictEqual(ROOT_TRANSACTION_NAME.SMART_BUTTONS_VAULT);
 });

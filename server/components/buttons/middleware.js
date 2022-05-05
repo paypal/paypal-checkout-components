@@ -14,7 +14,7 @@ import type { ContentType } from '../../../src/types';
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
 import { getButtonParams, getButtonPreflightParams } from './params';
 import { buttonStyle } from './style';
-import { setRootTransaction } from './instrumentation';
+import { getRootTransactionName, setRootTransaction } from './instrumentation';
 
 type ButtonMiddlewareOptions = {|
     logger : LoggerType,
@@ -127,7 +127,6 @@ export function getButtonMiddleware({
                     return getDefaultExperiments();
                 });
             const experiments = await getExperimentsPromise;
-
             const eligibility = {
                 cardFields: experiments.isCardFieldsExperimentEnabled
             };
@@ -159,15 +158,12 @@ export function getButtonMiddleware({
             } catch (err) {
                 return clientErrorResponse(res, err.stack || err.message);
             }
-
             const buttonHTML = render.button.Buttons(buttonProps).render(html());
-
             const setupParams = {
                 fundingEligibility, buyerCountry, cspNonce, merchantID, sdkMeta, wallet, correlationID,
                 firebaseConfig, facilitatorAccessToken, eligibility, content, cookies, personalization,
                 brandedDefault: experiments.isFundingSourceBranded
             };
-
             const pageHTML = `
                 <!DOCTYPE html>
                 <head></head>
@@ -181,8 +177,16 @@ export function getButtonMiddleware({
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON(setupParams) })</script>
                 </body>
             `;
+            const rootTransactionName = getRootTransactionName(userIDToken, clientAccessToken);
 
-            setRootTransaction(req, { userIDToken, clientAccessToken });
+            setRootTransaction(req, {
+                rootTxnData: {
+                    name:                  rootTransactionName,
+                    client_id:             clientID,
+                    sdk_version:           render.version,
+                    smart_buttons_version: render.version
+                }
+            });
             allowFrame(res);
             return htmlResponse(res, pageHTML);
         },

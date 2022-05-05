@@ -4,7 +4,17 @@
 import type { ExpressRequest, InstanceLocationInformation, SDKLocationInformation } from '../../server/types';
 
 type MockReq = {|
-    query : { [string] : string }
+    query : { [string] : string },
+    model : {| rootTxn :
+        {|
+            name : string,
+            data : {|
+                client_id : string,
+                sdk_version : string,
+                smart_buttons_version : string
+            |}
+        |}
+    |}
 |};
 
 export function mockReq(opts : Object = {}) : MockReq {
