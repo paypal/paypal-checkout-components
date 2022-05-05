@@ -82,7 +82,7 @@
         "pngjs": "^6.0.0",
         "prettier": "^2.5.1",
         "prettier-plugin-sh": "^0.10.0",
-        "puppeteer": "^1.20.0",
+        "puppeteer": "^13.0.0",
         "serve": "^13.0.0"
     },
     "dependencies": {
