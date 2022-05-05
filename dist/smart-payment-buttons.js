@@ -6867,6 +6867,9 @@ window.spb = function(modules) {
             return getSDKStorage().isStateFresh();
         }
         var session_buyerAccessToken;
+        function setBuyerAccessToken(token) {
+            session_buyerAccessToken = token;
+        }
         function getPostRobot() {
             var paypal = function() {
                 if (!window.paypal) throw new Error("paypal not found");
@@ -7176,7 +7179,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.96", _headers15);
+            _headers15["x-app-version"] = "5.0.97", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7224,7 +7227,7 @@ window.spb = function(modules) {
             var orderID = _ref20.orderID, clientMetadataID = _ref20.clientMetadataID;
             return callGraphQL({
                 name: "OneClickApproveOrder",
-                query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                }\n            }\n        ",
+                query: "\n            mutation OneClickApproveOrder(\n                $orderID : String!\n                $instrumentType : String!\n                $instrumentID : String!\n            ) {\n                oneClickPayment(\n                    token: $orderID\n                    selectedInstrumentType : $instrumentType\n                    selectedInstrumentId : $instrumentID\n                ) {\n                    userId\n                    auth {\n                        accessToken\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID,
                     instrumentType: _ref20.instrumentType,
@@ -7234,8 +7237,11 @@ window.spb = function(modules) {
                 _headers20["paypal-client-context"] = orderID, _headers20["paypal-client-metadata-id"] = clientMetadataID || orderID, 
                 _headers20)
             }).then((function(_ref21) {
+                var _oneClickPayment$auth;
+                var oneClickPayment = _ref21.oneClickPayment;
+                setBuyerAccessToken(null == oneClickPayment || null == (_oneClickPayment$auth = oneClickPayment.auth) ? void 0 : _oneClickPayment$auth.accessToken);
                 return {
-                    payerID: _ref21.oneClickPayment.userId
+                    payerID: oneClickPayment.userId
                 };
             }));
         }
@@ -8687,7 +8693,7 @@ window.spb = function(modules) {
                     var isPickup = "PICKUP" === shippingIdentifier;
                     (shipping && !isZeroAmount(shipping) || isPickup) && newLineItems.push({
                         label: shippingLabel || "Shipping",
-                        amount: shipping
+                        amount: shipping || "0.00"
                     });
                     return newLineItems;
                 }
@@ -8716,23 +8722,23 @@ window.spb = function(modules) {
                                 }
                                 var _validateShippingCont = function(contact) {
                                     var errors = [];
-                                    contact.locality || errors.push({
+                                    null != contact && contact.locality || errors.push({
                                         code: "shippingContactInvalid",
                                         contactField: "locality",
                                         message: "City is invalid"
                                     });
-                                    var country_code = contact.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
+                                    var country_code = null != contact && contact.countryCode ? COUNTRY[contact.countryCode.toUpperCase()] : null;
                                     country_code || errors.push({
                                         code: "shippingContactInvalid",
                                         contactField: "countryCode",
                                         message: "Country code is invalid"
                                     });
-                                    country_code !== COUNTRY.US || contact.administrativeArea || errors.push({
+                                    country_code !== COUNTRY.US || null != contact && contact.administrativeArea || errors.push({
                                         code: "shippingContactInvalid",
                                         contactField: "administrativeArea",
                                         message: "State is invalid"
                                     });
-                                    contact.postalCode || errors.push({
+                                    null != contact && contact.postalCode || errors.push({
                                         code: "shippingContactInvalid",
                                         contactField: "postalCode",
                                         message: "Postal code is invalid"
@@ -8740,10 +8746,10 @@ window.spb = function(modules) {
                                     return {
                                         errors: errors,
                                         shipping_address: {
-                                            city: contact.locality,
-                                            state: contact.administrativeArea,
+                                            city: null == contact ? void 0 : contact.locality,
+                                            state: null == contact ? void 0 : contact.administrativeArea,
                                             country_code: country_code,
-                                            postal_code: contact.postalCode
+                                            postal_code: null == contact ? void 0 : contact.postalCode
                                         }
                                     };
                                 }(shippingContact), errors = _validateShippingCont.errors, shipping_address = _validateShippingCont.shipping_address;
@@ -8943,12 +8949,14 @@ window.spb = function(modules) {
                                             });
                                             return result;
                                         }(country, order);
-                                        var _order$checkoutSessio = order.checkoutSession.cart.amounts;
+                                        var _order$checkoutSessio = order.checkoutSession.cart.amounts, taxValue = _order$checkoutSessio.tax.currencyValue, subtotalValue = _order$checkoutSessio.subtotal.currencyValue, totalValue = _order$checkoutSessio.total.currencyValue;
                                         currentShippingAmount = _order$checkoutSessio.shippingAndHandling.currencyValue;
-                                        currentShippingMethod = applePayRequest.shippingMethods && applePayRequest.shippingMethods.length ? applePayRequest.shippingMethods[0] : null;
-                                        currentTaxAmount = _order$checkoutSessio.tax.currencyValue;
-                                        currentSubtotalAmount = _order$checkoutSessio.subtotal.currencyValue;
-                                        currentTotalAmount = _order$checkoutSessio.total.currencyValue;
+                                        currentShippingMethod = (applePayRequest.shippingMethods || []).find((function() {
+                                            return !0;
+                                        }));
+                                        currentTaxAmount = taxValue;
+                                        currentSubtotalAmount = subtotalValue;
+                                        currentTotalAmount = totalValue;
                                         return applePay(4, applePayRequest).then((function(response) {
                                             var begin = response.begin, addEventListener = response.addEventListener, completeMerchantValidation = response.completeMerchantValidation, completeShippingContactSelection = response.completeShippingContactSelection, completePaymentMethodSelection = response.completePaymentMethodSelection, completeShippingMethodSelection = response.completeShippingMethodSelection, completePayment = response.completePayment;
                                             promise_ZalgoPromise.all([ addEventListener("validatemerchant", (function(_ref6) {
@@ -8992,7 +9000,7 @@ window.spb = function(modules) {
                                                 var update = {
                                                     newTotal: {
                                                         label: "Total",
-                                                        amount: currentTotalAmount
+                                                        amount: currentTotalAmount || "0.00"
                                                     },
                                                     newLineItems: []
                                                 };
@@ -9019,7 +9027,7 @@ window.spb = function(modules) {
                                                     var update = {
                                                         newTotal: {
                                                             label: "Total",
-                                                            amount: currentTotalAmount
+                                                            amount: currentTotalAmount || "0.00"
                                                         },
                                                         newLineItems: []
                                                     };
@@ -9536,7 +9544,7 @@ window.spb = function(modules) {
                             if (void 0 === _ref7$approveOnClose || !_ref7$approveOnClose) {
                                 approved = !0;
                                 logger_getLogger().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
-                                session_buyerAccessToken = buyerAccessToken;
+                                setBuyerAccessToken(buyerAccessToken);
                                 return _onApprove({
                                     payerID: payerID,
                                     paymentID: paymentID,
@@ -13407,7 +13415,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.96", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.97", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
