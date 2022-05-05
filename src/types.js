@@ -54,10 +54,10 @@ export type Requires = {|
 |};
 
 export type CustomStyle = {|
-    css : {|
+    css? : {|
         [string] : string
     |},
-    label : string
+    label? : string
 |};
 
 export type LazyExport<T> = {|

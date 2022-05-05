@@ -3,7 +3,7 @@
 import type { CustomStyle } from '../../../types';
 import { CLASS } from '../../../constants';
 
-export const customStyle = ({ custom } : {| custom? : CustomStyle |}) : string => {
+export const customStyle = ({ custom } : {| custom? : ?CustomStyle |}) : string => {
     const { css } = custom || {};
     
     if (!css) {

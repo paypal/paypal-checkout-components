@@ -46,7 +46,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience } : IndividualButtonProps) : ElementNode {
     
     const { custom, layout, shape } = style;
-    const inlineExperience = experience === EXPERIENCE.INLINE && custom;
+    const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label;
     const fundingConfig = getFundingConfig()[fundingSource];
 
     if (!fundingConfig) {
@@ -130,7 +130,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
-            custom={ inlineExperience ? custom : null }
+            custom={ inlineExperience ? custom : undefined }
             experiment={ experiment }
         />
     );
