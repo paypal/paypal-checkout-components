@@ -130,7 +130,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             personalization={ personalization }
             tagline={ tagline }
             content={ content }
-            custom={ inlineExperience && custom && custom.label ? custom : undefined }
+            custom={ inlineExperience ? custom : undefined }
             experiment={ experiment }
         />
     );
