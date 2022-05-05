@@ -1,3 +1,9 @@
+## <small>5.0.218 (2022-05-05)</small>
+
+* chore(release): 5.0.217 🎉 ([1d43996](https://github.com/paypal/paypal-checkout-components/commit/1d43996))
+
+
+
 ## <small>5.0.217 (2022-05-05)</small>
 
 * Add default styling for InlineXO (#1936) ([8600fdb](https://github.com/paypal/paypal-checkout-components/commit/8600fdb)), closes [#1936](https://github.com/paypal/paypal-checkout-components/issues/1936)
