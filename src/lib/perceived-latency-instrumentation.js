@@ -11,7 +11,7 @@ type InstrumentationPayload = {|
     query? : Object
 |};
 
-function getNavigationTimeorigin() : number {
+function getNavigationTimeOrigin() : number {
     if (window.performance) {
         const hrSyncPoint = performance.now();
         const unixSyncPoint = new Date().getTime();
@@ -46,7 +46,7 @@ export const logLatencyInstrumentationPhase = ({ buttonSessionID, phase } : LogL
 };
 
 export const prepareInstrumentationPayload = (buttonSessionID : string) : InstrumentationPayload => {
-    const timeOrigin = getNavigationTimeorigin();
+    const timeOrigin = getNavigationTimeOrigin();
     const renderStartTime = getStartTimeFromMark({ buttonSessionID, phase: 'buttons-first-render' });
     const renderEndTime = getStartTimeFromMark({ buttonSessionID, phase: 'buttons-first-render-end' });
     return {
