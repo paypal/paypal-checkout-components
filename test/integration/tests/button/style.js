@@ -163,7 +163,7 @@ describe('paypal button color', () => {
             test: {
                 onRender() {
                     if (JSON.stringify(style) !== expected) {
-                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ expected }`));
+                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ JSON.stringify(expected) }`));
                     }
                     done();
                 }
