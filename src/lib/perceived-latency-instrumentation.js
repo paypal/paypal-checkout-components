@@ -1,5 +1,4 @@
 /* @flow */
-import { getLogger } from '@paypal/sdk-client/src';
 
 type LogLatencyInstrumentationPhaseParams = {|
     buttonSessionID : string,
@@ -41,19 +40,8 @@ function getStartTimeFromMark({ buttonSessionID, phase } : LogLatencyInstrumenta
     })
 */
 export const logLatencyInstrumentationPhase = ({ buttonSessionID, phase } : LogLatencyInstrumentationPhaseParams) => {
-    try {
-        if (window.performance) {
-            window.performance.mark(`${ buttonSessionID }_${ phase }`);
-        } else {
-            getLogger().info('button_render_CPL_instrumentation_not_executed').flush();
-        }
-    } catch (err) {
-        getLogger().info('button_render_CPL_instrumentation_log_error').track({
-            phase,
-            err:      err.message || 'CPL_LOG_PHASE_ERROR',
-            details:  err.details,
-            stack:    JSON.stringify(err.stack || err)
-        });
+    if (window.performance && window.performance.mark) {
+        window.performance.mark(`${ buttonSessionID }_${ phase }`);
     }
 };
 
@@ -67,9 +55,7 @@ export const prepareInstrumentationPayload = (buttonSessionID : string) : Instru
                 start: timeOrigin + renderStartTime,
                 tt:    renderEndTime - renderStartTime
             }
-        },
-        query: {},
-        chunk: {}
+        }
     };
 };
 

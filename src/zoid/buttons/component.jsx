@@ -70,9 +70,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         [FPTI_KEY.TRANSITION]:            'process_client_metrics',
                         [FPTI_KEY.CONTEXT_ID]:            buttonSessionID,
                         [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons',
-                        [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplPhases?.comp || {}),
-                        [FPTI_KEY.CPL_QUERY_METRICS]:     JSON.stringify(cplPhases?.query || {}),
-                        [FPTI_KEY.CPL_CHUNK_METRICS]:     JSON.stringify(cplPhases?.chunk || {})
+                        [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplPhases?.comp || {})
                     };
                     getLogger().info('CPL_LATENCY_METRICS_FIRST_RENDER').track(cplLatencyMetrics).flush();
                 } catch (err) {
