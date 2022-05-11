@@ -1,3 +1,9 @@
+## <small>5.0.219 (2022-05-11)</small>
+
+* feat: add latency instrumentation logging for button render (#1920) ([1e21b08](https://github.com/paypal/paypal-checkout-components/commit/1e21b08)), closes [#1920](https://github.com/paypal/paypal-checkout-components/issues/1920)
+
+
+
 ## <small>5.0.218 (2022-05-05)</small>
 
 * chore(release): 5.0.217 🎉 ([1d43996](https://github.com/paypal/paypal-checkout-components/commit/1d43996))
