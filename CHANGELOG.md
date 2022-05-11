@@ -1,3 +1,9 @@
+## <small>5.0.220 (2022-05-11)</small>
+
+* fix: remove flush for CPL log (#1942) ([5956c14](https://github.com/paypal/paypal-checkout-components/commit/5956c14)), closes [#1942](https://github.com/paypal/paypal-checkout-components/issues/1942)
+
+
+
 ## <small>5.0.219 (2022-05-11)</small>
 
 * feat: add latency instrumentation logging for button render (#1920) ([1e21b08](https://github.com/paypal/paypal-checkout-components/commit/1e21b08)), closes [#1920](https://github.com/paypal/paypal-checkout-components/issues/1920)
