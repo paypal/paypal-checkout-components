@@ -74,7 +74,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons',
                         [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplPhases?.comp || {})
                     };
-                    getLogger().info('CPL_LATENCY_METRICS_FIRST_RENDER').track(cplLatencyMetrics).flush();
+                    getLogger().info('CPL_LATENCY_METRICS_FIRST_RENDER').track(cplLatencyMetrics);
                 } catch (err) {
                     getLogger().info('button_render_CPL_instrumentation_log_error').track({
                         err:      err.message || 'CPL_LOG_PHASE_ERROR',
