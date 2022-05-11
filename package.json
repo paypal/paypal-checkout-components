@@ -86,17 +86,17 @@
         "serve": "^13.0.0"
     },
     "dependencies": {
-        "@paypal/common-components": "^1.0.27",
-        "@paypal/funding-components": "^1.0.27",
-        "@paypal/sdk-client": "^4.0.166",
-        "@paypal/sdk-constants": "^1.0.107",
-        "@paypal/sdk-logos": "^1.0.45",
         "@krakenjs/belter": "^2.0.0",
         "@krakenjs/cross-domain-utils": "^3.0.0",
         "@krakenjs/jsx-pragmatic": "^3",
         "@krakenjs/post-robot": "^11.0.0",
         "@krakenjs/zalgo-promise": "^2.0.0",
-        "@krakenjs/zoid": "^10.0.0"
+        "@krakenjs/zoid": "^10.0.0",
+        "@paypal/common-components": "^1.0.27",
+        "@paypal/funding-components": "^1.0.27",
+        "@paypal/sdk-client": "^4.0.166",
+        "@paypal/sdk-constants": "^1.0.119",
+        "@paypal/sdk-logos": "^1.0.45"
     },
     "lint-staged": {
         "*.sh": "prettier --write"

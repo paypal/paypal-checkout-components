@@ -8,12 +8,18 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
     getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled, getVersion } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { create, type ZoidComponent } from '@krakenjs/zoid/src';
+import { create, EVENT, type ZoidComponent } from '@krakenjs/zoid/src';
 import { uniqueID, memoize, isApplePaySupported, supportsPopups as userAgentSupportsPopups, noop, isLocalStorageEnabled } from '@krakenjs/belter/src';
 import { FUNDING, FUNDING_BRAND_LABEL, QUERY_BOOL, ENV, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 
-import { getSessionID, storageState, sessionState } from '../../lib';
+import {
+    getSessionID,
+    storageState,
+    sessionState,
+    logLatencyInstrumentationPhase,
+    prepareInstrumentationPayload
+} from '../../lib';
 import { normalizeButtonStyle, type ButtonProps } from '../../ui/buttons/props';
 import { isFundingEligible } from '../../funding';
 import { EXPERIENCE } from '../../constants';
@@ -44,7 +50,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
         logger: getLogger(),
 
-        prerenderTemplate: ({ state, props, doc }) => {
+        prerenderTemplate: ({ state, props, doc, event }) => {
             const { buttonSessionID } = props;
             
             if (!isLocalStorageEnabled()) {
@@ -55,6 +61,28 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     [ FPTI_KEY.TRANSITION ]:         'localstorage_inaccessible_possible_private_browsing'
                 });
             }
+
+            event.on(EVENT.PRERENDERED, () => {
+                // CPL stands for Consumer Perceived Latency
+                logLatencyInstrumentationPhase({ buttonSessionID, phase: 'buttons-first-render-end' });
+                try {
+                    const cplPhases = prepareInstrumentationPayload(buttonSessionID);
+                    const cplLatencyMetrics = {
+                        [FPTI_KEY.STATE]:                 'CPL_LATENCY_METRICS',
+                        [FPTI_KEY.TRANSITION]:            'process_client_metrics',
+                        [FPTI_KEY.CONTEXT_ID]:            buttonSessionID,
+                        [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons',
+                        [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplPhases?.comp || {})
+                    };
+                    getLogger().info('CPL_LATENCY_METRICS_FIRST_RENDER').track(cplLatencyMetrics).flush();
+                } catch (err) {
+                    getLogger().info('button_render_CPL_instrumentation_log_error').track({
+                        err:      err.message || 'CPL_LOG_PHASE_ERROR',
+                        details:  err.details,
+                        stack:    JSON.stringify(err.stack || err)
+                    });
+                }
+            });
 
             return (
                 <PrerenderedButtons
@@ -275,6 +303,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required: false,
                 default:  () => noop,
                 decorate: ({ props, value = noop }) => {
+                    logLatencyInstrumentationPhase({ buttonSessionID: props.buttonSessionID, phase: 'buttons-first-render' });
+
                     return (...args) => {
                         const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
