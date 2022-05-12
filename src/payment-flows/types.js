@@ -196,6 +196,7 @@ export type ApplePayPaymentPass = {|
     activationState : ApplePayPaymentPassActivationState
 |};
 
+// https://developer.apple.com/documentation/apple_pay_on_the_web/applepaypaymentmethod
 export type ApplePayPaymentMethod = {|
     displayName? : string,
     network? : string,

@@ -8,7 +8,7 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { getDetailedOrderInfo, approveApplePayPayment, getApplePayMerchantSession } from '../../api';
 import { getLogger, promiseNoop, unresolvedPromise } from '../../lib';
 import { FPTI_CUSTOM_KEY, FPTI_STATE, FPTI_TRANSITION } from '../../constants';
-import type { ApplePayLineItem, ApplePayPaymentContact, ApplePayShippingMethod, ApplePayShippingMethodUpdate, ApplePayShippingContactUpdate, PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from '../types';
+import type { ApplePayLineItem, ApplePayPaymentMethod, ApplePayPaymentContact, ApplePayShippingMethod, ApplePayShippingMethodUpdate, ApplePayShippingContactUpdate, PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from '../types';
 
 import { createApplePayRequest, isJSON, validateShippingContact, isZeroAmount } from './utils';
 
@@ -55,6 +55,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
 
     function logApplePayEvent(event, payload) {
         const data = isJSON(payload) ? payload : {};
+        // $FlowFixMe
         getLogger().info(`${ FPTI_TRANSITION.APPLEPAY_EVENT }_${ event }`, data)
             .track({
                 [FPTI_KEY.TRANSITION]:      `${ FPTI_TRANSITION.APPLEPAY_EVENT }_${ event }`,
@@ -323,7 +324,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             completePayment
                         } = response;
 
-                        function validateMerchant({ validationURL }) {
+                        function validateMerchant({ validationURL } : {| validationURL : string |}) {
                             logApplePayEvent('validatemerchant', { validationURL });
 
                             getApplePayMerchantSession({ url: validationURL, clientID, orderID, merchantDomain })
@@ -340,7 +341,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 });
                         }
 
-                        function paymentMethodSelected({ paymentMethod }) {
+                        function paymentMethodSelected({ paymentMethod } : {| paymentMethod : ApplePayPaymentMethod |}) {
                             logApplePayEvent('paymentmethodselected', paymentMethod);
 
                             const update = {
@@ -363,7 +364,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             completePaymentMethodSelection(update);
                         }
                         
-                        function shippingMethodSelected({ shippingMethod }) {
+                        function shippingMethodSelected({ shippingMethod } : {| shippingMethod : ApplePayShippingMethod |}) {
                             logApplePayEvent('shippingmethodselected');
 
                             // patch updated amount
@@ -394,7 +395,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 });
                         }
 
-                        function shippingContactSelected({ shippingContact }) {
+                        function shippingContactSelected({ shippingContact } : {| shippingContact : ApplePayPaymentContact |}) {
                             logApplePayEvent('shippingcontactselected', shippingContact);
 
                             // patch updated shipping contact information
@@ -415,11 +416,11 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             }
                             
                             // For some reason country code comes back as lowercase from Apple
-                            if (applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode) {
+                            if (applePayPayment?.shippingContact?.countryCode) {
                                 applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase();
                             }
 
-                            if (applePayPayment.billingContact && applePayPayment.billingContact.countryCode) {
+                            if (applePayPayment?.billingContact?.countryCode) {
                                 applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
                             }
 
