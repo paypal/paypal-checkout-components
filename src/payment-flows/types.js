@@ -128,6 +128,7 @@ export type ShippingAddress = {|
 |};
 
 export type ShippingMethod = {|
+    id? : string,
     amount : {|
         currencyCode : $Values<typeof CURRENCY>,
         currencyValue : string

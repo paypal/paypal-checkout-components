@@ -772,6 +772,7 @@ export const getDetailedOrderInfo : GetDetailedOrderInfo = (orderID, country) =>
                             country
                         }
                         shippingMethods {
+                            id
                             amount {
                                 currencyCode
                                 currencyValue

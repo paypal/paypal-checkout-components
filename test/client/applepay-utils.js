@@ -117,6 +117,7 @@ describe('Apple Pay Flow Utils', () => {
             if (getApplePayShippingMethods(
                 [
                     {
+                        id:     '1',
                         amount: {
                             'currencyCode':  'USD',
                             'currencyValue': '0.02'
@@ -126,6 +127,7 @@ describe('Apple Pay Flow Utils', () => {
                         type:     'SHIPPING'
                     },
                     {
+                        id:     '2',
                         amount: {
                             currencyCode:  'USD',
                             currencyValue: '0.01'
@@ -135,6 +137,7 @@ describe('Apple Pay Flow Utils', () => {
                         type:     'SHIPPING'
                     },
                     {
+                        id:     '3',
                         amount: {
                             currencyCode:   'USD',
                             currencyValue: '0.00'
@@ -147,20 +150,20 @@ describe('Apple Pay Flow Utils', () => {
             ).join() !== [
                 {
                     amount:     '0.01',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '2',
                     label:      '4-7 Day Shipping'
                 },
                 {
                     amount:     '0.02',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '1',
                     label:      '1-3 Day Shipping'
                 },
                 {
                     amount:     '0.00',
-                    detail:     '',
-                    identifier: 'PICKUP',
+                    detail:     'PICKUP',
+                    identifier: '3',
                     label:      'Pick up in Store'
                 }
             ].join()) {

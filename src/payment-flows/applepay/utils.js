@@ -78,11 +78,11 @@ function getShippingContactFromAddress(shippingAddress : ?ShippingAddress) : App
 export function getApplePayShippingMethods(shippingMethods : $ReadOnlyArray<ShippingMethod> = []) : $ReadOnlyArray<ApplePayShippingMethod> {
     return [ ...shippingMethods ].sort(method => {
         return method.selected ? -1 : 0;
-    }).map(method => {
+    }).map((method) => {
         return {
             amount:     method?.amount?.currencyValue || '0.00',
-            detail:     '',
-            identifier: method.type,
+            detail:     method.type,
+            identifier: method?.id || '',
             label:      method.label
         };
     });

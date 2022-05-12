@@ -59,6 +59,7 @@ describe('createApplePayRequest', () => {
                     },
                     shippingMethods: [
                         {
+                            id:     '1',
                             amount: {
                                 currencyCode:  'USD',
                                 currencyValue: '4.99'
@@ -68,6 +69,7 @@ describe('createApplePayRequest', () => {
                             type:     'SHIPPING'
                         },
                         {
+                            id:     '2',
                             amount: {
                                 currencyCode:  'USD',
                                 currencyValue: '24.99'
@@ -108,14 +110,14 @@ describe('createApplePayRequest', () => {
             shippingMethods: [
                 {
                     amount:     '4.99',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '1',
                     label:      '🚛 Ground Shipping (2 days)'
                 },
                 {
                     amount:     '24.99',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '2',
                     label:      '🚀 Drone Express (2 hours)'
                 }
             ],
@@ -178,6 +180,7 @@ describe('createApplePayRequest', () => {
                     },
                     shippingMethods: [
                         {
+                            id:         '1',
                             amount: {
                                 currencyCode:  'USD',
                                 currencyValue: '4.99'
@@ -187,6 +190,7 @@ describe('createApplePayRequest', () => {
                             type:     'SHIPPING'
                         },
                         {
+                            id:         '2',
                             amount: {
                                 currencyCode:  'USD',
                                 currencyValue: '24.99'
@@ -228,14 +232,14 @@ describe('createApplePayRequest', () => {
             shippingMethods: [
                 {
                     amount:     '4.99',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier:  '1',
                     label:      '🚛 Ground Shipping (2 days)'
                 },
                 {
                     amount:     '24.99',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '2',
                     label:      '🚀 Drone Express (2 hours)'
                 }
             ],
@@ -383,6 +387,7 @@ describe('getApplePayShippingMethods', () => {
         expect(getApplePayShippingMethods(
             [
                 {
+                    id:     '1',
                     amount: {
                         'currencyCode':  'USD',
                         'currencyValue': '0.02'
@@ -392,6 +397,7 @@ describe('getApplePayShippingMethods', () => {
                     type:     'SHIPPING'
                 },
                 {
+                    id:     '2',
                     amount: {
                         currencyCode:  'USD',
                         currencyValue: '0.01'
@@ -401,6 +407,7 @@ describe('getApplePayShippingMethods', () => {
                     type:     'SHIPPING'
                 },
                 {
+                    id:     '3',
                     amount: {
                         currencyCode:   'USD',
                         currencyValue: '0.00'
@@ -412,21 +419,21 @@ describe('getApplePayShippingMethods', () => {
             ]
         )).toEqual([
             {
+                identifier: '2',
                 amount:     '0.01',
-                detail:     '',
-                identifier: 'SHIPPING',
+                detail:     'SHIPPING',
                 label:      '4-7 Day Shipping'
             },
             {
+                identifier: '1',
                 amount:     '0.02',
-                detail:     '',
-                identifier: 'SHIPPING',
+                detail:     'SHIPPING',
                 label:      '1-3 Day Shipping'
             },
             {
+                identifier: '3',
                 amount:     '0.00',
-                detail:     '',
-                identifier: 'PICKUP',
+                detail:     'PICKUP',
                 label:      'Pick up in Store'
             }
         ]);

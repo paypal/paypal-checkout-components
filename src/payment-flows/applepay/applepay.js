@@ -77,7 +77,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
     }
 
     // eslint-disable-next-line flowtype/no-mutable-array
-    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel, shippingIdentifier } : {| subtotal : ?string, tax : ?string, shipping : ?string, shippingLabel : ?string, shippingIdentifier : ?string |}) : Array<ApplePayLineItem> {
+    function updateNewLineItems({ subtotal, tax, shipping, shippingLabel, shippingDetail } : {| subtotal : ?string, tax : ?string, shipping : ?string, shippingLabel : ?string, shippingDetail : ?string |}) : Array<ApplePayLineItem> {
         const newLineItems : Array<ApplePayLineItem> = [];
 
         if (subtotal && !isZeroAmount(subtotal)) {
@@ -94,7 +94,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
             });
         }
 
-        const isPickup = shippingIdentifier === 'PICKUP';
+        const isPickup = shippingDetail === 'PICKUP';
 
         if ((shipping && !isZeroAmount(shipping)) || isPickup) {
             newLineItems.push({
@@ -131,7 +131,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         subtotal:           currentSubtotalAmount,
                         tax:                currentTaxAmount,
                         shippingLabel:      currentShippingMethod?.label,
-                        shippingIdentifier: currentShippingMethod?.identifier
+                        shippingDetail:     currentShippingMethod?.detail
                     }
                 );
 
@@ -156,7 +156,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         subtotal:           currentSubtotalAmount,
                         tax:                currentTaxAmount,
                         shippingLabel:      currentShippingMethod?.label,
-                        shippingIdentifier: currentShippingMethod?.identifier
+                        shippingDetail:     currentShippingMethod?.detail
                     }
                 );
 
@@ -178,7 +178,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                 data.selected_shipping_option = {
                     label:  shippingMethod.label || currentShippingMethod?.label || 'Shipping',
                     // $FlowFixMe
-                    type:   shippingMethod.identifier,
+                    id:     shippingMethod.identifier,
                     amount: {
                         currency_code: currency,
                         value:         shippingMethod.amount
@@ -189,7 +189,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                 data.selected_shipping_option = {
                     label:  'Shipping',
                     // $FlowFixMe
-                    type:   currentShippingMethod?.identifier,
+                    id:     currentShippingMethod?.identifier,
                     amount: {
                         currency_code: currency,
                         value:         currentShippingAmount
@@ -250,7 +250,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 subtotal:           currentSubtotalAmount,
                                 tax:                currentTaxAmount,
                                 shippingLabel:      currentShippingMethod?.label,
-                                shippingIdentifier: currentShippingMethod?.identifier
+                                shippingDetail:     currentShippingMethod?.detail
                             }
                         );
 
@@ -357,7 +357,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                     subtotal:           currentSubtotalAmount,
                                     tax:                currentTaxAmount,
                                     shippingLabel:      currentShippingMethod?.label,
-                                    shippingIdentifier: currentShippingMethod?.identifier
+                                    shippingDetail:     currentShippingMethod?.detail
                                 }
                             );
 
@@ -387,7 +387,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                             subtotal:           currentSubtotalAmount,
                                             tax:                currentTaxAmount,
                                             shippingLabel:      shippingMethod?.label,
-                                            shippingIdentifier: currentShippingMethod?.identifier
+                                            shippingDetail:     currentShippingMethod?.detail
                                         }
                                     );
 

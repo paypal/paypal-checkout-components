@@ -55,6 +55,7 @@ jest.mock('../../../api', () => ({
                 },
                 shippingMethods: [
                     {
+                        id:     '1',
                         amount: {
                             currencyCode:  'USD',
                             currencyValue: '4.99'
@@ -64,6 +65,7 @@ jest.mock('../../../api', () => ({
                         type:     'SHIPPING'
                     },
                     {
+                        id:     '2',
                         amount: {
                             currencyCode:  'USD',
                             currencyValue: '24.99'
@@ -230,14 +232,14 @@ describe('initApplePay', () => {
             shippingMethods: [
                 {
                     amount:     '4.99',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '1',
                     label:      '🚛 Ground Shipping (2 days)'
                 },
                 {
                     amount:     '24.99',
-                    detail:     '',
-                    identifier: 'SHIPPING',
+                    detail:     'SHIPPING',
+                    identifier: '2',
                     label:      '🚀 Drone Express (2 hours)'
                 }
             ],
@@ -341,7 +343,7 @@ describe('initApplePay', () => {
                     value:         '4.99'
                 },
                 label: '🚛 Ground Shipping (2 days)',
-                type:  'SHIPPING'
+                id:    '1'
             },
             shipping_address: {
                 city:         'san jose',
@@ -362,8 +364,8 @@ describe('initApplePay', () => {
         */
         await mockSession.shippingmethodselected({ shippingMethod: {
             amount:     '24.99',
-            detail:     '',
-            identifier: 'SHIPPING',
+            detail:     'SHIPPING',
+            identifier: '1',
             label:      '🚀 Drone Express (2 hours)'
         } });
 
