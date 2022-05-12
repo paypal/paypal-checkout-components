@@ -100,6 +100,9 @@ describe('createApplePayRequest', () => {
             merchantCapabilities:          [ 'supports3DS', 'supportsCredit', 'supportsDebit' ],
             requiredBillingContactFields:  [ 'postalAddress', 'name', 'phone' ],
             requiredShippingContactFields: [
+                'name',
+                'phone',
+                'email'
             ],
             shippingContact: {},
             shippingMethods: [

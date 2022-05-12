@@ -199,6 +199,9 @@ describe('initApplePay - no shipping but has tax', () => {
                 'phone'
             ],
             requiredShippingContactFields: [
+                'name',
+                'phone',
+                'email'
             ],
             shippingContact: {},
             shippingMethods: [],

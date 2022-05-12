@@ -200,6 +200,9 @@ describe('initApplePay - no shipping', () => {
                 'phone'
             ],
             requiredShippingContactFields: [
+                'name',
+                'phone',
+                'email'
             ],
             shippingContact: {},
             shippingMethods: [],

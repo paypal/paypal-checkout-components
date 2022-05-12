@@ -148,7 +148,11 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
             'name',
             'phone',
             'email'
-        ] : [],
+        ] : [
+            'name',
+            'phone',
+            'email'
+        ],
         shippingContact: shippingContact?.givenName ? shippingContact : {},
         shippingMethods: applePayShippingMethods || [],
         lineItems:       [],
