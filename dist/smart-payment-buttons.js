@@ -7179,7 +7179,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.97", _headers15);
+            _headers15["x-app-version"] = "5.0.98", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7260,7 +7260,7 @@ window.spb = function(modules) {
             var _headers22;
             return callGraphQL({
                 name: "GetCheckoutDetails",
-                query: "\n            query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {\n                checkoutSession(token: $orderID) {\n                    flags{\n                        isShippingAddressRequired,\n                        isDigitalGoodsIntegration,\n                        isChangeShippingAddressAllowed\n                    }\n                    allowedCardIssuers(country: $country)\n                    cart {\n                        amounts {\n                            shippingAndHandling {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            tax {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            subtotal {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                }\n            }\n        ",
+                query: "\n            query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {\n                checkoutSession(token: $orderID) {\n                    flags{\n                        isShippingAddressRequired,\n                        isDigitalGoodsIntegration,\n                        isChangeShippingAddressAllowed\n                    }\n                    allowedCardIssuers(country: $country)\n                    cart {\n                        amounts {\n                            shippingAndHandling {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            tax {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            subtotal {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            id\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID,
                     country: country
@@ -8680,7 +8680,7 @@ window.spb = function(modules) {
                     }));
                 }
                 function updateNewLineItems(_ref4) {
-                    var subtotal = _ref4.subtotal, tax = _ref4.tax, shipping = _ref4.shipping, shippingLabel = _ref4.shippingLabel, shippingIdentifier = _ref4.shippingIdentifier;
+                    var subtotal = _ref4.subtotal, tax = _ref4.tax, shipping = _ref4.shipping, shippingLabel = _ref4.shippingLabel, shippingDetail = _ref4.shippingDetail;
                     var newLineItems = [];
                     subtotal && !isZeroAmount(subtotal) && newLineItems.push({
                         label: "Subtotal",
@@ -8690,7 +8690,7 @@ window.spb = function(modules) {
                         label: "Sales Tax",
                         amount: tax
                     });
-                    var isPickup = "PICKUP" === shippingIdentifier;
+                    var isPickup = "PICKUP" === shippingDetail;
                     (shipping && !isZeroAmount(shipping) || isPickup) && newLineItems.push({
                         label: shippingLabel || "Shipping",
                         amount: shipping || "0.00"
@@ -8701,7 +8701,7 @@ window.spb = function(modules) {
                     click: function() {
                         return promise_ZalgoPromise.try((function() {
                             return onShippingChangeCallback = function(_ref5) {
-                                var orderID = _ref5.orderID, shippingContact = _ref5.shippingContact, _ref5$shippingMethod = _ref5.shippingMethod, shippingMethod = void 0 === _ref5$shippingMethod ? null : _ref5$shippingMethod;
+                                var orderID = _ref5.orderID, shippingContact = _ref5.shippingContact, _ref5$shippingMethod = _ref5.shippingMethod, shippingMethod = void 0 === _ref5$shippingMethod ? null : _ref5$shippingMethod, callbackTrigger = _ref5.callbackTrigger;
                                 if (!onShippingChange) {
                                     var _currentShippingMetho, _currentShippingMetho2;
                                     var update = {
@@ -8716,7 +8716,7 @@ window.spb = function(modules) {
                                         subtotal: currentSubtotalAmount,
                                         tax: currentTaxAmount,
                                         shippingLabel: null == (_currentShippingMetho = currentShippingMethod) ? void 0 : _currentShippingMetho.label,
-                                        shippingIdentifier: null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.identifier
+                                        shippingDetail: null == (_currentShippingMetho2 = currentShippingMethod) ? void 0 : _currentShippingMetho2.detail
                                     });
                                     return promise_ZalgoPromise.resolve(update);
                                 }
@@ -8768,11 +8768,12 @@ window.spb = function(modules) {
                                         subtotal: currentSubtotalAmount,
                                         tax: currentTaxAmount,
                                         shippingLabel: null == (_currentShippingMetho3 = currentShippingMethod) ? void 0 : _currentShippingMetho3.label,
-                                        shippingIdentifier: null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.identifier
+                                        shippingDetail: null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.detail
                                     });
                                     return promise_ZalgoPromise.resolve(_update);
                                 }
                                 var data = {
+                                    callbackTrigger: callbackTrigger,
                                     amount: {
                                         currency_code: currency,
                                         value: "0.00"
@@ -8784,7 +8785,7 @@ window.spb = function(modules) {
                                     var _currentShippingMetho5;
                                     data.selected_shipping_option = {
                                         label: shippingMethod.label || (null == (_currentShippingMetho5 = currentShippingMethod) ? void 0 : _currentShippingMetho5.label) || "Shipping",
-                                        type: shippingMethod.identifier,
+                                        id: shippingMethod.identifier,
                                         amount: {
                                             currency_code: currency,
                                             value: shippingMethod.amount
@@ -8794,7 +8795,7 @@ window.spb = function(modules) {
                                     var _currentShippingMetho6;
                                     data.selected_shipping_option = {
                                         label: "Shipping",
-                                        type: null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.identifier,
+                                        id: null == (_currentShippingMetho6 = currentShippingMethod) ? void 0 : _currentShippingMetho6.identifier,
                                         amount: {
                                             currency_code: currency,
                                             value: currentShippingAmount
@@ -8833,7 +8834,7 @@ window.spb = function(modules) {
                                             subtotal: currentSubtotalAmount = "0.00" === updatedSubtotalValue ? currentSubtotalAmount : updatedSubtotalValue,
                                             tax: currentTaxAmount = "0.00" === updatedTaxValue ? currentTaxAmount : updatedTaxValue,
                                             shippingLabel: null == (_currentShippingMetho8 = currentShippingMethod) ? void 0 : _currentShippingMetho8.label,
-                                            shippingIdentifier: null == (_currentShippingMetho9 = currentShippingMethod) ? void 0 : _currentShippingMetho9.identifier
+                                            shippingDetail: null == (_currentShippingMetho9 = currentShippingMethod) ? void 0 : _currentShippingMetho9.detail
                                         });
                                         return promise_ZalgoPromise.resolve(update);
                                     }));
@@ -8903,8 +8904,8 @@ window.spb = function(modules) {
                                                     var _method$amount;
                                                     return {
                                                         amount: (null == method || null == (_method$amount = method.amount) ? void 0 : _method$amount.currencyValue) || "0.00",
-                                                        detail: "",
-                                                        identifier: method.type,
+                                                        detail: method.type,
+                                                        identifier: (null == method ? void 0 : method.id) || "",
                                                         label: method.label
                                                     };
                                                 }));
@@ -8924,7 +8925,7 @@ window.spb = function(modules) {
                                                 merchantCapabilities: merchantCapabilities,
                                                 supportedNetworks: supportedNetworks,
                                                 requiredBillingContactFields: [ "postalAddress", "name", "phone" ],
-                                                requiredShippingContactFields: isShippingAddressRequired ? [ "postalAddress", "name", "phone", "email" ] : [],
+                                                requiredShippingContactFields: isShippingAddressRequired ? [ "postalAddress", "name", "phone", "email" ] : [ "name", "phone", "email" ],
                                                 shippingContact: null != shippingContact && shippingContact.givenName ? shippingContact : {},
                                                 shippingMethods: applePayShippingMethods || [],
                                                 lineItems: [],
@@ -9009,7 +9010,7 @@ window.spb = function(modules) {
                                                     subtotal: currentSubtotalAmount,
                                                     tax: currentTaxAmount,
                                                     shippingLabel: null == (_currentShippingMetho10 = currentShippingMethod) ? void 0 : _currentShippingMetho10.label,
-                                                    shippingIdentifier: null == (_currentShippingMetho11 = currentShippingMethod) ? void 0 : _currentShippingMetho11.identifier
+                                                    shippingDetail: null == (_currentShippingMetho11 = currentShippingMethod) ? void 0 : _currentShippingMetho11.detail
                                                 });
                                                 completePaymentMethodSelection(update);
                                             })), addEventListener("shippingmethodselected", (function(_ref8) {
@@ -9018,7 +9019,8 @@ window.spb = function(modules) {
                                                 onShippingChangeCallback({
                                                     orderID: orderID,
                                                     shippingContact: currentShippingContact,
-                                                    shippingMethod: shippingMethod
+                                                    shippingMethod: shippingMethod,
+                                                    callbackTrigger: "SHIPPING_OPTION"
                                                 }).then((function(update) {
                                                     currentShippingMethod = shippingMethod;
                                                     completeShippingMethodSelection(update);
@@ -9036,7 +9038,7 @@ window.spb = function(modules) {
                                                         subtotal: currentSubtotalAmount,
                                                         tax: currentTaxAmount,
                                                         shippingLabel: null == shippingMethod ? void 0 : shippingMethod.label,
-                                                        shippingIdentifier: null == (_currentShippingMetho12 = currentShippingMethod) ? void 0 : _currentShippingMetho12.identifier
+                                                        shippingDetail: null == (_currentShippingMetho12 = currentShippingMethod) ? void 0 : _currentShippingMetho12.detail
                                                     });
                                                     completeShippingMethodSelection(update);
                                                 }));
@@ -9046,18 +9048,20 @@ window.spb = function(modules) {
                                                 onShippingChangeCallback({
                                                     orderID: orderID,
                                                     shippingContact: shippingContact,
-                                                    shippingMethod: currentShippingMethod
+                                                    shippingMethod: currentShippingMethod,
+                                                    callbackTrigger: "SHIPPING_ADDRESS"
                                                 }).then((function(update) {
                                                     completeShippingContactSelection(update);
                                                 })).catch((function(err) {
                                                     handleApplePayError("shippingContactSelected", err);
                                                 }));
                                             })), addEventListener("paymentauthorized", (function(_ref10) {
+                                                var _applePayPayment$ship, _applePayPayment$bill;
                                                 var applePayPayment = _ref10.payment;
                                                 logApplePayEvent("paymentauthorized");
                                                 if (!applePayPayment) throw new Error("No payment received from Apple.");
-                                                applePayPayment.shippingContact && applePayPayment.shippingContact.countryCode && (applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase());
-                                                applePayPayment.billingContact && applePayPayment.billingContact.countryCode && (applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase());
+                                                null != applePayPayment && null != (_applePayPayment$ship = applePayPayment.shippingContact) && _applePayPayment$ship.countryCode && (applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase());
+                                                null != applePayPayment && null != (_applePayPayment$bill = applePayPayment.billingContact) && _applePayPayment$bill.countryCode && (applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase());
                                                 (function(orderID, clientID, applePayPayment) {
                                                     return callGraphQL({
                                                         name: "ApproveApplePayPayment",
@@ -13415,7 +13419,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.97", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.98", 
                     _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
                     _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
                     _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
