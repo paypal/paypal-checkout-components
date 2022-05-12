@@ -14,6 +14,9 @@ import { createApplePayRequest, isJSON, validateShippingContact, isZeroAmount } 
 
 const SUPPORTED_VERSION = 4;
 
+const SHIPPING_OPTION = 'SHIPPING_OPTION';
+const SHIPPING_ADDRESS = 'SHIPPING_ADDRESS';
+
 let clean;
 function setupApplePay() : ZalgoPromise<void> {
     return ZalgoPromise.resolve();
@@ -114,7 +117,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
         let currentShippingContact : ?ApplePayPaymentContact;
         let currentShippingMethod : ?ApplePayShippingMethod;
 
-        const onShippingChangeCallback = <T>({ orderID, shippingContact, shippingMethod = null } : {| orderID : string, shippingContact : ?ApplePayPaymentContact, shippingMethod? : ?ApplePayShippingMethod |}) : ZalgoPromise<T> => {
+        const onShippingChangeCallback = <T>({ orderID, shippingContact, shippingMethod = null, callbackTrigger } : {| orderID : string, shippingContact : ?ApplePayPaymentContact, shippingMethod? : ?ApplePayShippingMethod, callbackTrigger : string |}) : ZalgoPromise<T> => {
 
             if (!onShippingChange) {
                 const update = {
@@ -165,7 +168,8 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
             }
 
             const data = {
-                amount: {
+                callbackTrigger,
+                amount:           {
                     currency_code: currency,
                     value:         '0.00'
                 },
@@ -368,7 +372,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             logApplePayEvent('shippingmethodselected');
 
                             // patch updated amount
-                            onShippingChangeCallback<ApplePayShippingMethodUpdate>({ orderID, shippingContact: currentShippingContact, shippingMethod })
+                            onShippingChangeCallback<ApplePayShippingMethodUpdate>({ orderID, shippingContact: currentShippingContact, shippingMethod, callbackTrigger: SHIPPING_OPTION })
                                 .then(update => {
                                     currentShippingMethod = shippingMethod;
                                     completeShippingMethodSelection(update);
@@ -399,7 +403,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             logApplePayEvent('shippingcontactselected', shippingContact);
 
                             // patch updated shipping contact information
-                            onShippingChangeCallback<ApplePayShippingContactUpdate>({ orderID, shippingContact, shippingMethod: currentShippingMethod })
+                            onShippingChangeCallback<ApplePayShippingContactUpdate>({ orderID, shippingContact, shippingMethod: currentShippingMethod, callbackTrigger: SHIPPING_ADDRESS })
                                 .then(update => {
                                     completeShippingContactSelection(update);
                                 })

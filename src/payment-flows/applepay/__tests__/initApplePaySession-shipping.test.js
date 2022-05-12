@@ -337,6 +337,7 @@ describe('initApplePay', () => {
             forceRestAPI:             true,
             orderID:                  'mock-orderID',
             partnerAttributionID:     'APPLEPAY',
+            callbackTrigger:          'SHIPPING_ADDRESS',
             selected_shipping_option: {
                 amount: {
                     currency_code: 'USD',
