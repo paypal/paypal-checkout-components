@@ -56,6 +56,7 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.ZIMPLER ]:        (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.zimpler !== 'undefined'        && __FUNDING_ELIGIBILITY__.zimpler.eligible)) ? getZimplerConfig() : null,
             [ FUNDING.WECHATPAY ]:      (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.wechatpay !== 'undefined'      && __FUNDING_ELIGIBILITY__.wechatpay.eligible)) ? getWechatpayConfig() : null,
             [ FUNDING.OXXO ]:           (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.oxxo !== 'undefined'           && __FUNDING_ELIGIBILITY__.oxxo.eligible)) ? getOxxoConfig() : null,
+            [ FUNDING.BOLETO ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.boleto !== 'undefined'         && __FUNDING_ELIGIBILITY__.boleto.eligible)) ? getBoletoConfig() : null,
             [ FUNDING.BOLETOBANCARIO ]: (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.boletobancario !== 'undefined' && __FUNDING_ELIGIBILITY__.boletobancario.eligible)) ? getBoletoConfig() : null,
             [ FUNDING.MAXIMA ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.maxima !== 'undefined'         && __FUNDING_ELIGIBILITY__.maxima.eligible)) ? getMaximaConfig() : null,
             [ FUNDING.MERCADOPAGO ]:    (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.mercadopago !== 'undefined'    && __FUNDING_ELIGIBILITY__.mercadopago.eligible)) ? getMercadopagoConfig() : null,
