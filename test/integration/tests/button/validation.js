@@ -715,6 +715,13 @@ const buttonConfigs = [
 
             {
                 layout: `vertical`,
+                label:  `boletobancario`,
+                commit: true,
+                valid:  false
+            },
+
+            {
+                layout: `vertical`,
                 label:  `multibanco`,
                 commit: true,
                 valid:  false

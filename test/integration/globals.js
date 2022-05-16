@@ -79,6 +79,9 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     boleto: {
         eligible: false
     },
+    boletobancario: {
+        eligible: false
+    },
     multibanco: {
         eligible: false
     },
