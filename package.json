@@ -95,7 +95,7 @@
   },
   "devDependencies": {
     "@krakenjs/grabthar-release": "^2.0.0",
-    "@krakenjs/grumbler-scripts": "^6.0.2",
+    "@krakenjs/grumbler-scripts": "^7.0.0",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
     "@krakenjs/webpack-mem-compile": "^2.0.1",
     "babel-core": "^7.0.0-bridge.0",
