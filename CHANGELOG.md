@@ -1,3 +1,9 @@
+## <small>5.0.221 (2022-05-16)</small>
+
+* fix: rename boleto to match confirm-funding-source (#1943) ([59a80ca](https://github.com/paypal/paypal-checkout-components/commit/59a80ca)), closes [#1943](https://github.com/paypal/paypal-checkout-components/issues/1943)
+
+
+
 ## <small>5.0.220 (2022-05-11)</small>
 
 * fix: remove flush for CPL log (#1942) ([5956c14](https://github.com/paypal/paypal-checkout-components/commit/5956c14)), closes [#1942](https://github.com/paypal/paypal-checkout-components/issues/1942)
