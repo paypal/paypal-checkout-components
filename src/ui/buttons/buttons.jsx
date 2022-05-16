@@ -119,14 +119,12 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         }
     }
 
-    // will need to make this common for all upcoming fundng sources
     if (fundingSources.indexOf(FUNDING.EPS) !== -1) {
         if (inlineExperience) {
             fundingSources = [ FUNDING.EPS, ...fundingSources.filter(src => src !== FUNDING.EPS) ];
+        } else {
+            fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.EPS), FUNDING.EPS ];
         }
-        // else {
-        //     fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.CARD),  FUNDING.CARD ];
-        // }
     }
 
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });

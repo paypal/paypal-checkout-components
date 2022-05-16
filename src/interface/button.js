@@ -34,7 +34,7 @@ export const CardForm : LazyProtectedExport<CardFormComponent> = {
 };
 
 export const PaymentFields : LazyProtectedExport<PaymentFieldsComponent> = {
-    __get__: () => protectedExport(getPaymentFieldsComponent())
+    __get__: () => getPaymentFieldsComponent()
 };
 
 export const Menu : LazyProtectedExport<MenuComponent> = {
