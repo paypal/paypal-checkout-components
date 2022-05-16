@@ -1,3 +1,27 @@
+## <small>5.0.220 (2022-05-11)</small>
+
+* fix: remove flush for CPL log (#1942) ([5956c14](https://github.com/paypal/paypal-checkout-components/commit/5956c14)), closes [#1942](https://github.com/paypal/paypal-checkout-components/issues/1942)
+
+
+
+## <small>5.0.219 (2022-05-11)</small>
+
+* feat: add latency instrumentation logging for button render (#1920) ([1e21b08](https://github.com/paypal/paypal-checkout-components/commit/1e21b08)), closes [#1920](https://github.com/paypal/paypal-checkout-components/issues/1920)
+
+
+
+## <small>5.0.218 (2022-05-05)</small>
+
+* chore(release): 5.0.217 🎉 ([1d43996](https://github.com/paypal/paypal-checkout-components/commit/1d43996))
+
+
+
+## <small>5.0.217 (2022-05-05)</small>
+
+* Add default styling for InlineXO (#1936) ([8600fdb](https://github.com/paypal/paypal-checkout-components/commit/8600fdb)), closes [#1936](https://github.com/paypal/paypal-checkout-components/issues/1936)
+
+
+
 ## <small>5.0.216 (2022-05-04)</small>
 
 * Prevent click prerender for inline experience (#1934) ([aefdc10](https://github.com/paypal/paypal-checkout-components/commit/aefdc10)), closes [#1934](https://github.com/paypal/paypal-checkout-components/issues/1934)

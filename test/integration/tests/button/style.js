@@ -139,4 +139,38 @@ describe('paypal button color', () => {
 
         }).render('#testContainer');
     });
+
+    it('should allow custom label for inlinexo', (done) => {
+        const style = {
+            custom: {
+                label: 'Checkout'
+            }
+        };
+        const expectedStyle = {
+            custom: {
+                label: 'Checkout',
+                css: {
+                    'background-color': 'black',
+                    'height': '48px',
+                    'margin-bottom': '15px'
+                }
+            }
+        };
+        const expected = JSON.stringify(expectedStyle);
+        done = once(done);
+        window.paypal.Buttons({
+            style,
+            test: {
+                onRender() {
+                    if (JSON.stringify(style) !== expected) {
+                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ JSON.stringify(expected) }`));
+                    }
+                    done();
+                }
+            },
+
+            onError: done
+
+        }).render('#testContainer');
+    });
 });
