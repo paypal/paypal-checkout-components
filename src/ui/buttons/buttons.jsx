@@ -119,14 +119,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         }
     }
 
-    if (fundingSources.indexOf(FUNDING.EPS) !== -1) {
-        if (inlineExperience) {
-            fundingSources = [ FUNDING.EPS, ...fundingSources.filter(src => src !== FUNDING.EPS) ];
-        } else {
-            fundingSources = [ ...fundingSources.filter(src => src !== FUNDING.EPS), FUNDING.EPS ];
-        }
-    }
-
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
 
     const isWallet = (
