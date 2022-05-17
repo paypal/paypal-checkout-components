@@ -73,14 +73,14 @@ export function createVenmoExperiment() : ?Experiment {
         }
 
         if (isIos() && isSafari()) {
-            return createExperiment('enable_venmo_ios', 90);
+            return createExperiment('enable_venmo_ios', 100);
         }
 
         if (isAndroid() && isChrome()) {
-            return createExperiment('enable_venmo_android', 90);
+            return createExperiment('enable_venmo_android', 100);
         }
     } else {
-        return createExperiment('enable_venmo_desktop', 90);
+        return createExperiment('enable_venmo_desktop', 100);
     }
 }
 
