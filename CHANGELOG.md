@@ -1,3 +1,9 @@
+## <small>5.0.222 (2022-05-18)</small>
+
+* chore(deps): update actions/stale action to v5 (#1899) ([db265ad](https://github.com/paypal/paypal-checkout-components/commit/db265ad)), closes [#1899](https://github.com/paypal/paypal-checkout-components/issues/1899)
+
+
+
 ## <small>5.0.221 (2022-05-16)</small>
 
 * fix: rename boleto to match confirm-funding-source (#1943) ([59a80ca](https://github.com/paypal/paypal-checkout-components/commit/59a80ca)), closes [#1943](https://github.com/paypal/paypal-checkout-components/issues/1943)
