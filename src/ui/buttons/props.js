@@ -5,7 +5,7 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { values, uniqueID } from '@krakenjs/belter/src';
 import { type OrderCreateRequest, type FundingEligibilityType,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
-import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
+import { CURRENCY, FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
@@ -122,6 +122,40 @@ export type OnShippingAddressChangeData = {|
     orderID : string,
     payerID : string,
     paymentID? : string,
+    amount : {|
+        breakdown : {|
+            item_total : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |},
+            shipping : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |},
+            handling : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |},
+            tax_total : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |},
+            insurance : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |},
+            shipping_discount : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |},
+            discount : {|
+                currency_code : $Values<typeof CURRENCY>,
+                value : string
+            |}
+        |},
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
     shipping_address : OnShippingChangeAddress
 |};
 export type OnShippingAddressChangeActions = {|
