@@ -82,6 +82,7 @@ type OnShippingChangeAddress = {|
 |};
 
 type OnShippingChangeMethod = {|
+    id? : string,
     label : string,
     type : string,
     amount : {|
@@ -105,6 +106,47 @@ export type OnShippingChangeActions = {|
 |};
 
 export type OnShippingChange = (data : OnShippingChangeData, actions : OnShippingChangeActions) => ZalgoPromise<void> | void;
+
+export type ShippingOption = {|
+    id? : string,
+    label : string,
+    selected : boolean,
+    type : string,
+    amount : {|
+        currency_code : string,
+        value : string
+    |}
+|};
+
+export type OnShippingAddressChangeData = {|
+    orderID : string,
+    payerID : string,
+    paymentID? : string,
+    shipping_address : OnShippingChangeAddress
+|};
+export type OnShippingAddressChangeActions = {|
+    patch : () => ZalgoPromise<OrderGetResponse>,
+    query : () => string,
+    updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
+    updateTax : ({| taxAmount : string |})
+|};
+
+export type OnShippingAddressChange = (data : OnShippingAddressChangeData, actions : OnShippingAddressChangeActions) => ZalgoPromise<void> | void;
+
+export type OnShippingOptionsChangeData = {|
+    orderID : string,
+    payerID : string,
+    paymentID? : string,
+    selected_shipping_method : OnShippingChangeMethod
+|};
+export type OnShippingOptionsChangeActions = {|
+    patch : () => ZalgoPromise<OrderGetResponse>,
+    query : () => string,
+    updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
+    updateTax : ({| taxAmount : string |})
+|};
+
+export type OnShippingOptionsChange = (data : OnShippingOptionsChangeData, actions : OnShippingOptionsChangeActions) => ZalgoPromise<void> | void;
 
 export type OnCancelData = {|
     orderID : string,
@@ -257,6 +299,8 @@ export type RenderButtonProps = {|
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     personalization : ?Personalization,
     clientAccessToken : ?string,
     content? : ContentType,
@@ -306,6 +350,8 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     clientAccessToken? : ?string,
     nonce : string,
     merchantID? : $ReadOnlyArray<string>,
@@ -344,6 +390,8 @@ export type ButtonPropsInputs = {
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
+    onShippingAddressChange : ?Function,
+    onShippingOptionsChange : ?Function,
     personalization? : Personalization,
     clientAccessToken? : ?string,
     wallet? : ?Wallet,
@@ -515,6 +563,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         components = [ COMPONENTS.BUTTONS ],
         nonce,
         onShippingChange,
+        onShippingAddressChange,
+        onShippingOptionsChange,
         personalization,
         clientAccessToken,
         content,
@@ -561,7 +611,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, wallet, flow, applePaySupport, supportsPopups, supportedNativeBrowser })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
@@ -569,6 +619,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(props, style);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, personalization, content, wallet, flow,
         experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser, experience };
 }

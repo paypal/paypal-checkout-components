@@ -202,6 +202,16 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required: false
                 },
 
+                onShippingAddressChange: {
+                    type:     'function',
+                    required: false
+                },
+
+                onShippingOptionsChange: {
+                    type:     'function',
+                    required: false
+                },
+
                 clientMetadataID: {
                     type:       'string',
                     required:   false,
