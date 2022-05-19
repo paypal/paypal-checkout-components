@@ -17,6 +17,14 @@ window.paypal.Buttons({
 
     onShippingChange() {
         send(window.top.frames[0], 'onShippingChange');
+    },
+
+    onShippingAddressChange() {
+        send(window.top.frames[0], 'onShippingAddressChange');
+    },
+
+    onShippingOptionsChange() {
+        send(window.top.frames[0], 'onShippingOptionsChange');
     }
 
 }).render(document.body).then(button => {
