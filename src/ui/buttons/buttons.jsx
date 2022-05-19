@@ -103,6 +103,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
     const { custom, layout, shape, tagline } = style;
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label;
+    const fundingSourcesWithInlinePaymentFields = [ FUNDING.EPS ];
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
@@ -204,7 +205,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
             }
 
             {
-                (fundingSources.indexOf(FUNDING.EPS) !== -1)
+                (fundingSourcesWithInlinePaymentFields.some(fs => fundingSources.indexOf(fs) !== -1))
                     ? <div id="payment-fields-container" class="payment-fields-container" />
                     : null
             }
