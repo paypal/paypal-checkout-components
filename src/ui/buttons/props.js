@@ -120,35 +120,35 @@ export type ShippingOption = {|
 
 export type OnShippingAddressChangeData = {|
     orderID : string,
-    payerID : string,
+    payerID? : string,
     paymentID? : string,
-    amount : {|
-        breakdown : {|
-            item_total : {|
+    amount? : {|
+        breakdown? : {|
+            item_total? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |},
-            shipping : {|
+            shipping? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |},
-            handling : {|
+            handling? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |},
-            tax_total : {|
+            tax_total? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |},
-            insurance : {|
+            insurance? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |},
-            shipping_discount : {|
+            shipping_discount? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |},
-            discount : {|
+            discount? : {|
                 currency_code : $Values<typeof CURRENCY>,
                 value : string
             |}
