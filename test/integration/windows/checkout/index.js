@@ -55,6 +55,7 @@ if (action === 'checkout') {
         order:   { patch: () => ZalgoPromise.resolve() }
     };
 
+
     if (type === 'noReject') {
         // $FlowFixMe
         delete callbackActions.reject;
@@ -71,6 +72,7 @@ if (action === 'checkout') {
                 country_code: 'YY'
             }
         }, callbackActions);
+
     });
 
 } else if (action === 'cancel') {
