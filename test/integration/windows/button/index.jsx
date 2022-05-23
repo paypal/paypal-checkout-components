@@ -83,14 +83,6 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
             return window.xprops.onShippingChange(data, actions);
         },
 
-        onShippingAddressChange(data, actions) : ZalgoPromise<void> {
-            return window.xprops.onShippingAddressChange(data, actions);
-        },
-
-        onShippingOptionsChange(data, actions) : ZalgoPromise<void> {
-            return window.xprops.onShippingOptionsChange(data, actions);
-        },
-
         onClose:  () => {
             if (!approved) {
                 return window.xprops.onCancel();

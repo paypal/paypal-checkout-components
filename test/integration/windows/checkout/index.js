@@ -90,53 +90,6 @@ if (action === 'checkout') {
                 }
             }, onShippingChangeActions);
         }
-
-        if (window.xprops.onShippingAddressChange) {
-            window.xprops.onShippingAddressChange({
-                amount: {
-                    currency_code: "USD",
-                    value: "200.00",
-                    breakdown: {
-                        item_total: {
-                            currency_code: "USD",
-                            value: "180.00"
-                        },
-                        shipping: {
-                            currency_code: "USD",
-                            value: "5.00"
-                        },
-                        handling: {
-                            currency_code: "USD",
-                            value: "1.00"
-                        },
-                        tax_total: {
-                            currency_code: "USD",
-                            value: "20.00"
-                        }
-                    }
-                },
-                shipping_address: {
-                    city: "San Jose",
-                    state: "CA",
-                    country_code: "US",
-                    postal_code: "11111"
-                }
-            }, onShippingAddressChangeActions);
-        }
-
-        if (window.xprops.onShippingOptionsChange) {
-            window.xprops.onShippingOptionsChange({
-                selected_shipping_option: {
-                    label: "Shipping",
-                    type: "SHIPPING",
-                    amount: {
-                      value: "20.00",
-                      currency_code: "USD"
-                    }
-                  }
-            }, onShippingOptionsChangeActions);
-        }
-
     });
 
 } else if (action === 'cancel') {
