@@ -671,7 +671,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, onComplete, vault } = props || {};
 
                     const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
@@ -685,6 +685,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         layout,
                         locale,
                         merchantID,
+                        onComplete,
                         vault
                     } }) ? EXPERIENCE.INLINE : '';
                 }
