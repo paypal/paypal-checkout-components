@@ -49,29 +49,93 @@ if (action === 'checkout') {
 
 } else if (action === 'shippingChange') {
 
-    const callbackActions = {
+    const onShippingChangeActions = {
         reject:  () => { /* pass */ },
         resolve: () => ZalgoPromise.resolve(),
         order:   { patch: () => ZalgoPromise.resolve() }
     };
 
+    const onShippingAddressChangeActions = {
+        reject:  () => { /* pass */ },
+        resolve: () => ZalgoPromise.resolve(),
+        updateTax: ({ taxAmount }) => ZalgoPromise.resolve(taxAmount),
+        updateShippingOptions: ({ shippingOptions }) => ZalgoPromise.resolve(shippingOptions),
+        patch : () => ZalgoPromise.resolve(),
+        query : () => ZalgoPromise.resolve()
+    };
+
+    const onShippingOptionsChangeActions = {
+        reject:  () => { /* pass */ },
+        resolve: () => ZalgoPromise.resolve(),
+        updateShippingOptions: ({ shippingOptions }) => ZalgoPromise.resolve(shippingOptions),
+        patch : () => ZalgoPromise.resolve(),
+        query : () => ZalgoPromise.resolve()
+    };
+
 
     if (type === 'noReject') {
         // $FlowFixMe
-        delete callbackActions.reject;
+        delete onShippingChangeActions.reject;
     }
 
     window.xprops.payment().then(orderID => {
+        if (window.xprops.onShippingChange) {
+            window.xprops.onShippingChange({
+                orderID,
+                shipping_address: {
+                    city:         'XXXXX',
+                    state:        'YY',
+                    postal_code:  '11111',
+                    country_code: 'YY'
+                }
+            }, onShippingChangeActions);
+        }
 
-        return window.xprops.onShippingChange({
-            orderID,
-            shipping_address: {
-                city:         'XXXXX',
-                state:        'YY',
-                postal_code:  '11111',
-                country_code: 'YY'
-            }
-        }, callbackActions);
+        if (window.xprops.onShippingAddressChange) {
+            window.xprops.onShippingAddressChange({
+                amount: {
+                    currency_code: "USD",
+                    value: "200.00",
+                    breakdown: {
+                        item_total: {
+                            currency_code: "USD",
+                            value: "180.00"
+                        },
+                        shipping: {
+                            currency_code: "USD",
+                            value: "5.00"
+                        },
+                        handling: {
+                            currency_code: "USD",
+                            value: "1.00"
+                        },
+                        tax_total: {
+                            currency_code: "USD",
+                            value: "20.00"
+                        }
+                    }
+                },
+                shipping_address: {
+                    city: "San Jose",
+                    state: "CA",
+                    country_code: "US",
+                    postal_code: "11111"
+                }
+            }, onShippingAddressChangeActions);
+        }
+
+        if (window.xprops.onShippingOptionsChange) {
+            window.xprops.onShippingOptionsChange({
+                selected_shipping_option: {
+                    label: "Shipping",
+                    type: "SHIPPING",
+                    amount: {
+                      value: "20.00",
+                      currency_code: "USD"
+                    }
+                  }
+            }, onShippingOptionsChangeActions);
+        }
 
     });
 
