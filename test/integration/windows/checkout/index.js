@@ -55,24 +55,6 @@ if (action === 'checkout') {
         order:   { patch: () => ZalgoPromise.resolve() }
     };
 
-    const onShippingAddressChangeActions = {
-        reject:  () => { /* pass */ },
-        resolve: () => ZalgoPromise.resolve(),
-        updateTax: ({ taxAmount }) => ZalgoPromise.resolve(taxAmount),
-        updateShippingOptions: ({ shippingOptions }) => ZalgoPromise.resolve(shippingOptions),
-        patch : () => ZalgoPromise.resolve(),
-        query : () => ZalgoPromise.resolve()
-    };
-
-    const onShippingOptionsChangeActions = {
-        reject:  () => { /* pass */ },
-        resolve: () => ZalgoPromise.resolve(),
-        updateShippingOptions: ({ shippingOptions }) => ZalgoPromise.resolve(shippingOptions),
-        patch : () => ZalgoPromise.resolve(),
-        query : () => ZalgoPromise.resolve()
-    };
-
-
     if (type === 'noReject') {
         // $FlowFixMe
         delete onShippingChangeActions.reject;
