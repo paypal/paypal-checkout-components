@@ -6,3 +6,4 @@ export * from './dom';
 export * from './comms';
 export * from './session';
 export * from './sdk';
+export * from './perceived-latency-instrumentation';

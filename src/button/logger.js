@@ -5,9 +5,19 @@ import { FPTI_KEY, ENV, FUNDING, FPTI_USER_ACTION, COUNTRY } from '@paypal/sdk-c
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
 import type { LocaleType } from '../types';
-import { getLogger, setupLogger, isStorageStateFresh, isIOSSafari, isAndroidChrome } from '../lib';
-import { DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY,
-    FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY, FPTI_CUSTOM_KEY } from '../constants';
+import {
+    getLogger,
+    setupLogger,
+    isStorageStateFresh,
+    isIOSSafari,
+    isAndroidChrome,
+    prepareLatencyInstrumentationPayload,
+    getNavigationTimeOrigin
+} from '../lib';
+import {
+    DATA_ATTRIBUTES, FPTI_TRANSITION, FPTI_BUTTON_TYPE, FPTI_BUTTON_KEY,
+    FPTI_STATE, FPTI_CONTEXT_TYPE, AMPLITUDE_KEY, FPTI_CUSTOM_KEY
+} from '../constants';
 import type { GetQueriedEligibleFunding, OnShippingChange } from '../props';
 
 import type { ButtonStyle } from './props';
@@ -20,6 +30,11 @@ function getTemplateVersion() : string {
 function getClientVersion() : string {
     const clientVersion = document.body && document.body.getAttribute(`${ DATA_ATTRIBUTES.CLIENT_VERSION }`);
     return (clientVersion || 'unknown').replace(/[^a-zA-Z0-9]+/g, '_');
+}
+
+function getResponseStartTime() : number {
+    const startTime = document.body && document.body.getAttribute(DATA_ATTRIBUTES.RESPONSE_START_TIME);
+    return Number(startTime);
 }
 
 type ButtonLoggerOptions = {|
@@ -61,7 +76,6 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
 
     logger.addTrackingBuilder(() => {
         return {
-            [FPTI_KEY.STATE]:                        FPTI_STATE.BUTTON,
             [FPTI_KEY.CONTEXT_TYPE]:                 FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID,
             [FPTI_KEY.CONTEXT_ID]:                   buttonSessionID,
             [FPTI_KEY.BUTTON_SESSION_UID]:           buttonSessionID,
@@ -124,7 +138,27 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             logger.info(`button_render_wallet_instrument_${ walletInstrument }`);
         }
 
+        if (window.performance) {
+            try {
+                const responseStartTime = getResponseStartTime();
+                const responseEndTime = getNavigationTimeOrigin() + performance.getEntriesByName('buttons-response-received').pop().startTime;
+                const cplPhases = prepareLatencyInstrumentationPayload(responseStartTime, responseEndTime);
+                logger.info('CPL_LATENCY_METRICS_SECOND_RENDER');
+                logger.track({
+                    [FPTI_KEY.STATE]:                 'CPL_LATENCY_METRICS',
+                    [FPTI_KEY.TRANSITION]:            'process_client_metrics',
+                    [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons',
+                    [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplPhases?.comp || {})
+                });
+            } catch (e) {
+                logger.info(`button_render_CPL_instrumentation_log_error`);
+            }
+        } else {
+            logger.info(`button_render_CPL_instrumentation_not_executed`);
+        }
+
         logger.track({
+            [FPTI_KEY.STATE]:                           FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:                      FPTI_TRANSITION.BUTTON_LOAD,
             [FPTI_KEY.FUNDING_LIST]:                    fundingSources.join(':'),
             [FPTI_KEY.FI_LIST]:                         walletInstruments.join(':'),
