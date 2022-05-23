@@ -192,9 +192,11 @@ export type OnShippingAddressChangeData = {|
     |},
     shipping_address : OnShippingChangeAddress
 |};
+
+export type Query = {| |};
 export type OnShippingAddressChangeActions = {|
     patch : () => ZalgoPromise<OrderGetResponse>,
-    query : () => string,
+    query : () => $ReadOnlyArray<Query>,
     updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
     updateTax : ({| taxAmount : string |})
 |};
