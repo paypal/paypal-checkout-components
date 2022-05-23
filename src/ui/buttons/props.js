@@ -81,7 +81,7 @@ type OnShippingChangeAddress = {|
     postal_code : string
 |};
 
-type OnShippingChangeMethod = {|
+type OnShippingChangeOption = {|
     id? : string,
     label : string,
     type : string,
@@ -96,7 +96,7 @@ export type OnShippingChangeData = {|
     payerID : string,
     paymentID? : string,
     shipping_address : OnShippingChangeAddress,
-    selected_shipping_method : OnShippingChangeMethod,
+    selected_shipping_option : OnShippingChangeOption,
     amount? : {|
         breakdown? : {|
             item_total? : {|
@@ -205,7 +205,7 @@ export type OnShippingOptionsChangeData = {|
     orderID : string,
     payerID : string,
     paymentID? : string,
-    selected_shipping_method : OnShippingChangeMethod
+    selected_shipping_option : OnShippingChangeOption
 |};
 export type OnShippingOptionsChangeActions = {|
     patch : () => ZalgoPromise<OrderGetResponse>,
