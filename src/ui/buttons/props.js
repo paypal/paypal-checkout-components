@@ -154,16 +154,19 @@ export type ShippingOption = {|
     |}
 |};
 
+export type ON_SHIPPING_CHANGE_EVENT = 'add' | 'replace';
+
 export type OnShippingAddressChangeData = {|
     orderID : string,
     payerID? : string,
     paymentID? : string,
     amount? : AmountBreakdown,
+    event? : ON_SHIPPING_CHANGE_EVENT,
     shipping_address : OnShippingChangeAddress
 |};
 
 export type Query = {|
-    op : string,
+    op : ON_SHIPPING_CHANGE_EVENT,
     path : string,
     value : {||}
 |};
