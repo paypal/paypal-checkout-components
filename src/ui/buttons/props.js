@@ -91,46 +91,48 @@ type OnShippingChangeOption = {|
     |}
 |};
 
+export type AmountBreakdown = {|
+    breakdown? : {|
+        item_total? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        shipping? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        handling? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        tax_total? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        insurance? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        shipping_discount? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        discount? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |}
+    |},
+    currency_code : $Values<typeof CURRENCY>,
+    value : string
+|};
+
 export type OnShippingChangeData = {|
     orderID : string,
     payerID : string,
     paymentID? : string,
     shipping_address : OnShippingChangeAddress,
     selected_shipping_option : OnShippingChangeOption,
-    amount? : {|
-        breakdown? : {|
-            item_total? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            shipping? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            handling? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            tax_total? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            insurance? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            shipping_discount? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            discount? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |}
-        |},
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
+    amount? : AmountBreakdown,
 |};
 
 export type OnShippingChangeActions = {|
@@ -156,44 +158,15 @@ export type OnShippingAddressChangeData = {|
     orderID : string,
     payerID? : string,
     paymentID? : string,
-    amount? : {|
-        breakdown? : {|
-            item_total? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            shipping? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            handling? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            tax_total? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            insurance? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            shipping_discount? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |},
-            discount? : {|
-                currency_code : $Values<typeof CURRENCY>,
-                value : string
-            |}
-        |},
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
+    amount? : AmountBreakdown,
     shipping_address : OnShippingChangeAddress
 |};
 
-export type Query = {| |};
+export type Query = {|
+    op : string,
+    path : string,
+    value : {||}
+|};
 export type OnShippingAddressChangeActions = {|
     patch : () => ZalgoPromise<OrderGetResponse>,
     query : () => $ReadOnlyArray<Query>,
