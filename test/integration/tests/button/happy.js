@@ -481,7 +481,12 @@ for (const flow of [ 'popup', 'iframe' ]) {
             window.paypal.Buttons({
 
                 test: { flow, action: 'shippingChange' },
-
+                style: {
+                    custom: {
+                        label: 'Checkout'
+                    }
+                },
+                experience: 'inline',
                 createOrder(data, actions) : string | ZalgoPromise<string> {
                     return actions.order.create({
                         purchase_units: [
@@ -499,8 +504,8 @@ for (const flow of [ 'popup', 'iframe' ]) {
                     return done();
                 },
 
-                onApprove() : void {
-                    return done(new Error('Expected onApprove to not be called'));
+                onComplete() : void {
+                    return done(new Error('Expected onComplete to not be called'));
                 },
 
                 onCancel() : void {
