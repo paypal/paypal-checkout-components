@@ -91,7 +91,7 @@ type OnShippingChangeOption = {|
     |}
 |};
 
-export type AmountBreakdown = {|
+export type ShippingAmount = {|
     breakdown? : {|
         item_total? : {|
             currency_code : $Values<typeof CURRENCY>,
@@ -132,7 +132,7 @@ export type OnShippingChangeData = {|
     paymentID? : string,
     shipping_address : OnShippingChangeAddress,
     selected_shipping_option : OnShippingChangeOption,
-    amount? : AmountBreakdown,
+    amount? : ShippingAmount,
 |};
 
 export type OnShippingChangeActions = {|
@@ -160,7 +160,7 @@ export type OnShippingAddressChangeData = {|
     orderID : string,
     payerID? : string,
     paymentID? : string,
-    amount? : AmountBreakdown,
+    amount? : ShippingAmount,
     event? : ON_SHIPPING_CHANGE_EVENT,
     shipping_address : OnShippingChangeAddress
 |};
