@@ -173,6 +173,7 @@ export type Query = {|
 export type OnShippingAddressChangeActions = {|
     patch : () => ZalgoPromise<OrderGetResponse>,
     query : () => $ReadOnlyArray<Query>,
+    updateShippingDiscount : ({| discountAmount : string |}) => ZalgoPromise<void> | void,
     updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
     updateTax : ({| taxAmount : string |})
 |};
@@ -188,6 +189,7 @@ export type OnShippingOptionsChangeData = {|
 export type OnShippingOptionsChangeActions = {|
     patch : () => ZalgoPromise<OrderGetResponse>,
     query : () => string,
+    updateShippingDiscount : ({| discountAmount : string |}) => ZalgoPromise<void> | void,
     updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
     updateTax : ({| taxAmount : string |})
 |};
