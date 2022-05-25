@@ -1,3 +1,9 @@
+## <small>5.0.223 (2022-05-25)</small>
+
+* Add new shipping callbacks (#1946) ([e473c0f](https://github.com/paypal/paypal-checkout-components/commit/e473c0f)), closes [#1946](https://github.com/paypal/paypal-checkout-components/issues/1946)
+
+
+
 ## <small>5.0.222 (2022-05-18)</small>
 
 * chore(deps): update actions/stale action to v5 (#1899) ([db265ad](https://github.com/paypal/paypal-checkout-components/commit/db265ad)), closes [#1899](https://github.com/paypal/paypal-checkout-components/issues/1899)
