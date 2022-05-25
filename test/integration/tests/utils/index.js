@@ -40,6 +40,7 @@ describe('isInlineXOEligible', () => {
             },
             layout: BUTTON_LAYOUT.VERTICAL,
             locale: { country: COUNTRY.US, lang: 'en' },
+            onComplete: () => true,
             vault:  false
         };
     });
@@ -114,6 +115,14 @@ describe('isInlineXOEligible', () => {
 
         if (isInlineXOEligible({ props })) {
             throw new Error(`Expected merchantID to not be set to be ineligible.`);
+        }
+    });
+   
+    it('should be ineligible if onComplete is not set', () => {
+        props.onComplete = undefined;
+
+        if (isInlineXOEligible({ props })) {
+            throw new Error(`Expected onComplete not be set to be ineligible.`);
         }
     });
 });

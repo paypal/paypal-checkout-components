@@ -107,6 +107,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const {
                 fundingSource,
                 onShippingChange,
+                onShippingAddressChange,
+                onShippingOptionsChange,
                 style = {},
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
@@ -133,7 +135,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             const platform           = getPlatform();
             const components         = getComponents();
 
-            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment })) {
+            if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment })) {
                 return {
                     eligible: true
                 };
@@ -163,7 +165,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
 
                 validate: ({ props }) => {
-                    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
+                    const { fundingSource, onShippingChange, onShippingAddressChange, onShippingOptionsChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
                         applePaySupport, supportsPopups, supportedNativeBrowser, createBillingAgreement, createSubscription } = props;
 
                     const flow = determineFlow({ createBillingAgreement, createSubscription });
@@ -172,7 +174,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     const platform           = getPlatform();
                     const components         = getComponents();
 
-                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser })) {
+                    if (fundingSource && !isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser })) {
                         throw new Error(`${ fundingSource } is not eligible`);
                     }
                 }
@@ -252,6 +254,24 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             onShippingChange: {
                 type:       'function',
                 required:   false,
+                queryParam: true,
+                queryValue: ({ value }) => {
+                    return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
+                }
+            },
+
+            onShippingAddressChange: {
+                type:     'function',
+                required: false,
+                queryParam: true,
+                queryValue: ({ value }) => {
+                    return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
+                }
+            },
+
+            onShippingOptionsChange: {
+                type:     'function',
+                required: false,
                 queryParam: true,
                 queryValue: ({ value }) => {
                     return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
@@ -651,7 +671,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, onComplete, vault } = props || {};
 
                     const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
@@ -665,6 +685,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         layout,
                         locale,
                         merchantID,
+                        onComplete,
                         vault
                     } }) ? EXPERIENCE.INLINE : '';
                 }

@@ -79,8 +79,14 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
             // pass
         },
 
-        onShippingChange(data, actions) : ZalgoPromise<void> {
-            return window.xprops.onShippingChange(data, actions);
+        onShippingChange(data, actions) : ZalgoPromise<void> | void {
+            if (window.xprops.onShippingChange) {
+                return window.xprops.onShippingChange(data, actions);
+            } else if (data.shipping_address && window.xprops.onShippingAddressChange) {
+                return window.xprops.onShippingAddressChange(data, actions);
+            } else if (data.selected_shipping_option && window.xprops.onShippingOptionsChange) {
+                return window.xprops.onShippingOptionsChange(data, actions);
+            }
         },
 
         onClose:  () => {

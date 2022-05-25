@@ -12,7 +12,7 @@ import { ValidationError } from '../../lib';
 
 import { getButtonDesign } from './buttonDesigns';
 import { ButtonDesignExperimentScriptWrapper } from './buttonDesigns/script';
-import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange } from './props';
+import { normalizeButtonProps, type ButtonPropsInputs, type OnShippingChange, type OnShippingAddressChange, type OnShippingOptionsChange } from './props';
 import { Style } from './style';
 import { Button } from './button';
 import { TagLine } from './tagline';
@@ -22,11 +22,13 @@ import { PoweredByPayPal } from './poweredBy';
 type GetWalletInstrumentOptions = {|
     wallet : ?Wallet,
     fundingSource : $Values<typeof FUNDING>,
-    onShippingChange : ?OnShippingChange
+    onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange
 |};
 
-function getWalletInstrument({ wallet, fundingSource, onShippingChange } : GetWalletInstrumentOptions) : ?WalletInstrument {
-    if (!isWalletFundingEligible({ wallet, onShippingChange })) {
+function getWalletInstrument({ wallet, fundingSource, onShippingChange, onShippingAddressChange, onShippingOptionsChange } : GetWalletInstrumentOptions) : ?WalletInstrument {
+    if (!isWalletFundingEligible({ wallet, onShippingChange, onShippingAddressChange, onShippingOptionsChange })) {
         return;
     }
 
@@ -48,14 +50,16 @@ type GetWalletInstrumentsOptions = {|
     wallet : ?Wallet,
     fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     layout : $Values<typeof BUTTON_LAYOUT>
 |};
 
-function getWalletInstruments({ wallet, layout, fundingSources, onShippingChange } : GetWalletInstrumentsOptions) : {| [$Values<typeof FUNDING>] : WalletInstrument |} {
+function getWalletInstruments({ wallet, layout, fundingSources, onShippingChange, onShippingAddressChange, onShippingOptionsChange } : GetWalletInstrumentsOptions) : {| [$Values<typeof FUNDING>] : WalletInstrument |} {
 
     const instruments = {};
     for (const source of fundingSources) {
-        const instrument = getWalletInstrument({ wallet, fundingSource: source, onShippingChange });
+        const instrument = getWalletInstrument({ wallet, fundingSource: source, onShippingChange, onShippingAddressChange, onShippingOptionsChange });
 
         if (instrument) {
             instruments[source] = instrument;
@@ -99,10 +103,11 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
-        nonce, components, onShippingChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
+        nonce, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
         supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
     const { custom, layout, shape, tagline } = style;
-    const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label;
+ 
+    const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label && custom.label.length !== 0;
 
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
@@ -119,7 +124,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         }
     }
 
-    const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange });
+    const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange, onShippingAddressChange, onShippingOptionsChange });
 
     const isWallet = (
         flow === BUTTON_FLOW.PURCHASE &&
@@ -171,6 +176,8 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         fundingEligibility={ fundingEligibility }
                         wallet={ wallet }
                         onShippingChange={ onShippingChange }
+                        onShippingAddressChange={ onShippingAddressChange }
+                        onShippingOptionsChange={ onShippingOptionsChange }
                         onClick={ onClick }
                         userIDToken={ userIDToken }
                         personalization={ personalization }

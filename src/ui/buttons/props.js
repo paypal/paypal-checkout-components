@@ -5,7 +5,7 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { values, uniqueID } from '@krakenjs/belter/src';
 import { type OrderCreateRequest, type FundingEligibilityType,
     type OrderGetResponse, type OrderCaptureResponse, type OrderAuthorizeResponse } from '@paypal/sdk-client/src';
-import { FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
+import { CURRENCY, FUNDING, PLATFORM, INTENT, COMMIT, VAULT,
     ENV, COUNTRY, LANG, COUNTRY_LANGS, type LocaleType, CARD, COMPONENTS } from '@paypal/sdk-constants/src';
 import { type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { LOGO_COLOR } from '@paypal/sdk-logos/src';
@@ -81,7 +81,8 @@ type OnShippingChangeAddress = {|
     postal_code : string
 |};
 
-type OnShippingChangeMethod = {|
+type OnShippingChangeOption = {|
+    id? : string,
     label : string,
     type : string,
     amount : {|
@@ -90,12 +91,98 @@ type OnShippingChangeMethod = {|
     |}
 |};
 
+export type ON_SHIPPING_CHANGE_EVENT = 'add' | 'replace';
+
+export type ShippingOption = {|
+    id? : string,
+    label : string,
+    selected : boolean,
+    type : string,
+    amount : {|
+        currency_code : string,
+        value : string
+    |}
+|};
+
+export type Query = {|
+    op : ON_SHIPPING_CHANGE_EVENT,
+    path : string,
+    value : mixed
+|};
+
+export type Breakdown = {|
+    item_total? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
+    shipping? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
+    handling? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
+    tax_total? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
+    insurance? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
+    shipping_discount? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |},
+    discount? : {|
+        currency_code : $Values<typeof CURRENCY>,
+        value : string
+    |}
+|};
+
+export type ShippingAmount = {|
+    breakdown? : {|
+        item_total? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        shipping? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        handling? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        tax_total? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        insurance? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        shipping_discount? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |},
+        discount? : {|
+            currency_code : $Values<typeof CURRENCY>,
+            value : string
+        |}
+    |},
+    currency_code : $Values<typeof CURRENCY>,
+    value : string
+|};
+
 export type OnShippingChangeData = {|
     orderID : string,
     payerID : string,
     paymentID? : string,
     shipping_address : OnShippingChangeAddress,
-    selected_shipping_method : OnShippingChangeMethod
+    selected_shipping_option : OnShippingChangeOption,
+    amount? : ShippingAmount,
 |};
 
 export type OnShippingChangeActions = {|
@@ -105,6 +192,41 @@ export type OnShippingChangeActions = {|
 |};
 
 export type OnShippingChange = (data : OnShippingChangeData, actions : OnShippingChangeActions) => ZalgoPromise<void> | void;
+
+export type OnShippingAddressChangeData = {|
+    orderID : string,
+    payerID? : string,
+    paymentID? : string,
+    amount? : ShippingAmount,
+    event? : ON_SHIPPING_CHANGE_EVENT,
+    shipping_address : OnShippingChangeAddress
+|};
+
+export type OnShippingAddressChangeActions = {|
+    patch : () => ZalgoPromise<OrderGetResponse>,
+    query : () => $ReadOnlyArray<Query>,
+    updateShippingDiscount : ({| discountAmount : string |}) => ZalgoPromise<void> | void,
+    updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
+    updateTax : ({| taxAmount : string |})
+|};
+
+export type OnShippingAddressChange = (data : OnShippingAddressChangeData, actions : OnShippingAddressChangeActions) => ZalgoPromise<void> | void;
+
+export type OnShippingOptionsChangeData = {|
+    orderID : string,
+    payerID : string,
+    paymentID? : string,
+    selected_shipping_option : OnShippingChangeOption
+|};
+export type OnShippingOptionsChangeActions = {|
+    patch : () => ZalgoPromise<OrderGetResponse>,
+    query : () => string,
+    updateShippingDiscount : ({| discountAmount : string |}) => ZalgoPromise<void> | void,
+    updateShippingOptions : ({| shippingOptions : $ReadOnlyArray<ShippingOption> |}) => ZalgoPromise<void> | void,
+    updateTax : ({| taxAmount : string |})
+|};
+
+export type OnShippingOptionsChange = (data : OnShippingOptionsChangeData, actions : OnShippingOptionsChangeActions) => ZalgoPromise<void> | void;
 
 export type OnCancelData = {|
     orderID : string,
@@ -257,6 +379,8 @@ export type RenderButtonProps = {|
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     personalization : ?Personalization,
     clientAccessToken : ?string,
     content? : ContentType,
@@ -306,6 +430,8 @@ export type ButtonProps = {|
     sessionID : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     clientAccessToken? : ?string,
     nonce : string,
     merchantID? : $ReadOnlyArray<string>,
@@ -344,6 +470,8 @@ export type ButtonPropsInputs = {
     nonce : string,
     components : $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     onShippingChange : ?Function,
+    onShippingAddressChange : ?Function,
+    onShippingOptionsChange : ?Function,
     personalization? : Personalization,
     clientAccessToken? : ?string,
     wallet? : ?Wallet,
@@ -515,6 +643,8 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         components = [ COMPONENTS.BUTTONS ],
         nonce,
         onShippingChange,
+        onShippingAddressChange,
+        onShippingOptionsChange,
         personalization,
         clientAccessToken,
         content,
@@ -561,7 +691,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
             throw new Error(`Invalid funding source: ${ fundingSource }`);
         }
 
-        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser })) {
+        if (!isFundingEligible(fundingSource, { platform, fundingSource, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, wallet, flow, applePaySupport, supportsPopups, supportedNativeBrowser })) {
             throw new Error(`Funding Source not eligible: ${ fundingSource }`);
         }
     }
@@ -569,6 +699,6 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
     style = normalizeButtonStyle(props, style);
 
     return { clientID, fundingSource, style, locale, remembered, env, fundingEligibility, platform, clientAccessToken,
-        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, personalization, content, wallet, flow,
+        buttonSessionID, commit, sessionID, nonce, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, personalization, content, wallet, flow,
         experiment, vault, userIDToken, applePay, applePaySupport, supportsPopups, supportedNativeBrowser, experience };
 }

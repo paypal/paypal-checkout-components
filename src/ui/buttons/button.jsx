@@ -13,7 +13,7 @@ import { getFundingConfig } from '../../funding';
 import { DesignExperimentLabel } from '../../funding/paypal/template';
 
 import { getButtonDesign } from './buttonDesigns';
-import type { ButtonStyle, Personalization, OnShippingChange } from './props';
+import type { ButtonStyle, Personalization, OnShippingChange, OnShippingAddressChange, OnShippingOptionsChange } from './props';
 import { Spinner } from './spinner';
 import { MenuButton } from './menu-button';
 
@@ -27,6 +27,8 @@ type IndividualButtonProps = {|
     wallet? : ?Wallet,
     fundingEligibility : FundingEligibilityType,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     i : number,
     nonce : string,
     userIDToken : ?string,

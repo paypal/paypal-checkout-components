@@ -475,6 +475,81 @@ for (const flow of [ 'popup', 'iframe' ]) {
             }).render('#testContainer');
         });
 
+        it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingAddressChange', (done) => {
+            done = once(done);
+
+            window.paypal.Buttons({
+
+                test: { flow, action: 'shippingChange' },
+                style: {
+                    custom: {
+                        label: 'Checkout'
+                    }
+                },
+                experience: 'inline',
+                createOrder(data, actions) : string | ZalgoPromise<string> {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
+                                }
+                            }
+                        ]
+                    });
+                },
+
+                onShippingAddressChange() : void {
+                    return done();
+                },
+
+                onComplete() : void {
+                    return done(new Error('Expected onComplete to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
+        it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingOptionsChange', (done) => {
+            done = once(done);
+
+            window.paypal.Buttons({
+
+                test: { flow, action: 'shippingChange' },
+
+                createOrder(data, actions) : string | ZalgoPromise<string> {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    currency_code: 'USD',
+                                    value:         '0.01'
+                                }
+                            }
+                        ]
+                    });
+                },
+
+                onShippingOptionsChange() : void {
+                    return done();
+                },
+
+                onApprove() : void {
+                    return done(new Error('Expected onApprove to not be called'));
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+
+            }).render('#testContainer');
+        });
+
         it('should render a button into a container and click on the button, call the REST api via actions.order with an object to create an order, then call onShippingChange and call actions.reject', (done) => {
             done = once(done);
 
