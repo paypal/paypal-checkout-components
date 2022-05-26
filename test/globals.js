@@ -82,6 +82,9 @@ const fundingEligibility = {
     boleto: {
         eligible: false
     },
+    boletobancario: {
+        eligible: false
+    },
     multibanco: {
         eligible: false
     },

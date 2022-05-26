@@ -73,14 +73,14 @@ export function createVenmoExperiment() : ?Experiment {
         }
 
         if (isIos() && isSafari()) {
-            return createExperiment('enable_venmo_ios', 90);
+            return createExperiment('enable_venmo_ios', 100);
         }
 
         if (isAndroid() && isChrome()) {
-            return createExperiment('enable_venmo_android', 90);
+            return createExperiment('enable_venmo_android', 100);
         }
     } else {
-        return createExperiment('enable_venmo_desktop', 90);
+        return createExperiment('enable_venmo_desktop', 100);
     }
 }
 
@@ -151,7 +151,7 @@ export function getVenmoAppLabelExperiment() : EligibilityExperiment  {
 }
 
 export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values<typeof FUNDING>> {
-    const { fundingSource, onShippingChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
+    const { fundingSource, onShippingChange, onShippingAddressChange, onShippingOptionsChange, style = {}, fundingEligibility = getRefinedFundingEligibility(),
         experiment = getVenmoExperiment(), applePaySupport, supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(), createBillingAgreement, createSubscription } = props;
 
@@ -161,7 +161,7 @@ export function getRenderedButtons(props : ButtonProps) : $ReadOnlyArray<$Values
     const platform           = getPlatform();
     const components         = getComponents();
 
-    const renderedButtons = determineEligibleFunding({ fundingSource, remembered, layout, platform, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
+    const renderedButtons = determineEligibleFunding({ fundingSource, remembered, layout, platform, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     return renderedButtons;
 }
 
@@ -306,11 +306,12 @@ type InlineCheckoutEligibilityProps = {|
     layout : $Values<typeof BUTTON_LAYOUT>,
     locale : LocaleType,
     merchantID? : $ReadOnlyArray<string>,
+    onComplete? : Function,
     vault : boolean
 |};
 
 export function isInlineXOEligible({ props } : {| props : InlineCheckoutEligibilityProps |}) : boolean {
-    const { commit, currency, createBillingAgreement, disableFunding, fundingEligibility, layout, locale, merchantID, vault } = props;
+    const { commit, currency, createBillingAgreement, disableFunding, fundingEligibility, layout, locale, merchantID, onComplete, vault } = props;
 
     const isEligible = (
         locale.country === COUNTRY.US &&
@@ -321,6 +322,7 @@ export function isInlineXOEligible({ props } : {| props : InlineCheckoutEligibil
         (fundingEligibility?.card?.eligible || false) &&
         layout === BUTTON_LAYOUT.VERTICAL &&
         merchantID?.length === 0 &&
+        Boolean(onComplete) &&
         vault === false
     );
 

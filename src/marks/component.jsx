@@ -8,7 +8,7 @@ import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { getRememberedFunding } from '@paypal/funding-components/src';
 import { getComponents, getFundingEligibility, getEnv } from '@paypal/sdk-client/src';
 
-import type { OnShippingChange } from '../ui/buttons/props';
+import type { OnShippingChange, OnShippingAddressChange, OnShippingOptionsChange } from '../ui/buttons/props';
 import { BUTTON_LAYOUT, BUTTON_FLOW } from '../constants';
 import { determineEligibleFunding, isFundingEligible } from '../funding';
 import { isSupportedNativeBrowser, getVenmoExperiment } from '../zoid/buttons/util';
@@ -24,13 +24,15 @@ type MarksInstance = {|
 
 type MarksProps = {|
     fundingSource? : ?$Values<typeof FUNDING>,
-    onShippingChange? : OnShippingChange
+    onShippingChange? : OnShippingChange,
+    onShippingAddressChange? : OnShippingAddressChange,
+    onShippingOptionsChange? : OnShippingOptionsChange
 |};
 
 export type MarksComponent = (MarksProps) => MarksInstance;
 
 export const getMarksComponent : () => MarksComponent = memoize(() => {
-    function Marks({ fundingSource, onShippingChange } : MarksProps = {}) : MarksInstance {
+    function Marks({ fundingSource, onShippingChange, onShippingAddressChange, onShippingOptionsChange } : MarksProps = {}) : MarksInstance {
 
         const height = DEFAULT_HEIGHT;
         const fundingEligibility = getFundingEligibility();
@@ -51,7 +53,7 @@ export const getMarksComponent : () => MarksComponent = memoize(() => {
                 return true;
             }
 
-            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
+            return isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
         };
 
         const render = (container) => {

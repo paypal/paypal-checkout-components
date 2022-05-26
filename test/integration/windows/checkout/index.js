@@ -49,29 +49,37 @@ if (action === 'checkout') {
 
 } else if (action === 'shippingChange') {
 
-    const callbackActions = {
+    const onShippingChangeActions = {
         reject:  () => { /* pass */ },
         resolve: () => ZalgoPromise.resolve(),
         order:   { patch: () => ZalgoPromise.resolve() }
     };
 
-
     if (type === 'noReject') {
         // $FlowFixMe
-        delete callbackActions.reject;
+        delete onShippingChangeActions.reject;
     }
 
     window.xprops.payment().then(orderID => {
-
-        return window.xprops.onShippingChange({
-            orderID,
-            shipping_address: {
-                city:         'XXXXX',
-                state:        'YY',
-                postal_code:  '11111',
-                country_code: 'YY'
-            }
-        }, callbackActions);
+        if (window.xprops.onShippingChange) {
+            window.xprops.onShippingChange({
+                orderID,
+                shipping_address: {
+                    city:         'XXXXX',
+                    state:        'YY',
+                    postal_code:  '11111',
+                    country_code: 'YY'
+                },
+                selected_shipping_option: {
+                    label: "Shipping",
+                    type: "SHIPPING",
+                    amount: {
+                      value: "20.00",
+                      currency_code: "USD"
+                    }
+                }
+            }, onShippingChangeActions);
+        }
 
     });
 
