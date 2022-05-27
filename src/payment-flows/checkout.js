@@ -247,10 +247,10 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                     .catch(noop);
             },
 
-            onAuth: ({ accessToken }) => {
+            onAuth: ({ accessToken, doLSATCapture }) => {
                 const access_token = accessToken ? accessToken : buyerAccessToken;
 
-                return onAuth({ accessToken: access_token }).then(token => {
+                return onAuth({ accessToken: access_token, doLSATCapture }).then(token => {
                     buyerAccessToken = token;
                 });
             },
