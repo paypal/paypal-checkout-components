@@ -677,7 +677,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         eligible: false
                     };
 
-                    let alphaEligible = false;
+                    let alphaEligible = true;
                     if (env === 'sandbox') {
                         const validMerchantIDs = [
                             'PJEHAEK4YBEDJ',
@@ -687,7 +687,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             'RB28JB2TP9RA4'
                         ];
                         const eligibleMerchantID = merchantID && merchantID.length && merchantID.reduce((acc, id) => {
-                            return acc || validMerchantIDs.indexOf(id) !== -1;
+                            return acc && validMerchantIDs.indexOf(id) !== -1;
                         }, false);
 
                         alphaEligible = clientID === 'AbUf2xGyVtp8HedZjyx9we1V2eRV9-Q7bLTVfr9Y-FFpG8dbWAaQ0AFqeh2dq_HYHrV_1GUPXGv6GMKp'
