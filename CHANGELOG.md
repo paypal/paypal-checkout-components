@@ -1,3 +1,9 @@
+## <small>5.0.224 (2022-06-01)</small>
+
+* Inline XO: Production Alpha eligibility ([7bcf14c](https://github.com/paypal/paypal-checkout-components/commit/7bcf14c))
+
+
+
 ## <small>5.0.223 (2022-05-25)</small>
 
 * Add new shipping callbacks (#1946) ([e473c0f](https://github.com/paypal/paypal-checkout-components/commit/e473c0f)), closes [#1946](https://github.com/paypal/paypal-checkout-components/issues/1946)
