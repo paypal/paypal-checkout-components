@@ -692,6 +692,17 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
                         alphaEligible = clientID === 'AbUf2xGyVtp8HedZjyx9we1V2eRV9-Q7bLTVfr9Y-FFpG8dbWAaQ0AFqeh2dq_HYHrV_1GUPXGv6GMKp'
                             && eligibleMerchantID;
+                    } else if (env === 'production') {
+                        const validMerchantIDs = [
+                            'G4Z8SJD6PEZ2G'
+                        ];
+
+                        const eligibleMerchantID = merchantID && merchantID.length && merchantID.reduce((acc, id) => {
+                            return acc && validMerchantIDs.indexOf(id) !== -1;
+                        }, true);
+
+                        alphaEligible = clientID === 'AT2hsh6PFa_pvqYVni64Ik2Ojaluh_l9DU3KwXuHb-sgj8q9zZrmob2TUsmvu4rjJ869oHUAlIAqJf9R'
+                            && eligibleMerchantID;
                     }
 
                     return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
