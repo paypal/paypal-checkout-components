@@ -688,7 +688,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         ];
                         const eligibleMerchantID = merchantID && merchantID.length && merchantID.reduce((acc, id) => {
                             return acc && validMerchantIDs.indexOf(id) !== -1;
-                        }, false);
+                        }, true);
 
                         alphaEligible = clientID === 'AbUf2xGyVtp8HedZjyx9we1V2eRV9-Q7bLTVfr9Y-FFpG8dbWAaQ0AFqeh2dq_HYHrV_1GUPXGv6GMKp'
                             && eligibleMerchantID;
