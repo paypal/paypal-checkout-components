@@ -671,12 +671,30 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, merchantID = [], style: { layout }, onComplete, vault } = props || {};
+                    const { env, clientID, merchantID, commit, createBillingAgreement, currency, disableFunding = [], fundingEligibility, locale, style: { layout }, vault } = props || {};
 
                     const inlineCheckoutEligibility : InlineXOEligibilityType = __INLINE_CHECKOUT_ELIGIBILITY__ || {
                         eligible: false
                     };
-                    return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && isInlineXOEligible({ props: {
+
+                    let alphaEligible = true;
+                    if (env === 'sandbox') {
+                        const validMerchantIDs = [
+                            'PJEHAEK4YBEDJ',
+                            'RMADGM9SZGSPJ',
+                            '5AZBQ2LU7HVE6',
+                            'SMJKX2JD3V27L',
+                            'RB28JB2TP9RA4'
+                        ];
+                        const eligibleMerchantID = merchantID && merchantID.length && merchantID.reduce((acc, id) => {
+                            return acc && validMerchantIDs.indexOf(id) !== -1;
+                        }, false);
+
+                        alphaEligible = clientID === 'AbUf2xGyVtp8HedZjyx9we1V2eRV9-Q7bLTVfr9Y-FFpG8dbWAaQ0AFqeh2dq_HYHrV_1GUPXGv6GMKp'
+                            && eligibleMerchantID;
+                    }
+
+                    return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
                         commit,
                         createBillingAgreement,
                         currency,
@@ -684,8 +702,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         fundingEligibility,
                         layout,
                         locale,
-                        merchantID,
-                        onComplete,
                         vault
                     } }) ? EXPERIENCE.INLINE : '';
                 }
