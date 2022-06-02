@@ -1,3 +1,9 @@
+## <small>5.0.225 (2022-06-02)</small>
+
+* Inline XO: Force Eligibility ([3f56a06](https://github.com/paypal/paypal-checkout-components/commit/3f56a06))
+
+
+
 ## <small>5.0.224 (2022-06-01)</small>
 
 * Inline XO: Production Alpha eligibility ([7bcf14c](https://github.com/paypal/paypal-checkout-components/commit/7bcf14c))
