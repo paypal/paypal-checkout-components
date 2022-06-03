@@ -423,6 +423,9 @@ window.smartCard = function(modules) {
         __webpack_require__.d(__webpack_exports__, "isApplePaySupported", (function() {
             return isApplePaySupported;
         }));
+        __webpack_require__.d(__webpack_exports__, "isCrossSiteTrackingEnabled", (function() {
+            return isCrossSiteTrackingEnabled;
+        }));
         __webpack_require__.d(__webpack_exports__, "getBody", (function() {
             return getBody;
         }));
@@ -1169,6 +1172,9 @@ window.smartCard = function(modules) {
                 return !1;
             }
             return !1;
+        }
+        function isCrossSiteTrackingEnabled(expectedCookieKey) {
+            return -1 === window.document.cookie.indexOf(expectedCookieKey);
         }
         function _setPrototypeOf(o, p) {
             return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
@@ -4082,9 +4088,9 @@ window.smartCard = function(modules) {
         })), S.d(N, "FUNDING", (function() {
             return m;
         })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
-            return y;
-        })), S.d(N, "CARD", (function() {
             return b;
+        })), S.d(N, "CARD", (function() {
+            return y;
         })), S.d(N, "WALLET_INSTRUMENT", (function() {
             return W;
         })), S.d(N, "FUNDING_PRODUCTS", (function() {
@@ -4116,9 +4122,9 @@ window.smartCard = function(modules) {
         })), S.d(N, "QUERY_BOOL", (function() {
             return o;
         })), S.d(N, "UNKNOWN", (function() {
-            return i;
-        })), S.d(N, "PROTOCOL", (function() {
             return O;
+        })), S.d(N, "PROTOCOL", (function() {
+            return i;
         })), S.d(N, "PAGE_TYPES", (function() {
             return M;
         })), S.d(N, "MERCHANT_ID_MAX", (function() {
@@ -4735,7 +4741,7 @@ window.smartCard = function(modules) {
         }, o = {
             TRUE: "true",
             FALSE: "false"
-        }, i = "unknown", O = {
+        }, O = "unknown", i = {
             HTTP: "http",
             HTTPS: "https"
         }, M = {
@@ -4855,13 +4861,14 @@ window.smartCard = function(modules) {
             MAXIMA: "maxima",
             OXXO: "oxxo",
             BOLETO: "boleto",
+            BOLETOBANCARIO: "boletobancario",
             WECHATPAY: "wechatpay",
             MERCADOPAGO: "mercadopago",
             MULTIBANCO: "multibanco"
-        }, y = {
+        }, b = {
             PAYPAL: "PayPal",
             CREDIT: "PayPal Credit"
-        }, b = {
+        }, y = {
             VISA: "visa",
             MASTERCARD: "mastercard",
             AMEX: "amex",
@@ -8313,10 +8320,10 @@ window.smartCard = function(modules) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, createSubscription = _ref.createSubscription;
             var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref.clientID);
             return function(_ref2) {
-                var accessToken = _ref2.accessToken;
+                var accessToken = _ref2.accessToken, doLSATCapture = _ref2.doLSATCapture;
                 getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
                 return promise_ZalgoPromise.try((function() {
-                    if (accessToken) return upgradeLSAT ? createOrder().then((function(orderID) {
+                    if (accessToken) return upgradeLSAT && !doLSATCapture ? createOrder().then((function(orderID) {
                         return createSubscription ? accessToken : function(facilitatorAccessToken, _ref3) {
                             var _headers;
                             var buyerAccessToken = _ref3.buyerAccessToken, orderID = _ref3.orderID;

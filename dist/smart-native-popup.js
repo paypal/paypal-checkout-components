@@ -207,6 +207,9 @@
             __webpack_require__.d(__webpack_exports__, "isApplePaySupported", (function() {
                 return isApplePaySupported;
             }));
+            __webpack_require__.d(__webpack_exports__, "isCrossSiteTrackingEnabled", (function() {
+                return isCrossSiteTrackingEnabled;
+            }));
             __webpack_require__.d(__webpack_exports__, "getBody", (function() {
                 return getBody;
             }));
@@ -953,6 +956,9 @@
                     return !1;
                 }
                 return !1;
+            }
+            function isCrossSiteTrackingEnabled(expectedCookieKey) {
+                return -1 === window.document.cookie.indexOf(expectedCookieKey);
             }
             function _setPrototypeOf(o, p) {
                 return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
@@ -4888,7 +4894,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.98", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.99", 
                     _ref3.user_id = buttonSessionID, _ref3.time = Date.now().toString(), _ref3;
                 }));
                 (function() {

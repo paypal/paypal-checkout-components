@@ -203,6 +203,9 @@ window.spb = function(modules) {
             __webpack_require__.d(__webpack_exports__, "isApplePaySupported", (function() {
                 return isApplePaySupported;
             }));
+            __webpack_require__.d(__webpack_exports__, "isCrossSiteTrackingEnabled", (function() {
+                return isCrossSiteTrackingEnabled;
+            }));
             __webpack_require__.d(__webpack_exports__, "getBody", (function() {
                 return getBody;
             }));
@@ -949,6 +952,9 @@ window.spb = function(modules) {
                     return !1;
                 }
                 return !1;
+            }
+            function isCrossSiteTrackingEnabled(expectedCookieKey) {
+                return -1 === window.document.cookie.indexOf(expectedCookieKey);
             }
             function _setPrototypeOf(o, p) {
                 return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
@@ -3468,9 +3474,9 @@ window.spb = function(modules) {
             })), S.d(N, "FUNDING", (function() {
                 return m;
             })), S.d(N, "FUNDING_BRAND_LABEL", (function() {
-                return y;
-            })), S.d(N, "CARD", (function() {
                 return b;
+            })), S.d(N, "CARD", (function() {
+                return y;
             })), S.d(N, "WALLET_INSTRUMENT", (function() {
                 return W;
             })), S.d(N, "FUNDING_PRODUCTS", (function() {
@@ -3502,9 +3508,9 @@ window.spb = function(modules) {
             })), S.d(N, "QUERY_BOOL", (function() {
                 return o;
             })), S.d(N, "UNKNOWN", (function() {
-                return i;
-            })), S.d(N, "PROTOCOL", (function() {
                 return O;
+            })), S.d(N, "PROTOCOL", (function() {
+                return i;
             })), S.d(N, "PAGE_TYPES", (function() {
                 return M;
             })), S.d(N, "MERCHANT_ID_MAX", (function() {
@@ -4121,7 +4127,7 @@ window.spb = function(modules) {
             }, o = {
                 TRUE: "true",
                 FALSE: "false"
-            }, i = "unknown", O = {
+            }, O = "unknown", i = {
                 HTTP: "http",
                 HTTPS: "https"
             }, M = {
@@ -4241,13 +4247,14 @@ window.spb = function(modules) {
                 MAXIMA: "maxima",
                 OXXO: "oxxo",
                 BOLETO: "boleto",
+                BOLETOBANCARIO: "boletobancario",
                 WECHATPAY: "wechatpay",
                 MERCADOPAGO: "mercadopago",
                 MULTIBANCO: "multibanco"
-            }, y = {
+            }, b = {
                 PAYPAL: "PayPal",
                 CREDIT: "PayPal Credit"
-            }, b = {
+            }, y = {
                 VISA: "visa",
                 MASTERCARD: "mastercard",
                 AMEX: "amex",
@@ -4979,6 +4986,9 @@ window.spb = function(modules) {
         function isChrome(ua) {
             void 0 === ua && (ua = getUserAgent());
             return /Chrome|Chromium|CriOS/.test(ua) && !/SamsungBrowser|Silk|EdgA/.test(ua);
+        }
+        function isCrossSiteTrackingEnabled(expectedCookieKey) {
+            return -1 === window.document.cookie.indexOf(expectedCookieKey);
         }
         function _setPrototypeOf(o, p) {
             return (_setPrototypeOf = Object.setPrototypeOf || function(o, p) {
@@ -6523,7 +6533,7 @@ window.spb = function(modules) {
             FALSE: !1
         };
         var LSAT_UPGRADE_EXCLUDED_MERCHANTS = [ "AQipcJ1uXz50maKgYx49lKUB8MlSOXP573M6cpsFpHqDZOqnopsJpfYY7bQC_9CtQJsEhGlk8HLs2oZz", "Aco-yrRKihknb5vDBbDOdtYywjYMEPaM7mQg6kev8VDAz01lLA88J4oAUnF4UV9F_InqkqX7K62_jOjx", "AeAiB9K2rRsTXsFKZt4FMAQ8a6VEu4hijducis3a8NcIjV2J_c5I2H2PYhT3qCOwxT8P4l17skqgBlmg", "AXKrWRqEvxiDoUIZQaD1tFi2QhtmhWve3yTDBi58bxWjieYJ9j73My-yJmM7hP00JvOXu4YD6L2eaI5O", "AfRTnXv_QcuVyalbUxThtgk1xTygygsdevlBUTz36dDgD6XZNHp3Ym99a-mjMaokXyTTiI8VJ9mRgaFB", "AejlsIlg_KjKjmLKqxJqFIAwn3ZP02emx41Z2It4IfirQ-nNgZgzWk1CU-Q1QDbYUXjWoYJZ4dq1S2pK", "AQXD7-m_2yMo-5AxJ1fQaPeEWYDE7NZ9XrLzEXeiPLTHDu9vfe_T0foF8BoX8K5cMfXuRDysUEmhw-8Z" ];
-        var APM_LIST = [ "ideal", "bancontact", "giropay", "sofort", "eps", "mybank", "p24", "payu", "blik", "trustly", "zimpler", "maxima", "oxxo", "boleto", "wechatpay", "mercadopago", "multibanco" ];
+        var APM_LIST = [ "ideal", "bancontact", "giropay", "sofort", "eps", "mybank", "p24", "payu", "blik", "trustly", "zimpler", "maxima", "oxxo", "boleto", "boletobancario", "wechatpay", "mercadopago", "multibanco" ];
         var AUTO_FLUSH_LEVEL = [ "warn", "error" ];
         var LOG_LEVEL_PRIORITY = [ "error", "warn", "info", "debug" ];
         var sendBeacon = function(_ref2) {
@@ -7179,7 +7189,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.98", _headers15);
+            _headers15["x-app-version"] = "5.0.99", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -8460,10 +8470,10 @@ window.spb = function(modules) {
                 var facilitatorAccessToken = _ref.facilitatorAccessToken, createOrder = _ref.createOrder, createSubscription = _ref.createSubscription;
                 var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref.clientID);
                 return function(_ref2) {
-                    var accessToken = _ref2.accessToken;
+                    var accessToken = _ref2.accessToken, doLSATCapture = _ref2.doLSATCapture;
                     logger_getLogger().info("spb_onauth_access_token_" + (accessToken ? "present" : "not_present"));
                     return promise_ZalgoPromise.try((function() {
-                        if (accessToken) return upgradeLSAT ? createOrder().then((function(orderID) {
+                        if (accessToken) return upgradeLSAT && !doLSATCapture ? createOrder().then((function(orderID) {
                             return createSubscription ? accessToken : auth_upgradeFacilitatorAccessToken(facilitatorAccessToken, {
                                 buyerAccessToken: accessToken,
                                 orderID: orderID
@@ -8704,14 +8714,13 @@ window.spb = function(modules) {
                                 var orderID = _ref5.orderID, shippingContact = _ref5.shippingContact, _ref5$shippingMethod = _ref5.shippingMethod, shippingMethod = void 0 === _ref5$shippingMethod ? null : _ref5$shippingMethod, callbackTrigger = _ref5.callbackTrigger;
                                 if (!onShippingChange) {
                                     var _currentShippingMetho, _currentShippingMetho2;
-                                    var update = {
+                                    (update = {
                                         newTotal: {
                                             label: "Total",
                                             amount: currentTotalAmount
                                         },
                                         newLineItems: []
-                                    };
-                                    update.newLineItems = updateNewLineItems({
+                                    }).newLineItems = updateNewLineItems({
                                         shipping: currentShippingAmount,
                                         subtotal: currentSubtotalAmount,
                                         tax: currentTaxAmount,
@@ -8755,22 +8764,22 @@ window.spb = function(modules) {
                                 }(shippingContact), errors = _validateShippingCont.errors, shipping_address = _validateShippingCont.shipping_address;
                                 if (errors && errors.length) {
                                     var _currentShippingMetho3, _currentShippingMetho4;
-                                    var _update = {
+                                    var update;
+                                    (update = {
                                         errors: errors,
                                         newTotal: {
                                             label: "Total",
                                             amount: currentTotalAmount
                                         },
                                         newLineItems: []
-                                    };
-                                    _update.newLineItems = updateNewLineItems({
+                                    }).newLineItems = updateNewLineItems({
                                         shipping: currentShippingAmount,
                                         subtotal: currentSubtotalAmount,
                                         tax: currentTaxAmount,
                                         shippingLabel: null == (_currentShippingMetho3 = currentShippingMethod) ? void 0 : _currentShippingMetho3.label,
                                         shippingDetail: null == (_currentShippingMetho4 = currentShippingMethod) ? void 0 : _currentShippingMetho4.detail
                                     });
-                                    return promise_ZalgoPromise.resolve(_update);
+                                    return promise_ZalgoPromise.resolve(update);
                                 }
                                 var data = {
                                     callbackTrigger: callbackTrigger,
@@ -9571,7 +9580,8 @@ window.spb = function(modules) {
                         },
                         onAuth: function(_ref8) {
                             return _onAuth({
-                                accessToken: _ref8.accessToken || buyerAccessToken
+                                accessToken: _ref8.accessToken || buyerAccessToken,
+                                doLSATCapture: _ref8.doLSATCapture
                             }).then((function(token) {
                                 buyerAccessToken = token;
                             }));
@@ -9727,7 +9737,9 @@ window.spb = function(modules) {
             setup: function() {},
             isEligible: function(_ref) {
                 var props = _ref.props;
-                return "inline" !== props.experience && !props.vault && !props.onShippingChange && _ref.serviceData.eligibility.cardForm;
+                var vault = props.vault, onShippingChange = props.onShippingChange;
+                var eligibility = _ref.serviceData.eligibility;
+                return !("inline" === props.experience && !isCrossSiteTrackingEnabled("enforce_policy")) && !vault && !onShippingChange && eligibility.cardForm;
             },
             isPaymentEligible: function(_ref2) {
                 var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
@@ -12600,6 +12612,8 @@ window.spb = function(modules) {
                         });
                     }
                 }), click = _init.click, start = _init.start, close = _init.close;
+                var derivedExperience = "";
+                isCrossSiteTrackingEnabled("enforce_policy") && "inline" === experience ? derivedExperience = "inline_tracking_enabled" : isCrossSiteTrackingEnabled("enforce_policy") || "inline" !== experience || (derivedExperience = "inline_tracking_disabled");
                 logger_getLogger().addPayloadBuilder((function() {
                     return {
                         token: null
@@ -12612,7 +12626,7 @@ window.spb = function(modules) {
                 })).track((_getLogger$addPayload = {}, _getLogger$addPayload.transition_name = "process_button_click", 
                 _getLogger$addPayload.chosen_fi_type = instrumentType, _getLogger$addPayload.payment_flow = name, 
                 _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload.info_msg = enableNativeCheckout ? "tester" : "", 
-                _getLogger$addPayload.experience = experience || "", _getLogger$addPayload)).flush();
+                _getLogger$addPayload.experience = derivedExperience, _getLogger$addPayload)).flush();
                 var loggingPromise = promise_ZalgoPromise.try((function() {
                     return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmPayload) {
                         var fieldsSessionID = confirmPayload ? confirmPayload.payment_source[fundingSource].metadata.fieldsSessionID : "";
@@ -13418,12 +13432,12 @@ window.spb = function(modules) {
                 }));
                 logger.addTrackingBuilder((function() {
                     var _ref3;
-                    return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.98", 
-                    _ref3.button_correlation_id = buttonCorrelationID, _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, 
-                    _ref3.bn_code = partnerAttributionID, _ref3.user_action = commit ? "commit" : "continue", 
-                    _ref3.seller_id = merchantID[0], _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), 
-                    _ref3.time = Date.now().toString(), _ref3.user_id = buttonSessionID, _ref3;
+                    return (_ref3 = {}).context_type = "button_session_id", _ref3.context_id = buttonSessionID, 
+                    _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.99", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
+                    _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
+                    _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.time = Date.now().toString(), 
+                    _ref3.user_id = buttonSessionID, _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -13449,7 +13463,7 @@ window.spb = function(modules) {
                     })),
                     queriedEligibleFunding: getQueriedEligibleFunding()
                 }).then((function(_ref4) {
-                    var _logger$track;
+                    var _logger$track2;
                     var pageRenderTime = _ref4.pageRenderTime, queriedEligibleFunding = _ref4.queriedEligibleFunding;
                     var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                         return el.getAttribute("data-funding-source");
@@ -13475,14 +13489,46 @@ window.spb = function(modules) {
                     logger.info("button_render_wallet_instrument_count_" + walletInstruments.length);
                     logger.info("button_render_" + native_device + "_storage_state_" + (isStorageStateFresh() ? "fresh" : "not_fresh"));
                     for (var _i2 = 0; _i2 < walletInstruments.length; _i2++) logger.info("button_render_wallet_instrument_" + walletInstruments[_i2]);
-                    logger.track(((_logger$track = {}).transition_name = "process_button_load", _logger$track.eligible_payment_methods = fundingSources.join(":"), 
-                    _logger$track.fi_list = walletInstruments.join(":"), _logger$track.merchant_selected_funding_source = fundingSource, 
-                    _logger$track.eligible_payment_count = fundingSources.length.toString(), _logger$track.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
-                    _logger$track.potential_payment_methods = queriedEligibleFunding.join(":"), _logger$track.pay_now = payNow.toString(), 
-                    _logger$track.button_layout = layout, _logger$track.button_color = color, _logger$track.button_size = "responsive", 
-                    _logger$track.button_shape = shape, _logger$track.button_label = label, _logger$track.button_width = window.innerWidth, 
-                    _logger$track.button_type = "iframe", _logger$track.button_tagline_enabled = tagline ? "1" : "0", 
-                    _logger$track.shipping_callback_passed = onShippingChange ? "1" : "0", _logger$track));
+                    if (window.performance) try {
+                        var _logger$track;
+                        var cplPhases = {
+                            comp: {
+                                "second-render-response": {
+                                    start: responseStartTime = (startTime = document.body && document.body.getAttribute("data-response-start-time"), 
+                                    Number(startTime)),
+                                    tt: (responseEndTime = function() {
+                                        if (window.performance) {
+                                            var hrSyncPoint = performance.now();
+                                            var unixSyncPoint = (new Date).getTime();
+                                            return window.performance.timeOrigin || window.performance.timing.navigationStart || unixSyncPoint - hrSyncPoint;
+                                        }
+                                        throw new Error("window.performance not supported");
+                                    }() + performance.getEntriesByName("buttons-response-received").pop().startTime) - responseStartTime
+                                },
+                                "second-render-body": {
+                                    start: responseEndTime,
+                                    tt: Date.now() - responseEndTime
+                                }
+                            }
+                        };
+                        logger.info("CPL_LATENCY_METRICS_SECOND_RENDER");
+                        logger.track(((_logger$track = {}).state_name = "CPL_LATENCY_METRICS", _logger$track.transition_name = "process_client_metrics", 
+                        _logger$track.page_name = "main:xo:paypal-components:smart-payment-buttons", _logger$track.cpl_comp_metrics = JSON.stringify((null == cplPhases ? void 0 : cplPhases.comp) || {}), 
+                        _logger$track));
+                    } catch (e) {
+                        logger.info("button_render_CPL_instrumentation_log_error");
+                    } else logger.info("button_render_CPL_instrumentation_not_executed");
+                    var responseStartTime, responseEndTime;
+                    var startTime;
+                    logger.track(((_logger$track2 = {}).state_name = "smart_button", _logger$track2.transition_name = "process_button_load", 
+                    _logger$track2.eligible_payment_methods = fundingSources.join(":"), _logger$track2.fi_list = walletInstruments.join(":"), 
+                    _logger$track2.merchant_selected_funding_source = fundingSource, _logger$track2.eligible_payment_count = fundingSources.length.toString(), 
+                    _logger$track2.page_load_time = pageRenderTime ? pageRenderTime.toString() : "", 
+                    _logger$track2.potential_payment_methods = queriedEligibleFunding.join(":"), _logger$track2.pay_now = payNow.toString(), 
+                    _logger$track2.button_layout = layout, _logger$track2.button_color = color, _logger$track2.button_size = "responsive", 
+                    _logger$track2.button_shape = shape, _logger$track2.button_label = label, _logger$track2.button_width = window.innerWidth, 
+                    _logger$track2.button_type = "iframe", _logger$track2.button_tagline_enabled = tagline ? "1" : "0", 
+                    _logger$track2.shipping_callback_passed = onShippingChange ? "1" : "0", _logger$track2));
                     logger.flush();
                 }));
             }({
