@@ -705,8 +705,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             return acc && validMerchantIDs.indexOf(id) !== -1;
                         }, true);
 
-                        alphaEligible = clientID === 'AT2hsh6PFa_pvqYVni64Ik2Ojaluh_l9DU3KwXuHb-sgj8q9zZrmob2TUsmvu4rjJ869oHUAlIAqJf9R'
-                            && eligibleMerchantID;
+                        if (clientID === 'AT2hsh6PFa_pvqYVni64Ik2Ojaluh_l9DU3KwXuHb-sgj8q9zZrmob2TUsmvu4rjJ869oHUAlIAqJf9R') {
+                            alphaEligible = eligibleMerchantID;
+
+                        }
                     }
 
                     return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
