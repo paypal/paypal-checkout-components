@@ -2,9 +2,11 @@
 
 import { regexMap, noop } from '@krakenjs/belter';
 import { FUNDING } from '@paypal/sdk-constants';
+import {getVersionFromNodeModules} from '@krakenjs/grabthar'
 
 import { getButtonMiddleware, cancelWatchers } from '../../server';
 import { ROOT_TRANSACTION_NAME } from '../../server/components/buttons/constants';
+import {type SDKVersionManager} from '../../server/types'
 
 import {
     mockReq, mockRes, graphQL, getAccessToken, getMerchantID,
@@ -42,8 +44,14 @@ const logger = {
     track: noop
 };
 
+// $FlowFixMe testing impl
+const sdkVersionManager: SDKVersionManager = {
+    getLiveVersion: () => '5.0.312',
+    getOrInstallSDK: async (...args) => await getVersionFromNodeModules(args),
+}
+
 test('should do a basic button render and succeed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({ sdkVersionManager, graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
 
     const req = mockReq({
         query: {
@@ -114,6 +122,7 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
     const res = mockRes();
 
     const errButtonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         graphQL,
         getAccessToken,
         getMerchantID,
@@ -159,7 +168,7 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
 });
 
 test('should give a 400 error with no clientID passed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({ sdkVersionManager, graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
 
     const req = mockReq();
     const res = mockRes();
@@ -175,7 +184,9 @@ test('should give a 400 error with no clientID passed', async () => {
 });
 
 test('should give a 400 error when an error occur while rendering button', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({ 
+        sdkVersionManager,
+        graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
 
     // These are considered valid (validateButtonProps pass)
     const req = mockReq({
@@ -197,7 +208,9 @@ test('should give a 400 error when an error occur while rendering button', async
 });
 
 test('should render empty personalization when API errors', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({ 
+        sdkVersionManager,
+        graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
 
     const req = mockReq({
         query: {
@@ -220,6 +233,7 @@ test('should render empty personalization when API errors', async () => {
 
 test('should render empty personalization when config is disabled', async () => {
     const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         graphQL,
         getAccessToken,
         getMerchantID,
@@ -252,6 +266,7 @@ test('should render empty personalization when config is disabled', async () => 
 
 test('should render filled out tagline when config is enabled', async () => {
     const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         graphQL,
         getAccessToken,
         getMerchantID,
@@ -283,7 +298,9 @@ test('should render filled out tagline when config is enabled', async () => {
 });
 
 test('should do a basic button render with post and succeed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({ 
+        sdkVersionManager,
+        graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
 
     const req = mockReq({
         method: 'post',
@@ -330,6 +347,7 @@ test('should do a basic button render with post and succeed', async () => {
 
 test('should find the req.model.rootTxn object in the req', async () => {
     const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         graphQL, getAccessToken, getMerchantID,
         content: mockContent, cache, logger, tracking,
         getPersonalizationEnabled, getInstanceLocationInformation,
@@ -351,12 +369,13 @@ test('should find the req.model.rootTxn object in the req', async () => {
 
     expect(name).toStrictEqual(ROOT_TRANSACTION_NAME.SMART_BUTTONS);
     expect(data?.client_id).toStrictEqual('sandbox');
-    expect(data?.sdk_version).toStrictEqual('local');
+    expect(data?.sdk_version).toStrictEqual('5.0.312');
     expect(data?.smart_buttons_version).toStrictEqual('local');
 });
 
 test('should find the rootTxn name in the req model when is wallet', async () => {
     const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         graphQL, getAccessToken, getMerchantID,
         content: mockContent, cache, logger, tracking,
         getPersonalizationEnabled, getInstanceLocationInformation,
@@ -382,6 +401,7 @@ test('should find the rootTxn name in the req model when is wallet', async () =>
 
 test('should find the req.model.rootTxn.name in the req model when is vault', async () => {
     const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         graphQL, getAccessToken, getMerchantID,
         content: mockContent, cache, logger, tracking,
         getPersonalizationEnabled, getInstanceLocationInformation,
@@ -412,6 +432,7 @@ test('should return an HTML page with the error', async () => {
         throw new Error('Mocking a critical failure');
     });
     const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
         content: mockContent, tracking: mockTracking,
         cache, logger, graphQL, getAccessToken, getMerchantID,
         getPersonalizationEnabled,

@@ -3,28 +3,26 @@
 import { join, dirname } from 'path';
 import { readFileSync } from 'fs';
 
+import { importDependency } from '@krakenjs/grabthar'
 import { noop } from '@krakenjs/belter';
 import { ENV } from '@paypal/sdk-constants';
 
-import type { CacheType, InstanceLocationInformation, SDKLocationInformation } from '../../types';
+import type { CacheType, InstanceLocationInformation, SDKVersionManager } from '../../types';
 import { BUTTON_RENDER_JS, BUTTON_CLIENT_JS, SMART_BUTTONS_MODULE, CHECKOUT_COMPONENTS_MODULE,
     BUTTON_CLIENT_MIN_JS, WEBPACK_CONFIG, ACTIVE_TAG } from '../../config';
 import { isLocalOrTest, compileWebpack, babelRequire, evalRequireScript, resolveScript,
     dynamicRequire, type LoggerBufferType } from '../../lib';
-import { getPayPalSDKWatcher, getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
+import { getPayPalSmartPaymentButtonsWatcher } from '../../watchers';
 
 
 const ROOT = join(__dirname, '../../..');
 
 export type SmartPaymentButtonsRenderScript = {|
-    button : {|
-        Buttons : ({||}) => {|
-            // eslint-disable-next-line no-undef
-            render : <T>(() => T) => T
-        |},
-        validateButtonProps : ({||}) => void
+    Buttons : ({||}) => {|
+        // eslint-disable-next-line no-undef
+        render : <T>(() => T) => T
     |},
-    version : string
+    validateButtonProps : ({||}) => void
 |};
 
 export async function getLocalSmartPaymentButtonRenderScript() : Promise<?SmartPaymentButtonsRenderScript> {
@@ -33,27 +31,27 @@ export async function getLocalSmartPaymentButtonRenderScript() : Promise<?SmartP
     if (webpackScriptPath && isLocalOrTest()) {
         const dir = dirname(webpackScriptPath);
         const { WEBPACK_CONFIG_BUTTON_RENDER } = babelRequire(webpackScriptPath);
-        const button = evalRequireScript(await compileWebpack(WEBPACK_CONFIG_BUTTON_RENDER, dir));
-        return { button, version: ENV.LOCAL };
+        return evalRequireScript(await compileWebpack(WEBPACK_CONFIG_BUTTON_RENDER, dir));
     }
 
     const distScriptPath = resolveScript(join(CHECKOUT_COMPONENTS_MODULE, BUTTON_RENDER_JS));
 
     if (distScriptPath) {
-        const button = dynamicRequire(distScriptPath);
-        return { button, version: ENV.LOCAL };
+        return Promise.resolve(dynamicRequire(distScriptPath));
     }
+
+    return Promise.resolve()
 }
 
 type GetPayPalSmartPaymentButtonsRenderScriptOptions = {|
     logBuffer : ?LoggerBufferType,
     cache : ?CacheType,
     useLocal? : boolean,
-    locationInformation : InstanceLocationInformation,
-    sdkLocationInformation : SDKLocationInformation
+    sdkCDNRegistry : ?string,
+    sdkVersionManager : SDKVersionManager
 |};
 
-export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache, useLocal = isLocalOrTest(), locationInformation, sdkLocationInformation } : GetPayPalSmartPaymentButtonsRenderScriptOptions) : Promise<SmartPaymentButtonsRenderScript> {
+export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cache, useLocal = isLocalOrTest(), sdkCDNRegistry, sdkVersionManager } : GetPayPalSmartPaymentButtonsRenderScriptOptions) : Promise<SmartPaymentButtonsRenderScript> {
     if (useLocal) {
         const script = await getLocalSmartPaymentButtonRenderScript();
         if (script) {
@@ -61,14 +59,20 @@ export async function getPayPalSmartPaymentButtonsRenderScript({ logBuffer, cach
         }
     }
 
-    const { getTag, getDeployTag, importDependency } = getPayPalSDKWatcher({ logBuffer, cache, locationInformation, sdkLocationInformation });
-    const { version } = await getTag();
-    const button = await importDependency(CHECKOUT_COMPONENTS_MODULE, BUTTON_RENDER_JS, ACTIVE_TAG);
+    const moduleDetails = await sdkVersionManager.getOrInstallSDK({
+        cdnRegistry:  sdkCDNRegistry || '',
+        childModules: [ CHECKOUT_COMPONENTS_MODULE ],
+        flat:         true,
+        dependencies: true,
+        logger:       logBuffer,
+        cache
+    })
 
-    // non-blocking download of the DEPLOY_TAG
-    getDeployTag().catch(noop);
-
-    return { button, version };
+    return importDependency({
+        moduleDetails,
+        dependencyName: CHECKOUT_COMPONENTS_MODULE,
+        path: BUTTON_RENDER_JS
+    });
 }
 
 export type SmartPaymentButtonsClientScript = {|

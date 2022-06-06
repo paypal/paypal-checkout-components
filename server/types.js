@@ -2,6 +2,28 @@
 
 import { COUNTRY, LANG } from '@paypal/sdk-constants';
 
+export class SDKVersionManager {
+    getLiveVersion: () => string
+
+    getOrInstallSDK: ({|
+        cdnRegistry:  string,
+        childModules: $ReadOnlyArray<string>,
+        flat:         boolean,
+        dependencies: boolean,
+        logger:       Object,
+        cache: Object
+    |}) => {|
+        nodeModulesPath : string,
+        modulePath : string,
+        version : string,
+        dependencies : {
+            [string] : {|
+                version : string,
+                path : string
+            |}
+        }
+    |}
+}
 
 export type ExpressRequest = express$Request & {| // eslint-disable-line no-undef
     correlationId? : string,

@@ -281,7 +281,9 @@ const buttonMiddleware = getButtonMiddleware({
     tracking,
     getPersonalizationEnabled,
     getInstanceLocationInformation,
-    getSDKLocationInformation
+    getSDKLocationInformation,
+    // $FlowFixMe we don't use this locally
+    sdkVersionManager: {},
 });
 
 const menuMiddleware = getMenuMiddleware({
