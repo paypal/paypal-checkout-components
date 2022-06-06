@@ -8,7 +8,10 @@ import { regexTokenize } from '@krakenjs/belter';
 import type { ChildType, NullableChildType } from '@krakenjs/jsx-pragmatic/src';
 
 import { HTTP_HEADER, HTTP_CONTENT_TYPE, HTTP_STATUS_CODE, HTTP_CONTENT_DISPOSITION, TIMEOUT_ERROR_MESSAGE } from '../config';
-import type { ExpressRequest, ExpressResponse, LoggerType, LoggerPayload } from '../types';
+import type {
+    ExpressRequest, ExpressResponse, LoggerType,
+    LoggerPayload, ErrorArgument
+} from '../types';
 
 function response(res : ExpressResponse, status : $Values<typeof HTTP_STATUS_CODE>, type : $Values<typeof HTTP_CONTENT_TYPE>, message : string) {
     res.status(status)
@@ -264,3 +267,28 @@ export function getCSPNonce(res : ExpressResponse) : string {
 
     return nonce;
 }
+
+/**
+* Handler for server error and communication with the parent window.
+* Return a HTML including the JS SDK allowing the communication with the parent SDK.
+*/
+export function htmlErrorHandler({ res, meta, errorMessage } : ErrorArgument) {
+    const cspNonce = getCSPNonce(res);
+    const pageHtml = `<!DOCTYPE html>
+        <html>
+            <body data-nonce="${ cspNonce }">
+                ${ meta.getSDKLoader({ nonce: cspNonce }) }
+                <script nonce="${ cspNonce }">
+                    var error = new Error("${ errorMessage }");
+
+                    if (window.xprops && typeof window.xprops.onError === "function") {
+                        window.xprops.onError(error);
+                    }
+                </script>
+            </body>
+        </html>`;
+    
+    response(res, HTTP_STATUS_CODE.SERVER_ERROR, HTTP_CONTENT_TYPE.HTML, pageHtml);
+}
+
+

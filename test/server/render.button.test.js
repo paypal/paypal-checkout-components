@@ -404,3 +404,36 @@ test('should find the req.model.rootTxn.name in the req model when is vault', as
 
     expect(name).toStrictEqual(ROOT_TRANSACTION_NAME.SMART_BUTTONS_VAULT);
 });
+
+test('should return an HTML page with the error', async () => {
+    const spyConsoleError = jest
+        .spyOn(console,  'error').mockImplementationOnce(jest.fn());
+    const mockTracking = jest.fn().mockImplementationOnce(() => {
+        throw new Error('Mocking a critical failure');
+    });
+    const buttonMiddleware = getButtonMiddleware({
+        content: mockContent, tracking: mockTracking,
+        cache, logger, graphQL, getAccessToken, getMerchantID,
+        getPersonalizationEnabled,
+        getInstanceLocationInformation,
+        getSDKLocationInformation
+    });
+
+    const req = mockReq({
+        method: 'post',
+        body:   {
+            clientID: 'xyz'
+        }
+    });
+    const res = mockRes().status(400);
+
+    // $FlowFixMe
+    await buttonMiddleware(req, res);
+
+    const status = res.getStatus();
+    const body = res.getBody();
+
+    expect(status).toBe(500);
+    expect(body).toMatchSnapshot();
+    spyConsoleError.mockRestore();
+});

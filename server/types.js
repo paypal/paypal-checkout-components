@@ -62,3 +62,12 @@ export type SDKLocationInformation = {|
     sdkActiveTag : ?string
 |};
 
+export type SDKMeta = {|
+    getSDKLoader : ({| nonce? : ?string |}) => string
+|};
+
+export type ErrorArgument = {|
+    res : ExpressResponse,
+    meta : SDKMeta,
+    errorMessage : string
+|};

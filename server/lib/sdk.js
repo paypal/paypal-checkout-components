@@ -4,12 +4,18 @@ import { unpackSDKMeta } from '@paypal/sdk-client';
 import { undotify } from '@krakenjs/belter';
 import { ERROR_CODE } from '@paypal/sdk-constants';
 
-import type { ExpressRequest, ExpressResponse, LoggerType, CacheType, InstanceLocationInformation } from '../types';
+import type {
+    ExpressRequest, ExpressResponse, LoggerType,
+    CacheType, InstanceLocationInformation, SDKMeta
+} from '../types';
 import { startWatchers } from '../watchers';
 import { EVENT, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
 
-import { clientErrorResponse, serverErrorResponse, defaultLogger, type LoggerBufferType,
-    getLogBuffer, safeJSON, isError, emptyResponse } from './util';
+import {
+    clientErrorResponse, serverErrorResponse, defaultLogger,
+    type LoggerBufferType, getLogBuffer, safeJSON, isError,
+    emptyResponse, htmlErrorHandler
+} from './util';
 
 
 function getSDKMetaString(req : ExpressRequest) : string {
@@ -21,10 +27,6 @@ function getSDKMetaString(req : ExpressRequest) : string {
 
     return sdkMeta;
 }
-
-type SDKMeta = {|
-    getSDKLoader : ({| nonce? : ?string |}) => string
-|};
 
 export function getSDKMeta(req : ExpressRequest) : SDKMeta {
     return unpackSDKMeta(getSDKMetaString(req));
@@ -73,6 +75,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache, locationInformati
 
     const appMiddleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         logBuffer.flush(req);
+        let meta;
 
         try {
             let params;
@@ -82,10 +85,7 @@ export function sdkMiddleware({ logger = defaultLogger, cache, locationInformati
             } catch (err) {
                 return clientErrorResponse(res, `Invalid params: ${ safeJSON(req.query) }`);
             }
-
             const sdkMeta = getSDKMetaString(req);
-
-            let meta;
 
             try {
                 meta = getSDKMeta(req);
@@ -102,10 +102,15 @@ export function sdkMiddleware({ logger = defaultLogger, cache, locationInformati
                 logger.warn(req, EVENT.VALIDATION, { err: err.stack ? err.stack : err.toString() });
                 return clientErrorResponse(res, err.message);
             }
+            const errorMessage : string = err?.message || 'Unexpected error';
+            const errorStack =  err.stack ? err.stack : err.toString();
 
-            console.error(err.stack ? err.stack : err); // eslint-disable-line no-console
-            logger.error(req, EVENT.ERROR, { err: err.stack ? err.stack : err.toString() });
-            return serverErrorResponse(res, err.stack ? err.stack : err.toString());
+            if (typeof meta?.getSDKLoader === 'function') {
+                logger.error(req, EVENT.HTML_ERROR, { err: errorStack });
+                return htmlErrorHandler({ res, meta, errorMessage });
+            }
+            logger.error(req, EVENT.ERROR, { err: errorStack });
+            return serverErrorResponse(res, errorMessage);
         }
     };
 
