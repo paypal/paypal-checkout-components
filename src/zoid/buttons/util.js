@@ -27,9 +27,11 @@ function logNativeScreenInformation(key = 'screenInformation') {
     const scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
     const computedHeight = Math.round(height * scale);
     const ios14 = isIOS14();
-    const screenInformation = { height, ios14, outerHeight, scale: `${scale}`, computedHeight: `${computedHeight}` };
+
+    const screenInformation = { computedHeight, height, ios14, outerHeight, scale };
 
     getLogger()
+      // $FlowFixMe - object is mixed values when this expects all of the same value types
       .info(key, screenInformation)
   }
 }
