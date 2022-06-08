@@ -1,5 +1,5 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled } from '@krakenjs/belter/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isIOS14, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled } from '@krakenjs/belter/src';
 import { COUNTRY, CURRENCY, ENV, FPTI_KEY, FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
 import { getEnableFunding, getDisableFunding, getLogger, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
@@ -26,7 +26,8 @@ function logNativeScreenInformation(key = 'screenInformation') {
     const outerHeight = window.outerHeight;
     const scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
     const computedHeight = Math.round(height * scale);
-    const screenInformation = { height, outerHeight, scale: `${scale}`, computedHeight: `${computedHeight}` };
+    const ios14 = isIOS14();
+    const screenInformation = { height, ios14, outerHeight, scale: `${scale}`, computedHeight: `${computedHeight}` };
 
     getLogger()
       .info(key, screenInformation)
