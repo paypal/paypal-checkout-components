@@ -15,6 +15,25 @@ type DetermineFlowOptions = {|
     createSubscription : CreateSubscription
 |};
 
+/**
+ * log information about screen to debug. currently in use to test if sfvc logic triggers
+ *
+ * @param {string} key for logging
+ */
+function logNativeScreenInformation(key = 'screenInformation') {
+  if (window) {
+    const height = window.innerHeight;
+    const outerHeight = window.outerHeight;
+    const scale = Math.round(window.screen.width / window.innerWidth * 100) / 100;
+    const computedHeight = Math.round(height * scale);
+    const screenInformation = { height, outerHeight, scale: `${scale}`, computedHeight: `${computedHeight}` };
+
+    getLogger()
+      .info(key, screenInformation)
+      .flush();
+  }
+}
+
 export function determineFlow(props : DetermineFlowOptions) : $Values<typeof BUTTON_FLOW> {
 
     if (props.createBillingAgreement) {
@@ -36,6 +55,7 @@ export function isSupportedNativeBrowser() : boolean {
     }
 
     if (isSFVC()) {
+        logNativeScreenInformation('sfvcScreenInformation');
         return false;
     }
 
