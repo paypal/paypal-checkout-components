@@ -30,7 +30,6 @@ function logNativeScreenInformation(key = 'screenInformation') {
 
     getLogger()
       .info(key, screenInformation)
-      .flush();
   }
 }
 
