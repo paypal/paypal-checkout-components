@@ -345,4 +345,134 @@ describe('exports cases', () => {
 
         gqlMock.done();
     });
+
+    it('should return false from exports.isShippingChangeEnabled()', async () => {
+        const hasOSC = false;
+
+        await mockSetupButton();
+
+        let hasOnShippingChange;
+        try {
+            hasOnShippingChange = await window.exports.isShippingChangeEnabled();
+        } catch {
+            throw new Error('Failed to get guestEnabled status');
+        }
+
+        if (hasOnShippingChange !== hasOSC) {
+            throw new Error(`Expected guestEnabled status to be ${ String(hasOSC) }, but got ${ hasOnShippingChange }`);
+        }
+    });
+
+    it('should return true from exports.isShippingChangeEnabled()', async () => {
+        const hasOSC = true;
+        window.xprops.onShippingChange = () => ZalgoPromise.try(() => {
+            return 'anything';
+        });
+
+        await mockSetupButton();
+
+        let hasOnShippingChange;
+        try {
+            hasOnShippingChange = await window.exports.isShippingChangeEnabled();
+        } catch {
+            throw new Error('Failed to get guestEnabled status');
+        }
+
+        if (hasOnShippingChange !== hasOSC) {
+            throw new Error(`Expected guestEnabled status to be ${ String(hasOSC) }, but got ${ hasOnShippingChange }`);
+        }
+    });
+
+
+    it('should call merchant createOrder via exports createOrder', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = generateOrderID();
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345ABC' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            window.exports.paymentSession().createOrder();
+        });
+    });
+
+    it('should call merchant onApprove via exports onApprove', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.onApprove = mockAsyncProp(expect('onApprove', () => {
+                return ZalgoPromise.try(() => {
+                    return null;
+                });
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345ABC' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            window.exports.paymentSession().onApprove({ payerID: 'XXYYZZ123456' });
+        });
+    });
+
+    it('should call merchant onCancel via exports onCancel', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.onCancel = mockAsyncProp(expect('onCancel', () => {
+                return ZalgoPromise.try(() => {
+                    return null;
+                });
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345ABC' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            window.exports.paymentSession().onCancel();
+        });
+    });
+
+    it('should call merchant onError via exports onError', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.onError = mockAsyncProp(expect('onError', () => {
+                return ZalgoPromise.try(() => {
+                    return null;
+                });
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345ABC' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY });
+
+            window.exports.paymentSession().onError();
+        });
+    });
+
+    it('should call merchant onShippingChange via exports onShippingChange', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            window.xprops.onShippingChange = mockAsyncProp(expect('onShippingChange', () => {
+                return ZalgoPromise.try(() => {
+                    return null;
+                });
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({ merchantID: [ 'XYZ12345ABC' ], fundingEligibility: DEFAULT_FUNDING_ELIGIBILITY, buyerAccessToken: MOCK_BUYER_ACCESS_TOKEN });
+
+            window.exports.paymentSession().onShippingChange({
+                'orderID':                  '00000000XXYYZZ000',
+                'paymentToken':             '00000000XXYYZZ000',
+                'paymentId':                'PAYID-00000000XXYYZZ00000000AB',
+                'selected_shipping_option': null
+            });
+        });
+    });
+
 });
