@@ -62,7 +62,7 @@
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
     "postpublish": "if [ \"$DRY_RUN\" != 'true' ]; then git clean -f && git checkout .; fi;",
-    "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com",
+    "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com --experimental-versioned-cdn",
     "postinstall": "npm_config_registry=https://npm.paypal.com npm install @paypalcorp/web --no-save --proxy='null' --https-proxy='null' || echo 'Unable to install cdnx cli tools'"
   },
   "peerDependencies": {
@@ -94,7 +94,7 @@
     "typed-graphqlify": "^2.2.3"
   },
   "devDependencies": {
-    "@krakenjs/grabthar-release": "^2.0.0",
+    "@krakenjs/grabthar-release": "^2.4.0",
     "@krakenjs/grumbler-scripts": "^7.0.0",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
     "@krakenjs/webpack-mem-compile": "^2.0.1",
