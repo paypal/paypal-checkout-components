@@ -1,3 +1,9 @@
+## <small>5.0.227 (2022-06-10)</small>
+
+* chore: log screen information for SFVC path (#1951) ([6eb2270](https://github.com/paypal/paypal-checkout-components/commit/6eb2270)), closes [#1951](https://github.com/paypal/paypal-checkout-components/issues/1951)
+
+
+
 ## <small>5.0.226 (2022-06-06)</small>
 
 * Inline XO: Fix production eligibility logic ([ad8b0d0](https://github.com/paypal/paypal-checkout-components/commit/ad8b0d0))
