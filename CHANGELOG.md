@@ -1,3 +1,27 @@
+## <small>5.0.227 (2022-06-10)</small>
+
+* chore: log screen information for SFVC path (#1951) ([6eb2270](https://github.com/paypal/paypal-checkout-components/commit/6eb2270)), closes [#1951](https://github.com/paypal/paypal-checkout-components/issues/1951)
+
+
+
+## <small>5.0.226 (2022-06-06)</small>
+
+* Inline XO: Fix production eligibility logic ([ad8b0d0](https://github.com/paypal/paypal-checkout-components/commit/ad8b0d0))
+
+
+
+## <small>5.0.225 (2022-06-02)</small>
+
+* Inline XO: Force Eligibility ([3f56a06](https://github.com/paypal/paypal-checkout-components/commit/3f56a06))
+
+
+
+## <small>5.0.224 (2022-06-01)</small>
+
+* Inline XO: Production Alpha eligibility ([7bcf14c](https://github.com/paypal/paypal-checkout-components/commit/7bcf14c))
+
+
+
 ## <small>5.0.223 (2022-05-25)</small>
 
 * Add new shipping callbacks (#1946) ([e473c0f](https://github.com/paypal/paypal-checkout-components/commit/e473c0f)), closes [#1946](https://github.com/paypal/paypal-checkout-components/issues/1946)
