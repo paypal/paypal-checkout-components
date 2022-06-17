@@ -102,9 +102,13 @@ export function validateButtonProps(props : ButtonPropsInputs) {
 
 export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
+    console.log('props --- ', props);
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
         nonce, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
         supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
+
+    console.log('experiment --- ', experiment);
+    console.log('nonce --- ', nonce);
     const { custom, layout, shape, tagline } = style;
 
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label && custom.label.length !== 0;
