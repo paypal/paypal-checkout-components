@@ -137,6 +137,11 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                     required: false
                 },
 
+                createOrder: {
+                    type:     'function',
+                    required: true
+                },
+
                 showActionButtons: {
                     type:       'boolean',
                     queryParam: true,
