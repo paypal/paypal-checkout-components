@@ -18,7 +18,7 @@ function setupCardForm() {
 let cardFormOpen = false;
 
 function isCardFormEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange, experience } = props;
+    const { vault, onShippingChange, onShippingAddressChange, onShippingOptionsChange, experience } = props;
     const { eligibility } = serviceData;
 
     if (experience === EXPERIENCE.INLINE && !isCrossSiteTrackingEnabled('enforce_policy')) {
@@ -29,7 +29,7 @@ function isCardFormEligible({ props, serviceData } : IsEligibleOptions) : boolea
         return false;
     }
 
-    if (onShippingChange) {
+    if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
         return false;
     }
 

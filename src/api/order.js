@@ -245,9 +245,7 @@ export function authorizeOrder(orderID : string, { facilitatorAccessToken, buyer
     });
 }
 
-type PatchData = {|
-
-|};
+type PatchData = mixed;
 
 export function patchOrder(orderID : string, data : PatchData, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI = false } : OrderAPIOptions) : ZalgoPromise<OrderResponse> {
     getLogger().info(`patch_order_lsat_upgrade_${ getLsatUpgradeCalled() ? 'called' : 'not_called' }`);

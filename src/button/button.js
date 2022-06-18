@@ -69,7 +69,8 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
 
     const props = getButtonProps({ facilitatorAccessToken, brandedDefault, paymentSource: null });
     const { env, sessionID, partnerAttributionID, commit, sdkCorrelationID, locale, onShippingChange,
-        buttonSessionID, merchantDomain, onInit, getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
+        buttonSessionID, merchantDomain, onInit,
+        getPrerenderDetails, rememberFunding, getQueriedEligibleFunding,
         style, fundingSource, intent, createBillingAgreement, createSubscription, stickinessID } = props;
         
     const config = getConfig({ serverCSPNonce, firebaseConfig });

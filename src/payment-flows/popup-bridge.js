@@ -25,9 +25,9 @@ function setupPopupBridge({ props } : SetupOptions) : ZalgoPromise<void> {
 }
 
 function isPopupBridgeEligible({ props } : IsEligibleOptions) : boolean {
-    const { onShippingChange } = props;
+    const { onShippingChange, onShippingAddressChange, onShippingOptionsChange } = props;
 
-    if (onShippingChange) {
+    if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
         return false;
     }
 

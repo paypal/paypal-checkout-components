@@ -10,6 +10,8 @@ export * from './onComplete';
 export * from './onInit';
 export * from './onCancel';
 export * from './onShippingChange';
+export * from './onShippingAddressChange';
+export * from './onShippingOptionsChange';
 export * from './onClick';
 export * from './onError';
 export * from './getPopupBridge';

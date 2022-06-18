@@ -11,13 +11,13 @@ function setupCardField() {
 }
 
 function isCardFieldEligible({ props } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange } = props;
+    const { vault, onShippingChange, onShippingAddressChange, onShippingOptionsChange } = props;
 
     if (vault) {
         return false;
     }
 
-    if (onShippingChange) {
+    if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
         return false;
     }
 

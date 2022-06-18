@@ -15,13 +15,13 @@ import { checkout, CHECKOUT_POPUP_DIMENSIONS } from './checkout';
 
 function isWalletCaptureEligible({ props, serviceData } : IsEligibleOptions) : boolean {
     const { wallet } = serviceData;
-    const { onShippingChange } = props;
+    const { onShippingChange, onShippingAddressChange, onShippingOptionsChange } = props;
 
     if (!wallet) {
         return false;
     }
 
-    if (onShippingChange) {
+    if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
         return false;
     }
 

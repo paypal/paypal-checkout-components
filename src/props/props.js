@@ -15,6 +15,8 @@ import { getOnApprove } from './onApprove';
 import { getOnComplete } from './onComplete';
 import { getOnCancel } from './onCancel';
 import { getOnShippingChange } from './onShippingChange';
+import { getOnShippingAddressChange } from './onShippingAddressChange';
+import { getOnShippingOptionsChange } from './onShippingOptionsChange';
 import { getOnClick } from './onClick';
 import { getCreateBillingAgreement } from './createBillingAgreement';
 import { getCreateSubscription } from './createSubscription';
@@ -22,7 +24,9 @@ import { getOnAuth } from './onAuth';
 import { getOnError } from './onError';
 
 import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingAgreement, OnInit,
-    XOnInit, OnApprove, XOnApprove, OnComplete, XOnComplete, OnCancel, XOnCancel, OnClick, XOnClick, OnShippingChange, XOnShippingChange, XOnError,
+    XOnInit, OnApprove, XOnApprove, OnComplete, XOnComplete, OnCancel, XOnCancel, OnClick, XOnClick,
+    OnShippingChange, XOnShippingChange, OnShippingAddressChange, XOnShippingAddressChange,
+    OnShippingOptionsChange, XOnShippingOptionsChange, XOnError,
     OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding
 } from '.';
 
@@ -93,6 +97,8 @@ export type XProps = {|
     onClick : XOnClick,
     onError : XOnError,
     onShippingChange : ?XOnShippingChange,
+    onShippingAddressChange : ?XOnShippingAddressChange,
+    onShippingOptionsChange : ?XOnShippingOptionsChange,
 
     paymentMethodNonce : ?string,
     paymentMethodToken : ?string,
@@ -164,6 +170,8 @@ export type Props = {|
 
     onCancel : OnCancel,
     onShippingChange : ?OnShippingChange,
+    onShippingAddressChange : ?OnShippingAddressChange,
+    onShippingOptionsChange : ?OnShippingOptionsChange,
     onAuth : OnAuth,
 
     paymentMethodToken : ?string,
@@ -247,6 +255,8 @@ export function getProps({ facilitatorAccessToken, branded, paymentSource } : {|
     const onComplete = getOnComplete({ createOrder, onComplete: xprops.onComplete, onError: xprops.onError });
     const onCancel = getOnCancel({ onCancel: xprops.onCancel, onError }, { createOrder });
     const onShippingChange = getOnShippingChange({ onShippingChange: xprops.onShippingChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
+    const onShippingAddressChange = getOnShippingAddressChange({ onShippingAddressChange: xprops.onShippingAddressChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
+    const onShippingOptionsChange = getOnShippingOptionsChange({ onShippingOptionsChange: xprops.onShippingOptionsChange, partnerAttributionID, clientID }, { facilitatorAccessToken, createOrder });
     const onAuth = getOnAuth({ facilitatorAccessToken, createOrder, createSubscription, clientID });
 
     return {
@@ -305,6 +315,8 @@ export function getProps({ facilitatorAccessToken, branded, paymentSource } : {|
         onComplete,
         onCancel,
         onShippingChange,
+        onShippingAddressChange,
+        onShippingOptionsChange,
 
         onAuth,
         standaloneFundingSource: fundingSource,

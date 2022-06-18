@@ -125,7 +125,7 @@ function getDimensions(fundingSource : string) : {| width : number, height : num
 function initCheckout({ props, components, serviceData, payment, config, restart: fullRestart } : InitOptions) : PaymentFlowInstance {
     const { Checkout } = components;
     const { sessionID, buttonSessionID, createOrder, onApprove, onComplete, onCancel,
-        onShippingChange, locale, commit, onError, vault, clientAccessToken,
+        onShippingChange, onShippingAddressChange, onShippingOptionsChange, locale, commit, onError, vault, clientAccessToken,
         createBillingAgreement, createSubscription, onClick, amount,
         clientID, connect, clientMetadataID: cmid, onAuth, userIDToken, env,
         currency, enableFunding, stickinessID,
@@ -265,6 +265,24 @@ function initCheckout({ props, components, serviceData, payment, config, restart
             onShippingChange: onShippingChange
                 ? (data, actions) => {
                     return onShippingChange({ buyerAccessToken, ...data }, actions);
+                } : null,
+
+            onShippingAddressChange: onShippingAddressChange
+                ? (data, actions) => {
+                    if (!data.shipping_address) {
+                        throw new Error('Must pass shipping_address in data to handle changes in shipping address.');
+                    }
+                    
+                    return onShippingAddressChange({ buyerAccessToken, ...data }, actions);
+                } : null,
+
+            onShippingOptionsChange: onShippingOptionsChange
+                ? (data, actions) => {
+                    if (!data.selected_shipping_option) {
+                        throw new Error('Must pass selected_shipping_option in data to handle changes in shipping options.');
+                    }
+                    
+                    return onShippingOptionsChange({ buyerAccessToken, ...data }, actions);
                 } : null,
 
             onClose: () => {
