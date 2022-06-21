@@ -5,7 +5,8 @@
 import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVault, getDisableFunding, getDisableCard,
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
-    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled, getVersion } from '@paypal/sdk-client/src';
+    getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled,
+    createExperiment, getVersion } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, EVENT, type ZoidComponent } from '@krakenjs/zoid/src';
@@ -711,7 +712,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         }
                     }
 
-                    return inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
+                    const eligible = inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
                         commit,
                         createBillingAgreement,
                         currency,
@@ -720,7 +721,16 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         layout,
                         locale,
                         vault
-                    } }) ? EXPERIENCE.INLINE : '';
+                    } });
+
+                    if (eligible) {
+                        const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
+                        inlinexoExperiment.logStart();
+
+                        return inlinexoExperiment.isEnabled() ? EXPERIENCE.INLINE : '';
+                    }
+
+                    return '';
                 }
             },
 
