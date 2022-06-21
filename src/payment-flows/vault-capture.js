@@ -8,7 +8,7 @@ import { initiateInstallments } from '@paypal/installments/src/interface';
 
 import type { ThreeDomainSecureFlowType, MenuChoices } from '../types';
 import type { CreateOrder } from '../props';
-import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault, updateButtonClientConfig, loadFraudnet } from '../api';
+import { validatePaymentMethod, type ValidatePaymentMethodResponse, getSupplementalOrderInfo, deleteVault, updateButtonClientConfig, loadFraudnet, confirmOrderAPI, buildPaymentSource } from '../api';
 import { TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, FPTI_MENU_OPTION } from '../constants';
 import { getLogger } from '../lib';
 import type { ButtonProps } from '../button/props';
@@ -174,7 +174,10 @@ function initVaultCapture({ props, components, payment, serviceData, config } : 
 
             const { status, body } = validate;
             return handleValidateResponse({ ThreeDomainSecure, status, body, createOrder, getParent }).then(() => {
-                return onApprove({}, { restart });
+                return confirmOrderAPI(orderID, { payment_source: buildPaymentSource(paymentMethodID) }, { facilitatorAccessToken, partnerAttributionID })
+                .then(() => {
+                  return onApprove({}, { restart });
+                });
             });
         });
     };

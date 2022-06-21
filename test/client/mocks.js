@@ -858,6 +858,25 @@ export function getValidatePaymentMethodApiMock(options : Object = {}) : MockEnd
     });
 }
 
+
+export function getConfirmOrderApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method:  'POST',
+        uri:     new RegExp('/v2/checkout/orders/[^/]+/confirm-payment-source'),
+        handler: ({ uri, method, query, data, headers }) => {
+            if (options.extraHandler) {
+                const result = options.extraHandler({ uri, method, query, data, headers });
+                if (result) {
+                    return result;
+                }
+            }
+
+            return {};
+        },
+        ...options
+    });
+}
+
 getCreateAccessTokenMock().listen();
 
 getCreateOrderApiMock().listen();
