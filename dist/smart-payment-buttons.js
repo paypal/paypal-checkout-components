@@ -7183,13 +7183,27 @@ window.spb = function(modules) {
                 return _ref9.data;
             }));
         }
+        function confirmOrderAPI(orderID, data, _ref10) {
+            var _headers14;
+            return callRestAPI({
+                accessToken: _ref10.facilitatorAccessToken,
+                method: "post",
+                eventName: "order_confirm_payment_source",
+                url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
+                data: data,
+                headers: (_headers14 = {}, _headers14["paypal-partner-attribution-id"] = _ref10.partnerAttributionID || "", 
+                _headers14.prefer = "return=representation", _headers14)
+            }).then((function(_ref11) {
+                return _ref11.data;
+            }));
+        }
         function validatePaymentMethod(_ref12) {
             var _headers15;
             var accessToken = _ref12.accessToken, orderID = _ref12.orderID, paymentMethodID = _ref12.paymentMethodID, enableThreeDomainSecure = _ref12.enableThreeDomainSecure, partnerAttributionID = _ref12.partnerAttributionID, clientMetadataID = _ref12.clientMetadataID, installmentPlan = _ref12.installmentPlan;
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.100", _headers15);
+            _headers15["x-app-version"] = "5.0.101", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7599,7 +7613,64 @@ window.spb = function(modules) {
             }).flush();
             return dom_redirect(url, window.top);
         };
+        function _objectWithoutPropertiesLoose(source, excluded) {
+            if (null == source) return {};
+            var target = {};
+            var sourceKeys = Object.keys(source);
+            var key, i;
+            for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
+            return target;
+        }
         var _excluded = [ "buyerAccessToken", "forceRestAPI" ];
+        var ON_SHIPPING_CHANGE_PATHS_AMOUNT = "/purchase_units/@reference_id=='default'/amount", ON_SHIPPING_CHANGE_PATHS_OPTIONS = "/purchase_units/@reference_id=='default'/shipping/options";
+        var SHIPPING_ADDRESS_ERROR_MESSAGES = {
+            ADDRESS_ERROR: "Your order can't be shipped to this address.",
+            COUNTRY_ERROR: "Your order can't be shipped to this country.",
+            STATE_ERROR: "Your order can't be shipped to this state.",
+            ZIP_ERROR: "Your order can't be shipped to this zip."
+        };
+        var SHIPPING_OPTIONS_ERROR_MESSAGES = {
+            METHOD_UNAVAILABLE: "The shipping method you chose is unavailable. To continue, choose another way to get your order.",
+            STORE_UNAVAILABLE: "Part of your order isn't available at this store."
+        };
+        var calculateTotalFromShippingBreakdownAmounts = function(_ref) {
+            var breakdown = _ref.breakdown, updatedAmounts = _ref.updatedAmounts;
+            var newAmount = 0;
+            var updatedAmountKeys = Object.keys(updatedAmounts) || [];
+            var discountKeys = [ "shipping_discount", "discount" ];
+            Object.keys(breakdown).forEach((function(item) {
+                if (-1 !== updatedAmountKeys.indexOf(item)) discountKeys.includes(item) ? newAmount -= Math.abs(parseFloat(updatedAmounts[item])) : newAmount += parseFloat(updatedAmounts[item]); else if (discountKeys.includes(item)) {
+                    var _breakdown$item;
+                    newAmount -= Math.abs(parseFloat(null == (_breakdown$item = breakdown[item]) ? void 0 : _breakdown$item.value));
+                } else {
+                    var _breakdown$item2;
+                    newAmount += parseFloat(null == (_breakdown$item2 = breakdown[item]) ? void 0 : _breakdown$item2.value);
+                }
+            }));
+            updatedAmountKeys.forEach((function(key) {
+                breakdown[key] || updatedAmounts[key] && (discountKeys.includes(key) ? newAmount -= Math.abs(parseFloat(updatedAmounts[key])) : newAmount += parseFloat(updatedAmounts[key]));
+            }));
+            return newAmount.toFixed(2);
+        };
+        var buildBreakdown = function(_ref2) {
+            var _Object$values$;
+            var _ref2$breakdown = _ref2.breakdown, breakdown = void 0 === _ref2$breakdown ? {} : _ref2$breakdown, _ref2$updatedAmounts = _ref2.updatedAmounts, updatedAmounts = void 0 === _ref2$updatedAmounts ? {} : _ref2$updatedAmounts;
+            var discountKeys = [ "shipping_discount", "discount" ];
+            var updatedAmountKeys = Object.keys(updatedAmounts);
+            var currency_code = null == (_Object$values$ = Object.values(breakdown)[0]) ? void 0 : _Object$values$.currency_code;
+            updatedAmountKeys.forEach((function(key) {
+                breakdown[key] ? breakdown[key].value = updatedAmounts[key] : updatedAmounts[key] && (breakdown[key] = {
+                    currency_code: currency_code,
+                    value: updatedAmounts[key] && discountKeys.includes(key) ? Math.abs(parseFloat(updatedAmounts[key])).toFixed(2) : updatedAmounts[key]
+                });
+            }));
+            return breakdown;
+        };
+        var convertQueriesToArray = function(_ref3) {
+            return Object.values(_ref3.queries) || [];
+        };
+        var onShippingAddressChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "shipping_address" ], _excluded2 = [ "buyerAccessToken", "forceRestAPI" ];
+        var onShippingOptionsChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "options", "selected_shipping_option" ], onShippingOptionsChange_excluded2 = [ "buyerAccessToken", "forceRestAPI" ];
         function getProps(_ref) {
             var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded, paymentSource = _ref.paymentSource;
             var xprops = window.xprops;
@@ -8411,14 +8482,7 @@ window.spb = function(modules) {
                 var facilitatorAccessToken = _ref3.facilitatorAccessToken, createOrder = _ref3.createOrder;
                 var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref2.clientID);
                 if (onShippingChange) return function(_ref4, actions) {
-                    var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 === _ref4$forceRestAPI ? upgradeLSAT : _ref4$forceRestAPI, data = function(source, excluded) {
-                        if (null == source) return {};
-                        var target = {};
-                        var sourceKeys = Object.keys(source);
-                        var key, i;
-                        for (i = 0; i < sourceKeys.length; i++) excluded.indexOf(key = sourceKeys[i]) >= 0 || (target[key] = source[key]);
-                        return target;
-                    }(_ref4, _excluded);
+                    var buyerAccessToken = _ref4.buyerAccessToken, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 === _ref4$forceRestAPI ? upgradeLSAT : _ref4$forceRestAPI, data = _objectWithoutPropertiesLoose(_ref4, _excluded);
                     return createOrder().then((function(orderID) {
                         var _getLogger$info$track;
                         logger_getLogger().info("button_shipping_change").track((_getLogger$info$track = {}, 
@@ -8460,6 +8524,309 @@ window.spb = function(modules) {
                 };
             }({
                 onShippingChange: xprops.onShippingChange,
+                partnerAttributionID: partnerAttributionID,
+                clientID: clientID
+            }, {
+                facilitatorAccessToken: facilitatorAccessToken,
+                createOrder: createOrder
+            });
+            var onShippingAddressChange = function(_ref5, _ref6) {
+                var onShippingAddressChange = _ref5.onShippingAddressChange, partnerAttributionID = _ref5.partnerAttributionID;
+                var facilitatorAccessToken = _ref6.facilitatorAccessToken, createOrder = _ref6.createOrder;
+                var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref5.clientID);
+                if (onShippingAddressChange) return function(_ref7, actions) {
+                    var buyerAccessToken = _ref7.buyerAccessToken, _ref7$forceRestAPI = _ref7.forceRestAPI, forceRestAPI = void 0 === _ref7$forceRestAPI ? upgradeLSAT : _ref7$forceRestAPI, data = _objectWithoutPropertiesLoose(_ref7, _excluded2);
+                    return createOrder().then((function(orderID) {
+                        var _getLogger$info$track;
+                        logger_getLogger().info("button_shipping_address_change").track((_getLogger$info$track = {}, 
+                        _getLogger$info$track.transition_name = "process_checkout_shipping_address_change", 
+                        _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
+                        _getLogger$info$track.context_id = orderID, _getLogger$info$track.shipping_callback_invoked = "1", 
+                        _getLogger$info$track)).flush();
+                        return onShippingAddressChange(function(data) {
+                            var shippingAddress = data.shipping_address, rest = _objectWithoutPropertiesLoose(data, onShippingAddressChange_excluded);
+                            return _extends({
+                                errors: SHIPPING_ADDRESS_ERROR_MESSAGES,
+                                shippingAddress: shippingAddress
+                            }, rest);
+                        }(data), function(_ref) {
+                            var _data$amount;
+                            var data = _ref.data, passedActions = _ref.actions, orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
+                            var patchQueries = {};
+                            var newAmount;
+                            var breakdown = (null == (_data$amount = data.amount) ? void 0 : _data$amount.breakdown) || {};
+                            if (0 === Object.keys(breakdown).length) throw new Error("Must pass amount with breakdown into data attribute for onShippingAddressChange callback.");
+                            var actions = {
+                                reject: passedActions.reject || function() {
+                                    throw new Error("Missing reject action callback");
+                                },
+                                updateTax: function(_ref2) {
+                                    var _data$amount2;
+                                    var tax = _ref2.tax;
+                                    breakdown = buildBreakdown({
+                                        breakdown: breakdown,
+                                        updatedAmounts: {
+                                            tax_total: tax
+                                        }
+                                    });
+                                    newAmount = calculateTotalFromShippingBreakdownAmounts({
+                                        breakdown: breakdown,
+                                        updatedAmounts: {
+                                            tax_total: tax
+                                        }
+                                    });
+                                    patchQueries[ON_SHIPPING_CHANGE_PATHS_AMOUNT] = {
+                                        op: "replace",
+                                        path: ON_SHIPPING_CHANGE_PATHS_AMOUNT,
+                                        value: {
+                                            value: "" + newAmount,
+                                            currency_code: null == data || null == (_data$amount2 = data.amount) ? void 0 : _data$amount2.currency_code,
+                                            breakdown: breakdown
+                                        }
+                                    };
+                                    return actions;
+                                },
+                                updateShippingOptions: function(_ref3) {
+                                    var options = _ref3.options;
+                                    if (options && options.length > 0) {
+                                        var _selectedShippingOpti, _selectedShippingOpti2, _data$amount3;
+                                        var selectedShippingOption = options.filter((function(option) {
+                                            return !0 === option.selected;
+                                        }));
+                                        var selectedShippingOptionAmount = selectedShippingOption && (null == (_selectedShippingOpti = selectedShippingOption[0]) || null == (_selectedShippingOpti2 = _selectedShippingOpti.amount) ? void 0 : _selectedShippingOpti2.value);
+                                        breakdown = buildBreakdown({
+                                            breakdown: breakdown,
+                                            updatedAmounts: {
+                                                shipping: selectedShippingOptionAmount
+                                            }
+                                        });
+                                        newAmount = calculateTotalFromShippingBreakdownAmounts({
+                                            breakdown: breakdown,
+                                            updatedAmounts: {
+                                                shipping: selectedShippingOptionAmount
+                                            }
+                                        });
+                                        patchQueries[ON_SHIPPING_CHANGE_PATHS_AMOUNT] = {
+                                            op: "replace",
+                                            path: ON_SHIPPING_CHANGE_PATHS_AMOUNT,
+                                            value: {
+                                                value: "" + newAmount,
+                                                currency_code: null == data || null == (_data$amount3 = data.amount) ? void 0 : _data$amount3.currency_code,
+                                                breakdown: breakdown
+                                            }
+                                        };
+                                        patchQueries[ON_SHIPPING_CHANGE_PATHS_OPTIONS] = {
+                                            op: (null == data ? void 0 : data.event) || "replace",
+                                            path: ON_SHIPPING_CHANGE_PATHS_OPTIONS,
+                                            value: options
+                                        };
+                                    }
+                                    return actions;
+                                },
+                                updateShippingDiscount: function(_ref4) {
+                                    var _data$amount4;
+                                    var discount = _ref4.discount;
+                                    newAmount = calculateTotalFromShippingBreakdownAmounts({
+                                        breakdown: breakdown,
+                                        updatedAmounts: {
+                                            shipping_discount: discount
+                                        }
+                                    });
+                                    breakdown = buildBreakdown({
+                                        breakdown: breakdown,
+                                        updatedAmounts: {
+                                            shipping_discount: discount
+                                        }
+                                    });
+                                    patchQueries[ON_SHIPPING_CHANGE_PATHS_AMOUNT] = {
+                                        op: "replace",
+                                        path: ON_SHIPPING_CHANGE_PATHS_AMOUNT,
+                                        value: {
+                                            value: "" + newAmount,
+                                            currency_code: null == data || null == (_data$amount4 = data.amount) ? void 0 : _data$amount4.currency_code,
+                                            breakdown: breakdown
+                                        }
+                                    };
+                                    return actions;
+                                },
+                                patch: function() {
+                                    return patchOrder(orderID, convertQueriesToArray({
+                                        queries: patchQueries
+                                    }), {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).catch((function() {
+                                        throw new Error("Order could not be patched");
+                                    }));
+                                },
+                                query: function() {
+                                    return JSON.stringify(convertQueriesToArray({
+                                        queries: patchQueries
+                                    }));
+                                }
+                            };
+                            return actions;
+                        }({
+                            data: data,
+                            actions: actions,
+                            orderID: orderID,
+                            facilitatorAccessToken: facilitatorAccessToken,
+                            buyerAccessToken: buyerAccessToken,
+                            partnerAttributionID: partnerAttributionID,
+                            forceRestAPI: forceRestAPI
+                        }));
+                    }));
+                };
+            }({
+                onShippingAddressChange: xprops.onShippingAddressChange,
+                partnerAttributionID: partnerAttributionID,
+                clientID: clientID
+            }, {
+                facilitatorAccessToken: facilitatorAccessToken,
+                createOrder: createOrder
+            });
+            var onShippingOptionsChange = function(_ref4, _ref5) {
+                var onShippingOptionsChange = _ref4.onShippingOptionsChange, partnerAttributionID = _ref4.partnerAttributionID;
+                var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
+                var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref4.clientID);
+                if (onShippingOptionsChange) return function(_ref6, actions) {
+                    var buyerAccessToken = _ref6.buyerAccessToken, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI, data = _objectWithoutPropertiesLoose(_ref6, onShippingOptionsChange_excluded2);
+                    return createOrder().then((function(orderID) {
+                        var _getLogger$info$track;
+                        logger_getLogger().info("button_shipping_options_change").track((_getLogger$info$track = {}, 
+                        _getLogger$info$track.transition_name = "process_checkout_shipping_options_change", 
+                        _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
+                        _getLogger$info$track.context_id = orderID, _getLogger$info$track.shipping_callback_invoked = "1", 
+                        _getLogger$info$track)).flush();
+                        return onShippingOptionsChange(function(data) {
+                            var selectedShippingOption = data.selected_shipping_option, rest = _objectWithoutPropertiesLoose(data, onShippingOptionsChange_excluded);
+                            return _extends({
+                                errors: SHIPPING_OPTIONS_ERROR_MESSAGES,
+                                selectedShippingOption: selectedShippingOption
+                            }, rest);
+                        }(data), function(_ref) {
+                            var _data$amount;
+                            var data = _ref.data, passedActions = _ref.actions, orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
+                            var patchQueries = {};
+                            var newAmount;
+                            var breakdown = (null == (_data$amount = data.amount) ? void 0 : _data$amount.breakdown) || {};
+                            if (0 === Object.keys(breakdown).length) throw new Error("Must pass breakdown into data attribute for onShippingAddressChange callback.");
+                            var actions = {
+                                reject: passedActions.reject || function() {
+                                    throw new Error("Missing reject action callback");
+                                },
+                                updateShippingOption: function(_ref2) {
+                                    var option = _ref2.option;
+                                    if (option && data.options) {
+                                        var _option$amount, _data$amount2, _data$amount3;
+                                        var selectedShippingOptionAmount = null == option || null == (_option$amount = option.amount) ? void 0 : _option$amount.value;
+                                        var options = function(_ref4) {
+                                            var option = _ref4.option;
+                                            var updatedOptions = [];
+                                            _ref4.options.forEach((function(opt) {
+                                                if (!opt.id) throw new Error("Must provide an id with each shipping option.");
+                                                if (opt.id === option.id) {
+                                                    opt.selected = !0;
+                                                    updatedOptions.push(opt);
+                                                } else {
+                                                    opt.selected = !1;
+                                                    updatedOptions.push(opt);
+                                                }
+                                            }));
+                                            return updatedOptions;
+                                        }({
+                                            option: option,
+                                            options: data.options
+                                        });
+                                        newAmount = calculateTotalFromShippingBreakdownAmounts({
+                                            breakdown: (null == data || null == (_data$amount2 = data.amount) ? void 0 : _data$amount2.breakdown) || {},
+                                            updatedAmounts: {
+                                                shipping: selectedShippingOptionAmount
+                                            }
+                                        });
+                                        breakdown = buildBreakdown({
+                                            breakdown: breakdown,
+                                            updatedAmounts: {
+                                                shipping: selectedShippingOptionAmount
+                                            }
+                                        });
+                                        options && options.length > 0 && (patchQueries[ON_SHIPPING_CHANGE_PATHS_OPTIONS] = {
+                                            op: (null == data ? void 0 : data.event) || "replace",
+                                            path: ON_SHIPPING_CHANGE_PATHS_OPTIONS,
+                                            value: options
+                                        });
+                                        patchQueries[ON_SHIPPING_CHANGE_PATHS_AMOUNT] = {
+                                            op: "replace",
+                                            path: ON_SHIPPING_CHANGE_PATHS_AMOUNT,
+                                            value: {
+                                                value: "" + newAmount,
+                                                currency_code: null == data || null == (_data$amount3 = data.amount) ? void 0 : _data$amount3.currency_code,
+                                                breakdown: breakdown
+                                            }
+                                        };
+                                    }
+                                    return actions;
+                                },
+                                updateShippingDiscount: function(_ref3) {
+                                    var _data$amount4, _data$amount5;
+                                    var discount = _ref3.discount;
+                                    newAmount = calculateTotalFromShippingBreakdownAmounts({
+                                        breakdown: (null == data || null == (_data$amount4 = data.amount) ? void 0 : _data$amount4.breakdown) || {},
+                                        updatedAmounts: {
+                                            shipping_discount: discount
+                                        }
+                                    });
+                                    breakdown = buildBreakdown({
+                                        breakdown: breakdown,
+                                        updatedAmounts: {
+                                            shipping_discount: discount
+                                        }
+                                    });
+                                    patchQueries[ON_SHIPPING_CHANGE_PATHS_AMOUNT] = {
+                                        op: "replace",
+                                        path: ON_SHIPPING_CHANGE_PATHS_AMOUNT,
+                                        value: {
+                                            value: "" + newAmount,
+                                            currency_code: null == data || null == (_data$amount5 = data.amount) ? void 0 : _data$amount5.currency_code,
+                                            breakdown: breakdown
+                                        }
+                                    };
+                                    return actions;
+                                },
+                                patch: function() {
+                                    return patchOrder(orderID, convertQueriesToArray({
+                                        queries: patchQueries
+                                    }), {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).catch((function() {
+                                        throw new Error("Order could not be patched");
+                                    }));
+                                },
+                                query: function() {
+                                    return JSON.stringify(convertQueriesToArray({
+                                        queries: patchQueries
+                                    }));
+                                }
+                            };
+                            return actions;
+                        }({
+                            data: data,
+                            actions: actions,
+                            orderID: orderID,
+                            facilitatorAccessToken: facilitatorAccessToken,
+                            buyerAccessToken: buyerAccessToken,
+                            partnerAttributionID: partnerAttributionID,
+                            forceRestAPI: forceRestAPI
+                        }));
+                    }));
+                };
+            }({
+                onShippingOptionsChange: xprops.onShippingOptionsChange,
                 partnerAttributionID: partnerAttributionID,
                 clientID: clientID
             }, {
@@ -8543,6 +8910,8 @@ window.spb = function(modules) {
                 onComplete: onComplete,
                 onCancel: onCancel,
                 onShippingChange: onShippingChange,
+                onShippingAddressChange: onShippingAddressChange,
+                onShippingOptionsChange: onShippingOptionsChange,
                 onAuth: onAuth,
                 standaloneFundingSource: fundingSource,
                 paymentMethodToken: paymentMethodToken,
@@ -9404,7 +9773,7 @@ window.spb = function(modules) {
             init: function initCheckout(_ref5) {
                 var props = _ref5.props, components = _ref5.components, serviceData = _ref5.serviceData, payment = _ref5.payment, config = _ref5.config, fullRestart = _ref5.restart;
                 var Checkout = components.Checkout;
-                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onComplete = props.onComplete, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded, paymentMethodToken = props.paymentMethodToken, allowBillingPayments = props.allowBillingPayments, merchantRequestedPopupsDisabled = props.merchantRequestedPopupsDisabled;
+                var sessionID = props.sessionID, buttonSessionID = props.buttonSessionID, _createOrder = props.createOrder, _onApprove = props.onApprove, _onComplete = props.onComplete, _onCancel = props.onCancel, onShippingChange = props.onShippingChange, onShippingAddressChange = props.onShippingAddressChange, onShippingOptionsChange = props.onShippingOptionsChange, locale = props.locale, commit = props.commit, _onError = props.onError, vault = props.vault, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, onClick = props.onClick, amount = props.amount, clientID = props.clientID, connect = props.connect, cmid = props.clientMetadataID, _onAuth = props.onAuth, userIDToken = props.userIDToken, env = props.env, currency = props.currency, enableFunding = props.enableFunding, stickinessID = props.stickinessID, standaloneFundingSource = props.standaloneFundingSource, branded = props.branded, paymentMethodToken = props.paymentMethodToken, allowBillingPayments = props.allowBillingPayments, merchantRequestedPopupsDisabled = props.merchantRequestedPopupsDisabled;
                 var button = payment.button, win = payment.win, fundingSource = payment.fundingSource, card = payment.card, _payment$buyerAccessT = payment.buyerAccessToken, buyerAccessToken = void 0 === _payment$buyerAccessT ? serviceData.buyerAccessToken : _payment$buyerAccessT, venmoPayloadID = payment.venmoPayloadID, buyerIntent = payment.buyerIntent;
                 var buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta, merchantID = serviceData.merchantID;
                 var cspNonce = config.cspNonce;
@@ -9596,6 +9965,18 @@ window.spb = function(modules) {
                                 buyerAccessToken: buyerAccessToken
                             }, data), actions);
                         } : null,
+                        onShippingAddressChange: onShippingAddressChange ? function(data, actions) {
+                            if (!data.shipping_address) throw new Error("Must pass shipping_address in data to handle changes in shipping address.");
+                            return onShippingAddressChange(_extends({
+                                buyerAccessToken: buyerAccessToken
+                            }, data), actions);
+                        } : null,
+                        onShippingOptionsChange: onShippingOptionsChange ? function(data, actions) {
+                            if (!data.selected_shipping_option) throw new Error("Must pass selected_shipping_option in data to handle changes in shipping options.");
+                            return onShippingOptionsChange(_extends({
+                                buyerAccessToken: buyerAccessToken
+                            }, data), actions);
+                        } : null,
                         onClose: function() {
                             return doApproveOnClose && !approved ? _onApprove({
                                 forceRestAPI: !0
@@ -9737,9 +10118,9 @@ window.spb = function(modules) {
             setup: function() {},
             isEligible: function(_ref) {
                 var props = _ref.props;
-                var vault = props.vault, onShippingChange = props.onShippingChange;
+                var vault = props.vault, onShippingChange = props.onShippingChange, onShippingAddressChange = props.onShippingAddressChange, onShippingOptionsChange = props.onShippingOptionsChange;
                 var eligibility = _ref.serviceData.eligibility;
-                return !("inline" === props.experience && !isCrossSiteTrackingEnabled("enforce_policy")) && !vault && !onShippingChange && eligibility.cardForm;
+                return !("inline" === props.experience && !isCrossSiteTrackingEnabled("enforce_policy")) && !vault && !(onShippingChange || onShippingAddressChange || onShippingOptionsChange) && eligibility.cardForm;
             },
             isPaymentEligible: function(_ref2) {
                 var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
@@ -9982,7 +10363,7 @@ window.spb = function(modules) {
             setup: function() {},
             isEligible: function(_ref) {
                 var props = _ref.props;
-                return !props.vault && !props.onShippingChange;
+                return !props.vault && !(props.onShippingChange || props.onShippingAddressChange || props.onShippingOptionsChange);
             },
             isPaymentEligible: function(_ref2) {
                 var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
@@ -10186,7 +10567,8 @@ window.spb = function(modules) {
             name: "vault_capture",
             setup: function() {},
             isEligible: function(_ref) {
-                return !_ref.props.onShippingChange;
+                var props = _ref.props;
+                return !(props.onShippingChange || props.onShippingAddressChange || props.onShippingOptionsChange);
             },
             isPaymentEligible: function(_ref2) {
                 var payment = _ref2.payment;
@@ -10292,9 +10674,22 @@ window.spb = function(modules) {
                             createOrder: createOrder,
                             getParent: getParent
                         }).then((function() {
-                            return onApprove({}, {
-                                restart: restart
-                            });
+                            return confirmOrderAPI(orderID, {
+                                payment_source: (tokenID = paymentMethodID, {
+                                    token: {
+                                        id: tokenID,
+                                        type: "NONCE"
+                                    }
+                                })
+                            }, {
+                                facilitatorAccessToken: facilitatorAccessToken,
+                                partnerAttributionID: partnerAttributionID
+                            }).then((function() {
+                                return onApprove({}, {
+                                    restart: restart
+                                });
+                            }));
+                            var tokenID;
                         }));
                     }));
                 };
@@ -10660,7 +11055,8 @@ window.spb = function(modules) {
                 }));
             },
             isEligible: function(_ref) {
-                return !!_ref.serviceData.wallet && !_ref.props.onShippingChange;
+                var props = _ref.props;
+                return !!_ref.serviceData.wallet && !(props.onShippingChange || props.onShippingAddressChange || props.onShippingOptionsChange);
             },
             isPaymentEligible: function(_ref4) {
                 var payment = _ref4.payment;
@@ -12224,7 +12620,8 @@ window.spb = function(modules) {
                 }));
             },
             isEligible: function(_ref2) {
-                return !_ref2.props.onShippingChange;
+                var props = _ref2.props;
+                return !(props.onShippingChange || props.onShippingAddressChange || props.onShippingOptionsChange);
             },
             isPaymentEligible: function(_ref3) {
                 return !_ref3.payment.win && !!parentPopupBridge;
@@ -12999,20 +13396,7 @@ window.spb = function(modules) {
                                     var facilitatorAccessToken = _ref2.facilitatorAccessToken;
                                     var startTime = Date.now();
                                     return promise_ZalgoPromise.try((function() {
-                                        return function(orderID, data, _ref10) {
-                                            var _headers14;
-                                            return callRestAPI({
-                                                accessToken: _ref10.facilitatorAccessToken,
-                                                method: "post",
-                                                eventName: "order_confirm_payment_source",
-                                                url: ORDERS_API_URL + "/" + orderID + "/confirm-payment-source",
-                                                data: data,
-                                                headers: (_headers14 = {}, _headers14["paypal-partner-attribution-id"] = _ref10.partnerAttributionID || "", 
-                                                _headers14.prefer = "return=representation", _headers14)
-                                            }).then((function(_ref11) {
-                                                return _ref11.data;
-                                            }));
-                                        }(orderID, payload, {
+                                        return confirmOrderAPI(orderID, payload, {
                                             facilitatorAccessToken: facilitatorAccessToken,
                                             partnerAttributionID: partnerAttributionID
                                         });
@@ -13433,7 +13817,7 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).context_type = "button_session_id", _ref3.context_id = buttonSessionID, 
-                    _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.100", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.101", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
                     _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.time = Date.now().toString(), 
@@ -13573,7 +13957,7 @@ window.spb = function(modules) {
             });
             var setupExportsTask = function(_ref) {
                 var props = _ref.props, isEnabled = _ref.isEnabled, facilitatorAccessToken = _ref.facilitatorAccessToken, fundingEligibility = _ref.fundingEligibility, merchantID = _ref.merchantID;
-                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, onClick = props.onClick, commit = props.commit, intent = props.intent, fundingSource = props.fundingSource, currency = props.currency;
+                var _createOrder = props.createOrder, _onApprove = props.onApprove, onError = props.onError, onCancel = props.onCancel, onClick = props.onClick, _onShippingChange = props.onShippingChange, commit = props.commit, intent = props.intent, fundingSource = props.fundingSource, currency = props.currency;
                 var fundingSources = querySelectorAll("[data-funding-source]").map((function(el) {
                     return el.getAttribute("data-funding-source");
                 })).filter(Boolean);
@@ -13600,6 +13984,9 @@ window.spb = function(modules) {
                                 return gqlResult && gqlResult.fundingEligibility && gqlResult.fundingEligibility.card && gqlResult.fundingEligibility.card.guestEnabled;
                             }));
                         }(merchantID);
+                    },
+                    isShippingChangeEnabled: function() {
+                        return "function" == typeof _onShippingChange;
                     },
                     paymentSession: function() {
                         return {
@@ -13645,6 +14032,16 @@ window.spb = function(modules) {
                             },
                             getFacilitatorAccessToken: function() {
                                 return facilitatorAccessToken;
+                            },
+                            onShippingChange: function(data) {
+                                if (_onShippingChange) return _onShippingChange(data, {
+                                    resolve: function() {
+                                        throw new Error("Action unimplemented");
+                                    },
+                                    reject: function() {
+                                        throw new Error("Action unimplemented");
+                                    }
+                                });
                             }
                         };
                     }
