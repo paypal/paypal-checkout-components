@@ -722,10 +722,26 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         locale,
                         vault
                     } });
+                    
+                    const logger = getLogger();
+
+                    logger
+                        .info('isInlineXOEligible props', { props: JSON.stringify(props) })
+                        .info('isInlineXOEligible eligible', { eligible: String(eligible) })
+                        .track({
+                            [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(eligible) }`
+                        }).flush();
 
                     if (eligible) {
-                        const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
-                        inlinexoExperiment.logStart();
+                        const inlinexoExperiment = createExperiment('inlinexo', 50, logger);
+                        const treatment = inlinexoExperiment.getTreatment();
+
+                        logger
+                            .info(treatment)
+                            .track({
+                                [FPTI_KEY.EXPERIMENT_NAME]: 'inlinexo',
+                                [FPTI_KEY.TREATMENT_NAME]:  treatment
+                            }).flush();
 
                         return inlinexoExperiment.isEnabled() ? EXPERIENCE.INLINE : '';
                     }
