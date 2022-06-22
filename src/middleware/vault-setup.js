@@ -7,6 +7,7 @@ import { COUNTRY, CURRENCY, FUNDING, CARD, INTENT, type FundingEligibilityType }
 import { enableVault, getFundingEligibility } from '../api';
 import { getLogger } from '../lib';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
+import { INTEGRATION_ARTIFACT, PRODUCT_FLOW, USER_EXPERIENCE_FLOW } from '../constants';
 
 
 type VaultAutoSetupEligibleProps = {|
@@ -55,7 +56,10 @@ type EnableVaultSetupOptions = {|
     commit : boolean,
     disableFunding : ?$ReadOnlyArray<$Values<typeof FUNDING>>,
     disableCard : ?$ReadOnlyArray<$Values<typeof CARD>>,
-    userIDToken : ?string
+    userIDToken : ?string,
+    inline : ?boolean,
+    userExperienceFlow : ?string,
+    buttonSessionID : string
 |};
 
 
@@ -108,7 +112,7 @@ function isVaultAutoSetupEligible({ vault, clientAccessToken, createBillingAgree
 }
 
 export function enableVaultSetup({ orderID, vault, clientAccessToken, createBillingAgreement, createSubscription, fundingSource,
-    clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard, userIDToken } : EnableVaultSetupOptions) : ZalgoPromise<void> {
+    clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard, userIDToken, inline = false, userExperienceFlow, buttonSessionID } : EnableVaultSetupOptions) : ZalgoPromise<void> {
 
     return ZalgoPromise.try(() => {
         getLogger()
@@ -120,7 +124,16 @@ export function enableVaultSetup({ orderID, vault, clientAccessToken, createBill
 
     }).then(eligible => {
         if (eligible && clientAccessToken) {
-            return enableVault({ orderID, clientAccessToken }).catch(err => {
+            const experienceFlow = inline ? USER_EXPERIENCE_FLOW.INLINE : USER_EXPERIENCE_FLOW.INCONTEXT;
+            return enableVault({
+                orderID,
+                clientAccessToken,
+                fundingSource,
+                integrationArtifact: INTEGRATION_ARTIFACT.PAYPAL_JS_SDK,
+                userExperienceFlow:  userExperienceFlow ? userExperienceFlow : experienceFlow,
+                productFlow:         PRODUCT_FLOW.SMART_PAYMENT_BUTTONS,
+                buttonSessionID
+            }).catch(err => {
                 if (vault) {
                     throw err;
                 }

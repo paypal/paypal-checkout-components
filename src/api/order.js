@@ -456,20 +456,29 @@ export function subscriptionIdToCartId(subscriptionID : string) : ZalgoPromise<s
     });
 }
 
-export function enableVault({ orderID, clientAccessToken } : {| orderID : string, clientAccessToken : string |}) : ZalgoPromise<mixed> {
+export function enableVault({ orderID, clientAccessToken, fundingSource, integrationArtifact, userExperienceFlow, productFlow, buttonSessionID } : {| orderID : string, clientAccessToken : string, fundingSource : string, integrationArtifact : string, userExperienceFlow : string, productFlow : string, buttonSessionID : string |}) : ZalgoPromise<mixed> {
+    const clientConfig = {
+        fundingSource,
+        integrationArtifact,
+        userExperienceFlow,
+        productFlow,
+        buttonSessionID,
+    }
     return callGraphQL({
         name:  'EnableVault',
         query: `
             mutation EnableVault(
-                $orderID : String!
+                $orderID : String!,
+                $clientConfig: ClientConfigInput!
             ) {
                 enableVault(
-                    token: $orderID
+                    token: $orderID,
+                    clientConfig: $clientConfig
                 )
             }
         `,
         variables: {
-            orderID
+            orderID, clientConfig
         },
         headers: {
             [ HEADERS.ACCESS_TOKEN ]:   clientAccessToken,

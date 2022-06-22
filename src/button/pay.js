@@ -161,7 +161,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 return ZalgoPromise.try(() => {
                     if (clientID && buyerIntent === BUYER_INTENT.PAY) {
                         return enableVaultSetup({ orderID, vault, clientAccessToken, fundingEligibility, fundingSource, createBillingAgreement, createSubscription,
-                            clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard, userIDToken });
+                            clientID, merchantID, buyerCountry, currency, commit, intent, disableFunding, disableCard, userIDToken, userExperienceFlow, buttonSessionID, inline });
                     }
                 });
             });
