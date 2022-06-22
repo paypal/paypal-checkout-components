@@ -11,8 +11,7 @@ import type { CreateOrder } from './createOrder';
 import type { CreateSubscription } from './createSubscription';
 
 export type XOnAuthDataType = {|
-    accessToken : ?string,
-    doLSATCapture? : boolean
+    accessToken : ?string
 |};
 
 export type OnAuth = (params : XOnAuthDataType) => ZalgoPromise<string | void>;
@@ -27,12 +26,12 @@ type GetOnAuthOptions = {|
 export function getOnAuth({ facilitatorAccessToken, createOrder, createSubscription, clientID } : GetOnAuthOptions) : OnAuth {
     const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
-    return ({ accessToken, doLSATCapture } : XOnAuthDataType) => {
+    return ({ accessToken } : XOnAuthDataType) => {
         getLogger().info(`spb_onauth_access_token_${ accessToken ? 'present' : 'not_present' }`);
 
         return ZalgoPromise.try(() => {
             if (accessToken) {
-                if (upgradeLSAT && !doLSATCapture) {
+                if (upgradeLSAT) {
                     return createOrder()
                         .then(orderID => {
                             if (createSubscription) {
