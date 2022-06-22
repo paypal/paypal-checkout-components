@@ -4,7 +4,8 @@ import {
     isJSON,
     validateShippingContact,
     getSupportedNetworksFromIssuers,
-    getApplePayShippingMethods
+    getApplePayShippingMethods,
+    buildRequiredShippingContactFieldsFromFlags
 } from '../utils';
 
 
@@ -130,7 +131,7 @@ describe('createApplePayRequest', () => {
         });
     });
 
-    test('it should map checkout session to applePaySession payload', () => {
+    test('it should map checkout session to applePaySession payload when isChangeShippingAddressAllowed is false', () => {
         const order = {
             checkoutSession: {
                 flags: {
@@ -223,7 +224,6 @@ describe('createApplePayRequest', () => {
             merchantCapabilities:          [ 'supports3DS', 'supportsCredit', 'supportsDebit' ],
             requiredBillingContactFields:  [ 'postalAddress', 'name', 'phone' ],
             requiredShippingContactFields: [
-                'postalAddress',
                 'name',
                 'phone',
                 'email'
@@ -442,5 +442,42 @@ describe('getApplePayShippingMethods', () => {
     test('should handle undefined', () => {
         expect(getApplePayShippingMethods(undefined)).toEqual([]);
     });
+
+    describe("buildRequiredShippingContactFields from shipping preferences", () => {
+        test("default GET_FROM_FILE", () => {
+            expect(buildRequiredShippingContactFieldsFromFlags({
+                isShippingAddressRequired : true,
+                isChangeShippingAddressAllowed : true
+            })).toEqual([
+                "name",
+                "phone",
+                "email",
+                "postalAddress",
+            ])
+        })
+
+        test("SET_PROVIDED_ADDRESS", () => {
+            expect(buildRequiredShippingContactFieldsFromFlags({
+                isShippingAddressRequired : true,
+                isChangeShippingAddressAllowed : false
+            })).toEqual([
+                "name",
+                "phone",
+                "email"
+            ])
+        })
+
+        test("NO_SHIPPING", () => {
+            expect(buildRequiredShippingContactFieldsFromFlags({
+                isShippingAddressRequired : false,
+                isChangeShippingAddressAllowed : false
+            })).toEqual([
+                "name",
+                "phone",
+                "email"
+            ])
+        })
+    })
+
 });
 

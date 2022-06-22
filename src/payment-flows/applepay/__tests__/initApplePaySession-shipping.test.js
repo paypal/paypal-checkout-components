@@ -11,7 +11,7 @@ jest.mock('../../../api', () => ({
             flags: {
                 isShippingAddressRequired:      true,
                 isDigitalGoodsIntegration:      false,
-                isChangeShippingAddressAllowed: false
+                isChangeShippingAddressAllowed: true
             },
             allowedCardIssuers: [
                 'MASTER_CARD',
@@ -223,10 +223,10 @@ describe('initApplePay', () => {
                 'phone'
             ],
             requiredShippingContactFields: [
-                'postalAddress',
                 'name',
                 'phone',
-                'email'
+                'email',
+                'postalAddress',
             ],
             shippingContact: {},
             shippingMethods: [

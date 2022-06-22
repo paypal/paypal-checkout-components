@@ -3,7 +3,7 @@
 import { COUNTRY } from '@paypal/sdk-constants/src';
 
 import { type DetailedOrderInfo } from '../../api';
-import type { ApplePayError, ApplePayPaymentContact, ApplePayMerchantCapabilities, ApplePayPaymentRequest, ApplePaySupportedNetworks, ApplePayShippingMethod, ShippingAddress, ShippingMethod, Shipping_Address } from '../types';
+import type { ApplePayError, ApplePayPaymentContact, ApplePayMerchantCapabilities, ApplePayPaymentRequest, ApplePaySupportedNetworks, ApplePayShippingMethod, ShippingAddress, ShippingMethod, Shipping_Address, ApplePayContactField } from '../types';
 
 export function isZeroAmount(value : string) : boolean {
     return parseFloat(value).toFixed(2) === '0.00';
@@ -99,10 +99,33 @@ export function getMerchantCapabilities(supportedNetworks : $ReadOnlyArray<Apple
     return merchantCapabilities;
 }
 
+type CheckoutSessionFlags = {|
+    isShippingAddressRequired : bool,
+    isChangeShippingAddressAllowed : bool
+|}
+
+export function buildRequiredShippingContactFieldsFromFlags({
+    isShippingAddressRequired,
+    isChangeShippingAddressAllowed,
+} : CheckoutSessionFlags) : $ReadOnlyArray<ApplePayContactField>{
+    const result = [
+        'name',
+        'phone',
+        'email'
+    ];
+
+    if (isShippingAddressRequired && isChangeShippingAddressAllowed) {
+        result.push('postalAddress');
+    }
+
+    return result;
+}
+
 export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, order : DetailedOrderInfo) : ApplePayPaymentRequest {
     const {
         flags: {
-            isShippingAddressRequired
+            isShippingAddressRequired,
+            isChangeShippingAddressAllowed
         },
         allowedCardIssuers,
         cart: {
@@ -143,16 +166,9 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
             'name',
             'phone'
         ],
-        requiredShippingContactFields: isShippingAddressRequired ? [
-            'postalAddress',
-            'name',
-            'phone',
-            'email'
-        ] : [
-            'name',
-            'phone',
-            'email'
-        ],
+        requiredShippingContactFields: buildRequiredShippingContactFieldsFromFlags({
+            isShippingAddressRequired, isChangeShippingAddressAllowed
+        }),
         shippingContact: shippingContact?.givenName ? shippingContact : {},
         shippingMethods: applePayShippingMethods || [],
         lineItems:       [],
