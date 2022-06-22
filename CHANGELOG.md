@@ -1,3 +1,9 @@
+## <small>5.0.228 (2022-06-22)</small>
+
+* Inline XO: Experiment (#1955) ([86f0b47](https://github.com/paypal/paypal-checkout-components/commit/86f0b47)), closes [#1955](https://github.com/paypal/paypal-checkout-components/issues/1955)
+
+
+
 ## <small>5.0.227 (2022-06-10)</small>
 
 * chore: log screen information for SFVC path (#1951) ([6eb2270](https://github.com/paypal/paypal-checkout-components/commit/6eb2270)), closes [#1951](https://github.com/paypal/paypal-checkout-components/issues/1951)
