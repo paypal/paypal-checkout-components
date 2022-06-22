@@ -1,6 +1,6 @@
 /* @flow */
-import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isIOS14, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled, isStandAlone } from '@krakenjs/belter/src';
-import { COUNTRY, CURRENCY, ENV, FPTI_KEY, FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
+import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isIOS14, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled, isStandAlone, once } from '@krakenjs/belter/src';
+import { COUNTRY, CURRENCY, ENV, FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
 import { getEnableFunding, getDisableFunding, getLogger, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
@@ -20,7 +20,7 @@ type DetermineFlowOptions = {|
  *
  * @param {string} key for logging
  */
-function logNativeScreenInformation(key = 'screenInformation') {
+const logNativeScreenInformation = once((key = 'screenInformation') => {
   if (window) {
     const height = window.innerHeight;
     const outerHeight = window.outerHeight;
@@ -35,7 +35,7 @@ function logNativeScreenInformation(key = 'screenInformation') {
       // $FlowFixMe - object is mixed values when this expects all of the same value types
       .info(key, screenInformation)
   }
-}
+});
 
 export function determineFlow(props : DetermineFlowOptions) : $Values<typeof BUTTON_FLOW> {
 
@@ -346,13 +346,6 @@ export function isInlineXOEligible({ props } : {| props : InlineCheckoutEligibil
         layout === BUTTON_LAYOUT.VERTICAL &&
         vault === false
     );
-
-    getLogger()
-        .info('isInlineXOEligible props', { props: JSON.stringify(props) })
-        .info('isInlineXOEligible eligible', { eligible: String(isEligible) })
-        .track({
-            [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(isEligible) }`
-        }).flush();
 
     return isEligible;
 }
