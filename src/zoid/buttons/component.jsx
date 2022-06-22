@@ -712,7 +712,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         }
                     }
 
-                    const eligible = inlineCheckoutEligibility &&  inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
+                    const eligible = inlineCheckoutEligibility && inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
                         commit,
                         createBillingAgreement,
                         currency,
