@@ -83,13 +83,6 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
 
         const { name, init, inline, spinner, updateFlowClientConfig } = getPaymentFlow({ props, payment, config, components, serviceData });
         const { click, start, close } = init({ props, config, serviceData, components, payment, restart });
-        
-        let derivedExperience = '';
-        if (isCrossSiteTrackingEnabled('enforce_policy') && experience === EXPERIENCE.INLINE) {
-            derivedExperience = 'inline_tracking_enabled';
-        } else if (!isCrossSiteTrackingEnabled('enforce_policy') && experience === EXPERIENCE.INLINE) {
-            derivedExperience = 'inline_tracking_disabled';
-        }
 
         getLogger()
             .addPayloadBuilder(() => {
@@ -115,8 +108,14 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 [FPTI_KEY.PAYMENT_FLOW]:      name,
                 [FPTI_KEY.IS_VAULT]:          instrumentType ? '1' : '0',
                 [FPTI_CUSTOM_KEY.INFO_MSG]:   enableNativeCheckout ? 'tester' : '',
-                [FPTI_CUSTOM_KEY.EXPERIENCE]: derivedExperience
-            }).flush();
+                [FPTI_CUSTOM_KEY.EXPERIENCE]: experience === EXPERIENCE.INLINE ? 'inline' : ''
+            });
+
+            getLogger()
+                .info(`cross_site_tracking_enabled_${ String(isCrossSiteTrackingEnabled('enforce_policy')) }`)
+                .track({
+                    [FPTI_KEY.TRANSITION]: `cross_site_tracking_enabled_${ String(isCrossSiteTrackingEnabled('enforce_policy')) }`
+                }).flush();
 
         const loggingPromise =  ZalgoPromise.try(() => {
             return window.xprops.sessionState.get(`__confirm_${ fundingSource }_payload__`).then(confirmPayload => {

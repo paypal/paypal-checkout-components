@@ -1,12 +1,13 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { FUNDING, CARD } from '@paypal/sdk-constants/src';
+import { FUNDING, CARD, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { createExperiment } from '@paypal/sdk-client/src';
 import { memoize, querySelectorAll, debounce, noop, isCrossSiteTrackingEnabled } from '@krakenjs/belter/src';
 import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import { DATA_ATTRIBUTES } from '../constants';
-import { unresolvedPromise, promiseNoop } from '../lib';
+import { unresolvedPromise, promiseNoop, getLogger } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
@@ -18,18 +19,28 @@ function setupCardForm() {
 let cardFormOpen = false;
 
 function isCardFormEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange, onShippingAddressChange, onShippingOptionsChange, experience } = props;
+    const { vault, onShippingChange, experience } = props;
     const { eligibility } = serviceData;
 
     if (experience === EXPERIENCE.INLINE && !isCrossSiteTrackingEnabled('enforce_policy')) {
-        return false;
+        const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
+        const treatment = inlinexoExperiment.getTreatment();
+
+        getLogger()
+            .info(treatment)
+            .track({
+                [FPTI_KEY.EXPERIMENT_NAME]: 'inlinexo',
+                [FPTI_KEY.TREATMENT_NAME]:  treatment
+            }).flush();
+
+        return inlinexoExperiment.isEnabled() ? false : true;
     }
 
     if (vault) {
         return false;
     }
 
-    if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
+    if (onShippingChange) {
         return false;
     }
 
