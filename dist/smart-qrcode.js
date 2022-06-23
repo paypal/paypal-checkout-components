@@ -842,18 +842,20 @@
             this.__v && (this.__e = !0, n && this.__h.push(n), m(this));
         }, _.prototype.render = d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
         g.__r = 0;
-        var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = l.__b, hooks_module_e = l.__r, hooks_module_a = l.diffed, hooks_module_v = l.__c, hooks_module_l = l.unmount;
-        function hooks_module_m(t, r) {
+        var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
+        function hooks_module_p(t, r) {
             l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
             var o = hooks_module_u.__H || (hooks_module_u.__H = {
                 __: [],
                 __h: []
             });
-            return t >= o.__.length && o.__.push({}), o.__[t];
+            return t >= o.__.length && o.__.push({
+                __V: hooks_module_f
+            }), o.__[t];
         }
-        function hooks_module_d(n) {
+        function hooks_module_y(n) {
             return hooks_module_i = 1, function(n, r, o) {
-                var i = hooks_module_m(hooks_module_t++, 2);
+                var i = hooks_module_p(hooks_module_t++, 2);
                 return i.t = n, i.__c || (i.__ = [ hooks_module_z(void 0, r), function(n) {
                     var t = i.t(i.__[0], n);
                     i.__[0] !== t && (i.__ = [ t, i.__[1] ], i.__c.setState({}));
@@ -868,32 +870,31 @@
             }
         }
         l.__b = function(n) {
-            hooks_module_u = null, hooks_module_f && hooks_module_f(n);
+            hooks_module_u = null, hooks_module_e && hooks_module_e(n);
         }, l.__r = function(n) {
-            hooks_module_e && hooks_module_e(n), hooks_module_t = 0;
+            hooks_module_a && hooks_module_a(n), hooks_module_t = 0;
             var o = (hooks_module_u = n.__c).__H;
             o && (hooks_module_r === hooks_module_u ? (o.__h = [], hooks_module_u.__h = [], 
             o.__.forEach((function(n) {
-                n.o = n.u = void 0;
-            }))) : (o.__.forEach((function(n) {
-                n.u && (n.__H = n.u), n.o && (n.__ = n.o), n.o = n.u = void 0;
-            })), o.__h.forEach(hooks_module_j), o.__h.forEach(hooks_module_k), o.__h = [])), 
+                n.__V = hooks_module_f, n.u = void 0;
+            }))) : (o.__h.forEach(hooks_module_j), o.__h.forEach(hooks_module_k), o.__h = [])), 
             hooks_module_r = hooks_module_u;
         }, l.diffed = function(t) {
-            hooks_module_a && hooks_module_a(t);
+            hooks_module_v && hooks_module_v(t);
             var i = t.__c;
-            i && i.__H && i.__H.__h.length && (1 !== hooks_module_c.push(i) && hooks_module_o === l.requestAnimationFrame || ((hooks_module_o = l.requestAnimationFrame) || function(n) {
+            i && i.__H && (i.__H.__h.length && (1 !== hooks_module_c.push(i) && hooks_module_o === l.requestAnimationFrame || ((hooks_module_o = l.requestAnimationFrame) || function(n) {
                 var t, u = function() {
                     clearTimeout(r), hooks_module_g && cancelAnimationFrame(t), setTimeout(n);
                 }, r = setTimeout(u, 100);
                 hooks_module_g && (t = requestAnimationFrame(u));
-            })(hooks_module_b)), hooks_module_u = null, hooks_module_r = null;
+            })(hooks_module_b)), i.__H.__.forEach((function(n) {
+                n.u && (n.__H = n.u), n.__V !== hooks_module_f && (n.__ = n.__V), n.u = void 0, 
+                n.__V = hooks_module_f;
+            }))), hooks_module_r = hooks_module_u = null;
         }, l.__c = function(t, u) {
             u.some((function(t) {
                 try {
-                    t.__H && t.__H.__.forEach((function(n) {
-                        n.u && (n.__H = n.u), n.o && (n.__ = n.o), n.o = n.u = void 0;
-                    })), t.__h.forEach(hooks_module_j), t.__h = t.__h.filter((function(n) {
+                    t.__h.forEach(hooks_module_j), t.__h = t.__h.filter((function(n) {
                         return !n.__ || hooks_module_k(n);
                     }));
                 } catch (r) {
@@ -901,9 +902,9 @@
                         n.__h && (n.__h = []);
                     })), u = [], l.__e(r, t.__v);
                 }
-            })), hooks_module_v && hooks_module_v(t, u);
+            })), hooks_module_l && hooks_module_l(t, u);
         }, l.unmount = function(t) {
-            hooks_module_l && hooks_module_l(t);
+            hooks_module_m && hooks_module_m(t);
             var u, r = t.__c;
             r && r.__H && (r.__H.__.forEach((function(n) {
                 try {
@@ -3165,7 +3166,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.101", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.102", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
@@ -3286,12 +3287,12 @@
         function QRCard(_ref) {
             var svgString = _ref.svgString;
             var _useXProps = function() {
-                var _useState = hooks_module_d(window.xprops), xprops = _useState[0], setXProps = _useState[1];
+                var _useState = hooks_module_y(window.xprops), xprops = _useState[0], setXProps = _useState[1];
                 r = function() {
                     return xprops.onProps((function(newProps) {
                         setXProps(_extends({}, newProps));
                     }));
-                }, o = [], i = hooks_module_m(hooks_module_t++, 3), !l.__s && function(n, t) {
+                }, o = [], i = hooks_module_p(hooks_module_t++, 3), !l.__s && function(n, t) {
                     return !n || n.length !== t.length || t.some((function(t, u) {
                         return t !== n[u];
                     }));
@@ -3306,7 +3307,7 @@
                 });
             }(), state = _useXProps.state, errorText = _useXProps.errorText, setState = _useXProps.setState, close = _useXProps.close, cancel = _useXProps.onCancel;
             var survey = function() {
-                var _useState = hooks_module_d({
+                var _useState = hooks_module_y({
                     isEnabled: !1,
                     reason: "prefer_not_to_say"
                 }), state = _useState[0], setState = _useState[1];
