@@ -264,19 +264,11 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             onShippingAddressChange: {
                 type:     'function',
                 required: false,
-                queryParam: true,
-                queryValue: ({ value }) => {
-                    return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
-                }
             },
 
             onShippingOptionsChange: {
                 type:     'function',
                 required: false,
-                queryParam: true,
-                queryValue: ({ value }) => {
-                    return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
-                }
             },
 
             onCancel: {
