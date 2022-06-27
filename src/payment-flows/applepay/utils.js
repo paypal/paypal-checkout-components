@@ -100,14 +100,14 @@ export function getMerchantCapabilities(supportedNetworks : $ReadOnlyArray<Apple
 }
 
 type CheckoutSessionFlags = {|
-    isShippingAddressRequired : bool,
-    isChangeShippingAddressAllowed : bool
-|}
+    isShippingAddressRequired : boolean,
+    isChangeShippingAddressAllowed : boolean
+|};
 
 export function buildRequiredShippingContactFieldsFromFlags({
     isShippingAddressRequired,
-    isChangeShippingAddressAllowed,
-} : CheckoutSessionFlags) : $ReadOnlyArray<ApplePayContactField>{
+    isChangeShippingAddressAllowed
+} : CheckoutSessionFlags) : $ReadOnlyArray<ApplePayContactField> {
     const result = [
         'name',
         'phone',
@@ -123,6 +123,9 @@ export function buildRequiredShippingContactFieldsFromFlags({
 
 export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, order : DetailedOrderInfo) : ApplePayPaymentRequest {
     const {
+        merchant: {
+            name
+        },
         flags: {
             isShippingAddressRequired,
             isChangeShippingAddressAllowed
@@ -173,7 +176,7 @@ export function createApplePayRequest(countryCode : $Values<typeof COUNTRY>, ord
         shippingMethods: applePayShippingMethods || [],
         lineItems:       [],
         total:           {
-            label:  'Total',
+            label:  name,
             amount: totalValue,
             type:   'final'
         }

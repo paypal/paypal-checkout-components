@@ -116,13 +116,14 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
         let currentShippingAmount : ?string;
         let currentShippingContact : ?ApplePayPaymentContact;
         let currentShippingMethod : ?ApplePayShippingMethod;
+        let merchantName : string;
 
         const onShippingChangeCallback = <T>({ orderID, shippingContact, shippingMethod = null, callbackTrigger } : {| orderID : string, shippingContact : ?ApplePayPaymentContact, shippingMethod? : ?ApplePayShippingMethod, callbackTrigger : string |}) : ZalgoPromise<T> => {
 
             if (!onShippingChange) {
                 const update = {
                     newTotal: {
-                        label:  'Total',
+                        label:  merchantName,
                         amount: currentTotalAmount
                     },
                     newLineItems: []
@@ -148,7 +149,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                 const update = {
                     errors,
                     newTotal: {
-                        label:  'Total',
+                        label:  merchantName,
                         amount: currentTotalAmount
                     },
                     newLineItems: []
@@ -240,10 +241,11 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         currentTaxAmount = updatedTaxValue === '0.00' ? currentTaxAmount : updatedTaxValue;
                         currentSubtotalAmount = updatedSubtotalValue === '0.00' ? currentSubtotalAmount : updatedSubtotalValue;
                         currentTotalAmount = updatedTotalValue;
+                        merchantName = updatedOrder?.checkoutSession?.merchant?.name || 'Total';
 
                         const update = {
                             newTotal: {
-                                label:  'Total',
+                                label:  merchantName,
                                 amount: updatedTotalValue
                             },
                             newLineItems: []
@@ -316,6 +318,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     currentTaxAmount = taxValue;
                     currentSubtotalAmount = subtotalValue;
                     currentTotalAmount = totalValue;
+                    merchantName = order?.checkoutSession?.merchant?.name || 'Total';
 
                     return applePay(SUPPORTED_VERSION, applePayRequest).then(response => {
                         const {
@@ -350,7 +353,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
 
                             const update = {
                                 newTotal: {
-                                    label:  'Total',
+                                    label:  merchantName,
                                     amount: currentTotalAmount || '0.00'
                                 },
                                 newLineItems: []
@@ -380,7 +383,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                                 .catch(() => {
                                     const update = {
                                         newTotal: {
-                                            label:  'Total',
+                                            label:  merchantName,
                                             amount: currentTotalAmount || '0.00'
                                         },
                                         newLineItems: []

@@ -58,6 +58,9 @@ describe('Apple Pay Flow', () => {
                     return {
                         data: {
                             checkoutSession: {
+                                merchant: {
+                                    name: 'PP Demo'
+                                },
                                 flags: {
                                     isShippingAddressRequired:      true,
                                     isDigitalGoodsIntegration:      false,
@@ -173,6 +176,9 @@ describe('Apple Pay Flow', () => {
                     return {
                         data: {
                             checkoutSession: {
+                                merchant: {
+                                    name: 'PP Demo'
+                                },
                                 flags: {
                                     isShippingAddressRequired:      false,
                                     isDigitalGoodsIntegration:      false,

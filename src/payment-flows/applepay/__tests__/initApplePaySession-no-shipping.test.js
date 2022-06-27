@@ -8,6 +8,9 @@ const SUPPORTED_VERSION = 4;
 jest.mock('../../../api', () => ({
     getDetailedOrderInfo:       jest.fn().mockResolvedValue({
         checkoutSession: {
+            merchant: {
+                name: 'PP Demo'
+            },
             flags: {
                 isShippingAddressRequired:      false,
                 isDigitalGoodsIntegration:      false,
@@ -208,7 +211,7 @@ describe('initApplePay - no shipping', () => {
             shippingMethods: [],
             lineItems:       [],
             total:           {
-                label:  'Total',
+                label:  'PP Demo',
                 amount:  '7.05',
                 type:   'final'
             }
@@ -246,7 +249,7 @@ describe('initApplePay - no shipping', () => {
 
             ],
             newTotal:     {
-                amount: '7.05', label: 'Total'
+                amount: '7.05', label: 'PP Demo'
             }
         });
 

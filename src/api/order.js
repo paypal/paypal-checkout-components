@@ -713,6 +713,9 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
 
 export type DetailedOrderInfo = {|
     checkoutSession : {|
+        merchant : {|
+            name : string
+        |},
         flags : {|
             isShippingAddressRequired : boolean,
             isDigitalGoodsIntegration : boolean,
@@ -759,6 +762,9 @@ export const getDetailedOrderInfo : GetDetailedOrderInfo = (orderID, country) =>
         query: `
             query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {
                 checkoutSession(token: $orderID) {
+                    merchant{
+                        name
+                    }
                     flags{
                         isShippingAddressRequired,
                         isDigitalGoodsIntegration,

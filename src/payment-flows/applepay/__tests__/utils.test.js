@@ -13,6 +13,9 @@ describe('createApplePayRequest', () => {
     test('it should map checkout session with isShippingAddressRequired flag false to applePaySession payload and not collect requiredShippingContactFields', () => {
         const order = {
             checkoutSession: {
+                merchant: {
+                    name: 'PP Demo'
+                },
                 flags: {
                     isShippingAddressRequired:      false,
                     isDigitalGoodsIntegration:      false,
@@ -125,7 +128,7 @@ describe('createApplePayRequest', () => {
             supportedNetworks: [ 'masterCard', 'discover', 'visa', 'amex' ],
             total:             {
                 amount: '7.05',
-                label:  'Total',
+                label:  'PP Demo',
                 type:   'final'
             }
         });
@@ -134,6 +137,9 @@ describe('createApplePayRequest', () => {
     test('it should map checkout session to applePaySession payload when isChangeShippingAddressAllowed is false', () => {
         const order = {
             checkoutSession: {
+                merchant: {
+                    name: 'PP Demo'
+                },
                 flags: {
                     isShippingAddressRequired:      true,
                     isDigitalGoodsIntegration:      false,
@@ -246,7 +252,7 @@ describe('createApplePayRequest', () => {
             supportedNetworks: [ 'masterCard', 'discover', 'visa', 'amex' ],
             total:             {
                 amount: '7.05',
-                label:  'Total',
+                label:  'PP Demo',
                 type:   'final'
             }
         });
@@ -443,41 +449,41 @@ describe('getApplePayShippingMethods', () => {
         expect(getApplePayShippingMethods(undefined)).toEqual([]);
     });
 
-    describe("buildRequiredShippingContactFields from shipping preferences", () => {
-        test("default GET_FROM_FILE", () => {
+    describe('buildRequiredShippingContactFields from shipping preferences', () => {
+        test('default GET_FROM_FILE', () => {
             expect(buildRequiredShippingContactFieldsFromFlags({
-                isShippingAddressRequired : true,
-                isChangeShippingAddressAllowed : true
+                isShippingAddressRequired:      true,
+                isChangeShippingAddressAllowed: true
             })).toEqual([
-                "name",
-                "phone",
-                "email",
-                "postalAddress",
-            ])
-        })
+                'name',
+                'phone',
+                'email',
+                'postalAddress'
+            ]);
+        });
 
-        test("SET_PROVIDED_ADDRESS", () => {
+        test('SET_PROVIDED_ADDRESS', () => {
             expect(buildRequiredShippingContactFieldsFromFlags({
-                isShippingAddressRequired : true,
-                isChangeShippingAddressAllowed : false
+                isShippingAddressRequired:      true,
+                isChangeShippingAddressAllowed: false
             })).toEqual([
-                "name",
-                "phone",
-                "email"
-            ])
-        })
+                'name',
+                'phone',
+                'email'
+            ]);
+        });
 
-        test("NO_SHIPPING", () => {
+        test('NO_SHIPPING', () => {
             expect(buildRequiredShippingContactFieldsFromFlags({
-                isShippingAddressRequired : false,
-                isChangeShippingAddressAllowed : false
+                isShippingAddressRequired:      false,
+                isChangeShippingAddressAllowed: false
             })).toEqual([
-                "name",
-                "phone",
-                "email"
-            ])
-        })
-    })
+                'name',
+                'phone',
+                'email'
+            ]);
+        });
+    });
 
 });
 

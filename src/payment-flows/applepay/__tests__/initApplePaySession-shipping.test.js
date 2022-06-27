@@ -8,6 +8,9 @@ const SUPPORTED_VERSION = 4;
 jest.mock('../../../api', () => ({
     getDetailedOrderInfo:       jest.fn().mockResolvedValue({
         checkoutSession: {
+            merchant: {
+                name: 'PP Demo'
+            },
             flags: {
                 isShippingAddressRequired:      true,
                 isDigitalGoodsIntegration:      false,
@@ -226,7 +229,7 @@ describe('initApplePay', () => {
                 'name',
                 'phone',
                 'email',
-                'postalAddress',
+                'postalAddress'
             ],
             shippingContact: {},
             shippingMethods: [
@@ -258,7 +261,7 @@ describe('initApplePay', () => {
                 }
             ],
             total: {
-                label:  'Total',
+                label:  'PP Demo',
                 amount:  '17.05',
                 type:   'final'
             }
@@ -307,7 +310,7 @@ describe('initApplePay', () => {
                 }
             ],
             newTotal:     {
-                amount: '17.05', label: 'Total'
+                amount: '17.05', label: 'PP Demo'
             }
         });
 
@@ -380,7 +383,7 @@ describe('initApplePay', () => {
                 ],
                 newTotal: {
                     amount: '7.05',
-                    label:  'Total'
+                    label:  'PP Demo'
                 }
             });
         }, 0);
