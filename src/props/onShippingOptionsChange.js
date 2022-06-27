@@ -135,7 +135,13 @@ export function buildXOnShippingOptionsChangeActions({ data, actions: passedActi
 
     };
 
-    return actions;
+    return {
+        reject: actions.reject,
+        updateShippingOption: actions.updateShippingOption,
+        updateShippingDiscount: actions.updateShippingDiscount,
+        patch: actions.patch,
+        query: actions.query
+    };
 }
 
 export type OnShippingOptionsChange = (OnShippingOptionsChangeData, OnShippingOptionsChangeActionsType) => ZalgoPromise<void>;

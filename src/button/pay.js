@@ -108,13 +108,13 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 [FPTI_KEY.PAYMENT_FLOW]:      name,
                 [FPTI_KEY.IS_VAULT]:          instrumentType ? '1' : '0',
                 [FPTI_CUSTOM_KEY.INFO_MSG]:   enableNativeCheckout ? 'tester' : '',
-                [FPTI_CUSTOM_KEY.EXPERIENCE]: experience === EXPERIENCE.INLINE ? 'inline' : ''
+                [FPTI_CUSTOM_KEY.EXPERIENCE]: experience === EXPERIENCE.INLINE ? 'inline' : 'default'
             });
 
             getLogger()
-                .info(`cross_site_tracking_enabled_${ String(isCrossSiteTrackingEnabled('enforce_policy')) }`)
+                .info(`cross_site_tracking_${ isCrossSiteTrackingEnabled('enforce_policy') ? 'enabled' : 'disabled' }`)
                 .track({
-                    [FPTI_KEY.TRANSITION]: `cross_site_tracking_enabled_${ String(isCrossSiteTrackingEnabled('enforce_policy')) }`
+                    [FPTI_KEY.TRANSITION]: `cross_site_tracking_${ isCrossSiteTrackingEnabled('enforce_policy') ? 'enabled' : 'disabled' }`
                 }).flush();
 
         const loggingPromise =  ZalgoPromise.try(() => {
@@ -146,12 +146,13 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             }
 
             const updateClientConfigPromise = createOrder().then(orderID => {
+                const experienceFlow = experience === EXPERIENCE.INLINE ? 'ACCELERATED' : userExperienceFlow;
                 if (updateFlowClientConfig) {
-                    return updateFlowClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID });
+                    return updateFlowClientConfig({ orderID, payment, userExperienceFlow: experienceFlow, buttonSessionID });
                 }
 
                 // Do not block by default
-                updateButtonClientConfig({ orderID, fundingSource, inline, userExperienceFlow }).catch(err => {
+                updateButtonClientConfig({ orderID, fundingSource, inline, userExperienceFlow: experienceFlow }).catch(err => {
                     getLogger().error('update_client_config_error', { err: stringifyError(err) });
                 });
             }).catch(noop);

@@ -160,7 +160,14 @@ export function buildXOnShippingAddressChangeActions({ data, actions: passedActi
 
     };
 
-    return actions;
+    return {
+        reject: actions.reject,
+        updateTax: actions.updateTax,
+        updateShippingOptions: actions.updateShippingOptions,
+        updateShippingDiscount: actions.updateShippingDiscount,
+        patch: actions.patch,
+        query: actions.query
+    };
 }
 
 export type OnShippingAddressChange = (OnShippingAddressChangeData, OnShippingAddressChangeActionsType) => ZalgoPromise<void>;

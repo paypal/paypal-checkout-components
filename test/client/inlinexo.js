@@ -39,6 +39,10 @@ describe('Inline XO cases', () => {
         }
     };
 
+    afterEach(() => {
+        window.xprops.intent = 'capture';
+    });
+
     it('should call onComplete if experience is inline', async () => {
         return await wrapPromise(async ({ expect, avoid }) => {
 
