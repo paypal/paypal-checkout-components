@@ -45,6 +45,8 @@ type CardFieldsProps = {|
     commit : boolean,
     vault : boolean,
     branded? : boolean,
+    minLength?: number,
+    maxLength?: number,
 
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
@@ -197,6 +199,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                             ...props.style
                         };
                     }
+                },
+
+                minLength: {
+                    type: 'number',
+                    required: false,
+                    value: ({props}) => props.minLength
+                },
+
+                maxLength: {
+                    type: 'number',
+                    required: false,
+                    value: ({props}) => props.maxLength
                 },
 
                 fundingEligibility: {
@@ -367,6 +381,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'object',
                 required:   false,
                 queryParam: true
+            },
+
+            minLength: {
+                type: 'number',
+                required: false,
+                value: ({props}) => props.minLength
+            },
+
+            maxLength: {
+                type: 'number',
+                required: false,
+                value: ({props}) => props.maxLength
             },
 
             fundingEligibility: {
