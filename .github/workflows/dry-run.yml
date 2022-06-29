@@ -13,7 +13,7 @@ jobs:
 
       - name: ⎔ Setup node
         # sets up the .npmrc file to publish to npm
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '14'
           registry-url: 'https://registry.npmjs.org'
