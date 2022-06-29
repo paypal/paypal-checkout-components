@@ -29,8 +29,8 @@ import { type InlineXOEligibilityType } from '../../types';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
-    
+    getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
+
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -53,7 +53,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
         prerenderTemplate: ({ state, props, doc, event }) => {
             const { buttonSessionID } = props;
-            
+
             if (!isLocalStorageEnabled()) {
                 getLogger().info('localstorage_inaccessible_possible_private_browsing').track({
                     [ FPTI_KEY.BUTTON_SESSION_UID ]: buttonSessionID,
@@ -114,7 +114,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = getButtonExperiments(fundingSource),
+                experiment = getButtonExperiments(),
                 createBillingAgreement, createSubscription
             } = props;
 
@@ -319,21 +319,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     logLatencyInstrumentationPhase({ buttonSessionID: props.buttonSessionID, phase: 'buttons-first-render' });
 
                     return (...args) => {
-                        const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
 
                         if (venmoExperiment) {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
-                        }
-
-                        const enableNoPaylaterExperiment = createNoPaylaterExperiment(fundingSource);
-
-                        if (enableNoPaylaterExperiment) {
-                            enableNoPaylaterExperiment.logStart({
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
-                                [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
-                                [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id'
-                            });
                         }
 
                         return value(...args);
@@ -466,9 +455,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      ({ props }) => {
-                    const { fundingSource } = props;
-                    const experiments = getButtonExperiments(fundingSource);
+                value:      () => {
+                    const experiments = getButtonExperiments();
                     return experiments;
                 }
             },
@@ -714,7 +702,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         locale,
                         vault
                     } });
-                    
+
                     const logger = getLogger();
 
                     logger
