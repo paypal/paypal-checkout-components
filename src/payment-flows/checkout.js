@@ -245,8 +245,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
 
                 setBuyerAccessToken(buyerAccessToken);
 
-                // eslint-disable-next-line no-use-before-define
-                return onComplete({ buyerAccessToken }, { restart })
+                return onComplete({ buyerAccessToken })
                     // eslint-disable-next-line no-use-before-define
                     .finally(() => close().then(noop))
                     .catch(noop);

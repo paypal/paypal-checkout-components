@@ -107,8 +107,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                 [FPTI_KEY.CHOSEN_FI_TYPE]:    instrumentType,
                 [FPTI_KEY.PAYMENT_FLOW]:      name,
                 [FPTI_KEY.IS_VAULT]:          instrumentType ? '1' : '0',
-                [FPTI_CUSTOM_KEY.INFO_MSG]:   enableNativeCheckout ? 'tester' : '',
-                [FPTI_CUSTOM_KEY.EXPERIENCE]: experience === EXPERIENCE.INLINE ? 'inline' : 'default'
+                [FPTI_CUSTOM_KEY.INFO_MSG]:   enableNativeCheckout ? 'tester' : ''
             });
 
             getLogger()

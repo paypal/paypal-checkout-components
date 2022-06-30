@@ -6,10 +6,10 @@ import { FPTI_KEY } from '@paypal/sdk-constants/src';
 import { patchOrder, type OrderResponse } from '../api';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_CUSTOM_KEY } from '../constants';
 import { getLogger } from '../lib';
+import type { OrderAmount } from '../types';
 
 import type { CreateOrder } from './createOrder';
 import {
-    type ShippingAmount,
     type ShippingOption,
     type ON_SHIPPING_CHANGE_EVENT,
     ON_SHIPPING_CHANGE_PATHS,
@@ -41,7 +41,7 @@ export type OnShippingOptionsChangeData = {|
     paymentToken? : string,
     selected_shipping_option? : ShippingOption,
     options? : $ReadOnlyArray<ShippingOption>,
-    amount? : ShippingAmount,
+    amount? : OrderAmount,
     event? : ON_SHIPPING_CHANGE_EVENT,
     buyerAccessToken? : ?string,
     forceRestAPI? : boolean

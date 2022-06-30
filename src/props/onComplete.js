@@ -4,9 +4,9 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { memoize, redirect as redir } from '@krakenjs/belter/src';
 import { INTENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { getLogger, promiseNoop, unresolvedPromise } from '../lib';
+import { getLogger, promiseNoop } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
-import { getOrder, captureOrder, isProcessorDeclineError, isUnprocessableEntityError, type OrderResponse } from '../api';
+import { getOrder, captureAuthorization, type OrderResponse, type AuthorizationCaptureResponse } from '../api';
 
 import type { CreateOrder } from './createOrder';
 import type { OnError } from './onError';
@@ -23,26 +23,30 @@ export type OnCompleteData = {|
     paymentMethodToken? : string
 |};
 
-export type OnCompleteActions = {|
-    restart : () => ZalgoPromise<void>
-|};
-
-export type OnComplete = (OnCompleteData, OnCompleteActions) => ZalgoPromise<void>;
+export type OnComplete = (OnCompleteData) => ZalgoPromise<void>;
 
 export type XOnCompleteData = {|
     orderID : string,
     intent : $Values<typeof INTENT>
 |};
+
+export type XonCompleteOrderActions = {|
+    get : () => ZalgoPromise<OrderResponse>
+|};
+
+export type XonCompletePaymentActions = {|
+    capture : () => ZalgoPromise<AuthorizationCaptureResponse>
+|};
+
 export type XOnCompleteActions = {|
-    capture : () => ZalgoPromise<OrderResponse>,
-    get : () => ZalgoPromise<OrderResponse>,
+    payment : XonCompletePaymentActions,
+    order : XonCompleteOrderActions,
     redirect : (string) => ZalgoPromise<void>
 |};
 export type XOnComplete = (XOnCompleteData, XOnCompleteActions) => ZalgoPromise<void>;
 
 type OnCompleteActionOptions = {|
     orderID : string,
-    restart : () => ZalgoPromise<void>,
     facilitatorAccessToken : string,
     buyerAccessToken : ?string,
     partnerAttributionID : ?string,
@@ -75,38 +79,27 @@ const redirect = (url) => {
     return redir(url, window.top);
 };
 
-const handleProcessorError = <T>(err : mixed, restart : () => ZalgoPromise<void>, onError : OnError) : ZalgoPromise<T> => {
-
-    if (isUnprocessableEntityError(err)) {
-        if (err && err.response) {
-            // $FlowFixMe
-            err.message = JSON.stringify(err.response) || err.message;
-        }
-        return onError(err).then(unresolvedPromise);
-    }
-
-    if (isProcessorDeclineError(err)) {
-        return restart().then(unresolvedPromise);
-    }
-
-    throw err;
-};
-
-const buildOnCompleteActions = ({ orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError } : OnCompleteActionOptions) : XOnCompleteActions => {
+const buildOnCompleteActions = ({ orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError } : OnCompleteActionOptions) : XOnCompleteActions => {
     const get = memoize(() => {
         return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
     });
 
-    const capture = memoize(() => {
-        return captureOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
+    const capture = memoize((data) => {
+        return captureAuthorization(data, { orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
             .finally(get.reset)
             .finally(capture.reset)
-            .catch(err => {
-                return handleProcessorError<OrderResponse>(err, restart, onError);
-            });
+            .catch(onError);
     });
 
-    return { capture, get, redirect };
+    return {
+        payment: {
+            capture
+        },
+        order: {
+            get
+        },
+        redirect
+    };
 };
 
 export function getOnComplete({ intent, onComplete, partnerAttributionID, onError, clientID, facilitatorAccessToken, createOrder } : GetOnCompleteOptions) : OnComplete {
@@ -116,7 +109,7 @@ export function getOnComplete({ intent, onComplete, partnerAttributionID, onErro
 
     const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
-    return memoize(({ buyerAccessToken, forceRestAPI = upgradeLSAT } : OnCompleteData, { restart } : OnCompleteActions) => {
+    return memoize(({ buyerAccessToken, forceRestAPI = upgradeLSAT } : OnCompleteData) => {
         return createOrder().then(orderID => {
             getLogger()
                 .info('button_complete')
@@ -126,7 +119,7 @@ export function getOnComplete({ intent, onComplete, partnerAttributionID, onErro
                     [FPTI_KEY.TOKEN]:        orderID,
                     [FPTI_KEY.CONTEXT_ID]:   orderID
                 }).flush();
-            const actions = buildOnCompleteActions({ orderID, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError });
+            const actions = buildOnCompleteActions({ orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError });
 
             return onComplete({ orderID, intent }, actions).catch(err => {
                 return ZalgoPromise.try(() => {

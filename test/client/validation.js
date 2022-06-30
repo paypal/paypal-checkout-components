@@ -216,14 +216,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'capture',
+                                        intent:  'CAPTURE',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'capture'
+                                            initiationIntent: 'CAPTURE'
                                         }
                                     },
                                     payees: [
@@ -283,14 +283,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'sale',
+                                        intent:  'SALE',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'sale'
+                                            initiationIntent: 'SALE'
                                         }
                                     },
                                     payees: [
@@ -350,14 +350,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'authorize',
+                                        intent:  'AUTHORIZE',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'authorize'
+                                            initiationIntent: 'AUTHORIZATION'
                                         }
                                     },
                                     payees: [
@@ -417,14 +417,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'authorization',
+                                        intent:  'AUTHORIZE',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'authorization'
+                                            initiationIntent: 'AUTHORIZATION'
                                         }
                                     },
                                     payees: [
@@ -484,14 +484,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'order',
+                                        intent:  'ORDER',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'order'
+                                            initiationIntent: 'ORDER'
                                         }
                                     },
                                     payees: [
@@ -551,14 +551,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'order',
+                                        intent:  'ORDER',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'authorize'
+                                            initiationIntent: 'AUTHORIZE'
                                         }
                                     },
                                     payees: [
@@ -684,14 +684,14 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'authorize',
+                                        intent:  'AUTHORIZE',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
                                             }
                                         },
                                         supplementary: {
-                                            initiationIntent: 'authorize'
+                                            initiationIntent: 'AUTHORIZATION'
                                         }
                                     },
                                     payees: [
@@ -710,7 +710,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));
@@ -768,7 +768,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));
@@ -827,7 +827,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));
@@ -886,7 +886,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));
@@ -918,7 +918,7 @@ describe('validation cases', () => {
                             data: {
                                 checkoutSession: {
                                     cart: {
-                                        intent:  'sale',
+                                        intent:  'SALE',
                                         amounts: {
                                             total: {
                                                 currencyCode: 'USD'
@@ -944,7 +944,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));
@@ -1002,7 +1002,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));
@@ -1060,7 +1060,7 @@ describe('validation cases', () => {
             }).expectCalls();
 
             window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
-                return ZalgoPromise.try(() => {
+                return ZalgoPromise.delay(50).then(() => {
                     return orderID;
                 });
             }));

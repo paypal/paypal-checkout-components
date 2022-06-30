@@ -111,6 +111,7 @@ export const FPTI_TRANSITION = {
     CONFIRM_ORDER:             ('process_confirm_order' : 'process_confirm_order'),
     RECEIVE_ORDER:            ('process_receive_order' : 'process_receive_order'),
     CREATE_PAYMENT:           ('process_create_payment' : 'process_create_payment'),
+    CAPTURE_AUTHORIZATION:    ('process_capture_authorization' : 'process_capture_authorization'),
 
     CHECKOUT_SHIPPING_CHANGE:         ('process_checkout_shipping_change' : 'process_checkout_shipping_change'),
     CHECKOUT_SHIPPING_ADDRESS_CHANGE: ('process_checkout_shipping_address_change' : 'process_checkout_shipping_address_change'),

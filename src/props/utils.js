@@ -1,6 +1,9 @@
 /* @flow */
 
-import { type Breakdown, type Query, type ShippingOption, ON_SHIPPING_CHANGE_PATHS } from './onShippingChange';
+import type { Breakdown } from '../types';
+
+import { type Query, type ShippingOption, ON_SHIPPING_CHANGE_PATHS } from './onShippingChange';
+
 
 export const calculateTotalFromShippingBreakdownAmounts = ({ breakdown, updatedAmounts } : {| breakdown : Breakdown, updatedAmounts : {| [string] : ?string |} |}) : string => {
     let newAmount = 0;

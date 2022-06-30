@@ -1,11 +1,12 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { COUNTRY, CURRENCY, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
 
 import { patchOrder, type OrderResponse } from '../api';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_CUSTOM_KEY } from '../constants';
 import { getLogger } from '../lib';
+import type { OrderAmount } from '../types';
 
 import type { CreateOrder } from './createOrder';
 
@@ -46,42 +47,6 @@ export type Query = {|
     value : mixed
 |};
 
-export type Breakdown = {|
-    item_total? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
-    shipping? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
-    handling? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
-    tax_total? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
-    insurance? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
-    shipping_discount? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |},
-    discount? : {|
-        currency_code : $Values<typeof CURRENCY>,
-        value : string
-    |}
-|};
-export type ShippingAmount = {|
-    breakdown? : Breakdown,
-    currency_code : $Values<typeof CURRENCY>,
-    value : string
-|};
-
 export type XOnShippingChangeDataType = {|
     orderID? : string,
     paymentID? : string,
@@ -95,7 +60,7 @@ export type XOnShippingChangeDataType = {|
     selected_shipping_option? : ShippingOption,
     buyerAccessToken? : ?string,
     forceRestAPI? : boolean,
-    amount? : ShippingAmount
+    amount? : OrderAmount
 |};
 
 export type XOnShippingChangeActionsType = {|
@@ -113,7 +78,7 @@ export function buildXOnShippingChangeData(data : XOnShippingChangeDataType) : X
 }
 
 export type OnShippingChangeData = {|
-    amount? : ShippingAmount,
+    amount? : OrderAmount,
     orderID? : string,
     paymentID? : string,
     paymentToken? : string,
