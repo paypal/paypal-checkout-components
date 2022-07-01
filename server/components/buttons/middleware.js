@@ -1,7 +1,7 @@
 /* @flow */
 
 import { html } from '@krakenjs/jsx-pragmatic';
-import { COUNTRY, LANG, FPTI_KEY } from '@paypal/sdk-constants';
+import { COUNTRY, LANG, FPTI_KEY, FPTI_FEED } from '@paypal/sdk-constants';
 import { stringifyError, noop } from '@krakenjs/belter';
 
 import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON, sdkMiddleware, type ExpressMiddleware,
@@ -198,9 +198,8 @@ export function getButtonMiddleware({
                 [FPTI_KEY.TRANSITION]:            'process_server_metrics',
                 [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons',
                 [FPTI_KEY.CONTEXT_ID]:            buttonSessionID,
-                [FPTI_KEY.CPL_COMP_METRICS]:      cplCompPayload,
-                [FPTI_KEY.CPL_QUERY_METRICS]:     {},
-                [FPTI_KEY.CPL_CHUNK_METRICS]:     {}
+                [FPTI_KEY.FEED]:                  FPTI_FEED.PAYMENTS_SDK,
+                [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify(cplCompPayload)
             }, {});
             const responseStartTime = Date.now();
 
