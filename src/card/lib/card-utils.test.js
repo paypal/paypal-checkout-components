@@ -1,14 +1,15 @@
 /* @flow */
 
 import { getActiveElement } from '../../lib/dom';
+import { getLogger } from '../../lib';
 
 import {
     autoFocusOnFirstInput,
     maskValidCard,
     formatDate,
     parseGQLErrors,
+    filterStyle,
     styleToString,
-    getStyles,
     filterExtraFields
 } from './card-utils';
 
@@ -369,45 +370,72 @@ describe('card utils', () => {
         });
     });
 
-    describe('styleToString', () => {
-
-        it('should stringify a style object into a valid style string', () => {
-
-            const objectStyle = {
-                height:     '60px',
-                padding:    '10px',
-                fontSize:   '18px',
-                fontFamily: '"Open Sans", sans-serif',
-                transition: 'all 0.5s ease-out'
+    describe('filterStyle', () => {
+        it('normalizes css properties from camelCase to kebab-case', () => {
+            const styles = {
+                'input': {
+                    paddingTop:    '20px'
+                }
             };
-            const stringStyle = styleToString(objectStyle);
-
-            expect(stringStyle).toBe('  height : 60px ;  padding : 10px ;  font-size : 18px ;  font-family : "Open Sans", sans-serif ;  transition : all 0.5s ease-out ;');
+            const filteredStyles = filterStyle(styles)
+            const expectedStyles = {
+                'input': {
+                    'padding-top': '20px'
+                }
+           };
+           expect(filteredStyles).toEqual(expectedStyles);
         });
-
+        it('normalizes all css properties to lower case', () => {
+            const styles = {
+                'input': {
+                    'pAdDiNg-ToP':    '20px'
+                }
+            };
+            const filteredStyles = filterStyle(styles)
+            const expectedStyles = {
+                'input': {
+                    'padding-top': '20px'
+                }
+           };
+           expect(filteredStyles).toEqual(expectedStyles);
+        });
+        it('excludes css properties that are not on the allowlist and log a warning', () => {
+            const styles = {
+                'input': {
+                    boxShadow:    '20px',
+                    paddingTop:    '20px'
+                }
+            };
+            const originalLoggerWarn = getLogger().warn;
+            getLogger().warn = jest.fn();
+            const filteredStyles = filterStyle(styles)
+            const expectedStyles = {
+                'input': {
+                    'padding-top': '20px'
+                }
+            };
+            expect(filteredStyles).toEqual(expectedStyles);
+            expect(getLogger().warn).toHaveBeenCalledWith('style_warning', { warn: 'CSS property "boxShadow" was ignored. See allowed CSS property list.' });
+            getLogger().warn = originalLoggerWarn;
+        });
     });
 
-    describe('getStyles', () => {
-        it('should separate nested sub-styles into their own style objects', () => {
-            const objectStyle = {
-                'height':          '60px',
-                'padding':         '10px',
-                'fontSize':        '18px',
-                'fontFamily':      '"Open Sans", sans-serif',
-                'transition':        'all 0.5s ease-out',
-                'input.invalid': {
-                    color: 'red'
+    describe('styleToString', () => {
+        it('converts a style object to a valid style string', () => {
+            const styleObject = {
+                'input': {
+                    'font-size': '16 px',
+                    'font-color': 'red'
                 }
             };
 
-            const [ generalStyle, inputStyle ] = getStyles(objectStyle);
+            const targetString = `input {\n font-size: 16 px;\n font-color: red;\n}`
 
-            expect(Object.keys(generalStyle).length).toBe(1);
-            expect(generalStyle['input.invalid'].color).toBe('red');
+            expect(typeof styleObject).toBe('object');
 
-            expect(Object.keys(inputStyle).length).toBe(5);
-            expect(inputStyle.height).toBe('60px');
-
+            const styleString = styleToString(styleObject);
+            expect(typeof styleString).toBe('string');
+            expect(styleString).toBe(targetString)
         });
     });
 

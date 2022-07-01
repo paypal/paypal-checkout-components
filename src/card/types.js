@@ -13,19 +13,8 @@ export type Card = {|
 |};
 
 export type FieldStyle = {|
-    height? : string,
-    width? : string,
-    color? : string,
-    border? : string,
-    borderTop? : string,
-    borderLeft? : string,
-    borderBottom? : string,
-    borderRight? : string,
-    display? : string,
-    backgroundColor? : string,
-    background? : string,
     appearance? : string,
-    boxShadow? : string,
+    color? : string,
     direction? : string,
     font? : string,
     fontFamily? : string,
@@ -44,19 +33,21 @@ export type FieldStyle = {|
     lineHeight? : string,
     opacity? : string,
     outline? : string,
-    margin? : string,
-    marginTop? : string,
-    marginRight? : string,
-    marginBottom? : string,
-    marginLeft? : string,
     padding? : string,
     paddingTop? : string,
     paddingRight? : string,
     paddingBottom? : string,
     paddingLeft? : string,
-    textAlign? : string,
     textShadow? : string,
-    transition? : string
+    transition? : string,
+    MozApperance?: string,
+    MozOsxFontSmoothing?: string,
+    MozTapHighlightColor?: string,
+    MozTransition?: string,
+    WebkitAppearance?: string,
+    WebkitOsxFontSmoothing?: string,
+    WebkitTapHighlightColor?: string,
+    WebkitTransition?: string
 |};
 
 export type CardStyle = {| |};

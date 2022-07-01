@@ -1,13 +1,14 @@
 /* @flow */
 
-import { camelToDasherize, noop, values } from '@krakenjs/belter';
+import { noop, values } from '@krakenjs/belter';
 import creditCardType from 'credit-card-type';
 import luhn10 from 'card-validator/src/luhn-10';
 import cardValidator from 'card-validator';
 
-import type { CardType, CardNavigation, InputState, FieldValidity, FieldStyle, InputEvent, Card, ExtraFields } from '../types';
-import { CARD_ERRORS, FIELD_STYLE, VALIDATOR_TO_TYPE_MAP, DEFAULT_CARD_TYPE, GQL_ERRORS, CARD_FIELD_TYPE, VALID_EXTRA_FIELDS } from '../constants';
+import type { CardType, CardNavigation, InputState, FieldValidity, InputEvent, Card, ExtraFields } from '../types';
+import { CARD_ERRORS, FIELD_STYLE, FILTER_CSS_SELECTORS, FILTER_CSS_VALUES, VALIDATOR_TO_TYPE_MAP, DEFAULT_CARD_TYPE, GQL_ERRORS, CARD_FIELD_TYPE, VALID_EXTRA_FIELDS } from '../constants';
 import { getActiveElement } from '../../lib/dom';
+import { getLogger } from '../../lib';
 
 // Add additional supported card types
 creditCardType.addCard({
@@ -182,42 +183,74 @@ export function formatDate(date : string, prevFormat? : string = '') : string {
 
 }
 
-// Removed invalid and/or unsupported style props
-export function filterStyles(rawStyles : Object = {}) : FieldStyle {
-    const camelKey = Object.keys(FIELD_STYLE);
-    const dashKey = values(FIELD_STYLE);
+// from https://github.com/braintree/inject-stylesheet/blob/main/src/lib/filter-style-values.ts
+function isValidValue(value : string | number) : boolean {
+    return !FILTER_CSS_VALUES.some((regex) => regex.test(String(value)));
+}
 
-    // $FlowFixMe
-    return Object.keys(rawStyles).reduce((acc : Object, key : string) => {
-        if (typeof rawStyles[key] === 'object') {
-            acc[key] = rawStyles[key];
-        } else if (camelKey.includes(key) || dashKey.includes(key)) {
-            acc[key] = rawStyles[key];
+// from https://github.com/braintree/inject-stylesheet/blob/main/src/lib/validate-selector.ts
+function isValidSelector(selector : string) : boolean {
+    return !FILTER_CSS_SELECTORS.some((regex) => regex.test(selector));
+}
+
+export function filterStyle(style : Object) : Object {
+    const result = {};
+    Object.keys(style).forEach((key) => {
+        const value = style[key];
+        // if the key is pointing to a string or a number, it must be a CSS property
+        if (typeof value === 'string' || typeof value === 'number') {
+            // so normalize the property name and filter based on FIELD_STYLE (allow list)
+            let property;
+            if (FIELD_STYLE[key]) {
+                // normalize from camelCase to kebab-case
+                property = FIELD_STYLE[key];
+                if (isValidValue(value)) {
+                    result[property] = value;
+                }
+            } else if (values(FIELD_STYLE).includes(key.toLowerCase())) {
+                // normalize to lower case
+                property = key.toLowerCase();
+                if (isValidValue(value)) {
+                    result[property] = value;
+                }
+            } else {
+                getLogger().warn('style_warning', { warn: `CSS property "${key}" was ignored. See allowed CSS property list.`});
+            }
+        // if the key is pointing to an object, it must be a CSS selector
+        } else if (typeof value === 'object') {
+            if (isValidSelector(key)) {
+                // so normalize the object it's pointing to
+                result[key] = filterStyle(value);
+            }
         }
-        return acc;
-    }, { });
-
+    });
+    return result;
 }
 
 // Converts style object to valid style string
 export function styleToString(style : Object = { }) : string {
-    const filteredStyles = filterStyles(style);
-    return Object.keys(filteredStyles).reduce((acc : string, key : string) => (
-        `${ acc }  ${ camelToDasherize(key) } ${ typeof style[key] === 'object' ? `{ ${ styleToString(style[key]) } }` : `: ${ style[key] } ;` }`
-    ), '');
+    const s = [];
+    Object.keys(style).forEach((key) => {
+        const value = style[key];
+        if (typeof value === 'string' || typeof value === 'number') {
+            s.push(` ${ key }: ${ value };`);
+        } else if (typeof value === 'object') {
+            s.push(`${ key } {`);
+            s.push(styleToString(value));
+            s.push('}');
+        }
+    });
+    return s.join('\n');
 }
 
-// Destructures nested style objects
-export function getStyles(style : Object) : [Object, Object] {
-    // $FlowFixMe
-    return Object.keys(style).reduce((acc : [{| |}, {| |}], key : string) => {
-        if (typeof style[key] === 'object') {
-            acc[0][key] = style[key];
-        } else {
-            acc[1][key] = style[key];
-        }
-        return acc;
-    }, [ {}, {} ]);
+// convert default and custom styles to CSS text
+export function getCSSText(defaultStyle : Object, customStyle : Object) : string {
+    const s = [];
+    s.push('/* default style */');
+    s.push(styleToString(defaultStyle));
+    s.push('/* custom style */');
+    s.push(styleToString(filterStyle(customStyle)));
+    return s.join('\n');
 }
 
 export function removeNonDigits(value : string) : string {

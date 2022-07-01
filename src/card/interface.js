@@ -6,12 +6,12 @@ import { getAllFramesInWindow, isSameDomain } from '@krakenjs/cross-domain-utils
 import { uniqueID } from '@krakenjs/belter/src';
 
 import { FRAME_NAME } from '../constants';
-import { tokenizeCard, approveCardPayment } from '../api';
+import { tokenizeCard, confirmOrderAPI } from '../api';
 import { getLogger } from '../lib';
 
 import { getCardProps } from './props';
 import type { Card, ExtraFields } from './types';
-import { type CardExports, type ExportsOptions, parseGQLErrors } from './lib';
+import { type CardExports, type ExportsOptions } from './lib';
 
 function getExportsByFrameName<T>(name : $Values<typeof FRAME_NAME>) : ?CardExports<T> {
     try {
@@ -150,16 +150,24 @@ type SubmitCardFieldsOptions = {|
 |};
 
 type CardValues = {|
-    cardNumber : string,
-    expirationDate? : string,
-    securityCode? : string,
+    number : string,
+    expiry? : ?string,
+    security_code? : string,
     postalCode? : string,
     name? : string,
     ...ExtraFields
 |};
 
+// Reformat MM/YYYY to YYYY-MM
+function reformatExpiry(expiry : ?string) : ?string {
+    if (typeof expiry === "string") {
+        const [ month, year ] = expiry.split('/');
+        return `${ year }-${ month }`;
+    }
+}
+
 export function submitCardFields({ facilitatorAccessToken, extraFields } : SubmitCardFieldsOptions) : ZalgoPromise<void> {
-    const { intent, branded, vault, createOrder, onApprove, clientID } = getCardProps({ facilitatorAccessToken });
+    const { intent, createOrder, onApprove, onError } = getCardProps({ facilitatorAccessToken });
 
     resetGQLErrors();
 
@@ -188,9 +196,10 @@ export function submitCardFields({ facilitatorAccessToken, extraFields } : Submi
             return createOrder().then(orderID => {
 
                 const cardObject : CardValues = {
-                    cardNumber:     card.number,
-                    expirationDate: card.expiry,
-                    securityCode:   card.cvv,
+                    name:          card.name,
+                    number:        card.number,
+                    expiry:        reformatExpiry(card.expiry),
+                    security_code: card.cvv,
                     ...extraFields
                 };
 
@@ -198,22 +207,22 @@ export function submitCardFields({ facilitatorAccessToken, extraFields } : Submi
                     cardObject.name = card.name;
                 }
 
-                return approveCardPayment({ card: cardObject, orderID, vault, branded, clientID }).catch((error) => {
-
-                    const { errorsMap, parsedErrors, errors } = parseGQLErrors(error);
-
-                    if (errorsMap) {
-                        emitGqlErrors(errorsMap);
+                // eslint-disable-next-line flowtype/no-weak-types
+                const data : any = {
+                    payment_source: {
+                        card: cardObject
                     }
-
+                };
+                return confirmOrderAPI(orderID, data, { facilitatorAccessToken, partnerAttributionID: '' }).catch((error) => {
                     getLogger().info('card_fields_payment_failed');
+                    if (onError) {
+                        onError(error);
+                    }
+                    throw error;
+                })
 
-                    const errorObject = { parsedErrors, errors };
-
-                    throw errorObject;
-                });
-            }).then(() => {
-                return onApprove({ payerID: uniqueID(), buyerAccessToken: uniqueID() }, { restart });
+            }).then((orderData) => {
+                return onApprove({ payerID: uniqueID(), buyerAccessToken: uniqueID(), ...orderData }, { restart });
             });
         }
     });

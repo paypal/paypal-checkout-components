@@ -71,7 +71,7 @@
   "alias": {},
   "dependencies": {
     "@krakenjs/beaver-logger": "^5.0.1",
-    "@krakenjs/belter": "^2.0.0",
+    "@krakenjs/belter": "^2.1.0",
     "@krakenjs/cross-domain-utils": "^3.0.0",
     "@krakenjs/grabthar": "^6.1.1",
     "@krakenjs/jsx-pragmatic": "^3.0.0",

@@ -74,10 +74,12 @@ function Page({ cspNonce, props } : PageProps) : mixed {
     };
 
     useEffect(() => {
-        onChange({
-            isValid:  fieldValid,
-            errors:   fieldErrors
-        });
+        if(typeof onChange === 'function') {
+            onChange({
+                isValid:  fieldValid,
+                errors:   fieldErrors
+            });
+        }
     }, [ fieldValid, fieldErrors ]);
 
     useEffect(() => {
@@ -112,31 +114,6 @@ function Page({ cspNonce, props } : PageProps) : mixed {
 
     return (
         <Fragment>
-            <style nonce={ cspNonce }>
-                {`
-                    * {
-                        box-sizing: border-box;
-                    }
-
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                    }
-
-                    body {
-                        display: inline-block;
-                        width: 100%;
-                        font-size: 100%;
-                        font-family: monospace;
-                    }
-
-                    *:focus {
-                        outline: none;
-                    }
-                `}
-            </style>
-
             {
                 (type === CARD_FIELD_TYPE.SINGLE)
                     ? <CardField
