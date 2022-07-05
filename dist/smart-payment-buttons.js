@@ -7224,68 +7224,6 @@ window.spb = function(modules) {
                 return "DUPLICATE_INVOICE_ID" === detail.issue;
             })));
         }
-        function captureOrder(orderID, _ref4) {
-            var _headers7;
-            var facilitatorAccessToken = _ref4.facilitatorAccessToken, buyerAccessToken = _ref4.buyerAccessToken, partnerAttributionID = _ref4.partnerAttributionID, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 !== _ref4$forceRestAPI && _ref4$forceRestAPI;
-            logger_getLogger().info("capture_order_lsat_upgrade_" + (getLsatUpgradeCalled() ? "called" : "not_called"));
-            logger_getLogger().info("capture_order_lsat_upgrade_" + (getLsatUpgradeError() ? "errored" : "did_not_error"), {
-                err: stringifyError(getLsatUpgradeError())
-            });
-            if (forceRestAPI && !getLsatUpgradeError()) {
-                var _headers5;
-                return callRestAPI({
-                    accessToken: facilitatorAccessToken,
-                    method: "post",
-                    eventName: "v2_checkout_orders_capture",
-                    url: ORDERS_API_URL + "/" + orderID + "/capture",
-                    headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                    _headers5.prefer = "return=representation", _headers5["paypal-request-id"] = orderID, 
-                    _headers5)
-                }).catch((function(err) {
-                    var _headers6;
-                    var restCorrID = getErrorResponseCorrelationID(err);
-                    logger_getLogger().warn("capture_order_call_rest_api_error", {
-                        restCorrID: restCorrID,
-                        orderID: orderID,
-                        err: stringifyError(err)
-                    });
-                    if (isProcessorDeclineError(err) || isUnprocessableEntityError(err)) throw err;
-                    return callSmartAPI({
-                        accessToken: buyerAccessToken,
-                        method: "post",
-                        eventName: "order_capture",
-                        url: "/smart/api/order/" + orderID + "/capture",
-                        headers: (_headers6 = {}, _headers6["paypal-client-context"] = orderID, _headers6)
-                    }).then((function(res) {
-                        var smartCorrID = getResponseCorrelationID(res);
-                        logger_getLogger().info("capture_order_smart_fallback_success", {
-                            smartCorrID: smartCorrID,
-                            restCorrID: restCorrID,
-                            orderID: orderID
-                        });
-                        return res.data;
-                    })).catch((function(smartErr) {
-                        var smartCorrID = getErrorResponseCorrelationID(err);
-                        logger_getLogger().info("capture_order_smart_fallback_error", {
-                            smartCorrID: smartCorrID,
-                            restCorrID: restCorrID,
-                            orderID: orderID,
-                            err: stringifyError(smartErr)
-                        });
-                        throw smartErr;
-                    }));
-                }));
-            }
-            return callSmartAPI({
-                accessToken: buyerAccessToken,
-                method: "post",
-                eventName: "order_capture",
-                url: "/smart/api/order/" + orderID + "/capture",
-                headers: (_headers7 = {}, _headers7["paypal-client-context"] = orderID, _headers7)
-            }).then((function(_ref5) {
-                return _ref5.data;
-            }));
-        }
         function patchOrder(orderID, data, _ref8) {
             var _headers13;
             var facilitatorAccessToken = _ref8.facilitatorAccessToken, buyerAccessToken = _ref8.buyerAccessToken, partnerAttributionID = _ref8.partnerAttributionID, _ref8$forceRestAPI = _ref8.forceRestAPI, forceRestAPI = void 0 !== _ref8$forceRestAPI && _ref8$forceRestAPI;
@@ -7378,7 +7316,7 @@ window.spb = function(modules) {
             logger_getLogger().info("rest_api_create_order_token");
             var headers = ((_headers15 = {}).authorization = "Bearer " + accessToken, _headers15["paypal-partner-attribution-id"] = partnerAttributionID, 
             _headers15["paypal-client-metadata-id"] = clientMetadataID, _headers15["x-app-name"] = "smart-payment-buttons", 
-            _headers15["x-app-version"] = "5.0.102", _headers15);
+            _headers15["x-app-version"] = "5.0.103", _headers15);
             var paymentSource = {
                 token: {
                     id: paymentMethodID,
@@ -7459,7 +7397,7 @@ window.spb = function(modules) {
             var _headers22;
             return callGraphQL({
                 name: "GetCheckoutDetails",
-                query: "\n            query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {\n                checkoutSession(token: $orderID) {\n                    flags{\n                        isShippingAddressRequired,\n                        isDigitalGoodsIntegration,\n                        isChangeShippingAddressAllowed\n                    }\n                    allowedCardIssuers(country: $country)\n                    cart {\n                        amounts {\n                            shippingAndHandling {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            tax {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            subtotal {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            id\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                }\n            }\n        ",
+                query: "\n            query GetCheckoutDetails($orderID: String!, $country: CountryCodes!) {\n                checkoutSession(token: $orderID) {\n                    merchant{\n                        name\n                    }\n                    flags{\n                        isShippingAddressRequired,\n                        isDigitalGoodsIntegration,\n                        isChangeShippingAddressAllowed\n                    }\n                    allowedCardIssuers(country: $country)\n                    cart {\n                        amounts {\n                            shippingAndHandling {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            tax {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            subtotal {\n                                currencyValue\n                                currencySymbol\n                                currencyFormat\n                            }\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            id\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                }\n            }\n        ",
                 variables: {
                     orderID: orderID,
                     country: country
@@ -8216,7 +8154,68 @@ window.spb = function(modules) {
                                         }));
                                         var capture = memoize((function() {
                                             if ("capture" !== intent) throw new Error("Use intent=capture to use client-side capture");
-                                            return captureOrder(orderID, {
+                                            return function(orderID, _ref4) {
+                                                var _headers7;
+                                                var facilitatorAccessToken = _ref4.facilitatorAccessToken, buyerAccessToken = _ref4.buyerAccessToken, partnerAttributionID = _ref4.partnerAttributionID, _ref4$forceRestAPI = _ref4.forceRestAPI, forceRestAPI = void 0 !== _ref4$forceRestAPI && _ref4$forceRestAPI;
+                                                logger_getLogger().info("capture_order_lsat_upgrade_" + (getLsatUpgradeCalled() ? "called" : "not_called"));
+                                                logger_getLogger().info("capture_order_lsat_upgrade_" + (getLsatUpgradeError() ? "errored" : "did_not_error"), {
+                                                    err: stringifyError(getLsatUpgradeError())
+                                                });
+                                                if (forceRestAPI && !getLsatUpgradeError()) {
+                                                    var _headers5;
+                                                    return callRestAPI({
+                                                        accessToken: facilitatorAccessToken,
+                                                        method: "post",
+                                                        eventName: "v2_checkout_orders_capture",
+                                                        url: ORDERS_API_URL + "/" + orderID + "/capture",
+                                                        headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                                                        _headers5.prefer = "return=representation", _headers5["paypal-request-id"] = orderID, 
+                                                        _headers5)
+                                                    }).catch((function(err) {
+                                                        var _headers6;
+                                                        var restCorrID = getErrorResponseCorrelationID(err);
+                                                        logger_getLogger().warn("capture_order_call_rest_api_error", {
+                                                            restCorrID: restCorrID,
+                                                            orderID: orderID,
+                                                            err: stringifyError(err)
+                                                        });
+                                                        if (isProcessorDeclineError(err) || isUnprocessableEntityError(err)) throw err;
+                                                        return callSmartAPI({
+                                                            accessToken: buyerAccessToken,
+                                                            method: "post",
+                                                            eventName: "order_capture",
+                                                            url: "/smart/api/order/" + orderID + "/capture",
+                                                            headers: (_headers6 = {}, _headers6["paypal-client-context"] = orderID, _headers6)
+                                                        }).then((function(res) {
+                                                            var smartCorrID = getResponseCorrelationID(res);
+                                                            logger_getLogger().info("capture_order_smart_fallback_success", {
+                                                                smartCorrID: smartCorrID,
+                                                                restCorrID: restCorrID,
+                                                                orderID: orderID
+                                                            });
+                                                            return res.data;
+                                                        })).catch((function(smartErr) {
+                                                            var smartCorrID = getErrorResponseCorrelationID(err);
+                                                            logger_getLogger().info("capture_order_smart_fallback_error", {
+                                                                smartCorrID: smartCorrID,
+                                                                restCorrID: restCorrID,
+                                                                orderID: orderID,
+                                                                err: stringifyError(smartErr)
+                                                            });
+                                                            throw smartErr;
+                                                        }));
+                                                    }));
+                                                }
+                                                return callSmartAPI({
+                                                    accessToken: buyerAccessToken,
+                                                    method: "post",
+                                                    eventName: "order_capture",
+                                                    url: "/smart/api/order/" + orderID + "/capture",
+                                                    headers: (_headers7 = {}, _headers7["paypal-client-context"] = orderID, _headers7)
+                                                }).then((function(_ref5) {
+                                                    return _ref5.data;
+                                                }));
+                                            }(orderID, {
                                                 facilitatorAccessToken: facilitatorAccessToken,
                                                 buyerAccessToken: buyerAccessToken,
                                                 partnerAttributionID: partnerAttributionID,
@@ -8475,49 +8474,76 @@ window.spb = function(modules) {
                 var intent = _ref2.intent, onComplete = _ref2.onComplete, partnerAttributionID = _ref2.partnerAttributionID, onError = _ref2.onError, facilitatorAccessToken = _ref2.facilitatorAccessToken, createOrder = _ref2.createOrder;
                 if (!onComplete) return promiseNoop;
                 var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref2.clientID);
-                return memoize((function(_ref3, _ref4) {
+                return memoize((function(_ref3) {
                     var buyerAccessToken = _ref3.buyerAccessToken, _ref3$forceRestAPI = _ref3.forceRestAPI, forceRestAPI = void 0 === _ref3$forceRestAPI ? upgradeLSAT : _ref3$forceRestAPI;
-                    var restart = _ref4.restart;
                     return createOrder().then((function(orderID) {
                         var _getLogger$info$track;
                         logger_getLogger().info("button_complete").track((_getLogger$info$track = {}, _getLogger$info$track.transition_name = "process_checkout_complete", 
                         _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                         _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
                         var actions = function(_ref) {
-                            var orderID = _ref.orderID, restart = _ref.restart, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI, onError = _ref.onError;
+                            var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI, onError = _ref.onError;
                             var get = memoize((function() {
                                 return getOrder(orderID, {
                                     facilitatorAccessToken: facilitatorAccessToken,
                                     buyerAccessToken: buyerAccessToken,
                                     partnerAttributionID: partnerAttributionID,
                                     forceRestAPI: forceRestAPI
-                                });
+                                }).finally(get.reset);
                             }));
-                            var capture = memoize((function() {
-                                return captureOrder(orderID, {
+                            var capture = memoize((function(data) {
+                                return function(data, _ref7) {
+                                    var orderID = _ref7.orderID, facilitatorAccessToken = _ref7.facilitatorAccessToken, buyerAccessToken = _ref7.buyerAccessToken, partnerAttributionID = _ref7.partnerAttributionID, forceRestAPI = _ref7.forceRestAPI;
+                                    logger_getLogger().info("rest_api_capture_authorization");
+                                    return getOrder(orderID, {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).then((function(order) {
+                                        var _order$purchase_units, _order$purchase_units2, _order$purchase_units3, _headers5;
+                                        var id = (null == order || null == (_order$purchase_units = order.purchase_units[0]) || null == (_order$purchase_units2 = _order$purchase_units.payments) || null == (_order$purchase_units3 = _order$purchase_units2.authorizations[0]) ? void 0 : _order$purchase_units3.id) || null;
+                                        if (!id) throw new Error("Could not find authorization id to capture authorization.");
+                                        if (!data) throw new Error("Must pass data into capture in order to complete payment for intent=authorize.");
+                                        return callRestAPI({
+                                            accessToken: facilitatorAccessToken,
+                                            method: "post",
+                                            eventName: "v2_payments_authorizations_capture",
+                                            url: "/v2/payments/authorizations/" + id + "/capture",
+                                            data: data,
+                                            headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = partnerAttributionID || "", 
+                                            _headers5)
+                                        }).then((function(body) {
+                                            var _getLogger$track2;
+                                            var captureID = body && body.id;
+                                            if (!captureID) throw new Error("Payment Api response error:\n\n" + JSON.stringify(body, null, 4));
+                                            logger_getLogger().track(((_getLogger$track2 = {}).transition_name = "process_capture_authorization", 
+                                            _getLogger$track2.context_type = "Pay-ID", _getLogger$track2.token = captureID, 
+                                            _getLogger$track2.context_id = captureID, _getLogger$track2));
+                                            return body;
+                                        }));
+                                    }));
+                                }(data, {
+                                    orderID: orderID,
                                     facilitatorAccessToken: facilitatorAccessToken,
                                     buyerAccessToken: buyerAccessToken,
                                     partnerAttributionID: partnerAttributionID,
                                     forceRestAPI: forceRestAPI
-                                }).finally(get.reset).finally(capture.reset).catch((function(err) {
-                                    return function(err, restart, onError) {
-                                        if (isUnprocessableEntityError(err)) {
-                                            err && err.response && (err.message = JSON.stringify(err.response) || err.message);
-                                            return onError(err).then(unresolvedPromise);
-                                        }
-                                        if (isProcessorDeclineError(err)) return restart().then(unresolvedPromise);
-                                        throw err;
-                                    }(err, restart, onError);
+                                }).finally(capture.reset).catch((function(err) {
+                                    return onError(err).then(unresolvedPromise);
                                 }));
                             }));
                             return {
-                                capture: capture,
-                                get: get,
+                                payment: {
+                                    capture: capture
+                                },
+                                order: {
+                                    get: get
+                                },
                                 redirect: onComplete_redirect
                             };
                         }({
                             orderID: orderID,
-                            restart: restart,
                             facilitatorAccessToken: facilitatorAccessToken,
                             buyerAccessToken: buyerAccessToken,
                             partnerAttributionID: partnerAttributionID,
@@ -8773,7 +8799,14 @@ window.spb = function(modules) {
                                     }));
                                 }
                             };
-                            return actions;
+                            return {
+                                reject: actions.reject,
+                                updateTax: actions.updateTax,
+                                updateShippingOptions: actions.updateShippingOptions,
+                                updateShippingDiscount: actions.updateShippingDiscount,
+                                patch: actions.patch,
+                                query: actions.query
+                            };
                         }({
                             data: data,
                             actions: actions,
@@ -8919,7 +8952,13 @@ window.spb = function(modules) {
                                     }));
                                 }
                             };
-                            return actions;
+                            return {
+                                reject: actions.reject,
+                                updateShippingOption: actions.updateShippingOption,
+                                updateShippingDiscount: actions.updateShippingDiscount,
+                                patch: actions.patch,
+                                query: actions.query
+                            };
                         }({
                             data: data,
                             actions: actions,
@@ -9196,7 +9235,7 @@ window.spb = function(modules) {
                                     var _currentShippingMetho, _currentShippingMetho2;
                                     (update = {
                                         newTotal: {
-                                            label: "Total",
+                                            label: merchantName,
                                             amount: currentTotalAmount
                                         },
                                         newLineItems: []
@@ -9248,7 +9287,7 @@ window.spb = function(modules) {
                                     (update = {
                                         errors: errors,
                                         newTotal: {
-                                            label: "Total",
+                                            label: merchantName,
                                             amount: currentTotalAmount
                                         },
                                         newLineItems: []
@@ -9307,13 +9346,13 @@ window.spb = function(modules) {
                                     currentShippingContact = shippingContact;
                                     shippingMethod && (currentShippingMethod = shippingMethod);
                                     return order_getDetailedOrderInfo(orderID, locale.country).then((function(updatedOrder) {
-                                        var _currentShippingMetho7, _currentShippingMetho8, _currentShippingMetho9;
+                                        var _currentShippingMetho7, _updatedOrder$checkou2, _updatedOrder$checkou3, _currentShippingMetho8, _currentShippingMetho9;
                                         var _updatedOrder$checkou = updatedOrder.checkoutSession.cart.amounts, updatedTaxValue = _updatedOrder$checkou.tax.currencyValue, updatedSubtotalValue = _updatedOrder$checkou.subtotal.currencyValue, updatedTotalValue = _updatedOrder$checkou.total.currencyValue;
                                         currentShippingAmount = (null == (_currentShippingMetho7 = currentShippingMethod) ? void 0 : _currentShippingMetho7.amount) || currentShippingAmount || "0.00";
                                         currentTotalAmount = updatedTotalValue;
                                         var update = {
                                             newTotal: {
-                                                label: "Total",
+                                                label: merchantName = (null == updatedOrder || null == (_updatedOrder$checkou2 = updatedOrder.checkoutSession) || null == (_updatedOrder$checkou3 = _updatedOrder$checkou2.merchant) ? void 0 : _updatedOrder$checkou3.name) || "Total",
                                                 amount: updatedTotalValue
                                             },
                                             newLineItems: []
@@ -9342,8 +9381,9 @@ window.spb = function(modules) {
                                 return orderPromise.then((function(orderID) {
                                     var country = locale.country;
                                     return order_getDetailedOrderInfo(orderID, country).then((function(order) {
+                                        var _order$checkoutSessio2, _order$checkoutSessio3;
                                         var applePayRequest = function(countryCode, order) {
-                                            var _order$checkoutSessio = order.checkoutSession, _order$checkoutSessio2 = _order$checkoutSessio.flags, isShippingAddressRequired = _order$checkoutSessio2.isShippingAddressRequired, isChangeShippingAddressAllowed = _order$checkoutSessio2.isChangeShippingAddressAllowed, _order$checkoutSessio3 = _order$checkoutSessio.cart, _order$checkoutSessio4 = _order$checkoutSessio3.amounts, shippingValue = _order$checkoutSessio4.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio4.tax.currencyValue, subtotalValue = _order$checkoutSessio4.subtotal.currencyValue, _order$checkoutSessio5 = _order$checkoutSessio4.total, currencyCode = _order$checkoutSessio5.currencyCode, totalValue = _order$checkoutSessio5.currencyValue, shippingAddress = _order$checkoutSessio3.shippingAddress, shippingMethods = _order$checkoutSessio3.shippingMethods;
+                                            var _order$checkoutSessio = order.checkoutSession, name = _order$checkoutSessio.merchant.name, _order$checkoutSessio2 = _order$checkoutSessio.flags, isShippingAddressRequired = _order$checkoutSessio2.isShippingAddressRequired, isChangeShippingAddressAllowed = _order$checkoutSessio2.isChangeShippingAddressAllowed, _order$checkoutSessio3 = _order$checkoutSessio.cart, _order$checkoutSessio4 = _order$checkoutSessio3.amounts, shippingValue = _order$checkoutSessio4.shippingAndHandling.currencyValue, taxValue = _order$checkoutSessio4.tax.currencyValue, subtotalValue = _order$checkoutSessio4.subtotal.currencyValue, _order$checkoutSessio5 = _order$checkoutSessio4.total, currencyCode = _order$checkoutSessio5.currencyCode, totalValue = _order$checkoutSessio5.currencyValue, shippingAddress = _order$checkoutSessio3.shippingAddress, shippingMethods = _order$checkoutSessio3.shippingMethods;
                                             var supportedNetworks = function(issuers) {
                                                 void 0 === issuers && (issuers = []);
                                                 var validNetworks = {
@@ -9422,7 +9462,7 @@ window.spb = function(modules) {
                                                 shippingMethods: applePayShippingMethods || [],
                                                 lineItems: [],
                                                 total: {
-                                                    label: "Total",
+                                                    label: name,
                                                     amount: totalValue,
                                                     type: "final"
                                                 }
@@ -9450,6 +9490,7 @@ window.spb = function(modules) {
                                         currentTaxAmount = taxValue;
                                         currentSubtotalAmount = subtotalValue;
                                         currentTotalAmount = totalValue;
+                                        merchantName = (null == order || null == (_order$checkoutSessio2 = order.checkoutSession) || null == (_order$checkoutSessio3 = _order$checkoutSessio2.merchant) ? void 0 : _order$checkoutSessio3.name) || "Total";
                                         return applePay(4, applePayRequest).then((function(response) {
                                             var begin = response.begin, addEventListener = response.addEventListener, completeMerchantValidation = response.completeMerchantValidation, completeShippingContactSelection = response.completeShippingContactSelection, completePaymentMethodSelection = response.completePaymentMethodSelection, completeShippingMethodSelection = response.completeShippingMethodSelection, completePayment = response.completePayment;
                                             promise_ZalgoPromise.all([ addEventListener("validatemerchant", (function(_ref6) {
@@ -9492,7 +9533,7 @@ window.spb = function(modules) {
                                                 logApplePayEvent("paymentmethodselected", _ref7.paymentMethod);
                                                 var update = {
                                                     newTotal: {
-                                                        label: "Total",
+                                                        label: merchantName,
                                                         amount: currentTotalAmount || "0.00"
                                                     },
                                                     newLineItems: []
@@ -9520,7 +9561,7 @@ window.spb = function(modules) {
                                                     var _currentShippingMetho12;
                                                     var update = {
                                                         newTotal: {
-                                                            label: "Total",
+                                                            label: merchantName,
                                                             amount: currentTotalAmount || "0.00"
                                                         },
                                                         newLineItems: []
@@ -9601,7 +9642,7 @@ window.spb = function(modules) {
                                     handleApplePayError("applepay_create_order_error", err);
                                 }));
                             }();
-                            var currentTotalAmount, currentSubtotalAmount, currentTaxAmount, currentShippingAmount, currentShippingContact, currentShippingMethod, onShippingChangeCallback, orderPromise;
+                            var currentTotalAmount, currentSubtotalAmount, currentTaxAmount, currentShippingAmount, currentShippingContact, currentShippingMethod, merchantName, onShippingChangeCallback, orderPromise;
                         })).catch((function(err) {
                             return close().then((function() {
                                 var _getLogger$error$trac;
@@ -10061,8 +10102,6 @@ window.spb = function(modules) {
                             setBuyerAccessToken(buyerAccessToken);
                             return _onComplete({
                                 buyerAccessToken: buyerAccessToken
-                            }, {
-                                restart: restart
                             }).finally((function() {
                                 return close().then(src_util_noop);
                             })).catch(src_util_noop);
@@ -10342,8 +10381,9 @@ window.spb = function(modules) {
                 var props = _ref.props;
                 var vault = props.vault, onShippingChange = props.onShippingChange;
                 var eligibility = _ref.serviceData.eligibility;
-                if ("inline" === props.experience && !isCrossSiteTrackingEnabled("enforce_policy")) {
+                if ("inline" === props.experience) {
                     var _getLogger$info$track;
+                    if ("production" !== props.env) return !1;
                     var inlinexoExperiment = (name = "inlinexo", logger = logger_getLogger(), log = logger || src_logger_getLogger(), 
                     experiment({
                         name: name,
@@ -10364,7 +10404,8 @@ window.spb = function(modules) {
                     }));
                     var treatment = inlinexoExperiment.getTreatment();
                     logger_getLogger().info(treatment).track((_getLogger$info$track = {}, _getLogger$info$track.pxp_exp_id = "inlinexo", 
-                    _getLogger$info$track.pxp_trtmnt_id = treatment, _getLogger$info$track)).flush();
+                    _getLogger$info$track.pxp_trtmnt_id = treatment, _getLogger$info$track.transition_name = "process_pxp_check", 
+                    _getLogger$info$track.state_name = "pxp_check", _getLogger$info$track)).flush();
                     return !inlinexoExperiment.isEnabled();
                 }
                 var name, logger, log;
@@ -13174,7 +13215,7 @@ window.spb = function(modules) {
             return promise_ZalgoPromise.try((function() {
                 var _getLogger$addPayload, _getLogger$info$track;
                 var merchantID = serviceData.merchantID, fundingEligibility = serviceData.fundingEligibility, buyerCountry = serviceData.buyerCountry;
-                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken, enableNativeCheckout = props.enableNativeCheckout, experience = props.experience;
+                var clientID = props.clientID, onClick = props.onClick, createOrder = props.createOrder, env = props.env, vault = props.vault, partnerAttributionID = props.partnerAttributionID, userExperienceFlow = props.userExperienceFlow, buttonSessionID = props.buttonSessionID, intent = props.intent, currency = props.currency, clientAccessToken = props.clientAccessToken, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, commit = props.commit, disableFunding = props.disableFunding, disableCard = props.disableCard, userIDToken = props.userIDToken, enableNativeCheckout = props.enableNativeCheckout;
                 !function(personalization) {
                     personalization && personalization.tagline && personalization.tagline.tracking && util_sendBeacon(personalization.tagline.tracking.click);
                     personalization && personalization.buttonText && personalization.buttonText.tracking && util_sendBeacon(personalization.buttonText.tracking.click);
@@ -13214,9 +13255,9 @@ window.spb = function(modules) {
                 })).track(((_getLogger$addPayload = {}).transition_name = "process_button_click", 
                 _getLogger$addPayload.chosen_fi_type = instrumentType, _getLogger$addPayload.payment_flow = name, 
                 _getLogger$addPayload.is_vault = instrumentType ? "1" : "0", _getLogger$addPayload.info_msg = enableNativeCheckout ? "tester" : "", 
-                _getLogger$addPayload.experience = "inline" === experience ? "inline" : "", _getLogger$addPayload));
-                logger_getLogger().info("cross_site_tracking_enabled_" + String(isCrossSiteTrackingEnabled("enforce_policy"))).track((_getLogger$info$track = {}, 
-                _getLogger$info$track.transition_name = "cross_site_tracking_enabled_" + String(isCrossSiteTrackingEnabled("enforce_policy")), 
+                _getLogger$addPayload));
+                logger_getLogger().info("cross_site_tracking_" + (isCrossSiteTrackingEnabled("enforce_policy") ? "enabled" : "disabled")).track((_getLogger$info$track = {}, 
+                _getLogger$info$track.transition_name = "cross_site_tracking_" + (isCrossSiteTrackingEnabled("enforce_policy") ? "enabled" : "disabled"), 
                 _getLogger$info$track)).flush();
                 var loggingPromise = promise_ZalgoPromise.try((function() {
                     return window.xprops.sessionState.get("__confirm_" + fundingSource + "_payload__").then((function(confirmPayload) {
@@ -13673,7 +13714,7 @@ window.spb = function(modules) {
                 brandedDefault: brandedDefault,
                 paymentSource: null
             });
-            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, onShippingChange = props.onShippingChange, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID;
+            var env = props.env, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, commit = props.commit, sdkCorrelationID = props.sdkCorrelationID, locale = props.locale, onShippingChange = props.onShippingChange, buttonSessionID = props.buttonSessionID, merchantDomain = props.merchantDomain, onInit = props.onInit, getPrerenderDetails = props.getPrerenderDetails, rememberFunding = props.rememberFunding, getQueriedEligibleFunding = props.getQueriedEligibleFunding, experience = props.experience, style = props.style, fundingSource = props.fundingSource, intent = props.intent, createBillingAgreement = props.createBillingAgreement, createSubscription = props.createSubscription, stickinessID = props.stickinessID;
             var config = getConfig({
                 serverCSPNonce: serverCSPNonce,
                 firebaseConfig: firebaseConfig
@@ -13972,7 +14013,7 @@ window.spb = function(modules) {
                 fundingEligibility: fundingEligibility
             });
             var setupButtonLogsTask = function(_ref) {
-                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, sdkVersion = _ref.sdkVersion, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding, stickinessID = _ref.stickinessID, buyerCountry = _ref.buyerCountry, onShippingChange = _ref.onShippingChange;
+                var env = _ref.env, sessionID = _ref.sessionID, buttonSessionID = _ref.buttonSessionID, clientID = _ref.clientID, partnerAttributionID = _ref.partnerAttributionID, commit = _ref.commit, sdkCorrelationID = _ref.sdkCorrelationID, buttonCorrelationID = _ref.buttonCorrelationID, locale = _ref.locale, merchantID = _ref.merchantID, merchantDomain = _ref.merchantDomain, sdkVersion = _ref.sdkVersion, style = _ref.style, fundingSource = _ref.fundingSource, getQueriedEligibleFunding = _ref.getQueriedEligibleFunding, stickinessID = _ref.stickinessID, buyerCountry = _ref.buyerCountry, onShippingChange = _ref.onShippingChange, experience = _ref.experience;
                 var logger = logger_getLogger();
                 !function(_ref2) {
                     var env = _ref2.env, sessionID = _ref2.sessionID, clientID = _ref2.clientID, sdkCorrelationID = _ref2.sdkCorrelationID, buyerCountry = _ref2.buyerCountry, locale = _ref2.locale, sdkVersion = _ref2.sdkVersion, fundingSource = _ref2.fundingSource;
@@ -14026,11 +14067,12 @@ window.spb = function(modules) {
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).context_type = "button_session_id", _ref3.context_id = buttonSessionID, 
-                    _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.102", _ref3.button_correlation_id = buttonCorrelationID, 
+                    _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.103", _ref3.button_correlation_id = buttonCorrelationID, 
                     _ref3.stickiness_id = isAndroidChrome() ? stickinessID : null, _ref3.bn_code = partnerAttributionID, 
                     _ref3.user_action = commit ? "commit" : "continue", _ref3.seller_id = merchantID[0], 
-                    _ref3.merchant_domain = merchantDomain, _ref3.t = Date.now().toString(), _ref3.time = Date.now().toString(), 
-                    _ref3.user_id = buttonSessionID, _ref3;
+                    _ref3.merchant_domain = merchantDomain, _ref3.experience = "inline" === experience ? "inline" : "default", 
+                    _ref3.t = Date.now().toString(), _ref3.time = Date.now().toString(), _ref3.user_id = buttonSessionID, 
+                    _ref3;
                 }));
                 (function() {
                     if (window.document.documentMode) try {
@@ -14142,7 +14184,8 @@ window.spb = function(modules) {
                 fundingSource: fundingSource,
                 getQueriedEligibleFunding: getQueriedEligibleFunding,
                 buyerCountry: buyerCountry,
-                onShippingChange: onShippingChange
+                onShippingChange: onShippingChange,
+                experience: experience
             });
             var setupPaymentFlowsTask = function(_ref) {
                 var props = _ref.props, config = _ref.config, serviceData = _ref.serviceData, components = _ref.components;
