@@ -85,13 +85,13 @@ const buildOnCompleteActions = ({ orderID, facilitatorAccessToken, buyerAccessTo
             .finally(get.reset);
     });
 
-    const capture = (data) => {
+    const capture = memoize((data) => {
         return captureAuthorization(data, { orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
             .finally(capture.reset)
             .catch(err => {
                 return onError(err).then(unresolvedPromise);
             });
-    };
+    });
 
     return {
         payment: {
