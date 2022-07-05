@@ -4,9 +4,9 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { memoize, redirect as redir } from '@krakenjs/belter/src';
 import { INTENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { getLogger, promiseNoop } from '../lib';
+import { getLogger, promiseNoop, unresolvedPromise } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
-import { getOrder, captureAuthorization, type OrderResponse, type AuthorizationCaptureResponse } from '../api';
+import { getOrder, captureAuthorization, type OrderResponse, type AuthorizationCaptureData, type AuthorizationCaptureResponse } from '../api';
 
 import type { CreateOrder } from './createOrder';
 import type { OnError } from './onError';
@@ -35,7 +35,7 @@ export type XonCompleteOrderActions = {|
 |};
 
 export type XonCompletePaymentActions = {|
-    capture : () => ZalgoPromise<AuthorizationCaptureResponse>
+    capture : (data : AuthorizationCaptureData) => ZalgoPromise<AuthorizationCaptureResponse>
 |};
 
 export type XOnCompleteActions = {|
@@ -81,15 +81,17 @@ const redirect = (url) => {
 
 const buildOnCompleteActions = ({ orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError } : OnCompleteActionOptions) : XOnCompleteActions => {
     const get = memoize(() => {
-        return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI });
+        return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
+            .finally(get.reset);
     });
 
-    const capture = memoize((data) => {
+    const capture = (data) => {
         return captureAuthorization(data, { orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
-            .finally(get.reset)
             .finally(capture.reset)
-            .catch(onError);
-    });
+            .catch(err => {
+                return onError(err).then(unresolvedPromise);
+            });
+    };
 
     return {
         payment: {
