@@ -145,13 +145,12 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             }
 
             const updateClientConfigPromise = createOrder().then(orderID => {
-                const experienceFlow = experience === EXPERIENCE.INLINE ? 'ACCELERATED' : userExperienceFlow;
                 if (updateFlowClientConfig) {
-                    return updateFlowClientConfig({ orderID, payment, userExperienceFlow: experienceFlow, buttonSessionID });
+                    return updateFlowClientConfig({ orderID, payment, userExperienceFlow, buttonSessionID });
                 }
 
                 // Do not block by default
-                updateButtonClientConfig({ orderID, fundingSource, inline, userExperienceFlow: experienceFlow }).catch(err => {
+                updateButtonClientConfig({ orderID, fundingSource, inline, userExperienceFlow }).catch(err => {
                     getLogger().error('update_client_config_error', { err: stringifyError(err) });
                 });
             }).catch(noop);
