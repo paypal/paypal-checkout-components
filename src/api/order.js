@@ -650,7 +650,9 @@ type SupplementalOrderInfo = {|
             supplementary? : {|
                 initiationIntent? : string
             |},
-            category? : $Values<typeof ITEM_CATEGORY>
+            category? : $Values<typeof ITEM_CATEGORY>,
+            shippingAddress? : ShippingAddress,
+            shippingMethods? : $ReadOnlyArray<ShippingMethod>
         |},
         buyer? : {|
             userId? : string
@@ -691,6 +693,26 @@ export const getSupplementalOrderInfo : GetSupplementalOrderInfo = memoize(order
                             initiationIntent
                         }
                         category
+                        shippingAddress {
+                            firstName
+                            lastName
+                            line1
+                            line2
+                            city
+                            state
+                            postalCode
+                            country
+                        }
+                        shippingMethods {
+                            id
+                            amount {
+                                currencyCode
+                                currencyValue
+                            }
+                            label
+                            selected
+                            type
+                        }
                     }
                     flags {
                         isChangeShippingAddressAllowed

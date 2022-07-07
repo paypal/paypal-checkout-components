@@ -12,7 +12,8 @@ import {
     createButtonHTML,
     mockFunction,
     clickButton,
-    getRestfulGetOrderApiMock
+    getRestfulGetOrderApiMock,
+    getRestfulAuthorizationsCaptureApiMock
 } from './mocks';
 
 describe('Inline XO cases', () => {
@@ -131,6 +132,10 @@ describe('Inline XO cases', () => {
                     throw new Error(`Expected actions.redirect() to be available.`);
                 }
 
+                if (!actions.order.get) {
+                    throw new Error(`Expected actions.order.get() to be available.`);
+                }
+
                 const getOrderMock = getRestfulGetOrderApiMock({
                     handler: expect('getOrder', ({ headers }) => {
                         if (headers.authorization !== `Bearer ${ facilitatorAccessToken }`) {
@@ -145,6 +150,119 @@ describe('Inline XO cases', () => {
                 getOrderMock.expectCalls();
                 await actions.order.get();
                 getOrderMock.done();
+            });
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onComplete', expect('onComplete', ({ original: onCompleteOriginal, args: [ data, actions ] }) => {
+                    return onCompleteOriginal({ ...data }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    const [ win, element, context ] = args;
+
+                    if (!win) {
+                        throw new Error(`Expected window to be passed to renderTo`);
+                    }
+
+                    if (!element || typeof element !== 'string') {
+                        throw new Error(`Expected string element to be passed to renderTo`);
+                    }
+
+                    if (context !== 'iframe') {
+                        throw new Error(`Expected context to be iframe, got ${ context }`);
+                    }
+
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML({ fundingEligibility });
+            await mockSetupButton({
+                experience: 'inline',
+                merchantID: [ 'XYZ12345' ],
+                fundingEligibility,
+                facilitatorAccessToken
+            });
+            await clickButton(FUNDING.CARD);
+        });
+    });
+
+    it('should call onComplete if experience is inline and capture authorization', async () => {
+        return await wrapPromise(async ({ expect, avoid }) => {
+
+            const orderID = generateOrderID();
+            const facilitatorAccessToken = uniqueID();
+
+            window.xprops.experience = 'inline';
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onCancel = avoid('onCancel');
+            window.xprops.onApprove = avoid('onApprove');
+            window.xprops.onError = avoid('onError');
+
+            window.xprops.onComplete = expect('onComplete', async (data, actions) => {
+                if (data.orderID !== orderID) {
+                    throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
+                }
+
+                if (!actions.payment.capture) {
+                    throw new Error(`Expected actions.payment.capture() to be available.`);
+                }
+
+                const authorizationID = uniqueID();
+
+                const getOrderMock = getRestfulGetOrderApiMock({
+                    handler: expect('getOrder', ({ headers }) => {
+                        if (headers.authorization !== `Bearer ${ facilitatorAccessToken }`) {
+                            throw new Error(`Expected call to come with correct facilitator access token`);
+                        }
+
+                        return {
+                            id: orderID,
+                            purchase_units: [{
+                                payments: {
+                                    authorizations: [{
+                                        id: authorizationID
+                                    }]
+                                }
+                            }],
+                        };
+                    })
+                });
+                getOrderMock.expectCalls();
+                
+                const getAuthorizationCaptureMock = getRestfulAuthorizationsCaptureApiMock({
+                    handler: expect('captureAuthorization', ({ data: captureData }) => {
+                        if (!captureData.invoice_id) {
+                            throw new Error(`Expected invoice id to be passed: ${ JSON.stringify(captureData) }`);
+                        }
+                        return {
+                            id: authorizationID
+                        };
+                    })
+                }).expectCalls();
+                            
+                await actions.payment.capture({
+                    invoice_id: `${ uniqueID() }`
+                });
+                getOrderMock.done();
+                getAuthorizationCaptureMock.done();
             });
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {

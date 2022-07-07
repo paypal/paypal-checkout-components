@@ -1,6 +1,6 @@
 /* @flow */
 
-import { buildBreakdown, calculateTotalFromShippingBreakdownAmounts, convertQueriesToArray, updateShippingOptions } from '../../src/props/utils';
+import { buildBreakdown, calculateTotalFromShippingBreakdownAmounts, convertQueriesToArray, updateOperationForShippingOptions, updateShippingOptions } from '../../src/props/utils';
 import { ON_SHIPPING_CHANGE_PATHS } from '../../src/props/onShippingChange';
 
 describe('onShippingChange utils', () => {
@@ -358,6 +358,32 @@ describe('onShippingChange utils', () => {
 
             const expectedResult = JSON.stringify([{"op":"replace","path":"/purchase_units/@reference_id=='default'/amount","value":{"value":"110.0","currency_code":"USD","breakdown":{"item_total":{"value":"100.0","currency_code":"USD"},"shipping":{"value":"10.0","currency_code":"USD"}}}},{"op":"replace","path":"/purchase_units/@reference_id=='default'/shipping/options","value":[{"id":"SHIP_1234","label":"Free Shipping","type":"SHIPPING","selected":true,"amount":{"value":"0.00","currency_code":"USD"}},{"id":"SHIP_123","label":"Shipping","type":"SHIPPING","selected":false,"amount":{"value":"20.00","currency_code":"USD"}},{"id":"SHIP_124","label":"Overnight","type":"SHIPPING","selected":false,"amount":{"value":"40.00","currency_code":"USD"}}]}]);
             const result = JSON.stringify(convertQueriesToArray({ queries }));
+
+            if (result !== expectedResult) {
+                throw new Error(`Expected result to match result. ${ JSON.stringify(result) }`);
+            }
+        });
+
+        it('should update op to replace if add and convert object amount and options queries to array', () => {
+            const queries = {
+                [ON_SHIPPING_CHANGE_PATHS.AMOUNT]: {
+                    op:       'replace',
+                    path:     ON_SHIPPING_CHANGE_PATHS.AMOUNT,
+                    value: {
+                        value:         '110.0',
+                        currency_code: 'USD',
+                        breakdown
+                    }
+                },
+                [ON_SHIPPING_CHANGE_PATHS.OPTIONS]: {
+                    op:    'add',
+                    path:  ON_SHIPPING_CHANGE_PATHS.OPTIONS,
+                    value: shippingOptions
+                }
+            };
+
+            const expectedResult = JSON.stringify([{"op":"replace","path":"/purchase_units/@reference_id=='default'/amount","value":{"value":"110.0","currency_code":"USD","breakdown":{"item_total":{"value":"100.0","currency_code":"USD"},"shipping":{"value":"10.0","currency_code":"USD"}}}},{"op":"replace","path":"/purchase_units/@reference_id=='default'/shipping/options","value":[{"id":"SHIP_1234","label":"Free Shipping","type":"SHIPPING","selected":true,"amount":{"value":"0.00","currency_code":"USD"}},{"id":"SHIP_123","label":"Shipping","type":"SHIPPING","selected":false,"amount":{"value":"20.00","currency_code":"USD"}},{"id":"SHIP_124","label":"Overnight","type":"SHIPPING","selected":false,"amount":{"value":"40.00","currency_code":"USD"}}]}]);
+            const result = JSON.stringify(updateOperationForShippingOptions({ queries }));
 
             if (result !== expectedResult) {
                 throw new Error(`Expected result to match result. ${ JSON.stringify(result) }`);
