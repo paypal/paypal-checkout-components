@@ -7244,7 +7244,7 @@ window.smartCard = function(modules) {
         var _headers21;
         return callGraphQL({
             name: "GetCheckoutDetails",
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            id\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
             variables: {
                 orderID: orderID
             },
@@ -7573,6 +7573,13 @@ window.smartCard = function(modules) {
     };
     var convertQueriesToArray = function(_ref3) {
         return Object.values(_ref3.queries) || [];
+    };
+    var utils_updateOperationForShippingOptions = function(_ref5) {
+        var queries = _ref5.queries;
+        queries[ON_SHIPPING_CHANGE_PATHS_OPTIONS] && (queries[ON_SHIPPING_CHANGE_PATHS_OPTIONS].op = "replace");
+        return convertQueriesToArray({
+            queries: queries
+        });
     };
     var onShippingAddressChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "shipping_address" ], _excluded2 = [ "buyerAccessToken", "forceRestAPI" ];
     var onShippingOptionsChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "options", "selected_shipping_option" ], onShippingOptionsChange_excluded2 = [ "buyerAccessToken", "forceRestAPI" ];
@@ -8574,31 +8581,40 @@ window.smartCard = function(modules) {
                                 return actions;
                             },
                             patch: function() {
-                                return patchOrder(orderID, convertQueriesToArray({
-                                    queries: patchQueries
-                                }), {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
-                                }).catch((function() {
-                                    throw new Error("Order could not be patched");
+                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
+                                    var _supplementalData$che, _supplementalData$che2;
+                                    var queries;
+                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che = supplementalData.checkoutSession) || null == (_supplementalData$che2 = _supplementalData$che.cart) ? void 0 : _supplementalData$che2.shippingMethods) || [];
+                                    queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
+                                        queries: patchQueries
+                                    }) : convertQueriesToArray({
+                                        queries: patchQueries
+                                    });
+                                    return patchOrder(orderID, queries, {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).catch((function() {
+                                        throw new Error("Order could not be patched");
+                                    }));
                                 }));
                             },
                             query: function() {
-                                return JSON.stringify(convertQueriesToArray({
-                                    queries: patchQueries
+                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
+                                    var _supplementalData$che3, _supplementalData$che4;
+                                    var queries;
+                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che3 = supplementalData.checkoutSession) || null == (_supplementalData$che4 = _supplementalData$che3.cart) ? void 0 : _supplementalData$che4.shippingMethods) || [];
+                                    queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
+                                        queries: patchQueries
+                                    }) : convertQueriesToArray({
+                                        queries: patchQueries
+                                    });
+                                    return JSON.stringify(queries);
                                 }));
                             }
                         };
-                        return {
-                            reject: actions.reject,
-                            updateTax: actions.updateTax,
-                            updateShippingOptions: actions.updateShippingOptions,
-                            updateShippingDiscount: actions.updateShippingDiscount,
-                            patch: actions.patch,
-                            query: actions.query
-                        };
+                        return actions;
                     }({
                         data: data,
                         actions: actions,
@@ -8727,30 +8743,40 @@ window.smartCard = function(modules) {
                                 return actions;
                             },
                             patch: function() {
-                                return patchOrder(orderID, convertQueriesToArray({
-                                    queries: patchQueries
-                                }), {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
-                                }).catch((function() {
-                                    throw new Error("Order could not be patched");
+                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
+                                    var _supplementalData$che, _supplementalData$che2;
+                                    var queries;
+                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che = supplementalData.checkoutSession) || null == (_supplementalData$che2 = _supplementalData$che.cart) ? void 0 : _supplementalData$che2.shippingMethods) || [];
+                                    queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
+                                        queries: patchQueries
+                                    }) : convertQueriesToArray({
+                                        queries: patchQueries
+                                    });
+                                    return patchOrder(orderID, queries, {
+                                        facilitatorAccessToken: facilitatorAccessToken,
+                                        buyerAccessToken: buyerAccessToken,
+                                        partnerAttributionID: partnerAttributionID,
+                                        forceRestAPI: forceRestAPI
+                                    }).catch((function() {
+                                        throw new Error("Order could not be patched");
+                                    }));
                                 }));
                             },
                             query: function() {
-                                return JSON.stringify(convertQueriesToArray({
-                                    queries: patchQueries
+                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
+                                    var _supplementalData$che3, _supplementalData$che4;
+                                    var queries;
+                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che3 = supplementalData.checkoutSession) || null == (_supplementalData$che4 = _supplementalData$che3.cart) ? void 0 : _supplementalData$che4.shippingMethods) || [];
+                                    queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
+                                        queries: patchQueries
+                                    }) : convertQueriesToArray({
+                                        queries: patchQueries
+                                    });
+                                    return JSON.stringify(queries);
                                 }));
                             }
                         };
-                        return {
-                            reject: actions.reject,
-                            updateShippingOption: actions.updateShippingOption,
-                            updateShippingDiscount: actions.updateShippingDiscount,
-                            patch: actions.patch,
-                            query: actions.query
-                        };
+                        return actions;
                     }({
                         data: data,
                         actions: actions,
