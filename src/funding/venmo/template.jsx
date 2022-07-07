@@ -42,6 +42,8 @@ export function  WalletLabel({ ...props } : WalletLabelOptions) : ChildType {
 
     if (instrument && instrument.label) {
         label = instrument.label;
+    } else {
+        label = 'handle not available'
     }
     
 
