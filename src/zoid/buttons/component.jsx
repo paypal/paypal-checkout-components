@@ -652,7 +652,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, locale, onComplete, onShippingAddressChange, onShippingOptionsChange, style : { custom = {}, layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, locale, onComplete, style : { custom = {}, layout }, vault } = props || {};
 
                     if (experience === 'inline') {
                         return EXPERIENCE.INLINE;
@@ -672,8 +672,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         layout,
                         locale,
                         onComplete,
-                        onShippingAddressChange,
-                        onShippingOptionsChange,
                         vault
                     } });
 
@@ -699,7 +697,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             [FPTI_KEY.TRANSITION]:      'process_pxp_check',
                             [FPTI_KEY.STATE]:           'pxp_check'
                         }).flush();
-                        
+
                     return experimentEligible ? EXPERIENCE.INLINE : '';
                 }
             },
