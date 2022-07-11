@@ -4,7 +4,7 @@
     "description": "PayPal Checkout components, for integrating checkout products.",
     "main": "index.js",
     "engines": {
-        "node": ">=14.13.1 <16",
+        "node": "<17",
         "npm": ">=6"
     },
     "scripts": {
