@@ -685,20 +685,24 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         }).flush();
 
                     
-                    const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
-                    const treatment = inlinexoExperiment.getTreatment();
-                    const experimentEligible = inlinexoExperiment.isEnabled() ? false : true;
+                    if (!eligible) {
+                        return '';
+                    } else {
+                        const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
+                        const treatment = inlinexoExperiment.getTreatment();
+                        const experimentEligible = inlinexoExperiment.isEnabled() ? false : true;
 
-                    getLogger()
-                        .info(treatment)
-                        .track({
-                            [FPTI_KEY.EXPERIMENT_NAME]: 'inlinexo',
-                            [FPTI_KEY.TREATMENT_NAME]:  treatment,
-                            [FPTI_KEY.TRANSITION]:      'process_pxp_check',
-                            [FPTI_KEY.STATE]:           'pxp_check'
-                        }).flush();
+                        getLogger()
+                            .info(treatment)
+                            .track({
+                                [FPTI_KEY.EXPERIMENT_NAME]: 'inlinexo',
+                                [FPTI_KEY.TREATMENT_NAME]:  treatment,
+                                [FPTI_KEY.TRANSITION]:      'process_pxp_check',
+                                [FPTI_KEY.STATE]:           'pxp_check'
+                            }).flush();
 
-                    return experimentEligible ? EXPERIENCE.INLINE : '';
+                        return experimentEligible ? EXPERIENCE.INLINE : '';
+                    }
                 }
             },
 
