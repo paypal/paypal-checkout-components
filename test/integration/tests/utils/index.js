@@ -26,6 +26,7 @@ describe('isInlineXOEligible', () => {
         props = {
             commit:             true,
             currency:           CURRENCY.USD,
+            custom:             { label: 'Checkout', css: {} },
             disableFunding:     [ FUNDING.CREDIT ],
             fundingEligibility: {
                 [FUNDING.CARD]: {
@@ -41,6 +42,8 @@ describe('isInlineXOEligible', () => {
             layout: BUTTON_LAYOUT.VERTICAL,
             locale: { country: COUNTRY.US, lang: 'en' },
             onComplete: () => true,
+            onShippingAddressChange: () => true,
+            onShippingOptionsChange: () => true,
             vault:  false
         };
     });
@@ -102,6 +105,14 @@ describe('isInlineXOEligible', () => {
         }
     });
    
+    it('should be ineligible if custom is not set', () => {
+        props.custom = undefined;
+
+        if (isInlineXOEligible({ props })) {
+            throw new Error(`Expected custom style to be set to be eligible.`);
+        }
+    });
+   
     it('should be ineligible if vault is false', () => {
         props.vault = false;
 
@@ -123,6 +134,22 @@ describe('isInlineXOEligible', () => {
 
         if (isInlineXOEligible({ props })) {
             throw new Error(`Expected onComplete not be set to be ineligible.`);
+        }
+    });
+   
+    it('should be ineligible if onShippingAddressChange is not set', () => {
+        props.onShippingAddressChange = undefined;
+
+        if (isInlineXOEligible({ props })) {
+            throw new Error(`Expected onShippingAddressChange to be set to be eligible.`);
+        }
+    });
+   
+    it('should be ineligible if onShippingOptionsChange is not set', () => {
+        props.onShippingOptionsChange = undefined;
+
+        if (isInlineXOEligible({ props })) {
+            throw new Error(`Expected onShippingOptionsChange to be set to be eligible.`);
         }
     });
 });
