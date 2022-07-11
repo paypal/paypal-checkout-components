@@ -26,6 +26,7 @@ describe('isInlineXOEligible', () => {
         props = {
             commit:             true,
             currency:           CURRENCY.USD,
+            custom:             { label: 'Checkout', css: {} },
             disableFunding:     [ FUNDING.CREDIT ],
             fundingEligibility: {
                 [FUNDING.CARD]: {
@@ -99,6 +100,14 @@ describe('isInlineXOEligible', () => {
 
         if (isInlineXOEligible({ props })) {
             throw new Error(`Expected layout=horizontal to be ineligible.`);
+        }
+    });
+   
+    it('should be ineligible if custom is not set', () => {
+        props.custom = undefined;
+
+        if (isInlineXOEligible({ props })) {
+            throw new Error(`Expected custom style to be set to be eligible.`);
         }
     });
    
