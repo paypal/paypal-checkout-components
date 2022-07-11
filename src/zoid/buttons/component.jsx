@@ -6,7 +6,7 @@ import { getLogger, getLocale, getClientID, getEnv, getIntent, getCommit, getVau
     getMerchantID, getPayPalDomainRegex, getCurrency, getSDKMeta, getCSPNonce, getBuyerCountry, getClientAccessToken, getPlatform,
     getPartnerAttributionID, getCorrelationID, getEnableThreeDomainSecure, getDebug, getComponents, getStageHost, getAPIStageHost, getPayPalDomain,
     getUserIDToken, getClientMetadataID, getAmount, getEnableFunding, getStorageID, getUserExperienceFlow, getMerchantRequestedPopupsDisabled,
-    getVersion, createExperiment } from '@paypal/sdk-client/src';
+    getVersion } from '@paypal/sdk-client/src';
 import { rememberFunding, getRememberedFunding, getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, EVENT, type ZoidComponent } from '@krakenjs/zoid/src';
@@ -684,25 +684,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(eligible) }`
                         }).flush();
 
-                    
-                    if (!eligible) {
-                        return '';
-                    } else {
-                        const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
-                        const treatment = inlinexoExperiment.getTreatment();
-                        const experimentEligible = inlinexoExperiment.isEnabled() ? false : true;
-
-                        getLogger()
-                            .info(treatment)
-                            .track({
-                                [FPTI_KEY.EXPERIMENT_NAME]: 'inlinexo',
-                                [FPTI_KEY.TREATMENT_NAME]:  treatment,
-                                [FPTI_KEY.TRANSITION]:      'process_pxp_check',
-                                [FPTI_KEY.STATE]:           'pxp_check'
-                            }).flush();
-
-                        return experimentEligible ? EXPERIENCE.INLINE : '';
-                    }
+                        return eligible ? EXPERIENCE.INLINE : '';
                 }
             },
 
