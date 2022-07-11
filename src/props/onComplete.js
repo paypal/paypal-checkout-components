@@ -4,9 +4,9 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { memoize, redirect as redir } from '@krakenjs/belter/src';
 import { INTENT, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { getLogger, promiseNoop, unresolvedPromise } from '../lib';
+import { getLogger, promiseNoop } from '../lib';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS } from '../constants';
-import { getOrder, captureAuthorization, type OrderResponse, type AuthorizationCaptureData, type AuthorizationCaptureResponse } from '../api';
+import { getOrder, type OrderResponse } from '../api';
 
 import type { CreateOrder } from './createOrder';
 import type { OnError } from './onError';
@@ -34,12 +34,7 @@ export type XonCompleteOrderActions = {|
     get : () => ZalgoPromise<OrderResponse>
 |};
 
-export type XonCompletePaymentActions = {|
-    capture : (data : AuthorizationCaptureData) => ZalgoPromise<AuthorizationCaptureResponse>
-|};
-
 export type XOnCompleteActions = {|
-    payment : XonCompletePaymentActions,
     order : XonCompleteOrderActions,
     redirect : (string) => ZalgoPromise<void>
 |};
@@ -79,24 +74,13 @@ const redirect = (url) => {
     return redir(url, window.top);
 };
 
-const buildOnCompleteActions = ({ orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError } : OnCompleteActionOptions) : XOnCompleteActions => {
+const buildOnCompleteActions = ({ orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : OnCompleteActionOptions) : XOnCompleteActions => {
     const get = memoize(() => {
         return getOrder(orderID, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
             .finally(get.reset);
     });
 
-    const capture = memoize((data) => {
-        return captureAuthorization(data, { orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI })
-            .finally(capture.reset)
-            .catch(err => {
-                return onError(err).then(unresolvedPromise);
-            });
-    });
-
     return {
-        payment: {
-            capture
-        },
         order: {
             get
         },

@@ -3,7 +3,7 @@
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { patchOrder, type OrderResponse, getSupplementalOrderInfo } from '../api';
+import { patchOrder, type OrderResponse, getShippingOrderInfo } from '../api';
 import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_CUSTOM_KEY } from '../constants';
 import { getLogger } from '../lib';
 import type { OrderAmount } from '../types';
@@ -151,9 +151,9 @@ export function buildXOnShippingAddressChangeActions({ data, actions: passedActi
         },
 
         patch: () => {
-            return getSupplementalOrderInfo(orderID).then(supplementalData => {
+            return getShippingOrderInfo(orderID).then(sessionData => {
                 let queries = [];
-                const shippingMethods = supplementalData?.checkoutSession?.cart?.shippingMethods || [];
+                const shippingMethods = sessionData?.checkoutSession?.cart?.shippingMethods || [];
                 const hasShippingMethods = Boolean(shippingMethods.length > 0);
                 
                 if (hasShippingMethods) {
@@ -169,9 +169,9 @@ export function buildXOnShippingAddressChangeActions({ data, actions: passedActi
         },
 
         query: () => {
-            return getSupplementalOrderInfo(orderID).then(supplementalData => {
+            return getShippingOrderInfo(orderID).then(sessionData => {
                 let queries = [];
-                const shippingMethods = supplementalData?.checkoutSession?.cart?.shippingMethods || [];
+                const shippingMethods = sessionData?.checkoutSession?.cart?.shippingMethods || [];
                 const hasShippingMethods = Boolean(shippingMethods.length > 0);
                 
                 if (hasShippingMethods) {
