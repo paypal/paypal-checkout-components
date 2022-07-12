@@ -7244,13 +7244,24 @@ window.smartCard = function(modules) {
         var _headers21;
         return callGraphQL({
             name: "GetCheckoutDetails",
-            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            id\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+            query: "\n        query GetCheckoutDetails($orderID: String!) {\n            checkoutSession(token: $orderID) {\n                cart {\n                    billingType\n                    intent\n                    paymentId\n                    billingToken\n                    amounts {\n                        total {\n                            currencyValue\n                            currencyCode\n                            currencyFormatSymbolISOCurrency\n                        }\n                    }\n                    supplementary {\n                        initiationIntent\n                    }\n                    category\n                }\n                flags {\n                    isChangeShippingAddressAllowed\n                }\n                payees {\n                    merchantId\n                    email {\n                        stringValue\n                    }\n                }\n            }\n        }\n        ",
             variables: {
                 orderID: orderID
             },
             headers: (_headers21 = {}, _headers21["paypal-client-context"] = orderID, _headers21)
         });
     }));
+    var order_getShippingOrderInfo = function(orderID) {
+        var _headers22;
+        return callGraphQL({
+            name: "GetCheckoutDetails",
+            query: "\n            query GetCheckoutDetails($orderID: String!) {\n                checkoutSession(token: $orderID) {\n                    cart {\n                        billingType\n                        intent\n                        paymentId\n                        billingToken\n                        amounts {\n                            total {\n                                currencyValue\n                                currencyCode\n                                currencyFormatSymbolISOCurrency\n                            }\n                        }\n                        supplementary {\n                            initiationIntent\n                        }\n                        category\n                        shippingAddress {\n                            firstName\n                            lastName\n                            line1\n                            line2\n                            city\n                            state\n                            postalCode\n                            country\n                        }\n                        shippingMethods {\n                            id\n                            amount {\n                                currencyCode\n                                currencyValue\n                            }\n                            label\n                            selected\n                            type\n                        }\n                    }\n                    flags {\n                        isChangeShippingAddressAllowed\n                    }\n                    payees {\n                        merchantId\n                        email {\n                            stringValue\n                        }\n                    }\n                }\n            }\n        ",
+            variables: {
+                orderID: orderID
+            },
+            headers: (_headers22 = {}, _headers22["paypal-client-context"] = orderID, _headers22)
+        });
+    };
     function createRequest(accessToken, subscriptionPayload, partnerAttributionID, eventName) {
         return request({
             method: "post",
@@ -8281,7 +8292,7 @@ window.smartCard = function(modules) {
                     _getLogger$info$track.context_type = "EC-Token", _getLogger$info$track.token = orderID, 
                     _getLogger$info$track.context_id = orderID, _getLogger$info$track)).flush();
                     var actions = function(_ref) {
-                        var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI, onError = _ref.onError;
+                        var orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
                         var get = memoize((function() {
                             return getOrder(orderID, {
                                 facilitatorAccessToken: facilitatorAccessToken,
@@ -8290,52 +8301,7 @@ window.smartCard = function(modules) {
                                 forceRestAPI: forceRestAPI
                             }).finally(get.reset);
                         }));
-                        var capture = memoize((function(data) {
-                            return function(data, _ref7) {
-                                var orderID = _ref7.orderID, facilitatorAccessToken = _ref7.facilitatorAccessToken, buyerAccessToken = _ref7.buyerAccessToken, partnerAttributionID = _ref7.partnerAttributionID, forceRestAPI = _ref7.forceRestAPI;
-                                getLogger().info("rest_api_capture_authorization");
-                                return getOrder(orderID, {
-                                    facilitatorAccessToken: facilitatorAccessToken,
-                                    buyerAccessToken: buyerAccessToken,
-                                    partnerAttributionID: partnerAttributionID,
-                                    forceRestAPI: forceRestAPI
-                                }).then((function(order) {
-                                    var _order$purchase_units, _order$purchase_units2, _order$purchase_units3, _headers5;
-                                    var id = (null == order || null == (_order$purchase_units = order.purchase_units[0]) || null == (_order$purchase_units2 = _order$purchase_units.payments) || null == (_order$purchase_units3 = _order$purchase_units2.authorizations[0]) ? void 0 : _order$purchase_units3.id) || null;
-                                    if (!id) throw new Error("Could not find authorization id to capture authorization.");
-                                    if (!data) throw new Error("Must pass data into capture in order to complete payment for intent=authorize.");
-                                    return callRestAPI({
-                                        accessToken: facilitatorAccessToken,
-                                        method: "post",
-                                        eventName: "v2_payments_authorizations_capture",
-                                        url: "/v2/payments/authorizations/" + id + "/capture",
-                                        data: data,
-                                        headers: (_headers5 = {}, _headers5["paypal-partner-attribution-id"] = partnerAttributionID || "", 
-                                        _headers5)
-                                    }).then((function(body) {
-                                        var _getLogger$track2;
-                                        var captureID = body && body.id;
-                                        if (!captureID) throw new Error("Payment Api response error:\n\n" + JSON.stringify(body, null, 4));
-                                        getLogger().track(((_getLogger$track2 = {}).transition_name = "process_capture_authorization", 
-                                        _getLogger$track2.context_type = "Pay-ID", _getLogger$track2.token = captureID, 
-                                        _getLogger$track2.context_id = captureID, _getLogger$track2));
-                                        return body;
-                                    }));
-                                }));
-                            }(data, {
-                                orderID: orderID,
-                                facilitatorAccessToken: facilitatorAccessToken,
-                                buyerAccessToken: buyerAccessToken,
-                                partnerAttributionID: partnerAttributionID,
-                                forceRestAPI: forceRestAPI
-                            }).finally(capture.reset).catch((function(err) {
-                                return onError(err).then(unresolvedPromise);
-                            }));
-                        }));
                         return {
-                            payment: {
-                                capture: capture
-                            },
                             order: {
                                 get: get
                             },
@@ -8581,10 +8547,10 @@ window.smartCard = function(modules) {
                                 return actions;
                             },
                             patch: function() {
-                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
-                                    var _supplementalData$che, _supplementalData$che2;
+                                return order_getShippingOrderInfo(orderID).then((function(sessionData) {
+                                    var _sessionData$checkout, _sessionData$checkout2;
                                     var queries;
-                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che = supplementalData.checkoutSession) || null == (_supplementalData$che2 = _supplementalData$che.cart) ? void 0 : _supplementalData$che2.shippingMethods) || [];
+                                    var shippingMethods = (null == sessionData || null == (_sessionData$checkout = sessionData.checkoutSession) || null == (_sessionData$checkout2 = _sessionData$checkout.cart) ? void 0 : _sessionData$checkout2.shippingMethods) || [];
                                     queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
                                         queries: patchQueries
                                     }) : convertQueriesToArray({
@@ -8601,10 +8567,10 @@ window.smartCard = function(modules) {
                                 }));
                             },
                             query: function() {
-                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
-                                    var _supplementalData$che3, _supplementalData$che4;
+                                return order_getShippingOrderInfo(orderID).then((function(sessionData) {
+                                    var _sessionData$checkout3, _sessionData$checkout4;
                                     var queries;
-                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che3 = supplementalData.checkoutSession) || null == (_supplementalData$che4 = _supplementalData$che3.cart) ? void 0 : _supplementalData$che4.shippingMethods) || [];
+                                    var shippingMethods = (null == sessionData || null == (_sessionData$checkout3 = sessionData.checkoutSession) || null == (_sessionData$checkout4 = _sessionData$checkout3.cart) ? void 0 : _sessionData$checkout4.shippingMethods) || [];
                                     queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
                                         queries: patchQueries
                                     }) : convertQueriesToArray({
@@ -8743,10 +8709,10 @@ window.smartCard = function(modules) {
                                 return actions;
                             },
                             patch: function() {
-                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
-                                    var _supplementalData$che, _supplementalData$che2;
+                                return order_getShippingOrderInfo(orderID).then((function(sessionData) {
+                                    var _sessionData$checkout, _sessionData$checkout2;
                                     var queries;
-                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che = supplementalData.checkoutSession) || null == (_supplementalData$che2 = _supplementalData$che.cart) ? void 0 : _supplementalData$che2.shippingMethods) || [];
+                                    var shippingMethods = (null == sessionData || null == (_sessionData$checkout = sessionData.checkoutSession) || null == (_sessionData$checkout2 = _sessionData$checkout.cart) ? void 0 : _sessionData$checkout2.shippingMethods) || [];
                                     queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
                                         queries: patchQueries
                                     }) : convertQueriesToArray({
@@ -8763,10 +8729,10 @@ window.smartCard = function(modules) {
                                 }));
                             },
                             query: function() {
-                                return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
-                                    var _supplementalData$che3, _supplementalData$che4;
+                                return order_getShippingOrderInfo(orderID).then((function(sessionData) {
+                                    var _sessionData$checkout3, _sessionData$checkout4;
                                     var queries;
-                                    var shippingMethods = (null == supplementalData || null == (_supplementalData$che3 = supplementalData.checkoutSession) || null == (_supplementalData$che4 = _supplementalData$che3.cart) ? void 0 : _supplementalData$che4.shippingMethods) || [];
+                                    var shippingMethods = (null == sessionData || null == (_sessionData$checkout3 = sessionData.checkoutSession) || null == (_sessionData$checkout4 = _sessionData$checkout3.cart) ? void 0 : _sessionData$checkout4.shippingMethods) || [];
                                     queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
                                         queries: patchQueries
                                     }) : convertQueriesToArray({
