@@ -3,17 +3,13 @@
     "version": "5.0.230",
     "description": "PayPal Checkout components, for integrating checkout products.",
     "main": "index.js",
-    "engines": {
-        "node": ">=14.13.1 <16",
-        "npm": ">=6"
-    },
     "scripts": {
-        "dev": "babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
+        "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
         "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
         "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
         "flow": "flow",
         "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
-        "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot; fi;",
+        "test": "npm run check-node-version && npm run lint && npm run flow-typed && npm run flow && npm run jest-ssr && npm run karma && npm run jest-screenshot",
         "webpack": "babel-node $(npm bin)/webpack --progress",
         "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size",
         "build": "npm run test && npm run webpack",
@@ -31,7 +27,8 @@
         "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
         "check-size": "npm run webpack-size && bundlemon && npm run delete-size",
         "delete-size": "rm dist/size.* dist/report.html",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "check-node-version": "node scripts/check-node-version.js"
     },
     "files": [
         "src/",
@@ -48,7 +45,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/paypal/paypal-checkout-components.git"
+        "url": "https://github.com/paypal/paypal-checkout-components.git"
     },
     "homepage": "https://developer.paypal.com/",
     "keywords": [
