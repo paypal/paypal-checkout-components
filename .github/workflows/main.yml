@@ -15,10 +15,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🤝 Set Node version from .nvmrc
+        run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
+
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: ${{ env.NVMRC }}
           registry-url: 'https://registry.npmjs.org'
 
       - name: 📥 Download deps
