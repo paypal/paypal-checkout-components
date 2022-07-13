@@ -1,3 +1,15 @@
+## <small>5.0.231 (2022-07-13)</small>
+
+* chore: upgrade to Node 16 (#1966) ([a829473](https://github.com/paypal/paypal-checkout-components/commit/a829473)), closes [#1966](https://github.com/paypal/paypal-checkout-components/issues/1966)
+
+
+
+## <small>5.0.230 (2022-07-06)</small>
+
+* chore: update minimum height for single name field (#1962) ([92d81aa](https://github.com/paypal/paypal-checkout-components/commit/92d81aa)), closes [#1962](https://github.com/paypal/paypal-checkout-components/issues/1962)
+
+
+
 ## <small>5.0.229 (2022-06-23)</small>
 
 * chore: remove Inline XO experiment (#1956) ([edc220d](https://github.com/paypal/paypal-checkout-components/commit/edc220d)), closes [#1956](https://github.com/paypal/paypal-checkout-components/issues/1956)

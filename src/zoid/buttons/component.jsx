@@ -29,8 +29,8 @@ import { type InlineXOEligibilityType } from '../../types';
 import { containerTemplate } from './container';
 import { PrerenderedButtons } from './prerender';
 import { applePaySession, determineFlow, isSupportedNativeBrowser, createVenmoExperiment,
-    createNoPaylaterExperiment, getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
-    
+    getRenderedButtons, getButtonSize, getButtonExperiments, isInlineXOEligible } from './util';
+
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
@@ -53,7 +53,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
         prerenderTemplate: ({ state, props, doc, event }) => {
             const { buttonSessionID } = props;
-            
+
             if (!isLocalStorageEnabled()) {
                 getLogger().info('localstorage_inaccessible_possible_private_browsing').track({
                     [ FPTI_KEY.BUTTON_SESSION_UID ]: buttonSessionID,
@@ -114,7 +114,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 fundingEligibility = getRefinedFundingEligibility(),
                 supportsPopups = userAgentSupportsPopups(),
                 supportedNativeBrowser = isSupportedNativeBrowser(),
-                experiment = getButtonExperiments(fundingSource),
+                experiment = getButtonExperiments(),
                 createBillingAgreement, createSubscription
             } = props;
 
@@ -319,21 +319,10 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                     logLatencyInstrumentationPhase({ buttonSessionID: props.buttonSessionID, phase: 'buttons-first-render' });
 
                     return (...args) => {
-                        const { fundingSource } = props;
                         const venmoExperiment = createVenmoExperiment();
 
                         if (venmoExperiment) {
                             venmoExperiment.logStart({ [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID });
-                        }
-
-                        const enableNoPaylaterExperiment = createNoPaylaterExperiment(fundingSource);
-
-                        if (enableNoPaylaterExperiment) {
-                            enableNoPaylaterExperiment.logStart({
-                                [ FPTI_KEY.BUTTON_SESSION_UID ]: props.buttonSessionID,
-                                [ FPTI_KEY.CONTEXT_ID ]:         props.buttonSessionID,
-                                [ FPTI_KEY.CONTEXT_TYPE ]:       'button_session_id'
-                            });
                         }
 
                         return value(...args);
@@ -466,9 +455,8 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
             experiment: {
                 type:       'object',
                 queryParam: true,
-                value:      ({ props }) => {
-                    const { fundingSource } = props;
-                    const experiments = getButtonExperiments(fundingSource);
+                value:      () => {
+                    const experiments = getButtonExperiments();
                     return experiments;
                 }
             },
@@ -664,7 +652,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { env, clientID, merchantID, commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, locale, style: { layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, locale, onComplete, style : { custom = {}, layout }, vault } = props || {};
 
                     if (experience === 'inline') {
                         return EXPERIENCE.INLINE;
@@ -674,47 +662,19 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         eligible: false
                     };
 
-                    let alphaEligible = true;
-                    if (env === 'sandbox') {
-                        const validMerchantIDs = [
-                            'PJEHAEK4YBEDJ',
-                            'RMADGM9SZGSPJ',
-                            '5AZBQ2LU7HVE6',
-                            'SMJKX2JD3V27L',
-                            'RB28JB2TP9RA4'
-                        ];
-                        const eligibleMerchantID = merchantID && merchantID.length && merchantID.reduce((acc, id) => {
-                            return acc && validMerchantIDs.indexOf(id) !== -1;
-                        }, true);
-
-                        alphaEligible = clientID === 'AbUf2xGyVtp8HedZjyx9we1V2eRV9-Q7bLTVfr9Y-FFpG8dbWAaQ0AFqeh2dq_HYHrV_1GUPXGv6GMKp'
-                            && eligibleMerchantID;
-                    } else if (env === 'production') {
-                        const validMerchantIDs = [
-                            'G4Z8SJD6PEZ2G'
-                        ];
-
-                        const eligibleMerchantID = merchantID && merchantID.length && merchantID.reduce((acc, id) => {
-                            return acc && validMerchantIDs.indexOf(id) !== -1;
-                        }, true);
-
-                        if (clientID === 'AT2hsh6PFa_pvqYVni64Ik2Ojaluh_l9DU3KwXuHb-sgj8q9zZrmob2TUsmvu4rjJ869oHUAlIAqJf9R') {
-                            alphaEligible = eligibleMerchantID;
-
-                        }
-                    }
-
-                    const eligible = inlineCheckoutEligibility && inlineCheckoutEligibility.eligible && alphaEligible && isInlineXOEligible({ props: {
+                    const eligible = inlineCheckoutEligibility && inlineCheckoutEligibility.eligible && isInlineXOEligible({ props: {
                         commit,
                         createBillingAgreement,
                         currency,
+                        custom,
                         disableFunding,
                         fundingEligibility,
                         layout,
                         locale,
+                        onComplete,
                         vault
                     } });
-                    
+
                     const logger = getLogger();
 
                     logger
@@ -724,7 +684,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(eligible) }`
                         }).flush();
 
-                    return eligible ? EXPERIENCE.INLINE : '';
+                        return eligible ? EXPERIENCE.INLINE : '';
                 }
             },
 
