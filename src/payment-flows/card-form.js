@@ -1,13 +1,12 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { ENV, FUNDING, CARD, FPTI_KEY } from '@paypal/sdk-constants/src';
-import { createExperiment } from '@paypal/sdk-client/src';
+import { FUNDING, CARD } from '@paypal/sdk-constants/src';
 import { memoize, querySelectorAll, debounce, noop } from '@krakenjs/belter/src';
 import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import { DATA_ATTRIBUTES } from '../constants';
-import { unresolvedPromise, promiseNoop, getLogger } from '../lib';
+import { unresolvedPromise, promiseNoop } from '../lib';
 
 import type { PaymentFlow, PaymentFlowInstance, IsEligibleOptions, IsPaymentEligibleOptions, InitOptions } from './types';
 import { checkout } from './checkout';
@@ -19,27 +18,11 @@ function setupCardForm() {
 let cardFormOpen = false;
 
 function isCardFormEligible({ props, serviceData } : IsEligibleOptions) : boolean {
-    const { vault, onShippingChange, experience, env } = props;
+    const { vault, onShippingChange, experience } = props;
     const { eligibility } = serviceData;
 
     if (experience === EXPERIENCE.INLINE) {
-        if (env !== ENV.PRODUCTION) {
-            return false;
-        }
-        
-        const inlinexoExperiment = createExperiment('inlinexo', 50, getLogger());
-        const treatment = inlinexoExperiment.getTreatment();
-
-        getLogger()
-            .info(treatment)
-            .track({
-                [FPTI_KEY.EXPERIMENT_NAME]: 'inlinexo',
-                [FPTI_KEY.TREATMENT_NAME]:  treatment,
-                [FPTI_KEY.TRANSITION]:      'process_pxp_check',
-                [FPTI_KEY.STATE]:           'pxp_check'
-            }).flush();
-
-        return inlinexoExperiment.isEnabled() ? false : true;
+        return false
     }
 
     if (vault) {

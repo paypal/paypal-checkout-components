@@ -131,6 +131,10 @@ describe('Inline XO cases', () => {
                     throw new Error(`Expected actions.redirect() to be available.`);
                 }
 
+                if (!actions.order.get) {
+                    throw new Error(`Expected actions.order.get() to be available.`);
+                }
+
                 const getOrderMock = getRestfulGetOrderApiMock({
                     handler: expect('getOrder', ({ headers }) => {
                         if (headers.authorization !== `Bearer ${ facilitatorAccessToken }`) {

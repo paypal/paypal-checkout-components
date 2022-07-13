@@ -648,6 +648,20 @@ export function getRestfulPatchOrderApiMock(options : Object = {}) : MockEndpoin
     });
 }
 
+export function getRestfulAuthorizationsCaptureApiMock(options : Object = {}) : MockEndpoint {
+    return $mockEndpoint.register({
+        method: 'POST',
+        uri:    new RegExp('/v2/payments/authorizations/[^/]+/capture'),
+        data:   {
+            ack:  'success',
+            data: {
+
+            }
+        },
+        ...options
+    });
+}
+
 export function getSubscriptionIdToCartIdApiMock(options : Object = {}, subscriptionID : string = 'I-SUBSCRIPTIONID', cartId : string = 'CARTIDOFSUBSCRIPTIONS') : MockEndpoint {
 
     return $mockEndpoint.register({
@@ -896,6 +910,7 @@ getRestfulGetOrderApiMock().listen();
 getRestfulCaptureOrderApiMock().listen();
 getRestfulAuthorizeOrderApiMock().listen();
 getRestfulPatchOrderApiMock().listen();
+getRestfulAuthorizationsCaptureApiMock().listen();
 
 
 navigator.sendBeacon = () => true;
