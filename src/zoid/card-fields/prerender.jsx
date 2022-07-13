@@ -8,7 +8,7 @@ type PrerenderedCardProps = {|
     height : ?number
 |};
 
-const DEFAULT_HEIGHT = 30;
+const DEFAULT_HEIGHT = 78;
 
 export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildType {
     return (
