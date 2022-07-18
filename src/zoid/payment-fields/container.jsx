@@ -67,20 +67,20 @@ export function PaymentFieldsContainer({ uid, frame, prerenderFrame, event, nonc
                         min-width: 250px;
                         max-width: 100%;
                         font-size: 0;
-                        height: 150px;
-                        min-height: 150px;
+                        height: 91px;
+                        min-height: 91px;
                         transition: all 0.5s ease-in-out;
                     }
 
                     @media only screen and (min-width: 0px) {
                         #${ uid } {
-                            min-height: 150px;
+                            min-height: 91px;
                         }
                     }
 
                     @media only screen and (min-width: 600px) {
                         #${ uid } {
-                            min-height: 150px;
+                            min-height: 91px;
                         }
                     }
 
