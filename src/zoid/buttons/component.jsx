@@ -652,7 +652,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 required:   false,
                 type:       'string',
                 value:      ({ props }) => {
-                    const { commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, locale, onComplete, style : { custom = {}, layout }, vault } = props || {};
+                    const { commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, onComplete, style : { custom = {}, layout }, vault } = props || {};
 
                     if (experience === 'inline') {
                         return EXPERIENCE.INLINE;
@@ -670,7 +670,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         disableFunding,
                         fundingEligibility,
                         layout,
-                        locale,
                         onComplete,
                         vault
                     } });
@@ -684,7 +683,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                             [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(eligible) }`
                         }).flush();
 
-                        return eligible ? EXPERIENCE.INLINE : '';
+                    return eligible ? EXPERIENCE.INLINE : '';
                 }
             },
 
