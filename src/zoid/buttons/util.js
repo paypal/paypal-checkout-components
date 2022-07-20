@@ -1,6 +1,6 @@
 /* @flow */
 import { supportsPopups as userAgentSupportsPopups, isAndroid, isChrome, isIos, isIOS14, isSafari, isSFVC, type Experiment, isDevice, isTablet, getElement, isLocalStorageEnabled, isStandAlone, once } from '@krakenjs/belter/src';
-import { COUNTRY, CURRENCY, ENV, FUNDING, type LocaleType } from '@paypal/sdk-constants/src';
+import { CURRENCY, ENV, FUNDING } from '@paypal/sdk-constants/src';
 import { getEnableFunding, getLogger, createExperiment, getFundingEligibility, getPlatform, getComponents, getEnv, type FundingEligibilityType } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
