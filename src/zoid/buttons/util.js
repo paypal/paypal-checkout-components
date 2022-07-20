@@ -293,7 +293,6 @@ type InlineCheckoutEligibilityProps = {|
     disableFunding : $ReadOnlyArray<$Values<typeof FUNDING>>,
     fundingEligibility : FundingEligibilityType,
     layout : $Values<typeof BUTTON_LAYOUT>,
-    locale : LocaleType,
     merchantID? : $ReadOnlyArray<string>,
     onComplete : Function,
     custom? : ?{|
@@ -306,12 +305,11 @@ type InlineCheckoutEligibilityProps = {|
 |};
 
 export function isInlineXOEligible({ props } : {| props : InlineCheckoutEligibilityProps |}) : boolean {
-    const { commit, currency, custom, createBillingAgreement, disableFunding, fundingEligibility, layout, locale, onComplete, vault } = props;
+    const { commit, currency, custom, createBillingAgreement, disableFunding, fundingEligibility, layout, onComplete, vault } = props;
 
     const isEligible = (
         custom?.label && custom.label.length > 0,
         onComplete &&
-        locale.country === COUNTRY.US &&
         commit === true &&
         !createBillingAgreement &&
         currency === CURRENCY.USD &&
