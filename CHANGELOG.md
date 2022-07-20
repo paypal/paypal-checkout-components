@@ -1,3 +1,9 @@
+## <small>5.0.232 (2022-07-20)</small>
+
+* Remove locale eligibility for Accelerated XO (#1974) ([068e175](https://github.com/paypal/paypal-checkout-components/commit/068e175)), closes [#1974](https://github.com/paypal/paypal-checkout-components/issues/1974)
+
+
+
 ## <small>5.0.231 (2022-07-13)</small>
 
 * chore: upgrade to Node 16 (#1966) ([a829473](https://github.com/paypal/paypal-checkout-components/commit/a829473)), closes [#1966](https://github.com/paypal/paypal-checkout-components/issues/1966)
