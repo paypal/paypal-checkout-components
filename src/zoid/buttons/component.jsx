@@ -229,7 +229,36 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
 
             createOrder: {
                 type:     'function',
-                required: false
+                required: false,
+                default:  () => noop,
+                decorate: ({ props, value = noop }) => {
+                    return (...args) => {
+                        const createOrderStartTime = Date.now();
+                        const createOrderResponse = value(...args);
+                        const createOrderEndTime = Date.now();
+                        try {
+                            const cplLatencyMetrics = {
+                                [FPTI_KEY.STATE]:                 'CPL_LATENCY_METRICS',
+                                [FPTI_KEY.TRANSITION]:            'process_client_metrics',
+                                [FPTI_KEY.CONTEXT_ID]:            props.buttonSessionID,
+                                [FPTI_KEY.PAGE]:                  'main:xo:paypal-components:smart-payment-buttons:create-order',
+                                [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify({
+                                    start: createOrderStartTime,
+                                    tt: createOrderEndTime - createOrderStartTime
+                                })
+                            };
+                            getLogger().info('CPL_LATENCY_METRICS').track(cplLatencyMetrics);
+                        } catch (err) {
+                            getLogger().info('create_order_CPL_instrumentation_log_error').track({
+                                err:      err.message || 'CPL_LOG_PHASE_ERROR',
+                                details:  err.details,
+                                stack:    JSON.stringify(err.stack || err)
+                            });
+                        }
+
+                        return createOrderResponse;
+                    };
+                }
             },
 
             createBillingAgreement: {
