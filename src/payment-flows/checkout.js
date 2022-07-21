@@ -223,7 +223,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                 });
             },
 
-            onApprove: ({ approveOnClose = false, payerID, paymentID, billingToken, subscriptionID, authCode } = {}) => {
+            onApprove: ({ accelerated, approveOnClose = false, payerID, paymentID, billingToken, subscriptionID, authCode } = {}) => {
                 if (approveOnClose) {
                     doApproveOnClose = true;
                     return;
@@ -234,7 +234,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                 setBuyerAccessToken(buyerAccessToken);
 
                 // eslint-disable-next-line no-use-before-define
-                return onApprove({ payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart })
+                return onApprove({ accelerated, payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart })
                     // eslint-disable-next-line no-use-before-define
                     .finally(() => close().then(noop))
                     .catch(noop);

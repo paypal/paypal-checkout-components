@@ -24,7 +24,8 @@ export type XOnApproveOrderDataType = {|
     billingToken : ?string,
     authCode : ?string,
     facilitatorAccessToken : string,
-    paymentSource : $Values<typeof FUNDING> | null
+    paymentSource : $Values<typeof FUNDING> | null,
+    accelerated? : boolean
 |};
 
 export type XOnApproveBillingDataType = {|
@@ -313,7 +314,8 @@ export type OnApproveData = {|
     buyerAccessToken? : ?string,
     authCode? : ?string,
     forceRestAPI? : boolean,
-    paymentMethodToken? : string
+    paymentMethodToken? : string,
+    accelerated? : boolean
 |};
 
 export type OnApproveActions = {|
@@ -355,7 +357,7 @@ export function getOnApproveOrder({ intent, onApprove = getDefaultOnApproveOrder
 
     const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
 
-    return memoize(({ payerID, paymentID, billingToken, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
+    return memoize(({ accelerated = false, payerID, paymentID, billingToken, buyerAccessToken, authCode, forceRestAPI = upgradeLSAT } : OnApproveData, { restart } : OnApproveActions) => {
         return createOrder().then(orderID => {
             getLogger()
                 .info('button_approve')
@@ -376,7 +378,7 @@ export function getOnApproveOrder({ intent, onApprove = getDefaultOnApproveOrder
                 billingToken = billingToken || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.billingToken);
                 paymentID = paymentID || (supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId);
 
-                const data = { orderID, payerID, paymentID, billingToken, facilitatorAccessToken, authCode, paymentSource };
+                const data = { accelerated, orderID, payerID, paymentID, billingToken, facilitatorAccessToken, authCode, paymentSource };
                 const actions = buildXApproveOrderActions({ orderID, paymentID, payerID, intent, restart, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI, onError });
 
                 return onApprove(data, actions).catch(err => {

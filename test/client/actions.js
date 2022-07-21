@@ -63,6 +63,9 @@ describe('actions cases', () => {
             }));
 
             window.xprops.onApprove = mockAsyncProp(expect('onApprove', async (data) => {
+                if (!data.accelerated) {
+                    throw new Error('Expected data.accelerated to be true.');
+                }
                 if (data.orderID !== orderID) {
                     throw new Error(`Expected orderID to be ${ orderID }, got ${ data.orderID }`);
                 }
@@ -75,6 +78,7 @@ describe('actions cases', () => {
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
 
                 mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    data.accelerated = true;
                     return onApproveOriginal({ ...data, payerID }, actions);
                 }));
 
