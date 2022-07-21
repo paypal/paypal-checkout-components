@@ -12,8 +12,7 @@ import { create, CONTEXT, type ZoidComponent, EVENT } from '@krakenjs/zoid/src';
 import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { SpinnerPage, Overlay } from '@paypal/common-components/src';
-
-import { getSessionID } from '../../lib';
+import { getSessionID, prepareInstrumentationTrackPayload } from '../../lib';
 
 import type { CheckoutPropsType } from './props';
 import { containerContent } from './content';
@@ -142,7 +141,24 @@ export function getCheckoutComponent() : CheckoutComponent {
                     alias:      'payment',
                     // $FlowFixMe
                     queryValue: ({ value }) => ZalgoPromise.try(value),
-                    decorate:   ({ value }) => memoize(value)
+                    decorate: ({ props, value = noop }) => {
+                        return (...args) => {
+                            const createOrderStartTime = Date.now();
+                            const createOrderResponse = memoize(value(...args));
+                            const createOrderEndTime = Date.now();
+                            try {
+                                getLogger().info('CPL_LATENCY_METRICS').track(prepareInstrumentationTrackPayload('main:xo:paypal-checkout-components:create-order', createOrderStartTime, createOrderEndTime));
+                            } catch (err) {
+                                getLogger().info('create_order_CPL_instrumentation_log_error').track({
+                                    err:      err.message || 'CPL_LOG_PHASE_ERROR',
+                                    details:  err.details,
+                                    stack:    JSON.stringify(err.stack || err)
+                                });
+                            }
+    
+                            return createOrderResponse;
+                        };
+                    }
                 },
         
                 xcomponent: {

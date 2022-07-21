@@ -1,4 +1,5 @@
 /* @flow */
+import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
 type LogLatencyInstrumentationPhaseParams = {|
     buttonSessionID : string,
@@ -44,6 +45,18 @@ export const logLatencyInstrumentationPhase = ({ buttonSessionID, phase } : LogL
         window.performance.mark(`${ buttonSessionID }_${ phase }`);
     }
 };
+
+export const prepareInstrumentationTrackPayload = (page : string, startTime : number, endTime : number) : any => {
+    return {
+        [FPTI_KEY.STATE]:                 'CPL_LATENCY_METRICS',
+        [FPTI_KEY.TRANSITION]:            'process_client_metrics',
+        [FPTI_KEY.PAGE]:                  page,
+        [FPTI_KEY.CPL_COMP_METRICS]:      JSON.stringify({
+            start: startTime,
+            tt: endTime - startTime
+        })
+    };
+}
 
 export const prepareInstrumentationPayload = (buttonSessionID : string) : InstrumentationPayload => {
     const timeOrigin = getNavigationTimeOrigin();
