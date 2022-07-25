@@ -11,7 +11,7 @@ import { submitCardFields } from '../interface';
 import { getCardProps, type CardProps } from '../props';
 import type { SetupCardOptions } from '../types';
 
-import { CardField, CardNumberField, CardCVVField, CardExpiryField, CardNameField } from './fields';
+import { CardField, CardNumberField, CardCVVField, CardExpiryField, CardNameField, CardPostalCodeField } from './fields';
 
 type PageProps = {|
     cspNonce : string,
@@ -19,13 +19,13 @@ type PageProps = {|
 |};
 
 function Page({ cspNonce, props } : PageProps) : mixed {
-    const { facilitatorAccessToken, style, disableAutocomplete, placeholder, type, onChange, export: xport } = props;
+    const { facilitatorAccessToken, style, disableAutocomplete, placeholder, type, onChange, minLength, maxLength, export: xport } = props;
 
     const [ fieldValue, setFieldValue ] = useState();
     const [ fieldValid, setFieldValid ] = useState(false);
     const [ fieldErrors, setFieldErrors ] = useState([]);
     const [ mainRef, setRef ] = useState();
-    const [ fieldGQLErrors, setFieldGQLErrors ] = useState({ singleField: {}, numberField: [], expiryField: [], cvvField: [] });
+    const [ fieldGQLErrors, setFieldGQLErrors ] = useState({ singleField: {}, numberField: [], expiryField: [], cvvField: [], nameField: [], postalCodeField: [] });
 
     let autocomplete;
     if (disableAutocomplete) {
@@ -61,6 +61,9 @@ function Page({ cspNonce, props } : PageProps) : mixed {
             case CARD_FIELD_TYPE.NAME:
                 errorObject.nameField = [ ...errors ];
                 break;
+            case CARD_FIELD_TYPE.POSTAL:
+                errorObject.postalCodeField = [ ...errors ];
+                break;
             default:
                 break;
             }
@@ -70,7 +73,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
     };
 
     const resetGQLErrors = () => {
-        setFieldGQLErrors({ singleField: {}, numberField: [], expiryField: [], cvvField: [], nameField: [] });
+        setFieldGQLErrors({ singleField: {}, numberField: [], expiryField: [], cvvField: [], nameField: [], postalCodeField: [] });
     };
 
     useEffect(() => {
@@ -178,6 +181,21 @@ function Page({ cspNonce, props } : PageProps) : mixed {
                             onChange={ onFieldChange }
                             styleObject={ style }
                             placeholder={ placeholder }
+                            autoFocusRef={ (ref) => setRef(ref.current.base) }
+                    /> : null
+            }
+
+            {
+                (type === CARD_FIELD_TYPE.POSTAL)
+                    ? <CardPostalCodeField
+                            ref={ mainRef }
+                            gqlErrors={ fieldGQLErrors.postalCodeField }
+                            cspNonce={ cspNonce }
+                            onChange={ onFieldChange }
+                            styleObject={ style }
+                            placeholder={ placeholder }
+                            minLength={ minLength }
+                            maxLength={ maxLength || 10}
                             autoFocusRef={ (ref) => setRef(ref.current.base) }
                     /> : null
             }

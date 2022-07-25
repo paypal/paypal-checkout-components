@@ -964,7 +964,7 @@ describe('card fields cases', () => {
 
         });
 
-        it('should render multi card fields with createOrder and optional cardholder name field', async () => {
+        it('should render multi card fields with createOrder and optional cardholder name and postal code fields', async () => {
 
             return await wrapPromise(async ({ expect }) => {
 
@@ -984,13 +984,15 @@ describe('card fields cases', () => {
                 window.xprops.placeholder = {
                     number: 'Card number',
                     expiry: 'MM/YY',
-                    cvv:    'CVV'
+                    cvv:    'CVV',
+                    postal: 'Postal Code'
                 };
 
                 const cardNumber = '5555555555554444';
                 const cardExpiry = '01/2022';
                 const cardCvv = '123';
                 const cardName = 'John Doe';
+                const cardPostalCode = '12345';
 
                 window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
                     return ZalgoPromise.try(() => {
@@ -1085,6 +1087,28 @@ describe('card fields cases', () => {
                         return nameFieldToOriginal;
                         
                     }));
+
+                    mockFunction(cardFieldInstance, 'PostalCodeField', expect('PostalCodeField', ({ original: PostalCodeFieldToOriginal, args: postalCodeArgs }) => {
+
+                        const postalCodeFieldToOriginal = PostalCodeFieldToOriginal(...postalCodeArgs);
+
+                        mockFunction(postalCodeFieldToOriginal, 'render', expect('render', async ({ original: renderToOriginal, args }) => {
+                            return props.createOrder().then(id => {
+
+                                if (id !== orderID) {
+                                    throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                                }
+
+                                return renderToOriginal(...args);
+                            });
+                        }));
+
+                        renderCardFieldMock({ name: 'card-postal-field', isFieldValid: () => true, getFieldValue: () => cardPostalCode });
+                        setCardFieldsValues({ postalCode: cardPostalCode });
+                        return postalCodeFieldToOriginal;
+
+                    }));
+
                     return cardFieldInstance;
                 }));
                 
@@ -1093,6 +1117,7 @@ describe('card fields cases', () => {
                 const expiryContainer = createCardFieldsContainerHTML('expiry');
                 const cvvContainer = createCardFieldsContainerHTML('cvv');
                 const nameContainer = createCardFieldsContainerHTML('name');
+                const postalCodeContainer = createCardFieldsContainerHTML('postal');
 
                 const cardFields = window.paypal.CardFields(window.xprops);
 
@@ -1111,6 +1136,11 @@ describe('card fields cases', () => {
                 window.xprops.type = CARD_FIELD_TYPE.NAME;
                 await mockSetupCardFields();
                 cardFields.NameField(window.xprops).render(nameContainer);
+
+                window.xprops.type = CARD_FIELD_TYPE.POSTAL;
+                await mockSetupCardFields();
+                cardFields.PostalCodeField(window.xprops).render(postalCodeContainer);
+
             });
 
         });

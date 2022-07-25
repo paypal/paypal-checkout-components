@@ -56,7 +56,8 @@ export type CardPlaceholder = {|
     number? : string,
     expiry? : string,
     cvv? : string,
-    name? : string
+    name? : string,
+    postal?: string
 |};
 
 export type CardType = {|
@@ -98,6 +99,11 @@ export type CardCvvChangeEvent = {|
 export type CardNameChangeEvent = {|
     event : InputEvent,
     cardName : string
+|};
+
+export type CardPostalCodeChangeEvent = {|
+    event : InputEvent,
+    cardPostalCode : string
 |};
 
 export type FieldValidity = {|

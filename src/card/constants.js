@@ -11,7 +11,8 @@ export const CARD_FIELD_TYPE = {
     NUMBER: 'number',
     CVV:    'cvv',
     EXPIRY: 'expiry',
-    NAME:   'name'
+    NAME:   'name',
+    POSTAL: 'postal'
 };
 
 export const GQL_ERRORS = {
@@ -35,7 +36,8 @@ export const CARD_ERRORS = {
     INVALID_NUMBER:       ('INVALID_NUMBER' : 'INVALID_NUMBER'),
     INVALID_EXPIRY:       ('INVALID_EXPIRY' : 'INVALID_EXPIRY'),
     INVALID_CVV:          ('INVALID_CVV' : 'INVALID_CVV'),
-    INVALID_NAME:         ('INVALID_NAME' : 'INVALID_NAME')
+    INVALID_NAME:         ('INVALID_NAME' : 'INVALID_NAME'),
+    INVALID_POSTAL:       ('INVALID_POSTAL' : 'INVALID_POSTAL')
 };
 
 export const CARD_FIELD_TYPE_TO_FRAME_NAME : {| [$Values<typeof CARD_FIELD_TYPE>] : $Values<typeof FRAME_NAME> |} = {
@@ -43,7 +45,8 @@ export const CARD_FIELD_TYPE_TO_FRAME_NAME : {| [$Values<typeof CARD_FIELD_TYPE>
     [ CARD_FIELD_TYPE.NUMBER ]: FRAME_NAME.CARD_NUMBER_FIELD,
     [ CARD_FIELD_TYPE.CVV ]:    FRAME_NAME.CARD_CVV_FIELD,
     [ CARD_FIELD_TYPE.EXPIRY ]: FRAME_NAME.CARD_EXPIRY_FIELD,
-    [ CARD_FIELD_TYPE.NAME ]:   FRAME_NAME.CARD_NAME_FIELD
+    [ CARD_FIELD_TYPE.NAME ]:   FRAME_NAME.CARD_NAME_FIELD,
+    [ CARD_FIELD_TYPE.POSTAL ]: FRAME_NAME.CARD_POSTAL_FIELD
 };
 
 export const FIELD_STYLE : FieldStyle = {
@@ -161,16 +164,33 @@ export const DEFAULT_STYLE = {
         'padding':       '1.25rem 0.75rem',
         'width':         '100%'
     },
-    'input:focus': {
-        'outline': 'none'
-    },
-    'input::placeholder': {
+    '::placeholder': {
         'color':   '#687173',
         'opacity': '1'
     },
-    'input.invalid': {
-        'color': '#d9360b'
+
+};
+
+export const DEFAULT_STYLE_MULTI_CARD = {
+
+    ':focus': {
+        'border-color': '#000000',
+        'box-shadow':   '0 0 0 0.125rem #000000 inset, 0 0 0 0.375rem rgb(0 0 0 / 16%)',
+        'outline':      'none'
     },
+    ':focus.invalid': {
+        'border-color': '#d9360b',
+        'box-shadow':   '0 0 0 0.125rem #d9360b inset, 0 0 0 0.375rem rgb(217 54 11 / 16%)'
+    },
+    '.invalid': {
+        'border-color': '#d9360b',
+        'box-shadow':   '0 0 0 0.0625rem #d9360b inset',
+        'color':        '#d9360b'
+    }
+
+};
+
+export const DEFAULT_STYLE_SINGLE_CARD = {
 
     '.card-field': {
         'background':     '#ffffff',
@@ -180,38 +200,48 @@ export const DEFAULT_STYLE = {
         'display':        'flex',
         'flex-direction': 'row'
     },
-    '.card-field.focus': {
+    '.focus': {
         'border-color': '#000000',
         'box-shadow':   '0 0 0 0.125rem #000000 inset, 0 0 0 0.375rem rgb(0 0 0 / 16%)'
     },
-    '.card-field.focus.invalid': {
+    '.focus.invalid': {
         'border-color': '#d9360b',
         'box-shadow':   '0 0 0 0.125rem #d9360b inset, 0 0 0 0.375rem rgb(217 54 11 / 16%)'
     },
-    '.card-field.invalid': {
+    '.invalid': {
         'border-color': '#d9360b',
-        'box-shadow': '0 0 0 0.0625rem #d9360b inset'
+        'box-shadow':   '0 0 0 0.0625rem #d9360b inset',
+        'color':        '#d9360b'
     },
 
-    '.card-field > input': {
+    'input': {
         'background':    'transparent',
         'border':        'none',
         'border-radius': 'unset',
         'box-sizing':    'content-box',
         'margin':        '0'
     },
-    '.card-field > input.number': {
+    'input, input:focus': {
+        'border':     'none',
+        'box-shadow': 'none',
+        'outline':    'none'
+    },
+    'input.invalid': {
+        'border':     'none',
+        'box-shadow': 'none'
+    },
+    'input.number': {
         'flex':          '1',
         'min-width':     '4ch',
         'padding-right': '0.375rem'
     },
-    '.card-field > input.expiry': {
+    'input.expiry': {
         'padding-left':  '0.375rem',
         'padding-right': '0.375rem',
         'text-align':    'center',
         'width':         '7ch'
     },
-    '.card-field > input.cvv': {
+    'input.cvv': {
         'padding-left': '0.375rem',
         'text-align':   'center',
         'width':        '4ch'
@@ -240,7 +270,8 @@ export const DEFAULT_PLACEHOLDERS : CardPlaceholder = {
     number: 'Card number',
     expiry: 'MM / YY',
     cvv:    'CVV',
-    name:   'Cardholder name'
+    name:   'Cardholder name',
+    postal: 'Postal code'
 };
 
 export const VALID_EXTRA_FIELDS = [

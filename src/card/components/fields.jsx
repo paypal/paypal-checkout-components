@@ -21,13 +21,15 @@ import type {
     CardExpiryChangeEvent,
     CardCvvChangeEvent,
     CardNameChangeEvent,
+    CardPostalCodeChangeEvent,
     FieldValidity,
     CardNavigation,
     CardType
 } from '../types';
 import {
     CARD_ERRORS,
-    DEFAULT_STYLE,
+    DEFAULT_STYLE_MULTI_CARD,
+    DEFAULT_STYLE_SINGLE_CARD,
     DEFAULT_CARD_TYPE,
     DEFAULT_PLACEHOLDERS,
     CARD_FIELD_TYPE
@@ -37,7 +39,7 @@ import { CardNumber } from './CardNumber';
 import { CardExpiry } from './CardExpiry';
 import { CardCVV } from './CardCVV';
 import { CardName } from './CardName';
-
+import { CardPostalCode } from './CardPostalCode';
 
 type CardFieldProps = {|
     cspNonce : string,
@@ -87,7 +89,7 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
     }, []);
 
     useEffect(() => {
-        setCSSText(getCSSText(DEFAULT_STYLE, styleObject));
+        setCSSText(getCSSText(DEFAULT_STYLE_SINGLE_CARD, styleObject));
     }, [ styleObject ]);
 
     useEffect(() => {
@@ -235,7 +237,7 @@ export function CardNumberField({ cspNonce, onChange, styleObject = {}, placehol
     }, []);
 
     useEffect(() => {
-        setCSSText(getCSSText(DEFAULT_STYLE, styleObject));
+        setCSSText(getCSSText(DEFAULT_STYLE_MULTI_CARD, styleObject));
     }, [ styleObject ]);
 
     useEffect(() => {
@@ -293,7 +295,7 @@ export function CardExpiryField({ cspNonce, onChange, styleObject = {}, placehol
     }, []);
 
     useEffect(() => {
-        setCSSText(getCSSText(DEFAULT_STYLE, styleObject));
+        setCSSText(getCSSText(DEFAULT_STYLE_MULTI_CARD, styleObject));
     }, [ styleObject ]);
 
     useEffect(() => {
@@ -351,7 +353,7 @@ export function CardCVVField({ cspNonce, onChange, styleObject = {}, placeholder
     }, []);
 
     useEffect(() => {
-        setCSSText(getCSSText(DEFAULT_STYLE, styleObject));
+        setCSSText(getCSSText(DEFAULT_STYLE_MULTI_CARD, styleObject));
     }, [ styleObject ]);
 
     useEffect(() => {
@@ -409,7 +411,7 @@ export function CardNameField({ cspNonce, onChange, styleObject = {}, placeholde
     }, []);
 
     useEffect(() => {
-        setCSSText(getCSSText(DEFAULT_STYLE, styleObject));
+        setCSSText(getCSSText(DEFAULT_STYLE_MULTI_CARD, styleObject));
     }, [ styleObject ]);
 
     useEffect(() => {
@@ -442,4 +444,66 @@ export function CardNameField({ cspNonce, onChange, styleObject = {}, placeholde
             />
         </Fragment>
     );
+}
+
+type CardPostalFieldProps = {|
+    cspNonce : string,
+    onChange : ({| value : string, valid : boolean, errors : [$Values<typeof CARD_ERRORS>] | [] |}) => void,
+    styleObject : CardStyle,
+    placeholder : {| number? : string, expiry? : string, cvv? : string, name? : string |},
+    minLength : number,
+    maxLength: number,
+    autoFocusRef : (mixed) => void,
+    autocomplete? : string,
+    gqlErrors : []
+|};
+
+export function CardPostalCodeField({ cspNonce, onChange, styleObject = {}, placeholder = {}, minLength, maxLength, autoFocusRef, autocomplete, gqlErrors = [] } : CardPostalFieldProps) : mixed {
+    const [ cssText, setCSSText ] : [ string, (string) => string ] = useState('');
+    const [ postalCode, setPostalCode ] : [ string, (string) => string ] = useState('');
+    const [ postalCodeValidity, setPostalCodeValidity ] : [ FieldValidity, (FieldValidity) => FieldValidity ] = useState(initFieldValidity);
+    const postalRef = useRef();
+
+    const { isValid, isPotentiallyValid } = postalCodeValidity;
+
+    useEffect(() => {
+        autoFocusRef(postalRef);
+    }, []);
+
+    useEffect(() => {
+        setCSSText(getCSSText(DEFAULT_STYLE_MULTI_CARD, styleObject));
+    }, [ styleObject ]);
+
+    useEffect(() => {
+        const hasGQLErrors = gqlErrors.length > 0;
+        if (hasGQLErrors) {
+            setPostalCodeValidity({ isPotentiallyValid: false, isValid: false });
+        }
+    }, [ gqlErrors ]);
+
+    useEffect(() => {
+        const errors = setErrors({ isPostalCodeValid: postalCodeValidity.isValid });
+
+        onChange({ value: postalCode, valid: postalCodeValidity.isValid, errors });
+    }, [ postalCode, isValid, isPotentiallyValid  ]);
+
+    return (
+        <Fragment>
+            <style nonce={ cspNonce }>
+                { cssText }
+            </style>
+            <CardPostalCode
+                ref={ postalRef }
+                type='text'
+                autocomplete={ autocomplete }
+                placeholder={ placeholder.name ?? DEFAULT_PLACEHOLDERS.postal }
+                // eslint-disable-next-line react/forbid-component-props
+                className={ `expiry ${ postalCodeValidity.isPotentiallyValid || postalCodeValidity.isValid ? 'valid' : 'invalid' }` }
+                minLength={ minLength }
+                maxLength={ maxLength }
+                onChange={ ({ cardPostalCode } : CardPostalCodeChangeEvent) => setPostalCode(cardPostalCode) }
+                onValidityChange={ (validity : FieldValidity) => setPostalCodeValidity(validity) }
+            />
+        </Fragment>
+    )
 }
