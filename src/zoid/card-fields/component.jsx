@@ -21,7 +21,8 @@ const CARD_FIELD_TYPE = {
     NUMBER: 'number',
     CVV:    'cvv',
     EXPIRY: 'expiry',
-    NAME:   'name'
+    NAME:   'name',
+    POSTAL: 'postal'
 };
 
 type CardFieldsProps = {|
@@ -44,6 +45,8 @@ type CardFieldsProps = {|
     commit : boolean,
     vault : boolean,
     branded? : boolean,
+    minLength?: number,
+    maxLength?: number,
 
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
@@ -69,7 +72,8 @@ type CardFieldsChildren = {|
     NumberField : CardFieldComponent,
     CVVField : CardFieldComponent,
     ExpiryField : CardFieldComponent,
-    NameField : CardFieldComponent
+    NameField : CardFieldComponent,
+    PostalCodeField: CardFieldComponent
 |};
 
 const url = () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__ }`;
@@ -197,6 +201,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     }
                 },
 
+                minLength: {
+                    type: 'number',
+                    required: false,
+                    value: ({props}) => props.minLength
+                },
+
+                maxLength: {
+                    type: 'number',
+                    required: false,
+                    value: ({props}) => props.maxLength
+                },
+
                 fundingEligibility: {
                     type:  'object',
                     value: ({ props }) => props.parent.props.fundingEligibility
@@ -250,6 +266,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
     const CVVField = genericCardField(CARD_FIELD_TYPE.CVV);
     const ExpiryField = genericCardField(CARD_FIELD_TYPE.EXPIRY);
     const NameField = genericCardField(CARD_FIELD_TYPE.NAME);
+    const PostalCodeField = genericCardField(CARD_FIELD_TYPE.POSTAL);
 
     const CardFields = create({
         tag: 'paypal-card-fields',
@@ -278,7 +295,8 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 NumberField,
                 CVVField,
                 ExpiryField,
-                NameField
+                NameField,
+                PostalCodeField
             };
         },
 
@@ -363,6 +381,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'object',
                 required:   false,
                 queryParam: true
+            },
+
+            minLength: {
+                type: 'number',
+                required: false,
+                value: ({props}) => props.minLength
+            },
+
+            maxLength: {
+                type: 'number',
+                required: false,
+                value: ({props}) => props.maxLength
             },
 
             fundingEligibility: {
