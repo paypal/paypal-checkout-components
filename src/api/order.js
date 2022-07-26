@@ -301,6 +301,31 @@ export function patchOrder(orderID : string, data : PatchData, { facilitatorAcce
         return patchData;
     });
 }
+
+export function patchShipping({ clientID, orderID, data } : {|clientID : string, orderID : string, data : PatchData |}) : ZalgoPromise<OrderResponse> {
+    return callGraphQL({
+        name:  'UpdateShipping',
+        query: `
+            mutation UpdateShipping(
+                $clientID: String!
+                $patch: [JSON]!
+                $token: String!
+            ) {
+                updateShipping(
+                    clientID: $clientID,
+                    patch: $patch,
+                    token: $token,
+                )
+            }
+        `,
+        variables: {
+            clientID,
+            patch: data,
+            token: orderID
+        }
+    });
+}
+
 type ConfirmPaymentSource = {|
     [$Values<typeof FUNDING>] : {|
         country_code? : string | null,

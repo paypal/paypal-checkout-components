@@ -277,7 +277,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                         throw new Error('Must pass shipping_address in data to handle changes in shipping address.');
                     }
                     
-                    return onShippingAddressChange({ buyerAccessToken, ...data }, actions);
+                    return onShippingAddressChange({ ...data }, actions);
                 } : null,
 
             onShippingOptionsChange: onShippingOptionsChange
@@ -286,7 +286,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                         throw new Error('Must pass selected_shipping_option in data to handle changes in shipping options.');
                     }
                     
-                    return onShippingOptionsChange({ buyerAccessToken, ...data }, actions);
+                    return onShippingOptionsChange({ ...data }, actions);
                 } : null,
 
             onClose: () => {
