@@ -461,6 +461,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 }
             },
 
+            paymentRequest: {
+                type:       'object',
+                queryParam: false,
+                required: false
+            },
+
             flow: {
                 type:       'string',
                 queryParam: true,

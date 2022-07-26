@@ -192,11 +192,6 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                 listeners.paymentauthorized({ payment });
             };
 
-            // eslint-disable-next-line unicorn/prefer-add-event-listener
-            session.oncancel = () => {
-                listeners.cancel();
-            };
-
             return {
                 addEventListener: (name, handler) => {
                     listeners[name] = handler;
@@ -218,7 +213,9 @@ export function applePaySession() : ?ApplePaySessionConfigRequest {
                     const newUpdate = convertErrorsFromUpdate(update);
                     session.completePayment(newUpdate);
                 },
-                begin: () => session.begin()
+                begin: () => session.begin(),
+                abort: () => session.abort(),
+                oncancel: () => session.oncancel()
             };
         };
     } catch (e) {
