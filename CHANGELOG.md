@@ -1,3 +1,9 @@
+## <small>5.0.233 (2022-07-26)</small>
+
+* feat: add paymentrequest prop (#1963) ([e1eb91e](https://github.com/paypal/paypal-checkout-components/commit/e1eb91e)), closes [#1963](https://github.com/paypal/paypal-checkout-components/issues/1963)
+
+
+
 ## <small>5.0.232 (2022-07-20)</small>
 
 * Remove locale eligibility for Accelerated XO (#1974) ([068e175](https://github.com/paypal/paypal-checkout-components/commit/068e175)), closes [#1974](https://github.com/paypal/paypal-checkout-components/issues/1974)
