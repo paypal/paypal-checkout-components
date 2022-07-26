@@ -62,23 +62,23 @@ window.spb = function(modules) {
     __webpack_require__.d(__webpack_exports__, "setupMenu", (function() {
         return setupMenu;
     }));
-    var n, l, preact_module_u, preact_module_t, preact_module_o, preact_module_r, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
-    function preact_module_a(n, l) {
+    var n, l, preact_module_u, preact_module_t, preact_module_o, f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+    function s(n, l) {
         for (var u in l) n[u] = l[u];
         return n;
     }
-    function h(n) {
+    function preact_module_a(n) {
         var l = n.parentNode;
         l && l.removeChild(n);
     }
-    function v(l, u, i) {
+    function h(l, u, i) {
         var t, o, r, f = {};
         for (r in u) "key" == r ? t = u[r] : "ref" == r ? o = u[r] : f[r] = u[r];
         if (arguments.length > 2 && (f.children = arguments.length > 3 ? n.call(arguments, 2) : i), 
         "function" == typeof l && null != l.defaultProps) for (r in l.defaultProps) void 0 === f[r] && (f[r] = l.defaultProps[r]);
-        return y(l, f, t, o, null);
+        return v(l, f, t, o, null);
     }
-    function y(n, i, t, o, r) {
+    function v(n, i, t, o, r) {
         var f = {
             type: n,
             props: i,
@@ -96,66 +96,66 @@ window.spb = function(modules) {
         };
         return null == r && null != l.vnode && l.vnode(f), f;
     }
-    function d(n) {
+    function p(n) {
         return n.children;
     }
-    function _(n, l) {
+    function d(n, l) {
         this.props = n, this.context = l;
     }
-    function k(n, l) {
-        if (null == l) return n.__ ? k(n.__, n.__.__k.indexOf(n) + 1) : null;
+    function _(n, l) {
+        if (null == l) return n.__ ? _(n.__, n.__.__k.indexOf(n) + 1) : null;
         for (var u; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) return u.__e;
-        return "function" == typeof n.type ? k(n) : null;
+        return "function" == typeof n.type ? _(n) : null;
     }
-    function b(n) {
+    function k(n) {
         var l, u;
         if (null != (n = n.__) && null != n.__c) {
             for (n.__e = n.__c.base = null, l = 0; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) {
                 n.__e = n.__c.base = u.__e;
                 break;
             }
-            return b(n);
+            return k(n);
         }
     }
-    function m(n) {
-        (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_r !== l.debounceRendering) && ((preact_module_r = l.debounceRendering) || preact_module_o)(g);
+    function b(n) {
+        (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_o !== l.debounceRendering) && ((preact_module_o = l.debounceRendering) || setTimeout)(g);
     }
     function g() {
         for (var n; g.__r = preact_module_t.length; ) n = preact_module_t.sort((function(n, l) {
             return n.__v.__b - l.__v.__b;
         })), preact_module_t = [], n.some((function(n) {
             var l, u, i, t, o, r;
-            n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = preact_module_a({}, t)).__v = t.__v + 1, 
-            j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? k(t) : o, t.__h), 
-            z(u, t), t.__e != o && b(t)));
+            n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = s({}, t)).__v = t.__v + 1, 
+            j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? _(t) : o, t.__h), 
+            z(u, t), t.__e != o && k(t)));
         }));
     }
-    function w(n, l, u, i, t, o, r, f, s, a) {
-        var h, v, p, _, b, m, g, w = i && i.__k || c, A = w.length;
-        for (u.__k = [], h = 0; h < l.length; h++) if (null != (_ = u.__k[h] = null == (_ = l[h]) || "boolean" == typeof _ ? null : "string" == typeof _ || "number" == typeof _ || "bigint" == typeof _ ? y(null, _, null, null, _) : Array.isArray(_) ? y(d, {
-            children: _
-        }, null, null, null) : _.__b > 0 ? y(_.type, _.props, _.key, null, _.__v) : _)) {
-            if (_.__ = u, _.__b = u.__b + 1, null === (p = w[h]) || p && _.key == p.key && _.type === p.type) w[h] = void 0; else for (v = 0; v < A; v++) {
-                if ((p = w[v]) && _.key == p.key && _.type === p.type) {
-                    w[v] = void 0;
+    function w(n, l, u, i, t, o, r, c, s, a) {
+        var h, y, d, k, b, g, w, x = i && i.__k || e, C = x.length;
+        for (u.__k = [], h = 0; h < l.length; h++) if (null != (k = u.__k[h] = null == (k = l[h]) || "boolean" == typeof k ? null : "string" == typeof k || "number" == typeof k || "bigint" == typeof k ? v(null, k, null, null, k) : Array.isArray(k) ? v(p, {
+            children: k
+        }, null, null, null) : k.__b > 0 ? v(k.type, k.props, k.key, null, k.__v) : k)) {
+            if (k.__ = u, k.__b = u.__b + 1, null === (d = x[h]) || d && k.key == d.key && k.type === d.type) x[h] = void 0; else for (y = 0; y < C; y++) {
+                if ((d = x[y]) && k.key == d.key && k.type === d.type) {
+                    x[y] = void 0;
                     break;
                 }
-                p = null;
+                d = null;
             }
-            j(n, _, p = p || e, t, o, r, f, s, a), b = _.__e, (v = _.ref) && p.ref != v && (g || (g = []), 
-            p.ref && g.push(p.ref, null, _), g.push(v, _.__c || b, _)), null != b ? (null == m && (m = b), 
-            "function" == typeof _.type && _.__k === p.__k ? _.__d = s = x(_, s, n) : s = P(n, _, p, w, b, s), 
-            "function" == typeof u.type && (u.__d = s)) : s && p.__e == s && s.parentNode != n && (s = k(p));
+            j(n, k, d = d || f, t, o, r, c, s, a), b = k.__e, (y = k.ref) && d.ref != y && (w || (w = []), 
+            d.ref && w.push(d.ref, null, k), w.push(y, k.__c || b, k)), null != b ? (null == g && (g = b), 
+            "function" == typeof k.type && k.__k === d.__k ? k.__d = s = m(k, s, n) : s = A(n, k, d, x, b, s), 
+            "function" == typeof u.type && (u.__d = s)) : s && d.__e == s && s.parentNode != n && (s = _(d));
         }
-        for (u.__e = m, h = A; h--; ) null != w[h] && ("function" == typeof u.type && null != w[h].__e && w[h].__e == u.__d && (u.__d = k(i, h + 1)), 
-        N(w[h], w[h]));
-        if (g) for (h = 0; h < g.length; h++) M(g[h], g[++h], g[++h]);
+        for (u.__e = g, h = C; h--; ) null != x[h] && ("function" == typeof u.type && null != x[h].__e && x[h].__e == u.__d && (u.__d = _(i, h + 1)), 
+        N(x[h], x[h]));
+        if (w) for (h = 0; h < w.length; h++) M(w[h], w[++h], w[++h]);
     }
-    function x(n, l, u) {
-        for (var i, t = n.__k, o = 0; t && o < t.length; o++) (i = t[o]) && (i.__ = n, l = "function" == typeof i.type ? x(i, l, u) : P(u, i, i, t, i.__e, l));
+    function m(n, l, u) {
+        for (var i, t = n.__k, o = 0; t && o < t.length; o++) (i = t[o]) && (i.__ = n, l = "function" == typeof i.type ? m(i, l, u) : A(u, i, i, t, i.__e, l));
         return l;
     }
-    function P(n, l, u, i, t, o) {
+    function A(n, l, u, i, t, o) {
         var r, f, e;
         if (void 0 !== l.__d) r = l.__d, l.__d = void 0; else if (null == u || t != o || null == t.parentNode) n: if (null == o || o.parentNode !== n) n.appendChild(t), 
         r = null; else {
@@ -165,7 +165,7 @@ window.spb = function(modules) {
         return void 0 !== r ? r : t.nextSibling;
     }
     function $(n, l, u) {
-        "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || s.test(l) ? u : u + "px";
+        "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || c.test(l) ? u : u + "px";
     }
     function H(n, l, u, i, t) {
         var o;
@@ -189,42 +189,41 @@ window.spb = function(modules) {
         this.l[n.type + !0](l.event ? l.event(n) : n);
     }
     function j(n, u, i, t, o, r, f, e, c) {
-        var s, h, v, y, p, k, b, m, g, x, A, P, C, $ = u.type;
+        var a, h, v, y, _, k, b, g, m, x, A, C, $, H = u.type;
         if (void 0 !== u.constructor) return null;
-        null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (s = l.__b) && s(u);
+        null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (a = l.__b) && a(u);
         try {
-            n: if ("function" == typeof $) {
-                if (m = u.props, g = (s = $.contextType) && t[s.__c], x = s ? g ? g.props.value : s.__ : t, 
-                i.__c ? b = (h = u.__c = i.__c).__ = h.__E : ("prototype" in $ && $.prototype.render ? u.__c = h = new $(m, x) : (u.__c = h = new _(m, x), 
-                h.constructor = $, h.render = O), g && g.sub(h), h.props = m, h.state || (h.state = {}), 
+            n: if ("function" == typeof H) {
+                if (g = u.props, m = (a = H.contextType) && t[a.__c], x = a ? m ? m.props.value : a.__ : t, 
+                i.__c ? b = (h = u.__c = i.__c).__ = h.__E : ("prototype" in H && H.prototype.render ? u.__c = h = new H(g, x) : (u.__c = h = new d(g, x), 
+                h.constructor = H, h.render = O), m && m.sub(h), h.props = g, h.state || (h.state = {}), 
                 h.context = x, h.__n = t, v = h.__d = !0, h.__h = []), null == h.__s && (h.__s = h.state), 
-                null != $.getDerivedStateFromProps && (h.__s == h.state && (h.__s = preact_module_a({}, h.__s)), 
-                preact_module_a(h.__s, $.getDerivedStateFromProps(m, h.__s))), y = h.props, p = h.state, 
-                v) null == $.getDerivedStateFromProps && null != h.componentWillMount && h.componentWillMount(), 
+                null != H.getDerivedStateFromProps && (h.__s == h.state && (h.__s = s({}, h.__s)), 
+                s(h.__s, H.getDerivedStateFromProps(g, h.__s))), y = h.props, _ = h.state, v) null == H.getDerivedStateFromProps && null != h.componentWillMount && h.componentWillMount(), 
                 null != h.componentDidMount && h.__h.push(h.componentDidMount); else {
-                    if (null == $.getDerivedStateFromProps && m !== y && null != h.componentWillReceiveProps && h.componentWillReceiveProps(m, x), 
-                    !h.__e && null != h.shouldComponentUpdate && !1 === h.shouldComponentUpdate(m, h.__s, x) || u.__v === i.__v) {
-                        h.props = m, h.state = h.__s, u.__v !== i.__v && (h.__d = !1), h.__v = u, u.__e = i.__e, 
+                    if (null == H.getDerivedStateFromProps && g !== y && null != h.componentWillReceiveProps && h.componentWillReceiveProps(g, x), 
+                    !h.__e && null != h.shouldComponentUpdate && !1 === h.shouldComponentUpdate(g, h.__s, x) || u.__v === i.__v) {
+                        h.props = g, h.state = h.__s, u.__v !== i.__v && (h.__d = !1), h.__v = u, u.__e = i.__e, 
                         u.__k = i.__k, u.__k.forEach((function(n) {
                             n && (n.__ = u);
                         })), h.__h.length && f.push(h);
                         break n;
                     }
-                    null != h.componentWillUpdate && h.componentWillUpdate(m, h.__s, x), null != h.componentDidUpdate && h.__h.push((function() {
-                        h.componentDidUpdate(y, p, k);
+                    null != h.componentWillUpdate && h.componentWillUpdate(g, h.__s, x), null != h.componentDidUpdate && h.__h.push((function() {
+                        h.componentDidUpdate(y, _, k);
                     }));
                 }
-                if (h.context = x, h.props = m, h.__v = u, h.__P = n, A = l.__r, P = 0, "prototype" in $ && $.prototype.render) h.state = h.__s, 
-                h.__d = !1, A && A(u), s = h.render(h.props, h.state, h.context); else do {
-                    h.__d = !1, A && A(u), s = h.render(h.props, h.state, h.context), h.state = h.__s;
-                } while (h.__d && ++P < 25);
-                h.state = h.__s, null != h.getChildContext && (t = preact_module_a(preact_module_a({}, t), h.getChildContext())), 
-                v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, p)), 
-                C = null != s && s.type === d && null == s.key ? s.props.children : s, w(n, Array.isArray(C) ? C : [ C ], u, i, t, o, r, f, e, c), 
+                if (h.context = x, h.props = g, h.__v = u, h.__P = n, A = l.__r, C = 0, "prototype" in H && H.prototype.render) h.state = h.__s, 
+                h.__d = !1, A && A(u), a = h.render(h.props, h.state, h.context); else do {
+                    h.__d = !1, A && A(u), a = h.render(h.props, h.state, h.context), h.state = h.__s;
+                } while (h.__d && ++C < 25);
+                h.state = h.__s, null != h.getChildContext && (t = s(s({}, t), h.getChildContext())), 
+                v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, _)), 
+                $ = null != a && a.type === p && null == a.key ? a.props.children : a, w(n, Array.isArray($) ? $ : [ $ ], u, i, t, o, r, f, e, c), 
                 h.base = u.__e, u.__h = null, h.__h.length && f.push(h), b && (h.__E = h.__ = null), 
                 h.__e = !1;
             } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = L(i.__e, u, i, t, o, r, f, c);
-            (s = l.diffed) && s(u);
+            (a = l.diffed) && a(u);
         } catch (n) {
             u.__v = null, (c || null != r) && (u.__e = e, u.__h = !!c, r[r.indexOf(e)] = null), 
             l.__e(n, u, i);
@@ -241,10 +240,10 @@ window.spb = function(modules) {
             }
         }));
     }
-    function L(l, u, i, t, o, r, f, c) {
-        var s, a, v, y = i.props, p = u.props, d = u.type, _ = 0;
-        if ("svg" === d && (o = !0), null != r) for (;_ < r.length; _++) if ((s = r[_]) && "setAttribute" in s == !!d && (d ? s.localName === d : 3 === s.nodeType)) {
-            l = s, r[_] = null;
+    function L(l, u, i, t, o, r, e, c) {
+        var s, h, v, y = i.props, p = u.props, d = u.type, k = 0;
+        if ("svg" === d && (o = !0), null != r) for (;k < r.length; k++) if ((s = r[k]) && "setAttribute" in s == !!d && (d ? s.localName === d : 3 === s.nodeType)) {
+            l = s, r[k] = null;
             break;
         }
         if (null == l) {
@@ -253,19 +252,19 @@ window.spb = function(modules) {
             r = null, c = !1;
         }
         if (null === d) y === p || c && l.data === p || (l.data = p); else {
-            if (r = r && n.call(l.childNodes), a = (y = i.props || e).dangerouslySetInnerHTML, 
+            if (r = r && n.call(l.childNodes), h = (y = i.props || f).dangerouslySetInnerHTML, 
             v = p.dangerouslySetInnerHTML, !c) {
-                if (null != r) for (y = {}, _ = 0; _ < l.attributes.length; _++) y[l.attributes[_].name] = l.attributes[_].value;
-                (v || a) && (v && (a && v.__html == a.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
+                if (null != r) for (y = {}, k = 0; k < l.attributes.length; k++) y[l.attributes[k].name] = l.attributes[k].value;
+                (v || h) && (v && (h && v.__html == h.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
             }
             if (function(n, l, u, i, t) {
                 var o;
                 for (o in u) "children" === o || "key" === o || o in l || H(n, o, null, u[o], i);
                 for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || H(n, o, l[o], u[o], i);
-            }(l, p, y, o, c), v) u.__k = []; else if (_ = u.props.children, w(l, Array.isArray(_) ? _ : [ _ ], u, i, t, o && "foreignObject" !== d, r, f, r ? r[0] : i.__k && k(i, 0), c), 
-            null != r) for (_ = r.length; _--; ) null != r[_] && h(r[_]);
-            c || ("value" in p && void 0 !== (_ = p.value) && (_ !== l.value || "progress" === d && !_ || "option" === d && _ !== y.value) && H(l, "value", _, y.value, !1), 
-            "checked" in p && void 0 !== (_ = p.checked) && _ !== l.checked && H(l, "checked", _, y.checked, !1));
+            }(l, p, y, o, c), v) u.__k = []; else if (k = u.props.children, w(l, Array.isArray(k) ? k : [ k ], u, i, t, o && "foreignObject" !== d, r, e, r ? r[0] : i.__k && _(i, 0), c), 
+            null != r) for (k = r.length; k--; ) null != r[k] && preact_module_a(r[k]);
+            c || ("value" in p && void 0 !== (k = p.value) && (k !== l.value || "progress" === d && !k || "option" === d && k !== y.value) && H(l, "value", k, y.value, !1), 
+            "checked" in p && void 0 !== (k = p.checked) && k !== l.checked && H(l, "checked", k, y.checked, !1));
         }
         return l;
     }
@@ -288,12 +287,12 @@ window.spb = function(modules) {
             t.base = t.__P = null;
         }
         if (t = n.__k) for (o = 0; o < t.length; o++) t[o] && N(t[o], u, "function" != typeof n.type);
-        i || null == n.__e || h(n.__e), n.__e = n.__d = void 0;
+        i || null == n.__e || preact_module_a(n.__e), n.__e = n.__d = void 0;
     }
     function O(n, l, u) {
         return this.constructor(n, u);
     }
-    n = c.slice, l = {
+    n = e.slice, l = {
         __e: function(n, l, u, i) {
             for (var t, o, r; l = l.__; ) if ((t = l.__c) && !t.__) try {
                 if ((o = t.constructor) && null != o.getDerivedStateFromError && (t.setState(o.getDerivedStateFromError(n)), 
@@ -304,15 +303,14 @@ window.spb = function(modules) {
             }
             throw n;
         }
-    }, preact_module_u = 0, _.prototype.setState = function(n, l) {
+    }, preact_module_u = 0, d.prototype.setState = function(n, l) {
         var u;
-        u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = preact_module_a({}, this.state), 
-        "function" == typeof n && (n = n(preact_module_a({}, u), this.props)), n && preact_module_a(u, n), 
-        null != n && this.__v && (l && this.__h.push(l), m(this));
-    }, _.prototype.forceUpdate = function(n) {
-        this.__v && (this.__e = !0, n && this.__h.push(n), m(this));
-    }, _.prototype.render = d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-    g.__r = 0;
+        u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = s({}, this.state), 
+        "function" == typeof n && (n = n(s({}, u), this.props)), n && s(u, n), null != n && this.__v && (l && this.__h.push(l), 
+        b(this));
+    }, d.prototype.forceUpdate = function(n) {
+        this.__v && (this.__e = !0, n && this.__h.push(n), b(this));
+    }, d.prototype.render = p, preact_module_t = [], g.__r = 0;
     var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
     function hooks_module_p(t, r) {
         l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
@@ -1885,15 +1883,15 @@ window.spb = function(modules) {
             onFocus: _ref.onFocus,
             onFocusFail: _ref.onFocusFail
         });
-        return v(d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, '\n                    .menu {\n                        width: 100%;\n                        z-index: 5000;\n                        background: white;\n                        border-radius: 0 0 3px 3px;\n                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n                        letter-spacing: 0.5px;\n                        box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);\n                        outline-style: none;\n                        user-select: none;\n                        text-align: center;\n                        margin-top: ' + verticalOffset + "px;\n                        overflow: hidden;\n                    }\n\n                    .menu-item {\n                        border-top: 2px solid rgba(230, 230, 230, 0.5);;\n                        color: #0070ba;\n                        cursor: pointer;\n                    }\n\n                    .menu-item:first-child {\n                        border-top: none;\n                    }\n\n                    .menu-item:hover {\n                        background: #fcfcfc;\n                        text-decoration: underline;\n                    }\n\n                    @media screen and (min-width: 0px) {\n                        .menu-item {\n                            font-size: 11px;\n                            line-height: 14px;\n                            padding: 8px;\n                        }\n                    }\n\n                    @media screen and (min-width: 300px) {\n                        .menu-item {\n                            font-size: 14px;\n                            line-height: 18px;\n                            padding: 14px;\n                        }\n                    }\n\n                    @media screen and (min-width: 500px) {\n                        .menu-item {\n                            font-size: 18px;\n                            line-height: 21px;\n                            padding: 17px;\n                        }\n                    }\n                "), v("div", {
+        }, '\n                    .menu {\n                        width: 100%;\n                        z-index: 5000;\n                        background: white;\n                        border-radius: 0 0 3px 3px;\n                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n                        letter-spacing: 0.5px;\n                        box-shadow: 0px 0px 3px 1px rgba(222,222,222,1);\n                        outline-style: none;\n                        user-select: none;\n                        text-align: center;\n                        margin-top: ' + verticalOffset + "px;\n                        overflow: hidden;\n                    }\n\n                    .menu-item {\n                        border-top: 2px solid rgba(230, 230, 230, 0.5);;\n                        color: #0070ba;\n                        cursor: pointer;\n                    }\n\n                    .menu-item:first-child {\n                        border-top: none;\n                    }\n\n                    .menu-item:hover {\n                        background: #fcfcfc;\n                        text-decoration: underline;\n                    }\n\n                    @media screen and (min-width: 0px) {\n                        .menu-item {\n                            font-size: 11px;\n                            line-height: 14px;\n                            padding: 8px;\n                        }\n                    }\n\n                    @media screen and (min-width: 300px) {\n                        .menu-item {\n                            font-size: 14px;\n                            line-height: 18px;\n                            padding: 14px;\n                        }\n                    }\n\n                    @media screen and (min-width: 500px) {\n                        .menu-item {\n                            font-size: 18px;\n                            line-height: 21px;\n                            padding: 17px;\n                        }\n                    }\n                "), h("div", {
             class: "menu",
             tabIndex: "0",
             onBlur: onBlur,
             ref: autoFocus
         }, choices.map((function(choice) {
-            return v("div", {
+            return h("div", {
                 class: "menu-item",
                 onClick: function() {
                     return function(choice) {
@@ -1991,9 +1989,9 @@ window.spb = function(modules) {
             setOpaque(hasChoices);
             setVisible(hasChoices);
         }), [ choices ]);
-        return v(d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, "\n                    * {\n                        box-sizing: border-box;\n                    }\n\n                    html, body {\n                        margin: 0;\n                        padding: 0;\n                        opacity: " + (opaque ? "1" : "0") + ";\n                        transition: opacity " + .15.toFixed(2) + 's ease-in-out;\n                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n                    }\n\n                    body {\n                        padding: 5px 20px;\n                        display: inline-block;\n                        width: 100%;\n                    }\n                '), choices && visible ? v(Menu, {
+        }, "\n                    * {\n                        box-sizing: border-box;\n                    }\n\n                    html, body {\n                        margin: 0;\n                        padding: 0;\n                        opacity: " + (opaque ? "1" : "0") + ";\n                        transition: opacity " + .15.toFixed(2) + 's ease-in-out;\n                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n                    }\n\n                    body {\n                        padding: 5px 20px;\n                        display: inline-block;\n                        width: 100%;\n                    }\n                '), choices && visible ? h(Menu, {
             choices: choices,
             onChoose: function(_ref2) {
                 var id = _ref2.id, win = _ref2.win;
@@ -2018,15 +2016,17 @@ window.spb = function(modules) {
     }
     function setupMenu(_ref3) {
         var _ref3$pageVisible = _ref3.pageVisible;
-        u = v(Page, {
+        !function(u, i, t) {
+            var r, e;
+            l.__ && l.__(u, i), r = !1 ? null : i.__k, e = [], j(i, u = i.__k = h(p, null, [ u ]), r || f, f, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, e, r ? r.__e : i.firstChild, !1), 
+            z(e, u);
+        }(h(Page, {
             cspNonce: _ref3.cspNonce,
             pageVisible: void 0 !== _ref3$pageVisible && _ref3$pageVisible
-        }), i = function() {
+        }), function() {
             var body = document.body;
             if (!body) throw new Error("Document body not found");
             return body;
-        }(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), r || e, e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
-        z(f, u);
-        var u, i, r, f;
+        }());
     }
 } ]);
