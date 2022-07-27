@@ -306,6 +306,19 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             }
         },
 
+        eligible: () => {
+            const fundingEligibility = getRefinedFundingEligibility();
+            if (fundingEligibility?.card?.eligible) {
+                return {
+                    eligible: true
+                };
+            }
+            return {
+                eligible: false,
+                reason: 'card payments are not eligible'
+            };
+        },
+
         props: {
             type: {
                 type:       'string',
