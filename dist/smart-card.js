@@ -4937,23 +4937,23 @@ window.smartCard = function(modules) {
             return target;
         }).apply(this, arguments);
     }
-    var n, l, preact_module_u, preact_module_t, preact_module_o, preact_module_r, preact_module_e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
-    function preact_module_a(n, l) {
+    var n, l, preact_module_u, preact_module_t, preact_module_o, f = {}, preact_module_e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+    function s(n, l) {
         for (var u in l) n[u] = l[u];
         return n;
     }
-    function h(n) {
+    function preact_module_a(n) {
         var l = n.parentNode;
         l && l.removeChild(n);
     }
-    function v(l, u, i) {
+    function h(l, u, i) {
         var t, o, r, f = {};
         for (r in u) "key" == r ? t = u[r] : "ref" == r ? o = u[r] : f[r] = u[r];
         if (arguments.length > 2 && (f.children = arguments.length > 3 ? n.call(arguments, 2) : i), 
         "function" == typeof l && null != l.defaultProps) for (r in l.defaultProps) void 0 === f[r] && (f[r] = l.defaultProps[r]);
-        return y(l, f, t, o, null);
+        return v(l, f, t, o, null);
     }
-    function y(n, i, t, o, r) {
+    function v(n, i, t, o, r) {
         var f = {
             type: n,
             props: i,
@@ -4971,66 +4971,66 @@ window.smartCard = function(modules) {
         };
         return null == r && null != l.vnode && l.vnode(f), f;
     }
-    function preact_module_d(n) {
+    function p(n) {
         return n.children;
     }
-    function _(n, l) {
+    function preact_module_d(n, l) {
         this.props = n, this.context = l;
     }
-    function k(n, l) {
-        if (null == l) return n.__ ? k(n.__, n.__.__k.indexOf(n) + 1) : null;
+    function _(n, l) {
+        if (null == l) return n.__ ? _(n.__, n.__.__k.indexOf(n) + 1) : null;
         for (var u; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) return u.__e;
-        return "function" == typeof n.type ? k(n) : null;
+        return "function" == typeof n.type ? _(n) : null;
     }
-    function b(n) {
+    function k(n) {
         var l, u;
         if (null != (n = n.__) && null != n.__c) {
             for (n.__e = n.__c.base = null, l = 0; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) {
                 n.__e = n.__c.base = u.__e;
                 break;
             }
-            return b(n);
+            return k(n);
         }
     }
-    function m(n) {
-        (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_r !== l.debounceRendering) && ((preact_module_r = l.debounceRendering) || preact_module_o)(g);
+    function b(n) {
+        (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_o !== l.debounceRendering) && ((preact_module_o = l.debounceRendering) || setTimeout)(g);
     }
     function g() {
         for (var n; g.__r = preact_module_t.length; ) n = preact_module_t.sort((function(n, l) {
             return n.__v.__b - l.__v.__b;
         })), preact_module_t = [], n.some((function(n) {
             var l, u, i, t, o, r;
-            n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = preact_module_a({}, t)).__v = t.__v + 1, 
-            j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? k(t) : o, t.__h), 
-            z(u, t), t.__e != o && b(t)));
+            n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = s({}, t)).__v = t.__v + 1, 
+            j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? _(t) : o, t.__h), 
+            z(u, t), t.__e != o && k(t)));
         }));
     }
-    function w(n, l, u, i, t, o, r, f, s, a) {
-        var h, v, p, _, b, m, g, w = i && i.__k || c, A = w.length;
-        for (u.__k = [], h = 0; h < l.length; h++) if (null != (_ = u.__k[h] = null == (_ = l[h]) || "boolean" == typeof _ ? null : "string" == typeof _ || "number" == typeof _ || "bigint" == typeof _ ? y(null, _, null, null, _) : Array.isArray(_) ? y(preact_module_d, {
-            children: _
-        }, null, null, null) : _.__b > 0 ? y(_.type, _.props, _.key, null, _.__v) : _)) {
-            if (_.__ = u, _.__b = u.__b + 1, null === (p = w[h]) || p && _.key == p.key && _.type === p.type) w[h] = void 0; else for (v = 0; v < A; v++) {
-                if ((p = w[v]) && _.key == p.key && _.type === p.type) {
-                    w[v] = void 0;
+    function w(n, l, u, i, t, o, r, c, s, a) {
+        var h, y, d, k, b, g, w, x = i && i.__k || preact_module_e, C = x.length;
+        for (u.__k = [], h = 0; h < l.length; h++) if (null != (k = u.__k[h] = null == (k = l[h]) || "boolean" == typeof k ? null : "string" == typeof k || "number" == typeof k || "bigint" == typeof k ? v(null, k, null, null, k) : Array.isArray(k) ? v(p, {
+            children: k
+        }, null, null, null) : k.__b > 0 ? v(k.type, k.props, k.key, null, k.__v) : k)) {
+            if (k.__ = u, k.__b = u.__b + 1, null === (d = x[h]) || d && k.key == d.key && k.type === d.type) x[h] = void 0; else for (y = 0; y < C; y++) {
+                if ((d = x[y]) && k.key == d.key && k.type === d.type) {
+                    x[y] = void 0;
                     break;
                 }
-                p = null;
+                d = null;
             }
-            j(n, _, p = p || preact_module_e, t, o, r, f, s, a), b = _.__e, (v = _.ref) && p.ref != v && (g || (g = []), 
-            p.ref && g.push(p.ref, null, _), g.push(v, _.__c || b, _)), null != b ? (null == m && (m = b), 
-            "function" == typeof _.type && _.__k === p.__k ? _.__d = s = x(_, s, n) : s = P(n, _, p, w, b, s), 
-            "function" == typeof u.type && (u.__d = s)) : s && p.__e == s && s.parentNode != n && (s = k(p));
+            j(n, k, d = d || f, t, o, r, c, s, a), b = k.__e, (y = k.ref) && d.ref != y && (w || (w = []), 
+            d.ref && w.push(d.ref, null, k), w.push(y, k.__c || b, k)), null != b ? (null == g && (g = b), 
+            "function" == typeof k.type && k.__k === d.__k ? k.__d = s = m(k, s, n) : s = A(n, k, d, x, b, s), 
+            "function" == typeof u.type && (u.__d = s)) : s && d.__e == s && s.parentNode != n && (s = _(d));
         }
-        for (u.__e = m, h = A; h--; ) null != w[h] && ("function" == typeof u.type && null != w[h].__e && w[h].__e == u.__d && (u.__d = k(i, h + 1)), 
-        N(w[h], w[h]));
-        if (g) for (h = 0; h < g.length; h++) M(g[h], g[++h], g[++h]);
+        for (u.__e = g, h = C; h--; ) null != x[h] && ("function" == typeof u.type && null != x[h].__e && x[h].__e == u.__d && (u.__d = _(i, h + 1)), 
+        N(x[h], x[h]));
+        if (w) for (h = 0; h < w.length; h++) M(w[h], w[++h], w[++h]);
     }
-    function x(n, l, u) {
-        for (var i, t = n.__k, o = 0; t && o < t.length; o++) (i = t[o]) && (i.__ = n, l = "function" == typeof i.type ? x(i, l, u) : P(u, i, i, t, i.__e, l));
+    function m(n, l, u) {
+        for (var i, t = n.__k, o = 0; t && o < t.length; o++) (i = t[o]) && (i.__ = n, l = "function" == typeof i.type ? m(i, l, u) : A(u, i, i, t, i.__e, l));
         return l;
     }
-    function P(n, l, u, i, t, o) {
+    function A(n, l, u, i, t, o) {
         var r, f, e;
         if (void 0 !== l.__d) r = l.__d, l.__d = void 0; else if (null == u || t != o || null == t.parentNode) n: if (null == o || o.parentNode !== n) n.appendChild(t), 
         r = null; else {
@@ -5040,7 +5040,7 @@ window.smartCard = function(modules) {
         return void 0 !== r ? r : t.nextSibling;
     }
     function $(n, l, u) {
-        "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || s.test(l) ? u : u + "px";
+        "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || c.test(l) ? u : u + "px";
     }
     function H(n, l, u, i, t) {
         var o;
@@ -5064,42 +5064,41 @@ window.smartCard = function(modules) {
         this.l[n.type + !0](l.event ? l.event(n) : n);
     }
     function j(n, u, i, t, o, r, f, e, c) {
-        var s, h, v, y, p, k, b, m, g, x, A, P, C, $ = u.type;
+        var a, h, v, y, _, k, b, g, m, x, A, C, $, H = u.type;
         if (void 0 !== u.constructor) return null;
-        null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (s = l.__b) && s(u);
+        null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (a = l.__b) && a(u);
         try {
-            n: if ("function" == typeof $) {
-                if (m = u.props, g = (s = $.contextType) && t[s.__c], x = s ? g ? g.props.value : s.__ : t, 
-                i.__c ? b = (h = u.__c = i.__c).__ = h.__E : ("prototype" in $ && $.prototype.render ? u.__c = h = new $(m, x) : (u.__c = h = new _(m, x), 
-                h.constructor = $, h.render = O), g && g.sub(h), h.props = m, h.state || (h.state = {}), 
+            n: if ("function" == typeof H) {
+                if (g = u.props, m = (a = H.contextType) && t[a.__c], x = a ? m ? m.props.value : a.__ : t, 
+                i.__c ? b = (h = u.__c = i.__c).__ = h.__E : ("prototype" in H && H.prototype.render ? u.__c = h = new H(g, x) : (u.__c = h = new preact_module_d(g, x), 
+                h.constructor = H, h.render = O), m && m.sub(h), h.props = g, h.state || (h.state = {}), 
                 h.context = x, h.__n = t, v = h.__d = !0, h.__h = []), null == h.__s && (h.__s = h.state), 
-                null != $.getDerivedStateFromProps && (h.__s == h.state && (h.__s = preact_module_a({}, h.__s)), 
-                preact_module_a(h.__s, $.getDerivedStateFromProps(m, h.__s))), y = h.props, p = h.state, 
-                v) null == $.getDerivedStateFromProps && null != h.componentWillMount && h.componentWillMount(), 
+                null != H.getDerivedStateFromProps && (h.__s == h.state && (h.__s = s({}, h.__s)), 
+                s(h.__s, H.getDerivedStateFromProps(g, h.__s))), y = h.props, _ = h.state, v) null == H.getDerivedStateFromProps && null != h.componentWillMount && h.componentWillMount(), 
                 null != h.componentDidMount && h.__h.push(h.componentDidMount); else {
-                    if (null == $.getDerivedStateFromProps && m !== y && null != h.componentWillReceiveProps && h.componentWillReceiveProps(m, x), 
-                    !h.__e && null != h.shouldComponentUpdate && !1 === h.shouldComponentUpdate(m, h.__s, x) || u.__v === i.__v) {
-                        h.props = m, h.state = h.__s, u.__v !== i.__v && (h.__d = !1), h.__v = u, u.__e = i.__e, 
+                    if (null == H.getDerivedStateFromProps && g !== y && null != h.componentWillReceiveProps && h.componentWillReceiveProps(g, x), 
+                    !h.__e && null != h.shouldComponentUpdate && !1 === h.shouldComponentUpdate(g, h.__s, x) || u.__v === i.__v) {
+                        h.props = g, h.state = h.__s, u.__v !== i.__v && (h.__d = !1), h.__v = u, u.__e = i.__e, 
                         u.__k = i.__k, u.__k.forEach((function(n) {
                             n && (n.__ = u);
                         })), h.__h.length && f.push(h);
                         break n;
                     }
-                    null != h.componentWillUpdate && h.componentWillUpdate(m, h.__s, x), null != h.componentDidUpdate && h.__h.push((function() {
-                        h.componentDidUpdate(y, p, k);
+                    null != h.componentWillUpdate && h.componentWillUpdate(g, h.__s, x), null != h.componentDidUpdate && h.__h.push((function() {
+                        h.componentDidUpdate(y, _, k);
                     }));
                 }
-                if (h.context = x, h.props = m, h.__v = u, h.__P = n, A = l.__r, P = 0, "prototype" in $ && $.prototype.render) h.state = h.__s, 
-                h.__d = !1, A && A(u), s = h.render(h.props, h.state, h.context); else do {
-                    h.__d = !1, A && A(u), s = h.render(h.props, h.state, h.context), h.state = h.__s;
-                } while (h.__d && ++P < 25);
-                h.state = h.__s, null != h.getChildContext && (t = preact_module_a(preact_module_a({}, t), h.getChildContext())), 
-                v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, p)), 
-                C = null != s && s.type === preact_module_d && null == s.key ? s.props.children : s, 
-                w(n, Array.isArray(C) ? C : [ C ], u, i, t, o, r, f, e, c), h.base = u.__e, u.__h = null, 
-                h.__h.length && f.push(h), b && (h.__E = h.__ = null), h.__e = !1;
+                if (h.context = x, h.props = g, h.__v = u, h.__P = n, A = l.__r, C = 0, "prototype" in H && H.prototype.render) h.state = h.__s, 
+                h.__d = !1, A && A(u), a = h.render(h.props, h.state, h.context); else do {
+                    h.__d = !1, A && A(u), a = h.render(h.props, h.state, h.context), h.state = h.__s;
+                } while (h.__d && ++C < 25);
+                h.state = h.__s, null != h.getChildContext && (t = s(s({}, t), h.getChildContext())), 
+                v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, _)), 
+                $ = null != a && a.type === p && null == a.key ? a.props.children : a, w(n, Array.isArray($) ? $ : [ $ ], u, i, t, o, r, f, e, c), 
+                h.base = u.__e, u.__h = null, h.__h.length && f.push(h), b && (h.__E = h.__ = null), 
+                h.__e = !1;
             } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = L(i.__e, u, i, t, o, r, f, c);
-            (s = l.diffed) && s(u);
+            (a = l.diffed) && a(u);
         } catch (n) {
             u.__v = null, (c || null != r) && (u.__e = e, u.__h = !!c, r[r.indexOf(e)] = null), 
             l.__e(n, u, i);
@@ -5116,10 +5115,10 @@ window.smartCard = function(modules) {
             }
         }));
     }
-    function L(l, u, i, t, o, r, f, c) {
-        var s, a, v, y = i.props, p = u.props, d = u.type, _ = 0;
-        if ("svg" === d && (o = !0), null != r) for (;_ < r.length; _++) if ((s = r[_]) && "setAttribute" in s == !!d && (d ? s.localName === d : 3 === s.nodeType)) {
-            l = s, r[_] = null;
+    function L(l, u, i, t, o, r, e, c) {
+        var s, h, v, y = i.props, p = u.props, d = u.type, k = 0;
+        if ("svg" === d && (o = !0), null != r) for (;k < r.length; k++) if ((s = r[k]) && "setAttribute" in s == !!d && (d ? s.localName === d : 3 === s.nodeType)) {
+            l = s, r[k] = null;
             break;
         }
         if (null == l) {
@@ -5128,19 +5127,19 @@ window.smartCard = function(modules) {
             r = null, c = !1;
         }
         if (null === d) y === p || c && l.data === p || (l.data = p); else {
-            if (r = r && n.call(l.childNodes), a = (y = i.props || preact_module_e).dangerouslySetInnerHTML, 
+            if (r = r && n.call(l.childNodes), h = (y = i.props || f).dangerouslySetInnerHTML, 
             v = p.dangerouslySetInnerHTML, !c) {
-                if (null != r) for (y = {}, _ = 0; _ < l.attributes.length; _++) y[l.attributes[_].name] = l.attributes[_].value;
-                (v || a) && (v && (a && v.__html == a.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
+                if (null != r) for (y = {}, k = 0; k < l.attributes.length; k++) y[l.attributes[k].name] = l.attributes[k].value;
+                (v || h) && (v && (h && v.__html == h.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
             }
             if (function(n, l, u, i, t) {
                 var o;
                 for (o in u) "children" === o || "key" === o || o in l || H(n, o, null, u[o], i);
                 for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || H(n, o, l[o], u[o], i);
-            }(l, p, y, o, c), v) u.__k = []; else if (_ = u.props.children, w(l, Array.isArray(_) ? _ : [ _ ], u, i, t, o && "foreignObject" !== d, r, f, r ? r[0] : i.__k && k(i, 0), c), 
-            null != r) for (_ = r.length; _--; ) null != r[_] && h(r[_]);
-            c || ("value" in p && void 0 !== (_ = p.value) && (_ !== l.value || "progress" === d && !_ || "option" === d && _ !== y.value) && H(l, "value", _, y.value, !1), 
-            "checked" in p && void 0 !== (_ = p.checked) && _ !== l.checked && H(l, "checked", _, y.checked, !1));
+            }(l, p, y, o, c), v) u.__k = []; else if (k = u.props.children, w(l, Array.isArray(k) ? k : [ k ], u, i, t, o && "foreignObject" !== d, r, e, r ? r[0] : i.__k && _(i, 0), c), 
+            null != r) for (k = r.length; k--; ) null != r[k] && preact_module_a(r[k]);
+            c || ("value" in p && void 0 !== (k = p.value) && (k !== l.value || "progress" === d && !k || "option" === d && k !== y.value) && H(l, "value", k, y.value, !1), 
+            "checked" in p && void 0 !== (k = p.checked) && k !== l.checked && H(l, "checked", k, y.checked, !1));
         }
         return l;
     }
@@ -5163,12 +5162,12 @@ window.smartCard = function(modules) {
             t.base = t.__P = null;
         }
         if (t = n.__k) for (o = 0; o < t.length; o++) t[o] && N(t[o], u, "function" != typeof n.type);
-        i || null == n.__e || h(n.__e), n.__e = n.__d = void 0;
+        i || null == n.__e || preact_module_a(n.__e), n.__e = n.__d = void 0;
     }
     function O(n, l, u) {
         return this.constructor(n, u);
     }
-    n = c.slice, l = {
+    n = preact_module_e.slice, l = {
         __e: function(n, l, u, i) {
             for (var t, o, r; l = l.__; ) if ((t = l.__c) && !t.__) try {
                 if ((o = t.constructor) && null != o.getDerivedStateFromError && (t.setState(o.getDerivedStateFromError(n)), 
@@ -5179,15 +5178,14 @@ window.smartCard = function(modules) {
             }
             throw n;
         }
-    }, preact_module_u = 0, _.prototype.setState = function(n, l) {
+    }, preact_module_u = 0, preact_module_d.prototype.setState = function(n, l) {
         var u;
-        u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = preact_module_a({}, this.state), 
-        "function" == typeof n && (n = n(preact_module_a({}, u), this.props)), n && preact_module_a(u, n), 
-        null != n && this.__v && (l && this.__h.push(l), m(this));
-    }, _.prototype.forceUpdate = function(n) {
-        this.__v && (this.__e = !0, n && this.__h.push(n), m(this));
-    }, _.prototype.render = preact_module_d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-    g.__r = 0;
+        u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = s({}, this.state), 
+        "function" == typeof n && (n = n(s({}, u), this.props)), n && s(u, n), null != n && this.__v && (l && this.__h.push(l), 
+        b(this));
+    }, preact_module_d.prototype.forceUpdate = function(n) {
+        this.__v && (this.__e = !0, n && this.__h.push(n), b(this));
+    }, preact_module_d.prototype.render = p, preact_module_t = [], g.__r = 0;
     var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
     function hooks_module_p(t, r) {
         l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
@@ -7220,14 +7218,25 @@ window.smartCard = function(modules) {
             return _ref9.data;
         }));
     }
+    function patchShipping(_ref10) {
+        return callGraphQL({
+            name: "UpdateShipping",
+            query: "\n            mutation UpdateShipping(\n                $clientID: String!\n                $patch: [JSON]!\n                $token: String!\n            ) {\n                updateShipping(\n                    clientID: $clientID,\n                    patch: $patch,\n                    token: $token,\n                )\n            }\n        ",
+            variables: {
+                clientID: _ref10.clientID,
+                patch: _ref10.data,
+                token: _ref10.orderID
+            }
+        });
+    }
     function billingTokenToOrderID(billingToken) {
         return callSmartAPI({
             authenticated: !1,
             method: "post",
             eventName: "payment_ectoken",
             url: "/smart/api/payment/" + billingToken + "/ectoken"
-        }).then((function(_ref13) {
-            return _ref13.data.token;
+        }).then((function(_ref14) {
+            return _ref14.data.token;
         }));
     }
     function subscriptionIdToCartId(subscriptionID) {
@@ -7236,8 +7245,8 @@ window.smartCard = function(modules) {
             method: "post",
             eventName: "billagmt_subscriptions_cartid",
             url: "/smart/api/billagmt/subscriptions/" + subscriptionID + "/cartid"
-        }).then((function(_ref14) {
-            return _ref14.data.token;
+        }).then((function(_ref15) {
+            return _ref15.data.token;
         }));
     }
     var getSupplementalOrderInfo = memoize((function(orderID) {
@@ -7592,8 +7601,8 @@ window.smartCard = function(modules) {
             queries: queries
         });
     };
-    var onShippingAddressChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "shipping_address" ], _excluded2 = [ "buyerAccessToken", "forceRestAPI" ];
-    var onShippingOptionsChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "options", "selected_shipping_option" ], onShippingOptionsChange_excluded2 = [ "buyerAccessToken", "forceRestAPI" ];
+    var onShippingAddressChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "shipping_address" ];
+    var onShippingOptionsChange_excluded = [ "amount", "buyerAccessToken", "event", "forceRestAPI", "options", "selected_shipping_option" ];
     function getProps(_ref) {
         var facilitatorAccessToken = _ref.facilitatorAccessToken, branded = _ref.branded, paymentSource = _ref.paymentSource;
         var xprops = window.xprops;
@@ -7930,7 +7939,7 @@ window.smartCard = function(modules) {
                 if (!onApprove) throw new Error("Expected onApprove");
                 var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID);
                 return memoize((function(_ref8, _ref9) {
-                    var payerID = _ref8.payerID, paymentID = _ref8.paymentID, billingToken = _ref8.billingToken, buyerAccessToken = _ref8.buyerAccessToken, authCode = _ref8.authCode, _ref8$forceRestAPI = _ref8.forceRestAPI, forceRestAPI = void 0 === _ref8$forceRestAPI ? upgradeLSAT : _ref8$forceRestAPI;
+                    var _ref8$accelerated = _ref8.accelerated, accelerated = void 0 !== _ref8$accelerated && _ref8$accelerated, payerID = _ref8.payerID, paymentID = _ref8.paymentID, billingToken = _ref8.billingToken, buyerAccessToken = _ref8.buyerAccessToken, authCode = _ref8.authCode, _ref8$forceRestAPI = _ref8.forceRestAPI, forceRestAPI = void 0 === _ref8$forceRestAPI ? upgradeLSAT : _ref8$forceRestAPI;
                     var restart = _ref9.restart;
                     return createOrder().then((function(orderID) {
                         var _getLogger$info$track;
@@ -7942,6 +7951,7 @@ window.smartCard = function(modules) {
                         }).flush();
                         return getSupplementalOrderInfo(orderID).then((function(supplementalData) {
                             var data = {
+                                accelerated: accelerated,
                                 orderID: orderID,
                                 payerID: payerID,
                                 paymentID: paymentID = paymentID || supplementalData && supplementalData.checkoutSession && supplementalData.checkoutSession.cart && supplementalData.checkoutSession.cart.paymentId,
@@ -8428,11 +8438,10 @@ window.smartCard = function(modules) {
             createOrder: createOrder
         });
         var onShippingAddressChange = function(_ref5, _ref6) {
-            var onShippingAddressChange = _ref5.onShippingAddressChange, partnerAttributionID = _ref5.partnerAttributionID;
-            var facilitatorAccessToken = _ref6.facilitatorAccessToken, createOrder = _ref6.createOrder;
-            var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref5.clientID);
+            var onShippingAddressChange = _ref5.onShippingAddressChange, clientID = _ref5.clientID;
+            var createOrder = _ref6.createOrder;
             if (onShippingAddressChange) return function(_ref7, actions) {
-                var buyerAccessToken = _ref7.buyerAccessToken, _ref7$forceRestAPI = _ref7.forceRestAPI, forceRestAPI = void 0 === _ref7$forceRestAPI ? upgradeLSAT : _ref7$forceRestAPI, data = _objectWithoutPropertiesLoose(_ref7, _excluded2);
+                var data = _extends({}, _ref7);
                 return createOrder().then((function(orderID) {
                     var _getLogger$info$track;
                     getLogger().info("button_shipping_address_change").track((_getLogger$info$track = {}, 
@@ -8448,7 +8457,7 @@ window.smartCard = function(modules) {
                         }, rest);
                     }(data), function(_ref) {
                         var _data$amount;
-                        var data = _ref.data, passedActions = _ref.actions, orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
+                        var clientID = _ref.clientID, data = _ref.data, passedActions = _ref.actions, orderID = _ref.orderID;
                         var patchQueries = {};
                         var newAmount;
                         var breakdown = (null == (_data$amount = data.amount) ? void 0 : _data$amount.breakdown) || {};
@@ -8556,11 +8565,10 @@ window.smartCard = function(modules) {
                                     }) : convertQueriesToArray({
                                         queries: patchQueries
                                     });
-                                    return patchOrder(orderID, queries, {
-                                        facilitatorAccessToken: facilitatorAccessToken,
-                                        buyerAccessToken: buyerAccessToken,
-                                        partnerAttributionID: partnerAttributionID,
-                                        forceRestAPI: forceRestAPI
+                                    return patchShipping({
+                                        clientID: clientID,
+                                        orderID: orderID,
+                                        data: queries
                                     }).catch((function() {
                                         throw new Error("Order could not be patched");
                                     }));
@@ -8569,43 +8577,35 @@ window.smartCard = function(modules) {
                             query: function() {
                                 return order_getShippingOrderInfo(orderID).then((function(sessionData) {
                                     var _sessionData$checkout3, _sessionData$checkout4;
-                                    var queries;
                                     var shippingMethods = (null == sessionData || null == (_sessionData$checkout3 = sessionData.checkoutSession) || null == (_sessionData$checkout4 = _sessionData$checkout3.cart) ? void 0 : _sessionData$checkout4.shippingMethods) || [];
-                                    queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
+                                    return Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
                                         queries: patchQueries
                                     }) : convertQueriesToArray({
                                         queries: patchQueries
                                     });
-                                    return JSON.stringify(queries);
                                 }));
                             }
                         };
                         return actions;
                     }({
+                        clientID: clientID,
                         data: data,
                         actions: actions,
-                        orderID: orderID,
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken,
-                        partnerAttributionID: partnerAttributionID,
-                        forceRestAPI: forceRestAPI
+                        orderID: orderID
                     }));
                 }));
             };
         }({
             onShippingAddressChange: xprops.onShippingAddressChange,
-            partnerAttributionID: partnerAttributionID,
             clientID: clientID
         }, {
-            facilitatorAccessToken: facilitatorAccessToken,
             createOrder: createOrder
         });
         var onShippingOptionsChange = function(_ref4, _ref5) {
-            var onShippingOptionsChange = _ref4.onShippingOptionsChange, partnerAttributionID = _ref4.partnerAttributionID;
-            var facilitatorAccessToken = _ref5.facilitatorAccessToken, createOrder = _ref5.createOrder;
-            var upgradeLSAT = -1 === LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(_ref4.clientID);
+            var onShippingOptionsChange = _ref4.onShippingOptionsChange, clientID = _ref4.clientID;
+            var createOrder = _ref5.createOrder;
             if (onShippingOptionsChange) return function(_ref6, actions) {
-                var buyerAccessToken = _ref6.buyerAccessToken, _ref6$forceRestAPI = _ref6.forceRestAPI, forceRestAPI = void 0 === _ref6$forceRestAPI ? upgradeLSAT : _ref6$forceRestAPI, data = _objectWithoutPropertiesLoose(_ref6, onShippingOptionsChange_excluded2);
+                var data = _extends({}, _ref6);
                 return createOrder().then((function(orderID) {
                     var _getLogger$info$track;
                     getLogger().info("button_shipping_options_change").track((_getLogger$info$track = {}, 
@@ -8621,7 +8621,7 @@ window.smartCard = function(modules) {
                         }, rest);
                     }(data), function(_ref) {
                         var _data$amount;
-                        var data = _ref.data, passedActions = _ref.actions, orderID = _ref.orderID, facilitatorAccessToken = _ref.facilitatorAccessToken, buyerAccessToken = _ref.buyerAccessToken, partnerAttributionID = _ref.partnerAttributionID, forceRestAPI = _ref.forceRestAPI;
+                        var clientID = _ref.clientID, data = _ref.data, passedActions = _ref.actions, orderID = _ref.orderID;
                         var patchQueries = {};
                         var newAmount;
                         var breakdown = (null == (_data$amount = data.amount) ? void 0 : _data$amount.breakdown) || {};
@@ -8718,11 +8718,10 @@ window.smartCard = function(modules) {
                                     }) : convertQueriesToArray({
                                         queries: patchQueries
                                     });
-                                    return patchOrder(orderID, queries, {
-                                        facilitatorAccessToken: facilitatorAccessToken,
-                                        buyerAccessToken: buyerAccessToken,
-                                        partnerAttributionID: partnerAttributionID,
-                                        forceRestAPI: forceRestAPI
+                                    return patchShipping({
+                                        clientID: clientID,
+                                        orderID: orderID,
+                                        data: queries
                                     }).catch((function() {
                                         throw new Error("Order could not be patched");
                                     }));
@@ -8731,35 +8730,28 @@ window.smartCard = function(modules) {
                             query: function() {
                                 return order_getShippingOrderInfo(orderID).then((function(sessionData) {
                                     var _sessionData$checkout3, _sessionData$checkout4;
-                                    var queries;
                                     var shippingMethods = (null == sessionData || null == (_sessionData$checkout3 = sessionData.checkoutSession) || null == (_sessionData$checkout4 = _sessionData$checkout3.cart) ? void 0 : _sessionData$checkout4.shippingMethods) || [];
-                                    queries = Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
+                                    return Boolean(shippingMethods.length > 0) ? utils_updateOperationForShippingOptions({
                                         queries: patchQueries
                                     }) : convertQueriesToArray({
                                         queries: patchQueries
                                     });
-                                    return JSON.stringify(queries);
                                 }));
                             }
                         };
                         return actions;
                     }({
+                        clientID: clientID,
                         data: data,
                         actions: actions,
-                        orderID: orderID,
-                        facilitatorAccessToken: facilitatorAccessToken,
-                        buyerAccessToken: buyerAccessToken,
-                        partnerAttributionID: partnerAttributionID,
-                        forceRestAPI: forceRestAPI
+                        orderID: orderID
                     }));
                 }));
             };
         }({
             onShippingOptionsChange: xprops.onShippingOptionsChange,
-            partnerAttributionID: partnerAttributionID,
             clientID: clientID
         }, {
-            facilitatorAccessToken: facilitatorAccessToken,
             createOrder: createOrder
         });
         var onAuth = function(_ref) {
@@ -9006,8 +8998,8 @@ window.smartCard = function(modules) {
                 var restart = function() {
                     throw new Error("Restart not implemented for card fields flow");
                 };
-                return intent === sdk_constants.INTENT.TOKENIZE ? function(_ref23) {
-                    var card = _ref23.card;
+                return intent === sdk_constants.INTENT.TOKENIZE ? function(_ref24) {
+                    var card = _ref24.card;
                     return promise_ZalgoPromise.try((function() {
                         console.info("Card Tokenize GQL mutation not yet implemented", {
                             card: card
@@ -9031,7 +9023,7 @@ window.smartCard = function(modules) {
                         securityCode: card.cvv
                     }, extraFields);
                     card.name && (cardObject.name = card.name);
-                    return (_ref24 = {
+                    return (_ref25 = {
                         card: cardObject,
                         orderID: orderID,
                         vault: vault,
@@ -9041,10 +9033,10 @@ window.smartCard = function(modules) {
                         name: "ProcessPayment",
                         query: '\n            mutation ProcessPayment(\n                $orderID: String!\n                $clientID: String!\n                $card: CardInput!\n                $branded: Boolean!\n            ) {\n                processPayment(\n                    clientID: $clientID\n                    paymentMethod: { type: CARD, card: $card }\n                    branded: $branded\n                    orderID: $orderID\n                    buttonSessionID: "f7r7367r4"\n                )\n            }\n        ',
                         variables: {
-                            orderID: _ref24.orderID,
-                            clientID: _ref24.clientID,
-                            card: _ref24.card,
-                            branded: _ref24.branded
+                            orderID: _ref25.orderID,
+                            clientID: _ref25.clientID,
+                            card: _ref25.card,
+                            branded: _ref25.branded
                         },
                         returnErrorObject: !0
                     }).then((function(gqlResult) {
@@ -9087,7 +9079,7 @@ window.smartCard = function(modules) {
                             errors: errors
                         };
                     }));
-                    var _ref24;
+                    var _ref25;
                 })).then((function() {
                     return onApprove({
                         payerID: uniqueID(),
@@ -9135,7 +9127,7 @@ window.smartCard = function(modules) {
                 inputState: inputState
             }) && navigation.next();
         }), [ isValid, isPotentiallyValid ]);
-        return v("input", {
+        return h("input", {
             name: name,
             autocomplete: autocomplete,
             inputmode: "numeric",
@@ -9240,7 +9232,7 @@ window.smartCard = function(modules) {
             });
             allowNavigation && maskedInputValue && isValid && navigation.next();
         }), [ isValid, isPotentiallyValid ]);
-        return v("input", {
+        return h("input", {
             name: name,
             autocomplete: autocomplete,
             inputmode: "numeric",
@@ -9346,7 +9338,7 @@ window.smartCard = function(modules) {
             });
             allowNavigation && inputValue && isValid && navigation.next();
         }), [ isValid, isPotentiallyValid ]);
-        return v("input", {
+        return h("input", {
             name: name,
             autocomplete: autocomplete,
             inputmode: "numeric",
@@ -9414,7 +9406,7 @@ window.smartCard = function(modules) {
             });
             allowNavigation && inputValue && isValid && navigation.next();
         }), [ isValid, isPotentiallyValid ]);
-        return v("input", {
+        return h("input", {
             name: name,
             inputmode: "text",
             ref: ref,
@@ -9526,9 +9518,9 @@ window.smartCard = function(modules) {
                 errors: errors
             });
         }), [ number, cvv, expiry, isValid, numberValidity, cvvValidity, expiryValidity, cardType ]);
-        return v(preact_module_d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, styleToString(composedStyles)), v(CardNumber, {
+        }, styleToString(composedStyles)), h(CardNumber, {
             ref: numberRef,
             autocomplete: autocomplete,
             navigation: cardNumberNavivation,
@@ -9546,7 +9538,7 @@ window.smartCard = function(modules) {
             onValidityChange: function(validity) {
                 return setNumberValidity(_extends({}, validity));
             }
-        }), v(CardExpiry, {
+        }), h(CardExpiry, {
             ref: expiryRef,
             autocomplete: autocomplete,
             navigation: cardExpiryNavivation,
@@ -9562,7 +9554,7 @@ window.smartCard = function(modules) {
             onValidityChange: function(validity) {
                 return setExpiryValidity(_extends({}, validity));
             }
-        }), v(CardCVV, {
+        }), h(CardCVV, {
             ref: cvvRef,
             autocomplete: autocomplete,
             navigation: cardCvvNavivation,
@@ -9615,9 +9607,9 @@ window.smartCard = function(modules) {
                 errors: errors
             });
         }), [ number, isValid, isPotentiallyValid ]);
-        return v(preact_module_d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, styleToString(composedStyles)), v(CardNumber, {
+        }, styleToString(composedStyles)), h(CardNumber, {
             ref: numberRef,
             type: "text",
             autocomplete: autocomplete,
@@ -9663,9 +9655,9 @@ window.smartCard = function(modules) {
                 errors: errors
             });
         }), [ expiry, isValid, isPotentiallyValid ]);
-        return v(preact_module_d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, styleToString(composedStyles)), v(CardExpiry, {
+        }, styleToString(composedStyles)), h(CardExpiry, {
             ref: expiryRef,
             type: "text",
             autocomplete: autocomplete,
@@ -9711,9 +9703,9 @@ window.smartCard = function(modules) {
                 errors: errors
             });
         }), [ cvv, isValid, isPotentiallyValid ]);
-        return v(preact_module_d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, styleToString(composedStyles)), v(CardCVV, {
+        }, styleToString(composedStyles)), h(CardCVV, {
             ref: cvvRef,
             type: "text",
             autocomplete: autocomplete,
@@ -9759,9 +9751,9 @@ window.smartCard = function(modules) {
                 errors: errors
             });
         }), [ name, isValid, isPotentiallyValid ]);
-        return v(preact_module_d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, styleToString(composedStyles)), v(CardName, {
+        }, styleToString(composedStyles)), h(CardName, {
             ref: nameRef,
             type: "text",
             className: "name " + (nameValidity.isPotentiallyValid || nameValidity.isValid ? "valid" : "invalid"),
@@ -9893,9 +9885,9 @@ window.smartCard = function(modules) {
             setFieldValid(valid);
             resetGQLErrors();
         };
-        return v(preact_module_d, null, v("style", {
+        return h(p, null, h("style", {
             nonce: cspNonce
-        }, "\n                    * {\n                        box-sizing: border-box;\n                    }\n\n                    html, body {\n                        margin: 0;\n                        padding: 0;\n                        height: 100%;\n                    }\n\n                    body {\n                        display: inline-block;\n                        width: 100%;\n                        font-size: 100%;\n                        font-family: monospace;\n                    }\n\n                    *:focus {\n                        outline: none;\n                    }\n                "), "single" === type ? v(CardField, {
+        }, "\n                    * {\n                        box-sizing: border-box;\n                    }\n\n                    html, body {\n                        margin: 0;\n                        padding: 0;\n                        height: 100%;\n                    }\n\n                    body {\n                        display: inline-block;\n                        width: 100%;\n                        font-size: 100%;\n                        font-family: monospace;\n                    }\n\n                    *:focus {\n                        outline: none;\n                    }\n                "), "single" === type ? h(CardField, {
             gqlErrorsObject: fieldGQLErrors.singleField,
             cspNonce: cspNonce,
             autocomplete: autocomplete,
@@ -9905,7 +9897,7 @@ window.smartCard = function(modules) {
             autoFocusRef: function(ref) {
                 return setRef(ref.current.base);
             }
-        }) : null, "number" === type ? v(CardNumberField, {
+        }) : null, "number" === type ? h(CardNumberField, {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.numberField,
             cspNonce: cspNonce,
@@ -9916,7 +9908,7 @@ window.smartCard = function(modules) {
             autoFocusRef: function(ref) {
                 return setRef(ref.current.base);
             }
-        }) : null, "cvv" === type ? v(CardCVVField, {
+        }) : null, "cvv" === type ? h(CardCVVField, {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.cvvField,
             cspNonce: cspNonce,
@@ -9927,7 +9919,7 @@ window.smartCard = function(modules) {
             autoFocusRef: function(ref) {
                 return setRef(ref.current.base);
             }
-        }) : null, "expiry" === type ? v(CardExpiryField, {
+        }) : null, "expiry" === type ? h(CardExpiryField, {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.expiryField,
             cspNonce: cspNonce,
@@ -9938,7 +9930,7 @@ window.smartCard = function(modules) {
             autoFocusRef: function(ref) {
                 return setRef(ref.current.base);
             }
-        }) : null, "name" === type ? v(CardNameField, {
+        }) : null, "name" === type ? h(CardNameField, {
             ref: mainRef,
             gqlErrors: fieldGQLErrors.nameField,
             cspNonce: cspNonce,
@@ -9951,13 +9943,13 @@ window.smartCard = function(modules) {
         }) : null);
     }
     function setupCard(_ref3) {
-        u = v(Page, {
+        u = h(Page, {
             cspNonce: _ref3.cspNonce,
             props: getCardProps({
                 facilitatorAccessToken: _ref3.facilitatorAccessToken
             })
-        }), i = util_getBody(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(preact_module_d, null, [ u ]), r || preact_module_e, preact_module_e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
-        z(f, u);
-        var u, i, r, f;
+        }), i = util_getBody(), l.__ && l.__(u, i), r = !1 ? null : i.__k, e = [], j(i, u = i.__k = h(p, null, [ u ]), r || f, f, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, e, r ? r.__e : i.firstChild, !1), 
+        z(e, u);
+        var u, i, r, e;
     }
 } ]);

@@ -9,7 +9,6 @@ import {
     mockAsyncProp,
     createButtonHTML,
     getGraphQLApiMock,
-    getRestfulPatchOrderApiMock,
     DEFAULT_FUNDING_ELIGIBILITY,
     mockFunction,
     clickButton,
@@ -96,7 +95,7 @@ describe('onShippingAddressChange', () => {
             const facilitatorAccessToken = uniqueID();
 
             const getCheckoutDetails = getGraphQLApiMock({
-                extraHandler: expect('upgradeLSATGQLCall', ({ data }) => {
+                extraHandler: expect('GetCheckoutDetailsCall', ({ data }) => {
 
                     if (data.query.includes('query GetCheckoutDetails')) {
                         return {
@@ -163,21 +162,19 @@ describe('onShippingAddressChange', () => {
                 });
             }));
 
-            window.xprops.onShippingAddressChange = mockAsyncProp(expect('onShippingAddressChange', async (data, actions) => {
-                const patchOrderMock = getRestfulPatchOrderApiMock({
-                    handler: expect('patchOrder', ({ headers }) => {
-                        if (headers.authorization !== `Bearer ${ facilitatorAccessToken }`) {
-                            throw new Error(`Expected call to come with correct facilitator access token`);
+            window.xprops.onShippingAddressChange = mockAsyncProp(expect('onShippingAddressChange', async (callbackData, actions) => {
+                const patchShippingMock = getGraphQLApiMock({
+                    extraHandler: expect('UpdateShippingCall', ({ data }) => {
+                        if (data.query.includes('UpdateShipping')) {
+                            return {
+                                id: orderID
+                            };
                         }
-
-                        return {
-                            id: orderID
-                        };
                     })
                 });
-                patchOrderMock.expectCalls();
+                patchShippingMock.expectCalls();
                 await actions.patch();
-                patchOrderMock.done();
+                patchShippingMock.done();
             }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
@@ -237,21 +234,19 @@ describe('onShippingAddressChange', () => {
                 });
             }));
 
-            window.xprops.onShippingAddressChange = mockAsyncProp(expect('onShippingAddressChange', async (data, actions) => {
-                const patchOrderMock = getRestfulPatchOrderApiMock({
-                    handler: expect('patchOrder', ({ headers }) => {
-                        if (headers.authorization !== `Bearer ${ facilitatorAccessToken }`) {
-                            throw new Error(`Expected call to come with correct facilitator access token`);
+            window.xprops.onShippingAddressChange = mockAsyncProp(expect('onShippingAddressChange', async (callbackData, actions) => {
+                const patchShippingMock = getGraphQLApiMock({
+                    extraHandler: expect('UpdateShippingCall', ({ data }) => {
+                        if (data.query.includes('UpdateShipping')) {
+                            return {
+                                id: orderID
+                            };
                         }
-
-                        return {
-                            id: orderID
-                        };
                     })
                 });
-                patchOrderMock.expectCalls();
+                patchShippingMock.expectCalls();
                 await actions.patch();
-                patchOrderMock.done();
+                patchShippingMock.done();
             }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
@@ -380,7 +375,7 @@ describe('onShippingAddressChange', () => {
                     .query();
                 const expectedQuery = `[{"op":"replace","path":"/purchase_units/@reference_id=='default'/amount","value":{"value":"181.00","currency_code":"USD","breakdown":{"item_total":{"currency_code":"USD","value":"180.00"},"shipping":{"currency_code":"USD","value":"0.00"},"handling":{"currency_code":"USD","value":"1.00"},"tax_total":{"currency_code":"USD","value":"20.00"},"discount":{"currency_code":"USD","value":"10.00"},"shipping_discount":{"currency_code":"USD","value":"10.00"}}}},{"op":"replace","path":"/purchase_units/@reference_id=='default'/shipping/options","value":[{"id":"SHIP_1234","label":"Free Shipping","type":"SHIPPING","selected":true,"amount":{"value":"0.00","currency_code":"USD"}},{"id":"SHIP_123","label":"Shipping","type":"SHIPPING","selected":false,"amount":{"value":"20.00","currency_code":"USD"}},{"id":"SHIP_124","label":"Overnight","type":"SHIPPING","selected":false,"amount":{"value":"40.00","currency_code":"USD"}}]}]`;
 
-                if (query !== expectedQuery) {
+                if (JSON.stringify(query) !== expectedQuery) {
                     throw new Error(`Expected query, ${ query }, to be, ${ expectedQuery }`);
                 }
             }));
@@ -450,7 +445,7 @@ describe('onShippingAddressChange', () => {
                     .query();
                 const expectedQuery = `[{"op":"replace","path":"/purchase_units/@reference_id=='default'/amount","value":{"value":"181.00","currency_code":"USD","breakdown":{"item_total":{"currency_code":"USD","value":"180.00"},"shipping":{"currency_code":"USD","value":"0.00"},"handling":{"currency_code":"USD","value":"1.00"},"tax_total":{"currency_code":"USD","value":"20.00"},"discount":{"currency_code":"USD","value":"10.00"},"shipping_discount":{"currency_code":"USD","value":"10.00"}}}},{"op":"replace","path":"/purchase_units/@reference_id=='default'/shipping/options","value":[{"id":"SHIP_1234","label":"Free Shipping","type":"SHIPPING","selected":true,"amount":{"value":"0.00","currency_code":"USD"}},{"id":"SHIP_123","label":"Shipping","type":"SHIPPING","selected":false,"amount":{"value":"20.00","currency_code":"USD"}},{"id":"SHIP_124","label":"Overnight","type":"SHIPPING","selected":false,"amount":{"value":"40.00","currency_code":"USD"}}]}]`;
 
-                if (query !== expectedQuery) {
+                if (JSON.stringify(query) !== expectedQuery) {
                     throw new Error(`Expected query, ${ query }, to be, ${ expectedQuery }`);
                 }
             }));
@@ -511,18 +506,20 @@ describe('onShippingAddressChange', () => {
                 });
             }));
 
-            window.xprops.onShippingAddressChange = mockAsyncProp(expect('onShippingAddressChange', async (data, actions) => {
-                const patchOrderMock = getRestfulPatchOrderApiMock({
-                    handler: avoid('patchOrder', () => {
-                        throw new Error(`Expected error...`);
+            window.xprops.onShippingAddressChange = mockAsyncProp(expect('onShippingAddressChange', async (callbackData, actions) => {
+                const patchShippingMock = getGraphQLApiMock({
+                    extraHandler: avoid('UpdateShippingCall', ({ data }) => {
+                        if (data.query.includes('UpdateShipping')) {
+                            throw new Error(`Expected error...`);
+                        }
                     })
                 });
 
                 const query = await actions.query();
-                if (query !== '[]') {
-                    throw new Error(`Expected query to be an empty array but was, ${ query }`);
+                if (query && query.length > 0) {
+                    throw new Error(`Expected query to be an empty array but was, ${ JSON.stringify(query) }`);
                 }
-                patchOrderMock.done();
+                patchShippingMock.done();
             }));
 
             mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {

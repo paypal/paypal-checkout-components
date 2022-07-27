@@ -591,23 +591,23 @@
                 return target;
             }).apply(this, arguments);
         }
-        var n, l, preact_module_u, preact_module_t, preact_module_o, preact_module_r, e = {}, c = [], s = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
-        function preact_module_a(n, l) {
+        var n, l, preact_module_u, preact_module_t, preact_module_o, f = {}, e = [], c = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
+        function s(n, l) {
             for (var u in l) n[u] = l[u];
             return n;
         }
-        function h(n) {
+        function preact_module_a(n) {
             var l = n.parentNode;
             l && l.removeChild(n);
         }
-        function v(l, u, i) {
+        function h(l, u, i) {
             var t, o, r, f = {};
             for (r in u) "key" == r ? t = u[r] : "ref" == r ? o = u[r] : f[r] = u[r];
             if (arguments.length > 2 && (f.children = arguments.length > 3 ? n.call(arguments, 2) : i), 
             "function" == typeof l && null != l.defaultProps) for (r in l.defaultProps) void 0 === f[r] && (f[r] = l.defaultProps[r]);
-            return y(l, f, t, o, null);
+            return v(l, f, t, o, null);
         }
-        function y(n, i, t, o, r) {
+        function v(n, i, t, o, r) {
             var f = {
                 type: n,
                 props: i,
@@ -625,66 +625,66 @@
             };
             return null == r && null != l.vnode && l.vnode(f), f;
         }
-        function d(n) {
+        function p(n) {
             return n.children;
         }
-        function _(n, l) {
+        function d(n, l) {
             this.props = n, this.context = l;
         }
-        function k(n, l) {
-            if (null == l) return n.__ ? k(n.__, n.__.__k.indexOf(n) + 1) : null;
+        function _(n, l) {
+            if (null == l) return n.__ ? _(n.__, n.__.__k.indexOf(n) + 1) : null;
             for (var u; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) return u.__e;
-            return "function" == typeof n.type ? k(n) : null;
+            return "function" == typeof n.type ? _(n) : null;
         }
-        function b(n) {
+        function k(n) {
             var l, u;
             if (null != (n = n.__) && null != n.__c) {
                 for (n.__e = n.__c.base = null, l = 0; l < n.__k.length; l++) if (null != (u = n.__k[l]) && null != u.__e) {
                     n.__e = n.__c.base = u.__e;
                     break;
                 }
-                return b(n);
+                return k(n);
             }
         }
-        function m(n) {
-            (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_r !== l.debounceRendering) && ((preact_module_r = l.debounceRendering) || preact_module_o)(g);
+        function b(n) {
+            (!n.__d && (n.__d = !0) && preact_module_t.push(n) && !g.__r++ || preact_module_o !== l.debounceRendering) && ((preact_module_o = l.debounceRendering) || setTimeout)(g);
         }
         function g() {
             for (var n; g.__r = preact_module_t.length; ) n = preact_module_t.sort((function(n, l) {
                 return n.__v.__b - l.__v.__b;
             })), preact_module_t = [], n.some((function(n) {
                 var l, u, i, t, o, r;
-                n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = preact_module_a({}, t)).__v = t.__v + 1, 
-                j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? k(t) : o, t.__h), 
-                z(u, t), t.__e != o && b(t)));
+                n.__d && (o = (t = (l = n).__v).__e, (r = l.__P) && (u = [], (i = s({}, t)).__v = t.__v + 1, 
+                j(r, t, i, l.__n, void 0 !== r.ownerSVGElement, null != t.__h ? [ o ] : null, u, null == o ? _(t) : o, t.__h), 
+                z(u, t), t.__e != o && k(t)));
             }));
         }
-        function w(n, l, u, i, t, o, r, f, s, a) {
-            var h, v, p, _, b, m, g, w = i && i.__k || c, A = w.length;
-            for (u.__k = [], h = 0; h < l.length; h++) if (null != (_ = u.__k[h] = null == (_ = l[h]) || "boolean" == typeof _ ? null : "string" == typeof _ || "number" == typeof _ || "bigint" == typeof _ ? y(null, _, null, null, _) : Array.isArray(_) ? y(d, {
-                children: _
-            }, null, null, null) : _.__b > 0 ? y(_.type, _.props, _.key, null, _.__v) : _)) {
-                if (_.__ = u, _.__b = u.__b + 1, null === (p = w[h]) || p && _.key == p.key && _.type === p.type) w[h] = void 0; else for (v = 0; v < A; v++) {
-                    if ((p = w[v]) && _.key == p.key && _.type === p.type) {
-                        w[v] = void 0;
+        function w(n, l, u, i, t, o, r, c, s, a) {
+            var h, y, d, k, b, g, w, x = i && i.__k || e, C = x.length;
+            for (u.__k = [], h = 0; h < l.length; h++) if (null != (k = u.__k[h] = null == (k = l[h]) || "boolean" == typeof k ? null : "string" == typeof k || "number" == typeof k || "bigint" == typeof k ? v(null, k, null, null, k) : Array.isArray(k) ? v(p, {
+                children: k
+            }, null, null, null) : k.__b > 0 ? v(k.type, k.props, k.key, null, k.__v) : k)) {
+                if (k.__ = u, k.__b = u.__b + 1, null === (d = x[h]) || d && k.key == d.key && k.type === d.type) x[h] = void 0; else for (y = 0; y < C; y++) {
+                    if ((d = x[y]) && k.key == d.key && k.type === d.type) {
+                        x[y] = void 0;
                         break;
                     }
-                    p = null;
+                    d = null;
                 }
-                j(n, _, p = p || e, t, o, r, f, s, a), b = _.__e, (v = _.ref) && p.ref != v && (g || (g = []), 
-                p.ref && g.push(p.ref, null, _), g.push(v, _.__c || b, _)), null != b ? (null == m && (m = b), 
-                "function" == typeof _.type && _.__k === p.__k ? _.__d = s = x(_, s, n) : s = P(n, _, p, w, b, s), 
-                "function" == typeof u.type && (u.__d = s)) : s && p.__e == s && s.parentNode != n && (s = k(p));
+                j(n, k, d = d || f, t, o, r, c, s, a), b = k.__e, (y = k.ref) && d.ref != y && (w || (w = []), 
+                d.ref && w.push(d.ref, null, k), w.push(y, k.__c || b, k)), null != b ? (null == g && (g = b), 
+                "function" == typeof k.type && k.__k === d.__k ? k.__d = s = m(k, s, n) : s = A(n, k, d, x, b, s), 
+                "function" == typeof u.type && (u.__d = s)) : s && d.__e == s && s.parentNode != n && (s = _(d));
             }
-            for (u.__e = m, h = A; h--; ) null != w[h] && ("function" == typeof u.type && null != w[h].__e && w[h].__e == u.__d && (u.__d = k(i, h + 1)), 
-            N(w[h], w[h]));
-            if (g) for (h = 0; h < g.length; h++) M(g[h], g[++h], g[++h]);
+            for (u.__e = g, h = C; h--; ) null != x[h] && ("function" == typeof u.type && null != x[h].__e && x[h].__e == u.__d && (u.__d = _(i, h + 1)), 
+            N(x[h], x[h]));
+            if (w) for (h = 0; h < w.length; h++) M(w[h], w[++h], w[++h]);
         }
-        function x(n, l, u) {
-            for (var i, t = n.__k, o = 0; t && o < t.length; o++) (i = t[o]) && (i.__ = n, l = "function" == typeof i.type ? x(i, l, u) : P(u, i, i, t, i.__e, l));
+        function m(n, l, u) {
+            for (var i, t = n.__k, o = 0; t && o < t.length; o++) (i = t[o]) && (i.__ = n, l = "function" == typeof i.type ? m(i, l, u) : A(u, i, i, t, i.__e, l));
             return l;
         }
-        function P(n, l, u, i, t, o) {
+        function A(n, l, u, i, t, o) {
             var r, f, e;
             if (void 0 !== l.__d) r = l.__d, l.__d = void 0; else if (null == u || t != o || null == t.parentNode) n: if (null == o || o.parentNode !== n) n.appendChild(t), 
             r = null; else {
@@ -694,7 +694,7 @@
             return void 0 !== r ? r : t.nextSibling;
         }
         function $(n, l, u) {
-            "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || s.test(l) ? u : u + "px";
+            "-" === l[0] ? n.setProperty(l, u) : n[l] = null == u ? "" : "number" != typeof u || c.test(l) ? u : u + "px";
         }
         function H(n, l, u, i, t) {
             var o;
@@ -718,42 +718,41 @@
             this.l[n.type + !0](l.event ? l.event(n) : n);
         }
         function j(n, u, i, t, o, r, f, e, c) {
-            var s, h, v, y, p, k, b, m, g, x, A, P, C, $ = u.type;
+            var a, h, v, y, _, k, b, g, m, x, A, C, $, H = u.type;
             if (void 0 !== u.constructor) return null;
-            null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (s = l.__b) && s(u);
+            null != i.__h && (c = i.__h, e = u.__e = i.__e, u.__h = null, r = [ e ]), (a = l.__b) && a(u);
             try {
-                n: if ("function" == typeof $) {
-                    if (m = u.props, g = (s = $.contextType) && t[s.__c], x = s ? g ? g.props.value : s.__ : t, 
-                    i.__c ? b = (h = u.__c = i.__c).__ = h.__E : ("prototype" in $ && $.prototype.render ? u.__c = h = new $(m, x) : (u.__c = h = new _(m, x), 
-                    h.constructor = $, h.render = O), g && g.sub(h), h.props = m, h.state || (h.state = {}), 
+                n: if ("function" == typeof H) {
+                    if (g = u.props, m = (a = H.contextType) && t[a.__c], x = a ? m ? m.props.value : a.__ : t, 
+                    i.__c ? b = (h = u.__c = i.__c).__ = h.__E : ("prototype" in H && H.prototype.render ? u.__c = h = new H(g, x) : (u.__c = h = new d(g, x), 
+                    h.constructor = H, h.render = O), m && m.sub(h), h.props = g, h.state || (h.state = {}), 
                     h.context = x, h.__n = t, v = h.__d = !0, h.__h = []), null == h.__s && (h.__s = h.state), 
-                    null != $.getDerivedStateFromProps && (h.__s == h.state && (h.__s = preact_module_a({}, h.__s)), 
-                    preact_module_a(h.__s, $.getDerivedStateFromProps(m, h.__s))), y = h.props, p = h.state, 
-                    v) null == $.getDerivedStateFromProps && null != h.componentWillMount && h.componentWillMount(), 
+                    null != H.getDerivedStateFromProps && (h.__s == h.state && (h.__s = s({}, h.__s)), 
+                    s(h.__s, H.getDerivedStateFromProps(g, h.__s))), y = h.props, _ = h.state, v) null == H.getDerivedStateFromProps && null != h.componentWillMount && h.componentWillMount(), 
                     null != h.componentDidMount && h.__h.push(h.componentDidMount); else {
-                        if (null == $.getDerivedStateFromProps && m !== y && null != h.componentWillReceiveProps && h.componentWillReceiveProps(m, x), 
-                        !h.__e && null != h.shouldComponentUpdate && !1 === h.shouldComponentUpdate(m, h.__s, x) || u.__v === i.__v) {
-                            h.props = m, h.state = h.__s, u.__v !== i.__v && (h.__d = !1), h.__v = u, u.__e = i.__e, 
+                        if (null == H.getDerivedStateFromProps && g !== y && null != h.componentWillReceiveProps && h.componentWillReceiveProps(g, x), 
+                        !h.__e && null != h.shouldComponentUpdate && !1 === h.shouldComponentUpdate(g, h.__s, x) || u.__v === i.__v) {
+                            h.props = g, h.state = h.__s, u.__v !== i.__v && (h.__d = !1), h.__v = u, u.__e = i.__e, 
                             u.__k = i.__k, u.__k.forEach((function(n) {
                                 n && (n.__ = u);
                             })), h.__h.length && f.push(h);
                             break n;
                         }
-                        null != h.componentWillUpdate && h.componentWillUpdate(m, h.__s, x), null != h.componentDidUpdate && h.__h.push((function() {
-                            h.componentDidUpdate(y, p, k);
+                        null != h.componentWillUpdate && h.componentWillUpdate(g, h.__s, x), null != h.componentDidUpdate && h.__h.push((function() {
+                            h.componentDidUpdate(y, _, k);
                         }));
                     }
-                    if (h.context = x, h.props = m, h.__v = u, h.__P = n, A = l.__r, P = 0, "prototype" in $ && $.prototype.render) h.state = h.__s, 
-                    h.__d = !1, A && A(u), s = h.render(h.props, h.state, h.context); else do {
-                        h.__d = !1, A && A(u), s = h.render(h.props, h.state, h.context), h.state = h.__s;
-                    } while (h.__d && ++P < 25);
-                    h.state = h.__s, null != h.getChildContext && (t = preact_module_a(preact_module_a({}, t), h.getChildContext())), 
-                    v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, p)), 
-                    C = null != s && s.type === d && null == s.key ? s.props.children : s, w(n, Array.isArray(C) ? C : [ C ], u, i, t, o, r, f, e, c), 
+                    if (h.context = x, h.props = g, h.__v = u, h.__P = n, A = l.__r, C = 0, "prototype" in H && H.prototype.render) h.state = h.__s, 
+                    h.__d = !1, A && A(u), a = h.render(h.props, h.state, h.context); else do {
+                        h.__d = !1, A && A(u), a = h.render(h.props, h.state, h.context), h.state = h.__s;
+                    } while (h.__d && ++C < 25);
+                    h.state = h.__s, null != h.getChildContext && (t = s(s({}, t), h.getChildContext())), 
+                    v || null == h.getSnapshotBeforeUpdate || (k = h.getSnapshotBeforeUpdate(y, _)), 
+                    $ = null != a && a.type === p && null == a.key ? a.props.children : a, w(n, Array.isArray($) ? $ : [ $ ], u, i, t, o, r, f, e, c), 
                     h.base = u.__e, u.__h = null, h.__h.length && f.push(h), b && (h.__E = h.__ = null), 
                     h.__e = !1;
                 } else null == r && u.__v === i.__v ? (u.__k = i.__k, u.__e = i.__e) : u.__e = L(i.__e, u, i, t, o, r, f, c);
-                (s = l.diffed) && s(u);
+                (a = l.diffed) && a(u);
             } catch (n) {
                 u.__v = null, (c || null != r) && (u.__e = e, u.__h = !!c, r[r.indexOf(e)] = null), 
                 l.__e(n, u, i);
@@ -770,10 +769,10 @@
                 }
             }));
         }
-        function L(l, u, i, t, o, r, f, c) {
-            var s, a, v, y = i.props, p = u.props, d = u.type, _ = 0;
-            if ("svg" === d && (o = !0), null != r) for (;_ < r.length; _++) if ((s = r[_]) && "setAttribute" in s == !!d && (d ? s.localName === d : 3 === s.nodeType)) {
-                l = s, r[_] = null;
+        function L(l, u, i, t, o, r, e, c) {
+            var s, h, v, y = i.props, p = u.props, d = u.type, k = 0;
+            if ("svg" === d && (o = !0), null != r) for (;k < r.length; k++) if ((s = r[k]) && "setAttribute" in s == !!d && (d ? s.localName === d : 3 === s.nodeType)) {
+                l = s, r[k] = null;
                 break;
             }
             if (null == l) {
@@ -782,19 +781,19 @@
                 r = null, c = !1;
             }
             if (null === d) y === p || c && l.data === p || (l.data = p); else {
-                if (r = r && n.call(l.childNodes), a = (y = i.props || e).dangerouslySetInnerHTML, 
+                if (r = r && n.call(l.childNodes), h = (y = i.props || f).dangerouslySetInnerHTML, 
                 v = p.dangerouslySetInnerHTML, !c) {
-                    if (null != r) for (y = {}, _ = 0; _ < l.attributes.length; _++) y[l.attributes[_].name] = l.attributes[_].value;
-                    (v || a) && (v && (a && v.__html == a.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
+                    if (null != r) for (y = {}, k = 0; k < l.attributes.length; k++) y[l.attributes[k].name] = l.attributes[k].value;
+                    (v || h) && (v && (h && v.__html == h.__html || v.__html === l.innerHTML) || (l.innerHTML = v && v.__html || ""));
                 }
                 if (function(n, l, u, i, t) {
                     var o;
                     for (o in u) "children" === o || "key" === o || o in l || H(n, o, null, u[o], i);
                     for (o in l) t && "function" != typeof l[o] || "children" === o || "key" === o || "value" === o || "checked" === o || u[o] === l[o] || H(n, o, l[o], u[o], i);
-                }(l, p, y, o, c), v) u.__k = []; else if (_ = u.props.children, w(l, Array.isArray(_) ? _ : [ _ ], u, i, t, o && "foreignObject" !== d, r, f, r ? r[0] : i.__k && k(i, 0), c), 
-                null != r) for (_ = r.length; _--; ) null != r[_] && h(r[_]);
-                c || ("value" in p && void 0 !== (_ = p.value) && (_ !== l.value || "progress" === d && !_ || "option" === d && _ !== y.value) && H(l, "value", _, y.value, !1), 
-                "checked" in p && void 0 !== (_ = p.checked) && _ !== l.checked && H(l, "checked", _, y.checked, !1));
+                }(l, p, y, o, c), v) u.__k = []; else if (k = u.props.children, w(l, Array.isArray(k) ? k : [ k ], u, i, t, o && "foreignObject" !== d, r, e, r ? r[0] : i.__k && _(i, 0), c), 
+                null != r) for (k = r.length; k--; ) null != r[k] && preact_module_a(r[k]);
+                c || ("value" in p && void 0 !== (k = p.value) && (k !== l.value || "progress" === d && !k || "option" === d && k !== y.value) && H(l, "value", k, y.value, !1), 
+                "checked" in p && void 0 !== (k = p.checked) && k !== l.checked && H(l, "checked", k, y.checked, !1));
             }
             return l;
         }
@@ -817,12 +816,12 @@
                 t.base = t.__P = null;
             }
             if (t = n.__k) for (o = 0; o < t.length; o++) t[o] && N(t[o], u, "function" != typeof n.type);
-            i || null == n.__e || h(n.__e), n.__e = n.__d = void 0;
+            i || null == n.__e || preact_module_a(n.__e), n.__e = n.__d = void 0;
         }
         function O(n, l, u) {
             return this.constructor(n, u);
         }
-        n = c.slice, l = {
+        n = e.slice, l = {
             __e: function(n, l, u, i) {
                 for (var t, o, r; l = l.__; ) if ((t = l.__c) && !t.__) try {
                     if ((o = t.constructor) && null != o.getDerivedStateFromError && (t.setState(o.getDerivedStateFromError(n)), 
@@ -833,15 +832,14 @@
                 }
                 throw n;
             }
-        }, preact_module_u = 0, _.prototype.setState = function(n, l) {
+        }, preact_module_u = 0, d.prototype.setState = function(n, l) {
             var u;
-            u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = preact_module_a({}, this.state), 
-            "function" == typeof n && (n = n(preact_module_a({}, u), this.props)), n && preact_module_a(u, n), 
-            null != n && this.__v && (l && this.__h.push(l), m(this));
-        }, _.prototype.forceUpdate = function(n) {
-            this.__v && (this.__e = !0, n && this.__h.push(n), m(this));
-        }, _.prototype.render = d, preact_module_t = [], preact_module_o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, 
-        g.__r = 0;
+            u = null != this.__s && this.__s !== this.state ? this.__s : this.__s = s({}, this.state), 
+            "function" == typeof n && (n = n(s({}, u), this.props)), n && s(u, n), null != n && this.__v && (l && this.__h.push(l), 
+            b(this));
+        }, d.prototype.forceUpdate = function(n) {
+            this.__v && (this.__e = !0, n && this.__h.push(n), b(this));
+        }, d.prototype.render = p, preact_module_t = [], g.__r = 0;
         var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
         function hooks_module_p(t, r) {
             l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
@@ -2919,18 +2917,18 @@
         };
         function ErrorMessage(_ref) {
             var resetFunc = _ref.resetFunc;
-            return v("div", {
+            return h("div", {
                 id: "error-view"
-            }, v("div", {
+            }, h("div", {
                 className: "error-message"
-            }, _ref.message || "An issue has occurred"), v("button", {
+            }, _ref.message || "An issue has occurred"), h("button", {
                 className: "reset-button",
                 type: "button",
                 onClick: resetFunc
             }, "Try scanning again"));
         }
         function QRCodeElement(_ref2) {
-            return v("img", {
+            return h("img", {
                 id: "qr-code",
                 src: "data:image/svg+xml;base64," + btoa(_ref2.svgString),
                 alt: "QR Code"
@@ -2974,94 +2972,94 @@
                 }
             }))).render(Object(jsx_pragmatic.preact)({
                 Preact: {
-                    h: v
+                    h: h
                 }
             }));
             var _ref, _ref$logoColor, logoColor, props, primary;
         }
         function InstructionIcon(_ref3) {
             var _ref3$stylingClass = _ref3.stylingClass;
-            return v("svg", {
+            return h("svg", {
                 className: void 0 === _ref3$stylingClass ? "instruction-icon" : _ref3$stylingClass,
                 width: "68",
                 height: "47",
                 viewBox: "0 0 68 47",
                 fill: "none",
                 xmlns: "http://www.w3.org/2000/svg"
-            }, v("rect", {
+            }, h("rect", {
                 x: "11.5",
                 y: "6.90039",
                 width: "20.7",
                 height: "29.9",
                 fill: "white"
-            }), v("path", {
+            }), h("path", {
                 "fill-rule": "evenodd",
                 "clip-rule": "evenodd",
                 d: "M30.82 2.2998H12.88C10.8475 2.2998 9.19995 3.98283 9.19995 6.05894V42.2407C9.19995 44.3168 10.8475 45.9998 12.88 45.9998H30.82C32.8524 45.9998 34.5 44.3168 34.5 42.2407V6.05894C34.5 3.98283 32.8524 2.2998 30.82 2.2998ZM21.8499 42.6635C20.8337 42.6635 20.0099 41.822 20.0099 40.784C20.0099 39.7459 20.8337 38.9044 21.8499 38.9044C22.8661 38.9044 23.6899 39.7459 23.6899 40.784C23.6899 41.822 22.8661 42.6635 21.8499 42.6635ZM11.9599 36.414H31.7399V7.32767H11.9599V36.414Z",
                 fill: "#888C94"
-            }), v("path", {
+            }), h("path", {
                 d: "M25.7367 12.4121C26.107 13.0217 26.274 13.6495 26.274 14.4425C26.274 16.9719 24.1071 20.2578 22.3483 22.5651H18.3314L16.7205 12.966L20.2378 12.6333L21.0894 19.4636C21.8853 18.1716 22.8674 16.1412 22.8674 14.757C22.8674 13.9992 22.7371 13.4832 22.5335 13.0582L25.7367 12.4121Z",
                 fill: "#008CFF"
-            }), v("circle", {
+            }), h("circle", {
                 cx: "14.5",
                 cy: "33.5",
                 r: "1.25",
                 fill: "white",
                 stroke: "#0074DE",
                 "stroke-width": "0.5"
-            }), v("circle", {
+            }), h("circle", {
                 cx: "18.5",
                 cy: "33.5",
                 r: "1.25",
                 fill: "white",
                 stroke: "#0074DE",
                 "stroke-width": "0.5"
-            }), v("rect", {
+            }), h("rect", {
                 x: "21",
                 y: "32",
                 width: "9",
                 height: "3",
                 rx: "1.5",
                 fill: "#0074DE"
-            }), v("circle", {
+            }), h("circle", {
                 cx: "49",
                 cy: "26",
                 r: "18",
                 fill: "white",
                 stroke: "#2F3033",
                 "stroke-width": "2"
-            }), v("path", {
+            }), h("path", {
                 "fill-rule": "evenodd",
                 "clip-rule": "evenodd",
                 d: "M56.7188 16.5H51.9688C50.985 16.5 50.1875 17.2975 50.1875 18.2812V23.0312C50.1875 24.015 50.985 24.8125 51.9688 24.8125H56.7188C57.7025 24.8125 58.5 24.015 58.5 23.0312V18.2812C58.5 17.2975 57.7025 16.5 56.7188 16.5ZM51.375 18.2812C51.375 17.9533 51.6408 17.6875 51.9688 17.6875H56.7188C57.0467 17.6875 57.3125 17.9533 57.3125 18.2812V23.0312C57.3125 23.3592 57.0467 23.625 56.7188 23.625H51.9688C51.6408 23.625 51.375 23.3592 51.375 23.0312V18.2812ZM41.875 19.5083C41.875 19.1585 42.1585 18.875 42.5083 18.875H44.8042C45.154 18.875 45.4375 19.1585 45.4375 19.5083V21.8042C45.4375 22.154 45.154 22.4375 44.8042 22.4375H42.5083C42.1585 22.4375 41.875 22.154 41.875 21.8042V19.5083ZM52.5625 19.5083C52.5625 19.1585 52.846 18.875 53.1958 18.875H55.4917C55.8415 18.875 56.125 19.1585 56.125 19.5083V21.8042C56.125 22.154 55.8415 22.4375 55.4917 22.4375H53.1958C52.846 22.4375 52.5625 22.154 52.5625 21.8042V19.5083ZM50.8208 27.1875C50.471 27.1875 50.1875 27.471 50.1875 27.8208V28.9292C50.1875 29.279 50.471 29.5625 50.8208 29.5625H51.9292C52.279 29.5625 52.5625 29.279 52.5625 28.9292V27.8208C52.5625 27.471 52.279 27.1875 51.9292 27.1875H50.8208ZM50.1875 33.7583C50.1875 33.4085 50.471 33.125 50.8208 33.125H51.9292C52.279 33.125 52.5625 33.4085 52.5625 33.7583V34.8667C52.5625 35.2165 52.279 35.5 51.9292 35.5H50.8208C50.471 35.5 50.1875 35.2165 50.1875 34.8667V33.7583ZM56.7583 27.1875C56.4085 27.1875 56.125 27.471 56.125 27.8208V28.9292C56.125 29.279 56.4085 29.5625 56.7583 29.5625H57.8667C58.2165 29.5625 58.5 29.279 58.5 28.9292V27.8208C58.5 27.471 58.2165 27.1875 57.8667 27.1875H56.7583ZM56.125 33.7583C56.125 33.4085 56.4085 33.125 56.7583 33.125H57.8667C58.2165 33.125 58.5 33.4085 58.5 33.7583V34.8667C58.5 35.2165 58.2165 35.5 57.8667 35.5H56.7583C56.4085 35.5 56.125 35.2165 56.125 34.8667V33.7583ZM53.7895 30.1562C53.4398 30.1562 53.1562 30.4398 53.1562 30.7895V31.898C53.1562 32.2477 53.4398 32.5312 53.7895 32.5312H54.898C55.2477 32.5312 55.5312 32.2477 55.5312 31.898V30.7895C55.5312 30.4398 55.2477 30.1562 54.898 30.1562H53.7895ZM41.875 30.1958C41.875 29.846 42.1585 29.5625 42.5083 29.5625H44.8042C45.154 29.5625 45.4375 29.846 45.4375 30.1958V32.4917C45.4375 32.8415 45.154 33.125 44.8042 33.125H42.5083C42.1585 33.125 41.875 32.8415 41.875 32.4917V30.1958ZM41.2812 27.1875H46.0312C47.015 27.1875 47.8125 27.985 47.8125 28.9688V33.7188C47.8125 34.7025 47.015 35.5 46.0312 35.5H41.2812C40.2975 35.5 39.5 34.7025 39.5 33.7188V28.9688C39.5 27.985 40.2975 27.1875 41.2812 27.1875ZM41.2812 28.375C40.9533 28.375 40.6875 28.6408 40.6875 28.9688V33.7188C40.6875 34.0467 40.9533 34.3125 41.2812 34.3125H46.0312C46.3592 34.3125 46.625 34.0467 46.625 33.7188V28.9688C46.625 28.6408 46.3592 28.375 46.0312 28.375H41.2812ZM41.2812 16.5H46.0312C47.015 16.5 47.8125 17.2975 47.8125 18.2812V23.0312C47.8125 24.015 47.015 24.8125 46.0312 24.8125H41.2812C40.2975 24.8125 39.5 24.015 39.5 23.0312V18.2812C39.5 17.2975 40.2975 16.5 41.2812 16.5ZM41.2812 17.6875C40.9533 17.6875 40.6875 17.9533 40.6875 18.2812V23.0312C40.6875 23.3592 40.9533 23.625 41.2812 23.625H46.0312C46.3592 23.625 46.625 23.3592 46.625 23.0312V18.2812C46.625 17.9533 46.3592 17.6875 46.0312 17.6875H41.2812Z",
                 fill: "#008CFF"
-            }), v("path", {
+            }), h("path", {
                 d: "M36 13.0004L15 33",
                 stroke: "#2F3033"
-            }), v("path", {
+            }), h("path", {
                 d: "M43.4999 43.4991L14.4999 32.9995",
                 stroke: "#2F3033"
             }));
         }
         function VenmoMark() {
-            return v("svg", {
+            return h("svg", {
                 id: "venmo-mark",
                 xmlns: "http://www.w3.org/2000/svg",
                 viewBox: "0 0 48 48"
-            }, v("path", {
+            }, h("path", {
                 d: "M42.3 2L28.5 4.8c.8 1.9 1.4 4.1 1.4 7.4 0 6-4.2 14.8-7.7 20.4L18.5 3 3.3 4.5l7 41.5h17.4c7.7-10 17-24.3 17-35.2 0-3.4-.8-6.1-2.4-8.8z",
                 fill: "#fff"
             }));
         }
         function AuthMark() {
-            return v("svg", {
+            return h("svg", {
                 id: "success-mark",
                 width: "59",
                 height: "59",
                 viewBox: "0 0 59 59",
                 fill: "none",
                 xmlns: "http://www.w3.org/2000/svg"
-            }, v("rect", {
+            }, h("rect", {
                 x: "1",
                 y: "1",
                 width: "57",
@@ -3069,17 +3067,17 @@
                 rx: "28.5",
                 fill: "#148572",
                 stroke: "#888C94"
-            }), v("g", {
+            }), h("g", {
                 "clip-path": "url(#clip0)"
-            }, v("path", {
+            }, h("path", {
                 d: "M24.0068 40.8397C22.921 39.7538 22.921 37.9933 24.0068 36.9075L39.2933 21.621C40.3791 20.5352 42.1396 20.5352 43.2255 21.621C44.3113 22.7069 44.3113 24.4674 43.2255 25.5532L27.939 40.8397C26.8532 41.9255 25.0927 41.9255 24.0068 40.8397Z",
                 fill: "white"
-            }), v("path", {
+            }), h("path", {
                 d: "M27.9763 40.8397C26.8905 41.9255 25.13 41.9255 24.0441 40.8397L17.1628 33.9583C16.0769 32.8725 16.0769 31.112 17.1628 30.0261C18.2486 28.9403 20.0091 28.9403 21.095 30.0261L27.9763 36.9075C29.0622 37.9933 29.0622 39.7538 27.9763 40.8397Z",
                 fill: "white"
-            })), v("defs", null, v("clipPath", {
+            })), h("defs", null, h("clipPath", {
                 id: "clip0"
-            }, v("rect", {
+            }, h("rect", {
                 width: "27.8049",
                 height: "27.8049",
                 fill: "white",
@@ -3166,7 +3164,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.105", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.106", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
@@ -3201,13 +3199,13 @@
             }));
             return logger;
         }
-        var radioSvg = v("svg", {
+        var radioSvg = h("svg", {
             width: "40",
             height: "40",
             viewBox: "0 0 40 40",
             fill: "none",
             xmlns: "http://www.w3.org/2000/svg"
-        }, v("rect", {
+        }, h("rect", {
             x: "0.25",
             y: "0.25",
             width: "39.5",
@@ -3216,18 +3214,18 @@
             stroke: "#888C94",
             "stroke-width": "0.5"
         }));
-        var checkedRadioSvg = v("svg", {
+        var checkedRadioSvg = h("svg", {
             width: "40",
             height: "40",
             viewBox: "0 0 40 40",
             fill: "none",
             xmlns: "http://www.w3.org/2000/svg"
-        }, v("circle", {
+        }, h("circle", {
             cx: "20",
             cy: "20",
             r: "12",
             fill: "#148572"
-        }), v("rect", {
+        }), h("rect", {
             x: "0.25",
             y: "0.25",
             width: "39.5",
@@ -3255,29 +3253,29 @@
                 text: "I prefer not to say",
                 reason: "prefer_not_to_say"
             } ].map((function(answer) {
-                return v("div", {
+                return h("div", {
                     class: "answer"
-                }, v("input", {
+                }, h("input", {
                     type: "radio",
                     id: answer.reason,
                     value: answer.reason,
                     checked: answer.reason === survey.reason,
                     onChange: onChange
-                }), v("label", {
+                }), h("label", {
                     for: answer.reason
                 }, answer.reason === survey.reason ? checkedRadioSvg : radioSvg, answer.text));
             }));
-            return v("div", {
+            return h("div", {
                 id: "survey"
-            }, v("h1", null, "We’re sorry to see you leave!"), v("p", {
+            }, h("h1", null, "We’re sorry to see you leave!"), h("p", {
                 class: "message"
-            }, "Please let us know why. Your feedback is important to us."), v("div", {
+            }, "Please let us know why. Your feedback is important to us."), h("div", {
                 class: "answers"
-            }, answersElements), v("button", {
+            }, answersElements), h("button", {
                 type: "button",
                 class: "continue-button",
                 onClick: survey.disable
-            }, "Continue payment"), v("button", {
+            }, "Continue payment"), h("button", {
                 type: "button",
                 class: "leave-button",
                 onClick: onCloseClick
@@ -3408,63 +3406,63 @@
                 }
                 return cancel();
             };
-            var errorMessage = v(ErrorMessage, {
+            var errorMessage = h(ErrorMessage, {
                 message: errorText,
                 resetFunc: function() {
                     return setState("qr_default");
                 }
             });
-            var frontView = v("div", {
+            var frontView = h("div", {
                 id: "front-view",
                 className: "card"
-            }, v("p", {
+            }, h("p", {
                 id: "fee-disclaimer"
-            }, "No fees no matter how you pay"), v("div", {
+            }, "No fees no matter how you pay"), h("div", {
                 id: "instructions"
-            }, v(InstructionIcon, {
+            }, h(InstructionIcon, {
                 stylingClass: "instruction-icon"
-            }), v("span", null, "To pay, scan the QR code with your Venmo app")), v(QRCodeElement, {
+            }), h("span", null, "To pay, scan the QR code with your Venmo app")), h(QRCodeElement, {
                 svgString: svgString
-            }), v(Logo, null));
-            var surveyElement = v(Survey, {
+            }), h(Logo, null));
+            var surveyElement = h(Survey, {
                 survey: survey,
                 onCloseClick: onCloseClick
             });
             var content = survey.isEnabled && "qr_default" === state ? surveyElement : frontView;
-            var escapePathFooter = !survey.isEnabled && "qr_default" === state && v("p", {
+            var escapePathFooter = !survey.isEnabled && "qr_default" === state && h("p", {
                 className: "escape-path"
-            }, "Don't have the app? Pay with ", v("span", {
+            }, "Don't have the app? Pay with ", h("span", {
                 className: "escape-path__link",
                 onClick: function() {
                     return handleClick("paypal");
                 }
-            }, "PayPal"), " or ", v("span", {
+            }, "PayPal"), " or ", h("span", {
                 className: "escape-path__link",
                 onClick: function() {
                     return handleClick("card");
                 }
             }, "Credit/Debit card"));
-            return v(d, null, v("style", {
+            return h(p, null, h("style", {
                 nonce: window.xprops.cspNonce
-            }, " ", '\n    * {\n        box-sizing: border-box;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n    }\n    html, body {\n        display: flex;\n        position: fixed;\n        width: 100%;\n        height: 100%;\n        top: 0;\n        left: 0;\n        align-items: center;\n        justify-content: center;\n    }\n    body {\n        flex-direction: column;\n    }\n    #error-view {\n        width: 100%;\n        height: 100%;\n        padding: 1.5em;\n        justify-content: center;\n    }\n    #error-view .error-message,\n    #error-view .reset-button {\n        color: #FFFFFF;\n        text-align: center;\n        line-height: 16px;\n    }\n    #error-view .error-message {\n        margin-bottom: 2em;\n        word-break: break-word;\n    }\n    #error-view .reset-button {\n        cursor: pointer;\n        border: 0;\n        border-radius: 24px;\n        padding: 12px;\n        background: #3D93CE;\n        line-height: 24px;\n        font-weight: 700;\n        width: 300px;\n    }\n    .card,\n    #error-view {\n        display: inline-flex;\n        align-items: center;\n        flex-direction: column;\n    }\n    .card {\n        border-radius: 8px;\n        min-width: 280px;\n        min-height: 320px;\n        backface-visibility: hidden;\n        -webkit-backface-visibility: hidden;\n        transition: transform 1s;\n        transform-style: preserve-3d;\n    }\n    .card * {\n        box-sizing: content-box;\n    }\n    #view-boxes {\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        height: 100%;\n        width: 100%;\n    }\n    #view-boxes.qr_scanned #front-view,\n    #view-boxes.qr_authorized #front-view {\n        transform: rotateY(180deg);\n        position: absolute;\n    }\n    #view-boxes #back-view {width: 320px;}\n    #view-boxes.qr_scanned #back-view,\n    #view-boxes.qr_authorized #back-view {\n        transform: rotateY(0deg);\n        position: relative;\n    }\n    #view-boxes #back-view #success-mark,\n    #view-boxes #back-view .success-message {\n        opacity: 0;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark,\n    #view-boxes.qr_authorized #back-view .success-message {\n        opacity: 1;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark {\n        transform: rotate(720deg);\n    }\n    #view-boxes.qr_authorized #back-view .auth-message {\n        opacity: 0;\n    }\n    #front-view {\n        background-color: white;\n        border: 1px solid #888C94;\n        z-index: 2;\n        transform: rotateY(0deg);\n        justify-content: flex-end;\n        width: 462px;\n    }\n    #front-view > svg,\n    #front-view > img {\n        padding: 16px 16px 0px;\n    }\n    #front-view > img + img {\n        padding-top: 12px;\n        padding-bottom: 32px;\n    }\n    #qr-code {\n        min-width: 160px;\n        min-height: 160px;\n        width: calc(100% - 32px);\n        max-width: 325px;\n    }\n    #instructions {\n        background-color: #FFFF;\n        border-top-left-radius: 8px;\n        border-top-right-radius: 8px;\n        box-sizing: border-box;\n        margin-top: 16px;\n        display: flex;\n        align-items: center;\n        font-size: 14px;\n        line-height: 16px;\n        max-width: 250px;\n        width: 100%;\n    }\n    .instruction-icon {\n        min-width: 68px;\n        min-height: 46px;\n        margin-right: 16px;\n    }\n    #fee-disclaimer{\n        margin: 0;\n        padding-top: 32px;\n        padding-left: 16px;\n        padding-right: 16px;\n        font-size: 20px;\n        color: #2F3033;\n    }\n    #back-view {\n        position: absolute;\n        transform: rotateY(-180deg);\n        background-color: #3D93CE;\n        justify-content: center;\n        font-size: 18px;\n        line-height: 16px;\n        text-align: center;\n        color: #FFFFFF;\n    }\n    #back-view .auth-message,\n    #back-view .success-message {\n        position: absolute;\n        bottom: -30px;\n        white-space: nowrap;\n        transition: opacity 500ms;\n    }\n    #back-view .mark {\n        position: relative ;\n    }\n    #venmo-mark{\n        width: 50%;\n    }\n    #success-mark {\n        position: absolute;\n        left: 50%;\n        bottom: -10%;\n        transition: transform 500ms, opacity 500ms;\n        transition-delay: 350ms;\n    }\n    #close {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n        z-index: 10;\n    }\n    #close:hover {\n        opacity: 1;\n    }\n    #close:before, #close:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 20px;\n        width: 2px;\n        background-color: #FFF;\n    }\n    #close:before {\n        transform: rotate(45deg);\n    }\n    #close:after {\n        transform: rotate(-45deg);\n    }\n    #survey {\n        background: #FFFFFF;\n        height: 542px;\n        width: 500px;\n        border-radius: 8px;\n    }\n    #survey h1 {\n        width: 423px;\n        font-weight: 500;\n        font-size: 24px;\n        line-height: 32px;\n        text-align: center;\n        margin: auto;\n        margin-top: 30px;\n    }\n    #survey button {\n        display: block;\n        margin: auto;\n        border: none;\n        font-family: sans-serif;\n        cursor: pointer;\n        font-weight: bold;\n    }\n    #survey button.continue-button {\n        margin-top: 40px;\n        min-height: 48px;\n        width:  335px;\n        background: #0074DE;\n        height: 24px;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        color: #FFFFFF;\n        border-radius: 24px;\n        display: block;\n    }\n    #survey button.leave-button {\n        margin-top: 10px;\n        height: 48px;\n        width:  335px;\n        color: #0074DE;\n        background: none;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        display: block;\n    }\n    #survey .message {\n        width: 333px;\n        font-family: sans-serif;\n        font-size: 16px;\n        line-height: 20px;\n        text-align: center;\n        margin: auto;\n        margin-top: 8px;\n    }\n\n    #survey .answers {\n        width: 400px;\n        font-size: 16px;\n        line-height: 20px;\n        margin: auto;\n        cursor: pointer;\n    }\n    #survey .answers .answer {\n        margin-top: 28px;\n        display: flex;\n        align-items: center;\n    }\n    #survey label {\n        font-family: sans-serif;\n        font-size: 16px;\n        cursor: pointer;\n        display: flex;\n        align-items: center;\n    }\n    #survey .answers svg{\n        margin-right: 8px;\n        min-width: 40px;\n    }\n    #survey .answers input{\n        display: none;\n    }\n    #survey .answers input:focus::after {\n        content: "";\n        min-width: 44px;\n        height: 44px;\n        position: absolute;\n        top: -2px;\n        left: -2px;\n        border: solid 1px black;\n        border-radius: 50%;\n    }\n    .escape-path {\n        background-color: white;\n        color: #2F3033;\n        width: 100%;\n        text-align: center;\n        padding: 1rem;\n        margin: 0;\n        border-bottom-left-radius: 16px;\n        border-bottom-right-radius: 16px;\n    }\n    .escape-path__link {\n        font-weight: 600;\n        color: #008CFF;\n    }\n    .escape-path__link:hover {\n        cursor: pointer;\n    }\n    ', " "), v("a", {
+            }, " ", '\n    * {\n        box-sizing: border-box;\n        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;\n        text-transform: none;\n    }\n    html, body {\n        display: flex;\n        position: fixed;\n        width: 100%;\n        height: 100%;\n        top: 0;\n        left: 0;\n        align-items: center;\n        justify-content: center;\n    }\n    body {\n        flex-direction: column;\n    }\n    #error-view {\n        width: 100%;\n        height: 100%;\n        padding: 1.5em;\n        justify-content: center;\n    }\n    #error-view .error-message,\n    #error-view .reset-button {\n        color: #FFFFFF;\n        text-align: center;\n        line-height: 16px;\n    }\n    #error-view .error-message {\n        margin-bottom: 2em;\n        word-break: break-word;\n    }\n    #error-view .reset-button {\n        cursor: pointer;\n        border: 0;\n        border-radius: 24px;\n        padding: 12px;\n        background: #3D93CE;\n        line-height: 24px;\n        font-weight: 700;\n        width: 300px;\n    }\n    .card,\n    #error-view {\n        display: inline-flex;\n        align-items: center;\n        flex-direction: column;\n    }\n    .card {\n        border-radius: 8px;\n        min-width: 280px;\n        min-height: 320px;\n        backface-visibility: hidden;\n        -webkit-backface-visibility: hidden;\n        transition: transform 1s;\n        transform-style: preserve-3d;\n    }\n    .card * {\n        box-sizing: content-box;\n    }\n    #view-boxes {\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        height: 100%;\n        width: 100%;\n    }\n    #view-boxes.qr_scanned #front-view,\n    #view-boxes.qr_authorized #front-view {\n        transform: rotateY(180deg);\n        position: absolute;\n    }\n    #view-boxes #back-view {width: 320px;}\n    #view-boxes.qr_scanned #back-view,\n    #view-boxes.qr_authorized #back-view {\n        transform: rotateY(0deg);\n        position: relative;\n    }\n    #view-boxes #back-view #success-mark,\n    #view-boxes #back-view .success-message {\n        opacity: 0;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark,\n    #view-boxes.qr_authorized #back-view .success-message {\n        opacity: 1;\n    }\n    #view-boxes.qr_authorized #back-view #success-mark {\n        transform: rotate(720deg);\n    }\n    #view-boxes.qr_authorized #back-view .auth-message {\n        opacity: 0;\n    }\n    #front-view {\n        background-color: white;\n        border: 1px solid #888C94;\n        z-index: 2;\n        transform: rotateY(0deg);\n        justify-content: flex-end;\n        width: 462px;\n    }\n    #front-view > svg,\n    #front-view > img {\n        padding: 16px 16px 0px;\n    }\n    #front-view > img + img {\n        padding-top: 12px;\n        padding-bottom: 32px;\n    }\n    #qr-code {\n        min-width: 160px;\n        min-height: 160px;\n        width: calc(100% - 32px);\n        max-width: 325px;\n    }\n    #instructions {\n        background-color: #FFFF;\n        border-top-left-radius: 8px;\n        border-top-right-radius: 8px;\n        box-sizing: border-box;\n        margin-top: 16px;\n        display: flex;\n        align-items: center;\n        font-size: 14px;\n        line-height: 16px;\n        max-width: 250px;\n        width: 100%;\n    }\n    .instruction-icon {\n        min-width: 68px;\n        min-height: 46px;\n        margin-right: 16px;\n    }\n    #fee-disclaimer{\n        margin: 0;\n        padding-top: 32px;\n        padding-left: 16px;\n        padding-right: 16px;\n        font-size: 20px;\n        color: #2F3033;\n    }\n    #back-view {\n        position: absolute;\n        transform: rotateY(-180deg);\n        background-color: #3D93CE;\n        justify-content: center;\n        font-size: 18px;\n        line-height: 16px;\n        text-align: center;\n        color: #FFFFFF;\n    }\n    #back-view .auth-message,\n    #back-view .success-message {\n        position: absolute;\n        bottom: -30px;\n        white-space: nowrap;\n        transition: opacity 500ms;\n    }\n    #back-view .mark {\n        position: relative ;\n    }\n    #venmo-mark{\n        width: 50%;\n    }\n    #success-mark {\n        position: absolute;\n        left: 50%;\n        bottom: -10%;\n        transition: transform 500ms, opacity 500ms;\n        transition-delay: 350ms;\n    }\n    #close {\n        position: absolute;\n        right: 16px;\n        top: 16px;\n        width: 16px;\n        height: 16px;\n        opacity: 0.6;\n        z-index: 10;\n    }\n    #close:hover {\n        opacity: 1;\n    }\n    #close:before, #close:after {\n        position: absolute;\n        left: 8px;\n        content: \' \';\n        height: 20px;\n        width: 2px;\n        background-color: #FFF;\n    }\n    #close:before {\n        transform: rotate(45deg);\n    }\n    #close:after {\n        transform: rotate(-45deg);\n    }\n    #survey {\n        background: #FFFFFF;\n        height: 542px;\n        width: 500px;\n        border-radius: 8px;\n    }\n    #survey h1 {\n        width: 423px;\n        font-weight: 500;\n        font-size: 24px;\n        line-height: 32px;\n        text-align: center;\n        margin: auto;\n        margin-top: 30px;\n    }\n    #survey button {\n        display: block;\n        margin: auto;\n        border: none;\n        font-family: sans-serif;\n        cursor: pointer;\n        font-weight: bold;\n    }\n    #survey button.continue-button {\n        margin-top: 40px;\n        min-height: 48px;\n        width:  335px;\n        background: #0074DE;\n        height: 24px;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        color: #FFFFFF;\n        border-radius: 24px;\n        display: block;\n    }\n    #survey button.leave-button {\n        margin-top: 10px;\n        height: 48px;\n        width:  335px;\n        color: #0074DE;\n        background: none;\n        font-size: 18px;\n        line-height: 24px;\n        text-align: center;\n        display: block;\n    }\n    #survey .message {\n        width: 333px;\n        font-family: sans-serif;\n        font-size: 16px;\n        line-height: 20px;\n        text-align: center;\n        margin: auto;\n        margin-top: 8px;\n    }\n\n    #survey .answers {\n        width: 400px;\n        font-size: 16px;\n        line-height: 20px;\n        margin: auto;\n        cursor: pointer;\n    }\n    #survey .answers .answer {\n        margin-top: 28px;\n        display: flex;\n        align-items: center;\n    }\n    #survey label {\n        font-family: sans-serif;\n        font-size: 16px;\n        cursor: pointer;\n        display: flex;\n        align-items: center;\n    }\n    #survey .answers svg{\n        margin-right: 8px;\n        min-width: 40px;\n    }\n    #survey .answers input{\n        display: none;\n    }\n    #survey .answers input:focus::after {\n        content: "";\n        min-width: 44px;\n        height: 44px;\n        position: absolute;\n        top: -2px;\n        left: -2px;\n        border: solid 1px black;\n        border-radius: 50%;\n    }\n    .escape-path {\n        background-color: white;\n        color: #2F3033;\n        width: 100%;\n        text-align: center;\n        padding: 1rem;\n        margin: 0;\n        border-bottom-left-radius: 16px;\n        border-bottom-right-radius: 16px;\n    }\n    .escape-path__link {\n        font-weight: 600;\n        color: #008CFF;\n    }\n    .escape-path__link:hover {\n        cursor: pointer;\n    }\n    ', " "), h("a", {
                 href: "#",
                 id: "close",
                 "aria-label": "close",
                 role: "button",
                 onClick: onCloseClick
-            }), v("div", {
+            }), h("div", {
                 id: "view-boxes",
                 className: state
-            }, "qr_error" === state ? errorMessage : content, v("div", {
+            }, "qr_error" === state ? errorMessage : content, h("div", {
                 className: "card",
                 id: "back-view"
-            }, v("span", {
+            }, h("span", {
                 className: "mark"
-            }, v(VenmoMark, null), v(AuthMark, null)), v("div", {
+            }, h(VenmoMark, null), h(AuthMark, null)), h("div", {
                 className: "auth-message"
-            }, "Go to your Venmo app and authorize"), v("div", {
+            }, "Go to your Venmo app and authorize"), h("div", {
                 className: "success-message"
-            }, "Venmo account authorized")), window.xprops.debug && v("button", {
+            }, "Venmo account authorized")), window.xprops.debug && h("button", {
                 type: "button",
                 style: {
                     position: "absolute",
@@ -3480,11 +3478,13 @@
         function renderQRCode(_ref2) {
             var svgString = _ref2.svgString;
             qrcard_logger = setupNativeQRLogger();
-            u = v(QRCard, {
+            !function(u, i, t) {
+                var r, e;
+                l.__ && l.__(u, i), r = !1 ? null : i.__k, e = [], j(i, u = i.__k = h(p, null, [ u ]), r || f, f, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, e, r ? r.__e : i.firstChild, !1), 
+                z(e, u);
+            }(h(QRCard, {
                 svgString: svgString
-            }), i = util_getBody(), l.__ && l.__(u, i), r = !1 ? null : i.__k, f = [], j(i, u = i.__k = v(d, null, [ u ]), r || e, e, void 0 !== i.ownerSVGElement, r ? null : i.firstChild ? n.call(i.childNodes) : null, f, r ? r.__e : i.firstChild, !1), 
-            z(f, u);
-            var u, i, r, f;
+            }), util_getBody());
         }
     } ]);
 }));

@@ -3,14 +3,15 @@
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { patchOrder, type OrderResponse, getShippingOrderInfo } from '../api';
-import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_CUSTOM_KEY } from '../constants';
+import { getShippingOrderInfo, patchShipping, type OrderResponse } from '../api';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
 import { getLogger } from '../lib';
 import type { OrderAmount } from '../types';
 
 import type { CreateOrder } from './createOrder';
 import {
     type ShippingOption,
+    type Query,
     type ON_SHIPPING_CHANGE_EVENT,
     ON_SHIPPING_CHANGE_PATHS,
     SHIPPING_OPTIONS_ERROR_MESSAGES
@@ -27,7 +28,7 @@ export type XOnShippingOptionsChangeDataType = {|
 
 export type XOnShippingOptionsChangeActionsType = {|
     patch : () => ZalgoPromise<OrderResponse>,
-    query : () => ZalgoPromise<string>,
+    query : () => ZalgoPromise<$ReadOnlyArray<Query>>,
     reject : (string) => ZalgoPromise<void>,
     updateShippingDiscount : ({| discount : string |}) => XOnShippingOptionsChangeActionsType,
     updateShippingOption : ({| option : ShippingOption |}) => XOnShippingOptionsChangeActionsType
@@ -63,7 +64,7 @@ export function buildXOnShippingOptionsChangeData(data : OnShippingOptionsChange
     };
 }
 
-export function buildXOnShippingOptionsChangeActions({ data, actions: passedActions, orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : {| data : OnShippingOptionsChangeData, actions : OnShippingOptionsChangeActionsType, orderID : string, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string, forceRestAPI : boolean |}) : XOnShippingOptionsChangeActionsType {
+export function buildXOnShippingOptionsChangeActions({ clientID, data, actions: passedActions, orderID } : {| clientID: string, data : OnShippingOptionsChangeData, actions : OnShippingOptionsChangeActionsType, orderID : string |}) : XOnShippingOptionsChangeActionsType {
     const patchQueries = {};
 
     let newAmount;
@@ -137,7 +138,7 @@ export function buildXOnShippingOptionsChangeActions({ data, actions: passedActi
                     queries = convertQueriesToArray({ queries: patchQueries });
                 }
 
-                return patchOrder(orderID, queries, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI }).catch(() => {
+                return patchShipping({ clientID, orderID, data: queries }).catch(() => {
                     throw new Error('Order could not be patched');
                 });
             });
@@ -155,7 +156,7 @@ export function buildXOnShippingOptionsChangeActions({ data, actions: passedActi
                     queries = convertQueriesToArray({ queries: patchQueries });
                 }
                 
-                return JSON.stringify(queries);
+                return queries;
             });
         }
 
@@ -168,15 +169,12 @@ export type OnShippingOptionsChange = (OnShippingOptionsChangeData, OnShippingOp
 
 type OnShippingOptionsChangeXProps = {|
     onShippingOptionsChange : ?XOnShippingOptionsChange,
-    partnerAttributionID : ?string,
     clientID : string
 |};
 
-export function getOnShippingOptionsChange({ onShippingOptionsChange, partnerAttributionID, clientID } : OnShippingOptionsChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingOptionsChange {
-    const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
-
+export function getOnShippingOptionsChange({ onShippingOptionsChange, clientID } : OnShippingOptionsChangeXProps, { createOrder } : {| createOrder : CreateOrder |}) : ?OnShippingOptionsChange {
     if (onShippingOptionsChange) {
-        return ({ buyerAccessToken, forceRestAPI = upgradeLSAT, ...data }, actions) => {
+        return ({ ...data }, actions) => {
             return createOrder().then(orderID => {
                 getLogger()
                     .info('button_shipping_options_change')
@@ -188,7 +186,7 @@ export function getOnShippingOptionsChange({ onShippingOptionsChange, partnerAtt
                         [FPTI_CUSTOM_KEY.SHIPPING_CALLBACK_INVOKED]: '1'
                     }).flush();
                 
-                return onShippingOptionsChange(buildXOnShippingOptionsChangeData(data), buildXOnShippingOptionsChangeActions({ data, actions, orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI }));
+                return onShippingOptionsChange(buildXOnShippingOptionsChangeData(data), buildXOnShippingOptionsChangeActions({ clientID, data, actions, orderID }));
             });
         };
     }

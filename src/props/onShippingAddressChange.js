@@ -3,14 +3,15 @@
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { COUNTRY, FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { patchOrder, type OrderResponse, getShippingOrderInfo } from '../api';
-import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, LSAT_UPGRADE_EXCLUDED_MERCHANTS, FPTI_CUSTOM_KEY } from '../constants';
+import { getShippingOrderInfo, type OrderResponse, patchShipping } from '../api';
+import { FPTI_TRANSITION, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
 import { getLogger } from '../lib';
 import type { OrderAmount } from '../types';
  
 import type { CreateOrder } from './createOrder';
 import {
     type ShippingOption,
+    type Query,
     type ON_SHIPPING_CHANGE_EVENT,
     ON_SHIPPING_CHANGE_PATHS,
     SHIPPING_ADDRESS_ERROR_MESSAGES
@@ -32,7 +33,7 @@ export type XOnShippingAddressChangeDataType = {|
 
 export type XOnShippingAddressChangeActionsType = {|
     patch : () => ZalgoPromise<OrderResponse>,
-    query : () => ZalgoPromise<string>,
+    query : () => ZalgoPromise<$ReadOnlyArray<Query>>,
     reject : (string) => ZalgoPromise<void>,
     updateShippingDiscount : ({| discount : string |}) => XOnShippingAddressChangeActionsType,
     updateShippingOptions : ({| options : $ReadOnlyArray<ShippingOption> |}) => XOnShippingAddressChangeActionsType,
@@ -73,7 +74,7 @@ export function buildXOnShippingAddressChangeData(data : OnShippingAddressChange
     };
 }
 
-export function buildXOnShippingAddressChangeActions({ data, actions: passedActions, orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI } : {| data : OnShippingAddressChangeData, actions : OnShippingAddressChangeActionsType, orderID : string, facilitatorAccessToken : string, buyerAccessToken : ?string, partnerAttributionID : ?string, forceRestAPI : boolean |}) : XOnShippingAddressChangeActionsType {
+export function buildXOnShippingAddressChangeActions({ clientID, data, actions: passedActions, orderID } : {| clientID : string, data : OnShippingAddressChangeData, actions : OnShippingAddressChangeActionsType, orderID : string |}) : XOnShippingAddressChangeActionsType {
     const patchQueries = {};
 
     let newAmount;
@@ -162,7 +163,7 @@ export function buildXOnShippingAddressChangeActions({ data, actions: passedActi
                     queries = convertQueriesToArray({ queries: patchQueries });
                 }
 
-                return patchOrder(orderID, queries, { facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI }).catch(() => {
+                return patchShipping({ clientID, orderID,data: queries }).catch(() => {
                     throw new Error('Order could not be patched');
                 });
             });
@@ -180,7 +181,7 @@ export function buildXOnShippingAddressChangeActions({ data, actions: passedActi
                     queries = convertQueriesToArray({ queries: patchQueries });
                 }
                 
-                return JSON.stringify(queries);
+                return queries;
             });
         }
 
@@ -193,15 +194,12 @@ export type OnShippingAddressChange = (OnShippingAddressChangeData, OnShippingAd
 
 type OnShippingAddressChangeXProps = {|
     onShippingAddressChange : ?XOnShippingAddressChange,
-    partnerAttributionID : ?string,
     clientID : string
 |};
 
-export function getOnShippingAddressChange({ onShippingAddressChange, partnerAttributionID, clientID } : OnShippingAddressChangeXProps, { facilitatorAccessToken, createOrder } : {| facilitatorAccessToken : string, createOrder : CreateOrder |}) : ?OnShippingAddressChange {
-    const upgradeLSAT = LSAT_UPGRADE_EXCLUDED_MERCHANTS.indexOf(clientID) === -1;
-
+export function getOnShippingAddressChange({ onShippingAddressChange, clientID } : OnShippingAddressChangeXProps, { createOrder } : {| createOrder : CreateOrder |}) : ?OnShippingAddressChange {
     if (onShippingAddressChange) {
-        return ({ buyerAccessToken, forceRestAPI = upgradeLSAT, ...data }, actions) => {
+        return ({ ...data }, actions) => {
             return createOrder().then(orderID => {
                 getLogger()
                     .info('button_shipping_address_change')
@@ -213,7 +211,7 @@ export function getOnShippingAddressChange({ onShippingAddressChange, partnerAtt
                         [FPTI_CUSTOM_KEY.SHIPPING_CALLBACK_INVOKED]: '1'
                     }).flush();
                 
-                return onShippingAddressChange(buildXOnShippingAddressChangeData(data), buildXOnShippingAddressChangeActions({ data, actions, orderID, facilitatorAccessToken, buyerAccessToken, partnerAttributionID, forceRestAPI }));
+                return onShippingAddressChange(buildXOnShippingAddressChangeData(data), buildXOnShippingAddressChangeActions({ clientID, data, actions, orderID }));
             });
         };
     }
