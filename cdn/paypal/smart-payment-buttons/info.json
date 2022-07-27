@@ -6,8 +6,8 @@
         "active-test": "5.0.106",
         "active-local": "5.0.106",
         "active-stage": "5.0.106",
-        "active-sandbox": "5.0.105",
-        "active-production": "5.0.105",
+        "active-sandbox": "5.0.106",
+        "active-production": "5.0.106",
         "alpha": "5.0.104-alpha-956ab6a9.0",
         "beta": "5.0.0-beta.90"
     },
@@ -103,39 +103,6 @@
                 "url": "git+https://github.com/paypal/paypal-smart-payment-buttons.git"
             },
             "gitHead": "fb913299983af0f218b44cc73abe1f31e24d2175"
-        },
-        "5.0.105": {
-            "dependencies": {
-                "@krakenjs/beaver-logger": "^5.0.1",
-                "@krakenjs/belter": "^2.0.0",
-                "@krakenjs/cross-domain-utils": "^3.0.0",
-                "@krakenjs/grabthar": "^6.1.1",
-                "@krakenjs/jsx-pragmatic": "^3.0.0",
-                "@krakenjs/post-robot": "^11.0.0",
-                "@krakenjs/zalgo-promise": "^2.0.0",
-                "@paypal/checkout-components": "^5.0.167",
-                "@paypal/common-components": "^1.0.16",
-                "@paypal/installments": "^1.0.0",
-                "@paypal/sdk-client": "^4.0.156",
-                "@paypal/sdk-constants": "^1.0.119",
-                "@paypal/sdk-logos": "^1.0.43",
-                "@paypal/sdk-release": "^5.0.138",
-                "card-validator": "^8.1.1",
-                "credit-card-type": "^9.1.0",
-                "get-browser-fingerprint": "^1.1.0",
-                "module-alias": "^2.2.2",
-                "preact": "^10",
-                "preact-render-to-string": "^5.1.4",
-                "strict-merge": "^1.0.1",
-                "typed-graphqlify": "^2.2.3"
-            },
-            "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/paypal/smart-payment-buttons/tarballs/5.0.105.tgz"
-            },
-            "repository": {
-                "url": "git+https://github.com/paypal/paypal-smart-payment-buttons.git"
-            },
-            "gitHead": "f2b89e41ca5305b1746615b84bd0fef4aa596bda"
         },
         "5.0.106": {
             "dependencies": {
