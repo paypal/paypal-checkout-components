@@ -235,9 +235,15 @@ function initCheckout({ props, components, serviceData, payment, config, restart
 
                 // eslint-disable-next-line no-use-before-define
                 return onApprove({ accelerated, payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart })
-                    // eslint-disable-next-line no-use-before-define
-                    .finally(() => close().then(noop))
-                    .catch(noop);
+                .finally(() => {
+                    if (accelerated) {
+                        return noop;
+                    } else {
+                        // eslint-disable-next-line no-use-before-define
+                        return close().then(noop);
+                    }
+                })
+                .catch(noop);
             },
 
             onComplete: () => {
