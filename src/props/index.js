@@ -19,3 +19,4 @@ export * from './rememberFunding';
 export * from './getPageUrl';
 export * from './onAuth';
 export * from './getQueriedEligibleFunding';
+export * from './paymentRequest';
