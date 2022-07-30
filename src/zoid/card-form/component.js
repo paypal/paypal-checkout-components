@@ -7,7 +7,7 @@ import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, type ZoidComponent } from '@krakenjs/zoid/src';
 import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { inlineMemoize } from '@krakenjs/belter/src';
-import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard, getPayPalDomain } from '@paypal/sdk-client/src';
+import { getLocale, getEnv, getCommit, getSDKMeta, getDisableCard, getPayPalDomain, getClientMetadataID } from '@paypal/sdk-client/src';
 
 import { getSessionID } from '../../lib';
 
@@ -72,6 +72,13 @@ export function getCardFormComponent() : CardFormComponent {
                 buttonSessionID: {
                     type:       'string',
                     queryParam: true
+                },
+
+                clientMetadataID: {
+                    type: 'string',
+                    required: false,
+                    default: getClientMetadataID,
+                    queryParam: 'client-metadata-id',
                 },
 
                 commit: {
