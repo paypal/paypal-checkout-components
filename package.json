@@ -31,8 +31,8 @@
     "webpack.config.js"
   ],
   "engines": {
-    "node": ">=14.13.1 <16",
-    "npm": ">=6"
+    "node": ">=16",
+    "npm": ">=8"
   },
   "scripts": {
     "start": "babel-node ./server/devServer",
