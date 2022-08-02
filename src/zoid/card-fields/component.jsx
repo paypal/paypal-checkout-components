@@ -66,7 +66,8 @@ export type CardFieldComponent = ZoidComponent<CardFieldProps>;
 
 type CardFieldsExports = {|
     submit : () => ZalgoPromise<void>,
-    setAttribute : () => ZalgoPromise<void>
+    setAttribute : () => void,
+    removeAttribute : () => void
 |};
 
 type CardFieldsChildren = {|
@@ -117,6 +118,9 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
 
             exports: {
                 setAttribute: {
+                    type: 'function'
+                },
+                removeAttribute: {
                     type: 'function'
                 }
             },
