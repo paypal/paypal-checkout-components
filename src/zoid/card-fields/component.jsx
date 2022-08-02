@@ -65,7 +65,8 @@ type CardFieldProps = {|
 export type CardFieldComponent = ZoidComponent<CardFieldProps>;
 
 type CardFieldsExports = {|
-    submit : () => ZalgoPromise<void>
+    submit : () => ZalgoPromise<void>,
+    setAttribute : () => ZalgoPromise<void>
 |};
 
 type CardFieldsChildren = {|
@@ -113,6 +114,12 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
 
             prerenderTemplate,
+
+            exports: {
+                setAttribute: {
+                    type: 'function'
+                }
+            },
 
             props: {
                 type: {
@@ -303,7 +310,10 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
         exports: {
             submit: {
                 type: 'function'
-            }
+            },
+            setAttribute: {
+                type: 'function'
+            },
         },
 
         eligible: () => {
