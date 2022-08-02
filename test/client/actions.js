@@ -112,6 +112,88 @@ describe('actions cases', () => {
         });
     });
 
+    it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.create and handle error', async () => {
+        return await wrapPromise(async ({ expect, expectError }) => {
+
+            let orderID = uniqueID();
+            const payerID = 'YYYYYYYYYY';
+            const facilitatorAccessToken = uniqueID();
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async (data, actions) => {
+                const createOrderMock = getCreateOrderApiMock({
+                    handler: expect('createOrder', ({ headers }) => {
+                        if (headers.authorization !== `Bearer ${ facilitatorAccessToken }`) {
+                            throw new Error(`Expected call to come with correct facilitator access token`);
+                        }
+
+                        return {
+                            id: orderID
+                        };
+                    })
+                });
+                createOrderMock.expectCalls();
+                orderID = await actions.order.create({
+                    purchase_units: [ {
+                        amount: {
+                            value: '0.01'
+                        }
+                    } ]
+                });
+                createOrderMock.done();
+
+                if (!orderID) {
+                    throw new Error(`Expected orderID to be returned by actions.order.create`);
+                }
+
+                return orderID;
+            }));
+
+            window.xprops.onApprove = mockAsyncProp(expectError('onApprove', async () => {
+                throw new Error(`Merchant throws an error.`);
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    data.accelerated = true;
+                    return onApproveOriginal({ ...data, payerID }, actions)
+                        .then(valid => {
+                            if (valid) {
+                                throw new Error(`Expected onApprove to have errored and be invalid.`);
+                            }
+                        });
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args);
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                facilitatorAccessToken,
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
+
     it('should render a button, click the button, and render checkout, then pass onApprove callback to the parent with actions.order.get and use RestAPI', async () => {
         return await wrapPromise(async ({ expect }) => {
 
