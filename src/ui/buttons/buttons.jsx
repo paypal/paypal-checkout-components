@@ -109,8 +109,6 @@ export function Buttons(props : ButtonsProps) : ElementNode {
 
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label && custom.label.length !== 0;
 
-    const fundingSourcesWithInlinePaymentFields = [ FUNDING.EPS ];
-
     let fundingSources = determineEligibleFunding({ fundingSource, layout, remembered, platform, fundingEligibility, components, onShippingChange, flow, wallet, applePaySupport, supportsPopups, supportedNativeBrowser, experiment });
     const multiple = fundingSources.length > 1;
 
@@ -212,11 +210,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                     : null
             }
 
-            {
-                (fundingSourcesWithInlinePaymentFields.some(fs => fundingSources.indexOf(fs) !== -1))
-                    ? <div id="payment-fields-container" class="payment-fields-container" />
-                    : null
-            }
+            <div id="payment-fields-container" className="payment-fields-container"/>
 
             {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1 && !inlineExperience)
