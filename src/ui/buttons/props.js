@@ -351,7 +351,6 @@ export type ApplePayPaymentAuthorizationResult = {|
 export type ApplePaySessionConfig = {|
     begin : () => void,
     abort : () => void,
-    oncancel : () => void,
     addEventListener : (string, Function) => void,
     // eslint-disable-next-line flowtype/no-weak-types
     completeMerchantValidation : (validatedSession : any) => void,
