@@ -67,7 +67,9 @@ export type CardFieldComponent = ZoidComponent<CardFieldProps>;
 type CardFieldsExports = {|
     submit : () => ZalgoPromise<void>,
     setAttribute : () => void,
-    removeAttribute : () => void
+    removeAttribute : () => void,
+    addClass : () => void,
+    removeClass : () => void
 |};
 
 type CardFieldsChildren = {|
@@ -121,6 +123,12 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     type: 'function'
                 },
                 removeAttribute: {
+                    type: 'function'
+                },
+                addClass: {
+                    type: 'function'
+                },
+                removeClass: {
                     type: 'function'
                 }
             },
@@ -318,6 +326,15 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             setAttribute: {
                 type: 'function'
             },
+            removeAttribute: {
+                type: 'function'
+            },
+            addClass: {
+                type: 'function'
+            },
+            removeClass: {
+                type: 'function'
+            }
         },
 
         eligible: () => {
