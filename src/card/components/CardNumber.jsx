@@ -1,9 +1,8 @@
 /* @flow */
 /** @jsx h */
 
-import { h } from 'preact';
+import { h, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-
 
 import {
     maskCard,
@@ -27,10 +26,26 @@ import type {
 } from '../types';
 import {  DEFAULT_CARD_TYPE } from '../constants';
 
+import { Icon } from './Icons';
+
+const defaultCardNumberInputState : InputState = {
+    ...defaultInputState,
+    displayCardIcon: false
+}
+
 // Helper method to check if navigation to next field should be allowed
 function validateNavigation({ allowNavigation,  inputState } : {| allowNavigation : boolean, inputState : InputState |}) : boolean {
     const { inputValue, isValid, maskedInputValue, cursorStart, contentPasted } = inputState;
     return Boolean(allowNavigation && inputValue && isValid && (maskedInputValue.length === cursorStart || contentPasted));
+}
+
+function getIconId(type) : string {
+    const iconId = `icon-${type}`;
+    const element = document.getElementById(iconId);
+    if (element) {
+        return iconId;
+    }
+    return 'icon-UNKNOWN';
 }
 
 type CardNumberProps = {|
@@ -71,7 +86,7 @@ export function CardNumber(
     } : CardNumberProps
 ) : mixed {
     const [ cardType, setCardType ] : [ CardType, (CardType) => CardType ] = useState(DEFAULT_CARD_TYPE);
-    const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
+    const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultCardNumberInputState, ...state });
 
     const { inputValue, maskedInputValue, cursorStart, cursorEnd, keyStrokeCount, isValid, isPotentiallyValid, contentPasted } = inputState;
 
@@ -137,7 +152,7 @@ export function CardNumber(
         }
 
         const maskedValue = maskCard(inputValue);
-        const updatedState = { ...inputState, maskedInputValue: maskedValue };
+        const updatedState = { ...inputState, maskedInputValue: maskedValue, displayCardIcon: true };
         if (!isValid) {
             updatedState.isPotentiallyValid = true;
         }
@@ -146,7 +161,7 @@ export function CardNumber(
     };
 
     const onBlurEvent : (InputEvent) => void = (event : InputEvent) : void => {
-        const updatedState = { maskedInputValue, isPotentiallyValid, contentPasted: false };
+        const updatedState = { maskedInputValue, isPotentiallyValid, contentPasted: false, displayCardIcon: inputState.inputValue.length > 0 };
 
         if (isValid) {
             updatedState.maskedInputValue = maskValidCard(maskedInputValue);
@@ -174,22 +189,25 @@ export function CardNumber(
     };
 
     return (
-        <input
-            name={ name }
-            autocomplete={ autocomplete }
-            inputmode='numeric'
-            ref={ ref }
-            type={ type }
-            className={ className }
-            placeholder={ placeholder }
-            value={ maskedInputValue }
-            style={ style }
-            maxLength={ maxLength }
-            onInput={ setValueAndCursor }
-            onFocus={ onFocusEvent }
-            onBlur={ onBlurEvent }
-            onKeyDown={ onKeyDownEvent }
-            onPaste={ onPasteEvent }
-        />
+        <Fragment>
+            <input
+                name={ name }
+                autocomplete={ autocomplete }
+                inputmode='numeric'
+                ref={ ref }
+                type={ type }
+                className={ `${className} ${inputState.displayCardIcon ? 'display-icon' : ''}` }
+                placeholder={ placeholder }
+                value={ maskedInputValue }
+                style={ style }
+                maxLength={ maxLength }
+                onInput={ setValueAndCursor }
+                onFocus={ onFocusEvent }
+                onBlur={ onBlurEvent }
+                onKeyDown={ onKeyDownEvent }
+                onPaste={ onPasteEvent }
+            />
+            <Icon iconId={ getIconId(cardType.type) } iconClass="card-icon" />
+        </Fragment>
     );
 }

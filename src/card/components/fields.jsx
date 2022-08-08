@@ -40,6 +40,7 @@ import { CardExpiry } from './CardExpiry';
 import { CardCVV } from './CardCVV';
 import { CardName } from './CardName';
 import { CardPostalCode } from './CardPostalCode';
+import { Icons, Icon } from './Icons';
 
 type CardFieldProps = {|
     cspNonce : string,
@@ -150,6 +151,7 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
             <style nonce={ cspNonce }>
                 { cssText }
             </style>
+            <Icons />
             <div className={ `card-field ${ hasFocus ? 'focus' : '' } ${ !validationMessage.length ? '' : 'invalid' }` }>
                 <CardNumber
                     ref={ numberRef }
@@ -206,9 +208,7 @@ export function CardField({ cspNonce, onChange, styleObject = {}, placeholder = 
 export function ValidationMessage({ message } : Object) : mixed {
     return (
         <div className={ `card-field-validation-error ${ message.length ? '' : 'hidden' }` }>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M21.64 17.34L14.05 4.2c-.92-1.59-3.22-1.59-4.14 0L2.32 17.34c-.92 1.59.23 3.59 2.07 3.59h15.18c1.84 0 2.99-2 2.07-3.59zM11.26 7.91h1.45c.26 0 .47.25.45.53l-.5 5.53c-.01.15-.13.27-.27.27h-.78c-.14 0-.26-.12-.27-.27l-.53-5.52c-.02-.29.18-.54.45-.54zm.73 10.19c-.64 0-1.17-.52-1.17-1.17 0-.64.53-1.17 1.17-1.17.65 0 1.17.53 1.17 1.17 0 .65-.52 1.17-1.17 1.17z"/>
-            </svg>
+            <Icon iconId="icon-error"/>
             { message }
         </div>
     );
@@ -257,6 +257,7 @@ export function CardNumberField({ cspNonce, onChange, styleObject = {}, placehol
             <style nonce={ cspNonce }>
                 { cssText }
             </style>
+            <Icons />
             <CardNumber
                 ref={ numberRef }
                 type='text'

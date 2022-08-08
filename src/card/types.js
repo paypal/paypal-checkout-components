@@ -124,7 +124,8 @@ export type InputState = {|
     keyStrokeCount : number,
     isPotentiallyValid : boolean,
     isValid : boolean,
-    contentPasted? : boolean
+    contentPasted? : boolean,
+    displayCardIcon?: boolean
 |};
 
 export type InputOptions = {|
