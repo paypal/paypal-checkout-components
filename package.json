@@ -1,6 +1,6 @@
 {
   "name": "@paypal/smart-payment-buttons",
-  "version": "5.0.106",
+  "version": "5.0.107",
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
@@ -31,8 +31,8 @@
     "webpack.config.js"
   ],
   "engines": {
-    "node": ">=14.13.1 <16",
-    "npm": ">=6"
+    "node": ">=16",
+    "npm": ">=8"
   },
   "scripts": {
     "start": "babel-node ./server/devServer",
@@ -58,7 +58,7 @@
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
     "jest:server": "jest test/server --collectCoverage --collectCoverageFrom='server/' --env=node --no-cache --runInBand",
-    "jest:client": "jest src/ --collectCoverage --collectCoverageFrom='src/' --no-cache --runInBand --env=jsdom",
+    "jest:client": "jest src/ --collectCoverage --collectCoverageFrom='src/' --testPathIgnorePatterns=/fixtures/ --no-cache --runInBand --env=jsdom",
     "cover": "echo no-cover",
     "prepublishOnly": "npm run babel",
     "postpublish": "if [ \"$DRY_RUN\" != 'true' ]; then git clean -f && git checkout .; fi;",

@@ -9,3 +9,4 @@ export * from './fraudnet';
 export * from './wallet';
 export * from './eligibility';
 export * from './api';
+export * from './config';

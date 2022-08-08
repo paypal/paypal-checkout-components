@@ -233,11 +233,20 @@ function initCheckout({ props, components, serviceData, payment, config, restart
 
                 setBuyerAccessToken(buyerAccessToken);
 
+                let valid = true;
                 // eslint-disable-next-line no-use-before-define
                 return onApprove({ accelerated, payerID, paymentID, billingToken, subscriptionID, buyerAccessToken, authCode }, { restart })
-                    // eslint-disable-next-line no-use-before-define
-                    .finally(() => close().then(noop))
-                    .catch(noop);
+                .finally(() => {
+                    if (accelerated) {
+                        return valid;
+                    } else {
+                        // eslint-disable-next-line no-use-before-define
+                        return close().then(noop);
+                    }
+                })
+                .catch(() => {
+                    valid = false;
+                });
             },
 
             onComplete: () => {

@@ -136,6 +136,7 @@ export const FPTI_TRANSITION = {
     APPLEPAY_CREATE_ORDER_ERROR:                        ('applepay_create_order_error' : 'applepay_create_order_error'),
     APPLEPAY_GET_DETAILS_ERROR:                         ('applepay_get_details_error' : 'applepay_get_details_error'),
     APPLEPAY_PAYMENT_ERROR:                             ('applepay_payment_error' : 'applepay_payment_error'),
+    APPLEPAY_CONFIG_ERROR:                             ('applepay_config_error' : 'applepay_config_error'),
 
     NATIVE_DETECT_POSSIBLE_APP_SWITCH:      ('native_detect_possible_app_switch' : 'native_detect_possible_app_switch'),
     NATIVE_DETECT_APP_SWITCH:               ('native_detect_app_switch' : 'native_detect_app_switch'),

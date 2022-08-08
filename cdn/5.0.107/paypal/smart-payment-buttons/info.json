@@ -1,13 +1,13 @@
 {
     "name": "@paypal/smart-payment-buttons",
     "dist-tags": {
-        "latest": "5.0.106",
+        "latest": "5.0.107",
         "noop": "2.0.290",
-        "active-test": "5.0.106",
-        "active-local": "5.0.106",
-        "active-stage": "5.0.106",
-        "active-sandbox": "5.0.106",
-        "active-production": "5.0.106",
+        "active-test": "5.0.107",
+        "active-local": "5.0.107",
+        "active-stage": "5.0.107",
+        "active-sandbox": "5.0.107",
+        "active-production": "5.0.107",
         "alpha": "5.0.104-alpha-956ab6a9.0",
         "beta": "5.0.0-beta.90"
     },
@@ -32,7 +32,7 @@
                 "zalgo-promise": "^1.0.28"
             },
             "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.106/paypal/smart-payment-buttons/tarballs/2.0.290.tgz"
+                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.107/paypal/smart-payment-buttons/tarballs/2.0.290.tgz"
             },
             "repository": {
                 "url": "https://github.paypal.com/Checkout/smart-buttons"
@@ -64,7 +64,7 @@
                 "zalgo-promise": "^1.0.28"
             },
             "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.106/paypal/smart-payment-buttons/tarballs/5.0.0-beta.90.tgz"
+                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.107/paypal/smart-payment-buttons/tarballs/5.0.0-beta.90.tgz"
             },
             "repository": {
                 "url": "git+https://github.com/paypal/paypal-smart-payment-buttons.git"
@@ -97,14 +97,14 @@
                 "typed-graphqlify": "^2.2.3"
             },
             "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.106/paypal/smart-payment-buttons/tarballs/5.0.104-alpha-956ab6a9.0.tgz"
+                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.107/paypal/smart-payment-buttons/tarballs/5.0.104-alpha-956ab6a9.0.tgz"
             },
             "repository": {
                 "url": "git+https://github.com/paypal/paypal-smart-payment-buttons.git"
             },
             "gitHead": "fb913299983af0f218b44cc73abe1f31e24d2175"
         },
-        "5.0.106": {
+        "5.0.107": {
             "dependencies": {
                 "@krakenjs/beaver-logger": "^5.0.1",
                 "@krakenjs/belter": "^2.0.0",
@@ -130,12 +130,12 @@
                 "typed-graphqlify": "^2.2.3"
             },
             "dist": {
-                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.106/paypal/smart-payment-buttons/tarballs/5.0.106.tgz"
+                "tarball": "https://www.paypalobjects.com/smart-payment-buttons/5.0.107/paypal/smart-payment-buttons/tarballs/5.0.107.tgz"
             },
             "repository": {
                 "url": "git+https://github.com/paypal/paypal-smart-payment-buttons.git"
             },
-            "gitHead": "f71951690b1d75a4d7f848b551bc13dd3f861fdd"
+            "gitHead": "4dcead1490e78ccecacb0b3c0396292e857e654a"
         }
     }
 }

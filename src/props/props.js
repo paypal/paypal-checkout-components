@@ -27,7 +27,7 @@ import type { CreateOrder, XCreateOrder, CreateBillingAgreement, XCreateBillingA
     XOnInit, OnApprove, XOnApprove, OnComplete, XOnComplete, OnCancel, XOnCancel, OnClick, XOnClick,
     OnShippingChange, XOnShippingChange, OnShippingAddressChange, XOnShippingAddressChange,
     OnShippingOptionsChange, XOnShippingOptionsChange, XOnError,
-    OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding
+    OnError, XGetPopupBridge, GetPopupBridge, XCreateSubscription, RememberFunding, GetPageURL, OnAuth, GetQueriedEligibleFunding, PaymentRequest
 } from '.';
 
 // export something to force webpack to see this as an ES module
@@ -106,7 +106,8 @@ export type XProps = {|
     userExperienceFlow : string,
     allowBillingPayments : boolean,
 
-    applePay : XApplePaySessionConfigRequest
+    applePay : XApplePaySessionConfigRequest,
+    paymentRequest: ?PaymentRequest
 |};
 
 export type Props = {|
@@ -180,7 +181,10 @@ export type Props = {|
 
     branded : boolean | null,
     userExperienceFlow : string,
-    allowBillingPayments : boolean
+    allowBillingPayments : boolean,
+
+    paymentRequest: ?PaymentRequest,
+    merchantID : $ReadOnlyArray<string>
 |};
 
 export function getProps({ facilitatorAccessToken, branded, paymentSource } : {| facilitatorAccessToken : string, branded : boolean | null, paymentSource : $Values<typeof FUNDING> | null |}) : Props {
@@ -230,7 +234,8 @@ export function getProps({ facilitatorAccessToken, branded, paymentSource } : {|
         storageID,
         applePay,
         userExperienceFlow,
-        allowBillingPayments
+        allowBillingPayments,
+        paymentRequest
     } = xprops;
 
     const onInit = getOnInit({ onInit: xprops.onInit });
@@ -325,6 +330,9 @@ export function getProps({ facilitatorAccessToken, branded, paymentSource } : {|
         stickinessID,
         applePay,
         userExperienceFlow,
-        allowBillingPayments
+        allowBillingPayments,
+
+        paymentRequest,
+        merchantID
     };
 }
