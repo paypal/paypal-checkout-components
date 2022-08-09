@@ -21,6 +21,7 @@ import './inlinexo';
 import './native';
 import './native-qrcode';
 import './nativeFallback';
+import './nativePopup';
 import './payee';
 import './connect';
 import './smart-fields';
