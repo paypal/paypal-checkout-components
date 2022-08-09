@@ -84,8 +84,6 @@ export function getButtonMiddleware({
             const gqlBatch = graphQLBatch(req, graphQL, { env });
             const content = smartContent[locale.country][locale.lang] || {};
 
-            const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
-            const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
             const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
             const renderPromise = getPayPalSmartPaymentButtonsRenderScript({
                 sdkCDNRegistry: sdkLocationInformation?.sdkCDNRegistry,
@@ -118,7 +116,7 @@ export function getButtonMiddleware({
             let facilitatorAccessToken;
 
             try {
-                facilitatorAccessToken = await facilitatorAccessTokenPromise;
+                facilitatorAccessToken = await getAccessToken(req, clientID);
             } catch (err) {
                 if (err && err.statusCode && err.statusCode >= 400 && err.statusCode < 500) {
                     return clientErrorResponse(res, 'Invalid clientID');
@@ -129,7 +127,7 @@ export function getButtonMiddleware({
 
             const renderButton = await renderPromise;
             const client = await clientPromise;
-            const merchantID = await merchantIDPromise;
+            const merchantID = await resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken })
             const wallet = await walletPromise;
             const personalization = await personalizationPromise;
 
