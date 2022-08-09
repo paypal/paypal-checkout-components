@@ -312,7 +312,7 @@ window.spb = function(modules) {
         this.__v && (this.__e = !0, n && this.__h.push(n), b(this));
     }, d.prototype.render = p, preact_module_t = [], g.__r = 0;
     var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
-    function hooks_module_p(t, r) {
+    function hooks_module_d(t, r) {
         l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
         var o = hooks_module_u.__H || (hooks_module_u.__H = {
             __: [],
@@ -322,21 +322,37 @@ window.spb = function(modules) {
             __V: hooks_module_f
         }), o.__[t];
     }
-    function hooks_module_y(n) {
+    function hooks_module_p(n) {
         return hooks_module_i = 1, function(n, r, o) {
-            var i = hooks_module_p(hooks_module_t++, 2);
-            return i.t = n, i.__c || (i.__ = [ hooks_module_z(void 0, r), function(n) {
-                var t = i.t(i.__[0], n);
-                i.__[0] !== t && (i.__ = [ t, i.__[1] ], i.__c.setState({}));
-            } ], i.__c = hooks_module_u), i.__;
+            var i = hooks_module_d(hooks_module_t++, 2);
+            if (i.t = n, !i.__c && (i.__ = [ hooks_module_z(void 0, r), function(n) {
+                var t = i.__N ? i.__N[0] : i.__[0], u = i.t(t, n);
+                t !== u && (i.__N = [ u, i.__[1] ], i.__c.setState({}));
+            } ], i.__c = hooks_module_u, !i.__c.u)) {
+                i.__c.__H.u = !0;
+                var c = i.__c.shouldComponentUpdate;
+                i.__c.shouldComponentUpdate = function(n, t, u) {
+                    var r = i.__c.__H.__.filter((function(n) {
+                        return n.__c;
+                    }));
+                    return (r.every((function(n) {
+                        return !n.__N;
+                    })) || !r.every((function(n) {
+                        if (!n.__N) return !0;
+                        var t = n.__[0];
+                        return n.__ = n.__N, n.__N = void 0, t === n.__[0];
+                    }))) && (!c || c(n, t, u));
+                };
+            }
+            return i.__N || i.__;
         }(hooks_module_z, n);
     }
     function hooks_module_(r, o) {
-        var i = hooks_module_p(hooks_module_t++, 3);
-        !l.__s && hooks_module_w(i.__H, o) && (i.__ = r, i.u = o, hooks_module_u.__H.__h.push(i));
+        var i = hooks_module_d(hooks_module_t++, 3);
+        !l.__s && hooks_module_w(i.__H, o) && (i.__ = r, i.o = o, hooks_module_u.__H.__h.push(i));
     }
     function hooks_module_b() {
-        for (var t; t = hooks_module_c.shift(); ) if (t.__P) try {
+        for (var t; t = hooks_module_c.shift(); ) if (t.__P && t.__H) try {
             t.__H.__h.forEach(hooks_module_j), t.__H.__h.forEach(hooks_module_k), t.__H.__h = [];
         } catch (u) {
             t.__H.__h = [], l.__e(u, t.__v);
@@ -349,7 +365,7 @@ window.spb = function(modules) {
         var o = (hooks_module_u = n.__c).__H;
         o && (hooks_module_r === hooks_module_u ? (o.__h = [], hooks_module_u.__h = [], 
         o.__.forEach((function(n) {
-            n.__V = hooks_module_f, n.u = void 0;
+            n.__N && (n.__ = n.__N), n.__V = hooks_module_f, n.__N = n.o = void 0;
         }))) : (o.__h.forEach(hooks_module_j), o.__h.forEach(hooks_module_k), o.__h = [])), 
         hooks_module_r = hooks_module_u;
     }, l.diffed = function(t) {
@@ -361,7 +377,7 @@ window.spb = function(modules) {
             }, r = setTimeout(u, 100);
             hooks_module_g && (t = requestAnimationFrame(u));
         })(hooks_module_b)), i.__H.__.forEach((function(n) {
-            n.u && (n.__H = n.u), n.__V !== hooks_module_f && (n.__ = n.__V), n.u = void 0, 
+            n.o && (n.__H = n.o), n.__V !== hooks_module_f && (n.__ = n.__V), n.o = void 0, 
             n.__V = hooks_module_f;
         }))), hooks_module_r = hooks_module_u = null;
     }, l.__c = function(t, u) {
@@ -1863,10 +1879,10 @@ window.spb = function(modules) {
         var autoFocus = function(_temp) {
             var _ref = void 0 === _temp ? {} : _temp, _ref$onFocus = _ref.onFocus, onFocus = void 0 === _ref$onFocus ? src_util_noop : _ref$onFocus, _ref$onFocusFail = _ref.onFocusFail, onFocusFail = void 0 === _ref$onFocusFail ? src_util_noop : _ref$onFocusFail;
             var ref = (hooks_module_i = 5, function(n, u) {
-                var r = hooks_module_p(hooks_module_t++, 7);
+                var r = hooks_module_d(hooks_module_t++, 7);
                 return hooks_module_w(r.__H, u) ? (r.__V = {
                     current: void 0
-                }, r.u = u, r.__h = n, r.__V) : r.__;
+                }, r.o = u, r.__h = n, r.__V) : r.__;
             }((function() {
                 return {
                     current: void 0
@@ -1974,7 +1990,7 @@ window.spb = function(modules) {
     function Page(_ref) {
         var cspNonce = _ref.cspNonce, _ref$pageVisible = _ref.pageVisible, pageVisible = void 0 !== _ref$pageVisible && _ref$pageVisible;
         var _useXProps = function() {
-            var _useState = hooks_module_y(window.xprops), xprops = _useState[0], setXProps = _useState[1];
+            var _useState = hooks_module_p(window.xprops), xprops = _useState[0], setXProps = _useState[1];
             hooks_module_((function() {
                 return xprops.onProps((function(newProps) {
                     setXProps(_extends({}, newProps));
@@ -1982,8 +1998,8 @@ window.spb = function(modules) {
             }), []);
             return _extends({}, xprops);
         }(), choices = _useXProps.choices, onChoose = _useXProps.onChoose, verticalOffset = _useXProps.verticalOffset, hide = _useXProps.hide, _useXProps$onBlur = _useXProps.onBlur, onBlur = void 0 === _useXProps$onBlur ? src_util_noop : _useXProps$onBlur, _useXProps$onFocus = _useXProps.onFocus, onFocus = void 0 === _useXProps$onFocus ? src_util_noop : _useXProps$onFocus, _useXProps$onFocusFai = _useXProps.onFocusFail, onFocusFail = void 0 === _useXProps$onFocusFai ? src_util_noop : _useXProps$onFocusFai;
-        var _useState = hooks_module_y(!1), opaque = _useState[0], setOpaque = _useState[1];
-        var _useState2 = hooks_module_y(pageVisible), visible = _useState2[0], setVisible = _useState2[1];
+        var _useState = hooks_module_p(!1), opaque = _useState[0], setOpaque = _useState[1];
+        var _useState2 = hooks_module_p(pageVisible), visible = _useState2[0], setVisible = _useState2[1];
         hooks_module_((function() {
             var hasChoices = Boolean(choices && choices.length);
             setOpaque(hasChoices);
