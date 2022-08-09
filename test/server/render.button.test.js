@@ -1,17 +1,19 @@
 /* @flow */
+// eslint-disable-next-line eslint-comments/disable-enable-pair 
+/* eslint-disable max-lines */
 
 import { regexMap, noop } from '@krakenjs/belter';
 import { FUNDING } from '@paypal/sdk-constants';
-import {getVersionFromNodeModules} from '@krakenjs/grabthar'
+import { getVersionFromNodeModules } from '@krakenjs/grabthar'
 
-import { getButtonMiddleware, cancelWatchers } from '../../server';
+import { getButtonMiddleware } from '../../server';
 import { ROOT_TRANSACTION_NAME } from '../../server/components/buttons/constants';
-import {type SDKVersionManager} from '../../server/types'
+import { type SDKVersionManager } from '../../server/types'
 
 import {
     mockReq, mockRes, graphQL, getAccessToken, getMerchantID,
     mockContent, tracking, getPersonalizationEnabled,
-    getInstanceLocationInformation, getSDKLocationInformation
+    getSDKLocationInformation
 } from './mock';
 
 function getRenderedFundingSources(template) : $ReadOnlyArray<string> {
@@ -24,17 +26,6 @@ function getSetupButtonParams(template) : Object {
 }
 
 jest.setTimeout(300000);
-
-afterAll((done) => {
-    cancelWatchers();
-    done();
-});
-
-const cache = {
-    // eslint-disable-next-line no-unused-vars
-    get: (key) => Promise.resolve(),
-    set: (key, value) => Promise.resolve(value)
-};
 
 const logger = {
     debug: noop,
@@ -50,8 +41,25 @@ const sdkVersionManager: SDKVersionManager = {
     getOrInstallSDK: async (...args) => await getVersionFromNodeModules(args),
 }
 
+// $FlowFixMe testing impl
+const buttonsVersionManager: SDKVersionManager = {
+    getLiveVersion: () => '5.0.100',
+    getOrInstallSDK: async (...args) => await getVersionFromNodeModules(args),
+}
+
 test('should do a basic button render and succeed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ sdkVersionManager, graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({ 
+        sdkVersionManager,
+        buttonsVersionManager,
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content: mockContent,
+        logger,
+        tracking,
+        getPersonalizationEnabled,
+        getSDKLocationInformation
+    });
 
     const req = mockReq({
         query: {
@@ -123,15 +131,14 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
 
     const errButtonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         graphQL,
         getAccessToken,
         getMerchantID,
         content: mockContent,
-        cache,
         logger,
         tracking,
         getPersonalizationEnabled,
-        getInstanceLocationInformation,
         getSDKLocationInformation
     });
     // $FlowFixMe
@@ -168,7 +175,18 @@ test('should do a basic button render and succeed when graphql fundingEligibilit
 });
 
 test('should give a 400 error with no clientID passed', async () => {
-    const buttonMiddleware = getButtonMiddleware({ sdkVersionManager, graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+    const buttonMiddleware = getButtonMiddleware({
+        sdkVersionManager,
+        buttonsVersionManager,
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content: mockContent,
+        logger,
+        tracking,
+        getPersonalizationEnabled,
+        getSDKLocationInformation
+    });
 
     const req = mockReq();
     const res = mockRes();
@@ -186,7 +204,16 @@ test('should give a 400 error with no clientID passed', async () => {
 test('should give a 400 error when an error occur while rendering button', async () => {
     const buttonMiddleware = getButtonMiddleware({ 
         sdkVersionManager,
-        graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+        buttonsVersionManager,
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content: mockContent,
+        logger,
+        tracking,
+        getPersonalizationEnabled,
+        getSDKLocationInformation
+    });
 
     // These are considered valid (validateButtonProps pass)
     const req = mockReq({
@@ -210,7 +237,16 @@ test('should give a 400 error when an error occur while rendering button', async
 test('should render empty personalization when API errors', async () => {
     const buttonMiddleware = getButtonMiddleware({ 
         sdkVersionManager,
-        graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+        buttonsVersionManager,
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content: mockContent,
+        logger,
+        tracking,
+        getPersonalizationEnabled,
+        getSDKLocationInformation
+    });
 
     const req = mockReq({
         query: {
@@ -234,15 +270,14 @@ test('should render empty personalization when API errors', async () => {
 test('should render empty personalization when config is disabled', async () => {
     const buttonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         graphQL,
         getAccessToken,
         getMerchantID,
         content:                   mockContent,
-        cache,
         logger,
         tracking,
         getPersonalizationEnabled: () => false,
-        getInstanceLocationInformation,
         getSDKLocationInformation
     });
 
@@ -267,15 +302,14 @@ test('should render empty personalization when config is disabled', async () => 
 test('should render filled out tagline when config is enabled', async () => {
     const buttonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         graphQL,
         getAccessToken,
         getMerchantID,
         content:                   mockContent,
-        cache,
         logger,
         tracking,
         getPersonalizationEnabled: () => true,
-        getInstanceLocationInformation,
         getSDKLocationInformation
     });
 
@@ -300,7 +334,16 @@ test('should render filled out tagline when config is enabled', async () => {
 test('should do a basic button render with post and succeed', async () => {
     const buttonMiddleware = getButtonMiddleware({ 
         sdkVersionManager,
-        graphQL, getAccessToken, getMerchantID, content: mockContent, cache, logger, tracking, getPersonalizationEnabled, getInstanceLocationInformation, getSDKLocationInformation });
+        buttonsVersionManager,
+        graphQL,
+        getAccessToken,
+        getMerchantID,
+        content: mockContent,
+        logger,
+        tracking,
+        getPersonalizationEnabled,
+        getSDKLocationInformation
+    });
 
     const req = mockReq({
         method: 'post',
@@ -348,9 +391,10 @@ test('should do a basic button render with post and succeed', async () => {
 test('should find the req.model.rootTxn object in the req', async () => {
     const buttonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         graphQL, getAccessToken, getMerchantID,
-        content: mockContent, cache, logger, tracking,
-        getPersonalizationEnabled, getInstanceLocationInformation,
+        content: mockContent, logger, tracking,
+        getPersonalizationEnabled,
         getSDKLocationInformation
     });
 
@@ -370,15 +414,16 @@ test('should find the req.model.rootTxn object in the req', async () => {
     expect(name).toStrictEqual(ROOT_TRANSACTION_NAME.SMART_BUTTONS);
     expect(data?.client_id).toStrictEqual('sandbox');
     expect(data?.sdk_version).toStrictEqual('5.0.312');
-    expect(data?.smart_buttons_version).toStrictEqual('local');
+    expect(data?.smart_buttons_version).toStrictEqual('5.0.100');
 });
 
 test('should find the rootTxn name in the req model when is wallet', async () => {
     const buttonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         graphQL, getAccessToken, getMerchantID,
-        content: mockContent, cache, logger, tracking,
-        getPersonalizationEnabled, getInstanceLocationInformation,
+        content: mockContent, logger, tracking,
+        getPersonalizationEnabled,
         getSDKLocationInformation
     });
 
@@ -402,9 +447,10 @@ test('should find the rootTxn name in the req model when is wallet', async () =>
 test('should find the req.model.rootTxn.name in the req model when is vault', async () => {
     const buttonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         graphQL, getAccessToken, getMerchantID,
-        content: mockContent, cache, logger, tracking,
-        getPersonalizationEnabled, getInstanceLocationInformation,
+        content: mockContent, logger, tracking,
+        getPersonalizationEnabled,
         getSDKLocationInformation
     });
 
@@ -433,10 +479,10 @@ test('should return an HTML page with the error', async () => {
     });
     const buttonMiddleware = getButtonMiddleware({
         sdkVersionManager,
+        buttonsVersionManager,
         content: mockContent, tracking: mockTracking,
-        cache, logger, graphQL, getAccessToken, getMerchantID,
+        logger, graphQL, getAccessToken, getMerchantID,
         getPersonalizationEnabled,
-        getInstanceLocationInformation,
         getSDKLocationInformation
     });
 

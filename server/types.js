@@ -5,13 +5,8 @@ import { COUNTRY, LANG } from '@paypal/sdk-constants';
 export class SDKVersionManager {
     getLiveVersion: () => string
 
-    getOrInstallSDK: ({|
+    getOrInstallSDK: (?{|
         cdnRegistry:  string,
-        childModules: $ReadOnlyArray<string>,
-        flat:         boolean,
-        dependencies: boolean,
-        logger:       Object,
-        cache: Object
     |}) => {|
         nodeModulesPath : string,
         modulePath : string,
@@ -49,11 +44,6 @@ export type LoggerType = {|
     track : (req : ExpressRequest, payload : LoggerPayload, meta : ?Object) => void
 |};
 
-export type CacheType = {|
-    get : (string) => Promise<string | void>,
-    set : (string, string) => Promise<string>
-|};
-
 export type LocaleType = {|
     country : $Values<typeof COUNTRY>,
     lang : $Values<typeof LANG>
@@ -72,11 +62,6 @@ export type FirebaseConfig = {|
 
 export type RiskData = {|
     
-|};
-
-export type InstanceLocationInformation = {|
-    cdnHostName : string,
-    paypalDomain : string
 |};
 
 export type SDKLocationInformation = {|

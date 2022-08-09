@@ -5,10 +5,11 @@ import { undotify } from '@krakenjs/belter';
 import { ERROR_CODE } from '@paypal/sdk-constants';
 
 import type {
-    ExpressRequest, ExpressResponse, LoggerType,
-    CacheType, InstanceLocationInformation, SDKMeta
+    ExpressRequest,
+    ExpressResponse,
+    LoggerType,
+    SDKMeta
 } from '../types';
-import { startWatchers } from '../watchers';
 import { EVENT, BROWSER_CACHE_TIME, HTTP_HEADER } from '../config';
 
 import {
@@ -33,9 +34,7 @@ export function getSDKMeta(req : ExpressRequest) : SDKMeta {
 }
 
 export type SDKMiddlewareOptions = {|
-    logger : LoggerType | void,
-    cache : ?CacheType,
-    locationInformation : InstanceLocationInformation
+    logger : LoggerType | void
 |};
 
 export type SDKMiddleware = ({|
@@ -69,9 +68,8 @@ export type ExpressMiddleware = (
 
 let logBuffer;
 
-export function sdkMiddleware({ logger = defaultLogger, cache, locationInformation } : SDKMiddlewareOptions, { app, script, preflight } : {| app : SDKMiddleware, script? : SDKScriptMiddleware, preflight? : SDKPreflightMiddleware |}) : ExpressMiddleware {
+export function sdkMiddleware({ logger = defaultLogger } : SDKMiddlewareOptions, { app, script, preflight } : {| app : SDKMiddleware, script? : SDKScriptMiddleware, preflight? : SDKPreflightMiddleware |}) : ExpressMiddleware {
     logBuffer = logBuffer || getLogBuffer(logger);
-    startWatchers({ logBuffer, cache, locationInformation });
 
     const appMiddleware = async (req : ExpressRequest, res : ExpressResponse) : Promise<void> => {
         logBuffer.flush(req);
