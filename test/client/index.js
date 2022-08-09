@@ -20,7 +20,6 @@ import './card';
 import './inlinexo';
 import './native';
 import './native-qrcode';
-import './nativePopup';
 import './nativeFallback';
 import './payee';
 import './connect';
