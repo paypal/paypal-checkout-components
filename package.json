@@ -91,7 +91,7 @@
         "@krakenjs/zoid": "^10.0.0",
         "@paypal/common-components": "^1.0.27",
         "@paypal/funding-components": "^1.0.27",
-        "@paypal/sdk-client": "^4.0.166",
+        "@paypal/sdk-client": "^4.0.168-alpha.ed",
         "@paypal/sdk-constants": "^1.0.119",
         "@paypal/sdk-logos": "^1.0.45"
     },
