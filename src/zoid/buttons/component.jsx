@@ -690,7 +690,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         }).flush();
 
                     return eligible ? EXPERIENCE.INLINE : '';
-                },
+                }
             },
 
             // allowBillingPayments prop is used by Honey Extension to render the one-click button
