@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError } from '@krakenjs/belter/src';
+import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError, parseQuery } from '@krakenjs/belter/src';
 import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 
@@ -27,6 +27,17 @@ export const CHECKOUT_APM_POPUP_DIMENSIONS = {
 
 let canRenderTop = false;
 let inline = false;
+let smokeHash = '';
+
+function getSmokeHash() : ZalgoPromise<string> {
+    return window.xprops.getPageUrl().then(pageUrl => {
+        if (pageUrl.indexOf('smokeHash') !== -1) {
+            return parseQuery(pageUrl.split('?')[1]).smokeHash
+        }
+
+        return '';
+    });
+}
 
 function getRenderWindow() : Object {
     const top = getTop(window);
@@ -51,6 +62,10 @@ function setupCheckout({ components } : SetupOptions) : ZalgoPromise<void> {
             canRenderTop = result;
         });
     }
+
+    getSmokeHash().then(hash => {
+        smokeHash = hash;
+    });
 
     return ZalgoPromise.hash(tasks).then(noop);
 }
@@ -153,6 +168,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
             clientAccessToken,
             venmoPayloadID,
             inlinexo: inline,
+            smokeHash,
 
             createAuthCode: () => {
                 return ZalgoPromise.try(() => {
