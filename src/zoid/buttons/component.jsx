@@ -693,12 +693,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 },
             },
 
-            smokeHash: {
-                type:       'string',
-                required:   false,
-                queryParam: true
-            },
-
             // allowBillingPayments prop is used by Honey Extension to render the one-click button
             // with payment methods & to use the payment methods instead of the Billing Agreement
             allowBillingPayments: {

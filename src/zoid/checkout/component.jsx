@@ -9,7 +9,7 @@ import {
 } from '@paypal/sdk-client/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { create, CONTEXT, type ZoidComponent, EVENT } from '@krakenjs/zoid/src';
-import { isDevice, memoize, noop, supportsPopups, inlineMemoize } from '@krakenjs/belter/src';
+import { isDevice, memoize, noop, supportsPopups, inlineMemoize, parseQuery } from '@krakenjs/belter/src';
 import { FUNDING } from '@paypal/sdk-constants/src';
 import { SpinnerPage, Overlay } from '@paypal/common-components/src';
 
