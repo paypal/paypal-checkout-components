@@ -8,7 +8,7 @@ import { clientErrorResponse, htmlResponse, allowFrame, defaultLogger, safeJSON,
     graphQLBatch, type GraphQL, javascriptResponse, emptyResponse, promiseTimeout, isLocalOrTest, getDefaultExperiments, type GetExperimentsParams, type GetExperimentsType } from '../../lib';
 import { resolveFundingEligibility, resolveMerchantID, resolveWallet, resolvePersonalization } from '../../service';
 import { EXPERIMENT_TIMEOUT, TIMEOUT_ERROR_MESSAGE, FPTI_STATE } from '../../config';
-import type { LoggerType, CacheType, ExpressRequest, FirebaseConfig, InstanceLocationInformation, SDKLocationInformation, SDKVersionManager } from '../../types';
+import type { LoggerType, ExpressRequest, FirebaseConfig, SDKLocationInformation, SDKVersionManager } from '../../types';
 import type { ContentType } from '../../../src/types';
 
 import { getSmartPaymentButtonsClientScript, getPayPalSmartPaymentButtonsRenderScript } from './script';
@@ -21,7 +21,6 @@ type ButtonMiddlewareOptions = {|
     graphQL : GraphQL,
     getAccessToken : (ExpressRequest, string) => Promise<string>,
     getMerchantID : (ExpressRequest, string) => Promise<string>,
-    cache : CacheType,
     firebaseConfig? : FirebaseConfig,
     content : {
         [$Values<typeof COUNTRY>] : {
@@ -31,10 +30,10 @@ type ButtonMiddlewareOptions = {|
     tracking : (ExpressRequest) => void,
     getPersonalizationEnabled : (ExpressRequest) => boolean,
     cdn? : boolean,
-    getInstanceLocationInformation : () => InstanceLocationInformation,
     getSDKLocationInformation : (req : ExpressRequest, env : string) => Promise<SDKLocationInformation>,
     getExperiments? : (req : ExpressRequest, params : GetExperimentsParams) => Promise<GetExperimentsType>,
-    sdkVersionManager: SDKVersionManager
+    sdkVersionManager: SDKVersionManager,
+    buttonsVersionManager: SDKVersionManager
 |};
 
 export function getButtonMiddleware({
@@ -44,21 +43,18 @@ export function getButtonMiddleware({
     getAccessToken,
     cdn = !isLocalOrTest(),
     getMerchantID,
-    cache,
     firebaseConfig,
     tracking,
     getPersonalizationEnabled = () => false,
-    getInstanceLocationInformation,
     getSDKLocationInformation,
     getExperiments = getDefaultExperiments,
     sdkVersionManager,
+    buttonsVersionManager,
 } : ButtonMiddlewareOptions = {}) : ExpressMiddleware {
     const useLocal = !cdn;
 
-    const locationInformation = getInstanceLocationInformation();
-
-    return sdkMiddleware({ logger, cache, locationInformation }, {
-        app: async ({ req, res, params, meta, logBuffer, sdkMeta }) => {
+    return sdkMiddleware({ logger }, {
+        app: async ({ req, res, params, meta, sdkMeta }) => {
             logger.info(req, 'smart_buttons_render');
             const middlewareStartTime = Date.now();
 
@@ -84,17 +80,14 @@ export function getButtonMiddleware({
             const gqlBatch = graphQLBatch(req, graphQL, { env });
             const content = smartContent[locale.country][locale.lang] || {};
 
-            const facilitatorAccessTokenPromise = getAccessToken(req, clientID);
-            const merchantIDPromise = facilitatorAccessTokenPromise.then(facilitatorAccessToken => resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken }));
-            const clientPromise = getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
+            const clientPromise = getSmartPaymentButtonsClientScript({ debug, useLocal, buttonsVersionManager });
             const renderPromise = getPayPalSmartPaymentButtonsRenderScript({
                 sdkCDNRegistry: sdkLocationInformation?.sdkCDNRegistry,
-                cache,
-                logBuffer,
                 useLocal,
                 sdkVersionManager
             });
             const sdkVersion = sdkVersionManager.getLiveVersion();
+            const buttonsVersion = buttonsVersionManager.getLiveVersion()
 
             const fundingEligibilityPromise = resolveFundingEligibility(req, gqlBatch, {
                 logger, clientID, merchantID: sdkMerchantID, buttonSessionID, currency, intent, commit, vault,
@@ -118,7 +111,7 @@ export function getButtonMiddleware({
             let facilitatorAccessToken;
 
             try {
-                facilitatorAccessToken = await facilitatorAccessTokenPromise;
+                facilitatorAccessToken = await getAccessToken(req, clientID);
             } catch (err) {
                 if (err && err.statusCode && err.statusCode >= 400 && err.statusCode < 500) {
                     return clientErrorResponse(res, 'Invalid clientID');
@@ -128,8 +121,8 @@ export function getButtonMiddleware({
             }
 
             const renderButton = await renderPromise;
-            const client = await clientPromise;
-            const merchantID = await merchantIDPromise;
+            const clientScript = await clientPromise;
+            const merchantID = await resolveMerchantID(req, { merchantID: sdkMerchantID, getMerchantID, facilitatorAccessToken })
             const wallet = await walletPromise;
             const personalization = await personalizationPromise;
 
@@ -152,7 +145,7 @@ export function getButtonMiddleware({
             };
 
             logger.info(req, `button_render_version_${ sdkVersion }`);
-            logger.info(req, `button_client_version_${ client.version }`);
+            logger.info(req, `button_client_version_${ buttonsVersion }`);
 
             const buttonProps = {
                 ...params,
@@ -212,13 +205,13 @@ export function getButtonMiddleware({
                       }
                     </script>
                 </head>
-                <body data-nonce="${ cspNonce }" data-client-version="${ client.version }" data-render-version="${ sdkVersion }" data-response-start-time="${ responseStartTime }">
+                <body data-nonce="${ cspNonce }" data-client-version="${ buttonsVersion }" data-render-version="${ sdkVersion }" data-response-start-time="${ responseStartTime }">
                     <style nonce="${ cspNonce }">${ buttonStyle }</style>
 
                     <div id="buttons-container" class="buttons-container" role="main" aria-label="PayPal">${ buttonHTML }</div>
 
                     ${ meta.getSDKLoader({ nonce: cspNonce }) }
-                    <script nonce="${ cspNonce }">${ client.script }</script>
+                    <script nonce="${ cspNonce }">${ clientScript }</script>
                     <script nonce="${ cspNonce }">spb.setupButton(${ safeJSON(setupParams) })</script>
                 </body>
             `;
@@ -229,23 +222,23 @@ export function getButtonMiddleware({
                     name:                  rootTransactionName,
                     client_id:             clientID,
                     sdk_version:           sdkVersion,
-                    smart_buttons_version: client.version
+                    smart_buttons_version: buttonsVersion
                 }
             });
             allowFrame(res);
             return htmlResponse(res, pageHTML);
         },
 
-        script: async ({ req, res, params, logBuffer }) => {
+        script: async ({ req, res, params }) => {
             logger.info(req, 'smart_buttons_script_render');
 
             const { debug } = getButtonParams(params, req, res);
-            const { script } = await getSmartPaymentButtonsClientScript({ debug, logBuffer, cache, useLocal, locationInformation });
+            const script = await getSmartPaymentButtonsClientScript({ debug, useLocal, buttonsVersionManager });
 
             return javascriptResponse(res, script);
         },
 
-        preflight: ({ req, res, params, logBuffer }) => {
+        preflight: ({ req, res, params }) => {
             const { clientID, merchantID, currency, userIDToken, amount } = getButtonPreflightParams(params);
 
             const gqlBatch = graphQLBatch(req, graphQL);
@@ -253,7 +246,7 @@ export function getButtonMiddleware({
             resolveWallet(req, gqlBatch, {
                 logger, clientID, merchantID, currency, amount, userIDToken
             }).catch(err => {
-                logBuffer.warn('preflight_error', { err: stringifyError(err) });
+                logger.warn(req, 'preflight_error', { err: stringifyError(err) });
             });
 
             gqlBatch.flush();

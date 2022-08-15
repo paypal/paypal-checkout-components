@@ -4894,7 +4894,7 @@
                 logger.addTrackingBuilder((function() {
                     var _ref3;
                     return (_ref3 = {}).state_name = "smart_button", _ref3.context_type = "button_session_id", 
-                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.107", 
+                    _ref3.context_id = buttonSessionID, _ref3.button_session_id = buttonSessionID, _ref3.button_version = "5.0.110", 
                     _ref3.user_id = buttonSessionID, _ref3.time = Date.now().toString(), _ref3;
                 }));
                 (function() {
@@ -5118,16 +5118,8 @@
                 }));
             };
             var handleHash = function() {
-                var _logger$info$track9;
                 if (window.location.hash && "#" !== window.location.hash) {
                     var _hashString$split = (window.location.hash && window.location.hash.slice(1)).split("?"), hash = _hashString$split[0], queryString = _hashString$split[1];
-                    var _parseQuery = parseQuery(queryString), appVersion = _parseQuery.appVersion, bundleIdentifier = _parseQuery.bundleIdentifier;
-                    logger.info("native_popup_hashchange", {
-                        hash: hash,
-                        queryString: queryString
-                    }).track((_logger$info$track9 = {}, _logger$info$track9.transition_name = "popup_hashchange", 
-                    _logger$info$track9.mobile_app_version = appVersion, _logger$info$track9.mapv = bundleIdentifier, 
-                    _logger$info$track9.info_msg = "" + window.location.href, _logger$info$track9)).flush();
                     switch (hash) {
                       case "init":
                       case "loaded":
@@ -5137,11 +5129,11 @@
                         break;
 
                       case "onApprove":
-                        var _parseQuery2 = parseQuery(queryString);
+                        var _parseQuery = parseQuery(queryString);
                         sendToParent("onApprove", {
-                            payerID: _parseQuery2.payerID,
-                            paymentID: _parseQuery2.paymentID,
-                            billingToken: _parseQuery2.billingToken
+                            payerID: _parseQuery.payerID,
+                            paymentID: _parseQuery.paymentID,
+                            billingToken: _parseQuery.billingToken
                         }).finally(closeWindow);
                         break;
 
@@ -5150,18 +5142,18 @@
                         break;
 
                       case "fallback":
-                        var _parseQuery3 = parseQuery(queryString);
+                        var _parseQuery2 = parseQuery(queryString);
                         sendToParent("onFallback", {
-                            type: _parseQuery3.type,
-                            skip_native_duration: _parseQuery3.skip_native_duration,
-                            fallback_reason: _parseQuery3.fallback_reason
+                            type: _parseQuery2.type,
+                            skip_native_duration: _parseQuery2.skip_native_duration,
+                            fallback_reason: _parseQuery2.fallback_reason
                         });
                         break;
 
                       case "onError":
-                        var _parseQuery4 = parseQuery(queryString);
+                        var _parseQuery3 = parseQuery(queryString);
                         sendToParent("onError", {
-                            message: _parseQuery4.message
+                            message: _parseQuery3.message
                         }).finally(closeWindow);
                         break;
 

@@ -841,7 +841,7 @@
             this.__v && (this.__e = !0, n && this.__h.push(n), b(this));
         }, d.prototype.render = p, preact_module_t = [], g.__r = 0;
         var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
-        function hooks_module_p(t, r) {
+        function hooks_module_d(t, r) {
             l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
             var o = hooks_module_u.__H || (hooks_module_u.__H = {
                 __: [],
@@ -851,17 +851,33 @@
                 __V: hooks_module_f
             }), o.__[t];
         }
-        function hooks_module_y(n) {
+        function hooks_module_p(n) {
             return hooks_module_i = 1, function(n, r, o) {
-                var i = hooks_module_p(hooks_module_t++, 2);
-                return i.t = n, i.__c || (i.__ = [ hooks_module_z(void 0, r), function(n) {
-                    var t = i.t(i.__[0], n);
-                    i.__[0] !== t && (i.__ = [ t, i.__[1] ], i.__c.setState({}));
-                } ], i.__c = hooks_module_u), i.__;
+                var i = hooks_module_d(hooks_module_t++, 2);
+                if (i.t = n, !i.__c && (i.__ = [ hooks_module_z(void 0, r), function(n) {
+                    var t = i.__N ? i.__N[0] : i.__[0], u = i.t(t, n);
+                    t !== u && (i.__N = [ u, i.__[1] ], i.__c.setState({}));
+                } ], i.__c = hooks_module_u, !i.__c.u)) {
+                    i.__c.__H.u = !0;
+                    var c = i.__c.shouldComponentUpdate;
+                    i.__c.shouldComponentUpdate = function(n, t, u) {
+                        var r = i.__c.__H.__.filter((function(n) {
+                            return n.__c;
+                        }));
+                        return (r.every((function(n) {
+                            return !n.__N;
+                        })) || !r.every((function(n) {
+                            if (!n.__N) return !0;
+                            var t = n.__[0];
+                            return n.__ = n.__N, n.__N = void 0, t === n.__[0];
+                        }))) && (!c || c(n, t, u));
+                    };
+                }
+                return i.__N || i.__;
             }(hooks_module_z, n);
         }
         function hooks_module_b() {
-            for (var t; t = hooks_module_c.shift(); ) if (t.__P) try {
+            for (var t; t = hooks_module_c.shift(); ) if (t.__P && t.__H) try {
                 t.__H.__h.forEach(hooks_module_j), t.__H.__h.forEach(hooks_module_k), t.__H.__h = [];
             } catch (u) {
                 t.__H.__h = [], l.__e(u, t.__v);
@@ -874,7 +890,7 @@
             var o = (hooks_module_u = n.__c).__H;
             o && (hooks_module_r === hooks_module_u ? (o.__h = [], hooks_module_u.__h = [], 
             o.__.forEach((function(n) {
-                n.__V = hooks_module_f, n.u = void 0;
+                n.__N && (n.__ = n.__N), n.__V = hooks_module_f, n.__N = n.o = void 0;
             }))) : (o.__h.forEach(hooks_module_j), o.__h.forEach(hooks_module_k), o.__h = [])), 
             hooks_module_r = hooks_module_u;
         }, l.diffed = function(t) {
@@ -886,7 +902,7 @@
                 }, r = setTimeout(u, 100);
                 hooks_module_g && (t = requestAnimationFrame(u));
             })(hooks_module_b)), i.__H.__.forEach((function(n) {
-                n.u && (n.__H = n.u), n.__V !== hooks_module_f && (n.__ = n.__V), n.u = void 0, 
+                n.o && (n.__H = n.o), n.__V !== hooks_module_f && (n.__ = n.__V), n.o = void 0, 
                 n.__V = hooks_module_f;
             }))), hooks_module_r = hooks_module_u = null;
         }, l.__c = function(t, u) {
@@ -3164,7 +3180,7 @@
             logger.addTrackingBuilder((function() {
                 var _ref2;
                 return (_ref2 = {}).state_name = "smart_button", _ref2.context_type = "EC-Token", 
-                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.107", 
+                _ref2.context_id = orderID, _ref2.button_session_id = buttonSessionID, _ref2.button_version = "5.0.110", 
                 _ref2.user_id = buttonSessionID, _ref2;
             }));
             (function() {
@@ -3285,16 +3301,16 @@
         function QRCard(_ref) {
             var svgString = _ref.svgString;
             var _useXProps = function() {
-                var _useState = hooks_module_y(window.xprops), xprops = _useState[0], setXProps = _useState[1];
+                var _useState = hooks_module_p(window.xprops), xprops = _useState[0], setXProps = _useState[1];
                 r = function() {
                     return xprops.onProps((function(newProps) {
                         setXProps(_extends({}, newProps));
                     }));
-                }, o = [], i = hooks_module_p(hooks_module_t++, 3), !l.__s && function(n, t) {
+                }, o = [], i = hooks_module_d(hooks_module_t++, 3), !l.__s && function(n, t) {
                     return !n || n.length !== t.length || t.some((function(t, u) {
                         return t !== n[u];
                     }));
-                }(i.__H, o) && (i.__ = r, i.u = o, hooks_module_u.__H.__h.push(i));
+                }(i.__H, o) && (i.__ = r, i.o = o, hooks_module_u.__H.__h.push(i));
                 var r, o, i;
                 return _extends({}, xprops, {
                     setState: function(newState) {
@@ -3305,7 +3321,7 @@
                 });
             }(), state = _useXProps.state, errorText = _useXProps.errorText, setState = _useXProps.setState, close = _useXProps.close, cancel = _useXProps.onCancel;
             var survey = function() {
-                var _useState = hooks_module_y({
+                var _useState = hooks_module_p({
                     isEnabled: !1,
                     reason: "prefer_not_to_say"
                 }), state = _useState[0], setState = _useState[1];

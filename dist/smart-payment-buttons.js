@@ -10742,7 +10742,7 @@ window.spb = function(modules) {
             Object(lib.getLogger)().info("rest_api_create_order_token");
             var headers = ((_headers15 = {})[constants.HEADERS.AUTHORIZATION] = "Bearer " + accessToken, 
             _headers15[constants.HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _headers15[constants.HEADERS.CLIENT_METADATA_ID] = clientMetadataID, 
-            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.107", 
+            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.110", 
             _headers15);
             var paymentSource = {
                 token: {
@@ -12187,8 +12187,8 @@ window.spb = function(modules) {
                                                 handleApplePayError(constants.FPTI_TRANSITION.APPLEPAY_PAYMENT_ERROR, err);
                                             }));
                                         }));
-                                    })), addEventListener("cancel", (function() {
-                                        logApplePayEvent("cancel");
+                                    })), addEventListener("oncancel", (function() {
+                                        logApplePayEvent("oncancel");
                                         onCancel && onCancel();
                                     })) ]).then((function() {
                                         begin();
@@ -12616,6 +12616,7 @@ window.spb = function(modules) {
                                 approved = !0;
                                 Object(lib.getLogger)().info("spb_onapprove_access_token_" + (buyerAccessToken ? "present" : "not_present")).flush();
                                 Object(lib.setBuyerAccessToken)(buyerAccessToken);
+                                var valid = !0;
                                 return _onApprove({
                                     accelerated: accelerated,
                                     payerID: payerID,
@@ -12627,8 +12628,10 @@ window.spb = function(modules) {
                                 }, {
                                     restart: restart
                                 }).finally((function() {
-                                    return accelerated ? src.noop : close().then(src.noop);
-                                })).catch(src.noop);
+                                    return accelerated ? valid : close().then(src.noop);
+                                })).catch((function() {
+                                    valid = !1;
+                                }));
                             }
                             doApproveOnClose = !0;
                         },
@@ -15344,8 +15347,8 @@ window.spb = function(modules) {
                     return (_ref5 = {})[sdk_constants_src.FPTI_KEY.CHOSEN_FUNDING] = fundingSource, 
                     _ref5[sdk_constants_src.FPTI_KEY.CONTEXT_TYPE] = constants.FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _ref5[sdk_constants_src.FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref5[sdk_constants_src.FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, 
-                    _ref5[constants.AMPLITUDE_KEY.USER_ID] = buttonSessionID, _ref5[sdk_constants_src.FPTI_KEY.TOKEN] = null, 
-                    _ref5;
+                    _ref5[constants.AMPLITUDE_KEY.USER_ID] = buttonSessionID, _ref5[constants.AMPLITUDE_KEY.TIME] = Date.now().toString(), 
+                    _ref5[sdk_constants_src.FPTI_KEY.TOKEN] = null, _ref5;
                 })).track(((_getLogger$addPayload = {})[sdk_constants_src.FPTI_KEY.TRANSITION] = constants.FPTI_TRANSITION.BUTTON_CLICK, 
                 _getLogger$addPayload[sdk_constants_src.FPTI_KEY.CHOSEN_FI_TYPE] = instrumentType, 
                 _getLogger$addPayload[sdk_constants_src.FPTI_KEY.PAYMENT_FLOW] = name, _getLogger$addPayload[sdk_constants_src.FPTI_KEY.IS_VAULT] = instrumentType ? "1" : "0", 
@@ -16054,14 +16057,13 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {})[sdk_constants_src.FPTI_KEY.CONTEXT_TYPE] = constants.FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _ref3[sdk_constants_src.FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref3[sdk_constants_src.FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, 
-                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.107", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
+                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.110", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
                     _ref3[sdk_constants_src.FPTI_KEY.STICKINESS_ID] = Object(lib.isAndroidChrome)() ? stickinessID : null, 
                     _ref3[sdk_constants_src.FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, 
                     _ref3[sdk_constants_src.FPTI_KEY.USER_ACTION] = commit ? sdk_constants_src.FPTI_USER_ACTION.COMMIT : sdk_constants_src.FPTI_USER_ACTION.CONTINUE, 
                     _ref3[sdk_constants_src.FPTI_KEY.SELLER_ID] = merchantID[0], _ref3[sdk_constants_src.FPTI_KEY.MERCHANT_DOMAIN] = merchantDomain, 
-                    _ref3[constants.FPTI_CUSTOM_KEY.EXPERIENCE] = experience === constants_button.EXPERIENCE.INLINE ? "inline" : "default", 
-                    _ref3[sdk_constants_src.FPTI_KEY.TIMESTAMP] = Date.now().toString(), _ref3[constants.AMPLITUDE_KEY.TIME] = Date.now().toString(), 
-                    _ref3[constants.AMPLITUDE_KEY.USER_ID] = buttonSessionID, _ref3;
+                    _ref3[constants.FPTI_CUSTOM_KEY.EXPERIENCE] = experience === constants_button.EXPERIENCE.INLINE ? "accelerated" : "default", 
+                    _ref3[sdk_constants_src.FPTI_KEY.TIMESTAMP] = Date.now().toString(), _ref3;
                 }));
                 Object(src.isIEIntranet)() && logger.warn("button_child_intranet_mode");
                 return zalgo_promise_src.ZalgoPromise.hash({

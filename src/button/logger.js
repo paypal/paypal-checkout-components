@@ -88,7 +88,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
             [FPTI_KEY.USER_ACTION]:                  commit ? FPTI_USER_ACTION.COMMIT : FPTI_USER_ACTION.CONTINUE,
             [FPTI_KEY.SELLER_ID]:                    merchantID[0],
             [FPTI_KEY.MERCHANT_DOMAIN]:              merchantDomain,
-            [FPTI_CUSTOM_KEY.EXPERIENCE]:            experience === EXPERIENCE.INLINE ? 'inline' : 'default',
+            [FPTI_CUSTOM_KEY.EXPERIENCE]:            experience === EXPERIENCE.INLINE ? 'accelerated' : 'default',
             [FPTI_KEY.TIMESTAMP]:                    Date.now().toString()
         };
     });

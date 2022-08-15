@@ -1,23 +1,14 @@
 /* @flow */
 
 import { noop } from '@krakenjs/belter';
+import { getVersionFromNodeModules } from '@krakenjs/grabthar'
 
-import { getQRCodeMiddleware, cancelWatchers } from '../../server';
+import { getQRCodeMiddleware } from '../../server';
+import { type SDKVersionManager } from '../../server/types'
 
-import { mockReq, mockRes, getInstanceLocationInformation } from './mock';
+import { mockReq, mockRes } from './mock';
 
 jest.setTimeout(300000);
-
-afterAll((done) => {
-    cancelWatchers();
-    done();
-});
-
-const cache = {
-    // eslint-disable-next-line no-unused-vars
-    get: (key) => Promise.resolve(),
-    set: (key, value) => Promise.resolve(value)
-};
 
 const logger = {
     debug: noop,
@@ -27,6 +18,11 @@ const logger = {
     track: noop
 };
 
+// $FlowFixMe testing impl
+const buttonsVersionManager: SDKVersionManager = {
+    getLiveVersion: () => '5.0.100',
+    getOrInstallSDK: async (...args) => await getVersionFromNodeModules(args),
+}
 
 const test_qrPath = 'string_to_be_encoded';
 
@@ -42,7 +38,7 @@ function isRenderCallCorrect ({ html } : {|html : string |}) : boolean {
 }
 
 test('should do a basic QRCode page render', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, buttonsVersionManager });
     const req = mockReq({
         query: {
             parentDomain: 'foo.paypal.com',
@@ -79,7 +75,7 @@ test('should do a basic QRCode page render', async () => {
 });
 
 test('should fail if qrPath query param not provided', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, buttonsVersionManager });
 
     const req = mockReq({
         query: {
@@ -113,7 +109,7 @@ test('should fail if qrPath query param not provided', async () => {
 });
 
 test('should fail with a non-paypal domain', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, buttonsVersionManager });
 
     const req = mockReq({
         query: {
@@ -143,7 +139,7 @@ test('should fail with a non-paypal domain', async () => {
 });
 
 test('should render & make correct init call when when "debug" param passed', async () => {
-    const qrCodeMiddleware = getQRCodeMiddleware({ logger, cache, getInstanceLocationInformation });
+    const qrCodeMiddleware = getQRCodeMiddleware({ logger, buttonsVersionManager });
 
     const req = mockReq({
         query: {

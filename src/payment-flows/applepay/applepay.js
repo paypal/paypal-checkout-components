@@ -525,7 +525,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     }
 
                     function cancel() {
-                        logApplePayEvent('cancel');
+                        logApplePayEvent('oncancel');
 
                         if (onCancel) {
                             onCancel();
@@ -538,7 +538,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         addEventListener('shippingmethodselected', shippingMethodSelected),
                         addEventListener('shippingcontactselected', shippingContactSelected),
                         addEventListener('paymentauthorized', paymentAuthorized),
-                        addEventListener('cancel', cancel)
+                        addEventListener('oncancel', cancel)
                     ]).then(() => {
                         begin();
                     });

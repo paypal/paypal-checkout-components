@@ -928,7 +928,6 @@ getRestfulAuthorizeOrderApiMock().listen();
 getRestfulPatchOrderApiMock().listen();
 getRestfulAuthorizationsCaptureApiMock().listen();
 
-
 navigator.sendBeacon = () => true;
 
 type NativeMockWebSocket = {|
