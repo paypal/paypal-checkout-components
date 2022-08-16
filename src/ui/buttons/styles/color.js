@@ -62,6 +62,7 @@ export const buttonColorStyle = `
         background: #008CFF;
     }
 
+    /* For APM funding sources, default button color to be defined by payment scheme branding guidelines */
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BLIK }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
         background: #2C2E2F;
     }
@@ -122,6 +123,7 @@ export const buttonColorStyle = `
         background: #1AAD19;
     }
 
+    /* APM button hover actions */
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BANCONTACT }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:hover,
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BLIK }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:hover,
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BOLETO }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:hover,
@@ -140,6 +142,7 @@ export const buttonColorStyle = `
         filter: brightness(1.2);
     }
 
+    /* APM button on focus actions */
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BLIK }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:focus,
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BANCONTACT }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:focus,
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BOLETO }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:focus,
@@ -158,6 +161,7 @@ export const buttonColorStyle = `
         outline: none;
     }
 
+    /* APM button after focus actions */
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BLIK }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:focus::after,
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BANCONTACT }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:focus::after,
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BOLETO }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT }:focus::after,
