@@ -311,110 +311,111 @@ window.spb = function(modules) {
     }, d.prototype.forceUpdate = function(n) {
         this.__v && (this.__e = !0, n && this.__h.push(n), b(this));
     }, d.prototype.render = p, preact_module_t = [], g.__r = 0;
-    var hooks_module_t, hooks_module_u, hooks_module_r, hooks_module_o, hooks_module_i = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
-    function hooks_module_d(t, r) {
-        l.__h && l.__h(hooks_module_u, t, hooks_module_i || r), hooks_module_i = 0;
-        var o = hooks_module_u.__H || (hooks_module_u.__H = {
+    var hooks_module_t, hooks_module_r, hooks_module_u, hooks_module_i, hooks_module_o = 0, hooks_module_c = [], hooks_module_f = [], hooks_module_e = l.__b, hooks_module_a = l.__r, hooks_module_v = l.diffed, hooks_module_l = l.__c, hooks_module_m = l.unmount;
+    function hooks_module_d(t, u) {
+        l.__h && l.__h(hooks_module_r, t, hooks_module_o || u), hooks_module_o = 0;
+        var i = hooks_module_r.__H || (hooks_module_r.__H = {
             __: [],
             __h: []
         });
-        return t >= o.__.length && o.__.push({
+        return t >= i.__.length && i.__.push({
             __V: hooks_module_f
-        }), o.__[t];
+        }), i.__[t];
     }
     function hooks_module_p(n) {
-        return hooks_module_i = 1, function(n, r, o) {
-            var i = hooks_module_d(hooks_module_t++, 2);
-            if (i.t = n, !i.__c && (i.__ = [ hooks_module_z(void 0, r), function(n) {
-                var t = i.__N ? i.__N[0] : i.__[0], u = i.t(t, n);
-                t !== u && (i.__N = [ u, i.__[1] ], i.__c.setState({}));
-            } ], i.__c = hooks_module_u, !i.__c.u)) {
-                i.__c.__H.u = !0;
-                var c = i.__c.shouldComponentUpdate;
-                i.__c.shouldComponentUpdate = function(n, t, u) {
-                    var r = i.__c.__H.__.filter((function(n) {
+        return hooks_module_o = 1, function(n, u, i) {
+            var o = hooks_module_d(hooks_module_t++, 2);
+            if (o.t = n, !o.__c && (o.__ = [ hooks_module_z(void 0, u), function(n) {
+                var t = o.__N ? o.__N[0] : o.__[0], r = o.t(t, n);
+                t !== r && (o.__N = [ r, o.__[1] ], o.__c.setState({}));
+            } ], o.__c = hooks_module_r, !hooks_module_r.u)) {
+                hooks_module_r.u = !0;
+                var c = hooks_module_r.shouldComponentUpdate;
+                hooks_module_r.shouldComponentUpdate = function(n, t, r) {
+                    if (!o.__c.__H) return !0;
+                    var u = o.__c.__H.__.filter((function(n) {
                         return n.__c;
                     }));
-                    return (r.every((function(n) {
+                    return (u.every((function(n) {
                         return !n.__N;
-                    })) || !r.every((function(n) {
+                    })) || !u.every((function(n) {
                         if (!n.__N) return !0;
                         var t = n.__[0];
                         return n.__ = n.__N, n.__N = void 0, t === n.__[0];
-                    }))) && (!c || c(n, t, u));
+                    }))) && (!c || c.call(this, n, t, r));
                 };
             }
-            return i.__N || i.__;
+            return o.__N || o.__;
         }(hooks_module_z, n);
     }
-    function hooks_module_(r, o) {
-        var i = hooks_module_d(hooks_module_t++, 3);
-        !l.__s && hooks_module_w(i.__H, o) && (i.__ = r, i.o = o, hooks_module_u.__H.__h.push(i));
+    function hooks_module_h(u, i) {
+        var o = hooks_module_d(hooks_module_t++, 3);
+        !l.__s && hooks_module_w(o.__H, i) && (o.__ = u, o.i = i, hooks_module_r.__H.__h.push(o));
     }
     function hooks_module_b() {
         for (var t; t = hooks_module_c.shift(); ) if (t.__P && t.__H) try {
             t.__H.__h.forEach(hooks_module_j), t.__H.__h.forEach(hooks_module_k), t.__H.__h = [];
-        } catch (u) {
-            t.__H.__h = [], l.__e(u, t.__v);
+        } catch (r) {
+            t.__H.__h = [], l.__e(r, t.__v);
         }
     }
     l.__b = function(n) {
-        hooks_module_u = null, hooks_module_e && hooks_module_e(n);
+        hooks_module_r = null, hooks_module_e && hooks_module_e(n);
     }, l.__r = function(n) {
         hooks_module_a && hooks_module_a(n), hooks_module_t = 0;
-        var o = (hooks_module_u = n.__c).__H;
-        o && (hooks_module_r === hooks_module_u ? (o.__h = [], hooks_module_u.__h = [], 
-        o.__.forEach((function(n) {
-            n.__N && (n.__ = n.__N), n.__V = hooks_module_f, n.__N = n.o = void 0;
-        }))) : (o.__h.forEach(hooks_module_j), o.__h.forEach(hooks_module_k), o.__h = [])), 
-        hooks_module_r = hooks_module_u;
+        var i = (hooks_module_r = n.__c).__H;
+        i && (hooks_module_u === hooks_module_r ? (i.__h = [], hooks_module_r.__h = [], 
+        i.__.forEach((function(n) {
+            n.__N && (n.__ = n.__N), n.__V = hooks_module_f, n.__N = n.i = void 0;
+        }))) : (i.__h.forEach(hooks_module_j), i.__h.forEach(hooks_module_k), i.__h = [])), 
+        hooks_module_u = hooks_module_r;
     }, l.diffed = function(t) {
         hooks_module_v && hooks_module_v(t);
-        var i = t.__c;
-        i && i.__H && (i.__H.__h.length && (1 !== hooks_module_c.push(i) && hooks_module_o === l.requestAnimationFrame || ((hooks_module_o = l.requestAnimationFrame) || function(n) {
-            var t, u = function() {
-                clearTimeout(r), hooks_module_g && cancelAnimationFrame(t), setTimeout(n);
-            }, r = setTimeout(u, 100);
-            hooks_module_g && (t = requestAnimationFrame(u));
-        })(hooks_module_b)), i.__H.__.forEach((function(n) {
-            n.o && (n.__H = n.o), n.__V !== hooks_module_f && (n.__ = n.__V), n.o = void 0, 
+        var o = t.__c;
+        o && o.__H && (o.__H.__h.length && (1 !== hooks_module_c.push(o) && hooks_module_i === l.requestAnimationFrame || ((hooks_module_i = l.requestAnimationFrame) || function(n) {
+            var t, r = function() {
+                clearTimeout(u), hooks_module_g && cancelAnimationFrame(t), setTimeout(n);
+            }, u = setTimeout(r, 100);
+            hooks_module_g && (t = requestAnimationFrame(r));
+        })(hooks_module_b)), o.__H.__.forEach((function(n) {
+            n.i && (n.__H = n.i), n.__V !== hooks_module_f && (n.__ = n.__V), n.i = void 0, 
             n.__V = hooks_module_f;
-        }))), hooks_module_r = hooks_module_u = null;
-    }, l.__c = function(t, u) {
-        u.some((function(t) {
+        }))), hooks_module_u = hooks_module_r = null;
+    }, l.__c = function(t, r) {
+        r.some((function(t) {
             try {
                 t.__h.forEach(hooks_module_j), t.__h = t.__h.filter((function(n) {
                     return !n.__ || hooks_module_k(n);
                 }));
-            } catch (r) {
-                u.some((function(n) {
+            } catch (u) {
+                r.some((function(n) {
                     n.__h && (n.__h = []);
-                })), u = [], l.__e(r, t.__v);
+                })), r = [], l.__e(u, t.__v);
             }
-        })), hooks_module_l && hooks_module_l(t, u);
+        })), hooks_module_l && hooks_module_l(t, r);
     }, l.unmount = function(t) {
         hooks_module_m && hooks_module_m(t);
-        var u, r = t.__c;
-        r && r.__H && (r.__H.__.forEach((function(n) {
+        var r, u = t.__c;
+        u && u.__H && (u.__H.__.forEach((function(n) {
             try {
                 hooks_module_j(n);
             } catch (n) {
-                u = n;
+                r = n;
             }
-        })), u && l.__e(u, r.__v));
+        })), r && l.__e(r, u.__v));
     };
     var hooks_module_g = "function" == typeof requestAnimationFrame;
     function hooks_module_j(n) {
-        var t = hooks_module_u, r = n.__c;
-        "function" == typeof r && (n.__c = void 0, r()), hooks_module_u = t;
+        var t = hooks_module_r, u = n.__c;
+        "function" == typeof u && (n.__c = void 0, u()), hooks_module_r = t;
     }
     function hooks_module_k(n) {
-        var t = hooks_module_u;
-        n.__c = n.__(), hooks_module_u = t;
+        var t = hooks_module_r;
+        n.__c = n.__(), hooks_module_r = t;
     }
     function hooks_module_w(n, t) {
-        return !n || n.length !== t.length || t.some((function(t, u) {
-            return t !== n[u];
+        return !n || n.length !== t.length || t.some((function(t, r) {
+            return t !== n[r];
         }));
     }
     function hooks_module_z(n, t) {
@@ -1878,17 +1879,17 @@ window.spb = function(modules) {
         var choices = _ref.choices, onBlur = _ref.onBlur, cspNonce = _ref.cspNonce, verticalOffset = _ref.verticalOffset;
         var autoFocus = function(_temp) {
             var _ref = void 0 === _temp ? {} : _temp, _ref$onFocus = _ref.onFocus, onFocus = void 0 === _ref$onFocus ? src_util_noop : _ref$onFocus, _ref$onFocusFail = _ref.onFocusFail, onFocusFail = void 0 === _ref$onFocusFail ? src_util_noop : _ref$onFocusFail;
-            var ref = (hooks_module_i = 5, function(n, u) {
-                var r = hooks_module_d(hooks_module_t++, 7);
-                return hooks_module_w(r.__H, u) ? (r.__V = {
+            var ref = (hooks_module_o = 5, function(n, r) {
+                var u = hooks_module_d(hooks_module_t++, 7);
+                return hooks_module_w(u.__H, r) ? (u.__V = {
                     current: void 0
-                }, r.o = u, r.__h = n, r.__V) : r.__;
+                }, u.i = r, u.__h = n, u.__V) : u.__;
             }((function() {
                 return {
                     current: void 0
                 };
             }), []));
-            hooks_module_((function() {
+            hooks_module_h((function() {
                 if (ref.current) {
                     ref.current.focus();
                     document.activeElement === ref.current ? onFocus() : onFocusFail();
@@ -1991,7 +1992,7 @@ window.spb = function(modules) {
         var cspNonce = _ref.cspNonce, _ref$pageVisible = _ref.pageVisible, pageVisible = void 0 !== _ref$pageVisible && _ref$pageVisible;
         var _useXProps = function() {
             var _useState = hooks_module_p(window.xprops), xprops = _useState[0], setXProps = _useState[1];
-            hooks_module_((function() {
+            hooks_module_h((function() {
                 return xprops.onProps((function(newProps) {
                     setXProps(_extends({}, newProps));
                 }));
@@ -2000,7 +2001,7 @@ window.spb = function(modules) {
         }(), choices = _useXProps.choices, onChoose = _useXProps.onChoose, verticalOffset = _useXProps.verticalOffset, hide = _useXProps.hide, _useXProps$onBlur = _useXProps.onBlur, onBlur = void 0 === _useXProps$onBlur ? src_util_noop : _useXProps$onBlur, _useXProps$onFocus = _useXProps.onFocus, onFocus = void 0 === _useXProps$onFocus ? src_util_noop : _useXProps$onFocus, _useXProps$onFocusFai = _useXProps.onFocusFail, onFocusFail = void 0 === _useXProps$onFocusFai ? src_util_noop : _useXProps$onFocusFai;
         var _useState = hooks_module_p(!1), opaque = _useState[0], setOpaque = _useState[1];
         var _useState2 = hooks_module_p(pageVisible), visible = _useState2[0], setVisible = _useState2[1];
-        hooks_module_((function() {
+        hooks_module_h((function() {
             var hasChoices = Boolean(choices && choices.length);
             setOpaque(hasChoices);
             setVisible(hasChoices);

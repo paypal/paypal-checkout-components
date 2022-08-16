@@ -10742,7 +10742,7 @@ window.spb = function(modules) {
             Object(lib.getLogger)().info("rest_api_create_order_token");
             var headers = ((_headers15 = {})[constants.HEADERS.AUTHORIZATION] = "Bearer " + accessToken, 
             _headers15[constants.HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _headers15[constants.HEADERS.CLIENT_METADATA_ID] = clientMetadataID, 
-            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.110", 
+            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.111", 
             _headers15);
             var paymentSource = {
                 token: {
@@ -12451,6 +12451,7 @@ window.spb = function(modules) {
         var src_config = __webpack_require__("./src/config.js");
         var canRenderTop = !1;
         var checkout_inline = !1;
+        var smokeHash = "";
         function getDimensions(fundingSource) {
             if (-1 !== constants.APM_LIST.indexOf(fundingSource)) {
                 Object(lib.getLogger)().info("popup_dimensions_value_" + fundingSource).flush();
@@ -12474,6 +12475,11 @@ window.spb = function(modules) {
                 top && parent && parent !== top && (tasks.canRenderTo = Checkout.canRenderTo(top).then((function(result) {
                     canRenderTop = result;
                 })));
+                window.xprops.getPageUrl().then((function(pageUrl) {
+                    return -1 !== pageUrl.indexOf("smokeHash") ? Object(src.parseQuery)(pageUrl.split("?")[1]).smokeHash : "";
+                })).then((function(hash) {
+                    smokeHash = hash;
+                }));
                 return zalgo_promise_src.ZalgoPromise.hash(tasks).then(src.noop);
             },
             isEligible: function() {
@@ -12535,6 +12541,7 @@ window.spb = function(modules) {
                         clientAccessToken: clientAccessToken,
                         venmoPayloadID: venmoPayloadID,
                         inlinexo: checkout_inline,
+                        smokeHash: smokeHash,
                         createAuthCode: function() {
                             return zalgo_promise_src.ZalgoPromise.try((function() {
                                 var fundingSkipLogin = src_config.FUNDING_SKIP_LOGIN[fundingSource];
@@ -15304,7 +15311,7 @@ window.spb = function(modules) {
         }
         function initiatePaymentFlow(_ref3) {
             var _props$style;
-            var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props;
+            var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props, brandedDefault = _ref3.brandedDefault;
             var button = payment.button, fundingSource = payment.fundingSource, instrumentType = payment.instrumentType, buyerIntent = payment.buyerIntent;
             var buttonLabel = null == (_props$style = props.style) ? void 0 : _props$style.label;
             return zalgo_promise_src.ZalgoPromise.try((function() {
@@ -15705,6 +15712,7 @@ window.spb = function(modules) {
                                 }, {
                                     facilitatorAccessToken: serviceData.facilitatorAccessToken
                                 });
+                                brandedDefault || Object(lib.getLogger)().warn("Standalone button integration has been deprecated, please use unbranded integration https://developer.paypa.com/docs/checkout/apm/. If this is an existing integration please contact developer team dl-pp-altpay-exp@paypal.com");
                             }));
                         }));
                         return zalgo_promise_src.ZalgoPromise.all([ loggingPromise, updateClientConfigPromise, clickPromise, vaultPromise, validateOrderPromise, startPromise, confirmOrderPromise ]).catch((function(err) {
@@ -15778,7 +15786,8 @@ window.spb = function(modules) {
                                     config: config,
                                     serviceData: serviceData,
                                     components: components,
-                                    props: paymentProps
+                                    props: paymentProps,
+                                    brandedDefault: brandedDefault
                                 }).finally((function() {
                                     paymentProcessing = !1;
                                 }));
@@ -16057,7 +16066,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {})[sdk_constants_src.FPTI_KEY.CONTEXT_TYPE] = constants.FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _ref3[sdk_constants_src.FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref3[sdk_constants_src.FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, 
-                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.110", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
+                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.111", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
                     _ref3[sdk_constants_src.FPTI_KEY.STICKINESS_ID] = Object(lib.isAndroidChrome)() ? stickinessID : null, 
                     _ref3[sdk_constants_src.FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, 
                     _ref3[sdk_constants_src.FPTI_KEY.USER_ACTION] = commit ? sdk_constants_src.FPTI_USER_ACTION.COMMIT : sdk_constants_src.FPTI_USER_ACTION.CONTINUE, 
