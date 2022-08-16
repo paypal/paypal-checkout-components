@@ -10,8 +10,6 @@ import { Text, Space } from '../../ui/text';
 
 export function getIdealConfig() : FundingSourceConfig {
     return {
-        apmText: 'iDEAL',
-
         ...DEFAULT_APM_FUNDING_CONFIG,
 
         shippingChange: false,
