@@ -1,3 +1,9 @@
+## <small>5.0.235 (2022-08-17)</small>
+
+* Enable smokeHash testing of Checkoutuinodeweb apps through the SDK (#1988) ([ad64456](https://github.com/paypal/paypal-checkout-components/commit/ad64456)), closes [#1988](https://github.com/paypal/paypal-checkout-components/issues/1988)
+
+
+
 ## <small>5.0.234 (2022-08-08)</small>
 
 * oncancel (#1984) ([faef34a](https://github.com/paypal/paypal-checkout-components/commit/faef34a)), closes [#1984](https://github.com/paypal/paypal-checkout-components/issues/1984)
