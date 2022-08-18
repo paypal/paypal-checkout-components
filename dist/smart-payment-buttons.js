@@ -10742,7 +10742,7 @@ window.spb = function(modules) {
             Object(lib.getLogger)().info("rest_api_create_order_token");
             var headers = ((_headers15 = {})[constants.HEADERS.AUTHORIZATION] = "Bearer " + accessToken, 
             _headers15[constants.HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _headers15[constants.HEADERS.CLIENT_METADATA_ID] = clientMetadataID, 
-            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.111", 
+            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.112", 
             _headers15);
             var paymentSource = {
                 token: {
@@ -11806,13 +11806,6 @@ window.spb = function(modules) {
                 var close = Object(src.memoize)((function() {
                     return applepay_clean.all();
                 }));
-                var validate = Object(src.memoize)((function() {
-                    return zalgo_promise_src.ZalgoPromise.try((function() {
-                        return !onClick || onClick({
-                            fundingSource: fundingSource
-                        });
-                    }));
-                }));
                 function logApplePayEvent(event, payload) {
                     var _getLogger$info$track;
                     var data = function(json) {
@@ -11999,18 +11992,7 @@ window.spb = function(modules) {
                                         return zalgo_promise_src.ZalgoPromise.resolve(update);
                                     }));
                                 }));
-                            }, orderPromise = validate().then((function(valid) {
-                                if (!valid) {
-                                    var _getLogger$info$track2;
-                                    Object(lib.getLogger)().info("applepay_onclick_invalid").track((_getLogger$info$track2 = {}, 
-                                    _getLogger$info$track2[sdk_constants_src.FPTI_KEY.STATE] = constants.FPTI_STATE.BUTTON, 
-                                    _getLogger$info$track2[sdk_constants_src.FPTI_KEY.TRANSITION] = constants.FPTI_TRANSITION.APPLEPAY_ON_CLICK_INVALID, 
-                                    _getLogger$info$track2)).flush();
-                                }
-                                return valid;
-                            })).then((function(valid) {
-                                return valid ? createOrder() : Object(lib.unresolvedPromise)();
-                            })), function setupApplePaySession() {
+                            }, function setupApplePaySession() {
                                 var _paymentRequest$apple, _config, _config2, _paymentRequest$apple2;
                                 var requiredShippingContactFields = (null == paymentRequest || null == (_paymentRequest$apple = paymentRequest.applepay) ? void 0 : _paymentRequest$apple.requiredShippingContactFields) || [];
                                 var applePayRequest = {
@@ -12036,7 +12018,25 @@ window.spb = function(modules) {
                                         logApplePayEvent("validatemerchant", {
                                             validationURL: validationURL
                                         });
-                                        orderPromise.then((function(orderID) {
+                                        zalgo_promise_src.ZalgoPromise.try((function() {
+                                            return !onClick || onClick({
+                                                fundingSource: fundingSource
+                                            }).then((function(valid) {
+                                                valid || abort();
+                                                return valid;
+                                            }));
+                                        })).then((function(valid) {
+                                            if (!valid) {
+                                                var _getLogger$info$track2;
+                                                Object(lib.getLogger)().info("applepay_onclick_invalid").track((_getLogger$info$track2 = {}, 
+                                                _getLogger$info$track2[sdk_constants_src.FPTI_KEY.STATE] = constants.FPTI_STATE.BUTTON, 
+                                                _getLogger$info$track2[sdk_constants_src.FPTI_KEY.TRANSITION] = constants.FPTI_TRANSITION.APPLEPAY_ON_CLICK_INVALID, 
+                                                _getLogger$info$track2)).flush();
+                                            }
+                                            return valid;
+                                        })).then((function(valid) {
+                                            return valid ? createOrder() : Object(lib.unresolvedPromise)();
+                                        })).then((function(orderID) {
                                             Object(api.getDetailedOrderInfo)(orderID, locale.country).then((function(order) {
                                                 var _order$checkoutSessio = order.checkoutSession, merchant = _order$checkoutSessio.merchant, _order$checkoutSessio2 = _order$checkoutSessio.cart, _order$checkoutSessio3 = _order$checkoutSessio2.amounts, taxValue = _order$checkoutSessio3.tax.currencyValue, subtotalValue = _order$checkoutSessio3.subtotal.currencyValue, totalValue = _order$checkoutSessio3.total.currencyValue, shippingAddress = _order$checkoutSessio2.shippingAddress;
                                                 currentShippingAmount = _order$checkoutSessio3.shippingAndHandling.currencyValue;
@@ -12117,7 +12117,7 @@ window.spb = function(modules) {
                                     })), addEventListener("shippingmethodselected", (function(_ref9) {
                                         var shippingMethod = _ref9.shippingMethod;
                                         logApplePayEvent("shippingmethodselected");
-                                        orderPromise.then((function(orderID) {
+                                        createOrder().then((function(orderID) {
                                             onShippingChangeCallback({
                                                 orderID: orderID,
                                                 shippingContact: currentShippingContact,
@@ -12148,7 +12148,7 @@ window.spb = function(modules) {
                                     })), addEventListener("shippingcontactselected", (function(_ref10) {
                                         var shippingContact = _ref10.shippingContact;
                                         logApplePayEvent("shippingcontactselected", shippingContact);
-                                        orderPromise.then((function(orderID) {
+                                        createOrder().then((function(orderID) {
                                             onShippingChangeCallback({
                                                 orderID: orderID,
                                                 shippingContact: shippingContact,
@@ -12167,7 +12167,7 @@ window.spb = function(modules) {
                                         if (!applePayPayment) throw new Error("No payment received from Apple.");
                                         null != applePayPayment && null != (_applePayPayment$ship = applePayPayment.shippingContact) && _applePayPayment$ship.countryCode && (applePayPayment.shippingContact.countryCode = applePayPayment.shippingContact.countryCode.toUpperCase());
                                         null != applePayPayment && null != (_applePayPayment$bill = applePayPayment.billingContact) && _applePayPayment$bill.countryCode && (applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase());
-                                        orderPromise.then((function(orderID) {
+                                        createOrder().then((function(orderID) {
                                             Object(api.approveApplePayPayment)(orderID, clientID, applePayPayment).then((function(validatedPayment) {
                                                 if (validatedPayment) {
                                                     completePayment({
@@ -12195,7 +12195,7 @@ window.spb = function(modules) {
                                     }));
                                 }));
                             }();
-                            var currentTotalAmount, currentSubtotalAmount, currentTaxAmount, currentShippingAmount, currentShippingContact, currentShippingMethod, merchantName, onShippingChangeCallback, orderPromise;
+                            var currentTotalAmount, currentSubtotalAmount, currentTaxAmount, currentShippingAmount, currentShippingContact, currentShippingMethod, merchantName, onShippingChangeCallback;
                         })).catch((function(err) {
                             return close().then((function() {
                                 var _getLogger$error$trac3;
@@ -16066,7 +16066,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {})[sdk_constants_src.FPTI_KEY.CONTEXT_TYPE] = constants.FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _ref3[sdk_constants_src.FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref3[sdk_constants_src.FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, 
-                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.111", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
+                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.112", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
                     _ref3[sdk_constants_src.FPTI_KEY.STICKINESS_ID] = Object(lib.isAndroidChrome)() ? stickinessID : null, 
                     _ref3[sdk_constants_src.FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, 
                     _ref3[sdk_constants_src.FPTI_KEY.USER_ACTION] = commit ? sdk_constants_src.FPTI_USER_ACTION.COMMIT : sdk_constants_src.FPTI_USER_ACTION.CONTINUE, 
