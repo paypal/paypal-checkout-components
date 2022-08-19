@@ -63,11 +63,10 @@ type InitiatePaymentOptions = {|
     props : ButtonProps,
     serviceData : ServiceData,
     config : Config,
-    components : Components,
-    brandedDefault? : boolean | null
+    components : Components
 |};
 
-export function initiatePaymentFlow({ payment, serviceData, config, components, props, brandedDefault } : InitiatePaymentOptions) : ZalgoPromise<void> {
+export function initiatePaymentFlow({ payment, serviceData, config, components, props } : InitiatePaymentOptions) : ZalgoPromise<void> {
     const { button, fundingSource, instrumentType, buyerIntent } = payment;
     const buttonLabel = props.style?.label;
 
@@ -178,11 +177,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
                     `__confirm_${ fundingSource }_payload__`
                 ).then(confirmOrderPayload => {
                     if (!confirmOrderPayload) {
-                        // skip the confirm call when there is no confirm payload (regular flow). 
-                        if( !brandedDefault ) {
-                            getLogger().warn(`Standalone button integration has been deprecated, please use unbranded integration https://developer.paypa.com/docs/checkout/apm/. If this is an existing integration please contact developer team dl-pp-altpay-exp@paypal.com`);
-                        }
-                    
+                        // skip the confirm call when there is no confirm payload (regular flow).
                         return;
                     }
 

@@ -109,7 +109,7 @@ export function setupButton(opts : ButtonOpts) : ZalgoPromise<void> {
             if (isEnabled()) {
                 paymentProcessing = true;
 
-                return initiatePaymentFlow({ payment, config, serviceData, components, props: paymentProps, brandedDefault }).finally(() => {
+                return initiatePaymentFlow({ payment, config, serviceData, components, props: paymentProps }).finally(() => {
                     paymentProcessing = false;
                 });
             } else  {
