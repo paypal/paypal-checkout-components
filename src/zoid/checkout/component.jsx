@@ -252,6 +252,12 @@ export function getCheckoutComponent() : CheckoutComponent {
                     required:       false,
                     queryParam:     true,
                     allowDelegate:  true
+                },
+
+                smokeHash: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: true
                 }
             },
         
