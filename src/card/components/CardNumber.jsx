@@ -2,19 +2,21 @@
 /** @jsx h */
 
 import { h, Fragment } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 
 import {
-    maskCard,
+    maskCardNumber,
     checkForNonDigits,
     removeNonDigits,
     detectCardType,
-    checkCardNumber,
+    checkCardEligibility,
+    validateCardNumber,
     moveCursor,
     defaultNavigation,
     defaultInputState,
     navigateOnKeyDown,
-    maskValidCard
+    maskValidCard,
+    exportMethods
 } from '../lib';
 import type {
     CardNumberChangeEvent,
@@ -28,11 +30,6 @@ import {  DEFAULT_CARD_TYPE } from '../constants';
 
 import { Icon } from './Icons';
 
-const defaultCardNumberInputState : InputState = {
-    ...defaultInputState,
-    displayCardIcon: false
-}
-
 // Helper method to check if navigation to next field should be allowed
 function validateNavigation({ allowNavigation,  inputState } : {| allowNavigation : boolean, inputState : InputState |}) : boolean {
     const { inputValue, isValid, maskedInputValue, cursorStart, contentPasted } = inputState;
@@ -45,16 +42,14 @@ function getIconId(type) : string {
     if (element) {
         return iconId;
     }
-    return 'icon-UNKNOWN';
+    return 'icon-unknown';
 }
 
 type CardNumberProps = {|
     name : string,
     autocomplete? : string,
-    ref : () => void,
     type : string,
     state? : InputState,
-    className : string,
     placeholder : string,
     style : Object,
     maxLength : string,
@@ -63,7 +58,8 @@ type CardNumberProps = {|
     onChange : (numberEvent : CardNumberChangeEvent) => void,
     onFocus? : (event : InputEvent) => void,
     onBlur? : (event : InputEvent) => void,
-    onValidityChange? : (numberValidity : FieldValidity) => void
+    onValidityChange? : (numberValidity : FieldValidity) => void,
+    onEligibilityChange? : (isCardEligible : boolean) => void
 |};
 
 export function CardNumber(
@@ -73,28 +69,39 @@ export function CardNumber(
         navigation = defaultNavigation,
         allowNavigation = false,
         state,
-        ref,
         type,
-        className,
         placeholder,
         style,
         maxLength,
         onChange,
         onFocus,
         onBlur,
-        onValidityChange
+        onValidityChange,
+        onEligibilityChange
     } : CardNumberProps
 ) : mixed {
     const [ cardType, setCardType ] : [ CardType, (CardType) => CardType ] = useState(DEFAULT_CARD_TYPE);
-    const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultCardNumberInputState, ...state });
-
+    const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, maskedInputValue, cursorStart, cursorEnd, keyStrokeCount, isValid, isPotentiallyValid, contentPasted } = inputState;
 
+    const numberRef = useRef()
+
     useEffect(() => {
-        const validity = checkCardNumber(inputValue, cardType);
+        if (!allowNavigation) {
+            exportMethods(numberRef);
+        }
+    }, []);
+
+    useEffect(() => {
+        const validity = validateCardNumber(inputValue);
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue, maskedInputValue ]);
 
+    useEffect(() => {
+        if (typeof onEligibilityChange === 'function') {
+            onEligibilityChange(checkCardEligibility(inputValue, cardType));
+        }
+    }, [ cardType ]);
 
     useEffect(() => {
         if (typeof onValidityChange === 'function') {
@@ -107,12 +114,11 @@ export function CardNumber(
 
     }, [ isValid, isPotentiallyValid ]);
 
-
     const setValueAndCursor : (InputEvent) => void = (event : InputEvent) : void => {
         const { value: rawValue, selectionStart, selectionEnd } = event.target;
         const value = removeNonDigits(rawValue);
         const detectedCardType = detectCardType(value);
-        const maskedValue = maskCard(value);
+        const maskedValue = maskCardNumber(value);
 
         let startCursorPosition = selectionStart;
         let endCursorPosition = selectionEnd;
@@ -151,7 +157,12 @@ export function CardNumber(
             onFocus(event);
         }
 
-        const maskedValue = maskCard(inputValue);
+        const element = numberRef?.current;
+        if (element) {
+            element.classList.add('display-icon');
+        }
+
+        const maskedValue = maskCardNumber(inputValue);
         const updatedState = { ...inputState, maskedInputValue: maskedValue, displayCardIcon: true };
         if (!isValid) {
             updatedState.isPotentiallyValid = true;
@@ -162,6 +173,15 @@ export function CardNumber(
 
     const onBlurEvent : (InputEvent) => void = (event : InputEvent) : void => {
         const updatedState = { maskedInputValue, isPotentiallyValid, contentPasted: false, displayCardIcon: inputState.inputValue.length > 0 };
+
+        const element = numberRef?.current;
+        if (element) {
+            if (inputState.inputValue.length > 0) {
+                element.classList.add('display-icon');
+            } else {
+                element.classList.remove('display-icon');
+            }
+        }
 
         if (isValid) {
             updatedState.maskedInputValue = maskValidCard(maskedInputValue);
@@ -194,9 +214,9 @@ export function CardNumber(
                 name={ name }
                 autocomplete={ autocomplete }
                 inputmode='numeric'
-                ref={ ref }
+                ref={ numberRef }
                 type={ type }
-                className={ `${className} ${inputState.displayCardIcon ? 'display-icon' : ''}` }
+                className='card-field-number'
                 placeholder={ placeholder }
                 value={ maskedInputValue }
                 style={ style }

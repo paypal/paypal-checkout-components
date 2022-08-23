@@ -85,7 +85,6 @@
     "@paypal/sdk-logos": "^1.0.43",
     "@paypal/sdk-release": "^5.0.138",
     "card-validator": "^8.1.1",
-    "credit-card-type": "^9.1.0",
     "get-browser-fingerprint": "^1.1.0",
     "module-alias": "^2.2.2",
     "preact": "^10",
