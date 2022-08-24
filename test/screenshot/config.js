@@ -34,7 +34,6 @@ const RESPONSIVE_WIDTHS = [ 144, 222, 465, 670 ];
 
 type ButtonConfig = {|
     only? : boolean,
-    diffThreshold? : number,
     filename? : string,
     userAgent? : string,
     container? : {|
@@ -324,7 +323,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -380,7 +378,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -436,7 +433,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -489,7 +485,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -546,7 +541,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -603,7 +597,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -657,7 +650,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -711,7 +703,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -754,7 +745,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -814,7 +804,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -863,7 +852,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 350
     },
@@ -1047,7 +1035,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 240
     },
@@ -1097,7 +1084,6 @@ buttonConfigs.push({
 });
 
 buttonConfigs.push({
-    diffThreshold: 1000,
     container:     {
         width: 300
     },

@@ -1,7 +1,7 @@
+
 /* @flow */
 /* eslint no-restricted-globals: off, no-console: off, no-process-exit: off, no-process-env: off, unicorn/no-process-exit: off */
-
-import fs from 'fs-extra';
+import { toMatchImageSnapshot } from 'jest-image-snapshot';
 import { getWebpackConfig } from '@krakenjs/grumbler-scripts/config/webpack.config';
 
 import { getTestGlobals } from '../globals';
@@ -9,14 +9,15 @@ import globals from '../../globals';
 import { testContent } from '../content';
 
 import { webpackCompile } from './lib/compile';
-import { openPage, takeScreenshot } from './lib/browser';
+import { openPage } from './lib/browser';
 import { sha256, dotifyToString } from './lib/util';
-import { diffPNG, readPNG, uploadToImgur } from './lib/image';
 import { buttonConfigs } from './config';
 
-const IMAGE_DIR = `${ __dirname }/images`;
+// set up expect for `expect(page.screenshot()).toMatchScreenshot();`
+// $FlowIssue
+expect.extend({ toMatchImageSnapshot });
 
-const DEFAULT_DIFF_THRESHOLD = 500;
+const IMAGE_DIR = `${ __dirname }/images`;
 
 const HEADLESS = (process.env.HEADLESS !== '0');
 const DEVTOOLS = (process.env.DEVTOOLS === '1');
@@ -32,12 +33,6 @@ const setupBrowserPage = (async () => {
         vars:          { ...getTestGlobals(globals) }
     })), { headless: HEADLESS, devtools: DEVTOOLS });
 
-    for (const filename of await fs.readdir(IMAGE_DIR)) {
-        if (filename.endsWith('-old.png')) {
-            await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
-        }
-    }
-
     return { browser, page, open };
 })();
 
@@ -51,15 +46,12 @@ afterAll(async () => {
 });
 
 for (const config of buttonConfigs) {
-    const { only, diffThreshold = DEFAULT_DIFF_THRESHOLD, ...buttonConfig } = config;
+    const { only, ...buttonConfig } = config;
     const description = dotifyToString(buttonConfig) || 'base';
     const filename = sha256(JSON.stringify(buttonConfig));
 
     const testPromise = (async () => {
         const { page } = await setupBrowserPage;
-
-        const filepath = `${ IMAGE_DIR }/${ filename }.png`;
-        const diffpath = `${ IMAGE_DIR }/${ filename }-old.png`;
 
         buttonConfig.button = buttonConfig.button || {};
         buttonConfig.button.content = testContent;
@@ -134,40 +126,14 @@ for (const config of buttonConfigs) {
             throw new Error(`Button height is 0`);
         }
 
-        const existingExists = await fs.exists(filepath);
+        const screenshot = await page.screenshot({
+            clip: { x, y, width, height }
+        });
 
-        const [ screenshot, existing ] = await Promise.all([
-            takeScreenshot(page, { x, y, width, height }),
-            existingExists ? readPNG(filepath) : null
-        ]);
-
-        if (existing) {
-            let delta;
-
-            try {
-                delta = await diffPNG(screenshot, existing);
-            } catch (err) {
-                await existing.write(diffpath);
-                await screenshot.write(filepath);
-                throw err;
-            }
-
-            if (delta > diffThreshold) {
-                await existing.write(diffpath);
-                await screenshot.write(filepath);
-
-                let imgurUrl = '';
-
-                if (process.env.TRAVIS) {
-                    imgurUrl = await uploadToImgur(filepath);
-                }
-
-                throw new Error(`Button style changed with delta of ${ delta } for configuration:\n\n${ JSON.stringify(config, null, 4) }\n\nSee ${ diffpath } or ${ imgurUrl || '' }`);
-            }
-
-        } else {
-            await screenshot.write(filepath);
-        }
+        expect(screenshot).toMatchImageSnapshot({
+            customSnapshotsDir: IMAGE_DIR,
+            customSnapshotIdentifier: filename
+        });
 
     });
 
