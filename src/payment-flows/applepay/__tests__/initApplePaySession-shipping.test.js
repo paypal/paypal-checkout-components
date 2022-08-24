@@ -1,5 +1,7 @@
 /* @flow */
 
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+
 import {
   getApplepayConfig,
   getDetailedOrderInfo,
@@ -141,11 +143,11 @@ describe("initApplePay", () => {
     const onShippingChange = jest.fn().mockResolvedValue({});
 
     const props = {
-      createOrder: jest.fn().mockResolvedValue("mock-orderID"),
+      createOrder: jest.fn(() => ZalgoPromise.resolve("mock-orderID")), 
       onApprove: jest.fn(),
       onCancel: jest.fn(),
       onError: jest.fn(),
-      onClick: jest.fn().mockResolvedValue(true),
+      onClick: jest.fn(() => ZalgoPromise.resolve(true)), 
       onShippingChange,
       applePay: jest.fn().mockResolvedValue({
         begin,
@@ -249,8 +251,6 @@ describe("initApplePay", () => {
     // $FlowFixMe
     await click();
 
-    expect(props.onClick).toHaveBeenCalled();
-
     expect(props.applePay).toHaveBeenCalledWith(SUPPORTED_VERSION, {
       countryCode: "US",
       currencyCode: "USD",
@@ -296,6 +296,9 @@ describe("initApplePay", () => {
     await mockSession.validatemerchant({
       validationURL: "https://www.mock-applepayurl.com",
     });
+
+
+    expect(props.onClick).toHaveBeenCalled();
 
     expect(props.createOrder).toHaveBeenCalled();
 
