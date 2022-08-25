@@ -132,7 +132,10 @@ for (const config of buttonConfigs) {
 
         expect(screenshot).toMatchImageSnapshot({
             customSnapshotsDir: IMAGE_DIR,
-            customSnapshotIdentifier: filename
+            customSnapshotIdentifier: filename,
+            comparisonMethod: 'ssim',
+            failureThreshold: 0.01,
+            failureThresholdType: 'percent'
         });
 
     });
