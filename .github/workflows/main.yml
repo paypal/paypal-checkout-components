@@ -16,17 +16,23 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
-      - name: ▶️ Run flow-typed script
-        run: npm run flow-typed
+      - name: ▶️ Lint
+        run: npm run lint
 
-      - name: ▶️ Run build script
+      - name: ▶️ Typecheck
+        run: npm run typecheck
+
+      - name: ▶️ Karma & Jest
+        run: npm run test
+
+      - name: ▶️ Build
         run: npm run build
 
       - name: ⬆️ Upload coverage report
