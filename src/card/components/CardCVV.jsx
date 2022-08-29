@@ -3,8 +3,11 @@
 
 import { h } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
-import { validateCVV, removeNonDigits, defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
+import { getPostRobot } from '../../lib';
+import { DEFAULT_CARD_TYPE } from '../constants';
+import { removeNonDigits, defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods, getContext } from '../lib';
 import type { CardType, CardCvvChangeEvent, CardNavigation, FieldValidity, InputState, InputEvent } from '../types';
 
 type CardCvvProps = {|
@@ -14,8 +17,6 @@ type CardCvvProps = {|
     state? : InputState,
     placeholder : string,
     style : Object,
-    maxLength : string,
-    cardType : CardType,
     navigation : CardNavigation,
     onChange : (cvvEvent : CardCvvChangeEvent) => void,
     onFocus : (event : InputEvent) => void,
@@ -35,29 +36,51 @@ export function CardCVV(
         type,
         placeholder,
         style,
-        maxLength,
         onChange,
         onFocus,
         onBlur,
-        onValidityChange,
-        cardType
+        onValidityChange
     } : CardCvvProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
+    const [ cardType, setCardType ] : [ CardType, (CardType) => CardType ] = useState(DEFAULT_CARD_TYPE);
+    const [ touched, setTouched ] = useState(false);
     const { inputValue, keyStrokeCount, isValid, isPotentiallyValid } = inputState;
 
     const cvvRef = useRef()
 
     useEffect(() => {
         if (!allowNavigation) {
-            exportMethods(cvvRef);
+            exportMethods(cvvRef, setAttributes);
+        }
+        // listen for card type changes
+        const postRobot = getPostRobot();
+        if (postRobot) {
+            const context = getContext(window);
+            postRobot.on('cardTypeChange', {
+                domain: window.location.origin
+             }, (event) => {
+                const messageContext = getContext(event.source);
+                if (messageContext === context) {
+                    setCardType(event.data);
+                }
+            });
         }
     }, []);
 
     useEffect(() => {
-        const validity = validateCVV(inputValue, cardType);
+        const validity = cardValidator.cvv(inputValue, cardType?.code?.size);
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue ]);
+
+    useEffect(() => {
+        const validity = cardValidator.cvv(inputValue, cardType?.code?.size);
+        if (touched) {
+            validity.isPotentiallyValid = false;
+        }
+        setInputState(newState => ({ ...newState, ...validity }));
+    }, [ cardType ]);
 
     useEffect(() => {
         if (typeof onValidityChange === 'function') {
@@ -89,6 +112,9 @@ export function CardCVV(
     };
 
     const onFocusEvent : (InputEvent) => void = (event : InputEvent) : void => {
+        if (!touched) {
+            setTouched(true);
+        }
         if (typeof onFocus === 'function') {
             onFocus(event);
         }
@@ -114,14 +140,15 @@ export function CardCVV(
             ref={ cvvRef }
             type={ type }
             className='card-field-cvv'
-            placeholder={ placeholder }
             value={ inputValue }
             style={ style }
-            maxLength={ maxLength }
+            maxLength={ cardType.code.size }
             onKeyDown={ onKeyDownEvent }
             onInput={ setCvvValue }
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
+            { ...attributes }
+            placeholder={ attributes.placeholder ?? cardType.code.name }
         />
     );
 }

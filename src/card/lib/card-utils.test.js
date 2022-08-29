@@ -9,8 +9,14 @@ import {
     filterStyle,
     styleToString,
     filterExtraFields,
-    isValidAttribute
+    isValidAttribute,
+    removeNonDigits,
+    checkForNonDigits,
+    convertDateFormat,
+    getContext,
+    markValidity
 } from './card-utils';
+
 
 jest.mock('../../lib/dom');
 
@@ -383,4 +389,95 @@ describe('card utils', () => {
 
     });
 
+    describe('removeNonDigits', () => {
+
+        it('should remove non-digits', () => {
+            expect(removeNonDigits('abc123')).toBe('123');
+        });
+
+    });
+
+    describe('checkForNonDigits', () => {
+
+        it('should check for non-digits', () => {
+            expect(checkForNonDigits('abc123')).toBe(true);
+            expect(checkForNonDigits('123123')).toBe(false);
+        });
+
+    });
+
+    describe('convertDateFormat', () => {
+
+        it('should format the date as MM/YYYY', () => {
+            expect(convertDateFormat('11/23')).toBe('11/2023');
+            expect(convertDateFormat('11 / 23')).toBe('11/2023');
+            expect(convertDateFormat('11 / 2023')).toBe('11/2023');
+        });
+
+    });
+
+    describe('getContext', () => {
+
+        beforeEach(() => {
+            window.xprops = {};
+        });
+
+        it('should return the UID of the component', () => {
+            window.xprops.uid = 'abc123';
+            expect(getContext(window)).toBe('abc123');
+        });
+
+        it('should return the UID of the parent of the component', () => {
+            window.xprops.uid = 'abc123';
+            window.xprops.parent = {
+                uid: 'xyz789'
+            };
+            expect(getContext(window)).toBe('xyz789');
+        });
+
+    });
+
+    describe('markValidity', () => {
+
+        it('marks the refs HTMLelement as valid when isValid is true', () => {
+
+            const element = document.createElement('div')
+
+            const ref = {
+                current: {
+                    base: element
+                }
+            };
+
+            const validity = {
+                isValid: true,
+                isPotentiallyValid: true
+            };
+
+            markValidity(ref, validity)
+
+            expect(element.classList.contains('valid')).toBe(true)
+        })
+
+        it('marks the refs HTMLelement as invalid when isValid is false', () => {
+
+            const element = document.createElement('div')
+
+            const ref = {
+                current: {
+                    base: element
+                }
+            };
+
+            const validity = {
+                isValid: false,
+                isPotentiallyValid: false
+            };
+
+            markValidity(ref, validity)
+
+            expect(element.classList.contains('invalid')).toBe(true)
+            expect(element.classList.contains('valid')).toBe(false)
+        })
+    });
 });

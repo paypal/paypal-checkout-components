@@ -3,10 +3,10 @@
 
 import { h } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
 import {
     formatDate,
-    validateExpiry,
     removeNonDigits,
     removeDateMask,
     defaultNavigation,
@@ -51,6 +51,7 @@ export function CardExpiry(
         allowNavigation = false
     } : CardExpiryProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, maskedInputValue, keyStrokeCount, isValid, isPotentiallyValid, contentPasted } = inputState;
 
@@ -58,12 +59,12 @@ export function CardExpiry(
 
     useEffect(() => {
         if (!allowNavigation) {
-            exportMethods(expiryRef);
+            exportMethods(expiryRef, setAttributes);
         }
     }, []);
 
     useEffect(() => {
-        const validity = validateExpiry(maskedInputValue);
+        const validity = cardValidator.expirationDate(maskedInputValue);
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue, maskedInputValue ]);
 
@@ -148,7 +149,6 @@ export function CardExpiry(
             ref={ expiryRef }
             type={ type }
             className='card-field-expiry'
-            placeholder={ placeholder }
             value={ maskedInputValue }
             style={ style }
             maxLength={ maxLength }
@@ -157,6 +157,7 @@ export function CardExpiry(
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
             onPaste={ onPasteEvent }
+            { ...attributes }
         />
     );
 }

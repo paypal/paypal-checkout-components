@@ -1,6 +1,6 @@
 /* @flow */
 
-import { autoFocusOnFirstInput } from "./card-focus";
+import { autoFocusOnFirstInput, goToNextField, goToPreviousField } from "./card-focus";
 
 function triggerFocusListener(input) {
 
@@ -100,3 +100,43 @@ describe("autoFocusOnFirstInput", () => {
     expect(spy).toBeCalledWith("");
   });
 });
+
+describe("goToNextField", () => {
+  it('puts the cursor at the start of the next field', () => {
+    jest.useFakeTimers();
+    const element = document.createElement('input');
+    const ref = {
+      current: {
+        base: element
+      }
+    };
+
+    goToNextField(ref)();
+    const spy = jest.spyOn(element, 'focus')
+    jest.runAllTimers()
+
+    expect(element.selectionStart).toBe(0);
+    expect(spy).toHaveBeenCalled()
+  })
+})
+
+describe("goToPreviousField", () => {
+  it('puts the cursor at the end of the previous field', () => {
+    jest.useFakeTimers();
+
+    const element = document.createElement('input');
+    element.value = 'foo'
+    const ref = {
+      current: {
+        base: element
+      }
+    };
+
+    goToPreviousField(ref)();
+    const spy = jest.spyOn(element, 'focus')
+    jest.runAllTimers()
+
+    expect(element.selectionStart).toBe(3);
+    expect(spy).toHaveBeenCalled()
+  })
+})

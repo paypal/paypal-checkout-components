@@ -3,8 +3,9 @@
 
 import { h } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
-import { validateCardName, defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
+import { defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
 import type { CardNameChangeEvent, CardNavigation, FieldValidity, InputState, InputEvent } from '../types';
 
 type CardNameProps = {|
@@ -39,17 +40,18 @@ export function CardName(
         onValidityChange
     } : CardNameProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, keyStrokeCount, isValid, isPotentiallyValid } = inputState;
 
     const nameRef = useRef()
 
     useEffect(() => {
-        exportMethods(nameRef);
+        exportMethods(nameRef, setAttributes);
     }, []);
 
     useEffect(() => {
-        const validity = validateCardName(inputValue);
+        const validity = cardValidator.cardholderName(inputValue);
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue ]);
 
@@ -106,7 +108,6 @@ export function CardName(
             ref={ nameRef }
             type={ type }
             className="card-field-name"
-            placeholder={ placeholder }
             value={ inputValue }
             style={ style }
             maxLength={ maxLength }
@@ -114,6 +115,7 @@ export function CardName(
             onInput={ setNameValue }
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
+            { ...attributes }
         />
     );
 }

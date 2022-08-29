@@ -3,8 +3,9 @@
 
 import { h } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
-import { validatePostalCode, defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
+import { defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
 import type { CardPostalCodeChangeEvent, CardNavigation, FieldValidity, InputState, InputEvent } from '../types';
 
 type CardPostalCodeProps = {|
@@ -40,17 +41,18 @@ export function CardPostalCode(
         minLength
     } : CardPostalCodeProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, keyStrokeCount, isValid, isPotentiallyValid } = inputState;
 
     const postalCodeRef = useRef();
 
     useEffect(() => {
-        exportMethods(postalCodeRef);
+        exportMethods(postalCodeRef, setAttributes);
     }, []);
 
     useEffect(() => {
-        const validity = validatePostalCode(inputValue, minLength);
+        const validity = cardValidator.postalCode(inputValue, { minLength });
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue ]);
 
@@ -107,7 +109,6 @@ export function CardPostalCode(
             ref={ postalCodeRef }
             type={ type }
             className='card-field-postal-code'
-            placeholder={ placeholder }
             value={ inputValue }
             style={ style }
             maxLength={ maxLength }
@@ -116,6 +117,7 @@ export function CardPostalCode(
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
             minLength={ minLength }
+            { ...attributes }
         />
     )
 }
