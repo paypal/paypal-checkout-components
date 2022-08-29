@@ -130,6 +130,12 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 },
                 removeClass: {
                     type: 'function'
+                },
+                clear: {
+                    type: 'function'
+                },
+                focus: {
+                    type: 'function'
                 }
             },
 
@@ -333,6 +339,12 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type: 'function'
             },
             removeClass: {
+                type: 'function'
+            },
+            clear: {
+                type: 'function'
+            },
+            focus: {
                 type: 'function'
             }
         },
