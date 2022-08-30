@@ -773,6 +773,13 @@ const buttonConfigs = [
                 label:  `mercadopage`,
                 commit: true,
                 valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `grabpay`,
+                commit: true,
+                valid:  false
             }
 
         // $FlowFixMe

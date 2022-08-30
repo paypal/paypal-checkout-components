@@ -111,5 +111,8 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     applepay: {
         eligible: true
+    },
+    grabpay: {
+        eligible: false
     }
 };
