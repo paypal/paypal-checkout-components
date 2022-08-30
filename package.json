@@ -80,7 +80,7 @@
     "@paypal/common-components": "^1.0.16",
     "@paypal/installments": "^1.0.0",
     "@paypal/sdk-client": "^4.0.156",
-    "@paypal/sdk-constants": "^1.0.119",
+    "@paypal/sdk-constants": "^1.0.123",
     "@paypal/sdk-logos": "^1.0.43",
     "@paypal/sdk-release": "^5.0.138",
     "card-validator": "^8.1.1",
