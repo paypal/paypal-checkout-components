@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import { node, type ElementNode } from '@krakenjs/jsx-pragmatic/src';
-import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { FUNDING, WALLET_INSTRUMENT, APM_LIST } from '@paypal/sdk-constants/src';
 import { noop } from '@krakenjs/belter/src';
 
 import type { Wallet, WalletInstrument } from '../../types';
@@ -124,6 +124,10 @@ export function Buttons(props : ButtonsProps) : ElementNode {
         }
     }
 
+    const isAPM = fundingSources.some(src => {
+        return APM_LIST.includes(src);
+    });
+
     const instruments = getWalletInstruments({ wallet, fundingSources, layout, onShippingChange, onShippingAddressChange, onShippingOptionsChange });
 
     const isWallet = (
@@ -210,7 +214,11 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                     : null
             }
 
-            <div id="payment-fields-container" className="payment-fields-container"/>
+            {
+                (isAPM)
+                    ? <div id="payment-fields-container" className="payment-fields-container"/>
+                    : null
+            }
 
             {
                 (layout === BUTTON_LAYOUT.VERTICAL && fundingSources.indexOf(FUNDING.CARD) !== -1 && !inlineExperience)
