@@ -36,7 +36,7 @@ jobs:
         run: npm run typecheck
 
       - name: ▶️ Run Karma
-        run: npm run Karma
+        run: npm run karma
 
       - name: ▶️ Run Jest SSR
         run: npm run jest-ssr
