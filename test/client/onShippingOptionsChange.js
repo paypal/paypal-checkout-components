@@ -630,4 +630,70 @@ describe('onShippingOptionsChange', () => {
             await clickButton(FUNDING.PAYPAL);
         });
     });
+
+    it('should return generic message if merchant send unapproved one', async () => {
+        return await wrapPromise(async ({ expect }) => {
+
+            const orderID = uniqueID();
+            const accessToken = uniqueID();
+            const payerID = 'YYYYYYYYYY';
+            const facilitatorAccessToken = uniqueID();
+
+            window.xprops.createOrder = mockAsyncProp(expect('createOrder', async () => {
+                return ZalgoPromise.try(() => {
+                    return orderID;
+                });
+            }));
+
+            window.xprops.onShippingOptionsChange = mockAsyncProp(expect('onShippingAddressChange', async (data, actions) => {
+                actions.reject('This is messed up!');
+            }));
+
+            mockFunction(window.paypal, 'Checkout', expect('Checkout', ({ original: CheckoutOriginal, args: [ props ] }) => {
+                props.onAuth({ accessToken });
+                mockFunction(props, 'onApprove', expect('onApprove', ({ original: onApproveOriginal, args: [ data, actions ] }) => {
+                    return onApproveOriginal({ ...data, payerID }, actions);
+                }));
+
+                const checkoutInstance = CheckoutOriginal(props);
+
+                mockFunction(checkoutInstance, 'renderTo', expect('renderTo', async ({ original: renderToOriginal, args }) => {
+                    return props.createOrder().then(id => {
+                        if (id !== orderID) {
+                            throw new Error(`Expected orderID to be ${ orderID }, got ${ id }`);
+                        }
+
+                        return renderToOriginal(...args).then(() => {
+                            return props.onShippingOptionsChange({
+                                orderID,
+                                amount,
+                                selected_shipping_option
+                            }, { reject: expect('reject', (error) => {
+                                const expectedError = 'Unable to update address. Please try again.';
+
+                                if (error !== expectedError) {
+                                    throw new Error(`Expected error message to be, ${ expectedError }, but was ${ error }`);
+                                }
+                            }) });
+                        });
+                    });
+                }));
+
+                return checkoutInstance;
+            }));
+
+            createButtonHTML();
+
+            await mockSetupButton({
+                facilitatorAccessToken,
+                merchantID:                    [ 'XYZ12345' ],
+                fundingEligibility:            DEFAULT_FUNDING_ELIGIBILITY,
+                personalization:               {},
+                buyerCountry:                  COUNTRY.US,
+                isCardFieldsExperimentEnabled: false
+            });
+
+            await clickButton(FUNDING.PAYPAL);
+        });
+    });
 });

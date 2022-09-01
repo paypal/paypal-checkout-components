@@ -515,6 +515,7 @@ export function getOnApproveSubscription({ onApprove = getDefaultOnApproveSubscr
                 .info('button_approve')
                 .track({
                     [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_APPROVE,
+                    [FPTI_KEY.EVENT_NAME]:   FPTI_TRANSITION.CHECKOUT_APPROVE,
                     [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
                     [FPTI_KEY.TOKEN]:        orderID,
                     [FPTI_KEY.CONTEXT_ID]:   orderID

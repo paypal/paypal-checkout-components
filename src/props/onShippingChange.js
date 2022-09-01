@@ -30,6 +30,8 @@ export const SHIPPING_OPTIONS_ERROR_MESSAGES = {
     STORE_UNAVAILABLE:  `Part of your order isn't available at this store.`
 };
 
+export const GENERIC_REJECT_ADDRESS_MESSAGE = 'Unable to update address. Please try again.';
+
 export type ShippingOption = {|
     id? : string,
     label : string,
@@ -136,6 +138,7 @@ export function getOnShippingChange({ onShippingChange, partnerAttributionID, cl
                     .info('button_shipping_change')
                     .track({
                         [FPTI_KEY.TRANSITION]:                       FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
+                        [FPTI_KEY.EVENT_NAME]:                       FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE,
                         [FPTI_KEY.CONTEXT_TYPE]:                     FPTI_CONTEXT_TYPE.ORDER_ID,
                         [FPTI_KEY.TOKEN]:                            orderID,
                         [FPTI_KEY.CONTEXT_ID]:                       orderID,

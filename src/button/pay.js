@@ -104,6 +104,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             })
             .track({
                 [FPTI_KEY.TRANSITION]:        FPTI_TRANSITION.BUTTON_CLICK,
+                [FPTI_KEY.EVENT_NAME]:        FPTI_TRANSITION.BUTTON_CLICK,
                 [FPTI_KEY.CHOSEN_FI_TYPE]:    instrumentType,
                 [FPTI_KEY.PAYMENT_FLOW]:      name,
                 [FPTI_KEY.IS_VAULT]:          instrumentType ? '1' : '0',

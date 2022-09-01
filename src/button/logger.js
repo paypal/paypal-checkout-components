@@ -161,6 +161,7 @@ export function setupButtonLogger({ env, sessionID, buttonSessionID, clientID, p
         logger.track({
             [FPTI_KEY.STATE]:                           FPTI_STATE.BUTTON,
             [FPTI_KEY.TRANSITION]:                      FPTI_TRANSITION.BUTTON_LOAD,
+            [FPTI_KEY.EVENT_NAME]:                      FPTI_TRANSITION.BUTTON_LOAD,
             [FPTI_KEY.FUNDING_LIST]:                    fundingSources.join(':'),
             [FPTI_KEY.FI_LIST]:                         walletInstruments.join(':'),
             [FPTI_KEY.SELECTED_FI]:                     fundingSource,
