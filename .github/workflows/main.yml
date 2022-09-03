@@ -22,17 +22,29 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NVMRC }}
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
-      - name: ▶️ Run flow-typed script
-        run: npm run flow-typed
+      - name: ▶️ Run Lint
+        run: npm run lint
 
-      - name: ▶️ Run build script
+      - name: ▶️ Run Typecheck
+        run: npm run typecheck
+
+      - name: ▶️ Run Karma
+        run: npm run karma
+
+      - name: ▶️ Run Jest SSR
+        run: npm run jest-ssr
+
+      - name: ▶️ Run Jest Screenshot
+        run: npm run jest-screenshot
+
+      - name: ▶️ Run Build
         run: npm run build
 
       - name: ⬆️ Upload karma coverage report
@@ -47,7 +59,7 @@ jobs:
           directory: ./coverage/jest
           flags: jest
 
-      - name: 🤏 Check bundlesize
+      - name: 🤏 Check Bundle Size
         run: npm run check-size
         env:
           BUNDLEMON_PROJECT_ID: 6166e8ee491d1e00090fee72
