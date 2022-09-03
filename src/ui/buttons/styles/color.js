@@ -68,7 +68,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BANCONTACT }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
-        background: #005596;
+        background: linear-gradient(to right, #1E3764, #005AB9);
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.BOLETO }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
@@ -92,7 +92,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MERCADOPAGO }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
-        background: #009EE3;
+        background: #1D2647;
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.MULTIBANCO }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
@@ -116,7 +116,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.TRUSTLY }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
-        background: #33CC33;
+        background: #003140;
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.VERKKOPANKKI }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
@@ -124,7 +124,7 @@ export const buttonColorStyle = `
     }
 
     .${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.WECHATPAY }].${ CLASS.COLOR }-${ BUTTON_COLOR.DEFAULT } {
-        background: #1AAD19;
+        background: #4D4D4D;
     }
 
     /* APM button hover actions */
