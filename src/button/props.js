@@ -6,7 +6,7 @@ import type { CustomStyle } from '@paypal/checkout-components/src/types';
 import { EXPERIENCE } from '@paypal/checkout-components/src/constants/button';
 
 import type { ContentType, ProxyWindow, Wallet, CheckoutFlowType, CardFormFlowType,
-    ThreeDomainSecureFlowType, MenuFlowType, PersonalizationType, QRCodeType, PaymentFieldsFlowType, InlinePaymentFieldsEligibility } from '../types';
+    ThreeDomainSecureFlowType, MenuFlowType, PersonalizationType, QRCodeType } from '../types';
 import { type FirebaseConfig } from '../api';
 import { getNonce } from '../lib';
 import { getProps, type XProps, type Props } from '../props/props';
@@ -116,13 +116,12 @@ export type Components = {|
     ThreeDomainSecure : ThreeDomainSecureFlowType,
     Menu : MenuFlowType,
     Installments : InstallmentsFlowType,
-    QRCode : QRCodeType,
-    PaymentFields : PaymentFieldsFlowType
+    QRCode : QRCodeType
 |};
 
 export function getComponents() : Components {
-    const { Checkout, CardForm, ThreeDomainSecure, Menu, Installments, QRCode, PaymentFields } = paypal;
-    return { Checkout, CardForm, ThreeDomainSecure, Menu, Installments, QRCode, PaymentFields };
+    const { Checkout, CardForm, ThreeDomainSecure, Menu, Installments, QRCode } = paypal;
+    return { Checkout, CardForm, ThreeDomainSecure, Menu, Installments, QRCode };
 }
 
 export type Config = {|
@@ -152,8 +151,7 @@ export type ServiceData = {|
     buyerAccessToken : ?string,
     content : ContentType,
     eligibility : {|
-        cardForm : boolean,
-        paymentFields : InlinePaymentFieldsEligibility
+        cardForm : boolean
     |},
     cookies : string,
     personalization : PersonalizationType
@@ -169,8 +167,7 @@ type ServiceDataOptions = {|
     sdkMeta : string,
     content : ContentType,
     eligibility : {|
-        cardFields : boolean,
-        inlinePaymentFields : InlinePaymentFieldsEligibility
+        cardFields : boolean
     |},
     cookies : string,
     personalization : PersonalizationType
@@ -189,17 +186,9 @@ export function getServiceData({ facilitatorAccessToken, sdkMeta, content, buyer
         buyerAccessToken,
         facilitatorAccessToken,
         eligibility:  eligibility ? {
-            cardForm: eligibility.cardFields || false,
-            paymentFields: eligibility.inlinePaymentFields || {
-                inlineEligibleAPMs : [],
-                isInlineEnabled : false
-            }
+            cardForm: eligibility.cardFields || false
         } : {
-            cardForm: false,
-            paymentFields: {
-                inlineEligibleAPMs : [],
-                isInlineEnabled : false
-            }
+            cardForm: false
         },
         cookies,
         personalization

@@ -2,7 +2,7 @@
 
 import { FUNDING } from '@paypal/sdk-constants';
 
-import type { Wallet, InlinePaymentFieldsEligibility } from '../../src/types';
+import type { Wallet } from '../../src/types';
 
 export type GetExperimentsParams = {|
     merchantID : string,
@@ -20,18 +20,13 @@ export type GetExperimentsParams = {|
 export type GetExperimentsType = {|
     enableVenmoAppLabel : boolean,
     isFundingSourceBranded : boolean,
-    isCardFieldsExperimentEnabled : boolean,
-    isInlinePaymentFieldsEligibleExperiment: InlinePaymentFieldsEligibility
+    isCardFieldsExperimentEnabled : boolean
 |};
 
 export function getDefaultExperiments() : Promise<GetExperimentsType> {
     return Promise.resolve({
         enableVenmoAppLabel:           false,
         isFundingSourceBranded:        false,
-        isCardFieldsExperimentEnabled: false,
-        isInlinePaymentFieldsEligibleExperiment: {
-            inlineEligibleAPMs : [],
-            isInlineEnabled : false
-        }
+        isCardFieldsExperimentEnabled: false
     });
 }

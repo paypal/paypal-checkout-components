@@ -127,7 +127,7 @@ function getContext({ win, isClick, merchantRequestedPopupsDisabled } : {| win :
     return CONTEXT.IFRAME;
 }
 
-export const getDimensions = (fundingSource : string) : {| width : number, height : number |} => {
+function getDimensions(fundingSource : string) : {| width : number, height : number |} {
     if (APM_LIST.indexOf(fundingSource) !== -1) {
         getLogger().info(`popup_dimensions_value_${ fundingSource }`).flush();
         return { width: CHECKOUT_APM_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_APM_POPUP_DIMENSIONS.HEIGHT };

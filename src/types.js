@@ -9,7 +9,6 @@ import { CONTEXT, QRCODE_STATE } from './constants';
 import type { OnShippingChangeData } from './props/onShippingChange';
 import type { OnShippingAddressChangeData } from './props/onShippingAddressChange';
 import type { OnShippingOptionsChangeData } from './props/onShippingOptionsChange';
-import type { ConfirmData } from './api/order';
 
 // export something to force webpack to see this as an ES module
 export const TYPES = true;
@@ -164,38 +163,12 @@ export type PostRobot = {|
 
 |};
 
-export type InlinePaymentFieldsEligibility = {|
-    inlineEligibleAPMs : $ReadOnlyArray<string>,
-    isInlineEnabled : boolean
-|}
-
-export type PaymentFieldsProps = {|
-    window? : ?(ProxyWindow | CrossDomainWindowType),
-    sessionID : string,
-    buttonSessionID : string,
-    fundingSource : FundingType,
-    onClose : () => void,
-    onError : () => ZalgoPromise<void>,
-    onContinue : (data : ConfirmData, orderID : string) => ZalgoPromise<void>,
-    createOrder : () => ZalgoPromise<string>,
-    onFieldsClose : () => ZalgoPromise<void>,
-    showActionButtons : boolean,
-    sdkMeta : string,
-    buyerCountry : $Values<typeof COUNTRY>,
-    locale : LocaleType,
-    commit : boolean,
-    cspNonce : ?string
-|};
-
-export type PaymentFieldsFlowType = ZoidComponent<PaymentFieldsProps>;
-
 export type PayPal = {|
     version : string,
     Checkout : CheckoutFlowType,
     CardForm : CardFormFlowType,
     ThreeDomainSecure : ThreeDomainSecureFlowType,
     Menu : MenuFlowType,
-    PaymentFields : PaymentFieldsFlowType,
     postRobot : PostRobot
 |};
 
