@@ -660,7 +660,7 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 value:      ({ props }) => {
                     const { commit, createBillingAgreement, currency, disableFunding = [], experience, fundingEligibility, onComplete, style : { custom = {}, layout }, vault } = props || {};
 
-                    if (experience === 'inline') {
+                    if (experience === 'accelerated') {
                         return EXPERIENCE.INLINE;
                     }
 
