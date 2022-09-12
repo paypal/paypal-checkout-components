@@ -50,7 +50,6 @@
     "karma": "cross-env NODE_ENV=test babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/karma start",
     "lint": "eslint --ext .js --ext .jsx src/ server/ test/ *.js",
     "postactivate": "npm run cdnify -- --commitonly",
-    "postinstall": "npm_config_registry=https://npm.paypal.com npm install @paypalcorp/web --no-save --proxy='null' --https-proxy='null' || echo 'Unable to install cdnx cli tools'",
     "postpublish": "if [ \"$DRY_RUN\" != 'true' ]; then git clean -f && git checkout .; fi;",
     "postrelease": "npm run cdnify -- --commitonly",
     "prepublishOnly": "npm run babel",
