@@ -27,7 +27,7 @@ export function getMercadopagoConfig() : FundingSourceConfig {
 
             const apmLogo = (
                 <Fragment>
-                    { logo }<Space /><Text animate optional>mercado pago</Text>
+                    { logo }<Space /><Text animate optional>Mercado Pago</Text>
                 </Fragment>
             );
 
