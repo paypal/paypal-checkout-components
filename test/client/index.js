@@ -35,6 +35,7 @@ import './menu';
 import './props-utils';
 import './onShippingAddressChange';
 import './onShippingOptionsChange';
+import './payment-fields';
 
 beforeEach(() => {
     setupMocks();

@@ -4,7 +4,7 @@ import { onClick as onElementClick, querySelectorAll, noop, stringifyErrorMessag
 import { COUNTRY, FPTI_KEY, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 
-import type { ContentType, Wallet, PersonalizationType } from '../types';
+import type { ContentType, Wallet, PersonalizationType, InlinePaymentFieldsEligibility } from '../types';
 import { getLogger, getSmartFieldsByFundingSource } from '../lib';
 import { type FirebaseConfig } from '../api';
 import { DATA_ATTRIBUTES, BUYER_INTENT } from '../constants';
@@ -31,7 +31,8 @@ type ButtonOpts = {|
     wallet : ?Wallet,
     buyerAccessToken : ?string,
     eligibility : {|
-        cardFields : boolean
+        cardFields : boolean,
+        inlinePaymentFields: InlinePaymentFieldsEligibility
     |},
     correlationID? : string,
     cookies : string,
