@@ -7603,11 +7603,11 @@ window.spb = function(modules) {
             })), S.d(N, "DEFAULT_COMPONENTS", (function() {
                 return U;
             })), S.d(N, "DEFAULT_DEBUG", (function() {
-                return s;
+                return B;
             })), S.d(N, "ENV", (function() {
                 return G;
             })), S.d(N, "MOBILE_ENV", (function() {
-                return B;
+                return s;
             })), S.d(N, "ERROR_CODE", (function() {
                 return K;
             })), S.d(N, "FPTI_KEY", (function() {
@@ -7635,9 +7635,9 @@ window.spb = function(modules) {
             })), S.d(N, "LANG", (function() {
                 return t;
             })), S.d(N, "COUNTRY_LANGS", (function() {
-                return e;
-            })), S.d(N, "INTENT", (function() {
                 return T;
+            })), S.d(N, "INTENT", (function() {
+                return e;
             })), S.d(N, "COMMIT", (function() {
                 return n;
             })), S.d(N, "VAULT", (function() {
@@ -7649,15 +7649,15 @@ window.spb = function(modules) {
             })), S.d(N, "SDK_SETTINGS", (function() {
                 return F;
             })), S.d(N, "SDK_QUERY_KEYS", (function() {
-                return D;
-            })), S.d(N, "COMPONENTS", (function() {
-                return H;
-            })), S.d(N, "DEBUG", (function() {
                 return I;
+            })), S.d(N, "COMPONENTS", (function() {
+                return D;
+            })), S.d(N, "DEBUG", (function() {
+                return H;
             })), S.d(N, "QUERY_BOOL", (function() {
-                return o;
-            })), S.d(N, "UNKNOWN", (function() {
                 return O;
+            })), S.d(N, "UNKNOWN", (function() {
+                return o;
             })), S.d(N, "PROTOCOL", (function() {
                 return i;
             })), S.d(N, "PAGE_TYPES", (function() {
@@ -7668,6 +7668,8 @@ window.spb = function(modules) {
                 return h;
             })), S.d(N, "TYPES", (function() {
                 return k;
+            })), S.d(N, "APM_LIST", (function() {
+                return g;
             }));
             var R = {
                 AD: "AD",
@@ -7911,7 +7913,7 @@ window.spb = function(modules) {
                 VI: "vi",
                 ZH: "zh",
                 ZH_HANT: "zh_Hant"
-            }, e = {
+            }, T = {
                 AD: [ t.EN, t.FR, t.ES, t.ZH ],
                 AE: [ t.EN, t.FR, t.ES, t.ZH, t.AR ],
                 AG: [ t.EN, t.FR, t.ES, t.ZH ],
@@ -8115,7 +8117,7 @@ window.spb = function(modules) {
                 ZA: [ t.EN, t.FR, t.ES, t.ZH ],
                 ZM: [ t.EN, t.FR, t.ES, t.ZH ],
                 ZW: [ t.EN ]
-            }, T = {
+            }, e = {
                 CAPTURE: "capture",
                 AUTHORIZE: "authorize",
                 ORDER: "order",
@@ -8246,7 +8248,7 @@ window.spb = function(modules) {
                 PAGE_TYPE: "data-page-type",
                 USER_EXPERIENCE_FLOW: "data-user-experience-flow",
                 POPUPS_DISABLED: "data-popups-disabled"
-            }, D = {
+            }, I = {
                 COMPONENTS: "components",
                 ENV: "env",
                 DEBUG: "debug",
@@ -8267,16 +8269,16 @@ window.spb = function(modules) {
                 STAGE_ALIAS: "stage-alias",
                 CDN_REGISTRY: "cdn-registry",
                 VERSION: "version"
-            }, H = {
+            }, D = {
                 BUTTONS: "buttons",
                 HOSTED_FIELDS: "hosted-fields"
-            }, I = {
+            }, H = {
                 TRUE: !0,
                 FALSE: !1
-            }, o = {
+            }, O = {
                 TRUE: "true",
                 FALSE: "false"
-            }, O = "unknown", i = {
+            }, o = "unknown", i = {
                 HTTP: "http",
                 HTTPS: "https"
             }, M = {
@@ -8288,13 +8290,13 @@ window.spb = function(modules) {
                 SEARCH_RESULTS: "search-results",
                 PRODUCT_DETAILS: "product-details",
                 MINI_CART: "mini-cart"
-            }, C = 10, Z = R.US, a = r.USD, u = T.CAPTURE, L = n.TRUE, P = n.TRUE, d = n.TRUE, c = A.FALSE, U = H.BUTTONS, s = I.FALSE, G = {
+            }, C = 10, Z = R.US, a = r.USD, u = e.CAPTURE, L = n.TRUE, P = n.TRUE, d = n.TRUE, c = A.FALSE, U = D.BUTTONS, B = H.FALSE, G = {
                 LOCAL: "local",
                 STAGE: "stage",
                 SANDBOX: "sandbox",
                 PRODUCTION: "production",
                 TEST: "test"
-            }, B = {
+            }, s = {
                 ANDROID: "android",
                 IOS: "iOS"
             }, K = {
@@ -8302,6 +8304,7 @@ window.spb = function(modules) {
             }, p = {
                 FEED: "feed_name",
                 STATE: "state_name",
+                EVENT_NAME: "event_name",
                 TRANSITION: "transition_name",
                 PAGE: "page_name",
                 BUTTON_TYPE: "button_type",
@@ -8425,7 +8428,7 @@ window.spb = function(modules) {
             }, h = {
                 DESKTOP: "desktop",
                 MOBILE: "mobile"
-            }, k = !0;
+            }, k = !0, g = [ m.IDEAL, m.BANCONTACT, m.GIROPAY, m.SOFORT, m.EPS, m.MYBANK, m.P24, m.PAYU, m.BLIK, m.TRUSTLY, m.ZIMPLER, m.MAXIMA, m.OXXO, m.BOLETO, m.BOLETOBANCARIO, m.WECHATPAY, m.MERCADOPAGO, m.MULTIBANCO ];
         } ]);
     },
     "./node_modules/@paypal/sdk-constants/index.js": function(module, exports, __webpack_require__) {
@@ -8556,6 +8559,9 @@ window.spb = function(modules) {
         }));
         __webpack_require__.d(__webpack_exports__, "TYPES", (function() {
             return TYPES;
+        }));
+        __webpack_require__.d(__webpack_exports__, "APM_LIST", (function() {
+            return APM_LIST;
         }));
         var COUNTRY = {
             AD: "AD",
@@ -9219,6 +9225,7 @@ window.spb = function(modules) {
         var FPTI_KEY = {
             FEED: "feed_name",
             STATE: "state_name",
+            EVENT_NAME: "event_name",
             TRANSITION: "transition_name",
             PAGE: "page_name",
             BUTTON_TYPE: "button_type",
@@ -9354,6 +9361,7 @@ window.spb = function(modules) {
             MOBILE: "mobile"
         };
         var TYPES = !0;
+        var APM_LIST = [ FUNDING.IDEAL, FUNDING.BANCONTACT, FUNDING.GIROPAY, FUNDING.SOFORT, FUNDING.EPS, FUNDING.MYBANK, FUNDING.P24, FUNDING.PAYU, FUNDING.BLIK, FUNDING.TRUSTLY, FUNDING.ZIMPLER, FUNDING.MAXIMA, FUNDING.OXXO, FUNDING.BOLETO, FUNDING.BOLETOBANCARIO, FUNDING.WECHATPAY, FUNDING.MERCADOPAGO, FUNDING.MULTIBANCO ];
     },
     "./node_modules/card-validator/dist/card-number.js": function(module, exports, __webpack_require__) {
         "use strict";
@@ -10742,7 +10750,7 @@ window.spb = function(modules) {
             Object(lib.getLogger)().info("rest_api_create_order_token");
             var headers = ((_headers15 = {})[constants.HEADERS.AUTHORIZATION] = "Bearer " + accessToken, 
             _headers15[constants.HEADERS.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, _headers15[constants.HEADERS.CLIENT_METADATA_ID] = clientMetadataID, 
-            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.112", 
+            _headers15[constants.HEADERS.APP_NAME] = constants.SMART_PAYMENT_BUTTONS, _headers15[constants.HEADERS.APP_VERSION] = "5.0.113", 
             _headers15);
             var paymentSource = {
                 token: {
@@ -11713,7 +11721,8 @@ window.spb = function(modules) {
                 ThreeDomainSecure: _paypal.ThreeDomainSecure,
                 Menu: _paypal.Menu,
                 Installments: _paypal.Installments,
-                QRCode: _paypal.QRCode
+                QRCode: _paypal.QRCode,
+                PaymentFields: _paypal.PaymentFields
             };
         }
         function getConfig(_ref2) {
@@ -11737,9 +11746,17 @@ window.spb = function(modules) {
                 buyerAccessToken: _ref3.buyerAccessToken,
                 facilitatorAccessToken: _ref3.facilitatorAccessToken,
                 eligibility: eligibility ? {
-                    cardForm: eligibility.cardFields || !1
+                    cardForm: eligibility.cardFields || !1,
+                    paymentFields: eligibility.inlinePaymentFields || {
+                        inlineEligibleAPMs: [],
+                        isInlineEnabled: !1
+                    }
                 } : {
-                    cardForm: !1
+                    cardForm: !1,
+                    paymentFields: {
+                        inlineEligibleAPMs: [],
+                        isInlineEnabled: !1
+                    }
                 },
                 cookies: _ref3.cookies,
                 personalization: _ref3.personalization
@@ -12452,8 +12469,8 @@ window.spb = function(modules) {
         var canRenderTop = !1;
         var checkout_inline = !1;
         var smokeHash = "";
-        function getDimensions(fundingSource) {
-            if (-1 !== constants.APM_LIST.indexOf(fundingSource)) {
+        var checkout_getDimensions = function(fundingSource) {
+            if (-1 !== sdk_constants_src.APM_LIST.indexOf(fundingSource)) {
                 Object(lib.getLogger)().info("popup_dimensions_value_" + fundingSource).flush();
                 return {
                     width: 1282,
@@ -12465,7 +12482,7 @@ window.spb = function(modules) {
                 width: 500,
                 height: 590
             };
-        }
+        };
         var checkout = {
             name: "checkout",
             setup: function(_ref) {
@@ -12688,11 +12705,12 @@ window.spb = function(modules) {
                             Object(lib.getLogger)().info("checkout_flow_error ", {
                                 err: Object(src.stringifyError)(err)
                             }).track((_getLogger$info$track2 = {}, _getLogger$info$track2[sdk_constants_src.FPTI_KEY.TRANSITION] = constants.FPTI_TRANSITION.CHECKOUT_ERROR, 
+                            _getLogger$info$track2[sdk_constants_src.FPTI_KEY.EVENT_NAME] = constants.FPTI_TRANSITION.CHECKOUT_ERROR, 
                             _getLogger$info$track2[sdk_constants_src.FPTI_KEY.ERROR_DESC] = Object(src.stringifyError)(err), 
                             _getLogger$info$track2)).flush();
                             return _onError(err);
                         },
-                        dimensions: getDimensions(fundingSource),
+                        dimensions: checkout_getDimensions(fundingSource),
                         fundingSource: fundingSource,
                         card: card,
                         buyerCountry: buyerCountry,
@@ -12737,7 +12755,7 @@ window.spb = function(modules) {
                     click: function() {
                         return zalgo_promise_src.ZalgoPromise.try((function() {
                             if (checkout_inline) context = constants.CONTEXT.IFRAME; else if (!merchantRequestedPopupsDisabled && !win && Object(src.supportsPopups)()) try {
-                                var _getDimensions = getDimensions(fundingSource);
+                                var _getDimensions = checkout_getDimensions(fundingSource);
                                 win = function(_ref) {
                                     var width = _ref.width, height = _ref.height, _ref$closeOnUnload = _ref.closeOnUnload, closeOnUnload = void 0 === _ref$closeOnUnload ? 1 : _ref$closeOnUnload;
                                     var win = Object(cross_domain_utils_src.assertSameDomain)(Object(src.popup)("", {
@@ -12925,6 +12943,227 @@ window.spb = function(modules) {
                             recalculateMargin();
                         }();
                         highlightCard(card);
+                        return renderPromise;
+                    },
+                    close: close
+                };
+            },
+            inline: !0
+        };
+        var src_props = __webpack_require__("./src/props/index.js");
+        var paymentFieldsOpen = !1;
+        var payment_fields_getElements = function(fundingSource) {
+            var buttonsContainer = document.querySelector("#buttons-container");
+            var fundingSourceButtonsContainer;
+            fundingSource && (fundingSourceButtonsContainer = document.querySelector("[" + constants.DATA_ATTRIBUTES.FUNDING_SOURCE + '="' + fundingSource + '"]'));
+            var paymentFieldsContainer = document.querySelector("#payment-fields-container");
+            if (!buttonsContainer || !fundingSourceButtonsContainer || !paymentFieldsContainer) throw new Error("Did not find payment fields elements");
+            return {
+                buttonsContainer: buttonsContainer,
+                fundingSourceButtonsContainer: fundingSourceButtonsContainer,
+                paymentFieldsContainer: paymentFieldsContainer
+            };
+        };
+        var payment_fields_resizeListener;
+        var payment_fields_slideDownButtons = function(fundingSource) {
+            var buttonsContainer = payment_fields_getElements(fundingSource).buttonsContainer;
+            Object(src.querySelectorAll)("[" + constants.DATA_ATTRIBUTES.FUNDING_SOURCE + "]").forEach((function(el) {
+                el.style.opacity = "1";
+                el.parentElement && (el.parentElement.style.display = "");
+                el.style.display = "";
+            }));
+            window.removeEventListener("resize", payment_fields_resizeListener);
+            buttonsContainer.style.removeProperty("transition-duration");
+            buttonsContainer.style.removeProperty("margin-top");
+        };
+        var paymentFields = {
+            name: "payment_fields",
+            setup: function() {},
+            isEligible: function(_ref) {
+                var props = _ref.props;
+                var eligibility = _ref.serviceData.eligibility;
+                var componentsList = window.xprops.components || [];
+                return !props.vault && !props.onShippingChange && !componentsList.includes("marks") && eligibility.paymentFields.isInlineEnabled;
+            },
+            isPaymentEligible: function(_ref2) {
+                var _ref3 = _ref2.payment || {}, fundingSource = _ref3.fundingSource;
+                return !(_ref3.win || fundingSource && !(_ref2.serviceData.eligibility.paymentFields.inlineEligibleAPMs || []).includes(fundingSource));
+            },
+            init: function initPaymentFields(_ref4) {
+                var props = _ref4.props, components = _ref4.components, payment = _ref4.payment, serviceData = _ref4.serviceData, config = _ref4.config;
+                var createOrder = props.createOrder, _onApprove = props.onApprove, _onCancel = props.onCancel, locale = props.locale, commit = props.commit, onError = props.onError, sessionID = props.sessionID, partnerAttributionID = props.partnerAttributionID, buttonSessionID = props.buttonSessionID, _onAuth = props.onAuth, stickinessID = props.stickinessID, onShippingChange = props.onShippingChange, onShippingAddressChange = props.onShippingAddressChange, onShippingOptionsChange = props.onShippingOptionsChange, clientMetadataID = props.clientMetadataID, enableFunding = props.enableFunding, _onComplete = props.onComplete;
+                var PaymentFields = components.PaymentFields, Checkout = components.Checkout;
+                var fundingSource = payment.fundingSource, card = payment.card;
+                var cspNonce = config.cspNonce;
+                var buyerCountry = serviceData.buyerCountry, sdkMeta = serviceData.sdkMeta;
+                paymentFieldsOpen = !1;
+                Object(lib.getLogger)().info("spb_payment_flow_init_payment_fields", {
+                    buttonSessionID: buttonSessionID,
+                    fundingSource: fundingSource
+                });
+                if (paymentFieldsOpen) return {
+                    start: lib.promiseNoop,
+                    close: lib.promiseNoop
+                };
+                var instance;
+                var approved = !1;
+                var forceClosed = !1;
+                var restart = Object(src.memoize)((function() {
+                    return close().finally((function() {
+                        return initPaymentFields({
+                            props: props,
+                            components: components,
+                            serviceData: serviceData,
+                            config: config,
+                            payment: Object(esm_extends.default)({}, payment),
+                            restart: restart
+                        }).start().finally(lib.unresolvedPromise);
+                    }));
+                }));
+                var buyerAccessToken;
+                var _PaymentFields = PaymentFields({
+                    createOrder: createOrder,
+                    fundingSource: fundingSource,
+                    onContinue: function(data) {
+                        return createOrder().then((function(orderID) {
+                            return Object(src_props.getConfirmOrder)({
+                                orderID: orderID,
+                                payload: data,
+                                partnerAttributionID: partnerAttributionID
+                            }, {
+                                facilitatorAccessToken: serviceData.facilitatorAccessToken
+                            }).then((function() {
+                                Object(lib.getLogger)().info("spb_payment_fields_rendering_checkout_instance", {
+                                    orderID: orderID
+                                });
+                                (instance = Checkout({
+                                    onClose: function() {
+                                        if (!forceClosed && !approved) return close().then((function() {
+                                            return _onCancel();
+                                        }));
+                                    },
+                                    onApprove: function(_ref5) {
+                                        var payerID = _ref5.payerID, paymentID = _ref5.paymentID, billingToken = _ref5.billingToken;
+                                        approved = !0;
+                                        return close().then((function() {
+                                            return _onApprove({
+                                                payerID: payerID,
+                                                paymentID: paymentID,
+                                                billingToken: billingToken,
+                                                buyerAccessToken: buyerAccessToken
+                                            }, {
+                                                restart: restart
+                                            }).catch(src.noop);
+                                        }));
+                                    },
+                                    branded: !1,
+                                    standaloneFundingSource: fundingSource,
+                                    inlinexo: !1,
+                                    onCancel: function() {
+                                        return close().then((function() {
+                                            return _onCancel();
+                                        }));
+                                    },
+                                    onAuth: function(_ref6) {
+                                        return _onAuth({
+                                            accessToken: _ref6.accessToken || buyerAccessToken
+                                        }).then((function(token) {
+                                            buyerAccessToken = token;
+                                        }));
+                                    },
+                                    buttonSessionID: buttonSessionID,
+                                    stickinessID: stickinessID,
+                                    onComplete: function() {
+                                        return _onComplete({
+                                            buyerAccessToken: buyerAccessToken
+                                        }).finally((function() {
+                                            return close().then(src.noop);
+                                        })).catch(src.noop);
+                                    },
+                                    onShippingChange: onShippingChange,
+                                    onShippingAddressChange: onShippingAddressChange,
+                                    onShippingOptionsChange: onShippingOptionsChange,
+                                    restart: restart,
+                                    createOrder: createOrder,
+                                    card: card,
+                                    clientMetadataID: clientMetadataID,
+                                    enableFunding: enableFunding,
+                                    dimensions: checkout_getDimensions(fundingSource),
+                                    onError: onError,
+                                    sessionID: sessionID,
+                                    fundingSource: fundingSource,
+                                    buyerCountry: buyerCountry,
+                                    locale: locale,
+                                    commit: commit,
+                                    cspNonce: cspNonce,
+                                    smokeHash: ""
+                                })).renderTo(function() {
+                                    Object(cross_domain_utils_src.getTop)(window);
+                                    return Object(cross_domain_utils_src.getParent)() ? Object(cross_domain_utils_src.getParent)() : window;
+                                }(), constants.TARGET_ELEMENT.BODY, constants.CONTEXT.POPUP);
+                            })).catch((function(err) {
+                                Object(lib.getLogger)().error("payment_fields_confirm_order_error", {
+                                    err: Object(src.stringifyError)(err)
+                                });
+                                throw err;
+                            }));
+                        }));
+                    },
+                    onFieldsClose: function() {
+                        return closePaymentFields().then((function() {
+                            paymentFieldsOpen = !1;
+                            payment_fields_slideDownButtons(fundingSource);
+                        }));
+                    },
+                    onError: onError,
+                    onClose: function() {
+                        paymentFieldsOpen = !1;
+                    },
+                    showActionButtons: !0,
+                    sdkMeta: sdkMeta,
+                    sessionID: sessionID,
+                    buttonSessionID: buttonSessionID,
+                    buyerCountry: buyerCountry,
+                    locale: locale,
+                    commit: commit,
+                    cspNonce: cspNonce
+                }), render = _PaymentFields.render, closePaymentFields = _PaymentFields.close;
+                var close = function() {
+                    return closePaymentFields().then((function() {
+                        forceClosed = !0;
+                        paymentFieldsOpen = !1;
+                        instance && instance.close();
+                        payment_fields_slideDownButtons(fundingSource);
+                    }));
+                };
+                return {
+                    start: function() {
+                        paymentFieldsOpen = !0;
+                        var renderPromise = render("#payment-fields-container");
+                        !function(fundingSource) {
+                            var _getElements = payment_fields_getElements(fundingSource), buttonsContainer = _getElements.buttonsContainer, fundingSourceButtonsContainer = _getElements.fundingSourceButtonsContainer, paymentFieldsContainer = _getElements.paymentFieldsContainer;
+                            if (!buttonsContainer || !fundingSourceButtonsContainer || !paymentFieldsContainer) throw new Error("Required elements not found");
+                            paymentFieldsContainer.style.minHeight = "0px";
+                            paymentFieldsContainer.style.display = "block";
+                            var recalculateMargin = function() {
+                                buttonsContainer.style.marginTop = buttonsContainer.offsetTop - fundingSourceButtonsContainer.offsetTop + "px";
+                            };
+                            payment_fields_resizeListener = Object(src.debounce)((function() {
+                                buttonsContainer.style.transitionDuration = "0s";
+                                recalculateMargin();
+                            }));
+                            window.addEventListener("resize", payment_fields_resizeListener);
+                            recalculateMargin();
+                        }(fundingSource);
+                        !function(fundingSource) {
+                            fundingSource && Object(src.querySelectorAll)("[" + constants.DATA_ATTRIBUTES.FUNDING_SOURCE + "]").forEach((function(el) {
+                                if (el.getAttribute(constants.DATA_ATTRIBUTES.FUNDING_SOURCE) === fundingSource.toLowerCase()) el.style.opacity = "1"; else {
+                                    el.style.display = "none";
+                                    el.parentElement && (el.parentElement.style.display = "none");
+                                    el.style.opacity = "0.1";
+                                }
+                            }));
+                        }(fundingSource);
                         return renderPromise;
                     },
                     close: close
@@ -15180,7 +15419,6 @@ window.spb = function(modules) {
             },
             spinner: !0
         };
-        var src_props = __webpack_require__("./src/props/index.js");
         var parentPopupBridge;
         var popupBridge = {
             name: "popup_bridge",
@@ -15290,7 +15528,7 @@ window.spb = function(modules) {
             newMenu.renderTo(window.xprops.getParent(), "#" + containerUID + " #smart-menu");
             return menu_menu = newMenu;
         }
-        var PAYMENT_FLOWS = [ vaultCapture, walletCapture, cardField, cardForm, popupBridge, applepay, native_native, checkout ];
+        var PAYMENT_FLOWS = [ vaultCapture, walletCapture, cardField, cardForm, paymentFields, popupBridge, applepay, native_native, checkout ];
         function getPaymentFlow(_ref2) {
             var props = _ref2.props, payment = _ref2.payment, config = _ref2.config, serviceData = _ref2.serviceData;
             !props.fundingSource && payment.fundingSource && (props.fundingSource = payment.fundingSource);
@@ -15311,7 +15549,7 @@ window.spb = function(modules) {
         }
         function initiatePaymentFlow(_ref3) {
             var _props$style;
-            var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props, brandedDefault = _ref3.brandedDefault;
+            var payment = _ref3.payment, serviceData = _ref3.serviceData, config = _ref3.config, components = _ref3.components, props = _ref3.props;
             var button = payment.button, fundingSource = payment.fundingSource, instrumentType = payment.instrumentType, buyerIntent = payment.buyerIntent;
             var buttonLabel = null == (_props$style = props.style) ? void 0 : _props$style.label;
             return zalgo_promise_src.ZalgoPromise.try((function() {
@@ -15357,6 +15595,7 @@ window.spb = function(modules) {
                     _ref5[constants.AMPLITUDE_KEY.USER_ID] = buttonSessionID, _ref5[constants.AMPLITUDE_KEY.TIME] = Date.now().toString(), 
                     _ref5[sdk_constants_src.FPTI_KEY.TOKEN] = null, _ref5;
                 })).track(((_getLogger$addPayload = {})[sdk_constants_src.FPTI_KEY.TRANSITION] = constants.FPTI_TRANSITION.BUTTON_CLICK, 
+                _getLogger$addPayload[sdk_constants_src.FPTI_KEY.EVENT_NAME] = constants.FPTI_TRANSITION.BUTTON_CLICK, 
                 _getLogger$addPayload[sdk_constants_src.FPTI_KEY.CHOSEN_FI_TYPE] = instrumentType, 
                 _getLogger$addPayload[sdk_constants_src.FPTI_KEY.PAYMENT_FLOW] = name, _getLogger$addPayload[sdk_constants_src.FPTI_KEY.IS_VAULT] = instrumentType ? "1" : "0", 
                 _getLogger$addPayload[constants.FPTI_CUSTOM_KEY.INFO_MSG] = enableNativeCheckout ? "tester" : "", 
@@ -15712,7 +15951,6 @@ window.spb = function(modules) {
                                 }, {
                                     facilitatorAccessToken: serviceData.facilitatorAccessToken
                                 });
-                                brandedDefault || Object(lib.getLogger)().warn("Standalone button integration has been deprecated, please use unbranded integration https://developer.paypa.com/docs/checkout/apm/. If this is an existing integration please contact developer team dl-pp-altpay-exp@paypal.com");
                             }));
                         }));
                         return zalgo_promise_src.ZalgoPromise.all([ loggingPromise, updateClientConfigPromise, clickPromise, vaultPromise, validateOrderPromise, startPromise, confirmOrderPromise ]).catch((function(err) {
@@ -15786,8 +16024,7 @@ window.spb = function(modules) {
                                     config: config,
                                     serviceData: serviceData,
                                     components: components,
-                                    props: paymentProps,
-                                    brandedDefault: brandedDefault
+                                    props: paymentProps
                                 }).finally((function() {
                                     paymentProcessing = !1;
                                 }));
@@ -16066,7 +16303,7 @@ window.spb = function(modules) {
                     var _ref3;
                     return (_ref3 = {})[sdk_constants_src.FPTI_KEY.CONTEXT_TYPE] = constants.FPTI_CONTEXT_TYPE.BUTTON_SESSION_ID, 
                     _ref3[sdk_constants_src.FPTI_KEY.CONTEXT_ID] = buttonSessionID, _ref3[sdk_constants_src.FPTI_KEY.BUTTON_SESSION_UID] = buttonSessionID, 
-                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.112", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
+                    _ref3[sdk_constants_src.FPTI_KEY.BUTTON_VERSION] = "5.0.113", _ref3[constants.FPTI_BUTTON_KEY.BUTTON_CORRELATION_ID] = buttonCorrelationID, 
                     _ref3[sdk_constants_src.FPTI_KEY.STICKINESS_ID] = Object(lib.isAndroidChrome)() ? stickinessID : null, 
                     _ref3[sdk_constants_src.FPTI_KEY.PARTNER_ATTRIBUTION_ID] = partnerAttributionID, 
                     _ref3[sdk_constants_src.FPTI_KEY.USER_ACTION] = commit ? sdk_constants_src.FPTI_USER_ACTION.COMMIT : sdk_constants_src.FPTI_USER_ACTION.CONTINUE, 
@@ -16123,6 +16360,7 @@ window.spb = function(modules) {
                     var startTime;
                     logger.track(((_logger$track2 = {})[sdk_constants_src.FPTI_KEY.STATE] = constants.FPTI_STATE.BUTTON, 
                     _logger$track2[sdk_constants_src.FPTI_KEY.TRANSITION] = constants.FPTI_TRANSITION.BUTTON_LOAD, 
+                    _logger$track2[sdk_constants_src.FPTI_KEY.EVENT_NAME] = constants.FPTI_TRANSITION.BUTTON_LOAD, 
                     _logger$track2[sdk_constants_src.FPTI_KEY.FUNDING_LIST] = fundingSources.join(":"), 
                     _logger$track2[sdk_constants_src.FPTI_KEY.FI_LIST] = walletInstruments.join(":"), 
                     _logger$track2[sdk_constants_src.FPTI_KEY.SELECTED_FI] = fundingSource, _logger$track2[sdk_constants_src.FPTI_KEY.FUNDING_COUNT] = fundingSources.length.toString(), 
@@ -16495,10 +16733,6 @@ window.spb = function(modules) {
         __webpack_require__.d(__webpack_exports__, "STATUS_CODES", (function() {
             return STATUS_CODES;
         }));
-        __webpack_require__.d(__webpack_exports__, "APM_LIST", (function() {
-            return APM_LIST;
-        }));
-        var _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/@paypal/sdk-constants/src/index.js");
         var SMART_PAYMENT_BUTTONS = "smart-payment-buttons";
         var BUYER_INTENT = {
             PAY: "pay",
@@ -16728,7 +16962,6 @@ window.spb = function(modules) {
         var STATUS_CODES = {
             TOO_MANY_REQUESTS: 429
         };
-        var APM_LIST = [ _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.IDEAL, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.BANCONTACT, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.GIROPAY, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.SOFORT, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.EPS, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.MYBANK, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.P24, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.PAYU, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.BLIK, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.TRUSTLY, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.ZIMPLER, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.MAXIMA, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.OXXO, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.BOLETO, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.BOLETOBANCARIO, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.WECHATPAY, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.MERCADOPAGO, _paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_0__.FUNDING.MULTIBANCO ];
     },
     "./src/lib/dom.js": function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
@@ -17518,6 +17751,7 @@ window.spb = function(modules) {
                         _ref7;
                     })).track((_getLogger$addPayload = {}, _getLogger$addPayload[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.STATE] = _constants__WEBPACK_IMPORTED_MODULE_6__.FPTI_STATE.BUTTON, 
                     _getLogger$addPayload[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_6__.FPTI_TRANSITION.RECEIVE_ORDER, 
+                    _getLogger$addPayload[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_6__.FPTI_TRANSITION.RECEIVE_ORDER, 
                     _getLogger$addPayload[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_6__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$addPayload[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.CONTEXT_ID] = orderID, 
                     _getLogger$addPayload[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.TOKEN] = orderID, 
@@ -17721,6 +17955,9 @@ window.spb = function(modules) {
         __webpack_require__.d(__webpack_exports__, "SHIPPING_OPTIONS_ERROR_MESSAGES", (function() {
             return _onShippingChange__WEBPACK_IMPORTED_MODULE_9__.SHIPPING_OPTIONS_ERROR_MESSAGES;
         }));
+        __webpack_require__.d(__webpack_exports__, "GENERIC_REJECT_ADDRESS_MESSAGE", (function() {
+            return _onShippingChange__WEBPACK_IMPORTED_MODULE_9__.GENERIC_REJECT_ADDRESS_MESSAGE;
+        }));
         __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", (function() {
             return _onShippingChange__WEBPACK_IMPORTED_MODULE_9__.buildXOnShippingChangeData;
         }));
@@ -17785,7 +18022,7 @@ window.spb = function(modules) {
         }));
         __webpack_require__("./src/props/getQueriedEligibleFunding.js");
         var _paymentRequest__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__("./src/props/paymentRequest.js");
-        for (var __WEBPACK_IMPORT_KEY__ in _paymentRequest__WEBPACK_IMPORTED_MODULE_19__) [ "default", "TYPES", "getProps", "buildXCreateOrderData", "buildOrderActions", "buildPaymentActions", "buildXCreateOrderActions", "getCreateOrder", "getConfirmOrder", "buildXCreateBillingAgreementData", "buildXCreateBillingAgreementActions", "getCreateBillingAgreement", "buildXCreateSubscriptionData", "buildXCreateSubscriptionActions", "getCreateSubscription", "getOnApproveOrder", "getOnApproveBilling", "getOnApproveTokenize", "getOnApproveSubscription", "getOnApprove", "getOnComplete", "buildXOnInitActions", "getOnInit", "buildXOnCancelData", "buildXOnCancelActions", "getOnCancel", "ON_SHIPPING_CHANGE_PATHS", "SHIPPING_ADDRESS_ERROR_MESSAGES", "SHIPPING_OPTIONS_ERROR_MESSAGES", "buildXOnShippingChangeData", "buildXShippingChangeActions", "getOnShippingChange", "buildXOnShippingAddressChangeData", "buildXOnShippingAddressChangeActions", "getOnShippingAddressChange", "buildXOnShippingOptionsChangeData", "buildXOnShippingOptionsChangeActions", "getOnShippingOptionsChange", "CLICK_VALID", "buildXOnClickData", "buildXOnClickActions", "getOnClick", "getOnError", "POPUP_BRIDGE_OPTYPE", "getRememberFunding", "getGetPageUrl", "getOnAuth" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
+        for (var __WEBPACK_IMPORT_KEY__ in _paymentRequest__WEBPACK_IMPORTED_MODULE_19__) [ "default", "TYPES", "getProps", "buildXCreateOrderData", "buildOrderActions", "buildPaymentActions", "buildXCreateOrderActions", "getCreateOrder", "getConfirmOrder", "buildXCreateBillingAgreementData", "buildXCreateBillingAgreementActions", "getCreateBillingAgreement", "buildXCreateSubscriptionData", "buildXCreateSubscriptionActions", "getCreateSubscription", "getOnApproveOrder", "getOnApproveBilling", "getOnApproveTokenize", "getOnApproveSubscription", "getOnApprove", "getOnComplete", "buildXOnInitActions", "getOnInit", "buildXOnCancelData", "buildXOnCancelActions", "getOnCancel", "ON_SHIPPING_CHANGE_PATHS", "SHIPPING_ADDRESS_ERROR_MESSAGES", "SHIPPING_OPTIONS_ERROR_MESSAGES", "GENERIC_REJECT_ADDRESS_MESSAGE", "buildXOnShippingChangeData", "buildXShippingChangeActions", "getOnShippingChange", "buildXOnShippingAddressChangeData", "buildXOnShippingAddressChangeActions", "getOnShippingAddressChange", "buildXOnShippingOptionsChangeData", "buildXOnShippingOptionsChangeActions", "getOnShippingOptionsChange", "CLICK_VALID", "buildXOnClickData", "buildXOnClickActions", "getOnClick", "getOnError", "POPUP_BRIDGE_OPTYPE", "getRememberFunding", "getGetPageUrl", "getOnAuth" ].indexOf(__WEBPACK_IMPORT_KEY__) < 0 && function(key) {
             __webpack_require__.d(__webpack_exports__, key, (function() {
                 return _paymentRequest__WEBPACK_IMPORTED_MODULE_19__[key];
             }));
@@ -18091,6 +18328,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track4;
                     Object(_lib__WEBPACK_IMPORTED_MODULE_5__.getLogger)().info("button_approve").track((_getLogger$info$track4 = {}, 
                     _getLogger$info$track4[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_APPROVE, 
+                    _getLogger$info$track4[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_APPROVE, 
                     _getLogger$info$track4[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$info$track4[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TOKEN] = orderID, 
                     _getLogger$info$track4[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_ID] = orderID, 
@@ -18259,6 +18497,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track;
                     Object(_lib__WEBPACK_IMPORTED_MODULE_3__.getLogger)().info("button_cancel").track((_getLogger$info$track = {}, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_CANCEL, 
+                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_CANCEL, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TOKEN] = orderID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_ID] = orderID, 
@@ -18359,6 +18598,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track;
                     Object(_lib__WEBPACK_IMPORTED_MODULE_3__.getLogger)().info("button_complete").track((_getLogger$info$track = {}, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_COMPLETE, 
+                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_COMPLETE, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TOKEN] = orderID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_ID] = orderID, 
@@ -18497,7 +18737,9 @@ window.spb = function(modules) {
             var breakdown = (null == (_data$amount = data.amount) ? void 0 : _data$amount.breakdown) || {};
             if (0 === Object.keys(breakdown).length) throw new Error("Must pass amount with breakdown into data attribute for onShippingAddressChange callback.");
             var actions = {
-                reject: passedActions.reject || function() {
+                reject: passedActions.reject ? function(message) {
+                    return -1 === Object.values(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__.SHIPPING_ADDRESS_ERROR_MESSAGES).indexOf(message) ? passedActions.reject(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__.GENERIC_REJECT_ADDRESS_MESSAGE) : passedActions.reject(message);
+                } : function() {
                     throw new Error("Missing reject action callback");
                 },
                 updateTax: function(_ref2) {
@@ -18631,6 +18873,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track;
                     Object(_lib__WEBPACK_IMPORTED_MODULE_6__.getLogger)().info("button_shipping_address_change").track((_getLogger$info$track = {}, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_5__.FPTI_TRANSITION.CHECKOUT_SHIPPING_ADDRESS_CHANGE, 
+                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_5__.FPTI_TRANSITION.CHECKOUT_SHIPPING_ADDRESS_CHANGE, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_5__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.TOKEN] = orderID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.CONTEXT_ID] = orderID, 
@@ -18657,6 +18900,9 @@ window.spb = function(modules) {
         }));
         __webpack_require__.d(__webpack_exports__, "SHIPPING_OPTIONS_ERROR_MESSAGES", (function() {
             return SHIPPING_OPTIONS_ERROR_MESSAGES;
+        }));
+        __webpack_require__.d(__webpack_exports__, "GENERIC_REJECT_ADDRESS_MESSAGE", (function() {
+            return GENERIC_REJECT_ADDRESS_MESSAGE;
         }));
         __webpack_require__.d(__webpack_exports__, "buildXOnShippingChangeData", (function() {
             return buildXOnShippingChangeData;
@@ -18688,6 +18934,7 @@ window.spb = function(modules) {
             METHOD_UNAVAILABLE: "The shipping method you chose is unavailable. To continue, choose another way to get your order.",
             STORE_UNAVAILABLE: "Part of your order isn't available at this store."
         };
+        var GENERIC_REJECT_ADDRESS_MESSAGE = "Unable to update address. Please try again.";
         function buildXOnShippingChangeData(data) {
             return data;
         }
@@ -18725,6 +18972,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track;
                     Object(_lib__WEBPACK_IMPORTED_MODULE_5__.getLogger)().info("button_shipping_change").track((_getLogger$info$track = {}, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
+                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_TRANSITION.CHECKOUT_SHIPPING_CHANGE, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_4__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.TOKEN] = orderID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_2__.FPTI_KEY.CONTEXT_ID] = orderID, 
@@ -18779,7 +19027,9 @@ window.spb = function(modules) {
             var breakdown = (null == (_data$amount = data.amount) ? void 0 : _data$amount.breakdown) || {};
             if (0 === Object.keys(breakdown).length) throw new Error("Must pass breakdown into data attribute for onShippingAddressChange callback.");
             var actions = {
-                reject: passedActions.reject || function() {
+                reject: passedActions.reject ? function(message) {
+                    return -1 === Object.values(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__.SHIPPING_OPTIONS_ERROR_MESSAGES).indexOf(message) ? passedActions.reject(_onShippingChange__WEBPACK_IMPORTED_MODULE_7__.GENERIC_REJECT_ADDRESS_MESSAGE) : passedActions.reject(message);
+                } : function() {
                     throw new Error("Missing reject action callback");
                 },
                 updateShippingOption: function(_ref2) {
@@ -18888,6 +19138,7 @@ window.spb = function(modules) {
                     var _getLogger$info$track;
                     Object(_lib__WEBPACK_IMPORTED_MODULE_6__.getLogger)().info("button_shipping_options_change").track((_getLogger$info$track = {}, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.TRANSITION] = _constants__WEBPACK_IMPORTED_MODULE_5__.FPTI_TRANSITION.CHECKOUT_SHIPPING_OPTIONS_CHANGE, 
+                    _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.EVENT_NAME] = _constants__WEBPACK_IMPORTED_MODULE_5__.FPTI_TRANSITION.CHECKOUT_SHIPPING_OPTIONS_CHANGE, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.CONTEXT_TYPE] = _constants__WEBPACK_IMPORTED_MODULE_5__.FPTI_CONTEXT_TYPE.ORDER_ID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.TOKEN] = orderID, 
                     _getLogger$info$track[_paypal_sdk_constants_src__WEBPACK_IMPORTED_MODULE_3__.FPTI_KEY.CONTEXT_ID] = orderID, 
