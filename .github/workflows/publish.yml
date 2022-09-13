@@ -37,7 +37,10 @@ jobs:
       - name: ▶️ Karma & Jest
         run: npm run test
 
-      - name: Publish to npm
+      - name: ▶️ Build
+        run: npm run build-commit
+
+      - name: ▶️ Publish to npm
         run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

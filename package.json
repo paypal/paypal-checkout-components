@@ -37,7 +37,7 @@
   "scripts": {
     "all-ci": "npm run lint && npm run typecheck && npm run test",
     "babel": "babel server --ignore=node_modules --out-dir server && babel webpack.config.js globals.js --out-dir .",
-    "build": "npm run webpack",
+    "build": "npm run webpack:release",
     "build-commit": "npm run build && git add dist && (git commit -m 'Dist' || echo 'Nothing to commit') && git push",
     "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com",
     "clean": "rimraf dist coverage",
@@ -54,14 +54,15 @@
     "postrelease": "npm run cdnify -- --commitonly",
     "prepublishOnly": "npm run babel",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
-    "release": "npm run build-commit && grabthar-release",
+    "release": "grabthar-release",
     "release:cli": "rm -rf node_modules && npm i && npm run all-ci && npm run build-commit && grabthar-release",
     "release:dry-run": "DRY_RUN=true grabthar-release",
     "setup": "npm install && npm run flow-typed",
     "start": "babel-node ./server/devServer",
     "test": "npm run karma && npm run jest:server && npm run jest:client",
     "typecheck": "npm run flow-typed && npm run flow -- check",
-    "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress"
+    "webpack": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack --progress",
+    "webpack:release": "babel-node --plugins=transform-es2015-modules-commonjs ./node_modules/.bin/webpack"
   },
   "peerDependencies": {
     "express": "^4.16.3"
