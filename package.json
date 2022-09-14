@@ -94,7 +94,7 @@
     "@paypal/common-components": "^1.0.27",
     "@paypal/funding-components": "^1.0.27",
     "@paypal/sdk-client": "^4.0.166",
-    "@paypal/sdk-constants": "^1.0.119",
+    "@paypal/sdk-constants": "^1.0.123",
     "@paypal/sdk-logos": "^1.0.45"
   },
   "lint-staged": {
