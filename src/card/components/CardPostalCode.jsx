@@ -2,17 +2,16 @@
 /** @jsx h */
 
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
-import { checkPostalCode, defaultNavigation, defaultInputState, navigateOnKeyDown } from '../lib';
+import { defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
 import type { CardPostalCodeChangeEvent, CardNavigation, FieldValidity, InputState, InputEvent } from '../types';
 
 type CardPostalCodeProps = {|
     name : string,
-    ref : () => void,
     type : string,
     state? : InputState,
-    className : string,
     placeholder : string,
     style : Object,
     maxLength : number,
@@ -31,9 +30,7 @@ export function CardPostalCode(
         navigation = defaultNavigation,
         allowNavigation = false,
         state,
-        ref,
         type,
-        className,
         placeholder,
         style,
         maxLength,
@@ -44,11 +41,18 @@ export function CardPostalCode(
         minLength
     } : CardPostalCodeProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, keyStrokeCount, isValid, isPotentiallyValid } = inputState;
 
+    const postalCodeRef = useRef();
+
     useEffect(() => {
-        const validity = checkPostalCode(inputValue, minLength);
+        exportMethods(postalCodeRef, setAttributes);
+    }, []);
+
+    useEffect(() => {
+        const validity = cardValidator.postalCode(inputValue, { minLength });
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue ]);
 
@@ -102,10 +106,9 @@ export function CardPostalCode(
         <input
             name={ name }
             inputmode='numeric'
-            ref={ ref }
+            ref={ postalCodeRef }
             type={ type }
-            className={ className }
-            placeholder={ placeholder }
+            className='card-field-postal-code'
             value={ inputValue }
             style={ style }
             maxLength={ maxLength }
@@ -114,6 +117,7 @@ export function CardPostalCode(
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
             minLength={ minLength }
+            { ...attributes }
         />
     )
 }

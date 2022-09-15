@@ -3,111 +3,24 @@
 import { getLogger } from '../../lib';
 
 import {
-    autoFocusOnFirstInput,
     maskValidCard,
     formatDate,
     parseGQLErrors,
     filterStyle,
     styleToString,
     filterExtraFields,
-    checkPostalCode
+    isValidAttribute,
+    removeNonDigits,
+    checkForNonDigits,
+    convertDateFormat,
+    getContext,
+    markValidity
 } from './card-utils';
+
 
 jest.mock('../../lib/dom');
 
-function triggerFocusListener(input) {
-
-    const focusListener = window.addEventListener.mock.calls.find((args) => {
-        return args[0] === 'focus';
-    })[1];
-
-    focusListener();
-
-    if (input) {
-
-        const focusinListener = window.addEventListener.mock.calls.find((args) => {
-            return args[0] === 'focusin';
-        })[1];
-
-        focusinListener({ target: input });
-    }
-
-    jest.runAllTimers();
-
-}
-
 describe('card utils', () => {
-    describe('autoFocusOnFirstInput', () => {
-        let input : HTMLInputElement;
-
-        beforeEach(() => {
-            jest.useFakeTimers();
-            jest.spyOn(window, 'addEventListener').mockImplementation(jest.fn());
-            input = document.createElement('input');
-        });
-
-        it('noops when no input is passed', () => {
-            autoFocusOnFirstInput();
-
-            expect(window.addEventListener).not.toBeCalled();
-        });
-
-        it('adds a focus and focusin listener when input is available', () => {
-            autoFocusOnFirstInput(input);
-
-            expect(window.addEventListener).toBeCalledTimes(2);
-            expect(window.addEventListener).toBeCalledWith('focus', expect.any(Function));
-            expect(window.addEventListener).toBeCalledWith('focusin', expect.any(Function));
-        });
-
-        it('noops when the an HTMLInputElement gets focus', () => {
-            const spy = jest.spyOn(input, 'focus');
-
-            autoFocusOnFirstInput(input);
-
-            triggerFocusListener(input);
-
-            expect(spy).not.toBeCalled();
-        });
-
-        it('focuses on input when the window gets focus', () => {
-            const spy = jest.spyOn(input, 'focus');
-
-            autoFocusOnFirstInput(input);
-
-            triggerFocusListener();
-
-            expect(spy).toBeCalledTimes(1);
-        });
-
-        it('applies a focus patch for Safari using setSelectionRange', () => {
-            input.value = 'foo';
-
-            input.setSelectionRange(1, 2);
-
-            const spy = jest.spyOn(input, 'setSelectionRange');
-            autoFocusOnFirstInput(input);
-
-            triggerFocusListener();
-
-            expect(spy).toBeCalledTimes(2);
-            expect(spy).toBeCalledWith(0, 0);
-            expect(spy).toBeCalledWith(1, 2);
-        });
-
-        it('adjusts and resets the inputs value when it is empty to accomodate Safari quirk', () => {
-            input.value = '';
-
-            const spy = jest.spyOn(input, 'value', 'set');
-            autoFocusOnFirstInput(input);
-
-            triggerFocusListener();
-
-            expect(spy).toBeCalledTimes(2);
-            expect(spy).toBeCalledWith(' ');
-            expect(spy).toBeCalledWith('');
-        });
-    });
 
     describe('maskValidCard', () => {
         it('masks all but the last 4 of the card number with •', () => {
@@ -432,27 +345,6 @@ describe('card utils', () => {
         });
     });
 
-    describe('checkPostalCode', () => {
-        it('returns true for isValid for a 5-digit postal code', () => {
-            const postalCode = '12345';
-
-            expect(checkPostalCode(postalCode).isValid).toBe(true)
-        });
-
-        it('returns false for isValid for a postal code < 5 digits', () => {
-            const postalCode = '1234';
-
-            expect(checkPostalCode(postalCode, 5).isValid).toBe(false)
-        });
-
-        it('retusn false for isValid for a postal code that is not a string', () => {
-            const postalCode = 12345
-
-            // $FlowFixMe
-            expect(checkPostalCode(postalCode).isValid).toBe(false)
-        })
-    })
-
     describe('filterExtraFields', () => {
 
         it('should return empty object for invalid data', () => {
@@ -477,4 +369,115 @@ describe('card utils', () => {
         });
     });
 
+    describe('isValidAttribute', () => {
+
+        it('should return true if the attribute name is valid', () => {
+            expect(isValidAttribute('aria-invalid')).toBe(true);
+            expect(isValidAttribute('Aria-Invalid')).toBe(true);
+            expect(isValidAttribute('aria-required')).toBe(true);
+            expect(isValidAttribute('disabled')).toBe(true);
+            expect(isValidAttribute('placeholder')).toBe(true);
+        });
+
+        it('should return false and log a warning if the attribute name is not valid', () => {
+            const originalLoggerWarn = getLogger().warn;
+            getLogger().warn = jest.fn();
+            expect(isValidAttribute('invalid')).toBe(false);
+            expect(getLogger().warn).toHaveBeenCalledWith('attribute_warning', { warn: 'HTML Attribute "invalid" was ignored. See allowed attribute list.' });
+            getLogger().warn = originalLoggerWarn;
+        });
+
+    });
+
+    describe('removeNonDigits', () => {
+
+        it('should remove non-digits', () => {
+            expect(removeNonDigits('abc123')).toBe('123');
+        });
+
+    });
+
+    describe('checkForNonDigits', () => {
+
+        it('should check for non-digits', () => {
+            expect(checkForNonDigits('abc123')).toBe(true);
+            expect(checkForNonDigits('123123')).toBe(false);
+        });
+
+    });
+
+    describe('convertDateFormat', () => {
+
+        it('should format the date as MM/YYYY', () => {
+            expect(convertDateFormat('11/23')).toBe('11/2023');
+            expect(convertDateFormat('11 / 23')).toBe('11/2023');
+            expect(convertDateFormat('11 / 2023')).toBe('11/2023');
+        });
+
+    });
+
+    describe('getContext', () => {
+
+        beforeEach(() => {
+            window.xprops = {};
+        });
+
+        it('should return the UID of the component', () => {
+            window.xprops.uid = 'abc123';
+            expect(getContext(window)).toBe('abc123');
+        });
+
+        it('should return the UID of the parent of the component', () => {
+            window.xprops.uid = 'abc123';
+            window.xprops.parent = {
+                uid: 'xyz789'
+            };
+            expect(getContext(window)).toBe('xyz789');
+        });
+
+    });
+
+    describe('markValidity', () => {
+
+        it('marks the refs HTMLelement as valid when isValid is true', () => {
+
+            const element = document.createElement('div')
+
+            const ref = {
+                current: {
+                    base: element
+                }
+            };
+
+            const validity = {
+                isValid: true,
+                isPotentiallyValid: true
+            };
+
+            markValidity(ref, validity)
+
+            expect(element.classList.contains('valid')).toBe(true)
+        })
+
+        it('marks the refs HTMLelement as invalid when isValid is false', () => {
+
+            const element = document.createElement('div')
+
+            const ref = {
+                current: {
+                    base: element
+                }
+            };
+
+            const validity = {
+                isValid: false,
+                isPotentiallyValid: false
+            };
+
+            markValidity(ref, validity)
+
+            expect(element.classList.contains('invalid')).toBe(true)
+            expect(element.classList.contains('valid')).toBe(false)
+        })
+    });
 });

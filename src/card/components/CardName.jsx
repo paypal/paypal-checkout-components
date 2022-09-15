@@ -2,17 +2,16 @@
 /** @jsx h */
 
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
-import { checkName, defaultNavigation, defaultInputState, navigateOnKeyDown } from '../lib';
+import { defaultNavigation, defaultInputState, navigateOnKeyDown, exportMethods } from '../lib';
 import type { CardNameChangeEvent, CardNavigation, FieldValidity, InputState, InputEvent } from '../types';
 
 type CardNameProps = {|
     name : string,
-    ref : () => void,
     type : string,
     state? : InputState,
-    className : string,
     placeholder : string,
     style : Object,
     maxLength : string,
@@ -31,9 +30,7 @@ export function CardName(
         navigation = defaultNavigation,
         allowNavigation = false,
         state,
-        ref,
         type,
-        className,
         placeholder,
         style,
         maxLength,
@@ -43,11 +40,18 @@ export function CardName(
         onValidityChange
     } : CardNameProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, keyStrokeCount, isValid, isPotentiallyValid } = inputState;
 
+    const nameRef = useRef()
+
     useEffect(() => {
-        const validity = checkName(inputValue);
+        exportMethods(nameRef, setAttributes);
+    }, []);
+
+    useEffect(() => {
+        const validity = cardValidator.cardholderName(inputValue);
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue ]);
 
@@ -101,10 +105,9 @@ export function CardName(
         <input
             name={ name }
             inputmode='text'
-            ref={ ref }
+            ref={ nameRef }
             type={ type }
-            className={ className }
-            placeholder={ placeholder }
+            className="card-field-name"
             value={ inputValue }
             style={ style }
             maxLength={ maxLength }
@@ -112,6 +115,7 @@ export function CardName(
             onInput={ setNameValue }
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
+            { ...attributes }
         />
     );
 }

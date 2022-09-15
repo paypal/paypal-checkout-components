@@ -2,27 +2,26 @@
 /** @jsx h */
 
 import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
+import cardValidator from 'card-validator';
 
 import {
     formatDate,
-    checkExpiry,
     removeNonDigits,
     removeDateMask,
     defaultNavigation,
     defaultInputState,
     navigateOnKeyDown,
-    moveCursor
+    moveCursor,
+    exportMethods
 } from '../lib';
 import type { CardExpiryChangeEvent, CardNavigation, FieldValidity, InputState, InputEvent } from '../types';
 
 type CardExpiryProps = {|
     name : string,
     autocomplete? : string,
-    ref : () => void,
     type : string,
     state? : InputState,
-    className : string,
     placeholder : string,
     style : Object,
     maxLength : string,
@@ -41,9 +40,7 @@ export function CardExpiry(
         autocomplete = 'cc-exp',
         navigation = defaultNavigation,
         state,
-        ref,
         type,
-        className,
         placeholder,
         style,
         maxLength,
@@ -54,12 +51,20 @@ export function CardExpiry(
         allowNavigation = false
     } : CardExpiryProps
 ) : mixed {
+    const [ attributes, setAttributes ] : [ Object, (Object) => Object ] = useState({ placeholder });
     const [ inputState, setInputState ] : [ InputState, (InputState | InputState => InputState) => InputState ] = useState({ ...defaultInputState, ...state });
     const { inputValue, maskedInputValue, keyStrokeCount, isValid, isPotentiallyValid, contentPasted } = inputState;
 
+    const expiryRef = useRef()
 
     useEffect(() => {
-        const validity = checkExpiry(maskedInputValue);
+        if (!allowNavigation) {
+            exportMethods(expiryRef, setAttributes);
+        }
+    }, []);
+
+    useEffect(() => {
+        const validity = cardValidator.expirationDate(maskedInputValue);
         setInputState(newState => ({ ...newState, ...validity }));
     }, [ inputValue, maskedInputValue ]);
 
@@ -141,10 +146,9 @@ export function CardExpiry(
             name={ name }
             autocomplete={ autocomplete }
             inputmode='numeric'
-            ref={ ref }
+            ref={ expiryRef }
             type={ type }
-            className={ className }
-            placeholder={ placeholder }
+            className='card-field-expiry'
             value={ maskedInputValue }
             style={ style }
             maxLength={ maxLength }
@@ -153,6 +157,7 @@ export function CardExpiry(
             onFocus={ onFocusEvent }
             onBlur={ onBlurEvent }
             onPaste={ onPasteEvent }
+            { ...attributes }
         />
     );
 }

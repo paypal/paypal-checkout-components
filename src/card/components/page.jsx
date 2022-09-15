@@ -5,7 +5,7 @@ import { h, render, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 
 import { getBody } from '../../lib';
-import { setupExports, formatFieldValue, autoFocusOnFirstInput, filterExtraFields } from '../lib';
+import { setupExports, autoFocusOnFirstInput, filterExtraFields } from '../lib';
 import { CARD_FIELD_TYPE_TO_FRAME_NAME, CARD_FIELD_TYPE } from '../constants';
 import { submitCardFields } from '../interface';
 import { getCardProps, type CardProps } from '../props';
@@ -107,9 +107,7 @@ function Page({ cspNonce, props } : PageProps) : mixed {
     }, [ fieldValid, fieldValue ]);
 
     const onFieldChange = ({ value, valid, errors }) => {
-        const newFieldValue = formatFieldValue(value);
-        
-        setFieldValue(newFieldValue);
+        setFieldValue(value);
         setFieldErrors([ ...errors ]);
         setFieldValid(valid);
         resetGQLErrors();

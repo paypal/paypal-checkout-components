@@ -1,10 +1,13 @@
 /* @flow */
 
-import { types } from 'credit-card-type';
+import cardValidator from 'card-validator';
+import { CARD } from '@paypal/sdk-constants/src';
 
 import { FRAME_NAME } from '../constants';
 
 import type { FieldStyle, CardType, CardPlaceholder } from './types';
+
+const { types } = cardValidator.creditCardType;
 
 export const CARD_FIELD_TYPE = {
     SINGLE: 'single',
@@ -33,6 +36,7 @@ export const GQL_ERRORS = {
 };
 
 export const CARD_ERRORS = {
+    INELIGIBLE_CARD:      ('INELIGIBLE_CARD': 'INELIGIBLE_CARD'),
     INVALID_NUMBER:       ('INVALID_NUMBER' : 'INVALID_NUMBER'),
     INVALID_EXPIRY:       ('INVALID_EXPIRY' : 'INVALID_EXPIRY'),
     INVALID_CVV:          ('INVALID_CVV' : 'INVALID_CVV'),
@@ -113,32 +117,25 @@ export const FILTER_CSS_SELECTORS : $ReadOnlyArray<RegExp> = [
 
 // $FlowFixMe
 export const VALIDATOR_TO_TYPE_MAP = {
-    [types.AMERICAN_EXPRESS]: 'AMEX',
-    [types.DINERS_CLUB]:      'DINERS',
-    [types.DISCOVER]:         'DISCOVER',
-    [types.ELO]:              'ELO',
-    [types.HIPER]:            'HIPER',
-    [types.HIPERCARD]:        'HIPERCARD',
-    [types.JCB]:              'JCB',
-    [types.MASTERCARD]:       'MASTER_CARD',
-    [types.MAESTRO]:          'MAESTRO',
-    [types.UNIONPAY]:         'CHINA_UNION_PAY',
-    [types.VISA]:             'VISA',
-    'cb-nationale':           'CB_NATIONALE',
-    'cetelem':                'CETELEM',
-    'cofidis':                'COFIDIS',
-    'cofinoga':               'COFINOGA'
+    [types.AMERICAN_EXPRESS]: CARD.AMEX,
+    [types.DISCOVER]:         CARD.DISCOVER,
+    [types.ELO]:              CARD.ELO,
+    [types.HIPER]:            CARD.HIPER,
+    [types.JCB]:              CARD.JCB,
+    [types.MASTERCARD]:       CARD.MASTERCARD,
+    [types.UNIONPAY]:         CARD.CUP,
+    [types.VISA]:             CARD.VISA
 };
 
 export const DEFAULT_CARD_TYPE : CardType = {
     gaps:     [ 4, 8, 12 ],
     lengths:  [ 16 ],
     patterns: [],
-    type:     'UNKNOWN',
+    type:     'unknown',
     niceType: 'Unknown',
     code:     {
         name: 'CVV',
-        size: 3
+        size: 4
     }
 };
 
@@ -172,21 +169,21 @@ export const DEFAULT_STYLE = {
         'display': 'none'
     },
     '.card-icon': {
-        'width': '40px',
-        'height': '24px',
+        'width':          '40px',
+        'height':         '24px',
         'pointer-events': 'none',
-        'position': 'absolute',
-        'top': '1.6875rem', // calc(0.375rem + 0.0625rem + 1.25rem)
-        'left': '1.1875rem' // calc(0.375rem + 0.0625rem + 0.75rem)
+        'position':       'absolute',
+        'top':            '1.6875rem', // calc(0.375rem + 0.0625rem + 1.25rem)
+        'left':           '1.1875rem' // calc(0.375rem + 0.0625rem + 0.75rem)
     },
-    'input.number.display-icon': {
-        'padding-left':  'calc(1.2rem + 40px)' // calc(0.75rem + 40px + 0.375rem)' 
+    'input.card-field-number.display-icon': {
+        'padding-left': 'calc(1.2rem + 40px)' // calc(0.75rem + 40px + 0.375rem)' 
     },
-    'input.number.display-icon + .card-icon': {
-        'display':  'block'
+    'input.card-field-number.display-icon + .card-icon': {
+        'display': 'block'
     },
-    'input.number + .card-icon': {
-        'display':  'none'
+    'input.card-field-number + .card-icon': {
+        'display': 'none'
     }
 };
 
@@ -217,7 +214,9 @@ export const DEFAULT_STYLE_SINGLE_CARD = {
         'border-radius':  '0.25rem',
         'box-sizing':     'border-box',
         'display':        'flex',
-        'flex-direction': 'row'
+        'flex-direction': 'row',
+        'margin':         '0',
+        'padding':        '0'
     },
     '.focus': {
         'border-color': '#000000',
@@ -249,18 +248,18 @@ export const DEFAULT_STYLE_SINGLE_CARD = {
         'border':     'none',
         'box-shadow': 'none'
     },
-    'input.number': {
+    'input.card-field-number': {
         'flex':          '1',
         'min-width':     '4ch',
         'padding-right': '0.375rem'
     },
-    'input.expiry': {
+    'input.card-field-expiry': {
         'padding-left':  '0.375rem',
         'padding-right': '0.375rem',
         'text-align':    'center',
         'width':         '7ch'
     },
-    'input.cvv': {
+    'input.card-field-cvv': {
         'padding-left': '0.375rem',
         'text-align':   'center',
         'width':        '4ch'
@@ -294,4 +293,11 @@ export const DEFAULT_PLACEHOLDERS : CardPlaceholder = {
 
 export const VALID_EXTRA_FIELDS = [
     'billingAddress'
+];
+
+export const ALLOWED_ATTRIBUTES = [
+    "aria-invalid",
+    "aria-required",
+    "disabled",
+    "placeholder",
 ];

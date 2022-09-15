@@ -81,8 +81,7 @@ export type InputEvent = {|
 export type CardNumberChangeEvent = {|
     event : InputEvent,
     cardNumber : string,
-    cardMaskedNumber : string,
-    cardType : CardType
+    cardMaskedNumber : string
 |};
 
 export type CardExpiryChangeEvent = {|
