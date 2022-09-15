@@ -1,3 +1,9 @@
+## <small>5.0.237 (2022-09-14)</small>
+
+* Inline payment-fields (#1944) ([c380539](https://github.com/paypal/paypal-checkout-components/commit/c380539)), closes [#1944](https://github.com/paypal/paypal-checkout-components/issues/1944)
+
+
+
 ## <small>5.0.236 (2022-09-08)</small>
 
 * AcceleratedXO: Change experience name for merchant (#2002) ([6a2c6dd](https://github.com/paypal/paypal-checkout-components/commit/6a2c6dd)), closes [#2002](https://github.com/paypal/paypal-checkout-components/issues/2002)
