@@ -101,6 +101,7 @@ export function getOnComplete({ intent, onComplete, partnerAttributionID, onErro
                 .info('button_complete')
                 .track({
                     [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_COMPLETE,
+                    [FPTI_KEY.EVENT_NAME]:   FPTI_TRANSITION.CHECKOUT_COMPLETE,
                     [FPTI_KEY.CONTEXT_TYPE]: FPTI_CONTEXT_TYPE.ORDER_ID,
                     [FPTI_KEY.TOKEN]:        orderID,
                     [FPTI_KEY.CONTEXT_ID]:   orderID

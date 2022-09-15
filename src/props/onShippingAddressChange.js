@@ -14,7 +14,8 @@ import {
     type Query,
     type ON_SHIPPING_CHANGE_EVENT,
     ON_SHIPPING_CHANGE_PATHS,
-    SHIPPING_ADDRESS_ERROR_MESSAGES
+    SHIPPING_ADDRESS_ERROR_MESSAGES,
+    GENERIC_REJECT_ADDRESS_MESSAGE
 } from './onShippingChange';
 import { buildBreakdown, calculateTotalFromShippingBreakdownAmounts, convertQueriesToArray, updateOperationForShippingOptions } from './utils';
         
@@ -85,9 +86,16 @@ export function buildXOnShippingAddressChangeActions({ clientID, data, actions: 
     }
 
     const actions = {
-        reject: passedActions.reject || function reject() {
-            throw new Error(`Missing reject action callback`);
-        },
+        reject: passedActions.reject ?
+            (message) => {
+                if (Object.values(SHIPPING_ADDRESS_ERROR_MESSAGES).indexOf(message) === -1) {
+                    return passedActions.reject(GENERIC_REJECT_ADDRESS_MESSAGE);
+                } else {
+                    return passedActions.reject(message);
+                }
+            } : function reject() {
+                throw new Error(`Missing reject action callback`);
+            },
 
         updateTax: ({ tax }) => {
             breakdown = buildBreakdown({ breakdown, updatedAmounts: { tax_total: tax } });
@@ -205,6 +213,7 @@ export function getOnShippingAddressChange({ onShippingAddressChange, clientID }
                     .info('button_shipping_address_change')
                     .track({
                         [FPTI_KEY.TRANSITION]:                       FPTI_TRANSITION.CHECKOUT_SHIPPING_ADDRESS_CHANGE,
+                        [FPTI_KEY.EVENT_NAME]:                       FPTI_TRANSITION.CHECKOUT_SHIPPING_ADDRESS_CHANGE,
                         [FPTI_KEY.CONTEXT_TYPE]:                     FPTI_CONTEXT_TYPE.ORDER_ID,
                         [FPTI_KEY.TOKEN]:                            orderID,
                         [FPTI_KEY.CONTEXT_ID]:                       orderID,

@@ -292,6 +292,25 @@ export function setupMocks() {
                 }
             };
         },
+        PaymentFields: (props) => {
+            return {
+                render: () => {
+                    return ZalgoPromise.delay(50).then(() => {
+                        return props.onContinue();
+                    });
+                },
+                close: () => {
+                    return ZalgoPromise.delay(50).then(() => {
+                        if (props.onClose) {
+                            return props.onClose();
+                        }
+                    });
+                },
+                onError: (err) => {
+                    throw err;
+                }
+            };
+        },
         postRobot: {
             on:                () => ({ cancel: noop }),
             once:              () => cancelablePromise(ZalgoPromise.resolve()),
@@ -335,6 +354,7 @@ export function setupMocks() {
         onApprove:  mockAsyncProp(noop),
         onCancel:   mockAsyncProp(noop),
         onChange:   mockAsyncProp(noop),
+        onContinue: mockAsyncProp(noop),
         export:     mockAsyncProp(noop),
         onError:    mockAsyncProp((err) => {
             throw err;
@@ -378,6 +398,11 @@ export function setupMocks() {
     singleCardFieldContainer.id = 'card-fields-container';
     destroyElement(singleCardFieldContainer);
     body.appendChild(singleCardFieldContainer);
+
+    const paymentFieldsContainer = document.querySelector('#payment-fields-container') || document.createElement('div');
+    paymentFieldsContainer.id = 'payment-fields-container';
+    destroyElement(paymentFieldsContainer);
+    body.appendChild(paymentFieldsContainer);
 }
 
 setupMocks();
@@ -927,7 +952,6 @@ getRestfulCaptureOrderApiMock().listen();
 getRestfulAuthorizeOrderApiMock().listen();
 getRestfulPatchOrderApiMock().listen();
 getRestfulAuthorizationsCaptureApiMock().listen();
-
 
 navigator.sendBeacon = () => true;
 
@@ -1615,7 +1639,11 @@ export async function mockSetupButton(overrides? : Object = {}) : Promise<void> 
         firebaseConfig:                MOCK_FIREBASE_CONFIG,
         eligibility:                   {
             cardFields: false,
-            native:     false
+            native:     false,
+            inlinePaymentFields: {
+                inlineEligibleAPMs : [],
+                isInlineEnabled : false
+            }
         },
         sdkMeta: MOCK_SDK_META,
         ...overrides

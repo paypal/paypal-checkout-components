@@ -23,12 +23,6 @@ import type { ExpressRequest, ExpressResponse } from './types';
 const app = express();
 const PORT = process.env.PORT || 8003;
 
-const cache = {
-    // eslint-disable-next-line no-unused-vars
-    get: (key) => Promise.resolve(),
-    set: (key, value) => Promise.resolve(value)
-};
-
 const logger = {
     debug: noop,
     info:  noop,
@@ -230,13 +224,6 @@ const getMerchantID = () => {
 
 const getPersonalizationEnabled = () => true;
 
-const getInstanceLocationInformation = () => {
-    return {
-        cdnHostName:  'string',
-        paypalDomain: 'string'
-    };
-};
-
 const getSDKLocationInformation = () => Promise.resolve({
     sdkCDNRegistry: 'string',
     sdkActiveTag:   'string'
@@ -272,7 +259,6 @@ const defaultMiddleware = (req : ExpressRequest, res : ExpressResponse, next) =>
 
 
 const buttonMiddleware = getButtonMiddleware({
-    cache,
     logger,
     graphQL,
     getAccessToken,
@@ -280,58 +266,59 @@ const buttonMiddleware = getButtonMiddleware({
     content,
     tracking,
     getPersonalizationEnabled,
-    getInstanceLocationInformation,
     getSDKLocationInformation,
     // $FlowFixMe we don't use this locally
     sdkVersionManager: {},
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const menuMiddleware = getMenuMiddleware({
-    cache,
     logger,
-    getInstanceLocationInformation
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const nativePopupMiddleware = getNativePopupMiddleware({
-    cache,
     logger,
     graphQL,
     tracking,
     fundingSource: FUNDING.PAYPAL,
-    getInstanceLocationInformation
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const nativeFallbackMiddleware = getNativeFallbackMiddleware({
-    cache,
     logger,
     graphQL,
     tracking,
     fundingSource: FUNDING.PAYPAL,
-    getInstanceLocationInformation
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const qrCodeMiddleware = getQRCodeMiddleware({
-    cache,
     logger,
-    getInstanceLocationInformation
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const venmoPopupMiddleware = getNativePopupMiddleware({
-    cache,
     logger,
     graphQL,
     tracking,
     fundingSource: FUNDING.VENMO,
-    getInstanceLocationInformation
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const venmoFallbackMiddleware = getNativeFallbackMiddleware({
-    cache,
     logger,
     graphQL,
     tracking,
     fundingSource: FUNDING.VENMO,
-    getInstanceLocationInformation
+    // $FlowFixMe we don't use this locally
+    buttonsVersionManager: {},
 });
 
 const buttonsScriptMiddleware = webpackDevMiddleware(webpack(WEBPACK_CONFIG_BUTTONS_LOCAL_DEBUG), { serverSideRender: true });

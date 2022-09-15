@@ -222,6 +222,7 @@ export function getCreateOrder({ createOrder, intent, currency, merchantID, part
                 .track({
                     [FPTI_KEY.STATE]:              FPTI_STATE.BUTTON,
                     [FPTI_KEY.TRANSITION]:         FPTI_TRANSITION.RECEIVE_ORDER,
+                    [FPTI_KEY.EVENT_NAME]:         FPTI_TRANSITION.RECEIVE_ORDER,
                     [FPTI_KEY.CONTEXT_TYPE]:       FPTI_CONTEXT_TYPE.ORDER_ID,
                     [FPTI_KEY.CONTEXT_ID]:         orderID,
                     [FPTI_KEY.TOKEN]:              orderID,

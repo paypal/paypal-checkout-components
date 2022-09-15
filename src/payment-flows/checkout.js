@@ -1,14 +1,14 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError } from '@krakenjs/belter/src';
-import { FUNDING, FPTI_KEY } from '@paypal/sdk-constants/src';
+import { memoize, noop, supportsPopups, stringifyError, extendUrl, PopupOpenError, parseQuery } from '@krakenjs/belter/src';
+import { FUNDING, FPTI_KEY, APM_LIST } from '@paypal/sdk-constants/src';
 import { getParent, getTop, type CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 
 import type { ProxyWindow, ConnectOptions } from '../types';
 import { type CreateBillingAgreement, type CreateSubscription } from '../props';
 import { exchangeAccessTokenForAuthCode, getConnectURL, updateButtonClientConfig, getSmartWallet, loadFraudnet  } from '../api';
-import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE, APM_LIST } from '../constants';
+import { CONTEXT, TARGET_ELEMENT, BUYER_INTENT, FPTI_TRANSITION, FPTI_CONTEXT_TYPE } from '../constants';
 import { unresolvedPromise, getLogger, setBuyerAccessToken } from '../lib';
 import { openPopup } from '../ui';
 import { FUNDING_SKIP_LOGIN } from '../config';
@@ -27,6 +27,17 @@ export const CHECKOUT_APM_POPUP_DIMENSIONS = {
 
 let canRenderTop = false;
 let inline = false;
+let smokeHash = '';
+
+function getSmokeHash() : ZalgoPromise<string> {
+    return window.xprops.getPageUrl().then(pageUrl => {
+        if (pageUrl.indexOf('smokeHash') !== -1) {
+            return parseQuery(pageUrl.split('?')[1]).smokeHash
+        }
+
+        return '';
+    });
+}
 
 function getRenderWindow() : Object {
     const top = getTop(window);
@@ -51,6 +62,10 @@ function setupCheckout({ components } : SetupOptions) : ZalgoPromise<void> {
             canRenderTop = result;
         });
     }
+
+    getSmokeHash().then(hash => {
+        smokeHash = hash;
+    });
 
     return ZalgoPromise.hash(tasks).then(noop);
 }
@@ -112,7 +127,7 @@ function getContext({ win, isClick, merchantRequestedPopupsDisabled } : {| win :
     return CONTEXT.IFRAME;
 }
 
-function getDimensions(fundingSource : string) : {| width : number, height : number |} {
+export const getDimensions = (fundingSource : string) : {| width : number, height : number |} => {
     if (APM_LIST.indexOf(fundingSource) !== -1) {
         getLogger().info(`popup_dimensions_value_${ fundingSource }`).flush();
         return { width: CHECKOUT_APM_POPUP_DIMENSIONS.WIDTH, height: CHECKOUT_APM_POPUP_DIMENSIONS.HEIGHT };
@@ -153,6 +168,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
             clientAccessToken,
             venmoPayloadID,
             inlinexo: inline,
+            smokeHash,
 
             createAuthCode: () => {
                 return ZalgoPromise.try(() => {
@@ -313,6 +329,7 @@ function initCheckout({ props, components, serviceData, payment, config, restart
                     .info(`checkout_flow_error `, { err: stringifyError(err) })
                     .track({
                         [FPTI_KEY.TRANSITION]:   FPTI_TRANSITION.CHECKOUT_ERROR,
+                        [FPTI_KEY.EVENT_NAME]:   FPTI_TRANSITION.CHECKOUT_ERROR,
                         [FPTI_KEY.ERROR_DESC]:   stringifyError(err)
                     }).flush();
                 return onError(err);

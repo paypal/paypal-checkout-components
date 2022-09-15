@@ -20,8 +20,8 @@ import './card';
 import './inlinexo';
 import './native';
 import './native-qrcode';
-import './nativePopup';
 import './nativeFallback';
+import './nativePopup';
 import './payee';
 import './connect';
 import './smart-fields';
@@ -35,6 +35,7 @@ import './menu';
 import './props-utils';
 import './onShippingAddressChange';
 import './onShippingOptionsChange';
+import './payment-fields';
 
 beforeEach(() => {
     setupMocks();

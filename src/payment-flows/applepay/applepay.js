@@ -69,11 +69,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
         return clean.all();
     });
 
-    const validate = memoize(() => {
-        return ZalgoPromise.try(() => {
-            return onClick ? onClick({ fundingSource }) : true;
-        });
-    });
+
 
     function logApplePayEvent(event, payload) {
         const data = isJSON(payload) ? payload : {};
@@ -287,25 +283,6 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                 });
         };
 
-        const validatePromise = validate().then(valid => {
-            if (!valid) {
-                getLogger().info(`applepay_onclick_invalid`).track({
-                    [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
-                    [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.APPLEPAY_ON_CLICK_INVALID
-                }).flush();
-            }
-
-            return valid;
-        });
-
-        const orderPromise = validatePromise.then(valid => {
-            if (valid) {
-                return createOrder();
-            }
-
-            return unresolvedPromise();
-        });
-
         const setupApplePaySession = () => {
                 const requiredShippingContactFields = paymentRequest?.applepay?.requiredShippingContactFields || [];
 
@@ -346,6 +323,33 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
 
                     function validateMerchant({ validationURL } : {| validationURL : string |}) {
                         logApplePayEvent('validatemerchant', { validationURL });
+
+                        const validatePromise = ZalgoPromise.try(() => {
+                            return onClick ? onClick({ fundingSource })
+                                .then((valid) => {
+                                    if(!valid){
+                                        abort();
+                                    }
+                                    return valid
+                                }) : true;
+                            }).then(valid => {
+                                if (!valid) {
+                                    getLogger().info(`applepay_onclick_invalid`).track({
+                                        [FPTI_KEY.STATE]:       FPTI_STATE.BUTTON,
+                                        [FPTI_KEY.TRANSITION]:  FPTI_TRANSITION.APPLEPAY_ON_CLICK_INVALID
+                                    }).flush();
+                                }
+                    
+                                return valid;
+                            });
+                
+                        const orderPromise = validatePromise.then(valid => {
+                            if (valid) {
+                                return createOrder();
+                            }
+                
+                            return unresolvedPromise();
+                        });
 
                         orderPromise.then(orderID => {                
                             getDetailedOrderInfo(orderID, locale.country).then(order => {
@@ -434,7 +438,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     function shippingMethodSelected({ shippingMethod } : {| shippingMethod : ApplePayShippingMethod |}) {
                         logApplePayEvent('shippingmethodselected');
 
-                        orderPromise.then(orderID => {
+                        createOrder().then(orderID => {
                             // patch updated amount
                             onShippingChangeCallback<ApplePayShippingMethodUpdate>({ orderID, shippingContact: currentShippingContact, shippingMethod, callbackTrigger: SHIPPING_OPTION })
                                 .then(update => {
@@ -468,7 +472,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     function shippingContactSelected({ shippingContact } : {| shippingContact : ApplePayPaymentContact |}) {
                         logApplePayEvent('shippingcontactselected', shippingContact);
 
-                        orderPromise.then(orderID => {
+                        createOrder().then(orderID => {
                             // patch updated shipping contact information
                             onShippingChangeCallback<ApplePayShippingContactUpdate>({ orderID, shippingContact, shippingMethod: currentShippingMethod, callbackTrigger: SHIPPING_ADDRESS })
                                 .then(update => {
@@ -496,7 +500,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                             applePayPayment.billingContact.countryCode = applePayPayment.billingContact.countryCode.toUpperCase();
                         }
 
-                        orderPromise.then(orderID => {
+                        createOrder().then(orderID => {
                             // call graphQL mutation passing in token, billingContact and shippingContact
                             approveApplePayPayment(orderID, clientID, applePayPayment)
                                 .then(validatedPayment => {
@@ -525,7 +529,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                     }
 
                     function cancel() {
-                        logApplePayEvent('cancel');
+                        logApplePayEvent('oncancel');
 
                         if (onCancel) {
                             onCancel();
@@ -538,7 +542,7 @@ function initApplePay({ props, payment, serviceData } : InitOptions) : PaymentFl
                         addEventListener('shippingmethodselected', shippingMethodSelected),
                         addEventListener('shippingcontactselected', shippingContactSelected),
                         addEventListener('paymentauthorized', paymentAuthorized),
-                        addEventListener('cancel', cancel)
+                        addEventListener('oncancel', cancel)
                     ]).then(() => {
                         begin();
                     });

@@ -4,7 +4,7 @@ import { noop, stringifyError, isCrossSiteTrackingEnabled } from '@krakenjs/belt
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { FPTI_KEY } from '@paypal/sdk-constants/src';
 
-import { applepay, checkout, cardField, cardForm, native, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
+import { applepay, checkout, cardField, cardForm, paymentFields, native, vaultCapture, walletCapture, popupBridge, type Payment, type PaymentFlow } from '../payment-flows';
 import { getLogger, sendBeacon } from '../lib';
 import { AMPLITUDE_KEY, FPTI_TRANSITION, BUYER_INTENT, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY } from '../constants';
 import { updateButtonClientConfig } from '../api';
@@ -21,6 +21,7 @@ const PAYMENT_FLOWS : $ReadOnlyArray<PaymentFlow> = [
     walletCapture,
     cardField,
     cardForm,
+    paymentFields,
     popupBridge,
     applepay,
     native,
@@ -104,6 +105,7 @@ export function initiatePaymentFlow({ payment, serviceData, config, components, 
             })
             .track({
                 [FPTI_KEY.TRANSITION]:        FPTI_TRANSITION.BUTTON_CLICK,
+                [FPTI_KEY.EVENT_NAME]:        FPTI_TRANSITION.BUTTON_CLICK,
                 [FPTI_KEY.CHOSEN_FI_TYPE]:    instrumentType,
                 [FPTI_KEY.PAYMENT_FLOW]:      name,
                 [FPTI_KEY.IS_VAULT]:          instrumentType ? '1' : '0',
