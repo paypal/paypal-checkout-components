@@ -8,9 +8,11 @@ import type { CreateBillingAgreement, CreateSubscription } from '../props';
 import { BUTTON_LABEL, FPTI_CONTEXT_TYPE, FPTI_CUSTOM_KEY, ITEM_CATEGORY } from '../constants';
 import { getSupplementalOrderInfo } from '../api';
 import { getLogger, isEmailAddress } from '../lib';
+import { ORDER_VALIDATION_WHITELIST, SANDBOX_ORDER_VALIDATION_WHITELIST } from '../config';
 
 type OrderValidateOptions = {|
     env : $Values<typeof ENV>,
+    clientID : string,
     merchantID : $ReadOnlyArray<string>,
     intent : $Values<typeof INTENT>,
     currency : $Values<typeof CURRENCY>,
@@ -73,14 +75,24 @@ function isValidMerchantIDs(merchantIDs : $ReadOnlyArray<string>, payees : $Read
 type triggerIntegrationErrorOptions = {|
     error : string,
     message? : string,
+    clientID : string,
     orderID? : string,
+    env : $Values<typeof ENV>,
     loggerPayload? : {|
         [string] : ?(string | boolean)
     |},
     throwError? : boolean
 |};
 
-function triggerIntegrationError({ error, message = error, orderID, loggerPayload = {}, throwError = true } : triggerIntegrationErrorOptions) {
+function triggerIntegrationError({ env, error, message = error, clientID, orderID, loggerPayload = {}, throwError = true } : triggerIntegrationErrorOptions) {
+
+    const isSandbox = (env === ENV.SANDBOX);
+    const isWhitelisted = isSandbox
+        ? (clientID && SANDBOX_ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1)
+        : (clientID && ORDER_VALIDATION_WHITELIST.indexOf(clientID) !== -1);
+
+    const shouldThrow = (throwError && !isWhitelisted);
+
 
     getLogger()
         .warn(error, loggerPayload)
@@ -90,10 +102,11 @@ function triggerIntegrationError({ error, message = error, orderID, loggerPayloa
             [ FPTI_KEY.TOKEN ]:                        orderID,
             [ FPTI_KEY.CONTEXT_ID ]:                   orderID,
             [ FPTI_CUSTOM_KEY.INTEGRATION_ISSUE ]:     error,
+            [ FPTI_CUSTOM_KEY.INTEGRATION_WHITELIST ]: shouldThrow ? 'false' : 'true',
             [ FPTI_KEY.ERROR_DESC ]:                   message
         }).flush();
 
-    if (throwError) {
+    if (shouldThrow) {
         console.error(message);
         throw new Error(message);
     } else {
@@ -109,15 +122,16 @@ type ValidatePropsOptions = {|
     createSubscription : ?CreateSubscription
 |};
 
-export function validateProps({ intent, createBillingAgreement, createSubscription } : ValidatePropsOptions) {
+export function validateProps({ env, clientID, intent, createBillingAgreement, createSubscription } : ValidatePropsOptions) {
     const logger = getLogger();
 
     if (createBillingAgreement && intent !== INTENT.TOKENIZE) {
         triggerIntegrationError({
             error:         `smart_button_validation_error_expected_intent_tokenize`,
             message:       `Expected intent=${ INTENT.TOKENIZE } to be passed to SDK with createBillingAgreement, but got intent=${ intent }`,
+            env, clientID,
             loggerPayload: { intent },
-            throwError: false
+            throwError:    false
         });
     }
 
@@ -125,8 +139,9 @@ export function validateProps({ intent, createBillingAgreement, createSubscripti
         triggerIntegrationError({
             error:         `smart_button_validation_error_expected_intent_subscription`,
             message:       `Expected intent=${ INTENT.SUBSCRIPTION } to be passed to SDK with createSubscription, but got intent=${ intent }`,
+            env, clientID,
             loggerPayload: { intent },
-            throwError: false
+            throwError:    false
         });
     }
 
@@ -139,7 +154,7 @@ const VALIDATE_INTENTS = [
     INTENT.ORDER
 ];
 
-export function validateOrder(orderID : string, { env, merchantID, currency, intent, vault, buttonLabel } : OrderValidateOptions) : ZalgoPromise<void> {
+export function validateOrder(orderID : string, { env, clientID, merchantID, currency, intent, vault, buttonLabel } : OrderValidateOptions) : ZalgoPromise<void> {
     const logger = getLogger();
 
     // eslint-disable-next-line complexity
@@ -161,7 +176,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
                 error:         'smart_button_validation_error_incorrect_intent',
                 message:       `Expected intent from order api call to be ${ intent }, got ${ cartIntent }. Please ensure you are passing ${ SDK_QUERY_KEYS.INTENT }=${ initiationIntent || cartIntent } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
                 loggerPayload: { cartIntent, intent },
-                orderID
+                env, clientID, orderID
             });
         }
 
@@ -174,7 +189,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
                     error:         'smart_button_validation_error_incorrect_item_category',
                     message:       `Expected item category from order api call to be ${ category }, got ${ itemCategory }. Please ensure you are passing category=${ category } for all items in the order payload. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
                     loggerPayload: { itemCategory, category },
-                    orderID
+                    env, clientID, orderID
                 });
             }
         }
@@ -184,7 +199,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
                 error:         'smart_button_validation_error_incorrect_currency',
                 message:       `Expected currency from order api call to be ${ currency }, got ${ cartCurrency }. Please ensure you are passing ${ SDK_QUERY_KEYS.CURRENCY }=${ cartCurrency } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
                 loggerPayload: { cartCurrency, currency },
-                orderID
+                env, clientID, orderID
             });
         }
 
@@ -192,7 +207,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
             triggerIntegrationError({
                 error:   'smart_button_validation_error_no_merchant_id',
                 message: `Could not determine correct merchant id`,
-                orderID
+                env, clientID, orderID
             });
         }
 
@@ -200,8 +215,9 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
             triggerIntegrationError({
                 error:         `smart_button_validation_error_billing_${ cartAmount ? 'with' : 'without' }_purchase_no_vault`,
                 message:       `Expected ${ SDK_QUERY_KEYS.VAULT }=${ VAULT.TRUE.toString() } for a billing transaction`,
-                orderID,
-                loggerPayload: { cartBillingType, vault }
+                env, clientID, orderID,
+                loggerPayload: { cartBillingType, vault },
+                throwError:    false
             });
         }
 
@@ -209,8 +225,9 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
             triggerIntegrationError({
                 error:         `smart_button_validation_error_vault_passed_not_needed`,
                 message:       `Expected ${ SDK_QUERY_KEYS.VAULT }=${ VAULT.FALSE.toString() } for a non-billing, non-subscription transaction`,
-                orderID,
-                loggerPayload: { vault, cartBillingType }
+                env, clientID, orderID,
+                loggerPayload: { vault, cartBillingType },
+                throwError:    false
             });
         }
 
@@ -218,8 +235,9 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
             triggerIntegrationError({
                 error:         `smart_button_validation_error_billing_without_purchase_intent_tokenize_not_passed`,
                 message:       `Expected ${ SDK_QUERY_KEYS.INTENT }=${ INTENT.TOKENIZE } for a billing-without-purchase transaction`,
-                orderID,
-                loggerPayload: { vault, cartBillingType, cartAmount }
+                env, clientID, orderID,
+                loggerPayload: { vault, cartBillingType, cartAmount },
+                throwError:    false
             });
         }
 
@@ -228,7 +246,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
         if (!payees) {
             return triggerIntegrationError({
                 error:      'smart_button_validation_error_supplemental_order_missing_payees',
-                orderID,
+                env, clientID, orderID,
                 throwError: false
             });
         }
@@ -236,7 +254,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
         if (!payees.length) {
             return triggerIntegrationError({
                 error:      'smart_button_validation_error_supplemental_order_no_payees',
-                orderID,
+                env, clientID, orderID,
                 throwError: false
             });
         }
@@ -249,9 +267,9 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
             if (!payee.merchantId && (!payee.email || !payee.email.stringValue)) {
                 return triggerIntegrationError({
                     error:         'smart_button_validation_error_supplemental_order_missing_values',
-                    orderID,
+                    env, clientID, orderID,
                     loggerPayload: { payees: JSON.stringify(payees) },
-                    throwError: false
+                    throwError:    false
                 });
             }
 
@@ -281,7 +299,7 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
                 error:         'smart_button_validation_error_invalid_payee_state',
                 message:       `Invalid payee state: ${ JSON.stringify(uniquePayees) }`,
                 loggerPayload: { uniquePayees: JSON.stringify(uniquePayees) },
-                orderID
+                env, clientID, orderID
             });
 
             throw new Error('Payees Incorrect');
@@ -297,14 +315,13 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
                     triggerIntegrationError({
                         error:      'smart_button_validation_error_payee_no_match',
                         message:    `Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue) ? uniquePayees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
-                        orderID,
-                        throwError: true
+                        env, clientID, orderID
                     });
                 } else {
                     triggerIntegrationError({
                         error:      'smart_button_validation_error_payee_no_match',
                         message:    `Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=* to the sdk url and ${ SDK_SETTINGS.MERCHANT_ID }="${ payeesStr }" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
-                        orderID
+                        env, clientID, orderID
                     });
                 }
             }
@@ -322,14 +339,14 @@ export function validateOrder(orderID : string, { env, merchantID, currency, int
                     triggerIntegrationError({
                         error:      'smart_button_validation_error_payee_no_match',
                         message:    `Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ payeesStr } or ${ SDK_QUERY_KEYS.MERCHANT_ID }=${ (uniquePayees[0] && uniquePayees[0].email && uniquePayees[0].email.stringValue) ? uniquePayees[0].email.stringValue : 'payee@merchant.com' } to the sdk url. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
-                        orderID,
+                        env, clientID, orderID,
                         throwError: false
                     });
                 } else {
                     triggerIntegrationError({
                         error:      'smart_button_validation_error_payee_no_match',
                         message:    `Payee(s) passed in transaction does not match expected merchant id. Please ensure you are passing ${ SDK_QUERY_KEYS.MERCHANT_ID }=* to the sdk url and ${ SDK_SETTINGS.MERCHANT_ID }="${ payeesStr }" in the sdk script tag. https://developer.paypal.com/docs/checkout/reference/customize-sdk/`,
-                        orderID
+                        env, clientID, orderID
                     });
                 }
             }
