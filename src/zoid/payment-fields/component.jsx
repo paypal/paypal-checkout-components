@@ -122,6 +122,32 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                     required: false
                 },
 
+                onError: {
+                    type:     'function',
+                    required: false
+                },
+
+                onContinue: {
+                    type:     'function',
+                    required: false
+                },
+
+                onClose: {
+                    type:     'function',
+                    required: false
+                },
+
+                showActionButtons: {
+                    type:       'boolean',
+                    queryParam: true,
+                    required:   false
+                },
+
+                onFieldsClose: {
+                    type:     'function',
+                    required: false
+                },
+
                 buyerCountry: {
                     type:       'string',
                     queryParam: true,

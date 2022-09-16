@@ -8,6 +8,7 @@ import { allowIframe as _allowIframe } from '../lib';
 import { getCheckoutComponent, type CheckoutComponent } from '../zoid/checkout';
 import { getButtonsComponent, type ButtonsComponent } from '../zoid/buttons';
 import { getCardFormComponent, type CardFormComponent } from '../zoid/card-form';
+import { getPaymentFieldsComponent, type PaymentFieldsComponent } from '../zoid/payment-fields';
 import { getMenuComponent, type MenuComponent } from '../zoid/menu';
 import { getInstallmentsComponent, type InstallmentsComponent } from '../zoid/installments';
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
@@ -30,6 +31,10 @@ export const Checkout : LazyProtectedExport<CheckoutComponent> = {
 
 export const CardForm : LazyProtectedExport<CardFormComponent> = {
     __get__: () => protectedExport(getCardFormComponent())
+};
+
+export const PaymentFields : LazyProtectedExport<PaymentFieldsComponent> = {
+    __get__: () => protectedExport(getPaymentFieldsComponent())
 };
 
 export const Menu : LazyProtectedExport<MenuComponent> = {
