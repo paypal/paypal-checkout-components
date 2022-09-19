@@ -1,0 +1,8 @@
+{
+  "PROJECT_TYPE": "front-tier",
+  "web": {
+    "projectName": "smart-payment-buttons",
+    "staticDirectory": "cdn",
+    "staticNamespace": "smart-payment-buttons"
+  }
+}

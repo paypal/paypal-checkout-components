@@ -12,23 +12,31 @@ jobs:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+<<<<<<< HEAD
         with:
           fetch-depth: 0
 
       - name: 🤝 Set Node version from .nvmrc
         run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
+=======
+>>>>>>> upstream/Unbranded-Multi-Card-Fields
 
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
+<<<<<<< HEAD
           node-version: ${{ env.NVMRC }}
           registry-url: "https://registry.npmjs.org"
+=======
+          node-version: "16"
+>>>>>>> upstream/Unbranded-Multi-Card-Fields
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
+<<<<<<< HEAD
       - name: ▶️ Run Lint
         run: npm run lint
 
@@ -64,3 +72,19 @@ jobs:
         env:
           BUNDLEMON_PROJECT_ID: 6166e8ee491d1e00090fee72
           CI_COMMIT_SHA: ${{github.event.pull_request.head.sha || github.sha}}
+=======
+      - name: ▶️ Lint
+        run: npm run lint
+
+      - name: ▶️ Typecheck
+        run: npm run typecheck
+
+      - name: ▶️ Karma & Jest
+        run: npm run test
+
+      - name: ▶️ Build
+        run: npm run build
+
+      - name: ⬆️ Upload coverage report
+        uses: codecov/codecov-action@v3
+>>>>>>> upstream/Unbranded-Multi-Card-Fields
