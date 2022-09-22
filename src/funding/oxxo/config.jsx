@@ -29,7 +29,7 @@ export function getOxxoConfig() : FundingSourceConfig {
 
             const apmLogo = (
                 <Fragment>
-                    { logo }<Space /><Text animate optional>OXXO Direct</Text>
+                    { logo }<Space /><Text animate optional>OXXO</Text>
                 </Fragment>
             );
 
