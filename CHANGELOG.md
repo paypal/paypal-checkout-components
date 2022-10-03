@@ -1,3 +1,9 @@
+## <small>5.0.238 (2022-10-03)</small>
+
+* Update APM buttons with new default colors (#1989) ([82777ad](https://github.com/paypal/paypal-checkout-components/commit/82777ad)), closes [#1989](https://github.com/paypal/paypal-checkout-components/issues/1989)
+
+
+
 ## <small>5.0.237 (2022-09-14)</small>
 
 * Inline payment-fields (#1944) ([c380539](https://github.com/paypal/paypal-checkout-components/commit/c380539)), closes [#1944](https://github.com/paypal/paypal-checkout-components/issues/1944)
