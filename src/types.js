@@ -10,7 +10,8 @@ export type WalletInstrument = {|
     tokenID? : string,
     vendor? : $Values<typeof CARD>,
     oneClick : boolean,
-    branded : boolean
+    branded : boolean,
+    secondaryInstruments : { type: string, label: string, instrumentID: string }
 |};
 
 export type WalletPaymentType = {|
