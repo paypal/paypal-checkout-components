@@ -306,8 +306,14 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         : null
                 }
                 {
-                    !instrument?.secondaryInstruments[0]
+                    instrument?.secondaryInstruments?.[0]
                         ? (
+                            <div class='balance'>
+                                <Text>Balance &</Text>
+                                <Space />
+                            </div>
+                        )
+                        : (
                             <div class='pay-label' optional={ 2 }>
                                 <Space />
                                 {
@@ -318,21 +324,6 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                                 <Space />
                             </div>
                         )
-                        : null
-                }
-                {
-                    instrument?.secondaryInstruments[0]
-                        ? (
-                            <div class='balance'>
-                                {
-                                    (instrument?.secondaryInstruments)
-                                        ? <Text>Balance &</Text>
-                                        : null
-                                }
-                                <Space />
-                            </div>
-                        )
-                        : null
                 }
                 <div class='logo' optional={ 1 }>
                     {
