@@ -320,6 +320,20 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         )
                         : null
                 }
+                {
+                    instrument?.secondaryInstruments
+                        ? (
+                            <div class='balance'>
+                                {
+                                    (instrument?.secondaryInstruments)
+                                        ? <Text>Balance &</Text>
+                                        : null
+                                }
+                                <Space />
+                            </div>
+                        )
+                        : null
+                }
                 <div class='logo' optional={ 1 }>
                     {
                         (instrument && logo)
