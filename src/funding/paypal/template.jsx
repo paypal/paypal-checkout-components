@@ -305,16 +305,21 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         )
                         : null
                 }
-
-                <div class='pay-label' optional={ 2 }>
-                    <Space />
-                    {
-                        (instrument && content)
-                            ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
-                            : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
-                    }
-                    <Space />
-                </div>
+                {
+                    !instrument?.secondaryInstruments
+                        ? (
+                            <div class='pay-label' optional={ 2 }>
+                                <Space />
+                                {
+                                    (instrument && content)
+                                        ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
+                                        : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
+                                }
+                                <Space />
+                            </div>
+                        )
+                        : null
+                }
                 <div class='logo' optional={ 1 }>
                     {
                         (instrument && logo)
