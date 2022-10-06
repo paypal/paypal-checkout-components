@@ -235,7 +235,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, vault, textColor, fundingSource } = opts;
+    const { logoColor, instrument, content, commit, vault, textColor, fundingSource, showPayLabel } = opts;
 
     if (instrument && !instrument.type) {
         return WalletLabelOld(opts);
@@ -306,9 +306,8 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         : null
                 }
                 {
-                    instrument
-                        ? null
-                        : (
+                    showPayLabel
+                        ? (
                             <div class='pay-label' optional={ 2 }>
                                 <Space />
                                 {
@@ -319,6 +318,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                                 <Space />
                             </div>
                         )
+                        : null
                 }
                 {
                     instrument?.secondaryInstruments?.[0]

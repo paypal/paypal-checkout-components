@@ -41,11 +41,12 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    experience? : string
+    experience? : string,
+    showPayLabel : boolean
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience, showPayLabel } : IndividualButtonProps) : ElementNode {
     
     const { custom, layout, shape } = style;
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label;
@@ -189,6 +190,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 vault={ vault }
                 textColor={ textColor }
                 fundingSource={ fundingSource }
+                showPayLabel={ showPayLabel }
             />
         );
 
