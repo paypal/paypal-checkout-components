@@ -292,6 +292,9 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         attrs[ATTRIBUTE.PAY_NOW] = true;
     }
 
+    let logoClass;
+    if (showPayLabel) logoClass = 'logo';
+
     return (
         <Style css={ css }>
             <div class='wallet-label-new' { ...attrs }>
@@ -330,7 +333,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         )
                         : null
                 }
-                <div class='logo' optional={ 1 }>
+                <div class={ logoClass } optional={ 1 }>
                     {
                         (instrument && logo)
                             ? logo
