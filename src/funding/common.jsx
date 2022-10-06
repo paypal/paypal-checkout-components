@@ -81,7 +81,8 @@ export type WalletLabelOptions = {|
     vault : boolean,
     nonce? : ?string,
     textColor : $Values<typeof TEXT_COLOR>,
-    fundingSource : $Values<typeof FUNDING>
+    fundingSource : $Values<typeof FUNDING>,
+    showPayLabel : boolean
 |};
 
 export type TagOptions = {|
