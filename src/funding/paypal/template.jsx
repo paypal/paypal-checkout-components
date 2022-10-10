@@ -292,8 +292,8 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         attrs[ATTRIBUTE.PAY_NOW] = true;
     }
 
-    let logoClass;
-    if (showPayLabel) logoClass = 'logo';
+    const logoMargin = showPayLabel ? "logo" : "";
+    const centerDiv = showPayLabel ? "" : "center-div";
 
     return (
         <Style css={ css }>
@@ -324,30 +324,34 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                         : null
                 }
                 {
-                    instrument?.secondaryInstruments?.[0]
-                        ? (
-                            <div class='balance'>
-                                <Text>Balance &</Text>
-                                <Space />
-                            </div>
-                        )
-                        : null
+                    <div class={ `${centerDiv}` }>
+                        {
+                            instrument?.secondaryInstruments?.[0]
+                                ? (
+                                    <div class="balance">
+                                        <Text>Balance &</Text>
+                                        <Space />
+                                    </div>
+                                )
+                                : null
+                        }
+                        <div class={ `${ logoMargin }` } optional={ 1 }>
+                            {
+                                (instrument && logo)
+                                    ? logo
+                                    : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
+                            }
+                        </div>
+                        <div class="label">
+                            <Space />
+                            {
+                                (instrument && label)
+                                    ? <Text>{ label }</Text>
+                                    : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
+                            }
+                        </div>
+                    </div>
                 }
-                <div class={ logoClass } optional={ 1 }>
-                    {
-                        (instrument && logo)
-                            ? logo
-                            : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
-                    }
-                </div>
-                <div class='label'>
-                    <Space />
-                    {
-                        (instrument && label)
-                            ? <Text>{ label }</Text>
-                            : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
-                    }
-                </div>
             </div>
         </Style>
     );
