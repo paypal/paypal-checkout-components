@@ -234,7 +234,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     );
 }
 
-function ShowPayLabel(opts) {
+function ShowPayLabel(opts) : ?ChildType {
     const {instrument, content, payNow, textColor, logo, label } = opts;
 
     return (
@@ -267,7 +267,7 @@ function ShowPayLabel(opts) {
     );
 }
 
-function NoPayLabel(opts) {
+function NoPayLabel(opts) : ?ChildType {
     const { instrument, textColor, logo, label, content } = opts;
 
     return (
@@ -276,7 +276,7 @@ function NoPayLabel(opts) {
                 instrument?.secondaryInstruments?.[0]
                     ? (
                         <div class='balance'>
-                            <Text>{ content.balance } &</Text>
+                            <Text>{ content?.balance } &</Text>
                             <Space />
                         </div>
                     )
