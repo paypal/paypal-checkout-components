@@ -268,7 +268,7 @@ function ShowPayLabel(opts) {
 }
 
 function NoPayLabel(opts) {
-    const { instrument, textColor, logo, label } = opts;
+    const { instrument, textColor, logo, label, content } = opts;
 
     return (
         <div class='no-pay-label'>
@@ -276,7 +276,7 @@ function NoPayLabel(opts) {
                 instrument?.secondaryInstruments?.[0]
                     ? (
                         <div class='balance'>
-                            <Text>Balance &</Text>
+                            <Text>{ content.balance } &</Text>
                             <Space />
                         </div>
                     )
@@ -387,6 +387,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                             textColor={ textColor }
                             logo={ logo }
                             label={ label }
+                            content={ content }
                         />
                 }
             </div>
