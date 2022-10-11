@@ -234,6 +234,73 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     );
 }
 
+function ShowPayLabel(opts) {
+    const {instrument, content, payNow, textColor, logo, label } = opts;
+
+    return (
+        <div class='show-pay-label'>
+            <div class='pay-label' optional={ 2 }>
+                <Space />
+                {
+                    (instrument && content)
+                        ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
+                        : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
+                }
+                <Space />
+            </div>
+            <div class='logo' optional={ 1 }>
+                {
+                    (instrument && logo)
+                        ? logo
+                        : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
+                }
+            </div>
+            <div class='label'>
+                <Space />
+                {
+                    (instrument && label)
+                        ? <Text>{ label }</Text>
+                        : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
+                }
+            </div>
+        </div>
+    );
+}
+
+function NoPayLabel(opts) {
+    const { instrument, textColor, logo, label } = opts;
+
+    return (
+        <div class='no-pay-label'>
+            {
+                instrument?.secondaryInstruments?.[0]
+                    ? (
+                        <div class='balance'>
+                            <Text>Balance &</Text>
+                            <Space />
+                        </div>
+                    )
+                    : null
+            }
+            <div optional={ 1 }>
+                {
+                    (instrument && logo)
+                        ? logo
+                        : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
+                }
+            </div>
+            <div class='label'>
+                <Space />
+                {
+                    (instrument && label)
+                        ? <Text>{ label }</Text>
+                        : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
+                }
+            </div>
+        </div>
+    );
+}
+
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     const { logoColor, instrument, content, commit, vault, textColor, fundingSource, showPayLabel } = opts;
 
@@ -292,9 +359,6 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         attrs[ATTRIBUTE.PAY_NOW] = true;
     }
 
-    const logoMargin = showPayLabel ? "logo" : "";
-    const centerDiv = showPayLabel ? "" : "center-div";
-
     return (
         <Style css={ css }>
             <div class='wallet-label-new' { ...attrs }>
@@ -310,47 +374,20 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                 }
                 {
                     showPayLabel
-                        ? (
-                            <div class='pay-label' optional={ 2 }>
-                                <Space />
-                                {
-                                    (instrument && content)
-                                        ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
-                                        : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
-                                }
-                                <Space />
-                            </div>
-                        )
-                        : null
-                }
-                {
-                    <div class={ `${centerDiv}` }>
-                        {
-                            instrument?.secondaryInstruments?.[0]
-                                ? (
-                                    <div class="balance">
-                                        <Text>Balance &</Text>
-                                        <Space />
-                                    </div>
-                                )
-                                : null
-                        }
-                        <div class={ `${ logoMargin }` } optional={ 1 }>
-                            {
-                                (instrument && logo)
-                                    ? logo
-                                    : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
-                            }
-                        </div>
-                        <div class="label">
-                            <Space />
-                            {
-                                (instrument && label)
-                                    ? <Text>{ label }</Text>
-                                    : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
-                            }
-                        </div>
-                    </div>
+                        ? <ShowPayLabel
+                            instrument={ instrument }
+                            content={ content }
+                            payNow={ payNow }
+                            textColor={ textColor }
+                            logo={ logo }
+                            label={ label }
+                        />
+                        : <NoPayLabel
+                            instrument={ instrument }
+                            textColor={ textColor }
+                            logo={ logo }
+                            label={ label }
+                        />
                 }
             </div>
         </Style>
