@@ -282,21 +282,33 @@ function NoPayLabel(opts) : ?ChildType {
                     )
                     : null
             }
-            <div optional={ 1 }>
-                {
-                    (instrument && logo)
-                        ? logo
-                        : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
-                }
-            </div>
-            <div class='label'>
-                <Space />
-                {
-                    (instrument && label)
-                        ? <Text>{ label }</Text>
-                        : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
-                }
-            </div>
+            {
+                (instrument?.type === "BALANCE")
+                    ? (
+                        <div class='paypal-balance'>
+                            <Text>{ content?.payPalBalance }</Text>
+                        </div>
+                    )
+                    : (
+                        <div class='no-paypal-balance'>
+                            <div class='fi-logo' optional={ 1 }>
+                                {
+                                    (instrument && logo)
+                                        ? logo
+                                        : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
+                                }
+                            </div>
+                            <div class='label'>
+                                <Space />
+                                {
+                                    (instrument && label)
+                                        ? <Text>{ label }</Text>
+                                        : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
+                                }
+                            </div>
+                        </div>
+                    )
+            }
         </div>
     );
 }
