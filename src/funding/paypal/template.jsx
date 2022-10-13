@@ -283,7 +283,7 @@ function NoPayLabel(opts) : ?ChildType {
                     : null
             }
             {
-                (instrument?.type === "BALANCE")
+                (instrument?.type === "balance")
                     ? (
                         <div class='paypal-balance'>
                             <Text>{ content?.payPalBalance }</Text>
