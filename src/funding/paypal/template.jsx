@@ -335,14 +335,14 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
     }
 
     if (instrument) {
-        if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
+        if ((instrument.type === WALLET_INSTRUMENT.CARD || WALLET_INSTRUMENT.CARD_BALANCE) && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
                 : <GlyphCard logoColor={ logoColor } />;
 
             label = instrument.label.replace('••••', '••');
 
-        } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
+        } else if ((instrument.type === WALLET_INSTRUMENT.BANK || WALLET_INSTRUMENT.BANK_BALANCE) && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
                 : <GlyphBank logoColor={ logoColor } />;
