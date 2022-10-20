@@ -111,5 +111,11 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     applepay: {
         eligible: true
+    },
+    satispay: {
+        eligible: false
+    },
+    alipay: {
+        eligible: false
     }
 };

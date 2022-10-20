@@ -10,6 +10,8 @@ export function getPayuConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_FUNDING_CONFIG,
 
+        automatic: false,
+
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],

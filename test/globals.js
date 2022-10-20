@@ -111,6 +111,12 @@ const fundingEligibility = {
     },
     itau: {
         eligible: false
+    },
+    satispay: {
+        eligible: false
+    },
+    alipay: {
+        eligible: false
     }
 };
 
