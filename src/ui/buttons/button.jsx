@@ -220,11 +220,12 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             <div
                 role='link'
                 { ...{
-                    [ ATTRIBUTE.BUTTON ]:            true,
-                    [ ATTRIBUTE.FUNDING_SOURCE ]:    fundingSource,
-                    [ ATTRIBUTE.PAYMENT_METHOD_ID ]: instrument ? instrument.tokenID : null,
-                    [ ATTRIBUTE.INSTRUMENT_ID ]:     instrument ? instrument.instrumentID : null,
-                    [ ATTRIBUTE.INSTRUMENT_TYPE ]:   instrument ? instrument.type : null
+                    [ ATTRIBUTE.BUTTON ]:                    true,
+                    [ ATTRIBUTE.FUNDING_SOURCE ]:            fundingSource,
+                    [ ATTRIBUTE.PAYMENT_METHOD_ID ]:         instrument ? instrument.tokenID : null,
+                    [ ATTRIBUTE.INSTRUMENT_ID ]:             instrument ? instrument.instrumentID : null,
+                    [ ATTRIBUTE.INSTRUMENT_TYPE ]:           instrument ? instrument.type : null,
+                    [ ATTRIBUTE.SECONDARY_INSTRUMENT_TYPE ]: instrument?.secondaryInstruments ? instrument.secondaryInstruments[0].type : null
                 } }
                 class={ [
                     CLASS.BUTTON,
