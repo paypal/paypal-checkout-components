@@ -17,7 +17,7 @@ export type WalletInstrument = {|
     vendor? : $Values<typeof CARD>,
     oneClick : boolean,
     branded : boolean,
-    secondaryInstruments? : $ReadOnlyArray<SecondaryInstruments>
+    secondaryInstruments? : SecondaryInstruments
 |};
 
 export type WalletPaymentType = {|
