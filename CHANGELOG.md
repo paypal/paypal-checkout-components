@@ -1,3 +1,9 @@
+## <small>5.0.241 (2022-10-26)</small>
+
+* chore(release): 5.0.240 🎉 ([1b80daf](https://github.com/paypal/paypal-checkout-components/commit/1b80daf))
+
+
+
 ## <small>5.0.240 (2022-10-26)</small>
 
 * chore(release): 5.0.239 🎉 ([9c0c083](https://github.com/paypal/paypal-checkout-components/commit/9c0c083))
