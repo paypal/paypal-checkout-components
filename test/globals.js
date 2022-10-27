@@ -114,9 +114,6 @@ const fundingEligibility = {
     },
     satispay: {
         eligible: false
-    },
-    alipay: {
-        eligible: false
     }
 };
 

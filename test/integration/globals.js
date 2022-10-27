@@ -114,8 +114,5 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     satispay: {
         eligible: false
-    },
-    alipay: {
-        eligible: false
     }
 };

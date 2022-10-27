@@ -12,8 +12,6 @@ export function getWechatpayConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_APM_FUNDING_CONFIG,
 
-        automatic: false,
-
         shippingChange: false,
     
         layouts: [
