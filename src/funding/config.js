@@ -30,7 +30,6 @@ import { getBoletoConfig } from './boleto';
 import { getMaximaConfig } from './maxima';
 import { getMercadopagoConfig } from './mercadopago';
 import { getMultibancoConfig } from './multibanco';
-import { getAlipayConfig } from './alipay';
 import { getSatispayConfig } from './satispay';
 
 export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
