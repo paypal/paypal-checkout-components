@@ -2,7 +2,7 @@
 
 import { CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
-type SecondaryInstruments = {|
+export type SecondaryInstruments = {|
     type : string,
     label : string,
     instrumentID : string
