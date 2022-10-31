@@ -139,9 +139,6 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 },
                 setMessage: {
                     type: 'function'
-                },
-                getState: {
-                    type: 'function'
                 }
             },
 
