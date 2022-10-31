@@ -5,12 +5,12 @@ import { IdealLogo } from '@paypal/sdk-logos/src';
 import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 
 import { BUTTON_LAYOUT } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
+import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
 import { Text, Space } from '../../ui/text';
 
 export function getIdealConfig() : FundingSourceConfig {
     return {
-        ...DEFAULT_FUNDING_CONFIG,
+        ...DEFAULT_APM_FUNDING_CONFIG,
 
         shippingChange: false,
     
@@ -25,15 +25,15 @@ export function getIdealConfig() : FundingSourceConfig {
                 return logo;
             }
 
-            const idealLogo = (
+            const apmLogo = (
                 <Fragment>
-                    { logo }<Space /><Text>Online betalen</Text>
+                    { logo }<Space /><Text animate optional>iDEAL</Text>
                 </Fragment>
             );
 
             return (<BasicLabel
                 { ...opts }
-                logo={ idealLogo }
+                logo={ apmLogo }
             />);
         }
     };

@@ -218,3 +218,36 @@ export const DEFAULT_FUNDING_CONFIG : FundingSourceConfig = {
         return true;
     }
 };
+
+export const DEFAULT_APM_FUNDING_CONFIG : FundingSourceConfig = {
+
+    ...DEFAULT_FUNDING_CONFIG,
+
+    colors: [
+        BUTTON_COLOR.DEFAULT,
+        BUTTON_COLOR.SILVER,
+        BUTTON_COLOR.WHITE,
+        BUTTON_COLOR.BLACK
+    ],
+
+    logoColors: {
+        [ BUTTON_COLOR.DEFAULT ]:   LOGO_COLOR.DEFAULT,
+        [ BUTTON_COLOR.SILVER ]:    LOGO_COLOR.BLACK,
+        [ BUTTON_COLOR.WHITE ]:     LOGO_COLOR.BLACK,
+        [ BUTTON_COLOR.BLACK ]:     LOGO_COLOR.WHITE
+    },
+
+    textColors: {
+        [ BUTTON_COLOR.DEFAULT ]:   TEXT_COLOR.WHITE,
+        [ BUTTON_COLOR.BLACK ]:     TEXT_COLOR.WHITE,
+        [ BUTTON_COLOR.SILVER ]:    TEXT_COLOR.BLACK,
+        [ BUTTON_COLOR.WHITE ]:     TEXT_COLOR.BLACK
+    },
+
+    secondaryColors: {
+        [ DEFAULT ]:                BUTTON_COLOR.DEFAULT,
+        [ BUTTON_COLOR.SILVER ]:    BUTTON_COLOR.SILVER,
+        [ BUTTON_COLOR.WHITE ]:     BUTTON_COLOR.WHITE,
+        [ BUTTON_COLOR.BLACK ]:     BUTTON_COLOR.BLACK
+    }
+};
