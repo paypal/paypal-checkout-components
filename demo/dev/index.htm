@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 
+
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD"></script>
+    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=EUR"></script>
     <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
 </head>
 
+
 <body>
-    <style>
+<style>
         div.options, p {
             border: 1px solid lightblue;
             padding: 10px 20px;
@@ -18,8 +20,9 @@
         }
     </style>
 
-    <section>
-    
+
+<section>
+
     <div class="options">
         <form id="colors">
             <strong>Colors</strong><br/>
@@ -36,6 +39,7 @@
         </form>
     </div>
 
+
     <div class="options">
         <form id="widths">
             <strong>Widths</strong><br/>
@@ -48,21 +52,23 @@
             <input type="checkbox" id="width-220px" name="width" value="220px" />
             <label for="width-220px">220px</label>
             <input type="checkbox" id="width-150px" name="width" value="150px" />
-            <label for="width-150px">150px</label>        
+            <label for="width-150px">150px</label>
         </form>
     </div>
 
+
     <div class="options">
-        <form id="fis"> 
-        <strong>fis</strong><br/>
-        <input type="checkbox" id="fis-applepay" name="width" value="applepay" />
-        <label for="fis-applepay">Apple Pay</label>
-        <input type="checkbox" id="fis-venmo" name="width" value="venmo" />
-        <label for="fis-venmo">Venmo</label>
-        <input type="checkbox" id="fis-credit" name="width" value="credit" />
-        <label for="fis-credit">Credit</label>
-    </form>
+        <form id="fis">
+            <strong>fis</strong><br/>
+            <input type="checkbox" id="fis-applepay" name="width" value="applepay" />
+            <label for="fis-applepay">Apple Pay</label>
+            <input type="checkbox" id="fis-venmo" name="width" value="venmo" />
+            <label for="fis-venmo">Venmo</label>
+            <input type="checkbox" id="fis-credit" name="width" value="credit" />
+            <label for="fis-credit">Credit</label>
+        </form>
     </div>
+
 
     <div class="options">
         <form id="taglines">
@@ -74,6 +80,7 @@
         </form>
     </div>
 
+
     <div class="options">
         <form id="labels">
             <strong>Labels</strong><br/>
@@ -83,8 +90,9 @@
             <label for="labels-pay">pay</label>
             <input type="checkbox" id="labels-buynow" name="labels" value="buynow" />
             <label for="labels-buynow">buynow</label>
-    </form>
+        </form>
     </div>
+
 
     <div class="options">
         <form id="instruments">
@@ -100,8 +108,9 @@
         </form>
     </div>
 
+
     <div class="options">
-        <form id="shapes"> 
+        <form id="shapes">
             <strong>Shapes</strong><br/>
             <input type="checkbox" id="shapes-rect" name="width" value="rect" />
             <label for="shapes-rect">rect</label>
@@ -109,6 +118,7 @@
             <label for="shapes-pill">pill</label>
         </form>
     </div>
+
 
     <div class="options">
         <form id="experiences">
@@ -120,6 +130,7 @@
         </form>
     </div>
 
+
     <div class="options">
         <button onclick="toggleAll(true)"> Select All </button>
         <button onclick="toggleAll(false)"> Clear All </button>
@@ -127,9 +138,10 @@
             <strong>Generate Buttons</strong>
         </button>
     </div>
-    </section>
+</section>
 
-    <script>
+
+<script>
         let colors = [];
         let widths = [];
         let fis = [];
@@ -138,6 +150,44 @@
         let instruments = [];
         let shapes = [];
         let experiences = [];
+        let APM_FUNDING_SOURCES = [
+            constants.FUNDING.BANCONTACT,
+            constants.FUNDING.BLIK,
+            constants.FUNDING.BOLETO,
+            constants.FUNDING.EPS,
+            constants.FUNDING.GIROPAY,
+            constants.FUNDING.IDEAL,
+// <!--            constants.FUNDING.MAXIMA,-->
+            constants.FUNDING.MERCADOPAGO,
+            constants.FUNDING.MULTIBANCO,
+            constants.FUNDING.MYBANK,
+            constants.FUNDING.OXXO,
+            constants.FUNDING.P24,
+            constants.FUNDING.PAYU,
+            constants.FUNDING.SATISPAY,
+            constants.FUNDING.SOFORT,
+            constants.FUNDING.TRUSTLY,
+            constants.FUNDING.VERKKOPANKKI,
+            constants.FUNDING.WECHATPAY, 
+<!--            constants.FUNDING.ZIMPLER,-->
+        ];
+        let MARKS_FUNDING_SOURCES = [
+            constants.FUNDING.BANCONTACT,
+            constants.FUNDING.BLIK,
+            constants.FUNDING.BOLETO,
+            constants.FUNDING.EPS,
+            constants.FUNDING.GIROPAY,
+            constants.FUNDING.IDEAL,
+            constants.FUNDING.MERCADOPAGO,
+            constants.FUNDING.MULTIBANCO,
+            constants.FUNDING.MYBANK,
+            constants.FUNDING.OXXO,
+            constants.FUNDING.P24,
+            constants.FUNDING.SOFORT,
+            constants.FUNDING.TRUSTLY,
+            constants.FUNDING.VERKKOPANKKI,
+            constants.FUNDING.WECHATPAY
+        ];
         function generateButtons () {
             const currentButtons = document.querySelectorAll('p');
             if(currentButtons.length) {
@@ -145,6 +195,7 @@
                     el.parentNode.removeChild(el);
                 });
             }
+
 
             function loopForCheckedIntoArray(formId,arr) {
                 document.getElementById(formId)
@@ -156,6 +207,7 @@
                     });
             }
 
+
             loopForCheckedIntoArray('colors',colors);
             loopForCheckedIntoArray('widths',widths);
             loopForCheckedIntoArray('fis',fis);
@@ -165,31 +217,11 @@
             loopForCheckedIntoArray('shapes',shapes);
             loopForCheckedIntoArray('experiences',experiences);
 
-            const markOpts = [
-                {
-                    fundingEligibility: {
-                        applepay: {
-                            eligible: true
-                        },
-                        paypal: {
-                            eligible: true
-                        },
-                        venmo: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true,
-                            products: {
-                                payIn4: {
-                                    eligible: true
-                                }
-                            }
-                        }
-                    }
-                }
-            ];
+
+            const markOpts = [];
 
             const buttonOpts = [];
+
 
             for (const color of colors) {
                 const config = {
@@ -220,6 +252,7 @@
                     }
                 };
 
+
                 if (document.querySelector('#experiences-inline').checked) {
                     config.style.custom = {
                         label: 'Checkout'
@@ -230,8 +263,10 @@
                     };
                 }
 
+
                 buttonOpts.push(config);
             }
+
 
             for (const label of labels) {
                 buttonOpts.push({
@@ -263,6 +298,7 @@
                 });
             }
 
+
             for (const shape of shapes) {
                 buttonOpts.push({
                     style: {
@@ -288,6 +324,7 @@
                     }
                 });
             }
+
 
             for (const label of labels) {
                 buttonOpts.push({
@@ -315,6 +352,7 @@
                 });
             }
 
+
             for (const fi of fis) {
                 buttonOpts.push({
                     style: {
@@ -332,6 +370,7 @@
                 });
             }
 
+
             for (const tagline of taglines) {
                 buttonOpts.push({
                     style: {
@@ -348,6 +387,7 @@
                     }
                 });
             }
+
 
             for (const instrument of instruments) {
                 buttonOpts.push({
@@ -379,6 +419,7 @@
                     }
                 });
 
+
                 if (instrument !== 'credit') {
                     buttonOpts.push({
                         fundingSource: 'paypal',
@@ -406,7 +447,9 @@
                         }
                     });
 
+
                 }
+
 
                 if (instrument === 'credit') {
                     buttonOpts.push({
@@ -447,6 +490,7 @@
                         }
                     });
 
+
                     buttonOpts.push({
                         fundingEligibility: {
                             paypal: {
@@ -480,6 +524,7 @@
                             }
                         }
                     });
+
 
                     buttonOpts.push({
                         fundingSource: 'credit',
@@ -518,6 +563,7 @@
                 }
             }
 
+
             for (const instrument of instruments) {
                 buttonOpts.push({
                     style: {
@@ -548,7 +594,17 @@
                 });
             }
 
-            for (const fundingSource of Object.values(constants.FUNDING)) {
+
+            for (const fundingSource of Object.values(APM_FUNDING_SOURCES)) {
+                markOpts.push({
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
                 buttonOpts.push({
                     fundingSource,
                     fundingEligibility: {
@@ -557,6 +613,101 @@
                         }
                     }
                 });
+
+
+                buttonOpts.push({
+                    style: {
+                        color: 'silver'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        color: 'white'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        color: 'black'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        color: 'silver',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        color: 'white',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        color: 'black',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
 
                 buttonOpts.push({
                     style: {
@@ -569,27 +720,105 @@
                         }
                     }
                 });
-            }
 
-            for (opts of markOpts) {
-                const p = document.createElement('p');
-                document.body.appendChild(p);
-                // need to be able to override fundingEligibility when testing
-                ['applepay', 'paypal', 'card', 'credit'].forEach(fundingSource => {
-                    let mark = paypal.Marks({
-                        fundingEligibility: {
-                            [fundingSource]: {
-                                eligible: true
-                            }
-                        },
-                        fundingSource,
-                        ...opts
-                    });
 
-                    if (mark.isEligible()) {
-                        mark.render(p);
-                    } else {
-                        console.warn(`${ fundingSource } was not marks eligible.`);
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        color: 'silver'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        color: 'white'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        color: 'black'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        color: 'silver',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        color: 'white',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
+                    }
+                });
+
+
+                buttonOpts.push({
+                    style: {
+                        label: 'pay',
+                        color: 'black',
+                        shape: 'pill'
+                    },
+                    fundingSource,
+                    fundingEligibility: {
+                        [fundingSource]: {
+                            eligible: true
+                        }
                     }
                 });
             }
@@ -604,12 +833,15 @@
                 }
             }
 
+
             function renderButton (width) {
                 const button = paypal.Buttons(opts);
                 if (button.isEligible()) {
                     const p = document.createElement('p');
                     if (width) {
-                        p.style.minWidth = width; 
+                        p.style.minWidth = width;
+                    } else {
+                        p.style.minWidth = "320px";
                     }
                     document.body.appendChild(p);
                     button.render(p);
@@ -617,6 +849,24 @@
                     console.warn(`Not eligible`, opts)
                 }
             }
+
+<!--            for (opts of markOpts) {-->
+<!--                renderMark(opts);-->
+<!--            }-->
+
+
+<!--            function renderMark (opts) {-->
+<!--                const mark = paypal.Marks(opts);-->
+<!--                if (mark.isEligible()) {-->
+<!--                    const div = document.createElement('div');-->
+<!--                    document.body.appendChild(div);-->
+<!--                    document.body.appendChild(document.createElement('br'));-->
+<!--                    mark.render(div);-->
+<!--                } else {-->
+<!--                    console.warn(`Mark Not eligible`, opts)-->
+<!--                }-->
+<!--            }-->
+
 
             colors = [];
             widths = [];
@@ -627,17 +877,21 @@
             shapes = [];
             experiences = [];
         };
-       
+
+
 
         function toggleAll (bool) {
             document.querySelectorAll('input[type="checkbox"]')
-                .forEach(el=>{ 
+                .forEach(el=>{
                     el.checked=bool;
                 });
         }
 
-        
+
+
         generateButtons();
+
+
 
 
     </script>
