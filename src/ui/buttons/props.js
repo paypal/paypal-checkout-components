@@ -429,6 +429,7 @@ export type ButtonProps = {|
     remember : ($ReadOnlyArray<$Values<typeof FUNDING>>) => void,
     clientID : string,
     sessionID : string,
+    buttonLocation : string,
     buttonSessionID : string,
     onShippingChange : ?OnShippingChange,
     onShippingAddressChange : ?OnShippingAddressChange,
