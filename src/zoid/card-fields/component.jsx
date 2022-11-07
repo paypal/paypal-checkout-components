@@ -15,6 +15,7 @@ import { CARD, CURRENCY, INTENT, type FundingEligibilityType } from '@paypal/sdk
 import { getSessionID } from '../../lib';
 
 import { CardPrerender } from './prerender';
+import { string } from '../../../../paypal-smart-payment-buttons/src/config';
 
 const CARD_FIELD_TYPE = {
     SINGLE: 'single',
@@ -69,7 +70,8 @@ type CardFieldsExports = {|
     setAttribute : () => void,
     removeAttribute : () => void,
     addClass : () => void,
-    removeClass : () => void
+    removeClass : () => void,
+    getState : () => String
 |};
 
 type CardFieldsChildren = {|
@@ -349,7 +351,10 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
             focus: {
                 type: 'function'
-            }
+            },
+            getState: {
+                type: 'function'
+            },
         },
 
         eligible: () => {
