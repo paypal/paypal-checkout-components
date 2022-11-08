@@ -45,7 +45,7 @@ type IndividualButtonProps = {|
     showPayLabel : boolean
 |};
 
-export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
+export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience, showPayLabel } : IndividualButtonProps) : ElementNode {
     
     const { custom, layout, shape } = style;
