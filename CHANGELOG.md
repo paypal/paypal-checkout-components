@@ -1,3 +1,9 @@
+## <small>5.0.242 (2022-11-09)</small>
+
+* feat: add new prop for passing hostname to fraudnet (#2028) ([c244835](https://github.com/paypal/paypal-checkout-components/commit/c244835)), closes [#2028](https://github.com/paypal/paypal-checkout-components/issues/2028)
+
+
+
 ## <small>5.0.241 (2022-10-26)</small>
 
 * chore(release): 5.0.240 🎉 ([1b80daf](https://github.com/paypal/paypal-checkout-components/commit/1b80daf))
