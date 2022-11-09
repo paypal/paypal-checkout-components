@@ -91,11 +91,11 @@
     "@krakenjs/post-robot": "^11.0.0",
     "@krakenjs/zalgo-promise": "^2.0.0",
     "@krakenjs/zoid": "^10.0.0",
-    "@paypal/common-components": "^1.0.33",
-    "@paypal/funding-components": "^1.0.27",
+    "@paypal/common-components": "^1.0.34",
+    "@paypal/funding-components": "^1.0.30",
     "@paypal/sdk-client": "^4.0.166",
-    "@paypal/sdk-constants": "^1.0.123",
-    "@paypal/sdk-logos": "^2.0.0"
+    "@paypal/sdk-constants": "^1.0.127",
+    "@paypal/sdk-logos": "^2.0.2"
   },
   "lint-staged": {
     "*.sh": "prettier --write"

@@ -111,6 +111,9 @@ const fundingEligibility = {
     },
     itau: {
         eligible: false
+    },
+    satispay: {
+        eligible: false
     }
 };
 
