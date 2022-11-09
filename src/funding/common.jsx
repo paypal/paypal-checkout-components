@@ -120,7 +120,7 @@ export type FundingSourceConfig = {|
     logoColors : { [$Values<typeof BUTTON_COLOR>] : $Values<typeof LOGO_COLOR> },
     shapes : $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
     labelText? : string | (({| content : ?ContentType, fundingEligibility : ?FundingEligibilityType |}) => string),
-    showWalletMenu : ({| instrument : WalletInstrument |}) => boolean
+    showWalletMenu : ({| instrument : WalletInstrument, userIDToken : ?string |}) => boolean
 |};
 
 export function BasicLabel({ logo, label, period, locale: { lang } } : LabelOptions) : ChildType {

@@ -47,6 +47,8 @@ type ButtonConfig = {|
     button? : {|
         locale? : string,
         fundingSource? : string,
+        userIDToken? : string,
+        clientAccessToken? : string,
         style? : {|
             color? : string,
             size? : string,
@@ -887,6 +889,91 @@ buttonConfigs.push({
         }
     },
     button: {
+        fundingSource: 'card'
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc-123-456',
+                    vendor:  'visa',
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        card: {
+            eligible: true
+        }
+    },
+    button: {
+        userIDToken: "1234455",
+        fundingSource: 'card'
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa',
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        card: {
+            eligible: true
+        }
+    },
+    button: {
+        userIDToken: "1234455",
+        fundingSource: 'card'
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        card: {
+            instruments: [
+                {
+                    type:    'card',
+                    label:   'Visa x-1234',
+                    tokenID: 'abc123',
+                    vendor:  'visa',
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        card: {
+            eligible: true
+        }
+    },
+    button: {
+        clientAccessToken: "5544321",
+        userIDToken: "1234455",
         fundingSource: 'card'
     }
 });
