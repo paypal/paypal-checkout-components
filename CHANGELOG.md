@@ -1,3 +1,9 @@
+## <small>5.0.243 (2022-11-09)</small>
+
+* feat: add new funding source satispay (#2020) ([efe0df2](https://github.com/paypal/paypal-checkout-components/commit/efe0df2)), closes [#2020](https://github.com/paypal/paypal-checkout-components/issues/2020)
+
+
+
 ## <small>5.0.242 (2022-11-09)</small>
 
 * feat: add new prop for passing hostname to fraudnet (#2028) ([c244835](https://github.com/paypal/paypal-checkout-components/commit/c244835)), closes [#2028](https://github.com/paypal/paypal-checkout-components/issues/2028)
