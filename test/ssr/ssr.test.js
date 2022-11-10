@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint no-restricted-globals: 0, promise/no-native: 0 */
 
-import { getWebpackConfig } from '@krakenjs/grumbler-scripts/config/webpack.config';
+import { getWebpackConfig } from "@krakenjs/webpack-config-grumbler";
 import { html, ElementNode } from '@krakenjs/jsx-pragmatic';
 import { ERROR_CODE } from '@paypal/sdk-constants';
 
