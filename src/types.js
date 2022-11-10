@@ -2,11 +2,11 @@
 
 import { CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
-export type SecondaryInstruments = {|
+export type SecondaryInstruments = $ReadOnlyArray<{|
     type : string,
     label : string,
     instrumentID : string
-|};
+|}>;
 
 export type WalletInstrument = {|
     type? : $Values<typeof WALLET_INSTRUMENT>,
