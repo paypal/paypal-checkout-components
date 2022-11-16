@@ -1,3 +1,21 @@
+## <small>5.0.244 (2022-11-09)</small>
+
+* Disable vaulted card menu for token type (#2029) ([0b2c88a](https://github.com/paypal/paypal-checkout-components/commit/0b2c88a)), closes [#2029](https://github.com/paypal/paypal-checkout-components/issues/2029)
+
+
+
+## <small>5.0.243 (2022-11-09)</small>
+
+* feat: add new funding source satispay (#2020) ([efe0df2](https://github.com/paypal/paypal-checkout-components/commit/efe0df2)), closes [#2020](https://github.com/paypal/paypal-checkout-components/issues/2020)
+
+
+
+## <small>5.0.242 (2022-11-09)</small>
+
+* feat: add new prop for passing hostname to fraudnet (#2028) ([c244835](https://github.com/paypal/paypal-checkout-components/commit/c244835)), closes [#2028](https://github.com/paypal/paypal-checkout-components/issues/2028)
+
+
+
 ## <small>5.0.241 (2022-10-26)</small>
 
 * chore(release): 5.0.240 🎉 ([1b80daf](https://github.com/paypal/paypal-checkout-components/commit/1b80daf))

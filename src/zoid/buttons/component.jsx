@@ -386,6 +386,12 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                 queryParam: true
             },
 
+            buttonLocation: {
+                type: 'string',
+                value: () => window.location.hostname,
+                queryParam: false
+            },
+
             buttonSessionID: {
                 type:       'string',
                 value:      uniqueID,

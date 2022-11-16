@@ -1,26 +1,26 @@
 /* @flow */
 /** @jsx node */
 
-import { PayuLogo } from '@paypal/sdk-logos/src';
+import { SatispayLogo } from '@paypal/sdk-logos/src';
 import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 
 import { BUTTON_LAYOUT } from '../../constants';
-import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel} from '../common';
+import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
 import { Text, Space } from '../../ui/text';
 
-export function getPayuConfig() : FundingSourceConfig {
+export function getSatispayConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_APM_FUNDING_CONFIG,
 
         automatic: false,
 
+        shippingChange: false,
+    
         layouts: [
             BUTTON_LAYOUT.VERTICAL
         ],
-
-        shippingChange: false,
     
-        Logo: ({ logoColor, optional }) => PayuLogo({ logoColor, optional }),
+        Logo: ({ logoColor, optional }) => SatispayLogo({ logoColor, optional }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {
@@ -29,7 +29,7 @@ export function getPayuConfig() : FundingSourceConfig {
 
             const apmLogo = (
                 <Fragment>
-                    { logo }<Space /><Text animate optional>PayU</Text>
+                    { logo }<Space /><Text animate optional>Satispay</Text>
                 </Fragment>
             );
 

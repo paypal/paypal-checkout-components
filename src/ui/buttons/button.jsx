@@ -195,7 +195,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         isWallet = true;
     }
 
-    const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument });
+    const shouldShowWalletMenu = isWallet && instrument && showWalletMenu({ instrument, userIDToken });
 
     return (
         <div

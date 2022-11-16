@@ -170,10 +170,14 @@ export function getCardConfig() : FundingSourceConfig {
 
         WalletLabel,
 
-        showWalletMenu: ({ instrument }) => {
+        showWalletMenu: ({ instrument, userIDToken }) => {
             if (instrument.branded) {
                 return false;
             } else {
+                if (!instrument.tokenID?.match(/-/) && userIDToken) {
+                    return false
+                }
+
                 return true;
             }
         }
