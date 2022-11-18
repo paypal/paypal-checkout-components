@@ -298,7 +298,7 @@ function NoPayLabel(opts) : ?ChildType {
                                         : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
                                 }
                             </div>
-                            <div class='label'>
+                            <div class='fi-label'>
                                 <Space />
                                 {
                                     (instrument && label)
