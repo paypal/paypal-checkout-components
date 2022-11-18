@@ -74,6 +74,16 @@
 
     .no-pay-label {
         margin: auto;
+        display: flex;
+    }
+
+    .non-paypal-balance {
+        display: flex;
+    }
+
+    .balance, .fi-logo, .label {
+        display: flex;
+        align-items: center;
     }
 
     @media only screen and (max-width: 150px) {

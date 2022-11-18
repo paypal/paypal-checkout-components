@@ -290,7 +290,7 @@ function NoPayLabel(opts) : ?ChildType {
                         </div>
                     )
                     : (
-                        <div class='no-paypal-balance'>
+                        <div class='non-paypal-balance'>
                             <div class='fi-logo' optional={ 1 }>
                                 {
                                     (instrument && logo)
