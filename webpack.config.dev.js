@@ -36,7 +36,8 @@ const WEBPACK_CONFIG_DEV : WebpackConfig = getWebpackConfig({
                 __CHECKOUT__:   `/demo/dev/checkout.htm`,
                 __BUTTONS__:    `/demo/dev/button.htm`,
                 __MENU__:       `/demo/dev/menu.htm`,
-                __CARD_FIELD__: `/demo/dev/cardfield.htm`
+                __CARD_FIELD__: `/demo/dev/cardfield.htm`,
+                // Does this need a fraudnet test URI?
             }
         }
     }

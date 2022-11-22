@@ -32,7 +32,8 @@ module.exports = {
             __CARD_FIELDS__:    '/smart/card-fields',
             __CARD_FIELD__:     '/smart/card-field',
             __WALLET__:         '/smart/wallet',
-            __PAYMENT_FIELDS__: '/altpayfields'
+            __PAYMENT_FIELDS__: '/altpayfields',
+            __FRAUDNET__:       '/smart/fraudnet'
         }
     }
 };

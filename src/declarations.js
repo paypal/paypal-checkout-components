@@ -17,6 +17,7 @@ declare var __PAYPAL_CHECKOUT__ : {|
         __QRCODE__ : string,
         __WALLET__ : string,
         __PAYMENT_FIELDS__ : string
+        __FRAUDNET__ : string
     |}
 |};
 

@@ -128,7 +128,8 @@ function getTestGlobals(productionGlobals) {
                 __CARD_FIELDS__:    `/base/test/integration/windows/card-fields/index.htm`,
                 __CARD_FIELD__:     `/base/test/integration/windows/card-field/index.htm`,
                 __WALLET__:         `/base/test/integration/windows/wallet/index.htm`,
-                __PAYMENT_FIELDS__: `/base/test/integration/windows/paymentfields/index.htm`
+                __PAYMENT_FIELDS__: `/base/test/integration/windows/paymentfields/index.htm`,
+                __FRAUDNET__:       '/base/test/integration/windows/fraudnet/index.htm'
             }
         },
 
