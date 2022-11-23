@@ -62,7 +62,8 @@ export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourc
             [ FUNDING.MAXIMA ]:         (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.maxima !== 'undefined'         && __FUNDING_ELIGIBILITY__.maxima.eligible)) ? getMaximaConfig() : null,
             [ FUNDING.MERCADOPAGO ]:    (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.mercadopago !== 'undefined'    && __FUNDING_ELIGIBILITY__.mercadopago.eligible)) ? getMercadopagoConfig() : null,
             [ FUNDING.MULTIBANCO ]:     (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.multibanco !== 'undefined'     && __FUNDING_ELIGIBILITY__.multibanco.eligible)) ? getMultibancoConfig() : null,
-            [ FUNDING.SATISPAY ]:       (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.satispay !== 'undefined'       && __FUNDING_ELIGIBILITY__.satispay.eligible)) ? getSatispayConfig() : null
+            [ FUNDING.SATISPAY ]:       (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.satispay !== 'undefined'       && __FUNDING_ELIGIBILITY__.satispay.eligible)) ? getSatispayConfig() : null,
+            [ FUNDING.PAIDY ]:          (!__TREE_SHAKE__ || (typeof __FUNDING_ELIGIBILITY__.paidy !== 'undefined'          && __FUNDING_ELIGIBILITY__.paidy.eligible)) ? getPaidyConfig() : null
         };
     });
 }
