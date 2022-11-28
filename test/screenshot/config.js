@@ -45,6 +45,7 @@ type ButtonConfig = {|
     wallet? : Object,
     rememberedFunding? : $ReadOnlyArray<string>,
     button? : {|
+        showPayLabel? : boolean,
         locale? : string,
         fundingSource? : string,
         userIDToken? : string,
@@ -1234,5 +1235,41 @@ buttonConfigs.push({
                 }
             }
         }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    branded: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    oneClick: true,
+                    planID: 'aabbccdd11223344556677889900zzxx',
+                    secondaryInstruments: [{
+                        instrumentID: "BALANCEUSD",
+                        label: "PayPal Balance",
+                        type: "balance"
+                    }],
+                    tokenID: null,
+                    type:    'card',
+                    vendor:  'VISA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
     }
 });
