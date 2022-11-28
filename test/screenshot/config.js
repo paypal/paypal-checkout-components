@@ -1247,15 +1247,16 @@ buttonConfigs.push({
         paypal: {
             instruments: [
                 {
-                    branded: null,
+                    accessToken: null,
                     instrumentID: 'abc12345',
                     label: '••1234',
+                    logoUrl: null,
                     oneClick: true,
-                    planID: 'aabbccdd11223344556677889900zzxx',
+                    planID: null,
                     secondaryInstruments: [{
                         instrumentID: "BALANCEUSD",
                         label: "PayPal Balance",
-                        type: "balance"
+                        type: "BALANCE"
                     }],
                     tokenID: null,
                     type:    'card',
