@@ -1307,3 +1307,36 @@ buttonConfigs.push({
         showPayLabel: false
     }
 });
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: null,
+                    tokenID: null,
+                    type:    'card',
+                    vendor:  'VISA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
+    }
+});
