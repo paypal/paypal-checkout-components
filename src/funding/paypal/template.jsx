@@ -290,7 +290,7 @@ function ShowInstrumentsOnFile(opts) : ?ChildType {
                         </div>
                     )
                     : (
-                        <div class='no-paypal-balance'>
+                        <div class='fi-container'>
                             <div class='fi-logo' optional={ 1 }>
                                 {
                                     (instrument && logo)
