@@ -70,7 +70,7 @@ type CardFieldsExports = {|
     removeAttribute : () => ZalgoPromise<void>,
     addClass : () => ZalgoPromise<void>,
     removeClass : () => ZalgoPromise<void>,
-    getState : () => ZalgoPromise<void>
+    getState : () => ZalgoPromise<Object>
 |};
 
 type CardFieldsChildren = {|
