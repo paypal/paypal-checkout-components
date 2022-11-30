@@ -267,11 +267,11 @@ function ShowPayLabel(opts) : ?ChildType {
     );
 }
 
-function NoPayLabel(opts) : ?ChildType {
+function ShowInstrumentsOnFile(opts) : ?ChildType {
     const { instrument, textColor, logo, label, content } = opts;
 
     return (
-        <div class='no-pay-label'>
+        <div class='show-instruments-on-file'>
             {
                 instrument?.secondaryInstruments?.[0]
                     ? (
@@ -394,7 +394,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                             logo={ logo }
                             label={ label }
                         />
-                        : <NoPayLabel
+                        : <ShowInstrumentsOnFile
                             instrument={ instrument }
                             textColor={ textColor }
                             logo={ logo }
