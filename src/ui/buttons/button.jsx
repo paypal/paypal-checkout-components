@@ -45,7 +45,7 @@ type IndividualButtonProps = {|
     showPayLabel : boolean
 |};
 
-export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, vault,
+export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience, showPayLabel } : IndividualButtonProps) : ElementNode {
     
     const { custom, layout, shape } = style;
@@ -175,7 +175,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     if (
         WalletLabel &&
-        !showPayLabel &&
+        (!showPayLabel || flow === BUTTON_FLOW.PURCHASE) &&
         (instrument || (__WEB__ && userIDToken && (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.VENMO)))
     ) {
         labelNode = (

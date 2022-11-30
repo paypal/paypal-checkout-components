@@ -662,7 +662,7 @@ export function normalizeButtonProps(props : ?ButtonPropsInputs) : RenderButtonP
         supportsPopups = false,
         supportedNativeBrowser = false,
         experience = '',
-        showPayLabel
+        showPayLabel = true
     } = props;
 
     const { country, lang } = locale;

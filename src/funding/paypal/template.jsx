@@ -314,7 +314,7 @@ function ShowInstrumentsOnFile(opts) : ?ChildType {
 }
 
 export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, vault, textColor, fundingSource, showPayLabel = true } = opts;
+    const { logoColor, instrument, content, commit, vault, textColor, fundingSource, showPayLabel } = opts;
 
     if (instrument && !instrument.type) {
         return WalletLabelOld(opts);
