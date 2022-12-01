@@ -281,11 +281,9 @@ describe('paypal on file eligibility', () => {
             showPayLabel: false,
             test:   {
                 onRender: () => {
-                    setTimeout(() => {
-                        assert.equal(getElementRecursive('.balance .paypal-button-text').innerHTML, 'Balance &amp;');
-                        assert.equal(getElementRecursive('.fi-label .paypal-button-text').innerHTML, '••1234');
-                        done();
-                    }, 1000);
+                    assert.equal(getElementRecursive('.balance .paypal-button-text').innerHTML, 'Balance &amp;');
+                    assert.equal(getElementRecursive('.fi-label .paypal-button-text').innerHTML, '••1234');
+                    done();
                 }
             }
         }).render('#testContainer');
