@@ -13,11 +13,11 @@ import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { storageState, sessionState } from '../../lib';
 import { isFundingEligible } from '../../funding';
 import { BUTTON_FLOW } from '../../constants';
+import { isSupportedNativeBrowser, getButtonExperiments } from '../buttons/util';
 
 import { type PaymentFieldsProps } from './props';
 import { PaymentFieldsPrerender } from './prerender';
 import { PaymentFieldsContainer } from './container';
-import { isSupportedNativeBrowser, getButtonExperiments } from '../buttons/util';
 
 export type PaymentFieldsComponent = ZoidComponent<PaymentFieldsProps>;
 
