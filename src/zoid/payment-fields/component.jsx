@@ -4,15 +4,19 @@
 
 import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID,
-    getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale, getPartnerAttributionID } from '@paypal/sdk-client/src';
+    getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale, getPartnerAttributionID,
+    getPlatform, getComponents } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from '@krakenjs/zoid/src';
-import { inlineMemoize, uniqueID } from '@krakenjs/belter/src';
+import { inlineMemoize, uniqueID, supportsPopups as userAgentSupportsPopups } from '@krakenjs/belter/src';
+import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import { storageState, sessionState } from '../../lib';
+import { isFundingEligible } from '../../funding';
 
 import { type PaymentFieldsProps } from './props';
 import { PaymentFieldsPrerender } from './prerender';
 import { PaymentFieldsContainer } from './container';
+import { determineFlow, isSupportedNativeBrowser, getButtonExperiments } from '../buttons/util';
 
 export type PaymentFieldsComponent = ZoidComponent<PaymentFieldsProps>;
 
@@ -53,6 +57,46 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                 iframe: {
                     scrolling: 'no'
                 }
+            },
+
+            eligible: ({ props }) => {
+                const {
+                    fundingSource,
+                    onShippingChange,
+                    onShippingAddressChange,
+                    onShippingOptionsChange,
+                    style = {},
+                    fundingEligibility = getRefinedFundingEligibility(),
+                    supportsPopups = userAgentSupportsPopups(),
+                    supportedNativeBrowser = isSupportedNativeBrowser(),
+                    experiment = getButtonExperiments(),
+                    createBillingAgreement, createSubscription
+                } = props;
+
+                const flow = determineFlow({ createBillingAgreement, createSubscription });
+                const applePaySupport = fundingEligibility?.applepay?.eligible ? isApplePaySupported() : false;
+                
+                if (!fundingSource) {
+                    return {
+                        eligible: true
+                    };
+                }
+    
+                const { layout } = style;
+    
+                const platform           = getPlatform();
+                const components         = getComponents();
+
+                if (isFundingEligible(fundingSource, { layout, platform, fundingSource, fundingEligibility, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, flow, applePaySupport, supportsPopups, supportedNativeBrowser, experiment })) {
+                    return {
+                        eligible: true
+                    };
+                }
+
+                return {
+                    eligible: false,
+                    reason:   `${ fundingSource } is not eligible`
+                };
             },
 
             props: {
