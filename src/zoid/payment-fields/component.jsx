@@ -7,16 +7,17 @@ import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClient
     getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale, getPartnerAttributionID,
     getPlatform, getComponents } from '@paypal/sdk-client/src';
 import { create, type ZoidComponent } from '@krakenjs/zoid/src';
-import { inlineMemoize, uniqueID, supportsPopups as userAgentSupportsPopups } from '@krakenjs/belter/src';
+import { inlineMemoize, uniqueID, supportsPopups as userAgentSupportsPopups, isApplePaySupported } from '@krakenjs/belter/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 
 import { storageState, sessionState } from '../../lib';
 import { isFundingEligible } from '../../funding';
+import { BUTTON_FLOW } from '../../constants';
 
 import { type PaymentFieldsProps } from './props';
 import { PaymentFieldsPrerender } from './prerender';
 import { PaymentFieldsContainer } from './container';
-import { determineFlow, isSupportedNativeBrowser, getButtonExperiments } from '../buttons/util';
+import { isSupportedNativeBrowser, getButtonExperiments } from '../buttons/util';
 
 export type PaymentFieldsComponent = ZoidComponent<PaymentFieldsProps>;
 
@@ -70,10 +71,9 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                     supportsPopups = userAgentSupportsPopups(),
                     supportedNativeBrowser = isSupportedNativeBrowser(),
                     experiment = getButtonExperiments(),
-                    createBillingAgreement, createSubscription
                 } = props;
 
-                const flow = determineFlow({ createBillingAgreement, createSubscription });
+                const flow = BUTTON_FLOW.PURCHASE;
                 const applePaySupport = fundingEligibility?.applepay?.eligible ? isApplePaySupported() : false;
                 
                 if (!fundingSource) {
