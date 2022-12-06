@@ -49,6 +49,25 @@ describe(`paypal standalone fields`, () => {
             });
         });
 
+        it(`should not render a standalone ${ fundingSource } Fields element error out when not eligible`, () => {
+            return wrapPromise(({ expect }) => {
+                const mockEligibility = mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], 'eligible', false);
+
+                const fields = window.paypal.Fields({
+                    test: {},
+                    fundingSource
+                });
+
+                if (fields.isEligible()) {
+                    throw new Error(`Expected fields to not be eligible`);
+                }
+
+                return fields.render('#testContainer').catch(expect('buttonRenderCatch')).then(() => {
+                    mockEligibility.cancel();
+                });
+            });
+        });
+
     }
 
 });
