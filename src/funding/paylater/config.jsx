@@ -21,7 +21,7 @@ function getLabelText(fundingEligibility : FundingEligibilityType) : ?string {
         paylater?.products?.paylater?.eligible &&
         paylater?.products?.paylater?.variant === 'DE'
     ) {
-        labelText = 'Später Bezahlen';
+        labelText = 'Später bezahlen';
     }
 
     if (
@@ -83,7 +83,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
                 </Style>
             );
         },
-    
+
         colors: [
             BUTTON_COLOR.WHITE,
             BUTTON_COLOR.BLACK,
@@ -108,7 +108,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
             [BUTTON_COLOR.BLACK]:  LOGO_COLOR.WHITE,
             [BUTTON_COLOR.WHITE]:  LOGO_COLOR.BLUE
         },
-        
+
         labelText: ({ fundingEligibility }) => {
             return (fundingEligibility && getLabelText(fundingEligibility)) || `${ FUNDING.PAYPAL } ${ FUNDING.PAYLATER }`;
         }

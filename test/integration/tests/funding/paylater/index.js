@@ -80,8 +80,8 @@ describe(`paylater button text`, () => {
         }
 
         return button.render('#testContainer').then(() => {
-            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Später Bezahlen');
-            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'Später Bezahlen');
+            assert.equal(getElementRecursive('.paypal-button-text').innerHTML, 'Später bezahlen');
+            assert.equal(getElementRecursive('.paypal-button').getAttribute('aria-label'), 'Später bezahlen');
         });
     });
 
