@@ -2,6 +2,12 @@
 
 import { CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
 
+export type SecondaryInstruments = $ReadOnlyArray<{|
+    type : string,
+    label : string,
+    instrumentID : string
+|}>;
+
 export type WalletInstrument = {|
     type? : $Values<typeof WALLET_INSTRUMENT>,
     label? : string,
@@ -10,7 +16,8 @@ export type WalletInstrument = {|
     tokenID? : string,
     vendor? : $Values<typeof CARD>,
     oneClick : boolean,
-    branded : boolean
+    branded : boolean,
+    secondaryInstruments? : SecondaryInstruments
 |};
 
 export type WalletPaymentType = {|
@@ -38,7 +45,8 @@ export type ContentType = {|
     credit : string,
     payWith : string,
     payLater : string,
-    flex : string
+    flex : string,
+    payPalBalance: string
 |};
 
 export type Experiment = {|
