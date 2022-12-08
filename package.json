@@ -25,11 +25,12 @@
     "preversion": "./scripts/preversion.sh",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "release": "./scripts/publish.sh",
+    "start": "npm run webpack -- --progress --watch",
     "test": "npm run jest-ssr && npm run karma && npm run jest-screenshot",
     "typecheck": "npm run flow-typed && npm run flow",
     "version": "./scripts/version.sh",
-    "webpack": "babel-node $(npm bin)/webpack --progress",
-    "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size",
+    "webpack": "babel-node $(npm bin)/webpack",
+    "webpack-size": "npm run webpack -- --config webpack.config.size",
     "prepare": "husky install"
   },
   "files": [
