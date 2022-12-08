@@ -1,3 +1,9 @@
+## <small>5.0.245 (2022-12-07)</small>
+
+* PPoF Render Logic (#2038) ([eae443c](https://github.com/paypal/paypal-checkout-components/commit/eae443c)), closes [#2038](https://github.com/paypal/paypal-checkout-components/issues/2038)
+
+
+
 ## <small>5.0.244 (2022-11-09)</small>
 
 * Disable vaulted card menu for token type (#2029) ([0b2c88a](https://github.com/paypal/paypal-checkout-components/commit/0b2c88a)), closes [#2029](https://github.com/paypal/paypal-checkout-components/issues/2029)

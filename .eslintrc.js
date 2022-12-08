@@ -1,7 +1,7 @@
 /* @flow */
 
 module.exports = {
-    'extends': './node_modules/@krakenjs/grumbler-scripts/config/.eslintrc-browser.js',
+    'extends': "@krakenjs/eslint-config-grumbler/eslintrc-browser",
 
     'globals': {
         'Promise': false,
@@ -31,5 +31,27 @@ module.exports = {
         'react/require-default-props': 'off',
         'react/forbid-component-props': 'off',
         'react/no-unused-prop-types': 'off'
-    }
+    },
+
+    "overrides": [
+      {
+        "files": ["test/**/*"],
+        "rules": {
+          'compat/compat':         'off',
+          'max-lines':             'off',
+          'no-restricted-globals': 'off',
+          'promise/no-native':     'off'
+        },
+        'globals': {
+          'document':    true,
+          'performance': true,
+          'assert':      true,
+          'beforeAll':   true,
+          'afterAll':    true,
+          'test':        true,
+          'jest':        true,
+          'page':        true
+        },
+      }
+    ],
 };

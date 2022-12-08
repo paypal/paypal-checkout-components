@@ -14,5 +14,6 @@ export const testContent = {
     payNow:                   'Pay Now',
     payWith:                  'Pay with',
     credit:                   'Credit',
-    balance:                  'Balance'
+    balance:                  'Balance',
+    payPalBalance:            'PayPal balance',
 };
