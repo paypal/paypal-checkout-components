@@ -48,7 +48,7 @@ const SMART_CARDS = [
 
 module.exports = {
     'actions': {
-        entry:          './src/actions/interface',
+        entry:          './src/interface/actions',
     },
     'buttons': {
         entry:          './src/interface/button',
