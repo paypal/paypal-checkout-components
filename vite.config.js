@@ -34,7 +34,7 @@ export default defineConfig({
   define,
   test: {
     environment: "jsdom",
-    // setupFiles: ["vitestSetup.js"],
+    setupFiles: ["vitestSetup.js"],
     include: ["**/test/unit/**/*.test.js"],
     deps: {
       inline: ["@krakenjs/post-robot"],
