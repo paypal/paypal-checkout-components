@@ -1,8 +1,21 @@
 /* @flow */
+
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+
 import { ValidationError } from "../../lib"
+
+type CardDetails = {|
+  number: ?string,
+  expiry: ?string,
+  name?: ?string,
+  security_code?: ?string,
+  type?: string,
+  postalCode?: ?string,
+  billingAddress? : string,
+|};
+
 type SaveActionConfig = {|
-  // eslint-disable-next-line no-restricted-globals, promise/no-native
-  createVaultSetupToken: () => Promise<string>,
+  createVaultSetupToken: () => ZalgoPromise<string>,
   onApprove: ({| vaultSetupToken: string |}) => void,
 |};
 
@@ -10,9 +23,8 @@ export type SaveAction = (SaveActionConfig) => ({|
   type: "save",
   /* TODO: 
       - We need to define how paymentSourceDetails is typed here
-      - Do we have another `onError` type from elsewhere we could reference here?
   */
-  save: ({|onError: () => {}, paymentSourceDetails: any|}) => Promise<void>,
+  save: ({|onError: (error: string) => void, paymentSourceDetails: CardDetails|}) => ZalgoPromise<void>,
 |});
 
 /**
@@ -35,12 +47,12 @@ const validateSaveConfig = (config: SaveActionConfig) => {
  * Creating a Save action allows us to validate initial inputs from the merchant, and then return the resulting object. 
  */
 export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
-  const { createVaultSetupToken } = config;
-
   validateSaveConfig(config)
 
   return {
     type: "save",
-    save: async () => {}
+    save: async () => {
+      // Implementation coming in later ticket
+    }
   }
 };
