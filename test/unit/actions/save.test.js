@@ -28,6 +28,7 @@ describe('Save', () => {
 
       // $FlowFixMe - Ignoring so we can use the run-time validations in createSaveAction.
       expect(() => createSaveAction({
+        // $FlowFixMe
         createVaultSetupToken: "i am not a function",
       })).toThrowError("Save action is missing the required")
     })
@@ -40,6 +41,7 @@ describe('Save', () => {
 
       // $FlowFixMe - Ignoring so we can use the run-time validations in createSaveAction.
       expect(() => createSaveAction({
+        // $FlowFixMe
         onApprove: "i am not a function",
       })).toThrowError("Save action is missing the required")
     })

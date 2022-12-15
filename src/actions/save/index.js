@@ -35,7 +35,7 @@ const REQUIRED_INPUTS = {
   createVaultSetupToken: 'function'
 }
 
-const validateSaveConfig = (config: SaveActionConfig) => {
+const validateSaveConfig = (config: SaveActionConfig): void => {
   for (const [inputProp, inputType] of Object.entries(REQUIRED_INPUTS)) {
     if (!config[inputProp] || typeof config[inputProp] !== inputType) {
       throw new ValidationError(`Save action is missing the required '${inputProp}' callback`)  
@@ -51,8 +51,10 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
   return {
     type: "save",
-    save: async () => {
-      // Implementation coming in later ticket
+    save: () => {
+      return ZalgoPromise.try(() => {
+        // basics for typing requirements. Implementation to come in next ticket.
+      })
     }
   }
 };
