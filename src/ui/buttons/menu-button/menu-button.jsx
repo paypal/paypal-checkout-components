@@ -8,13 +8,7 @@ import { Chevron } from '../../chevron';
 
 import css from './menu-button.scoped.scss';
 
-export function MenuButton({ textColor = TEXT_COLOR.BLACK, showPayLabel } : {| textColor? : $Values<typeof TEXT_COLOR>, showPayLabel: boolean |} = { }) : ChildType {
-    let labelText = "";
-
-    if (!showPayLabel) {
-        labelText = "Down arrow for more options";
-    }
-    
+export function MenuButton({ textColor = TEXT_COLOR.BLACK } : {| textColor? : $Values<typeof TEXT_COLOR> |} = { }) : ChildType {
     return (
         <Style css={ css }>
             <div
@@ -22,8 +16,7 @@ export function MenuButton({ textColor = TEXT_COLOR.BLACK, showPayLabel } : {| t
                     [ATTRIBUTE.MENU]: true
                 } }
                 tabindex='0'
-                class='menu-button'
-                aria-label={ labelText }>
+                class='menu-button'>
                 <Chevron color={ textColor } />
             </div>
         </Style>
