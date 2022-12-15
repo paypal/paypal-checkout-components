@@ -19,12 +19,11 @@ type SaveActionConfig = {|
   onApprove: ({| vaultSetupToken: string |}) => void,
 |};
 
+export type onErrorCallback = (error: string) => void
+
 export type SaveAction = (SaveActionConfig) => ({|
   type: "save",
-  /* TODO: 
-      - We need to define how paymentSourceDetails is typed here
-  */
-  save: ({|onError: (error: string) => void, paymentSourceDetails: CardDetails|}) => ZalgoPromise<void>,
+  save: (onError: onErrorCallback, paymentSourceDetails: CardDetails) => ZalgoPromise<void> | Promise<void>,
 |});
 
 /**
@@ -51,10 +50,14 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
   return {
     type: "save",
-    save: () => {
-      return ZalgoPromise.try(() => {
-        // basics for typing requirements. Implementation to come in next ticket.
-      })
+    save: async (onError, paymentSourceDetails) => {
+      const { createVaultSetupToken } = config;
+
+      // TODO: Do we use ZalgoPromise? Should we? If we do, how do we work with merchant async functions?
+      // DO we do ZalgoPromise.try(() => createVaultSetupToken())???
+      const emptySetupToken = await createVaultSetupToken();
+
+      console.log(`emptySetupToken`, emptySetupToken);
     }
   }
 };

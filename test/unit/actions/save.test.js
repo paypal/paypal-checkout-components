@@ -1,9 +1,10 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/dist/zalgo-promise";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { createSaveAction } from "../../../src/actions/save"
+import type { onErrorCallback } from "../../../src/actions/save"
 
 describe('Save', () => {
   const mockCreateVaultSetupToken = () => ZalgoPromise.try(() => "some-fake-token")
@@ -44,6 +45,29 @@ describe('Save', () => {
         // $FlowFixMe
         onApprove: "i am not a function",
       })).toThrowError("Save action is missing the required")
+    })
+  })
+
+  describe('Save#save function', () => {
+    const fakeEmptySetupToken = "some-empty-setup-token"
+    const actionInputs = {
+      createVaultSetupToken: vi.fn(async () => {
+        return fakeEmptySetupToken
+      }),
+      onApprove: () => {}
+    }
+
+    it("uses merchant config callback to get token", () => {
+      const saveAction = createSaveAction(actionInputs)
+      const mockOnError: onErrorCallback = () => {}
+      const mockCardDetails = {
+        number: "41111111111",
+        expiry: "05/25"
+      }
+
+      saveAction.save(mockOnError, mockCardDetails)
+
+      expect(actionInputs.createVaultSetupToken).toHaveBeenCalled()
     })
   })
 })
