@@ -230,6 +230,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     }
                 },
 
+                onChange: {
+                    type: 'function',
+                    required: false,
+                    value: ({props}) => {
+                        if (props.onChange) {
+                            return props.onChange
+                        } else {
+                            return props.parent.props.onChange
+                        }
+                    }
+                },
+
                 minLength: {
                     type: 'number',
                     required: false,
@@ -444,6 +456,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'object',
                 required:   false,
                 queryParam: true
+            },
+
+            onChange: {
+                type: 'function',
+                required: false
             },
 
             minLength: {
