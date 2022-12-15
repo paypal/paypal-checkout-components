@@ -50,14 +50,15 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
   return {
     type: "save",
-    save: async (onError, paymentSourceDetails) => {
+    save: (onError, paymentSourceDetails) => {
       const { createVaultSetupToken } = config;
 
-      // TODO: Do we use ZalgoPromise? Should we? If we do, how do we work with merchant async functions?
-      // DO we do ZalgoPromise.try(() => createVaultSetupToken())???
-      const emptySetupToken = await createVaultSetupToken();
-
-      console.log(`emptySetupToken`, emptySetupToken);
+      return ZalgoPromise.try(() => {
+        createVaultSetupToken()
+          .then((emptySetupToken) => {
+            // take token and call our PP endpoint with it
+          })
+      })  
     }
   }
 };
