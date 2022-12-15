@@ -100,13 +100,17 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
         }
     };
 
-    let labelText;
+    function getAriaLabel() : string {
+        let labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
 
-    if (!showPayLabel && instrument?.vendor && instrument.label) {
-        labelText = instrument.secondaryInstruments ? `${instrument.secondaryInstruments[0].type} & ${instrument.vendor} ${instrument.label}` : `${instrument.vendor} ${instrument.label}`;
-    } else {
-        labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
+        if (!showPayLabel && instrument?.vendor && instrument.label) {
+            labelText = instrument.secondaryInstruments ? `${instrument.secondaryInstruments[0].type} & ${instrument.vendor} ${instrument.label}` : `${instrument.vendor} ${instrument.label}`;
+        }
+
+        return labelText;
     }
+
+    const labelText = getAriaLabel();
 
     const logoNode = (
         <Logo
