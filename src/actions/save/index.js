@@ -21,6 +21,9 @@ type SaveActionConfig = {|
 
 export type onErrorCallback = (error: string) => void
 
+/* 
+ * The onError function passed here is the `onError` callback provided to the component, e.g. Hosted Card Fields.
+*/
 export type SaveAction = (SaveActionConfig) => ({|
   type: "save",
   save: (onError: onErrorCallback, paymentSourceDetails: CardDetails) => ZalgoPromise<void>,
