@@ -46,7 +46,8 @@ export type ContentType = {|
     payWith : string,
     payLater : string,
     flex : string,
-    payPalBalance: string
+    payPalBalance: string,
+    moreOptions: string
 |};
 
 export type Experiment = {|

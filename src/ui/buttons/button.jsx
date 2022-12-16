@@ -263,7 +263,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 <Spinner />
             </div>
 
-            { shouldShowWalletMenu ? <MenuButton textColor={ textColor } /> : null }
+            { shouldShowWalletMenu ? <MenuButton textColor={ textColor } content={ content } /> : null }
         </div>
     );
 }
