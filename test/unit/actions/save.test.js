@@ -51,7 +51,7 @@ describe('Save', () => {
     const fakeEmptySetupToken = "some-empty-setup-token"
     const actionInputs = {
       createVaultSetupToken: vi.fn(() => {
-        return fakeEmptySetupToken
+        return ZalgoPromise.resolve(fakeEmptySetupToken)
       }),
       onApprove: vi.fn()
     }
@@ -87,24 +87,22 @@ describe('Save', () => {
       const mockOnError = vi.fn()
       const saveAction = createSaveAction(actionInputs)
 
-      try {
-        // $FlowFixMe - Explicitly testing this case
-        saveAction.save(mockOnError)
-      } catch (error) {
+      // $FlowFixMe - Explicitly testing this case
+      return saveAction.save(mockOnError).catch((error) => {
+        // $FlowFixMe
         expect(error.message).toContain("Missing args to #save")
-      }
+      })
     })
-
+    
     it('errors if onError callback is not provided', () => {
       expect.assertions(1)
       const saveAction = createSaveAction(actionInputs)
-
-      try {
-        // $FlowFixMe - Explicitly testing this case
-        saveAction.save(undefined, mockCardDetails)
-      } catch (error) {
+      
+      // $FlowFixMe - Explicitly testing this case
+      return saveAction.save(undefined, mockCardDetails).catch(error => {
+        // $FlowFixMe
         expect(error.message).toContain("Missing args to #save")
-      }
+      })
     })
   })
 })

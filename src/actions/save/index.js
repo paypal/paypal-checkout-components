@@ -57,7 +57,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
       const { createVaultSetupToken } = config;
     
       if (!onError || !paymentSourceDetails) {
-        throw new ValidationError("Missing args to #save")
+        return ZalgoPromise.reject(new ValidationError("Missing args to #save"))
       }
 
       return ZalgoPromise.try(() => {
