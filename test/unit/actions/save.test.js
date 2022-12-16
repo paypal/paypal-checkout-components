@@ -4,7 +4,6 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/dist/zalgo-promise";
 import { describe, it, expect, vi } from "vitest";
 
 import { createSaveAction } from "../../../src/actions/save"
-import type { onErrorCallback } from "../../../src/actions/save"
 
 describe('Save', () => {
   const mockCreateVaultSetupToken = () => ZalgoPromise.try(() => "some-fake-token")
@@ -63,7 +62,7 @@ describe('Save', () => {
 
     it("uses merchant config callback to get token", () => {
       const saveAction = createSaveAction(actionInputs)
-      const mockOnError: onErrorCallback = vi.fn()
+      const mockOnError = vi.fn()
 
       saveAction.save(mockOnError, mockCardDetails)
 
@@ -75,7 +74,7 @@ describe('Save', () => {
       // $FlowFixMe
       actionInputs.createVaultSetupToken.mockRejectedValue(mockError)
       const saveAction = createSaveAction(actionInputs)
-      const mockOnError: onErrorCallback = vi.fn()
+      const mockOnError = vi.fn()
       
       saveAction.save(mockOnError, mockCardDetails).then(() => {
         expect(mockOnError).toBeCalledWith("Unable to retrieve setup token from 'createVaultSetupToken'")
@@ -85,7 +84,7 @@ describe('Save', () => {
     
     it('errors if payment details are not provided', () => {
       expect.assertions(1)
-      const mockOnError: onErrorCallback = vi.fn()
+      const mockOnError = vi.fn()
       const saveAction = createSaveAction(actionInputs)
 
       try {
