@@ -16,4 +16,5 @@ export const testContent = {
     credit:                   'Credit',
     balance:                  'Balance',
     payPalBalance:            'PayPal balance',
+    moreOptions:              'More options'
 };
