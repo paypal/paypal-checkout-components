@@ -23,7 +23,7 @@ export type onErrorCallback = (error: string) => void
 
 export type SaveAction = (SaveActionConfig) => ({|
   type: "save",
-  save: (onError: onErrorCallback, paymentSourceDetails: CardDetails) => ZalgoPromise<void> | Promise<void>,
+  save: (onError: onErrorCallback, paymentSourceDetails: CardDetails) => ZalgoPromise<void>,
 |});
 
 /**
@@ -59,9 +59,9 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
       return ZalgoPromise.try(() => {
         createVaultSetupToken()
-        .then((emptySetupToken) => {
+        .then((/* emptySetupToken */) => {
           // take token and call our PP endpoint with it
-        }).catch((error) => {
+        }).catch((/* error */) => {
           // TODO: Let's make sure we stringify this error safely/idiomatically - Do we define errors elsewhere?
           return onError("Unable to retrieve setup token from 'createVaultSetupToken'")
         })

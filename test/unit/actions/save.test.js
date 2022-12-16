@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/dist/zalgo-promise";
-import { describe, it, expect, vi, mocked } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { createSaveAction } from "../../../src/actions/save"
 import type { onErrorCallback } from "../../../src/actions/save"
@@ -51,10 +51,10 @@ describe('Save', () => {
   describe('Save#save function', () => {
     const fakeEmptySetupToken = "some-empty-setup-token"
     const actionInputs = {
-      createVaultSetupToken: vi.fn(async () => {
+      createVaultSetupToken: vi.fn(() => {
         return fakeEmptySetupToken
       }),
-      onApprove: () => {}
+      onApprove: vi.fn()
     }
     const mockCardDetails = {
       number: "41111111111",
@@ -63,7 +63,7 @@ describe('Save', () => {
 
     it("uses merchant config callback to get token", () => {
       const saveAction = createSaveAction(actionInputs)
-      const mockOnError: onErrorCallback = () => {}
+      const mockOnError: onErrorCallback = vi.fn()
 
       saveAction.save(mockOnError, mockCardDetails)
 
@@ -98,7 +98,6 @@ describe('Save', () => {
 
     it('errors if onError callback is not provided', () => {
       expect.assertions(1)
-      const mockOnError: onErrorCallback = vi.fn()
       const saveAction = createSaveAction(actionInputs)
 
       try {
