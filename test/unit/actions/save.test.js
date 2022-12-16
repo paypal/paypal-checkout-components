@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/dist/zalgo-promise";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, mocked } from "vitest";
 
 import { createSaveAction } from "../../../src/actions/save"
 import type { onErrorCallback } from "../../../src/actions/save"
@@ -56,18 +56,57 @@ describe('Save', () => {
       }),
       onApprove: () => {}
     }
+    const mockCardDetails = {
+      number: "41111111111",
+      expiry: "05/25"
+    }
 
     it("uses merchant config callback to get token", () => {
       const saveAction = createSaveAction(actionInputs)
       const mockOnError: onErrorCallback = () => {}
-      const mockCardDetails = {
-        number: "41111111111",
-        expiry: "05/25"
-      }
 
       saveAction.save(mockOnError, mockCardDetails)
 
       expect(actionInputs.createVaultSetupToken).toHaveBeenCalled()
+    })
+
+    it('uses onError arg if the request fails', (done) => {
+      const mockError = "Some error"
+      // $FlowFixMe
+      actionInputs.createVaultSetupToken.mockRejectedValue(mockError)
+      const saveAction = createSaveAction(actionInputs)
+      const mockOnError: onErrorCallback = vi.fn()
+      
+      saveAction.save(mockOnError, mockCardDetails).then(() => {
+        expect(mockOnError).toBeCalledWith("Unable to retrieve setup token from 'createVaultSetupToken'")
+        done()
+      })
+    })
+    
+    it('errors if payment details are not provided', () => {
+      expect.assertions(1)
+      const mockOnError: onErrorCallback = vi.fn()
+      const saveAction = createSaveAction(actionInputs)
+
+      try {
+        // $FlowFixMe - Explicitly testing this case
+        saveAction.save(mockOnError)
+      } catch (error) {
+        expect(error.message).toContain("Missing args to #save")
+      }
+    })
+
+    it('errors if onError callback is not provided', () => {
+      expect.assertions(1)
+      const mockOnError: onErrorCallback = vi.fn()
+      const saveAction = createSaveAction(actionInputs)
+
+      try {
+        // $FlowFixMe - Explicitly testing this case
+        saveAction.save(undefined, mockCardDetails)
+      } catch (error) {
+        expect(error.message).toContain("Missing args to #save")
+      }
     })
   })
 })

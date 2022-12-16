@@ -52,12 +52,19 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
     type: "save",
     save: (onError, paymentSourceDetails) => {
       const { createVaultSetupToken } = config;
+    
+      if (!onError || !paymentSourceDetails) {
+        throw new ValidationError("Missing args to #save")
+      }
 
       return ZalgoPromise.try(() => {
         createVaultSetupToken()
-          .then((emptySetupToken) => {
-            // take token and call our PP endpoint with it
-          })
+        .then((emptySetupToken) => {
+          // take token and call our PP endpoint with it
+        }).catch((error) => {
+          // TODO: Let's make sure we stringify this error safely/idiomatically - Do we define errors elsewhere?
+          return onError("Unable to retrieve setup token from 'createVaultSetupToken'")
+        })
       })  
     }
   }
