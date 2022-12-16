@@ -248,7 +248,7 @@ describe('paypal on file eligibility', () => {
         destroyTestContainer();
     });
 
-    it(`should render paypal button with wallet instrument labels when ppof eligibility is true`, (done) => {
+    it(`should render paypal button with wallet instrument labels and aria-label when ppof eligibility is true`, (done) => {
         const fundingSource = FUNDING.PAYPAL;
         const content = testContent;
         const wallet = {
@@ -283,6 +283,7 @@ describe('paypal on file eligibility', () => {
                 onRender: () => {
                     assert.equal(getElementRecursive('.balance .paypal-button-text').innerHTML, 'Balance &amp;');
                     assert.equal(getElementRecursive('.fi-label .paypal-button-text').innerHTML, '••1234');
+                    assert.equal(getElementRecursive('.menu-button').getAttribute('aria-label'), 'More options');
                     done();
                 }
             }
