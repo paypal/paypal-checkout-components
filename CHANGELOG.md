@@ -1,3 +1,9 @@
+## <small>5.0.247 (2022-12-19)</small>
+
+* chore(release): 5.0.246 🎉 ([5bc10aa](https://github.com/paypal/paypal-checkout-components/commit/5bc10aa))
+
+
+
 ## <small>5.0.246 (2022-12-19)</small>
 
 * Merge Multi Card Field Feature Branch into Main Branch (#2043) ([a8e0932](https://github.com/paypal/paypal-checkout-components/commit/a8e0932)), closes [#2043](https://github.com/paypal/paypal-checkout-components/issues/2043) [#1967](https://github.com/paypal/paypal-checkout-components/issues/1967) [#1978](https://github.com/paypal/paypal-checkout-components/issues/1978) [#1987](https://github.com/paypal/paypal-checkout-components/issues/1987) [#2007](https://github.com/paypal/paypal-checkout-components/issues/2007) [#2027](https://github.com/paypal/paypal-checkout-components/issues/2027) [#2033](https://github.com/paypal/paypal-checkout-components/issues/2033)
