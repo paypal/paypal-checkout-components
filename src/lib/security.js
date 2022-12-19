@@ -21,3 +21,6 @@ export function allowIframe() : boolean {
 
     return false;
 }
+
+// $FlowIssue
+export const protectedExport = (unprotectedExport) => (isPayPalDomain() ? unprotectedExport : undefined);
