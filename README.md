@@ -5,7 +5,7 @@
 [![npm version][version-badge]][package]
 [![apache license][license-badge]][license]
 
-[build-badge]: https://img.shields.io/github/workflow/status/paypal/paypal-checkout-components/build?logo=github&style=flat-square
+[build-badge]: https://img.shields.io/github/actions/workflow/status/paypal/paypal-checkout-components/main.yml?branch=main&logo=github&style=flat-square
 [build]: https://github.com/paypal/paypal-checkout-components/actions?query=workflow%3Abuild
 [coverage-badge]: https://img.shields.io/codecov/c/github/paypal/paypal-checkout-components.svg?style=flat-square
 [coverage]: https://codecov.io/github/paypal/paypal-checkout-components/
