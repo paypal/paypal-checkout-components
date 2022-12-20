@@ -19,12 +19,14 @@ type SaveActionConfig = {|
   onApprove: ({| vaultSetupToken: string |}) => void,
 |};
 
+export type onErrorCallback = (error: string) => void
+
+/* 
+ * The onError function passed here is the `onError` callback provided to the component, e.g. Hosted Card Fields.
+*/
 export type SaveAction = (SaveActionConfig) => ({|
   type: "save",
-  /* TODO: 
-      - We need to define how paymentSourceDetails is typed here
-  */
-  save: ({|onError: (error: string) => void, paymentSourceDetails: CardDetails|}) => ZalgoPromise<void>,
+  save: (onError: onErrorCallback, paymentSourceDetails: CardDetails) => ZalgoPromise<void>,
 |});
 
 /**
@@ -51,10 +53,22 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
   return {
     type: "save",
-    save: () => {
+    save: (onError, paymentSourceDetails) => {
+      const { createVaultSetupToken } = config;
+    
+      if (!onError || !paymentSourceDetails) {
+        return ZalgoPromise.reject(new ValidationError("Missing args to #save"))
+      }
+
       return ZalgoPromise.try(() => {
-        // basics for typing requirements. Implementation to come in next ticket.
-      })
+        createVaultSetupToken()
+        .then((/* emptySetupToken */) => {
+          // take token and call our PP endpoint with it
+        }).catch((/* error */) => {
+          // TODO: Let's make sure we stringify this error safely/idiomatically - Do we define errors elsewhere?
+          return onError("Unable to retrieve setup token from 'createVaultSetupToken'")
+        })
+      })  
     }
   }
 };
