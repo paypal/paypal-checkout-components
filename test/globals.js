@@ -114,6 +114,9 @@ const fundingEligibility = {
     },
     satispay: {
         eligible: false
+    },
+    payuponinvoice: {
+        eligible: false
     }
 };
 

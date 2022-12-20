@@ -114,5 +114,8 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     },
     satispay: {
         eligible: false
+    },
+    payuponinvoice: {
+        eligible: false
     }
 };

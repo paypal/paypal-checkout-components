@@ -780,6 +780,13 @@ const buttonConfigs = [
                 label:  `satispay`,
                 commit: true,
                 valid:  false
+            },
+
+            {
+                layout: `vertical`,
+                label:  `payuponinvoices`,
+                commit: true,
+                valid:  false
             }
 
         // $FlowFixMe
