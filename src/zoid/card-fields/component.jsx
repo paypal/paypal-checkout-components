@@ -47,7 +47,7 @@ type CardFieldsProps = {|
     branded? : boolean,
     minLength?: number,
     maxLength?: number,
-
+    onChange?: () => ZalgoPromise<Object> | Object,
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
