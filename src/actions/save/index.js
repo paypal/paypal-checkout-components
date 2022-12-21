@@ -1,6 +1,9 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { request } from '@krakenjs/belter/src';
+import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
+
 
 import { ValidationError } from "../../lib"
 
@@ -51,9 +54,11 @@ const validateSaveConfig = (config: SaveActionConfig): void => {
 export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
   validateSaveConfig(config)
 
+  const defaultLogger = getLogger();
+
   return {
     type: "save",
-    save: (onError, paymentSourceDetails) => {
+    save: (onError = defaultLogger, paymentSourceDetails, lowScopedAccessToken) => {
       const { createVaultSetupToken } = config;
     
       if (!onError || !paymentSourceDetails) {
@@ -62,7 +67,39 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
       return ZalgoPromise.try(() => {
         createVaultSetupToken()
-        .then((/* emptySetupToken */) => {
+        .then(({ vaultSetupToken }) => {
+          const vaultUrl = `${ getPayPalDomain() }/v3/vault/setup-tokens/${vaultSetupToken}/update`
+          // call the vault api to update the setup token with our payment details
+          const request = request({
+            method: 'post',
+            url: vaultUrl,
+            headers: {
+              'Authorization': `Basic ${vaultSetupToken}`,
+              'Content-Type': 'application/json',
+            },
+            data: {
+              'payment_source': {
+                'card': {
+                  ...paymentSourceDetails,
+                  // TODO Determine source for ths part of the payload
+                  'experience_context': {
+                    'brand_name': 'YourBrandName',
+                    'locale': 'en-US',
+                    'return_url': 'https://example.com/returnUrl',
+                    'cancel_url': 'https://example.com/cancelUrl'
+                  }
+                }
+              }
+            },
+          }).then(({ body }) => {
+            // check the response and do some validation
+            if (!body || !body.status == 'APPROVED') {
+              throw new Error('request was not approved')
+            }
+            onApprove({ setupToken: vaultSetupToken })
+
+          }).catch(onError)
+
           // take token and call our PP endpoint with it
         }).catch((/* error */) => {
           // TODO: Let's make sure we stringify this error safely/idiomatically - Do we define errors elsewhere?
