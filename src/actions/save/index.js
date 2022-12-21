@@ -59,7 +59,9 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
   return {
     type: "save",
     save: (onError = defaultLogger, paymentSourceDetails, lowScopedAccessToken) => {
-      const { createVaultSetupToken } = config;
+      // TODO validate paymentSourceDetails
+
+      const { createVaultSetupToken, onApprove } = config;
     
       if (!onError || !paymentSourceDetails) {
         return ZalgoPromise.reject(new ValidationError("Missing args to #save"))
@@ -74,7 +76,8 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
             method: 'post',
             url: vaultUrl,
             headers: {
-              'Authorization': `Basic ${vaultSetupToken}`,
+              // Figure out where we can get authToken
+              'Authorization': `Basic ${authToken}`,
               'Content-Type': 'application/json',
             },
             data: {
