@@ -2,7 +2,7 @@
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
 import { request } from '@krakenjs/belter/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
+import { getLogger, getPayPalDomain } from '@paypal/sdk-client/src';
 
 
 import { ValidationError } from "../../lib"
@@ -77,7 +77,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
             url: vaultUrl,
             headers: {
               // Figure out where we can get authToken
-              'Authorization': `Basic ${authToken}`,
+              'Authorization': `Basic ${lowScopedAccessToken}`,
               'Content-Type': 'application/json',
             },
             data: {
