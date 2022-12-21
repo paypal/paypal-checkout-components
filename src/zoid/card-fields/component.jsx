@@ -47,7 +47,7 @@ type CardFieldsProps = {|
     branded? : boolean,
     minLength?: number,
     maxLength?: number,
-
+    onChange?: () => ZalgoPromise<Object> | Object,
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
@@ -227,6 +227,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                             // $FlowFixMe
                             ...props.style
                         };
+                    }
+                },
+
+                onChange: {
+                    type: 'function',
+                    required: false,
+                    value: ({props}) => {
+                        if (props.onChange) {
+                            return props.onChange
+                        } else {
+                            return props.parent.props.onChange
+                        }
                     }
                 },
 
@@ -444,6 +456,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'object',
                 required:   false,
                 queryParam: true
+            },
+
+            onChange: {
+                type: 'function',
+                required: false
             },
 
             minLength: {
