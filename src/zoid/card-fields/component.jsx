@@ -48,12 +48,12 @@ type CardFieldsProps = {|
     minLength?: number,
     maxLength?: number,
     onChange?: () => ZalgoPromise<Object> | Object,
-    inputEvents?: {
+    inputEvents?: {|
         onChange?: () => ZalgoPromise<Object> | Object,
         onBlur?: () => ZalgoPromise<Object> | Object,
         onFocus?: () => ZalgoPromise<Object> | Object,
         onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
-    },
+    |},
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
