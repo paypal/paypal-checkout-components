@@ -1,0 +1,1 @@
+export const actionTypes = { SAVE: 'SAVE' } as const;

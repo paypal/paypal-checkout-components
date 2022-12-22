@@ -289,6 +289,10 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
         },
 
         props: {
+            action: {
+                type: 'object',
+                required: true
+            },
             type: {
                 type:       'string',
                 value:      () => CARD_FIELD_TYPE.SINGLE,
