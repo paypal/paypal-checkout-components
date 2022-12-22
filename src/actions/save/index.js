@@ -59,10 +59,6 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
   return {
     type: "SAVE",
     save: (onError = noop, paymentSourceDetails, lowScopedAccessToken) => {
-      // open popup
-
-      // TODO validate paymentSourceDetails
-
       const { createVaultSetupToken, onApprove } = config;
     
       if (!onError || !paymentSourceDetails) {
@@ -71,9 +67,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
 
       return ZalgoPromise.try(() => {
         createVaultSetupToken()
-        .then((args) => {
-          const { vaultSetupToken } = args;
-          console.log(args)
+        .then(({ vaultSetupToken }) => {
           // const vaultUrl = `${ getPayPalDomain() }/v3/vault/setup-tokens/${vaultSetupToken}/update`
           const vaultUrl = `https://msmaster.qa.paypal.com:18582/v3/vault/setup-tokens/${vaultSetupToken}/update`
           // call the vault api to update the setup token with our payment details
@@ -88,6 +82,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
             data: {
               'payment_source': {
                 'card': {
+                  // TODO validate paymentSourceDetails
                   ...paymentSourceDetails,
                   // TODO Determine source for ths part of the payload
                   'experience_context': {
