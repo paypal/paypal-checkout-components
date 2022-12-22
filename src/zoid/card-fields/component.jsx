@@ -48,6 +48,12 @@ type CardFieldsProps = {|
     minLength?: number,
     maxLength?: number,
     onChange?: () => ZalgoPromise<Object> | Object,
+    inputEvents?: {|
+        onChange?: () => ZalgoPromise<Object> | Object,
+        onBlur?: () => ZalgoPromise<Object> | Object,
+        onFocus?: () => ZalgoPromise<Object> | Object,
+        onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
+    |},
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
@@ -238,6 +244,18 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                             return props.onChange
                         } else {
                             return props.parent.props.onChange
+                        }
+                    }
+                },
+
+                inputEvents: {
+                    type: 'object',
+                    required: false,
+                    value: ({props}) => {
+                        if (props.inputEvents) {
+                            return props.inputEvents
+                        } else {
+                            return props.parent.props.inputEvents
                         }
                     }
                 },
@@ -460,6 +478,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
 
             onChange: {
                 type: 'function',
+                required: false
+            },
+
+            inputEvents: {
+                type: 'object',
                 required: false
             },
 
