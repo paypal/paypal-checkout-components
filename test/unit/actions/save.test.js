@@ -77,7 +77,7 @@ describe('Save', () => {
       expect(actionInputs.createVaultSetupToken).toHaveBeenCalled()
     })
 
-    it("uses the resposne from merchant config callback to update the setup token", (done) => {
+    it("uses the response from merchant config callback to update the setup token", async () => {
       const lowScopedAccessToken = 'test-access-token'
       const vaultSetupToken = 'test-setup-token'
 
@@ -88,27 +88,27 @@ describe('Save', () => {
       const mockOnError = vi.fn()
       const spy = vi.spyOn(belter, 'request')
 
-      saveAction.save(mockOnError, mockCardDetails, lowScopedAccessToken).then(() => {
-        expect(spy).toHaveBeenCalledOnce()
-        // get our arguments
-        const [ [ args ] ] = spy.calls
-        expect(args).toEqual({
-          method: 'post',
-          url: `${mockPayPalDomain}/v3/vault/setup-tokens/${vaultSetupToken}/update`,
-          headers: {
-            // Figure out where we can get authToken
-            'Authorization': `Basic ${lowScopedAccessToken}`,
-            'Content-Type': 'application/json',
-          },
-          data: {
-            'payment_source': {
-              'card': {
-                ...mockCardDetails
-              }
+      await saveAction.save(mockOnError, mockCardDetails, lowScopedAccessToken)
+      expect.assertions(2)
+
+      expect(spy).toHaveBeenCalled()
+      // get our arguments
+      const [ [ args ] ] = spy.calls
+      expect(args).toEqual({
+        method: 'post',
+        url: `${mockPayPalDomain}/v3/vault/setup-tokens/${vaultSetupToken}/update`,
+        headers: {
+          // Figure out where we can get authToken
+          'Authorization': `Basic ${lowScopedAccessToken}`,
+          'Content-Type': 'application/json',
+        },
+        data: {
+          'payment_source': {
+            'card': {
+              ...mockCardDetails
             }
           }
-        })
-        done()
+        }
       })
     })
 
