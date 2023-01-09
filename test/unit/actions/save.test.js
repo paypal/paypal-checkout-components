@@ -2,8 +2,16 @@
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/dist/zalgo-promise";
 import { describe, it, expect, vi } from "vitest";
+import * as belter from '@krakenjs/belter/src'; // eslint-disable-line import/no-namespace
 
 import { createSaveAction } from "../../../src/actions/save"
+
+const mockPayPalDomain = 'unit-test.paypal.com'
+
+vi.mock('@paypal/sdk-client/src', () => ({
+  getLogger: vi.fn(() => console),
+  getPayPalDomain: vi.fn(() => mockPayPalDomain),
+}));
 
 describe('Save', () => {
   const mockCreateVaultSetupToken = () => ZalgoPromise.try(() => "some-fake-token")
@@ -15,7 +23,7 @@ describe('Save', () => {
       createVaultSetupToken: mockCreateVaultSetupToken,
       onApprove: mockOnApprove
     })
-    expect(result.type).toEqual("save")
+    expect(result.type).toEqual("SAVE")
     expect(result.save).toBeTypeOf("function")
   })
 
@@ -67,6 +75,41 @@ describe('Save', () => {
       saveAction.save(mockOnError, mockCardDetails)
 
       expect(actionInputs.createVaultSetupToken).toHaveBeenCalled()
+    })
+
+    it("uses the resposne from merchant config callback to update the setup token", (done) => {
+      const lowScopedAccessToken = 'test-access-token'
+      const vaultSetupToken = 'test-setup-token'
+
+      const saveAction = createSaveAction({
+        createVaultSetupToken: () => ZalgoPromise.resolve({ vaultSetupToken }),
+        onApprove: vi.fn()
+      })
+      const mockOnError = vi.fn()
+      const spy = vi.spyOn(belter, 'request')
+
+      saveAction.save(mockOnError, mockCardDetails, lowScopedAccessToken).then(() => {
+        expect(spy).toHaveBeenCalledOnce()
+        // get our arguments
+        const [ [ args ] ] = spy.calls
+        expect(args).toEqual({
+          method: 'post',
+          url: `${mockPayPalDomain}/v3/vault/setup-tokens/${vaultSetupToken}/update`,
+          headers: {
+            // Figure out where we can get authToken
+            'Authorization': `Basic ${lowScopedAccessToken}`,
+            'Content-Type': 'application/json',
+          },
+          data: {
+            'payment_source': {
+              'card': {
+                ...mockCardDetails
+              }
+            }
+          }
+        })
+        done()
+      })
     })
 
     it('uses onError arg if the request fails', (done) => {

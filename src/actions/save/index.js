@@ -1,6 +1,9 @@
 /* @flow */
 
 import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { request } from '@krakenjs/belter/src';
+import { getLogger, getPayPalDomain } from '@paypal/sdk-client/src';
+
 
 import { ValidationError } from "../../lib"
 
@@ -51,22 +54,64 @@ const validateSaveConfig = (config: SaveActionConfig): void => {
 export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
   validateSaveConfig(config)
 
+  const logger = getLogger()
+
   return {
-    type: "save",
-    save: (onError, paymentSourceDetails) => {
-      const { createVaultSetupToken } = config;
+    type: "SAVE",
+    save: (onError, paymentSourceDetails, lowScopedAccessToken) => {
+      const { createVaultSetupToken, onApprove } = config;
     
       if (!onError || !paymentSourceDetails) {
         return ZalgoPromise.reject(new ValidationError("Missing args to #save"))
       }
 
+      const handleError = (error) => {
+        logger.error('pp_sdk_actions_save_error', JSON.stringify(error))
+        onError(error.message)
+      }
+
       return ZalgoPromise.try(() => {
         createVaultSetupToken()
-        .then((/* emptySetupToken */) => {
+        .then(({ vaultSetupToken }) => {
+          const vaultUrl = `${ getPayPalDomain() }/v3/vault/setup-tokens/${vaultSetupToken}/update`
+          // call the vault api to update the setup token with our payment details
+          return request({
+            method: 'post',
+            url: vaultUrl,
+            headers: {
+              // Figure out where we can get authToken
+              'Authorization': `Basic ${lowScopedAccessToken}`,
+              'Content-Type': 'application/json',
+            },
+            data: {
+              'payment_source': {
+                'card': {
+                  // TODO validate paymentSourceDetails
+                  ...paymentSourceDetails,
+                  // TODO Determine source for ths part of the payload
+                  // Do we need this?
+                  // 'experience_context': {
+                  //   'brand_name': 'YourBrandName',
+                  //   'locale': 'en-US',
+                  //   'return_url': 'https://example.com/returnUrl',
+                  //   'cancel_url': 'https://example.com/cancelUrl'
+                  // }
+                }
+              }
+            },
+          }).then(({ body }) => {
+            // check the response and do some validation
+            if (!body || !body.status === 'APPROVED') {
+              throw new Error('request was not approved')
+            }
+            onApprove({ setupToken: vaultSetupToken })
+
+          }).catch(handleError)
+
           // take token and call our PP endpoint with it
         }).catch((/* error */) => {
           // TODO: Let's make sure we stringify this error safely/idiomatically - Do we define errors elsewhere?
-          return onError("Unable to retrieve setup token from 'createVaultSetupToken'")
+          return handleError(new Error("Unable to retrieve setup token from 'createVaultSetupToken'"))
         })
       })  
     }
