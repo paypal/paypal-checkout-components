@@ -401,8 +401,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
 
         props: {
             action: {
-                type: 'object',
-                required: true
+                type: 'object'
             },
             type: {
                 type:       'string',
