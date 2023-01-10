@@ -22,7 +22,7 @@ export function getApplePayConfig() : FundingSourceConfig {
             /** If the JS SDK Script Includes Standalone ApplePay Component the Exclude the ApplePay Button From the Vertical Stack 
              * https://paypal.atlassian.net/browse/DTALTPAY-1232
             */
-           return components? !components.includes(FUNDING.APPLEPAY): true;
+           return !components?.includes(FUNDING.APPLEPAY);
         },
 
         platforms: [
