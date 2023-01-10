@@ -67,18 +67,18 @@ describe('Save', () => {
       number: "41111111111",
       expiry: "05/25"
     }
+    const mockAccessToken = 'test-access-token'
 
     it("uses merchant config callback to get token", () => {
       const saveAction = createSaveAction(actionInputs)
       const mockOnError = vi.fn()
 
-      saveAction.save(mockOnError, mockCardDetails)
+      saveAction.save(mockOnError, mockCardDetails, mockAccessToken)
 
       expect(actionInputs.createVaultSetupToken).toHaveBeenCalled()
     })
 
     it("uses the response from merchant config callback to update the setup token", async () => {
-      const lowScopedAccessToken = 'test-access-token'
       const vaultSetupToken = 'test-setup-token'
 
       const saveAction = createSaveAction({
@@ -88,7 +88,7 @@ describe('Save', () => {
       const mockOnError = vi.fn()
       const spy = vi.spyOn(belter, 'request')
 
-      await saveAction.save(mockOnError, mockCardDetails, lowScopedAccessToken)
+      await saveAction.save(mockOnError, mockCardDetails, mockAccessToken)
       expect.assertions(2)
 
       expect(spy).toHaveBeenCalled()
@@ -99,7 +99,7 @@ describe('Save', () => {
         url: `${mockPayPalDomain}/v3/vault/setup-tokens/${vaultSetupToken}/update`,
         headers: {
           // Figure out where we can get authToken
-          'Authorization': `Basic ${lowScopedAccessToken}`,
+          'Authorization': `Basic ${mockAccessToken}`,
           'Content-Type': 'application/json',
         },
         data: {
@@ -113,13 +113,14 @@ describe('Save', () => {
     })
 
     it('uses onError arg if the request fails', (done) => {
+      expect.assertions(1)
       const mockError = "Some error"
       // $FlowFixMe
       actionInputs.createVaultSetupToken.mockRejectedValue(mockError)
       const saveAction = createSaveAction(actionInputs)
       const mockOnError = vi.fn()
       
-      saveAction.save(mockOnError, mockCardDetails).then(() => {
+      saveAction.save(mockOnError, mockCardDetails, mockAccessToken).then(() => {
         expect(mockOnError).toBeCalledWith("Unable to retrieve setup token from 'createVaultSetupToken'")
         done()
       })

@@ -17,19 +17,23 @@ type CardDetails = {|
   billingAddress? : string,
 |};
 
+type SetupTokenResponse = {|
+  vaultSetupToken: string
+|}
+
 type SaveActionConfig = {|
-  createVaultSetupToken: () => ZalgoPromise<string>,
+  createVaultSetupToken: () => ZalgoPromise<SetupTokenResponse>,
   onApprove: ({| vaultSetupToken: string |}) => void,
 |};
 
-export type onErrorCallback = (error: string) => void
+export type onErrorCallback = (error: mixed) => void
 
 /* 
  * The onError function passed here is the `onError` callback provided to the component, e.g. Hosted Card Fields.
 */
 export type SaveAction = (SaveActionConfig) => ({|
   type: "save",
-  save: (onError: onErrorCallback, paymentSourceDetails: CardDetails) => ZalgoPromise<void>,
+  save: (onError: onErrorCallback, paymentSourceDetails: CardDetails, lowScopedAccessToken: string) => ZalgoPromise<void>,
 |});
 
 /**
@@ -57,7 +61,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
   const logger = getLogger()
 
   return {
-    type: "SAVE",
+    type: "save",
     save: (onError, paymentSourceDetails, lowScopedAccessToken) => {
       const { createVaultSetupToken, onApprove } = config;
     
@@ -66,8 +70,8 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
       }
 
       const handleError = (error) => {
-        logger.error('pp_sdk_actions_save_error', JSON.stringify(error))
-        onError(error.message)
+        logger.error('pp_sdk_actions_save_error', { error: JSON.stringify(error) } )
+        onError(error)
       }
 
       return ZalgoPromise.try(() => {
@@ -84,6 +88,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
               'Content-Type': 'application/json',
             },
             data: {
+              /* $FlowIgnore[incompatible-call] schema doesn't allow for nested objects */
               'payment_source': {
                 'card': {
                   // TODO validate paymentSourceDetails
@@ -104,7 +109,7 @@ export const createSaveAction: SaveAction = (config: SaveActionConfig) => {
             if (!body || !body.status === 'APPROVED') {
               throw new Error('request was not approved')
             }
-            onApprove({ setupToken: vaultSetupToken })
+            onApprove({ vaultSetupToken })
 
           }).catch(handleError)
 
