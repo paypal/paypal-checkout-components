@@ -126,7 +126,7 @@ export const buttonStyle = `
         margin-top: 10px;
     }
 
-    @media only screen and (max-width: ${ MIN_VAULT_BUTTON_WIDTH }px) {
+    @media only screen and (max-width: ${ MIN_VAULT_BUTTON_WIDTH - 1 }px) {
         .menu-button {
             display: none;
         }
