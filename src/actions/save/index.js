@@ -9,6 +9,8 @@ type SaveActionConfig = {|
   onApprove: ({| vaultSetupToken: string |}) => void,
 |};
 
+export type CreateSaveAction = (config: SaveActionConfig) => {|type: 'SAVE', ... SaveActionConfig|}
+
 /**
  * These are the input configurations required from the merchant.
  */
@@ -28,7 +30,7 @@ const validateSaveConfig = (config: SaveActionConfig): void => {
 /**
  * Creating a Save action allows us to validate initial inputs from the merchant, and then return the resulting object. 
  */
-export const createSaveAction = (config: SaveActionConfig): {|type: 'SAVE', ... SaveActionConfig|} => {
+export const createSaveAction: CreateSaveAction = (config)  => {
   validateSaveConfig(config)
 
   return {
