@@ -291,7 +291,7 @@ function ShowInstrumentsOnFile(opts) : ?ChildType {
                     )
                     : (
                         <div class='fi-container'>
-                            <div class='fi-logo' optional={ 1 }>
+                            <div class='fi-logo'>
                                 {
                                     (instrument && logo)
                                         ? logo
