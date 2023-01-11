@@ -1,3 +1,9 @@
+## <small>5.0.248 (2023-01-11)</small>
+
+* Add InputEvents Callbacks to Hosted Card Fields (#2059) ([ac37e88](https://github.com/paypal/paypal-checkout-components/commit/ac37e88)), closes [#2059](https://github.com/paypal/paypal-checkout-components/issues/2059)
+
+
+
 ## <small>5.0.247 (2022-12-19)</small>
 
 * chore(release): 5.0.246 🎉 ([5bc10aa](https://github.com/paypal/paypal-checkout-components/commit/5bc10aa))
