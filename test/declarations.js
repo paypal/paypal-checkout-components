@@ -2,6 +2,8 @@
 /* eslint import/unambiguous: 0 */
 
 declare var jest;
-declare var beforeAll;
-declare var afterAll;
-declare var test;
+declare var afterAll : Function;
+declare var beforeEach : Function;
+declare var it : Function;
+declare var describe : Function;
+declare var test : Function;
