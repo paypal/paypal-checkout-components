@@ -174,7 +174,7 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                     queryValue({ value }) : string {
                         // $FlowFixMe
                         const { country } = value;
-                        return `${ country }`;
+                        return country;
                     },
                     value: getLocale
                 },
