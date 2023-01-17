@@ -1,3 +1,9 @@
+## <small>5.0.249 (2023-01-17)</small>
+
+* feat: support >= 250px button widths for PPoF (#2072) ([0b4b5b3](https://github.com/paypal/paypal-checkout-components/commit/0b4b5b3)), closes [#2072](https://github.com/paypal/paypal-checkout-components/issues/2072)
+
+
+
 ## <small>5.0.248 (2023-01-11)</small>
 
 * Add InputEvents Callbacks to Hosted Card Fields (#2059) ([ac37e88](https://github.com/paypal/paypal-checkout-components/commit/ac37e88)), closes [#2059](https://github.com/paypal/paypal-checkout-components/issues/2059)
