@@ -185,9 +185,14 @@ describe(`paypal button component sizes`, () => {
                 setTimeout(() => {
                     const paypalButton = getElementRecursive(".paypal-button");
                     const paypalButtonWidth = paypalButton.offsetWidth;
+                    const menuButton = getElementRecursive(".menu-button");
+
+                    if (!menuButton) {
+                        return done(new Error("Expected menu button to be rendered to the DOM"));
+                    }
 
                     if (paypalButtonWidth === containerWidth) {
-                        return done(new Error("Menu button should be visibile at >= 250px button width, but is scrolled out of view."));
+                        return done(new Error("Menu button should be visibile at >= 250px button width, but is scrolled out of view"));
                     }
 
                     return done();
