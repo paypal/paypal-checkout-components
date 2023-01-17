@@ -2,8 +2,10 @@
 /* eslint max-lines: 0 */
 
 import { getElement, createElement, once } from '@krakenjs/belter/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { createTestContainer, destroyTestContainer, onElementResize } from '../common';
+import { createTestContainer, destroyTestContainer, onElementResize, getElementRecursive } from '../common';
+import { testContent } from '../../../content';
 
 describe(`paypal button component sizes`, () => {
 
@@ -109,6 +111,88 @@ describe(`paypal button component sizes`, () => {
 
                     if (height !== expectedHeight) {
                         return done(new Error(`Expected button to have height of ${ expectedHeight }px, got ${ height }px`));
+                    }
+
+                    return done();
+                }, 100);
+            }
+
+        }).render(container);
+    });
+
+    it('should render a responsive PPoF button in the medium spectrum with menu button displayed', (done) => {
+        done = once(done);
+
+        const containerWidth = 250;
+
+        const container = createElement('div', {
+            style: {
+                width:  `${containerWidth}px`,
+                height: '100px'
+            }
+        }, getElement('#testContainer'));
+
+        const fundingSource = FUNDING.PAYPAL;
+        const content = testContent;
+        const wallet = {
+            [fundingSource]: {
+                instruments: [
+                    {
+                        accessToken: null,
+                        instrumentID: 'abc12345',
+                        label: '••1234',
+                        logoUrl: null,
+                        oneClick: true,
+                        planID: null,
+                        secondaryInstruments: [{
+                            instrumentID: "BALANCEUSD",
+                            label: "PayPal Balance",
+                            type: "BALANCE"
+                        }],
+                        tokenID: null,
+                        type:    'card',
+                        vendor:  'VISA'
+                    }
+                ]
+            }
+        };
+
+        window.paypal.Buttons({
+            content,
+            
+            fundingSource,
+            
+            wallet,
+
+            showPayLabel: false,
+
+            style: {
+                layout:  'horizontal',
+                tagline: false
+            },
+
+            test: {},
+
+            createOrder() {
+                done(new Error('Expected createOrder() to not be called'));
+            },
+
+            onApprove() {
+                done(new Error('Expected onApprove() to not be called'));
+            },
+
+            onRendered() {
+                setTimeout(() => {
+                    const paypalButton = getElementRecursive(".paypal-button");
+                    const paypalButtonWidth = paypalButton.offsetWidth;
+                    const menuButton = getElementRecursive(".menu-button");
+
+                    if (!menuButton) {
+                        return done(new Error("Expected menu button to be rendered to the DOM"));
+                    }
+
+                    if (paypalButtonWidth === containerWidth) {
+                        return done(new Error("Menu button should be visibile at >= 250px button width, but is scrolled out of view"));
                     }
 
                     return done();
