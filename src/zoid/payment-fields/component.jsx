@@ -167,6 +167,18 @@ export function getPaymentFieldsComponent() : PaymentFieldsComponent {
                     value: getLocale
                 },
 
+                country: {
+                    type:          'object',
+                    queryParam:    'country.x',
+                    allowDelegate: true,
+                    queryValue({ value }) : string {
+                        // $FlowFixMe
+                        const { country } = value;
+                        return country;
+                    },
+                    value: getLocale
+                },
+
                 storageState: {
                     type:  'object',
                     value: () => storageState
