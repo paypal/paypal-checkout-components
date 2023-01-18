@@ -1,3 +1,33 @@
+## <small>5.0.249 (2023-01-17)</small>
+
+* feat: support >= 250px button widths for PPoF (#2072) ([0b4b5b3](https://github.com/paypal/paypal-checkout-components/commit/0b4b5b3)), closes [#2072](https://github.com/paypal/paypal-checkout-components/issues/2072)
+
+
+
+## <small>5.0.248 (2023-01-11)</small>
+
+* Add InputEvents Callbacks to Hosted Card Fields (#2059) ([ac37e88](https://github.com/paypal/paypal-checkout-components/commit/ac37e88)), closes [#2059](https://github.com/paypal/paypal-checkout-components/issues/2059)
+
+
+
+## <small>5.0.247 (2022-12-19)</small>
+
+* chore(release): 5.0.246 🎉 ([5bc10aa](https://github.com/paypal/paypal-checkout-components/commit/5bc10aa))
+
+
+
+## <small>5.0.246 (2022-12-19)</small>
+
+* Merge Multi Card Field Feature Branch into Main Branch (#2043) ([a8e0932](https://github.com/paypal/paypal-checkout-components/commit/a8e0932)), closes [#2043](https://github.com/paypal/paypal-checkout-components/issues/2043) [#1967](https://github.com/paypal/paypal-checkout-components/issues/1967) [#1978](https://github.com/paypal/paypal-checkout-components/issues/1978) [#1987](https://github.com/paypal/paypal-checkout-components/issues/1987) [#2007](https://github.com/paypal/paypal-checkout-components/issues/2007) [#2027](https://github.com/paypal/paypal-checkout-components/issues/2027) [#2033](https://github.com/paypal/paypal-checkout-components/issues/2033)
+
+
+
+## <small>5.0.245 (2022-12-07)</small>
+
+* PPoF Render Logic (#2038) ([eae443c](https://github.com/paypal/paypal-checkout-components/commit/eae443c)), closes [#2038](https://github.com/paypal/paypal-checkout-components/issues/2038)
+
+
+
 ## <small>5.0.244 (2022-11-09)</small>
 
 * Disable vaulted card menu for token type (#2029) ([0b2c88a](https://github.com/paypal/paypal-checkout-components/commit/0b2c88a)), closes [#2029](https://github.com/paypal/paypal-checkout-components/issues/2029)

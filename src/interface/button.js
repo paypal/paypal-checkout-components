@@ -1,10 +1,9 @@
 /* @flow */
 
-import { isPayPalDomain } from '@paypal/sdk-client/src';
 import { PopupOpenError as _PopupOpenError, destroy as zoidDestroy, destroyComponents } from '@krakenjs/zoid/src';
 
 import type { LazyExport, LazyProtectedExport } from '../types';
-import { allowIframe as _allowIframe } from '../lib';
+import { allowIframe as _allowIframe, protectedExport } from '../lib';
 import { getCheckoutComponent, type CheckoutComponent } from '../zoid/checkout';
 import { getButtonsComponent, type ButtonsComponent } from '../zoid/buttons';
 import { getCardFormComponent, type CardFormComponent } from '../zoid/card-form';
@@ -14,12 +13,6 @@ import { getInstallmentsComponent, type InstallmentsComponent } from '../zoid/in
 import { Buttons as _ButtonsTemplate } from '../ui/buttons';
 import { getQRCodeComponent, type QRCodeComponent } from '../zoid/qr-code';
 import { getModalComponent, type ModalComponent } from '../zoid/modal/component';
-
-function protectedExport<T>(xport : T) : ?T {
-    if (isPayPalDomain()) {
-        return xport;
-    }
-}
 
 export const Buttons : LazyExport<ButtonsComponent> = {
     __get__: () => getButtonsComponent()

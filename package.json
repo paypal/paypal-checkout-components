@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.244",
+  "version": "5.0.249",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "debug": "cross-env NODE_ENV=debug",
     "delete-size": "rm dist/size.* dist/report.html",
     "demo": "serve ./demo -l 1337",
-    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open demo/dev/index.htm --https --hot=false",
+    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open demo/dev/index.htm --https --hot=false --static './'",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "flow": "flow",
     "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
@@ -25,11 +25,13 @@
     "preversion": "./scripts/preversion.sh",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "release": "./scripts/publish.sh",
-    "test": "npm run jest-ssr && npm run karma && npm run jest-screenshot",
+    "start": "npm run webpack -- --progress --watch",
+    "test": "npm run test:unit && npm run jest-ssr && npm run karma && npm run jest-screenshot",
+    "test:unit": "vitest",
     "typecheck": "npm run flow-typed && npm run flow",
     "version": "./scripts/version.sh",
-    "webpack": "babel-node $(npm bin)/webpack --progress",
-    "webpack-size": "babel-node $(npm bin)/webpack --progress --config webpack.config.size",
+    "webpack": "babel-node $(npm bin)/webpack",
+    "webpack-size": "npm run webpack -- --config webpack.config.size",
     "prepare": "husky install"
   },
   "files": [
@@ -61,6 +63,7 @@
   "license": "Apache-2.0",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "@bunchtogether/vite-plugin-flow": "^1.0.2",
     "@krakenjs/grumbler-scripts": "^8.0.7",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -85,7 +88,9 @@
     "prettier": "^2.5.1",
     "prettier-plugin-sh": "^0.10.0",
     "puppeteer": "^1.20.0",
-    "serve": "^13.0.0"
+    "serve": "^13.0.0",
+    "vite": "^3.2.4",
+    "vitest": "^0.25.3"
   },
   "dependencies": {
     "@krakenjs/belter": "^2.0.0",

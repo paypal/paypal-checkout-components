@@ -104,7 +104,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
     const { onClick = noop } = props;
     const { wallet, fundingSource, style, locale, remembered, env, fundingEligibility, platform, commit, vault,
         nonce, components, onShippingChange, onShippingAddressChange, onShippingOptionsChange, personalization, userIDToken, content, flow, experiment, applePaySupport,
-        supportsPopups, supportedNativeBrowser, experience } = normalizeButtonProps(props);
+        supportsPopups, supportedNativeBrowser, experience, showPayLabel } = normalizeButtonProps(props);
     const { custom, layout, shape, tagline } = style;
  
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label && custom.label.length !== 0;
@@ -192,6 +192,7 @@ export function Buttons(props : ButtonsProps) : ElementNode {
                         vault={ vault }
                         instrument={ instruments[source] }
                         experience={ experience }
+                        showPayLabel={ showPayLabel }
                     />
                 ))
             }
