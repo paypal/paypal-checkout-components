@@ -4,7 +4,6 @@ import fs from "fs";
 import percySnapshot from "@percy/playwright";
 import test, { chromium } from "@playwright/test";
 
-import { dotifyToString } from "../lib/util";
 import { openPage } from "../lib/browser";
 import { testContent } from "../content";
 
