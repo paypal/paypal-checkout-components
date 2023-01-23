@@ -120,7 +120,7 @@ test.afterAll(async () => {
 });
 
 for (const buttonConfig of buttonConfigs) {
-  const description = dotifyToString(buttonConfig) || "base";
+  const description = JSON.stringify(buttonConfig) || "base";
 
   test(`Render button with ${description}`, async () => {
     await testPromise(browser, buttonConfig, description);
