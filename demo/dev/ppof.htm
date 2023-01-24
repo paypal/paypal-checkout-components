@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=BC123&currency=USD"></script>
+</head>
+<body>
+    <div id="button"></div>
+    <script>
+         
+        paypal.Buttons({
+            fundingSource: 'paypal',
+            fundingEligibility: {
+                paypal: {
+                    eligible: true
+                },
+            },
+            wallet: {
+                paypal: {
+                    instruments: [
+                        {
+                            accessToken: null,
+                            instrumentID: 'abc12345',
+                            label: '••1234',
+                            logoUrl: null,
+                            oneClick: true,
+                            planID: null,
+                            secondaryInstruments: [{
+                                instrumentID: "BALANCEUSD",
+                                label: "PayPal Balance",
+                                type: "BALANCE"
+                            }],
+                            tokenID: null,
+                            type:    'bank',
+                            vendor:  'BANK OF AMERICA'
+                        }
+                    ]
+                }
+            },
+            button: {
+                showPayLabel: false
+            }
+        }).render('#button')
+    </script>
+</body>
+</html>
