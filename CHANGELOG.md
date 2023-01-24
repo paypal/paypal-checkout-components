@@ -1,3 +1,9 @@
+## <small>5.0.251 (2023-01-24)</small>
+
+* tweaks for save action (#2074) ([e0ebe6e](https://github.com/paypal/paypal-checkout-components/commit/e0ebe6e)), closes [#2074](https://github.com/paypal/paypal-checkout-components/issues/2074)
+
+
+
 ## <small>5.0.250 (2023-01-19)</small>
 
 * fix(applepay): Supress ApplePay Button from SPB when User adds standalone (#2071) ([931dc3f](https://github.com/paypal/paypal-checkout-components/commit/931dc3f)), closes [#2071](https://github.com/paypal/paypal-checkout-components/issues/2071)
