@@ -1,11 +1,9 @@
-// eslint-disable-next-line import/no-nodejs-modules
-import fs from "fs";
-
 import percySnapshot from "@percy/playwright";
 import test, { chromium } from "@playwright/test";
 
 import { openPage } from "../lib/browser";
 import { testContent } from "../content";
+import buttonConfigs from "../files/buttonConfigs.json";
 
 // eslint-disable-next-line no-process-env
 const HEADLESS = process.env.HEADLESS !== "0";
@@ -86,11 +84,6 @@ const testPromise = async (browser, buttonConfig, description) => {
     scope: ".paypal-buttons",
   });
 };
-
-const buttonConfigs = JSON.parse(
-  // eslint-disable-next-line no-sync
-  fs.readFileSync("./test/percy/files/buttonConfigs.json")
-);
 
 test.setTimeout("600000");
 test.describe.configure({ mode: "parallel" });
