@@ -72,5 +72,9 @@ export function setup() {
 }
 
 export function destroy(err? : mixed) {
+
+
     zoidDestroy(err);
+
+
 }
