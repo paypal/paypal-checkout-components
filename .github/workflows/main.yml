@@ -44,6 +44,12 @@ jobs:
       - name: ▶️ Run Jest Screenshot
         run: npm run jest-screenshot
 
+      - name: ▶️ Run Percy Screenshot
+        if: ${{ github.actor != 'renovate[bot]' }}
+        run: npm run percy-screenshot
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
       - name: ▶️ Run Build
         run: npm run build
 
