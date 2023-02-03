@@ -6,7 +6,7 @@ import type { ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 
 export function getLogoCDNExperiment(): Experiment {
-  return createExperiment("enable_logo_cdn", 100);
+  return createExperiment("enable_logo_cdn", 0);
 }
 
 type LogoProps = {|

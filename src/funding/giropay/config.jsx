@@ -8,6 +8,7 @@ import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
 import { Text, Space } from '../../ui/text';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 export function getGiropayConfig() : FundingSourceConfig {
     return {
@@ -19,7 +20,7 @@ export function getGiropayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => GiropayLogo({ logoColor, optional }),
+        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(GiropayLogo, { logoColor, optional }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {
