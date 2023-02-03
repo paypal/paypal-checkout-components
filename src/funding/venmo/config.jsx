@@ -6,9 +6,10 @@ import { PLATFORM } from '@paypal/sdk-constants/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 import { WalletLabel, Label, AppLabel } from './template';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
+
 
 export function getVenmoConfig() : FundingSourceConfig {
     return {
