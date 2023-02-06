@@ -18,13 +18,12 @@ import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
 import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 import css from './style.scoped.scss';
 
 export function Logo({ logoColor } : LogoOptions) : ChildType {
-    return (
-        <PayPalLogo logoColor={ logoColor } />
-    );
+    return enableLogoCDNExperiment(PayPalLogo, { logoColor })
 }
 
 function getPersonalizationText({ personalization, layout, multiple } : LabelOptions) : ?string {
@@ -192,18 +191,20 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     if (instrument.logoUrl) {
         logo = <img class='card-art' src={ instrument.logoUrl } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
-        logo = <GlyphCard logoColor={ logoColor } />;
+      // $FlowFixMe
+        logo = enableLogoCDNExperiment(GlyphCard, { logoColor });
     } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
-        logo = <GlyphBank logoColor={ logoColor } />;
+        logo = enableLogoCDNExperiment(GlyphBank, { logoColor });
     } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-        logo = <CreditLogo locale={ locale } logoColor={ logoColor } />;
+      // $FlowFixMe
+        logo = enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
     }
 
     return (
         <Style css={ css }>
             <div class='wallet-label'>
                 <div class='paypal-mark'>
-                    <PPLogo logoColor={ logoColor } />
+                    {enableLogoCDNExperiment(PPLogo ,{ logoColor })}
                 </div>
                 {
                     (instrument.oneClick && commit && content) &&
@@ -214,7 +215,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
                 }
                 <div class='paypal-wordmark'>
                     <Space />
-                    <PayPalLogo logoColor={ logoColor } />
+                    {enableLogoCDNExperiment(PayPalLogo ,{ logoColor })}
                 </div>
                 <div class='divider'>|</div>
                 {
@@ -338,24 +339,27 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
-                : <GlyphCard logoColor={ logoColor } />;
+                // $FlowFixMe
+                : enableLogoCDNExperiment(GlyphCard, { logoColor });
 
             label = instrument.label.replace('••••', '••');
 
         } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
-                : <GlyphBank logoColor={ logoColor } />;
+                : enableLogoCDNExperiment(GlyphBank, { logoColor });
 
             label = instrument.label.replace('••••', '••');
 
         } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-            logo = <CreditMark />;
+            // $FlowFixMe
+            logo = enableLogoCDNExperiment(CreditMark, {});
 
             label = content && content.credit;
 
         } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
-            logo = <PayPalMark />;
+            // $FlowFixMe
+            logo = enableLogoCDNExperiment(PayPalMark, {});
 
             label = content && content.balance;
 
@@ -378,7 +382,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     branded
                         ? (
                             <div class='paypal-mark'>
-                                <PPLogo logoColor={ logoColor } />
+                                { enableLogoCDNExperiment(PPLogo, { logoColor }) }
                                 <Space />
                             </div>
                         )
