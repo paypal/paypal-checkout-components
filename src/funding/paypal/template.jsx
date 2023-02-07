@@ -191,12 +191,10 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     if (instrument.logoUrl) {
         logo = <img class='card-art' src={ instrument.logoUrl } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
-      // $FlowFixMe
         logo = enableLogoCDNExperiment(GlyphCard, { logoColor });
     } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
         logo = enableLogoCDNExperiment(GlyphBank, { logoColor });
     } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-      // $FlowFixMe
         logo = enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
     }
 

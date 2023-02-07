@@ -3,23 +3,14 @@
 import { createExperiment } from "@paypal/sdk-client/src";
 import type { Experiment } from "@krakenjs/belter/src";
 import type { ChildType } from "@krakenjs/jsx-pragmatic/src";
-import { LOGO_COLOR } from "@paypal/sdk-logos/src";
-import type { LocaleType } from "@paypal/sdk-constants/src";
 
 export function getLogoCDNExperiment(): Experiment {
   return createExperiment("enable_logo_cdn", 100);
 }
 
-type LogoProps = {|
-  logoColor?: $Values<typeof LOGO_COLOR>,
-  optional?: void | boolean,
-  locale?: LocaleType,
-  loadFromCDN?: boolean,
-|};
-
-export function enableLogoCDNExperiment(
-  logo: (LogoProps) => ChildType,
-  logoOptions: LogoProps
+export function enableLogoCDNExperiment<T>(
+  logo: (T) => ChildType,
+  logoOptions: T
 ): ChildType {
   // enable logo CDN experiment for first render only
   if (__WEB__) {
