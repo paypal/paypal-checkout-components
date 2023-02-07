@@ -337,7 +337,6 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
-                // $FlowFixMe
                 : enableLogoCDNExperiment(GlyphCard, { logoColor });
 
             label = instrument.label.replace('••••', '••');
@@ -350,13 +349,11 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
             label = instrument.label.replace('••••', '••');
 
         } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-            // $FlowFixMe
             logo = enableLogoCDNExperiment(CreditMark, {});
 
             label = content && content.credit;
 
         } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
-            // $FlowFixMe
             logo = enableLogoCDNExperiment(PayPalMark, {});
 
             label = content && content.balance;

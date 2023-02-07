@@ -117,7 +117,6 @@ export function getCardConfig() : FundingSourceConfig {
         },
 
         Logo: ({ logoColor }) => {
-          // $FlowFixMe
             return enableLogoCDNExperiment(GlyphCard, { logoColor });
         },
 

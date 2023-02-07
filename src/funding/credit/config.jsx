@@ -28,7 +28,6 @@ export function getCreditConfig() : FundingSourceConfig {
 
         Logo: ({ locale, logoColor }) => {
             if (locale.country === COUNTRY.DE) {
-                // $FlowFixMe
                 return enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
             }
     
@@ -41,7 +40,6 @@ export function getCreditConfig() : FundingSourceConfig {
                         <Space />
                     </span>
                     {
-                        // $FlowFixMe
                         enableLogoCDNExperiment(CreditLogo, { locale, logoColor })
                     }
                 </Fragment>
