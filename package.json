@@ -109,7 +109,7 @@
     "@paypal/funding-components": "^1.0.30",
     "@paypal/sdk-client": "^4.0.166",
     "@paypal/sdk-constants": "^1.0.127",
-    "@paypal/sdk-logos": "^2.0.2"
+    "@paypal/sdk-logos": "^2.2.3"
   },
   "lint-staged": {
     "*.sh": "prettier --write"
