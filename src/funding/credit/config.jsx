@@ -9,6 +9,7 @@ import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT, BUTTON_FLOW } from '../../constan
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Space } from '../../ui/text';
 import { WalletLabel } from '../paypal/template';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 export function getCreditConfig() : FundingSourceConfig {
     return {
@@ -27,18 +28,20 @@ export function getCreditConfig() : FundingSourceConfig {
 
         Logo: ({ locale, logoColor }) => {
             if (locale.country === COUNTRY.DE) {
-                return <CreditLogo logoColor={ logoColor } locale={ locale } />;
+                return enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
             }
     
             return (
                 <Fragment>
-                    <PPLogo logoColor={ logoColor } />
+                    {enableLogoCDNExperiment(PPLogo, { logoColor })}
                     <Space />
                     <span optional>
-                        <PayPalLogo logoColor={ logoColor } />
+                    {enableLogoCDNExperiment(PayPalLogo, { logoColor }) }
                         <Space />
                     </span>
-                    <CreditLogo logoColor={ logoColor } locale={ locale } />
+                    {
+                        enableLogoCDNExperiment(CreditLogo, { locale, logoColor })
+                    }
                 </Fragment>
             );
         },

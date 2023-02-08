@@ -3,9 +3,10 @@
 import { HiperLogo } from '@paypal/sdk-logos/src';
 
 import type { CardConfig } from '../../common';
+import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getHiperConfig() : CardConfig {
     return {
-        Label: HiperLogo
+        Label: () => enableLogoCDNExperiment(HiperLogo)
     };
 }

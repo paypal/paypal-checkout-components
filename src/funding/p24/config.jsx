@@ -7,6 +7,7 @@ import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
 import { Text, Space } from '../../ui/text';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 export function getP24Config() : FundingSourceConfig {
     return {
@@ -18,7 +19,7 @@ export function getP24Config() : FundingSourceConfig {
 
         shippingChange: false,
     
-        Logo: ({ logoColor, optional }) => P24Logo({ logoColor, optional }),
+        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(P24Logo, { logoColor, optional }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {
