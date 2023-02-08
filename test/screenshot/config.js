@@ -46,6 +46,7 @@ type ButtonConfig = {|
     wallet? : Object,
     rememberedFunding? : $ReadOnlyArray<string>,
     button? : {|
+        showPayLabel? : boolean,
         locale? : string,
         fundingSource? : string,
         userIDToken? : string,
@@ -1235,5 +1236,215 @@ buttonConfigs.push({
                 }
             }
         }
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: [{
+                        instrumentID: "BALANCEUSD",
+                        label: "PayPal Balance",
+                        type: "BALANCE"
+                    }],
+                    tokenID: null,
+                    type:    'card',
+                    vendor:  'VISA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: [{
+                        instrumentID: "BALANCEUSD",
+                        label: "PayPal Balance",
+                        type: "BALANCE"
+                    }],
+                    tokenID: null,
+                    type:    'bank',
+                    vendor:  'BANK OF AMERICA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: null,
+                    tokenID: null,
+                    type:    'bank',
+                    vendor:  'BANK OF AMERICA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: null,
+                    tokenID: null,
+                    type:    'card',
+                    vendor:  'VISA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
+    }
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 350
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'BALANCEUSD',
+                    label: 'BALANCE',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: null,
+                    tokenID: null,
+                    type:    'balance',
+                    vendor:  'BALANCE'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
+    },
+});
+
+buttonConfigs.push({
+    diffThreshold: 1000,
+    container:     {
+        width: 250
+    },
+    wallet: {
+        paypal: {
+            instruments: [
+                {
+                    accessToken: null,
+                    instrumentID: 'abc12345',
+                    label: '••1234',
+                    logoUrl: null,
+                    oneClick: true,
+                    planID: null,
+                    secondaryInstruments: [{
+                        instrumentID: "BALANCEUSD",
+                        label: "PayPal Balance",
+                        type: "BALANCE"
+                    }],
+                    tokenID: null,
+                    type:    'bank',
+                    vendor:  'BANK OF AMERICA'
+                }
+            ]
+        }
+    },
+    fundingEligibility: {
+        paypal: {
+            eligible: true
+        }
+    },
+    button: {
+        showPayLabel: false
     }
 });

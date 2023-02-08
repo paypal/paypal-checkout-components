@@ -21,7 +21,8 @@ const CARD_FIELD_TYPE = {
     NUMBER: 'number',
     CVV:    'cvv',
     EXPIRY: 'expiry',
-    NAME:   'name'
+    NAME:   'name',
+    POSTAL: 'postal'
 };
 
 type CardFieldsProps = {|
@@ -44,7 +45,15 @@ type CardFieldsProps = {|
     commit : boolean,
     vault : boolean,
     branded? : boolean,
-
+    minLength?: number,
+    maxLength?: number,
+    onChange?: () => ZalgoPromise<Object> | Object,
+    inputEvents?: {|
+        onChange?: () => ZalgoPromise<Object> | Object,
+        onBlur?: () => ZalgoPromise<Object> | Object,
+        onFocus?: () => ZalgoPromise<Object> | Object,
+        onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
+    |},
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
@@ -62,14 +71,20 @@ type CardFieldProps = {|
 export type CardFieldComponent = ZoidComponent<CardFieldProps>;
 
 type CardFieldsExports = {|
-    submit : () => ZalgoPromise<void>
+    submit : () => ZalgoPromise<void>,
+    setAttribute : () => ZalgoPromise<void>,
+    removeAttribute : () => ZalgoPromise<void>,
+    addClass : () => ZalgoPromise<void>,
+    removeClass : () => ZalgoPromise<void>,
+    getState : () => ZalgoPromise<Object>
 |};
 
 type CardFieldsChildren = {|
     NumberField : CardFieldComponent,
     CVVField : CardFieldComponent,
     ExpiryField : CardFieldComponent,
-    NameField : CardFieldComponent
+    NameField : CardFieldComponent,
+    PostalCodeField: CardFieldComponent
 |};
 
 const url = () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__ }`;
@@ -109,6 +124,30 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
 
             prerenderTemplate,
+
+            exports: {
+                setAttribute: {
+                    type: 'function'
+                },
+                removeAttribute: {
+                    type: 'function'
+                },
+                addClass: {
+                    type: 'function'
+                },
+                removeClass: {
+                    type: 'function'
+                },
+                clear: {
+                    type: 'function'
+                },
+                focus: {
+                    type: 'function'
+                },
+                setMessage: {
+                    type: 'function'
+                }
+            },
 
             props: {
                 type: {
@@ -197,6 +236,42 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     }
                 },
 
+                onChange: {
+                    type: 'function',
+                    required: false,
+                    value: ({props}) => {
+                        if (props.onChange) {
+                            return props.onChange
+                        } else {
+                            return props.parent.props.onChange
+                        }
+                    }
+                },
+
+                inputEvents: {
+                    type: 'object',
+                    required: false,
+                    value: ({props}) => {
+                        if (props.inputEvents) {
+                            return props.inputEvents
+                        } else {
+                            return props.parent.props.inputEvents
+                        }
+                    }
+                },
+
+                minLength: {
+                    type: 'number',
+                    required: false,
+                    value: ({props}) => props.minLength
+                },
+
+                maxLength: {
+                    type: 'number',
+                    required: false,
+                    value: ({props}) => props.maxLength
+                },
+
                 fundingEligibility: {
                     type:  'object',
                     value: ({ props }) => props.parent.props.fundingEligibility
@@ -250,6 +325,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
     const CVVField = genericCardField(CARD_FIELD_TYPE.CVV);
     const ExpiryField = genericCardField(CARD_FIELD_TYPE.EXPIRY);
     const NameField = genericCardField(CARD_FIELD_TYPE.NAME);
+    const PostalCodeField = genericCardField(CARD_FIELD_TYPE.POSTAL);
 
     const CardFields = create({
         tag: 'paypal-card-fields',
@@ -278,14 +354,49 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 NumberField,
                 CVVField,
                 ExpiryField,
-                NameField
+                NameField,
+                PostalCodeField
             };
         },
 
         exports: {
             submit: {
                 type: 'function'
+            },
+            setAttribute: {
+                type: 'function'
+            },
+            removeAttribute: {
+                type: 'function'
+            },
+            addClass: {
+                type: 'function'
+            },
+            removeClass: {
+                type: 'function'
+            },
+            clear: {
+                type: 'function'
+            },
+            focus: {
+                type: 'function'
+            },
+            getState: {
+                type: 'function'
+            },
+        },
+
+        eligible: () => {
+            const fundingEligibility = getRefinedFundingEligibility();
+            if (fundingEligibility?.card?.eligible) {
+                return {
+                    eligible: true
+                };
             }
+            return {
+                eligible: false,
+                reason: 'card payments are not eligible'
+            };
         },
 
         props: {
@@ -363,6 +474,28 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'object',
                 required:   false,
                 queryParam: true
+            },
+
+            onChange: {
+                type: 'function',
+                required: false
+            },
+
+            inputEvents: {
+                type: 'object',
+                required: false
+            },
+
+            minLength: {
+                type: 'number',
+                required: false,
+                value: ({props}) => props.minLength
+            },
+
+            maxLength: {
+                type: 'number',
+                required: false,
+                value: ({props}) => props.maxLength
             },
 
             fundingEligibility: {

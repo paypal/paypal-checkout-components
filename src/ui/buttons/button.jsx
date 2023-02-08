@@ -41,11 +41,12 @@ type IndividualButtonProps = {|
     vault : boolean,
     merchantFundingSource : ?$Values<typeof FUNDING>,
     instrument : ?WalletInstrument,
-    experience? : string
+    experience? : string,
+    showPayLabel : boolean
 |};
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
-    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience } : IndividualButtonProps) : ElementNode {
+    userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience, showPayLabel } : IndividualButtonProps) : ElementNode {
     
     const { custom, layout, shape } = style;
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label;
@@ -98,8 +99,18 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             preventClickFocus(el);
         }
     };
-    
-    const labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
+
+    function getAriaLabel() : string {
+        let labelText = typeof fundingConfig.labelText === 'function' ?  fundingConfig.labelText({ content, fundingEligibility }) : (fundingConfig.labelText || fundingSource);
+
+        if (!showPayLabel && instrument?.vendor && instrument.label) {
+            labelText = instrument.secondaryInstruments ? `${instrument.secondaryInstruments[0].type} & ${instrument.vendor} ${instrument.label}` : `${instrument.vendor} ${instrument.label}`;
+        }
+
+        return labelText;
+    }
+
+    const labelText = getAriaLabel();
 
     const logoNode = (
         <Logo
@@ -174,7 +185,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
 
     if (
         WalletLabel &&
-        flow === BUTTON_FLOW.PURCHASE &&
+        (!showPayLabel || flow === BUTTON_FLOW.PURCHASE) &&
         (instrument || (__WEB__ && userIDToken && (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.VENMO)))
     ) {
         labelNode = (
@@ -189,6 +200,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 vault={ vault }
                 textColor={ textColor }
                 fundingSource={ fundingSource }
+                showPayLabel={ showPayLabel }
             />
         );
 
@@ -218,11 +230,12 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
             <div
                 role='link'
                 { ...{
-                    [ ATTRIBUTE.BUTTON ]:            true,
-                    [ ATTRIBUTE.FUNDING_SOURCE ]:    fundingSource,
-                    [ ATTRIBUTE.PAYMENT_METHOD_ID ]: instrument ? instrument.tokenID : null,
-                    [ ATTRIBUTE.INSTRUMENT_ID ]:     instrument ? instrument.instrumentID : null,
-                    [ ATTRIBUTE.INSTRUMENT_TYPE ]:   instrument ? instrument.type : null
+                    [ ATTRIBUTE.BUTTON ]:                    true,
+                    [ ATTRIBUTE.FUNDING_SOURCE ]:            fundingSource,
+                    [ ATTRIBUTE.PAYMENT_METHOD_ID ]:         instrument ? instrument.tokenID : null,
+                    [ ATTRIBUTE.INSTRUMENT_ID ]:             instrument ? instrument.instrumentID : null,
+                    [ ATTRIBUTE.INSTRUMENT_TYPE ]:           instrument ? instrument.type : null,
+                    [ ATTRIBUTE.SECONDARY_INSTRUMENT_TYPE ]: instrument?.secondaryInstruments ? instrument.secondaryInstruments[0].type : null
                 } }
                 class={ [
                     CLASS.BUTTON,
@@ -250,7 +263,7 @@ export function Button({ fundingSource, style, multiple, locale, env, fundingEli
                 <Spinner />
             </div>
 
-            { shouldShowWalletMenu ? <MenuButton textColor={ textColor } /> : null }
+            { shouldShowWalletMenu ? <MenuButton textColor={ textColor } content={ content } /> : null }
         </div>
     );
 }
