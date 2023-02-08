@@ -1,3 +1,9 @@
+## <small>5.0.252 (2023-02-08)</small>
+
+* chore: create logo experiment (#2080) ([5c04118](https://github.com/paypal/paypal-checkout-components/commit/5c04118)), closes [#2080](https://github.com/paypal/paypal-checkout-components/issues/2080)
+
+
+
 ## <small>5.0.251 (2023-01-24)</small>
 
 * tweaks for save action (#2074) ([e0ebe6e](https://github.com/paypal/paypal-checkout-components/commit/e0ebe6e)), closes [#2074](https://github.com/paypal/paypal-checkout-components/issues/2074)
