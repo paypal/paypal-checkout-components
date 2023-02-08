@@ -17,13 +17,6 @@ describe('Tests for button CDN rendering', () => {
 
         window.paypal.Buttons({
 
-            style: {
-                shape:  'pill',
-                color:  'gold',
-                layout: 'vertical',
-                label:  'paypal'
-            },
-
             test: {
                 onRender() {
                     const frame = document.querySelector('#testContainer iframe');
@@ -49,13 +42,6 @@ describe('Tests for button CDN rendering', () => {
 
     it('should not render logo from CDN when experiment is inactive', (done) => {
         window.paypal.Buttons({
-
-            style: {
-                shape:  'pill',
-                color:  'gold',
-                layout: 'vertical',
-                label:  'paypal'
-            },
 
             test: {
                 onRender() {
