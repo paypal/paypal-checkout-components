@@ -8,7 +8,7 @@ import { BUTTON_LAYOUT } from '../../constants';
 import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
 import { Text, Space } from '../../ui/text';
 
-export function getSatispayConfig() : FundingSourceConfig {
+export function getPaidyConfig() : FundingSourceConfig {
     return {
         ...DEFAULT_APM_FUNDING_CONFIG,
 
