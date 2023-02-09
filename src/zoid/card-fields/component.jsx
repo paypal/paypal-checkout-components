@@ -8,7 +8,7 @@ import { create, type ZoidComponent } from '@krakenjs/zoid/src';
 import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { memoize, uniqueID } from '@krakenjs/belter/src';
 import { getLocale, getEnv, getSDKMeta, getDisableCard, getPayPalDomain, getClientID, getDebug, getCurrency, getIntent,
-    getCommit, getVault } from '@paypal/sdk-client/src';
+    getCommit, getVault, getUserIDToken } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { CARD, CURRENCY, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
@@ -57,7 +57,8 @@ type CardFieldsProps = {|
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>
+    onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
+    action: Object
 |};
 
 type CardFieldProps = {|
@@ -150,6 +151,17 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
 
             props: {
+                action: {
+                    type: 'object',
+                    value: ({props}) => {
+                        if (props.action) {
+                            return props.action
+                        } else {
+                            return props.parent.props.action
+                        }
+                    }
+                },
+
                 type: {
                     type:       'string',
                     value:      () => type,
@@ -316,7 +328,13 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     queryParam: true,
                     required:   false,
                     value:      ({ props }) => props.parent.props.branded
-                }
+                },
+
+                userIDToken: {
+                    type:       'string',
+                    default:    getUserIDToken,
+                    required:   false,
+                },
             }
         });
     };
@@ -400,6 +418,10 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
         },
 
         props: {
+            action: {
+                type:       'object',
+            },
+
             type: {
                 type:       'string',
                 value:      () => CARD_FIELD_TYPE.SINGLE,
@@ -541,7 +563,13 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'boolean',
                 queryParam: true,
                 required:   false
-            }
+            },
+
+            userIDToken: {
+                type:       'string',
+                default:    getUserIDToken,
+                required:   false,
+            },
         }
     });
 
