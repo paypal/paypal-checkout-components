@@ -58,7 +58,10 @@ type CardFieldsProps = {|
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    action: Object
+    save: {|
+        createVaultSetupToken: () => ZalgoPromise<string>,
+        onApprove: ({|vaultSetupToken: string|}) => ?ZalgoPromise<void>
+    |}
 |};
 
 type CardFieldProps = {|
@@ -151,13 +154,13 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
 
             props: {
-                action: {
+                save: {
                     type: 'object',
                     value: ({props}) => {
-                        if (props.action) {
-                            return props.action
+                        if (props.save) {
+                            return props.save
                         } else {
-                            return props.parent.props.action
+                            return props.parent.props.save
                         }
                     }
                 },
@@ -418,7 +421,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
         },
 
         props: {
-            action: {
+            save: {
                 type:       'object',
             },
 
