@@ -8,7 +8,7 @@ import { create, type ZoidComponent } from '@krakenjs/zoid/src';
 import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { memoize, uniqueID } from '@krakenjs/belter/src';
 import { getLocale, getEnv, getSDKMeta, getDisableCard, getPayPalDomain, getClientID, getDebug, getCurrency, getIntent,
-    getCommit, getVault } from '@paypal/sdk-client/src';
+    getCommit, getVault, getCorrelationID } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { CARD, CURRENCY, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
@@ -316,7 +316,13 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     queryParam: true,
                     required:   false,
                     value:      ({ props }) => props.parent.props.branded
-                }
+                },
+                sdkCorrelationID: {
+                    type:       'string',
+                    required:   false,
+                    value:      ({ props }) => props.parent.props.sdkCorrelationID,
+                    queryParam: true
+                },
             }
         });
     };
@@ -541,7 +547,13 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'boolean',
                 queryParam: true,
                 required:   false
-            }
+            },
+            sdkCorrelationID: {
+                type:       'string',
+                required:   false,
+                value:      getCorrelationID,
+                queryParam: true
+            },
         }
     });
 
