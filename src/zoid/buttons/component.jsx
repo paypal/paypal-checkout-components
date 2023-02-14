@@ -686,15 +686,6 @@ export const getButtonsComponent : () => ButtonsComponent = memoize(() => {
                         vault
                     } });
 
-                    const logger = getLogger();
-
-                    logger
-                        .info('isInlineXOEligible props', { props: JSON.stringify(props) })
-                        .info('isInlineXOEligible eligible', { eligible: String(eligible) })
-                        .track({
-                            [ FPTI_KEY.TRANSITION ]: `inline_xo_eligibility_${ String(eligible) }`
-                        }).flush();
-
                     return eligible ? EXPERIENCE.INLINE : '';
                 }
             },

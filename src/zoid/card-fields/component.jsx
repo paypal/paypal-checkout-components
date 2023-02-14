@@ -57,7 +57,8 @@ type CardFieldsProps = {|
     createOrder : () => ZalgoPromise<string> | string,
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>
+    onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
+    action: Object
 |};
 
 type CardFieldProps = {|
@@ -150,6 +151,17 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             },
 
             props: {
+                action: {
+                    type: 'object',
+                    value: ({props}) => {
+                        if (props.action) {
+                            return props.action
+                        } else {
+                            return props.parent.props.action
+                        }
+                    }
+                },
+
                 type: {
                     type:       'string',
                     value:      () => type,
@@ -344,6 +356,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     queryParam: true,
                     value:      ({ props }) => props.parent.props.merchantID
                 },
+                userIDToken: {
+                    type:       'string',
+                    default:    getUserIDToken,
+                    required:   false,
+                },
             }
         });
     };
@@ -427,6 +444,10 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
         },
 
         props: {
+            action: {
+                type:       'object',
+            },
+
             type: {
                 type:       'string',
                 value:      () => CARD_FIELD_TYPE.SINGLE,
@@ -589,6 +610,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 type:       'array',
                 queryParam: true,
                 value:      getMerchantID
+            },
+            userIDToken: {
+                type:       'string',
+                default:    getUserIDToken,
+                required:   false,
             },
         }
     });
