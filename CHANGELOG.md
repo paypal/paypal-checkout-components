@@ -1,3 +1,21 @@
+## <small>5.0.252 (2023-02-08)</small>
+
+* chore: create logo experiment (#2080) ([5c04118](https://github.com/paypal/paypal-checkout-components/commit/5c04118)), closes [#2080](https://github.com/paypal/paypal-checkout-components/issues/2080)
+
+
+
+## <small>5.0.251 (2023-01-24)</small>
+
+* tweaks for save action (#2074) ([e0ebe6e](https://github.com/paypal/paypal-checkout-components/commit/e0ebe6e)), closes [#2074](https://github.com/paypal/paypal-checkout-components/issues/2074)
+
+
+
+## <small>5.0.250 (2023-01-19)</small>
+
+* fix(applepay): Supress ApplePay Button from SPB when User adds standalone (#2071) ([931dc3f](https://github.com/paypal/paypal-checkout-components/commit/931dc3f)), closes [#2071](https://github.com/paypal/paypal-checkout-components/issues/2071)
+
+
+
 ## <small>5.0.249 (2023-01-17)</small>
 
 * feat: support >= 250px button widths for PPoF (#2072) ([0b4b5b3](https://github.com/paypal/paypal-checkout-components/commit/0b4b5b3)), closes [#2072](https://github.com/paypal/paypal-checkout-components/issues/2072)

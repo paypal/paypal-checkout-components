@@ -1,10 +1,11 @@
 /* @flow */
 /** @jsx node */
 
-import { PLATFORM } from '@paypal/sdk-constants/src';
+import { PLATFORM, FUNDING } from '@paypal/sdk-constants/src';
 import { ApplePayLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 import { Mark } from './template';
@@ -18,6 +19,12 @@ export function getApplePayConfig() : FundingSourceConfig {
                 applepay: true
             };
         },
+        eligible: ({components}) => {
+            /** If the JS SDK Script Includes Standalone ApplePay Component the Exclude the ApplePay Button From the Vertical Stack 
+             * https://paypal.atlassian.net/browse/DTALTPAY-1232
+            */
+           return !components?.includes(FUNDING.APPLEPAY);
+        },
 
         platforms: [
             PLATFORM.DESKTOP,
@@ -29,7 +36,7 @@ export function getApplePayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => ApplePayLogo({ logoColor, optional }),
+        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(ApplePayLogo, { logoColor, optional }),
         Mark: ({ ...props }) => Mark({ ...props }),
 
         colors: [
