@@ -161,10 +161,11 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             props: {
                 save: {
                     type: 'object',
+                    required: false,
                     value: ({props}) => {
                         if (props.save) {
                             return props.save
-                        } else {
+                        } else if (props.parent.props) {
                             return props.parent.props.save
                         }
                     }
@@ -448,6 +449,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
         props: {
             save: {
                 type:       'object',
+                required: false,
             },
 
             type: {
