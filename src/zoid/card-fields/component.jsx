@@ -58,7 +58,11 @@ type CardFieldsProps = {|
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    action: Object
+    action: Object,
+    sdkCorrelationID: string,
+    hcfSessionID: string,
+    partnerAttributionID: string,
+    merchantID: $ReadOnlyArray<string>
 |};
 
 type CardFieldProps = {|
