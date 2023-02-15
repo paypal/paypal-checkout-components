@@ -1,3 +1,9 @@
+## <small>5.0.253 (2023-02-15)</small>
+
+* update SDK Bank logo (#2100) ([8feef3b](https://github.com/paypal/paypal-checkout-components/commit/8feef3b)), closes [#2100](https://github.com/paypal/paypal-checkout-components/issues/2100)
+
+
+
 ## <small>5.0.252 (2023-02-08)</small>
 
 * chore: create logo experiment (#2080) ([5c04118](https://github.com/paypal/paypal-checkout-components/commit/5c04118)), closes [#2080](https://github.com/paypal/paypal-checkout-components/issues/2080)
