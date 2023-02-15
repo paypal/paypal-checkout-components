@@ -8,7 +8,7 @@ import { create, type ZoidComponent } from '@krakenjs/zoid/src';
 import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
 import { memoize, uniqueID } from '@krakenjs/belter/src';
 import { getLocale, getEnv, getSDKMeta, getDisableCard, getPayPalDomain, getClientID, getDebug, getCurrency, getIntent,
-    getCommit, getVault, getUserIDToken } from '@paypal/sdk-client/src';
+    getCommit, getVault, getCorrelationID, getPartnerAttributionID, getMerchantID, getUserIDToken } from '@paypal/sdk-client/src';
 import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
 import { CARD, CURRENCY, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
 
@@ -58,6 +58,11 @@ type CardFieldsProps = {|
     onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
     onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
+    action: Object,
+    sdkCorrelationID: string,
+    hcfSessionID: string,
+    partnerAttributionID: string,
+    merchantID: $ReadOnlyArray<string>,
     save: {|
         createVaultSetupToken: () => ZalgoPromise<string>,
         onApprove: ({|vaultSetupToken: string|}) => ?ZalgoPromise<void>
@@ -332,7 +337,27 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                     required:   false,
                     value:      ({ props }) => props.parent.props.branded
                 },
-
+                sdkCorrelationID: {
+                    type:       'string',
+                    required:   false,
+                    value:      ({ props }) => props.parent.props.sdkCorrelationID,
+                    queryParam: true
+                },
+                hcfSessionID : {
+                    type:       'string',
+                    required: false,
+                    value: ({ props }) => props.parent.props.hcfSessionID
+                },
+                partnerAttributionID: {
+                    type:       'string',
+                    required:   false,
+                    value:      ({ props }) => props.parent.props.partnerAttributionID
+                },
+                merchantID: {
+                    type:       'array',
+                    queryParam: true,
+                    value:      ({ props }) => props.parent.props.merchantID
+                },
                 userIDToken: {
                     type:       'string',
                     default:    getUserIDToken,
@@ -440,7 +465,7 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
             sessionID: {
                 type:       'string',
                 required:   false,
-                default:    getSessionID,
+                value:    getSessionID,
                 queryParam: true
             },
 
@@ -567,7 +592,27 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
                 queryParam: true,
                 required:   false
             },
-
+            sdkCorrelationID: {
+                type:       'string',
+                required:   false,
+                value:      getCorrelationID,
+                queryParam: true
+            },
+            hcfSessionID : {
+                type:       'string',
+                required:   false,
+                value:      uniqueID
+            },
+            partnerAttributionID: {
+                type:       'string',
+                required:   false,
+                value:      getPartnerAttributionID
+            },
+            merchantID: {
+                type:       'array',
+                queryParam: true,
+                value:      getMerchantID
+            },
             userIDToken: {
                 type:       'string',
                 default:    getUserIDToken,
