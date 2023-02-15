@@ -62,7 +62,7 @@ type CardFieldsProps = {|
     sdkCorrelationID: string,
     hcfSessionID: string,
     partnerAttributionID: string,
-    merchantID: $ReadOnlyArray<string>
+    merchantID: $ReadOnlyArray<string>,
     save: {|
         createVaultSetupToken: () => ZalgoPromise<string>,
         onApprove: ({|vaultSetupToken: string|}) => ?ZalgoPromise<void>
