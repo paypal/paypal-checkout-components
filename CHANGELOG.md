@@ -1,3 +1,9 @@
+## <small>5.0.254 (2023-02-15)</small>
+
+* fix save prop on CardFields (#2101) ([3f1fbc9](https://github.com/paypal/paypal-checkout-components/commit/3f1fbc9)), closes [#2101](https://github.com/paypal/paypal-checkout-components/issues/2101)
+
+
+
 ## <small>5.0.253 (2023-02-15)</small>
 
 * update SDK Bank logo (#2100) ([8feef3b](https://github.com/paypal/paypal-checkout-components/commit/8feef3b)), closes [#2100](https://github.com/paypal/paypal-checkout-components/issues/2100)
