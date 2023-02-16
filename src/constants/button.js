@@ -7,7 +7,8 @@ export const BUTTON_LABEL = {
     PAY:         ('pay' : 'pay'),
     INSTALLMENT: ('installment' : 'installment'),
     SUBSCRIBE:   ('subscribe' : 'subscribe'),
-    DONATE:      ('donate' : 'donate')
+    DONATE:      ('donate' : 'donate'),
+    SAVE:      ('save' : 'save')
 };
 
 export const BUTTON_COLOR = {

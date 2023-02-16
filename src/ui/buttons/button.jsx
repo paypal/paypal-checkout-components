@@ -47,7 +47,7 @@ type IndividualButtonProps = {|
 
 export function Button({ fundingSource, style, multiple, locale, env, fundingEligibility, i, nonce, flow, vault,
     userIDToken, personalization, onClick = noop, content, tagline, commit, experiment, instrument, experience, showPayLabel } : IndividualButtonProps) : ElementNode {
-    
+
     const { custom, layout, shape } = style;
     const inlineExperience = experience === EXPERIENCE.INLINE && custom && custom.label;
     const fundingConfig = getFundingConfig()[fundingSource];
