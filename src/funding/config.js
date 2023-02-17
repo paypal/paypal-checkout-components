@@ -31,6 +31,7 @@ import { getMaximaConfig } from './maxima';
 import { getMercadopagoConfig } from './mercadopago';
 import { getMultibancoConfig } from './multibanco';
 import { getSatispayConfig } from './satispay';
+import { getPaidyConfig } from './paidy';
 
 export function getFundingConfig() : { [$Values<typeof FUNDING>] : ?FundingSourceConfig } {
     return inlineMemoize(getFundingConfig, () => {
