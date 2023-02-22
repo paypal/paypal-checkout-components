@@ -1,3 +1,9 @@
+## <small>5.0.255 (2023-02-22)</small>
+
+* feat: Adding paidy as APM. (#2037) ([51dc37a](https://github.com/paypal/paypal-checkout-components/commit/51dc37a)), closes [#2037](https://github.com/paypal/paypal-checkout-components/issues/2037)
+
+
+
 ## <small>5.0.254 (2023-02-15)</small>
 
 * fix save prop on CardFields (#2101) ([3f1fbc9](https://github.com/paypal/paypal-checkout-components/commit/3f1fbc9)), closes [#2101](https://github.com/paypal/paypal-checkout-components/issues/2101)
