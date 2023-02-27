@@ -9,7 +9,6 @@ import {
     BasicLabel
 } from '../common';
 import { Text, Space } from '../../ui/text';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 import css from './style.scoped.scss';
  

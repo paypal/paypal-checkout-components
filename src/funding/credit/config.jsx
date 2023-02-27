@@ -9,7 +9,6 @@ import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT, BUTTON_FLOW } from '../../constan
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 import { Space } from '../../ui/text';
 import { WalletLabel } from '../paypal/template';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 export function getCreditConfig() : FundingSourceConfig {
     return {

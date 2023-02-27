@@ -10,7 +10,6 @@ import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig, type CardConfig } fro
 import { Text, Space } from '../../ui/text';
 import { isRTLLanguage } from '../../lib';
 import { WalletLabel } from '../paypal/template';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 import { getVisaConfig } from './visa';
 import { getMastercardConfig } from './mastercard';

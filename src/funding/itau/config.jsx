@@ -5,7 +5,6 @@
 import { ItauLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
 export function getItauConfig() : FundingSourceConfig {

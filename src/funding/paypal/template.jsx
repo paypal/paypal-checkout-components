@@ -18,7 +18,6 @@ import { componentContent } from '../content';
 import { Text, Space, PlaceHolder } from '../../ui/text';
 import { TrackingBeacon } from '../../ui/tracking';
 import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
 import css from './style.scoped.scss';
 
