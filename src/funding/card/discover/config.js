@@ -7,6 +7,6 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getDiscoverConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(DiscoverLogo)
+        Label: DiscoverLogo
     };
 }

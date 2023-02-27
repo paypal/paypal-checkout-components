@@ -7,6 +7,6 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getJCBConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(JcbLogo)
+        Label: JcbLogo
     };
 }

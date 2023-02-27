@@ -7,6 +7,6 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getVisaConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(VisaLogo)
+        Label: VisaLogo
     };
 }

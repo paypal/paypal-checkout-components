@@ -7,6 +7,6 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getEloConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(EloLogo)
+        Label: EloLogo
     };
 }

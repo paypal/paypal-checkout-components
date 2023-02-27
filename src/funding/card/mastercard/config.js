@@ -7,6 +7,6 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getMastercardConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(MastercardLogo)
+        Label: MastercardLogo
     };
 }

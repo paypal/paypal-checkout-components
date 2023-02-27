@@ -7,7 +7,7 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getAmexConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(AmexLogo)
+        Label: AmexLogo
     };
 }
 

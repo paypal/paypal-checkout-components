@@ -7,6 +7,6 @@ import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
 
 export function getHiperConfig() : CardConfig {
     return {
-        Label: () => enableLogoCDNExperiment(HiperLogo)
+        Label: HiperLogo
     };
 }
