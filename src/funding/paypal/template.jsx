@@ -22,7 +22,9 @@ import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/l
 import css from './style.scoped.scss';
 
 export function Logo({ logoColor } : LogoOptions) : ChildType {
-    return enableLogoCDNExperiment(PayPalLogo, { logoColor })
+    return (
+        <PayPalLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
+    );
 }
 
 function getPersonalizationText({ personalization, layout, multiple } : LabelOptions) : ?string {
@@ -190,18 +192,18 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
     if (instrument.logoUrl) {
         logo = <img class='card-art' src={ instrument.logoUrl } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
-        logo = enableLogoCDNExperiment(GlyphCard, { logoColor });
+        logo = <GlyphCard logoColor={ logoColor } loadFromCDN={ __WEB__ } />;
     } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
-        logo = enableLogoCDNExperiment(GlyphBank, { logoColor });
+        logo = <GlyphBank logoColor={ logoColor } loadFromCDN={ __WEB__ } />;
     } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-        logo = enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
+        logo = <CreditLogo locale={ locale } logoColor={ logoColor } loadFromCDN={ __WEB__ } />;
     }
 
     return (
         <Style css={ css }>
             <div class='wallet-label'>
                 <div class='paypal-mark'>
-                    {enableLogoCDNExperiment(PPLogo ,{ logoColor })}
+                    <PPLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
                 </div>
                 {
                     (instrument.oneClick && commit && content) &&
@@ -212,7 +214,7 @@ export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
                 }
                 <div class='paypal-wordmark'>
                     <Space />
-                    {enableLogoCDNExperiment(PayPalLogo ,{ logoColor })}
+                    <PayPalLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
                 </div>
                 <div class='divider'>|</div>
                 {
@@ -336,24 +338,24 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
         if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
-                : enableLogoCDNExperiment(GlyphCard, { logoColor });
+                : <GlyphCard logoColor={ logoColor } loadFromCDN={ __WEB__ } />;
 
             label = instrument.label.replace('••••', '••');
 
         } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
             logo = instrument.logoUrl
                 ? <img class='card-art' src={ instrument.logoUrl } />
-                : enableLogoCDNExperiment(GlyphBank, { logoColor });
+                : <GlyphBank logoColor={ logoColor } loadFromCDN={ __WEB__ } />;
 
             label = instrument.label.replace('••••', '••');
 
         } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-            logo = enableLogoCDNExperiment(CreditMark, {});
+            logo = <CreditMark loadFromCDN={ __WEB__ } />;
 
             label = content && content.credit;
 
         } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
-            logo = enableLogoCDNExperiment(PayPalMark, {});
+            logo = <PayPalMark loadFromCDN={ __WEB__ } />;
 
             label = content && content.balance;
 
@@ -376,7 +378,7 @@ export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
                     branded
                         ? (
                             <div class='paypal-mark'>
-                                { enableLogoCDNExperiment(PPLogo, { logoColor }) }
+                                <PPLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
                                 <Space />
                             </div>
                         )

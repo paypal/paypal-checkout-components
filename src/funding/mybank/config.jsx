@@ -18,7 +18,7 @@ export function getMybankConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => MybankLogo({ logoColor, optional, loadFromCDN: true }),
+        Logo: ({ logoColor, optional }) => MybankLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

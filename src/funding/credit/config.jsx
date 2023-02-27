@@ -27,20 +27,18 @@ export function getCreditConfig() : FundingSourceConfig {
 
         Logo: ({ locale, logoColor }) => {
             if (locale.country === COUNTRY.DE) {
-                return enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
+                return <CreditLogo logoColor={ logoColor } locale={ locale } loadFromCDN={ __WEB__ } />;
             }
     
             return (
                 <Fragment>
-                    {enableLogoCDNExperiment(PPLogo, { logoColor })}
+                    <PPLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
                     <Space />
                     <span optional>
-                    {enableLogoCDNExperiment(PayPalLogo, { logoColor }) }
+                        <PayPalLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
                         <Space />
                     </span>
-                    {
-                        enableLogoCDNExperiment(CreditLogo, { locale, logoColor })
-                    }
+                    <CreditLogo logoColor={ logoColor } locale={ locale } loadFromCDN={ __WEB__ } />
                 </Fragment>
             );
         },

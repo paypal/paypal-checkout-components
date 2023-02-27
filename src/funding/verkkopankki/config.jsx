@@ -20,7 +20,7 @@ export function getVerkkopankkiConfig() : FundingSourceConfig {
 
         shippingChange: false,
     
-        Logo: ({ logoColor, optional }) => VerkkopankkiLogo({ logoColor, optional, loadFromCDN: true }),
+        Logo: ({ logoColor, optional }) => VerkkopankkiLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

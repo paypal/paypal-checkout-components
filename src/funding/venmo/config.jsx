@@ -40,7 +40,7 @@ export function getVenmoConfig() : FundingSourceConfig {
             return {};
         },
 
-        Logo:  ({ logoColor, optional }) => VenmoLogo({ logoColor, optional, loadFromCDN: true }),
+        Logo:  ({ logoColor, optional }) => VenmoLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
         
         Label: ({ ...props }) => {
             if (props.experiment && props.experiment.enableVenmoAppLabel) {

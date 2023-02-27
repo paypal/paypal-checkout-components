@@ -20,7 +20,7 @@ export function getMultibancoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => MultibancoLogo({ logoColor, optional, loadFromCDN: true }),
+        Logo: ({ logoColor, optional }) => MultibancoLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

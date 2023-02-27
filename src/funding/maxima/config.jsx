@@ -16,7 +16,7 @@ export function getMaximaConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => MaximaLogo({ logoColor, optional, loadFromCDN: true }),
+        Logo: ({ logoColor, optional }) => MaximaLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
         colors: [
             BUTTON_COLOR.DEFAULT,

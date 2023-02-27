@@ -116,7 +116,9 @@ export function getCardConfig() : FundingSourceConfig {
         },
 
         Logo: ({ logoColor }) => {
-            return enableLogoCDNExperiment(GlyphCard, { logoColor });
+            return (
+                <GlyphCard logoColor={ logoColor } loadFromCDN={ __WEB__ } />
+            );
         },
 
         Label: ({ logo, locale, content, custom }) => {

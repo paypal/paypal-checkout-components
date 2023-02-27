@@ -77,7 +77,7 @@ export function getPaylaterConfig() : FundingSourceConfig {
         Logo: ({ logoColor, nonce, fundingEligibility }) => {
             return (
                 <Style css={ css } nonce={ nonce }>
-                    {enableLogoCDNExperiment(PPLogo, { logoColor })}
+                    <PPLogo logoColor={ logoColor } loadFromCDN={ __WEB__ } />
                     <Space />
                     <Text>{ getLabelText(fundingEligibility) || 'Pay Later' }</Text>
                 </Style>

@@ -16,7 +16,7 @@ export function getItauConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => ItauLogo({ logoColor, optional, loadFromCDN: true }),
+        Logo: ({ logoColor, optional }) => ItauLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
         colors: [
             BUTTON_COLOR.DARKBLUE,
