@@ -21,7 +21,7 @@ export function getTrustlyConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(TrustlyLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => TrustlyLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

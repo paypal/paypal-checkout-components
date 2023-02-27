@@ -19,7 +19,7 @@ export function getWechatpayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(WechatpayLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => WechatpayLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

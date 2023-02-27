@@ -19,7 +19,7 @@ export function getSofortConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(SofortLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => SofortLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

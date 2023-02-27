@@ -19,7 +19,7 @@ export function getBancontactConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(BancontactLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => BancontactLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

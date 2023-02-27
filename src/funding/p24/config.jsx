@@ -19,7 +19,7 @@ export function getP24Config() : FundingSourceConfig {
 
         shippingChange: false,
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(P24Logo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => P24Logo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

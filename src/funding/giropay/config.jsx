@@ -20,7 +20,7 @@ export function getGiropayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(GiropayLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => GiropayLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

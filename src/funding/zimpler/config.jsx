@@ -17,6 +17,6 @@ export function getZimplerConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(ZimplerLogo, { logoColor, optional })
+        Logo: ({ logoColor, optional }) => ZimplerLogo({ logoColor, optional, loadFromCDN: true })
     };
 }

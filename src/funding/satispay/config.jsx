@@ -21,7 +21,7 @@ export function getSatispayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(SatispayLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => SatispayLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

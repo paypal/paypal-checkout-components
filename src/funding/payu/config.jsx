@@ -21,7 +21,7 @@ export function getPayuConfig() : FundingSourceConfig {
 
         shippingChange: false,
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(PayuLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => PayuLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

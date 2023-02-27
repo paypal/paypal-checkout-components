@@ -21,7 +21,7 @@ export function getPaidyConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) =>  enableLogoCDNExperiment(PaidyLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) =>  PaidyLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

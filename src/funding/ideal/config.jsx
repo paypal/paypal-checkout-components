@@ -19,7 +19,7 @@ export function getIdealConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(IdealLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => IdealLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

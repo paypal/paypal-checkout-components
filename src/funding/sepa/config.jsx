@@ -15,6 +15,6 @@ export function getSepaConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
     
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(SepaLogo, { logoColor, optional })
+        Logo: ({ logoColor, optional }) => SepaLogo({ logoColor, optional, loadFromCDN: true })
     };
 }

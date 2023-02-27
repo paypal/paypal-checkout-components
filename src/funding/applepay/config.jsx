@@ -36,7 +36,7 @@ export function getApplePayConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(ApplePayLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => ApplePayLogo({ logoColor, optional, loadFromCDN: true }),
         Mark: ({ ...props }) => Mark({ ...props }),
 
         colors: [

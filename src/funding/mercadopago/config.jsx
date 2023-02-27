@@ -19,7 +19,7 @@ export function getMercadopagoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(MercadoPagoLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => MercadoPagoLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

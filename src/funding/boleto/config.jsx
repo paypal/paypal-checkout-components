@@ -21,7 +21,7 @@ export function getBoletoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(BoletoLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => BoletoLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

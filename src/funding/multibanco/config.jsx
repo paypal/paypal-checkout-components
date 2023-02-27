@@ -21,7 +21,7 @@ export function getMultibancoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(MultibancoLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => MultibancoLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

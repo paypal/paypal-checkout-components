@@ -19,7 +19,7 @@ export function getEpsConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(EpsLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => EpsLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

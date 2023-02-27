@@ -19,7 +19,7 @@ export function getBlikConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(BlikLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => BlikLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {

@@ -21,7 +21,7 @@ export function getOxxoConfig() : FundingSourceConfig {
             BUTTON_LAYOUT.VERTICAL
         ],
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(OxxoLogo, { logoColor, optional }),
+        Logo: ({ logoColor, optional }) => OxxoLogo({ logoColor, optional, loadFromCDN: true }),
 
         Label: ({ logo, ...opts }) => {
             if (__WEB__) {
