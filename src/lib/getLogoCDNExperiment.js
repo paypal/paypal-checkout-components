@@ -5,7 +5,7 @@ import type { Experiment } from "@krakenjs/belter/src";
 import type { ChildType } from "@krakenjs/jsx-pragmatic/src";
 
 export function getLogoCDNExperiment(): Experiment {
-  return createExperiment("enable_logo_cdn_experiment", 25);
+  return createExperiment("enable_logo_cdn_experiment", 100);
 }
 
 export function enableLogoCDNExperiment<T>(
