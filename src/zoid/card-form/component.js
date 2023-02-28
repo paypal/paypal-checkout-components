@@ -54,6 +54,12 @@ export function getCardFormComponent() : CardFormComponent {
             },
 
             props: {
+                bundleId: {
+                    type: 'string',
+                    required: false,
+                    queryParam: true,
+                    value: () => '3d1f4e249e122'
+                },
                 sessionID: {
                     type:       'string',
                     required:   false,
