@@ -1,3 +1,9 @@
+## <small>5.0.256 (2023-03-01)</small>
+
+* chore: pin version of percy cli (#2113) ([8f4ff5f](https://github.com/paypal/paypal-checkout-components/commit/8f4ff5f)), closes [#2113](https://github.com/paypal/paypal-checkout-components/issues/2113)
+
+
+
 ## <small>5.0.255 (2023-02-22)</small>
 
 * feat: Adding paidy as APM. (#2037) ([51dc37a](https://github.com/paypal/paypal-checkout-components/commit/51dc37a)), closes [#2037](https://github.com/paypal/paypal-checkout-components/issues/2037)
