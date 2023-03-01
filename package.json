@@ -114,6 +114,6 @@
     "@paypal/sdk-logos": "^2.2.3"
   },
   "lint-staged": {
-    "*.sh": "prettier --write"
+    "**/{src,test,scripts}/**/*.{js,jsx,json,sh}": "prettier --write"
   }
 }
