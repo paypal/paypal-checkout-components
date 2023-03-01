@@ -2,74 +2,86 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain } from '@paypal/sdk-client/src';
-import { create, EVENT, type ZoidComponent } from '@krakenjs/zoid/src';
-import { inlineMemoize, destroyElement, toCSS } from '@krakenjs/belter/src';
-import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import {
+  getLogger,
+  getPayPalDomainRegex,
+  getSDKMeta,
+  getPayPalDomain,
+} from "@paypal/sdk-client/src";
+import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
+import { inlineMemoize, destroyElement, toCSS } from "@krakenjs/belter/src";
+import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 
-import { type ModalProps } from './props';
+import { type ModalProps } from "./props";
 
 const CLASS = {
-    VISIBLE:   'visible',
-    INVISIBLE: 'invisible'
+  VISIBLE: "visible",
+  INVISIBLE: "invisible",
 };
 
 export type ModalComponent = ZoidComponent<ModalProps>;
 
-export function getModalComponent() : ModalComponent {
-    return inlineMemoize(getModalComponent, () => {
-        return create({
-            tag:    'paypal-modal',
-            url:    () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__MODAL__ }`,
-            domain: getPayPalDomainRegex(),
+export function getModalComponent(): ModalComponent {
+  return inlineMemoize(getModalComponent, () => {
+    return create({
+      tag: "paypal-modal",
+      url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__MODAL__}`,
+      domain: getPayPalDomainRegex(),
 
-            dimensions: {
-                width:  '100%',
-                height: '100%'
-            },
+      dimensions: {
+        width: "100%",
+        height: "100%",
+      },
 
-            logger: getLogger(),
+      logger: getLogger(),
 
-            containerTemplate: ({ frame, prerenderFrame, props, doc, uid, event }) => {
-                if (!frame || !prerenderFrame) {
-                    return;
-                }
+      containerTemplate: ({
+        frame,
+        prerenderFrame,
+        props,
+        doc,
+        uid,
+        event,
+      }) => {
+        if (!frame || !prerenderFrame) {
+          return;
+        }
 
-                const { cspNonce } = props;
+        const { cspNonce } = props;
 
-                prerenderFrame.classList.add(CLASS.VISIBLE);
-                frame.classList.add(CLASS.INVISIBLE);
-    
-                event.on(EVENT.RENDERED, () => {
-                    prerenderFrame.classList.remove(CLASS.VISIBLE);
-                    prerenderFrame.classList.add(CLASS.INVISIBLE);
-    
-                    frame.classList.remove(CLASS.INVISIBLE);
-                    frame.classList.add(CLASS.VISIBLE);
-    
-                    setTimeout(() => {
-                        destroyElement(prerenderFrame);
-                    }, 1);
-                });
+        prerenderFrame.classList.add(CLASS.VISIBLE);
+        frame.classList.add(CLASS.INVISIBLE);
 
-                const setupResize = (div) => {
-                    event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
-                        if (typeof newWidth === 'number') {
-                            div.style.width = toCSS(newWidth);
-                        }
+        event.on(EVENT.RENDERED, () => {
+          prerenderFrame.classList.remove(CLASS.VISIBLE);
+          prerenderFrame.classList.add(CLASS.INVISIBLE);
 
-                        if (typeof newHeight === 'number') {
-                            div.style.height = toCSS(newHeight);
-                        }
-                    });
-                };
+          frame.classList.remove(CLASS.INVISIBLE);
+          frame.classList.add(CLASS.VISIBLE);
 
-                return (
-                    <div id={ uid } onRender={ setupResize }>
-                        <style
-                            nonce={ cspNonce }
-                            innerHTML={ `
-                                #${ uid } {
+          setTimeout(() => {
+            destroyElement(prerenderFrame);
+          }, 1);
+        });
+
+        const setupResize = (div) => {
+          event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
+            if (typeof newWidth === "number") {
+              div.style.width = toCSS(newWidth);
+            }
+
+            if (typeof newHeight === "number") {
+              div.style.height = toCSS(newHeight);
+            }
+          });
+        };
+
+        return (
+          <div id={uid} onRender={setupResize}>
+            <style
+              nonce={cspNonce}
+              innerHTML={`
+                                #${uid} {
                                     display: block;
                                     position: fixed;
                                     width: 100%;
@@ -79,7 +91,7 @@ export function getModalComponent() : ModalComponent {
                                     z-index: 200000;
                                 }
 
-                                #${ uid } > iframe {
+                                #${uid} > iframe {
                                     display: inline-block;
                                     position: absolute;
                                     width: 100%;
@@ -88,52 +100,53 @@ export function getModalComponent() : ModalComponent {
                                     left: 0;
                                     transition: opacity .2s ease-in-out;
                                 }
-                                #${ uid } > iframe.${ CLASS.INVISIBLE } {
+                                #${uid} > iframe.${CLASS.INVISIBLE} {
                                     opacity: 0;
                                 }
-                                #${ uid } > iframe.${ CLASS.VISIBLE } {
+                                #${uid} > iframe.${CLASS.VISIBLE} {
                                     opacity: 1;
                                 }
-                            ` } />
-                        <node el={ frame } />
-                        <node el={ prerenderFrame } />
-                    </div>
-                ).render(dom({ doc }));
-            },
+                            `}
+            />
+            <node el={frame} />
+            <node el={prerenderFrame} />
+          </div>
+        ).render(dom({ doc }));
+      },
 
-            prerenderTemplate: () => {
-                return null;
-            },
+      prerenderTemplate: () => {
+        return null;
+      },
 
-            attributes: {
-                iframe: {
-                    scrolling: 'no'
-                }
-            },
+      attributes: {
+        iframe: {
+          scrolling: "no",
+        },
+      },
 
-            props: {
-                sdkMeta: {
-                    type:        'string',
-                    queryParam:  true,
-                    sendToChild: false,
-                    value:       getSDKMeta
-                },
-                
-                clientID: {
-                    type:       'string',
-                    queryParam: true
-                },
-                
-                orderID: {
-                    type:       'string',
-                    queryParam: true
-                },
+      props: {
+        sdkMeta: {
+          type: "string",
+          queryParam: true,
+          sendToChild: false,
+          value: getSDKMeta,
+        },
 
-                customerID: {
-                    type:       'string',
-                    queryParam: true
-                }
-            }
-        });
+        clientID: {
+          type: "string",
+          queryParam: true,
+        },
+
+        orderID: {
+          type: "string",
+          queryParam: true,
+        },
+
+        customerID: {
+          type: "string",
+          queryParam: true,
+        },
+      },
     });
+  });
 }

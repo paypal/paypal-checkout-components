@@ -1,41 +1,45 @@
 /* @flow */
 /** @jsx node */
 
-import { IdealLogo } from '@paypal/sdk-logos/src';
-import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
+import { IdealLogo } from "@paypal/sdk-logos/src";
+import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
-import { BUTTON_LAYOUT } from '../../constants';
-import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
-import { Text, Space } from '../../ui/text';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
+import { BUTTON_LAYOUT } from "../../constants";
+import {
+  DEFAULT_APM_FUNDING_CONFIG,
+  type FundingSourceConfig,
+  BasicLabel,
+} from "../common";
+import { Text, Space } from "../../ui/text";
+import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
-export function getIdealConfig() : FundingSourceConfig {
-    return {
-        ...DEFAULT_APM_FUNDING_CONFIG,
+export function getIdealConfig(): FundingSourceConfig {
+  return {
+    ...DEFAULT_APM_FUNDING_CONFIG,
 
-        shippingChange: false,
-    
-        layouts: [
-            BUTTON_LAYOUT.VERTICAL
-        ],
+    shippingChange: false,
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(IdealLogo, { logoColor, optional }),
+    layouts: [BUTTON_LAYOUT.VERTICAL],
 
-        Label: ({ logo, ...opts }) => {
-            if (__WEB__) {
-                return logo;
-            }
+    Logo: ({ logoColor, optional }) =>
+      enableLogoCDNExperiment(IdealLogo, { logoColor, optional }),
 
-            const apmLogo = (
-                <Fragment>
-                    { logo }<Space /><Text animate optional>iDEAL</Text>
-                </Fragment>
-            );
+    Label: ({ logo, ...opts }) => {
+      if (__WEB__) {
+        return logo;
+      }
 
-            return (<BasicLabel
-                { ...opts }
-                logo={ apmLogo }
-            />);
-        }
-    };
+      const apmLogo = (
+        <Fragment>
+          {logo}
+          <Space />
+          <Text animate optional>
+            iDEAL
+          </Text>
+        </Fragment>
+      );
+
+      return <BasicLabel {...opts} logo={apmLogo} />;
+    },
+  };
 }

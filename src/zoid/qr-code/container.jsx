@@ -1,64 +1,64 @@
 /* @flow */
 /** @jsx node */
 
-import { destroyElement, type EventEmitterType } from '@krakenjs/belter/src';
-import { EVENT, type RenderOptionsType } from '@krakenjs/zoid/src';
-import { node, dom, type ChildType } from '@krakenjs/jsx-pragmatic/src';
+import { destroyElement, type EventEmitterType } from "@krakenjs/belter/src";
+import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
+import { node, dom, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
-import { type QRCodeProps } from './types';
+import { type QRCodeProps } from "./types";
 
 const CLASS = {
-    VISIBLE:         'visible',
-    INVISIBLE:       'invisible',
-    COMPONENT_FRAME: 'component-frame',
-    PRERENDER_FRAME: 'prerender-frame'
+  VISIBLE: "visible",
+  INVISIBLE: "invisible",
+  COMPONENT_FRAME: "component-frame",
+  PRERENDER_FRAME: "prerender-frame",
 };
 
 export function QRCodeContainer({
-    uid,
-    frame,
-    prerenderFrame,
-    event,
-    cspNonce
-} : {|
-    uid : string,
-    frame : ?HTMLIFrameElement,
-    prerenderFrame : ?HTMLIFrameElement,
-    event : EventEmitterType,
-    cspNonce? : ?string
-|}) : ?ChildType {
-    if (!frame || !prerenderFrame) {
-        throw new Error(`Expected frame and prerenderframe`);
-    }
+  uid,
+  frame,
+  prerenderFrame,
+  event,
+  cspNonce,
+}: {|
+  uid: string,
+  frame: ?HTMLIFrameElement,
+  prerenderFrame: ?HTMLIFrameElement,
+  event: EventEmitterType,
+  cspNonce?: ?string,
+|}): ?ChildType {
+  if (!frame || !prerenderFrame) {
+    throw new Error(`Expected frame and prerenderframe`);
+  }
 
-    frame.classList.add(CLASS.COMPONENT_FRAME);
-    prerenderFrame.classList.add(CLASS.PRERENDER_FRAME);
+  frame.classList.add(CLASS.COMPONENT_FRAME);
+  prerenderFrame.classList.add(CLASS.PRERENDER_FRAME);
 
-    frame.classList.add(CLASS.INVISIBLE);
-    prerenderFrame.classList.add(CLASS.VISIBLE);
+  frame.classList.add(CLASS.INVISIBLE);
+  prerenderFrame.classList.add(CLASS.VISIBLE);
 
-    event.on(EVENT.RENDERED, () => {
-        prerenderFrame.classList.remove(CLASS.VISIBLE);
-        prerenderFrame.classList.add(CLASS.INVISIBLE);
+  event.on(EVENT.RENDERED, () => {
+    prerenderFrame.classList.remove(CLASS.VISIBLE);
+    prerenderFrame.classList.add(CLASS.INVISIBLE);
 
-        frame.classList.remove(CLASS.INVISIBLE);
-        frame.classList.add(CLASS.VISIBLE);
+    frame.classList.remove(CLASS.INVISIBLE);
+    frame.classList.add(CLASS.VISIBLE);
 
-        setTimeout(() => {
-            destroyElement(prerenderFrame);
-        }, 1);
-    });
+    setTimeout(() => {
+      destroyElement(prerenderFrame);
+    }, 1);
+  });
 
-    return (
-        <div id={ uid }>
-            <style
-                nonce={ cspNonce }
-                innerHTML={ `
+  return (
+    <div id={uid}>
+      <style
+        nonce={cspNonce}
+        innerHTML={`
             * {
                 box-sizing: border-box;
             }
 
-            #${ uid } {
+            #${uid} {
                 display: flex;
                 position: fixed;
                 width: 100%;
@@ -70,7 +70,7 @@ export function QRCodeContainer({
                 justify-content: center;
                 background-color: rgba(0, 0, 0, 0.4); 
             }
-            #${ uid } iframe {
+            #${uid} iframe {
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -81,10 +81,10 @@ export function QRCodeContainer({
                 left: 0;
                 transition: opacity .2s ease-in-out;
             }
-            #${ uid } > iframe.${ CLASS.VISIBLE } {
+            #${uid} > iframe.${CLASS.VISIBLE} {
                 opacity: 1;
             }
-            #${ uid } > iframe.${ CLASS.INVISIBLE } {
+            #${uid} > iframe.${CLASS.INVISIBLE} {
                 opacity: 0;
                 pointer-events: none;
             }
@@ -100,31 +100,37 @@ export function QRCodeContainer({
                 flex-direction: column;
                 position: relative;
             }     
-            ` } />
-            <div id="qrModal">
-                <node el={ frame } />
-                <node el={ prerenderFrame } />
-            </div>
-                        
-        </div>
-    );
+            `}
+      />
+      <div id="qrModal">
+        <node el={frame} />
+        <node el={prerenderFrame} />
+      </div>
+    </div>
+  );
 }
 
-export function containerTemplate({ frame, prerenderFrame, props, doc, uid, event } : (RenderOptionsType<QRCodeProps>)) : ?HTMLElement {
-    if (!frame || !prerenderFrame) {
-        return;
-    }
+export function containerTemplate({
+  frame,
+  prerenderFrame,
+  props,
+  doc,
+  uid,
+  event,
+}: RenderOptionsType<QRCodeProps>): ?HTMLElement {
+  if (!frame || !prerenderFrame) {
+    return;
+  }
 
-    const { cspNonce } = props;
+  const { cspNonce } = props;
 
-    return (
-        <QRCodeContainer
-            uid={ uid }
-            cspNonce={ cspNonce }
-            event={ event }
-            frame={ frame }
-            prerenderFrame={ prerenderFrame }
-        />
-        
-    ).render(dom({ doc }));
+  return (
+    <QRCodeContainer
+      uid={uid}
+      cspNonce={cspNonce}
+      event={event}
+      frame={frame}
+      prerenderFrame={prerenderFrame}
+    />
+  ).render(dom({ doc }));
 }

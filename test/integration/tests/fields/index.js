@@ -1,3 +1,3 @@
 /* @flow */
 
-import './standalone';
+import "./standalone";

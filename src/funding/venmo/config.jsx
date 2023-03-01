@@ -1,79 +1,76 @@
 /* @flow */
 /** @jsx node */
 
-import { VenmoLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
-import { PLATFORM } from '@paypal/sdk-constants/src';
+import { VenmoLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
+import { PLATFORM } from "@paypal/sdk-constants/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT } from '../../constants';
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
+import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
+import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
-import { WalletLabel, Label, AppLabel } from './template';
+import { WalletLabel, Label, AppLabel } from "./template";
 
+export function getVenmoConfig(): FundingSourceConfig {
+  return {
+    ...DEFAULT_FUNDING_CONFIG,
 
-export function getVenmoConfig() : FundingSourceConfig {
-    return {
-        ...DEFAULT_FUNDING_CONFIG,
+    shippingChange: false,
 
-        shippingChange: false,
+    layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-        layouts: [
-            BUTTON_LAYOUT.HORIZONTAL,
-            BUTTON_LAYOUT.VERTICAL
-        ],
-        
-        eligible: ({ experiment }) => {
-            if (experiment && experiment.enableVenmo === false) {
-                return false;
-            }
+    eligible: ({ experiment }) => {
+      if (experiment && experiment.enableVenmo === false) {
+        return false;
+      }
 
-            return true;
-        },
+      return true;
+    },
 
-        requires: ({ platform }) => {
-            if (platform === PLATFORM.MOBILE) {
-                return {
-                    native: true,
-                    popup:  true
-                };
-            }
+    requires: ({ platform }) => {
+      if (platform === PLATFORM.MOBILE) {
+        return {
+          native: true,
+          popup: true,
+        };
+      }
 
-            return {};
-        },
+      return {};
+    },
 
-        Logo:  ({ logoColor, optional }) => enableLogoCDNExperiment(VenmoLogo, { logoColor, optional }),
-        
-        Label: ({ ...props }) => {
-            if (props.experiment && props.experiment.enableVenmoAppLabel) {
-                return AppLabel(props);
-            }
-            return Label(props);
-        },
+    Logo: ({ logoColor, optional }) =>
+      enableLogoCDNExperiment(VenmoLogo, { logoColor, optional }),
 
-        WalletLabel: (...props) => WalletLabel(...props),
+    Label: ({ ...props }) => {
+      if (props.experiment && props.experiment.enableVenmoAppLabel) {
+        return AppLabel(props);
+      }
+      return Label(props);
+    },
 
-        showWalletMenu: () => false,
+    WalletLabel: (...props) => WalletLabel(...props),
 
-        colors: [
-            BUTTON_COLOR.BLUE,
-            BUTTON_COLOR.SILVER,
-            BUTTON_COLOR.BLACK,
-            BUTTON_COLOR.WHITE
-        ],
+    showWalletMenu: () => false,
 
-        logoColors:  {
-            [ BUTTON_COLOR.BLUE ]:   LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.SILVER ]: LOGO_COLOR.BLUE,
-            [ BUTTON_COLOR.BLACK ]:  LOGO_COLOR.WHITE,
-            [ BUTTON_COLOR.WHITE ]:  LOGO_COLOR.BLUE
-        },
+    colors: [
+      BUTTON_COLOR.BLUE,
+      BUTTON_COLOR.SILVER,
+      BUTTON_COLOR.BLACK,
+      BUTTON_COLOR.WHITE,
+    ],
 
-        secondaryColors: {
-            ...DEFAULT_FUNDING_CONFIG.secondaryColors,
+    logoColors: {
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.SILVER]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+    },
 
-            [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.BLUE,
-            [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.SILVER,
-            [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.BLUE
-        }
-    };
+    secondaryColors: {
+      ...DEFAULT_FUNDING_CONFIG.secondaryColors,
+
+      [BUTTON_COLOR.GOLD]: BUTTON_COLOR.BLUE,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.SILVER,
+      [BUTTON_COLOR.SILVER]: BUTTON_COLOR.BLUE,
+    },
+  };
 }

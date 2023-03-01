@@ -15,8 +15,8 @@ nvm use 8
 
 # Install node modules
 if [[ $CLEAR_NODE_MODULES == 'true' ]]; then
-    rm -rf node_modules;
-fi;
+  rm -rf node_modules
+fi
 npm install
 
 # Run end to end tests

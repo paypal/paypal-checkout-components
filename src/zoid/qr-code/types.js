@@ -1,6 +1,6 @@
 /* @flow */
 
 export type QRCodeProps = {|
-    qrPath : string,
-    cspNonce : ?string
+  qrPath: string,
+  cspNonce: ?string,
 |};

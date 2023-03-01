@@ -39,7 +39,7 @@ export default defineConfig({
     deps: {
       inline: ["@krakenjs/post-robot"],
     },
-    globals: true
+    globals: true,
   },
   optimizeDeps: {
     esbuildOptions: {

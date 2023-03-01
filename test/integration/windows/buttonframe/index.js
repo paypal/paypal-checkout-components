@@ -1,32 +1,33 @@
 /* @flow */
 
-import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { send } from '@krakenjs/post-robot/src';
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+import { send } from "@krakenjs/post-robot/src";
 
-import { generateOrderID } from '../../tests/common';
+import { generateOrderID } from "../../tests/common";
 
-window.paypal.Buttons({
-
-    createOrder() : ZalgoPromise<string> {
-        return ZalgoPromise.resolve(generateOrderID());
+window.paypal
+  .Buttons({
+    createOrder(): ZalgoPromise<string> {
+      return ZalgoPromise.resolve(generateOrderID());
     },
 
     onApprove() {
-        send(window.top.frames[0], 'onApprove');
+      send(window.top.frames[0], "onApprove");
     },
 
     onShippingChange() {
-        send(window.top.frames[0], 'onShippingChange');
+      send(window.top.frames[0], "onShippingChange");
     },
 
     onShippingAddressChange() {
-        send(window.top.frames[0], 'onShippingAddressChange');
+      send(window.top.frames[0], "onShippingAddressChange");
     },
 
     onShippingOptionsChange() {
-        send(window.top.frames[0], 'onShippingOptionsChange');
-    }
-
-}).render(document.body).then(button => {
-    button.window.document.querySelector('button').click();
-});
+      send(window.top.frames[0], "onShippingOptionsChange");
+    },
+  })
+  .render(document.body)
+  .then((button) => {
+    button.window.document.querySelector("button").click();
+  });

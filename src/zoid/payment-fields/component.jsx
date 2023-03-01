@@ -2,199 +2,223 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { node, dom } from '@krakenjs/jsx-pragmatic/src';
-import { getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID,
-    getCorrelationID, getSessionID, getEnv, getBuyerCountry, getLocale, getPartnerAttributionID } from '@paypal/sdk-client/src';
-import { create, type ZoidComponent } from '@krakenjs/zoid/src';
-import { inlineMemoize, uniqueID } from '@krakenjs/belter/src';
+import { node, dom } from "@krakenjs/jsx-pragmatic/src";
+import {
+  getLogger,
+  getPayPalDomainRegex,
+  getSDKMeta,
+  getPayPalDomain,
+  getClientID,
+  getCorrelationID,
+  getSessionID,
+  getEnv,
+  getBuyerCountry,
+  getLocale,
+  getPartnerAttributionID,
+} from "@paypal/sdk-client/src";
+import { create, type ZoidComponent } from "@krakenjs/zoid/src";
+import { inlineMemoize, uniqueID } from "@krakenjs/belter/src";
 
-import { storageState, sessionState } from '../../lib';
+import { storageState, sessionState } from "../../lib";
 
-import { type PaymentFieldsProps } from './props';
-import { PaymentFieldsPrerender } from './prerender';
-import { PaymentFieldsContainer } from './container';
+import { type PaymentFieldsProps } from "./props";
+import { PaymentFieldsPrerender } from "./prerender";
+import { PaymentFieldsContainer } from "./container";
 
 export type PaymentFieldsComponent = ZoidComponent<PaymentFieldsProps>;
 
-export function getPaymentFieldsComponent() : PaymentFieldsComponent {
-    return inlineMemoize(getPaymentFieldsComponent, () => {
-        return create({
-            tag: 'paypal-fields',
-            url: () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__PAYMENT_FIELDS__ }`,
+export function getPaymentFieldsComponent(): PaymentFieldsComponent {
+  return inlineMemoize(getPaymentFieldsComponent, () => {
+    return create({
+      tag: "paypal-fields",
+      url: () =>
+        `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__PAYMENT_FIELDS__}`,
 
-            domain: getPayPalDomainRegex(),
-            
-            autoResize: {
-                width:   false,
-                height:  true,
-                element: 'body'
-            },
+      domain: getPayPalDomainRegex(),
 
-            dimensions: {
-                width:  '100%',
-                height: '300px'
-            },
+      autoResize: {
+        width: false,
+        height: true,
+        element: "body",
+      },
 
-            logger: getLogger(),
+      dimensions: {
+        width: "100%",
+        height: "300px",
+      },
 
-            containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
-                return (
-                    <PaymentFieldsContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
-                ).render(dom({ doc }));
-            },
+      logger: getLogger(),
 
-            prerenderTemplate: ({ props, doc }) => {
-                return (
-                    <PaymentFieldsPrerender nonce={ props.nonce } />
-                ).render(dom({ doc }));
-            },
+      containerTemplate: ({
+        props,
+        doc,
+        uid,
+        frame,
+        prerenderFrame,
+        event,
+      }) => {
+        return (
+          <PaymentFieldsContainer
+            uid={uid}
+            frame={frame}
+            prerenderFrame={prerenderFrame}
+            event={event}
+            nonce={props.nonce}
+          />
+        ).render(dom({ doc }));
+      },
 
-            attributes: {
-                iframe: {
-                    scrolling: 'no'
-                }
-            },
+      prerenderTemplate: ({ props, doc }) => {
+        return (<PaymentFieldsPrerender nonce={props.nonce} />).render(
+          dom({ doc })
+        );
+      },
 
-            props: {
+      attributes: {
+        iframe: {
+          scrolling: "no",
+        },
+      },
 
-                fields: {
-                    type:       'object',
-                    queryParam: true,
-                    required:   false,
-                    decorate:   ({ value }) => value,
-                    default:    () => ({})
-                },
+      props: {
+        fields: {
+          type: "object",
+          queryParam: true,
+          required: false,
+          decorate: ({ value }) => value,
+          default: () => ({}),
+        },
 
-                style: {
-                    type:       'object',
-                    queryParam: true,
-                    required:   false,
-                    decorate:   ({ value }) => value,
-                    default:    () => ({})
-                },
+        style: {
+          type: "object",
+          queryParam: true,
+          required: false,
+          decorate: ({ value }) => value,
+          default: () => ({}),
+        },
 
-                sdkMeta: {
-                    type:        'string',
-                    queryParam:  true,
-                    sendToChild: false,
-                    value:       getSDKMeta
-                },
-                
-                clientID: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      getClientID
-                },
-                
-                fundingSource: {
-                    type:       'string',
-                    queryParam: true,
-                    required:   true
-                },
+        sdkMeta: {
+          type: "string",
+          queryParam: true,
+          sendToChild: false,
+          value: getSDKMeta,
+        },
 
-                correlationID: {
-                    type:       'string',
-                    required:   false,
-                    value:      getCorrelationID
-                },
+        clientID: {
+          type: "string",
+          queryParam: true,
+          value: getClientID,
+        },
 
-                sessionID: {
-                    type:       'string',
-                    value:      getSessionID,
-                    queryParam: true,
-                    required:   false
-                },
+        fundingSource: {
+          type: "string",
+          queryParam: true,
+          required: true,
+        },
 
-                fieldsSessionID: {
-                    type:       'string',
-                    value:      uniqueID,
-                    queryParam: true
-                },
+        correlationID: {
+          type: "string",
+          required: false,
+          value: getCorrelationID,
+        },
 
-                env: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      getEnv
-                },
+        sessionID: {
+          type: "string",
+          value: getSessionID,
+          queryParam: true,
+          required: false,
+        },
 
-                onInit: {
-                    type:     'function',
-                    required: false
-                },
+        fieldsSessionID: {
+          type: "string",
+          value: uniqueID,
+          queryParam: true,
+        },
 
-                onError: {
-                    type:     'function',
-                    required: false
-                },
+        env: {
+          type: "string",
+          queryParam: true,
+          value: getEnv,
+        },
 
-                onContinue: {
-                    type:     'function',
-                    required: false
-                },
+        onInit: {
+          type: "function",
+          required: false,
+        },
 
-                onClose: {
-                    type:     'function',
-                    required: false
-                },
+        onError: {
+          type: "function",
+          required: false,
+        },
 
-                showActionButtons: {
-                    type:       'boolean',
-                    queryParam: true,
-                    required:   false
-                },
+        onContinue: {
+          type: "function",
+          required: false,
+        },
 
-                onFieldsClose: {
-                    type:     'function',
-                    required: false
-                },
+        onClose: {
+          type: "function",
+          required: false,
+        },
 
-                buyerCountry: {
-                    type:       'string',
-                    queryParam: true,
-                    required:   false,
-                    default:    getBuyerCountry
-                },
+        showActionButtons: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
 
-                locale: {
-                    type:          'object',
-                    queryParam:    'locale.x',
-                    allowDelegate: true,
-                    queryValue({ value }) : string {
-                        // $FlowFixMe
-                        const { lang, country } = value;
-                        return `${ lang }_${ country }`;
-                    },
-                    value: getLocale
-                },
+        onFieldsClose: {
+          type: "function",
+          required: false,
+        },
 
-                country: {
-                    type:          'object',
-                    queryParam:    'country.x',
-                    allowDelegate: true,
-                    queryValue({ value }) : string {
-                        // $FlowFixMe
-                        const { country } = value;
-                        return country;
-                    },
-                    value: getLocale
-                },
+        buyerCountry: {
+          type: "string",
+          queryParam: true,
+          required: false,
+          default: getBuyerCountry,
+        },
 
-                storageState: {
-                    type:  'object',
-                    value: () => storageState
-                },
+        locale: {
+          type: "object",
+          queryParam: "locale.x",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            // $FlowFixMe
+            const { lang, country } = value;
+            return `${lang}_${country}`;
+          },
+          value: getLocale,
+        },
 
-                sessionState: {
-                    type:  'object',
-                    value: () => sessionState
-                },
+        country: {
+          type: "object",
+          queryParam: "country.x",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            // $FlowFixMe
+            const { country } = value;
+            return country;
+          },
+          value: getLocale,
+        },
 
-                partnerAttributionID: {
-                    type:       'string',
-                    required:   false,
-                    value:      getPartnerAttributionID
-                }
-            }
-        });
+        storageState: {
+          type: "object",
+          value: () => storageState,
+        },
+
+        sessionState: {
+          type: "object",
+          value: () => sessionState,
+        },
+
+        partnerAttributionID: {
+          type: "string",
+          required: false,
+          value: getPartnerAttributionID,
+        },
+      },
     });
+  });
 }

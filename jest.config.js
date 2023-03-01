@@ -2,6 +2,4 @@
 /* eslint import/no-commonjs: off */
 
 // $FlowFixMe
-module.exports = {
-    
-};
+module.exports = {};

@@ -1,176 +1,213 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { once } from '@krakenjs/belter/src';
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+import { once } from "@krakenjs/belter/src";
 
-import { generateOrderID, createTestContainer, destroyTestContainer, getElementRecursive, assert, WEBVIEW_USER_AGENT } from '../common';
+import {
+  generateOrderID,
+  createTestContainer,
+  destroyTestContainer,
+  getElementRecursive,
+  assert,
+  WEBVIEW_USER_AGENT,
+} from "../common";
 
-for (const flow of [ 'popup', 'iframe' ]) {
-
-    describe(`paypal button style cases on ${ flow }`, () => {
-
-        beforeEach(() => {
-            createTestContainer();
-            if (flow === 'iframe') {
-                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
-            }
-        });
-
-        afterEach(() => {
-            destroyTestContainer();
-        });
-
-        it('should render a button and click and get a black overlay', (done) => {
-            done = once(done);
-            window.paypal.Buttons({
-
-                test: {
-                    flow,
-                    action: 'checkout',
-                    onRender() {
-                        assert.ok(getElementRecursive('.paypal-checkout-background-color-black'));
-                        done();
-                    }
-                },
-
-                createOrder() : string | ZalgoPromise<string> {
-                    return ZalgoPromise.resolve(generateOrderID());
-                },
-
-                onApprove() : void {
-                    return done();
-                },
-
-                onCancel() : void {
-                    return done(new Error('Expected onCancel to not be called'));
-                }
-
-            }).render('#testContainer');
-        });
-    });
-}
-
-describe('paypal button color', () => {
+for (const flow of ["popup", "iframe"]) {
+  describe(`paypal button style cases on ${flow}`, () => {
     beforeEach(() => {
-        createTestContainer();
+      createTestContainer();
+      if (flow === "iframe") {
+        window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+      }
     });
 
     afterEach(() => {
-        destroyTestContainer();
+      destroyTestContainer();
     });
 
-    it('should render a button with gold background when no color is specified', () => {
-        return window.paypal.Buttons({
-            style: {
-                color: ''
-            }
-        }).render('#testContainer').then(() => {
-            assert.ok(getElementRecursive('.paypal-button-color-gold'));
-        });
-    });
-
-    it('should render a button with black background when passed "black"', () => {
-        return window.paypal.Buttons({
-            style: {
-                color: 'black'
-            }
-        }).render('#testContainer').then(() => {
-            assert.ok(getElementRecursive('.paypal-button-color-black'));
-        });
-    });
-
-    it('should render a button with gold background when passed ""', () => {
-        return window.paypal.Buttons({
-            style: {
-                color: ''
-            }
-        }).render('#testContainer').then(() => {
-            assert.ok(getElementRecursive('.paypal-button-color-gold'));
-        });
-    });
-
-    it('should not mutate the style object', (done) => {
-        const style = {
-            shape: 'pill'
-        };
-        const expected = JSON.stringify(style);
-        done = once(done);
-        window.paypal.Buttons({
-            style,
-            test: {
-                onRender() {
-                    if (JSON.stringify(style) !== expected) {
-                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ expected }`));
-                    }
-                    done();
-                }
+    it("should render a button and click and get a black overlay", (done) => {
+      done = once(done);
+      window.paypal
+        .Buttons({
+          test: {
+            flow,
+            action: "checkout",
+            onRender() {
+              assert.ok(
+                getElementRecursive(".paypal-checkout-background-color-black")
+              );
+              done();
             },
+          },
 
-            onError: done
+          createOrder(): string | ZalgoPromise<string> {
+            return ZalgoPromise.resolve(generateOrderID());
+          },
 
-        }).render('#testContainer');
+          onApprove(): void {
+            return done();
+          },
+
+          onCancel(): void {
+            return done(new Error("Expected onCancel to not be called"));
+          },
+        })
+        .render("#testContainer");
     });
+  });
+}
 
-    it('should allow custom styling for inlinexo', (done) => {
-        const style = {
-            custom: {
-                label: 'Checkout',
-                css:   {
-                    background: 'white',
-                    height:     '24px'
-                }
+describe("paypal button color", () => {
+  beforeEach(() => {
+    createTestContainer();
+  });
+
+  afterEach(() => {
+    destroyTestContainer();
+  });
+
+  it("should render a button with gold background when no color is specified", () => {
+    return window.paypal
+      .Buttons({
+        style: {
+          color: "",
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive(".paypal-button-color-gold"));
+      });
+  });
+
+  it('should render a button with black background when passed "black"', () => {
+    return window.paypal
+      .Buttons({
+        style: {
+          color: "black",
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive(".paypal-button-color-black"));
+      });
+  });
+
+  it('should render a button with gold background when passed ""', () => {
+    return window.paypal
+      .Buttons({
+        style: {
+          color: "",
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive(".paypal-button-color-gold"));
+      });
+  });
+
+  it("should not mutate the style object", (done) => {
+    const style = {
+      shape: "pill",
+    };
+    const expected = JSON.stringify(style);
+    done = once(done);
+    window.paypal
+      .Buttons({
+        style,
+        test: {
+          onRender() {
+            if (JSON.stringify(style) !== expected) {
+              done(
+                new Error(
+                  `Expected style object ${JSON.stringify(
+                    style
+                  )} to remain unmodified as ${expected}`
+                )
+              );
             }
-        };
-        const expected = JSON.stringify(style);
-        done = once(done);
-        window.paypal.Buttons({
-            style,
-            test: {
-                onRender() {
-                    if (JSON.stringify(style) !== expected) {
-                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ expected }`));
-                    }
-                    done();
-                }
-            },
+            done();
+          },
+        },
 
-            onError: done
+        onError: done,
+      })
+      .render("#testContainer");
+  });
 
-        }).render('#testContainer');
-    });
-
-    it('should allow custom label for inlinexo', (done) => {
-        const style = {
-            custom: {
-                label: 'Checkout'
+  it("should allow custom styling for inlinexo", (done) => {
+    const style = {
+      custom: {
+        label: "Checkout",
+        css: {
+          background: "white",
+          height: "24px",
+        },
+      },
+    };
+    const expected = JSON.stringify(style);
+    done = once(done);
+    window.paypal
+      .Buttons({
+        style,
+        test: {
+          onRender() {
+            if (JSON.stringify(style) !== expected) {
+              done(
+                new Error(
+                  `Expected style object ${JSON.stringify(
+                    style
+                  )} to remain unmodified as ${expected}`
+                )
+              );
             }
-        };
-        const expectedStyle = {
-            custom: {
-                label: 'Checkout',
-                css: {
-                    'background-color': 'black',
-                    'height': '48px',
-                    'margin-bottom': '15px'
-                }
+            done();
+          },
+        },
+
+        onError: done,
+      })
+      .render("#testContainer");
+  });
+
+  it("should allow custom label for inlinexo", (done) => {
+    const style = {
+      custom: {
+        label: "Checkout",
+      },
+    };
+    const expectedStyle = {
+      custom: {
+        label: "Checkout",
+        css: {
+          "background-color": "black",
+          height: "48px",
+          "margin-bottom": "15px",
+        },
+      },
+    };
+    const expected = JSON.stringify(expectedStyle);
+    done = once(done);
+    window.paypal
+      .Buttons({
+        style,
+        test: {
+          onRender() {
+            if (JSON.stringify(style) !== expected) {
+              done(
+                new Error(
+                  `Expected style object ${JSON.stringify(
+                    style
+                  )} to remain unmodified as ${JSON.stringify(expected)}`
+                )
+              );
             }
-        };
-        const expected = JSON.stringify(expectedStyle);
-        done = once(done);
-        window.paypal.Buttons({
-            style,
-            test: {
-                onRender() {
-                    if (JSON.stringify(style) !== expected) {
-                        done(new Error(`Expected style object ${ JSON.stringify(style) } to remain unmodified as ${ JSON.stringify(expected) }`));
-                    }
-                    done();
-                }
-            },
+            done();
+          },
+        },
 
-            onError: done
-
-        }).render('#testContainer');
-    });
+        onError: done,
+      })
+      .render("#testContainer");
+  });
 });

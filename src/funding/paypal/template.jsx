@@ -1,419 +1,470 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, Style, type ChildType } from '@krakenjs/jsx-pragmatic/src';
-import { PPLogo, PayPalLogo, CreditLogo, CreditMark, PayPalMark, GlyphCard, GlyphBank, LOGO_CLASS } from '@paypal/sdk-logos/src';
-import { FUNDING, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import {
+  node,
+  Fragment,
+  Style,
+  type ChildType,
+} from "@krakenjs/jsx-pragmatic/src";
+import {
+  PPLogo,
+  PayPalLogo,
+  CreditLogo,
+  CreditMark,
+  PayPalMark,
+  GlyphCard,
+  GlyphBank,
+  LOGO_CLASS,
+} from "@paypal/sdk-logos/src";
+import { FUNDING, WALLET_INSTRUMENT } from "@paypal/sdk-constants/src";
 
 import {
-    type LogoOptions,
-    type LabelOptions,
-    type DesignExperimentLabelOptions,
-    type WalletLabelOptions,
-    type TagOptions,
-    BasicLabel
-} from '../common';
-import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from '../../constants';
-import { componentContent } from '../content';
-import { Text, Space, PlaceHolder } from '../../ui/text';
-import { TrackingBeacon } from '../../ui/tracking';
-import { HIDDEN, VISIBLE, COMPRESSED, EXPANDED } from '../../ui/buttons/styles/labels';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
+  type LogoOptions,
+  type LabelOptions,
+  type DesignExperimentLabelOptions,
+  type WalletLabelOptions,
+  type TagOptions,
+  BasicLabel,
+} from "../common";
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from "../../constants";
+import { componentContent } from "../content";
+import { Text, Space, PlaceHolder } from "../../ui/text";
+import { TrackingBeacon } from "../../ui/tracking";
+import {
+  HIDDEN,
+  VISIBLE,
+  COMPRESSED,
+  EXPANDED,
+} from "../../ui/buttons/styles/labels";
+import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
-import css from './style.scoped.scss';
+import css from "./style.scoped.scss";
 
-export function Logo({ logoColor } : LogoOptions) : ChildType {
-    return enableLogoCDNExperiment(PayPalLogo, { logoColor })
+export function Logo({ logoColor }: LogoOptions): ChildType {
+  return enableLogoCDNExperiment(PayPalLogo, { logoColor });
 }
 
-function getPersonalizationText({ personalization, layout, multiple } : LabelOptions) : ?string {
-    const personalizationText = personalization && personalization.buttonText && personalization.buttonText.text;
+function getPersonalizationText({
+  personalization,
+  layout,
+  multiple,
+}: LabelOptions): ?string {
+  const personalizationText =
+    personalization &&
+    personalization.buttonText &&
+    personalization.buttonText.text;
 
-    if (!personalizationText) {
-        return;
-    }
+  if (!personalizationText) {
+    return;
+  }
 
-    if (personalizationText.match(/[{}]/)) {
-        return;
-    }
+  if (personalizationText.match(/[{}]/)) {
+    return;
+  }
 
-    if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
-        return;
-    }
+  if (layout === BUTTON_LAYOUT.HORIZONTAL && multiple) {
+    return;
+  }
 
-    return personalizationText;
+  return personalizationText;
 }
 
-function getPersonalizationTracker({ personalization } : LabelOptions) : ?string {
-    const personalizationTracker = personalization && personalization.buttonText && personalization.buttonText.tracking && personalization.buttonText.tracking.impression;
+function getPersonalizationTracker({ personalization }: LabelOptions): ?string {
+  const personalizationTracker =
+    personalization &&
+    personalization.buttonText &&
+    personalization.buttonText.tracking &&
+    personalization.buttonText.tracking.impression;
 
-    if (!personalizationTracker) {
-        return;
-    }
+  if (!personalizationTracker) {
+    return;
+  }
 
-    return personalizationTracker;
+  return personalizationTracker;
 }
 
-function getButtonPersonalizationStyle(opts : LabelOptions) : ?ChildType {
-    if (__TEST__) {
-        return null;
-    }
+function getButtonPersonalizationStyle(opts: LabelOptions): ?ChildType {
+  if (__TEST__) {
+    return null;
+  }
 
-    const { tagline } = opts;
+  const { tagline } = opts;
 
-    const personalizationText = !tagline && getPersonalizationText(opts);
+  const personalizationText = !tagline && getPersonalizationText(opts);
 
-    const MIN_WIDTH = 300;
-    const PERSONALIZATION_DURATION = 5;
+  const MIN_WIDTH = 300;
+  const PERSONALIZATION_DURATION = 5;
 
-    const PAYPAL_BUTTON = `.${ CLASS.BUTTON }[${ ATTRIBUTE.FUNDING_SOURCE }=${ FUNDING.PAYPAL }]`;
+  const PAYPAL_BUTTON = `.${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.PAYPAL}]`;
 
-    return (
-        <style innerHTML={ `
-            @media only screen and (max-width: ${ MIN_WIDTH }px) {
-                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.PERSONALIZATION_TEXT } {
-                    ${ HIDDEN }
+  return (
+    <style
+      innerHTML={`
+            @media only screen and (max-width: ${MIN_WIDTH}px) {
+                .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${
+        CLASS.PERSONALIZATION_TEXT
+      } {
+                    ${HIDDEN}
                 }
             }
 
-            @media only screen and (min-width: ${ MIN_WIDTH }px) {
-                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ LOGO_CLASS.LOGO }.${ LOGO_CLASS.LOGO }-${ FUNDING.PAYPAL } {
-                    animation: ${ personalizationText ? `toggle-paypal-logo ${ PERSONALIZATION_DURATION }s 0s forwards` : `none` };
+            @media only screen and (min-width: ${MIN_WIDTH}px) {
+                .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${LOGO_CLASS.LOGO}.${
+        LOGO_CLASS.LOGO
+      }-${FUNDING.PAYPAL} {
+                    animation: ${
+                      personalizationText
+                        ? `toggle-paypal-logo ${PERSONALIZATION_DURATION}s 0s forwards`
+                        : `none`
+                    };
                 }
 
-                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.TEXT }:not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
-                    ${ COMPRESSED }
-                    ${ VISIBLE }
-                    animation: ${ personalizationText ? `show-text-delayed ${ PERSONALIZATION_DURATION }s 0s forwards` : `show-text 1s 0s forwards` };
+                .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${CLASS.TEXT}:not(.${
+        CLASS.PERSONALIZATION_TEXT
+      }):not(.${CLASS.HIDDEN}) {
+                    ${COMPRESSED}
+                    ${VISIBLE}
+                    animation: ${
+                      personalizationText
+                        ? `show-text-delayed ${PERSONALIZATION_DURATION}s 0s forwards`
+                        : `show-text 1s 0s forwards`
+                    };
                 }
 
-                .${ CLASS.DOM_READY } ${ PAYPAL_BUTTON } .${ CLASS.PERSONALIZATION_TEXT } {
-                    ${ COMPRESSED }
-                    ${ VISIBLE }
-                    animation: show-personalization-text ${ PERSONALIZATION_DURATION }s 0s forwards;
+                .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${
+        CLASS.PERSONALIZATION_TEXT
+      } {
+                    ${COMPRESSED}
+                    ${VISIBLE}
+                    animation: show-personalization-text ${PERSONALIZATION_DURATION}s 0s forwards;
                 }
             }
 
             @keyframes toggle-paypal-logo {
-                0% { ${ EXPANDED } }
-                15% { ${ COMPRESSED } }
-                85% { ${ COMPRESSED } }
-                100% { ${ EXPANDED } }
+                0% { ${EXPANDED} }
+                15% { ${COMPRESSED} }
+                85% { ${COMPRESSED} }
+                100% { ${EXPANDED} }
             }
 
             @keyframes show-text-delayed {
-                0% { ${ COMPRESSED } }
-                85% { ${ COMPRESSED } }
-                100% { ${ EXPANDED } }
+                0% { ${COMPRESSED} }
+                85% { ${COMPRESSED} }
+                100% { ${EXPANDED} }
             }
 
             @keyframes show-personalization-text {
-                0% { ${ COMPRESSED } }
-                15% { ${ COMPRESSED } }
-                25% { ${ EXPANDED } }
-                70% { ${ EXPANDED } }
-                85% { ${ COMPRESSED } }
-                100% { ${ COMPRESSED } }
+                0% { ${COMPRESSED} }
+                15% { ${COMPRESSED} }
+                25% { ${EXPANDED} }
+                70% { ${EXPANDED} }
+                85% { ${COMPRESSED} }
+                100% { ${COMPRESSED} }
             }
-        ` } />
-    );
+        `}
+    />
+  );
 }
 
-function ButtonPersonalization(opts : LabelOptions) : ?ChildType {
-    if (__WEB__) {
-        return;
-    }
+function ButtonPersonalization(opts: LabelOptions): ?ChildType {
+  if (__WEB__) {
+    return;
+  }
 
-    const { nonce, tagline, label } = opts;
+  const { nonce, tagline, label } = opts;
 
-    if (tagline || !label) {
-        return;
-    }
+  if (tagline || !label) {
+    return;
+  }
 
-    const personalizationText = getPersonalizationText(opts);
-    const personalizationTracker = getPersonalizationTracker(opts);
+  const personalizationText = getPersonalizationText(opts);
+  const personalizationTracker = getPersonalizationTracker(opts);
 
-    if (!personalizationText) {
-        return;
-    }
+  if (!personalizationText) {
+    return;
+  }
 
-    return (
-        <Fragment>
-            <Text className={ [ CLASS.PERSONALIZATION_TEXT ] } optional={ 2 }>{ personalizationText }</Text>
-            {
-                personalizationTracker &&
-                    <TrackingBeacon url={ personalizationTracker } nonce={ nonce } />
-            }
-            {
-                getButtonPersonalizationStyle(opts)
-            }
-        </Fragment>
-
-    );
+  return (
+    <Fragment>
+      <Text className={[CLASS.PERSONALIZATION_TEXT]} optional={2}>
+        {personalizationText}
+      </Text>
+      {personalizationTracker && (
+        <TrackingBeacon url={personalizationTracker} nonce={nonce} />
+      )}
+      {getButtonPersonalizationStyle(opts)}
+    </Fragment>
+  );
 }
 
-
-export function Label(opts : LabelOptions) : ChildType {
-    return (
-        <Fragment>
-            <BasicLabel { ...opts } />
-            <ButtonPersonalization { ...opts } />
-        </Fragment>
-    );
+export function Label(opts: LabelOptions): ChildType {
+  return (
+    <Fragment>
+      <BasicLabel {...opts} />
+      <ButtonPersonalization {...opts} />
+    </Fragment>
+  );
 }
 
-export function DesignExperimentLabel(opts : DesignExperimentLabelOptions) : ChildType {
-    const { buttonDesignComponent, ...updatedOpts } = opts;
-    const basicLabel = (<BasicLabel { ...updatedOpts } />);
-    const buttonPersonalization = (<ButtonPersonalization { ...updatedOpts } />);
-    return (
-        <Fragment>
-            { basicLabel }
-            { buttonDesignComponent }
-            { buttonPersonalization }
-        </Fragment>
-    );
+export function DesignExperimentLabel(
+  opts: DesignExperimentLabelOptions
+): ChildType {
+  const { buttonDesignComponent, ...updatedOpts } = opts;
+  const basicLabel = <BasicLabel {...updatedOpts} />;
+  const buttonPersonalization = <ButtonPersonalization {...updatedOpts} />;
+  return (
+    <Fragment>
+      {basicLabel}
+      {buttonDesignComponent}
+      {buttonPersonalization}
+    </Fragment>
+  );
 }
 
-export function WalletLabelOld(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, locale, content, commit } = opts;
+export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
+  const { logoColor, instrument, locale, content, commit } = opts;
 
-    if (__WEB__) {
-        return;
-    }
+  if (__WEB__) {
+    return;
+  }
 
-    if (!instrument) {
-        throw new Error(`Expected instrument`);
-    }
+  if (!instrument) {
+    throw new Error(`Expected instrument`);
+  }
 
-    let logo;
+  let logo;
 
-    if (instrument.logoUrl) {
-        logo = <img class='card-art' src={ instrument.logoUrl } />;
-    } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
-        logo = enableLogoCDNExperiment(GlyphCard, { logoColor });
-    } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
-        logo = enableLogoCDNExperiment(GlyphBank, { logoColor });
+  if (instrument.logoUrl) {
+    logo = <img class="card-art" src={instrument.logoUrl} />;
+  } else if (instrument.type === WALLET_INSTRUMENT.CARD) {
+    logo = enableLogoCDNExperiment(GlyphCard, { logoColor });
+  } else if (instrument.type === WALLET_INSTRUMENT.BANK) {
+    logo = enableLogoCDNExperiment(GlyphBank, { logoColor });
+  } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
+    logo = enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
+  }
+
+  return (
+    <Style css={css}>
+      <div class="wallet-label">
+        <div class="paypal-mark">
+          {enableLogoCDNExperiment(PPLogo, { logoColor })}
+        </div>
+        {instrument.oneClick && commit && content && (
+          <div class="pay-label">
+            <Space />
+            <Text>{content.payNow}</Text>
+          </div>
+        )}
+        <div class="paypal-wordmark">
+          <Space />
+          {enableLogoCDNExperiment(PayPalLogo, { logoColor })}
+        </div>
+        <div class="divider">|</div>
+        {logo && (
+          <div class="logo" optional>
+            {logo}
+            <Space />
+          </div>
+        )}
+        <div class="label">
+          <Text className={["limit"]}>{instrument.label}</Text>
+        </div>
+      </div>
+    </Style>
+  );
+}
+
+function ShowPayLabel(opts): ?ChildType {
+  const { instrument, content, payNow, textColor, logo, label } = opts;
+
+  return (
+    <div class="show-pay-label">
+      <div class="pay-label" optional={2}>
+        <Space />
+        {instrument && content ? (
+          <Text>{payNow ? content.payNow : content.payWith}</Text>
+        ) : (
+          <Text>
+            <PlaceHolder chars={7} color={textColor} />
+          </Text>
+        )}
+        <Space />
+      </div>
+      <div class="logo" optional={1}>
+        {instrument && logo ? (
+          logo
+        ) : (
+          <Text>
+            <PlaceHolder chars={4} color={textColor} />
+          </Text>
+        )}
+      </div>
+      <div class="label">
+        <Space />
+        {instrument && label ? (
+          <Text>{label}</Text>
+        ) : (
+          <Text>
+            <PlaceHolder chars={6} color={textColor} />
+          </Text>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ShowInstrumentsOnFile(opts): ?ChildType {
+  const { instrument, textColor, logo, label, content } = opts;
+
+  return (
+    <div class="show-instruments-on-file">
+      {instrument?.secondaryInstruments?.[0] ? (
+        <div class="balance">
+          <Text>{content?.balance} &</Text>
+          <Space />
+        </div>
+      ) : null}
+      {instrument?.type === "balance" ? (
+        <div class="paypal-balance">
+          <Text>{content?.payPalBalance}</Text>
+        </div>
+      ) : (
+        <div class="fi-container">
+          <div class="fi-logo">
+            {instrument && logo ? (
+              logo
+            ) : (
+              <Text>
+                <PlaceHolder chars={4} color={textColor} />
+              </Text>
+            )}
+          </div>
+          <div class="fi-label">
+            <Space />
+            {instrument && label ? (
+              <Text>{label}</Text>
+            ) : (
+              <Text>
+                <PlaceHolder chars={6} color={textColor} />
+              </Text>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
+  const {
+    logoColor,
+    instrument,
+    content,
+    commit,
+    vault,
+    textColor,
+    fundingSource,
+    showPayLabel,
+  } = opts;
+
+  if (instrument && !instrument.type) {
+    return WalletLabelOld(opts);
+  }
+
+  let logo;
+  let label;
+  let branded;
+
+  if (instrument && typeof instrument.branded === "boolean") {
+    branded = instrument.branded;
+  } else if (
+    fundingSource === FUNDING.PAYPAL ||
+    fundingSource === FUNDING.CREDIT
+  ) {
+    branded = true;
+  } else if (fundingSource === FUNDING.CARD) {
+    branded = false;
+  } else {
+    branded = true;
+  }
+
+  if (instrument) {
+    if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
+      logo = instrument.logoUrl ? (
+        <img class="card-art" src={instrument.logoUrl} />
+      ) : (
+        enableLogoCDNExperiment(GlyphCard, { logoColor })
+      );
+
+      label = instrument.label.replace("••••", "••");
+    } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
+      logo = instrument.logoUrl ? (
+        <img class="card-art" src={instrument.logoUrl} />
+      ) : (
+        enableLogoCDNExperiment(GlyphBank, { logoColor })
+      );
+
+      label = instrument.label.replace("••••", "••");
     } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-        logo = enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
-    }
+      logo = enableLogoCDNExperiment(CreditMark, {});
 
-    return (
-        <Style css={ css }>
-            <div class='wallet-label'>
-                <div class='paypal-mark'>
-                    {enableLogoCDNExperiment(PPLogo ,{ logoColor })}
-                </div>
-                {
-                    (instrument.oneClick && commit && content) &&
-                        <div class='pay-label'>
-                            <Space />
-                            <Text>{ content.payNow }</Text>
-                        </div>
-                }
-                <div class='paypal-wordmark'>
-                    <Space />
-                    {enableLogoCDNExperiment(PayPalLogo ,{ logoColor })}
-                </div>
-                <div class='divider'>|</div>
-                {
-                    logo &&
-                        <div class='logo' optional>
-                            { logo }
-                            <Space />
-                        </div>
-                }
-                <div class='label'>
-                    <Text className={ [ 'limit' ] }>
-                        { instrument.label }
-                    </Text>
-                </div>
-            </div>
-        </Style>
-    );
+      label = content && content.credit;
+    } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
+      logo = enableLogoCDNExperiment(PayPalMark, {});
+
+      label = content && content.balance;
+    } else if (instrument.label) {
+      label = instrument.label;
+    }
+  }
+
+  const payNow = Boolean(instrument && instrument.oneClick && commit && !vault);
+
+  const attrs = {};
+  if (payNow) {
+    attrs[ATTRIBUTE.PAY_NOW] = true;
+  }
+
+  return (
+    <Style css={css}>
+      <div class="wallet-label-new" {...attrs}>
+        {branded ? (
+          <div class="paypal-mark">
+            {enableLogoCDNExperiment(PPLogo, { logoColor })}
+            <Space />
+          </div>
+        ) : null}
+        {showPayLabel ? (
+          <ShowPayLabel
+            instrument={instrument}
+            content={content}
+            payNow={payNow}
+            textColor={textColor}
+            logo={logo}
+            label={label}
+          />
+        ) : (
+          <ShowInstrumentsOnFile
+            instrument={instrument}
+            textColor={textColor}
+            logo={logo}
+            label={label}
+            content={content}
+          />
+        )}
+      </div>
+    </Style>
+  );
 }
 
-function ShowPayLabel(opts) : ?ChildType {
-    const {instrument, content, payNow, textColor, logo, label } = opts;
+export function Tag({ multiple, locale: { lang } }: TagOptions): ?ChildType {
+  if (__WEB__) {
+    return null;
+  }
 
-    return (
-        <div class='show-pay-label'>
-            <div class='pay-label' optional={ 2 }>
-                <Space />
-                {
-                    (instrument && content)
-                        ? <Text>{ payNow ? content.payNow : content.payWith }</Text>
-                        : <Text><PlaceHolder chars={ 7 } color={ textColor } /></Text>
-                }
-                <Space />
-            </div>
-            <div class='logo' optional={ 1 }>
-                {
-                    (instrument && logo)
-                        ? logo
-                        : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
-                }
-            </div>
-            <div class='label'>
-                <Space />
-                {
-                    (instrument && label)
-                        ? <Text>{ label }</Text>
-                        : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
-                }
-            </div>
-        </div>
-    );
-}
+  const { DualTag, SaferTag } = componentContent[lang];
 
-function ShowInstrumentsOnFile(opts) : ?ChildType {
-    const { instrument, textColor, logo, label, content } = opts;
-
-    return (
-        <div class='show-instruments-on-file'>
-            {
-                instrument?.secondaryInstruments?.[0]
-                    ? (
-                        <div class='balance'>
-                            <Text>{ content?.balance } &</Text>
-                            <Space />
-                        </div>
-                    )
-                    : null
-            }
-            {
-                (instrument?.type === "balance")
-                    ? (
-                        <div class='paypal-balance'>
-                            <Text>{ content?.payPalBalance }</Text>
-                        </div>
-                    )
-                    : (
-                        <div class='fi-container'>
-                            <div class='fi-logo'>
-                                {
-                                    (instrument && logo)
-                                        ? logo
-                                        : <Text><PlaceHolder chars={ 4 } color={ textColor } /></Text>
-                                }
-                            </div>
-                            <div class='fi-label'>
-                                <Space />
-                                {
-                                    (instrument && label)
-                                        ? <Text>{ label }</Text>
-                                        : <Text><PlaceHolder chars={ 6 } color={ textColor } /></Text>
-                                }
-                            </div>
-                        </div>
-                    )
-            }
-        </div>
-    );
-}
-
-export function WalletLabel(opts : WalletLabelOptions) : ?ChildType {
-    const { logoColor, instrument, content, commit, vault, textColor, fundingSource, showPayLabel } = opts;
-
-    if (instrument && !instrument.type) {
-        return WalletLabelOld(opts);
-    }
-
-    let logo;
-    let label;
-    let branded;
-
-    if (instrument && typeof instrument.branded === 'boolean') {
-        branded = instrument.branded;
-    } else if (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.CREDIT) {
-        branded = true;
-    } else if (fundingSource === FUNDING.CARD) {
-        branded = false;
-    } else {
-        branded = true;
-    }
-
-    if (instrument) {
-        if (instrument.type === WALLET_INSTRUMENT.CARD && instrument.label) {
-            logo = instrument.logoUrl
-                ? <img class='card-art' src={ instrument.logoUrl } />
-                : enableLogoCDNExperiment(GlyphCard, { logoColor });
-
-            label = instrument.label.replace('••••', '••');
-
-        } else if (instrument.type === WALLET_INSTRUMENT.BANK && instrument.label) {
-            logo = instrument.logoUrl
-                ? <img class='card-art' src={ instrument.logoUrl } />
-                : enableLogoCDNExperiment(GlyphBank, { logoColor });
-
-            label = instrument.label.replace('••••', '••');
-
-        } else if (instrument.type === WALLET_INSTRUMENT.CREDIT) {
-            logo = enableLogoCDNExperiment(CreditMark, {});
-
-            label = content && content.credit;
-
-        } else if (instrument.type === WALLET_INSTRUMENT.BALANCE) {
-            logo = enableLogoCDNExperiment(PayPalMark, {});
-
-            label = content && content.balance;
-
-        } else if (instrument.label) {
-            label = instrument.label;
-        }
-    }
-
-    const payNow = Boolean((instrument && instrument.oneClick) && commit && !vault);
-
-    const attrs = {};
-    if (payNow) {
-        attrs[ATTRIBUTE.PAY_NOW] = true;
-    }
-
-    return (
-        <Style css={ css }>
-            <div class='wallet-label-new' { ...attrs }>
-                {
-                    branded
-                        ? (
-                            <div class='paypal-mark'>
-                                { enableLogoCDNExperiment(PPLogo, { logoColor }) }
-                                <Space />
-                            </div>
-                        )
-                        : null
-                }
-                {
-                    showPayLabel
-                        ? <ShowPayLabel
-                            instrument={ instrument }
-                            content={ content }
-                            payNow={ payNow }
-                            textColor={ textColor }
-                            logo={ logo }
-                            label={ label }
-                        />
-                        : <ShowInstrumentsOnFile
-                            instrument={ instrument }
-                            textColor={ textColor }
-                            logo={ logo }
-                            label={ label }
-                            content={ content }
-                        />
-                }
-            </div>
-        </Style>
-    );
-}
-
-export function Tag({ multiple, locale: { lang } } : TagOptions) : ?ChildType {
-    if (__WEB__) {
-        return null;
-    }
-
-    const { DualTag, SaferTag } = componentContent[lang];
-
-    return (multiple && DualTag)
-        ? <DualTag optional />
-        : <SaferTag optional />;
+  return multiple && DualTag ? <DualTag optional /> : <SaferTag optional />;
 }

@@ -1,83 +1,83 @@
 /* @flow */
 
-import { CARD, WALLET_INSTRUMENT } from '@paypal/sdk-constants/src';
+import { CARD, WALLET_INSTRUMENT } from "@paypal/sdk-constants/src";
 
 export type SecondaryInstruments = $ReadOnlyArray<{|
-    type : string,
-    label : string,
-    instrumentID : string
+  type: string,
+  label: string,
+  instrumentID: string,
 |}>;
 
 export type WalletInstrument = {|
-    type? : $Values<typeof WALLET_INSTRUMENT>,
-    label? : string,
-    logoUrl? : string,
-    instrumentID? : string,
-    tokenID? : string,
-    vendor? : $Values<typeof CARD>,
-    oneClick : boolean,
-    branded : boolean,
-    secondaryInstruments? : SecondaryInstruments
+  type?: $Values<typeof WALLET_INSTRUMENT>,
+  label?: string,
+  logoUrl?: string,
+  instrumentID?: string,
+  tokenID?: string,
+  vendor?: $Values<typeof CARD>,
+  oneClick: boolean,
+  branded: boolean,
+  secondaryInstruments?: SecondaryInstruments,
 |};
 
 export type WalletPaymentType = {|
-    instruments : $ReadOnlyArray<WalletInstrument>
+  instruments: $ReadOnlyArray<WalletInstrument>,
 |};
 
 export type Wallet = {|
-    paypal : WalletPaymentType,
-    card : WalletPaymentType,
-    credit : WalletPaymentType,
-    venmo : WalletPaymentType
+  paypal: WalletPaymentType,
+  card: WalletPaymentType,
+  credit: WalletPaymentType,
+  venmo: WalletPaymentType,
 |};
 
 export type ContentType = {|
-    instantlyPayWith : string,
-    poweredBy : string,
-    chooseCardOrShipping : string,
-    useDifferentAccount : string,
-    deleteVaultedAccount : string,
-    deleteVaultedCard : string,
-    chooseCard : string,
-    balance : string,
-    payNow : string,
-    payWithDebitOrCreditCard : string,
-    credit : string,
-    payWith : string,
-    payLater : string,
-    flex : string,
-    payPalBalance: string,
-    moreOptions: string
+  instantlyPayWith: string,
+  poweredBy: string,
+  chooseCardOrShipping: string,
+  useDifferentAccount: string,
+  deleteVaultedAccount: string,
+  deleteVaultedCard: string,
+  chooseCard: string,
+  balance: string,
+  payNow: string,
+  payWithDebitOrCreditCard: string,
+  credit: string,
+  payWith: string,
+  payLater: string,
+  flex: string,
+  payPalBalance: string,
+  moreOptions: string,
 |};
 
 export type Experiment = {|
-    enableVenmo? : boolean,
-    disablePaylater? : boolean,
-    enableVenmoAppLabel? : boolean
+  enableVenmo?: boolean,
+  disablePaylater?: boolean,
+  enableVenmoAppLabel?: boolean,
 |};
 
 export type Requires = {|
-    applepay? : boolean,
-    popup? : boolean,
-    native? : boolean
+  applepay?: boolean,
+  popup?: boolean,
+  native?: boolean,
 |};
 
 export type CustomStyle = {|
-    css? : {|
-        [string] : string
-    |},
-    label? : string
+  css?: {|
+    [string]: string,
+  |},
+  label?: string,
 |};
 
 export type LazyExport<T> = {|
-    __get__ : () => T
+  __get__: () => T,
 |};
 
 export type LazyProtectedExport<T> = {|
-    __get__ : () => ?T
+  __get__: () => ?T,
 |};
 
 export type InlineXOEligibilityType = {|
-    eligible : boolean,
-    ineligibilityReason : string
+  eligible: boolean,
+  ineligibilityReason: string,
 |};

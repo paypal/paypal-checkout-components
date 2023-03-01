@@ -10,16 +10,16 @@
  *
  */
 // Based off https://github.com/ForbesLindesay/umd/blob/master/template.js
-;(function(f) {
+(function (f) {
   // CommonJS
   if (typeof exports === "object" && typeof module !== "undefined") {
-    module.exports = f(require('react'));
+    module.exports = f(require("react"));
 
-  // RequireJS
+    // RequireJS
   } else if (typeof define === "function" && define.amd) {
-    define(['react'], f);
+    define(["react"], f);
 
-  // <script>
+    // <script>
   } else {
     var g;
     if (typeof window !== "undefined") {
@@ -36,7 +36,6 @@
     }
     g.ReactDOM = f(g.React);
   }
-
-})(function(React) {
+})(function (React) {
   return React.__SECRET_DOM_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 });

@@ -1,41 +1,45 @@
 /* @flow */
 /** @jsx node */
 
-import { BlikLogo } from '@paypal/sdk-logos/src';
-import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
+import { BlikLogo } from "@paypal/sdk-logos/src";
+import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
-import { BUTTON_LAYOUT } from '../../constants';
-import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
-import { Text, Space } from '../../ui/text';
-import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
+import { BUTTON_LAYOUT } from "../../constants";
+import {
+  DEFAULT_APM_FUNDING_CONFIG,
+  type FundingSourceConfig,
+  BasicLabel,
+} from "../common";
+import { Text, Space } from "../../ui/text";
+import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
-export function getBlikConfig() : FundingSourceConfig {
-    return {
-        ...DEFAULT_APM_FUNDING_CONFIG,
-        
-        shippingChange: false,
-    
-        layouts: [
-            BUTTON_LAYOUT.VERTICAL
-        ],
+export function getBlikConfig(): FundingSourceConfig {
+  return {
+    ...DEFAULT_APM_FUNDING_CONFIG,
 
-        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(BlikLogo, { logoColor, optional }),
+    shippingChange: false,
 
-        Label: ({ logo, ...opts }) => {
-            if (__WEB__) {
-                return logo;
-            }
+    layouts: [BUTTON_LAYOUT.VERTICAL],
 
-            const apmLogo = (
-                <Fragment>
-                    { logo }<Space /><Text animate optional>BLIK</Text>
-                </Fragment>
-            );
+    Logo: ({ logoColor, optional }) =>
+      enableLogoCDNExperiment(BlikLogo, { logoColor, optional }),
 
-            return (<BasicLabel
-                { ...opts }
-                logo={ apmLogo }
-            />);
-        }
-    };
+    Label: ({ logo, ...opts }) => {
+      if (__WEB__) {
+        return logo;
+      }
+
+      const apmLogo = (
+        <Fragment>
+          {logo}
+          <Space />
+          <Text animate optional>
+            BLIK
+          </Text>
+        </Fragment>
+      );
+
+      return <BasicLabel {...opts} logo={apmLogo} />;
+    },
+  };
 }
