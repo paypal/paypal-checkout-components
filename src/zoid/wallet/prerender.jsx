@@ -1,19 +1,19 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType } from '@krakenjs/jsx-pragmatic/src';
+import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
 type PrerenderedWalletProps = {|
-    nonce : ?string
+  nonce: ?string,
 |};
 
-export function WalletPrerender({ nonce } : PrerenderedWalletProps) : ChildType {
-    return (
-        <html>
-            <body>
-                <style
-                    nonce={ nonce }
-                    innerHTML={ `
+export function WalletPrerender({ nonce }: PrerenderedWalletProps): ChildType {
+  return (
+    <html>
+      <body>
+        <style
+          nonce={nonce}
+          innerHTML={`
                         html, body {
                             padding: 0;
                             margin: 0;
@@ -49,9 +49,9 @@ export function WalletPrerender({ nonce } : PrerenderedWalletProps) : ChildType 
                                 transform: translateX(150%);
                             }
                         }
-                    ` }
-                />
-            </body>
-        </html>
-    );
+                    `}
+        />
+      </body>
+    </html>
+  );
 }

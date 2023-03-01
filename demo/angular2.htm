@@ -1,68 +1,67 @@
-
 <head>
-    <script src="https://npmcdn.com/core-js@2.4.1/client/shim.min.js"></script>
-    <script src="https://npmcdn.com/zone.js@0.8.12?main=browser"></script>
-    <script src="https://npmcdn.com/reflect-metadata@0.1.10"></script>
-    <script src="https://npmcdn.com/rxjs@5.4.1/bundles/Rx.min.js"></script>
-    <script src="https://npmcdn.com/@angular/core@4.2.3/bundles/core.umd.js"></script>
-    <script src="https://npmcdn.com/@angular/common@4.2.3/bundles/common.umd.js"></script>
-    <script src="https://npmcdn.com/@angular/compiler@4.2.3/bundles/compiler.umd.js"></script>
-    <script src="https://npmcdn.com/@angular/platform-browser@4.2.3/bundles/platform-browser.umd.js"></script>
-    <script src="https://npmcdn.com/@angular/platform-browser-dynamic@4.2.3/bundles/platform-browser-dynamic.umd.js"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+  <script src="https://npmcdn.com/core-js@2.4.1/client/shim.min.js"></script>
+  <script src="https://npmcdn.com/zone.js@0.8.12?main=browser"></script>
+  <script src="https://npmcdn.com/reflect-metadata@0.1.10"></script>
+  <script src="https://npmcdn.com/rxjs@5.4.1/bundles/Rx.min.js"></script>
+  <script src="https://npmcdn.com/@angular/core@4.2.3/bundles/core.umd.js"></script>
+  <script src="https://npmcdn.com/@angular/common@4.2.3/bundles/common.umd.js"></script>
+  <script src="https://npmcdn.com/@angular/compiler@4.2.3/bundles/compiler.umd.js"></script>
+  <script src="https://npmcdn.com/@angular/platform-browser@4.2.3/bundles/platform-browser.umd.js"></script>
+  <script src="https://npmcdn.com/@angular/platform-browser-dynamic@4.2.3/bundles/platform-browser-dynamic.umd.js"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
 </head>
 
 <body>
-    <my-app></my-app>
+  <my-app></my-app>
 
-    <script type="text/typescript">
+  <script type="text/typescript">
 
-        @ng.core.Component({
-          selector: 'my-app',
-          template:`
-              <div id="app">
-                  <paypal-buttons [props]="{
-                      createOrder: createOrder,
-                      onApprove: onApprove
-                  }"></paypal-buttons>
-              </div>
-          `,
-        })
-        class AppComponent {
-            private createOrder(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: '0.01'
-                        }
-                    }]
-                });
-            }
-
-            private onApprove(data, actions) {
-                return actions.order.capture();
-            }
+    @ng.core.Component({
+      selector: 'my-app',
+      template:`
+          <div id="app">
+              <paypal-buttons [props]="{
+                  createOrder: createOrder,
+                  onApprove: onApprove
+              }"></paypal-buttons>
+          </div>
+      `,
+    })
+    class AppComponent {
+        private createOrder(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '0.01'
+                    }
+                }]
+            });
         }
 
-        @ng.core.NgModule({
-            imports: [
-                ng.platformBrowser.BrowserModule,
-                paypal.Buttons.driver('angular2', ng.core)
-            ],
-            declarations: [
-                AppComponent
-            ],
-            bootstrap: [
-                AppComponent
-            ]
-        })
-        class AppModule {}
+        private onApprove(data, actions) {
+            return actions.order.capture();
+        }
+    }
 
-        ng.platformBrowserDynamic
-            .platformBrowserDynamic()
-            .bootstrapModule(AppModule);
-    </script>
+    @ng.core.NgModule({
+        imports: [
+            ng.platformBrowser.BrowserModule,
+            paypal.Buttons.driver('angular2', ng.core)
+        ],
+        declarations: [
+            AppComponent
+        ],
+        bootstrap: [
+            AppComponent
+        ]
+    })
+    class AppModule {}
 
-    <script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
-    <script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
+    ng.platformBrowserDynamic
+        .platformBrowserDynamic()
+        .bootstrapModule(AppModule);
+  </script>
+
+  <script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
+  <script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
 </body>

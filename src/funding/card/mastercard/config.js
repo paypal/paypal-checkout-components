@@ -1,12 +1,12 @@
 /* @flow */
 
-import { MastercardLogo } from '@paypal/sdk-logos/src';
+import { MastercardLogo } from "@paypal/sdk-logos/src";
 
-import type { CardConfig } from '../../common';
-import { enableLogoCDNExperiment } from '../../../lib/getLogoCDNExperiment';
+import type { CardConfig } from "../../common";
+import { enableLogoCDNExperiment } from "../../../lib/getLogoCDNExperiment";
 
-export function getMastercardConfig() : CardConfig {
-    return {
-        Label: () => enableLogoCDNExperiment(MastercardLogo)
-    };
+export function getMastercardConfig(): CardConfig {
+  return {
+    Label: () => enableLogoCDNExperiment(MastercardLogo),
+  };
 }

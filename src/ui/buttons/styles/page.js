@@ -1,6 +1,6 @@
 /* @flow */
 
-import { CLASS } from '../../../constants';
+import { CLASS } from "../../../constants";
 
 export const pageStyle = `
     html, body {
@@ -28,12 +28,12 @@ export const pageStyle = `
         display: inline-block;
     }
 
-    .${ CLASS.HIDDEN } {
+    .${CLASS.HIDDEN} {
         position: absolute !important;
         visibility: hidden !important;
     }
 
-    .${ CLASS.HIDDEN } * {
+    .${CLASS.HIDDEN} * {
         visibility: hidden !important;
     }
 `;

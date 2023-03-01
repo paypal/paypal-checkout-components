@@ -1,3 +1,3 @@
 /* @flow */
 
-export { componentStyle } from './base';
+export { componentStyle } from "./base";

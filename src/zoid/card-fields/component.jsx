@@ -2,370 +2,401 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { node, dom } from '@krakenjs/jsx-pragmatic/src';
-import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { create, type ZoidComponent } from '@krakenjs/zoid/src';
-import type { CrossDomainWindowType } from '@krakenjs/cross-domain-utils/src';
-import { memoize, uniqueID } from '@krakenjs/belter/src';
-import { getLocale, getEnv, getSDKMeta, getDisableCard, getPayPalDomain, getClientID, getDebug, getCurrency, getIntent,
-    getCommit, getVault, getCorrelationID, getPartnerAttributionID, getMerchantID, getUserIDToken } from '@paypal/sdk-client/src';
-import { getRefinedFundingEligibility } from '@paypal/funding-components/src';
-import { CARD, CURRENCY, INTENT, type FundingEligibilityType } from '@paypal/sdk-constants/src';
+import { node, dom } from "@krakenjs/jsx-pragmatic/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+import { create, type ZoidComponent } from "@krakenjs/zoid/src";
+import type { CrossDomainWindowType } from "@krakenjs/cross-domain-utils/src";
+import { memoize, uniqueID } from "@krakenjs/belter/src";
+import {
+  getLocale,
+  getEnv,
+  getSDKMeta,
+  getDisableCard,
+  getPayPalDomain,
+  getClientID,
+  getDebug,
+  getCurrency,
+  getIntent,
+  getCommit,
+  getVault,
+  getCorrelationID,
+  getPartnerAttributionID,
+  getMerchantID,
+  getUserIDToken,
+} from "@paypal/sdk-client/src";
+import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
+import {
+  CARD,
+  CURRENCY,
+  INTENT,
+  type FundingEligibilityType,
+} from "@paypal/sdk-constants/src";
 
-import { getSessionID } from '../../lib';
+import { getSessionID } from "../../lib";
 
-import { CardPrerender } from './prerender';
+import { CardPrerender } from "./prerender";
 
 const CARD_FIELD_TYPE = {
-    SINGLE: 'single',
-    NUMBER: 'number',
-    CVV:    'cvv',
-    EXPIRY: 'expiry',
-    NAME:   'name',
-    POSTAL: 'postal'
+  SINGLE: "single",
+  NUMBER: "number",
+  CVV: "cvv",
+  EXPIRY: "expiry",
+  NAME: "name",
+  POSTAL: "postal",
 };
 
 type CardFieldsProps = {|
-    clientID : string,
-    style? : {|
-        height : number
-    |},
-    env? : string,
-    locale? : string,
-    nonce : string,
-    logLevel : string,
-    sessionID : string,
-    cardFieldsSessionID : string,
-    debug : boolean,
-    sdkMeta : string,
-    fundingEligibility : FundingEligibilityType,
-    disableCard? : $ReadOnlyArray<$Values<typeof CARD>>,
-    currency : $Values<typeof CURRENCY>,
-    intent : $Values<typeof INTENT>,
-    commit : boolean,
-    vault : boolean,
-    branded? : boolean,
-    minLength?: number,
-    maxLength?: number,
+  clientID: string,
+  style?: {|
+    height: number,
+  |},
+  env?: string,
+  locale?: string,
+  nonce: string,
+  logLevel: string,
+  sessionID: string,
+  cardFieldsSessionID: string,
+  debug: boolean,
+  sdkMeta: string,
+  fundingEligibility: FundingEligibilityType,
+  disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
+  currency: $Values<typeof CURRENCY>,
+  intent: $Values<typeof INTENT>,
+  commit: boolean,
+  vault: boolean,
+  branded?: boolean,
+  minLength?: number,
+  maxLength?: number,
+  onChange?: () => ZalgoPromise<Object> | Object,
+  inputEvents?: {|
     onChange?: () => ZalgoPromise<Object> | Object,
-    inputEvents?: {|
-        onChange?: () => ZalgoPromise<Object> | Object,
-        onBlur?: () => ZalgoPromise<Object> | Object,
-        onFocus?: () => ZalgoPromise<Object> | Object,
-        onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
-    |},
-    createOrder : () => ZalgoPromise<string> | string,
-    onApprove : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    onComplete : ({| returnUrl : string |}, {| redirect : (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    onCancel ? : ({| cancelUrl : string |}, {| redirect : (? CrossDomainWindowType, ? string) => ZalgoPromise<void> |}) => ?ZalgoPromise<void>,
-    action: Object,
-    sdkCorrelationID: string,
-    hcfSessionID: string,
-    partnerAttributionID: string,
-    merchantID: $ReadOnlyArray<string>,
-    save: {|
-        createVaultSetupToken: () => ZalgoPromise<string>,
-        onApprove: ({|vaultSetupToken: string|}) => ?ZalgoPromise<void>
-    |}
+    onBlur?: () => ZalgoPromise<Object> | Object,
+    onFocus?: () => ZalgoPromise<Object> | Object,
+    onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
+  |},
+  createOrder: () => ZalgoPromise<string> | string,
+  onApprove: (
+    {| returnUrl: string |},
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+  ) => ?ZalgoPromise<void>,
+  onComplete: (
+    {| returnUrl: string |},
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+  ) => ?ZalgoPromise<void>,
+  onCancel?: (
+    {| cancelUrl: string |},
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+  ) => ?ZalgoPromise<void>,
+  action: Object,
+  sdkCorrelationID: string,
+  hcfSessionID: string,
+  partnerAttributionID: string,
+  merchantID: $ReadOnlyArray<string>,
+  save: {|
+    createVaultSetupToken: () => ZalgoPromise<string>,
+    onApprove: ({| vaultSetupToken: string |}) => ?ZalgoPromise<void>,
+  |},
 |};
 
 type CardFieldProps = {|
-    ...CardFieldsProps,
+  ...CardFieldsProps,
 
-    parent : {|
-        props : CardFieldsProps
-    |}
+  parent: {|
+    props: CardFieldsProps,
+  |},
 |};
 
 export type CardFieldComponent = ZoidComponent<CardFieldProps>;
 
 type CardFieldsExports = {|
-    submit : () => ZalgoPromise<void>,
-    setAttribute : () => ZalgoPromise<void>,
-    removeAttribute : () => ZalgoPromise<void>,
-    addClass : () => ZalgoPromise<void>,
-    removeClass : () => ZalgoPromise<void>,
-    getState : () => ZalgoPromise<Object>
+  submit: () => ZalgoPromise<void>,
+  setAttribute: () => ZalgoPromise<void>,
+  removeAttribute: () => ZalgoPromise<void>,
+  addClass: () => ZalgoPromise<void>,
+  removeClass: () => ZalgoPromise<void>,
+  getState: () => ZalgoPromise<Object>,
 |};
 
 type CardFieldsChildren = {|
-    NumberField : CardFieldComponent,
-    CVVField : CardFieldComponent,
-    ExpiryField : CardFieldComponent,
-    NameField : CardFieldComponent,
-    PostalCodeField: CardFieldComponent
+  NumberField: CardFieldComponent,
+  CVVField: CardFieldComponent,
+  ExpiryField: CardFieldComponent,
+  NameField: CardFieldComponent,
+  PostalCodeField: CardFieldComponent,
 |};
 
-const url = () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__ }`;
+const url = () =>
+  `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
 const prerenderTemplate = ({ props, doc }) => {
-    return (
-        <CardPrerender
-            nonce={ props.nonce }
-            height={ props.style?.height }
-        />
-    ).render(dom({ doc }));
+  return (
+    <CardPrerender nonce={props.nonce} height={props.style?.height} />
+  ).render(dom({ doc }));
 };
 
-export type CardFieldsComponent = ZoidComponent<CardFieldsProps, CardFieldsExports, CardFieldsChildren>;
+export type CardFieldsComponent = ZoidComponent<
+  CardFieldsProps,
+  CardFieldsExports,
+  CardFieldsChildren
+>;
 
-export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : CardFieldsComponent => {
-
+export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
+  (): CardFieldsComponent => {
     const genericCardField = (type) => {
-        return create({
-            tag: `paypal-card-${ type }-field`,
-            url,
+      return create({
+        tag: `paypal-card-${type}-field`,
+        url,
 
-            dimensions: {
-                height: '30px',
-                width:  '100%'
+        dimensions: {
+          height: "30px",
+          width: "100%",
+        },
+
+        attributes: {
+          iframe: {
+            scrolling: "no",
+          },
+        },
+
+        autoResize: {
+          height: true,
+          width: false,
+        },
+
+        prerenderTemplate,
+
+        exports: {
+          setAttribute: {
+            type: "function",
+          },
+          removeAttribute: {
+            type: "function",
+          },
+          addClass: {
+            type: "function",
+          },
+          removeClass: {
+            type: "function",
+          },
+          clear: {
+            type: "function",
+          },
+          focus: {
+            type: "function",
+          },
+          setMessage: {
+            type: "function",
+          },
+        },
+
+        props: {
+          save: {
+            type: "object",
+            required: false,
+            value: ({ props }) => {
+              if (props.save) {
+                return props.save;
+              } else if (props.parent.props) {
+                return props.parent.props.save;
+              }
             },
+          },
 
-            attributes: {
-                iframe: {
-                    scrolling: 'no'
-                }
+          type: {
+            type: "string",
+            value: () => type,
+            queryParam: true,
+          },
+
+          clientID: {
+            type: "string",
+            value: ({ props }) => props.parent.props.clientID,
+            queryParam: true,
+          },
+
+          sessionID: {
+            type: "string",
+            value: ({ props }) => props.parent.props.sessionID,
+            queryParam: true,
+          },
+
+          createOrder: {
+            type: "function",
+            required: false,
+            value: ({ props }) => props.parent.props.createOrder,
+          },
+
+          cardFieldsSessionID: {
+            type: "string",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.cardFieldsSessionID,
+          },
+
+          env: {
+            type: "string",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.env,
+          },
+
+          debug: {
+            type: "boolean",
+            value: ({ props }) => props.parent.props.debug,
+            queryParam: true,
+          },
+
+          locale: {
+            type: "object",
+            queryParam: true,
+            allowDelegate: true,
+            value: ({ props }) => props.parent.props.locale,
+          },
+
+          onApprove: {
+            type: "function",
+            required: false,
+            value: ({ props }) => props.parent.props.onApprove,
+          },
+
+          onComplete: {
+            type: "function",
+            required: false,
+            value: ({ props }) => props.parent.props.onComplete,
+          },
+
+          onCancel: {
+            type: "function",
+            required: false,
+            value: ({ props }) => props.parent.props.onCancel,
+          },
+
+          sdkMeta: {
+            type: "string",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.sdkMeta,
+          },
+
+          style: {
+            type: "object",
+            required: false,
+            queryParam: true,
+            value: ({ props }) => {
+              return {
+                ...props.parent.props.style,
+                // $FlowFixMe
+                ...props.style,
+              };
             },
+          },
 
-            autoResize: {
-                height: true,
-                width:  false
+          onChange: {
+            type: "function",
+            required: false,
+            value: ({ props }) => {
+              if (props.onChange) {
+                return props.onChange;
+              } else {
+                return props.parent.props.onChange;
+              }
             },
+          },
 
-            prerenderTemplate,
-
-            exports: {
-                setAttribute: {
-                    type: 'function'
-                },
-                removeAttribute: {
-                    type: 'function'
-                },
-                addClass: {
-                    type: 'function'
-                },
-                removeClass: {
-                    type: 'function'
-                },
-                clear: {
-                    type: 'function'
-                },
-                focus: {
-                    type: 'function'
-                },
-                setMessage: {
-                    type: 'function'
-                }
+          inputEvents: {
+            type: "object",
+            required: false,
+            value: ({ props }) => {
+              if (props.inputEvents) {
+                return props.inputEvents;
+              } else {
+                return props.parent.props.inputEvents;
+              }
             },
+          },
 
-            props: {
-                save: {
-                    type: 'object',
-                    required: false,
-                    value: ({props}) => {
-                        if (props.save) {
-                            return props.save
-                        } else if (props.parent.props) {
-                            return props.parent.props.save
-                        }
-                    }
-                },
+          minLength: {
+            type: "number",
+            required: false,
+            value: ({ props }) => props.minLength,
+          },
 
-                type: {
-                    type:       'string',
-                    value:      () => type,
-                    queryParam: true
-                },
+          maxLength: {
+            type: "number",
+            required: false,
+            value: ({ props }) => props.maxLength,
+          },
 
-                clientID: {
-                    type:       'string',
-                    value:      ({ props }) => props.parent.props.clientID,
-                    queryParam: true
-                },
+          fundingEligibility: {
+            type: "object",
+            value: ({ props }) => props.parent.props.fundingEligibility,
+          },
 
-                sessionID: {
-                    type:       'string',
-                    value:      ({ props }) => props.parent.props.sessionID,
-                    queryParam: true
-                },
+          disableCard: {
+            type: "array",
+            queryParam: "disable-card",
+            allowDelegate: true,
+            queryValue({ value }): string {
+              return value.join(",");
+            },
+            value: ({ props }) => props.parent.props.disableCard,
+          },
 
-                createOrder: {
-                    type:     'function',
-                    required: false,
-                    value:    ({ props }) => props.parent.props.createOrder
-                },
+          currency: {
+            type: "string",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.currency,
+          },
 
-                cardFieldsSessionID: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.cardFieldsSessionID
-                },
+          intent: {
+            type: "string",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.intent,
+          },
 
-                env: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.env
-                },
+          commit: {
+            type: "boolean",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.commit,
+          },
 
-                debug: {
-                    type:       'boolean',
-                    value:      ({ props }) => props.parent.props.debug,
-                    queryParam: true
-                },
+          vault: {
+            type: "boolean",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.vault,
+          },
 
-                locale: {
-                    type:          'object',
-                    queryParam:    true,
-                    allowDelegate: true,
-                    value:         ({ props }) => props.parent.props.locale
-                },
-
-                onApprove: {
-                    type:     'function',
-                    required: false,
-                    value:      ({ props }) => props.parent.props.onApprove
-                },
-
-                onComplete: {
-                    type:     'function',
-                    required: false,
-                    value:      ({ props }) => props.parent.props.onComplete
-                },
-
-                onCancel: {
-                    type:     'function',
-                    required: false,
-                    value:      ({ props }) => props.parent.props.onCancel
-                },
-
-                sdkMeta: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.sdkMeta
-                },
-
-                style: {
-                    type:       'object',
-                    required:   false,
-                    queryParam: true,
-                    value:      ({ props }) => {
-                        return {
-                            ...props.parent.props.style,
-                            // $FlowFixMe
-                            ...props.style
-                        };
-                    }
-                },
-
-                onChange: {
-                    type: 'function',
-                    required: false,
-                    value: ({props}) => {
-                        if (props.onChange) {
-                            return props.onChange
-                        } else {
-                            return props.parent.props.onChange
-                        }
-                    }
-                },
-
-                inputEvents: {
-                    type: 'object',
-                    required: false,
-                    value: ({props}) => {
-                        if (props.inputEvents) {
-                            return props.inputEvents
-                        } else {
-                            return props.parent.props.inputEvents
-                        }
-                    }
-                },
-
-                minLength: {
-                    type: 'number',
-                    required: false,
-                    value: ({props}) => props.minLength
-                },
-
-                maxLength: {
-                    type: 'number',
-                    required: false,
-                    value: ({props}) => props.maxLength
-                },
-
-                fundingEligibility: {
-                    type:  'object',
-                    value: ({ props }) => props.parent.props.fundingEligibility
-                },
-
-                disableCard: {
-                    type:          'array',
-                    queryParam:    'disable-card',
-                    allowDelegate: true,
-                    queryValue({ value }) : string {
-                        return value.join(',');
-                    },
-                    value:      ({ props }) => props.parent.props.disableCard
-                },
-
-                currency: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.currency
-                },
-
-                intent: {
-                    type:       'string',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.intent
-                },
-
-                commit: {
-                    type:       'boolean',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.commit
-                },
-
-                vault: {
-                    type:       'boolean',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.vault
-                },
-
-                branded: {
-                    type:       'boolean',
-                    queryParam: true,
-                    required:   false,
-                    value:      ({ props }) => props.parent.props.branded
-                },
-                sdkCorrelationID: {
-                    type:       'string',
-                    required:   false,
-                    value:      ({ props }) => props.parent.props.sdkCorrelationID,
-                    queryParam: true
-                },
-                hcfSessionID : {
-                    type:       'string',
-                    required: false,
-                    value: ({ props }) => props.parent.props.hcfSessionID
-                },
-                partnerAttributionID: {
-                    type:       'string',
-                    required:   false,
-                    value:      ({ props }) => props.parent.props.partnerAttributionID
-                },
-                merchantID: {
-                    type:       'array',
-                    queryParam: true,
-                    value:      ({ props }) => props.parent.props.merchantID
-                },
-                userIDToken: {
-                    type:       'string',
-                    default:    getUserIDToken,
-                    required:   false,
-                },
-            }
-        });
+          branded: {
+            type: "boolean",
+            queryParam: true,
+            required: false,
+            value: ({ props }) => props.parent.props.branded,
+          },
+          sdkCorrelationID: {
+            type: "string",
+            required: false,
+            value: ({ props }) => props.parent.props.sdkCorrelationID,
+            queryParam: true,
+          },
+          hcfSessionID: {
+            type: "string",
+            required: false,
+            value: ({ props }) => props.parent.props.hcfSessionID,
+          },
+          partnerAttributionID: {
+            type: "string",
+            required: false,
+            value: ({ props }) => props.parent.props.partnerAttributionID,
+          },
+          merchantID: {
+            type: "array",
+            queryParam: true,
+            value: ({ props }) => props.parent.props.merchantID,
+          },
+          userIDToken: {
+            type: "string",
+            default: getUserIDToken,
+            required: false,
+          },
+        },
+      });
     };
 
     const NumberField = genericCardField(CARD_FIELD_TYPE.NUMBER);
@@ -375,253 +406,254 @@ export const getCardFieldsComponent : () => CardFieldsComponent = memoize(() : C
     const PostalCodeField = genericCardField(CARD_FIELD_TYPE.POSTAL);
 
     const CardFields = create({
-        tag: 'paypal-card-fields',
-        url,
+      tag: "paypal-card-fields",
+      url,
 
-        dimensions: {
-            height: '30px',
-            width:  '100%'
+      dimensions: {
+        height: "30px",
+        width: "100%",
+      },
+
+      attributes: {
+        iframe: {
+          scrolling: "no",
         },
+      },
 
-        attributes: {
-            iframe: {
-                scrolling: 'no'
-            }
+      autoResize: {
+        height: true,
+        width: false,
+      },
+
+      prerenderTemplate,
+
+      children: () => {
+        return {
+          NumberField,
+          CVVField,
+          ExpiryField,
+          NameField,
+          PostalCodeField,
+        };
+      },
+
+      exports: {
+        submit: {
+          type: "function",
         },
-
-        autoResize: {
-            height: true,
-            width:  false
+        setAttribute: {
+          type: "function",
         },
-
-        prerenderTemplate,
-        
-        children: () => {
-            return {
-                NumberField,
-                CVVField,
-                ExpiryField,
-                NameField,
-                PostalCodeField
-            };
+        removeAttribute: {
+          type: "function",
         },
-
-        exports: {
-            submit: {
-                type: 'function'
-            },
-            setAttribute: {
-                type: 'function'
-            },
-            removeAttribute: {
-                type: 'function'
-            },
-            addClass: {
-                type: 'function'
-            },
-            removeClass: {
-                type: 'function'
-            },
-            clear: {
-                type: 'function'
-            },
-            focus: {
-                type: 'function'
-            },
-            getState: {
-                type: 'function'
-            },
+        addClass: {
+          type: "function",
         },
-
-        eligible: () => {
-            const fundingEligibility = getRefinedFundingEligibility();
-            if (fundingEligibility?.card?.eligible) {
-                return {
-                    eligible: true
-                };
-            }
-            return {
-                eligible: false,
-                reason: 'card payments are not eligible'
-            };
+        removeClass: {
+          type: "function",
         },
+        clear: {
+          type: "function",
+        },
+        focus: {
+          type: "function",
+        },
+        getState: {
+          type: "function",
+        },
+      },
 
-        props: {
-            save: {
-                type:       'object',
-                required: false,
-            },
-
-            type: {
-                type:       'string',
-                value:      () => CARD_FIELD_TYPE.SINGLE,
-                queryParam: true
-            },
-    
-            clientID: {
-                type:       'string',
-                value:      getClientID,
-                queryParam: true
-            },
-
-            sessionID: {
-                type:       'string',
-                required:   false,
-                value:    getSessionID,
-                queryParam: true
-            },
-
-            createOrder: {
-                type:     'function',
-                required: false
-            },
-
-            cardFieldsSessionID: {
-                type:       'string',
-                queryParam: true,
-                value:      uniqueID
-            },
-
-            env: {
-                type:       'string',
-                queryParam: true,
-                value:      getEnv
-            },
-
-            debug: {
-                type:       'boolean',
-                value:      getDebug,
-                queryParam: true
-            },
-
-            locale: {
-                type:          'object',
-                queryParam:    true,
-                allowDelegate: true,
-                value:         getLocale
-            },
-
-            onApprove: {
-                type:     'function',
-                required: false
-            },
-
-            onComplete: {
-                type:     'function',
-                required: false
-            },
-
-            onCancel: {
-                type:     'function',
-                required: false
-            },
-
-            sdkMeta: {
-                type:       'string',
-                queryParam: true,
-                value:      getSDKMeta
-            },
-
-            style: {
-                type:       'object',
-                required:   false,
-                queryParam: true
-            },
-
-            onChange: {
-                type: 'function',
-                required: false
-            },
-
-            inputEvents: {
-                type: 'object',
-                required: false
-            },
-
-            minLength: {
-                type: 'number',
-                required: false,
-                value: ({props}) => props.minLength
-            },
-
-            maxLength: {
-                type: 'number',
-                required: false,
-                value: ({props}) => props.maxLength
-            },
-
-            fundingEligibility: {
-                type:  'object',
-                value: getRefinedFundingEligibility
-            },
-
-            disableCard: {
-                type:          'array',
-                queryParam:    'disable-card',
-                allowDelegate: true,
-                queryValue({ value }) : string {
-                    return value.join(',');
-                },
-                value: getDisableCard
-            },
-
-            currency: {
-                type:       'string',
-                queryParam: true,
-                value:      getCurrency
-            },
-
-            intent: {
-                type:       'string',
-                queryParam: true,
-                value:      getIntent
-            },
-
-            commit: {
-                type:       'boolean',
-                queryParam: true,
-                value:      getCommit
-            },
-
-            vault: {
-                type:       'boolean',
-                queryParam: true,
-                value:      getVault
-            },
-
-            branded: {
-                type:       'boolean',
-                queryParam: true,
-                required:   false
-            },
-            sdkCorrelationID: {
-                type:       'string',
-                required:   false,
-                value:      getCorrelationID,
-                queryParam: true
-            },
-            hcfSessionID : {
-                type:       'string',
-                required:   false,
-                value:      uniqueID
-            },
-            partnerAttributionID: {
-                type:       'string',
-                required:   false,
-                value:      getPartnerAttributionID
-            },
-            merchantID: {
-                type:       'array',
-                queryParam: true,
-                value:      getMerchantID
-            },
-            userIDToken: {
-                type:       'string',
-                default:    getUserIDToken,
-                required:   false,
-            },
+      eligible: () => {
+        const fundingEligibility = getRefinedFundingEligibility();
+        if (fundingEligibility?.card?.eligible) {
+          return {
+            eligible: true,
+          };
         }
+        return {
+          eligible: false,
+          reason: "card payments are not eligible",
+        };
+      },
+
+      props: {
+        save: {
+          type: "object",
+          required: false,
+        },
+
+        type: {
+          type: "string",
+          value: () => CARD_FIELD_TYPE.SINGLE,
+          queryParam: true,
+        },
+
+        clientID: {
+          type: "string",
+          value: getClientID,
+          queryParam: true,
+        },
+
+        sessionID: {
+          type: "string",
+          required: false,
+          value: getSessionID,
+          queryParam: true,
+        },
+
+        createOrder: {
+          type: "function",
+          required: false,
+        },
+
+        cardFieldsSessionID: {
+          type: "string",
+          queryParam: true,
+          value: uniqueID,
+        },
+
+        env: {
+          type: "string",
+          queryParam: true,
+          value: getEnv,
+        },
+
+        debug: {
+          type: "boolean",
+          value: getDebug,
+          queryParam: true,
+        },
+
+        locale: {
+          type: "object",
+          queryParam: true,
+          allowDelegate: true,
+          value: getLocale,
+        },
+
+        onApprove: {
+          type: "function",
+          required: false,
+        },
+
+        onComplete: {
+          type: "function",
+          required: false,
+        },
+
+        onCancel: {
+          type: "function",
+          required: false,
+        },
+
+        sdkMeta: {
+          type: "string",
+          queryParam: true,
+          value: getSDKMeta,
+        },
+
+        style: {
+          type: "object",
+          required: false,
+          queryParam: true,
+        },
+
+        onChange: {
+          type: "function",
+          required: false,
+        },
+
+        inputEvents: {
+          type: "object",
+          required: false,
+        },
+
+        minLength: {
+          type: "number",
+          required: false,
+          value: ({ props }) => props.minLength,
+        },
+
+        maxLength: {
+          type: "number",
+          required: false,
+          value: ({ props }) => props.maxLength,
+        },
+
+        fundingEligibility: {
+          type: "object",
+          value: getRefinedFundingEligibility,
+        },
+
+        disableCard: {
+          type: "array",
+          queryParam: "disable-card",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            return value.join(",");
+          },
+          value: getDisableCard,
+        },
+
+        currency: {
+          type: "string",
+          queryParam: true,
+          value: getCurrency,
+        },
+
+        intent: {
+          type: "string",
+          queryParam: true,
+          value: getIntent,
+        },
+
+        commit: {
+          type: "boolean",
+          queryParam: true,
+          value: getCommit,
+        },
+
+        vault: {
+          type: "boolean",
+          queryParam: true,
+          value: getVault,
+        },
+
+        branded: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
+        sdkCorrelationID: {
+          type: "string",
+          required: false,
+          value: getCorrelationID,
+          queryParam: true,
+        },
+        hcfSessionID: {
+          type: "string",
+          required: false,
+          value: uniqueID,
+        },
+        partnerAttributionID: {
+          type: "string",
+          required: false,
+          value: getPartnerAttributionID,
+        },
+        merchantID: {
+          type: "array",
+          queryParam: true,
+          value: getMerchantID,
+        },
+        userIDToken: {
+          type: "string",
+          default: getUserIDToken,
+          required: false,
+        },
+      },
     });
 
     return CardFields;
-});
+  }
+);

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { CLASS } from '../../../constants';
+import { CLASS } from "../../../constants";
 
 export const COMPRESSED = `
     max-width: 0%;
@@ -25,31 +25,35 @@ export const VISIBLE = `
 
 export const labelStyle = `
 
-    .${ CLASS.BUTTON } .${ CLASS.TEXT } {
+    .${CLASS.BUTTON} .${CLASS.TEXT} {
         height: 100%;
-        ${ HIDDEN }
+        ${HIDDEN}
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.TEXT }.${ CLASS.IMMEDIATE }:not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
-        ${ VISIBLE }
-        ${ EXPANDED }
+    .${CLASS.BUTTON} .${CLASS.TEXT}.${CLASS.IMMEDIATE}:not(.${
+  CLASS.PERSONALIZATION_TEXT
+}):not(.${CLASS.HIDDEN}) {
+        ${VISIBLE}
+        ${EXPANDED}
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.VAULT_LABEL } {
+    .${CLASS.BUTTON} .${CLASS.VAULT_LABEL} {
         max-width: 60%;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
     }
 
-    .${ CLASS.DOM_READY } .${ CLASS.BUTTON } .${ CLASS.TEXT }:not(.${ CLASS.IMMEDIATE }):not(.${ CLASS.PERSONALIZATION_TEXT }):not(.${ CLASS.HIDDEN }) {
-        ${ VISIBLE }
-        ${ COMPRESSED }
-        animation: show-text ${ __TEST__ ? '0' : '1' }s 0s forwards;
+    .${CLASS.DOM_READY} .${CLASS.BUTTON} .${CLASS.TEXT}:not(.${
+  CLASS.IMMEDIATE
+}):not(.${CLASS.PERSONALIZATION_TEXT}):not(.${CLASS.HIDDEN}) {
+        ${VISIBLE}
+        ${COMPRESSED}
+        animation: show-text ${__TEST__ ? "0" : "1"}s 0s forwards;
     }
 
     @keyframes show-text {
-        0% { ${ COMPRESSED } }
-        100% { ${ EXPANDED } }
+        0% { ${COMPRESSED} }
+        100% { ${EXPANDED} }
     }
 `;

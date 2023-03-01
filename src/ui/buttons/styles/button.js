@@ -1,15 +1,15 @@
 /* @flow */
 
-import { ENV } from '@paypal/sdk-constants/src';
-import { LOGO_CLASS } from '@paypal/sdk-logos/src';
+import { ENV } from "@paypal/sdk-constants/src";
+import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS } from '../../../constants';
+import { CLASS } from "../../../constants";
 
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
 export const buttonStyle = `
 
-    .${ CLASS.CONTAINER } {
+    .${CLASS.CONTAINER} {
         display: block;
         white-space: nowrap;
         margin: 0;
@@ -25,7 +25,7 @@ export const buttonStyle = `
         box-sizing: border-box;
     }
 
-    .${ CLASS.BUTTON } {
+    .${CLASS.BUTTON} {
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
         position: relative;
@@ -37,22 +37,22 @@ export const buttonStyle = `
         overflow: hidden;
     }
 
-    .${ CLASS.BUTTON } * {
+    .${CLASS.BUTTON} * {
         cursor: pointer;
     }
 
-    .${ CLASS.CONTAINER }.${ CLASS.ENV }-${ ENV.TEST } .${ CLASS.TEXT } {
+    .${CLASS.CONTAINER}.${CLASS.ENV}-${ENV.TEST} .${CLASS.TEXT} {
         font-family: Arial !important;
         background: rgba(0, 0, 0, 0.5) !important;
         color: transparent  !important;
         text-shadow: none  !important;
     }
 
-    .${ CLASS.CARD } {
+    .${CLASS.CARD} {
         cursor: pointer;
     }
 
-    .${ LOGO_CLASS.LOGO } {
+    .${LOGO_CLASS.LOGO} {
         padding: 0;
         display: inline-block;
         background: none;
@@ -60,25 +60,25 @@ export const buttonStyle = `
         width: auto;
     }
 
-    .${ CLASS.TEXT }, .${ CLASS.SPACE } {
+    .${CLASS.TEXT}, .${CLASS.SPACE} {
         display: inline-block;
         white-space: pre;
         vertical-align: top;
     }
 
-    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } {
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
         position: relative;
         top: 50%;
         transform: translateY(-50%);
     }
 
-    .${ CLASS.BUTTON } > .${ CLASS.BUTTON_LABEL } * {
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} * {
         vertical-align: middle;
         height: 100%;
         text-align: left;
     }
 
-    .${ CLASS.TAGLINE } {
+    .${CLASS.TAGLINE} {
         max-width: 100%;
         font-size: initial;
         font-weight: normal;
@@ -87,7 +87,7 @@ export const buttonStyle = `
         width: auto;
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
+    .${CLASS.BUTTON} .${CLASS.SPINNER} {
         position: absolute;
         height: 40px;
         width: 40px;
@@ -98,10 +98,10 @@ export const buttonStyle = `
         border: 3px solid rgba(0, 0, 0, .2);
         border-top-color: rgba(33, 128, 192, 0.8);
         border-radius: 100%;
-        animation: ${ CLASS.SPINNER }-rotation .7s infinite linear;
+        animation: ${CLASS.SPINNER}-rotation .7s infinite linear;
     }
 
-    @keyframes ${ CLASS.SPINNER }-rotation {
+    @keyframes ${CLASS.SPINNER}-rotation {
         from {
             transform: translateX(-50%) translateY(-50%) rotate(0deg);
         }
@@ -110,24 +110,26 @@ export const buttonStyle = `
         }
     }
 
-    .${ CLASS.BUTTON } .${ CLASS.SPINNER } {
+    .${CLASS.BUTTON} .${CLASS.SPINNER} {
         display: none !important;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.LOADING } * {
+    .${CLASS.BUTTON}.${CLASS.LOADING} * {
         display: none !important;
     }
 
-    .${ CLASS.BUTTON }.${ CLASS.LOADING } .${ CLASS.SPINNER } {
+    .${CLASS.BUTTON}.${CLASS.LOADING} .${CLASS.SPINNER} {
         display: block !important;
     }
 
-    .${ CLASS.CONTAINER } .${ CLASS.VAULT_HEADER } {
+    .${CLASS.CONTAINER} .${CLASS.VAULT_HEADER} {
         margin-top: 10px;
     }
 
-    @media only screen and (max-width: ${ MIN_VAULT_BUTTON_WIDTH - 1 }px) {
-        .${ CLASS.CONTAINER } .${ CLASS.BUTTON_ROW }.${ CLASS.WALLET }.${ CLASS.WALLET_MENU } .${ CLASS.BUTTON }  {
+    @media only screen and (max-width: ${MIN_VAULT_BUTTON_WIDTH - 1}px) {
+        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${
+  CLASS.WALLET_MENU
+} .${CLASS.BUTTON}  {
             border-top-right-radius: 4px;
             border-bottom-right-radius: 4px;
             width: 100%;

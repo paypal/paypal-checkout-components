@@ -2,9 +2,8 @@
 name: 🚀 Feature request
 about: Suggest an idea to us!
 title: "[Feature] Feature request"
-labels: 'feature'
-assignees: ''
-
+labels: "feature"
+assignees: ""
 ---
 
 ### 🚀 Feature Proposal

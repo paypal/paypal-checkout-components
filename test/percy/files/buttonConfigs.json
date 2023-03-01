@@ -1,1 +1,1372 @@
-[{"button":{}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"paypal"},"fundingEligibility":{"paypal":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1","button":{"fundingSource":"venmo"},"fundingEligibility":{"venmo":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"itau"},"fundingEligibility":{"itau":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"credit"},"fundingEligibility":{"credit":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"paylater"},"fundingEligibility":{"paylater":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"ideal"},"fundingEligibility":{"ideal":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"sepa"},"fundingEligibility":{"sepa":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"bancontact"},"fundingEligibility":{"bancontact":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"giropay"},"fundingEligibility":{"giropay":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"eps"},"fundingEligibility":{"eps":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"sofort"},"fundingEligibility":{"sofort":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"mybank"},"fundingEligibility":{"mybank":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"blik"},"fundingEligibility":{"blik":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"p24"},"fundingEligibility":{"p24":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"zimpler"},"fundingEligibility":{"zimpler":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"wechatpay"},"fundingEligibility":{"wechatpay":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"payu"},"fundingEligibility":{"payu":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"verkkopankki"},"fundingEligibility":{"verkkopankki":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"trustly"},"fundingEligibility":{"trustly":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"oxxo"},"fundingEligibility":{"oxxo":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"boleto"},"fundingEligibility":{"boleto":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"boletobancario"},"fundingEligibility":{"boletobancario":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"maxima"},"fundingEligibility":{"maxima":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"satispay"},"fundingEligibility":{"satispay":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36","button":{"fundingSource":"card"},"fundingEligibility":{"card":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"button":{"style":{"label":"pay"}}},{"button":{"style":{"label":"buynow"}}},{"button":{"style":{"label":"checkout"}}},{"button":{"style":{"label":"subscribe"}}},{"button":{"style":{"label":"donate"}}},{"fundingEligibility":{"paypal":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"venmo":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":["venmo"],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"itau":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"credit":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"ideal":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"sepa":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"bancontact":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"giropay":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"eps":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"sofort":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"mybank":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"blik":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"p24":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"zimpler":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"wechatpay":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"payu":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"verkkopankki":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"trustly":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"oxxo":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"boleto":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"boletobancario":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"maxima":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"satispay":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":null}},"rememberedFunding":[],"button":{}},{"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"products":{"payIn4":{"eligible":true}},"vendors":{"visa":{"eligible":true},"amex":{"eligible":true},"mastercard":{"eligible":true}}}},"rememberedFunding":[],"button":{}},{"container":{"width":144},"button":{}},{"container":{"width":222},"button":{}},{"container":{"width":465},"button":{}},{"container":{"width":670},"button":{}},{"button":{"style":{"color":"gold"}}},{"button":{"style":{"color":"blue"}}},{"button":{"style":{"color":"silver"}}},{"button":{"style":{"color":"black"}}},{"button":{"style":{"color":"white"}}},{"button":{"style":{"shape":"rect"}}},{"button":{"style":{"shape":"rect","height":45}}},{"button":{"style":{"shape":"pill"}}},{"button":{"style":{"shape":"pill","height":45}}},{"button":{"style":{"layout":"vertical"}}},{"button":{"style":{"layout":"horizontal"}}},{"button":{"style":{"layout":"horizontal","tagline":false}}},{"button":{"style":{"layout":"horizontal"}},"container":{"width":300},"userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1","fundingEligibility":{"paypal":{"eligible":true},"venmo":{"eligible":true}}},{"button":{"style":{"layout":"horizontal"}},"container":{"width":300},"fundingEligibility":{"paypal":{"eligible":true},"credit":{"eligible":true}}},{"button":{"style":{"layout":"horizontal"}},"container":{"width":300},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"payIn4":{"eligible":true}}}}},{"button":{"style":{"layout":"horizontal"}},"container":{"width":300},"fundingEligibility":{"paypal":{"eligible":true},"itau":{"eligible":true}}},{"container":{"width":340},"button":{"style":{"height":44}}},{"container":{"width":550},"button":{"style":{"height":55}}},{"userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1","button":{"fundingSource":"venmo"},"fundingEligibility":{"venmo":{"eligible":true}},"wallet":{"venmo":{"instruments":[{"label":"@foo"}]}}},{"diffThreshold":1000,"container":{"width":350},"button":{"fundingSource":"paypal"},"wallet":{"paypal":{"instruments":[{"label":"foo@bar.com","oneClick":true,"tokenID":"12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"button":{"fundingSource":"card"},"wallet":{"paypal":{"instruments":[{"label":"foo@bar.com","oneClick":true,"tokenID":"12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"label":"foo@bar.com","oneClick":true,"tokenID":"12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"button":{"fundingSource":"paypal"},"wallet":{"paypal":{"instruments":[{"type":"card","label":"••1234","oneClick":true,"instrumentID":"abc12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"button":{"fundingSource":"card"},"wallet":{"paypal":{"instruments":[{"type":"bank","label":"••7331","oneClick":false,"instrumentID":"xyz12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"type":"credit","label":"foo@bar.com","oneClick":false,"instrumentID":"abc12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"type":"balance","label":"foo@bar.com","oneClick":true,"instrumentID":"ttt4345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"credit":{"instruments":[{"type":"credit","label":"foo@bar.com","oneClick":true,"instrumentID":"abc12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"credit":{"eligible":true}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"type":"card","label":"••1234","oneClick":true,"instrumentID":"abc12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}},"button":{"style":{"layout":"horizontal","tagline":false}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"credit":{"instruments":[{"type":"credit","label":"foo@bar.com","oneClick":true,"instrumentID":"abc12345"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"},{"type":"card","label":"Mastercard x-1234","tokenID":"xyz123","vendor":"mastercard"}]}},"fundingEligibility":{"paypal":{"eligible":true},"credit":{"eligible":true}},"button":{"style":{"layout":"horizontal","tagline":false}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa","branded":true}]}},"fundingEligibility":{"card":{"eligible":true}},"button":{"fundingSource":"card"}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc-123-456","vendor":"visa"}]}},"fundingEligibility":{"card":{"eligible":true}},"button":{"userIDToken":"1234455","fundingSource":"card"}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"}]}},"fundingEligibility":{"card":{"eligible":true}},"button":{"userIDToken":"1234455","fundingSource":"card"}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc123","vendor":"visa"}]}},"fundingEligibility":{"card":{"eligible":true}},"button":{"clientAccessToken":"5544321","userIDToken":"1234455","fundingSource":"card"}},{"button":{"style":{"layout":"horizontal","label":"pay"}},"container":{"width":330},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"paylater":{"eligible":true,"variant":"DE"}}}}},{"button":{"style":{"layout":"horizontal","label":"pay"}},"container":{"width":320},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"paylater":{"eligible":true,"variant":"DE"}}}}},{"button":{"style":{"layout":"horizontal","label":"pay"}},"container":{"width":300},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"paylater":{"eligible":true,"variant":"DE"}}}}},{"button":{"style":{"layout":"horizontal","label":"pay"}},"container":{"width":290},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"paylater":{"eligible":true,"variant":"DE"}}}}},{"button":{"style":{"layout":"horizontal","label":"pay"}},"container":{"width":300},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"paylater":{"eligible":true,"variant":"IT"}}}}},{"button":{"style":{"layout":"horizontal","label":"pay"}},"container":{"width":300},"fundingEligibility":{"paypal":{"eligible":true},"paylater":{"eligible":true,"products":{"paylater":{"eligible":true,"variant":"ES"}}}}},{"diffThreshold":1000,"container":{"width":240},"button":{"fundingSource":"paypal"},"wallet":{"paypal":{"instruments":[{"label":"foo2@bar2.com","oneClick":true,"tokenID":"123456"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc1234","vendor":"visa"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":300},"button":{"fundingSource":"paypal","style":{"menuPlacement":"above"}},"wallet":{"paypal":{"instruments":[{"label":"foo2@bar2.com","oneClick":true,"tokenID":"123456"}]},"card":{"instruments":[{"type":"card","label":"Visa x-1234","tokenID":"abc1234","vendor":"visa"}]}},"fundingEligibility":{"paypal":{"eligible":true},"card":{"eligible":true,"vendors":{"visa":{"eligible":true},"mastercard":{"eligible":true},"amex":{"eligible":true}}}}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"accessToken":null,"instrumentID":"abc12345","label":"••1234","logoUrl":null,"oneClick":true,"planID":null,"secondaryInstruments":[{"instrumentID":"BALANCEUSD","label":"PayPal Balance","type":"BALANCE"}],"tokenID":null,"type":"card","vendor":"VISA"}]}},"fundingEligibility":{"paypal":{"eligible":true}},"button":{"showPayLabel":false}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"accessToken":null,"instrumentID":"abc12345","label":"••1234","logoUrl":null,"oneClick":true,"planID":null,"secondaryInstruments":[{"instrumentID":"BALANCEUSD","label":"PayPal Balance","type":"BALANCE"}],"tokenID":null,"type":"bank","vendor":"BANK OF AMERICA"}]}},"fundingEligibility":{"paypal":{"eligible":true}},"button":{"showPayLabel":false}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"accessToken":null,"instrumentID":"abc12345","label":"••1234","logoUrl":null,"oneClick":true,"planID":null,"secondaryInstruments":null,"tokenID":null,"type":"bank","vendor":"BANK OF AMERICA"}]}},"fundingEligibility":{"paypal":{"eligible":true}},"button":{"showPayLabel":false}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"accessToken":null,"instrumentID":"abc12345","label":"••1234","logoUrl":null,"oneClick":true,"planID":null,"secondaryInstruments":null,"tokenID":null,"type":"card","vendor":"VISA"}]}},"fundingEligibility":{"paypal":{"eligible":true}},"button":{"showPayLabel":false}},{"diffThreshold":1000,"container":{"width":350},"wallet":{"paypal":{"instruments":[{"accessToken":null,"instrumentID":"BALANCEUSD","label":"BALANCE","logoUrl":null,"oneClick":true,"planID":null,"secondaryInstruments":null,"tokenID":null,"type":"balance","vendor":"BALANCE"}]}},"fundingEligibility":{"paypal":{"eligible":true}},"button":{"showPayLabel":false}}]
+[
+  { "button": {} },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "paypal" },
+    "fundingEligibility": {
+      "paypal": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+    "button": { "fundingSource": "venmo" },
+    "fundingEligibility": {
+      "venmo": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "itau" },
+    "fundingEligibility": {
+      "itau": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "credit" },
+    "fundingEligibility": {
+      "credit": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "paylater" },
+    "fundingEligibility": {
+      "paylater": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "ideal" },
+    "fundingEligibility": {
+      "ideal": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "sepa" },
+    "fundingEligibility": {
+      "sepa": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "bancontact" },
+    "fundingEligibility": {
+      "bancontact": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "giropay" },
+    "fundingEligibility": {
+      "giropay": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "eps" },
+    "fundingEligibility": {
+      "eps": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "sofort" },
+    "fundingEligibility": {
+      "sofort": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "mybank" },
+    "fundingEligibility": {
+      "mybank": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "blik" },
+    "fundingEligibility": {
+      "blik": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "p24" },
+    "fundingEligibility": {
+      "p24": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "zimpler" },
+    "fundingEligibility": {
+      "zimpler": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "wechatpay" },
+    "fundingEligibility": {
+      "wechatpay": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "payu" },
+    "fundingEligibility": {
+      "payu": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "verkkopankki" },
+    "fundingEligibility": {
+      "verkkopankki": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "trustly" },
+    "fundingEligibility": {
+      "trustly": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "oxxo" },
+    "fundingEligibility": {
+      "oxxo": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "boleto" },
+    "fundingEligibility": {
+      "boleto": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "boletobancario" },
+    "fundingEligibility": {
+      "boletobancario": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "maxima" },
+    "fundingEligibility": {
+      "maxima": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "satispay" },
+    "fundingEligibility": {
+      "satispay": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
+    "button": { "fundingSource": "card" },
+    "fundingEligibility": {
+      "card": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  { "button": { "style": { "label": "pay" } } },
+  { "button": { "style": { "label": "buynow" } } },
+  { "button": { "style": { "label": "checkout" } } },
+  { "button": { "style": { "label": "subscribe" } } },
+  { "button": { "style": { "label": "donate" } } },
+  {
+    "fundingEligibility": {
+      "paypal": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "venmo": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": ["venmo"],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "itau": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "credit": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "ideal": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "sepa": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "bancontact": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "giropay": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "eps": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "sofort": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "mybank": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "blik": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "p24": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "zimpler": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "wechatpay": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "payu": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "verkkopankki": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "trustly": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "oxxo": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "boleto": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "boletobancario": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "maxima": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "satispay": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": null
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  {
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } },
+        "vendors": {
+          "visa": { "eligible": true },
+          "amex": { "eligible": true },
+          "mastercard": { "eligible": true }
+        }
+      }
+    },
+    "rememberedFunding": [],
+    "button": {}
+  },
+  { "container": { "width": 144 }, "button": {} },
+  { "container": { "width": 222 }, "button": {} },
+  { "container": { "width": 465 }, "button": {} },
+  { "container": { "width": 670 }, "button": {} },
+  { "button": { "style": { "color": "gold" } } },
+  { "button": { "style": { "color": "blue" } } },
+  { "button": { "style": { "color": "silver" } } },
+  { "button": { "style": { "color": "black" } } },
+  { "button": { "style": { "color": "white" } } },
+  { "button": { "style": { "shape": "rect" } } },
+  { "button": { "style": { "shape": "rect", "height": 45 } } },
+  { "button": { "style": { "shape": "pill" } } },
+  { "button": { "style": { "shape": "pill", "height": 45 } } },
+  { "button": { "style": { "layout": "vertical" } } },
+  { "button": { "style": { "layout": "horizontal" } } },
+  { "button": { "style": { "layout": "horizontal", "tagline": false } } },
+  {
+    "button": { "style": { "layout": "horizontal" } },
+    "container": { "width": 300 },
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "venmo": { "eligible": true }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal" } },
+    "container": { "width": 300 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "credit": { "eligible": true }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal" } },
+    "container": { "width": 300 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "payIn4": { "eligible": true } }
+      }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal" } },
+    "container": { "width": 300 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "itau": { "eligible": true }
+    }
+  },
+  { "container": { "width": 340 }, "button": { "style": { "height": 44 } } },
+  { "container": { "width": 550 }, "button": { "style": { "height": 55 } } },
+  {
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
+    "button": { "fundingSource": "venmo" },
+    "fundingEligibility": { "venmo": { "eligible": true } },
+    "wallet": { "venmo": { "instruments": [{ "label": "@foo" }] } }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "button": { "fundingSource": "paypal" },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          { "label": "foo@bar.com", "oneClick": true, "tokenID": "12345" }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "button": { "fundingSource": "card" },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          { "label": "foo@bar.com", "oneClick": true, "tokenID": "12345" }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          { "label": "foo@bar.com", "oneClick": true, "tokenID": "12345" }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "button": { "fundingSource": "paypal" },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "••1234",
+            "oneClick": true,
+            "instrumentID": "abc12345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "button": { "fundingSource": "card" },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "type": "bank",
+            "label": "••7331",
+            "oneClick": false,
+            "instrumentID": "xyz12345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "type": "credit",
+            "label": "foo@bar.com",
+            "oneClick": false,
+            "instrumentID": "abc12345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "type": "balance",
+            "label": "foo@bar.com",
+            "oneClick": true,
+            "instrumentID": "ttt4345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "credit": {
+        "instruments": [
+          {
+            "type": "credit",
+            "label": "foo@bar.com",
+            "oneClick": true,
+            "instrumentID": "abc12345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "credit": { "eligible": true }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "••1234",
+            "oneClick": true,
+            "instrumentID": "abc12345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    },
+    "button": { "style": { "layout": "horizontal", "tagline": false } }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "credit": {
+        "instruments": [
+          {
+            "type": "credit",
+            "label": "foo@bar.com",
+            "oneClick": true,
+            "instrumentID": "abc12345"
+          }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          },
+          {
+            "type": "card",
+            "label": "Mastercard x-1234",
+            "tokenID": "xyz123",
+            "vendor": "mastercard"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "credit": { "eligible": true }
+    },
+    "button": { "style": { "layout": "horizontal", "tagline": false } }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa",
+            "branded": true
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "card": { "eligible": true } },
+    "button": { "fundingSource": "card" }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc-123-456",
+            "vendor": "visa"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "card": { "eligible": true } },
+    "button": { "userIDToken": "1234455", "fundingSource": "card" }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "card": { "eligible": true } },
+    "button": { "userIDToken": "1234455", "fundingSource": "card" }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc123",
+            "vendor": "visa"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "card": { "eligible": true } },
+    "button": {
+      "clientAccessToken": "5544321",
+      "userIDToken": "1234455",
+      "fundingSource": "card"
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal", "label": "pay" } },
+    "container": { "width": 330 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "paylater": { "eligible": true, "variant": "DE" } }
+      }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal", "label": "pay" } },
+    "container": { "width": 320 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "paylater": { "eligible": true, "variant": "DE" } }
+      }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal", "label": "pay" } },
+    "container": { "width": 300 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "paylater": { "eligible": true, "variant": "DE" } }
+      }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal", "label": "pay" } },
+    "container": { "width": 290 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "paylater": { "eligible": true, "variant": "DE" } }
+      }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal", "label": "pay" } },
+    "container": { "width": 300 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "paylater": { "eligible": true, "variant": "IT" } }
+      }
+    }
+  },
+  {
+    "button": { "style": { "layout": "horizontal", "label": "pay" } },
+    "container": { "width": 300 },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "paylater": {
+        "eligible": true,
+        "products": { "paylater": { "eligible": true, "variant": "ES" } }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 240 },
+    "button": { "fundingSource": "paypal" },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          { "label": "foo2@bar2.com", "oneClick": true, "tokenID": "123456" }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc1234",
+            "vendor": "visa"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 300 },
+    "button": {
+      "fundingSource": "paypal",
+      "style": { "menuPlacement": "above" }
+    },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          { "label": "foo2@bar2.com", "oneClick": true, "tokenID": "123456" }
+        ]
+      },
+      "card": {
+        "instruments": [
+          {
+            "type": "card",
+            "label": "Visa x-1234",
+            "tokenID": "abc1234",
+            "vendor": "visa"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": {
+      "paypal": { "eligible": true },
+      "card": {
+        "eligible": true,
+        "vendors": {
+          "visa": { "eligible": true },
+          "mastercard": { "eligible": true },
+          "amex": { "eligible": true }
+        }
+      }
+    }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "accessToken": null,
+            "instrumentID": "abc12345",
+            "label": "••1234",
+            "logoUrl": null,
+            "oneClick": true,
+            "planID": null,
+            "secondaryInstruments": [
+              {
+                "instrumentID": "BALANCEUSD",
+                "label": "PayPal Balance",
+                "type": "BALANCE"
+              }
+            ],
+            "tokenID": null,
+            "type": "card",
+            "vendor": "VISA"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "paypal": { "eligible": true } },
+    "button": { "showPayLabel": false }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "accessToken": null,
+            "instrumentID": "abc12345",
+            "label": "••1234",
+            "logoUrl": null,
+            "oneClick": true,
+            "planID": null,
+            "secondaryInstruments": [
+              {
+                "instrumentID": "BALANCEUSD",
+                "label": "PayPal Balance",
+                "type": "BALANCE"
+              }
+            ],
+            "tokenID": null,
+            "type": "bank",
+            "vendor": "BANK OF AMERICA"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "paypal": { "eligible": true } },
+    "button": { "showPayLabel": false }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "accessToken": null,
+            "instrumentID": "abc12345",
+            "label": "••1234",
+            "logoUrl": null,
+            "oneClick": true,
+            "planID": null,
+            "secondaryInstruments": null,
+            "tokenID": null,
+            "type": "bank",
+            "vendor": "BANK OF AMERICA"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "paypal": { "eligible": true } },
+    "button": { "showPayLabel": false }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "accessToken": null,
+            "instrumentID": "abc12345",
+            "label": "••1234",
+            "logoUrl": null,
+            "oneClick": true,
+            "planID": null,
+            "secondaryInstruments": null,
+            "tokenID": null,
+            "type": "card",
+            "vendor": "VISA"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "paypal": { "eligible": true } },
+    "button": { "showPayLabel": false }
+  },
+  {
+    "diffThreshold": 1000,
+    "container": { "width": 350 },
+    "wallet": {
+      "paypal": {
+        "instruments": [
+          {
+            "accessToken": null,
+            "instrumentID": "BALANCEUSD",
+            "label": "BALANCE",
+            "logoUrl": null,
+            "oneClick": true,
+            "planID": null,
+            "secondaryInstruments": null,
+            "tokenID": null,
+            "type": "balance",
+            "vendor": "BALANCE"
+          }
+        ]
+      }
+    },
+    "fundingEligibility": { "paypal": { "eligible": true } },
+    "button": { "showPayLabel": false }
+  }
+]

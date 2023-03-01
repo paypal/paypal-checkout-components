@@ -40,7 +40,7 @@ On the client side check:
 
 ```javascript
 if (window !== window.parent && !paypal.allowIframe()) {
-    // Show an error page
+	// Show an error page
 }
 ```
 
@@ -112,7 +112,7 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 
 - `accessToken` - [required] the access token of the buyer
 
-`onAuth` will only be available when the checkout flow has been rendered from another `*.paypal.com` domain, to avoid passing the access token to an untrusted domain. 
+`onAuth` will only be available when the checkout flow has been rendered from another `*.paypal.com` domain, to avoid passing the access token to an untrusted domain.
 
 #### `onShippingChange`
 
@@ -122,22 +122,21 @@ Please see https://github.com/paypal/paypal-sdk-constants for the full list of c
 
 - `paymentToken`: [required] the EC- token for the transaction
 - `shipping_address`: [required] Shipping address fields
-	- `state`: Shipping address state or province
-	- `postal_code`: Shipping address ZIP code or postal code
-	- `country`: Shipping address country
-- `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api 
-- `billingToken` - [optional] the BA- token for the transaction, if a billing-agreement flow 
+  - `state`: Shipping address state or province
+  - `postal_code`: Shipping address ZIP code or postal code
+  - `country`: Shipping address country
+- `paymentID` - [optional] the payment ID for the transaction, if the transaction was created using the payments api
+- `billingToken` - [optional] the BA- token for the transaction, if a billing-agreement flow
 - `selected_shipping_method`: [optional] the shipping option selected by the buyer
-	- `label`: Custom shipping method label
-	- `type`: Shipping method type (`SHIPPING` or `PICKUP`)
-	- `amount`: Additional cost for this method
-		- `currency_code`: ISO currency code (e.g `USD`)
-		- `value`: String-formatted decimal format (e.g '1.00')
+  - `label`: Custom shipping method label
+  - `type`: Shipping method type (`SHIPPING` or `PICKUP`)
+  - `amount`: Additional cost for this method
+    - `currency_code`: ISO currency code (e.g `USD`)
+    - `value`: String-formatted decimal format (e.g '1.00')
 
 `actions` should contain the following:
 
 - `reject` - [required] a function that the merchant will call if they do not support the address or selected shipping option.
-
 
 #### `commit`
 

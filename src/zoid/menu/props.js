@@ -1,5 +1,3 @@
 /* @flow */
 
-export type MenuProps = {|
-    
-|};
+export type MenuProps = {||};

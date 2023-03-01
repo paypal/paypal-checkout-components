@@ -2,32 +2,31 @@
 <script src="https://www.paypal.com/sdk/js?client-id=sb&debug=true"></script>
 
 <script>
-    paypal.Buttons.driver('angular', window.angular);
+  paypal.Buttons.driver("angular", window.angular);
 
-    angular.module('app', [ 'paypal-buttons' ])
-        .controller('appController', function($scope) {
-
-            $scope.opts = {
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: '0.01'
-                            }
-                        }]
-                    });
+  angular
+    .module("app", ["paypal-buttons"])
+    .controller("appController", function ($scope) {
+      $scope.opts = {
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: {
+                  value: "0.01",
                 },
+              },
+            ],
+          });
+        },
 
-                onApprove: function(data, actions) {
-                    return actions.order.capture();
-                }
-            };
-
+        onApprove: function (data, actions) {
+          return actions.order.capture();
+        },
+      };
     });
 </script>
 
 <body ng-app="app" ng-controller="appController">
-
-    <paypal-buttons props="opts"></paypal-buttons>
-
+  <paypal-buttons props="opts"></paypal-buttons>
 </body>

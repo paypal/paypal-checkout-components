@@ -1,17 +1,16 @@
-
 <body>
-    <h1>Button Frame</h1>
+  <h1>Button Frame</h1>
 
-    <button id="button">Click me</button>
+  <button id="button">Click me</button>
 
-    <script>
-        window.mockDomain = 'mock://www.paypal.com';
-        var parentWindow = (window.opener || window.parent);
-        window.__coverage__ = parentWindow.__coverage__;
-        window.navigator.mockUserAgent = parentWindow.navigator.mockUserAgent;
-    </script>
+  <script>
+    window.mockDomain = "mock://www.paypal.com";
+    var parentWindow = window.opener || window.parent;
+    window.__coverage__ = parentWindow.__coverage__;
+    window.navigator.mockUserAgent = parentWindow.navigator.mockUserAgent;
+  </script>
 
-    <script src="/base/test/integration/globals.js"></script>
-    <script src="/base/test/paypal.js"></script>
-    <script src="./index.js"></script>
+  <script src="/base/test/integration/globals.js"></script>
+  <script src="/base/test/paypal.js"></script>
+  <script src="./index.js"></script>
 </body>

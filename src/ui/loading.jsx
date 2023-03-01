@@ -1,14 +1,21 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, type ChildType } from '@krakenjs/jsx-pragmatic/src';
+import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
-export function LoadingDots({ color = 'rgba(0, 0, 0, 0.5)', delay = 0.2 } : {| color : string, delay : number |}) : ChildType {
-    return (
-        <Fragment>
-            <style innerHTML={ `
+export function LoadingDots({
+  color = "rgba(0, 0, 0, 0.5)",
+  delay = 0.2,
+}: {|
+  color: string,
+  delay: number,
+|}): ChildType {
+  return (
+    <Fragment>
+      <style
+        innerHTML={`
                 .loading-dots {
-                    color: ${ color };
+                    color: ${color};
                     font-size: inherit;
                     display: inline-block;
                 }
@@ -24,15 +31,15 @@ export function LoadingDots({ color = 'rgba(0, 0, 0, 0.5)', delay = 0.2 } : {| c
                 }
 
                 .loading-dot-0 {
-                    animation-delay: ${ delay.toFixed(1) }s;
+                    animation-delay: ${delay.toFixed(1)}s;
                 }
 
                 .loading-dot-1 {
-                    animation-delay: ${ (delay * 2).toFixed(1) }s;
+                    animation-delay: ${(delay * 2).toFixed(1)}s;
                 }
 
                 .loading-dot-2 {
-                    animation-delay: ${ (delay * 3).toFixed(1) }s;
+                    animation-delay: ${(delay * 3).toFixed(1)}s;
                 }
 
                 @keyframes loading-dot {
@@ -52,14 +59,14 @@ export function LoadingDots({ color = 'rgba(0, 0, 0, 0.5)', delay = 0.2 } : {| c
                         opacity: 0;
                     }
                 }
-            ` } />
+            `}
+      />
 
-            <div class='loading-dots'>
-                {
-                    [ 0, 1, 2 ].map(i =>
-                        <div class={ `loading-dot loading-dot-${ i }` }>•</div>)
-                }
-            </div>
-        </Fragment>
-    );
+      <div class="loading-dots">
+        {[0, 1, 2].map((i) => (
+          <div class={`loading-dot loading-dot-${i}`}>•</div>
+        ))}
+      </div>
+    </Fragment>
+  );
 }

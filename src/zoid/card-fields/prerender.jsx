@@ -1,22 +1,25 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType } from '@krakenjs/jsx-pragmatic/src';
+import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
 type PrerenderedCardProps = {|
-    nonce : ?string,
-    height : ?number
+  nonce: ?string,
+  height: ?number,
 |};
 
 const DEFAULT_HEIGHT = 78;
 
-export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildType {
-    return (
-        <html>
-            <body>
-                <style
-                    nonce={ nonce }
-                    innerHTML={ `
+export function CardPrerender({
+  nonce,
+  height,
+}: PrerenderedCardProps): ChildType {
+  return (
+    <html>
+      <body>
+        <style
+          nonce={nonce}
+          innerHTML={`
                         html, body {
                             padding: 0;
                             margin: 0;
@@ -28,7 +31,7 @@ export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildT
                             background: #e9ebee;
                             position: relative;
                             overflow: hidden;
-                            height: ${ height ?? DEFAULT_HEIGHT };
+                            height: ${height ?? DEFAULT_HEIGHT};
                         }
 
                         body::after {
@@ -39,7 +42,7 @@ export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildT
                             top: 0;
                             bottom: 0;
                             width: 100%;
-                            height: ${ height ?? DEFAULT_HEIGHT };
+                            height: ${height ?? DEFAULT_HEIGHT};
                             transform: translateX(0);
                             box-shadow: 0px 0px 107px 60px #dddfe2;
                             animation: 1.5s loading-placeholder ease-in-out infinite;
@@ -56,9 +59,9 @@ export function CardPrerender({ nonce, height } : PrerenderedCardProps) : ChildT
                                 opacity: 0.1;
                             }
                         }
-                    ` }
-                />
-            </body>
-        </html>
-    );
+                    `}
+        />
+      </body>
+    </html>
+  );
 }

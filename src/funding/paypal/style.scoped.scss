@@ -1,101 +1,107 @@
-
 .wallet-label {
-    display: block;
+  display: block;
+  height: 100%;
+  text-align: center;
+
+  * {
+    display: inline-block;
+    vertical-align: middle;
     height: 100%;
-    text-align: center;
+  }
 
-    * {
-        display: inline-block;
-        vertical-align: middle;
-        height: 100%;
+  .divider {
+    margin: 0 5px;
+    opacity: 0.2;
+  }
+
+  .paypal-wordmark {
+    display: none;
+  }
+
+  .card-art {
+    border-radius: 3px;
+  }
+
+  .label {
+    max-width: 40%;
+
+    .limit {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+  }
 
-    .divider {
-        margin: 0 5px;
-        opacity: 0.2;
-    }
-
+  @media only screen and (max-width: 249px) {
+    .paypal-mark,
     .paypal-wordmark {
-        display: none;
+      display: inline-block;
     }
 
-    .card-art {
-        border-radius: 3px;
+    .label,
+    .divider,
+    .card-art,
+    .pay-label,
+    .logo {
+      display: none;
     }
-
-    .label {
-        max-width: 40%;
-
-       .limit {
-           display: block;
-           overflow: hidden;
-           text-overflow: ellipsis;
-       }
-    }
-
-    @media only screen and (max-width: 249px) {
-        .paypal-mark, .paypal-wordmark {
-            display: inline-block;
-        }
-
-        .label, .divider, .card-art, .pay-label, .logo {
-            display: none;
-        }
-    }
+  }
 }
 
 .wallet-label-new {
-    display: flex;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  text-align: left;
+
+  * {
+    display: inline-block;
+    vertical-align: top;
     height: 100%;
-    width: 100%;
-    text-align: left;
+  }
 
-    * {
-        display: inline-block;
-        vertical-align: top;
-        height: 100%;
-    }
+  .paypal-wordmark {
+    display: none;
+  }
 
-    .paypal-wordmark {
-        display: none;
-    }
+  .card-art {
+    border-radius: 3px;
+  }
 
-    .card-art {
-        border-radius: 3px;
-    }
+  .logo {
+    margin-left: auto;
+  }
+
+  .show-pay-label {
+    all: inherit;
+  }
+
+  .show-instruments-on-file {
+    margin: auto;
+    display: flex;
+  }
+
+  .fi-container {
+    display: flex;
+  }
+
+  .balance,
+  .fi-logo,
+  .fi-label {
+    display: flex;
+    align-items: center;
+  }
+
+  @media only screen and (max-width: 150px) {
+    text-align: center;
+    display: inline-block;
 
     .logo {
-        margin-left: auto;
+      display: none;
     }
 
-    .show-pay-label {
-        all: inherit;
+    .pay-label {
+      display: none;
     }
-
-    .show-instruments-on-file {
-        margin: auto;
-        display: flex;
-    }
-
-    .fi-container {
-        display: flex;
-    }
-
-    .balance, .fi-logo, .fi-label {
-        display: flex;
-        align-items: center;
-    }
-
-    @media only screen and (max-width: 150px) {
-        text-align: center;
-        display: inline-block;
-
-        .logo {
-            display: none;
-        }
-
-        .pay-label {
-            display: none;
-        }
-    }
+  }
 }

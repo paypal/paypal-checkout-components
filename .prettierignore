@@ -1,0 +1,5 @@
+build
+dist
+coverage
+flow-typed
+CHANGELOG.md

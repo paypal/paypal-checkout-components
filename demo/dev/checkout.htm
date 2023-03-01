@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1"></script>
 </head>
 
 <body>
-    <button id="paypal-pay">Pay</button><br />
-    <button id="paypal-cancel">Cancel</button><br />
+  <button id="paypal-pay">Pay</button><br />
+  <button id="paypal-cancel">Cancel</button><br />
 
-    <script>
-        document.querySelector('#paypal-pay').addEventListener('click', function() {
-            window.xprops.onAuthorize({
-                paymentToken: 'EC-XXXXXXXXXX',
-                paymentID: 'PAY-XXXXXXXXXXXXXXXX',
-                returnUrl: 'http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY',
-                cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
-            });
+  <script>
+    document
+      .querySelector("#paypal-pay")
+      .addEventListener("click", function () {
+        window.xprops.onAuthorize({
+          paymentToken: "EC-XXXXXXXXXX",
+          paymentID: "PAY-XXXXXXXXXXXXXXXX",
+          returnUrl:
+            "http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY",
+          cancelUrl:
+            "http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX",
         });
+      });
 
-        document.querySelector('#paypal-cancel').addEventListener('click', function() {
-            window.xprops.onCancel({
-                paymentToken: 'EC-XXXXXXXXXX',
-                paymentID: 'PAY-XXXXXXXXXXXXXXXX',
-                returnUrl: 'http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY',
-                cancelUrl: 'http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX'
-            });
+    document
+      .querySelector("#paypal-cancel")
+      .addEventListener("click", function () {
+        window.xprops.onCancel({
+          paymentToken: "EC-XXXXXXXXXX",
+          paymentID: "PAY-XXXXXXXXXXXXXXXX",
+          returnUrl:
+            "http://google.com?action=return&token=EC-XXXXXXXXXXXXXXXXX&PayerID=YYYYYYYYYYYYYYYYY",
+          cancelUrl:
+            "http://google.com?action=cancel&token=EC-XXXXXXXXXXXXXXXXX",
         });
-    </script>
-
+      });
+  </script>
 </body>

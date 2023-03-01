@@ -1,644 +1,702 @@
 <!DOCTYPE html>
 
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD"></script>
-    <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD"></script>
+  <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
 </head>
 
 <body>
-    <style>
-        div.options, p {
-            border: 1px solid lightblue;
-            padding: 10px 20px;
-            display: inline-block;
-            margin: 10px;
-            vertical-align: top;
-        }
-    </style>
+  <style>
+    div.options,
+    p {
+      border: 1px solid lightblue;
+      padding: 10px 20px;
+      display: inline-block;
+      margin: 10px;
+      vertical-align: top;
+    }
+  </style>
 
-    <section>
-    
+  <section>
     <div class="options">
-        <form id="colors">
-            <strong>Colors</strong><br/>
-            <input type="checkbox" id="color-gold" name="color" value="gold" />
-            <label for="color-gold">Gold</label>
-            <input type="checkbox" id="color-blue" name="color" value="blue" />
-            <label for="color-blue">Blue</label>
-            <input type="checkbox" id="color-silver" name="color" value="silver" />
-            <label for="color-silver">Silver</label>
-            <input type="checkbox" id="color-black" name="color" value="black" />
-            <label for="color-black">Black</label>
-            <input type="checkbox" id="color-white" name="color" value="white" />
-            <label for="color-white">White</label>
-        </form>
+      <form id="colors">
+        <strong>Colors</strong><br />
+        <input type="checkbox" id="color-gold" name="color" value="gold" />
+        <label for="color-gold">Gold</label>
+        <input type="checkbox" id="color-blue" name="color" value="blue" />
+        <label for="color-blue">Blue</label>
+        <input type="checkbox" id="color-silver" name="color" value="silver" />
+        <label for="color-silver">Silver</label>
+        <input type="checkbox" id="color-black" name="color" value="black" />
+        <label for="color-black">Black</label>
+        <input type="checkbox" id="color-white" name="color" value="white" />
+        <label for="color-white">White</label>
+      </form>
     </div>
 
     <div class="options">
-        <form id="widths">
-            <strong>Widths</strong><br/>
-            <input type="checkbox" id="width-750px" name="width" value="750px" />
-            <label for="width-750px">750px</label>
-            <input type="checkbox" id="width-450px" name="width" value="450px" />
-            <label for="width-450px">450px</label>
-            <input type="checkbox" id="width-300px" name="width" value="300px" />
-            <label for="width-300px">300px</label>
-            <input type="checkbox" id="width-220px" name="width" value="220px" />
-            <label for="width-220px">220px</label>
-            <input type="checkbox" id="width-150px" name="width" value="150px" />
-            <label for="width-150px">150px</label>        
-        </form>
+      <form id="widths">
+        <strong>Widths</strong><br />
+        <input type="checkbox" id="width-750px" name="width" value="750px" />
+        <label for="width-750px">750px</label>
+        <input type="checkbox" id="width-450px" name="width" value="450px" />
+        <label for="width-450px">450px</label>
+        <input type="checkbox" id="width-300px" name="width" value="300px" />
+        <label for="width-300px">300px</label>
+        <input type="checkbox" id="width-220px" name="width" value="220px" />
+        <label for="width-220px">220px</label>
+        <input type="checkbox" id="width-150px" name="width" value="150px" />
+        <label for="width-150px">150px</label>
+      </form>
     </div>
 
     <div class="options">
-        <form id="fis"> 
-        <strong>fis</strong><br/>
-        <input type="checkbox" id="fis-applepay" name="width" value="applepay" />
+      <form id="fis">
+        <strong>fis</strong><br />
+        <input
+          type="checkbox"
+          id="fis-applepay"
+          name="width"
+          value="applepay"
+        />
         <label for="fis-applepay">Apple Pay</label>
         <input type="checkbox" id="fis-venmo" name="width" value="venmo" />
         <label for="fis-venmo">Venmo</label>
         <input type="checkbox" id="fis-credit" name="width" value="credit" />
         <label for="fis-credit">Credit</label>
-    </form>
+      </form>
     </div>
 
     <div class="options">
-        <form id="taglines">
-            <strong>Taglines</strong><br/>
-            <input type="checkbox" id="taglines-true" name="taglines" value="true" />
-            <label for="taglines-true">True</label>
-            <input type="checkbox" id="taglines-false" name="taglines" value="false" />
-            <label for="taglines-false">False</label>
-        </form>
+      <form id="taglines">
+        <strong>Taglines</strong><br />
+        <input
+          type="checkbox"
+          id="taglines-true"
+          name="taglines"
+          value="true"
+        />
+        <label for="taglines-true">True</label>
+        <input
+          type="checkbox"
+          id="taglines-false"
+          name="taglines"
+          value="false"
+        />
+        <label for="taglines-false">False</label>
+      </form>
     </div>
 
     <div class="options">
-        <form id="labels">
-            <strong>Labels</strong><br/>
-            <input type="checkbox" id="labels-checkout" name="labels" value="checkout" />
-            <label for="labels-checkout">checkout</label>
-            <input type="checkbox" id="labels-pay" name="labels" value="pay" />
-            <label for="labels-pay">pay</label>
-            <input type="checkbox" id="labels-buynow" name="labels" value="buynow" />
-            <label for="labels-buynow">buynow</label>
-    </form>
+      <form id="labels">
+        <strong>Labels</strong><br />
+        <input
+          type="checkbox"
+          id="labels-checkout"
+          name="labels"
+          value="checkout"
+        />
+        <label for="labels-checkout">checkout</label>
+        <input type="checkbox" id="labels-pay" name="labels" value="pay" />
+        <label for="labels-pay">pay</label>
+        <input
+          type="checkbox"
+          id="labels-buynow"
+          name="labels"
+          value="buynow"
+        />
+        <label for="labels-buynow">buynow</label>
+      </form>
     </div>
 
     <div class="options">
-        <form id="instruments">
-            <strong>Instruments</strong><br/>
-            <input type="checkbox" id="instruments-card" name="instruments" value="card" />
-            <label for="instruments-card">card</label>
-            <input type="checkbox" id="instruments-bank" name="instruments" value="bank" />
-            <label for="instruments-bank">bank</label>
-            <input type="checkbox" id="instruments-balance" name="instruments" value="balance" />
-            <label for="instruments-balance">balance</label>
-            <input type="checkbox" id="instruments-credit" name="instruments" value="credit" />
-            <label for="instruments-credit">credit</label>
-        </form>
+      <form id="instruments">
+        <strong>Instruments</strong><br />
+        <input
+          type="checkbox"
+          id="instruments-card"
+          name="instruments"
+          value="card"
+        />
+        <label for="instruments-card">card</label>
+        <input
+          type="checkbox"
+          id="instruments-bank"
+          name="instruments"
+          value="bank"
+        />
+        <label for="instruments-bank">bank</label>
+        <input
+          type="checkbox"
+          id="instruments-balance"
+          name="instruments"
+          value="balance"
+        />
+        <label for="instruments-balance">balance</label>
+        <input
+          type="checkbox"
+          id="instruments-credit"
+          name="instruments"
+          value="credit"
+        />
+        <label for="instruments-credit">credit</label>
+      </form>
     </div>
 
     <div class="options">
-        <form id="shapes"> 
-            <strong>Shapes</strong><br/>
-            <input type="checkbox" id="shapes-rect" name="width" value="rect" />
-            <label for="shapes-rect">rect</label>
-            <input type="checkbox" id="shapes-pill" name="width" value="pill" />
-            <label for="shapes-pill">pill</label>
-        </form>
+      <form id="shapes">
+        <strong>Shapes</strong><br />
+        <input type="checkbox" id="shapes-rect" name="width" value="rect" />
+        <label for="shapes-rect">rect</label>
+        <input type="checkbox" id="shapes-pill" name="width" value="pill" />
+        <label for="shapes-pill">pill</label>
+      </form>
     </div>
 
     <div class="options">
-        <form id="experiences">
-            <strong>Experiences</strong>
-            <input type="radio" id="experiences-standard" name="width" value="standard" checked />
-            <label for="shapes-rect">standard</label>
-            <input type="radio" id="experiences-inline" name="width" value="inline" />
-            <label for="shapes-rect">inline</label>
-        </form>
+      <form id="experiences">
+        <strong>Experiences</strong>
+        <input
+          type="radio"
+          id="experiences-standard"
+          name="width"
+          value="standard"
+          checked
+        />
+        <label for="shapes-rect">standard</label>
+        <input
+          type="radio"
+          id="experiences-inline"
+          name="width"
+          value="inline"
+        />
+        <label for="shapes-rect">inline</label>
+      </form>
     </div>
 
     <div class="options">
-        <button onclick="toggleAll(true)"> Select All </button>
-        <button onclick="toggleAll(false)"> Clear All </button>
-        <button onclick="generateButtons()">
-            <strong>Generate Buttons</strong>
-        </button>
+      <button onclick="toggleAll(true)">Select All</button>
+      <button onclick="toggleAll(false)">Clear All</button>
+      <button onclick="generateButtons()">
+        <strong>Generate Buttons</strong>
+      </button>
     </div>
-    </section>
+  </section>
 
-    <script>
-        let colors = [];
-        let widths = [];
-        let fis = [];
-        let taglines = [];
-        let labels = [];
-        let instruments = [];
-        let shapes = [];
-        let experiences = [];
-        function generateButtons () {
-            const currentButtons = document.querySelectorAll('p');
-            if(currentButtons.length) {
-                currentButtons.forEach(el=>{
-                    el.parentNode.removeChild(el);
-                });
+  <script>
+    let colors = [];
+    let widths = [];
+    let fis = [];
+    let taglines = [];
+    let labels = [];
+    let instruments = [];
+    let shapes = [];
+    let experiences = [];
+    function generateButtons() {
+      const currentButtons = document.querySelectorAll("p");
+      if (currentButtons.length) {
+        currentButtons.forEach((el) => {
+          el.parentNode.removeChild(el);
+        });
+      }
+
+      function loopForCheckedIntoArray(formId, arr) {
+        document
+          .getElementById(formId)
+          .querySelectorAll("input")
+          .forEach((el) => {
+            if (el.checked === true) {
+              arr.push(el.value);
             }
+          });
+      }
 
-            function loopForCheckedIntoArray(formId,arr) {
-                document.getElementById(formId)
-                    .querySelectorAll('input')
-                    .forEach(el=>{
-                        if(el.checked === true){
-                            arr.push(el.value);
-                        }
-                    });
-            }
+      loopForCheckedIntoArray("colors", colors);
+      loopForCheckedIntoArray("widths", widths);
+      loopForCheckedIntoArray("fis", fis);
+      loopForCheckedIntoArray("taglines", taglines);
+      loopForCheckedIntoArray("labels", labels);
+      loopForCheckedIntoArray("instruments", instruments);
+      loopForCheckedIntoArray("shapes", shapes);
+      loopForCheckedIntoArray("experiences", experiences);
 
-            loopForCheckedIntoArray('colors',colors);
-            loopForCheckedIntoArray('widths',widths);
-            loopForCheckedIntoArray('fis',fis);
-            loopForCheckedIntoArray('taglines',taglines)
-            loopForCheckedIntoArray('labels',labels);
-            loopForCheckedIntoArray('instruments',instruments);
-            loopForCheckedIntoArray('shapes',shapes);
-            loopForCheckedIntoArray('experiences',experiences);
+      const markOpts = [
+        {
+          fundingEligibility: {
+            applepay: {
+              eligible: true,
+            },
+            paypal: {
+              eligible: true,
+            },
+            venmo: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+              products: {
+                payIn4: {
+                  eligible: true,
+                },
+              },
+            },
+          },
+        },
+      ];
 
-            const markOpts = [
-                {
-                    fundingEligibility: {
-                        applepay: {
-                            eligible: true
-                        },
-                        paypal: {
-                            eligible: true
-                        },
-                        venmo: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true,
-                            products: {
-                                payIn4: {
-                                    eligible: true
-                                }
-                            }
-                        }
-                    }
-                }
-            ];
+      const buttonOpts = [];
 
-            const buttonOpts = [];
-
-            for (const color of colors) {
-                const config = {
-                    style: {
-                        color
-                    },
-                    fundingEligibility: {
-                        applepay: {
-                            eligible: true
-                        },
-                        paypal: {
-                            eligible: true
-                        },
-                        venmo: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true,
-                            products: {
-                                payIn4: {
-                                    eligible: true
-                                }
-                            }
-                        },
-                        card: {
-                            eligible: true
-                        }
-                    }
-                };
-
-                if (document.querySelector('#experiences-inline').checked) {
-                    config.style.custom = {
-                        label: 'Checkout'
-                    };
-                    config.experience = 'inline';
-                    config.onComplete = () => {
-                        return true;
-                    };
-                }
-
-                buttonOpts.push(config);
-            }
-
-            for (const label of labels) {
-                buttonOpts.push({
-                    style: {
-                        label
-                    },
-                    fundingEligibility: {
-                        applepay: {
-                            eligible: true
-                        },
-                        paypal: {
-                            eligible: true
-                        },
-                        venmo: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true,
-                            products: {
-                                payIn4: {
-                                    eligible: true
-                                }
-                            }
-                        },
-                        card: {
-                            eligible: true
-                        }
-                    }
-                });
-            }
-
-            for (const shape of shapes) {
-                buttonOpts.push({
-                    style: {
-                        layout: 'horizontal',
-                        shape,
-                        tagline: false
-                    },
-                    fundingEligibility: {
-                        paypal: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true,
-                            products: {
-                                payIn4: {
-                                    eligible: true
-                                }
-                            }
-                        },
-                        card: {
-                            eligible: true
-                        }
-                    }
-                });
-            }
-
-            for (const label of labels) {
-                buttonOpts.push({
-                    style: {
-                        layout: 'horizontal',
-                        label,
-                        tagline: false
-                    },
-                    fundingEligibility: {
-                        applepay: {
-                            eligible: true
-                        },
-                        paypal: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true,
-                            products: {
-                                payIn4: {
-                                    eligible: true
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            for (const fi of fis) {
-                buttonOpts.push({
-                    style: {
-                        layout: 'horizontal',
-                        tagline: false
-                    },
-                    fundingEligibility: {
-                        paypal: {
-                            eligible: true
-                        },
-                        [fi]: {
-                            eligible: true
-                        }
-                    }
-                });
-            }
-
-            for (const tagline of taglines) {
-                buttonOpts.push({
-                    style: {
-                        layout: 'horizontal',
-                        tagline
-                    },
-                    fundingEligibility: {
-                        paypal: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true
-                        }
-                    }
-                });
-            }
-
-            for (const instrument of instruments) {
-                buttonOpts.push({
-                    style: {
-                        layout: 'horizontal',
-                        tagline: false
-                    },
-                    fundingEligibility: {
-                        paypal: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true
-                        }
-                    },
-                    userIDToken: 'abc123',
-                    server: {
-                        wallet: {
-                            paypal: {
-                                instruments: [
-                                    {
-                                        type: instrument,
-                                        label: '••1337',
-                                        oneClick: (instrument === 'card' || instrument === 'balance')
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                });
-
-                if (instrument !== 'credit') {
-                    buttonOpts.push({
-                        fundingSource: 'paypal',
-                        fundingEligibility: {
-                            paypal: {
-                                eligible: true
-                            },
-                            paylater: {
-                                eligible: true
-                            }
-                        },
-                        userIDToken: 'abc123',
-                        server: {
-                            wallet: {
-                                paypal: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    });
-
-                }
-
-                if (instrument === 'credit') {
-                    buttonOpts.push({
-                        style: {
-                            layout: 'horizontal',
-                            tagline: false
-                        },
-                        fundingEligibility: {
-                            paypal: {
-                                eligible: true
-                            },
-                            credit: {
-                                eligible: true
-                            }
-                        },
-                        userIDToken: 'abc123',
-                        server: {
-                            wallet: {
-                                paypal: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                },
-                                credit: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    });
-
-                    buttonOpts.push({
-                        fundingEligibility: {
-                            paypal: {
-                                eligible: true
-                            },
-                            credit: {
-                                eligible: true
-                            }
-                        },
-                        userIDToken: 'abc123',
-                        server: {
-                            wallet: {
-                                paypal: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                },
-                                credit: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    });
-
-                    buttonOpts.push({
-                        fundingSource: 'credit',
-                        fundingEligibility: {
-                            paypal: {
-                                eligible: true
-                            },
-                            credit: {
-                                eligible: true
-                            }
-                        },
-                        userIDToken: 'abc123',
-                        server: {
-                            wallet: {
-                                paypal: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                },
-                                credit: {
-                                    instruments: [
-                                        {
-                                            type: instrument,
-                                            label: '••1337',
-                                            oneClick: (instrument === 'card' || instrument === 'balance')
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-
-            for (const instrument of instruments) {
-                buttonOpts.push({
-                    style: {
-                        color: 'blue'
-                    },
-                    fundingEligibility: {
-                        paypal: {
-                            eligible: true
-                        },
-                        paylater: {
-                            eligible: true
-                        }
-                    },
-                    userIDToken: 'abc123',
-                    server: {
-                        wallet: {
-                            paypal: {
-                                instruments: [
-                                    {
-                                        type: instrument,
-                                        label: '••1337',
-                                        oneClick: (instrument === 'card' || instrument === 'balance')
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                });
-            }
-
-            for (const fundingSource of Object.values(constants.FUNDING)) {
-                buttonOpts.push({
-                    fundingSource,
-                    fundingEligibility: {
-                        [fundingSource]: {
-                            eligible: true
-                        }
-                    }
-                });
-
-                buttonOpts.push({
-                    style: {
-                        label: 'pay'
-                    },
-                    fundingSource,
-                    fundingEligibility: {
-                        [fundingSource]: {
-                            eligible: true
-                        }
-                    }
-                });
-            }
-
-            for (opts of markOpts) {
-                const p = document.createElement('p');
-                document.body.appendChild(p);
-                // need to be able to override fundingEligibility when testing
-                ['applepay', 'paypal', 'card', 'credit'].forEach(fundingSource => {
-                    let mark = paypal.Marks({
-                        fundingEligibility: {
-                            [fundingSource]: {
-                                eligible: true
-                            }
-                        },
-                        fundingSource,
-                        ...opts
-                    });
-
-                    if (mark.isEligible()) {
-                        mark.render(p);
-                    } else {
-                        console.warn(`${ fundingSource } was not marks eligible.`);
-                    }
-                });
-            }
-
-            for (opts of buttonOpts) {
-                if (widths.length === 0) {
-                    renderButton()
-                } else {
-                    for (const width of widths) {
-                        renderButton(width);
-                    }
-                }
-            }
-
-            function renderButton (width) {
-                const button = paypal.Buttons(opts);
-                if (button.isEligible()) {
-                    const p = document.createElement('p');
-                    if (width) {
-                        p.style.minWidth = width; 
-                    }
-                    document.body.appendChild(p);
-                    button.render(p);
-                } else {
-                    console.warn(`Not eligible`, opts)
-                }
-            }
-
-            colors = [];
-            widths = [];
-            fis = [];
-            taglines = [];
-            labels = [];
-            instruments = [];
-            shapes = [];
-            experiences = [];
+      for (const color of colors) {
+        const config = {
+          style: {
+            color,
+          },
+          fundingEligibility: {
+            applepay: {
+              eligible: true,
+            },
+            paypal: {
+              eligible: true,
+            },
+            venmo: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+              products: {
+                payIn4: {
+                  eligible: true,
+                },
+              },
+            },
+            card: {
+              eligible: true,
+            },
+          },
         };
-       
 
-        function toggleAll (bool) {
-            document.querySelectorAll('input[type="checkbox"]')
-                .forEach(el=>{ 
-                    el.checked=bool;
-                });
+        if (document.querySelector("#experiences-inline").checked) {
+          config.style.custom = {
+            label: "Checkout",
+          };
+          config.experience = "inline";
+          config.onComplete = () => {
+            return true;
+          };
         }
 
-        
-        generateButtons();
+        buttonOpts.push(config);
+      }
 
+      for (const label of labels) {
+        buttonOpts.push({
+          style: {
+            label,
+          },
+          fundingEligibility: {
+            applepay: {
+              eligible: true,
+            },
+            paypal: {
+              eligible: true,
+            },
+            venmo: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+              products: {
+                payIn4: {
+                  eligible: true,
+                },
+              },
+            },
+            card: {
+              eligible: true,
+            },
+          },
+        });
+      }
 
-    </script>
+      for (const shape of shapes) {
+        buttonOpts.push({
+          style: {
+            layout: "horizontal",
+            shape,
+            tagline: false,
+          },
+          fundingEligibility: {
+            paypal: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+              products: {
+                payIn4: {
+                  eligible: true,
+                },
+              },
+            },
+            card: {
+              eligible: true,
+            },
+          },
+        });
+      }
+
+      for (const label of labels) {
+        buttonOpts.push({
+          style: {
+            layout: "horizontal",
+            label,
+            tagline: false,
+          },
+          fundingEligibility: {
+            applepay: {
+              eligible: true,
+            },
+            paypal: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+              products: {
+                payIn4: {
+                  eligible: true,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      for (const fi of fis) {
+        buttonOpts.push({
+          style: {
+            layout: "horizontal",
+            tagline: false,
+          },
+          fundingEligibility: {
+            paypal: {
+              eligible: true,
+            },
+            [fi]: {
+              eligible: true,
+            },
+          },
+        });
+      }
+
+      for (const tagline of taglines) {
+        buttonOpts.push({
+          style: {
+            layout: "horizontal",
+            tagline,
+          },
+          fundingEligibility: {
+            paypal: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+            },
+          },
+        });
+      }
+
+      for (const instrument of instruments) {
+        buttonOpts.push({
+          style: {
+            layout: "horizontal",
+            tagline: false,
+          },
+          fundingEligibility: {
+            paypal: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+            },
+          },
+          userIDToken: "abc123",
+          server: {
+            wallet: {
+              paypal: {
+                instruments: [
+                  {
+                    type: instrument,
+                    label: "••1337",
+                    oneClick: instrument === "card" || instrument === "balance",
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        if (instrument !== "credit") {
+          buttonOpts.push({
+            fundingSource: "paypal",
+            fundingEligibility: {
+              paypal: {
+                eligible: true,
+              },
+              paylater: {
+                eligible: true,
+              },
+            },
+            userIDToken: "abc123",
+            server: {
+              wallet: {
+                paypal: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+              },
+            },
+          });
+        }
+
+        if (instrument === "credit") {
+          buttonOpts.push({
+            style: {
+              layout: "horizontal",
+              tagline: false,
+            },
+            fundingEligibility: {
+              paypal: {
+                eligible: true,
+              },
+              credit: {
+                eligible: true,
+              },
+            },
+            userIDToken: "abc123",
+            server: {
+              wallet: {
+                paypal: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+                credit: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+              },
+            },
+          });
+
+          buttonOpts.push({
+            fundingEligibility: {
+              paypal: {
+                eligible: true,
+              },
+              credit: {
+                eligible: true,
+              },
+            },
+            userIDToken: "abc123",
+            server: {
+              wallet: {
+                paypal: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+                credit: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+              },
+            },
+          });
+
+          buttonOpts.push({
+            fundingSource: "credit",
+            fundingEligibility: {
+              paypal: {
+                eligible: true,
+              },
+              credit: {
+                eligible: true,
+              },
+            },
+            userIDToken: "abc123",
+            server: {
+              wallet: {
+                paypal: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+                credit: {
+                  instruments: [
+                    {
+                      type: instrument,
+                      label: "••1337",
+                      oneClick:
+                        instrument === "card" || instrument === "balance",
+                    },
+                  ],
+                },
+              },
+            },
+          });
+        }
+      }
+
+      for (const instrument of instruments) {
+        buttonOpts.push({
+          style: {
+            color: "blue",
+          },
+          fundingEligibility: {
+            paypal: {
+              eligible: true,
+            },
+            paylater: {
+              eligible: true,
+            },
+          },
+          userIDToken: "abc123",
+          server: {
+            wallet: {
+              paypal: {
+                instruments: [
+                  {
+                    type: instrument,
+                    label: "••1337",
+                    oneClick: instrument === "card" || instrument === "balance",
+                  },
+                ],
+              },
+            },
+          },
+        });
+      }
+
+      for (const fundingSource of Object.values(constants.FUNDING)) {
+        buttonOpts.push({
+          fundingSource,
+          fundingEligibility: {
+            [fundingSource]: {
+              eligible: true,
+            },
+          },
+        });
+
+        buttonOpts.push({
+          style: {
+            label: "pay",
+          },
+          fundingSource,
+          fundingEligibility: {
+            [fundingSource]: {
+              eligible: true,
+            },
+          },
+        });
+      }
+
+      for (opts of markOpts) {
+        const p = document.createElement("p");
+        document.body.appendChild(p);
+        // need to be able to override fundingEligibility when testing
+        ["applepay", "paypal", "card", "credit"].forEach((fundingSource) => {
+          let mark = paypal.Marks({
+            fundingEligibility: {
+              [fundingSource]: {
+                eligible: true,
+              },
+            },
+            fundingSource,
+            ...opts,
+          });
+
+          if (mark.isEligible()) {
+            mark.render(p);
+          } else {
+            console.warn(`${fundingSource} was not marks eligible.`);
+          }
+        });
+      }
+
+      for (opts of buttonOpts) {
+        if (widths.length === 0) {
+          renderButton();
+        } else {
+          for (const width of widths) {
+            renderButton(width);
+          }
+        }
+      }
+
+      function renderButton(width) {
+        const button = paypal.Buttons(opts);
+        if (button.isEligible()) {
+          const p = document.createElement("p");
+          if (width) {
+            p.style.minWidth = width;
+          }
+          document.body.appendChild(p);
+          button.render(p);
+        } else {
+          console.warn(`Not eligible`, opts);
+        }
+      }
+
+      colors = [];
+      widths = [];
+      fis = [];
+      taglines = [];
+      labels = [];
+      instruments = [];
+      shapes = [];
+      experiences = [];
+    }
+
+    function toggleAll(bool) {
+      document.querySelectorAll('input[type="checkbox"]').forEach((el) => {
+        el.checked = bool;
+      });
+    }
+
+    generateButtons();
+  </script>
 </body>

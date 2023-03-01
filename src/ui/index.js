@@ -1,5 +1,5 @@
 /* @flow */
 
-export * from './text';
-export * from './loading';
-export * from './buttons';
+export * from "./text";
+export * from "./loading";
+export * from "./buttons";

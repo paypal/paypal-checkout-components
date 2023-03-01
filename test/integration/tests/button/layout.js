@@ -1,90 +1,92 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
-import { once } from '@krakenjs/belter/src';
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+import { once } from "@krakenjs/belter/src";
 
-import { createTestContainer, destroyTestContainer } from '../common';
+import { createTestContainer, destroyTestContainer } from "../common";
 
 describe(`paypal button layouts`, () => {
+  beforeEach(() => {
+    createTestContainer();
+  });
 
-    beforeEach(() => {
-        createTestContainer();
-    });
+  afterEach(() => {
+    destroyTestContainer();
+  });
 
-    afterEach(() => {
-        destroyTestContainer();
-    });
+  it("should render a maximum of 2 buttons horizontally", (done) => {
+    done = once(done);
+    window.paypal
+      .Buttons({
+        style: {
+          layout: "horizontal",
+        },
 
-    it('should render a maximum of 2 buttons horizontally', (done) => {
-        done = once(done);
-        window.paypal.Buttons({
+        test: {
+          onRender({ fundingSources }) {
+            if (fundingSources.length > 2) {
+              throw new Error(
+                `Expected a maximum of 2 buttons to be rendered horizontally, got ${fundingSources.length}`
+              );
+            }
 
-            style: {
-                layout: 'horizontal'
-            },
+            done();
+          },
+        },
 
-            test: {
-                onRender({ fundingSources }) {
-                    if (fundingSources.length > 2) {
-                        throw new Error(`Expected a maximum of 2 buttons to be rendered horizontally, got ${ fundingSources.length }`);
-                    }
+        createOrder(): string | ZalgoPromise<string> {
+          throw new Error("Expected createOrder to not be called");
+        },
 
-                    done();
-                }
-            },
+        onApprove() {
+          throw new Error("Expected onApprove to not be called");
+        },
 
-            createOrder() : string | ZalgoPromise<string> {
-                throw new Error('Expected createOrder to not be called');
-            },
+        onCancel() {
+          throw new Error("Expected onCancel to not be called");
+        },
 
-            onApprove() {
-                throw new Error('Expected onApprove to not be called');
-            },
+        onError: done,
+      })
+      .render("#testContainer");
+  });
 
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
+  it("should render a maximum of 4 buttons vertically", (done) => {
+    done = once(done);
 
-            onError: done
+    window.paypal
+      .Buttons({
+        test: {
+          onRender({ fundingSources }) {
+            if (fundingSources.length > 4) {
+              throw new Error(
+                `Expected a maximum of 4 buttons to be rendered vertically, got ${fundingSources.length}`
+              );
+            }
 
-        }).render('#testContainer');
-    });
+            done();
+          },
+        },
 
-    it('should render a maximum of 4 buttons vertically', (done) => {
-        done = once(done);
+        style: {
+          layout: "vertical",
+        },
 
+        createOrder(): string | ZalgoPromise<string> {
+          throw new Error("Expected createOrder to not be called");
+        },
 
-        window.paypal.Buttons({
+        onApprove() {
+          throw new Error("Expected onApprove to not be called");
+        },
 
-            test: {
-                onRender({ fundingSources }) {
-                    if (fundingSources.length > 4) {
-                        throw new Error(`Expected a maximum of 4 buttons to be rendered vertically, got ${ fundingSources.length }`);
-                    }
+        onCancel() {
+          throw new Error("Expected onCancel to not be called");
+        },
 
-                    done();
-                }
-            },
-
-            style: {
-                layout: 'vertical'
-            },
-
-            createOrder() : string | ZalgoPromise<string> {
-                throw new Error('Expected createOrder to not be called');
-            },
-
-            onApprove() {
-                throw new Error('Expected onApprove to not be called');
-            },
-
-            onCancel() {
-                throw new Error('Expected onCancel to not be called');
-            },
-
-            onError: done
-
-        }).render('#testContainer');
-    });
+        onError: done,
+      })
+      .render("#testContainer");
+  });
 });
