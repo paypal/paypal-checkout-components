@@ -16,8 +16,6 @@
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "flow": "flow",
     "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
-    "format": "prettier --write --ignore-unknown .",
-    "format:check": "prettier --check .",
     "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
     "jest-screenshot": "jest test/screenshot --env=node --no-cache",
     "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
@@ -28,7 +26,7 @@
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "release": "./scripts/publish.sh",
     "start": "npm run webpack -- --progress --watch",
-    "test": "npm run format:check && npm run test:unit && npm run jest-ssr && npm run karma && npm run jest-screenshot",
+    "test": "npm run test:unit && npm run jest-ssr && npm run karma && npm run jest-screenshot",
     "test:unit": "vitest",
     "percy-screenshot": "babel-node ./test/percy/server/createButtonConfigs.js && percy exec -- playwright test --config=./test/percy/playwright.config.js --reporter=dot --pass-with-no-tests",
     "typecheck": "npm run flow-typed && npm run flow",
@@ -114,6 +112,6 @@
     "@paypal/sdk-logos": "^2.2.3"
   },
   "lint-staged": {
-    "**/{src,test,scripts}/**/*.{js,jsx,json,sh}": "prettier --write"
+    "*.sh": "prettier --write"
   }
 }

@@ -3,68 +3,69 @@
 
 import { getKarmaConfig } from "@krakenjs/karma-config-grumbler";
 
-import { WEBPACK_CONFIG_TEST } from "./webpack.config";
+import { WEBPACK_CONFIG_TEST } from './webpack.config';
 
-export default function configKarma(karma: Object) {
-  const karmaConfig = getKarmaConfig(karma, {
-    basePath: __dirname,
-    testDir: "test",
-    windowDir: "test/integration/windows",
-    entry: "test/integration/index.js",
-    webpack: WEBPACK_CONFIG_TEST,
-  });
+export default function configKarma(karma : Object) {
 
-  karma.set({
-    ...karmaConfig,
+    const karmaConfig = getKarmaConfig(karma, {
+        basePath:  __dirname,
+        testDir:   'test',
+        windowDir: 'test/integration/windows',
+        entry:     'test/integration/index.js',
+        webpack:   WEBPACK_CONFIG_TEST
+    });
 
-    files: [
-      {
-        pattern: "test/integration/vendor/react_v15.1.0.js",
-        included: true,
-        served: true,
-      },
+    karma.set({
+        ...karmaConfig,
 
-      {
-        pattern: "test/integration/vendor/react-dom_v15.1.0.js",
-        included: true,
-        served: true,
-      },
+        files: [
+            {
+                pattern:  'test/integration/vendor/react_v15.1.0.js',
+                included: true,
+                served:   true
+            },
 
-      {
-        pattern: "test/integration/vendor/angular.min.js",
-        included: true,
-        served: true,
-      },
+            {
+                pattern:  'test/integration/vendor/react-dom_v15.1.0.js',
+                included: true,
+                served:   true
+            },
 
-      {
-        pattern: "test/integration/globals.js",
-        included: true,
-        served: true,
-      },
+            {
+                pattern:  'test/integration/vendor/angular.min.js',
+                included: true,
+                served:   true
+            },
 
-      {
-        pattern: "test/paypal.js",
-        included: true,
-        served: true,
-      },
+            {
+                pattern:  'test/integration/globals.js',
+                included: true,
+                served:   true
+            },
 
-      ...karmaConfig.files,
-    ],
+            {
+                pattern:  'test/paypal.js',
+                included: true,
+                served:   true
+            },
 
-    preprocessors: {
-      ...karmaConfig.preprocessors,
+            ...karmaConfig.files
+        ],
 
-      "src/index.js": ["webpack", "sourcemap"],
-      "src/**/*.js": ["sourcemap"],
-    },
+        preprocessors: {
+            ...karmaConfig.preprocessors,
 
-    coverageReporter: {
-      reporters: [
-        {
-          type: "lcov",
-          dir: "coverage/karma",
+            'src/index.js': [ 'webpack', 'sourcemap' ],
+            'src/**/*.js':  [ 'sourcemap' ]
         },
-      ],
-    },
-  });
+
+        coverageReporter: {
+            reporters: [
+                {
+                    type: 'lcov',
+                    dir:  'coverage/karma'
+                }
+            ]
+        }
+    });
 }

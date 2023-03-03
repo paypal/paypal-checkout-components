@@ -1,5 +1,8 @@
 {
-  "extends": ["config:base", ":preserveSemverRanges"],
+  "extends": [
+    "config:base",
+    ":preserveSemverRanges"
+  ],
   "prCreation": "immediate",
   "prHourlyLimit": 0,
   "rangeStrategy": "status-success",
@@ -7,7 +10,9 @@
   "semanticCommits": true,
   "timezone": "America/Los_Angeles",
   "rebaseStalePrs": true,
-  "labels": [":christmas_tree: dependencies"],
+  "labels": [
+    ":christmas_tree: dependencies"
+  ],
   "ignoreDeps": ["flow-bin"],
   "packageRules": [
     {

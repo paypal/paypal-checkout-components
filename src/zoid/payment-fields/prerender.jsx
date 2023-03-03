@@ -1,21 +1,19 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
+import { node, type ChildType } from '@krakenjs/jsx-pragmatic/src';
 
 type PrerenderedPaymentFieldsProps = {|
-  nonce: ?string,
+    nonce : ?string
 |};
 
-export function PaymentFieldsPrerender({
-  nonce,
-}: PrerenderedPaymentFieldsProps): ChildType {
-  return (
-    <html>
-      <body>
-        <style
-          nonce={nonce}
-          innerHTML={`
+export function PaymentFieldsPrerender({ nonce } : PrerenderedPaymentFieldsProps) : ChildType {
+    return (
+        <html>
+            <body>
+                <style
+                    nonce={ nonce }
+                    innerHTML={ `
                         html, body {
                             padding: 0;
                             margin: 0;
@@ -28,9 +26,9 @@ export function PaymentFieldsPrerender({
                             position: relative;
                             overflow: hidden;
                         }
-                    `}
-        />
-      </body>
-    </html>
-  );
+                    ` }
+                />
+            </body>
+        </html>
+    );
 }
