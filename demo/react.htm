@@ -1,42 +1,44 @@
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.13.1/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.js"></script>
 
 <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
 
-<body>
-  <div id="page"></div>
+<div id="page"></div>
 
-  <script type="text/babel">
-    let PayPalButton = paypal.Buttons.driver("react", { React, ReactDOM });
+    <script type="text/babel">
 
-    class Main extends React.Component {
-      createOrder(data, actions) {
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                value: "0.01",
-              },
-            },
-          ],
-        });
-      }
+        let PayPalButton = paypal.Buttons.driver('react', { React, ReactDOM });
 
-      onApprove(data, actions) {
-        return actions.order.capture();
-      }
+        class Main extends React.Component {
 
-      render() {
-        return (
-          <PayPalButton
-            createOrder={(data, actions) => this.createOrder(data, actions)}
-            onApprove={(data, actions) => this.onApprove(data, actions)}
-          />
-        );
-      }
-    }
+            createOrder(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '0.01'
+                        }
+                    }]
+                });
+            }
 
-    ReactDOM.render(<Main />, document.querySelector("#page"));
-  </script>
+            onApprove(data, actions) {
+                return actions.order.capture();
+            }
+
+            render() {
+                return (
+                    <PayPalButton
+                        createOrder={ (data, actions) => this.createOrder(data, actions) }
+                        onApprove={ (data, actions) => this.onApprove(data, actions) }
+                    />
+                );
+            }
+        }
+
+        ReactDOM.render(<Main />, document.querySelector('#page'));
+
+    </script>
+
 </body>
