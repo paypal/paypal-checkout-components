@@ -1,3 +1,5 @@
 /* @flow */
 
-export type ModalProps = {||};
+export type ModalProps = {|
+    
+|};

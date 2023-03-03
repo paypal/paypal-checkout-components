@@ -1,47 +1,43 @@
 /* @flow */
 /** @jsx node */
 
-import { TrustlyLogo } from "@paypal/sdk-logos/src";
-import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
+import { TrustlyLogo } from '@paypal/sdk-logos/src';
+import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 
-import { BUTTON_LAYOUT } from "../../constants";
-import {
-  DEFAULT_APM_FUNDING_CONFIG,
-  type FundingSourceConfig,
-  BasicLabel,
-} from "../common";
-import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
+import { BUTTON_LAYOUT } from '../../constants';
+import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
+import { Text, Space } from '../../ui/text';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
-export function getTrustlyConfig(): FundingSourceConfig {
-  return {
-    ...DEFAULT_APM_FUNDING_CONFIG,
+export function getTrustlyConfig() : FundingSourceConfig {
+    return {
+        ...DEFAULT_APM_FUNDING_CONFIG,
 
-    automatic: false,
+        automatic: false,
+        
+        shippingChange: false,
+    
+        layouts: [
+            BUTTON_LAYOUT.VERTICAL
+        ],
 
-    shippingChange: false,
+        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(TrustlyLogo, { logoColor, optional }),
 
-    layouts: [BUTTON_LAYOUT.VERTICAL],
+        Label: ({ logo, ...opts }) => {
+            if (__WEB__) {
+                return logo;
+            }
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(TrustlyLogo, { logoColor, optional }),
+            const apmLogo = (
+                <Fragment>
+                    { logo }<Space /><Text animate optional>Trustly</Text>
+                </Fragment>
+            );
 
-    Label: ({ logo, ...opts }) => {
-      if (__WEB__) {
-        return logo;
-      }
-
-      const apmLogo = (
-        <Fragment>
-          {logo}
-          <Space />
-          <Text animate optional>
-            Trustly
-          </Text>
-        </Fragment>
-      );
-
-      return <BasicLabel {...opts} logo={apmLogo} />;
-    },
-  };
+            return (<BasicLabel
+                { ...opts }
+                logo={ apmLogo }
+            />);
+        }
+    };
 }

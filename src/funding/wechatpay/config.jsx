@@ -1,45 +1,41 @@
 /* @flow */
 /** @jsx node */
 
-import { WechatpayLogo } from "@paypal/sdk-logos/src";
-import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
+import { WechatpayLogo } from '@paypal/sdk-logos/src';
+import { Fragment, node } from '@krakenjs/jsx-pragmatic/src';
 
-import { BUTTON_LAYOUT } from "../../constants";
-import {
-  DEFAULT_APM_FUNDING_CONFIG,
-  type FundingSourceConfig,
-  BasicLabel,
-} from "../common";
-import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
+import { BUTTON_LAYOUT } from '../../constants';
+import { DEFAULT_APM_FUNDING_CONFIG, type FundingSourceConfig, BasicLabel } from '../common';
+import { Text, Space } from '../../ui/text';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
 
-export function getWechatpayConfig(): FundingSourceConfig {
-  return {
-    ...DEFAULT_APM_FUNDING_CONFIG,
+export function getWechatpayConfig() : FundingSourceConfig {
+    return {
+        ...DEFAULT_APM_FUNDING_CONFIG,
 
-    shippingChange: false,
+        shippingChange: false,
+    
+        layouts: [
+            BUTTON_LAYOUT.VERTICAL
+        ],
+    
+        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(WechatpayLogo, { logoColor, optional }),
 
-    layouts: [BUTTON_LAYOUT.VERTICAL],
+        Label: ({ logo, ...opts }) => {
+            if (__WEB__) {
+                return logo;
+            }
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(WechatpayLogo, { logoColor, optional }),
+            const apmLogo = (
+                <Fragment>
+                    { logo }<Space /><Text animate optional>WeChat Pay</Text>
+                </Fragment>
+            );
 
-    Label: ({ logo, ...opts }) => {
-      if (__WEB__) {
-        return logo;
-      }
-
-      const apmLogo = (
-        <Fragment>
-          {logo}
-          <Space />
-          <Text animate optional>
-            WeChat Pay
-          </Text>
-        </Fragment>
-      );
-
-      return <BasicLabel {...opts} logo={apmLogo} />;
-    },
-  };
+            return (<BasicLabel
+                { ...opts }
+                logo={ apmLogo }
+            />);
+        }
+    };
 }

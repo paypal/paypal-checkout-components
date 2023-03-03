@@ -1,68 +1,61 @@
 /* @flow */
 
-import { FUNDING } from "@paypal/sdk-constants/src";
+import { FUNDING } from '@paypal/sdk-constants/src';
 
-import { createTestContainer, destroyTestContainer, mockProp } from "../common";
+import { createTestContainer, destroyTestContainer, mockProp } from '../common';
 
 describe(`paypal button funding source order`, () => {
-  beforeEach(() => {
-    createTestContainer();
-  });
 
-  afterEach(() => {
-    destroyTestContainer();
-  });
+    beforeEach(() => {
+        createTestContainer();
+    });
 
-  it("should render card last in the list if it is an available funding source", (done) => {
-    const eligibleFundingSources = [
-      FUNDING.PAYPAL,
-      FUNDING.CARD,
-      FUNDING.IDEAL,
-      FUNDING.SEPA,
-    ];
+    afterEach(() => {
+        destroyTestContainer();
+    });
 
-    for (const source of eligibleFundingSources) {
-      mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], "eligible", true);
-    }
+    it('should render card last in the list if it is an available funding source', (done) => {
+        const eligibleFundingSources = [
+            FUNDING.PAYPAL,
+            FUNDING.CARD,
+            FUNDING.IDEAL,
+            FUNDING.SEPA
+        ];
 
-    window.paypal
-      .Buttons({
-        test: {
-          onRender({ fundingSources }) {
-            if (
-              fundingSources.indexOf(FUNDING.CARD) !==
-              fundingSources.length - 1
-            ) {
-              done(
-                new Error(
-                  `Expected card to be at index ${
-                    fundingSources.length - 1
-                  }, found at index ${fundingSources.indexOf(FUNDING.CARD)}`
-                )
-              );
-            }
-            done();
-          },
-        },
+        for (const source of eligibleFundingSources) {
+            mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], 'eligible', true);
+        }
 
-        style: {
-          layout: "vertical",
-        },
+        window.paypal.Buttons({
 
-        createOrder() {
-          done(new Error("Expected createOrder to not be called"));
-        },
+            test: {
+                onRender({ fundingSources }) {
+                    if (fundingSources.indexOf(FUNDING.CARD) !== fundingSources.length - 1) {
+                        done(new Error(`Expected card to be at index ${ fundingSources.length - 1 }, found at index ${ fundingSources.indexOf(FUNDING.CARD) }`));
+                    }
+                    done();
+                }
+            },
 
-        onApprove() {
-          done(new Error("Expected onApprove to not be called"));
-        },
+            style: {
+                layout: 'vertical'
+            },
 
-        onCancel() {
-          done(new Error("Expected onCancel to not be called"));
-        },
+            createOrder() {
+                done(new Error('Expected createOrder to not be called'));
+            },
 
-        onError: done,
-      })
-      .render("#testContainer");
-  });
+            onApprove() {
+                done(new Error('Expected onApprove to not be called'));
+            },
+
+            onCancel() {
+                done(new Error('Expected onCancel to not be called'));
+            },
+
+            onError: done
+
+        }).render('#testContainer');
+    });
+
 });

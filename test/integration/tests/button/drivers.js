@@ -1,283 +1,297 @@
 /* @flow */
 
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { once } from "@krakenjs/belter/src";
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { once } from '@krakenjs/belter/src';
 
-import {
-  generateOrderID,
-  createTestContainer,
-  destroyTestContainer,
-  WEBVIEW_USER_AGENT,
-} from "../common";
+import { generateOrderID, createTestContainer, destroyTestContainer, WEBVIEW_USER_AGENT } from '../common';
 
-window.angular.module("app", [
-  window.paypal.Buttons.driver("angular", window.angular).name,
-]);
-window.angular.bootstrap(document.body, ["app"]);
+window.angular.module('app', [ window.paypal.Buttons.driver('angular', window.angular).name ]);
+window.angular.bootstrap(document.body, [ 'app' ]);
 
-for (const flow of ["popup", "iframe"]) {
-  describe(`paypal button framework drivers on ${flow}`, () => {
-    beforeEach(() => {
-      createTestContainer();
+for (const flow of [ 'popup', 'iframe' ]) {
 
-      if (flow === "iframe") {
-        window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
-      }
-    });
+    describe(`paypal button framework drivers on ${ flow }`, () => {
 
-    afterEach(() => {
-      destroyTestContainer();
-    });
+        beforeEach(() => {
+            createTestContainer();
 
-    it("should render a button into a container with React and click on the button, then complete the checkout", (done) => {
-      done = once(done);
+            if (flow === 'iframe') {
+                window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+            }
+        });
 
-      const PayPalButton = window.paypal.Buttons.driver("react", {
-        React: window.React,
-        ReactDOM: window.ReactDOM,
-      });
+        afterEach(() => {
+            destroyTestContainer();
+        });
 
-      const Main = window.React.createClass({
-        render(): Object {
-          window.__test__ = { flow, action: "checkout" };
+        it('should render a button into a container with React and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
-          return window.React.createElement(
-            "div",
-            null,
-            window.React.createElement(PayPalButton, {
-              createOrder(): string | ZalgoPromise<string> {
-                return ZalgoPromise.resolve(generateOrderID());
-              },
+            const PayPalButton = window.paypal.Buttons.driver('react', {
+                React:    window.React,
+                ReactDOM: window.ReactDOM
+            });
 
-              onApprove(): void {
-                return done();
-              },
+            const Main = window.React.createClass({
 
-              onCancel(): void {
-                return done(new Error("Expected onCancel to not be called"));
-              },
-            })
-          );
-        },
-      });
+                render() : Object {
 
-      const container = document.createElement("div");
+                    window.__test__ = { flow, action: 'checkout' };
 
-      if (!document.body) {
-        throw new Error("Could not find document body");
-      }
+                    return window.React.createElement(
+                        'div',
+                        null,
+                        window.React.createElement(PayPalButton, {
 
-      document.body.appendChild(container);
+                            createOrder() : string | ZalgoPromise<string> {
+                                return ZalgoPromise.resolve(generateOrderID());
+                            },
 
-      window.ReactDOM.render(window.React.createElement(Main, null), container);
-    });
+                            onApprove() : void {
+                                return done();
+                            },
 
-    it("should render a button into a container with React with a promise in createOrder and click on the button, then complete the checkout", (done) => {
-      done = once(done);
+                            onCancel() : void {
+                                return done(new Error('Expected onCancel to not be called'));
+                            }
+                        })
+                    );
+                }
+            });
 
-      const PayPalButton = window.paypal.Buttons.driver("react", {
-        React: window.React,
-        ReactDOM: window.ReactDOM,
-      });
+            const container = document.createElement('div');
 
-      const Main = window.React.createClass({
-        render(): Object {
-          window.__test__ = { flow, action: "checkout" };
+            if (!document.body) {
+                throw new Error('Could not find document body');
+            }
 
-          return window.React.createElement(
-            "div",
-            null,
-            window.React.createElement(PayPalButton, {
-              createOrder(): string | ZalgoPromise<string> {
-                return ZalgoPromise.try(() => {
-                  return ZalgoPromise.resolve(generateOrderID());
-                });
-              },
+            document.body.appendChild(container);
 
-              onApprove(): void {
-                return done();
-              },
+            window.ReactDOM.render(window.React.createElement(Main, null), container);
+        });
 
-              onCancel(): void {
-                return done(new Error("Expected onCancel to not be called"));
-              },
-            })
-          );
-        },
-      });
+        it('should render a button into a container with React with a promise in createOrder and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
-      const container = document.createElement("div");
+            const PayPalButton = window.paypal.Buttons.driver('react', {
+                React:    window.React,
+                ReactDOM: window.ReactDOM
+            });
 
-      if (!document.body) {
-        throw new Error("Could not find document body");
-      }
+            const Main = window.React.createClass({
 
-      document.body.appendChild(container);
+                render() : Object {
 
-      window.ReactDOM.render(window.React.createElement(Main, null), container);
-    });
+                    window.__test__ = { flow, action: 'checkout' };
 
-    it("should render a button into a container with React with a non-zalgo promise in createOrder and click on the button, then complete the checkout", (done) => {
-      done = once(done);
+                    return window.React.createElement(
+                        'div',
+                        null,
+                        window.React.createElement(PayPalButton, {
 
-      const PayPalButton = window.paypal.Buttons.driver("react", {
-        React: window.React,
-        ReactDOM: window.ReactDOM,
-      });
+                            createOrder() : string | ZalgoPromise<string> {
+                                return ZalgoPromise.try(() => {
+                                    return ZalgoPromise.resolve(generateOrderID());
+                                });
+                            },
 
-      const Main = window.React.createClass({
-        render(): Object {
-          window.__test__ = { flow, action: "checkout" };
+                            onApprove() : void {
+                                return done();
+                            },
 
-          return window.React.createElement(
-            "div",
-            null,
-            window.React.createElement(PayPalButton, {
-              createOrder(): string | ZalgoPromise<string> {
-                // $FlowFixMe
-                return {
-                  then(successHandler) {
-                    successHandler(generateOrderID());
-                  },
-                };
-              },
+                            onCancel() : void {
+                                return done(new Error('Expected onCancel to not be called'));
+                            }
+                        })
+                    );
+                }
+            });
 
-              onApprove(): void {
-                return done();
-              },
+            const container = document.createElement('div');
 
-              onCancel(): void {
-                return done(new Error("Expected onCancel to not be called"));
-              },
-            })
-          );
-        },
-      });
+            if (!document.body) {
+                throw new Error('Could not find document body');
+            }
 
-      const container = document.createElement("div");
+            document.body.appendChild(container);
 
-      if (!document.body) {
-        throw new Error("Could not find document body");
-      }
+            window.ReactDOM.render(window.React.createElement(Main, null), container);
+        });
 
-      document.body.appendChild(container);
+        it('should render a button into a container with React with a non-zalgo promise in createOrder and click on the button, then complete the checkout', (done) => {
+            done = once(done);
 
-      window.ReactDOM.render(window.React.createElement(Main, null), container);
-    });
+            const PayPalButton = window.paypal.Buttons.driver('react', {
+                React:    window.React,
+                ReactDOM: window.ReactDOM
+            });
 
-    it("should render a button into a container with Angular and click on the button, then complete the checkout", (done) => {
-      const injector = window.angular.element(document.body).injector();
-      const $compile = injector.get("$compile");
-      const $rootScope = injector.get("$rootScope");
+            const Main = window.React.createClass({
 
-      const $scope = $rootScope.$new();
+                render() : Object {
 
-      window.__test__ = { flow, action: "checkout" };
+                    window.__test__ = { flow, action: 'checkout' };
 
-      $scope.opts = {
-        createOrder(): string | ZalgoPromise<string> {
-          return ZalgoPromise.resolve(generateOrderID());
-        },
+                    return window.React.createElement(
+                        'div',
+                        null,
+                        window.React.createElement(PayPalButton, {
 
-        onApprove(): void {
-          return done();
-        },
+                            createOrder() : string | ZalgoPromise<string> {
+                                // $FlowFixMe
+                                return {
+                                    then(successHandler) {
+                                        successHandler(generateOrderID());
+                                    }
+                                };
+                            },
 
-        onCancel(): void {
-          return done(new Error("Expected onCancel to not be called"));
-        },
-      };
+                            onApprove() : void {
+                                return done();
+                            },
 
-      const template = `
+                            onCancel() : void {
+                                return done(new Error('Expected onCancel to not be called'));
+                            }
+                        })
+                    );
+                }
+            });
+
+            const container = document.createElement('div');
+
+            if (!document.body) {
+                throw new Error('Could not find document body');
+            }
+
+            document.body.appendChild(container);
+
+            window.ReactDOM.render(window.React.createElement(Main, null), container);
+        });
+
+        it('should render a button into a container with Angular and click on the button, then complete the checkout', done => {
+
+            const injector = window.angular.element(document.body).injector();
+            const $compile = injector.get('$compile');
+            const $rootScope = injector.get('$rootScope');
+
+            const $scope = $rootScope.$new();
+
+            window.__test__ = { flow, action: 'checkout' };
+
+            $scope.opts = {
+
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.resolve(generateOrderID());
+                },
+
+                onApprove() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+            };
+
+            const template = `
                 <paypal-buttons props="opts"></paypal-button>
             `;
 
-      $compile(template)($scope, (element) => {
-        if (!document.body) {
-          throw new Error("Could not find document body");
-        }
+            $compile(template)($scope, element => {
 
-        document.body.appendChild(element[0]);
-      });
-    });
+                if (!document.body) {
+                    throw new Error('Could not find document body');
+                }
 
-    it("should render a button into a container with Angular with a promise in createOrder and click on the button, then complete the checkout", (done) => {
-      const injector = window.angular.element(document.body).injector();
-      const $compile = injector.get("$compile");
-      const $rootScope = injector.get("$rootScope");
+                document.body.appendChild(element[0]);
+            });
+        });
 
-      const $scope = $rootScope.$new();
+        it('should render a button into a container with Angular with a promise in createOrder and click on the button, then complete the checkout', done => {
 
-      window.__test__ = { flow, action: "checkout" };
+            const injector = window.angular.element(document.body).injector();
+            const $compile = injector.get('$compile');
+            const $rootScope = injector.get('$rootScope');
 
-      $scope.opts = {
-        createOrder(): string | ZalgoPromise<string> {
-          return ZalgoPromise.try(() => {
-            return ZalgoPromise.resolve(generateOrderID());
-          });
-        },
+            const $scope = $rootScope.$new();
 
-        onApprove(): void {
-          return done();
-        },
+            window.__test__ = { flow, action: 'checkout' };
 
-        onCancel(): void {
-          return done(new Error("Expected onCancel to not be called"));
-        },
-      };
+            $scope.opts = {
 
-      const template = `
+                createOrder() : string | ZalgoPromise<string> {
+                    return ZalgoPromise.try(() => {
+                        return ZalgoPromise.resolve(generateOrderID());
+                    });
+                },
+
+                onApprove() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+            };
+
+            const template = `
                 <paypal-buttons props="opts"></test-component>
             `;
 
-      $compile(template)($scope, (element) => {
-        if (!document.body) {
-          throw new Error("Could not find document body");
-        }
+            $compile(template)($scope, element => {
 
-        document.body.appendChild(element[0]);
-      });
-    });
+                if (!document.body) {
+                    throw new Error('Could not find document body');
+                }
 
-    it("should render a button into a container with Angular with a non-zalgo promise in createOrder and click on the button, then complete the checkout", (done) => {
-      const injector = window.angular.element(document.body).injector();
-      const $compile = injector.get("$compile");
-      const $rootScope = injector.get("$rootScope");
+                document.body.appendChild(element[0]);
+            });
+        });
 
-      const $scope = $rootScope.$new();
+        it('should render a button into a container with Angular with a non-zalgo promise in createOrder and click on the button, then complete the checkout', done => {
 
-      window.__test__ = { flow, action: "checkout" };
+            const injector = window.angular.element(document.body).injector();
+            const $compile = injector.get('$compile');
+            const $rootScope = injector.get('$rootScope');
 
-      $scope.opts = {
-        createOrder(): string | ZalgoPromise<string> {
-          // $FlowFixMe
-          return {
-            then(successHandler) {
-              successHandler(generateOrderID());
-            },
-          };
-        },
+            const $scope = $rootScope.$new();
 
-        onApprove(): void {
-          return done();
-        },
+            window.__test__ = { flow, action: 'checkout' };
 
-        onCancel(): void {
-          return done(new Error("Expected onCancel to not be called"));
-        },
-      };
+            $scope.opts = {
 
-      const template = `
+                createOrder() : string | ZalgoPromise<string> {
+                    // $FlowFixMe
+                    return {
+                        then(successHandler) {
+                            successHandler(generateOrderID());
+                        }
+                    };
+                },
+
+                onApprove() : void {
+                    return done();
+                },
+
+                onCancel() : void {
+                    return done(new Error('Expected onCancel to not be called'));
+                }
+            };
+
+            const template = `
                 <paypal-buttons props="opts"></test-component>
             `;
 
-      $compile(template)($scope, (element) => {
-        if (!document.body) {
-          throw new Error("Could not find document body");
-        }
+            $compile(template)($scope, element => {
 
-        document.body.appendChild(element[0]);
-      });
+                if (!document.body) {
+                    throw new Error('Could not find document body');
+                }
+
+                document.body.appendChild(element[0]);
+            });
+        });
     });
-  });
+
 }

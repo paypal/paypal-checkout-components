@@ -15,7 +15,6 @@
 <!-- Are there any additional considerations when deploying this change to production? -->
 
 ### Groups who should review (if applicable)
-
 <!-- For cross-team internal contributors, please tag a group or individual from your team who should review this PR -->
 
-❤️ Thank you!
+❤️  Thank you!

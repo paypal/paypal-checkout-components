@@ -1,53 +1,54 @@
 /* @flow */
 
-import { WEBVIEW_USER_AGENT } from "./common";
+import { WEBVIEW_USER_AGENT } from './common';
 
-describe("security cases", () => {
-  it("should error out when not on paypal domain", () => {
-    let error;
+describe('security cases', () => {
 
-    try {
-      window.paypal.allowIframe();
-    } catch (err) {
-      error = err;
-    }
+    it('should error out when not on paypal domain', () => {
+        let error;
 
-    if (!error) {
-      throw new Error(`Expected error to be thrown`);
-    }
-  });
+        try {
+            window.paypal.allowIframe();
+        } catch (err) {
+            error = err;
+        }
 
-  it("should return false by default on paypal domain", () => {
-    window.mockDomain = "mock://www.paypal.com";
+        if (!error) {
+            throw new Error(`Expected error to be thrown`);
+        }
+    });
 
-    const result = window.paypal.allowIframe();
+    it('should return false by default on paypal domain', () => {
+        window.mockDomain = 'mock://www.paypal.com';
 
-    if (result) {
-      throw new Error(`Expected iframes to not be allowed`);
-    }
-  });
+        const result = window.paypal.allowIframe();
 
-  it("should return true when popups are not supported", () => {
-    window.mockDomain = "mock://www.paypal.com";
-    window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+        if (result) {
+            throw new Error(`Expected iframes to not be allowed`);
+        }
+    });
 
-    const result = window.paypal.allowIframe();
+    it('should return true when popups are not supported', () => {
+        window.mockDomain = 'mock://www.paypal.com';
+        window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
-    if (!result) {
-      throw new Error(`Expected iframes to be allowed`);
-    }
-  });
+        const result = window.paypal.allowIframe();
 
-  it("should return true when parent component is the same domain", () => {
-    window.mockDomain = "mock://www.paypal.com";
-    window.xprops = {
-      getParent: () => window,
-    };
+        if (!result) {
+            throw new Error(`Expected iframes to be allowed`);
+        }
+    });
 
-    const result = window.paypal.allowIframe();
+    it('should return true when parent component is the same domain', () => {
+        window.mockDomain = 'mock://www.paypal.com';
+        window.xprops = {
+            getParent: () => window
+        };
 
-    if (!result) {
-      throw new Error(`Expected iframes to be allowed`);
-    }
-  });
+        const result = window.paypal.allowIframe();
+
+        if (!result) {
+            throw new Error(`Expected iframes to be allowed`);
+        }
+    });
 });

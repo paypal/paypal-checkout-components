@@ -1,37 +1,45 @@
 /* @flow */
 /** @jsx node */
 
-import { ItauLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
+import { ItauLogo, LOGO_COLOR } from '@paypal/sdk-logos/src';
 
-export function getItauConfig(): FundingSourceConfig {
-  return {
-    ...DEFAULT_FUNDING_CONFIG,
+import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from '../../constants';
+import { enableLogoCDNExperiment } from '../../lib/getLogoCDNExperiment';
+import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from '../common';
 
-    layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
+export function getItauConfig() : FundingSourceConfig {
+    return {
+        ...DEFAULT_FUNDING_CONFIG,
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(ItauLogo, { logoColor, optional }),
+        layouts: [
+            BUTTON_LAYOUT.HORIZONTAL,
+            BUTTON_LAYOUT.VERTICAL
+        ],
 
-    colors: [BUTTON_COLOR.DARKBLUE, BUTTON_COLOR.BLUE, BUTTON_COLOR.BLACK],
+        Logo: ({ logoColor, optional }) => enableLogoCDNExperiment(ItauLogo, { logoColor, optional }),
 
-    logoColors: {
-      [BUTTON_COLOR.DARKBLUE]: LOGO_COLOR.WHITE,
-      [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
-      [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
-    },
+        colors: [
+            BUTTON_COLOR.DARKBLUE,
+            BUTTON_COLOR.BLUE,
+            BUTTON_COLOR.BLACK
+        ],
 
-    secondaryColors: {
-      ...DEFAULT_FUNDING_CONFIG.secondaryColors,
+        logoColors:  {
+            [ BUTTON_COLOR.DARKBLUE ]:   LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.BLUE ]:     LOGO_COLOR.WHITE,
+            [ BUTTON_COLOR.BLACK ]:    LOGO_COLOR.WHITE
+        },
 
-      [DEFAULT]: BUTTON_COLOR.DARKBLUE,
-      [BUTTON_COLOR.GOLD]: BUTTON_COLOR.DARKBLUE,
-      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
-      [BUTTON_COLOR.SILVER]: BUTTON_COLOR.DARKBLUE,
-      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.DARKBLUE,
-    },
-  };
+        secondaryColors: {
+            ...DEFAULT_FUNDING_CONFIG.secondaryColors,
+
+            [ DEFAULT ]:             BUTTON_COLOR.DARKBLUE,
+            [ BUTTON_COLOR.GOLD ]:   BUTTON_COLOR.DARKBLUE,
+            [ BUTTON_COLOR.BLUE ]:   BUTTON_COLOR.BLUE,
+            [ BUTTON_COLOR.SILVER ]: BUTTON_COLOR.DARKBLUE,
+            [ BUTTON_COLOR.WHITE ]:   BUTTON_COLOR.DARKBLUE
+
+        }
+    };
 }

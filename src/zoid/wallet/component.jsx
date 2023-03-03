@@ -2,307 +2,269 @@
 /** @jsx node */
 /* eslint max-lines: 0 */
 
-import { node, dom } from "@krakenjs/jsx-pragmatic/src";
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
 import {
-  getLogger,
-  getPayPalDomainRegex,
-  getSDKMeta,
-  getPayPalDomain,
-  getClientID,
-  getUserAccessToken,
-  getClientAccessToken,
-  getUserIDToken,
-  getLocale,
-  getPartnerAttributionID,
-  getCorrelationID,
-  getSessionID,
-  getEnv,
-  getStageHost,
-  getAPIStageHost,
-  getPlatform,
-  getCurrency,
-  getIntent,
-  getBuyerCountry,
-  getCommit,
-  getVault,
-  getMerchantID,
-  getCSPNonce,
-  getDebug,
-  getMerchantRequestedPopupsDisabled,
-} from "@paypal/sdk-client/src";
-import { create, type ZoidComponent } from "@krakenjs/zoid/src";
-import { inlineMemoize, memoize, uniqueID } from "@krakenjs/belter/src";
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
-import {
-  getRefinedFundingEligibility,
-  rememberFunding,
-} from "@paypal/funding-components/src";
+    getLogger, getPayPalDomainRegex, getSDKMeta, getPayPalDomain, getClientID, getUserAccessToken,
+    getClientAccessToken, getUserIDToken, getLocale, getPartnerAttributionID, getCorrelationID, getSessionID,
+    getEnv, getStageHost, getAPIStageHost, getPlatform, getCurrency, getIntent, getBuyerCountry, getCommit, getVault,
+    getMerchantID, getCSPNonce, getDebug, getMerchantRequestedPopupsDisabled
+} from '@paypal/sdk-client/src';
+import { create, type ZoidComponent } from '@krakenjs/zoid/src';
+import { inlineMemoize, memoize, uniqueID } from '@krakenjs/belter/src';
+import { ZalgoPromise } from '@krakenjs/zalgo-promise/src';
+import { FUNDING } from '@paypal/sdk-constants/src';
+import { getRefinedFundingEligibility, rememberFunding } from '@paypal/funding-components/src';
 
-import { type WalletProps } from "./props";
-import { WalletPrerender } from "./prerender";
-import { WalletContainer } from "./container";
+import { type WalletProps } from './props';
+import { WalletPrerender } from './prerender';
+import { WalletContainer } from './container';
 
 export type WalletComponent = ZoidComponent<WalletProps>;
 
-export function getWalletComponent(): WalletComponent {
-  return inlineMemoize(getWalletComponent, () => {
-    return create({
-      tag: "paypal-wallet",
-      url: () =>
-        `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__WALLET__}`,
-      domain: getPayPalDomainRegex(),
+export function getWalletComponent() : WalletComponent {
+    return inlineMemoize(getWalletComponent, () => {
+        return create({
+            tag:    'paypal-wallet',
+            url:    () => `${ getPayPalDomain() }${ __PAYPAL_CHECKOUT__.__URI__.__WALLET__ }`,
+            domain: getPayPalDomainRegex(),
+            
+            autoResize: {
+                width:  false,
+                height: true
+            },
 
-      autoResize: {
-        width: false,
-        height: true,
-      },
+            dimensions: {
+                width:  '100%',
+                height: '150px'
+            },
 
-      dimensions: {
-        width: "100%",
-        height: "150px",
-      },
+            logger: getLogger(),
 
-      logger: getLogger(),
+            containerTemplate: ({ props, doc, uid, frame, prerenderFrame, event }) => {
+                return (
+                    <WalletContainer uid={ uid } frame={ frame } prerenderFrame={ prerenderFrame } event={ event } nonce={ props.nonce } />
+                ).render(dom({ doc }));
+            },
 
-      containerTemplate: ({
-        props,
-        doc,
-        uid,
-        frame,
-        prerenderFrame,
-        event,
-      }) => {
-        return (
-          <WalletContainer
-            uid={uid}
-            frame={frame}
-            prerenderFrame={prerenderFrame}
-            event={event}
-            nonce={props.nonce}
-          />
-        ).render(dom({ doc }));
-      },
+            prerenderTemplate: ({ props, doc }) => {
+                return (
+                    <WalletPrerender nonce={ props.nonce } />
+                ).render(dom({ doc }));
+            },
 
-      prerenderTemplate: ({ props, doc }) => {
-        return (<WalletPrerender nonce={props.nonce} />).render(dom({ doc }));
-      },
+            attributes: {
+                iframe: {
+                    scrolling: 'no'
+                }
+            },
 
-      attributes: {
-        iframe: {
-          scrolling: "no",
-        },
-      },
+            props: {
+                sdkMeta: {
+                    type:        'string',
+                    queryParam:  true,
+                    sendToChild: false,
+                    value:       getSDKMeta
+                },
+                
+                clientID: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getClientID
+                },
+                
+                clientAccessToken: {
+                    type:       'string',
+                    required:   false,
+                    queryParam: true,
+                    value:      getClientAccessToken
+                },
 
-      props: {
-        sdkMeta: {
-          type: "string",
-          queryParam: true,
-          sendToChild: false,
-          value: getSDKMeta,
-        },
+                buyerAccessToken: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getUserAccessToken
+                },
 
-        clientID: {
-          type: "string",
-          queryParam: true,
-          value: getClientID,
-        },
+                fundingSource: {
+                    type:       'string',
+                    queryParam: true,
+                    default:    () => FUNDING.PAYPAL
+                },
 
-        clientAccessToken: {
-          type: "string",
-          required: false,
-          queryParam: true,
-          value: getClientAccessToken,
-        },
+                style: {
+                    type:     'object',
+                    required: false
+                },
 
-        buyerAccessToken: {
-          type: "string",
-          queryParam: true,
-          required: false,
-          value: getUserAccessToken,
-        },
+                setupListeners: {
+                    type:     'function',
+                    required: false
+                },
 
-        fundingSource: {
-          type: "string",
-          queryParam: true,
-          default: () => FUNDING.PAYPAL,
-        },
+                createOrder: {
+                    type:       'function',
+                    queryParam: 'orderID',
+                    // $FlowFixMe
+                    queryValue: ({ value }) => ZalgoPromise.try(value),
+                    // $FlowFixMe
+                    decorate:   ({ value }) => memoize(value)
+                },
 
-        style: {
-          type: "object",
-          required: false,
-        },
+                onApprove: {
+                    type: 'function'
+                },
 
-        setupListeners: {
-          type: "function",
-          required: false,
-        },
+                userIDToken: {
+                    type:       'string',
+                    value:      getUserIDToken,
+                    required:   false,
+                    queryParam: true
+                },
 
-        createOrder: {
-          type: "function",
-          queryParam: "orderID",
-          // $FlowFixMe
-          queryValue: ({ value }) => ZalgoPromise.try(value),
-          // $FlowFixMe
-          decorate: ({ value }) => memoize(value),
-        },
+                locale: {
+                    type:       'object',
+                    queryParam: true,
+                    value:      getLocale
+                },
 
-        onApprove: {
-          type: "function",
-        },
+                partnerAttributionID: {
+                    type:       'string',
+                    required:   false,
+                    value:     getPartnerAttributionID
+                },
 
-        userIDToken: {
-          type: "string",
-          value: getUserIDToken,
-          required: false,
-          queryParam: true,
-        },
+                merchantRequestedPopupsDisabled: {
+                    type:       'boolean',
+                    required:   false,
+                    value:      getMerchantRequestedPopupsDisabled
+                },
 
-        locale: {
-          type: "object",
-          queryParam: true,
-          value: getLocale,
-        },
+                correlationID: {
+                    type:       'string',
+                    required:   false,
+                    value:      getCorrelationID
+                },
 
-        partnerAttributionID: {
-          type: "string",
-          required: false,
-          value: getPartnerAttributionID,
-        },
+                sessionID: {
+                    type:       'string',
+                    value:      getSessionID,
+                    queryParam: true
+                },
 
-        merchantRequestedPopupsDisabled: {
-          type: "boolean",
-          required: false,
-          value: getMerchantRequestedPopupsDisabled,
-        },
+                walletSessionID: {
+                    type:       'string',
+                    value:      uniqueID,
+                    queryParam: true
+                },
 
-        correlationID: {
-          type: "string",
-          required: false,
-          value: getCorrelationID,
-        },
+                env: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getEnv
+                },
 
-        sessionID: {
-          type: "string",
-          value: getSessionID,
-          queryParam: true,
-        },
+                stageHost: {
+                    type:       'string',
+                    value:      getStageHost,
+                    required:   false
+                },
 
-        walletSessionID: {
-          type: "string",
-          value: uniqueID,
-          queryParam: true,
-        },
+                apiStageHost: {
+                    type:       'string',
+                    value:      getAPIStageHost,
+                    required:   false
+                },
 
-        env: {
-          type: "string",
-          queryParam: true,
-          value: getEnv,
-        },
+                fundingEligibility: {
+                    type:          'object',
+                    value:         getRefinedFundingEligibility,
+                    queryParam:    true,
+                    serialization: 'base64'
+                },
 
-        stageHost: {
-          type: "string",
-          value: getStageHost,
-          required: false,
-        },
+                platform: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getPlatform
+                },
 
-        apiStageHost: {
-          type: "string",
-          value: getAPIStageHost,
-          required: false,
-        },
+                remember: {
+                    type:  'function',
+                    value: () => {
+                        return (fundingSources : $ReadOnlyArray<$Values<typeof FUNDING>>) => {
+                            rememberFunding(fundingSources, { cookie: false });
+                        };
+                    }
+                },
 
-        fundingEligibility: {
-          type: "object",
-          value: getRefinedFundingEligibility,
-          queryParam: true,
-          serialization: "base64",
-        },
+                currency: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getCurrency
+                },
 
-        platform: {
-          type: "string",
-          queryParam: true,
-          value: getPlatform,
-        },
+                intent: {
+                    type:       'string',
+                    queryParam: true,
+                    value:      getIntent
+                },
 
-        remember: {
-          type: "function",
-          value: () => {
-            return (
-              fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
-            ) => {
-              rememberFunding(fundingSources, { cookie: false });
-            };
-          },
-        },
+                buyerCountry: {
+                    type:       'string',
+                    queryParam: true,
+                    required:   false,
+                    value:      getBuyerCountry
+                },
 
-        currency: {
-          type: "string",
-          queryParam: true,
-          value: getCurrency,
-        },
+                commit: {
+                    type:       'boolean',
+                    queryParam: true,
+                    value:      getCommit
+                },
 
-        intent: {
-          type: "string",
-          queryParam: true,
-          value: getIntent,
-        },
+                vault: {
+                    type:       'boolean',
+                    queryParam: true,
+                    value:      getVault
+                },
+            
+                merchantID: {
+                    type:       'array',
+                    queryParam: true,
+                    value:      getMerchantID
+                },
 
-        buyerCountry: {
-          type: "string",
-          queryParam: true,
-          required: false,
-          value: getBuyerCountry,
-        },
+                csp: {
+                    type:     'object',
+                    required: false,
+                    value:    () => {
+                        return {
+                            nonce: getCSPNonce()
+                        };
+                    }
+                },
+            
+                getPageUrl: {
+                    type:  'function',
+                    value: () => {
+                        return () => window.location.href;
+                    }
+                },
 
-        commit: {
-          type: "boolean",
-          queryParam: true,
-          value: getCommit,
-        },
+                debug: {
+                    type:       'boolean',
+                    value:      getDebug,
+                    queryParam: true
+                },
 
-        vault: {
-          type: "boolean",
-          queryParam: true,
-          value: getVault,
-        },
-
-        merchantID: {
-          type: "array",
-          queryParam: true,
-          value: getMerchantID,
-        },
-
-        csp: {
-          type: "object",
-          required: false,
-          value: () => {
-            return {
-              nonce: getCSPNonce(),
-            };
-          },
-        },
-
-        getPageUrl: {
-          type: "function",
-          value: () => {
-            return () => window.location.href;
-          },
-        },
-
-        debug: {
-          type: "boolean",
-          value: getDebug,
-          queryParam: true,
-        },
-
-        allowBillingPayments: {
-          type: "boolean",
-          queryParam: true,
-          required: false,
-          default: () => true,
-        },
-      },
+                allowBillingPayments: {
+                    type:       'boolean',
+                    queryParam: true,
+                    required:   false,
+                    default:    () => true
+                }
+            }
+        });
     });
-  });
 }

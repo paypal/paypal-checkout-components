@@ -1,18 +1,14 @@
 /* @flow */
 /** @jsx node */
 
-import { type RenderOptionsType } from "@krakenjs/zoid/src";
-import { node, dom } from "@krakenjs/jsx-pragmatic/src";
-import { SpinnerPage } from "@paypal/common-components/src";
+import { type RenderOptionsType } from '@krakenjs/zoid/src';
+import { node, dom } from '@krakenjs/jsx-pragmatic/src';
+import { SpinnerPage } from '@paypal/common-components/src';
 
-import { type QRCodeProps } from "./types";
+import { type QRCodeProps } from './types';
 
-export function prerenderTemplate({
-  doc,
-  props,
-  close,
-}: RenderOptionsType<QRCodeProps>): ?HTMLElement {
-  const style = `
+export function prerenderTemplate({ doc, props, close } : (RenderOptionsType<QRCodeProps>)) : ?HTMLElement {
+    const style = `
     #close {
         position: absolute;
         right: 16px;
@@ -41,12 +37,11 @@ export function prerenderTemplate({
     }  
     `;
 
-  const children = [
-    <style nonce={props.cspNonce} innerHTML={style} />,
-    <a href="#" id="close" aria-label="close" role="button" onClick={close} />,
-  ];
+    const children = [
+        <style nonce={ props.cspNonce } innerHTML={ style } />,
+        <a href="#" id="close" aria-label="close" role="button" onClick={ close } />
+    ];
 
-  return new SpinnerPage({ nonce: props.cspNonce }, children).render(
-    dom({ doc })
-  );
+    return new SpinnerPage({ nonce: props.cspNonce }, children)
+        .render(dom({ doc }));
 }
