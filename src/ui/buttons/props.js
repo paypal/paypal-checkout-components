@@ -515,6 +515,7 @@ export type ButtonProps = {|
   meta: {||},
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   experience: string,
+  createVaultSetupToken: () => ZalgoPromise<string>,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type

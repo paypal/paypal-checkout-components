@@ -850,6 +850,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         default: () => true,
       },
+      createVaultSetupToken: {
+        type: "function",
+        required: false,
+      },
     },
   });
 });
