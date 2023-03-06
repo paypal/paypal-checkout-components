@@ -5,7 +5,6 @@ import { PLATFORM, FUNDING } from "@paypal/sdk-constants/src";
 import { ApplePayLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { Mark } from "./template";
@@ -31,7 +30,8 @@ export function getApplePayConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
     Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(ApplePayLogo, { logoColor, optional }),
+      ApplePayLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+
     Mark: ({ ...props }) => Mark({ ...props }),
 
     colors: [BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],

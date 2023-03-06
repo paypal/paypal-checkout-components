@@ -4,7 +4,6 @@
 import { MaximaLogo } from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 export function getMaximaConfig(): FundingSourceConfig {
@@ -16,7 +15,7 @@ export function getMaximaConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
     Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(MaximaLogo, { logoColor, optional }),
+      MaximaLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
     colors: [
       BUTTON_COLOR.DEFAULT,

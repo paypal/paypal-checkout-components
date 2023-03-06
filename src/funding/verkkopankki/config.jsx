@@ -11,7 +11,6 @@ import {
   BasicLabel,
 } from "../common";
 import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 export function getVerkkopankkiConfig(): FundingSourceConfig {
   return {
@@ -24,7 +23,7 @@ export function getVerkkopankkiConfig(): FundingSourceConfig {
     shippingChange: false,
 
     Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(VerkkopankkiLogo, { logoColor, optional }),
+      VerkkopankkiLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

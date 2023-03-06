@@ -9,7 +9,6 @@ import { PPLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 import css from "./style.scoped.scss";
 
@@ -75,7 +74,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
     Logo: ({ logoColor, nonce, fundingEligibility }) => {
       return (
         <Style css={css} nonce={nonce}>
-          {enableLogoCDNExperiment(PPLogo, { logoColor })}
+          <PPLogo logoColor={logoColor} loadFromCDN={__WEB__} />
           <Space />
           <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
         </Style>

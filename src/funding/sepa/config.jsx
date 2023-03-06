@@ -4,7 +4,6 @@
 import { SepaLogo } from "@paypal/sdk-logos/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 export function getSepaConfig(): FundingSourceConfig {
@@ -14,6 +13,6 @@ export function getSepaConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
     Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(SepaLogo, { logoColor, optional }),
+      SepaLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
   };
 }

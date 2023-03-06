@@ -11,7 +11,6 @@ import {
   BasicLabel,
 } from "../common";
 import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 export function getBoletoConfig(): FundingSourceConfig {
   return {
@@ -24,7 +23,7 @@ export function getBoletoConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
     Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(BoletoLogo, { logoColor, optional }),
+      BoletoLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

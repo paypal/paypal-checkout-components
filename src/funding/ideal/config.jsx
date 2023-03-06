@@ -11,7 +11,6 @@ import {
   BasicLabel,
 } from "../common";
 import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 export function getIdealConfig(): FundingSourceConfig {
   return {
@@ -22,7 +21,7 @@ export function getIdealConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
     Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(IdealLogo, { logoColor, optional }),
+      IdealLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

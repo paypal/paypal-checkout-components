@@ -19,7 +19,6 @@ import {
 import { Text, Space } from "../../ui/text";
 import { isRTLLanguage } from "../../lib";
 import { WalletLabel } from "../paypal/template";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 import { getVisaConfig } from "./visa";
 import { getMastercardConfig } from "./mastercard";
@@ -176,7 +175,7 @@ export function getCardConfig(): FundingSourceConfig {
     },
 
     Logo: ({ logoColor }) => {
-      return enableLogoCDNExperiment(GlyphCard, { logoColor });
+      return <GlyphCard logoColor={logoColor} loadFromCDN={__WEB__} />;
     },
 
     Label: ({ logo, locale, content, custom }) => {
