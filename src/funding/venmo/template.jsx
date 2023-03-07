@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 import { node, Style, type ChildType } from "@krakenjs/jsx-pragmatic/src";
-import { VenmoLogo } from "@paypal/sdk-logos/src";
+import {
+  VenmoLogoExternalImage,
+  VenmoLogoInlineSVG,
+} from "@paypal/sdk-logos/src";
 
 import {
   type WalletLabelOptions,
@@ -17,7 +20,11 @@ export function AppLabel(opts: LabelOptions): ChildType {
 
   const AppLogo: ChildType = (
     <Style css={css}>
-      <VenmoLogo logoColor={logoColor} loadFromCDN={__WEB__} />
+      {__WEB__ ? (
+        <VenmoLogoExternalImage logoColor={logoColor} />
+      ) : (
+        <VenmoLogoInlineSVG logoColor={logoColor} />
+      )}
       <Text className={["app-label"]}>App</Text>
     </Style>
   );
@@ -32,7 +39,11 @@ export function Label(opts: LabelOptions): ChildType {
 export function WalletLabel({ ...props }: WalletLabelOptions): ChildType {
   const { instrument, logoColor } = props;
   let label;
-  const logo = <VenmoLogo logoColor={logoColor} loadFromCDN={__WEB__} />;
+  const logo = __WEB__ ? (
+    <VenmoLogoExternalImage logoColor={logoColor} />
+  ) : (
+    <VenmoLogoInlineSVG logoColor={logoColor} />
+  );
 
   if (instrument && instrument.label) {
     label = instrument.label;
