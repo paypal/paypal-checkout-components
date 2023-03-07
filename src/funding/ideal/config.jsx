@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { IdealLogo } from "@paypal/sdk-logos/src";
+import {
+  IdealLogoInlineSVG,
+  IdealLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getIdealConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      IdealLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return IdealLogoExternalImage({ logoColor, optional });
+      }
+
+      return IdealLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

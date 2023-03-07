@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { TrustlyLogo } from "@paypal/sdk-logos/src";
+import {
+  TrustlyLogoInlineSVG,
+  TrustlyLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -22,8 +25,13 @@ export function getTrustlyConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      TrustlyLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return TrustlyLogoExternalImage({ logoColor, optional });
+      }
+
+      return TrustlyLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

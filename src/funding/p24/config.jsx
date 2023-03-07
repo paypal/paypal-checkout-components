@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { P24Logo } from "@paypal/sdk-logos/src";
+import { P24LogoInlineSVG, P24LogoExternalImage } from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +20,13 @@ export function getP24Config(): FundingSourceConfig {
 
     shippingChange: false,
 
-    Logo: ({ logoColor, optional }) =>
-      P24Logo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return P24LogoExternalImage({ logoColor, optional });
+      }
+
+      return P24LogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { MercadoPagoLogo } from "@paypal/sdk-logos/src";
+import {
+  MercadoPagoLogoInlineSVG,
+  MercadoPagoLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getMercadopagoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      MercadoPagoLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return MercadoPagoLogoExternalImage({ logoColor, optional });
+      }
+
+      return MercadoPagoLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

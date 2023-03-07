@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { SatispayLogo } from "@paypal/sdk-logos/src";
+import {
+  SatispayLogoInlineSVG,
+  SatispayLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -22,8 +25,13 @@ export function getSatispayConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      SatispayLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return SatispayLogoExternalImage({ logoColor, optional });
+      }
+
+      return SatispayLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

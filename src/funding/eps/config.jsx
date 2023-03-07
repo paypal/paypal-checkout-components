@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { EpsLogo } from "@paypal/sdk-logos/src";
+import { EpsLogoInlineSVG, EpsLogoExternalImage } from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +20,13 @@ export function getEpsConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      EpsLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return EpsLogoExternalImage({ logoColor, optional });
+      }
+
+      return EpsLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

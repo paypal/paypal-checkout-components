@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { ZimplerLogo } from "@paypal/sdk-logos/src";
+import {
+  ZimplerLogoInlineSVG,
+  ZimplerLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -14,7 +17,12 @@ export function getZimplerConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      ZimplerLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return ZimplerLogoExternalImage({ logoColor, optional });
+      }
+
+      return ZimplerLogoInlineSVG({ logoColor, optional });
+    },
   };
 }

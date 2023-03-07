@@ -4,9 +4,12 @@
 import { COUNTRY, FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
 import { node, Fragment } from "@krakenjs/jsx-pragmatic/src";
 import {
-  CreditLogo,
-  PPLogo,
-  PayPalLogo,
+  CreditLogoExternalImage,
+  CreditLogoInlineSVG,
+  PPLogoExternalImage,
+  PPLogoInlineSVG,
+  PayPalLogoExternalImage,
+  PayPalLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 
@@ -34,28 +37,34 @@ export function getCreditConfig(): FundingSourceConfig {
 
     Logo: ({ locale, logoColor }) => {
       if (locale.country === COUNTRY.DE) {
-        return (
-          <CreditLogo
-            logoColor={logoColor}
-            locale={locale}
-            loadFromCDN={__WEB__}
-          />
+        return __WEB__ ? (
+          <CreditLogoExternalImage locale={locale} logoColor={logoColor} />
+        ) : (
+          <CreditLogoInlineSVG locale={locale} logoColor={logoColor} />
         );
       }
 
       return (
         <Fragment>
-          <PPLogo logoColor={logoColor} loadFromCDN={__WEB__} />
+          {__WEB__ ? (
+            <PPLogoExternalImage logoColor={logoColor} />
+          ) : (
+            <PPLogoInlineSVG logoColor={logoColor} />
+          )}
           <Space />
           <span optional>
-            <PayPalLogo logoColor={logoColor} loadFromCDN={__WEB__} />
+            {__WEB__ ? (
+              <PayPalLogoExternalImage logoColor={logoColor} />
+            ) : (
+              <PayPalLogoInlineSVG logoColor={logoColor} />
+            )}
             <Space />
           </span>
-          <CreditLogo
-            logoColor={logoColor}
-            locale={locale}
-            loadFromCDN={__WEB__}
-          />
+          {__WEB__ ? (
+            <CreditLogoExternalImage locale={locale} logoColor={logoColor} />
+          ) : (
+            <CreditLogoInlineSVG locale={locale} logoColor={logoColor} />
+          )}
         </Fragment>
       );
     },

@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { MybankLogo } from "@paypal/sdk-logos/src";
+import {
+  MybankLogoInlineSVG,
+  MybankLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getMybankConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      MybankLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return MybankLogoExternalImage({ logoColor, optional });
+      }
+
+      return MybankLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

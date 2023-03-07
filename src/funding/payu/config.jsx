@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { PayuLogo } from "@paypal/sdk-logos/src";
+import {
+  PayuLogoInlineSVG,
+  PayuLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -22,8 +25,13 @@ export function getPayuConfig(): FundingSourceConfig {
 
     shippingChange: false,
 
-    Logo: ({ logoColor, optional }) =>
-      PayuLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return PayuLogoExternalImage({ logoColor, optional });
+      }
+
+      return PayuLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

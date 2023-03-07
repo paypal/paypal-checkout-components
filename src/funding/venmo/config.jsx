@@ -1,7 +1,11 @@
 /* @flow */
 /** @jsx node */
 
-import { VenmoLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
+import {
+  VenmoLogoExternalImage,
+  VenmoLogoInlineSVG,
+  LOGO_COLOR,
+} from "@paypal/sdk-logos/src";
 import { PLATFORM } from "@paypal/sdk-constants/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
@@ -36,8 +40,13 @@ export function getVenmoConfig(): FundingSourceConfig {
       return {};
     },
 
-    Logo: ({ logoColor, optional }) =>
-      VenmoLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return VenmoLogoExternalImage({ logoColor, optional });
+      }
+
+      return VenmoLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ ...props }) => {
       if (props.experiment && props.experiment.enableVenmoAppLabel) {

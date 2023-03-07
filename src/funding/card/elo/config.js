@@ -1,11 +1,11 @@
 /* @flow */
 
-import { EloLogo } from "@paypal/sdk-logos/src";
+import { EloLogoInlineSVG, EloLogoExternalImage } from "@paypal/sdk-logos/src";
 
 import type { CardConfig } from "../../common";
 
 export function getEloConfig(): CardConfig {
   return {
-    Label: () => EloLogo({ loadFromCDN: __WEB__ }),
+    Label: __WEB__ ? EloLogoExternalImage : EloLogoInlineSVG,
   };
 }

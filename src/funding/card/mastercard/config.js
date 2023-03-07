@@ -1,11 +1,14 @@
 /* @flow */
 
-import { MastercardLogo } from "@paypal/sdk-logos/src";
+import {
+  MastercardLogoInlineSVG,
+  MastercardLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 
 import type { CardConfig } from "../../common";
 
 export function getMastercardConfig(): CardConfig {
   return {
-    Label: () => MastercardLogo({ loadFromCDN: __WEB__ }),
+    Label: __WEB__ ? MastercardLogoExternalImage : MastercardLogoInlineSVG,
   };
 }

@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { GiropayLogo } from "@paypal/sdk-logos/src";
+import {
+  GiropayLogoInlineSVG,
+  GiropayLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getGiropayConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      GiropayLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return GiropayLogoExternalImage({ logoColor, optional });
+      }
+
+      return GiropayLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

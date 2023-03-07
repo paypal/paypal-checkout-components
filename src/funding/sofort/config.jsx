@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { SofortLogo } from "@paypal/sdk-logos/src";
+import {
+  SofortLogoInlineSVG,
+  SofortLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getSofortConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      SofortLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return SofortLogoExternalImage({ logoColor, optional });
+      }
+
+      return SofortLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

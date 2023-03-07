@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { MultibancoLogo } from "@paypal/sdk-logos/src";
+import {
+  MultibancoLogoInlineSVG,
+  MultibancoLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -22,8 +25,13 @@ export function getMultibancoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      MultibancoLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return MultibancoLogoExternalImage({ logoColor, optional });
+      }
+
+      return MultibancoLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

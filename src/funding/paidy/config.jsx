@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { PaidyLogo } from "@paypal/sdk-logos/src";
+import {
+  PaidyLogoInlineSVG,
+  PaidyLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -22,8 +25,13 @@ export function getPaidyConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      PaidyLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return PaidyLogoExternalImage({ logoColor, optional });
+      }
+
+      return PaidyLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

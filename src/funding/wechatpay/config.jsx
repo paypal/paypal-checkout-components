@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { WechatpayLogo } from "@paypal/sdk-logos/src";
+import {
+  WechatpayLogoInlineSVG,
+  WechatpayLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getWechatpayConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      WechatpayLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return WechatpayLogoExternalImage({ logoColor, optional });
+      }
+
+      return WechatpayLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

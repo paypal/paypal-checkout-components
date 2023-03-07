@@ -1,11 +1,14 @@
 /* @flow */
 
-import { DiscoverLogo } from "@paypal/sdk-logos/src";
+import {
+  DiscoverLogoInlineSVG,
+  DiscoverLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 
 import type { CardConfig } from "../../common";
 
 export function getDiscoverConfig(): CardConfig {
   return {
-    Label: () => DiscoverLogo({ loadFromCDN: __WEB__ }),
+    Label: __WEB__ ? DiscoverLogoExternalImage : DiscoverLogoInlineSVG,
   };
 }

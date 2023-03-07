@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { BlikLogo } from "@paypal/sdk-logos/src";
+import {
+  BlikLogoInlineSVG,
+  BlikLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -20,8 +23,13 @@ export function getBlikConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      BlikLogo({ logoColor, optional, loadFromCDN: __WEB__ }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return BlikLogoExternalImage({ logoColor, optional });
+      }
+
+      return BlikLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {
