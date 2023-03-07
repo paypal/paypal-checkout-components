@@ -1,3 +1,9 @@
+## <small>5.0.257 (2023-03-07)</small>
+
+* Harden logos implementation for supporting both external and inline images (#2115) ([15904a0](https://github.com/paypal/paypal-checkout-components/commit/15904a0)), closes [#2115](https://github.com/paypal/paypal-checkout-components/issues/2115)
+
+
+
 ## <small>5.0.256 (2023-03-01)</small>
 
 * chore: pin version of percy cli (#2113) ([8f4ff5f](https://github.com/paypal/paypal-checkout-components/commit/8f4ff5f)), closes [#2113](https://github.com/paypal/paypal-checkout-components/issues/2113)
