@@ -3,7 +3,10 @@
 
 import { node, Fragment } from "@krakenjs/jsx-pragmatic/src";
 import { CARD, COUNTRY, COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
-import { GlyphCard } from "@paypal/sdk-logos/src";
+import {
+  GlyphCardExternalImage,
+  GlyphCardInlineSVG,
+} from "@paypal/sdk-logos/src";
 
 import {
   BUTTON_LAYOUT,
@@ -19,7 +22,6 @@ import {
 import { Text, Space } from "../../ui/text";
 import { isRTLLanguage } from "../../lib";
 import { WalletLabel } from "../paypal/template";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 import { getVisaConfig } from "./visa";
 import { getMastercardConfig } from "./mastercard";
@@ -176,7 +178,11 @@ export function getCardConfig(): FundingSourceConfig {
     },
 
     Logo: ({ logoColor }) => {
-      return enableLogoCDNExperiment(GlyphCard, { logoColor });
+      return __WEB__ ? (
+        <GlyphCardExternalImage logoColor={logoColor} />
+      ) : (
+        <GlyphCardInlineSVG logoColor={logoColor} />
+      );
     },
 
     Label: ({ logo, locale, content, custom }) => {

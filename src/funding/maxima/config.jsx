@@ -1,10 +1,12 @@
 /* @flow */
 /** @jsx node */
 
-import { MaximaLogo } from "@paypal/sdk-logos/src";
+import {
+  MaximaLogoInlineSVG,
+  MaximaLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 export function getMaximaConfig(): FundingSourceConfig {
@@ -15,8 +17,13 @@ export function getMaximaConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(MaximaLogo, { logoColor, optional }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return MaximaLogoExternalImage({ logoColor, optional });
+      }
+
+      return MaximaLogoInlineSVG({ logoColor, optional });
+    },
 
     colors: [
       BUTTON_COLOR.DEFAULT,

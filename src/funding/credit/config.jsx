@@ -4,9 +4,12 @@
 import { COUNTRY, FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
 import { node, Fragment } from "@krakenjs/jsx-pragmatic/src";
 import {
-  CreditLogo,
-  PPLogo,
-  PayPalLogo,
+  CreditLogoExternalImage,
+  CreditLogoInlineSVG,
+  PPLogoExternalImage,
+  PPLogoInlineSVG,
+  PayPalLogoExternalImage,
+  PayPalLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 
@@ -19,7 +22,6 @@ import {
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 import { Space } from "../../ui/text";
 import { WalletLabel } from "../paypal/template";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 export function getCreditConfig(): FundingSourceConfig {
   return {
@@ -35,18 +37,32 @@ export function getCreditConfig(): FundingSourceConfig {
 
     Logo: ({ locale, logoColor }) => {
       if (locale.country === COUNTRY.DE) {
-        return enableLogoCDNExperiment(CreditLogo, { locale, logoColor });
+        return __WEB__ ? (
+          <CreditLogoExternalImage locale={locale} logoColor={logoColor} />
+        ) : (
+          <CreditLogoInlineSVG locale={locale} logoColor={logoColor} />
+        );
       }
 
-      return (
+      return __WEB__ ? (
         <Fragment>
-          {enableLogoCDNExperiment(PPLogo, { logoColor })}
+          <PPLogoExternalImage logoColor={logoColor} />
           <Space />
           <span optional>
-            {enableLogoCDNExperiment(PayPalLogo, { logoColor })}
+            <PayPalLogoExternalImage logoColor={logoColor} />
             <Space />
           </span>
-          {enableLogoCDNExperiment(CreditLogo, { locale, logoColor })}
+          <CreditLogoExternalImage locale={locale} logoColor={logoColor} />
+        </Fragment>
+      ) : (
+        <Fragment>
+          <PPLogoInlineSVG logoColor={logoColor} />
+          <Space />
+          <span optional>
+            <PayPalLogoInlineSVG logoColor={logoColor} />
+            <Space />
+          </span>
+          <CreditLogoInlineSVG locale={locale} logoColor={logoColor} />
         </Fragment>
       );
     },
