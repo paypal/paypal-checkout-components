@@ -35,6 +35,7 @@ import type {
   CreateBillingAgreement,
   CreateSubscription,
   ButtonProps,
+  CreateVaultSetupToken,
 } from "../../ui/buttons/props";
 import { determineEligibleFunding } from "../../funding";
 import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
@@ -42,6 +43,7 @@ import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
 type DetermineFlowOptions = {|
   createBillingAgreement: CreateBillingAgreement,
   createSubscription: CreateSubscription,
+  createVaultSetupToken: CreateVaultSetupToken,
 |};
 
 /**
@@ -77,7 +79,9 @@ const logNativeScreenInformation = once((key = "screenInformation") => {
 export function determineFlow(
   props: DetermineFlowOptions
 ): $Values<typeof BUTTON_FLOW> {
-  if (props.createBillingAgreement) {
+  if (props.createVaultSetupToken) {
+    return BUTTON_FLOW.VAULT_WITHOUT_PURCHASE;
+  } else if (props.createBillingAgreement) {
     return BUTTON_FLOW.BILLING_SETUP;
   } else if (props.createSubscription) {
     return BUTTON_FLOW.SUBSCRIPTION_SETUP;
@@ -203,9 +207,14 @@ export function getRenderedButtons(
     supportedNativeBrowser = isSupportedNativeBrowser(),
     createBillingAgreement,
     createSubscription,
+    createVaultSetupToken,
   } = props;
 
-  const flow = determineFlow({ createBillingAgreement, createSubscription });
+  const flow = determineFlow({
+    createBillingAgreement,
+    createSubscription,
+    createVaultSetupToken,
+  });
   const { layout } = style;
   const remembered = [];
   const platform = getPlatform();

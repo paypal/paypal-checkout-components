@@ -181,11 +181,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         experiment = getButtonExperiments(),
         createBillingAgreement,
         createSubscription,
+        createVaultSetupToken,
       } = props;
 
       const flow = determineFlow({
         createBillingAgreement,
         createSubscription,
+        createVaultSetupToken,
       });
       const applePaySupport = fundingEligibility?.applepay?.eligible
         ? isApplePaySupported()
@@ -264,11 +266,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             supportedNativeBrowser,
             createBillingAgreement,
             createSubscription,
+            createVaultSetupToken,
           } = props;
 
           const flow = determineFlow({
             createBillingAgreement,
             createSubscription,
+            createVaultSetupToken,
           });
           const { layout } = style;
 
@@ -602,8 +606,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         queryParam: true,
         value: ({ props }) => {
-          const { createBillingAgreement, createSubscription } = props;
-          return determineFlow({ createBillingAgreement, createSubscription });
+          const {
+            createBillingAgreement,
+            createSubscription,
+            createVaultSetupToken,
+          } = props;
+          return determineFlow({
+            createBillingAgreement,
+            createSubscription,
+            createVaultSetupToken,
+          });
         },
       },
 
@@ -840,6 +852,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         required: false,
         default: () => true,
+      },
+      createVaultSetupToken: {
+        type: "function",
+        required: false,
       },
     },
   });
