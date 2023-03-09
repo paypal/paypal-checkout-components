@@ -122,7 +122,6 @@ type CardFieldsChildren = {|
   CVVField: CardFieldComponent,
   ExpiryField: CardFieldComponent,
   NameField: CardFieldComponent,
-  PostalCodeField: CardFieldComponent,
 |};
 
 const url = () =>
