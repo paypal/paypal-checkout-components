@@ -67,6 +67,8 @@ export type OnCompleteData = {||};
 
 export type CreateBillingAgreement = () => ZalgoPromise<string> | string;
 
+export type CreateVaultSetupToken = () => ZalgoPromise<string>;
+
 export type CreateSubscriptionRequest = {||};
 export type SubscriptionResponse = {||} | {||};
 export type CreateSubscriptionData = {||} | {||};
@@ -515,6 +517,7 @@ export type ButtonProps = {|
   meta: {||},
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   experience: string,
+  createVaultSetupToken: CreateVaultSetupToken,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type

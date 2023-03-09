@@ -55,6 +55,7 @@ export const BUTTON_FLOW = {
   PURCHASE: ("purchase": "purchase"),
   BILLING_SETUP: ("billing_setup": "billing_setup"),
   SUBSCRIPTION_SETUP: ("subscription_setup": "subscription_setup"),
+  VAULT_WITHOUT_PURCHASE: ("vault_without_purchase": "vault_without_purchase"),
 };
 
 export const MENU_PLACEMENT = {

@@ -1,10 +1,13 @@
 /* @flow */
 /** @jsx node */
 
-import { ItauLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
+import {
+  ItauLogoExternalImage,
+  ItauLogoInlineSVG,
+  LOGO_COLOR,
+} from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 export function getItauConfig(): FundingSourceConfig {
@@ -13,8 +16,13 @@ export function getItauConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(ItauLogo, { logoColor, optional }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return ItauLogoExternalImage({ logoColor, optional });
+      }
+
+      return ItauLogoInlineSVG({ logoColor, optional });
+    },
 
     colors: [BUTTON_COLOR.DARKBLUE, BUTTON_COLOR.BLUE, BUTTON_COLOR.BLACK],
 

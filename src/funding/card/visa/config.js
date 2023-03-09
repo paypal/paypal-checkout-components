@@ -1,12 +1,14 @@
 /* @flow */
 
-import { VisaLogo } from "@paypal/sdk-logos/src";
+import {
+  VisaLogoInlineSVG,
+  VisaLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 
 import type { CardConfig } from "../../common";
-import { enableLogoCDNExperiment } from "../../../lib/getLogoCDNExperiment";
 
 export function getVisaConfig(): CardConfig {
   return {
-    Label: () => enableLogoCDNExperiment(VisaLogo),
+    Label: __WEB__ ? VisaLogoExternalImage : VisaLogoInlineSVG,
   };
 }

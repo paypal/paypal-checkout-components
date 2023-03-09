@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { OxxoLogo } from "@paypal/sdk-logos/src";
+import {
+  OxxoLogoInlineSVG,
+  OxxoLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -11,7 +14,6 @@ import {
   BasicLabel,
 } from "../common";
 import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 export function getOxxoConfig(): FundingSourceConfig {
   return {
@@ -23,8 +25,13 @@ export function getOxxoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(OxxoLogo, { logoColor, optional }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return OxxoLogoExternalImage({ logoColor, optional });
+      }
+
+      return OxxoLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {

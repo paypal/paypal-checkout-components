@@ -1,7 +1,10 @@
 /* @flow */
 /** @jsx node */
 
-import { VerkkopankkiLogo } from "@paypal/sdk-logos/src";
+import {
+  VerkkopankkiLogoInlineSVG,
+  VerkkopankkiLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
@@ -11,7 +14,6 @@ import {
   BasicLabel,
 } from "../common";
 import { Text, Space } from "../../ui/text";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 export function getVerkkopankkiConfig(): FundingSourceConfig {
   return {
@@ -23,8 +25,13 @@ export function getVerkkopankkiConfig(): FundingSourceConfig {
 
     shippingChange: false,
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(VerkkopankkiLogo, { logoColor, optional }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return VerkkopankkiLogoExternalImage({ logoColor, optional });
+      }
+
+      return VerkkopankkiLogoInlineSVG({ logoColor, optional });
+    },
 
     Label: ({ logo, ...opts }) => {
       if (__WEB__) {
