@@ -122,7 +122,6 @@ type CardFieldsChildren = {|
   CVVField: CardFieldComponent,
   ExpiryField: CardFieldComponent,
   NameField: CardFieldComponent,
-  PostalCodeField: CardFieldComponent,
 |};
 
 const url = () =>
@@ -403,6 +402,10 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     const CVVField = genericCardField(CARD_FIELD_TYPE.CVV);
     const ExpiryField = genericCardField(CARD_FIELD_TYPE.EXPIRY);
     const NameField = genericCardField(CARD_FIELD_TYPE.NAME);
+    // TODO: Once the Billing address Fields have been built out
+    // add the postal code field as a child to the CardFields
+    // component along with the other billing address fields
+    // eslint-disable-next-line no-unused-vars
     const PostalCodeField = genericCardField(CARD_FIELD_TYPE.POSTAL);
 
     const CardFields = create({
@@ -433,7 +436,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           CVVField,
           ExpiryField,
           NameField,
-          PostalCodeField,
         };
       },
 
