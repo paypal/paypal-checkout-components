@@ -22,7 +22,6 @@ import {
   getCorrelationID,
   getPartnerAttributionID,
   getMerchantID,
-  getUserIDToken,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
@@ -389,11 +388,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             queryParam: true,
             value: ({ props }) => props.parent.props.merchantID,
           },
-          userIDToken: {
-            type: "string",
-            default: getUserIDToken,
-            required: false,
-          },
         },
       });
     };
@@ -647,11 +641,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "array",
           queryParam: true,
           value: getMerchantID,
-        },
-        userIDToken: {
-          type: "string",
-          default: getUserIDToken,
-          required: false,
         },
       },
     });
