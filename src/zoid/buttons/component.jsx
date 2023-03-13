@@ -72,7 +72,6 @@ import { normalizeButtonStyle, type ButtonProps } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
 import { EXPERIENCE } from "../../constants";
 import { type InlineXOEligibilityType } from "../../types";
-import { getLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -182,11 +181,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         experiment = getButtonExperiments(),
         createBillingAgreement,
         createSubscription,
+        createVaultSetupToken,
       } = props;
 
       const flow = determineFlow({
         createBillingAgreement,
         createSubscription,
+        createVaultSetupToken,
       });
       const applePaySupport = fundingEligibility?.applepay?.eligible
         ? isApplePaySupported()
@@ -265,11 +266,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             supportedNativeBrowser,
             createBillingAgreement,
             createSubscription,
+            createVaultSetupToken,
           } = props;
 
           const flow = determineFlow({
             createBillingAgreement,
             createSubscription,
+            createVaultSetupToken,
           });
           const { layout } = style;
 
@@ -451,14 +454,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               });
             }
 
-            const logoCDNExperiment = getLogoCDNExperiment();
-
-            if (logoCDNExperiment) {
-              logoCDNExperiment.logStart({
-                [FPTI_KEY.BUTTON_SESSION_UID]: props.buttonSessionID,
-              });
-            }
-
             return value(...args);
           };
         },
@@ -611,8 +606,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         queryParam: true,
         value: ({ props }) => {
-          const { createBillingAgreement, createSubscription } = props;
-          return determineFlow({ createBillingAgreement, createSubscription });
+          const {
+            createBillingAgreement,
+            createSubscription,
+            createVaultSetupToken,
+          } = props;
+          return determineFlow({
+            createBillingAgreement,
+            createSubscription,
+            createVaultSetupToken,
+          });
         },
       },
 
@@ -849,6 +852,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         required: false,
         default: () => true,
+      },
+      createVaultSetupToken: {
+        type: "function",
+        required: false,
       },
     },
   });

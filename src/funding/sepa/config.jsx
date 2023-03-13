@@ -1,10 +1,12 @@
 /* @flow */
 /** @jsx node */
 
-import { SepaLogo } from "@paypal/sdk-logos/src";
+import {
+  SepaLogoInlineSVG,
+  SepaLogoExternalImage,
+} from "@paypal/sdk-logos/src";
 
 import { BUTTON_LAYOUT } from "../../constants";
-import { enableLogoCDNExperiment } from "../../lib/getLogoCDNExperiment";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 export function getSepaConfig(): FundingSourceConfig {
@@ -13,7 +15,12 @@ export function getSepaConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.VERTICAL],
 
-    Logo: ({ logoColor, optional }) =>
-      enableLogoCDNExperiment(SepaLogo, { logoColor, optional }),
+    Logo: ({ logoColor, optional }) => {
+      if (__WEB__) {
+        return SepaLogoExternalImage({ logoColor, optional });
+      }
+
+      return SepaLogoInlineSVG({ logoColor, optional });
+    },
   };
 }
