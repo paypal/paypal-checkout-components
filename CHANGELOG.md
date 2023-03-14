@@ -1,3 +1,9 @@
+## <small>5.0.259 (2023-03-14)</small>
+
+* removing save wrapper from vaultSetup (#2139) ([d79903a](https://github.com/paypal/paypal-checkout-components/commit/d79903a)), closes [#2139](https://github.com/paypal/paypal-checkout-components/issues/2139)
+
+
+
 ## <small>5.0.258 (2023-03-08)</small>
 
 * Vault Without Purchase PayPal Button (#2121) ([358c9aa](https://github.com/paypal/paypal-checkout-components/commit/358c9aa)), closes [#2121](https://github.com/paypal/paypal-checkout-components/issues/2121)
