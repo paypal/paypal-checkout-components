@@ -75,8 +75,9 @@ type CardFieldsProps = {|
     onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
   |},
   createOrder: () => ZalgoPromise<string> | string,
+  createVaultSetupToken: () => ZalgoPromise<string>,
   onApprove: (
-    {| returnUrl: string |},
+    {| returnUrl?: string, vaultSetupToken?: string |},
     {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
   ) => ?ZalgoPromise<void>,
   onComplete: (
@@ -92,10 +93,6 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
-  save: {|
-    createVaultSetupToken: () => ZalgoPromise<string>,
-    onApprove: ({| vaultSetupToken: string |}) => ?ZalgoPromise<void>,
-  |},
 |};
 
 type CardFieldProps = {|
@@ -223,6 +220,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             type: "function",
             required: false,
             value: ({ props }) => props.parent.props.createOrder,
+          },
+
+          createVaultSetupToken: {
+            type: "function",
+            required: false,
+            value: ({ props }) => props.parent.props.createVaultSetupToken,
           },
 
           cardFieldsSessionID: {
@@ -505,6 +508,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         },
 
         createOrder: {
+          type: "function",
+          required: false,
+        },
+
+        createVaultSetupToken: {
           type: "function",
           required: false,
         },
