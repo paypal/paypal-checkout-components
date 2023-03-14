@@ -186,18 +186,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         },
 
         props: {
-          save: {
-            type: "object",
-            required: false,
-            value: ({ props }) => {
-              if (props.save) {
-                return props.save;
-              } else if (props.parent.props) {
-                return props.parent.props.save;
-              }
-            },
-          },
-
           type: {
             type: "string",
             value: () => type,
@@ -483,11 +471,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
       },
 
       props: {
-        save: {
-          type: "object",
-          required: false,
-        },
-
         type: {
           type: "string",
           value: () => CARD_FIELD_TYPE.SINGLE,
