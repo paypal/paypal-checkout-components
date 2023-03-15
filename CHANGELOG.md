@@ -1,3 +1,9 @@
+## <small>5.0.259 (2023-03-15)</small>
+
+* Adding onError callback for Hosted Card Fields. (#2138) ([e605a59](https://github.com/paypal/paypal-checkout-components/commit/e605a59)), closes [#2138](https://github.com/paypal/paypal-checkout-components/issues/2138)
+
+
+
 ## <small>5.0.258 (2023-03-08)</small>
 
 * Vault Without Purchase PayPal Button (#2121) ([358c9aa](https://github.com/paypal/paypal-checkout-components/commit/358c9aa)), closes [#2121](https://github.com/paypal/paypal-checkout-components/issues/2121)
