@@ -35,162 +35,32 @@ export function getFundingConfig(): {
 } {
   return inlineMemoize(getFundingConfig, () => {
     return {
-      [FUNDING.PAYPAL]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.paypal !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.paypal.eligible)
-          ? getPayPalConfig()
-          : null,
-      [FUNDING.VENMO]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.venmo !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.venmo.eligible)
-          ? getVenmoConfig()
-          : null,
-      [FUNDING.APPLEPAY]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.applepay !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.applepay.eligible)
-          ? getApplePayConfig()
-          : null,
-      [FUNDING.ITAU]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.itau !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.itau.eligible)
-          ? getItauConfig()
-          : null,
-      [FUNDING.CREDIT]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.credit !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.credit.eligible)
-          ? getCreditConfig()
-          : null,
-      [FUNDING.PAYLATER]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.paylater !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.paylater.eligible)
-          ? getPaylaterConfig()
-          : null,
-      [FUNDING.CARD]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.card !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.card.eligible)
-          ? getCardConfig()
-          : null,
-      [FUNDING.IDEAL]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.ideal !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.ideal.eligible)
-          ? getIdealConfig()
-          : null,
-      [FUNDING.SEPA]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.sepa !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.sepa.eligible)
-          ? getSepaConfig()
-          : null,
-      [FUNDING.BANCONTACT]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.bancontact !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.bancontact.eligible)
-          ? getBancontactConfig()
-          : null,
-      [FUNDING.GIROPAY]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.giropay !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.giropay.eligible)
-          ? getGiropayConfig()
-          : null,
-      [FUNDING.SOFORT]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.sofort !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.sofort.eligible)
-          ? getSofortConfig()
-          : null,
-      [FUNDING.EPS]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.eps !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.eps.eligible)
-          ? getEpsConfig()
-          : null,
-      [FUNDING.MYBANK]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.mybank !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.mybank.eligible)
-          ? getMybankConfig()
-          : null,
-      [FUNDING.P24]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.p24 !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.p24.eligible)
-          ? getP24Config()
-          : null,
-      [FUNDING.PAYU]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.payu !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.payu.eligible)
-          ? getPayuConfig()
-          : null,
-      [FUNDING.BLIK]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.blik !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.blik.eligible)
-          ? getBlikConfig()
-          : null,
-      [FUNDING.TRUSTLY]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.trustly !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.trustly.eligible)
-          ? getTrustlyConfig()
-          : null,
-      [FUNDING.WECHATPAY]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.wechatpay !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.wechatpay.eligible)
-          ? getWechatpayConfig()
-          : null,
-      [FUNDING.OXXO]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.oxxo !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.oxxo.eligible)
-          ? getOxxoConfig()
-          : null,
-      [FUNDING.BOLETO]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.boleto !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.boleto.eligible)
-          ? getBoletoConfig()
-          : null,
-      [FUNDING.BOLETOBANCARIO]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.boletobancario !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.boletobancario.eligible)
-          ? getBoletoConfig()
-          : null,
-      [FUNDING.MERCADOPAGO]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.mercadopago !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.mercadopago.eligible)
-          ? getMercadopagoConfig()
-          : null,
-      [FUNDING.MULTIBANCO]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.multibanco !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.multibanco.eligible)
-          ? getMultibancoConfig()
-          : null,
-      [FUNDING.SATISPAY]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.satispay !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.satispay.eligible)
-          ? getSatispayConfig()
-          : null,
-      [FUNDING.PAIDY]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.paidy !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.paidy.eligible)
-          ? getPaidyConfig()
-          : null,
+      [FUNDING.PAYPAL]: getPayPalConfig(),
+      [FUNDING.VENMO]: getVenmoConfig(),
+      [FUNDING.APPLEPAY]: getApplePayConfig(),
+      [FUNDING.ITAU]: getItauConfig(),
+      [FUNDING.CREDIT]: getCreditConfig(),
+      [FUNDING.PAYLATER]: getPaylaterConfig(),
+      [FUNDING.CARD]: getCardConfig(),
+      [FUNDING.IDEAL]: getIdealConfig(),
+      [FUNDING.SEPA]: getSepaConfig(),
+      [FUNDING.BANCONTACT]: getBancontactConfig(),
+      [FUNDING.GIROPAY]: getGiropayConfig(),
+      [FUNDING.SOFORT]: getSofortConfig(),
+      [FUNDING.EPS]: getEpsConfig(),
+      [FUNDING.MYBANK]: getMybankConfig(),
+      [FUNDING.P24]: getP24Config(),
+      [FUNDING.PAYU]: getPayuConfig(),
+      [FUNDING.BLIK]: getBlikConfig(),
+      [FUNDING.TRUSTLY]: getTrustlyConfig(),
+      [FUNDING.WECHATPAY]: getWechatpayConfig(),
+      [FUNDING.OXXO]: getOxxoConfig(),
+      [FUNDING.BOLETO]: getBoletoConfig(),
+      [FUNDING.BOLETOBANCARIO]: getBoletoConfig(),
+      [FUNDING.MERCADOPAGO]: getMercadopagoConfig(),
+      [FUNDING.MULTIBANCO]: getMultibancoConfig(),
+      [FUNDING.SATISPAY]: getSatispayConfig(),
+      [FUNDING.PAIDY]: getPaidyConfig(),
     };
   });
 }
