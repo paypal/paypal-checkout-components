@@ -97,6 +97,9 @@ const fundingEligibility = {
   trustly: {
     eligible: false,
   },
+  mercadopago: {
+    eligible: false,
+  },
   itau: {
     eligible: false,
   },

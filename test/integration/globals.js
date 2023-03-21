@@ -94,6 +94,9 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
   trustly: {
     eligible: false,
   },
+  mercadopago: {
+    eligible: false,
+  },
   itau: {
     eligible: false,
   },

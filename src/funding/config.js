@@ -25,6 +25,7 @@ import { getBlikConfig } from "./blik";
 import { getTrustlyConfig } from "./trustly";
 import { getOxxoConfig } from "./oxxo";
 import { getBoletoConfig } from "./boleto";
+import { getMercadopagoConfig } from "./mercadopago";
 import { getMultibancoConfig } from "./multibanco";
 import { getSatispayConfig } from "./satispay";
 import { getPaidyConfig } from "./paidy";
@@ -165,6 +166,12 @@ export function getFundingConfig(): {
         (typeof __FUNDING_ELIGIBILITY__.boletobancario !== "undefined" &&
           __FUNDING_ELIGIBILITY__.boletobancario.eligible)
           ? getBoletoConfig()
+          : null,
+      [FUNDING.MERCADOPAGO]:
+        !__TREE_SHAKE__ ||
+        (typeof __FUNDING_ELIGIBILITY__.mercadopago !== "undefined" &&
+          __FUNDING_ELIGIBILITY__.mercadopago.eligible)
+          ? getMercadopagoConfig()
           : null,
       [FUNDING.MULTIBANCO]:
         !__TREE_SHAKE__ ||
