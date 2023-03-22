@@ -232,7 +232,9 @@ export function Button({
 
   if (
     WalletLabel &&
-    (!showPayLabel || flow === BUTTON_FLOW.PURCHASE) &&
+    (!showPayLabel ||
+      flow === BUTTON_FLOW.PURCHASE ||
+      flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE) &&
     (instrument ||
       (__WEB__ &&
         userIDToken &&
