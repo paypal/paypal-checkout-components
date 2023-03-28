@@ -7,10 +7,9 @@ import {
   getCardFieldsComponent,
   type CardFieldsComponent,
 } from "../zoid/card-fields/component";
-import { protectedExport } from "../lib";
 
 export const CardFields: LazyExport<CardFieldsComponent> = {
-  __get__: () => protectedExport(getCardFieldsComponent()),
+  __get__: getCardFieldsComponent,
 };
 
 export function destroy(err?: mixed) {
