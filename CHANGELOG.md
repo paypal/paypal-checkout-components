@@ -1,3 +1,9 @@
+## <small>5.0.262 (2023-03-29)</small>
+
+* chore(release): 5.0.261 🎉 ([1d6b7a1](https://github.com/paypal/paypal-checkout-components/commit/1d6b7a1))
+
+
+
 ## <small>5.0.261 (2023-03-29)</small>
 
 * add VwoP check for WalletLabel (#2141) ([8aacaa0](https://github.com/paypal/paypal-checkout-components/commit/8aacaa0)), closes [#2141](https://github.com/paypal/paypal-checkout-components/issues/2141)
