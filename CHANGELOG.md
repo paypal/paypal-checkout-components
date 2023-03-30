@@ -1,3 +1,9 @@
+## <small>5.0.263 (2023-03-30)</small>
+
+* remove protected export from hcf (#2143) ([ba6ec80](https://github.com/paypal/paypal-checkout-components/commit/ba6ec80)), closes [#2143](https://github.com/paypal/paypal-checkout-components/issues/2143)
+
+
+
 ## <small>5.0.262 (2023-03-29)</small>
 
 * chore(release): 5.0.261 🎉 ([1d6b7a1](https://github.com/paypal/paypal-checkout-components/commit/1d6b7a1))
