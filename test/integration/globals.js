@@ -85,16 +85,7 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
   multibanco: {
     eligible: false,
   },
-  maxima: {
-    eligible: false,
-  },
-  zimpler: {
-    eligible: false,
-  },
   payu: {
-    eligible: false,
-  },
-  verkkopankki: {
     eligible: false,
   },
   blik: {

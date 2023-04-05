@@ -142,16 +142,6 @@
   },
   {
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
-    "button": { "fundingSource": "zimpler" },
-    "fundingEligibility": {
-      "zimpler": {
-        "eligible": true,
-        "products": { "payIn4": { "eligible": true } }
-      }
-    }
-  },
-  {
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
     "button": { "fundingSource": "wechatpay" },
     "fundingEligibility": {
       "wechatpay": {
@@ -165,16 +155,6 @@
     "button": { "fundingSource": "payu" },
     "fundingEligibility": {
       "payu": {
-        "eligible": true,
-        "products": { "payIn4": { "eligible": true } }
-      }
-    }
-  },
-  {
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
-    "button": { "fundingSource": "verkkopankki" },
-    "fundingEligibility": {
-      "verkkopankki": {
         "eligible": true,
         "products": { "payIn4": { "eligible": true } }
       }
@@ -215,16 +195,6 @@
     "button": { "fundingSource": "boletobancario" },
     "fundingEligibility": {
       "boletobancario": {
-        "eligible": true,
-        "products": { "payIn4": { "eligible": true } }
-      }
-    }
-  },
-  {
-    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
-    "button": { "fundingSource": "maxima" },
-    "fundingEligibility": {
-      "maxima": {
         "eligible": true,
         "products": { "payIn4": { "eligible": true } }
       }
@@ -425,18 +395,6 @@
   {
     "fundingEligibility": {
       "paypal": { "eligible": true },
-      "zimpler": {
-        "eligible": true,
-        "products": { "payIn4": { "eligible": true } },
-        "vendors": null
-      }
-    },
-    "rememberedFunding": [],
-    "button": {}
-  },
-  {
-    "fundingEligibility": {
-      "paypal": { "eligible": true },
       "wechatpay": {
         "eligible": true,
         "products": { "payIn4": { "eligible": true } },
@@ -450,18 +408,6 @@
     "fundingEligibility": {
       "paypal": { "eligible": true },
       "payu": {
-        "eligible": true,
-        "products": { "payIn4": { "eligible": true } },
-        "vendors": null
-      }
-    },
-    "rememberedFunding": [],
-    "button": {}
-  },
-  {
-    "fundingEligibility": {
-      "paypal": { "eligible": true },
-      "verkkopankki": {
         "eligible": true,
         "products": { "payIn4": { "eligible": true } },
         "vendors": null
@@ -510,18 +456,6 @@
     "fundingEligibility": {
       "paypal": { "eligible": true },
       "boletobancario": {
-        "eligible": true,
-        "products": { "payIn4": { "eligible": true } },
-        "vendors": null
-      }
-    },
-    "rememberedFunding": [],
-    "button": {}
-  },
-  {
-    "fundingEligibility": {
-      "paypal": { "eligible": true },
-      "maxima": {
         "eligible": true,
         "products": { "payIn4": { "eligible": true } },
         "vendors": null

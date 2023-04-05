@@ -676,13 +676,6 @@ const buttonConfigs = [
 
       {
         layout: `vertical`,
-        label: `zimpler`,
-        commit: true,
-        valid: false,
-      },
-
-      {
-        layout: `vertical`,
         label: `wechatpay`,
         commit: true,
         valid: false,
@@ -718,13 +711,6 @@ const buttonConfigs = [
 
       {
         layout: `vertical`,
-        label: `maxima`,
-        commit: true,
-        valid: false,
-      },
-
-      {
-        layout: `vertical`,
         label: `card`,
         valid: false,
       },
@@ -732,13 +718,6 @@ const buttonConfigs = [
       {
         layout: `vertical`,
         label: `payu`,
-        commit: true,
-        valid: false,
-      },
-
-      {
-        layout: `vertical`,
-        label: `verkkopankki`,
         commit: true,
         valid: false,
       },
@@ -759,7 +738,7 @@ const buttonConfigs = [
 
       {
         layout: `vertical`,
-        label: `mercadopage`,
+        label: `mercadopago`,
         commit: true,
         valid: false,
       },

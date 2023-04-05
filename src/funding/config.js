@@ -19,15 +19,12 @@ import { getSofortConfig } from "./sofort";
 import { getEpsConfig } from "./eps";
 import { getMybankConfig } from "./mybank";
 import { getP24Config } from "./p24";
-import { getZimplerConfig } from "./zimpler";
 import { getWechatpayConfig } from "./wechatpay";
 import { getPayuConfig } from "./payu";
-import { getVerkkopankkiConfig } from "./verkkopankki";
 import { getBlikConfig } from "./blik";
 import { getTrustlyConfig } from "./trustly";
 import { getOxxoConfig } from "./oxxo";
 import { getBoletoConfig } from "./boleto";
-import { getMaximaConfig } from "./maxima";
 import { getMercadopagoConfig } from "./mercadopago";
 import { getMultibancoConfig } from "./multibanco";
 import { getSatispayConfig } from "./satispay";
@@ -134,12 +131,6 @@ export function getFundingConfig(): {
           __FUNDING_ELIGIBILITY__.payu.eligible)
           ? getPayuConfig()
           : null,
-      [FUNDING.VERKKOPANKKI]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.verkkopankki !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.verkkopankki.eligible)
-          ? getVerkkopankkiConfig()
-          : null,
       [FUNDING.BLIK]:
         !__TREE_SHAKE__ ||
         (typeof __FUNDING_ELIGIBILITY__.blik !== "undefined" &&
@@ -151,12 +142,6 @@ export function getFundingConfig(): {
         (typeof __FUNDING_ELIGIBILITY__.trustly !== "undefined" &&
           __FUNDING_ELIGIBILITY__.trustly.eligible)
           ? getTrustlyConfig()
-          : null,
-      [FUNDING.ZIMPLER]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.zimpler !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.zimpler.eligible)
-          ? getZimplerConfig()
           : null,
       [FUNDING.WECHATPAY]:
         !__TREE_SHAKE__ ||
@@ -181,12 +166,6 @@ export function getFundingConfig(): {
         (typeof __FUNDING_ELIGIBILITY__.boletobancario !== "undefined" &&
           __FUNDING_ELIGIBILITY__.boletobancario.eligible)
           ? getBoletoConfig()
-          : null,
-      [FUNDING.MAXIMA]:
-        !__TREE_SHAKE__ ||
-        (typeof __FUNDING_ELIGIBILITY__.maxima !== "undefined" &&
-          __FUNDING_ELIGIBILITY__.maxima.eligible)
-          ? getMaximaConfig()
           : null,
       [FUNDING.MERCADOPAGO]:
         !__TREE_SHAKE__ ||

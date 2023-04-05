@@ -10,7 +10,6 @@ To add screenshot test coverage for a new funding source, simply extend the [SUP
 const SUPPORTED_FUNDING_SOURCES : $ReadOnlyArray<$Values<typeof FUNDING>> = [
     ...,
     FUNDING.BOLETOBANCARIO,
-    FUNDING.MAXIMA,
     FUNDING.SATISPAY,
     FUNDING.CARD,
     // add a new entry here
