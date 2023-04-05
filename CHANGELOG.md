@@ -1,3 +1,9 @@
+## <small>5.0.264 (2023-04-05)</small>
+
+* removing deprecated apm (#2127) ([700e74a](https://github.com/paypal/paypal-checkout-components/commit/700e74a)), closes [#2127](https://github.com/paypal/paypal-checkout-components/issues/2127)
+
+
+
 ## <small>5.0.263 (2023-03-30)</small>
 
 * remove protected export from hcf (#2143) ([ba6ec80](https://github.com/paypal/paypal-checkout-components/commit/ba6ec80)), closes [#2143](https://github.com/paypal/paypal-checkout-components/issues/2143)
