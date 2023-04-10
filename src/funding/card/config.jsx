@@ -33,62 +33,16 @@ import { getJCBConfig } from "./jcb";
 
 function getVendorConfig(): { [$Values<typeof CARD>]: ?CardConfig } {
   return {
-    [CARD.VISA]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.visa &&
-        __FUNDING_ELIGIBILITY__.card.vendors.visa.eligible)
-        ? getVisaConfig()
-        : null,
-    [CARD.AMEX]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.amex &&
-        __FUNDING_ELIGIBILITY__.card.vendors.amex.eligible)
-        ? getAmexConfig()
-        : null,
-    [CARD.MASTERCARD]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.mastercard &&
-        __FUNDING_ELIGIBILITY__.card.vendors.mastercard.eligible)
-        ? getMastercardConfig()
-        : null,
-    [CARD.DISCOVER]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.discover &&
-        __FUNDING_ELIGIBILITY__.card.vendors.discover.eligible)
-        ? getDiscoverConfig()
-        : null,
-    [CARD.JCB]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.jcb &&
-        __FUNDING_ELIGIBILITY__.card.vendors.jcb.eligible)
-        ? getJCBConfig()
-        : null,
-    [CARD.ELO]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.elo &&
-        __FUNDING_ELIGIBILITY__.card.vendors.elo.eligible)
-        ? getEloConfig()
-        : null,
-    [CARD.HIPER]:
-      !__TREE_SHAKE__ ||
-      (__FUNDING_ELIGIBILITY__.card &&
-        __FUNDING_ELIGIBILITY__.card.vendors &&
-        __FUNDING_ELIGIBILITY__.card.vendors.hiper &&
-        __FUNDING_ELIGIBILITY__.card.vendors.hiper.eligible)
-        ? getHiperConfig()
-        : null,
+    [CARD.VISA]: getVisaConfig(),
+
+    [CARD.AMEX]: getAmexConfig(),
+
+    [CARD.MASTERCARD]: getMastercardConfig(),
+
+    [CARD.DISCOVER]: getDiscoverConfig(),
+    [CARD.JCB]: getJCBConfig(),
+    [CARD.ELO]: getEloConfig(),
+    [CARD.HIPER]: getHiperConfig(),
   };
 }
 

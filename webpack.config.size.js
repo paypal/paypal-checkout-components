@@ -25,7 +25,6 @@ const CHECK_SIZE_CONFIG: WebpackConfig = getWebpackConfig({
   analyze: true,
   vars: {
     ...testGlobals,
-    __FUNDING_ELIGIBILITY__: fundingEligibility,
     __INLINE_CHECKOUT_ELIGIBILITY__: inlineCheckoutEligibility,
   },
 });
@@ -38,7 +37,6 @@ const CHECK_SIZE_MIN_CONFIG: WebpackConfig = getWebpackConfig({
   analyze: true,
   vars: {
     ...testGlobals,
-    __FUNDING_ELIGIBILITY__: fundingEligibility,
     __INLINE_CHECKOUT_ELIGIBILITY__: inlineCheckoutEligibility,
   },
 });
