@@ -1,3 +1,9 @@
+## <small>5.0.265 (2023-04-12)</small>
+
+* chore: remove __FUNDING_ELIGIBILITY__ global (#2144) ([ef9240d](https://github.com/paypal/paypal-checkout-components/commit/ef9240d)), closes [#2144](https://github.com/paypal/paypal-checkout-components/issues/2144)
+
+
+
 ## <small>5.0.264 (2023-04-05)</small>
 
 * removing deprecated apm (#2127) ([700e74a](https://github.com/paypal/paypal-checkout-components/commit/700e74a)), closes [#2127](https://github.com/paypal/paypal-checkout-components/issues/2127)
