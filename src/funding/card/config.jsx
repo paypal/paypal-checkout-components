@@ -59,9 +59,6 @@ export function getCardConfig(): FundingSourceConfig {
     eligible: ({ components, fundingSource, fundingEligibility, wallet }) => {
       const cardEligibility = fundingEligibility.card;
 
-      const hostedFieldsRequested = Boolean(
-        components.indexOf(COMPONENTS.HOSTED_FIELDS) !== -1
-      );
       const cardEligible = Boolean(cardEligibility && cardEligibility.eligible);
       const cardBranded = Boolean(cardEligibility && cardEligibility.branded);
       const cardVaulted = Boolean(
@@ -76,23 +73,43 @@ export function getCardConfig(): FundingSourceConfig {
         return false;
       }
 
-      // If card is branded, always show card buttons
+      /*
+       *
+       * the next 5 if statements are in a very important order. Each if statement relies on the one above
+       * to verify we are not in a situation where card fields should or should not be shown. Switching the
+       * order of these if statements could break merchant integrations
+       *
+       * 1. If funding eligibility says branded: true for card, it means that the merchant is not
+       *    eligible for unbranded experiences. In that case, the card button should always be eligible
+       * 2. If the merchant is attempting to render a standalone card, we should mark it as eligible
+       *    since it is outside of the smart stack
+       * 3. If the merchant is using the new card-fields component, the card button should be ineligible
+       *    because we should not mix branded and unbranded experiences
+       * 4. If there is a vaulted card in the buyer's wallet we should show the button. This is very important
+       *    because the old hosted card fields (hosted-fields) uses the card button as its return buyer experience
+       *    this is why this check happens before checking if hosted-fields was requested
+       * 5. If hosted-fields were requested, we shouldn't show the card button because we shouldn't mix branded and
+       *    unbranded experience. The exception is for vaulted cards explained in the point above
+       *
+       */
+
       if (cardBranded) {
         return true;
       }
 
-      // If there's a vaulted card, always show card button
-      if (cardVaulted) {
-        return true;
-      }
-
-      // If standalone card is selected, always show card button
       if (fundingSource === FUNDING.CARD) {
         return true;
       }
 
-      // If hosted fields is requested, do not show card buttons
-      if (hostedFieldsRequested) {
+      if (components.includes("card-fields")) {
+        return false;
+      }
+
+      if (cardVaulted) {
+        return true;
+      }
+
+      if (components.includes(COMPONENTS.HOSTED_FIELDS)) {
         return false;
       }
 
