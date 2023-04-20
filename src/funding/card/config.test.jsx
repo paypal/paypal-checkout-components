@@ -81,6 +81,20 @@ describe("card eligibility", () => {
     ).toEqual(false);
   });
 
+  test("should be ineligible if card-fields were requested, even if there is a vaulted instrument", () => {
+    expect(
+      getCardConfigEligible({
+        // $FlowIssue need to add the new card fields as a constant
+        components: ["card-fields"],
+        fundingSource: FUNDING.PAYPAL,
+        fundingEligibility: getEligibility(),
+        wallet: getWallet({
+          card: ["some instrument"],
+        }),
+      })
+    ).toEqual(false);
+  });
+
   test("should be eligible if there is a vaulted card", () => {
     expect(
       getCardConfigEligible({
@@ -88,9 +102,7 @@ describe("card eligibility", () => {
         fundingSource: FUNDING.PAYPAL,
         fundingEligibility: getEligibility(),
         wallet: getWallet({
-          card: {
-            instruments: ["some instrument"],
-          },
+          card: ["some instrument"],
         }),
       })
     ).toEqual(true);
