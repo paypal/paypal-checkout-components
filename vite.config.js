@@ -13,6 +13,7 @@ import { flowPlugin, esbuildFlowPlugin } from "@bunchtogether/vite-plugin-flow";
 const define = {
   __DEBUG__: false,
   __TEST__: true,
+  __WEB__: true,
   __POST_ROBOT__: JSON.stringify({
     __GLOBAL_KEY__: `__post_robot__`,
     __AUTO_SETUP__: false,
@@ -35,7 +36,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["vitestSetup.js"],
-    include: ["**/test/unit/**/*.test.js"],
+    include: ["**/src/**/*.test.{js,jsx}"],
     deps: {
       inline: ["@krakenjs/post-robot"],
     },

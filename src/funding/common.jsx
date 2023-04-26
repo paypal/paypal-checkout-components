@@ -126,10 +126,10 @@ export type FundingSourceConfig = {|
   vendors?: { [$Values<typeof CARD>]: ?CardConfig },
   eligible?: ({|
     components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
-    experiment: ?Experiment,
+    experiment?: ?Experiment,
     fundingEligibility: FundingEligibilityType,
     fundingSource: ?$Values<typeof FUNDING>,
-    layout: ?$Values<typeof BUTTON_LAYOUT>,
+    layout?: ?$Values<typeof BUTTON_LAYOUT>,
     wallet: ?Wallet,
   |}) => boolean,
   Logo: (LogoOptions) => ChildType,
