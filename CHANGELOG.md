@@ -1,3 +1,9 @@
+## <small>5.0.266 (2023-04-26)</small>
+
+* mark card button ineligible when using card-fields (#2150) ([9c40f07](https://github.com/paypal/paypal-checkout-components/commit/9c40f07)), closes [#2150](https://github.com/paypal/paypal-checkout-components/issues/2150)
+
+
+
 ## <small>5.0.265 (2023-04-12)</small>
 
 * chore: remove __FUNDING_ELIGIBILITY__ global (#2144) ([ef9240d](https://github.com/paypal/paypal-checkout-components/commit/ef9240d)), closes [#2144](https://github.com/paypal/paypal-checkout-components/issues/2144)
