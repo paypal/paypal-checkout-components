@@ -156,32 +156,7 @@ export function getCardConfig(): FundingSourceConfig {
       );
     },
 
-    Label: ({ logo, locale, content, custom }) => {
-      if (custom && custom.label && custom.label.length) {
-        const validLabels = {
-          buy: "Buy",
-          checkout: "Checkout",
-          pay: "Pay",
-          "buy now": "Buy Now",
-          "pay now": "Pay Now",
-          "checkout now": "Checkout Now",
-          "proceed to checkout": "Proceed to checkout",
-        };
-
-        let label = validLabels.checkout;
-
-        const lowerCaseLabel = custom.label.toLowerCase();
-        if (validLabels[lowerCaseLabel]) {
-          label = validLabels[lowerCaseLabel];
-        }
-
-        return (
-          <Fragment>
-            <Text>{label}</Text>
-            <Space />
-          </Fragment>
-        );
-      }
+    Label: ({ logo, locale, content }) => {
       const { lang } = locale;
       const isRTL = isRTLLanguage(lang);
       return (

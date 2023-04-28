@@ -17,7 +17,6 @@ import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 
 import type {
   ContentType,
-  CustomStyle,
   WalletInstrument,
   Experiment,
   Requires,
@@ -71,7 +70,6 @@ export type LabelOptions = {|
   tagline: ?boolean,
   content: ?ContentType,
   experiment?: Experiment,
-  custom?: ?CustomStyle,
 |};
 
 export type DesignExperimentLabelOptions = {|
