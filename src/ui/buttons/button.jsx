@@ -23,7 +23,6 @@ import {
   CLASS,
   BUTTON_COLOR,
   BUTTON_NUMBER,
-  EXPERIENCE,
   TEXT_COLOR,
   BUTTON_FLOW,
 } from "../../constants";
@@ -65,7 +64,6 @@ type IndividualButtonProps = {|
   vault: boolean,
   merchantFundingSource: ?$Values<typeof FUNDING>,
   instrument: ?WalletInstrument,
-  experience?: string,
   showPayLabel: boolean,
 |};
 
@@ -88,12 +86,10 @@ export function Button({
   commit,
   experiment,
   instrument,
-  experience,
   showPayLabel,
 }: IndividualButtonProps): ElementNode {
-  const { custom, layout, shape } = style;
-  const inlineExperience =
-    experience === EXPERIENCE.INLINE && custom && custom.label;
+  const { layout, shape } = style;
+
   const fundingConfig = getFundingConfig()[fundingSource];
 
   if (!fundingConfig) {
@@ -193,7 +189,6 @@ export function Button({
       personalization={personalization}
       tagline={tagline}
       content={content}
-      custom={inlineExperience ? custom : undefined}
       experiment={experiment}
     />
   );
@@ -266,7 +261,6 @@ export function Button({
     <div
       class={[
         CLASS.BUTTON_ROW,
-        inlineExperience && fundingSource === FUNDING.CARD ? CLASS.CUSTOM : "",
         `${CLASS.NUMBER}-${i}`,
         `${CLASS.LAYOUT}-${layout}`,
         `${CLASS.SHAPE}-${shape}`,
@@ -299,9 +293,6 @@ export function Button({
         }}
         class={[
           CLASS.BUTTON,
-          inlineExperience && fundingSource === FUNDING.CARD
-            ? CLASS.CUSTOM
-            : "",
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,
           `${CLASS.SHAPE}-${shape}`,

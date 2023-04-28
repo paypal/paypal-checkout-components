@@ -15,7 +15,6 @@ import {
   BUTTON_NUMBER,
   BUTTON_LAYOUT,
   BUTTON_FLOW,
-  EXPERIENCE,
 } from "../../constants";
 import {
   determineEligibleFunding,
@@ -177,16 +176,9 @@ export function Buttons(props: ButtonsProps): ElementNode {
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
-    experience,
     showPayLabel,
   } = normalizeButtonProps(props);
-  const { custom, layout, shape, tagline } = style;
-
-  const inlineExperience =
-    experience === EXPERIENCE.INLINE &&
-    custom &&
-    custom.label &&
-    custom.label.length !== 0;
+  const { layout, shape, tagline } = style;
 
   let fundingSources = determineEligibleFunding({
     fundingSource,
@@ -216,17 +208,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
   }
 
   if (fundingSources.indexOf(FUNDING.CARD) !== -1) {
-    if (inlineExperience) {
-      fundingSources = [
-        FUNDING.CARD,
-        ...fundingSources.filter((src) => src !== FUNDING.CARD),
-      ];
-    } else {
-      fundingSources = [
-        ...fundingSources.filter((src) => src !== FUNDING.CARD),
-        FUNDING.CARD,
-      ];
-    }
+    fundingSources = [
+      ...fundingSources.filter((src) => src !== FUNDING.CARD),
+      FUNDING.CARD,
+    ];
   }
 
   const isAPM = fundingSources.some((src) => {
@@ -248,16 +233,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
   const { buttonDesignScript = "" } = getButtonDesign(personalization);
   const index = (i) => {
-    if (!inlineExperience) {
-      return i;
-    }
-
-    // InlineXO: Need to change color indexing because we bring Cards to the top
-    if (i === 0) {
-      return fundingSources.length - 1;
-    } else {
-      return i - 1;
-    }
+    return i;
   };
 
   return (
@@ -304,7 +280,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
           flow={flow}
           vault={vault}
           instrument={instruments[source]}
-          experience={experience}
           showPayLabel={showPayLabel}
         />
       ))}
@@ -332,8 +307,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
       ) : null}
 
       {layout === BUTTON_LAYOUT.VERTICAL &&
-      fundingSources.indexOf(FUNDING.CARD) !== -1 &&
-      !inlineExperience ? (
+      fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
         <PoweredByPayPal locale={locale} nonce={nonce} />
       ) : null}
 
