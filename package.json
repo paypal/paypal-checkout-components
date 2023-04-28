@@ -12,7 +12,7 @@
     "debug": "cross-env NODE_ENV=debug",
     "delete-size": "rm dist/size.* dist/report.html",
     "demo": "serve ./demo -l 1337",
-    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open demo/dev/index.htm --https --hot=false --static './'",
+    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open /index.htm --https --hot=false --static './demo/dev'",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "flow": "flow",
     "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
