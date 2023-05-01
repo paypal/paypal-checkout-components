@@ -7,7 +7,6 @@ import { getWebpackConfig } from "@krakenjs/webpack-config-grumbler";
 import {
   getTestGlobals,
   fundingEligibility,
-  inlineCheckoutEligibility,
 } from "./test/globals";
 import globals from "./globals";
 
@@ -25,7 +24,6 @@ const CHECK_SIZE_CONFIG: WebpackConfig = getWebpackConfig({
   analyze: true,
   vars: {
     ...testGlobals,
-    __INLINE_CHECKOUT_ELIGIBILITY__: inlineCheckoutEligibility,
   },
 });
 
@@ -37,7 +35,6 @@ const CHECK_SIZE_MIN_CONFIG: WebpackConfig = getWebpackConfig({
   analyze: true,
   vars: {
     ...testGlobals,
-    __INLINE_CHECKOUT_ELIGIBILITY__: inlineCheckoutEligibility,
   },
 });
 

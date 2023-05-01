@@ -20,10 +20,5 @@ declare var __PAYPAL_CHECKOUT__: {|
   |},
 |};
 
-declare var __INLINE_CHECKOUT_ELIGIBILITY__: {|
-  eligible: boolean,
-  ineligibilityReason: string,
-|};
-
 declare var __WEB__: boolean;
 declare var __TREE_SHAKE__: boolean;
