@@ -17,7 +17,6 @@ import { getLogger } from "@paypal/sdk-client/src";
 import type { ZoidProps } from "@krakenjs/zoid/src";
 
 import { DEFAULT_POPUP_SIZE } from "../checkout";
-import { EXPERIENCE } from "../../constants";
 import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
 
@@ -59,11 +58,7 @@ export function PrerenderedButtons({
       })
       .flush();
 
-    if (
-      fundingSource === FUNDING.VENMO ||
-      fundingSource === FUNDING.APPLEPAY ||
-      (fundingSource === FUNDING.CARD && props.experience === EXPERIENCE.INLINE)
-    ) {
+    if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load
     } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {
       // remember the popup window to prevent showing a new popup window on every click in the prerender state

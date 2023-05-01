@@ -156,27 +156,6 @@
     </div>
 
     <div class="options">
-      <form id="experiences">
-        <strong>Experiences</strong>
-        <input
-          type="radio"
-          id="experiences-standard"
-          name="width"
-          value="standard"
-          checked
-        />
-        <label for="shapes-rect">standard</label>
-        <input
-          type="radio"
-          id="experiences-inline"
-          name="width"
-          value="inline"
-        />
-        <label for="shapes-rect">inline</label>
-      </form>
-    </div>
-
-    <div class="options">
       <button onclick="toggleAll(true)">Select All</button>
       <button onclick="toggleAll(false)">Clear All</button>
       <button onclick="generateButtons()">
@@ -193,7 +172,7 @@
     let labels = [];
     let instruments = [];
     let shapes = [];
-    let experiences = [];
+
     function generateButtons() {
       const currentButtons = document.querySelectorAll("p");
       if (currentButtons.length) {
@@ -220,7 +199,6 @@
       loopForCheckedIntoArray("labels", labels);
       loopForCheckedIntoArray("instruments", instruments);
       loopForCheckedIntoArray("shapes", shapes);
-      loopForCheckedIntoArray("experiences", experiences);
 
       const markOpts = [
         {
@@ -276,16 +254,6 @@
             },
           },
         };
-
-        if (document.querySelector("#experiences-inline").checked) {
-          config.style.custom = {
-            label: "Checkout",
-          };
-          config.experience = "inline";
-          config.onComplete = () => {
-            return true;
-          };
-        }
 
         buttonOpts.push(config);
       }
@@ -688,7 +656,6 @@
       labels = [];
       instruments = [];
       shapes = [];
-      experiences = [];
     }
 
     function toggleAll(bool) {

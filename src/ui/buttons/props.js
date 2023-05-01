@@ -30,7 +30,7 @@ import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import type { ComponentFunctionType } from "@krakenjs/jsx-pragmatic/src";
 
-import type { ContentType, CustomStyle, Wallet, Experiment } from "../../types";
+import type { ContentType, Wallet, Experiment } from "../../types";
 import {
   BUTTON_LABEL,
   BUTTON_COLOR,
@@ -317,7 +317,6 @@ export type ButtonStyle = {|
   menuPlacement: $Values<typeof MENU_PLACEMENT>,
   period?: number,
   height?: number,
-  custom?: ?CustomStyle,
 |};
 
 export type ButtonStyleInputs = {|
@@ -328,7 +327,6 @@ export type ButtonStyleInputs = {|
   layout?: $Values<typeof BUTTON_LAYOUT> | void,
   period?: number | void,
   height?: number | void,
-  custom?: ?CustomStyle,
 |};
 
 type PersonalizationComponentProps = {|
@@ -459,7 +457,6 @@ export type RenderButtonProps = {|
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
-  experience: string,
   showPayLabel: boolean,
 |};
 
@@ -516,7 +513,6 @@ export type ButtonProps = {|
   applePay: ApplePaySessionConfigRequest,
   meta: {||},
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  experience: string,
   createVaultSetupToken: CreateVaultSetupToken,
 |};
 
@@ -557,7 +553,6 @@ export type ButtonPropsInputs = {
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
-  experience: string,
   showPayLabel: boolean,
 };
 
@@ -615,7 +610,6 @@ export function normalizeButtonStyle(
     height,
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,
-    custom,
   } = style;
 
   // $FlowFixMe
@@ -678,32 +672,7 @@ export function normalizeButtonStyle(
     }
   }
 
-  if (custom) {
-    if (custom.label && typeof custom.label !== "string") {
-      throw new Error(`style.custom.label is expected to be a String.`);
-    }
-
-    if (custom.css && typeof custom.css !== "object") {
-      throw new Error(`style.custom.css is expected to be JSON.`);
-    }
-
-    if (custom.css && custom.label && custom.label.length === 0) {
-      throw new Error(
-        `Expected style.custom.label to be used with style.custom.css`
-      );
-    }
-
-    if (custom.label && custom.label.length > 0 && !custom.css) {
-      custom.css = {
-        "background-color": "black",
-        height: "48px",
-        "margin-bottom": "15px",
-      };
-    }
-  }
-
   return {
-    custom,
     label,
     layout,
     color,
@@ -766,7 +735,6 @@ export function normalizeButtonProps(
     applePaySupport = false,
     supportsPopups = false,
     supportedNativeBrowser = false,
-    experience = "",
     showPayLabel = true,
   } = props;
 
@@ -854,7 +822,6 @@ export function normalizeButtonProps(
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
-    experience,
     showPayLabel,
   };
 }

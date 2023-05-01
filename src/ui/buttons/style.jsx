@@ -18,8 +18,8 @@ export function Style({
   nonce,
   fundingEligibility,
 }: StyleProps): ElementNode {
-  const { custom = { label: undefined, css: undefined }, height } = style;
-  const css = componentStyle({ custom, height, fundingEligibility });
+  const { height } = style;
+  const css = componentStyle({ height, fundingEligibility });
 
   return <style nonce={nonce} innerHTML={css} />;
 }

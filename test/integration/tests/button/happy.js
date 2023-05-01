@@ -497,12 +497,6 @@ for (const flow of ["popup", "iframe"]) {
       window.paypal
         .Buttons({
           test: { flow, action: "shippingChange" },
-          style: {
-            custom: {
-              label: "Checkout",
-            },
-          },
-          experience: "inline",
           createOrder(data, actions): string | ZalgoPromise<string> {
             return actions.order.create({
               purchase_units: [

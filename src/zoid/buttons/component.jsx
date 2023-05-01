@@ -70,8 +70,6 @@ import {
 } from "../../lib";
 import { normalizeButtonStyle, type ButtonProps } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
-import { EXPERIENCE } from "../../constants";
-import { type InlineXOEligibilityType } from "../../types";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -83,7 +81,6 @@ import {
   getRenderedButtons,
   getButtonSize,
   getButtonExperiments,
-  isInlineXOEligible,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -796,53 +793,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: applePaySession,
-      },
-
-      experience: {
-        queryParam: true,
-        required: false,
-        type: "string",
-        value: ({ props }) => {
-          const {
-            commit,
-            createBillingAgreement,
-            currency,
-            disableFunding = [],
-            experience,
-            fundingEligibility,
-            onComplete,
-            style: { custom = {}, layout },
-            vault,
-          } = props || {};
-
-          if (experience === "accelerated") {
-            return EXPERIENCE.INLINE;
-          }
-
-          const inlineCheckoutEligibility: InlineXOEligibilityType =
-            __INLINE_CHECKOUT_ELIGIBILITY__ || {
-              eligible: false,
-            };
-
-          const eligible =
-            inlineCheckoutEligibility &&
-            inlineCheckoutEligibility.eligible &&
-            isInlineXOEligible({
-              props: {
-                commit,
-                createBillingAgreement,
-                currency,
-                custom,
-                disableFunding,
-                fundingEligibility,
-                layout,
-                onComplete,
-                vault,
-              },
-            });
-
-          return eligible ? EXPERIENCE.INLINE : "";
-        },
       },
 
       // allowBillingPayments prop is used by Honey Extension to render the one-click button

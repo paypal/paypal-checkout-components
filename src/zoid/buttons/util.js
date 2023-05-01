@@ -15,7 +15,7 @@ import {
   isStandAlone,
   once,
 } from "@krakenjs/belter/src";
-import { CURRENCY, ENV, FUNDING } from "@paypal/sdk-constants/src";
+import { ENV, FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
   getLogger,
@@ -24,7 +24,6 @@ import {
   getPlatform,
   getComponents,
   getEnv,
-  type FundingEligibilityType,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
@@ -373,53 +372,4 @@ export function getButtonSize(
       return BUTTON_SIZE.HUGE;
     }
   }
-}
-
-type InlineCheckoutEligibilityProps = {|
-  commit: boolean,
-  createBillingAgreement?: Function,
-  currency: string,
-  disableFunding: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  fundingEligibility: FundingEligibilityType,
-  layout: $Values<typeof BUTTON_LAYOUT>,
-  merchantID?: $ReadOnlyArray<string>,
-  onComplete: Function,
-  custom?: ?{|
-    css?: {|
-      [string]: string,
-    |},
-    label?: string,
-  |},
-  vault: boolean,
-|};
-
-export function isInlineXOEligible({
-  props,
-}: {|
-  props: InlineCheckoutEligibilityProps,
-|}): boolean {
-  const {
-    commit,
-    currency,
-    custom,
-    createBillingAgreement,
-    disableFunding,
-    fundingEligibility,
-    layout,
-    onComplete,
-    vault,
-  } = props;
-
-  const isEligible =
-    (custom?.label && custom.label.length > 0,
-    onComplete &&
-      commit === true &&
-      !createBillingAgreement &&
-      currency === CURRENCY.USD &&
-      disableFunding?.indexOf(FUNDING.CARD) === -1 &&
-      (fundingEligibility?.card?.eligible || false) &&
-      layout === BUTTON_LAYOUT.VERTICAL &&
-      vault === false);
-
-  return isEligible;
 }

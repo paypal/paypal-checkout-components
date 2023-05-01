@@ -75,7 +75,6 @@ export function getCheckoutComponent(): CheckoutComponent {
         const {
           nonce,
           locale: { lang },
-          inlinexo,
         } = props;
         const content = containerContent[lang];
         return (
@@ -88,7 +87,6 @@ export function getCheckoutComponent(): CheckoutComponent {
             prerenderFrame={prerenderFrame}
             content={content}
             nonce={nonce}
-            fullScreen={inlinexo === true}
           />
         ).render(dom({ doc }));
       },
@@ -277,13 +275,6 @@ export function getCheckoutComponent(): CheckoutComponent {
         test: {
           type: "object",
           default: () => window.__test__ || { action: "checkout" },
-        },
-
-        inlinexo: {
-          type: "boolean",
-          required: false,
-          queryParam: true,
-          allowDelegate: true,
         },
 
         smokeHash: {
