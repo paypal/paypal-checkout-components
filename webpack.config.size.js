@@ -4,10 +4,7 @@
 import type { WebpackConfig } from "@krakenjs/webpack-config-grumbler/index.flow";
 import { getWebpackConfig } from "@krakenjs/webpack-config-grumbler";
 
-import {
-  getTestGlobals,
-  fundingEligibility,
-} from "./test/globals";
+import { getTestGlobals, fundingEligibility } from "./test/globals";
 import globals from "./globals";
 
 const testGlobals = getTestGlobals(globals);
