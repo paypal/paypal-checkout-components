@@ -47,7 +47,7 @@ describe(`paylater button text`, () => {
         "Pay in 4"
       );
       assert.equal(
-        getElementRecursive(".paypal-button").getAttribute("aria-label"),
+        getElementRecursive(".paypal-button-text").getAttribute("aria-label"),
         "Pay in 4"
       );
     });
