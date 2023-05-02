@@ -25,6 +25,7 @@ export function Text(
 ): ChildType {
   return (
     <span
+      aria-label={children}
       class={[CLASS.TEXT, ...className, animate || CLASS.IMMEDIATE]
         .filter(Boolean)
         .join(" ")}

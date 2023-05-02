@@ -309,7 +309,6 @@ export function Button({
         onRender={onButtonRender}
         onKeyPress={keypressHandler}
         tabindex="0"
-        aria-label={labelText}
       >
         <div class={CLASS.BUTTON_LABEL}>{labelNode}</div>
 
