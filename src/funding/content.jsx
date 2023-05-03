@@ -349,7 +349,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout pls 🙏
+          Checkout
         </Text>
       </Fragment>
     ),
