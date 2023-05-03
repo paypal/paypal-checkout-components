@@ -35,6 +35,9 @@ const componentLabelText = {
     BuyNow: "شراء الآن",
     Donate: "تبرع",
   },
+  en: {
+    Checkout: "✅out",
+  },
 };
 
 export const componentContent: ContentMap = {
@@ -347,9 +350,9 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional>
+        <Text animate optional aria-label={componentLabelText.en.Checkout}>
           {" "}
-          Checkout
+          {componentLabelText.en.Checkout}
         </Text>
       </Fragment>
     ),
