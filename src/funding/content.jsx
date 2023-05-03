@@ -44,7 +44,7 @@ export const componentContent: ContentMap = {
   ar: {
     Checkout: ({ logo }) => (
       <Fragment>
-        <Text animate optional>
+        <Text animate optional aria-label={componentLabelText.ar.Checkout}>
           {componentLabelText.ar.Checkout}{" "}
         </Text>
         {logo}
@@ -53,20 +53,20 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional>
+        <Text animate optional aria-label={componentLabelText.ar.Subscribe}>
           {" "}
           {componentLabelText.ar.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
-      <Text animate optional>
+      <Text animate optional aria-label={componentLabelText.ar.SaferTag}>
         {componentLabelText.ar.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
-        <Text animate optional>
+        <Text animate optional aria-label={componentLabelText.ar.Pay}>
           {componentLabelText.ar.Pay}{" "}
         </Text>
         {logo}
@@ -75,7 +75,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional>
+        <Text animate optional aria-label={componentLabelText.ar.BuyNow}>
           {" "}
           {componentLabelText.ar.BuyNow}
         </Text>
@@ -84,7 +84,7 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional>
+        <Text animate optional aria-label={componentLabelText.ar.Donate}>
           {" "}
           {componentLabelText.ar.Donate}{" "}
         </Text>
