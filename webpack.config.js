@@ -31,6 +31,7 @@ export const WEBPACK_CONFIG_BUTTON_RENDER: WebpackConfig = getWebpackConfig({
   web: false,
   libraryTarget: "commonjs2",
   vars: globals,
+  minify: false,
 });
 
 export default [WEBPACK_CONFIG_BUTTON_RENDER];
