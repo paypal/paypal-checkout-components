@@ -26,12 +26,23 @@ export type ContentMap = {
   |},
 };
 
+const componentLabelText = {
+  ar: {
+    Checkout: "السداد بواسطة",
+    Subscribe: "اشتراك",
+    SaferTag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+    Pay: "دفع بواسطة",
+    BuyNow: "شراء الآن",
+    Donate: "تبرع",
+  },
+};
+
 export const componentContent: ContentMap = {
   ar: {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          السداد بواسطة{" "}
+          {componentLabelText.ar.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -41,19 +52,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          اشتراك
+          {componentLabelText.ar.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        الطريقة الأسهل والأكثر أماناً في الدفع
+        {componentLabelText.ar.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          دفع بواسطة{" "}
+          {componentLabelText.ar.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -63,7 +74,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          شراء الآن
+          {componentLabelText.ar.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -72,7 +83,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          تبرع{" "}
+          {componentLabelText.ar.Donate}{" "}
         </Text>
       </Fragment>
     ),
@@ -338,7 +349,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout
+          Checkout pls 🙏
         </Text>
       </Fragment>
     ),
