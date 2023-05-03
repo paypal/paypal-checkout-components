@@ -1,3 +1,9 @@
+## <small>5.0.267 (2023-05-03)</small>
+
+* chore(axo): Remove AXO (#2153) ([6209c4f](https://github.com/paypal/paypal-checkout-components/commit/6209c4f)), closes [#2153](https://github.com/paypal/paypal-checkout-components/issues/2153)
+
+
+
 ## <small>5.0.266 (2023-04-26)</small>
 
 * mark card button ineligible when using card-fields (#2150) ([9c40f07](https://github.com/paypal/paypal-checkout-components/commit/9c40f07)), closes [#2150](https://github.com/paypal/paypal-checkout-components/issues/2150)
