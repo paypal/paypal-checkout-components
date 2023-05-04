@@ -687,13 +687,11 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          <Text
-            animate
-            optional
-            dangerouslySetInnerHTML={componentLabelText.en.Installment({
+          <Text animate optional>
+            {componentLabelText.en.Installment({
               period,
             })}
-          />
+          </Text>
         </Fragment>
       );
     },
@@ -757,13 +755,11 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          <Text
-            animate
-            optional
-            dangerouslySetInnerHTML={componentLabelText.es.Installment({
+          <Text animate optional>
+            {componentLabelText.es.Installment({
               period,
             })}
-          />
+          </Text>
         </Fragment>
       );
     },
@@ -1583,13 +1579,11 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          <Text
-            animate
-            optional
-            dangerouslySetInnerHTML={componentLabelText.pt.Installment({
+          <Text animate optional>
+            {componentLabelText.pt.Installment({
               period,
             })}
-          />
+          </Text>
         </Fragment>
       );
     },
