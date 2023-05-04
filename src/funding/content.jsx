@@ -128,7 +128,7 @@ const componentLabelText = {
     Checkout: "שלם",
     Subscribe: "הצטרפות כמנוי",
     SaferTag: ".הדרך הקלה והבטוחה יותר לשלם",
-    Pay: ["שלם באמצעות","‏"]
+    Pay: ["שלם באמצעות", "‏"],
     BuyNow: " קנה עכשיו",
     Donate: " שליחת תרומה",
   },
@@ -442,7 +442,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-        {componentLabelText.cs.Checkout}{" "}
+          {componentLabelText.cs.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -564,8 +564,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.de.Pay[0]}
-          {" "}
+          {componentLabelText.de.Pay[0]}{" "}
         </Text>
         {logo}
         <Text animate optional>
@@ -597,7 +596,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-        {componentLabelText.el.Checkout}{" "}
+          {componentLabelText.el.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -619,8 +618,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.el.Pay}
-          {" "}
+          {componentLabelText.el.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -680,7 +678,13 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          <Text animate optional dangerouslySetInnerHTML={componentLabelText.en.Installment({period})} />
+          <Text
+            animate
+            optional
+            dangerouslySetInnerHTML={componentLabelText.en.Installment({
+              period,
+            })}
+          />
         </Fragment>
       );
     },
@@ -744,7 +748,13 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          <Text animate optional dangerouslySetInnerHTML={' ' + componentLabelText.es.Installment({period})} />
+          <Text
+            animate
+            optional
+            dangerouslySetInnerHTML={
+              " " + componentLabelText.es.Installment({ period })
+            }
+          />
         </Fragment>
       );
     },
@@ -1050,8 +1060,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.id.Pay}
-          {" "}
+          {componentLabelText.id.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1102,8 +1111,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.it.Pay}
-          {" "}
+          {componentLabelText.it.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1255,8 +1263,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.lt.Pay}
-          {" "}
+          {componentLabelText.lt.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1307,8 +1314,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.lv.Pay}
-          {" "}
+          {componentLabelText.lv.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1318,8 +1324,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          {componentLabelText.lv.BuyNow}
-          {" "}
+          {componentLabelText.lv.BuyNow}{" "}
         </Text>
       </Fragment>
     ),
@@ -1337,8 +1342,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ms.Checkout}
-          {" "}
+          {componentLabelText.ms.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1346,8 +1350,7 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ms.Subscribe}
-          {" "}
+          {componentLabelText.ms.Subscribe}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1360,8 +1363,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ms.Pay}
-          {" "}
+          {componentLabelText.ms.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1369,8 +1371,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ms.BuyNow}
-          {" "}
+          {componentLabelText.ms.BuyNow}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1378,8 +1379,7 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ms.Donate}
-          {" "}
+          {componentLabelText.ms.Donate}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1412,8 +1412,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.nl.Pay}
-          {" "}
+          {componentLabelText.nl.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1464,8 +1463,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.no.Pay}
-          {" "}
+          {componentLabelText.no.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1516,8 +1514,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.pl.Pay}
-          {" "}
+          {componentLabelText.pl.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1568,8 +1565,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.pt.Pay}
-          {" "}
+          {componentLabelText.pt.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1578,7 +1574,13 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          <Text animate optional dangerouslySetInnerHTML={componentLabelText.pt.Installment({period})} />
+          <Text
+            animate
+            optional
+            dangerouslySetInnerHTML={componentLabelText.pt.Installment({
+              period,
+            })}
+          />
         </Fragment>
       );
     },
@@ -1628,8 +1630,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ro.Pay}
-          {" "}
+          {componentLabelText.ro.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1680,8 +1681,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.ru.Pay}
-          {" "}
+          {componentLabelText.ru.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1834,8 +1834,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sl.Pay}
-          {" "}
+          {componentLabelText.sl.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1863,8 +1862,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sq.Checkout}
-          {" "}
+          {componentLabelText.sq.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1872,8 +1870,7 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sq.Subscribe}
-          {" "}
+          {componentLabelText.sq.Subscribe}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1886,8 +1883,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sq.Pay}
-          {" "}
+          {componentLabelText.sq.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1895,8 +1891,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sq.BuyNow}
-          {" "}
+          {componentLabelText.sq.BuyNow}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1904,8 +1899,7 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sq.Donate}
-          {" "}
+          {componentLabelText.sq.Donate}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1938,8 +1932,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.sv.Pay}
-          {" "}
+          {componentLabelText.sv.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1990,8 +1983,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.th.Pay}
-          {" "}
+          {componentLabelText.th.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -2042,8 +2034,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.tl.Pay}
-          {" "}
+          {componentLabelText.tl.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -2128,8 +2119,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          {componentLabelText.vi.Pay}
-          {" "}
+          {componentLabelText.vi.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -2174,7 +2164,7 @@ export const componentContent: ContentMap = {
     ),
     SaferTag: () => (
       <Text animate optional>
-      {componentLabelText.zh.SaferTag}
+        {componentLabelText.zh.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
