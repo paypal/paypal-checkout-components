@@ -80,10 +80,13 @@ const componentLabelText = {
     Subscribe: "Subscribe",
     SaferTag: "The safer, easier way to pay",
     Pay: "Pay with",
-    Installment: ({ period }) =>
-      period
-        ? `Pay up to ${period.toString()}x<br /> without interest`
-        : `Interest free<br /> payments`,
+    Installment: ({ period }) => {
+      if (period) {
+        return `Pay up to ${period.toString()}x<br /> without interest`;
+      } else {
+        return `Interest free<br /> payments`;
+      }
+    },
     DualTag: "Two easy ways to pay",
     BuyNow: "Buy Now",
     Donate: "Donate",
@@ -93,10 +96,13 @@ const componentLabelText = {
     Subscribe: "Suscribirse",
     SaferTag: "La forma rápida y segura de pagar",
     Pay: "Pagar con",
-    Installment: ({ period }) =>
-      period
-        ? `Pague hasta ${period.toString()}x<br /> sin interés`
-        : `Pagos en <br /> mensualidades`,
+    Installment: ({ period }) => {
+      if (period) {
+        return `Pague hasta ${period.toString()}x<br /> sin interés`;
+      } else {
+        return "Pagos en <br /> mensualidades";
+      }
+    },
     BuyNow: "Comprar ahora",
     Donate: "Donar",
   },
@@ -225,10 +231,13 @@ const componentLabelText = {
     Subscribe: "Assinar",
     SaferTag: "A maneira fácil e segura de pagar",
     Pay: "Pague com",
-    Installment: ({ period }) =>
-      period
-        ? `Pague em até<br /> {period.toString()}x sem juros`
-        : "Pagamentos<br /> parcelados",
+    Installment: ({ period }) => {
+      if (period) {
+        return `Pague em até<br /> {period.toString()}x sem juros`;
+      } else {
+        return "Pagamentos<br /> parcelados";
+      }
+    },
     BuyNow: "Comprar agora",
     Donate: "Doar",
   },
@@ -751,9 +760,9 @@ export const componentContent: ContentMap = {
           <Text
             animate
             optional
-            dangerouslySetInnerHTML={
-              " " + componentLabelText.es.Installment({ period })
-            }
+            dangerouslySetInnerHTML={componentLabelText.es.Installment({
+              period,
+            })}
           />
         </Fragment>
       );
@@ -1761,7 +1770,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatiť cez{" "}
+          {componentLabelText.sk.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1771,19 +1780,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Predplatiť
+          {componentLabelText.sk.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Jednoduchší a bezpečnejší spôsob platby
+        {componentLabelText.sk.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatiť cez{" "}
+          {componentLabelText.sk.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -1793,7 +1802,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Kúpiť
+          {componentLabelText.sk.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1802,7 +1811,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Prispieť
+          {componentLabelText.sk.Donate}
         </Text>
       </Fragment>
     ),
