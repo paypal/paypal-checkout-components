@@ -63,7 +63,7 @@ const componentLabelText = {
     Checkout: "Direkt zu",
     Subscribe: "Abonnieren",
     SaferTag: "Überall schnell und sicher bezahlen",
-    Pay: "Mit zahlen",
+    Pay: ["Mit", "zahlen"],
     BuyNow: "Jetzt kaufen",
     Donate: "Spenden",
   },
@@ -128,7 +128,7 @@ const componentLabelText = {
     Checkout: "שלם",
     Subscribe: "הצטרפות כמנוי",
     SaferTag: ".הדרך הקלה והבטוחה יותר לשלם",
-    Pay: "שלם באמצעות",
+    Pay: ["שלם באמצעות","‏"]
     BuyNow: " קנה עכשיו",
     Donate: " שליחת תרומה",
   },
@@ -393,7 +393,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Финализиране
+          {componentLabelText.bg.Checkout}
         </Text>
       </Fragment>
     ),
@@ -402,19 +402,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Абониране
+          {componentLabelText.bg.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        По-безопасният и по-лесен начин за плащане
+        {componentLabelText.bg.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Плащане с{" "}
+          {componentLabelText.bg.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -424,7 +424,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Купете сега
+          {componentLabelText.bg.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -433,7 +433,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Дарение
+          {componentLabelText.bg.Donate}
         </Text>
       </Fragment>
     ),
@@ -442,7 +442,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatit přes{" "}
+        {componentLabelText.cs.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -452,19 +452,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Předplatit
+          {componentLabelText.cs.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Jednodušší a bezpečnější způsob placení
+        {componentLabelText.cs.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatit přes{" "}
+          {componentLabelText.cs.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -472,7 +472,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Koupit ihned přes{" "}
+          {componentLabelText.cs.BuyNow}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -482,7 +482,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Přispět
+          {componentLabelText.cs.Donate}
         </Text>
       </Fragment>
     ),
@@ -493,7 +493,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Betal
+          {componentLabelText.da.Checkout}
         </Text>
       </Fragment>
     ),
@@ -502,19 +502,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Abonner
+          {componentLabelText.da.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Betal nemt og sikkert
+        {componentLabelText.da.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betal med{" "}
+          {componentLabelText.da.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -524,7 +524,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Køb nu
+          {componentLabelText.da.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -533,7 +533,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Doner
+          {componentLabelText.da.Donate}
         </Text>
       </Fragment>
     ),
@@ -542,7 +542,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Direkt zu{" "}
+          {componentLabelText.de.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -552,24 +552,25 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Abonnieren
+          {componentLabelText.de.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Überall schnell und sicher bezahlen
+        {componentLabelText.de.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Mit{" "}
+          {componentLabelText.de.Pay[0]}
+          {" "}
         </Text>
         {logo}
         <Text animate optional>
           {" "}
-          zahlen
+          {componentLabelText.de.Pay[1]}
         </Text>
       </Fragment>
     ),
@@ -578,7 +579,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Jetzt kaufen
+          {componentLabelText.de.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -587,7 +588,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Spenden
+          {componentLabelText.de.Donate}
         </Text>
       </Fragment>
     ),
@@ -596,7 +597,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Ολοκλήρωση αγοράς μέσω{" "}
+        {componentLabelText.el.Checkout}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -606,19 +607,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Εγγραφή
+          {componentLabelText.el.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής
+        {componentLabelText.el.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Πληρωμή μέσω{" "}
+          {componentLabelText.el.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -628,7 +630,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Αγορά τώρα
+          {componentLabelText.el.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -637,7 +639,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Δωρεά
+          {componentLabelText.el.Donate}
         </Text>
       </Fragment>
     ),
@@ -657,19 +659,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Subscribe
+          {componentLabelText.en.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        The safer, easier way to pay
+        {componentLabelText.en.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pay with{" "}
+          {componentLabelText.en.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -678,24 +680,13 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          {period ? (
-            <Text animate optional>
-              {" "}
-              Pay up to {period.toString()}x<br /> without interest
-            </Text>
-          ) : (
-            <Text animate optional>
-              {" "}
-              Interest free
-              <br /> payments
-            </Text>
-          )}
+          <Text animate optional dangerouslySetInnerHTML={componentLabelText.en.Installment({period})} />
         </Fragment>
       );
     },
     DualTag: () => (
       <Text animate optional>
-        Two easy ways to pay
+        {componentLabelText.en.DualTag}
       </Text>
     ),
     BuyNow: ({ logo }) => (
@@ -703,7 +694,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Buy Now
+          {componentLabelText.en.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -712,7 +703,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donate
+          {componentLabelText.en.Donate}
         </Text>
       </Fragment>
     ),
@@ -723,7 +714,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Pagar
+          {componentLabelText.es.Checkout}
         </Text>
       </Fragment>
     ),
@@ -732,19 +723,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Suscribirse
+          {componentLabelText.es.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        La forma rápida y segura de pagar
+        {componentLabelText.es.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pagar con{" "}
+          {componentLabelText.es.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -753,18 +744,7 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          {period ? (
-            <Text animate optional>
-              {" "}
-              Pague hasta {period.toString()}x<br /> sin interés
-            </Text>
-          ) : (
-            <Text animate optional>
-              {" "}
-              Pagos en
-              <br /> mensualidades
-            </Text>
-          )}
+          <Text animate optional dangerouslySetInnerHTML={' ' + componentLabelText.es.Installment({period})} />
         </Fragment>
       );
     },
@@ -773,7 +753,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Comprar ahora
+          {componentLabelText.es.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -782,7 +762,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donar
+          {componentLabelText.es.Donate}
         </Text>
       </Fragment>
     ),
@@ -793,7 +773,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Kassa
+          {componentLabelText.et.Checkout}
         </Text>
       </Fragment>
     ),
@@ -802,19 +782,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Tellige
+          {componentLabelText.et.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Ohutum ja lihtsam viis maksmiseks
+        {componentLabelText.et.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Makske{" "}
+          {componentLabelText.et.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -824,7 +804,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Osta kohe
+          {componentLabelText.et.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -833,7 +813,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Annetage
+          {componentLabelText.et.Donate}
         </Text>
       </Fragment>
     ),
@@ -843,7 +823,7 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          -maksu
+          {componentLabelText.fi.Checkout}
         </Text>
       </Fragment>
     ),
@@ -852,20 +832,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Tilaa
+          {componentLabelText.fi.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Turvallisempi ja helpompi maksutapa
+        {componentLabelText.fi.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         {logo}
         <Text animate optional>
-          -maksu
+          {componentLabelText.fi.Pay}
         </Text>
       </Fragment>
     ),
@@ -874,7 +854,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Osta nyt
+          {componentLabelText.fi.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -883,7 +863,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Lahjoita
+          {componentLabelText.fi.Donate}
         </Text>
       </Fragment>
     ),
@@ -894,7 +874,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Payer
+          {componentLabelText.fr.Checkout}
         </Text>
       </Fragment>
     ),
@@ -903,19 +883,19 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          S&#39;abonner
+          {componentLabelText.fr.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Votre réflexe sécurité pour payer en ligne
+        {componentLabelText.fr.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Payer avec{" "}
+          {componentLabelText.fr.Pay}{" "}
         </Text>
         {logo}
       </Fragment>
@@ -925,7 +905,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Acheter
+          {componentLabelText.fr.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -934,7 +914,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Faire un don
+          {componentLabelText.fr.Donate}
         </Text>
       </Fragment>
     ),
@@ -945,7 +925,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          שלם
+          {componentLabelText.he.Checkout}
         </Text>
       </Fragment>
     ),
@@ -954,23 +934,23 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          הצטרפות כמנוי
+          {componentLabelText.he.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        .הדרך הקלה והבטוחה יותר לשלם
+        {componentLabelText.he.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          שלם באמצעות{" "}
+          {componentLabelText.he.Pay[0]}{" "}
         </Text>
         {logo}
         <Text animate optional>
-          ‏
+          {componentLabelText.he.Pay[1]}
         </Text>
       </Fragment>
     ),
@@ -979,7 +959,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          קנה עכשיו
+          {componentLabelText.he.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -988,7 +968,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          שליחת תרומה
+          {componentLabelText.he.Donate}
         </Text>
       </Fragment>
     ),
@@ -998,7 +978,7 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          -fizetés
+          {componentLabelText.hu.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1007,20 +987,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Feliratkozás
+          {componentLabelText.hu.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Biztonságosabb, könnyebb fizetési mód
+        {componentLabelText.hu.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         {logo}
         <Text animate optional>
-          -fizetés
+          {componentLabelText.hu.Pay}
         </Text>
       </Fragment>
     ),
@@ -1029,7 +1009,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Vásárlás
+          {componentLabelText.hu.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1038,7 +1018,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Adományozás
+          {componentLabelText.hu.Donate}
         </Text>
       </Fragment>
     ),
@@ -1049,7 +1029,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout
+          {componentLabelText.id.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1058,19 +1038,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Berlangganan
+          {componentLabelText.id.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Cara yang lebih mudah dan aman untuk membayar
+        {componentLabelText.id.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Bayar dengan{" "}
+          {componentLabelText.id.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1080,7 +1061,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Beli Sekarang
+          {componentLabelText.id.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1089,7 +1070,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donasikan
+          {componentLabelText.id.Donate}
         </Text>
       </Fragment>
     ),
@@ -1100,7 +1081,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Paga adesso
+          {componentLabelText.it.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1109,19 +1090,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Abbonati
+          {componentLabelText.it.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Il modo rapido e sicuro per pagare
+        {componentLabelText.it.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Paga con{" "}
+          {componentLabelText.it.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1131,7 +1113,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Paga adesso
+          {componentLabelText.it.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1140,7 +1122,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donazione
+          {componentLabelText.it.Donate}
         </Text>
       </Fragment>
     ),
@@ -1150,7 +1132,7 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          で支払う
+          {componentLabelText.ja.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1159,20 +1141,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          サブスクリプション登録
+          {componentLabelText.ja.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        より安全・簡単にお支払い
+        {componentLabelText.ja.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         {logo}
         <Text animate optional>
-          で支払う
+          {componentLabelText.ja.Pay}
         </Text>
       </Fragment>
     ),
@@ -1181,7 +1163,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          購入
+          {componentLabelText.ja.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1190,7 +1172,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          寄付する
+          {componentLabelText.ja.Donate}
         </Text>
       </Fragment>
     ),
@@ -1201,7 +1183,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          체크 아웃
+          {componentLabelText.ko.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1210,20 +1192,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          정기결제
+          {componentLabelText.ko.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        더 안전하고 빠른 결제 방법
+        {componentLabelText.ko.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         {logo}
         <Text animate optional>
-          로 지불하기
+          {componentLabelText.ko.Pay}
         </Text>
       </Fragment>
     ),
@@ -1232,7 +1214,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          바로 구매
+          {componentLabelText.ko.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1241,7 +1223,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          기부
+          {componentLabelText.ko.Donate}
         </Text>
       </Fragment>
     ),
@@ -1252,7 +1234,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          „Checkout“
+          {componentLabelText.lt.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1261,19 +1243,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          prenumeruoti
+          {componentLabelText.lt.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Saugesnis ir paprastesnis mokėjimo būdas
+        {componentLabelText.lt.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Mokėti naudojant{" "}
+          {componentLabelText.lt.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1283,7 +1266,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          pirkti dabar
+          {componentLabelText.lt.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1292,7 +1275,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Paaukoti
+          {componentLabelText.lt.Donate}
         </Text>
       </Fragment>
     ),
@@ -1303,7 +1286,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout
+          {componentLabelText.lv.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1312,19 +1295,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          abonēt
+          {componentLabelText.lv.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Drošāks, ērtāks norēķinu veids
+        {componentLabelText.lv.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Maksāt ar{" "}
+          {componentLabelText.lv.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1334,7 +1318,8 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          pirkt tūlīt{" "}
+          {componentLabelText.lv.BuyNow}
+          {" "}
         </Text>
       </Fragment>
     ),
@@ -1343,7 +1328,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Ziedot
+          {componentLabelText.lv.Donate}
         </Text>
       </Fragment>
     ),
@@ -1352,7 +1337,8 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Daftar keluar{" "}
+          {componentLabelText.ms.Checkout}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1360,20 +1346,22 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Langgan{" "}
+          {componentLabelText.ms.Subscribe}
+          {" "}
         </Text>
         {logo}
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Kaedah bayaran yang lebih selamat dan mudah
+        {componentLabelText.ms.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Bayar dengan{" "}
+          {componentLabelText.ms.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1381,7 +1369,8 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Beli Sekarang{" "}
+          {componentLabelText.ms.BuyNow}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1389,7 +1378,8 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Derma{" "}
+          {componentLabelText.ms.Donate}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1401,7 +1391,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Betalen
+          {componentLabelText.nl.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1410,19 +1400,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Abonneren
+          {componentLabelText.nl.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        De veiligere en snellere manier om te betalen
+        {componentLabelText.nl.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betalen met{" "}
+          {componentLabelText.nl.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1432,7 +1423,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Nu kopen
+          {componentLabelText.nl.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1441,7 +1432,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Doneren
+          {componentLabelText.nl.Donate}
         </Text>
       </Fragment>
     ),
@@ -1452,7 +1443,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Betal
+          {componentLabelText.no.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1461,19 +1452,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Abonner
+          {componentLabelText.no.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        En trygg og enkel betalingsmetode
+        {componentLabelText.no.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betal med{" "}
+          {componentLabelText.no.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1483,7 +1475,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Kjøp nå
+          {componentLabelText.no.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1492,7 +1484,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Doner
+          {componentLabelText.no.Donate}
         </Text>
       </Fragment>
     ),
@@ -1503,7 +1495,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Do kasy
+          {componentLabelText.pl.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1512,19 +1504,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Subskrybuj
+          {componentLabelText.pl.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Płać wygodnie i bezpiecznie
+        {componentLabelText.pl.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zapłać z{" "}
+          {componentLabelText.pl.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1534,7 +1527,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Kup teraz
+          {componentLabelText.pl.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1543,7 +1536,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Przekaż darowiznę
+          {componentLabelText.pl.Donate}
         </Text>
       </Fragment>
     ),
@@ -1554,7 +1547,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout
+          {componentLabelText.pt.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1563,19 +1556,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Assinar
+          {componentLabelText.pt.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        A maneira fácil e segura de pagar
+        {componentLabelText.pt.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pague com{" "}
+          {componentLabelText.pt.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1584,19 +1578,7 @@ export const componentContent: ContentMap = {
       return (
         <Fragment>
           {logo}
-          {period ? (
-            <Text animate optional>
-              {" "}
-              Pague em até
-              <br /> {period.toString()}x sem juros
-            </Text>
-          ) : (
-            <Text animate optional>
-              {" "}
-              Pagamentos
-              <br /> parcelados
-            </Text>
-          )}
+          <Text animate optional dangerouslySetInnerHTML={componentLabelText.pt.Installment({period})} />
         </Fragment>
       );
     },
@@ -1605,7 +1587,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Comprar agora
+          {componentLabelText.pt.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1614,7 +1596,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Doar
+          {componentLabelText.pt.Donate}
         </Text>
       </Fragment>
     ),
@@ -1625,7 +1607,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout
+          {componentLabelText.ro.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1634,19 +1616,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Abonează-te
+          {componentLabelText.ro.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Modalitatea sigură și ușoară de plată
+        {componentLabelText.ro.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Plătește cu{" "}
+          {componentLabelText.ro.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1656,7 +1639,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Cumpără acum
+          {componentLabelText.ro.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1665,7 +1648,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donează
+          {componentLabelText.ro.Donate}
         </Text>
       </Fragment>
     ),
@@ -1676,7 +1659,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Оформить покупку
+          {componentLabelText.ru.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1685,19 +1668,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Подписаться
+          {componentLabelText.ru.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Более безопасный и простой способ оплаты
+        {componentLabelText.ru.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Оплатить через{" "}
+          {componentLabelText.ru.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1707,7 +1691,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Купить сейчас
+          {componentLabelText.ru.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1716,7 +1700,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Сделать пожертвование
+          {componentLabelText.ru.Donate}
         </Text>
       </Fragment>
     ),
@@ -1727,7 +1711,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          ගෙවා පිටවීම
+          {componentLabelText.si.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1736,13 +1720,13 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          දායක වන්න
+          {componentLabelText.si.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        ගෙවීමට වඩා ආරක්ෂිත, පහසු ක්‍රමය
+        {componentLabelText.si.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
@@ -1750,7 +1734,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          සමග ගෙවන්න
+          {componentLabelText.si.Pay}
         </Text>
       </Fragment>
     ),
@@ -1759,7 +1743,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          දැන් මිලදී ගන්න
+          {componentLabelText.si.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1768,7 +1752,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          පරිත්‍යාග කරන්න
+          {componentLabelText.si.Donate}
         </Text>
       </Fragment>
     ),
@@ -1829,7 +1813,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Blagajna
+          {componentLabelText.sl.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1838,19 +1822,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Naroči se
+          {componentLabelText.sl.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Varnejši, lažji način plačil
+        {componentLabelText.sl.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Plačaj z{" "}
+          {componentLabelText.sl.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1860,7 +1845,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Kupi zdaj
+          {componentLabelText.sl.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1869,7 +1854,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donirajte
+          {componentLabelText.sl.Donate}
         </Text>
       </Fragment>
     ),
@@ -1878,7 +1863,8 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Arka e{" "}
+          {componentLabelText.sq.Checkout}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1886,20 +1872,22 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Abonohu në{" "}
+          {componentLabelText.sq.Subscribe}
+          {" "}
         </Text>
         {logo}
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Mënyra më e sigurt dhe më e lehtë për të paguar
+        {componentLabelText.sq.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Paguaj me{" "}
+          {componentLabelText.sq.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1907,7 +1895,8 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Bli tani me{" "}
+          {componentLabelText.sq.BuyNow}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1915,7 +1904,8 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Dhuro{" "}
+          {componentLabelText.sq.Donate}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1927,7 +1917,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Betala
+          {componentLabelText.sv.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1936,19 +1926,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Prenumerera
+          {componentLabelText.sv.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Ett tryggt och smidigt sätt att betala
+        {componentLabelText.sv.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betala med{" "}
+          {componentLabelText.sv.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -1958,7 +1949,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Köp nu
+          {componentLabelText.sv.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -1967,7 +1958,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Donera
+          {componentLabelText.sv.Donate}
         </Text>
       </Fragment>
     ),
@@ -1978,7 +1969,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          ชำระเงิน
+          {componentLabelText.th.Checkout}
         </Text>
       </Fragment>
     ),
@@ -1987,19 +1978,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          ชำระค่าสมาชิก
+          {componentLabelText.th.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        วิธีชำระเงินที่ปลอดภัยและง่ายกว่า
+        {componentLabelText.th.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          ชำระเงินด้วย{" "}
+          {componentLabelText.th.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -2009,7 +2001,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          ซื้อทันที
+          {componentLabelText.th.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -2018,7 +2010,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          บริจาค
+          {componentLabelText.th.Donate}
         </Text>
       </Fragment>
     ),
@@ -2029,7 +2021,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Checkout
+          {componentLabelText.tl.Checkout}
         </Text>
       </Fragment>
     ),
@@ -2038,19 +2030,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Mag-subscribe
+          {componentLabelText.tl.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Ang mas ligtas, mas madaling paraan para magbayad
+        {componentLabelText.tl.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Magbayad gamit ang{" "}
+          {componentLabelText.tl.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -2060,7 +2053,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Bumili Ngayon
+          {componentLabelText.tl.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -2069,7 +2062,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Mag-donate
+          {componentLabelText.tl.Donate}
         </Text>
       </Fragment>
     ),
@@ -2080,13 +2073,13 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          ile Satın Alın
+          {componentLabelText.tr.Checkout}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Ödeme yapmanın daha güvenli ve kolay yolu
+        {componentLabelText.tr.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
@@ -2094,7 +2087,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          ile Öde
+          {componentLabelText.tr.Pay}
         </Text>
       </Fragment>
     ),
@@ -2103,7 +2096,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Hemen Satın Alın
+          {componentLabelText.tr.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -2114,7 +2107,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Thanh toán
+          {componentLabelText.vi.Checkout}
         </Text>
       </Fragment>
     ),
@@ -2123,19 +2116,20 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Đăng ký
+          {componentLabelText.vi.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        Cách thanh toán an toàn hơn, dễ dàng hơn
+        {componentLabelText.vi.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Thanh toán bằng{" "}
+          {componentLabelText.vi.Pay}
+          {" "}
         </Text>
         {logo}
       </Fragment>
@@ -2145,7 +2139,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Mua ngay
+          {componentLabelText.vi.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -2154,7 +2148,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          Quyên góp
+          {componentLabelText.vi.Donate}
         </Text>
       </Fragment>
     ),
@@ -2165,7 +2159,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          結帳
+          {componentLabelText.zh.Checkout}
         </Text>
       </Fragment>
     ),
@@ -2174,23 +2168,23 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          订购
+          {componentLabelText.zh.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        更安全、更便捷的付款方式
+      {componentLabelText.zh.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          用
+          {componentLabelText.zh.Pay[0]}
         </Text>
         {logo}
         <Text animate optional>
-          付款
+          {componentLabelText.zh.Pay[1]}
         </Text>
       </Fragment>
     ),
@@ -2199,7 +2193,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          捐赠
+          {componentLabelText.zh.Donate}
         </Text>
       </Fragment>
     ),
@@ -2208,7 +2202,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          立即购买
+          {componentLabelText.zh.BuyNow}
         </Text>
       </Fragment>
     ),
@@ -2219,7 +2213,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          結帳
+          {componentLabelText.zh_Hant.Checkout}
         </Text>
       </Fragment>
     ),
@@ -2228,23 +2222,23 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          訂閱
+          {componentLabelText.zh_Hant.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
       <Text animate optional>
-        更安全方便的付款方式
+        {componentLabelText.zh_Hant.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          使用
+          {componentLabelText.zh_Hant.Pay[0]}
         </Text>
         {logo}
         <Text animate optional>
-          付款
+          {componentLabelText.zh_Hant.Pay[1]}
         </Text>
       </Fragment>
     ),
@@ -2253,7 +2247,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          捐款
+          {componentLabelText.zh_Hant.Donate}
         </Text>
       </Fragment>
     ),
@@ -2262,7 +2256,7 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           {" "}
-          立即購
+          {componentLabelText.zh_Hant.BuyNow}
         </Text>
       </Fragment>
     ),
