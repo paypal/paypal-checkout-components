@@ -82,9 +82,9 @@ const componentLabelText = {
     Pay: "Pay with",
     Installment: ({ period }) => {
       if (period) {
-        return `Pay up to ${period.toString()}x<br /> without interest`;
+        return `Pay up to ${period.toString()}x without interest`;
       } else {
-        return `Interest free<br /> payments`;
+        return `Interest free payments`;
       }
     },
     DualTag: "Two easy ways to pay",
@@ -98,9 +98,9 @@ const componentLabelText = {
     Pay: "Pagar con",
     Installment: ({ period }) => {
       if (period) {
-        return `Pague hasta ${period.toString()}x<br /> sin interés`;
+        return `Pague hasta ${period.toString()}x sin interés`;
       } else {
-        return "Pagos en <br /> mensualidades";
+        return "Pagos en mensualidades";
       }
     },
     BuyNow: "Comprar ahora",
@@ -233,9 +233,9 @@ const componentLabelText = {
     Pay: "Pague com",
     Installment: ({ period }) => {
       if (period) {
-        return `Pague em até<br /> {period.toString()}x sem juros`;
+        return `Pague em até {period.toString()}x sem juros`;
       } else {
-        return "Pagamentos<br /> parcelados";
+        return "Pagamentos parcelados";
       }
     },
     BuyNow: "Comprar agora",
