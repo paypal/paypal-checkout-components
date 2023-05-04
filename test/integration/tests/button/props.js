@@ -179,6 +179,7 @@ describe(`paypal button component props`, () => {
 
   it("should render applepay button and get the renderedButtons props", () => {
     const renderedButtons = [FUNDING.PAYPAL, FUNDING.APPLEPAY, FUNDING.CARD];
+    window.xprops = {};
     window.xprops.enableFunding = [FUNDING.APPLEPAY];
     return ZalgoPromise.try(() => {
       return wrapPromise(({ expect, avoid }) => {
