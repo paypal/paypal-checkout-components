@@ -33,6 +33,8 @@ describe(`paypal standalone buttons`, () => {
           fundingSource === FUNDING.VENMO ||
           fundingSource === FUNDING.APPLEPAY
         ) {
+          window.xprops = window.xprops || {};
+          window.xprops.enableFunding = ["applepay"];
           window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
           window.ApplePaySession = {
             canMakePayments: () => true,
