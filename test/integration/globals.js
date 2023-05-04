@@ -105,5 +105,3 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     eligible: false,
   },
 };
-
-window.xprops = window.xprops || {};
