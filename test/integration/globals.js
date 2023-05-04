@@ -1,7 +1,5 @@
 /* @flow */
 
-import { FUNDING } from "@paypal/sdk-constants/src";
-
 window.__TEST_FUNDING_ELIGIBILITY__ = {
   bancontact: {
     eligible: false,
