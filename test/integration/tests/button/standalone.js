@@ -40,9 +40,7 @@ describe(`paypal standalone buttons`, () => {
           };
         }
 
-        const enableFunding = mockProp(window.xprops, "enableFunding", [
-          "applepay",
-        ]);
+        mockProp(window.xprops, "enableFunding", ["applepay"]);
 
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
