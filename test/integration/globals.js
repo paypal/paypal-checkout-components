@@ -106,4 +106,4 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
   },
 };
 
-window.xprops = {};
+window.xprops = window.xprops || {};
