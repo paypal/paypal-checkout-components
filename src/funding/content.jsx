@@ -35,8 +35,304 @@ const componentLabelText = {
     BuyNow: "شراء الآن",
     Donate: "تبرع",
   },
+  bg: {
+    Checkout: "Финализиране",
+    Subscribe: "Абониране",
+    SaferTag: "По-безопасният и по-лесен начин за плащане",
+    Pay: "Плащане с",
+    BuyNow: "Купете сега",
+    Donate: "Дарение",
+  },
+  cs: {
+    Checkout: "Zaplatit přes",
+    Subscribe: "Předplatit",
+    SaferTag: "Jednodušší a bezpečnější způsob placení",
+    Pay: "Zaplatit přes",
+    BuyNow: "Koupit ihned přes",
+    Donate: "Přispět",
+  },
+  da: {
+    Checkout: "Betal",
+    Subscribe: "Abonner",
+    SaferTag: "Betal nemt og sikkert",
+    Pay: "Betal med",
+    BuyNow: "Køb nu",
+    Donate: "Doner",
+  },
+  de: {
+    Checkout: "Direkt zu",
+    Subscribe: "Abonnieren",
+    SaferTag: "Überall schnell und sicher bezahlen",
+    Pay: "Mit zahlen",
+    BuyNow: "Jetzt kaufen",
+    Donate: "Spenden",
+  },
+  el: {
+    Checkout: "Ολοκλήρωση αγοράς μέσω",
+    Subscribe: "Εγγραφή",
+    SaferTag: "Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής",
+    Pay: "Πληρωμή μέσω",
+    BuyNow: "Αγορά τώρα",
+    Donate: "Δωρεά",
+  },
   en: {
-    Checkout: "✅out",
+    Checkout: "Checkout",
+    Subscribe: "Subscribe",
+    SaferTag: "The safer, easier way to pay",
+    Pay: "Pay with",
+    Installment: ({ period }) =>
+      period
+        ? `Pay up to ${period.toString()}x<br /> without interest`
+        : `Interest free<br /> payments`,
+    DualTag: "Two easy ways to pay",
+    BuyNow: "Buy Now",
+    Donate: "Donate",
+  },
+  es: {
+    Checkout: "Pagar",
+    Subscribe: "Suscribirse",
+    SaferTag: "La forma rápida y segura de pagar",
+    Pay: "Pagar con",
+    Installment: ({ period }) =>
+      period
+        ? `Pague hasta ${period.toString()}x<br /> sin interés`
+        : `Pagos en <br /> mensualidades`,
+    BuyNow: "Comprar ahora",
+    Donate: "Donar",
+  },
+  et: {
+    Checkout: "Kassa",
+    Subscribe: "Tellige",
+    SaferTag: "Ohutum ja lihtsam viis maksmiseks",
+    Pay: "Makske",
+    BuyNow: "Osta kohe",
+    Donate: "Annetage",
+  },
+  fi: {
+    Checkout: "-maksu",
+    Subscribe: "Tilaa",
+    SaferTag: "Turvallisempi ja helpompi maksutapa",
+    Pay: "-maksu",
+    BuyNow: "Osta nyt",
+    Donate: "Lahjoita",
+  },
+  fr: {
+    Checkout: "Payer",
+    Subscribe: "S&#39;abonner",
+    SaferTag: "Votre réflexe sécurité pour payer en ligne",
+    Pay: "Payer avec",
+    BuyNow: "Acheter",
+    Donate: "Faire un don",
+  },
+  he: {
+    Checkout: "שלם",
+    Subscribe: "הצטרפות כמנוי",
+    SaferTag: ".הדרך הקלה והבטוחה יותר לשלם",
+    Pay: "שלם באמצעות",
+    BuyNow: " קנה עכשיו",
+    Donate: " שליחת תרומה",
+  },
+  hu: {
+    Checkout: "-fizetés",
+    Subscribe: "Feliratkozás",
+    SaferTag: "Biztonságosabb, könnyebb fizetési mód",
+    Pay: "-fizetés",
+    BuyNow: "Vásárlás",
+    Donate: "Adományozás",
+  },
+  id: {
+    Checkout: "Checkout",
+    Subscribe: "Berlangganan",
+    SaferTag: "Cara yang lebih mudah dan aman untuk membayar",
+    Pay: "Bayar dengan",
+    BuyNow: "Beli Sekarang",
+    Donate: "Donasikan",
+  },
+  it: {
+    Checkout: "Paga adesso",
+    Subscribe: "Abbonati",
+    SaferTag: "Il modo rapido e sicuro per pagare",
+    Pay: "Paga con",
+    BuyNow: "Paga adesso",
+    Donate: "Donazione",
+  },
+  ja: {
+    Checkout: "で支払う",
+    Subscribe: "サブスクリプション登録",
+    SaferTag: "より安全・簡単にお支払い",
+    Pay: "で支払う",
+    BuyNow: "購入",
+    Donate: "寄付する",
+  },
+  ko: {
+    Checkout: "체크 아웃",
+    Subscribe: "정기결제",
+    SaferTag: "더 안전하고 빠른 결제 방법",
+    Pay: "로 지불하기",
+    BuyNow: "바로 구매",
+    Donate: "기부",
+  },
+  lt: {
+    Checkout: "„Checkout“",
+    Subscribe: "prenumeruoti",
+    SaferTag: "Saugesnis ir paprastesnis mokėjimo būdas",
+    Pay: "Mokėti naudojant",
+    BuyNow: "pirkti dabar",
+    Donate: "Paaukoti",
+  },
+  lv: {
+    Checkout: "Checkout",
+    Subscribe: "abonēt",
+    SaferTag: "Drošāks, ērtāks norēķinu veids",
+    Pay: "Maksāt ar",
+    BuyNow: "pirkt tūlīt",
+    Donate: "Ziedot",
+  },
+  ms: {
+    Checkout: "Daftar keluar",
+    Subscribe: "Langgan",
+    SaferTag: "Kaedah bayaran yang lebih selamat dan mudah",
+    Pay: "Bayar dengan",
+    BuyNow: "Beli Sekarang",
+    Donate: "Derma",
+  },
+  nl: {
+    Checkout: "Betalen",
+    Subscribe: "Abonneren",
+    SaferTag: "De veiligere en snellere manier om te betalen",
+    Pay: "Betalen met",
+    BuyNow: "Nu kopen",
+    Donate: "Doneren",
+  },
+  no: {
+    Checkout: "Betal",
+    Subscribe: "Abonner",
+    SaferTag: "En trygg og enkel betalingsmetode",
+    Pay: "Betal med",
+    BuyNow: "Kjøp nå",
+    Donate: "Doner",
+  },
+  pl: {
+    Checkout: "Do kasy",
+    Subscribe: "Subskrybuj",
+    SaferTag: "Płać wygodnie i bezpiecznie",
+    Pay: "Zapłać z",
+    BuyNow: "Kup teraz",
+    Donate: "Przekaż darowiznę",
+  },
+  pt: {
+    Checkout: "Checkout",
+    Subscribe: "Assinar",
+    SaferTag: "A maneira fácil e segura de pagar",
+    Pay: "Pague com",
+    Installment: ({ period }) =>
+      period
+        ? `Pague em até<br /> {period.toString()}x sem juros`
+        : "Pagamentos<br /> parcelados",
+    BuyNow: "Comprar agora",
+    Donate: "Doar",
+  },
+  ro: {
+    Checkout: "Checkout",
+    Subscribe: "Abonează-te",
+    SaferTag: "Modalitatea sigură și ușoară de plată",
+    Pay: "Plătește cu",
+    BuyNow: "Cumpără acum",
+    Donate: "Donează",
+  },
+  ru: {
+    Checkout: "Оформить покупку",
+    Subscribe: "Подписаться",
+    SaferTag: "Более безопасный и простой способ оплаты",
+    Pay: "Оплатить через",
+    BuyNow: "Купить сейчас",
+    Donate: "Сделать пожертвование",
+  },
+  si: {
+    Checkout: "ගෙවා පිටවීම",
+    Subscribe: "දායක වන්න",
+    SaferTag: "ගෙවීමට වඩා ආරක්ෂිත, පහසු ක්‍රමය",
+    Pay: "සමග ගෙවන්න",
+    BuyNow: "දැන් මිලදී ගන්න",
+    Donate: "පරිත්‍යාග කරන්න",
+  },
+  sk: {
+    Checkout: "Zaplatiť cez",
+    Subscribe: "Predplatiť",
+    SaferTag: "Jednoduchší a bezpečnejší spôsob platby",
+    Pay: "Zaplatiť cez",
+    BuyNow: "Kúpiť",
+    Donate: "Prispieť",
+  },
+  sl: {
+    Checkout: "Blagajna",
+    Subscribe: "Naroči se",
+    SaferTag: "Varnejši, lažji način plačil",
+    Pay: "Plačaj z",
+    BuyNow: "Kupi zdaj",
+    Donate: "Donirajte",
+  },
+  sq: {
+    Checkout: "Arka e",
+    Subscribe: "Abonohu në",
+    SaferTag: "Mënyra më e sigurt dhe më e lehtë për të paguar",
+    Pay: "Paguaj me",
+    BuyNow: "Bli tani me",
+    Donate: "Dhuro",
+  },
+  sv: {
+    Checkout: "Betala",
+    Subscribe: "Prenumerera",
+    SaferTag: "Ett tryggt och smidigt sätt att betala",
+    Pay: "Betala med",
+    BuyNow: "Köp nu",
+    Donate: "Donera",
+  },
+  th: {
+    Checkout: "ชำระเงิน",
+    Subscribe: "ชำระค่าสมาชิก",
+    SaferTag: "วิธีชำระเงินที่ปลอดภัยและง่ายกว่า",
+    Pay: "ชำระเงินด้วย",
+    BuyNow: "ซื้อทันท",
+    Donate: "บริจาค",
+  },
+  tl: {
+    Checkout: "Checkout",
+    Subscribe: "Mag-subscribe",
+    SaferTag: "Ang mas ligtas, mas madaling paraan para magbayad",
+    Pay: "Magbayad gamit ang",
+    BuyNow: "Bumili Ngayon",
+    Donate: "Mag-donate",
+  },
+  tr: {
+    Checkout: "ile Satın Alın",
+    SaferTag: "Ödeme yapmanın daha güvenli ve kolay yolu",
+    Pay: "ile Öde",
+    BuyNow: "Hemen Satın Alın",
+  },
+  vi: {
+    Checkout: "Thanh toán",
+    Subscribe: "Đăng ký",
+    SaferTag: "Cách thanh toán an toàn hơn, dễ dàng hơn",
+    Pay: "Thanh toán bằng",
+    BuyNow: "Mua ngay",
+    Donate: "Quyên góp",
+  },
+  zh: {
+    Checkout: "結帳",
+    Subscribe: "订购",
+    SaferTag: "更安全、更便捷的付款方式",
+    Pay: ["用", "付款"],
+    Donate: "捐赠",
+    BuyNow: "立即购买",
+  },
+  zh_Hant: {
+    Checkout: "結帳",
+    Subscribe: "訂閱",
+    SaferTag: "更安全方便的付款方式",
+    Pay: ["使用", "付款"],
+    Donate: "捐款",
+    BuyNow: "立即購",
   },
 };
 
@@ -44,7 +340,7 @@ export const componentContent: ContentMap = {
   ar: {
     Checkout: ({ logo }) => (
       <Fragment>
-        <Text animate optional aria-label={componentLabelText.ar.Checkout}>
+        <Text animate optional>
           {componentLabelText.ar.Checkout}{" "}
         </Text>
         {logo}
@@ -53,20 +349,20 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional aria-label={componentLabelText.ar.Subscribe}>
+        <Text animate optional>
           {" "}
           {componentLabelText.ar.Subscribe}
         </Text>
       </Fragment>
     ),
     SaferTag: () => (
-      <Text animate optional aria-label={componentLabelText.ar.SaferTag}>
+      <Text animate optional>
         {componentLabelText.ar.SaferTag}
       </Text>
     ),
     Pay: ({ logo }) => (
       <Fragment>
-        <Text animate optional aria-label={componentLabelText.ar.Pay}>
+        <Text animate optional>
           {componentLabelText.ar.Pay}{" "}
         </Text>
         {logo}
@@ -75,7 +371,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional aria-label={componentLabelText.ar.BuyNow}>
+        <Text animate optional>
           {" "}
           {componentLabelText.ar.BuyNow}
         </Text>
@@ -84,7 +380,7 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional aria-label={componentLabelText.ar.Donate}>
+        <Text animate optional>
           {" "}
           {componentLabelText.ar.Donate}{" "}
         </Text>
@@ -350,7 +646,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         {logo}
-        <Text animate optional aria-label={componentLabelText.en.Checkout}>
+        <Text animate optional>
           {" "}
           {componentLabelText.en.Checkout}
         </Text>
