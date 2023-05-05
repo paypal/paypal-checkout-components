@@ -204,6 +204,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       const platform = getPlatform();
       const components = getComponents();
+      const enableFunding = getEnableFunding();
 
       if (
         isFundingEligible(fundingSource, {
@@ -211,6 +212,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           platform,
           fundingSource,
           fundingEligibility,
+          enableFunding,
           components,
           onShippingChange,
           onShippingAddressChange,
