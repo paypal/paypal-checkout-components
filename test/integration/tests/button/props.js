@@ -141,8 +141,8 @@ describe(`paypal button component props`, () => {
   });
 
   it("should render a button and get the renderedButtons props", () => {
-    // should not render applepay without applepay listed in xprops.enable-funding
-    const renderedButtons = [FUNDING.PAYPAL, FUNDING.CARD];
+    // should not render applepay without applepay listed in xprops.enableFunding
+    const renderedButtons = [FUNDING.PAYPAL, FUNDING.APPLEPAY, FUNDING.CARD];
 
     return ZalgoPromise.try(() => {
       return wrapPromise(({ expect, avoid }) => {

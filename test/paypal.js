@@ -9,8 +9,9 @@ import * as paypalFields from "../src/interface/fields"; // eslint-disable-line 
 import * as paypalPaymentFields from "../src/interface/payment-fields"; // eslint-disable-line import/no-namespace
 
 // the enable-funding=venmo flag is temporarily needed for the venmo experiment
+// the enable-funding=applepay flag is needed for applepay vertical stack and standalone buttons to render
 insertMockSDKScript({
-  query: { "client-id": "test", "enable-funding": "venmo" },
+  query: { "client-id": "test", "enable-funding": "venmo,applepay" },
   attributes: { "data-csp-nonce": "test" },
 });
 

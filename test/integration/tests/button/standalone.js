@@ -29,13 +29,11 @@ describe(`paypal standalone buttons`, () => {
 
     it(`should render a standalone ${fundingSource} button and succeed when eligible`, () => {
       return wrapPromise(({ expect }) => {
+        // should not render applepay without applepay listed in xprops.enableFunding
         if (
           fundingSource === FUNDING.VENMO ||
           fundingSource === FUNDING.APPLEPAY
         ) {
-          window.xprops = {
-            enableFunding: ["applepay"],
-          };
           window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
           window.ApplePaySession = {
             canMakePayments: () => true,
