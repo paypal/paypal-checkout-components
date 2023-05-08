@@ -1,6 +1,13 @@
 [
   { "button": {} },
   {
+    "button": {
+      "style": {
+        "label": "installment"
+      }
+    }
+  },
+  {
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36",
     "button": { "fundingSource": "paypal" },
     "fundingEligibility": {
