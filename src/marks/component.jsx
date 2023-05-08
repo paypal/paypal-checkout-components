@@ -13,6 +13,7 @@ import {
 import { PLATFORM, FUNDING } from "@paypal/sdk-constants/src";
 import { getRememberedFunding } from "@paypal/funding-components/src";
 import {
+  getEnableFunding,
   getComponents,
   getFundingEligibility,
   getEnv,
@@ -60,6 +61,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const platform = isDevice() ? PLATFORM.MOBILE : PLATFORM.DESKTOP;
     const remembered = getRememberedFunding();
     const layout = BUTTON_LAYOUT.VERTICAL;
+    const enableFunding = getEnableFunding();
     const components = getComponents();
     const flow = BUTTON_FLOW.PURCHASE;
     const applePaySupport = fundingEligibility?.applepay?.eligible
@@ -71,6 +73,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const fundingSources = determineEligibleFunding({
       fundingSource,
       fundingEligibility,
+      enableFunding,
       components,
       platform,
       remembered,
@@ -93,6 +96,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         platform,
         fundingSource,
         fundingEligibility,
+        enableFunding,
         components,
         onShippingChange,
         onShippingAddressChange,

@@ -172,6 +172,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         onShippingAddressChange,
         onShippingOptionsChange,
         style = {},
+        enableFunding = getEnableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
         supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(),
@@ -204,7 +205,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       const platform = getPlatform();
       const components = getComponents();
-      const enableFunding = getEnableFunding();
 
       if (
         isFundingEligible(fundingSource, {
@@ -260,6 +260,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             onShippingOptionsChange,
             style = {},
             fundingEligibility = getRefinedFundingEligibility(),
+            enableFunding = getEnableFunding(),
             applePaySupport,
             supportsPopups,
             supportedNativeBrowser,
@@ -285,6 +286,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               platform,
               fundingSource,
               fundingEligibility,
+              enableFunding,
               components,
               onShippingChange,
               onShippingAddressChange,
