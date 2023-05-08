@@ -128,7 +128,7 @@ export function containerTemplate({
                           BUTTON_SIZE_STYLE[minimumSize].minHeight
                         }px;
                         min-width: ${BUTTON_SIZE_STYLE[minimumSize].minWidth}px;
-                        max-width: ${BUTTON_SIZE_STYLE[maximumSize].maxWidth}px;
+                        
                         font-size: 0;
                     }
 
