@@ -31,7 +31,8 @@ export function getApplePayConfig(): FundingSourceConfig {
       const isEnableFundingApplepay =
         enableFunding && enableFunding.indexOf(FUNDING.APPLEPAY) !== -1;
       return (
-        !components?.includes(FUNDING.APPLEPAY) && !!isEnableFundingApplepay
+        !components?.includes(FUNDING.APPLEPAY) &&
+        Boolean(isEnableFundingApplepay)
       );
     },
 
