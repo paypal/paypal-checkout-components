@@ -29,8 +29,7 @@ describe(`paypal standalone buttons`, () => {
 
     it(`should render a standalone ${fundingSource} button and succeed when eligible`, () => {
       return wrapPromise(({ expect }) => {
-        // should not render applepay without applepay listed in xprops.enableFunding
-        // enable-funding=applepay added to test/paypal.js
+        // should not render applepay without it listed in xprops.enableFunding (see test/paypal.js)
         if (
           fundingSource === FUNDING.VENMO ||
           fundingSource === FUNDING.APPLEPAY
