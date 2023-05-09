@@ -30,7 +30,9 @@ export function getApplePayConfig(): FundingSourceConfig {
        */
       const isEnableFundingApplepay =
         enableFunding && enableFunding.indexOf(FUNDING.APPLEPAY) !== -1;
-      return !components?.includes(FUNDING.APPLEPAY) && isEnableFundingApplepay;
+      return (
+        !components?.includes(FUNDING.APPLEPAY) && !!isEnableFundingApplepay
+      );
     },
 
     platforms: [PLATFORM.DESKTOP, PLATFORM.MOBILE],
