@@ -68,7 +68,7 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
-    "@krakenjs/grumbler-scripts": "^8.0.7",
+    "@krakenjs/grumbler-scripts": "^8.1.5",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
     "@percy/cli": "1.18.0",
     "@percy/playwright": "^1.0.4",
