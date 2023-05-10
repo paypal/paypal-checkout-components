@@ -20,6 +20,7 @@ type IsFundingEligibleOptions = {|
   fundingSource: ?$Values<typeof FUNDING>,
   flow: $Values<typeof BUTTON_FLOW>,
   fundingEligibility: FundingEligibilityType,
+  enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
@@ -38,6 +39,7 @@ export function isFundingEligible(
     platform,
     fundingSource,
     fundingEligibility,
+    enableFunding,
     components,
     onShippingChange,
     onShippingAddressChange,
@@ -71,6 +73,7 @@ export function isFundingEligible(
   if (
     fundingConfig.eligible &&
     !fundingConfig.eligible({
+      enableFunding,
       components,
       experiment,
       fundingSource,
@@ -136,6 +139,7 @@ export function determineEligibleFunding({
   layout,
   platform,
   fundingEligibility,
+  enableFunding,
   components,
   onShippingChange,
   onShippingAddressChange,
@@ -152,6 +156,7 @@ export function determineEligibleFunding({
   layout: $Values<typeof BUTTON_LAYOUT>,
   platform: $Values<typeof PLATFORM>,
   fundingEligibility: FundingEligibilityType,
+  enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   onShippingChange?: ?Function,
   onShippingAddressChange?: ?Function,
@@ -173,6 +178,7 @@ export function determineEligibleFunding({
       platform,
       fundingSource,
       fundingEligibility,
+      enableFunding,
       components,
       onShippingChange,
       onShippingAddressChange,

@@ -125,6 +125,7 @@ export type FundingSourceConfig = {|
   eligible?: ({|
     components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     experiment?: ?Experiment,
+    enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
     fundingEligibility: FundingEligibilityType,
     fundingSource: ?$Values<typeof FUNDING>,
     layout?: ?$Values<typeof BUTTON_LAYOUT>,

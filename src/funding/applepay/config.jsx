@@ -22,11 +22,18 @@ export function getApplePayConfig(): FundingSourceConfig {
         applepay: true,
       };
     },
-    eligible: ({ components }) => {
+    eligible: ({ components, enableFunding }) => {
       /** If the JS SDK Script Includes Standalone ApplePay Component the Exclude the ApplePay Button From the Vertical Stack
        * https://paypal.atlassian.net/browse/DTALTPAY-1232
+       * Only render applepay in vertical stack if applepay is present in enable-funding list
+       * https://paypal.atlassian.net/browse/DTALTPAY-1236
        */
-      return !components?.includes(FUNDING.APPLEPAY);
+      const isEnableFundingApplepay =
+        enableFunding && enableFunding.indexOf(FUNDING.APPLEPAY) !== -1;
+      return (
+        !components?.includes(FUNDING.APPLEPAY) &&
+        Boolean(isEnableFundingApplepay)
+      );
     },
 
     platforms: [PLATFORM.DESKTOP, PLATFORM.MOBILE],
