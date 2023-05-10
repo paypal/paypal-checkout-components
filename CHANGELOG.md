@@ -1,3 +1,9 @@
+## <small>5.0.268 (2023-05-10)</small>
+
+* fix: add logic to allow applepay presentation in vertical stack only when enable-funding list includ ([c70dee5](https://github.com/paypal/paypal-checkout-components/commit/c70dee5)), closes [#2159](https://github.com/paypal/paypal-checkout-components/issues/2159)
+
+
+
 ## <small>5.0.267 (2023-05-03)</small>
 
 * chore(axo): Remove AXO (#2153) ([6209c4f](https://github.com/paypal/paypal-checkout-components/commit/6209c4f)), closes [#2153](https://github.com/paypal/paypal-checkout-components/issues/2153)
