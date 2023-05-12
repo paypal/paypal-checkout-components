@@ -3,20 +3,19 @@
 
 import {
   node,
-  Style,
   type ChildType,
-  type NullableChildrenType,
+  type NullableChildrenType
 } from "@krakenjs/jsx-pragmatic/src";
 
 import { CLASS, TEXT_COLOR } from "../../constants";
 
-import css from "./style.scoped.scss";
+import styles from "./style.scoped.scss";
 
 type TextProps = {|
   optional?: boolean | number,
   className?: $ReadOnlyArray<string>,
   animate?: boolean,
-  children: NullableChildrenType,
+  children: NullableChildrenType
 |};
 
 export function Text(
@@ -42,18 +41,16 @@ export function Space(): ChildType {
 
 type PlaceHolderProps = {|
   chars: number,
-  color?: $Values<typeof TEXT_COLOR>,
+  color?: $Values<typeof TEXT_COLOR>
 |};
 
 export function PlaceHolder({
   chars,
-  color = TEXT_COLOR.WHITE,
+  color = TEXT_COLOR.WHITE
 }: PlaceHolderProps): ChildType {
   return (
-    <Style css={css}>
-      <div class={["placeholder", `color-${color}`].join(" ")}>
-        {new Array(chars).fill("x").join("")}
-      </div>
-    </Style>
+    <div class={[styles["placeholder"], styles[`color-${color}`]].join(" ")}>
+      {new Array(chars).fill("x").join("")}
+    </div>
   );
 }

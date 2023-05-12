@@ -56,8 +56,34 @@ module.exports = function(modules) {
         return {}.hasOwnProperty.call(object, property);
     };
     __webpack_require__.p = "";
-    return __webpack_require__(__webpack_require__.s = 14);
+    return __webpack_require__(__webpack_require__.s = 12);
 }([ function(module, exports, __webpack_require__) {
+    var css = __webpack_require__(7);
+    var insertCss = __webpack_require__(3);
+    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+    (exports = module.exports = css.locals || {})._getContent = function() {
+        return content;
+    };
+    exports._getCss = function() {
+        return "" + css;
+    };
+    exports._insertCss = function(options) {
+        return insertCss(content, options);
+    };
+}, function(module, exports, __webpack_require__) {
+    var css = __webpack_require__(8);
+    var insertCss = __webpack_require__(3);
+    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+    (exports = module.exports = css.locals || {})._getContent = function() {
+        return content;
+    };
+    exports._getCss = function() {
+        return "" + css;
+    };
+    exports._insertCss = function(options) {
+        return insertCss(content, options);
+    };
+}, function(module, exports, __webpack_require__) {
     "use strict";
     module.exports = function(useSourceMap) {
         var list = [];
@@ -143,34 +169,8 @@ module.exports = function(modules) {
         return removeCss.bind(null, ids);
     };
 }, function(module, exports, __webpack_require__) {
-    var css = __webpack_require__(9);
-    var insertCss = __webpack_require__(1);
-    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-    (exports = module.exports = css.locals || {})._getContent = function() {
-        return content;
-    };
-    exports._getCss = function() {
-        return "" + css;
-    };
-    exports._insertCss = function(options) {
-        return insertCss(content, options);
-    };
-}, function(module, exports, __webpack_require__) {
-    var css = __webpack_require__(10);
-    var insertCss = __webpack_require__(1);
-    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-    (exports = module.exports = css.locals || {})._getContent = function() {
-        return content;
-    };
-    exports._getCss = function() {
-        return "" + css;
-    };
-    exports._insertCss = function(options) {
-        return insertCss(content, options);
-    };
-}, function(module, exports, __webpack_require__) {
-    var css = __webpack_require__(8);
-    var insertCss = __webpack_require__(1);
+    var css = __webpack_require__(6);
+    var insertCss = __webpack_require__(3);
     var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
     (exports = module.exports = css.locals || {})._getContent = function() {
         return content;
@@ -183,7 +183,7 @@ module.exports = function(modules) {
     };
 }, function(module, exports, __webpack_require__) {
     var css = __webpack_require__(11);
-    var insertCss = __webpack_require__(1);
+    var insertCss = __webpack_require__(3);
     var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
     (exports = module.exports = css.locals || {})._getContent = function() {
         return content;
@@ -195,33 +195,7 @@ module.exports = function(modules) {
         return insertCss(content, options);
     };
 }, function(module, exports, __webpack_require__) {
-    var css = __webpack_require__(12);
-    var insertCss = __webpack_require__(1);
-    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-    (exports = module.exports = css.locals || {})._getContent = function() {
-        return content;
-    };
-    exports._getCss = function() {
-        return "" + css;
-    };
-    exports._insertCss = function(options) {
-        return insertCss(content, options);
-    };
-}, function(module, exports, __webpack_require__) {
-    var css = __webpack_require__(13);
-    var insertCss = __webpack_require__(1);
-    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
-    (exports = module.exports = css.locals || {})._getContent = function() {
-        return content;
-    };
-    exports._getCss = function() {
-        return "" + css;
-    };
-    exports._insertCss = function(options) {
-        return insertCss(content, options);
-    };
-}, function(module, exports, __webpack_require__) {
-    (exports = __webpack_require__(0)(!1)).push([ module.i, ".placeholder--lPbcyavQthOO0r1_P3vzT{display:inline-block;color:rgba(0,0,0,0);background:#fff;opacity:.15;border-radius:2px;animation:1s :local(loading-placeholder) ease-in-out infinite;position:relative;top:10%;height:80%}.placeholder--lPbcyavQthOO0r1_P3vzT.color-black--3Tk_lbdM447ORLDYRQ0dRp{background:#000}.placeholder--lPbcyavQthOO0r1_P3vzT.color-white--3oh7J7dCQs8OA5hLzzKH2P{background:#fff}@keyframes loading-placeholder--1tWP7jZhwqETMvlLNT-kNU{0%{opacity:.15}50%{opacity:.3}100%{opacity:.15}}", "" ]);
+    (exports = __webpack_require__(2)(!1)).push([ module.i, ".placeholder--lPbcyavQthOO0r1_P3vzT{display:inline-block;color:rgba(0,0,0,0);background:#fff;opacity:.15;border-radius:2px;animation:1s :local(loading-placeholder) ease-in-out infinite;position:relative;top:10%;height:80%}.placeholder--lPbcyavQthOO0r1_P3vzT.color-black--3Tk_lbdM447ORLDYRQ0dRp{background:#000}.placeholder--lPbcyavQthOO0r1_P3vzT.color-white--3oh7J7dCQs8OA5hLzzKH2P{background:#fff}@keyframes loading-placeholder--1tWP7jZhwqETMvlLNT-kNU{0%{opacity:.15}50%{opacity:.3}100%{opacity:.15}}", "" ]);
     exports.locals = {
         placeholder: "placeholder--lPbcyavQthOO0r1_P3vzT",
         "color-black": "color-black--3Tk_lbdM447ORLDYRQ0dRp",
@@ -230,7 +204,7 @@ module.exports = function(modules) {
     };
     module.exports = exports;
 }, function(module, exports, __webpack_require__) {
-    (exports = __webpack_require__(0)(!1)).push([ module.i, ".wallet-label--24D3SbsjKXSsRg7szNFS3b{display:block;height:100%;text-align:center}.wallet-label--24D3SbsjKXSsRg7szNFS3b *{display:inline-block;vertical-align:middle;height:100%}.wallet-label--24D3SbsjKXSsRg7szNFS3b .divider--26qxeF9D5G5jPSp7fekQ04{margin:0 5px;opacity:.2}.wallet-label--24D3SbsjKXSsRg7szNFS3b .paypal-wordmark--3A80UcWB1-EpIbUTN30tNV{display:none}.wallet-label--24D3SbsjKXSsRg7szNFS3b .card-art--3MQswwxsHuBUtJaeZGavic{border-radius:3px}.wallet-label--24D3SbsjKXSsRg7szNFS3b .label--1WBklKI6pqWvt9TmwBdMuc{max-width:40%}.wallet-label--24D3SbsjKXSsRg7szNFS3b .label--1WBklKI6pqWvt9TmwBdMuc .limit--12nwqOBt-tlUfMd0f5Pk3h{display:block;overflow:hidden;text-overflow:ellipsis}@media only screen and (max-width: 249px){.wallet-label--24D3SbsjKXSsRg7szNFS3b .paypal-mark--cK04z-NiIRM6SCbRhTLk7,.wallet-label--24D3SbsjKXSsRg7szNFS3b .paypal-wordmark--3A80UcWB1-EpIbUTN30tNV{display:inline-block}.wallet-label--24D3SbsjKXSsRg7szNFS3b .label--1WBklKI6pqWvt9TmwBdMuc,.wallet-label--24D3SbsjKXSsRg7szNFS3b .divider--26qxeF9D5G5jPSp7fekQ04,.wallet-label--24D3SbsjKXSsRg7szNFS3b .card-art--3MQswwxsHuBUtJaeZGavic,.wallet-label--24D3SbsjKXSsRg7szNFS3b .pay-label--bbNpetZnIZH1uLfip48OP,.wallet-label--24D3SbsjKXSsRg7szNFS3b .logo--tJQ60vbJd60iGc1Q6adJb{display:none}}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx{display:flex;height:100%;width:100%;text-align:left}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx *{display:inline-block;vertical-align:top;height:100%}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .paypal-wordmark--3A80UcWB1-EpIbUTN30tNV{display:none}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .card-art--3MQswwxsHuBUtJaeZGavic{border-radius:3px}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .logo--tJQ60vbJd60iGc1Q6adJb{margin-left:auto}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .show-pay-label--1hlWg0pBH2GxRS7a_xCKna{all:inherit}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .show-instruments-on-file--2tk42jv4Ct06VznIxbn5y5{margin:auto;display:flex}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .fi-container--20c0DUNPMEV0Y7neTEdv9Q{display:flex}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .balance--2SooWr2hVJKhK8OLgAsCaO,.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .fi-logo--GoScEt9PQk1cYNV-uYFVh,.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .fi-label--TV7MRva8N7Z45PqelWAvN{display:flex;align-items:center}@media only screen and (max-width: 150px){.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx{text-align:center;display:inline-block}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .logo--tJQ60vbJd60iGc1Q6adJb{display:none}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .pay-label--bbNpetZnIZH1uLfip48OP{display:none}}", "" ]);
+    (exports = __webpack_require__(2)(!1)).push([ module.i, ".wallet-label--24D3SbsjKXSsRg7szNFS3b{display:block;height:100%;text-align:center}.wallet-label--24D3SbsjKXSsRg7szNFS3b *{display:inline-block;vertical-align:middle;height:100%}.wallet-label--24D3SbsjKXSsRg7szNFS3b .divider--26qxeF9D5G5jPSp7fekQ04{margin:0 5px;opacity:.2}.wallet-label--24D3SbsjKXSsRg7szNFS3b .paypal-wordmark--3A80UcWB1-EpIbUTN30tNV{display:none}.wallet-label--24D3SbsjKXSsRg7szNFS3b .card-art--3MQswwxsHuBUtJaeZGavic{border-radius:3px}.wallet-label--24D3SbsjKXSsRg7szNFS3b .label--1WBklKI6pqWvt9TmwBdMuc{max-width:40%}.wallet-label--24D3SbsjKXSsRg7szNFS3b .label--1WBklKI6pqWvt9TmwBdMuc .limit--12nwqOBt-tlUfMd0f5Pk3h{display:block;overflow:hidden;text-overflow:ellipsis}@media only screen and (max-width: 249px){.wallet-label--24D3SbsjKXSsRg7szNFS3b .paypal-mark--cK04z-NiIRM6SCbRhTLk7,.wallet-label--24D3SbsjKXSsRg7szNFS3b .paypal-wordmark--3A80UcWB1-EpIbUTN30tNV{display:inline-block}.wallet-label--24D3SbsjKXSsRg7szNFS3b .label--1WBklKI6pqWvt9TmwBdMuc,.wallet-label--24D3SbsjKXSsRg7szNFS3b .divider--26qxeF9D5G5jPSp7fekQ04,.wallet-label--24D3SbsjKXSsRg7szNFS3b .card-art--3MQswwxsHuBUtJaeZGavic,.wallet-label--24D3SbsjKXSsRg7szNFS3b .pay-label--bbNpetZnIZH1uLfip48OP,.wallet-label--24D3SbsjKXSsRg7szNFS3b .logo--tJQ60vbJd60iGc1Q6adJb{display:none}}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx{display:flex;height:100%;width:100%;text-align:left}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx *{display:inline-block;vertical-align:top;height:100%}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .paypal-wordmark--3A80UcWB1-EpIbUTN30tNV{display:none}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .card-art--3MQswwxsHuBUtJaeZGavic{border-radius:3px}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .logo--tJQ60vbJd60iGc1Q6adJb{margin-left:auto}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .show-pay-label--1hlWg0pBH2GxRS7a_xCKna{all:inherit}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .show-instruments-on-file--2tk42jv4Ct06VznIxbn5y5{margin:auto;display:flex}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .fi-container--20c0DUNPMEV0Y7neTEdv9Q{display:flex}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .balance--2SooWr2hVJKhK8OLgAsCaO,.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .fi-logo--GoScEt9PQk1cYNV-uYFVh,.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .fi-label--TV7MRva8N7Z45PqelWAvN{display:flex;align-items:center}@media only screen and (max-width: 150px){.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx{text-align:center;display:inline-block}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .logo--tJQ60vbJd60iGc1Q6adJb{display:none}.wallet-label-new--2VFuPMXsimTs5yv4vQ5mHx .pay-label--bbNpetZnIZH1uLfip48OP{display:none}}", "" ]);
     exports.locals = {
         "wallet-label": "wallet-label--24D3SbsjKXSsRg7szNFS3b",
         divider: "divider--26qxeF9D5G5jPSp7fekQ04",
@@ -251,7 +225,7 @@ module.exports = function(modules) {
     };
     module.exports = exports;
 }, function(module, exports, __webpack_require__) {
-    (exports = __webpack_require__(0)(!1)).push([ module.i, ".app-label--3NRyJor-Ni8dDn7mnz2OoP{margin-left:.25rem}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz{height:100%;width:100%;text-align:center}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .divider--2bifz1Q25RudMVaWaN46ro{margin:0 5px;opacity:.2}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz *{display:inline-block;vertical-align:top;height:100%}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .logo--2qGzNhxpXQIoifOmOku5pL{margin-left:auto}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .label--1WXMqZ3M3pG-h13M_EoZfE{max-width:40%}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .label--1WXMqZ3M3pG-h13M_EoZfE .limit--22z2UWf7yBWLg1YEstO6dM{display:block;overflow:hidden;text-overflow:ellipsis}@media only screen and (max-width: 150px){.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz{text-align:center;display:inline-block}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .logo--2qGzNhxpXQIoifOmOku5pL{display:none}}", "" ]);
+    (exports = __webpack_require__(2)(!1)).push([ module.i, ".app-label--3NRyJor-Ni8dDn7mnz2OoP{margin-left:.25rem}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz{height:100%;width:100%;text-align:center}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .divider--2bifz1Q25RudMVaWaN46ro{margin:0 5px;opacity:.2}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz *{display:inline-block;vertical-align:top;height:100%}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .logo--2qGzNhxpXQIoifOmOku5pL{margin-left:auto}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .label--1WXMqZ3M3pG-h13M_EoZfE{max-width:40%}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .label--1WXMqZ3M3pG-h13M_EoZfE .limit--22z2UWf7yBWLg1YEstO6dM{display:block;overflow:hidden;text-overflow:ellipsis}@media only screen and (max-width: 150px){.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz{text-align:center;display:inline-block}.wallet-label-venmo--2B34a6jPytYzlUQISvPnJz .logo--2qGzNhxpXQIoifOmOku5pL{display:none}}", "" ]);
     exports.locals = {
         "app-label": "app-label--3NRyJor-Ni8dDn7mnz2OoP",
         "wallet-label-venmo": "wallet-label-venmo--2B34a6jPytYzlUQISvPnJz",
@@ -262,17 +236,27 @@ module.exports = function(modules) {
     };
     module.exports = exports;
 }, function(module, exports, __webpack_require__) {
-    (exports = __webpack_require__(0)(!1)).push([ module.i, ".paypal-mark--3WFWdZ-2Y5MLUMnNEXRNW7 .paypal-logo-applepay--3inJ9uy1HqlH-Dv8m7yTzU{height:30px}", "" ]);
+    var css = __webpack_require__(10);
+    var insertCss = __webpack_require__(3);
+    var content = "string" == typeof css ? [ [ module.i, css, "" ] ] : css;
+    (exports = module.exports = css.locals || {})._getContent = function() {
+        return content;
+    };
+    exports._getCss = function() {
+        return "" + css;
+    };
+    exports._insertCss = function(options) {
+        return insertCss(content, options);
+    };
+}, function(module, exports, __webpack_require__) {
+    (exports = __webpack_require__(2)(!1)).push([ module.i, ".paypal-mark--3WFWdZ-2Y5MLUMnNEXRNW7 .paypal-logo-applepay--3inJ9uy1HqlH-Dv8m7yTzU{height:30px}", "" ]);
     exports.locals = {
         "paypal-mark": "paypal-mark--3WFWdZ-2Y5MLUMnNEXRNW7",
         "paypal-logo-applepay": "paypal-logo-applepay--3inJ9uy1HqlH-Dv8m7yTzU"
     };
     module.exports = exports;
 }, function(module, exports, __webpack_require__) {
-    (exports = __webpack_require__(0)(!1)).push([ module.i, "", "" ]);
-    module.exports = exports;
-}, function(module, exports, __webpack_require__) {
-    (exports = __webpack_require__(0)(!1)).push([ module.i, ".menu-button--3hyUIBVJw98yeIJZ3qf38s{position:relative;display:inline-block;margin-left:2px;cursor:pointer}.menu-button--3hyUIBVJw98yeIJZ3qf38s:focus{outline:none;box-shadow:0 0 0 2px rgba(50,50,50,.9) inset}.menu-button--3hyUIBVJw98yeIJZ3qf38s img{height:30%;width:30%;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%)}", "" ]);
+    (exports = __webpack_require__(2)(!1)).push([ module.i, ".menu-button--3hyUIBVJw98yeIJZ3qf38s{position:relative;display:inline-block;margin-left:2px;cursor:pointer}.menu-button--3hyUIBVJw98yeIJZ3qf38s:focus{outline:none;box-shadow:0 0 0 2px rgba(50,50,50,.9) inset}.menu-button--3hyUIBVJw98yeIJZ3qf38s img{height:30%;width:30%;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%)}", "" ]);
     exports.locals = {
         "menu-button": "menu-button--3hyUIBVJw98yeIJZ3qf38s"
     };
@@ -521,13 +505,6 @@ module.exports = function(modules) {
     };
     function htmlEncode(text) {
         return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/\//g, "&#x2F;");
-    }
-    function Style(_ref) {
-        var css = _ref.css, nonce = _ref.nonce, children = _ref.children;
-        return node_node(Fragment, null, node_node("style", {
-            innerHTML: "string" == typeof css ? css : css._getCss(),
-            nonce: nonce
-        }), children);
     }
     var COUNTRY = {
         AD: "AD",
@@ -3671,11 +3648,9 @@ module.exports = function(modules) {
     }
     function PlaceHolder(_ref2) {
         var chars = _ref2.chars, _ref2$color = _ref2.color;
-        return node_node(Style, {
-            css: style_scoped_default.a
-        }, node_node("div", {
-            class: [ "placeholder", "color-" + (void 0 === _ref2$color ? "white" : _ref2$color) ].join(" ")
-        }, new Array(chars).fill("x").join("")));
+        return node_node("div", {
+            class: [ style_scoped_default.a.placeholder, style_scoped_default.a["color-" + (void 0 === _ref2$color ? "white" : _ref2$color)] ].join(" ")
+        }, new Array(chars).fill("x").join(""));
     }
     var componentContent = {
         ar: {
@@ -5234,7 +5209,7 @@ module.exports = function(modules) {
     var HIDDEN = "\n    position: absolute;\n    visibility: hidden;\n";
     var VISIBLE = "\n    position: static;\n    visibility: visible;\n";
     var labelStyle = "\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + " {\n        height: 100%;\n        " + HIDDEN + "\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.TEXT + "." + CLASS.IMMEDIATE + ":not(." + CLASS.PERSONALIZATION_TEXT + "):not(." + CLASS.HIDDEN + ") {\n        " + VISIBLE + "\n        " + EXPANDED + "\n    }\n\n    ." + CLASS.BUTTON + " ." + CLASS.VAULT_LABEL + " {\n        max-width: 60%;\n        text-overflow: ellipsis;\n        overflow: hidden;\n        white-space: nowrap;\n    }\n\n    ." + CLASS.DOM_READY + " ." + CLASS.BUTTON + " ." + CLASS.TEXT + ":not(." + CLASS.IMMEDIATE + "):not(." + CLASS.PERSONALIZATION_TEXT + "):not(." + CLASS.HIDDEN + ") {\n        " + VISIBLE + "\n        " + COMPRESSED + "\n        animation: show-text 1s 0s forwards;\n    }\n\n    @keyframes show-text {\n        0% { " + COMPRESSED + " }\n        100% { " + EXPANDED + " }\n    }\n";
-    var paypal_style_scoped = __webpack_require__(2);
+    var paypal_style_scoped = __webpack_require__(0);
     var paypal_style_scoped_default = __webpack_require__.n(paypal_style_scoped);
     var template_excluded = [ "buttonDesignComponent" ];
     function template_Logo(_ref) {
@@ -5343,30 +5318,28 @@ module.exports = function(modules) {
                 locale: locale,
                 logoColor: logoColor
             }));
-            return node_node(Style, {
-                css: paypal_style_scoped_default.a
+            return node_node("div", {
+                class: paypal_style_scoped_default.a["wallet-label"]
             }, node_node("div", {
-                class: "wallet-label"
-            }, node_node("div", {
-                class: "paypal-mark"
+                class: paypal_style_scoped_default.a["paypal-mark"]
             }, node_node(PPLogoInlineSVG, {
                 logoColor: logoColor
             })), instrument.oneClick && commit && content && node_node("div", {
-                class: "pay-label"
+                class: paypal_style_scoped_default.a["pay-label"]
             }, node_node(Space, null), node_node(Text, null, content.payNow)), node_node("div", {
-                class: "paypal-wordmark"
+                class: paypal_style_scoped_default.a["paypal-wordmark"]
             }, node_node(Space, null), node_node(PayPalLogoInlineSVG, {
                 logoColor: logoColor
             })), node_node("div", {
-                class: "divider"
+                class: paypal_style_scoped_default.a.divider
             }, "|"), logo && node_node("div", {
-                class: "logo",
+                class: paypal_style_scoped_default.a.logo,
                 optional: !0
             }, logo, node_node(Space, null)), node_node("div", {
-                class: "label"
+                class: paypal_style_scoped_default.a.label
             }, node_node(Text, {
-                className: [ "limit" ]
-            }, instrument.label))));
+                className: [ paypal_style_scoped_default.a.limit ]
+            }, instrument.label)));
         }(opts);
         var logo;
         var label;
@@ -5402,12 +5375,10 @@ module.exports = function(modules) {
         var payNow = Boolean(instrument && instrument.oneClick && commit && !vault);
         var attrs = {};
         payNow && (attrs["data-pay-now"] = !0);
-        return node_node(Style, {
-            css: paypal_style_scoped_default.a
-        }, node_node("div", _extends({
-            class: "wallet-label-new"
+        return node_node("div", _extends({
+            class: paypal_style_scoped_default.a["wallet-label-new"]
         }, attrs), branded ? node_node("div", {
-            class: "paypal-mark"
+            class: paypal_style_scoped_default.a["paypal-mark"]
         }, node_node(PPLogoInlineSVG, {
             logoColor: logoColor
         }), node_node(Space, null)) : null, showPayLabel ? node_node(ShowPayLabel, {
@@ -5423,7 +5394,7 @@ module.exports = function(modules) {
             logo: logo,
             label: label,
             content: content
-        })));
+        }));
     }
     function template_Tag(_ref4) {
         var _componentContent$lan = componentContent[_ref4.locale.lang], DualTag = _componentContent$lan.DualTag;
@@ -5431,7 +5402,7 @@ module.exports = function(modules) {
             optional: !0
         });
     }
-    var venmo_style_scoped = __webpack_require__(3);
+    var venmo_style_scoped = __webpack_require__(1);
     var venmo_style_scoped_default = __webpack_require__.n(venmo_style_scoped);
     function venmo_template_WalletLabel(_ref) {
         var props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
@@ -5441,25 +5412,20 @@ module.exports = function(modules) {
             logoColor: props.logoColor
         });
         instrument && instrument.label && (label = instrument.label);
-        return node_node(Style, {
-            css: venmo_style_scoped_default.a
+        return node_node("div", {
+            class: venmo_style_scoped_default.a["wallet-label-venmo"]
         }, node_node("div", {
-            class: "wallet-label-venmo"
-        }, node_node("div", {
-            class: "divider"
+            class: venmo_style_scoped_default.a.divider
         }, "|"), logo && node_node("div", {
-            class: "logo",
+            class: venmo_style_scoped_default.a.logo,
             optional: !0
         }, logo, node_node(Space, null)), label && node_node("div", {
-            class: "label"
+            class: venmo_style_scoped_default.a.label
         }, node_node(Text, {
-            className: [ "limit" ]
-        }, label))));
+            className: venmo_style_scoped_default.a.limit
+        }, label)));
     }
-    var applepay_style_scoped = __webpack_require__(5);
-    var applepay_style_scoped_default = __webpack_require__.n(applepay_style_scoped);
-    var paylater_style_scoped = __webpack_require__(6);
-    var paylater_style_scoped_default = __webpack_require__.n(paylater_style_scoped);
+    __webpack_require__(9);
     function getLabelText(fundingEligibility) {
         var _paylater$products, _paylater$products$pa, _paylater$products2, _paylater$products2$p, _paylater$products3, _paylater$products3$p, _paylater$products4, _paylater$products4$p, _paylater$products5, _paylater$products5$p, _paylater$products6, _paylater$products6$p, _paylater$products7, _paylater$products7$p, _paylater$products8, _paylater$products8$p, _paylater$products9, _paylater$products9$p;
         var paylater = fundingEligibility.paylater;
@@ -5586,9 +5552,7 @@ module.exports = function(modules) {
                         },
                         Label: function(_ref4) {
                             var props = _extends({}, (_objectDestructuringEmpty(_ref4), _ref4));
-                            return props.experiment && props.experiment.enableVenmoAppLabel ? (AppLogo = node_node(Style, {
-                                css: venmo_style_scoped_default.a
-                            }, node_node(VenmoLogoInlineSVG, {
+                            return props.experiment && props.experiment.enableVenmoAppLabel ? (AppLogo = node_node(Fragment, null, node_node(VenmoLogoInlineSVG, {
                                 logoColor: (opts = props).logoColor
                             }), node_node(Text, {
                                 className: [ "app-label" ]
@@ -5653,9 +5617,7 @@ module.exports = function(modules) {
                             var props = _extends({}, (_objectDestructuringEmpty(_ref3), _ref3));
                             return function(_ref) {
                                 var props = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
-                                return node_node(Style, {
-                                    css: applepay_style_scoped_default.a
-                                }, node_node(ApplePayMarkInlineSVG, props));
+                                return node_node(Fragment, null, node_node(ApplePayMarkInlineSVG, props));
                             }(_extends({}, props));
                         },
                         colors: [ "black", "white" ],
@@ -5832,10 +5794,7 @@ module.exports = function(modules) {
                         },
                         Logo: function(_ref3) {
                             var fundingEligibility = _ref3.fundingEligibility;
-                            return node_node(Style, {
-                                css: paylater_style_scoped_default.a,
-                                nonce: _ref3.nonce
-                            }, node_node(PPLogoInlineSVG, {
+                            return node_node(Fragment, null, node_node(PPLogoInlineSVG, {
                                 logoColor: _ref3.logoColor
                             }), node_node(Space, null), node_node(Text, null, getLabelText(fundingEligibility) || "Pay Later"));
                         },
@@ -7797,23 +7756,21 @@ module.exports = function(modules) {
             }
         }));
     }
-    var menu_button_scoped = __webpack_require__(7);
+    var menu_button_scoped = __webpack_require__(5);
     var menu_button_scoped_default = __webpack_require__.n(menu_button_scoped);
     function MenuButton(_temp) {
         var _ref2;
         var _ref = void 0 === _temp ? {} : _temp, _ref$textColor = _ref.textColor, textColor = void 0 === _ref$textColor ? "black" : _ref$textColor, content = _ref.content;
         var labelText = null == content ? void 0 : content.moreOptions;
-        return node_node(Style, {
-            css: menu_button_scoped_default.a
-        }, node_node("div", _extends({}, ((_ref2 = {})["data-menu"] = !0, _ref2), {
+        return node_node("div", _extends({}, ((_ref2 = {})["data-menu"] = !0, _ref2), {
             tabindex: "0",
-            class: "menu-button",
+            class: menu_button_scoped_default.a["menu-button"],
             role: "button",
             "aria-label": labelText,
             "aria-haspopup": "menu"
         }), node_node(Chevron, {
             color: textColor
-        })));
+        }));
     }
     function Button(_ref) {
         var _ref2;

@@ -3,18 +3,16 @@
 
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
-import { node, Style } from "@krakenjs/jsx-pragmatic/src";
+import { node, Fragment } from "@krakenjs/jsx-pragmatic/src";
 import {
   PPLogoExternalImage,
   PPLogoInlineSVG,
-  LOGO_COLOR,
+  LOGO_COLOR
 } from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 import { Text, Space } from "../../ui/text";
-
-import css from "./style.scoped.scss";
 
 function getLabelText(fundingEligibility: FundingEligibilityType): ?string {
   const { paylater } = fundingEligibility;
@@ -77,7 +75,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
 
     Logo: ({ logoColor, nonce, fundingEligibility }) => {
       return (
-        <Style css={css} nonce={nonce}>
+        <Fragment>
           {__WEB__ ? (
             <PPLogoExternalImage logoColor={logoColor} />
           ) : (
@@ -85,7 +83,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
           )}
           <Space />
           <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
-        </Style>
+        </Fragment>
       );
     },
 
@@ -94,7 +92,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
       BUTTON_COLOR.BLACK,
       BUTTON_COLOR.GOLD,
       BUTTON_COLOR.BLUE,
-      BUTTON_COLOR.SILVER,
+      BUTTON_COLOR.SILVER
     ],
 
     secondaryColors: {
@@ -103,7 +101,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
-      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE
     },
 
     logoColors: {
@@ -111,7 +109,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: LOGO_COLOR.BLUE,
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
-      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE
     },
 
     labelText: ({ fundingEligibility }) => {
@@ -119,6 +117,6 @@ export function getPaylaterConfig(): FundingSourceConfig {
         (fundingEligibility && getLabelText(fundingEligibility)) ||
         `${FUNDING.PAYPAL} ${FUNDING.PAYLATER}`
       );
-    },
+    }
   };
 }

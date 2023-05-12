@@ -1,12 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import {
-  node,
-  Fragment,
-  Style,
-  type ChildType,
-} from "@krakenjs/jsx-pragmatic/src";
+import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import {
   PPLogoExternalImage,
   PPLogoInlineSVG,
@@ -22,7 +17,7 @@ import {
   GlyphCardInlineSVG,
   GlyphBankExternalImage,
   GlyphBankInlineSVG,
-  LOGO_CLASS,
+  LOGO_CLASS
 } from "@paypal/sdk-logos/src";
 import { FUNDING, WALLET_INSTRUMENT } from "@paypal/sdk-constants/src";
 
@@ -32,7 +27,7 @@ import {
   type DesignExperimentLabelOptions,
   type WalletLabelOptions,
   type TagOptions,
-  BasicLabel,
+  BasicLabel
 } from "../common";
 import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from "../../constants";
 import { componentContent } from "../content";
@@ -42,10 +37,10 @@ import {
   HIDDEN,
   VISIBLE,
   COMPRESSED,
-  EXPANDED,
+  EXPANDED
 } from "../../ui/buttons/styles/labels";
 
-import css from "./style.scoped.scss";
+import styles from "./style.scoped.scss";
 
 export function Logo({ logoColor }: LogoOptions): ChildType {
   return __WEB__ ? (
@@ -58,7 +53,7 @@ export function Logo({ logoColor }: LogoOptions): ChildType {
 function getPersonalizationText({
   personalization,
   layout,
-  multiple,
+  multiple
 }: LabelOptions): ?string {
   const personalizationText =
     personalization &&
@@ -268,41 +263,39 @@ export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
   }
 
   return (
-    <Style css={css}>
-      <div class="wallet-label">
-        <div class="paypal-mark">
-          {__WEB__ ? (
-            <PPLogoExternalImage logoColor={logoColor} />
-          ) : (
-            <PPLogoInlineSVG logoColor={logoColor} />
-          )}
-        </div>
-        {instrument.oneClick && commit && content && (
-          <div class="pay-label">
-            <Space />
-            <Text>{content.payNow}</Text>
-          </div>
+    <div class={styles["wallet-label"]}>
+      <div class={styles["paypal-mark"]}>
+        {__WEB__ ? (
+          <PPLogoExternalImage logoColor={logoColor} />
+        ) : (
+          <PPLogoInlineSVG logoColor={logoColor} />
         )}
-        <div class="paypal-wordmark">
-          <Space />
-          {__WEB__ ? (
-            <PayPalLogoExternalImage logoColor={logoColor} />
-          ) : (
-            <PayPalLogoInlineSVG logoColor={logoColor} />
-          )}
-        </div>
-        <div class="divider">|</div>
-        {logo && (
-          <div class="logo" optional>
-            {logo}
-            <Space />
-          </div>
-        )}
-        <div class="label">
-          <Text className={["limit"]}>{instrument.label}</Text>
-        </div>
       </div>
-    </Style>
+      {instrument.oneClick && commit && content && (
+        <div class={styles["pay-label"]}>
+          <Space />
+          <Text>{content.payNow}</Text>
+        </div>
+      )}
+      <div class={styles["paypal-wordmark"]}>
+        <Space />
+        {__WEB__ ? (
+          <PayPalLogoExternalImage logoColor={logoColor} />
+        ) : (
+          <PayPalLogoInlineSVG logoColor={logoColor} />
+        )}
+      </div>
+      <div class={styles["divider"]}>|</div>
+      {logo && (
+        <div class={styles["logo"]} optional>
+          {logo}
+          <Space />
+        </div>
+      )}
+      <div class={styles["label"]}>
+        <Text className={[styles["limit"]]}>{instrument.label}</Text>
+      </div>
+    </div>
   );
 }
 
@@ -396,7 +389,7 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
     vault,
     textColor,
     fundingSource,
-    showPayLabel,
+    showPayLabel
   } = opts;
 
   if (instrument && !instrument.type) {
@@ -469,38 +462,36 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
   }
 
   return (
-    <Style css={css}>
-      <div class="wallet-label-new" {...attrs}>
-        {branded ? (
-          <div class="paypal-mark">
-            {__WEB__ ? (
-              <PPLogoExternalImage logoColor={logoColor} />
-            ) : (
-              <PPLogoInlineSVG logoColor={logoColor} />
-            )}
-            <Space />
-          </div>
-        ) : null}
-        {showPayLabel ? (
-          <ShowPayLabel
-            instrument={instrument}
-            content={content}
-            payNow={payNow}
-            textColor={textColor}
-            logo={logo}
-            label={label}
-          />
-        ) : (
-          <ShowInstrumentsOnFile
-            instrument={instrument}
-            textColor={textColor}
-            logo={logo}
-            label={label}
-            content={content}
-          />
-        )}
-      </div>
-    </Style>
+    <div class={styles["wallet-label-new"]} {...attrs}>
+      {branded ? (
+        <div class={styles["paypal-mark"]}>
+          {__WEB__ ? (
+            <PPLogoExternalImage logoColor={logoColor} />
+          ) : (
+            <PPLogoInlineSVG logoColor={logoColor} />
+          )}
+          <Space />
+        </div>
+      ) : null}
+      {showPayLabel ? (
+        <ShowPayLabel
+          instrument={instrument}
+          content={content}
+          payNow={payNow}
+          textColor={textColor}
+          logo={logo}
+          label={label}
+        />
+      ) : (
+        <ShowInstrumentsOnFile
+          instrument={instrument}
+          textColor={textColor}
+          logo={logo}
+          label={label}
+          content={content}
+        />
+      )}
+    </div>
   );
 }
 

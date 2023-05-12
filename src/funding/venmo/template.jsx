@@ -1,32 +1,32 @@
 /* @flow */
 /** @jsx node */
-import { node, Style, type ChildType } from "@krakenjs/jsx-pragmatic/src";
+import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import {
   VenmoLogoExternalImage,
-  VenmoLogoInlineSVG,
+  VenmoLogoInlineSVG
 } from "@paypal/sdk-logos/src";
 
 import {
   type WalletLabelOptions,
   type LabelOptions,
-  BasicLabel,
+  BasicLabel
 } from "../common";
 import { Text, Space } from "../../ui/text";
 
-import css from "./style.scoped.scss";
+import styles from "./style.scoped.scss";
 
 export function AppLabel(opts: LabelOptions): ChildType {
   const { logoColor } = opts;
 
   const AppLogo: ChildType = (
-    <Style css={css}>
+    <Fragment>
       {__WEB__ ? (
         <VenmoLogoExternalImage logoColor={logoColor} />
       ) : (
         <VenmoLogoInlineSVG logoColor={logoColor} />
       )}
       <Text className={["app-label"]}>App</Text>
-    </Style>
+    </Fragment>
   );
 
   return <BasicLabel {...opts} logo={AppLogo} />;
@@ -50,21 +50,19 @@ export function WalletLabel({ ...props }: WalletLabelOptions): ChildType {
   }
 
   return (
-    <Style css={css}>
-      <div class="wallet-label-venmo">
-        <div class="divider">|</div>
-        {logo && (
-          <div class="logo" optional>
-            {logo}
-            <Space />
-          </div>
-        )}
-        {label && (
-          <div class="label">
-            <Text className={["limit"]}>{label}</Text>
-          </div>
-        )}
-      </div>
-    </Style>
+    <div class={styles["wallet-label-venmo"]}>
+      <div class={styles["divider"]}>|</div>
+      {logo && (
+        <div class={styles["logo"]} optional>
+          {logo}
+          <Space />
+        </div>
+      )}
+      {label && (
+        <div class={styles["label"]}>
+          <Text className={styles["limit"]}>{label}</Text>
+        </div>
+      )}
+    </div>
   );
 }
