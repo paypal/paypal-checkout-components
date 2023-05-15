@@ -154,7 +154,9 @@ export function Button({
           ? "installmentWithPeriod"
           : "installmentWithoutPeriod";
       }
-      labelText = content.label[labelKey];
+      if (content) {
+        labelText = content.label[labelKey];
+      }
     }
 
     if (!showPayLabel && instrument?.vendor && instrument.label) {
