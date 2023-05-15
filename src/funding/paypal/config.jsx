@@ -38,8 +38,18 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
     },
 
-    labelText: `${FUNDING_BRAND_LABEL.PAYPAL}`,
-
+    labelText: ({ content, label, period }) => {
+      let text = `${FUNDING_BRAND_LABEL.PAYPAL}`;
+      if (label === "installment") {
+        text =
+          content.label[
+            period ? "installmentWithPeriod" : "installmentWithoutPeriod"
+          ];
+      } else if (content && label) {
+        text = content.label[label];
+      }
+      return text;
+    },
     Logo,
     Label,
     WalletLabel,

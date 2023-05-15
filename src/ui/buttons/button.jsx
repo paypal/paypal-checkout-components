@@ -144,20 +144,13 @@ export function Button({
   function getAriaLabel(): string {
     let labelText =
       typeof fundingConfig.labelText === "function"
-        ? fundingConfig.labelText({ content, fundingEligibility })
-        : fundingConfig.labelText;
-
-    if (!fundingConfig.labelText) {
-      let labelKey = style.label;
-      if (labelKey === "installment") {
-        labelKey = style.period
-          ? "installmentWithPeriod"
-          : "installmentWithoutPeriod";
-      }
-      if (content) {
-        labelText = content.label[labelKey];
-      }
-    }
+        ? fundingConfig.labelText({
+            content,
+            fundingEligibility,
+            label,
+            period,
+          })
+        : fundingConfig.labelText || fundingSource;
 
     if (!showPayLabel && instrument?.vendor && instrument.label) {
       labelText = instrument.secondaryInstruments
