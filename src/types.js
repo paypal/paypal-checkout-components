@@ -48,6 +48,16 @@ export type ContentType = {|
   flex: string,
   payPalBalance: string,
   moreOptions: string,
+  label: LabelContentType,
+|};
+
+type LabelContentType = {|
+  paypal: string,
+  checkout: string,
+  buynow: string,
+  pay: string,
+  installmentWithPeriod: string,
+  installmentWithoutPeriod: string,
 |};
 
 export type Experiment = {|

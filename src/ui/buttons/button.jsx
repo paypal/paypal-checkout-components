@@ -145,7 +145,17 @@ export function Button({
     let labelText =
       typeof fundingConfig.labelText === "function"
         ? fundingConfig.labelText({ content, fundingEligibility })
-        : fundingConfig.labelText || fundingSource;
+        : fundingConfig.labelText;
+
+    if (!fundingConfig.labelText) {
+      let labelKey = style.label;
+      if (labelKey === "installment") {
+        labelKey = style.period
+          ? "installmentWithPeriod"
+          : "installmentWithoutPeriod";
+      }
+      labelText = content.label[labelKey];
+    }
 
     if (!showPayLabel && instrument?.vendor && instrument.label) {
       labelText = instrument.secondaryInstruments
