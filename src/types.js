@@ -31,6 +31,15 @@ export type Wallet = {|
   venmo: WalletPaymentType,
 |};
 
+type LabelContentType = {|
+  paypal: string,
+  checkout: string,
+  buynow: string,
+  pay: string,
+  installmentWithPeriod: string,
+  installmentWithoutPeriod: string,
+|};
+
 export type ContentType = {|
   instantlyPayWith: string,
   poweredBy: string,
@@ -49,15 +58,6 @@ export type ContentType = {|
   payPalBalance: string,
   moreOptions: string,
   label: LabelContentType,
-|};
-
-type LabelContentType = {|
-  paypal: string,
-  checkout: string,
-  buynow: string,
-  pay: string,
-  installmentWithPeriod: string,
-  installmentWithoutPeriod: string,
 |};
 
 export type Experiment = {|
