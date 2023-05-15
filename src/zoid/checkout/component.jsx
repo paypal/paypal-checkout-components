@@ -77,7 +77,6 @@ export function getCheckoutComponent(): CheckoutComponent {
           locale: { lang },
         } = props;
         const content = containerContent[lang];
-        console.log(">>> zoid checkout content", containerContent);
         return (
           <Overlay
             context={context}
