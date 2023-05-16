@@ -23,7 +23,7 @@ export function checkForDeprecatedIntegration() {
             // eslint-disable-next-line no-console
             console.error(`
                 This integration pattern using '<script type="application/x-component">' is no longer supported.
-                Please visit https://developer.paypal.com/demo/checkout-v4/#/pattern/client 
+                Please visit https://developer.paypal.com/demo/checkout-v4/
                 for an example of the new recommended integration pattern.
             `);
         }
