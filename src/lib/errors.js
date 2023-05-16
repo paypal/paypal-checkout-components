@@ -20,6 +20,8 @@ export function checkForDeprecatedIntegration() {
 
     for (const script of scripts) {
         if (script.attributes.type?.value === 'application/x-component') {
+            warn('deprecated_integration_application_xcomponent');
+
             // eslint-disable-next-line no-console
             console.error(`
                 This integration pattern using '<script type="application/x-component">' is no longer supported.
