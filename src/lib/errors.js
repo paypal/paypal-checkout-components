@@ -16,17 +16,17 @@ function logWarn(err) : void {
 }
 
 export function checkForDeprecatedIntegration() {
-    // eslint-disable-next-line unicorn/prefer-spread
-    const scripts = Array.from(document.getElementsByTagName('script'));
+    const scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
 
-    // $FlowFixMe
-    if (scripts.some(script => script.attributes.type?.value === 'application/x-component')) {
-        // eslint-disable-next-line no-console
-        console.error(`
-            This integration pattern is no longer supported.
-            Please visit https://developer.paypal.com/demo/checkout-v4/#/pattern/client 
-            for an example of the new recommended integration pattern.
-        `);
+    for (const script of scripts) {
+        if (script.attributes.type?.value === 'application/x-component') {
+            // eslint-disable-next-line no-console
+            console.error(`
+                This integration pattern using '<script type="application/x-component">' is no longer supported.
+                Please visit https://developer.paypal.com/demo/checkout-v4/#/pattern/client 
+                for an example of the new recommended integration pattern.
+            `);
+        }
     }
 }
 
