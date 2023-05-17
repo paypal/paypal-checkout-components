@@ -1306,83 +1306,74 @@
     function replaceObject(item, replacers, fullKey) {
         void 0 === fullKey && (fullKey = "");
         if (Array.isArray(item)) {
-            var _ret = function() {
-                var length = item.length;
-                var result = [];
-                var _loop = function(i) {
-                    Object.defineProperty(result, i, {
-                        configurable: !0,
-                        enumerable: !0,
-                        get: function() {
-                            var itemKey = fullKey ? fullKey + "." + i : "" + i;
-                            var child = item[i];
-                            var replacer = replacers[typeof child];
-                            if (replacer) {
-                                var replaced = replacer(child, i, itemKey);
-                                if (void 0 !== replaced) {
-                                    result[i] = replaced;
-                                    return result[i];
-                                }
-                            }
-                            if ("object" == typeof child && null !== child) {
-                                result[i] = replaceObject(child, replacers, itemKey);
+            var length = item.length;
+            var result = [];
+            var _loop = function(i) {
+                Object.defineProperty(result, i, {
+                    configurable: !0,
+                    enumerable: !0,
+                    get: function() {
+                        var itemKey = fullKey ? fullKey + "." + i : "" + i;
+                        var child = item[i];
+                        var replacer = replacers[typeof child];
+                        if (replacer) {
+                            var replaced = replacer(child, i, itemKey);
+                            if (void 0 !== replaced) {
+                                result[i] = replaced;
                                 return result[i];
                             }
-                            result[i] = child;
+                        }
+                        if ("object" == typeof child && null !== child) {
+                            result[i] = replaceObject(child, replacers, itemKey);
                             return result[i];
-                        },
-                        set: function(value) {
-                            delete result[i];
-                            result[i] = value;
                         }
-                    });
-                };
-                for (var i = 0; i < length; i++) _loop(i);
-                return {
-                    v: result
-                };
-            }();
-            if ("object" == typeof _ret) return _ret.v;
-        } else {
-            if ("object" != typeof item || null === item) throw new Error("Pass an object or array");
-            var _ret2 = function() {
-                var result = {};
-                var _loop2 = function(key) {
-                    if (!item.hasOwnProperty(key)) return "continue";
-                    Object.defineProperty(result, key, {
-                        configurable: !0,
-                        enumerable: !0,
-                        get: function() {
-                            var itemKey = fullKey ? fullKey + "." + key : "" + key;
-                            var child = item[key];
-                            var replacer = replacers[typeof child];
-                            if (replacer) {
-                                var replaced = replacer(child, key, itemKey);
-                                if (void 0 !== replaced) {
-                                    result[key] = replaced;
-                                    return result[key];
-                                }
-                            }
-                            if ("object" == typeof child && null !== child) {
-                                result[key] = replaceObject(child, replacers, itemKey);
-                                return result[key];
-                            }
-                            result[key] = child;
-                            return result[key];
-                        },
-                        set: function(value) {
-                            delete result[key];
-                            result[key] = value;
-                        }
-                    });
-                };
-                for (var key in item) _loop2(key);
-                return {
-                    v: result
-                };
-            }();
-            if ("object" == typeof _ret2) return _ret2.v;
+                        result[i] = child;
+                        return result[i];
+                    },
+                    set: function(value) {
+                        delete result[i];
+                        result[i] = value;
+                    }
+                });
+            };
+            for (var i = 0; i < length; i++) _loop(i);
+            return result;
         }
+        if ("object" == typeof item && null !== item) {
+            var _result = {};
+            var _loop2 = function(key) {
+                if (!item.hasOwnProperty(key)) return "continue";
+                Object.defineProperty(_result, key, {
+                    configurable: !0,
+                    enumerable: !0,
+                    get: function() {
+                        var itemKey = fullKey ? fullKey + "." + key : "" + key;
+                        var child = item[key];
+                        var replacer = replacers[typeof child];
+                        if (replacer) {
+                            var replaced = replacer(child, key, itemKey);
+                            if (void 0 !== replaced) {
+                                _result[key] = replaced;
+                                return _result[key];
+                            }
+                        }
+                        if ("object" == typeof child && null !== child) {
+                            _result[key] = replaceObject(child, replacers, itemKey);
+                            return _result[key];
+                        }
+                        _result[key] = child;
+                        return _result[key];
+                    },
+                    set: function(value) {
+                        delete _result[key];
+                        _result[key] = value;
+                    }
+                });
+            };
+            for (var key in item) _loop2(key);
+            return _result;
+        }
+        throw new Error("Pass an object or array");
     }
     function copyProp(source, target, name, def) {
         if (source.hasOwnProperty(name)) {
@@ -3056,7 +3047,7 @@
         locales: constants.A,
         scriptUrl: "//www.paypalobjects.com/api/checkout.v4.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.336",
+        version: "4.0.337",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
         state: "checkoutjs",
@@ -6786,7 +6777,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.336";
+            payload.version = "4.0.337";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -7641,18 +7632,18 @@
     var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
     __webpack_require__(21);
-    if (window.paypal && "4.0.336" === window.paypal.version) {
+    if (window.paypal && "4.0.337" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.336"
+            version: "4.0.337"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.336) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.337) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.336" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.337" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.336"
+            version: "4.0.337"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.336");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.337");
     }
     try {
         var _interface = __webpack_require__(40);
@@ -8025,7 +8016,7 @@
             if (!domain) throw new Error("Must pass domain to listen to");
             if (this.listeners) {
                 var listeners = this.listeners();
-                var _loop = function(_i4, _Object$keys2) {
+                var _loop = function() {
                     var listenerName = _Object$keys2[_i4];
                     var name = listenerName.replace(/^zoid_/, "");
                     var errorHandler = function(err) {
@@ -8056,7 +8047,7 @@
                         errorListener.cancel();
                     }));
                 };
-                for (var _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop(_i4, _Object$keys2);
+                for (var _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop();
             }
         };
         return BaseComponent;
@@ -8140,9 +8131,9 @@
             }
             _this.component.log("construct_child");
             _this.onPropHandlers = [];
-            var _loop = function(_i2, _ref2) {
+            var _loop = function() {
                 var item = _ref2[_i2];
-                var _loop2 = function(_i4, _ref4) {
+                var _loop2 = function() {
                     var _ref4$_i = _ref4[_i4], name = _ref4$_i[0], getter = _ref4$_i[1];
                     Object.defineProperty(item, name, {
                         configurable: !0,
@@ -8158,9 +8149,9 @@
                     return Object(assertThisInitialized.a)(_this);
                 } ], [ "xprops", function() {
                     return _this.props;
-                } ] ]; _i4 < _ref4.length; _i4++) _loop2(_i4, _ref4);
+                } ] ]; _i4 < _ref4.length; _i4++) _loop2();
             };
-            for (var _i2 = 0, _ref2 = [ _this.component, window ]; _i2 < _ref2.length; _i2++) _loop(_i2, _ref2);
+            for (var _i2 = 0, _ref2 = [ _this.component, window ]; _i2 < _ref2.length; _i2++) _loop();
             _this.component.log("init_child");
             _this.setWindows();
             _this.onInit = _this.sendToParent(constants.POST_MESSAGE.INIT, {
@@ -9163,7 +9154,7 @@
                 throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.S)(err));
             }));
             var overrides = this.driver.delegateOverrides;
-            var _loop = function(_i6, _Object$keys4) {
+            var _loop = function() {
                 var key = _Object$keys4[_i6];
                 var val = overrides[key];
                 if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
@@ -9178,7 +9169,7 @@
                     }));
                 };
             };
-            for (var _i6 = 0, _Object$keys4 = Object.keys(overrides); _i6 < _Object$keys4.length; _i6++) _loop(_i6, _Object$keys4);
+            for (var _i6 = 0, _Object$keys4 = Object.keys(overrides); _i6 < _Object$keys4.length; _i6++) _loop();
         };
         _proto.watchForClose = function() {
             var _this16 = this;
@@ -9618,13 +9609,13 @@
         _proto.getOverrides = function(context) {
             var overrides = {};
             var self = this;
-            var _loop = function(_i6, _Object$keys4) {
+            var _loop = function() {
                 var key = _Object$keys4[_i6];
                 overrides[key] = function() {
                     return parent_ParentComponent.prototype[key].apply(self, arguments);
                 };
             };
-            for (var _i6 = 0, _Object$keys4 = Object.keys(RENDER_DRIVERS[context].delegateOverrides); _i6 < _Object$keys4.length; _i6++) _loop(_i6, _Object$keys4);
+            for (var _i6 = 0, _Object$keys4 = Object.keys(RENDER_DRIVERS[context].delegateOverrides); _i6 < _Object$keys4.length; _i6++) _loop();
             return overrides;
         };
         _proto.destroy = function() {
@@ -10162,7 +10153,7 @@
         });
     }));
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.336";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.337";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -10172,7 +10163,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.336.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.337.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -10267,6 +10258,16 @@
         if (window.console) {
             if (window.console.warn) return window.console.warn(err);
             if (window.console.log) return window.console.log(err);
+        }
+    }
+    function checkForDeprecatedIntegration() {
+        var scripts = [].slice.call(document.getElementsByTagName("script"));
+        for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+            var _script$attributes$ty;
+            if ("application/x-component" === (null == (_script$attributes$ty = scripts[_i2].attributes.type) ? void 0 : _script$attributes$ty.value)) {
+                Object(beaver_logger_client.p)("deprecated_integration_application_xcomponent");
+                console.error("\n                This integration pattern using '<script type=\"application/x-component\">' is no longer supported.\n                Please visit https://developer.paypal.com/demo/checkout-v4/\n                for an example of the new recommended integration pattern.\n            ");
+            }
         }
     }
     var headerBuilders = [];
@@ -23277,7 +23278,7 @@
                 logoColor: "blue"
             })));
         }(props_normalizeProps(props)) : null;
-        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.336", 
+        return jsxToHTML("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[src_constants.c.VERSION] = "4.0.337", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -23325,7 +23326,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.336", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[src_constants.c.SMART_BUTTON_VERSION] = "4.0.337", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        max-width: " + BUTTON_STYLE[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + src_constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + src_constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + BUTTON_STYLE[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -24343,7 +24344,7 @@
             return new zalgo_promise_src.a(belter_src.q);
         }
         debounce = !0;
-        var _loop = function(_i2, _ref5) {
+        var _loop = function() {
             var methodName = _ref5[_i2];
             var original = props[methodName];
             props[methodName] = function() {
@@ -24351,7 +24352,7 @@
                 if (original) return original.apply(this, arguments);
             };
         };
-        for (var _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop(_i2, _ref5);
+        for (var _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop();
         return callOriginal();
     }));
     Object(util.l)(rest.payment, "create", (function(_ref6) {
@@ -24625,7 +24626,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: Object(lib_session.c)(),
-                    ver: "4.0.336"
+                    ver: "4.0.337"
                 };
             }));
             Object(beaver_logger_client.a)((function() {
@@ -24686,6 +24687,7 @@
                 logLevel: "warn"
             });
         }();
+        window.addEventListener("load", checkForDeprecatedIntegration);
         pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript();
         precacheRemembered && (Object(lib_session.d)((function(session) {
             return session.recentlyCheckedRemembered;
@@ -24785,7 +24787,7 @@
     }
     var interface_postRobot = src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.336";
+    var interface_version = "4.0.337";
     var interface_Checkout;
     var interface_BillingPage;
     var PayPalCheckout;
