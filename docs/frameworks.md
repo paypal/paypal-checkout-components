@@ -3,32 +3,6 @@
 You can also drop a PayPal Button inline on your page, using a simple `<script>` tag, or with `React.js`, `Angular.js`, or `Ember.js`.
 The button will appear exactly where you place it in your HTML.
 
-## Script Tag
-
-```html
-<div class="myCart">
-    <p>Buy <strong>Full Body Lobster Onesie - $24.99</strong> now!</p>
-
-    <script type="application/x-component" data-component="paypal-button">
-        {
-            client: {
-                ...
-            },
-
-            payment: function() {
-                ...
-            },
-
-            commit: true,
-
-            onAuthorize: function(data, actions) {
-                ...
-            }
-        }
-    </script>
-</div>
-```
-
 ## React.js Element
 
 ```javascript
