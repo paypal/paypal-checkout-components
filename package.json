@@ -95,7 +95,7 @@
     "hi-base32": "^0.5.0",
     "post-robot": "^8.0.0",
     "zalgo-promise": "^1.0.10",
-    "zoid": "^6.0.67"
+    "zoid": "6.0.80"
   },
   "config": {
     "commitizen": {

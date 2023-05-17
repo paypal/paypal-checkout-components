@@ -15,6 +15,23 @@ function logWarn(err) : void {
     }
 }
 
+export function checkForDeprecatedIntegration() {
+    const scripts = Array.prototype.slice.call(document.getElementsByTagName('script'));
+
+    for (const script of scripts) {
+        if (script.attributes.type?.value === 'application/x-component') {
+            warn('deprecated_integration_application_xcomponent');
+
+            // eslint-disable-next-line no-console
+            console.error(`
+                This integration pattern using '<script type="application/x-component">' is no longer supported.
+                Please visit https://developer.paypal.com/demo/checkout-v4/
+                for an example of the new recommended integration pattern.
+            `);
+        }
+    }
+}
+
 export function checkForCommonErrors() {
 
     if (JSON.stringify([]) !== '[]') {
