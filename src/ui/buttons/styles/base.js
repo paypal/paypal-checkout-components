@@ -15,7 +15,7 @@ export function componentStyle({
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
-  disableMaxWidth?: Boolean,
+  disableMaxWidth?: ?boolean,
 |}): string {
   return `
         ${pageStyle}

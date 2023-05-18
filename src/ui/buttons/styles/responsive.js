@@ -28,7 +28,7 @@ export function buttonResponsiveStyle({
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
-  disableMaxWidth?: Boolean,
+  disableMaxWidth?: ?boolean,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {

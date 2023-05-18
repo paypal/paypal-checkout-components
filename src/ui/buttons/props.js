@@ -615,8 +615,6 @@ export function normalizeButtonStyle(
     disableMaxWidth,
   } = style;
 
-  console.log("disableMaxWidth: ", disableMaxWidth);
-
   // $FlowFixMe
   if (tagline === "false") {
     // $FlowFixMe
