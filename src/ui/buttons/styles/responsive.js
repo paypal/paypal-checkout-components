@@ -61,9 +61,7 @@ export function buttonResponsiveStyle({
 
                 .${CLASS.CONTAINER} {
                     min-width: ${style.minWidth}px;
-                    max-width: ${
-                      disableMaxWidth ? `100%` : `${style.maxWidth}px;`
-                    };
+                    ${disableMaxWidth ? "" : `max-width: ${style.maxWidth}px;`};
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
