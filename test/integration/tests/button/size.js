@@ -405,11 +405,12 @@ describe(`paypal button component sizes`, () => {
         onRendered() {
           setTimeout(() => {
             const frame = getElement("#testContainer iframe");
-            const container = frame.contentWindow.document.body.querySelector(
-              ".paypal-button-container"
-            );
-            const width = container.offsetWidth;
-            const height = container.offsetHeight;
+            const buttonContainer =
+              frame.contentWindow.document.body.querySelector(
+                ".paypal-button-container"
+              );
+            const width = buttonContainer.offsetWidth;
+            const height = buttonContainer.offsetHeight;
 
             if (width !== expectedWidth) {
               return done(
