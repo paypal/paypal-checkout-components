@@ -1349,8 +1349,8 @@
         var cross_domain_utils_src = __webpack_require__(7);
         var belter_src = __webpack_require__(11);
         function isSupportedNativeBrowser() {
-            var userAgent = Object(belter_src.c)();
-            return !(!Object(belter_src.t)(userAgent) || Object(belter_src.n)() || (!Object(belter_src.l)() || !Object(belter_src.o)()) && (!Object(belter_src.f)() || !Object(belter_src.g)()));
+            var userAgent = Object(belter_src.b)();
+            return !(!Object(belter_src.p)(userAgent) || Object(belter_src.l)() || (!Object(belter_src.j)() || !Object(belter_src.m)()) && (!Object(belter_src.d)() || !Object(belter_src.e)()));
         }
         var util = __webpack_require__(14);
         var post_robot_src = __webpack_require__(15);
@@ -1544,7 +1544,7 @@
             }
         }
         function allowIframe() {
-            if (!Object(belter_src.t)()) return !0;
+            if (!Object(belter_src.p)()) return !0;
             var parentWindow = Object(cross_domain_utils_src.n)(window);
             if (parentWindow && Object(cross_domain_utils_src.v)(parentWindow)) return !0;
             var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
@@ -1634,7 +1634,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.337";
+            return "4.0.338";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1644,7 +1644,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.337.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.338.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1692,7 +1692,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.337"
+                    ver: "4.0.338"
                 };
             }));
             Object(client.a)((function() {
@@ -1737,7 +1737,7 @@
                     var script = getCurrentScript();
                     if (script && script.hasAttribute("data-page-type")) {
                         var pageType = script.getAttribute("data-page-type").toLowerCase();
-                        if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
+                        if (-1 === Object(belter_src.r)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
                         return pageType;
                     }
                     return "";
@@ -1761,7 +1761,7 @@
         }
         var bowserCache = {};
         function getBowser() {
-            var userAgent = Object(belter_src.c)();
+            var userAgent = Object(belter_src.b)();
             if (bowserCache[userAgent]) return bowserCache[userAgent];
             delete __webpack_require__.c[42];
             var bowser = __webpack_require__(42);
@@ -1781,11 +1781,11 @@
         }
         var eligibilityResults = {};
         function isEligible() {
-            if (Object(belter_src.k)()) return !1;
+            if (Object(belter_src.i)()) return !1;
             var userAgent = window.navigator.userAgent;
             if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
             var result = function() {
-                if (Object(belter_src.k)()) return !1;
+                if (Object(belter_src.i)()) return !1;
                 var bowser = getBowser();
                 var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
                 return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
@@ -1831,8 +1831,8 @@
                 logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
                 Object(client.q)("json_stringify_object_broken");
             }
-            Object(belter_src.k)() && Object(client.q)("ie_intranet_mode");
-            Object(belter_src.i)() && !Object(belter_src.j)() && Object(client.q)("ie_meta_compatibility_header_missing", {
+            Object(belter_src.i)() && Object(client.q)("ie_intranet_mode");
+            Object(belter_src.g)() && !Object(belter_src.h)() && Object(client.q)("ie_meta_compatibility_header_missing", {
                 message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
             });
             3 !== function(bar, baz, zomg) {}.bind({
@@ -2006,7 +2006,7 @@
         var openMetaFrame = Object(util.i)((function(env) {
             void 0 === env && (env = config.a.env);
             return zalgo_promise_src.a.try((function() {
-                if (Object(belter_src.k)()) return {
+                if (Object(belter_src.i)()) return {
                     iframeEligible: !1,
                     iframeEligibleReason: "ie_intranet",
                     rememberedFunding: []
@@ -2019,7 +2019,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.337"
+                        version: "4.0.338"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2658,7 +2658,7 @@
             locales: constants.A,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.337",
+            version: "4.0.338",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
             state: "checkoutjs",
@@ -5107,70 +5107,58 @@
         0 === window.location.href.indexOf(CONSTANTS.FILE_PROTOCOL) && (CONFIG.ALLOW_POSTMESSAGE_POPUP = !0);
     }, function(module, __webpack_exports__, __webpack_require__) {
         "use strict";
-        __webpack_require__.d(__webpack_exports__, "c", (function() {
+        __webpack_require__.d(__webpack_exports__, "b", (function() {
             return getUserAgent;
         }));
-        __webpack_require__.d(__webpack_exports__, "h", (function() {
+        __webpack_require__.d(__webpack_exports__, "f", (function() {
             return isDevice;
         }));
-        __webpack_require__.d(__webpack_exports__, "f", (function() {
+        __webpack_require__.d(__webpack_exports__, "d", (function() {
             return isAndroid;
         }));
-        __webpack_require__.d(__webpack_exports__, "l", (function() {
+        __webpack_require__.d(__webpack_exports__, "j", (function() {
             return isIos;
         }));
-        __webpack_require__.d(__webpack_exports__, "n", (function() {
+        __webpack_require__.d(__webpack_exports__, "l", (function() {
             return isSFVC;
         }));
-        __webpack_require__.d(__webpack_exports__, "i", (function() {
+        __webpack_require__.d(__webpack_exports__, "g", (function() {
             return device_isIE;
         }));
-        __webpack_require__.d(__webpack_exports__, "j", (function() {
+        __webpack_require__.d(__webpack_exports__, "h", (function() {
             return isIECompHeader;
         }));
-        __webpack_require__.d(__webpack_exports__, "k", (function() {
+        __webpack_require__.d(__webpack_exports__, "i", (function() {
             return isIEIntranet;
         }));
-        __webpack_require__.d(__webpack_exports__, "t", (function() {
+        __webpack_require__.d(__webpack_exports__, "p", (function() {
             return supportsPopups;
         }));
-        __webpack_require__.d(__webpack_exports__, "g", (function() {
+        __webpack_require__.d(__webpack_exports__, "e", (function() {
             return isChrome;
         }));
-        __webpack_require__.d(__webpack_exports__, "o", (function() {
+        __webpack_require__.d(__webpack_exports__, "m", (function() {
             return isSafari;
         }));
-        __webpack_require__.d(__webpack_exports__, "m", (function() {
+        __webpack_require__.d(__webpack_exports__, "k", (function() {
             return isLocalStorageEnabled;
-        }));
-        __webpack_require__.d(__webpack_exports__, "b", (function() {
-            return getElementSafe;
-        }));
-        __webpack_require__.d(__webpack_exports__, "r", (function() {
-            return onResize;
-        }));
-        __webpack_require__.d(__webpack_exports__, "p", (function() {
-            return isShadowElement;
-        }));
-        __webpack_require__.d(__webpack_exports__, "e", (function() {
-            return insertShadowSlot;
         }));
         __webpack_require__.d(__webpack_exports__, "a", (function() {
             return base64encode;
         }));
-        __webpack_require__.d(__webpack_exports__, "u", (function() {
+        __webpack_require__.d(__webpack_exports__, "q", (function() {
             return uniqueID;
         }));
-        __webpack_require__.d(__webpack_exports__, "q", (function() {
+        __webpack_require__.d(__webpack_exports__, "n", (function() {
             return noop;
         }));
-        __webpack_require__.d(__webpack_exports__, "s", (function() {
+        __webpack_require__.d(__webpack_exports__, "o", (function() {
             return once;
         }));
-        __webpack_require__.d(__webpack_exports__, "v", (function() {
+        __webpack_require__.d(__webpack_exports__, "r", (function() {
             return values;
         }));
-        __webpack_require__.d(__webpack_exports__, "d", (function() {
+        __webpack_require__.d(__webpack_exports__, "c", (function() {
             return identity;
         }));
         var iPhoneScreenHeightMatrix = {
@@ -5488,20 +5476,6 @@
         function identity(item) {
             return item;
         }
-        function safeInterval(method, time) {
-            var timeout;
-            !function loop() {
-                timeout = setTimeout((function() {
-                    method();
-                    loop();
-                }), time);
-            }();
-            return {
-                cancel: function() {
-                    clearTimeout(timeout);
-                }
-            };
-        }
         Error;
         function isDocumentReady() {
             return Boolean(document.body) && "complete" === document.readyState;
@@ -5539,80 +5513,6 @@
                     return !1;
                 }.apply(void 0, args);
             }(isLocalStorageEnabled);
-        }
-        function getElementSafe(id, doc) {
-            void 0 === doc && (doc = document);
-            return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
-            var element;
-        }
-        function onResize(el, handler, _temp) {
-            var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
-            var currentWidth = el.offsetWidth;
-            var currentHeight = el.offsetHeight;
-            var canceled = !1;
-            handler({
-                width: currentWidth,
-                height: currentHeight
-            });
-            var check = function() {
-                if (!canceled && function(el) {
-                    return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-                }(el)) {
-                    var newWidth = el.offsetWidth;
-                    var newHeight = el.offsetHeight;
-                    (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                        width: newWidth,
-                        height: newHeight
-                    });
-                    currentWidth = newWidth;
-                    currentHeight = newHeight;
-                }
-            };
-            var observer;
-            var timeout;
-            win.addEventListener("resize", check);
-            if (void 0 !== win.ResizeObserver) {
-                (observer = new win.ResizeObserver(check)).observe(el);
-                timeout = safeInterval(check, 10 * interval);
-            } else if (void 0 !== win.MutationObserver) {
-                (observer = new win.MutationObserver(check)).observe(el, {
-                    attributes: !0,
-                    childList: !0,
-                    subtree: !0,
-                    characterData: !1
-                });
-                timeout = safeInterval(check, 10 * interval);
-            } else timeout = safeInterval(check, interval);
-            return {
-                cancel: function() {
-                    canceled = !0;
-                    observer.disconnect();
-                    window.removeEventListener("resize", check);
-                    timeout.cancel();
-                }
-            };
-        }
-        function isShadowElement(element) {
-            for (;element.parentNode; ) element = element.parentNode;
-            return "[object ShadowRoot]" === element.toString();
-        }
-        function insertShadowSlot(element) {
-            var shadowHost = function(element) {
-                var shadowRoot = function(element) {
-                    for (;element.parentNode; ) element = element.parentNode;
-                    if (isShadowElement(element)) return element;
-                }(element);
-                if (shadowRoot && shadowRoot.host) return shadowRoot.host;
-            }(element);
-            if (!shadowHost) throw new Error("Element is not in shadow dom");
-            var slotName = "shadow-slot-" + uniqueID();
-            var slot = document.createElement("slot");
-            slot.setAttribute("name", slotName);
-            element.appendChild(slot);
-            var slotProvider = document.createElement("div");
-            slotProvider.setAttribute("slot", slotName);
-            shadowHost.appendChild(slotProvider);
-            return isShadowElement(shadowHost) ? insertShadowSlot(slotProvider) : slotProvider;
         }
         var currentScript = "undefined" != typeof document ? document.currentScript : null;
         var getCurrentScript = memoize((function() {
@@ -6295,16 +6195,16 @@
         var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
         var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
         __webpack_require__.d(__webpack_exports__, "j", (function() {
-            return belter_src__WEBPACK_IMPORTED_MODULE_1__.q;
+            return belter_src__WEBPACK_IMPORTED_MODULE_1__.n;
         }));
         __webpack_require__.d(__webpack_exports__, "k", (function() {
-            return belter_src__WEBPACK_IMPORTED_MODULE_1__.s;
+            return belter_src__WEBPACK_IMPORTED_MODULE_1__.o;
         }));
         __webpack_require__.d(__webpack_exports__, "s", (function() {
-            return belter_src__WEBPACK_IMPORTED_MODULE_1__.u;
+            return belter_src__WEBPACK_IMPORTED_MODULE_1__.q;
         }));
         __webpack_require__.d(__webpack_exports__, "f", (function() {
-            return belter_src__WEBPACK_IMPORTED_MODULE_1__.m;
+            return belter_src__WEBPACK_IMPORTED_MODULE_1__.k;
         }));
         var moduleGlobal = {};
         function getGlobal() {
@@ -7693,7 +7593,7 @@
                 return config.a.paypalDomains;
             },
             contexts: {
-                iframe: !Object(belter_src.t)(),
+                iframe: !Object(belter_src.p)(),
                 popup: !0
             },
             get version() {
@@ -8062,7 +7962,7 @@
                 }
             },
             get dimensions() {
-                return Object(belter_src.h)() ? {
+                return Object(belter_src.f)() ? {
                     width: "100%",
                     height: "590px"
                 } : {
@@ -9569,7 +9469,52 @@
         }();
         var esm_extends = __webpack_require__(13);
         var client = __webpack_require__(4);
-        var belter_src = __webpack_require__(11);
+        __webpack_require__(17);
+        Object.create(Error.prototype);
+        function onResize(el, handler, _temp) {
+            var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
+            var currentWidth = el.offsetWidth;
+            var currentHeight = el.offsetHeight;
+            handler({
+                width: currentWidth,
+                height: currentHeight
+            });
+            var check = function() {
+                var newWidth = el.offsetWidth;
+                var newHeight = el.offsetHeight;
+                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                    width: newWidth,
+                    height: newHeight
+                });
+                currentWidth = newWidth;
+                currentHeight = newHeight;
+            };
+            var observer;
+            var timeout;
+            if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+                (observer = new win.MutationObserver(check)).observe(el, {
+                    attributes: !0,
+                    childList: !0,
+                    subtree: !0,
+                    characterData: !1
+                });
+                win.addEventListener("resize", check);
+            } else !function loop() {
+                check();
+                timeout = setTimeout(loop, interval);
+            }();
+            return {
+                cancel: function() {
+                    observer.disconnect();
+                    window.removeEventListener("resize", check);
+                    clearTimeout(timeout);
+                }
+            };
+        }
+        function isShadowElement(element) {
+            for (;element.parentNode; ) element = element.parentNode;
+            return "[object ShadowRoot]" === element.toString();
+        }
         var base32 = __webpack_require__(34);
         var base32_default = __webpack_require__.n(base32);
         var constants = __webpack_require__(8);
@@ -9807,7 +9752,7 @@
                 var _this$getAutoResize = this.getAutoResize(), width = _this$getAutoResize.width, height = _this$getAutoResize.height, element = _this$getAutoResize.element;
                 if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                     this.watchingForResize = !0;
-                    Object(belter_src.r)(element, (function(_ref8) {
+                    onResize(element, (function(_ref8) {
                         _this4.resize(width ? _ref8.width : void 0, height ? _ref8.height : void 0);
                     }), {
                         width: width,
@@ -10163,7 +10108,7 @@
             } else "string" === type || "object" === type || "number" === type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
             return resultValue;
         }
-        function getQueryParam(prop, key, value) {
+        function props_getQueryParam(prop, key, value) {
             return zalgo_promise_src.a.try((function() {
                 return "function" == typeof prop.queryParam ? prop.queryParam(value) : "string" == typeof prop.queryParam ? prop.queryParam : key;
             }));
@@ -10492,7 +10437,7 @@
                         var value = props[key];
                         if (value && prop.queryParam) return value;
                     })).then((function(value) {
-                        if (value) return zalgo_promise_src.a.all([ getQueryParam(prop, key, value), getQueryValue(prop, 0, value) ]).then((function(_ref) {
+                        if (value) return zalgo_promise_src.a.all([ props_getQueryParam(prop, key, value), getQueryValue(prop, 0, value) ]).then((function(_ref) {
                             var queryParam = _ref[0], queryValue = _ref[1];
                             var result;
                             if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
@@ -10925,7 +10870,11 @@
                             console.error(err.stack ? err.stack : err);
                         }
                         var _ref10 = "object" == typeof _this31.component.autoResize && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
-                        (element = Object(belter_src.b)(element, doc)) && (width || height) && Object(belter_src.r)(element, (function(_ref11) {
+                        (element = function(id, doc) {
+                            void 0 === doc && (doc = document);
+                            return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+                            var element;
+                        }(element, doc)) && (width || height) && onResize(element, (function(_ref11) {
                             _this31.resize(width ? _ref11.width : void 0, height ? _ref11.height : void 0);
                         }), {
                             width: width,
@@ -10973,7 +10922,34 @@
                 return zalgo_promise_src.a.try((function() {
                     var el;
                     if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
-                    Object(belter_src.p)(el) && (el = Object(belter_src.e)(el));
+                    isShadowElement(el) && (el = function(element) {
+                        var shadowHost = function(element) {
+                            var shadowRoot = function(element) {
+                                for (;element.parentNode; ) element = element.parentNode;
+                                if (isShadowElement(element)) return element;
+                            }(element);
+                            if (shadowRoot.host) return shadowRoot.host;
+                        }(element);
+                        if (!shadowHost) throw new Error("Element is not in shadow dom");
+                        if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
+                        var slotName = "shadow-slot-" + (chars = "0123456789abcdef", "xxxxxxxxxx".replace(/./g, (function() {
+                            return chars.charAt(Math.floor(Math.random() * chars.length));
+                        })) + "_" + function(str) {
+                            if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                                return String.fromCharCode(parseInt(p1, 16));
+                            })));
+                            if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+                            throw new Error("Can not find window.btoa or Buffer");
+                        }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase());
+                        var chars;
+                        var slot = document.createElement("slot");
+                        slot.setAttribute("name", slotName);
+                        element.appendChild(slot);
+                        var slotProvider = document.createElement("div");
+                        slotProvider.setAttribute("slot", slotName);
+                        shadowHost.appendChild(slotProvider);
+                        return slotProvider;
+                    }(el));
                     if (_this33.component.containerTemplate) {
                         var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                             container: el
@@ -11204,7 +11180,7 @@
                 _this.xchild = void 0;
                 _this.xprops = void 0;
                 !function(options) {
-                    if (!options) throw new Error("Expecred options to be passed");
+                    if (!options) throw new Error("Expected options to be passed");
                     if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
                     !function(options) {
                         if (options.props && "object" != typeof options.props) throw new Error("Expected options.props to be an object");
@@ -12468,7 +12444,7 @@
             function focus(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                Object(src.l)() && Object(src.t)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(src.q);
+                Object(src.j)() && Object(src.p)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(src.n);
             }
             var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK;
             var logoColor = LOGO_COLOR[overlayColor];
@@ -16089,17 +16065,13 @@
             global: function() {
                 return window.document;
             },
-            register: function register(component, document) {
+            register: function(component, document) {
                 function render(element) {
                     if (element && element.tagName && "script" === element.tagName.toLowerCase() && element.attributes.type && "application/x-component" === element.attributes.type.value && element.parentNode) {
                         var tag = element.getAttribute("data-component");
                         if (tag && tag === component.tag) {
-                            component.log("instantiate_script_component");
-                            var props = element.innerText ? eval("(" + element.innerText + ")") : {};
-                            var container = document.createElement("div");
-                            if (!element.parentNode) throw new Error("Element has no parent");
-                            element.parentNode.replaceChild(container, element);
-                            component.render(props, container);
+                            component.log("instantiate_script_component_error");
+                            throw new Error("\n               'x-component' script type is no longer supported.  \n               Please migrate to another integration pattern.\n            ");
                         }
                     }
                 }
@@ -16952,7 +16924,7 @@
             function focus(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                Object(belter_src.l)() && Object(belter_src.t)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+                Object(belter_src.j)() && Object(belter_src.p)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
             }
             var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK;
             var logoColor = LOGO_COLOR[overlayColor];
@@ -23979,7 +23951,7 @@
                     logoColor: "blue"
                 })));
             }(Object(button_props.a)(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.337", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.338", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -24027,7 +23999,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.337", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.338", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -24043,7 +24015,7 @@
                 });
                 template.addEventListener("click", (function() {
                     Object(beaver_logger_client.q)("button_pre_template_click");
-                    if (Object(belter_src.k)()) {
+                    if (Object(belter_src.i)()) {
                         Object(beaver_logger_client.q)("button_pre_template_click_intranet_mode");
                         Object(beaver_logger_client.h)();
                         alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -24347,7 +24319,7 @@
                         return function() {
                             var _track2;
                             var _getBrowser = Object(lib.i)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
-                            Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(belter_src.h)() ? "mobile" : "desktop") + "_" + version);
+                            Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(belter_src.f)() ? "mobile" : "desktop") + "_" + version);
                             var style = this.props.style || {};
                             Object(beaver_logger_client.k)("button_render");
                             Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
@@ -24363,7 +24335,7 @@
                             _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                             _track2[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.u.KEY.BUTTON_SOURCE] = this.props.source, 
                             _track2));
-                            Object(belter_src.k)() && Object(beaver_logger_client.q)("button_render_intranet_mode");
+                            Object(belter_src.i)() && Object(beaver_logger_client.q)("button_render_intranet_mode");
                             if (creditThrottle) {
                                 var _creditThrottle$logSt;
                                 creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -24389,7 +24361,7 @@
                             Object(beaver_logger_client.p)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                             _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_APPROVE, _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                             _track3[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, _track3));
-                            Object(belter_src.k)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
+                            Object(belter_src.i)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
                             Object(lib.D)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
                             Object(lib.e)("authorize");
                             Object(beaver_logger_client.h)();
@@ -24505,7 +24477,7 @@
                     once: !0,
                     def: function() {
                         return function(err) {
-                            if (Object(belter_src.k)()) {
+                            if (Object(belter_src.i)()) {
                                 Object(beaver_logger_client.q)("button_error_intranet_mode");
                                 Object(beaver_logger_client.h)();
                                 alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -24550,7 +24522,7 @@
                             _track6[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                             _track6[constants.u.KEY.PAYMENT_FLOW] = data && data.flow, _track6[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, 
                             _track6));
-                            Object(belter_src.k)() && Object(beaver_logger_client.q)("button_click_intranet_mode");
+                            Object(belter_src.i)() && Object(beaver_logger_client.q)("button_click_intranet_mode");
                             if (creditThrottle) {
                                 var _creditThrottle$log;
                                 creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
@@ -24711,7 +24683,7 @@
             for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) args[_key - 1] = arguments[_key];
             var instance = {
                 clone: function(_temp3) {
-                    var _ref6$decorate = (void 0 === _temp3 ? {} : _temp3).decorate, decorate = void 0 === _ref6$decorate ? belter_src.d : _ref6$decorate;
+                    var _ref6$decorate = (void 0 === _temp3 ? {} : _temp3).decorate, decorate = void 0 === _ref6$decorate ? belter_src.c : _ref6$decorate;
                     return {
                         render: function(container) {
                             var decoratedProps = decorate(props);
@@ -24721,7 +24693,7 @@
                 }
             };
             instances.push(instance);
-            var _props = props, _props$onDestroy = _props.onDestroy, onDestroy = void 0 === _props$onDestroy ? belter_src.q : _props$onDestroy;
+            var _props = props, _props$onDestroy = _props.onDestroy, onDestroy = void 0 === _props$onDestroy ? belter_src.n : _props$onDestroy;
             var newProps = Object(esm_extends.a)({}, props, {
                 onDestroy: function() {
                     var index = instances.indexOf(instance);
@@ -24857,11 +24829,11 @@
                 xprops && xprops.onShippingChange && window.pre && window.pre.inlineGuest && window.pre.inlineGuest.res && window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments && (window.pre.inlineGuest.res.data.treatments = []);
             } catch (err) {}
         }(component_Button);
-        Object(belter_src.i)() && Object(lib.n)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
+        Object(belter_src.g)() && Object(lib.n)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
             Object(beaver_logger_client.k)("force_ie_full_page");
             Object(beaver_logger_client.h)();
             var checkout = src_checkout.a.init({
-                onAuthorize: belter_src.q
+                onAuthorize: belter_src.n
             });
             checkout.delegate(win);
             checkout.openContainer().then((function() {
@@ -24914,7 +24886,7 @@
             var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
             if (debounce) {
                 Object(beaver_logger_client.q)("button_mutliple_click_debounce");
-                return new zalgo_promise_src.a(belter_src.q);
+                return new zalgo_promise_src.a(belter_src.n);
             }
             debounce = !0;
             var _loop = function() {
@@ -25253,7 +25225,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.337";
+        var interface_version = "4.0.338";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(49);
@@ -25337,7 +25309,7 @@
         var config = __webpack_require__(5);
         var post_robot_src = __webpack_require__(15);
         function isLegacyEligible() {
-            return !!Object(lib.D)() && !!Object(belter_src.t)() && !Object(belter_src.h)();
+            return !!Object(lib.D)() && !!Object(belter_src.p)() && !Object(belter_src.f)();
         }
         var warn = Object(client.n)(LOG_PREFIX).warn;
         var DEFAULT_COUNTRY = constants.r.US;
@@ -25866,7 +25838,7 @@
                             element.addEventListener("click", (function(event) {
                                 tracker();
                                 var eligible = isLegacyEligible();
-                                if (Object(belter_src.t)()) {
+                                if (Object(belter_src.p)()) {
                                     interface_debug("click_popups_supported");
                                     eligible || interface_debug("click_popups_supported_but_ineligible");
                                 } else {
