@@ -24,9 +24,11 @@ const WALLET_BUTTON_PERC = 60;
 export function buttonResponsiveStyle({
   height,
   fundingEligibility,
+  disableMaxWidth,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
+  disableMaxWidth?: ?boolean,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
@@ -59,7 +61,7 @@ export function buttonResponsiveStyle({
 
                 .${CLASS.CONTAINER} {
                     min-width: ${style.minWidth}px;
-                    max-width: ${style.maxWidth}px;
+                    ${disableMaxWidth ? "" : `max-width: ${style.maxWidth}px;`};
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${

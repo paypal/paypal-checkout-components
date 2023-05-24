@@ -11,15 +11,21 @@ import { buttonColorStyle } from "./color";
 export function componentStyle({
   height,
   fundingEligibility,
+  disableMaxWidth,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
+  disableMaxWidth?: ?boolean,
 |}): string {
   return `
         ${pageStyle}
         ${buttonStyle}
         ${buttonColorStyle}
         ${labelStyle}
-        ${buttonResponsiveStyle({ height, fundingEligibility })}
+        ${buttonResponsiveStyle({
+          height,
+          fundingEligibility,
+          disableMaxWidth,
+        })}
     `;
 }

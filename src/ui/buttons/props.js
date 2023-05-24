@@ -317,6 +317,7 @@ export type ButtonStyle = {|
   menuPlacement: $Values<typeof MENU_PLACEMENT>,
   period?: number,
   height?: number,
+  disableMaxWidth?: boolean,
 |};
 
 export type ButtonStyleInputs = {|
@@ -327,6 +328,7 @@ export type ButtonStyleInputs = {|
   layout?: $Values<typeof BUTTON_LAYOUT> | void,
   period?: number | void,
   height?: number | void,
+  disableMaxWidth?: boolean | void,
 |};
 
 type PersonalizationComponentProps = {|
@@ -613,6 +615,7 @@ export function normalizeButtonStyle(
     height,
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,
+    disableMaxWidth,
   } = style;
 
   // $FlowFixMe
@@ -684,6 +687,7 @@ export function normalizeButtonStyle(
     height,
     period,
     menuPlacement,
+    disableMaxWidth,
   };
 }
 

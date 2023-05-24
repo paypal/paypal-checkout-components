@@ -7,11 +7,7 @@ import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
 import { getVersion } from "@paypal/sdk-client/src";
 
 import { BUTTON_SIZE, ATTRIBUTE, MENU_PLACEMENT } from "../../constants";
-import {
-  BUTTON_SIZE_STYLE,
-  MINIMUM_SIZE,
-  MAXIMUM_SIZE,
-} from "../../ui/buttons/config";
+import { BUTTON_SIZE_STYLE, MINIMUM_SIZE } from "../../ui/buttons/config";
 import { type ButtonProps } from "../../ui/buttons/props";
 
 const CLASS = {
@@ -70,7 +66,6 @@ export function containerTemplate({
   const { label, layout, height: buttonHeight, menuPlacement } = style;
 
   let minimumSize = MINIMUM_SIZE[layout];
-  const maximumSize = MAXIMUM_SIZE[layout];
 
   if (buttonHeight) {
     const possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
@@ -128,7 +123,6 @@ export function containerTemplate({
                           BUTTON_SIZE_STYLE[minimumSize].minHeight
                         }px;
                         min-width: ${BUTTON_SIZE_STYLE[minimumSize].minWidth}px;
-                        max-width: ${BUTTON_SIZE_STYLE[maximumSize].maxWidth}px;
                         font-size: 0;
                     }
 
