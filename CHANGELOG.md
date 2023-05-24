@@ -1,3 +1,9 @@
+## <small>5.0.269 (2023-05-24)</small>
+
+* DTCHKINT-1477 (LI-7331): Implement disableMaxWidth to allow Merchant to control Width of PayPal butt ([0b9885d](https://github.com/paypal/paypal-checkout-components/commit/0b9885d)), closes [#2171](https://github.com/paypal/paypal-checkout-components/issues/2171)
+
+
+
 ## <small>5.0.268 (2023-05-10)</small>
 
 * fix: add logic to allow applepay presentation in vertical stack only when enable-funding list includ ([c70dee5](https://github.com/paypal/paypal-checkout-components/commit/c70dee5)), closes [#2159](https://github.com/paypal/paypal-checkout-components/issues/2159)
