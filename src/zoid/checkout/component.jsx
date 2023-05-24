@@ -246,7 +246,6 @@ export function getCheckoutComponent(): CheckoutComponent {
         onAuth: {
           type: "function",
           required: false,
-          sameDomain: true,
         },
 
         onSmartWalletEligible: {
