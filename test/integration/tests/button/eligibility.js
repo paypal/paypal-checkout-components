@@ -176,6 +176,7 @@ describe("venmo button eligibility", () => {
   it("should render venmo button for mobile when eligibility is true", () => {
     return wrapPromise(({ expect, avoid }) => {
       window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+      window.outerHeight = 667;
       window.localStorage.setItem("enable_venmo_ios", true);
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO],
