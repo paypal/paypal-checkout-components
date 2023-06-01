@@ -1193,158 +1193,161 @@
     }();
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "F", (function() {
+    __webpack_require__.d(__webpack_exports__, "G", (function() {
         return isSupportedNativeBrowser;
     }));
-    __webpack_require__.d(__webpack_exports__, "I", (function() {
+    __webpack_require__.d(__webpack_exports__, "J", (function() {
         return util.j;
     }));
-    __webpack_require__.d(__webpack_exports__, "K", (function() {
+    __webpack_require__.d(__webpack_exports__, "L", (function() {
         return util.k;
     }));
-    __webpack_require__.d(__webpack_exports__, "V", (function() {
+    __webpack_require__.d(__webpack_exports__, "W", (function() {
         return util.s;
     }));
-    __webpack_require__.d(__webpack_exports__, "H", (function() {
+    __webpack_require__.d(__webpack_exports__, "I", (function() {
         return util.i;
     }));
-    __webpack_require__.d(__webpack_exports__, "R", (function() {
+    __webpack_require__.d(__webpack_exports__, "S", (function() {
         return util.o;
     }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
         return util.c;
     }));
     __webpack_require__.d(__webpack_exports__, "b", (function() {
         return util.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "T", (function() {
+    __webpack_require__.d(__webpack_exports__, "U", (function() {
         return util.q;
     }));
-    __webpack_require__.d(__webpack_exports__, "U", (function() {
+    __webpack_require__.d(__webpack_exports__, "V", (function() {
         return util.r;
     }));
-    __webpack_require__.d(__webpack_exports__, "M", (function() {
+    __webpack_require__.d(__webpack_exports__, "N", (function() {
         return util.l;
     }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
         return util.d;
     }));
-    __webpack_require__.d(__webpack_exports__, "A", (function() {
+    __webpack_require__.d(__webpack_exports__, "B", (function() {
         return initLogger;
     }));
-    __webpack_require__.d(__webpack_exports__, "S", (function() {
+    __webpack_require__.d(__webpack_exports__, "T", (function() {
         return setLogLevel;
     }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
         return getBrowser;
     }));
-    __webpack_require__.d(__webpack_exports__, "C", (function() {
+    __webpack_require__.d(__webpack_exports__, "D", (function() {
         return isEligible;
     }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
         return checkRecognizedBrowser;
+    }));
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
+        return checkForDeprecatedIntegration;
     }));
     __webpack_require__.d(__webpack_exports__, "c", (function() {
         return checkForCommonErrors;
     }));
-    __webpack_require__.d(__webpack_exports__, "G", (function() {
+    __webpack_require__.d(__webpack_exports__, "H", (function() {
         return dom.i;
     }));
-    __webpack_require__.d(__webpack_exports__, "n", (function() {
+    __webpack_require__.d(__webpack_exports__, "o", (function() {
         return dom.c;
     }));
-    __webpack_require__.d(__webpack_exports__, "o", (function() {
+    __webpack_require__.d(__webpack_exports__, "p", (function() {
         return dom.d;
     }));
-    __webpack_require__.d(__webpack_exports__, "J", (function() {
+    __webpack_require__.d(__webpack_exports__, "K", (function() {
         return dom.j;
     }));
-    __webpack_require__.d(__webpack_exports__, "q", (function() {
+    __webpack_require__.d(__webpack_exports__, "r", (function() {
         return dom.f;
     }));
-    __webpack_require__.d(__webpack_exports__, "W", (function() {
+    __webpack_require__.d(__webpack_exports__, "X", (function() {
         return dom.l;
     }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
         return dom.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "O", (function() {
+    __webpack_require__.d(__webpack_exports__, "P", (function() {
         return dom.k;
     }));
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
         return dom.b;
     }));
-    __webpack_require__.d(__webpack_exports__, "B", (function() {
+    __webpack_require__.d(__webpack_exports__, "C", (function() {
         return dom.h;
     }));
-    __webpack_require__.d(__webpack_exports__, "p", (function() {
+    __webpack_require__.d(__webpack_exports__, "q", (function() {
         return dom.e;
     }));
-    __webpack_require__.d(__webpack_exports__, "t", (function() {
+    __webpack_require__.d(__webpack_exports__, "u", (function() {
         return dom.g;
     }));
-    __webpack_require__.d(__webpack_exports__, "Q", (function() {
+    __webpack_require__.d(__webpack_exports__, "R", (function() {
         return request;
     }));
-    __webpack_require__.d(__webpack_exports__, "z", (function() {
+    __webpack_require__.d(__webpack_exports__, "A", (function() {
         return getThrottle;
     }));
-    __webpack_require__.d(__webpack_exports__, "u", (function() {
+    __webpack_require__.d(__webpack_exports__, "v", (function() {
         return getReturnToken;
     }));
-    __webpack_require__.d(__webpack_exports__, "y", (function() {
+    __webpack_require__.d(__webpack_exports__, "z", (function() {
         return session.e;
     }));
-    __webpack_require__.d(__webpack_exports__, "x", (function() {
+    __webpack_require__.d(__webpack_exports__, "y", (function() {
         return session.d;
     }));
-    __webpack_require__.d(__webpack_exports__, "w", (function() {
+    __webpack_require__.d(__webpack_exports__, "x", (function() {
         return session.c;
     }));
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
         return session.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "L", (function() {
+    __webpack_require__.d(__webpack_exports__, "M", (function() {
         return openMetaFrame;
     }));
-    __webpack_require__.d(__webpack_exports__, "r", (function() {
+    __webpack_require__.d(__webpack_exports__, "s", (function() {
         return getRememberedFunding;
     }));
-    __webpack_require__.d(__webpack_exports__, "P", (function() {
+    __webpack_require__.d(__webpack_exports__, "Q", (function() {
         return rememberFunding;
     }));
-    __webpack_require__.d(__webpack_exports__, "D", (function() {
+    __webpack_require__.d(__webpack_exports__, "E", (function() {
         return isFundingRemembered;
     }));
-    __webpack_require__.d(__webpack_exports__, "N", (function() {
+    __webpack_require__.d(__webpack_exports__, "O", (function() {
         return precacheRememberedFunding;
     }));
-    __webpack_require__.d(__webpack_exports__, "s", (function() {
+    __webpack_require__.d(__webpack_exports__, "t", (function() {
         return getRenderedButtons;
     }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
         return getCurrentScript;
     }));
-    __webpack_require__.d(__webpack_exports__, "v", (function() {
+    __webpack_require__.d(__webpack_exports__, "w", (function() {
         return getScriptVersion;
     }));
-    __webpack_require__.d(__webpack_exports__, "l", (function() {
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
         return getCurrentScriptUrl;
     }));
-    __webpack_require__.d(__webpack_exports__, "m", (function() {
+    __webpack_require__.d(__webpack_exports__, "n", (function() {
         return getDomainSetting;
     }));
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return security.a;
     }));
-    __webpack_require__.d(__webpack_exports__, "E", (function() {
+    __webpack_require__.d(__webpack_exports__, "F", (function() {
         return security.b;
     }));
     var src = __webpack_require__(7);
     var belter_src = __webpack_require__(11);
     function isSupportedNativeBrowser() {
-        var userAgent = Object(belter_src.c)();
-        return !(!Object(belter_src.t)(userAgent) || Object(belter_src.n)() || (!Object(belter_src.l)() || !Object(belter_src.o)()) && (!Object(belter_src.f)() || !Object(belter_src.g)()));
+        var userAgent = Object(belter_src.b)();
+        return !(!Object(belter_src.p)(userAgent) || Object(belter_src.l)() || (!Object(belter_src.j)() || !Object(belter_src.m)()) && (!Object(belter_src.d)() || !Object(belter_src.e)()));
     }
     var util = __webpack_require__(14);
     var post_robot_src = __webpack_require__(15);
@@ -1481,7 +1484,7 @@
                 var script = getCurrentScript();
                 if (script && script.hasAttribute("data-page-type")) {
                     var pageType = script.getAttribute("data-page-type").toLowerCase();
-                    if (-1 === Object(belter_src.v)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
+                    if (-1 === Object(belter_src.r)(PAGE_TYPES).indexOf(pageType) && pageType.length) throw new Error("Invalid page type, '" + pageType + "'");
                     return pageType;
                 }
                 return "";
@@ -1505,7 +1508,7 @@
     }
     var bowserCache = {};
     function getBowser() {
-        var userAgent = Object(belter_src.c)();
+        var userAgent = Object(belter_src.b)();
         if (bowserCache[userAgent]) return bowserCache[userAgent];
         delete __webpack_require__.c[47];
         var bowser = __webpack_require__(47);
@@ -1525,11 +1528,11 @@
     }
     var eligibilityResults = {};
     function isEligible() {
-        if (Object(belter_src.k)()) return !1;
+        if (Object(belter_src.i)()) return !1;
         var userAgent = window.navigator.userAgent;
         if (userAgent && eligibilityResults.hasOwnProperty(userAgent)) return eligibilityResults[userAgent];
         var result = function() {
-            if (Object(belter_src.k)()) return !1;
+            if (Object(belter_src.i)()) return !1;
             var bowser = getBowser();
             var _getBrowser = getBrowser(), browser = _getBrowser.browser, version = _getBrowser.version;
             return !browser || !version || -1 !== bowser.compareVersions([ version, config.a.SUPPORTED_BROWSERS[browser] ]);
@@ -1556,6 +1559,16 @@
             if (window.console.log) return window.console.log(err);
         }
     }
+    function checkForDeprecatedIntegration() {
+        var scripts = [].slice.call(document.getElementsByTagName("script"));
+        for (var _i2 = 0; _i2 < scripts.length; _i2++) {
+            var _script$attributes$ty;
+            if ("application/x-component" === (null == (_script$attributes$ty = scripts[_i2].attributes.type) ? void 0 : _script$attributes$ty.value)) {
+                Object(client.q)("deprecated_integration_application_xcomponent");
+                console.error("\n                This integration pattern using '<script type=\"application/x-component\">' is no longer supported.\n                Please visit https://developer.paypal.com/demo/checkout-v4/\n                for an example of the new recommended integration pattern.\n            ");
+            }
+        }
+    }
     function checkForCommonErrors() {
         if ("[]" !== JSON.stringify([])) {
             logWarn([].toJSON ? "Custom Array.prototype.toJSON is causing incorrect json serialization of arrays. This is likely to cause issues. Probable cause is Prototype.js" : "JSON.stringify is doing incorrect serialization of arrays. This is likely to cause issues.");
@@ -1565,8 +1578,8 @@
             logWarn("JSON.stringify is doing incorrect serialization of objects. This is likely to cause issues.");
             Object(client.q)("json_stringify_object_broken");
         }
-        Object(belter_src.k)() && Object(client.q)("ie_intranet_mode");
-        Object(belter_src.i)() && !Object(belter_src.j)() && Object(client.q)("ie_meta_compatibility_header_missing", {
+        Object(belter_src.i)() && Object(client.q)("ie_intranet_mode");
+        Object(belter_src.g)() && !Object(belter_src.h)() && Object(client.q)("ie_meta_compatibility_header_missing", {
             message: 'Drop tag: <meta http-equiv="X-UA-Compatible" content="IE=edge">'
         });
         3 !== function(bar, baz, zomg) {}.bind({
@@ -1743,7 +1756,7 @@
     var openMetaFrame = Object(util.i)((function(env) {
         void 0 === env && (env = config.a.env);
         return zalgo_promise_src.a.try((function() {
-            if (Object(belter_src.k)()) return {
+            if (Object(belter_src.i)()) return {
                 iframeEligible: !1,
                 iframeEligibleReason: "ie_intranet",
                 rememberedFunding: []
@@ -3429,83 +3442,74 @@
     function replaceObject(item, replacers, fullKey) {
         void 0 === fullKey && (fullKey = "");
         if (Array.isArray(item)) {
-            var _ret = function() {
-                var length = item.length;
-                var result = [];
-                var _loop = function(i) {
-                    Object.defineProperty(result, i, {
-                        configurable: !0,
-                        enumerable: !0,
-                        get: function() {
-                            var itemKey = fullKey ? fullKey + "." + i : "" + i;
-                            var child = item[i];
-                            var replacer = replacers[typeof child];
-                            if (replacer) {
-                                var replaced = replacer(child, i, itemKey);
-                                if (void 0 !== replaced) {
-                                    result[i] = replaced;
-                                    return result[i];
-                                }
-                            }
-                            if ("object" == typeof child && null !== child) {
-                                result[i] = replaceObject(child, replacers, itemKey);
+            var length = item.length;
+            var result = [];
+            var _loop = function(i) {
+                Object.defineProperty(result, i, {
+                    configurable: !0,
+                    enumerable: !0,
+                    get: function() {
+                        var itemKey = fullKey ? fullKey + "." + i : "" + i;
+                        var child = item[i];
+                        var replacer = replacers[typeof child];
+                        if (replacer) {
+                            var replaced = replacer(child, i, itemKey);
+                            if (void 0 !== replaced) {
+                                result[i] = replaced;
                                 return result[i];
                             }
-                            result[i] = child;
+                        }
+                        if ("object" == typeof child && null !== child) {
+                            result[i] = replaceObject(child, replacers, itemKey);
                             return result[i];
-                        },
-                        set: function(value) {
-                            delete result[i];
-                            result[i] = value;
                         }
-                    });
-                };
-                for (var i = 0; i < length; i++) _loop(i);
-                return {
-                    v: result
-                };
-            }();
-            if ("object" == typeof _ret) return _ret.v;
-        } else {
-            if ("object" != typeof item || null === item) throw new Error("Pass an object or array");
-            var _ret2 = function() {
-                var result = {};
-                var _loop2 = function(key) {
-                    if (!item.hasOwnProperty(key)) return "continue";
-                    Object.defineProperty(result, key, {
-                        configurable: !0,
-                        enumerable: !0,
-                        get: function() {
-                            var itemKey = fullKey ? fullKey + "." + key : "" + key;
-                            var child = item[key];
-                            var replacer = replacers[typeof child];
-                            if (replacer) {
-                                var replaced = replacer(child, key, itemKey);
-                                if (void 0 !== replaced) {
-                                    result[key] = replaced;
-                                    return result[key];
-                                }
-                            }
-                            if ("object" == typeof child && null !== child) {
-                                result[key] = replaceObject(child, replacers, itemKey);
-                                return result[key];
-                            }
-                            result[key] = child;
-                            return result[key];
-                        },
-                        set: function(value) {
-                            delete result[key];
-                            result[key] = value;
-                        }
-                    });
-                };
-                for (var key in item) _loop2(key);
-                return {
-                    v: result
-                };
-            }();
-            if ("object" == typeof _ret2) return _ret2.v;
+                        result[i] = child;
+                        return result[i];
+                    },
+                    set: function(value) {
+                        delete result[i];
+                        result[i] = value;
+                    }
+                });
+            };
+            for (var i = 0; i < length; i++) _loop(i);
+            return result;
         }
+        if ("object" == typeof item && null !== item) {
+            var _result = {};
+            var _loop2 = function(key) {
+                if (!item.hasOwnProperty(key)) return "continue";
+                Object.defineProperty(_result, key, {
+                    configurable: !0,
+                    enumerable: !0,
+                    get: function() {
+                        var itemKey = fullKey ? fullKey + "." + key : "" + key;
+                        var child = item[key];
+                        var replacer = replacers[typeof child];
+                        if (replacer) {
+                            var replaced = replacer(child, key, itemKey);
+                            if (void 0 !== replaced) {
+                                _result[key] = replaced;
+                                return _result[key];
+                            }
+                        }
+                        if ("object" == typeof child && null !== child) {
+                            _result[key] = replaceObject(child, replacers, itemKey);
+                            return _result[key];
+                        }
+                        _result[key] = child;
+                        return _result[key];
+                    },
+                    set: function(value) {
+                        delete _result[key];
+                        _result[key] = value;
+                    }
+                });
+            };
+            for (var key in item) _loop2(key);
+            return _result;
+        }
+        throw new Error("Pass an object or array");
     }
     function copyProp(source, target, name, def) {
         if (source.hasOwnProperty(name)) {
@@ -4850,70 +4854,58 @@
     0 === window.location.href.indexOf(CONSTANTS.FILE_PROTOCOL) && (CONFIG.ALLOW_POSTMESSAGE_POPUP = !0);
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "c", (function() {
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
         return getUserAgent;
     }));
-    __webpack_require__.d(__webpack_exports__, "h", (function() {
+    __webpack_require__.d(__webpack_exports__, "f", (function() {
         return isDevice;
     }));
-    __webpack_require__.d(__webpack_exports__, "f", (function() {
+    __webpack_require__.d(__webpack_exports__, "d", (function() {
         return isAndroid;
     }));
-    __webpack_require__.d(__webpack_exports__, "l", (function() {
+    __webpack_require__.d(__webpack_exports__, "j", (function() {
         return isIos;
     }));
-    __webpack_require__.d(__webpack_exports__, "n", (function() {
+    __webpack_require__.d(__webpack_exports__, "l", (function() {
         return isSFVC;
     }));
-    __webpack_require__.d(__webpack_exports__, "i", (function() {
+    __webpack_require__.d(__webpack_exports__, "g", (function() {
         return device_isIE;
     }));
-    __webpack_require__.d(__webpack_exports__, "j", (function() {
+    __webpack_require__.d(__webpack_exports__, "h", (function() {
         return isIECompHeader;
     }));
-    __webpack_require__.d(__webpack_exports__, "k", (function() {
+    __webpack_require__.d(__webpack_exports__, "i", (function() {
         return isIEIntranet;
     }));
-    __webpack_require__.d(__webpack_exports__, "t", (function() {
+    __webpack_require__.d(__webpack_exports__, "p", (function() {
         return supportsPopups;
     }));
-    __webpack_require__.d(__webpack_exports__, "g", (function() {
+    __webpack_require__.d(__webpack_exports__, "e", (function() {
         return isChrome;
     }));
-    __webpack_require__.d(__webpack_exports__, "o", (function() {
+    __webpack_require__.d(__webpack_exports__, "m", (function() {
         return isSafari;
     }));
-    __webpack_require__.d(__webpack_exports__, "m", (function() {
+    __webpack_require__.d(__webpack_exports__, "k", (function() {
         return isLocalStorageEnabled;
-    }));
-    __webpack_require__.d(__webpack_exports__, "b", (function() {
-        return getElementSafe;
-    }));
-    __webpack_require__.d(__webpack_exports__, "r", (function() {
-        return onResize;
-    }));
-    __webpack_require__.d(__webpack_exports__, "p", (function() {
-        return isShadowElement;
-    }));
-    __webpack_require__.d(__webpack_exports__, "e", (function() {
-        return insertShadowSlot;
     }));
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return base64encode;
     }));
-    __webpack_require__.d(__webpack_exports__, "u", (function() {
+    __webpack_require__.d(__webpack_exports__, "q", (function() {
         return uniqueID;
     }));
-    __webpack_require__.d(__webpack_exports__, "q", (function() {
+    __webpack_require__.d(__webpack_exports__, "n", (function() {
         return noop;
     }));
-    __webpack_require__.d(__webpack_exports__, "s", (function() {
+    __webpack_require__.d(__webpack_exports__, "o", (function() {
         return once;
     }));
-    __webpack_require__.d(__webpack_exports__, "v", (function() {
+    __webpack_require__.d(__webpack_exports__, "r", (function() {
         return values;
     }));
-    __webpack_require__.d(__webpack_exports__, "d", (function() {
+    __webpack_require__.d(__webpack_exports__, "c", (function() {
         return identity;
     }));
     var iPhoneScreenHeightMatrix = {
@@ -5231,20 +5223,6 @@
     function identity(item) {
         return item;
     }
-    function safeInterval(method, time) {
-        var timeout;
-        !function loop() {
-            timeout = setTimeout((function() {
-                method();
-                loop();
-            }), time);
-        }();
-        return {
-            cancel: function() {
-                clearTimeout(timeout);
-            }
-        };
-    }
     Error;
     function isDocumentReady() {
         return Boolean(document.body) && "complete" === document.readyState;
@@ -5282,80 +5260,6 @@
                 return !1;
             }.apply(void 0, args);
         }(isLocalStorageEnabled);
-    }
-    function getElementSafe(id, doc) {
-        void 0 === doc && (doc = document);
-        return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
-        var element;
-    }
-    function onResize(el, handler, _temp) {
-        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
-        var currentWidth = el.offsetWidth;
-        var currentHeight = el.offsetHeight;
-        var canceled = !1;
-        handler({
-            width: currentWidth,
-            height: currentHeight
-        });
-        var check = function() {
-            if (!canceled && function(el) {
-                return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
-            }(el)) {
-                var newWidth = el.offsetWidth;
-                var newHeight = el.offsetHeight;
-                (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
-                    width: newWidth,
-                    height: newHeight
-                });
-                currentWidth = newWidth;
-                currentHeight = newHeight;
-            }
-        };
-        var observer;
-        var timeout;
-        win.addEventListener("resize", check);
-        if (void 0 !== win.ResizeObserver) {
-            (observer = new win.ResizeObserver(check)).observe(el);
-            timeout = safeInterval(check, 10 * interval);
-        } else if (void 0 !== win.MutationObserver) {
-            (observer = new win.MutationObserver(check)).observe(el, {
-                attributes: !0,
-                childList: !0,
-                subtree: !0,
-                characterData: !1
-            });
-            timeout = safeInterval(check, 10 * interval);
-        } else timeout = safeInterval(check, interval);
-        return {
-            cancel: function() {
-                canceled = !0;
-                observer.disconnect();
-                window.removeEventListener("resize", check);
-                timeout.cancel();
-            }
-        };
-    }
-    function isShadowElement(element) {
-        for (;element.parentNode; ) element = element.parentNode;
-        return "[object ShadowRoot]" === element.toString();
-    }
-    function insertShadowSlot(element) {
-        var shadowHost = function(element) {
-            var shadowRoot = function(element) {
-                for (;element.parentNode; ) element = element.parentNode;
-                if (isShadowElement(element)) return element;
-            }(element);
-            if (shadowRoot && shadowRoot.host) return shadowRoot.host;
-        }(element);
-        if (!shadowHost) throw new Error("Element is not in shadow dom");
-        var slotName = "shadow-slot-" + uniqueID();
-        var slot = document.createElement("slot");
-        slot.setAttribute("name", slotName);
-        element.appendChild(slot);
-        var slotProvider = document.createElement("div");
-        slotProvider.setAttribute("slot", slotName);
-        shadowHost.appendChild(slotProvider);
-        return isShadowElement(shadowHost) ? insertShadowSlot(slotProvider) : slotProvider;
     }
     var currentScript = "undefined" != typeof document ? document.currentScript : null;
     var getCurrentScript = memoize((function() {
@@ -6038,16 +5942,16 @@
     var zalgo_promise_src__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
     __webpack_require__.d(__webpack_exports__, "j", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.q;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.n;
     }));
     __webpack_require__.d(__webpack_exports__, "k", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.s;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.o;
     }));
     __webpack_require__.d(__webpack_exports__, "s", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.u;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.q;
     }));
     __webpack_require__.d(__webpack_exports__, "f", (function() {
-        return belter_src__WEBPACK_IMPORTED_MODULE_1__.m;
+        return belter_src__WEBPACK_IMPORTED_MODULE_1__.k;
     }));
     var moduleGlobal = {};
     function getGlobal() {
@@ -7335,7 +7239,7 @@
         if (regmatch) return regmatch[1];
     }
     var onAuthorize;
-    Object(lib.E)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
+    Object(lib.F)() && Object(post_robot_src.on)("onLegacyPaymentAuthorize", {
         window: window.parent
     }, (function(_ref) {
         onAuthorize = _ref.data.method;
@@ -7343,14 +7247,14 @@
     function onLegacyPaymentAuthorize(method) {
         onAuthorize = method;
         return src.a.try((function() {
-            if (post_robot_src.bridge && !Object(lib.E)()) return post_robot_src.bridge.openBridge(Object(lib.g)(config.a.postBridgeUrl, {
-                version: Object(lib.v)()
+            if (post_robot_src.bridge && !Object(lib.F)()) return post_robot_src.bridge.openBridge(Object(lib.h)(config.a.postBridgeUrl, {
+                version: Object(lib.w)()
             }), config.a.postBridgeDomain).then((function(postBridge) {
                 return Object(post_robot_src.send)(postBridge, "onLegacyPaymentAuthorize", {
                     method: method
                 }, {
                     domain: config.a.paypalDomain
-                }).then(lib.I);
+                }).then(lib.J);
             }));
         }));
     }
@@ -7384,7 +7288,7 @@
                                 win.PAYPAL && win.PAYPAL.Checkout && win.PAYPAL.Checkout.XhrResponse && win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES && Object.defineProperty(win.PAYPAL.Checkout.XhrResponse.RESPONSE_TYPES, "Redirect", {
                                     value: Math.random().toString()
                                 });
-                                win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.I);
+                                win.mob && win.mob.Xhr && win.mob.Xhr.prototype._xhrOnReady && (win.mob.Xhr.prototype._xhrOnReady = lib.J);
                             }
                         } catch (err) {
                             return;
@@ -7436,14 +7340,14 @@
             return config.a.paypalDomains;
         },
         contexts: {
-            iframe: !Object(belter_src.t)(),
+            iframe: !Object(belter_src.p)(),
             popup: !0
         },
         get version() {
-            return Object(lib.v)();
+            return Object(lib.w)();
         },
         validate: function() {
-            Object(lib.C)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
+            Object(lib.D)() || Object(beaver_logger_client.q)("checkout_render_ineligible");
         },
         prerenderTemplate: template.a,
         containerTemplate: template.b,
@@ -7452,7 +7356,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.w)();
+                    return Object(lib.x)();
                 },
                 queryParam: !0
             },
@@ -7460,7 +7364,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.j)();
+                    return Object(lib.k)();
                 },
                 queryParam: !0
             },
@@ -7530,7 +7434,7 @@
                 queryParam: "locale.x",
                 allowDelegate: !0,
                 def: function() {
-                    var _getBrowserLocale = Object(lib.i)();
+                    var _getBrowserLocale = Object(lib.j)();
                     return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                 }
             },
@@ -7561,8 +7465,8 @@
                     return payment();
                 },
                 childDecorate: function(payment) {
-                    var token = Object(lib.q)("token");
-                    return token ? Object(lib.H)((function() {
+                    var token = Object(lib.r)("token");
+                    return token ? Object(lib.I)((function() {
                         return src.a.resolve(token);
                     })) : payment;
                 },
@@ -7631,13 +7535,13 @@
                             }));
                         };
                         var redirect = function(win, url) {
-                            return src.a.all([ Object(lib.O)(win || window.top, url || data.returnUrl), close() ]);
+                            return src.a.all([ Object(lib.P)(win || window.top, url || data.returnUrl), close() ]);
                         };
                         return src.a.try((function() {
                             try {
                                 var isButton = -1 !== window.location.href.indexOf("/smart/button");
                                 var isGuest = -1 !== _this.window.location.href.indexOf("/webapps/xoonboarding");
-                                if (isButton && isGuest) return Object(lib.Q)({
+                                if (isButton && isGuest) return Object(lib.R)({
                                     win: _this.window,
                                     method: "get",
                                     url: "/webapps/xoonboarding/api/auth"
@@ -7696,7 +7600,7 @@
                             }));
                         };
                         var redirect = function(win, url) {
-                            return src.a.all([ Object(lib.O)(win || window.top, url || data.cancelUrl), close() ]);
+                            return src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), close() ]);
                         };
                         return src.a.try((function() {
                             return original.call(_this2, data, Object(esm_extends.a)({}, actions, {
@@ -7769,7 +7673,7 @@
                         Object(beaver_logger_client.q)("fallback", {
                             url: url
                         });
-                        if (Object(lib.m)("allow_full_page_fallback")) {
+                        if (Object(lib.n)("allow_full_page_fallback")) {
                             window.top.location = url;
                             return this.close();
                         }
@@ -7799,13 +7703,13 @@
                 sendToChild: !1,
                 def: function() {
                     return Object(belter_src.a)(JSON.stringify({
-                        url: Object(lib.l)()
+                        url: Object(lib.m)()
                     }));
                 }
             }
         },
         get dimensions() {
-            return Object(belter_src.h)() ? {
+            return Object(belter_src.f)() ? {
                 width: "100%",
                 height: "590px"
             } : {
@@ -7815,9 +7719,9 @@
         }
     });
     if (Checkout.isChild() && Checkout.xchild && Checkout.xprops) {
-        Checkout.xprops && Checkout.xprops.logLevel && Object(lib.S)(Checkout.xprops.logLevel);
+        Checkout.xprops && Checkout.xprops.logLevel && Object(lib.T)(Checkout.xprops.logLevel);
         Checkout.xchild.onProps((function(xprops) {
-            Object(lib.M)(xprops, "onAuthorize", (function(_ref) {
+            Object(lib.N)(xprops, "onAuthorize", (function(_ref) {
                 var callOriginal = _ref.callOriginal, data = _ref.args[0];
                 if (data && !data.intent) {
                     Object(beaver_logger_client.q)("hermes_authorize_no_intent", {
@@ -7838,21 +7742,21 @@
             }));
         }));
     }
-    Object(lib.M)(Checkout, "init", (function(_ref2) {
+    Object(lib.N)(Checkout, "init", (function(_ref2) {
         var _ref2$args = _ref2.args;
         return _ref2.original.call(_ref2.context, _ref2$args[0], _ref2$args[1], "body");
     }));
-    Object(lib.M)(Checkout, "render", (function(_ref3) {
+    Object(lib.N)(Checkout, "render", (function(_ref3) {
         return _ref3.original.call(_ref3.context, _ref3.args[0], "body");
     }));
-    Object(lib.M)(Checkout, "renderTo", (function(_ref4) {
+    Object(lib.N)(Checkout, "renderTo", (function(_ref4) {
         var _ref4$args = _ref4.args, win = _ref4$args[0], props = _ref4$args[1], original = _ref4.original, context = _ref4.context;
         var payment = props.payment();
         props.payment = function() {
             return payment;
         };
         return original.call(context, win, props, "body").catch((function(err) {
-            if (err instanceof zoid_src.b && Object(lib.E)()) {
+            if (err instanceof zoid_src.b && Object(lib.F)()) {
                 Checkout.contexts.iframe = !0;
                 return original.call(context, win, props, "body");
             }
@@ -9359,7 +9263,7 @@
             if (!domain) throw new Error("Must pass domain to listen to");
             if (this.listeners) {
                 var listeners = this.listeners();
-                var _loop = function(_i4, _Object$keys2) {
+                var _loop = function() {
                     var listenerName = _Object$keys2[_i4];
                     var name = listenerName.replace(/^zoid_/, "");
                     var errorHandler = function(err) {
@@ -9390,14 +9294,59 @@
                         errorListener.cancel();
                     }));
                 };
-                for (var _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop(_i4, _Object$keys2);
+                for (var _i4 = 0, _Object$keys2 = Object.keys(listeners); _i4 < _Object$keys2.length; _i4++) _loop();
             }
         };
         return BaseComponent;
     }();
     var esm_extends = __webpack_require__(13);
     var client = __webpack_require__(4);
-    var belter_src = __webpack_require__(11);
+    __webpack_require__(17);
+    Object.create(Error.prototype);
+    function onResize(el, handler, _temp) {
+        var _ref2 = void 0 === _temp ? {} : _temp, _ref2$width = _ref2.width, width = void 0 === _ref2$width || _ref2$width, _ref2$height = _ref2.height, height = void 0 === _ref2$height || _ref2$height, _ref2$interval = _ref2.interval, interval = void 0 === _ref2$interval ? 100 : _ref2$interval, _ref2$win = _ref2.win, win = void 0 === _ref2$win ? window : _ref2$win;
+        var currentWidth = el.offsetWidth;
+        var currentHeight = el.offsetHeight;
+        handler({
+            width: currentWidth,
+            height: currentHeight
+        });
+        var check = function() {
+            var newWidth = el.offsetWidth;
+            var newHeight = el.offsetHeight;
+            (width && newWidth !== currentWidth || height && newHeight !== currentHeight) && handler({
+                width: newWidth,
+                height: newHeight
+            });
+            currentWidth = newWidth;
+            currentHeight = newHeight;
+        };
+        var observer;
+        var timeout;
+        if (void 0 !== win.ResizeObserver) (observer = new win.ResizeObserver(check)).observe(el); else if (void 0 !== win.MutationObserver) {
+            (observer = new win.MutationObserver(check)).observe(el, {
+                attributes: !0,
+                childList: !0,
+                subtree: !0,
+                characterData: !1
+            });
+            win.addEventListener("resize", check);
+        } else !function loop() {
+            check();
+            timeout = setTimeout(loop, interval);
+        }();
+        return {
+            cancel: function() {
+                observer.disconnect();
+                window.removeEventListener("resize", check);
+                clearTimeout(timeout);
+            }
+        };
+    }
+    function isShadowElement(element) {
+        for (;element.parentNode; ) element = element.parentNode;
+        return "[object ShadowRoot]" === element.toString();
+    }
     var base32 = __webpack_require__(39);
     var base32_default = __webpack_require__.n(base32);
     var constants = __webpack_require__(8);
@@ -9475,9 +9424,9 @@
             }
             _this.component.log("construct_child");
             _this.onPropHandlers = [];
-            var _loop = function(_i2, _ref2) {
+            var _loop = function() {
                 var item = _ref2[_i2];
-                var _loop2 = function(_i4, _ref4) {
+                var _loop2 = function() {
                     var _ref4$_i = _ref4[_i4], name = _ref4$_i[0], getter = _ref4$_i[1];
                     Object.defineProperty(item, name, {
                         configurable: !0,
@@ -9493,9 +9442,9 @@
                     return Object(assertThisInitialized.a)(_this);
                 } ], [ "xprops", function() {
                     return _this.props;
-                } ] ]; _i4 < _ref4.length; _i4++) _loop2(_i4, _ref4);
+                } ] ]; _i4 < _ref4.length; _i4++) _loop2();
             };
-            for (var _i2 = 0, _ref2 = [ _this.component, window ]; _i2 < _ref2.length; _i2++) _loop(_i2, _ref2);
+            for (var _i2 = 0, _ref2 = [ _this.component, window ]; _i2 < _ref2.length; _i2++) _loop();
             _this.component.log("init_child");
             _this.setWindows();
             _this.onInit = _this.sendToParent(constants.POST_MESSAGE.INIT, {
@@ -9635,7 +9584,7 @@
             var _this$getAutoResize = this.getAutoResize(), width = _this$getAutoResize.width, height = _this$getAutoResize.height, element = _this$getAutoResize.element;
             if ((width || height) && this.context !== constants.CONTEXT_TYPES.POPUP && !this.watchingForResize) {
                 this.watchingForResize = !0;
-                Object(belter_src.r)(element, (function(_ref8) {
+                onResize(element, (function(_ref8) {
                     _this4.resize(width ? _ref8.width : void 0, height ? _ref8.height : void 0);
                 }), {
                     width: width,
@@ -9991,7 +9940,7 @@
         } else "string" === type || "object" === type || "number" === type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
         return resultValue;
     }
-    function getQueryParam(prop, key, value) {
+    function props_getQueryParam(prop, key, value) {
         return zalgo_promise_src.a.try((function() {
             return "function" == typeof prop.queryParam ? prop.queryParam(value) : "string" == typeof prop.queryParam ? prop.queryParam : key;
         }));
@@ -10320,7 +10269,7 @@
                     var value = props[key];
                     if (value && prop.queryParam) return value;
                 })).then((function(value) {
-                    if (value) return zalgo_promise_src.a.all([ getQueryParam(prop, key, value), getQueryValue(prop, 0, value) ]).then((function(_ref) {
+                    if (value) return zalgo_promise_src.a.all([ props_getQueryParam(prop, key, value), getQueryValue(prop, 0, value) ]).then((function(_ref) {
                         var queryParam = _ref[0], queryValue = _ref[1];
                         var result;
                         if ("boolean" == typeof queryValue) result = "1"; else if ("string" == typeof queryValue) result = queryValue.toString(); else {
@@ -10498,7 +10447,7 @@
                 throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.S)(err));
             }));
             var overrides = this.driver.delegateOverrides;
-            var _loop = function(_i6, _Object$keys4) {
+            var _loop = function() {
                 var key = _Object$keys4[_i6];
                 var val = overrides[key];
                 if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
@@ -10513,7 +10462,7 @@
                     }));
                 };
             };
-            for (var _i6 = 0, _Object$keys4 = Object.keys(overrides); _i6 < _Object$keys4.length; _i6++) _loop(_i6, _Object$keys4);
+            for (var _i6 = 0, _Object$keys4 = Object.keys(overrides); _i6 < _Object$keys4.length; _i6++) _loop();
         };
         _proto.watchForClose = function() {
             var _this16 = this;
@@ -10753,7 +10702,11 @@
                         console.error(err.stack ? err.stack : err);
                     }
                     var _ref10 = "object" == typeof _this31.component.autoResize && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
-                    (element = Object(belter_src.b)(element, doc)) && (width || height) && Object(belter_src.r)(element, (function(_ref11) {
+                    (element = function(id, doc) {
+                        void 0 === doc && (doc = document);
+                        return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
+                        var element;
+                    }(element, doc)) && (width || height) && onResize(element, (function(_ref11) {
                         _this31.resize(width ? _ref11.width : void 0, height ? _ref11.height : void 0);
                     }), {
                         width: width,
@@ -10801,7 +10754,34 @@
             return zalgo_promise_src.a.try((function() {
                 var el;
                 if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
-                Object(belter_src.p)(el) && (el = Object(belter_src.e)(el));
+                isShadowElement(el) && (el = function(element) {
+                    var shadowHost = function(element) {
+                        var shadowRoot = function(element) {
+                            for (;element.parentNode; ) element = element.parentNode;
+                            if (isShadowElement(element)) return element;
+                        }(element);
+                        if (shadowRoot.host) return shadowRoot.host;
+                    }(element);
+                    if (!shadowHost) throw new Error("Element is not in shadow dom");
+                    if (isShadowElement(shadowHost)) throw new Error("Host element is also in shadow dom");
+                    var slotName = "shadow-slot-" + (chars = "0123456789abcdef", "xxxxxxxxxx".replace(/./g, (function() {
+                        return chars.charAt(Math.floor(Math.random() * chars.length));
+                    })) + "_" + function(str) {
+                        if ("function" == typeof btoa) return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (function(m, p1) {
+                            return String.fromCharCode(parseInt(p1, 16));
+                        })));
+                        if ("undefined" != typeof Buffer) return Buffer.from(str, "utf8").toString("base64");
+                        throw new Error("Can not find window.btoa or Buffer");
+                    }((new Date).toISOString().slice(11, 19).replace("T", ".")).replace(/[^a-zA-Z0-9]/g, "").toLowerCase());
+                    var chars;
+                    var slot = document.createElement("slot");
+                    slot.setAttribute("name", slotName);
+                    element.appendChild(slot);
+                    var slotProvider = document.createElement("div");
+                    slotProvider.setAttribute("slot", slotName);
+                    shadowHost.appendChild(slotProvider);
+                    return slotProvider;
+                }(el));
                 if (_this33.component.containerTemplate) {
                     var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                         container: el
@@ -10953,13 +10933,13 @@
         _proto.getOverrides = function(context) {
             var overrides = {};
             var self = this;
-            var _loop = function(_i6, _Object$keys4) {
+            var _loop = function() {
                 var key = _Object$keys4[_i6];
                 overrides[key] = function() {
                     return parent_ParentComponent.prototype[key].apply(self, arguments);
                 };
             };
-            for (var _i6 = 0, _Object$keys4 = Object.keys(RENDER_DRIVERS[context].delegateOverrides); _i6 < _Object$keys4.length; _i6++) _loop(_i6, _Object$keys4);
+            for (var _i6 = 0, _Object$keys4 = Object.keys(RENDER_DRIVERS[context].delegateOverrides); _i6 < _Object$keys4.length; _i6++) _loop();
             return overrides;
         };
         _proto.destroy = function() {
@@ -11032,7 +11012,7 @@
             _this.xchild = void 0;
             _this.xprops = void 0;
             !function(options) {
-                if (!options) throw new Error("Expecred options to be passed");
+                if (!options) throw new Error("Expected options to be passed");
                 if (!options.tag || !options.tag.match(/^[a-z0-9-]+$/)) throw new Error("Invalid options.tag: " + options.tag);
                 !function(options) {
                     if (options.props && "object" != typeof options.props) throw new Error("Expected options.props to be an object");
@@ -12102,7 +12082,7 @@
     var belter_src__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
     var _config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
     function allowIframe() {
-        if (!Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.t)()) return !0;
+        if (!Object(belter_src__WEBPACK_IMPORTED_MODULE_1__.p)()) return !0;
         var parentWindow = Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.n)(window);
         if (parentWindow && Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.v)(parentWindow)) return !0;
         var parentComponentWindow = window.xchild && window.xchild.getParentComponentWindow();
@@ -12573,7 +12553,7 @@
         function focus(event) {
             event.preventDefault();
             event.stopPropagation();
-            Object(src.l)() && Object(src.t)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(src.q);
+            Object(src.j)() && Object(src.p)() ? window.alert("Please switch tabs to reactivate the PayPal window") : zalgo_promise_src.a.try(actions.focus).catch(src.n);
         }
         var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK;
         var logoColor = LOGO_COLOR[overlayColor];
@@ -16217,17 +16197,13 @@
         global: function() {
             return window.document;
         },
-        register: function register(component, document) {
+        register: function(component, document) {
             function render(element) {
                 if (element && element.tagName && "script" === element.tagName.toLowerCase() && element.attributes.type && "application/x-component" === element.attributes.type.value && element.parentNode) {
                     var tag = element.getAttribute("data-component");
                     if (tag && tag === component.tag) {
-                        component.log("instantiate_script_component");
-                        var props = element.innerText ? eval("(" + element.innerText + ")") : {};
-                        var container = document.createElement("div");
-                        if (!element.parentNode) throw new Error("Element has no parent");
-                        element.parentNode.replaceChild(container, element);
-                        component.render(props, container);
+                        component.log("instantiate_script_component_error");
+                        throw new Error("\n               'x-component' script type is no longer supported.  \n               Please migrate to another integration pattern.\n            ");
                     }
                 }
             }
@@ -16927,13 +16903,13 @@
         return constants.o;
     }));
     __webpack_require__.d(__webpack_exports__, "request", (function() {
-        return lib.Q;
+        return lib.R;
     }));
     __webpack_require__.d(__webpack_exports__, "isEligible", (function() {
-        return lib.C;
+        return lib.D;
     }));
     __webpack_require__.d(__webpack_exports__, "isFundingRemembered", (function() {
-        return lib.D;
+        return lib.E;
     }));
     __webpack_require__.d(__webpack_exports__, "forceIframe", (function() {
         return lib.a;
@@ -17025,13 +17001,13 @@
         return constants.o;
     }));
     __webpack_require__.d(interface_namespaceObject, "request", (function() {
-        return lib.Q;
+        return lib.R;
     }));
     __webpack_require__.d(interface_namespaceObject, "isEligible", (function() {
-        return lib.C;
+        return lib.D;
     }));
     __webpack_require__.d(interface_namespaceObject, "isFundingRemembered", (function() {
-        return lib.D;
+        return lib.E;
     }));
     __webpack_require__.d(interface_namespaceObject, "forceIframe", (function() {
         return lib.a;
@@ -17111,7 +17087,7 @@
         function focus(event) {
             event.preventDefault();
             event.stopPropagation();
-            Object(belter_src.l)() && Object(belter_src.t)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
+            Object(belter_src.j)() && Object(belter_src.p)() ? window.alert("Please switch tabs to reactivate the PayPal window") : actions.focus();
         }
         var overlayColor = (props.style || {}).overlayColor || constants.q.BLACK;
         var logoColor = LOGO_COLOR[overlayColor];
@@ -17199,7 +17175,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.w)();
+                    return Object(lib.x)();
                 },
                 queryParam: !0
             },
@@ -17212,7 +17188,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.j)();
+                    return Object(lib.k)();
                 },
                 queryParam: !0
             },
@@ -17238,7 +17214,7 @@
                 queryParam: "locale.x",
                 allowDelegate: !0,
                 def: function() {
-                    var _getBrowserLocale = Object(lib.i)();
+                    var _getBrowserLocale = Object(lib.j)();
                     return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                 }
             },
@@ -17272,7 +17248,7 @@
                 sendToChild: !1,
                 def: function() {
                     return Object(belter_src.a)(JSON.stringify({
-                        url: Object(lib.l)()
+                        url: Object(lib.m)()
                     }));
                 }
             }
@@ -17296,7 +17272,7 @@
                 sendToChild: !1,
                 def: function() {
                     return Object(belter_src.a)(JSON.stringify({
-                        url: Object(lib.l)()
+                        url: Object(lib.m)()
                     }));
                 }
             },
@@ -17306,7 +17282,7 @@
                 queryParam: "locale.x",
                 allowDelegate: !0,
                 def: function() {
-                    var _getBrowserLocale = Object(lib.i)();
+                    var _getBrowserLocale = Object(lib.j)();
                     return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                 }
             },
@@ -17394,8 +17370,8 @@
                 source: "checkoutjs"
             };
             clientId ? params.client_id = clientId : delete params.client_id;
-            var fullUrl = Object(lib.g)(config.a.pptmUrl, params);
-            Object(lib.G)(fullUrl, 0, {
+            var fullUrl = Object(lib.h)(config.a.pptmUrl, params);
+            Object(lib.H)(fullUrl, 0, {
                 async: !0,
                 id: constants.E
             }).then((function() {
@@ -17405,14 +17381,14 @@
                 _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.PPTM_LOADED, _track2));
             })).catch((function(err) {
                 Object(beaver_logger_client.k)("pptm_script_error", {
-                    error: Object(lib.T)(err)
+                    error: Object(lib.U)(err)
                 });
             }));
         },
         shouldCreateInitialPptmScript: function() {
             if (!window.location.hostname) return !1;
-            if (Object(lib.E)()) return !1;
-            var existingScript = Object(lib.n)(constants.E);
+            if (Object(lib.F)()) return !1;
+            var existingScript = Object(lib.o)(constants.E);
             if (Boolean(existingScript)) {
                 Object(beaver_logger_client.k)("pptm_tried_loading_twice");
                 return !1;
@@ -17420,22 +17396,22 @@
             return !0;
         },
         shouldReloadPptmScript: function(clientId) {
-            return !1 !== noContentFoundInContainer && !Object(lib.E)() && !config.a.merchantID && !!clientId;
+            return !1 !== noContentFoundInContainer && !Object(lib.F)() && !config.a.merchantID && !!clientId;
         },
         removePptm: function() {
-            var script = Object(lib.n)(constants.E);
+            var script = Object(lib.o)(constants.E);
             script && script.parentNode.removeChild(script);
         }
     });
     var noContentFoundInContainer, callback, listener, obj;
     var proxyRest = {};
-    var createAccessToken = Object(lib.H)((function(env, client) {
+    var createAccessToken = Object(lib.I)((function(env, client) {
         Object(beaver_logger_client.k)("rest_api_create_access_token");
         var clientID = client[env = env || config.a.env];
         if (!clientID) throw new Error("Client ID not found for env: " + env);
         if (proxyRest.createAccessToken && !proxyRest.createAccessToken.source.closed) return proxyRest.createAccessToken(env, client);
         var basicAuth = Object(belter_src.a)(clientID + ":");
-        return Object(lib.Q)({
+        return Object(lib.R)({
             method: "post",
             url: config.a.authApiUrls[env],
             headers: {
@@ -17452,7 +17428,7 @@
     }), {
         time: 6e5
     });
-    var createExperienceProfile = Object(lib.H)((function(env, client, experienceDetails) {
+    var createExperienceProfile = Object(lib.I)((function(env, client, experienceDetails) {
         void 0 === experienceDetails && (experienceDetails = {});
         Object(beaver_logger_client.k)("rest_api_create_experience_profile");
         if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
@@ -17460,7 +17436,7 @@
         experienceDetails.temporary = !0;
         experienceDetails.name = experienceDetails.name ? experienceDetails.name + "_" + Math.random().toString() : Math.random().toString();
         return createAccessToken(env, client).then((function(accessToken) {
-            return Object(lib.Q)({
+            return Object(lib.R)({
                 method: "post",
                 url: config.a.experienceApiUrls[env],
                 headers: {
@@ -17516,12 +17492,12 @@
                 return zalgo_promise_src.a.try((function() {
                     if (tracking) return zalgo_promise_src.a.resolve(function(env, client, merchantID, trackingData) {
                         if (!client[env = env || config.a.env]) throw new Error("Client ID not found for env: " + env);
-                        var trackingID = Object(lib.V)();
+                        var trackingID = Object(lib.W)();
                         return createAccessToken(env, client).then((function(accessToken) {
                             var headers = {
                                 Authorization: "Bearer " + accessToken
                             };
-                            return Object(lib.Q)({
+                            return Object(lib.R)({
                                 method: "put",
                                 url: config.a.trackingApiUrls[env] + "/" + merchantID + "/" + trackingID,
                                 headers: headers,
@@ -17541,7 +17517,7 @@
                     };
                     trackingID && (headers["Paypal-Client-Metadata-Id"] = trackingID);
                     meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-                    return Object(lib.Q)({
+                    return Object(lib.R)({
                         method: "post",
                         url: config.a.paymentApiUrls[env],
                         headers: headers,
@@ -17578,7 +17554,7 @@
                 Authorization: "Bearer " + accessToken
             };
             meta && meta.partner_attribution_id && (headers["PayPal-Partner-Attribution-Id"] = meta.partner_attribution_id);
-            return Object(lib.Q)({
+            return Object(lib.R)({
                 method: "post",
                 url: config.a.orderApiUrls[env],
                 headers: headers,
@@ -17605,7 +17581,7 @@
                 if (experienceDetails) return zalgo_promise_src.a.resolve(createExperienceProfile(env, client, experienceDetails));
             })).then((function(experienceID) {
                 experienceID && (billingDetails.experience_profile_id = experienceID);
-                return Object(lib.Q)({
+                return Object(lib.R)({
                     method: "post",
                     url: config.a.billingApiUrls[env],
                     headers: {
@@ -17639,16 +17615,16 @@
     }, (function(_ref) {
         proxyRest = _ref.data;
     }));
-    parentWin && Object(lib.E)() && !Object(cross_domain_utils_src.v)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
+    parentWin && Object(lib.F)() && !Object(cross_domain_utils_src.v)(parentWin) && Object(post_robot_src.send)(parentWin, "proxy_rest", {
         createAccessToken: createAccessToken,
         createExperienceProfile: createExperienceProfile,
         createPayment: createPayment,
         createBillingAgreement: createBillingAgreement,
         createOrder: createOrder
     }).catch((function() {}));
-    var onAuthorizeListener = Object(lib.e)();
+    var onAuthorizeListener = Object(lib.f)();
     function log(experiment, treatment, token, state) {
-        Object(lib.x)((function(session) {
+        Object(lib.y)((function(session) {
             var event = experiment + "_" + treatment + "_" + state;
             var loggedEvents = session.loggedExperimentEvents = session.loggedExperimentEvents || [];
             if (-1 !== loggedEvents.indexOf(event)) Object(beaver_logger_client.k)("duplicate_" + event); else {
@@ -17669,7 +17645,7 @@
     function logExperimentTreatment(_ref) {
         var experiment = _ref.experiment, treatment = _ref.treatment, state = _ref.state, token = _ref.token;
         if (experiment && treatment) {
-            Object(lib.x)((function(session) {
+            Object(lib.y)((function(session) {
                 session.externalExperiment = experiment;
                 session.externalExperimentTreatment = treatment;
                 token && (session.externalExperimentToken = token);
@@ -17678,7 +17654,7 @@
         }
     }
     function logReturn(token) {
-        var _getSessionState = Object(lib.x)((function(session) {
+        var _getSessionState = Object(lib.y)((function(session) {
             return session;
         })), externalExperiment = _getSessionState.externalExperiment, externalExperimentTreatment = _getSessionState.externalExperimentTreatment, externalExperimentToken = _getSessionState.externalExperimentToken;
         externalExperiment && externalExperimentTreatment && externalExperimentToken === token ? log(externalExperiment, externalExperimentTreatment, token, "complete") : Object(beaver_logger_client.k)("experiment_mismatch", {
@@ -17688,14 +17664,14 @@
             externalExperimentToken: externalExperimentToken
         });
     }
-    if (Object(lib.m)("log_authorize")) {
+    if (Object(lib.n)("log_authorize")) {
         onAuthorizeListener.once((function(_ref2) {
             var paymentToken = _ref2.paymentToken;
             setTimeout((function() {
                 logReturn(paymentToken);
             }), 1);
         }));
-        var returnToken = Object(lib.u)();
+        var returnToken = Object(lib.v)();
         returnToken && setTimeout((function() {
             returnToken && logReturn(returnToken);
         }), 1);
@@ -17724,7 +17700,7 @@
                                 err.code = "PAYMENT_CANCELLED";
                                 return reject(err);
                             };
-                            popupBridge.open(Object(lib.g)(url, {
+                            popupBridge.open(Object(lib.h)(url, {
                                 redirect_uri: popupBridge.getReturnUrlPrefix()
                             }));
                         }));
@@ -24202,15 +24178,15 @@
             });
             template.addEventListener("click", (function() {
                 Object(beaver_logger_client.q)("button_pre_template_click");
-                if (Object(belter_src.k)()) {
+                if (Object(belter_src.i)()) {
                     Object(beaver_logger_client.q)("button_pre_template_click_intranet_mode");
                     Object(beaver_logger_client.h)();
                     alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
                 }
-                if (Object(lib.m)("allow_full_page_fallback")) {
+                if (Object(lib.n)("allow_full_page_fallback")) {
                     Object(beaver_logger_client.k)("pre_template_force_full_page");
                     _this.props.payment().then((function(token) {
-                        window.top.location = Object(lib.g)(config.a.checkoutUrl, {
+                        window.top.location = Object(lib.h)(config.a.checkoutUrl, {
                             token: token
                         });
                     }));
@@ -24219,7 +24195,7 @@
             return jsxDom("html", null, jsxDom("body", null, template));
         },
         get version() {
-            return Object(lib.v)();
+            return Object(lib.w)();
         },
         get domain() {
             return config.a.paypalDomains;
@@ -24231,7 +24207,7 @@
             }
         },
         validate: function() {
-            Object(lib.C)() || Object(beaver_logger_client.q)("button_render_ineligible");
+            Object(lib.D)() || Object(beaver_logger_client.q)("button_render_ineligible");
         },
         props: {
             domain: {
@@ -24246,7 +24222,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.w)();
+                    return Object(lib.x)();
                 },
                 queryParam: !0
             },
@@ -24254,7 +24230,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.V)();
+                    return Object(lib.W)();
                 },
                 queryParam: !0
             },
@@ -24262,7 +24238,7 @@
                 type: "string",
                 required: !1,
                 def: function(props) {
-                    return Object(lib.s)(props);
+                    return Object(lib.t)(props);
                 },
                 queryParam: !0
             },
@@ -24270,7 +24246,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.y)();
+                    return Object(lib.z)();
                 },
                 queryParam: !0
             },
@@ -24369,7 +24345,7 @@
                         var _this2 = this;
                         void 0 === data && (data = {});
                         var actions = {
-                            request: lib.Q,
+                            request: lib.R,
                             payment: {
                                 create: function(options) {
                                     return _this2.props.braintree ? _this2.props.braintree.then((function(client) {
@@ -24395,7 +24371,7 @@
                                 }
                             }
                         };
-                        if (Object(lib.m)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
+                        if (Object(lib.n)("memoize_payment") && this.memoizedToken) return this.memoizedToken;
                         this.memoizedToken = zalgo_promise_src.a.try(original, this, [ data, actions ]);
                         var startTime = Date.now();
                         this.memoizedToken = this.memoizedToken.then((function(token) {
@@ -24448,7 +24424,7 @@
                     })));
                     (function(props) {
                         var _normalizeProps = Object(button_props.a)(props, {
-                            locale: Object(lib.i)()
+                            locale: Object(lib.j)()
                         }), label = _normalizeProps.label, funding = _normalizeProps.funding, layout = _normalizeProps.layout, locale = _normalizeProps.locale, max = _normalizeProps.max, sources = _normalizeProps.sources, env = _normalizeProps.env;
                         var allowed = funding.allowed;
                         var country = locale.country;
@@ -24471,20 +24447,20 @@
                         if (-1 !== sources.indexOf(constants.v.CREDIT)) return !1;
                         var domain = Object(cross_domain_utils_src.h)().replace(/^https?:\/\//, "").replace(/^www\./, "");
                         return -1 !== config.a.creditTestDomains.indexOf(domain);
-                    })(props) && (creditThrottle = Object(lib.z)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
-                    var remembered = Object(lib.r)((function(sources) {
+                    })(props) && (creditThrottle = Object(lib.A)("dual_credit_automatic", 50)).isEnabled() && (allowed = [].concat(allowed, [ constants.v.CREDIT ]));
+                    var remembered = Object(lib.s)((function(sources) {
                         return sources;
                     }));
                     remembered && -1 !== remembered.indexOf(constants.v.VENMO) && (remembered = remembered.filter((function(source) {
                         return source !== constants.v.VENMO;
                     })));
-                    Object(lib.F)() && !Object(lib.m)("disable_venmo") || disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]));
+                    Object(lib.G)() && !Object(lib.n)("disable_venmo") || disallowed && -1 === disallowed.indexOf(constants.v.VENMO) && (disallowed = [].concat(disallowed, [ constants.v.VENMO ]));
                     return {
                         allowed: allowed,
                         disallowed: disallowed,
                         remembered: remembered,
                         remember: function(sources) {
-                            Object(lib.P)(sources);
+                            Object(lib.Q)(sources);
                         }
                     };
                 }
@@ -24505,8 +24481,8 @@
                 decorate: function(original) {
                     return function() {
                         var _track2;
-                        var _getBrowser = Object(lib.h)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
-                        Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(belter_src.h)() ? "mobile" : "desktop") + "_" + version);
+                        var _getBrowser = Object(lib.i)(), _getBrowser$browser = _getBrowser.browser, browser = void 0 === _getBrowser$browser ? "unrecognized" : _getBrowser$browser, _getBrowser$version = _getBrowser.version, version = void 0 === _getBrowser$version ? "unrecognized" : _getBrowser$version;
+                        Object(beaver_logger_client.k)("button_render_browser_" + browser + "_" + (Object(belter_src.f)() ? "mobile" : "desktop") + "_" + version);
                         var style = this.props.style || {};
                         Object(beaver_logger_client.k)("button_render");
                         Object(beaver_logger_client.k)("button_render_color_" + (style.color || "default"));
@@ -24522,7 +24498,7 @@
                         _track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_RENDER, _track2[constants.u.KEY.BUTTON_TYPE] = constants.u.BUTTON_TYPE.IFRAME, 
                         _track2[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track2[constants.u.KEY.BUTTON_SOURCE] = this.props.source, 
                         _track2));
-                        Object(belter_src.k)() && Object(beaver_logger_client.q)("button_render_intranet_mode");
+                        Object(belter_src.i)() && Object(beaver_logger_client.q)("button_render_intranet_mode");
                         if (creditThrottle) {
                             var _creditThrottle$logSt;
                             creditThrottle.logStart(((_creditThrottle$logSt = {})[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
@@ -24548,9 +24524,9 @@
                         Object(beaver_logger_client.p)(((_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.CHECKOUT, 
                         _track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.CHECKOUT_APPROVE, _track3[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                         _track3[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, _track3));
-                        Object(belter_src.k)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
-                        Object(lib.C)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
-                        Object(lib.d)("authorize");
+                        Object(belter_src.i)() && Object(beaver_logger_client.q)("button_authorize_intranet_mode");
+                        Object(lib.D)() || Object(beaver_logger_client.k)("button_authorize_ineligible");
+                        Object(lib.e)("authorize");
                         Object(beaver_logger_client.h)();
                         var restart = actions.restart;
                         actions.restart = function() {
@@ -24562,10 +24538,10 @@
                             return zalgo_promise_src.a.try((function() {
                                 if (actions.close) return actions.close();
                             })).then((function() {
-                                return Object(lib.O)(win || window.top, url || data.returnUrl);
+                                return Object(lib.P)(win || window.top, url || data.returnUrl);
                             }));
                         };
-                        actions.payment.tokenize = Object(lib.H)((function() {
+                        actions.payment.tokenize = Object(lib.I)((function() {
                             if (!_this3.props.braintree) throw new Error("Must pass in Braintree client to tokenize payment");
                             return _this3.props.braintree.then((function(client) {
                                 return client.tokenizePayment(data);
@@ -24591,7 +24567,7 @@
                                 return result;
                             }));
                         };
-                        actions.request = lib.Q;
+                        actions.request = lib.R;
                         onAuthorizeListener.trigger({
                             paymentToken: data.paymentToken
                         });
@@ -24664,7 +24640,7 @@
                 once: !0,
                 def: function() {
                     return function(err) {
-                        if (Object(belter_src.k)()) {
+                        if (Object(belter_src.i)()) {
                             Object(beaver_logger_client.q)("button_error_intranet_mode");
                             Object(beaver_logger_client.h)();
                             alert("IE Intranet mode is not supported by PayPal. Please disable intranet mode, or continue in an alternate browser.");
@@ -24689,7 +24665,7 @@
                         Object(beaver_logger_client.h)();
                         return original.call(this, data, Object(esm_extends.a)({}, actions, {
                             redirect: function(win, url) {
-                                return zalgo_promise_src.a.all([ Object(lib.O)(win || window.top, url || data.cancelUrl), actions.close() ]);
+                                return zalgo_promise_src.a.all([ Object(lib.P)(win || window.top, url || data.cancelUrl), actions.close() ]);
                             }
                         }));
                     };
@@ -24709,7 +24685,7 @@
                         _track6[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, _track6[constants.u.KEY.CHOSEN_FUNDING] = data && (data.card || data.fundingSource), 
                         _track6[constants.u.KEY.PAYMENT_FLOW] = data && data.flow, _track6[constants.u.KEY.BUTTON_VERSION] = data && data.button_version, 
                         _track6));
-                        Object(belter_src.k)() && Object(beaver_logger_client.q)("button_click_intranet_mode");
+                        Object(belter_src.i)() && Object(beaver_logger_client.q)("button_click_intranet_mode");
                         if (creditThrottle) {
                             var _creditThrottle$log;
                             creditThrottle.log("click", ((_creditThrottle$log = {})[constants.u.KEY.STATE] = constants.u.STATE.BUTTON, 
@@ -24768,7 +24744,7 @@
                 required: !1,
                 queryParam: "locale.x",
                 def: function() {
-                    var _getBrowserLocale = Object(lib.i)();
+                    var _getBrowserLocale = Object(lib.j)();
                     return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                 },
                 validate: validateButtonLocale
@@ -24831,7 +24807,7 @@
                 sendToChild: !1,
                 def: function() {
                     return Object(belter_src.a)(JSON.stringify({
-                        url: Object(lib.l)()
+                        url: Object(lib.m)()
                     }));
                 }
             },
@@ -24870,7 +24846,7 @@
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) args[_key - 1] = arguments[_key];
         var instance = {
             clone: function(_temp3) {
-                var _ref6$decorate = (void 0 === _temp3 ? {} : _temp3).decorate, decorate = void 0 === _ref6$decorate ? belter_src.d : _ref6$decorate;
+                var _ref6$decorate = (void 0 === _temp3 ? {} : _temp3).decorate, decorate = void 0 === _ref6$decorate ? belter_src.c : _ref6$decorate;
                 return {
                     render: function(container) {
                         var decoratedProps = decorate(props);
@@ -24880,7 +24856,7 @@
             }
         };
         instances.push(instance);
-        var _props = props, _props$onDestroy = _props.onDestroy, onDestroy = void 0 === _props$onDestroy ? belter_src.q : _props$onDestroy;
+        var _props = props, _props$onDestroy = _props.onDestroy, onDestroy = void 0 === _props$onDestroy ? belter_src.n : _props$onDestroy;
         var newProps = Object(esm_extends.a)({}, props, {
             onDestroy: function() {
                 var index = instances.indexOf(instance);
@@ -24912,7 +24888,7 @@
                             }).then((function(token) {
                                 var _extendUrl;
                                 if (!token) throw new Error("Expected props.payment to return a payment id or token");
-                                return Object(lib.g)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
+                                return Object(lib.h)(Object(integrations_checkout.b)(env, constants.v.PAYPAL, token), ((_extendUrl = {})[Object(integrations_checkout.a)(token)] = token, 
                                 _extendUrl.useraction = props.commit ? "commit" : "", _extendUrl.native_xo = "1", 
                                 _extendUrl));
                             }));
@@ -24943,11 +24919,11 @@
                             "payment" === opType ? actions.redirect = function(win, redirectUrl) {
                                 void 0 === win && (win = window);
                                 void 0 === redirectUrl && (redirectUrl = return_uri);
-                                return Object(lib.O)(win, redirectUrl);
+                                return Object(lib.P)(win, redirectUrl);
                             } : "cancel" === opType && (actions.redirect = function(win, redirectUrl) {
                                 void 0 === win && (win = window);
                                 void 0 === redirectUrl && (redirectUrl = cancel_uri);
-                                return Object(lib.O)(win, redirectUrl);
+                                return Object(lib.P)(win, redirectUrl);
                             });
                             return actions;
                         }(payload.queryItems);
@@ -24960,7 +24936,7 @@
                     }));
                 }(props, popupBridge).catch((function(err) {
                     Object(beaver_logger_client.g)("popup_bridge_error", {
-                        err: Object(lib.T)(err)
+                        err: Object(lib.U)(err)
                     });
                     return original();
                 })) : original();
@@ -24987,7 +24963,7 @@
                 }));
             };
         }(src_checkout.a, ButtonComponent);
-        Object(lib.p)().then((function(pageRenderTime) {
+        Object(lib.q)().then((function(pageRenderTime) {
             var _track;
             var fundingSources = [].slice.call(document.querySelectorAll("[" + constants.c.FUNDING_SOURCE + "]")).map((function(el) {
                 return el.getAttribute(constants.c.CARD) || el.getAttribute(constants.c.FUNDING_SOURCE);
@@ -25009,18 +24985,18 @@
             }
         }));
         var xprops = ButtonComponent.xprops || src_checkout.a.xprops;
-        xprops && xprops.logLevel && Object(lib.S)(xprops.logLevel);
+        xprops && xprops.logLevel && Object(lib.T)(xprops.logLevel);
         xprops.payment && !xprops.createOrder && (xprops.createOrder = xprops.payment);
         xprops.onAuthorize && !xprops.onApprove && (xprops.onApprove = xprops.onAuthorize);
         try {
             xprops && xprops.onShippingChange && window.pre && window.pre.inlineGuest && window.pre.inlineGuest.res && window.pre.inlineGuest.res.data && window.pre.inlineGuest.res.data.treatments && (window.pre.inlineGuest.res.data.treatments = []);
         } catch (err) {}
     }(component_Button);
-    Object(belter_src.i)() && Object(lib.m)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
+    Object(belter_src.g)() && Object(lib.n)("ie_full_page") && (src_checkout.a.renderTo = function(win) {
         Object(beaver_logger_client.k)("force_ie_full_page");
         Object(beaver_logger_client.h)();
         var checkout = src_checkout.a.init({
-            onAuthorize: belter_src.q
+            onAuthorize: belter_src.n
         });
         checkout.delegate(win);
         checkout.openContainer().then((function() {
@@ -25028,7 +25004,7 @@
             checkout.showContainer();
         }));
         component_Button.xprops.payment().then((function(token) {
-            window.top.location = Object(lib.g)(config.a.checkoutUrl, {
+            window.top.location = Object(lib.h)(config.a.checkoutUrl, {
                 token: token
             });
         })).catch((function(err) {
@@ -25043,22 +25019,22 @@
             src_checkout.a.canRenderTo(hacks_top).then((function(result) {
                 canRenderTop = result;
             }));
-            Object(lib.M)(src_checkout.a, "renderTo", (function(_ref) {
+            Object(lib.N)(src_checkout.a, "renderTo", (function(_ref) {
                 var _ref$args = _ref.args, win = _ref$args[0], props = _ref$args[1], el = _ref$args[2], original = _ref.original, context = _ref.context;
                 canRenderTop || (win = Object(cross_domain_utils_src.n)(window));
                 return original.call(context, win, props, el);
             }));
         }
     }
-    Object(lib.M)(src_checkout.a, "renderTo", (function(_ref2) {
+    Object(lib.N)(src_checkout.a, "renderTo", (function(_ref2) {
         var callOriginal = _ref2.callOriginal, props = _ref2.args[1];
-        if (Object(lib.m)("allow_full_page_fallback")) {
-            var handleError = Object(lib.K)((function(err) {
+        if (Object(lib.n)("allow_full_page_fallback")) {
+            var handleError = Object(lib.L)((function(err) {
                 try {
                     console.error(err && err.stack);
                 } catch (err2) {}
                 return component_Button.xprops.payment().then((function(token) {
-                    window.top.location = Object(lib.g)(config.a.checkoutUrl, {
+                    window.top.location = Object(lib.h)(config.a.checkoutUrl, {
                         token: token
                     });
                 }));
@@ -25069,14 +25045,14 @@
         return callOriginal();
     }));
     var debounce = !1;
-    Object(lib.M)(src_checkout.a, "renderTo", (function(_ref3) {
+    Object(lib.N)(src_checkout.a, "renderTo", (function(_ref3) {
         var callOriginal = _ref3.callOriginal, props = _ref3.args[1];
         if (debounce) {
             Object(beaver_logger_client.q)("button_mutliple_click_debounce");
-            return new zalgo_promise_src.a(belter_src.q);
+            return new zalgo_promise_src.a(belter_src.n);
         }
         debounce = !0;
-        var _loop = function(_i2, _ref5) {
+        var _loop = function() {
             var methodName = _ref5[_i2];
             var original = props[methodName];
             props[methodName] = function() {
@@ -25084,10 +25060,10 @@
                 if (original) return original.apply(this, arguments);
             };
         };
-        for (var _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop(_i2, _ref5);
+        for (var _i2 = 0, _ref5 = [ "onAuthorize", "onCancel", "onError", "onClose" ]; _i2 < _ref5.length; _i2++) _loop();
         return callOriginal();
     }));
-    Object(lib.M)(rest.payment, "create", (function(_ref6) {
+    Object(lib.N)(rest.payment, "create", (function(_ref6) {
         var _ref6$args = _ref6.args, options = _ref6$args[2];
         options.payment || (options = {
             payment: options,
@@ -25095,7 +25071,7 @@
         });
         return _ref6.original.call(_ref6.context, _ref6$args[0], _ref6$args[1], options);
     }));
-    Object(lib.M)(component_Button.props.style, "validate", (function(_ref7) {
+    Object(lib.N)(component_Button.props.style, "validate", (function(_ref7) {
         var callOriginal = _ref7.callOriginal, style = _ref7.args[0];
         if (!style) return callOriginal();
         style && "creditblue" === style.color && (style.color = constants.e.DARKBLUE);
@@ -25106,7 +25082,7 @@
         }
         return callOriginal();
     }));
-    Object(lib.M)(component_Button, "render", (function(_ref8) {
+    Object(lib.N)(component_Button, "render", (function(_ref8) {
         var callOriginal = _ref8.callOriginal, props = _ref8.args[0];
         if (props.billingAgreement) {
             props.payment = props.billingAgreement;
@@ -25114,12 +25090,12 @@
         }
         return callOriginal();
     }));
-    Object(lib.M)(component_Button.props.payment, "decorate", (function(_ref9) {
+    Object(lib.N)(component_Button.props.payment, "decorate", (function(_ref9) {
         var originalPayment = _ref9.args[0];
         return _ref9.original.call(_ref9.context, (function(data, actions) {
             var _this = this;
             return new zalgo_promise_src.a((function(resolve, reject) {
-                Object(lib.M)(actions.payment, "create", (function(_ref10) {
+                Object(lib.N)(actions.payment, "create", (function(_ref10) {
                     var _ref10$args = _ref10.args, options = _ref10$args[0];
                     options.payment || (options = {
                         payment: options,
@@ -25133,9 +25109,9 @@
                 function rejectActions(err) {
                     reject(err);
                 }
-                Object(lib.f)(resolveData, data);
-                Object(lib.f)(resolveData, actions);
-                Object(lib.f)(rejectActions, actions);
+                Object(lib.g)(resolveData, data);
+                Object(lib.g)(resolveData, actions);
+                Object(lib.g)(rejectActions, actions);
                 var ctx = {
                     props: {
                         env: _this.props.env,
@@ -25176,7 +25152,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.w)();
+                    return Object(lib.x)();
                 },
                 queryParam: !0
             },
@@ -25189,7 +25165,7 @@
                 type: "string",
                 required: !1,
                 def: function() {
-                    return Object(lib.j)();
+                    return Object(lib.k)();
                 },
                 queryParam: !0
             },
@@ -25215,7 +25191,7 @@
                 queryParam: "locale.x",
                 allowDelegate: !0,
                 def: function() {
-                    var _getBrowserLocale = Object(lib.i)();
+                    var _getBrowserLocale = Object(lib.j)();
                     return _getBrowserLocale.lang + "_" + _getBrowserLocale.country;
                 }
             },
@@ -25260,7 +25236,7 @@
                 sendToChild: !1,
                 def: function() {
                     return Object(belter_src.a)(JSON.stringify({
-                        url: Object(lib.l)()
+                        url: Object(lib.m)()
                     }));
                 }
             },
@@ -25294,14 +25270,14 @@
     zalgo_promise_src.a.onPossiblyUnhandledException((function(err) {
         var _track;
         Object(beaver_logger_client.g)("unhandled_error", {
-            stack: Object(lib.T)(err),
+            stack: Object(lib.U)(err),
             errtype: {}.toString.call(err)
         });
         Object(beaver_logger_client.p)(((_track = {})[constants.u.KEY.ERROR_CODE] = "checkoutjs_error", 
-        _track[constants.u.KEY.ERROR_DESC] = Object(lib.U)(err), _track));
+        _track[constants.u.KEY.ERROR_DESC] = Object(lib.V)(err), _track));
         return Object(beaver_logger_client.h)().catch((function(err2) {
             if (window.console) try {
-                window.console.error ? window.console.error("Error flushing:", Object(lib.T)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.T)(err2));
+                window.console.error ? window.console.error("Error flushing:", Object(lib.U)(err2)) : window.console.log && window.console.log("Error flushing:", Object(lib.U)(err2));
             } catch (err3) {
                 setTimeout((function() {
                     throw err3;
@@ -25309,16 +25285,17 @@
             }
         }));
     }));
-    var currentScript = Object(lib.k)();
+    var currentScript = Object(lib.l)();
     var currentProtocol = window.location.protocol.split(":")[0];
-    var init = Object(lib.K)((function(_ref2) {
+    var init = Object(lib.L)((function(_ref2) {
         var precacheRemembered = _ref2.precacheRemembered;
-        Object(lib.C)() || Object(beaver_logger_client.q)("ineligible");
+        Object(lib.D)() || Object(beaver_logger_client.q)("ineligible");
         Object(lib.c)();
-        Object(lib.A)();
+        Object(lib.B)();
+        window.addEventListener("load", lib.d);
         pptm.shouldCreateInitialPptmScript() && pptm.createPptmScript();
-        precacheRemembered && Object(lib.N)();
-        Object(lib.m)("force_bridge") && !Object(lib.E)() && Object(lib.L)(config.a.env);
+        precacheRemembered && Object(lib.O)();
+        Object(lib.n)("force_bridge") && !Object(lib.F)() && Object(lib.M)(config.a.env);
         Object(beaver_logger_client.k)("setup_" + config.a.env);
         Object(beaver_logger_client.f)("current_protocol_" + currentProtocol);
     }));
@@ -25366,7 +25343,7 @@
                 config.a.state = state;
             }
             merchantID && (config.a.merchantID = merchantID);
-            logLevel ? Object(lib.S)(logLevel) : Object(lib.S)(config.a.logLevel);
+            logLevel ? Object(lib.T)(logLevel) : Object(lib.T)(config.a.logLevel);
         }(options);
         init(options);
     }
@@ -25374,19 +25351,19 @@
         env: currentScript.getAttribute("data-env"),
         stage: currentScript.getAttribute("data-stage"),
         apiStage: currentScript.getAttribute("data-api-stage"),
-        stageUrl: Object(lib.E)() ? currentScript.getAttribute("data-stage-url") : void 0,
-        localhostUrl: Object(lib.E)() ? currentScript.getAttribute("data-localhost-url") : void 0,
-        checkoutUri: Object(lib.E)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
+        stageUrl: Object(lib.F)() ? currentScript.getAttribute("data-stage-url") : void 0,
+        localhostUrl: Object(lib.F)() ? currentScript.getAttribute("data-localhost-url") : void 0,
+        checkoutUri: Object(lib.F)() ? currentScript.getAttribute("data-checkout-uri") : void 0,
         state: currentScript.getAttribute("data-state"),
         logLevel: currentScript.getAttribute("data-log-level"),
         merchantID: currentScript.getAttribute("data-merchant-id"),
         authCode: currentScript.getAttribute("data-auth-code"),
         precacheRemembered: currentScript.hasAttribute("data-precache-remembered-funding")
     }) : setup();
-    if (!Object(lib.E)()) if (currentScript) {
+    if (!Object(lib.F)()) if (currentScript) {
         var setup_track2;
         var scriptProtocol = currentScript.src.split(":")[0];
-        var loadTime = Object(lib.t)(currentScript.src);
+        var loadTime = Object(lib.u)(currentScript.src);
         Object(beaver_logger_client.f)("current_script_protocol_" + scriptProtocol);
         Object(beaver_logger_client.f)("current_script_protocol_" + (currentProtocol === scriptProtocol ? "match" : "mismatch"));
         Object(beaver_logger_client.f)("current_script_version_" + config.a.version.replace(/[^0-9a-zA-Z]+/g, "_"));
@@ -25398,7 +25375,7 @@
         }
         Object(beaver_logger_client.p)(((setup_track2 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track2[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track2[constants.u.KEY.TRANSITION_TIME] = loadTime, 
-        setup_track2[constants.u.KEY.FUNDING_REMEMBERED] = Object(lib.r)().join(","), setup_track2));
+        setup_track2[constants.u.KEY.FUNDING_REMEMBERED] = Object(lib.s)().join(","), setup_track2));
     } else {
         var setup_track3;
         Object(beaver_logger_client.f)("no_current_script");
@@ -25424,7 +25401,7 @@
     var enableCheckoutIframe;
     var logger;
     var interface_ThreeDomainSecure;
-    if (Object(lib.E)()) {
+    if (Object(lib.F)()) {
         interface_Checkout = src_checkout.a;
         interface_BillingPage = BillingPage;
         interface_ThreeDomainSecure = ThreeDomainSecure;
@@ -25495,7 +25472,7 @@
     var config = __webpack_require__(5);
     var post_robot_src = __webpack_require__(15);
     function isLegacyEligible() {
-        return !!Object(lib.C)() && !!Object(belter_src.t)() && !Object(belter_src.h)();
+        return !!Object(lib.D)() && !!Object(belter_src.p)() && !Object(belter_src.f)();
     }
     var warn = Object(client.n)(LOG_PREFIX).warn;
     var DEFAULT_COUNTRY = constants.r.US;
@@ -25525,19 +25502,19 @@
         };
     }
     var button_prefix = Object(client.n)(LOG_PREFIX), info = button_prefix.info, debug = button_prefix.debug, error = button_prefix.error;
-    var loadButtonJS = Object(lib.H)((function() {
+    var loadButtonJS = Object(lib.I)((function() {
         debug("buttonjs_load");
-        return Object(lib.G)(config.a.buttonJSUrl).catch((function(err) {
+        return Object(lib.H)(config.a.buttonJSUrl).catch((function(err) {
             info("buttonjs_load_error_retry", {
-                error: Object(lib.T)(err)
+                error: Object(lib.U)(err)
             });
-            return Object(lib.G)(config.a.buttonJSUrl);
+            return Object(lib.H)(config.a.buttonJSUrl);
         })).then((function(result) {
             debug("buttonjs_load_success");
             return result;
         })).catch((function(err) {
             error("buttonjs_load_error", {
-                error: Object(lib.T)(err)
+                error: Object(lib.U)(err)
             });
             throw err;
         }));
@@ -25572,7 +25549,7 @@
                         }).el;
                         container.appendChild(el);
                         try {
-                            info("in_page_button_" + (Object(lib.B)(el) ? "visible" : "not_visible"));
+                            info("in_page_button_" + (Object(lib.C)(el) ? "visible" : "not_visible"));
                         } catch (err) {}
                         return el.childNodes[0];
                     }));
@@ -25625,15 +25602,15 @@
     var redirected = !1;
     function logRedirect(location) {
         redirected && util_warn("multiple_redirects");
-        Object(lib.W)(location) && (redirected = !0);
+        Object(lib.X)(location) && (redirected = !0);
         Object(client.h)();
     }
     function redirect(url) {
         return src.a.try((function() {
             if (!url) throw new Error("Redirect url undefined");
-            if (config.a.env === constants.t.TEST && Object(lib.W)(url)) return Object(lib.O)(window, "#fullpageRedirect?url=" + url);
+            if (config.a.env === constants.t.TEST && Object(lib.X)(url)) return Object(lib.P)(window, "#fullpageRedirect?url=" + url);
             logRedirect(url);
-            return Object(lib.O)(window, url);
+            return Object(lib.P)(window, url);
         }));
     }
     var options_prefix = Object(client.n)(LOG_PREFIX), options_info = options_prefix.info, options_warn = options_prefix.warn;
@@ -25688,7 +25665,7 @@
                 });
                 throw new Error('Could not determine url or token from "' + item + '"');
             }
-            url = Object(lib.g)(config.a.checkoutUrl, {
+            url = Object(lib.h)(config.a.checkoutUrl, {
                 token: paymentToken
             });
             interface_debug("startflow_with_token", {
@@ -25735,7 +25712,7 @@
                 }
                 if (method && _url) {
                     event.preventDefault();
-                    Object(lib.Q)({
+                    Object(lib.R)({
                         method: method,
                         url: _url,
                         body: body,
@@ -25762,7 +25739,7 @@
             interface_checkout.initXO = function() {
                 interface_warn("gettoken_initxo");
             };
-            interface_checkout.startFlow = Object(lib.K)((function(item) {
+            interface_checkout.startFlow = Object(lib.L)((function(item) {
                 interface_debug("gettoken_startflow", {
                     item: item
                 });
@@ -25834,9 +25811,9 @@
                 resolve(data.paymentToken);
             };
         }));
-        var errorHandler = Object(lib.K)((function(err) {
+        var errorHandler = Object(lib.L)((function(err) {
             interface_error("component_error", {
-                error: Object(lib.T)(err)
+                error: Object(lib.U)(err)
             });
             if (hijackTarget) {
                 interface_warn("render_error_hijack_revert_target");
@@ -25848,7 +25825,7 @@
             }));
             paymentToken.then((function(token) {
                 interface_warn("render_error_redirect_using_token");
-                return redirect(Object(lib.g)(config.a.checkoutUrl, {
+                return redirect(Object(lib.h)(config.a.checkoutUrl, {
                     token: token
                 }));
             }));
@@ -25881,7 +25858,7 @@
         interface_info("setup", {
             id: id = id || "merchant",
             env: options.environment,
-            options: Object(lib.R)(options)
+            options: Object(lib.S)(options)
         });
         setupCalled && interface_debug("setup_called_multiple_times");
         setupCalled = !0;
@@ -25899,7 +25876,7 @@
                 options_info("options_button_single_button_passed");
                 options.button = [ options.button ];
             }
-            if (options.buttons && Object(lib.o)(options.buttons).length) {
+            if (options.buttons && Object(lib.p)(options.buttons).length) {
                 options_info("options_buttons_with_elements_passed");
                 options.button = options.buttons;
                 delete options.buttons;
@@ -25917,7 +25894,7 @@
                 delete options.container;
             }
             if (options.button) {
-                var button = Object(lib.o)(options.button);
+                var button = Object(lib.p)(options.button);
                 if (button.length) options.button = button; else {
                     options_warn("options_button_element_not_found", {
                         element: JSON.stringify(options.button)
@@ -25944,7 +25921,7 @@
                             options: options.container,
                             button: button.container
                         });
-                        Object(lib.o)(button.container || button.button).forEach((function(element) {
+                        Object(lib.p)(button.container || button.button).forEach((function(element) {
                             var _buttons$push;
                             buttons.push(((_buttons$push = {})[button.container ? "container" : "button"] = element, 
                             _buttons$push.click = button.click || options.click, _buttons$push.condition = button.condition || options.condition, 
@@ -25966,7 +25943,7 @@
                 buttons.length && (options.buttons = buttons);
             } else if (options.container && !Array.isArray(options.buttons)) {
                 var _buttons = [];
-                Object(lib.o)(options.container).forEach((function(container, i) {
+                Object(lib.p)(options.container).forEach((function(container, i) {
                     _buttons.push({
                         container: container,
                         click: options.click,
@@ -26008,7 +25985,7 @@
             Object(client.f)("setup_post_bridge", {
                 env: env
             });
-            return Object(lib.L)(env).then(lib.I);
+            return Object(lib.M)(env).then(lib.J);
         }));
         var env;
         return src.a.try((function() {
@@ -26024,7 +26001,7 @@
                         element.addEventListener("click", (function(event) {
                             tracker();
                             var eligible = isLegacyEligible();
-                            if (Object(belter_src.t)()) {
+                            if (Object(belter_src.p)()) {
                                 interface_debug("click_popups_supported");
                                 eligible || interface_debug("click_popups_supported_but_ineligible");
                             } else {
@@ -26043,7 +26020,7 @@
                                     clickHandler(event);
                                 } catch (err) {
                                     interface_error("click_handler_error", {
-                                        error: Object(lib.T)(err)
+                                        error: Object(lib.U)(err)
                                     });
                                 }
                             }(clickHandler, event) : function(event, element) {
@@ -26148,7 +26125,7 @@
                 }
             };
             !function(method) {
-                Object(lib.J)((function() {
+                Object(lib.K)((function() {
                     ready_debug("paypal_checkout_ready");
                     setTimeout((function() {
                         window.paypal || ready_error("paypal_checkout_ready_no_window_paypal");
@@ -26159,7 +26136,7 @@
             return oneTimeReady;
         }
     }));
-    Object(lib.J)((function() {
+    Object(lib.K)((function() {
         var buttons = [].slice.call(document.querySelectorAll("[" + ATTRIBUTES.BUTTON + "]"));
         if (buttons && buttons.length) {
             ready_debug("data_paypal_button", {
