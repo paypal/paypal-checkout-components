@@ -31,8 +31,6 @@ export type Wallet = {|
   venmo: WalletPaymentType,
 |};
 
-type LabelContentType = {||};
-
 export type ContentType = {|
   instantlyPayWith: string,
   poweredBy: string,
