@@ -47,15 +47,15 @@ export function getPayPalConfig(): FundingSourceConfig {
       let text = `${FUNDING_BRAND_LABEL.PAYPAL}`;
       if (content && label === BUTTON_LABEL.INSTALLMENT) {
         if (period) {
-          text = content.label.installmentWithPeriod.replace(
+          text = content["label.installment.withPeriod"].replace(
             "{period}",
             String(period)
           );
         } else {
-          text = content.label.installmentWithoutPeriod;
+          text = content["label.installment.withoutPeriod"];
         }
       } else if (content && label) {
-        text = content.label[label];
+        text = content[`label.${label}`];
       }
       return text;
     },

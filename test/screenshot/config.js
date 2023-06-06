@@ -36,8 +36,6 @@ const SUPPORTED_FUNDING_SOURCES: $ReadOnlyArray<$Values<typeof FUNDING>> = [
 
 const RESPONSIVE_WIDTHS = [144, 222, 465, 670];
 
-type ButtonContent = string | {| [string]: string | ButtonContent |};
-
 type ButtonConfig = {|
   only?: boolean,
   diffThreshold?: number,
@@ -66,7 +64,7 @@ type ButtonConfig = {|
       tagline?: boolean,
       menuPlacement?: string,
     |},
-    content?: ButtonContent,
+    content?: {| [string]: string |},
   |},
 |};
 
