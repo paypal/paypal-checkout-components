@@ -48,6 +48,12 @@ export type ContentType = {|
   flex: string,
   payPalBalance: string,
   moreOptions: string,
+  "label.paypal": string,
+  "label.checkout": string,
+  "label.buynow": string,
+  "label.pay": string,
+  "label.installment.withPeriod": string,
+  "label.installment.withoutPeriod": string,
 |};
 
 export type Experiment = {|

@@ -151,6 +151,8 @@ export type FundingSourceConfig = {|
     | (({|
         content: ?ContentType,
         fundingEligibility: ?FundingEligibilityType,
+        label?: string,
+        period?: number,
       |}) => string),
   showWalletMenu: ({|
     instrument: WalletInstrument,

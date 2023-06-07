@@ -17,4 +17,10 @@ export const testContent = {
   balance: "Balance",
   payPalBalance: "PayPal balance",
   moreOptions: "More options",
+  "label.checkout": "Checkout",
+  "label.paypal": "PayPal",
+  "label.buynow": "Buy Now",
+  "label.pay": "Pay with PayPal",
+  "label.installment.withPeriod": "Pay up to {period}x without interest",
+  "label.installment.withoutPeriod": "Interest free payments",
 };

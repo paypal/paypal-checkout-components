@@ -4,7 +4,12 @@
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 import { FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
+import {
+  BUTTON_COLOR,
+  BUTTON_LAYOUT,
+  BUTTON_FLOW,
+  BUTTON_LABEL,
+} from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { Logo, Label, WalletLabel, Tag } from "./template";
@@ -38,8 +43,22 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
     },
 
-    labelText: `${FUNDING_BRAND_LABEL.PAYPAL}`,
-
+    labelText: ({ content, label, period }) => {
+      let text = `${FUNDING_BRAND_LABEL.PAYPAL}`;
+      if (content && label === BUTTON_LABEL.INSTALLMENT) {
+        if (period) {
+          text = content["label.installment.withPeriod"].replace(
+            "{period}",
+            String(period)
+          );
+        } else {
+          text = content["label.installment.withoutPeriod"];
+        }
+      } else if (content && label) {
+        text = content[`label.${label}`];
+      }
+      return text;
+    },
     Logo,
     Label,
     WalletLabel,
