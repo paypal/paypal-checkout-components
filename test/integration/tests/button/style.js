@@ -135,3 +135,52 @@ describe("paypal button color", () => {
       .render("#testContainer");
   });
 });
+
+describe("paypal button aria-label", () => {
+  it("uses style.label and style.period", () => {
+    window.paypal
+      .Buttons({
+        content: {
+          "label.installment.withPeriod":
+            "Pay up to {period}x without interest",
+        },
+        style: {
+          label: "installment",
+          period: 3,
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(
+          getElementRecursive("[aria-label='Pay up to 3x without interest']")
+        );
+      });
+  });
+  it("handles style.label == 'installment' without style.period", () => {
+    window.paypal
+      .Buttons({
+        content: {
+          "label.installment.withoutPeriod": "Interest free payments",
+        },
+        style: {
+          label: "installment",
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive("[aria-label='Interest free payments']"));
+      });
+  });
+  it("falls back to the funding source if content is unavailable", () => {
+    window.paypal
+      .Buttons({
+        style: {
+          label: "buynow",
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive("[aria-label='PayPal']"));
+      });
+  });
+});
