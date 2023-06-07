@@ -1,3 +1,9 @@
+## <small>5.0.270 (2023-06-07)</small>
+
+* add style.label to aria-label (#2169) ([29a18ec](https://github.com/paypal/paypal-checkout-components/commit/29a18ec)), closes [#2169](https://github.com/paypal/paypal-checkout-components/issues/2169)
+
+
+
 ## <small>5.0.269 (2023-05-24)</small>
 
 * DTCHKINT-1477 (LI-7331): Implement disableMaxWidth to allow Merchant to control Width of PayPal butt ([0b9885d](https://github.com/paypal/paypal-checkout-components/commit/0b9885d)), closes [#2171](https://github.com/paypal/paypal-checkout-components/issues/2171)
