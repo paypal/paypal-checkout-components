@@ -30,8 +30,8 @@ import { FUNDING } from "@paypal/sdk-constants/src";
 import { SpinnerPage, Overlay } from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
+import type { CheckoutPropsType } from "../checkout/props";
 
-import type { CheckoutPropsType } from "./props";
 import { containerContent } from "./content";
 import { DEFAULT_POPUP_SIZE, HISTORY_NATIVE_POPUP_DOMAIN } from "./config";
 
