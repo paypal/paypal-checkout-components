@@ -272,12 +272,6 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
             return (handler) => event.on(EVENT.FOCUS, handler);
           },
         },
-
-        smokeHash: {
-          type: "string",
-          required: false,
-          queryParam: true,
-        },
       },
 
       dimensions: ({ props }) => {
