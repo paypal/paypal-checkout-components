@@ -247,13 +247,13 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
         onAuth: {
           type: "function",
           required: false,
-          trustedDomains: ["https://www.paypal.com", "https://venmo.com"],
+          trustedDomains: [getPayPalDomainRegex(), getVenmoDomainRegex()],
         },
 
         onSmartWalletEligible: {
           type: "function",
           required: false,
-          sameDomain: true,
+          trustedDomains: [getPayPalDomainRegex(), getVenmoDomainRegex()],
         },
 
         accessToken: {
