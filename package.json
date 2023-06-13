@@ -29,7 +29,7 @@
     "release": "./scripts/publish.sh",
     "start": "npm run webpack -- --progress --watch",
     "test": "npm run format:check && npm run test:unit && npm run jest-ssr && npm run karma && npm run jest-screenshot",
-    "test:unit": "vitest",
+    "test:unit": "vitest run",
     "percy-screenshot": "babel-node ./test/percy/server/createButtonConfigs.js && percy exec -- playwright test --config=./test/percy/playwright.config.js --reporter=dot --pass-with-no-tests",
     "typecheck": "npm run flow-typed && npm run flow",
     "version": "./scripts/version.sh",

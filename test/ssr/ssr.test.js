@@ -6,7 +6,8 @@ import { html, ElementNode } from "@krakenjs/jsx-pragmatic";
 import { ERROR_CODE } from "@paypal/sdk-constants";
 
 import { webpackCompileToString } from "../screenshot/lib/compile";
-import { fundingEligibility } from "../globals";
+import { fundingEligibility, getTestGlobals } from "../globals";
+import globals from "../../globals";
 
 jest.setTimeout(120000);
 
@@ -19,6 +20,7 @@ async function getButtonScript(): Promise<{|
   const config = {
     entry: "./src/ui/buttons",
     libraryTarget: "commonjs",
+    vars: getTestGlobals(globals),
     web: false,
   };
 
