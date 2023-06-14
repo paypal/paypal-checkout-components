@@ -10,7 +10,7 @@ type ContentMap = {
   |},
 };
 
-export const containerContent: ContentMap = (fundingSource) => ({
+export const containerContent: (string) => ContentMap = (fundingSource) => ({
   ar: {
     windowMessage: `لا ترى متصفح ${fundingSource} الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك`,
     continueMessage: `متابعة`,
