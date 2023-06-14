@@ -20,8 +20,8 @@ async function getButtonScript(): Promise<{|
   const config = {
     entry: "./src/ui/buttons",
     libraryTarget: "commonjs",
-    web: false,
     vars: getTestGlobals(globals),
+    web: false,
   };
 
   const cacheKey = JSON.stringify(config);

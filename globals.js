@@ -25,6 +25,7 @@ module.exports = {
       __BUTTONS__: "/smart/buttons",
       __MENU__: "/smart/menu",
       __QRCODE__: "/smart/qrcode",
+      __VENMO__: "/smart/checkout/venmo/popup",
       __INSTALLMENTS__: "/smart/installments",
       __MODAL__: "/smart/modal",
       __CARD_FIELDS__: "/smart/card-fields",

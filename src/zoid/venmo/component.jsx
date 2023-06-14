@@ -5,6 +5,7 @@
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import {
   getPayPalDomainRegex,
+  getVenmoDomainRegex,
   getLogger,
   getLocale,
   getEnv,
@@ -14,7 +15,6 @@ import {
   getCSPNonce,
   getBuyerCountry,
   getVersion,
-  getPayPalDomain,
   getClientMetadataID,
 } from "@paypal/sdk-client/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
@@ -31,19 +31,20 @@ import { SpinnerPage, Overlay } from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
 import { containerContent } from "../content";
+import type { CheckoutPropsType } from "../checkout/props";
 
-import type { CheckoutPropsType } from "./props";
-import { fixCreditRedirect } from "./hacks";
-import { DEFAULT_POPUP_SIZE } from "./config";
+import { DEFAULT_POPUP_SIZE, HISTORY_NATIVE_POPUP_DOMAIN } from "./config";
 
-export type CheckoutComponent = ZoidComponent<CheckoutPropsType>;
+export type VenmoCheckoutComponent = ZoidComponent<CheckoutPropsType>;
 
-export function getCheckoutComponent(): CheckoutComponent {
-  return inlineMemoize(getCheckoutComponent, () => {
+export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
+  return inlineMemoize(getVenmoCheckoutComponent, () => {
     const component = create({
-      tag: "paypal-checkout",
+      tag: "venmo-checkout",
       url: () =>
-        `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CHECKOUT__}`,
+        `${HISTORY_NATIVE_POPUP_DOMAIN[getEnv()]}${
+          __PAYPAL_CHECKOUT__.__URI__.__VENMO__
+        }`,
 
       attributes: {
         iframe: {
@@ -53,7 +54,7 @@ export function getCheckoutComponent(): CheckoutComponent {
 
       defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
-      domain: getPayPalDomainRegex(),
+      domain: [getPayPalDomainRegex(), getVenmoDomainRegex()],
 
       logger: getLogger(),
 
@@ -76,7 +77,7 @@ export function getCheckoutComponent(): CheckoutComponent {
           nonce,
           locale: { lang },
         } = props;
-        const content = containerContent("PayPal")[lang];
+        const content = containerContent("Venmo")[lang];
         return (
           <Overlay
             context={context}
@@ -190,7 +191,7 @@ export function getCheckoutComponent(): CheckoutComponent {
         fundingSource: {
           type: "string",
           queryParam: true,
-          default: () => FUNDING.PAYPAL,
+          default: () => FUNDING.VENMO,
         },
 
         standaloneFundingSource: {
@@ -246,13 +247,13 @@ export function getCheckoutComponent(): CheckoutComponent {
         onAuth: {
           type: "function",
           required: false,
-          sameDomain: true,
+          trustedDomains: [getPayPalDomainRegex(), getVenmoDomainRegex()],
         },
 
         onSmartWalletEligible: {
           type: "function",
           required: false,
-          sameDomain: true,
+          trustedDomains: [getPayPalDomainRegex(), getVenmoDomainRegex()],
         },
 
         accessToken: {
@@ -270,17 +271,6 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: ({ event }) => {
             return (handler) => event.on(EVENT.FOCUS, handler);
           },
-        },
-
-        test: {
-          type: "object",
-          default: () => window.__test__ || { action: "checkout" },
-        },
-
-        smokeHash: {
-          type: "string",
-          required: false,
-          queryParam: true,
         },
       },
 
@@ -307,8 +297,6 @@ export function getCheckoutComponent(): CheckoutComponent {
         show: noop,
         hide: noop,
       };
-
-      fixCreditRedirect();
     }
 
     return component;

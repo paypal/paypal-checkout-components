@@ -26,6 +26,10 @@ import {
 import { Buttons as _ButtonsTemplate } from "../ui/buttons";
 import { getQRCodeComponent, type QRCodeComponent } from "../zoid/qr-code";
 import {
+  getVenmoCheckoutComponent,
+  type VenmoCheckoutComponent,
+} from "../zoid/venmo";
+import {
   getModalComponent,
   type ModalComponent,
 } from "../zoid/modal/component";
@@ -60,6 +64,10 @@ export const Installments: LazyProtectedExport<InstallmentsComponent> = {
 
 export const QRCode: LazyProtectedExport<QRCodeComponent> = {
   __get__: () => protectedExport(getQRCodeComponent()),
+};
+
+export const Venmo: LazyProtectedExport<VenmoCheckoutComponent> = {
+  __get__: () => protectedExport(getVenmoCheckoutComponent()),
 };
 
 export const ButtonsTemplate: LazyProtectedExport<typeof _ButtonsTemplate> = {

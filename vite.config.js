@@ -25,6 +25,7 @@ const define = {
     _MAJOR_VERSION__: "",
     __MINOR_VERSION__: "",
   }),
+  __DISABLE_SET_COOKIE__: false,
 };
 
 // $FlowIssue
