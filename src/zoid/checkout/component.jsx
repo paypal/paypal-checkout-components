@@ -30,9 +30,9 @@ import { FUNDING } from "@paypal/sdk-constants/src";
 import { SpinnerPage, Overlay } from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
+import { containerContent } from "../content";
 
 import type { CheckoutPropsType } from "./props";
-import { containerContent } from "./content";
 import { fixCreditRedirect } from "./hacks";
 import { DEFAULT_POPUP_SIZE } from "./config";
 
@@ -76,7 +76,7 @@ export function getCheckoutComponent(): CheckoutComponent {
           nonce,
           locale: { lang },
         } = props;
-        const content = containerContent[lang];
+        const content = containerContent("PayPal")[lang];
         return (
           <Overlay
             context={context}

@@ -30,9 +30,9 @@ import { FUNDING } from "@paypal/sdk-constants/src";
 import { SpinnerPage, Overlay } from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
+import { containerContent } from "../content";
 import type { CheckoutPropsType } from "../checkout/props";
 
-import { containerContent } from "./content";
 import { DEFAULT_POPUP_SIZE, HISTORY_NATIVE_POPUP_DOMAIN } from "./config";
 
 export type VenmoCheckoutComponent = ZoidComponent<CheckoutPropsType>;
@@ -77,7 +77,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           nonce,
           locale: { lang },
         } = props;
-        const content = containerContent[lang];
+        const content = containerContent("Venmo")[lang];
         return (
           <Overlay
             context={context}
