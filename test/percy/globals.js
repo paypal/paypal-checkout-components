@@ -141,6 +141,7 @@ function getTestGlobals(productionGlobals) {
     __CORRELATION_ID__: "abc123",
     __PAYPAL_DOMAIN__: "mock://www.paypal.com",
     __PAYPAL_API_DOMAIN__: "mock://msmaster.qa.paypal.com",
+    __DISABLE_SET_COOKIE__: false,
 
     __ZOID__: {
       ...productionGlobals.__ZOID__,
