@@ -150,8 +150,6 @@ function getTestGlobals(productionGlobals) {
       ...productionGlobals.__POST_ROBOT__,
       __SCRIPT_NAMESPACE__: false,
     },
-
-    __DISABLE_SET_COOKIE__: false,
   };
 }
 
