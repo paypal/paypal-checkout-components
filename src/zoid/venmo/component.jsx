@@ -170,7 +170,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           type: "string",
           queryParam: true,
           required: false,
-          value: () => (isDevice ? CHANNEL.MOBILE : CHANNEL.DESKTOP),
+          value: () => (isDevice() ? CHANNEL.MOBILE : CHANNEL.DESKTOP),
         },
 
         parentDomain: {
