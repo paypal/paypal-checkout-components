@@ -33,4 +33,14 @@ export const WEBPACK_CONFIG_BUTTON_RENDER: WebpackConfig = getWebpackConfig({
   vars: globals,
 });
 
-export default [WEBPACK_CONFIG_BUTTON_RENDER];
+export const WEBPACK_CONFIG_TEST_BUTTON_RENDER: WebpackConfig = getWebpackConfig({
+  context: __dirname,
+  entry: "./src/ui/buttons",
+  filename: "./test/button.js",
+  modulename: MODULE_NAME,
+  web: false,
+  libraryTarget: "commonjs2",
+  vars: { ...getTestGlobals(globals) },
+});
+
+export default [WEBPACK_CONFIG_BUTTON_RENDER, WEBPACK_CONFIG_TEST_BUTTON_RENDER];
