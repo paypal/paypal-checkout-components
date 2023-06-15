@@ -54,7 +54,7 @@ export function getPayPalConfig(): FundingSourceConfig {
         } else {
           text = content["label.installment.withoutPeriod"];
         }
-      } else if (content && label) {
+      } else if (content && label && content[`label.${label}`]) {
         text = content[`label.${label}`];
       }
       return text;

@@ -137,7 +137,15 @@ describe("paypal button color", () => {
 });
 
 describe("paypal button aria-label", () => {
-  it("uses style.label and style.period", () => {
+  beforeEach(() => {
+    createTestContainer();
+  });
+
+  afterEach(() => {
+    destroyTestContainer();
+  });
+
+  it("uses style.label and style.period", (done) => {
     window.paypal
       .Buttons({
         content: {
@@ -152,11 +160,14 @@ describe("paypal button aria-label", () => {
       .render("#testContainer")
       .then(() => {
         assert.ok(
-          getElementRecursive("[aria-label='Pay up to 3x without interest']")
+          getElementRecursive(
+            ".paypal-button[aria-label='Pay up to 3x without interest']"
+          )
         );
+        done();
       });
   });
-  it("handles style.label == 'installment' without style.period", () => {
+  it("handles style.label == 'installment' without style.period", (done) => {
     window.paypal
       .Buttons({
         content: {
@@ -168,10 +179,15 @@ describe("paypal button aria-label", () => {
       })
       .render("#testContainer")
       .then(() => {
-        assert.ok(getElementRecursive("[aria-label='Interest free payments']"));
+        assert.ok(
+          getElementRecursive(
+            ".paypal-button[aria-label='Interest free payments']"
+          )
+        );
+        done();
       });
   });
-  it("falls back to the funding source if content is unavailable", () => {
+  it("falls back to the funding source if content is unavailable", (done) => {
     window.paypal
       .Buttons({
         style: {
@@ -180,7 +196,24 @@ describe("paypal button aria-label", () => {
       })
       .render("#testContainer")
       .then(() => {
-        assert.ok(getElementRecursive("[aria-label='PayPal']"));
+        assert.ok(getElementRecursive(".paypal-button[aria-label='PayPal']"));
+        done();
+      });
+  });
+  it("falls back to the funding source if the correct content is unavailable", (done) => {
+    window.paypal
+      .Buttons({
+        content: {
+          "label.pay": "Pay with PayPal",
+        },
+        style: {
+          label: "buynow",
+        },
+      })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive(".paypal-button[aria-label='PayPal']"));
+        done();
       });
   });
 });
