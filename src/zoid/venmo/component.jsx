@@ -35,6 +35,11 @@ import type { CheckoutPropsType } from "../checkout/props";
 
 import { DEFAULT_POPUP_SIZE, HISTORY_NATIVE_POPUP_DOMAIN } from "./config";
 
+const CHANNEL = {
+  DESKTOP: "desktop-web",
+  MOBILE: "mobile-web",
+};
+
 export type VenmoCheckoutComponent = ZoidComponent<CheckoutPropsType>;
 
 export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
@@ -161,6 +166,19 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           value: getLocale,
         },
 
+        channel: {
+          type: "string",
+          queryParam: true,
+          required: false,
+          value: () => (isDevice() ? CHANNEL.MOBILE : CHANNEL.DESKTOP),
+        },
+
+        parentDomain: {
+          type: "string",
+          queryParam: true,
+          required: true,
+        },
+
         createOrder: {
           type: "function",
           queryParam: "token",
@@ -271,6 +289,18 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           value: ({ event }) => {
             return (handler) => event.on(EVENT.FOCUS, handler);
           },
+        },
+
+        venmoWebUrl: {
+          type: "string",
+          queryParam: true,
+          required: true,
+        },
+
+        venmoWebEnabled: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
         },
       },
 

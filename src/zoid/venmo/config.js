@@ -12,8 +12,8 @@ export const DEFAULT_POPUP_SIZE = {
 };
 
 export const HISTORY_NATIVE_POPUP_DOMAIN: EnvConfig = {
-  [ENV.TEST]: "https://history.paypal.com",
-  [ENV.LOCAL]: "http://localhost:8001",
+  [ENV.TEST]: "https://localhost.paypal.com:8443",
+  [ENV.LOCAL]: "https://localhost.paypal.com:8443",
   [ENV.STAGE]: "https://history.paypal.com",
   [ENV.SANDBOX]: "https://history.paypal.com",
   [ENV.PRODUCTION]: "https://history.paypal.com",
