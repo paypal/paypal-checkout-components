@@ -59,8 +59,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
 
       defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
-      // eslint-disable-next-line security/detect-unsafe-regex
-      domain: [getPayPalDomainRegex(), /\.venmo\.(com|cn)(:\d+)?$/],
+      domain: [getPayPalDomainRegex(), getVenmoDomainRegex()],
 
       logger: getLogger(),
 
