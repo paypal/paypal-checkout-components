@@ -1,3 +1,9 @@
+## <small>5.0.271 (2023-06-14)</small>
+
+* feat(venmo): venmo component (#2182) ([b857fa3](https://github.com/paypal/paypal-checkout-components/commit/b857fa3)), closes [#2182](https://github.com/paypal/paypal-checkout-components/issues/2182)
+
+
+
 ## <small>5.0.270 (2023-06-07)</small>
 
 * add style.label to aria-label (#2169) ([29a18ec](https://github.com/paypal/paypal-checkout-components/commit/29a18ec)), closes [#2169](https://github.com/paypal/paypal-checkout-components/issues/2169)
