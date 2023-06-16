@@ -3,7 +3,7 @@
 set -e
 
 # Remove the `dist/` folder; we will re-generate later on
-rm dist/*
+rm -rf dist/*
 git checkout dist/
 
 # Make sure the HEAD is clean
