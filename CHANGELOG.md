@@ -1,3 +1,9 @@
+## <small>5.0.272 (2023-06-16)</small>
+
+* fix(ci): npm publish failure (#2192) ([ee3cf82](https://github.com/paypal/paypal-checkout-components/commit/ee3cf82)), closes [#2192](https://github.com/paypal/paypal-checkout-components/issues/2192)
+
+
+
 ## <small>5.0.271 (2023-06-14)</small>
 
 * feat(venmo): venmo component (#2182) ([b857fa3](https://github.com/paypal/paypal-checkout-components/commit/b857fa3)), closes [#2182](https://github.com/paypal/paypal-checkout-components/issues/2182)
