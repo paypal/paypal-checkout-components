@@ -17,12 +17,14 @@ export function getVenmoConfig(): FundingSourceConfig {
   return {
     ...DEFAULT_FUNDING_CONFIG,
 
-    shippingChange: false,
-
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
     eligible: ({ experiment }) => {
-      if (experiment && experiment.enableVenmo === false) {
+      if (
+        experiment &&
+        (experiment.enableVenmo === false ||
+          experiment.venmoWebEnabled === false)
+      ) {
         return false;
       }
 
