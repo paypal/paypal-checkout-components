@@ -1,3 +1,9 @@
+## <small>5.0.274 (2023-06-21)</small>
+
+* chore(deps): update actions/stale action to v8 (#2177) ([dbaa675](https://github.com/paypal/paypal-checkout-components/commit/dbaa675)), closes [#2177](https://github.com/paypal/paypal-checkout-components/issues/2177)
+
+
+
 ## <small>5.0.273 (2023-06-21)</small>
 
 * feat(venmo): config (#2195) ([9ffad9a](https://github.com/paypal/paypal-checkout-components/commit/9ffad9a)), closes [#2195](https://github.com/paypal/paypal-checkout-components/issues/2195)
