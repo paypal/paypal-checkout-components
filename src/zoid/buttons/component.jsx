@@ -817,11 +817,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         queryParam: true,
         required: false,
-        value: () => {
-          if (getDisableSetCookie()) {
-            return true;
-          }
-        },
+        value: getDisableSetCookie,
       },
     },
   });
