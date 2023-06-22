@@ -36,6 +36,7 @@ import {
   getUserExperienceFlow,
   getMerchantRequestedPopupsDisabled,
   getVersion,
+  getDisableSetCookie,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -810,6 +811,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       createVaultSetupToken: {
         type: "function",
         required: false,
+      },
+
+      disableSetCookie: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: getDisableSetCookie,
       },
     },
   });
