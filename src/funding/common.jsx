@@ -129,7 +129,7 @@ export type FundingSourceConfig = {|
     fundingEligibility: FundingEligibilityType,
     fundingSource: ?$Values<typeof FUNDING>,
     layout?: ?$Values<typeof BUTTON_LAYOUT>,
-    shippingChange?: boolean,
+    shippingChange?: ?boolean,
     wallet: ?Wallet,
   |}) => boolean,
   Logo: (LogoOptions) => ChildType,
