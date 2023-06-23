@@ -24,7 +24,11 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      if (experiment.venmoWebEnabled === false && shippingChange) {
+      if (
+        experiment &&
+        experiment.venmoWebEnabled === false &&
+        shippingChange
+      ) {
         return false;
       }
 
