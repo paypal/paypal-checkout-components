@@ -79,6 +79,8 @@ export function isFundingEligible(
       fundingSource,
       fundingEligibility,
       layout,
+      shippingChange:
+        onShippingChange || onShippingAddressChange || onShippingOptionsChange,
       wallet,
     })
   ) {

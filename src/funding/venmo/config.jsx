@@ -19,11 +19,15 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment }) => {
+    eligible: ({ experiment, shippingChange }) => {
+      if (experiment && experiment.enableVenmo === false) {
+        return false;
+      }
+
       if (
         experiment &&
-        (experiment.enableVenmo === false ||
-          experiment.venmoWebEnabled === false)
+        experiment.venmoWebEnabled === false &&
+        shippingChange
       ) {
         return false;
       }
