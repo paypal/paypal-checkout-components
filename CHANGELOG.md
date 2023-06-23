@@ -1,3 +1,9 @@
+## <small>5.0.275 (2023-06-23)</small>
+
+* fix(venmo): eligibility (#2197) ([6272fe8](https://github.com/paypal/paypal-checkout-components/commit/6272fe8)), closes [#2197](https://github.com/paypal/paypal-checkout-components/issues/2197)
+
+
+
 ## <small>5.0.274 (2023-06-21)</small>
 
 * chore(deps): update actions/stale action to v8 (#2177) ([dbaa675](https://github.com/paypal/paypal-checkout-components/commit/dbaa675)), closes [#2177](https://github.com/paypal/paypal-checkout-components/issues/2177)
