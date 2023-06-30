@@ -1,3 +1,9 @@
+## <small>5.0.276 (2023-06-30)</small>
+
+* fix(venmo): component url (#2202) ([4fff647](https://github.com/paypal/paypal-checkout-components/commit/4fff647)), closes [#2202](https://github.com/paypal/paypal-checkout-components/issues/2202)
+
+
+
 ## <small>5.0.275 (2023-06-23)</small>
 
 * fix(venmo): eligibility (#2197) ([6272fe8](https://github.com/paypal/paypal-checkout-components/commit/6272fe8)), closes [#2197](https://github.com/paypal/paypal-checkout-components/issues/2197)
