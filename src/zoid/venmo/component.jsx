@@ -16,6 +16,7 @@ import {
   getBuyerCountry,
   getVersion,
   getClientMetadataID,
+  getPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, CONTEXT, type ZoidComponent, EVENT } from "@krakenjs/zoid/src";
@@ -33,7 +34,7 @@ import { getSessionID } from "../../lib";
 import { containerContent } from "../content";
 import type { CheckoutPropsType } from "../checkout/props";
 
-import { DEFAULT_POPUP_SIZE, HISTORY_NATIVE_POPUP_DOMAIN } from "./config";
+import { DEFAULT_POPUP_SIZE } from "./config";
 
 const CHANNEL = {
   DESKTOP: "desktop-web",
@@ -46,10 +47,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
   return inlineMemoize(getVenmoCheckoutComponent, () => {
     const component = create({
       tag: "venmo-checkout",
-      url: () =>
-        `${HISTORY_NATIVE_POPUP_DOMAIN[getEnv()]}${
-          __PAYPAL_CHECKOUT__.__URI__.__VENMO__
-        }`,
+      url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__VENMO__}`,
 
       attributes: {
         iframe: {
