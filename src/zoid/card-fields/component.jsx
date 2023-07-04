@@ -45,6 +45,11 @@ const CARD_FIELD_TYPE = {
   POSTAL: "postal",
 };
 
+const THREEDS_CONTINGENCY = {
+  SCA_ALWAYS: "SCA_ALWAYS",
+  SCA_WHEN_REQUIRED: "SCA_WHEN_REQUIRED",
+};
+
 type CardFieldsProps = {|
   clientID: string,
   style?: {|
@@ -61,6 +66,7 @@ type CardFieldsProps = {|
   fundingEligibility: FundingEligibilityType,
   disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
   currency: $Values<typeof CURRENCY>,
+  contingency: $Values<typeof THREEDS_CONTINGENCY>,
   intent: $Values<typeof INTENT>,
   commit: boolean,
   vault: boolean,
@@ -210,13 +216,16 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             required: false,
             value: ({ props }) => props.parent.props.createOrder,
           },
-
+          contingency: {
+            type: "string",
+            required: false,
+            value: ({ props }) => props.parent.props.contingency,
+          },
           createVaultSetupToken: {
             type: "function",
             required: false,
             value: ({ props }) => props.parent.props.createVaultSetupToken,
           },
-
           cardFieldsSessionID: {
             type: "string",
             queryParam: true,
@@ -314,7 +323,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             required: false,
             value: ({ props }) => props.minLength,
           },
-
           maxLength: {
             type: "number",
             required: false,
@@ -506,7 +514,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "function",
           required: false,
         },
-
         cardFieldsSessionID: {
           type: "string",
           queryParam: true,
@@ -573,7 +580,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "object",
           required: false,
         },
-
         minLength: {
           type: "number",
           required: false,
