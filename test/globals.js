@@ -128,7 +128,7 @@ function getTestGlobals(productionGlobals) {
 
     __PROTOCOL__: "http",
     __PORT__: 8000,
-    __STAGE_HOST__: "msmaster.qa.paypal.com",
+    __STAGE_HOST__: "sandbox.paypal.com",
     __HOST__: "test.paypal.com",
     __HOSTNAME__: "test.paypal.com",
     __SDK_HOST__: "test.paypal.com",
@@ -138,7 +138,7 @@ function getTestGlobals(productionGlobals) {
     __COMPONENTS__: ["buttons"],
     __CORRELATION_ID__: "abc123",
     __PAYPAL_DOMAIN__: "mock://www.paypal.com",
-    __PAYPAL_API_DOMAIN__: "mock://msmaster.qa.paypal.com",
+    __PAYPAL_API_DOMAIN__: "mock://sandbox.paypal.com",
     __DISABLE_SET_COOKIE__: false,
 
     __ZOID__: {
