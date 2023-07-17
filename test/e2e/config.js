@@ -3,7 +3,7 @@
 
 jest.setTimeout(10 * 60 * 1000);
 
-export const STAGE: string = process.env.STAGE || "msmaster.qa.paypal.com";
+export const STAGE: string = process.env.STAGE || "sandbox.paypal.com";
 export const CLIENT_ID: string =
   process.env.CLIENT_ID ||
   "ATq4kPMhjTp6qrUQybY0SSz6Es1sO0YDF9f67rt2e-dZx36hHGbV1U9Ek3QRwcHcyyBlHXysRr-uXg18";
