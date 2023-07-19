@@ -1,3 +1,9 @@
+## <small>5.0.277 (2023-07-19)</small>
+
+* chore(ci): use sandbox urls (#2215) ([8d8f933](https://github.com/paypal/paypal-checkout-components/commit/8d8f933)), closes [#2215](https://github.com/paypal/paypal-checkout-components/issues/2215)
+
+
+
 ## <small>5.0.276 (2023-06-30)</small>
 
 * fix(venmo): component url (#2202) ([4fff647](https://github.com/paypal/paypal-checkout-components/commit/4fff647)), closes [#2202](https://github.com/paypal/paypal-checkout-components/issues/2202)
