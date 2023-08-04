@@ -37,6 +37,7 @@ import {
   getMerchantRequestedPopupsDisabled,
   getVersion,
   getDisableSetCookie,
+  getExperimentation,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -818,6 +819,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         required: false,
         value: getDisableSetCookie,
+      },
+
+      experimentation: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        value: getExperimentation,
       },
     },
   });
