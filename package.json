@@ -75,7 +75,7 @@
     "@playwright/test": "^1.28.1",
     "babel-core": "^7.0.0-bridge.0",
     "bundlemon": "^1.1.0",
-    "conventional-changelog-cli": "^2.0.34",
+    "conventional-changelog-cli": "^3.0.0",
     "cross-env": "^7.0.3",
     "flow-bin": "0.155.0",
     "flow-typed": "^3.8.0",
