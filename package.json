@@ -74,7 +74,7 @@
     "@percy/playwright": "^1.0.4",
     "@playwright/test": "^1.28.1",
     "babel-core": "^7.0.0-bridge.0",
-    "bundlemon": "^1.1.0",
+    "bundlemon": "^2.0.0",
     "conventional-changelog-cli": "^2.0.34",
     "cross-env": "^7.0.3",
     "flow-bin": "0.155.0",
