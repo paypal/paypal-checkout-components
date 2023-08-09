@@ -1,3 +1,9 @@
+## <small>5.0.278 (2023-08-09)</small>
+
+* [DTPPSDK-1320]add experimentation (#2230) ([160c914](https://github.com/paypal/paypal-checkout-components/commit/160c914)), closes [#2230](https://github.com/paypal/paypal-checkout-components/issues/2230)
+
+
+
 ## <small>5.0.277 (2023-07-19)</small>
 
 * chore(ci): use sandbox urls (#2215) ([8d8f933](https://github.com/paypal/paypal-checkout-components/commit/8d8f933)), closes [#2215](https://github.com/paypal/paypal-checkout-components/issues/2215)
