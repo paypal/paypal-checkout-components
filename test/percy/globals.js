@@ -142,6 +142,10 @@ function getTestGlobals(productionGlobals) {
     __PAYPAL_DOMAIN__: "mock://www.paypal.com",
     __PAYPAL_API_DOMAIN__: "mock://sandbox.paypal.com",
     __DISABLE_SET_COOKIE__: false,
+    __EXPERIMENTATION__: {
+      __EXPERIENCE__: "1432",
+      __TREATMENT__: "1122",
+    },
 
     __ZOID__: {
       ...productionGlobals.__ZOID__,

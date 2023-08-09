@@ -26,6 +26,10 @@ const define = {
     __MINOR_VERSION__: "",
   }),
   __DISABLE_SET_COOKIE__: false,
+  __EXPERIMENTATION__: {
+    __EXPERIENCE__: "",
+    __TREATMENT__: "",
+  },
 };
 
 // $FlowIssue
