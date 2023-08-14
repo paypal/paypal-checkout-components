@@ -15,23 +15,6 @@ import { Text, Space } from "../../ui/text";
 
 import css from "./style.scoped.scss";
 
-export function AppLabel(opts: LabelOptions): ChildType {
-  const { logoColor } = opts;
-
-  const AppLogo: ChildType = (
-    <Style css={css}>
-      {__WEB__ ? (
-        <VenmoLogoExternalImage logoColor={logoColor} />
-      ) : (
-        <VenmoLogoInlineSVG logoColor={logoColor} />
-      )}
-      <Text className={["app-label"]}>App</Text>
-    </Style>
-  );
-
-  return <BasicLabel {...opts} logo={AppLogo} />;
-}
-
 export function Label(opts: LabelOptions): ChildType {
   return <BasicLabel {...opts} />;
 }
