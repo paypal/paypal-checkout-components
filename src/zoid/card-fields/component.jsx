@@ -23,6 +23,7 @@ import {
   getPartnerAttributionID,
   getMerchantID,
   getUserIDToken,
+  getClientMetadataID,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
@@ -55,6 +56,7 @@ type CardFieldsProps = {|
   nonce: string,
   logLevel: string,
   sessionID: string,
+  clientMetadataID: string,
   cardFieldsSessionID: string,
   debug: boolean,
   sdkMeta: string,
@@ -203,6 +205,13 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             type: "string",
             value: ({ props }) => props.parent.props.sessionID,
             queryParam: true,
+          },
+
+          clientMetadataID: {
+            type: "string",
+            required: false,
+            queryParam: true,
+            value: ({ props }) => props.parent.props.clientMetadataID,
           },
 
           createOrder: {
@@ -494,6 +503,17 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "string",
           required: false,
           value: getSessionID,
+          queryParam: true,
+        },
+
+        clientMetadataID: {
+          type: "string",
+          required: false,
+          default: ({ props }) => {
+            const clientMetadataId = getClientMetadataID();
+
+            return clientMetadataId ? clientMetadataId : props.sessionID;
+          },
           queryParam: true,
         },
 
