@@ -57,6 +57,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
 
       defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
+      // $FlowIssue problem with the multiple types this prop takes
       domain: [getPayPalDomainRegex(), getVenmoDomainRegex()],
 
       logger: getLogger(),
