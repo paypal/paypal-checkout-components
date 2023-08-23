@@ -1,3 +1,9 @@
+## <small>5.0.279 (2023-08-23)</small>
+
+* chore: fix flow issues in main branch (#2236) ([471c44f](https://github.com/paypal/paypal-checkout-components/commit/471c44f)), closes [#2236](https://github.com/paypal/paypal-checkout-components/issues/2236)
+
+
+
 ## <small>5.0.278 (2023-08-09)</small>
 
 * [DTPPSDK-1320]add experimentation (#2230) ([160c914](https://github.com/paypal/paypal-checkout-components/commit/160c914)), closes [#2230](https://github.com/paypal/paypal-checkout-components/issues/2230)
