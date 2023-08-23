@@ -6,7 +6,6 @@ import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import {
   getPayPalDomainRegex,
   getVenmoDomainRegex,
-  getLogger,
   getLocale,
   getEnv,
   getClientID,
@@ -57,9 +56,8 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
 
       defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
+      // $FlowIssue problem with the multiple types this prop takes
       domain: [getPayPalDomainRegex(), getVenmoDomainRegex()],
-
-      logger: getLogger(),
 
       prerenderTemplate: ({ doc, props }) => {
         const { nonce } = props;
