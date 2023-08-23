@@ -60,8 +60,6 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
       // $FlowIssue problem with the multiple types this prop takes
       domain: [getPayPalDomainRegex(), getVenmoDomainRegex()],
 
-      logger: getLogger(),
-
       prerenderTemplate: ({ doc, props }) => {
         const { nonce } = props;
         return (<SpinnerPage nonce={nonce} />).render(dom({ doc }));

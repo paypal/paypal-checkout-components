@@ -55,6 +55,12 @@ export function getCheckoutComponent(): CheckoutComponent {
 
       domain: getPayPalDomainRegex(),
 
+      // 2023-08-23 Shane Brunson
+      // I don't think Zoid uses this logger prop and I don't think we the SDK
+      // use it anywhere either. I'm trying to fix the main branch from building
+      // though and removing all these logger calls is more of risky change than
+      // I'm willing to make right now though.
+      // $FlowIssue mismatch between beaver-logger and zoid logger type
       logger: getLogger(),
 
       prerenderTemplate: ({ doc, props }) => {
