@@ -6,7 +6,6 @@ import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import {
   getPayPalDomainRegex,
   getVenmoDomainRegex,
-  getLogger,
   getLocale,
   getEnv,
   getClientID,
