@@ -1,3 +1,9 @@
+## <small>5.0.280 (2023-08-29)</small>
+
+* pass cmid through card components (#2235) ([b15f38d](https://github.com/paypal/paypal-checkout-components/commit/b15f38d)), closes [#2235](https://github.com/paypal/paypal-checkout-components/issues/2235)
+
+
+
 ## <small>5.0.279 (2023-08-23)</small>
 
 * chore: fix flow issues in main branch (#2236) ([471c44f](https://github.com/paypal/paypal-checkout-components/commit/471c44f)), closes [#2236](https://github.com/paypal/paypal-checkout-components/issues/2236)
