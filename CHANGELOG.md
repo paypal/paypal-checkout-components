@@ -1,3 +1,9 @@
+## <small>5.0.281 (2023-09-06)</small>
+
+* Remove venmoAppLabel experiment (#2231) ([c27574e](https://github.com/paypal/paypal-checkout-components/commit/c27574e)), closes [#2231](https://github.com/paypal/paypal-checkout-components/issues/2231)
+
+
+
 ## <small>5.0.280 (2023-08-29)</small>
 
 * pass cmid through card components (#2235) ([b15f38d](https://github.com/paypal/paypal-checkout-components/commit/b15f38d)), closes [#2235](https://github.com/paypal/paypal-checkout-components/issues/2235)
