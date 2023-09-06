@@ -42,7 +42,7 @@ describe("venmo button eligibility", () => {
         test: {
           onRender: expect("onRender", ({ xprops, fundingSources }) => {
             const {
-              experiment: { enableVenmo, enableVenmoAppLabel, venmoWebEnabled },
+              experiment: { enableVenmo, venmoWebEnabled },
             } = xprops;
             if (!enableVenmo) {
               throw new Error(
@@ -55,14 +55,6 @@ describe("venmo button eligibility", () => {
             if (venmoWebEnabled) {
               throw new Error(
                 `Expected venmo web experiment to not be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
-              );
-            }
-
-            if (enableVenmoAppLabel) {
-              throw new Error(
-                `Expected enableVenmoAppLabel experiment to not be eligible: ${JSON.stringify(
                   xprops.experiment
                 )}`
               );
@@ -102,19 +94,11 @@ describe("venmo button eligibility", () => {
         test: {
           onRender: expect("onRender", ({ xprops, fundingSources }) => {
             const {
-              experiment: { enableVenmo, enableVenmoAppLabel },
+              experiment: { enableVenmo },
             } = xprops;
             if (!enableVenmo) {
               throw new Error(
                 `Expected venmo experiment to be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
-              );
-            }
-
-            if (!enableVenmoAppLabel) {
-              throw new Error(
-                `Expected enableVenmoAppLabel experiment to be eligible: ${JSON.stringify(
                   xprops.experiment
                 )}`
               );

@@ -11,11 +11,10 @@ import {
   isDevice,
   isTablet,
   getElement,
-  isLocalStorageEnabled,
   isStandAlone,
   once,
 } from "@krakenjs/belter/src";
-import { ENV, FUNDING } from "@paypal/sdk-constants/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
   getLogger,
@@ -23,7 +22,6 @@ import {
   getFundingEligibility,
   getPlatform,
   getComponents,
-  getEnv,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
@@ -175,21 +173,6 @@ export function getVenmoExperiment(): EligibilityExperiment {
   }
 }
 
-export function getVenmoAppLabelExperiment(): EligibilityExperiment {
-  const isEnvForTest =
-    getEnv() === ENV.LOCAL || getEnv() === ENV.TEST || getEnv() === ENV.STAGE;
-
-  let isEnabledForTest = false;
-
-  if (isLocalStorageEnabled() && isEnvForTest) {
-    isEnabledForTest = window.localStorage.getItem("enable_venmo_app_label");
-  }
-
-  return {
-    enableVenmoAppLabel: isEnabledForTest,
-  };
-}
-
 export function getRenderedButtons(
   props: ButtonProps
 ): $ReadOnlyArray<$Values<typeof FUNDING>> {
@@ -322,7 +305,6 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
 export function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getVenmoExperiment(),
-    ...getVenmoAppLabelExperiment(),
   };
 }
 
