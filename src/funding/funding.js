@@ -94,7 +94,6 @@ export function isFundingEligible(
       shippingChange:
         onShippingChange || onShippingAddressChange || onShippingOptionsChange,
       wallet,
-      displayOnly,
     })
   ) {
     return false;
