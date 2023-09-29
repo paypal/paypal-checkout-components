@@ -1,7 +1,12 @@
 /* @flow */
 
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
-import { PLATFORM, FUNDING, COMPONENTS } from "@paypal/sdk-constants/src";
+import {
+  PLATFORM,
+  FUNDING,
+  COMPONENTS,
+  DISPLAY_ONLY_VALUES,
+} from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 
 import type { Wallet, Experiment } from "../types";
@@ -30,8 +35,33 @@ type IsFundingEligibleOptions = {|
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
-  displayOnly?: string[],
+  displayOnly?: $ReadOnlyArray<$Values<DISPLAY_ONLY_VALUES>>,
 |};
+
+function isFundingVaultable({
+  fundingEligibility,
+  source,
+}: IsFundingEligibleOptions): boolean {
+  // fundingEligibility.card doesn't give vaultable property like other funding sources
+  if (source === FUNDING.CARD) {
+    const { vendors } = fundingEligibility[source];
+
+    // If any vendors are both eligible & vaultable, card is vaultable
+    for (const vendor in vendors) {
+      if (vendors[vendor].eligible && vendors[vendor].vaultable) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  if (!fundingEligibility[source].vaultable) {
+    return false;
+  }
+
+  return true;
+}
 
 export function isFundingEligible(
   source: $Values<typeof FUNDING>,
@@ -182,7 +212,7 @@ export function determineEligibleFunding({
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment: Experiment,
-  displayOnly?: string[],
+  displayOnly?: $ReadOnlyArray<$Values<DISPLAY_ONLY_VALUES>>,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -234,30 +264,6 @@ export function isWalletFundingEligible({
   }
 
   if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
-    return false;
-  }
-
-  return true;
-}
-
-function isFundingVaultable({
-  fundingEligibility,
-  displayOnly,
-  source,
-}: IsFundingEligibleOptions) {
-  // fundingEligibility.card doesn't give vaultable property like other funding sources
-  if (source === FUNDING.CARD) {
-    const { vendors } = fundingEligibility[source];
-
-    // If any vendors are both eligible & vaultable, card is vaultable
-    for (const vendor in vendors) {
-      if (vendors[vendor].eligible && vendors[vendor].vaultable) return true;
-    }
-
-    return false;
-  }
-
-  if (!fundingEligibility[source].vaultable) {
     return false;
   }
 
