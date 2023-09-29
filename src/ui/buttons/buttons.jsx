@@ -178,6 +178,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportsPopups,
     supportedNativeBrowser,
     showPayLabel,
+    displayOnly,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -196,6 +197,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportsPopups,
     supportedNativeBrowser,
     experiment,
+    displayOnly,
   });
   const multiple = fundingSources.length > 1;
 

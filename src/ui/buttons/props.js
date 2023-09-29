@@ -744,6 +744,7 @@ export function normalizeButtonProps(
     supportsPopups = false,
     supportedNativeBrowser = false,
     showPayLabel = true,
+    displayOnly = [],
   } = props;
 
   const { country, lang } = locale;
@@ -794,6 +795,7 @@ export function normalizeButtonProps(
         applePaySupport,
         supportsPopups,
         supportedNativeBrowser,
+        displayOnly,
       })
     ) {
       throw new Error(`Funding Source not eligible: ${fundingSource}`);
@@ -833,5 +835,6 @@ export function normalizeButtonProps(
     supportsPopups,
     supportedNativeBrowser,
     showPayLabel,
+    displayOnly,
   };
 }
