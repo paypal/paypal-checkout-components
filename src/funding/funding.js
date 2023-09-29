@@ -30,6 +30,7 @@ type IsFundingEligibleOptions = {|
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
+  displayOnly?: string[],
 |};
 
 export function isFundingEligible(
@@ -50,6 +51,7 @@ export function isFundingEligible(
     supportsPopups,
     supportedNativeBrowser,
     experiment,
+    displayOnly,
   }: IsFundingEligibleOptions
 ): boolean {
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
@@ -70,6 +72,16 @@ export function isFundingEligible(
     return false;
   }
 
+  const shouldDisplayOnlyVaultableButtons =
+    displayOnly && displayOnly.includes("vaultable");
+
+  if (
+    shouldDisplayOnlyVaultableButtons &&
+    !isFundingVaultable({ fundingEligibility, displayOnly, source })
+  ) {
+    return false;
+  }
+
   if (
     fundingConfig.eligible &&
     !fundingConfig.eligible({
@@ -82,6 +94,7 @@ export function isFundingEligible(
       shippingChange:
         onShippingChange || onShippingAddressChange || onShippingOptionsChange,
       wallet,
+      displayOnly,
     })
   ) {
     return false;
@@ -152,6 +165,7 @@ export function determineEligibleFunding({
   supportsPopups,
   supportedNativeBrowser,
   experiment,
+  displayOnly,
 }: {|
   fundingSource: ?$Values<typeof FUNDING>,
   remembered: $ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -169,6 +183,7 @@ export function determineEligibleFunding({
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment: Experiment,
+  displayOnly?: string[],
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -191,6 +206,7 @@ export function determineEligibleFunding({
       supportsPopups,
       supportedNativeBrowser,
       experiment,
+      displayOnly,
     })
   );
 
@@ -219,6 +235,30 @@ export function isWalletFundingEligible({
   }
 
   if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
+    return false;
+  }
+
+  return true;
+}
+
+function isFundingVaultable({
+  fundingEligibility,
+  displayOnly,
+  source,
+}: IsFundingEligibleOptions) {
+  // fundingEligibility.card doesn't give vaultable property like other funding sources
+  if (source === FUNDING.CARD) {
+    const { vendors } = fundingEligibility[source];
+
+    // If any vendors are both eligible & vaultable, card is vaultable
+    for (const vendor in vendors) {
+      if (vendors[vendor].eligible && vendors[vendor].vaultable) return true;
+    }
+
+    return false;
+  }
+
+  if (!fundingEligibility[source].vaultable) {
     return false;
   }
 
