@@ -64,7 +64,6 @@ type IndividualButtonProps = {|
   vault: boolean,
   merchantFundingSource: ?$Values<typeof FUNDING>,
   instrument: ?WalletInstrument,
-  showPayLabel: boolean,
 |};
 
 export function Button({
@@ -86,7 +85,6 @@ export function Button({
   commit,
   experiment,
   instrument,
-  showPayLabel,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape } = style;
 
@@ -152,10 +150,8 @@ export function Button({
           })
         : fundingConfig.labelText || fundingSource;
 
-    if (!showPayLabel && instrument?.vendor && instrument.label) {
-      labelText = instrument.secondaryInstruments
-        ? `${instrument.secondaryInstruments[0].type} & ${instrument.vendor} ${instrument.label}`
-        : `${instrument.vendor} ${instrument.label}`;
+    if (instrument?.vendor && instrument.label) {
+      labelText = `${instrument.vendor} ${instrument.label}`;
     }
 
     return labelText;
@@ -232,8 +228,7 @@ export function Button({
 
   if (
     WalletLabel &&
-    (!showPayLabel ||
-      flow === BUTTON_FLOW.PURCHASE ||
+    (flow === BUTTON_FLOW.PURCHASE ||
       flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE) &&
     (instrument ||
       (__WEB__ &&
@@ -252,7 +247,6 @@ export function Button({
         vault={vault}
         textColor={textColor}
         fundingSource={fundingSource}
-        showPayLabel={showPayLabel}
       />
     );
 
@@ -291,10 +285,6 @@ export function Button({
             ? instrument.instrumentID
             : null,
           [ATTRIBUTE.INSTRUMENT_TYPE]: instrument ? instrument.type : null,
-          [ATTRIBUTE.SECONDARY_INSTRUMENT_TYPE]:
-            instrument?.secondaryInstruments
-              ? instrument.secondaryInstruments[0].type
-              : null,
         }}
         class={[
           CLASS.BUTTON,

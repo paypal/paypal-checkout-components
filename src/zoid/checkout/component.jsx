@@ -255,12 +255,6 @@ export function getCheckoutComponent(): CheckoutComponent {
           sameDomain: true,
         },
 
-        onSmartWalletEligible: {
-          type: "function",
-          required: false,
-          sameDomain: true,
-        },
-
         accessToken: {
           type: "string",
           required: false,

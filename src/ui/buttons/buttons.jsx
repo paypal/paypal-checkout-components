@@ -177,7 +177,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
-    showPayLabel,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -282,7 +281,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
           flow={flow}
           vault={vault}
           instrument={instruments[source]}
-          showPayLabel={showPayLabel}
         />
       ))}
 

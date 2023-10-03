@@ -10,10 +10,7 @@ import {
   mockProp,
   IPHONE6_USER_AGENT,
   COMMON_DESKTOP_USER_AGENT,
-  getElementRecursive,
-  assert,
 } from "../common";
-import { testContent } from "../../../content";
 
 describe("venmo button eligibility", () => {
   beforeEach(() => {
@@ -300,70 +297,5 @@ describe("venmo button eligibility", () => {
         });
       });
     }
-  });
-});
-
-describe("paypal on file eligibility", () => {
-  beforeEach(() => {
-    createTestContainer();
-  });
-
-  afterEach(() => {
-    destroyTestContainer();
-  });
-
-  it(`should render paypal button with wallet instrument labels and aria-label when ppof eligibility is true`, (done) => {
-    const fundingSource = FUNDING.PAYPAL;
-    const content = testContent;
-    const wallet = {
-      [fundingSource]: {
-        instruments: [
-          {
-            accessToken: null,
-            instrumentID: "abc12345",
-            label: "••1234",
-            logoUrl: null,
-            oneClick: true,
-            planID: null,
-            secondaryInstruments: [
-              {
-                instrumentID: "BALANCEUSD",
-                label: "PayPal Balance",
-                type: "BALANCE",
-              },
-            ],
-            tokenID: null,
-            type: "card",
-            vendor: "VISA",
-          },
-        ],
-      },
-    };
-
-    window.paypal
-      .Buttons({
-        content,
-        fundingSource,
-        wallet,
-        showPayLabel: false,
-        test: {
-          onRender: () => {
-            assert.equal(
-              getElementRecursive(".balance .paypal-button-text").innerHTML,
-              "Balance &amp;"
-            );
-            assert.equal(
-              getElementRecursive(".fi-label .paypal-button-text").innerHTML,
-              "••1234"
-            );
-            assert.equal(
-              getElementRecursive(".menu-button").getAttribute("aria-label"),
-              "More options"
-            );
-            done();
-          },
-        },
-      })
-      .render("#testContainer");
   });
 });

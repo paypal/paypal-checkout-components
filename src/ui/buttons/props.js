@@ -460,7 +460,6 @@ export type RenderButtonProps = {|
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
-  showPayLabel: boolean,
 |};
 
 export type PrerenderDetails = {|
@@ -558,7 +557,6 @@ export type ButtonPropsInputs = {
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
-  showPayLabel: boolean,
 };
 
 export const DEFAULT_STYLE = {
@@ -743,7 +741,6 @@ export function normalizeButtonProps(
     applePaySupport = false,
     supportsPopups = false,
     supportedNativeBrowser = false,
-    showPayLabel = true,
   } = props;
 
   const { country, lang } = locale;
@@ -832,6 +829,5 @@ export function normalizeButtonProps(
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
-    showPayLabel,
   };
 }

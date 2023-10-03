@@ -306,87 +306,6 @@ export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
   );
 }
 
-function ShowPayLabel(opts): ?ChildType {
-  const { instrument, content, payNow, textColor, logo, label } = opts;
-
-  return (
-    <div class="show-pay-label">
-      <div class="pay-label" optional={2}>
-        <Space />
-        {instrument && content ? (
-          <Text>{payNow ? content.payNow : content.payWith}</Text>
-        ) : (
-          <Text>
-            <PlaceHolder chars={7} color={textColor} />
-          </Text>
-        )}
-        <Space />
-      </div>
-      <div class="logo" optional={1}>
-        {instrument && logo ? (
-          logo
-        ) : (
-          <Text>
-            <PlaceHolder chars={4} color={textColor} />
-          </Text>
-        )}
-      </div>
-      <div class="label">
-        <Space />
-        {instrument && label ? (
-          <Text>{label}</Text>
-        ) : (
-          <Text>
-            <PlaceHolder chars={6} color={textColor} />
-          </Text>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function ShowInstrumentsOnFile(opts): ?ChildType {
-  const { instrument, textColor, logo, label, content } = opts;
-
-  return (
-    <div class="show-instruments-on-file">
-      {instrument?.secondaryInstruments?.[0] ? (
-        <div class="balance">
-          <Text>{content?.balance} &</Text>
-          <Space />
-        </div>
-      ) : null}
-      {instrument?.type === "balance" ? (
-        <div class="paypal-balance">
-          <Text>{content?.payPalBalance}</Text>
-        </div>
-      ) : (
-        <div class="fi-container">
-          <div class="fi-logo">
-            {instrument && logo ? (
-              logo
-            ) : (
-              <Text>
-                <PlaceHolder chars={4} color={textColor} />
-              </Text>
-            )}
-          </div>
-          <div class="fi-label">
-            <Space />
-            {instrument && label ? (
-              <Text>{label}</Text>
-            ) : (
-              <Text>
-                <PlaceHolder chars={6} color={textColor} />
-              </Text>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
   const {
     logoColor,
@@ -394,9 +313,8 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
     content,
     commit,
     vault,
-    textColor,
     fundingSource,
-    showPayLabel,
+    textColor,
   } = opts;
 
   if (instrument && !instrument.type) {
@@ -481,24 +399,36 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
             <Space />
           </div>
         ) : null}
-        {showPayLabel ? (
-          <ShowPayLabel
-            instrument={instrument}
-            content={content}
-            payNow={payNow}
-            textColor={textColor}
-            logo={logo}
-            label={label}
-          />
-        ) : (
-          <ShowInstrumentsOnFile
-            instrument={instrument}
-            textColor={textColor}
-            logo={logo}
-            label={label}
-            content={content}
-          />
-        )}
+        <div class="pay-label" optional={2}>
+          <Space />
+          {instrument && content ? (
+            <Text>{payNow ? content.payNow : content.payWith}</Text>
+          ) : (
+            <Text>
+              <PlaceHolder chars={7} color={textColor} />
+            </Text>
+          )}
+          <Space />
+        </div>
+        <div class="logo" optional={1}>
+          {instrument && logo ? (
+            logo
+          ) : (
+            <Text>
+              <PlaceHolder chars={4} color={textColor} />
+            </Text>
+          )}
+        </div>
+        <div class="label">
+          <Space />
+          {instrument && label ? (
+            <Text>{label}</Text>
+          ) : (
+            <Text>
+              <PlaceHolder chars={6} color={textColor} />
+            </Text>
+          )}
+        </div>
       </div>
     </Style>
   );
