@@ -2,15 +2,12 @@
 /* eslint max-lines: 0 */
 
 import { getElement, createElement, once } from "@krakenjs/belter/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
 
 import {
   createTestContainer,
   destroyTestContainer,
   onElementResize,
-  getElementRecursive,
 } from "../common";
-import { testContent } from "../../../content";
 
 describe(`paypal button component sizes`, () => {
   beforeEach(() => {
