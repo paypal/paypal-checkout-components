@@ -47,13 +47,9 @@ function isFundingVaultable({
     const { vendors } = fundingEligibility[source];
 
     // If any vendors are both eligible & vaultable, card is vaultable
-    for (const vendor in vendors) {
-      if (vendors[vendor].eligible && vendors[vendor].vaultable) {
-        return true;
-      }
-    }
-
-    return false;
+    return Object.keys(vendors).some(
+      (vendor) => vendors[vendor].eligible && vendors[vendor].vaultable
+    );
   }
 
   if (!fundingEligibility[source].vaultable) {
