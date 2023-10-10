@@ -18,8 +18,6 @@ const defaultFundingOptions = {
     },
     card: {
       eligible: true,
-      branded: false,
-      installments: false,
       vendors: {
         visa: {
           eligible: true,
@@ -34,7 +32,6 @@ const defaultFundingOptions = {
           vaultable: false,
         },
       },
-      guestEnabled: false,
     },
   },
 };
