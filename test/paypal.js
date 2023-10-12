@@ -7,7 +7,6 @@ import * as paypalWallet from "../src/interface/wallet"; // eslint-disable-line 
 import * as paypalMarks from "../src/interface/marks"; // eslint-disable-line import/no-namespace
 import * as paypalFields from "../src/interface/fields"; // eslint-disable-line import/no-namespace
 import * as paypalPaymentFields from "../src/interface/payment-fields"; // eslint-disable-line import/no-namespace
-import * as paypalCardFields from "../src/interface/card-fields"; // eslint-disable-line import/no-namespace
 
 // the enable-funding=venmo flag is temporarily needed for the venmo experiment
 // the enable-funding=applepay flag is needed for applepay vertical stack and standalone buttons to render
@@ -34,9 +33,5 @@ setupSDK([
   {
     name: "paypal-fields",
     requirer: () => ({ ...paypalFields, ...paypalPaymentFields }),
-  },
-  {
-    name: "paypal-card-fields",
-    requirer: () => paypalCardFields,
   },
 ]);
