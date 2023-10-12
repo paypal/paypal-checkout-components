@@ -1,3 +1,9 @@
+## <small>5.0.282 (2023-10-12)</small>
+
+* Include branded in HCF eligibility check (#2257) ([415610a](https://github.com/paypal/paypal-checkout-components/commit/415610a)), closes [#2257](https://github.com/paypal/paypal-checkout-components/issues/2257)
+
+
+
 ## <small>5.0.281 (2023-09-06)</small>
 
 * Remove venmoAppLabel experiment (#2231) ([c27574e](https://github.com/paypal/paypal-checkout-components/commit/c27574e)), closes [#2231](https://github.com/paypal/paypal-checkout-components/issues/2231)
