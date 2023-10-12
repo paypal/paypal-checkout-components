@@ -475,7 +475,10 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
 
       eligible: () => {
         const fundingEligibility = getRefinedFundingEligibility();
-        if (fundingEligibility?.card?.eligible) {
+        if (
+          fundingEligibility?.card?.eligible &&
+          !fundingEligibility.card.branded
+        ) {
           return {
             eligible: true,
           };
