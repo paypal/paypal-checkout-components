@@ -2,7 +2,7 @@ import { describe, expect } from "vitest";
 import { isFundingEligible } from "./funding";
 import { COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
 
-const defaultFundingOptions = {
+const defaultMockFundingOptions = {
   platform: "desktop",
   fundingEligibility: {
     paylater: {
@@ -46,7 +46,10 @@ describe("Funding eligibility", () => {
   });
 
   test("should not be eligible if displayOnly includes 'vaultable' and vaultable is false", () => {
-    const options = { displayOnly: ["vaultable"], ...defaultFundingOptions };
+    const options = {
+      displayOnly: ["vaultable"],
+      ...defaultMockFundingOptions,
+    };
     const fundingEligible = isFundingEligible(FUNDING.PAYLATER, options);
 
     expect(fundingEligible).toBe(false);
@@ -56,7 +59,7 @@ describe("Funding eligibility", () => {
     const options = {
       displayOnly: ["vaultable"],
       components: COMPONENTS.BUTTONS,
-      ...defaultFundingOptions,
+      ...defaultMockFundingOptions,
     };
     const fundingEligible = isFundingEligible(FUNDING.CARD, options);
 
@@ -93,7 +96,7 @@ describe("Funding eligibility", () => {
   test("should not be eligible if fundingSource.eligible is false", () => {
     const fundingEligible = isFundingEligible(
       FUNDING.SEPA,
-      defaultFundingOptions
+      defaultMockFundingOptions
     );
 
     expect(fundingEligible).toBe(false);
