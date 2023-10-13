@@ -25,6 +25,11 @@ const defaultMockFundingOptions = {
       eligible: false,
       branded: false,
     },
+    oxxo: {
+      eligible: false,
+      vaultable: true,
+      branded: false,
+    },
     card: {
       eligible: true,
       branded: false,
@@ -118,6 +123,15 @@ describe("Funding eligibility", () => {
   test("should not be eligible if fundingSource.eligible is false", () => {
     const fundingEligible = isFundingEligible(
       FUNDING.SEPA,
+      defaultMockFundingOptions
+    );
+
+    expect(fundingEligible).toBe(false);
+  });
+
+  test("should not be eligible if fundingSource.eligible is false and fundingSource.vaultable is true", () => {
+    const fundingEligible = isFundingEligible(
+      FUNDING.OXXO,
       defaultMockFundingOptions
     );
 
