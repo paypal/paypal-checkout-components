@@ -1,6 +1,8 @@
-import { describe, expect } from "vitest";
-import { isFundingEligible } from "./funding";
+/* @flow */
 import { COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
+import { describe, expect } from "vitest";
+
+import { isFundingEligible } from "./funding";
 
 const defaultMockFundingOptions = {
   platform: "desktop",
