@@ -1,6 +1,9 @@
 /* @flow */
 
-import type { FundingEligibilityType } from "@paypal/sdk-client/src";
+import type {
+  FundingEligibilityType,
+  CardEligibility,
+} from "@paypal/sdk-client/src";
 import {
   PLATFORM,
   FUNDING,
@@ -35,24 +38,30 @@ type IsFundingEligibleOptions = {|
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
-  displayOnly?: $ReadOnlyArray<$Values<DISPLAY_ONLY_VALUES>>,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |};
 
 function isFundingVaultable({
   fundingEligibility,
-  source,
-}: IsFundingEligibleOptions): boolean {
+  fundingSource,
+}: {|
+  fundingEligibility: FundingEligibilityType,
+  fundingSource: $Values<typeof FUNDING>,
+|}): boolean {
   // fundingEligibility.card doesn't give vaultable property like other funding sources
-  if (source === FUNDING.CARD) {
-    const { vendors } = fundingEligibility[source];
+  if (
+    fundingSource === FUNDING.CARD &&
+    fundingEligibility[fundingSource]?.vendors
+  ) {
+    const { vendors } = (fundingEligibility[fundingSource]: CardEligibility);
 
     // If any vendors are both eligible & vaultable, card is vaultable
     return Object.keys(vendors).some(
-      (vendor) => vendors[vendor].eligible && vendors[vendor].vaultable
+      (vendor) => vendors[vendor]?.eligible && vendors[vendor]?.vaultable
     );
   }
 
-  if (!fundingEligibility[source].vaultable) {
+  if (!fundingEligibility[fundingSource]?.vaultable) {
     return false;
   }
 
@@ -103,7 +112,7 @@ export function isFundingEligible(
 
   if (
     shouldDisplayOnlyVaultableButtons &&
-    !isFundingVaultable({ fundingEligibility, displayOnly, source })
+    !isFundingVaultable({ fundingEligibility, fundingSource: source })
   ) {
     return false;
   }
@@ -190,7 +199,7 @@ export function determineEligibleFunding({
   supportsPopups,
   supportedNativeBrowser,
   experiment,
-  displayOnly,
+  displayOnly = [],
 }: {|
   fundingSource: ?$Values<typeof FUNDING>,
   remembered: $ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -208,7 +217,7 @@ export function determineEligibleFunding({
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment: Experiment,
-  displayOnly?: $ReadOnlyArray<$Values<DISPLAY_ONLY_VALUES>>,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];

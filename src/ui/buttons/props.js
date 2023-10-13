@@ -24,6 +24,7 @@ import {
   type LocaleType,
   CARD,
   COMPONENTS,
+  DISPLAY_ONLY_VALUES,
 } from "@paypal/sdk-constants/src";
 import { type CrossDomainWindowType } from "@krakenjs/cross-domain-utils/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
@@ -461,6 +462,7 @@ export type RenderButtonProps = {|
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   showPayLabel: boolean,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |};
 
 export type PrerenderDetails = {|
@@ -518,6 +520,7 @@ export type ButtonProps = {|
   meta: {||},
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   createVaultSetupToken: CreateVaultSetupToken,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -559,6 +562,7 @@ export type ButtonPropsInputs = {
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   showPayLabel: boolean,
+  displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 };
 
 export const DEFAULT_STYLE = {

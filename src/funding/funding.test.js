@@ -2,10 +2,15 @@
 import { COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
 import { describe, expect } from "vitest";
 
+import { BUTTON_FLOW } from "../constants";
+
 import { isFundingEligible } from "./funding";
 
 const defaultMockFundingOptions = {
   platform: "desktop",
+  components: [COMPONENTS.BUTTONS],
+  flow: BUTTON_FLOW.PURCHASE,
+  fundingSource: FUNDING.SEPA,
   fundingEligibility: {
     paylater: {
       eligible: true,
@@ -14,12 +19,15 @@ const defaultMockFundingOptions = {
     venmo: {
       eligible: true,
       vaultable: true,
+      branded: false,
     },
     sepa: {
       eligible: false,
+      branded: false,
     },
     card: {
       eligible: true,
+      branded: false,
       vendors: {
         visa: {
           eligible: true,
@@ -36,21 +44,29 @@ const defaultMockFundingOptions = {
       },
     },
   },
+  applePaySupport: false,
+  supportsPopups: true,
+  supportedNativeBrowser: true,
+  onShippingChange: null,
+  onShippingAddressChange: null,
+  onShippingOptionsChange: null,
 };
 
 describe("Funding eligibility", () => {
   test("should not be eligible if funding source is missing from fundingEligibility", () => {
-    const fundingEligible = isFundingEligible("fake_funding", {
-      fundingEligibility: { venmo: { eligible: true } },
-    });
+    const fundingEligible = isFundingEligible(
+      FUNDING.WECHATPAY,
+      defaultMockFundingOptions
+    );
 
     expect(fundingEligible).toBe(false);
   });
 
   test("should not be eligible if displayOnly includes 'vaultable' and vaultable is false", () => {
     const options = {
-      displayOnly: ["vaultable"],
       ...defaultMockFundingOptions,
+      displayOnly: ["vaultable"],
+      fundingSource: FUNDING.PAYLATER,
     };
     const fundingEligible = isFundingEligible(FUNDING.PAYLATER, options);
 
@@ -59,9 +75,10 @@ describe("Funding eligibility", () => {
 
   test("card should not be eligible if displayOnly includes 'vaultable' and no vendors are vaultable", () => {
     const options = {
-      displayOnly: ["vaultable"],
-      components: COMPONENTS.BUTTONS,
       ...defaultMockFundingOptions,
+      displayOnly: ["vaultable"],
+      components: [COMPONENTS.BUTTONS],
+      fundingSource: FUNDING.CARD,
     };
     const fundingEligible = isFundingEligible(FUNDING.CARD, options);
 
@@ -70,12 +87,15 @@ describe("Funding eligibility", () => {
 
   test("card should be eligible if displayOnly includes 'vaultable' and any vendor is vaultable", () => {
     const options = {
+      ...defaultMockFundingOptions,
       displayOnly: ["vaultable"],
-      components: COMPONENTS.BUTTONS,
+      fundingSource: FUNDING.CARD,
+      components: [COMPONENTS.BUTTONS],
       platform: "desktop",
       fundingEligibility: {
         card: {
           eligible: true,
+          branded: false,
           vendors: {
             visa: {
               eligible: true,
