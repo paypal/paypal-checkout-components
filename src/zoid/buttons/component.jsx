@@ -833,6 +833,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: getExperimentation,
       },
+
+      displayOnly: {
+        type: "array",
+        queryParam: true,
+        required: false,
+        value: ({ props }) => {
+          return props?.displayOnly || [];
+        },
+      },
     },
   });
 });
