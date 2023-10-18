@@ -1,3 +1,9 @@
+## <small>5.0.283 (2023-10-18)</small>
+
+* Support New displayOnly Confg Option (#2252) ([bcd4e50](https://github.com/paypal/paypal-checkout-components/commit/bcd4e50)), closes [#2252](https://github.com/paypal/paypal-checkout-components/issues/2252)
+
+
+
 ## <small>5.0.282 (2023-10-12)</small>
 
 * Include branded in HCF eligibility check (#2257) ([415610a](https://github.com/paypal/paypal-checkout-components/commit/415610a)), closes [#2257](https://github.com/paypal/paypal-checkout-components/issues/2257)
