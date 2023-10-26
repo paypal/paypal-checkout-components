@@ -79,4 +79,8 @@ module.exports = {
     entry: "./src/interface/card-fields",
     globals,
   },
+  "global-funding-eligibility": {
+    entry: "./src/interface/fundingEligibility",
+    automatic: true,
+  }
 };
