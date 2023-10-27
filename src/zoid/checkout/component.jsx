@@ -288,6 +288,12 @@ export function getCheckoutComponent(): CheckoutComponent {
           required: false,
           queryParam: true,
         },
+
+        sign_out_user: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
       },
 
       dimensions: ({ props }) => {
