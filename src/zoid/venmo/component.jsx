@@ -27,7 +27,7 @@ import {
   inlineMemoize,
 } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
-import { SpinnerPage, Overlay } from "@paypal/common-components/src";
+import { SpinnerPage, VenmoOverlay } from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
 import { containerContent } from "../content";
@@ -80,7 +80,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
         } = props;
         const content = containerContent("Venmo")[lang];
         return (
-          <Overlay
+          <VenmoOverlay
             context={context}
             close={close}
             focus={focus}
