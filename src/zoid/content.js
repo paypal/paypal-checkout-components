@@ -8,6 +8,7 @@ type ContentMap = {
     windowMessage?: string,
     continueMessage?: string,
     cancelMessage?: string,
+    interrogativeMessage?: string,
   |},
 };
 
@@ -19,6 +20,7 @@ export const containerContent: (string) => ContentMap = (fundingSource) => {
           "Tap cancel payment to cancel and return to the business. Continue payment will relaunch the payment window.",
         continueMessage: "Continue payment",
         cancelMessage: "Cancel payment",
+        interrogativeMessage: "What would you like to do?",
       },
     };
   } else {
