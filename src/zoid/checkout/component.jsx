@@ -87,8 +87,8 @@ export function getCheckoutComponent(): CheckoutComponent {
           locale: { lang },
           fundingSource,
         } = props;
-        const isVenmo: boolean = fundingSource === FUNDING.VENMO;
-        const brand: string = isVenmo ? "Venmo" : "PayPal";
+        const isVenmo = fundingSource === FUNDING.VENMO;
+        const brand = isVenmo ? "Venmo" : "PayPal";
         const content = containerContent(brand.toLowerCase())[lang];
         if (isVenmo) {
           return (
