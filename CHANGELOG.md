@@ -1,3 +1,9 @@
+## <small>5.0.284 (2023-11-02)</small>
+
+* Update CODE_OF_CONDUCT.md (#2268) ([6caee02](https://github.com/paypal/paypal-checkout-components/commit/6caee02)), closes [#2268](https://github.com/paypal/paypal-checkout-components/issues/2268)
+
+
+
 ## <small>5.0.283 (2023-10-18)</small>
 
 * Support New displayOnly Confg Option (#2252) ([bcd4e50](https://github.com/paypal/paypal-checkout-components/commit/bcd4e50)), closes [#2252](https://github.com/paypal/paypal-checkout-components/issues/2252)
