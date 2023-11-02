@@ -108,6 +108,7 @@
     "@krakenjs/zalgo-promise": "^2.0.0",
     "@krakenjs/zoid": "^10.3.1",
     "@paypal/common-components": "^1.0.35",
+    "@paypal/connect-loader-component": "^1.0.0",
     "@paypal/funding-components": "^1.0.31",
     "@paypal/sdk-client": "^4.0.176",
     "@paypal/sdk-constants": "^1.0.133",
