@@ -88,8 +88,8 @@ export function getCheckoutComponent(): CheckoutComponent {
           fundingSource,
         } = props;
         const isVenmo = fundingSource === FUNDING.VENMO;
-        const brand = isVenmo ? "Venmo" : "PayPal";
-        const content = containerContent(brand.toLowerCase())[lang];
+        const browserLanguage = isVenmo ? "en" : lang;
+        const content = containerContent(fundingSource)[browserLanguage];
         if (isVenmo) {
           return (
             <VenmoOverlay

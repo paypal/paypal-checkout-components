@@ -74,11 +74,8 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
         prerenderFrame,
         props,
       }) => {
-        const {
-          nonce,
-          locale: { lang },
-        } = props;
-        const content = containerContent("Venmo")[lang];
+        const { nonce } = props;
+        const content = containerContent("venmo")["en"];
         return (
           <VenmoOverlay
             context={context}
