@@ -75,7 +75,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
         props,
       }) => {
         const { nonce } = props;
-        const content = containerContent("venmo")["en"];
+        const content = containerContent("venmo").en;
         return (
           <VenmoOverlay
             context={context}
