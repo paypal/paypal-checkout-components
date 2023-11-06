@@ -1,12 +1,12 @@
 /* @flow */
-import type { LazyExport } from "../types";
-import { getAxoComponent, type AXOComponent } from "../zoid/axo";
 import { loadConnectScript } from "@paypal/connect-loader-component";
 import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
 } from "@paypal/sdk-client/src";
+
+import type { LazyExport } from "../types";
 
 // eslint-disable-next-line flowtype/no-weak-types
 export type AXOComponent = any;
@@ -15,7 +15,7 @@ export type AXOComponent = any;
 // scenario, so what do we return?
 // -> Looks like it returns a function that accepts the props
 // How do we define the input of merchant params here?
-export const AXO: LazyExport<AXOComponent> = {
+export const connect: LazyExport<AXOComponent> = {
   __get__: () => {
     return async (merchantProps) => {
       const cmid = getClientMetadataID();
