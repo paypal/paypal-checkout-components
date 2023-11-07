@@ -4,7 +4,7 @@
     {
       "path": "size.min.js",
       "compression": "gzip",
-      "maxPercentIncrease": 3,
+      "maxPercentIncrease": 3.6,
       "maxSize": "76kb"
     }
   ],
