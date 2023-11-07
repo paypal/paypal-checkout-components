@@ -62,6 +62,9 @@ module.exports = {
     entry: "./src/interface/wallet",
     globals,
   },
+  connect: {
+    entry: "./src/interface/connect",
+  },
   // @deprecated - renamed to payment-fields to be removed
   fields: {
     entry: "./src/interface/fields",
