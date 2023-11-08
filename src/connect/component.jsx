@@ -12,7 +12,7 @@ import {
 // -> Looks like it returns a function that accepts the props
 // How do we define the input of merchant params here?
 export const getConnectComponent = async (merchantProps) => {
-  const cmid = getClientMetadataID() ?? getSessionID();
+  const cmid = getClientMetadataID();
   const clientID = getClientID();
   const userIdToken = getUserIDToken();
   // TODO: Sort out integration specifics for inputs
