@@ -5,7 +5,7 @@ import {
   getClientMetadataID,
   getUserIDToken,
 } from "@paypal/sdk-client/src";
-import { loadConnectScript } from "@paypal/connect-loader-component";
+import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
 
 import { connect } from "./connect";
@@ -20,26 +20,26 @@ describe("connect: LazyExport AXOComponent", () => {
 
     vi.mock("@paypal/sdk-client/src", () => {
       return {
-        getClientID: vi.fn(),
-        getClientMetadataID: vi.fn(),
-        getUserIDToken: vi.fn(),
+        getClientID: vi.fn(() => "mock-client-id"),
+        getClientMetadataID: vi.fn(() => "mock-cmid"),
+        getUserIDToken: vi.fn(() => "mock-uid"),
       };
     });
 
     vi.mock("@paypal/connect-loader-component", () => {
       return {
-        loadConnectScript: vi
-          .fn()
-          .mockResolvedValue({ metadata: { someData: "data" } }),
+        loadAxo: vi.fn().mockResolvedValue({ metadata: { someData: "data" } }),
       };
     });
 
-    getClientID.mockReturnValue("mock-client-id");
-    getClientMetadataID.mockReturnValue("mock-cmid");
-    getUserIDToken.mockReturnValue("mock-uid");
+    // getClientID.mockReturnValue("mock-client-id");
+    // getClientMetadataID.mockReturnValue("mock-cmid");
+    // getUserIDToken.mockReturnValue("mock-uid");
   });
 
-  test("loadConnectScript and window.braintree.connect.create are called with proper data", async () => {
+  test("loadAxo and window.braintree.connect.create are called with proper data", async () => {
+    const mockAxoMetadata = { someData: "data" };
+    loadAxo.mockResolvedValue({ metadata: mockAxoMetadata });
     const mockProps = { someProp: "value" };
     const result = connect.__get__();
 
@@ -48,10 +48,10 @@ describe("connect: LazyExport AXOComponent", () => {
     expect(getClientID).toHaveBeenCalled();
     expect(getClientMetadataID).toHaveBeenCalled();
     expect(getUserIDToken).toHaveBeenCalled();
-    expect(loadConnectScript).toHaveBeenCalled();
+    expect(loadAxo).toHaveBeenCalled();
 
     expect(window.braintree.connect.create).toHaveBeenCalledWith({
-      someData: "data",
+      ...mockAxoMetadata,
       ...mockProps,
       clientID: "mock-client-id",
       cmid: "mock-cmid",
@@ -59,11 +59,11 @@ describe("connect: LazyExport AXOComponent", () => {
     });
   });
 
-  test("loadConnectScript failure is handled", async () => {
+  test("loadAxo failure is handled", async () => {
     const mockProps = { someProp: "value" };
     const errorMessage = "Something went wrong";
     // eslint-disable-next-line no-import-assign
-    loadConnectScript = vi.fn().mockRejectedValue(errorMessage);
+    loadAxo = vi.fn().mockRejectedValue(errorMessage);
 
     const result = connect.__get__();
     const error = await result(mockProps);
