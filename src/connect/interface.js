@@ -6,5 +6,5 @@ import type { LazyExport } from "../types";
 import { getConnectComponent, type ConnectComponent } from "./component";
 
 export const Connect: LazyExport<ConnectComponent> = async (merchantProps) => {
-  return await getConnectComponent(merchantProps);
+  return getConnectComponent(merchantProps);
 };

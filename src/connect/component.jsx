@@ -4,7 +4,6 @@ import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
-  getSessionID,
 } from "@paypal/sdk-client/src";
 
 // TODO: What's the expected structure/approach for this interface. It's not a zoid
@@ -22,6 +21,7 @@ export const getConnectComponent = async (merchantProps) => {
       sdkVersion: "", // PPCP proposal: string instead of function
       minified: false,
     });
+
     // FPTI: sdkversion, fraudnet info
     return await window.braintree.connect.create({
       ...loadResult.metadata, // returns a localeURL for assets
