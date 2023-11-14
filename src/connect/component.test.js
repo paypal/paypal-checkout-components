@@ -63,8 +63,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
 
   test("loadAxo failure is handled", async () => {
     const errorMessage = "Something went wrong";
-    // eslint-disable-next-line no-import-assign
-    loadAxo = vi.fn().mockRejectedValue(errorMessage);
+    loadAxo.mockRejectedValue(errorMessage);
 
     const error = await getConnectComponent(mockProps);
 
