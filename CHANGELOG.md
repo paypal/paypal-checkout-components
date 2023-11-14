@@ -1,3 +1,9 @@
+## <small>5.0.285 (2023-11-07)</small>
+
+* Venmo overlay (#2271) ([294709b](https://github.com/paypal/paypal-checkout-components/commit/294709b)), closes [#2271](https://github.com/paypal/paypal-checkout-components/issues/2271)
+
+
+
 ## <small>5.0.284 (2023-11-02)</small>
 
 * Update CODE_OF_CONDUCT.md (#2268) ([6caee02](https://github.com/paypal/paypal-checkout-components/commit/6caee02)), closes [#2268](https://github.com/paypal/paypal-checkout-components/issues/2268)
