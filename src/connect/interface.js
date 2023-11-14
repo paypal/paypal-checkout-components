@@ -1,10 +1,16 @@
+/* eslint-disable flowtype/no-weak-types */
 /* @flow */
-/* eslint import/no-deprecated: 0 */
-
-import type { LazyExport } from "../types";
+// flow-disable
 
 import { getConnectComponent, type ConnectComponent } from "./component";
 
-export const Connect: LazyExport<ConnectComponent> = async (merchantProps) => {
+type ConnectThing = (merchantProps: any) => ConnectComponent;
+// $FlowFixMe
+export const Connect: ConnectThing = async (
+  merchantProps: any
+): ConnectComponent => {
+  // $FlowFixMe
   return await getConnectComponent(merchantProps);
 };
+
+/* eslint-enable flowtype/no-weak-types */

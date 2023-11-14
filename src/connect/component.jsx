@@ -6,10 +6,13 @@ import {
   getUserIDToken,
 } from "@paypal/sdk-client/src";
 
+// eslint-disable-next-line flowtype/no-weak-types
+export type ConnectComponent = any;
 // TODO: What's the expected structure/approach for this interface. It's not a zoid
 // scenario, so what do we return?
 // -> Looks like it returns a function that accepts the props
 // How do we define the input of merchant params here?
+// $FlowFixMe
 export const getConnectComponent = async (merchantProps) => {
   const cmid = getClientMetadataID();
   const clientID = getClientID();
@@ -17,8 +20,8 @@ export const getConnectComponent = async (merchantProps) => {
   // TODO: Sort out integration specifics for inputs
   try {
     const loadResult = await loadAxo({
-      // client: { getVersion: () => "3.97.3-connect-alpha.6.1" }, // this is currently supported for BT
-      btSdkVersion: "3.97.3-connect-alpha.6.1", // PPCP proposal: string instead of function
+      platform: "PPCP",
+      btSdkVersion: "3.97.3-connect-alpha.6.1",
       minified: false,
     });
 

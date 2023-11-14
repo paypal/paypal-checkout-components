@@ -52,7 +52,8 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     expect(window.braintree.connect.create).toHaveBeenCalledWith({
       ...mockAxoMetadata,
       ...mockProps,
-      ppcp: {
+      platformOptions: {
+        platform: "PPCP",
         clientID: "mock-client-id",
         clientMetadataID: "mock-cmid",
         userIdToken: "mock-uid",
