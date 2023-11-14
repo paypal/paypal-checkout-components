@@ -33,6 +33,7 @@ export const buttonColorStyle = `
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD}:hover {
             filter: brightness(0.95);
+            overflow: inherit;
         }
     }
 
@@ -156,6 +157,7 @@ export const buttonColorStyle = `
     .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.PAIDY}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT}:hover,
     .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.WECHATPAY}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT}:hover {
         filter: brightness(1.2);
+        overflow: inherit;
     }
 
     /* APM button on focus actions */
@@ -214,6 +216,7 @@ export const buttonColorStyle = `
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE}:hover {
             filter: brightness(0.95);
+            overflow: inherit;
         }
     }
 
@@ -241,6 +244,7 @@ export const buttonColorStyle = `
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.SILVER}:hover {
             filter: brightness(0.95);
+            overflow: inherit;
         }
     }
 
@@ -267,6 +271,7 @@ export const buttonColorStyle = `
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DARKBLUE}:hover {
         filter: brightness(1.2);
+        overflow: inherit;
     }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DARKBLUE}:focus {
@@ -294,6 +299,7 @@ export const buttonColorStyle = `
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.BLACK}:hover {
         filter: brightness(1.2);
+        overflow: inherit;
     }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.BLACK}:focus {
@@ -321,6 +327,7 @@ export const buttonColorStyle = `
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE}:hover {
             filter: brightness(0.95);
+            overflow: inherit;
         }
     }
     
@@ -357,6 +364,7 @@ export const buttonColorStyle = `
 
     .${CLASS.BUTTON} .${CLASS.CARD}:hover {
         filter: brightness(1.2);
+        overflow: inherit;
     }
 
     .${CLASS.BUTTON} .${CLASS.CARD}:focus {
