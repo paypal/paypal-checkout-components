@@ -834,6 +834,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getExperimentation,
       },
 
+      hostedButtonId: {
+        type: "string",
+        required: false,
+        queryParam: true,
+      },
+
       displayOnly: {
         type: "array",
         queryParam: true,
