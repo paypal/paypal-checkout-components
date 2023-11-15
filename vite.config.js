@@ -43,7 +43,7 @@ export default defineConfig({
     setupFiles: ["vitestSetup.js"],
     include: ["**/src/**/*.test.{js,jsx}"],
     deps: {
-      inline: ["@krakenjs/post-robot"],
+      inline: ["@krakenjs/post-robot", "@krakenjs/zoid"],
     },
     globals: true,
   },

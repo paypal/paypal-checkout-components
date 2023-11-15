@@ -317,6 +317,11 @@ export function getCheckoutComponent(): CheckoutComponent {
           queryParam: true,
           required: false,
         },
+
+        hostedButtonId: {
+          type: "string",
+          required: false,
+        },
       },
 
       dimensions: ({ props }) => {

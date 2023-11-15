@@ -86,4 +86,8 @@ module.exports = {
     entry: "./src/interface/card-fields",
     globals,
   },
+  "hosted-buttons": {
+    entry: "./src/interface/hosted-buttons",
+    globals,
+  },
 };

@@ -521,6 +521,7 @@ export type ButtonProps = {|
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   createVaultSetupToken: CreateVaultSetupToken,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  hostedButtonId?: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
