@@ -52,6 +52,10 @@ module.exports = {
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
+  "hosted-buttons": {
+    entry: "./src/interface/hosted-button",
+    globals,
+  },
   marks: {
     entry: "./src/interface/marks",
     globals,
