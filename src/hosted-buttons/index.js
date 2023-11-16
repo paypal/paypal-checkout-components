@@ -1,20 +1,19 @@
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+/* @flow */
+import { getButtonsComponent } from "../zoid/buttons";
 
 type HostedButtonsInstance = {|
-  render: (string | HTMLElement) => ZalgoPromise<void>,
+  render: (string | HTMLElement) => void,
 |};
 
 type HostedButtonsProps = {|
-  hostedButtonId: string,
+  hostedButtonId?: string,
 |};
 
 export type HostedButtonsComponent =
   (HostedButtonsProps) => HostedButtonsInstance;
 
-import { getButtonsComponent } from "../zoid/buttons";
-
-export const getHostedButtonsComponent = () => {
-  function HostedButtons({ hostedButtonId }) {
+export const getHostedButtonsComponent = (): HostedButtonsComponent => {
+  function HostedButtons(): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = (selector) => {
       Buttons().render(selector);
