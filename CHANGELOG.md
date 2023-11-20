@@ -1,3 +1,9 @@
+## <small>5.0.286 (2023-11-16)</small>
+
+* Inherit overflow from parent for firefox hover/filter side-effect (#2274) ([1174669](https://github.com/paypal/paypal-checkout-components/commit/1174669)), closes [#2274](https://github.com/paypal/paypal-checkout-components/issues/2274)
+
+
+
 ## <small>5.0.285 (2023-11-07)</small>
 
 * Venmo overlay (#2271) ([294709b](https://github.com/paypal/paypal-checkout-components/commit/294709b)), closes [#2271](https://github.com/paypal/paypal-checkout-components/issues/2271)
