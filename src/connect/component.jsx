@@ -17,12 +17,14 @@ export const getConnectComponent = async (merchantProps) => {
   const cmid = getClientMetadataID();
   const clientID = getClientID();
   const userIdToken = getUserIDToken();
+  const { metadata } = merchantProps;
   // TODO: Sort out integration specifics for inputs
   try {
     const loadResult = await loadAxo({
       platform: "PPCP",
       btSdkVersion: "3.97.3-connect-alpha.6.1",
       minified: false,
+      metadata,
     });
 
     // FPTI: sdkversion, fraudnet info
