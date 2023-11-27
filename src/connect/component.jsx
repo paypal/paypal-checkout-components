@@ -56,10 +56,11 @@ export const getConnectComponent = async (merchantProps) => {
         errorName: "connect_load_error",
       },
     });
+
+    throw new Error(error);
   }
 
   try {
-    // FPTI: sdkversion, fraudnet info
     const connect = await window.braintree.connect.create({
       ...loadResult.metadata, // returns a localeURL for assets
       ...merchantProps, // AXO specific props
@@ -68,9 +69,6 @@ export const getConnectComponent = async (merchantProps) => {
         userIdToken,
         clientID,
         clientMetadataID: cmid,
-        fraudnet: () => {
-          return "";
-        },
       },
     });
 
@@ -78,6 +76,7 @@ export const getConnectComponent = async (merchantProps) => {
       name: "pp.app.paypal_sdk.connect.init.success.count",
       event: "success",
     });
+
     return connect;
   } catch (error) {
     sendCountMetric({
@@ -87,6 +86,6 @@ export const getConnectComponent = async (merchantProps) => {
         errorName: "connect_init_error",
       },
     });
-    return new Error(error);
+    throw new Error(error);
   }
 };

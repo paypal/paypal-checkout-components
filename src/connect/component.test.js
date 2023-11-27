@@ -4,41 +4,40 @@ import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
+  getLogger,
 } from "@paypal/sdk-client/src";
 import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
 
 import { getConnectComponent } from "./component";
 
+vi.mock("@paypal/sdk-client/src", () => {
+  return {
+    getClientID: vi.fn(() => "mock-client-id"),
+    getClientMetadataID: vi.fn(() => "mock-cmid"),
+    getUserIDToken: vi.fn(() => "mock-uid"),
+    getLogger: vi.fn(() => ({ metric: vi.fn() })),
+  };
+});
+
+vi.mock("@paypal/connect-loader-component", () => {
+  return {
+    loadAxo: vi.fn(),
+  };
+});
+
 describe("getConnectComponent: returns ConnectComponent", () => {
   const mockAxoMetadata = { someData: "data" };
   const mockProps = { someProp: "value" };
   beforeEach(() => {
+    vi.clearAllMocks();
     window.braintree = {
       connect: {
         create: vi.fn(),
       },
     };
 
-    vi.mock("@paypal/sdk-client/src", () => {
-      return {
-        getClientID: vi.fn(() => "mock-client-id"),
-        getClientMetadataID: vi.fn(() => "mock-cmid"),
-        getUserIDToken: vi.fn(() => "mock-uid"),
-      };
-    });
-
-    vi.mock("@paypal/connect-loader-component", () => {
-      return {
-        loadAxo: vi.fn(),
-      };
-    });
-
     loadAxo.mockResolvedValue({ metadata: mockAxoMetadata });
-
-    // getClientID.mockReturnValue("mock-client-id");
-    // getClientMetadataID.mockReturnValue("mock-cmid");
-    // getUserIDToken.mockReturnValue("mock-uid");
   });
 
   test("loadAxo and window.braintree.connect.create are called with proper data", async () => {
@@ -57,18 +56,28 @@ describe("getConnectComponent: returns ConnectComponent", () => {
         clientID: "mock-client-id",
         clientMetadataID: "mock-cmid",
         userIdToken: "mock-uid",
-        fraudnet: expect.any(Function),
       },
     });
+    expect(getLogger).toBeCalledTimes(2);
   });
 
   test("loadAxo failure is handled", async () => {
     const errorMessage = "Something went wrong";
     loadAxo.mockRejectedValue(errorMessage);
 
-    const error = await getConnectComponent(mockProps);
+    await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
+      errorMessage
+    );
+    expect(getLogger).toHaveBeenCalledTimes(2);
+  });
 
-    expect(error).toBeInstanceOf(Error);
-    expect(error.message).toEqual(errorMessage);
+  test("connect create failure is handled", async () => {
+    const expectedError = "create failed";
+    window.braintree.connect.create.mockRejectedValue(expectedError);
+
+    await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
+      expectedError
+    );
+    expect(getLogger).toBeCalledTimes(2);
   });
 });
