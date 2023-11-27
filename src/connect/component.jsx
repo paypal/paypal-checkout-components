@@ -6,8 +6,6 @@ import {
   getUserIDToken,
 } from "@paypal/sdk-client/src";
 
-// eslint-disable-next-line flowtype/no-weak-types
-export type ConnectComponent = any;
 // TODO: What's the expected structure/approach for this interface. It's not a zoid
 // scenario, so what do we return?
 // -> Looks like it returns a function that accepts the props

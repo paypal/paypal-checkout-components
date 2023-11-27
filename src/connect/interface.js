@@ -2,11 +2,11 @@
 /* @flow */
 // flow-disable
 
-import { getConnectComponent, type ConnectComponent } from "./component";
+import { getConnectComponent } from "./component";
 
-type ConnectThing = (merchantProps: any) => ConnectComponent;
+type ConnectComponent = (merchantProps: any) => ConnectComponent;
 // $FlowFixMe
-export const Connect: ConnectThing = async (
+export const Connect: ConnectComponent = async (
   merchantProps: any
 ): ConnectComponent => {
   // $FlowFixMe
