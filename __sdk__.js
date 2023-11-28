@@ -64,7 +64,7 @@ module.exports = {
   },
   connect: {
     entry: "./src/connect/interface",
-    globals
+    globals,
   },
   // @deprecated - renamed to payment-fields to be removed
   fields: {
