@@ -33,6 +33,7 @@ const sendCountMetric = ({
 export const getConnectComponent = async (merchantProps) => {
   sendCountMetric({
     name: "pp.app.paypal_sdk.connect.init.count",
+    dimensions: {},
   });
 
   const cmid = getClientMetadataID();
@@ -75,6 +76,7 @@ export const getConnectComponent = async (merchantProps) => {
     sendCountMetric({
       name: "pp.app.paypal_sdk.connect.init.success.count",
       event: "success",
+      dimensions: {},
     });
 
     return connect;
