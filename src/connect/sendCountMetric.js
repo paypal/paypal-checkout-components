@@ -1,6 +1,7 @@
 /* @flow */
 import { getLogger } from "@paypal/sdk-client/src";
 
+// TODO: This will be pulled in to a shared sdk-client util
 export const sendCountMetric = ({
   dimensions,
   event = "unused",
