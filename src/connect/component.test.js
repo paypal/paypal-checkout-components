@@ -10,19 +10,26 @@ import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
 
 import { getConnectComponent } from "./component";
+import { sendCountMetric } from "./sendCountMetric";
 
 vi.mock("@paypal/sdk-client/src", () => {
   return {
     getClientID: vi.fn(() => "mock-client-id"),
     getClientMetadataID: vi.fn(() => "mock-cmid"),
     getUserIDToken: vi.fn(() => "mock-uid"),
-    getLogger: vi.fn(() => ({ metric: vi.fn() })),
+    getLogger: vi.fn(() => ({ metric: vi.fn(), error: vi.fn() })),
   };
 });
 
 vi.mock("@paypal/connect-loader-component", () => {
   return {
     loadAxo: vi.fn(),
+  };
+});
+
+vi.mock("./sendCountMetric", () => {
+  return {
+    sendCountMetric: vi.fn(),
   };
 });
 
@@ -58,7 +65,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
         userIdToken: "mock-uid",
       },
     });
-    expect(getLogger).toBeCalledTimes(2);
+    expect(sendCountMetric).toBeCalledTimes(2);
   });
 
   test("loadAxo failure is handled", async () => {
@@ -68,7 +75,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
       errorMessage
     );
-    expect(getLogger).toHaveBeenCalledTimes(2);
+    expect(sendCountMetric).toHaveBeenCalledTimes(2);
   });
 
   test("connect create failure is handled", async () => {
@@ -78,6 +85,6 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
       expectedError
     );
-    expect(getLogger).toBeCalledTimes(2);
+    expect(sendCountMetric).toBeCalledTimes(2);
   });
 });

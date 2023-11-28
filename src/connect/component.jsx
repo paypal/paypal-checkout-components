@@ -1,5 +1,7 @@
 /* @flow */
 import { loadAxo } from "@paypal/connect-loader-component";
+import { stringifyError } from "@krakenjs/belter/src";
+
 import {
   getClientID,
   getClientMetadataID,
@@ -7,27 +9,7 @@ import {
   getLogger,
 } from "@paypal/sdk-client/src";
 
-const sendCountMetric = ({
-  dimensions,
-  event = "unused",
-  name,
-  value = 1,
-}: {|
-  event?: string,
-  name: string,
-  value?: number,
-  dimensions: {
-    [string]: mixed,
-  },
-  // $FlowIssue return type
-|}) =>
-  getLogger().metric({
-    dimensions,
-    metricEventName: event,
-    metricNamespace: name,
-    metricValue: value,
-    metricType: "counter",
-  });
+import { sendCountMetric } from "./sendCountMetric";
 
 // $FlowFixMe
 export const getConnectComponent = async (merchantProps) => {
@@ -57,6 +39,8 @@ export const getConnectComponent = async (merchantProps) => {
         errorName: "connect_load_error",
       },
     });
+
+    getLogger().error("load_axo_error", { err: stringifyError(error) });
 
     throw new Error(error);
   }
@@ -88,6 +72,9 @@ export const getConnectComponent = async (merchantProps) => {
         errorName: "connect_init_error",
       },
     });
+
+    getLogger().error("init_axo_error", { err: stringifyError(error) });
+
     throw new Error(error);
   }
 };
