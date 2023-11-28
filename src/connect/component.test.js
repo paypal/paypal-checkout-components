@@ -5,7 +5,6 @@ import {
   getClientMetadataID,
   getUserIDToken,
   getLogger,
-  getDebug,
 } from "@paypal/sdk-client/src";
 import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
@@ -18,7 +17,6 @@ vi.mock("@paypal/sdk-client/src", () => {
     getClientMetadataID: vi.fn(() => "mock-cmid"),
     getUserIDToken: vi.fn(() => "mock-uid"),
     getLogger: vi.fn(() => ({ metric: vi.fn() })),
-    getDebug: vi.fn(),
   };
 });
 
