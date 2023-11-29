@@ -1,7 +1,6 @@
 /* @flow */
 import { loadAxo } from "@paypal/connect-loader-component";
 import { stringifyError } from "@krakenjs/belter/src";
-
 import {
   getClientID,
   getClientMetadataID,

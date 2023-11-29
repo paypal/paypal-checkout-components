@@ -4,7 +4,6 @@ import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
-  getLogger,
 } from "@paypal/sdk-client/src";
 import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
