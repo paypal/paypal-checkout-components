@@ -1,3 +1,9 @@
+## <small>5.0.287 (2023-11-29)</small>
+
+* feat(connect): add initial support for connect component (#2280) ([fcc0f44](https://github.com/paypal/paypal-checkout-components/commit/fcc0f44)), closes [#2280](https://github.com/paypal/paypal-checkout-components/issues/2280)
+
+
+
 ## <small>5.0.286 (2023-11-16)</small>
 
 * Inherit overflow from parent for firefox hover/filter side-effect (#2274) ([1174669](https://github.com/paypal/paypal-checkout-components/commit/1174669)), closes [#2274](https://github.com/paypal/paypal-checkout-components/issues/2274)
