@@ -33,6 +33,7 @@
     "percy-screenshot": "npx playwright install && babel-node ./test/percy/server/createButtonConfigs.js && percy exec -- playwright test --config=./test/percy/playwright.config.js --reporter=dot --pass-with-no-tests",
     "typecheck": "npm run flow-typed && npm run flow",
     "version": "./scripts/version.sh",
+    "vitest": "vitest",
     "webpack": "babel-node $(npm bin)/webpack",
     "webpack-size": "npm run webpack -- --config webpack.config.size",
     "prepare": "husky install",
@@ -109,6 +110,7 @@
     "@krakenjs/zoid": "^10.3.1",
     "@paypal/common-components": "^1.0.35",
     "@paypal/funding-components": "^1.0.31",
+    "@paypal/connect-loader-component": "^1.1.0",
     "@paypal/sdk-client": "^4.0.176",
     "@paypal/sdk-constants": "^1.0.133",
     "@paypal/sdk-logos": "^2.2.6"
