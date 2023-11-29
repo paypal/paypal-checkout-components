@@ -27,7 +27,7 @@ export const getConnectComponent = async (merchantProps) => {
     loadResult = await loadAxo({
       platform: "PPCP",
       btSdkVersion: "3.97.3-connect-alpha.6.1",
-      minified: false,
+      minified: true,
       metadata,
     });
   } catch (error) {
