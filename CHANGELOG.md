@@ -1,3 +1,9 @@
+## <small>5.0.288 (2023-11-29)</small>
+
+* fix: bump connect loader to beta without polyfill (#2281) ([57b67bb](https://github.com/paypal/paypal-checkout-components/commit/57b67bb)), closes [#2281](https://github.com/paypal/paypal-checkout-components/issues/2281)
+
+
+
 ## <small>5.0.287 (2023-11-29)</small>
 
 * feat(connect): add initial support for connect component (#2280) ([fcc0f44](https://github.com/paypal/paypal-checkout-components/commit/fcc0f44)), closes [#2280](https://github.com/paypal/paypal-checkout-components/issues/2280)
