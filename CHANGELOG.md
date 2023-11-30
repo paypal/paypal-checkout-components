@@ -1,3 +1,9 @@
+## <small>5.0.289 (2023-11-30)</small>
+
+* fix: update to connect loader 1.1.1 (#2282) ([77b7dc0](https://github.com/paypal/paypal-checkout-components/commit/77b7dc0)), closes [#2282](https://github.com/paypal/paypal-checkout-components/issues/2282)
+
+
+
 ## <small>5.0.288 (2023-11-29)</small>
 
 * fix: bump connect loader to beta without polyfill (#2281) ([57b67bb](https://github.com/paypal/paypal-checkout-components/commit/57b67bb)), closes [#2281](https://github.com/paypal/paypal-checkout-components/issues/2281)
