@@ -88,8 +88,7 @@ describe("HostedButtons", () => {
     );
     await getHostedButtonDetails({
       hostedButtonId: "B1234567890",
-    }).then(({ merchantId, style }) => {
-      expect(merchantId).toBe("M1234567890");
+    }).then(({ style }) => {
       expect(style).toEqual({
         layout: "vertical",
         shape: "rect",

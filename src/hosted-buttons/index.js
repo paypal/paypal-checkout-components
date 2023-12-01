@@ -1,7 +1,7 @@
 /* @flow */
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { request, noop } from "@krakenjs/belter/src";
-import { getSDKHost, getClientID } from "@paypal/sdk-client/src";
+import { getSDKHost, getClientID, getMerchantID } from "@paypal/sdk-client/src";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
@@ -22,7 +22,6 @@ type HostedButtonsInstance = {|
 type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => ZalgoPromise<{|
     buttonType: string,
-    merchantId: string,
     html: string,
     htmlScript: string,
     style: {|
@@ -74,7 +73,6 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
     const variables = body.button_details.button_variables;
     return {
       buttonType: getButtonVariable(variables, "button_type"),
-      merchantId: getButtonVariable(variables, "business"),
       style: {
         layout: getButtonVariable(variables, "layout"),
         shape: getButtonVariable(variables, "shape"),
@@ -90,7 +88,6 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
 export const getHostedButtonCreateOrder = ({
   buttonType,
   hostedButtonId,
-  merchantId,
 }: GetCallbackProps): CreateOrder => {
   return (data) => {
     const userInputs = window.__pp_form_fields?.getUserInputs?.() || {};
@@ -103,7 +100,7 @@ export const getHostedButtonCreateOrder = ({
         entry_point: entryPoint,
         funding_source: getFundingSource(data.paymentSource),
         hosted_button_id: hostedButtonId,
-        merchant_id: merchantId,
+        merchant_id: getMerchantID(),
         ...userInputs,
       }),
     }).then(({ body }) => body.order_id);
@@ -113,7 +110,6 @@ export const getHostedButtonCreateOrder = ({
 export const getHostedButtonOnApprove = ({
   buttonType,
   hostedButtonId,
-  merchantId,
 }: GetCallbackProps): OnApprove => {
   return (data) => {
     return request({
@@ -125,7 +121,7 @@ export const getHostedButtonOnApprove = ({
         entry_point: entryPoint,
         hosted_button_id: hostedButtonId,
         id: data.orderID,
-        merchant_id: merchantId,
+        merchant_id: getMerchantID(),
       }),
     }).then(noop);
   };
@@ -153,8 +149,13 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = (selector) => {
+      // The SDK supports mutiple merchant IDs, but hosted buttons only
+      // have one merchant id as a query parameter to the SDK script.
+      // https://github.com/paypal/paypal-sdk-client/blob/c58e35f8f7adbab76523eb25b9c10543449d2d29/src/script.js#L144
+      const merchantId = getMerchantID()[0];
+
       getHostedButtonDetails({ hostedButtonId }).then(
-        ({ buttonType, html, htmlScript, merchantId, style }) => {
+        ({ buttonType, html, htmlScript, style }) => {
           renderForm({ html, htmlScript, selector });
 
           // $FlowFixMe
