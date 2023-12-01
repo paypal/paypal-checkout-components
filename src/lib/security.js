@@ -23,6 +23,15 @@ export function allowIframe(): boolean {
   return false;
 }
 
+// TODO: Incorporate an allow list for alpha merchants
+const isMerchantDomainAllowed = false;
+// $FlowIssue
+export function protectedMerchantExport(unprotectedExport) {
+  return isMerchantDomainAllowed || isPayPalDomain()
+    ? unprotectedExport
+    : undefined;
+}
+
 /* eslint-disable no-confusing-arrow */
 // $FlowIssue
 export const protectedExport = (unprotectedExport) =>

@@ -58,6 +58,9 @@ module.exports = {
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
+  "shopper-insights": {
+    entry: "./src/interface/api/shopper-insights",
+  },
   wallet: {
     entry: "./src/interface/wallet",
     globals,
