@@ -105,6 +105,31 @@ describe(`paypal checkout component happy path`, () => {
     });
   });
 
+  it("should render checkout with sign_out_user=true to enable paying with a different account", () => {
+    return wrapPromise(({ expect, error }) => {
+      return runOnClick(() => {
+        const orderID = generateOrderID();
+
+        return window.paypal
+          .Checkout({
+            buttonSessionID: uniqueID(),
+            fundingSource: FUNDING.PAYPAL,
+            createOrder: expect("createOrder", () => orderID),
+            sign_out_user: true,
+            onApprove: expect("onApprove", (data) => {
+              if (data.currentUrl.indexOf(`sign_out_user=true`) === -1) {
+                throw new Error(
+                  `Expected to find sign_out_user=true in url, got ${data.currentUrl}`
+                );
+              }
+            }),
+            onCancel: error("onCancel"),
+          })
+          .render("body");
+      });
+    });
+  });
+
   it("should render checkout, and click the close button to close the window", () => {
     return wrapPromise(({ expect, error }) => {
       return runOnClick(() => {

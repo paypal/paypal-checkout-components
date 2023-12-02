@@ -1,3 +1,57 @@
+## <small>5.0.289 (2023-11-30)</small>
+
+* fix: update to connect loader 1.1.1 (#2282) ([77b7dc0](https://github.com/paypal/paypal-checkout-components/commit/77b7dc0)), closes [#2282](https://github.com/paypal/paypal-checkout-components/issues/2282)
+
+
+
+## <small>5.0.288 (2023-11-29)</small>
+
+* fix: bump connect loader to beta without polyfill (#2281) ([57b67bb](https://github.com/paypal/paypal-checkout-components/commit/57b67bb)), closes [#2281](https://github.com/paypal/paypal-checkout-components/issues/2281)
+
+
+
+## <small>5.0.287 (2023-11-29)</small>
+
+* feat(connect): add initial support for connect component (#2280) ([fcc0f44](https://github.com/paypal/paypal-checkout-components/commit/fcc0f44)), closes [#2280](https://github.com/paypal/paypal-checkout-components/issues/2280)
+
+
+
+## <small>5.0.286 (2023-11-16)</small>
+
+* Inherit overflow from parent for firefox hover/filter side-effect (#2274) ([1174669](https://github.com/paypal/paypal-checkout-components/commit/1174669)), closes [#2274](https://github.com/paypal/paypal-checkout-components/issues/2274)
+
+
+
+## <small>5.0.285 (2023-11-07)</small>
+
+* Venmo overlay (#2271) ([294709b](https://github.com/paypal/paypal-checkout-components/commit/294709b)), closes [#2271](https://github.com/paypal/paypal-checkout-components/issues/2271)
+
+
+
+## <small>5.0.284 (2023-11-02)</small>
+
+* Update CODE_OF_CONDUCT.md (#2268) ([6caee02](https://github.com/paypal/paypal-checkout-components/commit/6caee02)), closes [#2268](https://github.com/paypal/paypal-checkout-components/issues/2268)
+
+
+
+## <small>5.0.283 (2023-10-18)</small>
+
+* Support New displayOnly Confg Option (#2252) ([bcd4e50](https://github.com/paypal/paypal-checkout-components/commit/bcd4e50)), closes [#2252](https://github.com/paypal/paypal-checkout-components/issues/2252)
+
+
+
+## <small>5.0.282 (2023-10-12)</small>
+
+* Include branded in HCF eligibility check (#2257) ([415610a](https://github.com/paypal/paypal-checkout-components/commit/415610a)), closes [#2257](https://github.com/paypal/paypal-checkout-components/issues/2257)
+
+
+
+## <small>5.0.281 (2023-09-06)</small>
+
+* Remove venmoAppLabel experiment (#2231) ([c27574e](https://github.com/paypal/paypal-checkout-components/commit/c27574e)), closes [#2231](https://github.com/paypal/paypal-checkout-components/issues/2231)
+
+
+
 ## <small>5.0.280 (2023-08-29)</small>
 
 * pass cmid through card components (#2235) ([b15f38d](https://github.com/paypal/paypal-checkout-components/commit/b15f38d)), closes [#2235](https://github.com/paypal/paypal-checkout-components/issues/2235)

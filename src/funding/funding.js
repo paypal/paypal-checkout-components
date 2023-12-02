@@ -1,7 +1,15 @@
 /* @flow */
 
-import type { FundingEligibilityType } from "@paypal/sdk-client/src";
-import { PLATFORM, FUNDING, COMPONENTS } from "@paypal/sdk-constants/src";
+import type {
+  FundingEligibilityType,
+  CardEligibility,
+} from "@paypal/sdk-client/src";
+import {
+  PLATFORM,
+  FUNDING,
+  COMPONENTS,
+  DISPLAY_ONLY_VALUES,
+} from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 
 import type { Wallet, Experiment } from "../types";
@@ -30,7 +38,35 @@ type IsFundingEligibleOptions = {|
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |};
+
+function isFundingVaultable({
+  fundingEligibility,
+  fundingSource,
+}: {|
+  fundingEligibility: FundingEligibilityType,
+  fundingSource: $Values<typeof FUNDING>,
+|}): boolean {
+  // fundingEligibility.card doesn't give vaultable property like other funding sources
+  if (
+    fundingSource === FUNDING.CARD &&
+    fundingEligibility[fundingSource]?.vendors
+  ) {
+    const { vendors } = (fundingEligibility[fundingSource]: CardEligibility);
+
+    // If any vendors are both eligible & vaultable, card is vaultable
+    return Object.keys(vendors).some(
+      (vendor) => vendors[vendor]?.eligible && vendors[vendor]?.vaultable
+    );
+  }
+
+  if (!fundingEligibility[fundingSource]?.vaultable) {
+    return false;
+  }
+
+  return true;
+}
 
 export function isFundingEligible(
   source: $Values<typeof FUNDING>,
@@ -50,6 +86,7 @@ export function isFundingEligible(
     supportsPopups,
     supportedNativeBrowser,
     experiment,
+    displayOnly,
   }: IsFundingEligibleOptions
 ): boolean {
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
@@ -67,6 +104,16 @@ export function isFundingEligible(
   }
 
   if (!fundingConfig.automatic && source !== fundingSource) {
+    return false;
+  }
+
+  const shouldDisplayOnlyVaultableButtons =
+    displayOnly && displayOnly.includes("vaultable");
+
+  if (
+    shouldDisplayOnlyVaultableButtons &&
+    !isFundingVaultable({ fundingEligibility, fundingSource: source })
+  ) {
     return false;
   }
 
@@ -152,6 +199,7 @@ export function determineEligibleFunding({
   supportsPopups,
   supportedNativeBrowser,
   experiment,
+  displayOnly = [],
 }: {|
   fundingSource: ?$Values<typeof FUNDING>,
   remembered: $ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -169,6 +217,7 @@ export function determineEligibleFunding({
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
   experiment: Experiment,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -191,6 +240,7 @@ export function determineEligibleFunding({
       supportsPopups,
       supportedNativeBrowser,
       experiment,
+      displayOnly,
     })
   );
 

@@ -27,7 +27,11 @@ import {
   inlineMemoize,
 } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
-import { SpinnerPage, Overlay } from "@paypal/common-components/src";
+import {
+  SpinnerPage,
+  Overlay,
+  VenmoOverlay,
+} from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
 import { containerContent } from "../content";
@@ -81,20 +85,38 @@ export function getCheckoutComponent(): CheckoutComponent {
         const {
           nonce,
           locale: { lang },
+          fundingSource,
         } = props;
-        const content = containerContent("PayPal")[lang];
-        return (
-          <Overlay
-            context={context}
-            close={close}
-            focus={focus}
-            event={event}
-            frame={frame}
-            prerenderFrame={prerenderFrame}
-            content={content}
-            nonce={nonce}
-          />
-        ).render(dom({ doc }));
+        const isVenmo = fundingSource === FUNDING.VENMO;
+        const browserLanguage = isVenmo ? "en" : lang;
+        const content = containerContent(fundingSource)[browserLanguage];
+        if (isVenmo) {
+          return (
+            <VenmoOverlay
+              context={context}
+              close={close}
+              focus={focus}
+              event={event}
+              frame={frame}
+              prerenderFrame={prerenderFrame}
+              content={content}
+              nonce={nonce}
+            />
+          ).render(dom({ doc }));
+        } else {
+          return (
+            <Overlay
+              context={context}
+              close={close}
+              focus={focus}
+              event={event}
+              frame={frame}
+              prerenderFrame={prerenderFrame}
+              content={content}
+              nonce={nonce}
+            />
+          ).render(dom({ doc }));
+        }
       },
 
       props: {
@@ -197,6 +219,7 @@ export function getCheckoutComponent(): CheckoutComponent {
           type: "string",
           queryParam: true,
           default: () => FUNDING.PAYPAL,
+          allowDelegate: true,
         },
 
         standaloneFundingSource: {
@@ -287,6 +310,12 @@ export function getCheckoutComponent(): CheckoutComponent {
           type: "string",
           required: false,
           queryParam: true,
+        },
+
+        sign_out_user: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
         },
       },
 
