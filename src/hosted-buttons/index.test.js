@@ -25,6 +25,7 @@ vi.mock("@paypal/sdk-client/src", async () => {
     ...(await vi.importActual("@paypal/sdk-client/src")),
     getSDKHost: () => "example.com",
     getClientID: () => "client_id_123",
+    getMerchantID: () => ["merchant_id_123"],
   };
 });
 
@@ -96,7 +97,7 @@ describe("HostedButtons", () => {
         label: "paypal",
       });
     });
-    expect.assertions(2);
+    expect.assertions(1);
   });
 
   test("getHostedButtonCreateOrder", async () => {
@@ -107,7 +108,7 @@ describe("HostedButtons", () => {
     });
 
     // $FlowIssue
-    request.mockImplementationOnce(() =>
+    request.mockImplementation(() =>
       ZalgoPromise.resolve({
         body: {
           hosted_button_id: "B1234567890",
@@ -130,7 +131,7 @@ describe("HostedButtons", () => {
     });
 
     // $FlowIssue
-    request.mockImplementationOnce(() => ZalgoPromise.resolve({}));
+    request.mockImplementation(() => ZalgoPromise.resolve({}));
     await onApprove({ orderID: "EC-1234567890" });
     expect(request).toHaveBeenCalledWith(
       expect.objectContaining({

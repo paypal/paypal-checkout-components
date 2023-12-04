@@ -1,6 +1,6 @@
 /* @flow */
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { request, noop } from "@krakenjs/belter/src";
+import { request, noop, memoize } from "@krakenjs/belter/src";
 import { getSDKHost, getClientID, getMerchantID } from "@paypal/sdk-client/src";
 
 import { getButtonsComponent } from "../zoid/buttons";
@@ -41,14 +41,16 @@ type CreateOrder = (data: {| paymentSource: string |}) => ZalgoPromise<string>;
 
 type OnApprove = (data: {| orderID: string |}) => ZalgoPromise<void>;
 
+type CreateAccessToken = (clientID: string) => ZalgoPromise<string>;
+
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;
 
 const entryPoint = "SDK";
 const baseUrl = `https://${getSDKHost()}`;
 
-const getHeaders = () => ({
-  Authorization: `Basic ${btoa(getClientID())}`,
+const getHeaders = (accessToken?: string) => ({
+  ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
   "Content-Type": "application/json",
   "PayPal-Entry-Point": entryPoint,
 });
@@ -85,45 +87,65 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
   });
 };
 
+const createAccessToken = memoize<CreateAccessToken>((clientId) => {
+  return request({
+    url: `${baseUrl.replace("www", "api")}/v1/oauth2/token`,
+    method: "POST",
+    body: "grant_type=client_credentials",
+    headers: {
+      Authorization: `Basic ${btoa(clientId)}`,
+      "Content-Type": "application/json",
+    },
+  }).then((response) => response.body.access_token);
+});
+
 export const getHostedButtonCreateOrder = ({
   buttonType,
   hostedButtonId,
+  merchantId,
 }: GetCallbackProps): CreateOrder => {
   return (data) => {
     const userInputs = window.__pp_form_fields?.getUserInputs?.() || {};
-    return request({
-      url: `${baseUrl}/ncp/api/create-order`,
-      headers: getHeaders(),
-      method: "POST",
-      body: JSON.stringify({
-        button_type: buttonType,
-        entry_point: entryPoint,
-        funding_source: getFundingSource(data.paymentSource),
-        hosted_button_id: hostedButtonId,
-        merchant_id: getMerchantID(),
-        ...userInputs,
-      }),
-    }).then(({ body }) => body.order_id);
+    return createAccessToken(getClientID()).then((accessToken) => {
+      return request({
+        url: `${baseUrl.replace("www", "api")}/v1/ncp/orders`,
+        headers: getHeaders(accessToken),
+        method: "POST",
+        body: JSON.stringify({
+          button_type: buttonType,
+          entry_point: entryPoint,
+          funding_source: getFundingSource(data.paymentSource),
+          hosted_button_id: hostedButtonId,
+          merchant_id: merchantId,
+          ...userInputs,
+        }),
+      }).then(({ body }) => body.order_id);
+    });
   };
 };
 
 export const getHostedButtonOnApprove = ({
   buttonType,
   hostedButtonId,
+  merchantId,
 }: GetCallbackProps): OnApprove => {
   return (data) => {
-    return request({
-      url: `${baseUrl}/ncp/api/capture-order`,
-      headers: getHeaders(),
-      method: "POST",
-      body: JSON.stringify({
-        button_type: buttonType,
-        entry_point: entryPoint,
-        hosted_button_id: hostedButtonId,
-        id: data.orderID,
-        merchant_id: getMerchantID(),
-      }),
-    }).then(noop);
+    return createAccessToken(getClientID()).then((accessToken) => {
+      return request({
+        url: `${baseUrl.replace("www", "api")}/v1/ncp/orders/${
+          data.orderID
+        }/capture`,
+        headers: getHeaders(accessToken),
+        method: "POST",
+        body: JSON.stringify({
+          button_type: buttonType,
+          entry_point: entryPoint,
+          hosted_button_id: hostedButtonId,
+          merchant_id: merchantId,
+          id: data.orderID,
+        }),
+      }).then(noop);
+    });
   };
 };
 
