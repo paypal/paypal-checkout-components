@@ -54,7 +54,7 @@ const getHeaders = () => ({
 });
 
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
-  variables.find((variable) => variable.name === key)?.value ?? "";
+  variables?.find((variable) => variable.name === key)?.value ?? "";
 
 const getFundingSource = (paymentSource) => {
   if (paymentSource === "credit") {
