@@ -79,6 +79,8 @@ export type ShopperInsightsComponent = {|
 |};
 
 export function getShopperInsightsComponent(): ShopperInsightsComponent {
+  const startTime = Date.now();
+
   sendCountMetric({
     name: SHOPPER_INSIGHTS_METRIC_NAME.INIT,
     event: "init",
@@ -127,6 +129,20 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
           const isVenmoRecommended =
             (venmo?.eligibleInPaypalNetwork && venmo?.recommended) || false;
 
+          getLogger()
+            .info("shopper_insights_api_success")
+            .track({
+              [FPTI_KEY.TRANSITION]:
+                FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
+              [FPTI_KEY.EVENT_NAME]:
+                FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
+              [FPTI_KEY.FEED]: FPTI_FEED.PAYMENTS_SDK,
+              [FPTI_KEY.SESSION_UID]: paymentReadySessionID,
+              [FPTI_KEY.PAGE_TYPE]: pageType,
+              [FPTI_KEY.REFERER]: window.location.host,
+              [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(), // TODO: Set up interval for duration
+            });
+
           sendCountMetric({
             name: SHOPPER_INSIGHTS_METRIC_NAME.SUCCESS,
             event: "success",
@@ -157,7 +173,7 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
               [FPTI_KEY.SESSION_UID]: paymentReadySessionID,
               [FPTI_KEY.PAGE_TYPE]: pageType,
               [FPTI_KEY.REFERER]: window.location.host,
-              [FPTI_KEY.RESPONSE_DURATION]: "", // TODO: Set up interval for duration
+              [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
             });
 
           throw err;
