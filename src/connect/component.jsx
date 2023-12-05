@@ -6,12 +6,21 @@ import {
   getClientMetadataID,
   getUserIDToken,
   getLogger,
+  loadFraudnet,
 } from "@paypal/sdk-client/src";
 
 import { sendCountMetric } from "./sendCountMetric";
 
 // $FlowFixMe
 export const getConnectComponent = async (merchantProps) => {
+  // TODO: Properly define the source of these values
+  const { collect } = loadFraudnet({
+    env: "TEST",
+    clientMetadataID: "some-cmid",
+    cspNonce: "sdk-local-test",
+    appName: "sdk-local-test",
+    // queryStringParams = {},
+  });
   sendCountMetric({
     name: "pp.app.paypal_sdk.connect.init.count",
     dimensions: {},
@@ -29,6 +38,7 @@ export const getConnectComponent = async (merchantProps) => {
       btSdkVersion: "3.97.3-connect-alpha.6.1",
       minified: true,
       metadata,
+      fraudnet: collect,
     });
   } catch (error) {
     sendCountMetric({
