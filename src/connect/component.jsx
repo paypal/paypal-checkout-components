@@ -6,19 +6,25 @@ import {
   getClientMetadataID,
   getUserIDToken,
   getLogger,
+  getEnv,
   loadFraudnet,
+  getCSPNonce,
 } from "@paypal/sdk-client/src";
 
 import { sendCountMetric } from "./sendCountMetric";
 
 // $FlowFixMe
 export const getConnectComponent = async (merchantProps) => {
-  // TODO: Properly define the source of these values
+  const cmid = getClientMetadataID();
+  const clientID = getClientID();
+  const userIdToken = getUserIDToken();
+  const env = getEnv();
+  const cspNonce = getCSPNonce();
   const { collect } = loadFraudnet({
-    env: "TEST",
-    clientMetadataID: "some-cmid",
-    cspNonce: "sdk-local-test",
-    appName: "sdk-local-test",
+    env,
+    clientMetadataID: cmid,
+    cspNonce,
+    appName: "ppcp-sdk-connect",
     // queryStringParams = {},
   });
   sendCountMetric({
@@ -26,9 +32,6 @@ export const getConnectComponent = async (merchantProps) => {
     dimensions: {},
   });
 
-  const cmid = getClientMetadataID();
-  const clientID = getClientID();
-  const userIdToken = getUserIDToken();
   const { metadata } = merchantProps;
 
   let loadResult = {};
