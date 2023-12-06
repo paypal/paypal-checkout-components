@@ -14,19 +14,21 @@ import {
 import { sendCountMetric } from "./sendCountMetric";
 
 // $FlowFixMe
-export const getConnectComponent = async (merchantProps) => {
+export const getConnectComponent = async (merchantProps = {}) => {
   const cmid = getClientMetadataID();
   const clientID = getClientID();
   const userIdToken = getUserIDToken();
   const env = getEnv();
   const cspNonce = getCSPNonce();
+
   const { collect } = loadFraudnet({
     env,
     clientMetadataID: cmid,
     cspNonce,
     appName: "ppcp-sdk-connect",
-    // queryStringParams = {},
+    // queryStringParams = {}, // TODO: what do we need here in this case?
   });
+
   sendCountMetric({
     name: "pp.app.paypal_sdk.connect.init.count",
     dimensions: {},
