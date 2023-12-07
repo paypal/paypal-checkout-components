@@ -43,7 +43,6 @@ export const getConnectComponent = async (merchantProps = {}) => {
       btSdkVersion: "3.97.3-connect-alpha.6.1",
       minified: true,
       metadata,
-      fraudnet: collect,
     });
   } catch (error) {
     sendCountMetric({
@@ -68,6 +67,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
         userIdToken,
         clientID,
         clientMetadataID: cmid,
+        fraudnet: collect,
       },
     });
 
