@@ -13,7 +13,7 @@ describe("interface.js", () => {
   });
   it("should call getConnectComponent with merchant props", async () => {
     const merchantProps = { props: "someProps" };
-    await Connect(merchantProps);
+    await Connect()(merchantProps);
     expect(getConnectComponent).toBeCalledWith(merchantProps);
   });
 });
