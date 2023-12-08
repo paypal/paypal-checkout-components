@@ -46,7 +46,7 @@ export const getConnectComponent = async (merchantProps) => {
         [FPTI_KEY.CONTEXT_ID]: cmid,
         [FPTI_KEY.EVENT_NAME]: `ppcp_axo_failure`,
       })
-      .error("load_axo_error", { err: stringifyError(error) })
+      .error("load_connect_error", { err: stringifyError(error) })
       .flush();
 
     throw new Error(error);
@@ -67,7 +67,7 @@ export const getConnectComponent = async (merchantProps) => {
       .track({
         [FPTI_KEY.CONTEXT_TYPE]: "CMID",
         [FPTI_KEY.CONTEXT_ID]: cmid,
-        [FPTI_KEY.EVENT_NAME]: `ppcp_axo_success`,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_success`,
       })
       .flush();
     sendCountMetric({
@@ -90,9 +90,9 @@ export const getConnectComponent = async (merchantProps) => {
       .track({
         [FPTI_KEY.CONTEXT_TYPE]: "CMID",
         [FPTI_KEY.CONTEXT_ID]: cmid,
-        [FPTI_KEY.EVENT_NAME]: `ppcp_axo_failure`,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_failure`,
       })
-      .error("init_axo_error", { err: stringifyError(error) })
+      .error("init_connect_error", { err: stringifyError(error) })
       .flush();
 
     throw new Error(error);
