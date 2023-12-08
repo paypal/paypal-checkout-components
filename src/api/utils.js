@@ -1,81 +1,58 @@
 /* @flow */
 
 import {
-  getUserIDToken,
   getPartnerAttributionID,
+  getSessionID,
+  getStorageState,
 } from "@paypal/sdk-client/src";
 import { request } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import { HEADERS } from "../constants/api";
 
-// TODO: Consider centralizing to SDK client
-function camelCaseToSnakeCase(key): string {
-  return key
-    .replace(/([a-z\d])([A-Z])/g, "$1_$2")
-    .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, "$1_$2")
-    .toLowerCase();
-}
-
-// TODO: Consider centralizing to SDK client
-function snakeCaseToCamelCase(key): string {
-  /* eslint-disable-next-line no-useless-escape*/
-  return key.toLowerCase().replace(/(\_\w)/g, (match) => {
-    return match[1].toUpperCase();
+export function setShopperInsightsUsage() {
+  getStorageState((state) => {
+    return {
+      ...state,
+      shopperInsights: {
+        getRecommendedPaymentMethodsUsed: true,
+      },
+    };
   });
-}
-
-// TODO: Consider centralizing to SDK client
-function formatPayload(bodyPayloadObject, caseKey): Object {
-  if (
-    typeof bodyPayloadObject === "function" ||
-    bodyPayloadObject !== Object(bodyPayloadObject)
-  ) {
-    return bodyPayloadObject;
-  }
-
-  return Object.fromEntries(
-    // $FlowFixMe
-    Object.entries(bodyPayloadObject).map(([key, value]) => [
-      caseKey(key),
-      formatPayload(value, caseKey),
-    ])
-  );
 }
 
 type RestAPIParams = {|
   method?: string,
   url: string,
   data: Object,
+  accessToken: ?string,
 |};
 
 // TODO: Consider centralizing from SPB to SDK client or creating a new one
 export function callRestAPI({
+  accessToken,
   method,
   url,
   data,
 }: RestAPIParams): ZalgoPromise<Object> {
-  // TODO: Update to SDK token
-  const accessToken = getUserIDToken();
   const partnerAttributionID = getPartnerAttributionID() || "";
 
   if (!accessToken) {
-    throw new Error(`SDK token not passed to SDK`);
+    throw new Error(`No access token passed to API request ${url}`);
   }
 
   const requestHeaders = {
     [HEADERS.AUTHORIZATION]: `Bearer ${accessToken}`,
     [HEADERS.CONTENT_TYPE]: `application/json`,
     [HEADERS.PARTNER_ATTRIBUTION_ID]: partnerAttributionID,
+    [HEADERS.CLIENT_METADATA_ID]: getSessionID(),
   };
-
-  const snakeCasedPayload = formatPayload(data, camelCaseToSnakeCase);
 
   return request({
     method,
     url,
     headers: requestHeaders,
-    json: snakeCasedPayload,
+    json: data,
   }).then(({ status, body, headers: responseHeaders }) => {
     if (status >= 300) {
       const error = new Error(
@@ -88,7 +65,6 @@ export function callRestAPI({
       throw error;
     }
 
-    const camelCasedPayload = formatPayload(body, snakeCaseToCamelCase);
-    return camelCasedPayload;
+    return body;
   });
 }
