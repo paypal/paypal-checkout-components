@@ -10,7 +10,6 @@ type HostedButtonsComponentProps = {|
 |};
 
 type GetCallbackProps = {|
-  buttonType: string,
   hostedButtonId: string,
   merchantId: string,
 |};
@@ -21,7 +20,6 @@ type HostedButtonsInstance = {|
 
 type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => ZalgoPromise<{|
-    buttonType: string,
     html: string,
     htmlScript: string,
     style: {|
@@ -60,9 +58,9 @@ const getButtonVariable = (variables: ButtonVariables, key: string): string =>
 
 const getFundingSource = (paymentSource) => {
   if (paymentSource === "credit") {
-    return `PAY_WITH_PAYPAL_CREDIT`;
+    return `CARD`;
   }
-  return `PAY_WITH_${paymentSource.toUpperCase()}`;
+  return paymentSource.toUpperCase();
 };
 
 export const getHostedButtonDetails: HostedButtonDetailsParams = ({
@@ -74,7 +72,6 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
   }).then(({ body }) => {
     const variables = body.button_details.link_variables;
     return {
-      buttonType: getButtonVariable(variables, "button_type"),
       style: {
         layout: getButtonVariable(variables, "layout"),
         shape: getButtonVariable(variables, "shape"),
@@ -100,7 +97,6 @@ const createAccessToken = memoize<CreateAccessToken>((clientId) => {
 });
 
 export const getHostedButtonCreateOrder = ({
-  buttonType,
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): CreateOrder => {
@@ -108,41 +104,40 @@ export const getHostedButtonCreateOrder = ({
     const userInputs = window.__pp_form_fields?.getUserInputs?.() || {};
     return createAccessToken(getClientID()).then((accessToken) => {
       return request({
-        url: `${baseUrl.replace("www", "api")}/v1/ncp/orders`,
+        url: `${baseUrl.replace(
+          "www",
+          "api"
+        )}/v1/checkout/links/${hostedButtonId}/create-context`,
         headers: getHeaders(accessToken),
         method: "POST",
         body: JSON.stringify({
-          button_type: buttonType,
           entry_point: entryPoint,
           funding_source: getFundingSource(data.paymentSource),
-          hosted_button_id: hostedButtonId,
           merchant_id: merchantId,
           ...userInputs,
         }),
-      }).then(({ body }) => body.order_id);
+      }).then(({ body }) => body.context_id);
     });
   };
 };
 
 export const getHostedButtonOnApprove = ({
-  buttonType,
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return (data) => {
     return createAccessToken(getClientID()).then((accessToken) => {
       return request({
-        url: `${baseUrl.replace("www", "api")}/v1/ncp/orders/${
-          data.orderID
-        }/capture`,
+        url: `${baseUrl.replace(
+          "www",
+          "api"
+        )}/v1/checkout/links/${hostedButtonId}/pay`,
         headers: getHeaders(accessToken),
         method: "POST",
         body: JSON.stringify({
-          button_type: buttonType,
           entry_point: entryPoint,
-          hosted_button_id: hostedButtonId,
           merchant_id: merchantId,
-          id: data.orderID,
+          context_id: data.orderID,
         }),
       }).then(noop);
     });
@@ -177,7 +172,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       const merchantId = getMerchantID()[0];
 
       getHostedButtonDetails({ hostedButtonId }).then(
-        ({ buttonType, html, htmlScript, style }) => {
+        ({ html, htmlScript, style }) => {
           renderForm({ html, htmlScript, selector });
 
           // $FlowFixMe
@@ -195,12 +190,10 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
               window.__pp_form_fields?.onClick?.(data, actions);
             },
             createOrder: getHostedButtonCreateOrder({
-              buttonType,
               hostedButtonId,
               merchantId,
             }),
             onApprove: getHostedButtonOnApprove({
-              buttonType,
               hostedButtonId,
               merchantId,
             }),

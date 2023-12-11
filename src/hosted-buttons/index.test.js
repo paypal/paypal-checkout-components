@@ -102,7 +102,6 @@ describe("HostedButtons", () => {
 
   test("getHostedButtonCreateOrder", async () => {
     const createOrder = getHostedButtonCreateOrder({
-      buttonType: "FIXED_PRICE",
       hostedButtonId: "B1234567890",
       merchantId: "M1234567890",
     });
@@ -111,10 +110,10 @@ describe("HostedButtons", () => {
     request.mockImplementation(() =>
       ZalgoPromise.resolve({
         body: {
-          hosted_button_id: "B1234567890",
+          link_id: "B1234567890",
           merchant_id: "M1234567890",
-          order_id: "EC-1234567890",
-          status: "PAYER_ACTION_REQUIRED",
+          context_id: "EC-1234567890",
+          status: "CREATED",
         },
       })
     );
@@ -125,22 +124,23 @@ describe("HostedButtons", () => {
 
   test("getHostedButtonOnApprove", async () => {
     const onApprove = getHostedButtonOnApprove({
-      buttonType: "FIXED_PRICE",
       hostedButtonId: "B1234567890",
       merchantId: "M1234567890",
     });
 
     // $FlowIssue
-    request.mockImplementation(() => ZalgoPromise.resolve({}));
+    request.mockImplementation(() =>
+      ZalgoPromise.resolve({
+        body: {},
+      })
+    );
     await onApprove({ orderID: "EC-1234567890" });
     expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
         body: JSON.stringify({
-          button_type: "FIXED_PRICE",
           entry_point: "SDK",
-          hosted_button_id: "B1234567890",
-          id: "EC-1234567890",
           merchant_id: "M1234567890",
+          context_id: "EC-1234567890",
         }),
       })
     );
