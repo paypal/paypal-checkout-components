@@ -16,6 +16,7 @@ vi.mock("@paypal/sdk-client/src", () => {
     getClientID: vi.fn(() => "mock-client-id"),
     getClientMetadataID: vi.fn(() => "mock-cmid"),
     getUserIDToken: vi.fn(() => "mock-uid"),
+    getDebug: vi.fn(() => false),
     getLogger: vi.fn(() => ({ metric: vi.fn(), error: vi.fn() })),
   };
 });
@@ -85,5 +86,15 @@ describe("getConnectComponent: returns ConnectComponent", () => {
       expectedError
     );
     expect(sendCountMetric).toBeCalledTimes(2);
+  });
+
+  test("minified is set according to debug value", async () => {
+    await getConnectComponent(mockProps);
+    expect(loadAxo).toHaveBeenCalledWith({
+      minified: true,
+      btSdkVersion: "3.97.3-connect-alpha.6.1",
+      metadata: undefined,
+      platform: "PPCP",
+    });
   });
 });
