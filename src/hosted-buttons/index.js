@@ -72,7 +72,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
     url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}`,
     headers: getHeaders(),
   }).then(({ body }) => {
-    const variables = body.button_details.button_variables;
+    const variables = body.button_details.link_variables;
     return {
       buttonType: getButtonVariable(variables, "button_type"),
       style: {

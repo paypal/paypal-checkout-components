@@ -39,7 +39,7 @@ vi.mock("../zoid/buttons", async () => {
 const getHostedButtonDetailsResponse = {
   body: {
     button_details: {
-      button_variables: [
+      link_variables: [
         {
           name: "business",
           value: "M1234567890",
