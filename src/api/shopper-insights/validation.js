@@ -53,7 +53,7 @@ export function validateMerchantConfig({
     );
   }
 
-  if (sdkToken && userIDToken) {
+  if (userIDToken) {
     sendCountMetric({
       name: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
@@ -69,7 +69,8 @@ export function validateMerchantConfig({
   }
 
   // Client token has widely adopted integrations in the SDK that we do not want
-  // to support anymore. For now, we will be only enforcing a warning
+  // to support anymore. For now, we will be only enforcing a warning. We should
+  // expand on this warning with upgrade guides when we have them.
   if (clientToken) {
     // eslint-disable-next-line no-console
     console.warn(`script data attribute client-token is not recommended`);
@@ -120,17 +121,27 @@ export function validateMerchantPayload(merchantPayload: MerchantPayloadData) {
     );
   }
 
+  if (
+    hasPurchaseUnits(merchantPayload) &&
+    !merchantPayload?.purchaseUnits?.[0]?.amount?.currencyCode
+  ) {
+    throw new ValidationError(
+      `Expected purchase units to include a currency code in the amount object`
+    );
+  }
+
   const allowedPayload = ["customer", "purchaseUnits"];
   if (isNonProdEnvironment) {
     allowedPayload.push("countryCode", "channel");
   }
 
-  const hasNonAllowedPayload = !allowedPayload.every((payloadKey) =>
-    Object.keys(merchantPayload).includes(payloadKey)
-  );
-  if (hasNonAllowedPayload) {
-    throw new ValidationError(`Unexpected shopper information passed`);
-  }
+  Object.keys(merchantPayload).forEach((merchantPayloadKey) => {
+    if (allowedPayload.indexOf(merchantPayloadKey) === -1) {
+      throw new ValidationError(
+        `Unexpected shopper information passed: ${merchantPayloadKey} is not supported`
+      );
+    }
+  });
 }
 
 type getRecommendedPaymentMethodsRequestPayload = {|
@@ -150,7 +161,7 @@ type getRecommendedPaymentMethodsRequestPayload = {|
   include_account_details: boolean,
 |};
 
-export function setRequestPayload(
+export function createRequestPayload(
   merchantPayload: MerchantPayloadData
 ): getRecommendedPaymentMethodsRequestPayload {
   return {
@@ -158,6 +169,7 @@ export function setRequestPayload(
       ...(hasEmail(merchantPayload) && {
         email: merchantPayload.customer?.email,
       }),
+      // $FlowIssue
       ...(hasPhoneNumber(merchantPayload) && {
         phone: {
           country_code: merchantPayload?.customer?.phone?.countryCode,
@@ -169,7 +181,8 @@ export function setRequestPayload(
       {
         amount: {
           currency_code: hasPurchaseUnits(merchantPayload)
-            ? merchantPayload?.purchaseUnits[0]?.amount?.currencyCode
+            ? // $FlowFixMe
+              merchantPayload?.purchaseUnits?.[0]?.amount?.currencyCode
             : getCurrency(),
         },
       },

@@ -3,7 +3,7 @@
 import {
   getPartnerAttributionID,
   getSessionID,
-  getStorageState,
+  getSessionState,
 } from "@paypal/sdk-client/src";
 import { request } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
@@ -11,7 +11,7 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { HEADERS } from "../constants/api";
 
 export function setShopperInsightsUsage() {
-  getStorageState((state) => {
+  getSessionState((state) => {
     return {
       ...state,
       shopperInsights: {

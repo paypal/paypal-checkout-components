@@ -5,8 +5,8 @@ import {
   getPageType,
   getClientToken,
   getSDKToken,
-  getEnv,
   getLogger,
+  getPayPalAPIDomain,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
@@ -14,7 +14,6 @@ import { stringifyError } from "@krakenjs/belter/src";
 
 import { callRestAPI, setShopperInsightsUsage } from "../utils";
 import {
-  BASE_API_URL,
   ELIGIBLE_PAYMENT_METHODS,
   FPTI_TRANSITION,
   SHOPPER_INSIGHTS_METRIC_NAME,
@@ -26,7 +25,7 @@ import { sendCountMetric } from "../../connect/sendCountMetric";
 import {
   validateMerchantConfig,
   validateMerchantPayload,
-  setRequestPayload,
+  createRequestPayload,
 } from "./validation";
 
 type RecommendedPaymentMethods = {|
@@ -63,11 +62,11 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
     getRecommendedPaymentMethods: (merchantPayload) => {
       validateMerchantPayload(merchantPayload);
 
-      const requestPayload = setRequestPayload(merchantPayload);
+      const requestPayload = createRequestPayload(merchantPayload);
 
       return callRestAPI({
         method: "POST",
-        url: `${BASE_API_URL[getEnv()]}/${ELIGIBLE_PAYMENT_METHODS}`,
+        url: `${getPayPalAPIDomain()}/${ELIGIBLE_PAYMENT_METHODS}`,
         data: requestPayload,
         accessToken: sdkToken,
       })
@@ -83,15 +82,11 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
           const isVenmoRecommended =
             (venmo?.eligible_in_paypal_network && venmo?.recommended) || false;
 
-          getLogger()
-            .info("shopper_insights_api_success")
-            .track({
-              [FPTI_KEY.TRANSITION]:
-                FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
-              [FPTI_KEY.EVENT_NAME]:
-                FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
-              [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
-            });
+          getLogger().track({
+            [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
+            [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
+            [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
+          });
 
           sendCountMetric({
             name: SHOPPER_INSIGHTS_METRIC_NAME,

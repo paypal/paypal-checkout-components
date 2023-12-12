@@ -1,5 +1,4 @@
 /* @flow */
-import { ENV } from "@paypal/sdk-constants/src";
 
 export const HEADERS = {
   AUTHORIZATION: "authorization",
@@ -9,14 +8,6 @@ export const HEADERS = {
 };
 
 export const ELIGIBLE_PAYMENT_METHODS = "v2/payments/find-eligible-methods";
-
-// $FlowFixMe
-export const BASE_API_URL = {
-  [ENV.LOCAL]: "https://api-m.sandbox.paypal.com",
-  [ENV.STAGE]: "https://api-m.sandbox.paypal.com",
-  [ENV.SANDBOX]: "https://api-m.sandbox.paypal.com",
-  [ENV.PRODUCTION]: "https://api.paypal.com",
-};
 
 export const FPTI_TRANSITION = {
   SHOPPER_INSIGHTS_API_INIT: "sdk_shopper_insights_recommended_init",
@@ -31,13 +22,13 @@ export type MerchantPayloadData = {|
   customer: {|
     email?: string,
     phone?: {|
-      countryCode: string,
-      nationalNumber: string,
+      countryCode?: string,
+      nationalNumber?: string,
     |},
   |},
   purchaseUnits?: $ReadOnlyArray<{|
-    amount: {|
-      currencyCode: string,
+    amount?: {|
+      currencyCode?: string,
     |},
   |}>,
   countryCode?: string,
