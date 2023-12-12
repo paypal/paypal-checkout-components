@@ -54,7 +54,7 @@ export const getConnectComponent = async (merchantProps) => {
         platform: "PPCP",
         userIdToken,
         clientID,
-        clientMetadataID: cmid,
+        clientMetadataId: cmid,
       },
     });
 
