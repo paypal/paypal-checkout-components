@@ -26,10 +26,4 @@ export type MerchantPayloadData = {|
       nationalNumber?: string,
     |},
   |},
-  purchaseUnits?: $ReadOnlyArray<{|
-    amount?: {|
-      currencyCode?: string,
-    |},
-  |}>,
-  countryCode?: string,
 |};

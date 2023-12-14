@@ -88,30 +88,29 @@ const hasPhoneNumber = (merchantPayload: MerchantPayloadData): boolean => {
   );
 };
 
-const hasPurchaseUnits = (merchantPayload: MerchantPayloadData): boolean => {
-  return merchantPayload.hasOwnProperty("purchaseUnits");
-};
-
-const hasCountryCode = (merchantPayload: MerchantPayloadData): boolean => {
-  return merchantPayload.hasOwnProperty("countryCode");
-};
-
 const isNonProdEnvironment = getEnv() !== "production";
 const buyerCountryForLowerEnvironments = getBuyerCountry() || "US";
 
 export function validateMerchantPayload(merchantPayload: MerchantPayloadData) {
-  if (typeof merchantPayload !== "object") {
-    throw new ValidationError(
-      `Expected shopper information to be passed as an object`
-    );
-  }
-
   const hasTopLevelCustomer = Object.keys(merchantPayload).includes("customer");
-  if (Object.keys(merchantPayload).length === 0 || !hasTopLevelCustomer) {
+  if (
+    typeof merchantPayload !== "object" ||
+    Object.keys(merchantPayload).length === 0 ||
+    !hasTopLevelCustomer
+  ) {
     throw new ValidationError(
       `Expected shopper information to be passed into customer object`
     );
   }
+
+  const allowedTopLevelPayload = ["customer"];
+  Object.keys(merchantPayload).forEach((merchantPayloadKey) => {
+    if (allowedTopLevelPayload.indexOf(merchantPayloadKey) === -1) {
+      throw new ValidationError(
+        `Unexpected shopper information passed: ${merchantPayloadKey} is not supported`
+      );
+    }
+  });
 
   const hasEmailOrPhoneNumber =
     hasEmail(merchantPayload) || hasPhoneNumber(merchantPayload);
@@ -120,32 +119,11 @@ export function validateMerchantPayload(merchantPayload: MerchantPayloadData) {
       `Expected shopper information to include an email or phone number`
     );
   }
-
-  if (
-    hasPurchaseUnits(merchantPayload) &&
-    !merchantPayload?.purchaseUnits?.[0]?.amount?.currencyCode
-  ) {
-    throw new ValidationError(
-      `Expected purchase units to include a currency code in the amount object`
-    );
-  }
-
-  const allowedPayload = ["customer", "purchaseUnits"];
-  if (isNonProdEnvironment) {
-    allowedPayload.push("countryCode", "channel");
-  }
-
-  Object.keys(merchantPayload).forEach((merchantPayloadKey) => {
-    if (allowedPayload.indexOf(merchantPayloadKey) === -1) {
-      throw new ValidationError(
-        `Unexpected shopper information passed: ${merchantPayloadKey} is not supported`
-      );
-    }
-  });
 }
 
 type getRecommendedPaymentMethodsRequestPayload = {|
   customer: {|
+    country_code?: string,
     email?: string,
     phone?: {|
       country_code: string,
@@ -157,8 +135,9 @@ type getRecommendedPaymentMethodsRequestPayload = {|
       currency_code: string,
     |},
   |}>,
-  country_code?: string,
-  include_account_details: boolean,
+  preferences: {|
+    include_account_details: boolean,
+  |},
 |};
 
 export function createRequestPayload(
@@ -166,10 +145,13 @@ export function createRequestPayload(
 ): getRecommendedPaymentMethodsRequestPayload {
   return {
     customer: {
-      ...(hasEmail(merchantPayload) && {
-        email: merchantPayload.customer?.email,
+      ...(isNonProdEnvironment && {
+        country_code: buyerCountryForLowerEnvironments,
       }),
       // $FlowIssue
+      ...(hasEmail(merchantPayload) && {
+        email: merchantPayload?.customer?.email,
+      }),
       ...(hasPhoneNumber(merchantPayload) && {
         phone: {
           country_code: merchantPayload?.customer?.phone?.countryCode,
@@ -180,19 +162,13 @@ export function createRequestPayload(
     purchase_units: [
       {
         amount: {
-          currency_code: hasPurchaseUnits(merchantPayload)
-            ? // $FlowFixMe
-              merchantPayload?.purchaseUnits?.[0]?.amount?.currencyCode
-            : getCurrency(),
+          currency_code: getCurrency(),
         },
       },
     ],
-    ...(isNonProdEnvironment && {
-      country_code: hasCountryCode(merchantPayload)
-        ? merchantPayload?.countryCode
-        : buyerCountryForLowerEnvironments,
-    }),
     // getRecommendedPaymentMethods maps to include_account_details in the API
-    include_account_details: true,
+    preferences: {
+      include_account_details: true,
+    },
   };
 }
