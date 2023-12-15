@@ -6,6 +6,7 @@ import {
   getClientMetadataID,
   getUserIDToken,
   getLogger,
+  getDebug,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants";
 
@@ -21,6 +22,7 @@ export const getConnectComponent = async (merchantProps) => {
   const cmid = getClientMetadataID();
   const clientID = getClientID();
   const userIdToken = getUserIDToken();
+  const debugEnabled = getDebug() || false;
   const { metadata } = merchantProps;
 
   let loadResult = {};
@@ -28,7 +30,7 @@ export const getConnectComponent = async (merchantProps) => {
     loadResult = await loadAxo({
       platform: "PPCP",
       btSdkVersion: "3.97.3-connect-alpha.6.1",
-      minified: true,
+      minified: !debugEnabled,
       metadata,
     });
   } catch (error) {
@@ -60,7 +62,7 @@ export const getConnectComponent = async (merchantProps) => {
         platform: "PPCP",
         userIdToken,
         clientID,
-        clientMetadataID: cmid,
+        clientMetadataId: cmid,
       },
     });
     getLogger()
