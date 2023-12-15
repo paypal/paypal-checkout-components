@@ -24,7 +24,6 @@ vi.mock("@paypal/sdk-client/src", () => {
       flush: vi.fn().mockReturnThis(),
     })),
     getEnv: vi.fn(),
-    getDebug: vi.fn(),
     getCSPNonce: vi.fn(),
     loadFraudnet: vi.fn(() => ({ collect: vi.fn() })),
   };
