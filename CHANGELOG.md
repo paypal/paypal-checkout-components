@@ -1,3 +1,9 @@
+## <small>5.0.290 (2023-12-15)</small>
+
+* add debug support for axo (#2292) ([d858f23](https://github.com/paypal/paypal-checkout-components/commit/d858f23)), closes [#2292](https://github.com/paypal/paypal-checkout-components/issues/2292)
+
+
+
 ## <small>5.0.289 (2023-11-30)</small>
 
 * fix: update to connect loader 1.1.1 (#2282) ([77b7dc0](https://github.com/paypal/paypal-checkout-components/commit/77b7dc0)), closes [#2282](https://github.com/paypal/paypal-checkout-components/issues/2282)
