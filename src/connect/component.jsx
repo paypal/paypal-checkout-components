@@ -1,6 +1,6 @@
 /* @flow */
 import { loadAxo } from "@paypal/connect-loader-component";
-import { stringifyError } from "@krakenjs/belter/src";
+import { stringifyError, getCurrentScriptUID } from "@krakenjs/belter/src";
 import {
   getClientID,
   getClientMetadataID,
@@ -25,7 +25,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
 
   const { collect } = loadFraudnet({
     env,
-    clientMetadataID: cmid,
+    clientMetadataID: cmid || getCurrentScriptUID(),
     cspNonce,
     appName: "ppcp-sdk-connect",
     // queryStringParams = {}, // TODO: what do we need here in this case?
