@@ -9,6 +9,7 @@ import {
   getEnv,
   loadFraudnet,
   getCSPNonce,
+  getDebug,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants";
 
@@ -35,9 +36,6 @@ export const getConnectComponent = async (merchantProps = {}) => {
     dimensions: {},
   });
 
-  const cmid = getClientMetadataID();
-  const clientID = getClientID();
-  const userIdToken = getUserIDToken();
   const debugEnabled = getDebug() || false;
   const { metadata } = merchantProps;
 

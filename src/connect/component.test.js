@@ -17,7 +17,16 @@ vi.mock("@paypal/sdk-client/src", () => {
     getClientMetadataID: vi.fn(() => "mock-cmid"),
     getUserIDToken: vi.fn(() => "mock-uid"),
     getDebug: vi.fn(() => false),
-    getLogger: vi.fn(() => ({ metric: vi.fn(), error: vi.fn() })),
+    getLogger: vi.fn(() => ({
+      metric: vi.fn().mockReturnThis(),
+      error: vi.fn().mockReturnThis(),
+      track: vi.fn().mockReturnThis(),
+      flush: vi.fn().mockReturnThis(),
+    })),
+    getEnv: vi.fn(),
+    getDebug: vi.fn(),
+    getCSPNonce: vi.fn(),
+    loadFraudnet: vi.fn(() => ({ collect: vi.fn() })),
   };
 });
 
@@ -61,8 +70,9 @@ describe("getConnectComponent: returns ConnectComponent", () => {
       platformOptions: {
         platform: "PPCP",
         clientID: "mock-client-id",
-        clientMetadataID: "mock-cmid",
+        clientMetadataId: "mock-cmid",
         userIdToken: "mock-uid",
+        fraudnet: expect.any(Function),
       },
     });
     expect(sendCountMetric).toBeCalledTimes(2);
