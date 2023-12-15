@@ -10,6 +10,7 @@ import {
   loadFraudnet,
   getCSPNonce,
 } from "@paypal/sdk-client/src";
+import { FPTI_KEY } from "@paypal/sdk-constants";
 
 import { sendCountMetric } from "./sendCountMetric";
 
@@ -34,6 +35,10 @@ export const getConnectComponent = async (merchantProps = {}) => {
     dimensions: {},
   });
 
+  const cmid = getClientMetadataID();
+  const clientID = getClientID();
+  const userIdToken = getUserIDToken();
+  const debugEnabled = getDebug() || false;
   const { metadata } = merchantProps;
 
   let loadResult = {};
@@ -41,7 +46,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
     loadResult = await loadAxo({
       platform: "PPCP",
       btSdkVersion: "3.97.3-connect-alpha.6.1",
-      minified: true,
+      minified: !debugEnabled,
       metadata,
     });
   } catch (error) {
@@ -53,7 +58,14 @@ export const getConnectComponent = async (merchantProps = {}) => {
       },
     });
 
-    getLogger().error("load_axo_error", { err: stringifyError(error) });
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_axo_failure`,
+      })
+      .error("load_connect_error", { err: stringifyError(error) })
+      .flush();
 
     throw new Error(error);
   }
@@ -66,11 +78,17 @@ export const getConnectComponent = async (merchantProps = {}) => {
         platform: "PPCP",
         userIdToken,
         clientID,
-        clientMetadataID: cmid,
         fraudnet: collect,
+        clientMetadataId: cmid,
       },
     });
-
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_success`,
+      })
+      .flush();
     sendCountMetric({
       name: "pp.app.paypal_sdk.connect.init.success.count",
       event: "success",
@@ -87,7 +105,14 @@ export const getConnectComponent = async (merchantProps = {}) => {
       },
     });
 
-    getLogger().error("init_axo_error", { err: stringifyError(error) });
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_failure`,
+      })
+      .error("init_connect_error", { err: stringifyError(error) })
+      .flush();
 
     throw new Error(error);
   }
