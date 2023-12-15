@@ -7,7 +7,7 @@ import { getConnectComponent } from "./component";
 
 type ConnectComponent = (merchantProps: any) => ConnectComponent;
 // $FlowFixMe
-export const Connect: () => ConnectComponent = memoize(
+export const Connect: (merchantProps: any) => ConnectComponent = memoize(
   async (merchantProps: any): ConnectComponent => {
     // $FlowFixMe
     return await getConnectComponent(merchantProps);

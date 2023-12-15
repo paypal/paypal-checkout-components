@@ -16,7 +16,7 @@ describe("interface.js", () => {
     };
   });
   it("should call getConnectComponent with merchant props", async () => {
-    const merchantProps = { props: "someProps" };
+    const merchantProps = { env: "test" };
 
     await Connect(merchantProps);
     expect(getConnectComponent).toBeCalledWith(merchantProps);
