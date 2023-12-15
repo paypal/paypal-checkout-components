@@ -1,11 +1,14 @@
 /* @flow */
 import { loadAxo } from "@paypal/connect-loader-component";
-import { stringifyError } from "@krakenjs/belter/src";
+import { stringifyError, getCurrentScriptUID } from "@krakenjs/belter/src";
 import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
   getLogger,
+  getEnv,
+  loadFraudnet,
+  getCSPNonce,
   getDebug,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants";
@@ -13,15 +16,26 @@ import { FPTI_KEY } from "@paypal/sdk-constants";
 import { sendCountMetric } from "./sendCountMetric";
 
 // $FlowFixMe
-export const getConnectComponent = async (merchantProps) => {
+export const getConnectComponent = async (merchantProps = {}) => {
+  const cmid = getClientMetadataID();
+  const clientID = getClientID();
+  const userIdToken = getUserIDToken();
+  const env = getEnv();
+  const cspNonce = getCSPNonce();
+
+  const { collect } = loadFraudnet({
+    env,
+    clientMetadataID: cmid || getCurrentScriptUID(),
+    cspNonce,
+    appName: "ppcp-sdk-connect",
+    // queryStringParams = {}, // TODO: what do we need here in this case?
+  });
+
   sendCountMetric({
     name: "pp.app.paypal_sdk.connect.init.count",
     dimensions: {},
   });
 
-  const cmid = getClientMetadataID();
-  const clientID = getClientID();
-  const userIdToken = getUserIDToken();
   const debugEnabled = getDebug() || false;
   const { metadata } = merchantProps;
 
@@ -62,6 +76,7 @@ export const getConnectComponent = async (merchantProps) => {
         platform: "PPCP",
         userIdToken,
         clientID,
+        fraudnet: collect,
         clientMetadataId: cmid,
       },
     });
