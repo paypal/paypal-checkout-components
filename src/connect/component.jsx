@@ -1,25 +1,42 @@
 /* @flow */
 import { loadAxo } from "@paypal/connect-loader-component";
-import { stringifyError } from "@krakenjs/belter/src";
+import { stringifyError, getCurrentScriptUID } from "@krakenjs/belter/src";
 import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
   getLogger,
+  getEnv,
+  loadFraudnet,
+  getCSPNonce,
+  getDebug,
 } from "@paypal/sdk-client/src";
+import { FPTI_KEY } from "@paypal/sdk-constants";
 
 import { sendCountMetric } from "./sendCountMetric";
 
 // $FlowFixMe
-export const getConnectComponent = async (merchantProps) => {
+export const getConnectComponent = async (merchantProps = {}) => {
+  const cmid = getClientMetadataID();
+  const clientID = getClientID();
+  const userIdToken = getUserIDToken();
+  const env = getEnv();
+  const cspNonce = getCSPNonce();
+
+  const { collect } = loadFraudnet({
+    env,
+    clientMetadataID: cmid || getCurrentScriptUID(),
+    cspNonce,
+    appName: "ppcp-sdk-connect",
+    // queryStringParams = {}, // TODO: what do we need here in this case?
+  });
+
   sendCountMetric({
     name: "pp.app.paypal_sdk.connect.init.count",
     dimensions: {},
   });
 
-  const cmid = getClientMetadataID();
-  const clientID = getClientID();
-  const userIdToken = getUserIDToken();
+  const debugEnabled = getDebug() || false;
   const { metadata } = merchantProps;
 
   let loadResult = {};
@@ -27,7 +44,7 @@ export const getConnectComponent = async (merchantProps) => {
     loadResult = await loadAxo({
       platform: "PPCP",
       btSdkVersion: "3.97.3-connect-alpha.6.1",
-      minified: true,
+      minified: !debugEnabled,
       metadata,
     });
   } catch (error) {
@@ -39,7 +56,14 @@ export const getConnectComponent = async (merchantProps) => {
       },
     });
 
-    getLogger().error("load_axo_error", { err: stringifyError(error) });
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_axo_failure`,
+      })
+      .error("load_connect_error", { err: stringifyError(error) })
+      .flush();
 
     throw new Error(error);
   }
@@ -52,10 +76,17 @@ export const getConnectComponent = async (merchantProps) => {
         platform: "PPCP",
         userIdToken,
         clientID,
-        clientMetadataID: cmid,
+        fraudnet: collect,
+        clientMetadataId: cmid,
       },
     });
-
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_success`,
+      })
+      .flush();
     sendCountMetric({
       name: "pp.app.paypal_sdk.connect.init.success.count",
       event: "success",
@@ -72,7 +103,14 @@ export const getConnectComponent = async (merchantProps) => {
       },
     });
 
-    getLogger().error("init_axo_error", { err: stringifyError(error) });
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_failure`,
+      })
+      .error("init_connect_error", { err: stringifyError(error) })
+      .flush();
 
     throw new Error(error);
   }
