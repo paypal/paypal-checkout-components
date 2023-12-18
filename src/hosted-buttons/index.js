@@ -101,7 +101,8 @@ export const getHostedButtonCreateOrder = ({
   merchantId,
 }: GetCallbackProps): CreateOrder => {
   return (data) => {
-    const userInputs = window.__pp_form_fields?.getUserInputs?.() || {};
+    const userInputs =
+      window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     return createAccessToken(getClientID()).then((accessToken) => {
       return request({
         url: `${baseUrl.replace(
@@ -183,11 +184,17 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
               // disable the button, listen for input changes,
               // and enable the button when the form is valid
               // using actions.disable() and actions.enable()
-              window.__pp_form_fields?.onInit?.(data, actions);
+              window[`__pp_form_fields_${hostedButtonId}`]?.onInit?.(
+                data,
+                actions
+              );
             },
             onClick(data, actions) {
               // render form errors, if present
-              window.__pp_form_fields?.onClick?.(data, actions);
+              window[`__pp_form_fields_${hostedButtonId}`]?.onClick?.(
+                data,
+                actions
+              );
             },
             createOrder: getHostedButtonCreateOrder({
               hostedButtonId,
