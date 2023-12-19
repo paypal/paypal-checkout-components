@@ -1,25 +1,10 @@
 /* @flow */
 
-import {
-  getPartnerAttributionID,
-  getSessionID,
-  getSessionState,
-} from "@paypal/sdk-client/src";
+import { getPartnerAttributionID, getSessionID } from "@paypal/sdk-client/src";
 import { request } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import { HEADERS } from "../constants/api";
-
-export function setShopperInsightsUsage() {
-  getSessionState((state) => {
-    return {
-      ...state,
-      shopperInsights: {
-        getRecommendedPaymentMethodsUsed: true,
-      },
-    };
-  });
-}
 
 type RestAPIParams = {|
   method?: string,
@@ -28,7 +13,6 @@ type RestAPIParams = {|
   accessToken: ?string,
 |};
 
-// TODO: Consider centralizing from SPB to SDK client or creating a new one
 export function callRestAPI({
   accessToken,
   method,

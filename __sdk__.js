@@ -59,7 +59,7 @@ module.exports = {
     cards: SMART_CARDS,
   },
   "shopper-insights": {
-    entry: "./src/interface/api/shopper-insights",
+    entry: "./src/api/shopper-insights/interface",
   },
   wallet: {
     entry: "./src/interface/wallet",

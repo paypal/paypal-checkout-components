@@ -1,14 +1,12 @@
 /* @flow */
 
-import { getCurrency, getEnv, getBuyerCountry } from "@paypal/sdk-client/src";
+import { sendCountMetric } from "@paypal/sdk-client/src";
 
 import {
   SHOPPER_INSIGHTS_METRIC_NAME,
   type MerchantPayloadData,
 } from "../../constants/api";
 import { ValidationError } from "../../lib";
-// Temp import from a location it was added in, needs to be moved to SDK client
-import { sendCountMetric } from "../../connect/sendCountMetric";
 
 type MerchantConfigParams = {|
   sdkToken: ?string,
@@ -77,40 +75,39 @@ export function validateMerchantConfig({
   }
 }
 
-const hasEmail = (merchantPayload: MerchantPayloadData): boolean => {
+export const hasEmail = (merchantPayload: MerchantPayloadData): boolean => {
   return Boolean(merchantPayload?.customer?.email);
 };
 
-const hasPhoneNumber = (merchantPayload: MerchantPayloadData): boolean => {
+export const hasPhoneNumber = (
+  merchantPayload: MerchantPayloadData
+): boolean => {
   return Boolean(
     merchantPayload?.customer?.phone?.countryCode &&
       merchantPayload?.customer?.phone?.nationalNumber
   );
 };
 
-const isNonProdEnvironment = getEnv() !== "production";
-const buyerCountryForLowerEnvironments = getBuyerCountry() || "US";
+const isValidEmailFormat = (email: string): boolean => {
+  const emailRegex = /^.+@.+$/;
+  return email.length < 320 && emailRegex.test(email);
+};
+
+const isValidPhoneNumberFormat = (phoneNumber: string): boolean => {
+  const phoneNumberRegex = /\d{5,}/;
+  return phoneNumberRegex.test(phoneNumber);
+};
 
 export function validateMerchantPayload(merchantPayload: MerchantPayloadData) {
-  const hasTopLevelCustomer = Object.keys(merchantPayload).includes("customer");
   if (
     typeof merchantPayload !== "object" ||
     Object.keys(merchantPayload).length === 0 ||
-    !hasTopLevelCustomer
+    !Object.keys(merchantPayload).includes("customer")
   ) {
     throw new ValidationError(
       `Expected shopper information to be passed into customer object`
     );
   }
-
-  const allowedTopLevelPayload = ["customer"];
-  Object.keys(merchantPayload).forEach((merchantPayloadKey) => {
-    if (allowedTopLevelPayload.indexOf(merchantPayloadKey) === -1) {
-      throw new ValidationError(
-        `Unexpected shopper information passed: ${merchantPayloadKey} is not supported`
-      );
-    }
-  });
 
   const hasEmailOrPhoneNumber =
     hasEmail(merchantPayload) || hasPhoneNumber(merchantPayload);
@@ -119,56 +116,22 @@ export function validateMerchantPayload(merchantPayload: MerchantPayloadData) {
       `Expected shopper information to include an email or phone number`
     );
   }
-}
 
-type getRecommendedPaymentMethodsRequestPayload = {|
-  customer: {|
-    country_code?: string,
-    email?: string,
-    phone?: {|
-      country_code: string,
-      national_number: string,
-    |},
-  |},
-  purchase_units: $ReadOnlyArray<{|
-    amount: {|
-      currency_code: string,
-    |},
-  |}>,
-  preferences: {|
-    include_account_details: boolean,
-  |},
-|};
+  const merchantPayloadEmail = merchantPayload?.customer?.email || "";
+  if (hasEmail(merchantPayload) && !isValidEmailFormat(merchantPayloadEmail)) {
+    throw new ValidationError(
+      `Expected shopper information to include a valid email format`
+    );
+  }
 
-export function createRequestPayload(
-  merchantPayload: MerchantPayloadData
-): getRecommendedPaymentMethodsRequestPayload {
-  return {
-    customer: {
-      ...(isNonProdEnvironment && {
-        country_code: buyerCountryForLowerEnvironments,
-      }),
-      // $FlowIssue
-      ...(hasEmail(merchantPayload) && {
-        email: merchantPayload?.customer?.email,
-      }),
-      ...(hasPhoneNumber(merchantPayload) && {
-        phone: {
-          country_code: merchantPayload?.customer?.phone?.countryCode,
-          national_number: merchantPayload?.customer?.phone?.nationalNumber,
-        },
-      }),
-    },
-    purchase_units: [
-      {
-        amount: {
-          currency_code: getCurrency(),
-        },
-      },
-    ],
-    // getRecommendedPaymentMethods maps to include_account_details in the API
-    preferences: {
-      include_account_details: true,
-    },
-  };
+  const merchantPhonePayload = merchantPayload?.customer?.phone || {};
+  const nationalNumber = merchantPhonePayload?.nationalNumber || "";
+  if (
+    hasPhoneNumber(merchantPayload) &&
+    !isValidPhoneNumberFormat(nationalNumber)
+  ) {
+    throw new ValidationError(
+      `Expected shopper information to a valid phone number format`
+    );
+  }
 }

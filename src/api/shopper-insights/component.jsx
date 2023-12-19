@@ -7,35 +7,100 @@ import {
   getSDKToken,
   getLogger,
   getPayPalAPIDomain,
+  getCurrency,
+  getBuyerCountry,
+  getEnv,
+  getSessionState,
+  sendCountMetric,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { stringifyError } from "@krakenjs/belter/src";
 
-import { callRestAPI, setShopperInsightsUsage } from "../utils";
+import { callRestAPI } from "../api";
+import { hasEmail, hasPhoneNumber } from "./validation";
 import {
   ELIGIBLE_PAYMENT_METHODS,
   FPTI_TRANSITION,
   SHOPPER_INSIGHTS_METRIC_NAME,
   type MerchantPayloadData,
 } from "../../constants/api";
-// Temp import from a location it was added in, needs to be moved to SDK client
-import { sendCountMetric } from "../../connect/sendCountMetric";
 
-import {
-  validateMerchantConfig,
-  validateMerchantPayload,
-  createRequestPayload,
-} from "./validation";
+import { validateMerchantConfig, validateMerchantPayload } from "./validation";
 
 type RecommendedPaymentMethods = {|
   isPayPalRecommended: boolean,
   isVenmoRecommended: boolean,
 |};
 
+type getRecommendedPaymentMethodsRequestPayload = {|
+  customer: {|
+    country_code?: string,
+    email?: string,
+    phone?: {|
+      country_code: string,
+      national_number: string,
+    |},
+  |},
+  purchase_units: $ReadOnlyArray<{|
+    amount: {|
+      currency_code: string,
+    |},
+  |}>,
+  preferences: {|
+    include_account_details: boolean,
+  |},
+|};
+
 export type ShopperInsightsComponent = {|
   getRecommendedPaymentMethods: (MerchantPayloadData) => ZalgoPromise<RecommendedPaymentMethods>,
 |};
+
+function createRecommendedPaymentMethodsRequestPayload(
+  merchantPayload: MerchantPayloadData
+): getRecommendedPaymentMethodsRequestPayload {
+  const isNonProdEnvironment = getEnv() !== "production";
+
+  return {
+    customer: {
+      ...(isNonProdEnvironment && {
+        country_code: getBuyerCountry() || "US",
+      }),
+      // $FlowIssue
+      ...(hasEmail(merchantPayload) && {
+        email: merchantPayload?.customer?.email,
+      }),
+      ...(hasPhoneNumber(merchantPayload) && {
+        phone: {
+          country_code: merchantPayload?.customer?.phone?.countryCode,
+          national_number: merchantPayload?.customer?.phone?.nationalNumber,
+        },
+      }),
+    },
+    purchase_units: [
+      {
+        amount: {
+          currency_code: getCurrency(),
+        },
+      },
+    ],
+    // getRecommendedPaymentMethods maps to include_account_details in the API
+    preferences: {
+      include_account_details: true,
+    },
+  };
+}
+
+function setShopperInsightsUsage() {
+  getSessionState((state) => {
+    return {
+      ...state,
+      shopperInsights: {
+        getRecommendedPaymentMethodsUsed: true,
+      },
+    };
+  });
+}
 
 export function getShopperInsightsComponent(): ShopperInsightsComponent {
   const startTime = Date.now();
@@ -62,7 +127,8 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
     getRecommendedPaymentMethods: (merchantPayload) => {
       validateMerchantPayload(merchantPayload);
 
-      const requestPayload = createRequestPayload(merchantPayload);
+      const requestPayload =
+        createRecommendedPaymentMethodsRequestPayload(merchantPayload);
 
       return callRestAPI({
         method: "POST",
