@@ -120,6 +120,7 @@ describe("shopper insights merchant payload validation", () => {
     ).toThrowError(
       "Expected shopper information to include an email or phone number"
     );
+    expect.assertions(2);
   });
 
   test("should throw if phone is in an invalid format", () => {
@@ -137,6 +138,7 @@ describe("shopper insights merchant payload validation", () => {
     ).toThrowError(
       "Expected shopper information to a valid phone number format"
     );
+    expect.assertions(2);
   });
 
   test("should throw if email is in an invalid format", () => {

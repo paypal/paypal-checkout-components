@@ -18,7 +18,6 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { stringifyError } from "@krakenjs/belter/src";
 
 import { callRestAPI } from "../api";
-import { hasEmail, hasPhoneNumber } from "./validation";
 import {
   ELIGIBLE_PAYMENT_METHODS,
   FPTI_TRANSITION,
@@ -26,7 +25,12 @@ import {
   type MerchantPayloadData,
 } from "../../constants/api";
 
-import { validateMerchantConfig, validateMerchantPayload } from "./validation";
+import {
+  validateMerchantConfig,
+  validateMerchantPayload,
+  hasEmail,
+  hasPhoneNumber,
+} from "./validation";
 
 type RecommendedPaymentMethods = {|
   isPayPalRecommended: boolean,
@@ -174,13 +178,15 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
             },
           });
 
-          getLogger()
-            .error("shopper_insights_api_error", { err: stringifyError(err) })
-            .track({
-              [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_ERROR,
-              [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_ERROR,
-              [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
-            });
+          getLogger().track({
+            [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_ERROR,
+            [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_ERROR,
+            [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
+          });
+
+          getLogger().error("shopper_insights_api_error", {
+            err: stringifyError(err),
+          });
 
           throw err;
         });
