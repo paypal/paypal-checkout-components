@@ -33,17 +33,9 @@ import {
   getModalComponent,
   type ModalComponent,
 } from "../zoid/modal/component";
-import {
-  getHostedButtonsComponent,
-  type HostedButtonsComponent,
-} from "../hosted-buttons";
 
 export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),
-};
-
-export const HostedButtons: LazyExport<HostedButtonsComponent> = {
-  __get__: () => getHostedButtonsComponent(),
 };
 
 export const Checkout: LazyProtectedExport<CheckoutComponent> = {
