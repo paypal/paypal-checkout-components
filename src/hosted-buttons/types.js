@@ -17,6 +17,7 @@ export type HostedButtonsInstance = {|
 
 export type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => ZalgoPromise<{|
+    hostedButtonType: string,
     html: string,
     htmlScript: string,
     style: {|
