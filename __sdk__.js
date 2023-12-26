@@ -86,5 +86,5 @@ module.exports = {
   "hosted-buttons": {
     entry: "./src/interface/hosted-buttons",
     globals,
-  }
+  },
 };

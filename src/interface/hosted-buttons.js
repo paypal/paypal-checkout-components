@@ -1,9 +1,7 @@
 /* @flow */
 
-import {
-  getHostedButtonsComponent,
-  type HostedButtonsComponent,
-} from "../hosted-buttons";
+import { getHostedButtonsComponent } from "../hosted-buttons";
+import type { HostedButtonsComponent } from "../hosted-buttons/types";
 import { getButtonsComponent } from "../zoid/buttons";
 import { getCheckoutComponent, type CheckoutComponent } from "../zoid/checkout";
 import type { LazyExport, LazyProtectedExport } from "../types";

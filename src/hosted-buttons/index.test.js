@@ -6,12 +6,7 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
-import {
-  getHostedButtonDetails,
-  getHostedButtonCreateOrder,
-  getHostedButtonOnApprove,
-  getHostedButtonsComponent,
-} from ".";
+import { getHostedButtonsComponent } from ".";
 
 vi.mock("@krakenjs/belter/src", async () => {
   return {
@@ -40,10 +35,6 @@ const getHostedButtonDetailsResponse = {
   body: {
     button_details: {
       link_variables: [
-        {
-          name: "business",
-          value: "M1234567890",
-        },
         {
           name: "shape",
           value: "rect",
@@ -79,71 +70,6 @@ describe("HostedButtons", () => {
       hostedButtonId: "B1234567890",
     }).render("#example");
     expect(Buttons).toHaveBeenCalled();
-    expect.assertions(1);
-  });
-
-  test("getHostedButtonDetails", async () => {
-    // $FlowIssue
-    request.mockImplementationOnce(() =>
-      ZalgoPromise.resolve(getHostedButtonDetailsResponse)
-    );
-    await getHostedButtonDetails({
-      hostedButtonId: "B1234567890",
-    }).then(({ style }) => {
-      expect(style).toEqual({
-        layout: "vertical",
-        shape: "rect",
-        color: "gold",
-        label: "paypal",
-      });
-    });
-    expect.assertions(1);
-  });
-
-  test("getHostedButtonCreateOrder", async () => {
-    const createOrder = getHostedButtonCreateOrder({
-      hostedButtonId: "B1234567890",
-      merchantId: "M1234567890",
-    });
-
-    // $FlowIssue
-    request.mockImplementation(() =>
-      ZalgoPromise.resolve({
-        body: {
-          link_id: "B1234567890",
-          merchant_id: "M1234567890",
-          context_id: "EC-1234567890",
-          status: "CREATED",
-        },
-      })
-    );
-    const orderID = await createOrder({ paymentSource: "paypal" });
-    expect(orderID).toBe("EC-1234567890");
-    expect.assertions(1);
-  });
-
-  test("getHostedButtonOnApprove", async () => {
-    const onApprove = getHostedButtonOnApprove({
-      hostedButtonId: "B1234567890",
-      merchantId: "M1234567890",
-    });
-
-    // $FlowIssue
-    request.mockImplementation(() =>
-      ZalgoPromise.resolve({
-        body: {},
-      })
-    );
-    await onApprove({ orderID: "EC-1234567890" });
-    expect(request).toHaveBeenCalledWith(
-      expect.objectContaining({
-        body: JSON.stringify({
-          entry_point: "SDK",
-          merchant_id: "M1234567890",
-          context_id: "EC-1234567890",
-        }),
-      })
-    );
     expect.assertions(1);
   });
 });
