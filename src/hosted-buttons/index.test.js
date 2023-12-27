@@ -51,6 +51,10 @@ const getHostedButtonDetailsResponse = {
           name: "button_text",
           value: "paypal",
         },
+        {
+          name: "button_type",
+          value: "FIXED_PRICE",
+        },
       ],
     },
   },
@@ -69,7 +73,12 @@ describe("HostedButtons", () => {
     HostedButtons({
       hostedButtonId: "B1234567890",
     }).render("#example");
-    expect(Buttons).toHaveBeenCalled();
+    expect(Buttons).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hostedButtonId: "B1234567890",
+        hostedButtonType: "NO_CODE_FIXED_PRICE",
+      })
+    );
     expect.assertions(1);
   });
 });

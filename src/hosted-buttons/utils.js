@@ -62,8 +62,10 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
         color: getButtonVariable(variables, "color"),
         label: getButtonVariable(variables, "button_text"),
       },
-      // TODO: Get from Button Variables
-      hostedButtonType: "NO_CODE_FIXED_PRICE",
+      hostedButtonType: `NO_CODE_${getButtonVariable(
+        variables,
+        "button_type"
+      )}`,
       html: body.html,
       htmlScript: body.html_script,
     };
