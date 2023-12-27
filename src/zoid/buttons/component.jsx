@@ -38,6 +38,7 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
+  getShopperInsights,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -354,6 +355,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         sendToChild: false,
         value: getSDKMeta,
+      },
+
+      shopperInsightsUsed: {
+        type: "boolean",
+        value: getShopperInsights,
       },
 
       createOrder: {
