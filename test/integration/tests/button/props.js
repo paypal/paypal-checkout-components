@@ -158,7 +158,17 @@ describe(`paypal button component props`, () => {
               )} to be queried, got ${queriedRenderedButtons.join(",")}`
             );
           }
+
+          if (xprops.referrer_domain !== "example.com") {
+            throw new Error(
+              `Expected referrer_domain to be example.com, got ${xprops.referrer_domain}`
+            );
+          }
         };
+
+        Object.defineProperty(document, "referrer", {
+          get: () => "https://example.com/path?q=1",
+        });
 
         const instance = window.paypal.Buttons({
           test: {
