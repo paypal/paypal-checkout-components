@@ -721,7 +721,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       referrer_domain: {
         type: "string",
-        value: () => new URL(window.document.referrer).host,
+        value: () => {
+          const referrer = window.document.referrer;
+          const matches = referrer.match(/:\/\/([^\/\?]+)/);
+          if (matches) {
+            return matches[1];
+          }
+        },
       },
 
       userIDToken: {
