@@ -721,6 +721,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       referrer_domain: {
         type: "string",
+        required: false,
         value: () => {
           const referrer = window.document.referrer;
           const matches = referrer.match(/:\/\/([^/?]+)/);
