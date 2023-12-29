@@ -38,6 +38,7 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
+  getSDKToken,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -722,6 +723,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       userIDToken: {
         type: "string",
         default: getUserIDToken,
+        required: false,
+        queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
+        bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
+      },
+
+      sdkToken: {
+        type: "string",
+        default: getSDKToken,
         required: false,
         queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
         bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
