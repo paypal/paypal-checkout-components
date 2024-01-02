@@ -78,6 +78,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
         clientID,
         fraudnet: collect,
         clientMetadataId: cmid,
+        env,
       },
     });
     getLogger()
