@@ -72,6 +72,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
         clientMetadataId: "mock-cmid",
         userIdToken: "mock-uid",
         fraudnet: expect.any(Function),
+        env: "mock-env",
       },
     });
     expect(sendCountMetric).toBeCalledTimes(2);
