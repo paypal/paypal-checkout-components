@@ -155,9 +155,7 @@ describe(`paypal button component props`, () => {
               onRender: expect("onRender", ({ xprops }) => {
                 if (xprops.referrerDomain !== domain) {
                   throw new Error(
-                    `Expected referrerDomain to be ${
-                      domain ?? "undefined"
-                    }, got ${xprops.referrerDomain}`
+                    `Expected referrerDomain to be ${domain}, got ${xprops.referrerDomain}`
                   );
                 }
               }),
@@ -179,7 +177,7 @@ describe(`paypal button component props`, () => {
       expectReferrerDomainToEqual(
         // eslint-disable-next-line no-script-url
         "javascript:alert(document.cookie)",
-        undefined
+        ""
       ),
     ]);
   });
