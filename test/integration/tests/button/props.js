@@ -140,6 +140,50 @@ describe(`paypal button component props`, () => {
     );
   });
 
+  it("should render a button and have the referrerDomain in xprops", () => {
+    const expectReferrerDomainToEqual = (uri, domain) => {
+      Object.defineProperty(document, "referrer", {
+        get: () => uri,
+        configurable: true,
+      });
+
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            test: {
+              action: "checkout",
+              onRender: expect("onRender", ({ xprops }) => {
+                if (xprops.referrerDomain !== domain) {
+                  throw new Error(
+                    `Expected referrerDomain to be ${
+                      domain ?? "undefined"
+                    }, got ${xprops.referrerDomain}`
+                  );
+                }
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    };
+
+    return ZalgoPromise.all([
+      expectReferrerDomainToEqual(
+        "https://example.com/path?q=1",
+        "example.com"
+      ),
+      expectReferrerDomainToEqual(
+        "https://not.example.com/path?q=1",
+        "not.example.com"
+      ),
+      // eslint-disable-next-line no-script-url
+      expectReferrerDomainToEqual(
+        "javascript:alert(document.cookie)",
+        undefined
+      ),
+    ]);
+  });
+
   it("should render a button and get the renderedButtons props", () => {
     // should not render applepay without applepay listed in xprops.enableFunding
     const renderedButtons = [FUNDING.PAYPAL, FUNDING.APPLEPAY, FUNDING.CARD];
@@ -158,17 +202,7 @@ describe(`paypal button component props`, () => {
               )} to be queried, got ${queriedRenderedButtons.join(",")}`
             );
           }
-
-          if (xprops.referrer_domain !== "example.com") {
-            throw new Error(
-              `Expected referrer_domain to be example.com, got ${xprops.referrer_domain}`
-            );
-          }
         };
-
-        Object.defineProperty(document, "referrer", {
-          get: () => "https://example.com/path?q=1",
-        });
 
         const instance = window.paypal.Buttons({
           test: {

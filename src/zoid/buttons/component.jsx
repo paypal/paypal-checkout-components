@@ -719,16 +719,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      referrer_domain: {
+      referrerDomain: {
         type: "string",
         required: false,
-        value: () => {
-          const referrer = window.document.referrer;
-          const matches = referrer.match(/:\/\/([^/?]+)/);
-          if (matches) {
-            return matches[1];
-          }
-        },
+        // eslint-disable-next-line compat/compat
+        value: () => new URL(window.document.referrer).host,
       },
 
       userIDToken: {
