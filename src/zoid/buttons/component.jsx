@@ -719,6 +719,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
+      referrerDomain: {
+        type: "string",
+        required: false,
+        value: () => {
+          if (window.document.referrer) {
+            return new URL(window.document.referrer).host || undefined;
+          }
+        },
+      },
+
       userIDToken: {
         type: "string",
         default: getUserIDToken,
