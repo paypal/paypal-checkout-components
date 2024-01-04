@@ -724,7 +724,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: () => {
           if (window.document.referrer) {
-            // eslint-disable-next-line compat/compat
             return new URL(window.document.referrer).host || undefined;
           }
         },
