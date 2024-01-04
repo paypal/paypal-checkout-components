@@ -176,8 +176,8 @@ describe(`paypal button component props`, () => {
         "https://not.example.com/path?q=1",
         "not.example.com"
       ),
-      // eslint-disable-next-line no-script-url
       expectReferrerDomainToEqual(
+        // eslint-disable-next-line no-script-url
         "javascript:alert(document.cookie)",
         undefined
       ),
