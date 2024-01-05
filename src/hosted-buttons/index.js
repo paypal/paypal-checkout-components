@@ -28,14 +28,13 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       const merchantId = getMerchantID()[0];
 
       getHostedButtonDetails({ hostedButtonId }).then(
-        ({ html, htmlScript, style, hostedButtonType }) => {
+        ({ html, htmlScript, style }) => {
           renderForm({ html, htmlScript, selector });
 
           // $FlowFixMe
           Buttons({
             style,
             hostedButtonId,
-            hostedButtonType,
             onInit(data, actions) {
               // disable the button, listen for input changes,
               // and enable the button when the form is valid
