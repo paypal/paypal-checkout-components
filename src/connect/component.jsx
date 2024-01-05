@@ -21,7 +21,9 @@ const MIN_MINOR_VERSION = 97;
 export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.3-connect-alpha.6.1`; // Minimum for supporting AXO
 
 export function getSdkVersion(version: string | null): string | null {
-  if (!version) return MIN_BT_VERSION;
+  if (!version) {
+    return MIN_BT_VERSION;
+  }
   const versionSplit = version.split(".");
   const majorVersion = Number(versionSplit[0]);
   const minorVersion = Number(versionSplit[1]);
