@@ -1,6 +1,6 @@
 /* @flow */
 import { loadAxo } from "@paypal/connect-loader-component";
-import { stringifyError, getCurrentScriptUID } from "@krakenjs/belter/src";
+import { stringifyError } from "@krakenjs/belter/src";
 import {
   getClientID,
   getClientMetadataID,
@@ -10,14 +10,45 @@ import {
   loadFraudnet,
   getCSPNonce,
   getDebug,
+  getSessionID,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants";
 
 import { sendCountMetric } from "./sendCountMetric";
 
+const MIN_MAJOR_VERSION = 3;
+const MIN_MINOR_VERSION = 97;
+export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.3-connect-alpha.6.1`; // Minimum for supporting AXO
+
+export function getSdkVersion(version: string | null): string | null {
+  if (!version) return MIN_BT_VERSION;
+  const versionSplit = version.split(".");
+  const majorVersion = Number(versionSplit[0]);
+  const minorVersion = Number(versionSplit[1]);
+
+  if (
+    majorVersion < MIN_MAJOR_VERSION ||
+    (majorVersion === MIN_MAJOR_VERSION && minorVersion < MIN_MINOR_VERSION)
+  ) {
+    sendCountMetric({
+      name: "pp.app.paypal_sdk.connect.init.error.count",
+      event: "error",
+      dimensions: {
+        errorName: "braintree_version_not_supported_error",
+      },
+    });
+
+    throw new Error(
+      `The braintree version used does not support Accelerated Checkout (AXO). Please use version ${MIN_BT_VERSION} or above`
+    );
+  }
+
+  return version;
+}
+
 // $FlowFixMe
 export const getConnectComponent = async (merchantProps = {}) => {
-  const cmid = getClientMetadataID();
+  const cmid = getClientMetadataID() || getSessionID();
   const clientID = getClientID();
   const userIdToken = getUserIDToken();
   const env = getEnv();
@@ -25,7 +56,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
 
   const { collect } = loadFraudnet({
     env,
-    clientMetadataID: cmid || getCurrentScriptUID(),
+    clientMetadataID: cmid,
     cspNonce,
     appName: "ppcp-sdk-connect",
     // queryStringParams = {}, // TODO: what do we need here in this case?
@@ -43,7 +74,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
   try {
     loadResult = await loadAxo({
       platform: "PPCP",
-      btSdkVersion: "3.97.3-connect-alpha.6.1",
+      btSdkVersion: getSdkVersion(window?.braintree?.version ?? null),
       minified: !debugEnabled,
       metadata,
     });
