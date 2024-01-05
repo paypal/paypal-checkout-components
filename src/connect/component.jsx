@@ -41,7 +41,7 @@ export function getSdkVersion(version: string | null): string {
     });
 
     throw new Error(
-      `The braintree version used does not support Accelerated Checkout (AXO). Please use version ${MIN_BT_VERSION} or above`
+      `The braintree version used does not support Connect. Please use version ${MIN_BT_VERSION} or above`
     );
   }
 
