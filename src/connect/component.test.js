@@ -8,7 +8,11 @@ import {
 import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
 
-import { getConnectComponent } from "./component";
+import {
+  getConnectComponent,
+  getSdkVersion,
+  MIN_BT_VERSION,
+} from "./component";
 import { sendCountMetric } from "./sendCountMetric";
 
 vi.mock("@paypal/sdk-client/src", () => {
@@ -106,5 +110,34 @@ describe("getConnectComponent: returns ConnectComponent", () => {
       metadata: undefined,
       platform: "PPCP",
     });
+  });
+});
+
+describe("getSdkVersion", () => {
+  test("returns minimum supported braintree version for AXO if input version is null", () => {
+    const version = getSdkVersion(null);
+
+    expect(version).toEqual(MIN_BT_VERSION);
+  });
+  test("returns the version passed if it is supported for AXO", () => {
+    const result1 = getSdkVersion("3.97.00");
+    const result2 = getSdkVersion("3.97.alpha-test");
+    const result3 = getSdkVersion("4.34.beta-test");
+    const result4 = getSdkVersion("4.34.47");
+
+    expect(result1).toEqual("3.97.00");
+    expect(result2).toEqual("3.97.alpha-test");
+    expect(result3).toEqual("4.34.beta-test");
+    expect(result4).toEqual("4.34.47");
+  });
+
+  test("throws error if the version passed is not supported for AXO and is not null", () => {
+    const result1 = getSdkVersion("3.96.00");
+    const result2 = getSdkVersion("2.87.alpha-test");
+    const result3 = getSdkVersion("3.34.beta-test");
+
+    expect(result1).toThrowError();
+    expect(result2).toThrowError();
+    expect(result3).toThrowError();
   });
 });
