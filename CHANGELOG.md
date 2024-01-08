@@ -1,3 +1,9 @@
+## <small>5.0.292 (2024-01-03)</small>
+
+* Add ShopperInsights component (#2286) ([57a9f69](https://github.com/paypal/paypal-checkout-components/commit/57a9f69)), closes [#2286](https://github.com/paypal/paypal-checkout-components/issues/2286)
+
+
+
 ## <small>5.0.291 (2023-12-15)</small>
 
 * feat: provide fraudnet preload functionality and wire up connect with it (#2287) ([fac18df](https://github.com/paypal/paypal-checkout-components/commit/fac18df)), closes [#2287](https://github.com/paypal/paypal-checkout-components/issues/2287)
