@@ -740,7 +740,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       clientMetadataID: {
         type: "string",
         required: false,
-        default: getClientMetadataID,
+        default: () => {
+          const clientMetadataId = getClientMetadataID();
+          const sessionID = getSessionID();
+
+          return clientMetadataId || sessionID;
+        },
         queryParam: true,
       },
 
