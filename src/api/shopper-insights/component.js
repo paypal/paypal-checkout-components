@@ -17,7 +17,7 @@ import { FPTI_KEY } from "@paypal/sdk-constants/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { stringifyError } from "@krakenjs/belter/src";
 
-import { callRestAPI } from "../api";
+import { callMemoizedRestAPI } from "../api";
 import {
   ELIGIBLE_PAYMENT_METHODS,
   FPTI_TRANSITION,
@@ -134,7 +134,7 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
       const requestPayload =
         createRecommendedPaymentMethodsRequestPayload(merchantPayload);
 
-      return callRestAPI({
+      return callMemoizedRestAPI({
         method: "POST",
         url: `${getPayPalAPIDomain()}/${ELIGIBLE_PAYMENT_METHODS}`,
         data: requestPayload,

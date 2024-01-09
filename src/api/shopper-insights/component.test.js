@@ -73,6 +73,69 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     expect.assertions(2);
   });
 
+  test("should get recommended payment methods from memoized request for the exact same payload", async () => {
+    const shopperInsightsComponent = getShopperInsightsComponent();
+    const payload = {
+      customer: {
+        email: "email-1.0@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
+        },
+      },
+    };
+    const response1 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods(payload);
+    expect(request).toHaveBeenCalled();
+    expect(request).toHaveBeenCalledTimes(1);
+    const response2 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods(payload);
+
+    expect(request).toHaveBeenCalled();
+    // This should not change as the payload is same
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(response1).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect(response2).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect.assertions(6);
+  });
+
+  test("should not get recommended payment methods from memoized request for a different payload", async () => {
+    const shopperInsightsComponent = getShopperInsightsComponent();
+    const response1 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods({
+        customer: {
+          email: "email-1.1@test.com",
+        },
+      });
+    expect(request).toHaveBeenCalled();
+    expect(request).toHaveBeenCalledTimes(1);
+    const response2 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods({
+        customer: {
+          email: "email-1.2@test.com",
+        },
+      });
+
+    expect(request).toHaveBeenCalled();
+    // This must change to 2 as the payload is different
+    expect(request).toHaveBeenCalledTimes(2);
+    expect(response1).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect(response2).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect.assertions(6);
+  });
+
   test("catch errors from the API", async () => {
     // $FlowFixMe
     request.mockImplementationOnce(() =>
