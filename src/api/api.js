@@ -1,7 +1,7 @@
 /* @flow */
 
 import { getPartnerAttributionID, getSessionID } from "@paypal/sdk-client/src";
-import { request } from "@krakenjs/belter/src";
+import { inlineMemoize, request } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import { HEADERS } from "../constants/api";
@@ -51,4 +51,17 @@ export function callRestAPI({
 
     return body;
   });
+}
+
+export function callMemoizedRestAPI({
+  accessToken,
+  method,
+  url,
+  data,
+}: RestAPIParams): ZalgoPromise<Object> {
+  return inlineMemoize(
+    callMemoizedRestAPI,
+    () => callRestAPI({ accessToken, method, url, data }),
+    [accessToken, method, url, JSON.stringify(data)]
+  );
 }

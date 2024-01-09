@@ -2,8 +2,7 @@
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { getEnv, getBuyerCountry } from "@paypal/sdk-client/src";
 import { vi, describe, expect } from "vitest";
-
-import { callRestAPI } from "../api";
+import { request } from "@krakenjs/belter/src";
 
 import { getShopperInsightsComponent } from "./component";
 
@@ -25,23 +24,22 @@ vi.mock("@paypal/sdk-client/src", () => {
   };
 });
 
-vi.mock("../api", async () => {
-  const actual = await vi.importActual("../api");
+vi.mock("@krakenjs/belter/src", async () => {
+  const actual = await vi.importActual("@krakenjs/belter/src");
   return {
     ...actual,
-    callRestAPI: vi.fn(() =>
+    request: vi.fn(() =>
       ZalgoPromise.resolve({
-        eligible_methods: {
-          paypal: {
-            can_be_vaulted: true,
-            eligible_in_paypal_network: true,
-            recommended: true,
-            recommended_priority: 1,
-          },
-          venmo: {
-            can_be_vaulted: true,
-            eligible_in_paypal_network: true,
-            recommended: false,
+        status: 200,
+        headers: {},
+        body: {
+          eligible_methods: {
+            paypal: {
+              can_be_vaulted: false,
+              eligible_in_paypal_network: true,
+              recommended: true,
+              recommended_priority: 1,
+            },
           },
         },
       })
@@ -67,7 +65,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
         },
       });
 
-    expect(callRestAPI).toHaveBeenCalled();
+    expect(request).toHaveBeenCalled();
     expect(recommendedPaymentMethods).toEqual({
       isPayPalRecommended: true,
       isVenmoRecommended: false,
@@ -75,12 +73,79 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     expect.assertions(2);
   });
 
+  test("should get recommended payment methods from memoized request for the exact same payload", async () => {
+    const shopperInsightsComponent = getShopperInsightsComponent();
+    const payload = {
+      customer: {
+        email: "email-1.0@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
+        },
+      },
+    };
+    const response1 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods(payload);
+    expect(request).toHaveBeenCalled();
+    expect(request).toHaveBeenCalledTimes(1);
+    const response2 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods(payload);
+
+    expect(request).toHaveBeenCalled();
+    // This should not change as the payload is same
+    expect(request).toHaveBeenCalledTimes(1);
+    expect(response1).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect(response2).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect.assertions(6);
+  });
+
+  test("should not get recommended payment methods from memoized request for a different payload", async () => {
+    const shopperInsightsComponent = getShopperInsightsComponent();
+    const response1 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods({
+        customer: {
+          email: "email-1.1@test.com",
+        },
+      });
+    expect(request).toHaveBeenCalled();
+    expect(request).toHaveBeenCalledTimes(1);
+    const response2 =
+      await shopperInsightsComponent.getRecommendedPaymentMethods({
+        customer: {
+          email: "email-1.2@test.com",
+        },
+      });
+
+    expect(request).toHaveBeenCalled();
+    // This must change to 2 as the payload is different
+    expect(request).toHaveBeenCalledTimes(2);
+    expect(response1).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect(response2).toEqual({
+      isPayPalRecommended: true,
+      isVenmoRecommended: false,
+    });
+    expect.assertions(6);
+  });
+
   test("catch errors from the API", async () => {
     // $FlowFixMe
-    callRestAPI.mockImplementationOnce(() =>
-      ZalgoPromise.reject({
-        name: "ERROR",
-        message: "This is an API error",
+    request.mockImplementationOnce(() =>
+      ZalgoPromise.resolve({
+        status: 400,
+        headers: {},
+        body: {
+          name: "ERROR",
+          message: "This is an API error",
+        },
       })
     );
 
@@ -92,12 +157,16 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
           email: "email@test.com",
           phone: {
             countryCode: "1",
-            nationalNumber: "2345678901",
+            nationalNumber: "2345678905",
           },
         },
       })
-    ).rejects.toThrow("This is an API error");
-    expect(callRestAPI).toHaveBeenCalled();
+    ).rejects.toThrow(
+      new Error(
+        `https://api.paypal.com/v2/payments/find-eligible-methods returned status 400\n\n{"name":"ERROR","message":"This is an API error"}`
+      )
+    );
+    expect(request).toHaveBeenCalled();
     expect.assertions(2);
   });
 
@@ -105,22 +174,22 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email10@test.com",
         phone: {
           countryCode: "1",
-          nationalNumber: "2345678901",
+          nationalNumber: "2345678906",
         },
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           customer: expect.objectContaining({
-            email: "email@test.com",
+            email: "email10@test.com",
             phone: expect.objectContaining({
               country_code: "1",
-              national_number: "2345678901",
+              national_number: "2345678906",
             }),
           }),
         }),
@@ -132,15 +201,15 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email2@test.com",
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           customer: expect.objectContaining({
-            email: "email@test.com",
+            email: "email2@test.com",
           }),
         }),
       })
@@ -151,7 +220,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email5@test.com",
         phone: {
           countryCode: "1",
           nationalNumber: "2345678901",
@@ -159,9 +228,9 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           customer: expect.objectContaining({
             phone: expect.objectContaining({
               country_code: "1",
@@ -177,13 +246,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email6@test.com",
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           purchase_units: expect.arrayContaining([
             expect.objectContaining({
               amount: expect.objectContaining({
@@ -203,13 +272,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email7@test.com",
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           customer: expect.objectContaining({
             country_code: "US",
           }),
@@ -227,13 +296,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email9@test.com",
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           customer: expect.objectContaining({
             country_code: "US",
           }),
@@ -250,9 +319,9 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           customer: expect.not.objectContaining({
             country_code: expect.anything(),
           }),
@@ -265,13 +334,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
       customer: {
-        email: "email@test.com",
+        email: "email9@test.com",
       },
     });
 
-    expect(callRestAPI).toHaveBeenCalledWith(
+    expect(request).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: expect.objectContaining({
+        json: expect.objectContaining({
           preferences: expect.objectContaining({
             include_account_details: true,
           }),
