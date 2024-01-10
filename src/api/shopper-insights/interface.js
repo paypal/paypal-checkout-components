@@ -1,13 +1,12 @@
 /* @flow */
 
-import type { LazyProtectedExport } from "../../types";
-import { protectedExport } from "../../lib";
+import type { LazyExport } from "../../types";
 
 import {
   getShopperInsightsComponent,
   type ShopperInsightsComponent,
 } from "./component";
 
-export const ShopperInsights: LazyProtectedExport<ShopperInsightsComponent> = {
-  __get__: () => protectedExport(getShopperInsightsComponent()),
+export const ShopperInsights: LazyExport<ShopperInsightsComponent> = {
+  __get__: () => getShopperInsightsComponent(),
 };
