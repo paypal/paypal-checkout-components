@@ -1,7 +1,8 @@
 /* @flow */
 
-import { request, noop, memoize, popup } from "@krakenjs/belter/src";
+import { request, memoize, popup } from "@krakenjs/belter/src";
 import { getSDKHost, getClientID } from "@paypal/sdk-client/src";
+
 import { DEFAULT_POPUP_SIZE } from "../zoid/checkout";
 
 import type {

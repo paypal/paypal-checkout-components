@@ -16,8 +16,6 @@ import type {
   HostedButtonsInstance,
 } from "./types";
 
-import { popup } from "@krakenjs/belter/src";
-
 export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
     hostedButtonId,
