@@ -1,3 +1,9 @@
+## <small>5.0.293 (2024-01-10)</small>
+
+* remove protected export for shopper insights (#2308) ([b616ef6](https://github.com/paypal/paypal-checkout-components/commit/b616ef6)), closes [#2308](https://github.com/paypal/paypal-checkout-components/issues/2308)
+
+
+
 ## <small>5.0.292 (2024-01-03)</small>
 
 * Add ShopperInsights component (#2286) ([57a9f69](https://github.com/paypal/paypal-checkout-components/commit/57a9f69)), closes [#2286](https://github.com/paypal/paypal-checkout-components/issues/2286)
