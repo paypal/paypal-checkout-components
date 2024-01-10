@@ -206,6 +206,12 @@ describe(`paypal button component props`, () => {
               )} to be queried, got ${queriedRenderedButtons.join(",")}`
             );
           }
+
+          if (!String(xprops.clientMetadataID).startsWith("uid_")) {
+            throw new Error(
+              `Expected clientMetadataId to be present in xprops, but got ${xprops.clientMetadataID}`
+            );
+          }
         };
 
         const instance = window.paypal.Buttons({
