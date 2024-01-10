@@ -107,7 +107,7 @@ test("buildHostedButtonOnApprove", async () => {
       body: {},
     })
   );
-  await onApprove({ orderID: "EC-1234567890" });
+  await onApprove({ orderID: "EC-1234567890", paymentSource: "paypal" });
   expect(request).toHaveBeenCalledWith(
     expect.objectContaining({
       body: JSON.stringify({

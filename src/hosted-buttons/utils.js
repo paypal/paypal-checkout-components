@@ -1,7 +1,8 @@
 /* @flow */
 
-import { request, noop, memoize } from "@krakenjs/belter/src";
+import { request, noop, memoize, popup } from "@krakenjs/belter/src";
 import { getSDKHost, getClientID } from "@paypal/sdk-client/src";
+import { DEFAULT_POPUP_SIZE } from "../zoid/checkout";
 
 import type {
   ButtonVariables,
@@ -106,7 +107,9 @@ export const buildHostedButtonCreateOrder = ({
           merchant_id: merchantId,
           ...userInputs,
         }),
-      }).then(({ body }) => body.context_id);
+      }).then(({ body }) => {
+        return body.context_id;
+      });
     });
   };
 };
@@ -126,7 +129,15 @@ export const buildHostedButtonOnApprove = ({
           merchant_id: merchantId,
           context_id: data.orderID,
         }),
-      }).then(noop);
+      }).then(() => {
+        if (data.paymentSource === "card") {
+          const url = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+          popup(url, {
+            width: DEFAULT_POPUP_SIZE.WIDTH,
+            height: DEFAULT_POPUP_SIZE.HEIGHT,
+          });
+        }
+      });
     });
   };
 };
