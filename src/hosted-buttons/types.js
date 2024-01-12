@@ -39,7 +39,7 @@ export type CreateOrder = (data: {|
 export type OnApprove = (data: {|
   orderID: string,
   paymentSource: string,
-|}) => ZalgoPromise<void>;
+|}) => ZalgoPromise<mixed>;
 
 export type CreateAccessToken = (clientID: string) => ZalgoPromise<string>;
 

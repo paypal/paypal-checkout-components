@@ -130,7 +130,7 @@ export const buildHostedButtonOnApprove = ({
           merchant_id: merchantId,
           context_id: data.orderID,
         }),
-      }).then(() => {
+      }).then((response) => {
         if (data.paymentSource === "card") {
           const url = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
           popup(url, {
@@ -138,6 +138,7 @@ export const buildHostedButtonOnApprove = ({
             height: DEFAULT_POPUP_SIZE.HEIGHT,
           });
         }
+        return response;
       });
     });
   };
