@@ -125,10 +125,9 @@ export function getShopperInsightsComponent(): ShopperInsightsComponent {
     [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_INIT,
   });
 
-  validateMerchantConfig({ sdkToken, pageType, userIDToken, clientToken });
-
   const shopperInsights = {
     getRecommendedPaymentMethods: (merchantPayload) => {
+      validateMerchantConfig({ sdkToken, pageType, userIDToken, clientToken });
       validateMerchantPayload(merchantPayload);
 
       const requestPayload =

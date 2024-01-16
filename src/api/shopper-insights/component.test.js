@@ -1,8 +1,10 @@
 /* @flow */
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { getEnv, getBuyerCountry } from "@paypal/sdk-client/src";
+import { getEnv, getBuyerCountry, getSDKToken } from "@paypal/sdk-client/src";
 import { vi, describe, expect } from "vitest";
 import { request } from "@krakenjs/belter/src";
+
+import { ValidationError } from "../../lib";
 
 import { getShopperInsightsComponent } from "./component";
 
@@ -347,5 +349,28 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
         }),
       })
     );
+  });
+
+  test("ensure sdk-token is passed when using the getRecommendedPaymentMethods", async () => {
+    // $FlowFixMe
+    getSDKToken.mockImplementationOnce(() => undefined);
+    // $FlowFixMe
+    const shopperInsightsComponent = getShopperInsightsComponent();
+    const error = new ValidationError(
+      `script data attribute sdk-client-token is required but was not passed`
+    );
+    await expect(
+      async () =>
+        await shopperInsightsComponent.getRecommendedPaymentMethods({
+          customer: {
+            email: "email@test.com",
+            phone: {
+              countryCode: "1",
+              nationalNumber: "2345678905",
+            },
+          },
+        })
+    ).rejects.toThrowError(error);
+    expect.assertions(1);
   });
 });
