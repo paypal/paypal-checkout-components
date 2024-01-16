@@ -29,28 +29,19 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
 
       getHostedButtonDetails({ hostedButtonId }).then(
         ({ html, htmlScript, style }) => {
-          renderForm({ html, htmlScript, selector });
+          const { onInit, onClick } = renderForm({
+            hostedButtonId,
+            html,
+            htmlScript,
+            selector,
+          });
 
           // $FlowFixMe
           Buttons({
-            style,
             hostedButtonId,
-            onInit(data, actions) {
-              // disable the button, listen for input changes,
-              // and enable the button when the form is valid
-              // using actions.disable() and actions.enable()
-              window[`__pp_form_fields_${hostedButtonId}`]?.onInit?.(
-                data,
-                actions
-              );
-            },
-            onClick(data, actions) {
-              // render form errors, if present
-              window[`__pp_form_fields_${hostedButtonId}`]?.onClick?.(
-                data,
-                actions
-              );
-            },
+            style,
+            onInit,
+            onClick,
             createOrder: buildHostedButtonCreateOrder({
               hostedButtonId,
               merchantId,

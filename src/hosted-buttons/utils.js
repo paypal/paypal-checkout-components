@@ -74,11 +74,12 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = ({
  * Attaches form fields (html) to the given selector, and
  * initializes window.__pp_form_fields (htmlScript).
  */
-export const renderForm = ({
+export const renderForm: RenderForm = ({
+  hostedButtonId,
   html,
   htmlScript,
   selector,
-}: RenderForm): void => {
+}) => {
   const elm =
     typeof selector === "string" ? document.querySelector(selector) : selector;
   if (elm) {
@@ -88,6 +89,14 @@ export const renderForm = ({
     newScriptEl.innerHTML = oldScriptEl?.innerHTML ?? "";
     oldScriptEl?.parentNode?.replaceChild(newScriptEl, oldScriptEl);
   }
+  return {
+    // disable the button, listen for input changes,
+    // and enable the button when the form is valid
+    // using actions.disable() and actions.enable()
+    onInit: window[`__pp_form_fields_${hostedButtonId}`]?.onInit,
+    // render form errors, if present
+    onClick: window[`__pp_form_fields_${hostedButtonId}`]?.onClick,
+  };
 };
 
 export const buildHostedButtonCreateOrder = ({

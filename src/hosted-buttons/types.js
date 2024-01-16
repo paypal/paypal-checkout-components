@@ -46,8 +46,12 @@ export type CreateAccessToken = (clientID: string) => ZalgoPromise<string>;
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;
 
-export type RenderForm = {|
+export type RenderForm = ({|
+  hostedButtonId: string,
   html: string,
   htmlScript: string,
   selector: string | HTMLElement,
+|}) => {|
+  onInit: (data: mixed, actions: mixed) => void,
+  onClick: (data: mixed, actions: mixed) => void,
 |};
