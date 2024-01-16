@@ -4,6 +4,8 @@ import { getEnv, getBuyerCountry, getSDKToken } from "@paypal/sdk-client/src";
 import { vi, describe, expect } from "vitest";
 import { request } from "@krakenjs/belter/src";
 
+import { ValidationError } from "../../lib";
+
 import { getShopperInsightsComponent } from "./component";
 
 vi.mock("@paypal/sdk-client/src", () => {
@@ -350,14 +352,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
   });
 
   test("ensure sdk-token is passed when using the getRecommendedPaymentMethods", async () => {
+    // $FlowFixMe
     getSDKToken.mockImplementationOnce(() => undefined);
     // $FlowFixMe
     const shopperInsightsComponent = getShopperInsightsComponent();
-    const error = new Error(
-      "script data attribute sdk-client-token is required but was not passed"
+    const error = new ValidationError(
+      `script data attribute sdk-client-token is required but was not passed`
     );
-    error.code = "validation_error";
-    error.name = "ValidationError";
     await expect(
       async () =>
         await shopperInsightsComponent.getRecommendedPaymentMethods({
