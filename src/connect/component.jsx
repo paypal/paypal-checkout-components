@@ -51,7 +51,7 @@ export function getSdkVersion(version: string | null): string {
 // $FlowFixMe
 export const getConnectComponent = async (merchantProps = {}) => {
   const cmid = getClientMetadataID() || getSessionID();
-  const clientID = getClientID();
+  const clientId = getClientID();
   const userIdToken = getUserIDToken();
   const env = getEnv();
   const cspNonce = getCSPNonce();
@@ -108,7 +108,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
       platformOptions: {
         platform: "PPCP",
         userIdToken,
-        clientID,
+        clientId,
         fraudnet: collect,
         clientMetadataId: cmid,
         env,
