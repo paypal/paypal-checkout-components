@@ -6,6 +6,7 @@ import {
   getClientID,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
 
 import { DEFAULT_POPUP_SIZE } from "../zoid/checkout";
 
@@ -57,11 +58,15 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
   variables?.find((variable) => variable.name === key)?.value ?? "";
 
-const getFundingSource = (paymentSource) => {
-  if (paymentSource === "credit") {
-    return `CARD`;
+export const getFundingSource = (paymentSource: string): string => {
+  let fundingSource = paymentSource;
+  // The SDK uses "credit" for the "Debit or Credit Card" button, but the
+  // Hosted Buttons API expects "CARD" for the "Debit or Credit Card" button
+  // as the `funding_source` property.
+  if (paymentSource === FUNDING.CREDIT) {
+    fundingSource = FUNDING.CARD;
   }
-  return paymentSource.toUpperCase();
+  return fundingSource.toUpperCase();
 };
 
 export const getHostedButtonDetails: HostedButtonDetailsParams = ({

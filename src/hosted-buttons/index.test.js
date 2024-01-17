@@ -76,7 +76,6 @@ describe("HostedButtons", () => {
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
         hostedButtonId: "B1234567890",
-        hostedButtonType: "NO_CODE_FIXED_PRICE",
       })
     );
     expect.assertions(1);

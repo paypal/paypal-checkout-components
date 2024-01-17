@@ -5,9 +5,10 @@ import { request } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import {
-  getHostedButtonDetails,
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
+  getFundingSource,
+  getHostedButtonDetails,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -118,4 +119,9 @@ test("buildHostedButtonOnApprove", async () => {
     })
   );
   expect.assertions(1);
+});
+
+test("getFundingSource", () => {
+  expect(getFundingSource("paypal")).toEqual("PAYPAL");
+  expect(getFundingSource("credit")).toEqual("CARD");
 });
