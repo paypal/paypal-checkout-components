@@ -321,6 +321,7 @@ export function getCheckoutComponent(): CheckoutComponent {
         hostedButtonId: {
           type: "string",
           required: false,
+          queryParam: true,
         },
       },
 
