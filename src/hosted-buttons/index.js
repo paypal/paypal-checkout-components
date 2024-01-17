@@ -1,7 +1,5 @@
 /* @flow */
 
-import { getMerchantID } from "@paypal/sdk-client/src";
-
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
@@ -9,6 +7,7 @@ import {
   buildHostedButtonOnApprove,
   getHostedButtonDetails,
   renderForm,
+  getMerchantID,
 } from "./utils";
 import type {
   HostedButtonsComponent,
@@ -22,10 +21,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = (selector) => {
-      // The SDK supports mutiple merchant IDs, but hosted buttons only
-      // have one merchant id as a query parameter to the SDK script.
-      // https://github.com/paypal/paypal-sdk-client/blob/c58e35f8f7adbab76523eb25b9c10543449d2d29/src/script.js#L144
-      const merchantId = getMerchantID()[0];
+      const merchantId = getMerchantID();
 
       getHostedButtonDetails({ hostedButtonId }).then(
         ({ html, htmlScript, style }) => {

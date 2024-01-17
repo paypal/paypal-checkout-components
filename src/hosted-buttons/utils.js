@@ -1,7 +1,11 @@
 /* @flow */
 
 import { request, memoize, popup } from "@krakenjs/belter/src";
-import { getSDKHost, getClientID } from "@paypal/sdk-client/src";
+import {
+  getSDKHost,
+  getClientID,
+  getMerchantID as getSDKMerchantID,
+} from "@paypal/sdk-client/src";
 
 import { DEFAULT_POPUP_SIZE } from "../zoid/checkout";
 
@@ -24,6 +28,17 @@ const getHeaders = (accessToken?: string) => ({
   "Content-Type": "application/json",
   "PayPal-Entry-Point": entryPoint,
 });
+
+export const getMerchantID = (): string | void => {
+  // The SDK supports mutiple merchant IDs, but hosted buttons only
+  // have one merchant id as a query parameter to the SDK script.
+  // https://github.com/paypal/paypal-sdk-client/blob/c58e35f8f7adbab76523eb25b9c10543449d2d29/src/script.js#L144
+  const merchantIds = getSDKMerchantID();
+  if (merchantIds.length > 1) {
+    throw new Error("Multiple merchant-ids are not supported.");
+  }
+  return merchantIds[0];
+};
 
 export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   (clientId) => {

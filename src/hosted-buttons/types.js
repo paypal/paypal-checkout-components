@@ -8,7 +8,7 @@ export type HostedButtonsComponentProps = {|
 
 export type GetCallbackProps = {|
   hostedButtonId: string,
-  merchantId: string,
+  merchantId?: string,
 |};
 
 export type HostedButtonsInstance = {|
