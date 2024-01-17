@@ -1,3 +1,9 @@
+## <small>5.0.294 (2024-01-17)</small>
+
+* Axo is expected clientId to be passed, currently it is being passed as clientID (#2313) ([10689f9](https://github.com/paypal/paypal-checkout-components/commit/10689f9)), closes [#2313](https://github.com/paypal/paypal-checkout-components/issues/2313)
+
+
+
 ## <small>5.0.293 (2024-01-10)</small>
 
 * remove protected export for shopper insights (#2308) ([b616ef6](https://github.com/paypal/paypal-checkout-components/commit/b616ef6)), closes [#2308](https://github.com/paypal/paypal-checkout-components/issues/2308)
