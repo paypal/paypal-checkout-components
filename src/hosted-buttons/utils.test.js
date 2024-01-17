@@ -1,7 +1,7 @@
 /* @flow */
 
 import { test, expect, vi } from "vitest";
-import { request } from "@krakenjs/belter/src";
+import { request, popup, supportsPopups } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import {
@@ -15,6 +15,8 @@ vi.mock("@krakenjs/belter/src", async () => {
   return {
     ...(await vi.importActual("@krakenjs/belter/src")),
     request: vi.fn(),
+    popup: vi.fn(),
+    supportsPopups: vi.fn(),
   };
 });
 
@@ -27,13 +29,17 @@ vi.mock("@paypal/sdk-client/src", async () => {
   };
 });
 
+const hostedButtonId = "B1234567890";
+const merchantId = "M1234567890";
+const orderID = "EC-1234567890";
+
 const getHostedButtonDetailsResponse = {
   body: {
     button_details: {
       link_variables: [
         {
           name: "business",
-          value: "M1234567890",
+          value: merchantId,
         },
         {
           name: "shape",
@@ -62,7 +68,7 @@ test("getHostedButtonDetails", async () => {
     ZalgoPromise.resolve(getHostedButtonDetailsResponse)
   );
   await getHostedButtonDetails({
-    hostedButtonId: "B1234567890",
+    hostedButtonId,
   }).then(({ style }) => {
     expect(style).toEqual({
       layout: "vertical",
@@ -76,49 +82,79 @@ test("getHostedButtonDetails", async () => {
 
 test("buildHostedButtonCreateOrder", async () => {
   const createOrder = buildHostedButtonCreateOrder({
-    hostedButtonId: "B1234567890",
-    merchantId: "M1234567890",
+    hostedButtonId,
+    merchantId,
   });
 
   // $FlowIssue
   request.mockImplementation(() =>
     ZalgoPromise.resolve({
       body: {
-        link_id: "B1234567890",
-        merchant_id: "M1234567890",
-        context_id: "EC-1234567890",
+        link_id: hostedButtonId,
+        merchant_id: merchantId,
+        context_id: orderID,
         status: "CREATED",
       },
     })
   );
-  const orderID = await createOrder({ paymentSource: "paypal" });
-  expect(orderID).toBe("EC-1234567890");
+  const createdOrderID = await createOrder({ paymentSource: "paypal" });
+  expect(createdOrderID).toBe(orderID);
   expect.assertions(1);
 });
 
-test("buildHostedButtonOnApprove", async () => {
-  const onApprove = buildHostedButtonOnApprove({
-    hostedButtonId: "B1234567890",
-    merchantId: "M1234567890",
+describe("buildHostedButtonOnApprove", () => {
+  test("makes a request to the Hosted Buttons API", async () => {
+    const onApprove = buildHostedButtonOnApprove({
+      hostedButtonId,
+      merchantId,
+    });
+
+    // $FlowIssue
+    request.mockImplementation(() =>
+      ZalgoPromise.resolve({
+        body: {},
+      })
+    );
+    await onApprove({ orderID, paymentSource: "paypal" });
+    expect(request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: JSON.stringify({
+          entry_point: "SDK",
+          merchant_id: merchantId,
+          context_id: orderID,
+        }),
+      })
+    );
+    expect.assertions(1);
   });
 
-  // $FlowIssue
-  request.mockImplementation(() =>
-    ZalgoPromise.resolve({
-      body: {},
-    })
-  );
-  await onApprove({ orderID: "EC-1234567890", paymentSource: "paypal" });
-  expect(request).toHaveBeenCalledWith(
-    expect.objectContaining({
-      body: JSON.stringify({
-        entry_point: "SDK",
-        merchant_id: "M1234567890",
-        context_id: "EC-1234567890",
-      }),
-    })
-  );
-  expect.assertions(1);
+  test("provides its own popup for inline guest", async () => {
+    const onApprove = buildHostedButtonOnApprove({
+      hostedButtonId,
+      merchantId,
+    });
+    // $FlowIssue
+    request.mockImplementation(() =>
+      ZalgoPromise.resolve({
+        body: {},
+      })
+    );
+
+    // $FlowIssue
+    supportsPopups.mockImplementation(() => true);
+    await onApprove({ orderID, paymentSource: "credit" });
+    expect(popup).toHaveBeenCalled();
+
+    // but redirects if popups are not supported
+    // $FlowIssue
+    supportsPopups.mockImplementation(() => false);
+    await onApprove({ orderID, paymentSource: "credit" });
+    expect(window.location).toMatch(
+      `/ncp/payment/${hostedButtonId}/${orderID}`
+    );
+
+    expect.assertions(2);
+  });
 });
 
 test("getFundingSource", () => {

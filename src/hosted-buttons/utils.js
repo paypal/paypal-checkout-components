@@ -1,6 +1,6 @@
 /* @flow */
 
-import { request, memoize, popup } from "@krakenjs/belter/src";
+import { request, memoize, popup, supportsPopups } from "@krakenjs/belter/src";
 import {
   getSDKHost,
   getClientID,
@@ -163,12 +163,16 @@ export const buildHostedButtonOnApprove = ({
         // The "Debit or Credit Card" button does not open a popup
         // so we need to open a new popup for buyers who complete
         // a checkout via "Debit or Credit Card".
-        if (data.paymentSource === "card") {
+        if (data.paymentSource === FUNDING.CREDIT) {
           const url = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
-          popup(url, {
-            width: DEFAULT_POPUP_SIZE.WIDTH,
-            height: DEFAULT_POPUP_SIZE.HEIGHT,
-          });
+          if (supportsPopups()) {
+            popup(url, {
+              width: DEFAULT_POPUP_SIZE.WIDTH,
+              height: DEFAULT_POPUP_SIZE.HEIGHT,
+            });
+          } else {
+            window.location = url;
+          }
         }
         return response;
       });
