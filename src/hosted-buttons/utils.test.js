@@ -7,7 +7,6 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
-  getFundingSource,
   getHostedButtonDetails,
 } from "./utils";
 
@@ -142,22 +141,17 @@ describe("buildHostedButtonOnApprove", () => {
 
     // $FlowIssue
     supportsPopups.mockImplementation(() => true);
-    await onApprove({ orderID, paymentSource: "credit" });
+    await onApprove({ orderID, paymentSource: "card" });
     expect(popup).toHaveBeenCalled();
 
     // but redirects if popups are not supported
     // $FlowIssue
     supportsPopups.mockImplementation(() => false);
-    await onApprove({ orderID, paymentSource: "credit" });
+    await onApprove({ orderID, paymentSource: "card" });
     expect(window.location).toMatch(
       `/ncp/payment/${hostedButtonId}/${orderID}`
     );
 
     expect.assertions(2);
   });
-});
-
-test("getFundingSource", () => {
-  expect(getFundingSource("paypal")).toEqual("PAYPAL");
-  expect(getFundingSource("credit")).toEqual("CARD");
 });
