@@ -158,8 +158,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         <PrerenderedButtons
           nonce={props.nonce}
           props={props}
-          onRenderCheckout={({ win, fundingSource, card }) => {
-            state.prerenderDetails = { win, fundingSource, card };
+          onRenderCheckout={({ win, fundingSource, card, hostedButtonId }) => {
+            state.prerenderDetails = {
+              win,
+              fundingSource,
+              card,
+              hostedButtonId,
+            };
           }}
         />
       ).render(dom({ doc }));
@@ -847,6 +852,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         required: false,
         value: getExperimentation,
+      },
+
+      hostedButtonId: {
+        type: "string",
+        required: false,
+        queryParam: true,
       },
 
       displayOnly: {

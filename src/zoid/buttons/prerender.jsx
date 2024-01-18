@@ -27,6 +27,7 @@ type PrerenderedButtonsProps = {|
     win?: CrossDomainWindowType,
     fundingSource: $Values<typeof FUNDING>,
     card: ?$Values<typeof CARD>,
+    hostedButtonId?: string,
   |}) => void,
 |};
 
@@ -77,7 +78,12 @@ export function PrerenderedButtons({
 
       writeElementToWindow(win, spinner);
 
-      onRenderCheckout({ win, fundingSource, card });
+      onRenderCheckout({
+        win,
+        fundingSource,
+        card,
+        hostedButtonId: props.hostedButtonId,
+      });
     } else {
       onRenderCheckout({ fundingSource, card });
     }
