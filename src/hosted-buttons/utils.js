@@ -58,17 +58,6 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
   variables?.find((variable) => variable.name === key)?.value ?? "";
 
-export const getFundingSource = (paymentSource: string): string => {
-  let fundingSource = paymentSource;
-  // The SDK uses "credit" for the "Debit or Credit Card" button, but the
-  // Hosted Buttons API expects "CARD" for the "Debit or Credit Card" button
-  // as the `funding_source` property.
-  if (paymentSource === FUNDING.CREDIT) {
-    fundingSource = FUNDING.CARD;
-  }
-  return fundingSource.toUpperCase();
-};
-
 export const getHostedButtonDetails: HostedButtonDetailsParams = ({
   hostedButtonId,
 }) => {
@@ -133,7 +122,7 @@ export const buildHostedButtonCreateOrder = ({
         method: "POST",
         body: JSON.stringify({
           entry_point: entryPoint,
-          funding_source: getFundingSource(data.paymentSource),
+          funding_source: data.paymentSource.toUpperCase(),
           merchant_id: merchantId,
           ...userInputs,
         }),
@@ -163,7 +152,7 @@ export const buildHostedButtonOnApprove = ({
         // The "Debit or Credit Card" button does not open a popup
         // so we need to open a new popup for buyers who complete
         // a checkout via "Debit or Credit Card".
-        if (data.paymentSource === FUNDING.CREDIT) {
+        if (data.paymentSource === FUNDING.CARD) {
           const url = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
           if (supportsPopups()) {
             popup(url, {
