@@ -192,7 +192,7 @@ export function DivideLogoTextComponent({
                   position: absolute;
                   opacity: 0; 
                   color: #142C8E;
-                  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                  font-family: "PayPalOpen-Regular", "Helvetica Neue", Arial, sans-serif;
                   font-size: 14px;
               }
 
