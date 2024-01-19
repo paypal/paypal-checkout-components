@@ -15,7 +15,7 @@ export const buttonStyle = `
         margin: 0;
         background: 0;
         border: 0;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: "PayPalOpen-Regular", "Helvetica Neue", Arial, sans-serif;
         text-transform: none;
         font-weight: 500;
         font-smoothing: antialiased;
@@ -42,7 +42,6 @@ export const buttonStyle = `
     }
 
     .${CLASS.CONTAINER}.${CLASS.ENV}-${ENV.TEST} .${CLASS.TEXT} {
-        font-family: Arial !important;
         background: rgba(0, 0, 0, 0.5) !important;
         color: transparent  !important;
         text-shadow: none  !important;
