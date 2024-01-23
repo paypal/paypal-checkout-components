@@ -15,6 +15,7 @@ import {
 import type { LazyExport } from "../types";
 import { callMemoizedRestAPI } from "../lib";
 
+import { fingerprint } from "./fingerprint";
 import {
   ShopperSession,
   type ShopperInsightsInterface,
@@ -40,6 +41,7 @@ const sessionState = {
 export const ShopperInsights: LazyExport<ShopperInsightsInterface> = {
   __get__: () => {
     const shopperSession = new ShopperSession({
+      fingerprint,
       logger: getLogger(),
       // $FlowIssue ZalgoPromise vs Promise
       request: callMemoizedRestAPI,

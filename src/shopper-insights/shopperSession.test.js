@@ -39,6 +39,11 @@ const defaultSdkConfig = {
 };
 
 const createShopperSession = ({
+  fingerprint = {
+    load: vi.fn(),
+    collect: vi.fn(),
+    get: vi.fn(),
+  },
   sdkConfig = defaultSdkConfig,
   logger = {
     info: vi.fn(),
@@ -51,6 +56,7 @@ const createShopperSession = ({
   request = mockFindEligiblePaymentsRequest(),
 } = {}) =>
   new ShopperSession({
+    fingerprint,
     sdkConfig,
     // $FlowIssue
     logger,

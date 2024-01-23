@@ -13,6 +13,8 @@ import {
 } from "../constants/api";
 import { ValidationError } from "../lib";
 
+import { Fingerprint, fingerprint } from "./fingerprint";
+
 export type MerchantPayloadData = {|
   email?: string,
   phone?: {|
@@ -246,6 +248,7 @@ export interface ShopperInsightsInterface {
 }
 
 export class ShopperSession {
+  fingerprint: Fingerprint;
   logger: LoggerType;
   request: Request;
   requestId: string = "";
@@ -253,16 +256,19 @@ export class ShopperSession {
   sessionState: Storage;
 
   constructor({
+    fingerprint,
     logger,
     request,
     sdkConfig,
     sessionState,
   }: {|
+    fingerprint: Fingerprint,
     logger: LoggerType,
     request: Request,
     sdkConfig: SdkConfig,
     sessionState: Storage,
   |}) {
+    this.fingerprint = fingerprint;
     this.logger = logger;
     this.request = request;
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
@@ -344,5 +350,14 @@ export class ShopperSession {
 
       throw error;
     }
+  }
+
+  async identify(): Promise<{||}> {
+    const { requestId } = await this.fingerprint.get();
+
+    this.requestId = requestId;
+
+    // $FlowIssue
+    return {};
   }
 }
