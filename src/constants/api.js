@@ -19,11 +19,9 @@ export const SHOPPER_INSIGHTS_METRIC_NAME =
   "pp.app.paypal_sdk.api.shopper_insights.count";
 
 export type MerchantPayloadData = {|
-  customer: {|
-    email?: string,
-    phone?: {|
-      countryCode?: string,
-      nationalNumber?: string,
-    |},
+  email?: string,
+  phone?: {|
+    countryCode?: string,
+    nationalNumber?: string,
   |},
 |};

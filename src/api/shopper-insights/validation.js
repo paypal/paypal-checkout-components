@@ -75,63 +75,45 @@ export function validateMerchantConfig({
   }
 }
 
-export const hasEmail = (merchantPayload: MerchantPayloadData): boolean => {
-  return Boolean(merchantPayload?.customer?.email);
-};
+export const hasEmail = (merchantPayload: MerchantPayloadData): boolean =>
+  Boolean(merchantPayload?.email);
 
-export const hasPhoneNumber = (
-  merchantPayload: MerchantPayloadData
-): boolean => {
-  return Boolean(
-    merchantPayload?.customer?.phone?.countryCode &&
-      merchantPayload?.customer?.phone?.nationalNumber
+export const hasPhoneNumber = (merchantPayload: MerchantPayloadData): boolean =>
+  Boolean(
+    merchantPayload?.phone?.countryCode &&
+      merchantPayload?.phone?.nationalNumber
   );
-};
 
-const isValidEmailFormat = (email: string): boolean => {
-  const emailRegex = /^.+@.+$/;
-  return email.length < 320 && emailRegex.test(email);
-};
+const isValidEmailFormat = (email: ?string): boolean =>
+  typeof email === "string" && email.length < 320 && /^.+@.+$/.test(email);
 
-const isValidPhoneNumberFormat = (phoneNumber: string): boolean => {
-  const phoneNumberRegex = /\d{5,}/;
-  return phoneNumberRegex.test(phoneNumber);
-};
+const isValidPhoneNumberFormat = (phoneNumber: ?string): boolean =>
+  typeof phoneNumber === "string" && /\d{5,}/.test(phoneNumber);
 
 export function validateMerchantPayload(merchantPayload: MerchantPayloadData) {
-  if (
-    typeof merchantPayload !== "object" ||
-    Object.keys(merchantPayload).length === 0 ||
-    !Object.keys(merchantPayload).includes("customer")
-  ) {
-    throw new ValidationError(
-      `Expected shopper information to be passed into customer object`
-    );
-  }
-
   const hasEmailOrPhoneNumber =
     hasEmail(merchantPayload) || hasPhoneNumber(merchantPayload);
-  if (!hasEmailOrPhoneNumber) {
+  if (typeof merchantPayload !== "object" || !hasEmailOrPhoneNumber) {
     throw new ValidationError(
-      `Expected shopper information to include an email or phone number`
+      `Expected either email or phone number for get recommended payment methods`
     );
   }
 
-  const merchantPayloadEmail = merchantPayload?.customer?.email || "";
-  if (hasEmail(merchantPayload) && !isValidEmailFormat(merchantPayloadEmail)) {
+  if (
+    hasEmail(merchantPayload) &&
+    !isValidEmailFormat(merchantPayload?.email)
+  ) {
     throw new ValidationError(
       `Expected shopper information to include a valid email format`
     );
   }
 
-  const merchantPhonePayload = merchantPayload?.customer?.phone || {};
-  const nationalNumber = merchantPhonePayload?.nationalNumber || "";
   if (
     hasPhoneNumber(merchantPayload) &&
-    !isValidPhoneNumberFormat(nationalNumber)
+    !isValidPhoneNumberFormat(merchantPayload?.phone?.nationalNumber)
   ) {
     throw new ValidationError(
-      `Expected shopper information to a valid phone number format`
+      `Expected shopper information to be a valid phone number format`
     );
   }
 }

@@ -58,12 +58,10 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     const recommendedPaymentMethods =
       await shopperInsightsComponent.getRecommendedPaymentMethods({
-        customer: {
-          email: "email@test.com",
-          phone: {
-            countryCode: "1",
-            nationalNumber: "2345678901",
-          },
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
         },
       });
 
@@ -78,12 +76,10 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
   test("should get recommended payment methods from memoized request for the exact same payload", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     const payload = {
-      customer: {
-        email: "email-1.0@test.com",
-        phone: {
-          countryCode: "1",
-          nationalNumber: "2345678901",
-        },
+      email: "email-1.0@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678901",
       },
     };
     const response1 =
@@ -111,17 +107,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     const response1 =
       await shopperInsightsComponent.getRecommendedPaymentMethods({
-        customer: {
-          email: "email-1.1@test.com",
-        },
+        email: "email-1.1@test.com",
       });
     expect(request).toHaveBeenCalled();
     expect(request).toHaveBeenCalledTimes(1);
     const response2 =
       await shopperInsightsComponent.getRecommendedPaymentMethods({
-        customer: {
-          email: "email-1.2@test.com",
-        },
+        email: "email-1.2@test.com",
       });
 
     expect(request).toHaveBeenCalled();
@@ -155,12 +147,10 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
 
     await expect(() =>
       shopperInsightsComponent.getRecommendedPaymentMethods({
-        customer: {
-          email: "email@test.com",
-          phone: {
-            countryCode: "1",
-            nationalNumber: "2345678905",
-          },
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678905",
         },
       })
     ).rejects.toThrow(
@@ -172,15 +162,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     expect.assertions(2);
   });
 
-  test("create customer payload with email and phone number", async () => {
+  test("create payload with email and phone number", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email10@test.com",
-        phone: {
-          countryCode: "1",
-          nationalNumber: "2345678906",
-        },
+      email: "email10@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678906",
       },
     });
 
@@ -199,12 +187,10 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     );
   });
 
-  test("create customer payload with email only", async () => {
+  test("create payload with email only", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email2@test.com",
-      },
+      email: "email2@test.com",
     });
 
     expect(request).toHaveBeenCalledWith(
@@ -218,15 +204,13 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     );
   });
 
-  test("create customer payload with phone only", async () => {
+  test("create payload with phone only", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email5@test.com",
-        phone: {
-          countryCode: "1",
-          nationalNumber: "2345678901",
-        },
+      email: "email5@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678901",
       },
     });
 
@@ -244,12 +228,10 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     );
   });
 
-  test("should default purchase units with currency code in the customer payload", async () => {
+  test("should default purchase units with currency code in the payload", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email6@test.com",
-      },
+      email: "email6@test.com",
     });
 
     expect(request).toHaveBeenCalledWith(
@@ -273,9 +255,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
 
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email7@test.com",
-      },
+      email: "email7@test.com",
     });
 
     expect(request).toHaveBeenCalledWith(
@@ -297,9 +277,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
 
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email9@test.com",
-      },
+      email: "email9@test.com",
     });
 
     expect(request).toHaveBeenCalledWith(
@@ -313,31 +291,22 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     );
   });
 
-  test("should not set country code in prod env in the customer payload", async () => {
+  test("should not set country code in prod env in the payload", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email@test.com",
-      },
+      email: "email@test.com",
     });
 
-    expect(request).toHaveBeenCalledWith(
-      expect.objectContaining({
-        json: expect.objectContaining({
-          customer: expect.not.objectContaining({
-            country_code: expect.anything(),
-          }),
-        }),
-      })
+    // $FlowIssue
+    expect(request.mock.calls[0][0].json.customer.country_code).toEqual(
+      undefined
     );
   });
 
   test("should request recommended payment methods by setting account details in the payload", async () => {
     const shopperInsightsComponent = getShopperInsightsComponent();
     await shopperInsightsComponent.getRecommendedPaymentMethods({
-      customer: {
-        email: "email9@test.com",
-      },
+      email: "email9@test.com",
     });
 
     expect(request).toHaveBeenCalledWith(
@@ -362,12 +331,10 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
     await expect(
       async () =>
         await shopperInsightsComponent.getRecommendedPaymentMethods({
-          customer: {
-            email: "email@test.com",
-            phone: {
-              countryCode: "1",
-              nationalNumber: "2345678905",
-            },
+          email: "email@test.com",
+          phone: {
+            countryCode: "1",
+            nationalNumber: "2345678905",
           },
         })
     ).rejects.toThrowError(error);
