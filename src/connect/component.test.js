@@ -72,7 +72,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
       ...mockProps,
       platformOptions: {
         platform: "PPCP",
-        clientID: "mock-client-id",
+        clientId: "mock-client-id",
         clientMetadataId: "mock-cmid",
         userIdToken: "mock-uid",
         fraudnet: expect.any(Function),

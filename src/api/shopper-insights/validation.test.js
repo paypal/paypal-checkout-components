@@ -54,9 +54,7 @@ describe("shopper insights merchant payload validation", () => {
   test("should have successful validation if email is only passed", () => {
     expect(() =>
       validateMerchantPayload({
-        customer: {
-          email: "email@test.com",
-        },
+        email: "email@test.com",
       })
     ).not.toThrowError();
   });
@@ -64,11 +62,9 @@ describe("shopper insights merchant payload validation", () => {
   test("should have successful validation if phone is only passed", () => {
     expect(() =>
       validateMerchantPayload({
-        customer: {
-          phone: {
-            countryCode: "1",
-            nationalNumber: "2345678901",
-          },
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
         },
       })
     ).not.toThrowError();
@@ -77,66 +73,65 @@ describe("shopper insights merchant payload validation", () => {
   test("should have successful validation if email and phone is passed", () => {
     expect(() =>
       validateMerchantPayload({
-        customer: {
-          email: "email@test.com",
-          phone: {
-            countryCode: "1",
-            nationalNumber: "2345678901",
-          },
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
         },
       })
     ).not.toThrowError();
   });
 
   test("should throw if email or phone is not passed", () => {
+    expect(() => validateMerchantPayload({})).toThrowError(
+      "Expected either email or phone number for get recommended payment methods"
+    );
+
     expect(() =>
-      validateMerchantPayload({
-        customer: {},
-      })
+      // $FlowIssue
+      validateMerchantPayload()
     ).toThrowError(
-      "Expected shopper information to include an email or phone number"
+      "Expected either email or phone number for get recommended payment methods"
     );
   });
 
   test("should throw if countryCode or nationalNumber in phone is not passed or is empty", () => {
+    expect.assertions(2);
     expect(() =>
       validateMerchantPayload({
-        customer: {
-          phone: {
-            nationalNumber: "",
-            countryCode: "",
-          },
+        phone: {
+          nationalNumber: "",
+          countryCode: "",
         },
       })
     ).toThrowError(
-      "Expected shopper information to include an email or phone number"
+      "Expected either email or phone number for get recommended payment methods"
     );
 
     expect(() =>
       validateMerchantPayload(
         // $FlowFixMe
-        { customer: { phone: {} } }
+        { phone: {} }
       )
     ).toThrowError(
-      "Expected shopper information to include an email or phone number"
+      "Expected either email or phone number for get recommended payment methods"
     );
-    expect.assertions(2);
   });
 
   test("should throw if phone is in an invalid format", () => {
     expect(() =>
       validateMerchantPayload({
-        customer: { phone: { countryCode: "1", nationalNumber: "2.354" } },
+        phone: { countryCode: "1", nationalNumber: "2.354" },
       })
     ).toThrowError(
-      "Expected shopper information to a valid phone number format"
+      "Expected shopper information to be a valid phone number format"
     );
     expect(() =>
       validateMerchantPayload({
-        customer: { phone: { countryCode: "1", nationalNumber: "2-354" } },
+        phone: { countryCode: "1", nationalNumber: "2-354" },
       })
     ).toThrowError(
-      "Expected shopper information to a valid phone number format"
+      "Expected shopper information to be a valid phone number format"
     );
     expect.assertions(2);
   });
@@ -144,9 +139,7 @@ describe("shopper insights merchant payload validation", () => {
   test("should throw if email is in an invalid format", () => {
     expect(() =>
       validateMerchantPayload({
-        customer: {
-          email: "123",
-        },
+        email: "123",
       })
     ).toThrowError(
       "Expected shopper information to include a valid email format"

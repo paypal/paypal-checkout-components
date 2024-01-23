@@ -72,12 +72,12 @@ function createRecommendedPaymentMethodsRequestPayload(
       }),
       // $FlowIssue
       ...(hasEmail(merchantPayload) && {
-        email: merchantPayload?.customer?.email,
+        email: merchantPayload?.email,
       }),
       ...(hasPhoneNumber(merchantPayload) && {
         phone: {
-          country_code: merchantPayload?.customer?.phone?.countryCode,
-          national_number: merchantPayload?.customer?.phone?.nationalNumber,
+          country_code: merchantPayload?.phone?.countryCode,
+          national_number: merchantPayload?.phone?.nationalNumber,
         },
       }),
     },
