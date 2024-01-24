@@ -1,13 +1,15 @@
 /* @flow */
 
 import { test, expect, vi } from "vitest";
-import { request, popup, supportsPopups } from "@krakenjs/belter/src";
+import { request, popup } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
+  buildOpenPopup,
   getHostedButtonDetails,
+  popupFallbackClassName,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -101,6 +103,31 @@ test("buildHostedButtonCreateOrder", async () => {
   expect.assertions(1);
 });
 
+test("buildHostedButtonCreateOrder error handling", async () => {
+  const createOrder = buildHostedButtonCreateOrder({
+    hostedButtonId,
+    merchantId,
+  });
+
+  // $FlowIssue
+  request.mockImplementation(() =>
+    ZalgoPromise.resolve({
+      body: {
+        name: "RESOURCE_NOT_FOUND",
+      },
+    })
+  );
+
+  const onError = vi.fn();
+  window[`__pp_form_fields_${hostedButtonId}`] = {
+    onError,
+  };
+
+  await createOrder({ paymentSource: "paypal" });
+  expect(onError).toHaveBeenCalledWith("RESOURCE_NOT_FOUND");
+  expect.assertions(1);
+});
+
 describe("buildHostedButtonOnApprove", () => {
   test("makes a request to the Hosted Buttons API", async () => {
     const onApprove = buildHostedButtonOnApprove({
@@ -127,10 +154,20 @@ describe("buildHostedButtonOnApprove", () => {
     expect.assertions(1);
   });
 
-  test("provides its own popup for inline guest", async () => {
+  describe("inline guest", () => {
+    const url = "https://example.com/ncp/payment/B1234567890/EC-1234567890";
+    const selector = "buttons-container";
+    // $FlowIssue
+    document.body.innerHTML = `<div id="${selector}"></div>`; // eslint-disable-line compat/compat
+    const popupFallback = `<a href="#">See payment details</a>`;
+    const openPopup = buildOpenPopup({
+      popupFallback,
+      selector: `#${selector}`,
+    });
     const onApprove = buildHostedButtonOnApprove({
       hostedButtonId,
       merchantId,
+      openPopup,
     });
     // $FlowIssue
     request.mockImplementation(() =>
@@ -139,19 +176,55 @@ describe("buildHostedButtonOnApprove", () => {
       })
     );
 
-    // $FlowIssue
-    supportsPopups.mockImplementation(() => true);
-    await onApprove({ orderID, paymentSource: "card" });
-    expect(popup).toHaveBeenCalled();
+    test("provides its own popup", async () => {
+      await onApprove({ orderID, paymentSource: "card" });
+      expect(popup).toHaveBeenCalledWith(url, expect.anything());
+      expect.assertions(1);
+    });
 
-    // but redirects if popups are not supported
-    // $FlowIssue
-    supportsPopups.mockImplementation(() => false);
-    await onApprove({ orderID, paymentSource: "card" });
-    expect(window.location).toMatch(
-      `/ncp/payment/${hostedButtonId}/${orderID}`
-    );
+    test("appends a link if the popup is blocked", async () => {
+      // $FlowIssue
+      popup.mockImplementationOnce(() => {
+        throw new Error("popup_blocked");
+      });
+      await onApprove({ orderID, paymentSource: "card" });
+      const link = document.querySelector(`.${popupFallbackClassName} a`);
+      expect(link?.getAttribute("href")).toBe(url);
+      expect.assertions(1);
+    });
 
-    expect.assertions(2);
+    test("does not append a second link if the popup is blocked a second time", async () => {
+      // still present from the previous popup open failure
+      expect(
+        document.querySelectorAll(`.${popupFallbackClassName}`).length
+      ).toBe(1);
+      // $FlowIssue
+      popup.mockImplementationOnce(() => {
+        throw new Error("popup_blocked");
+      });
+      await onApprove({ orderID, paymentSource: "card" });
+      expect(
+        document.querySelectorAll(`.${popupFallbackClassName}`).length
+      ).toBe(1);
+      expect.assertions(2);
+    });
+
+    test("removes the fallback message if a different payment source is used", async () => {
+      // still present from the previous popup open failure
+      expect(
+        document.querySelectorAll(`.${popupFallbackClassName}`).length
+      ).toBe(1);
+      // $FlowIssue
+      popup.mockImplementationOnce(() => {
+        throw new Error("popup_blocked");
+      });
+
+      // note new payment source
+      await onApprove({ orderID, paymentSource: "paypal" });
+      expect(
+        document.querySelectorAll(`.${popupFallbackClassName}`).length
+      ).toBe(0);
+      expect.assertions(2);
+    });
   });
 });

@@ -5,6 +5,7 @@ import { getButtonsComponent } from "../zoid/buttons";
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
+  buildOpenPopup,
   getHostedButtonDetails,
   renderForm,
   getMerchantID,
@@ -24,13 +25,15 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       const merchantId = getMerchantID();
 
       getHostedButtonDetails({ hostedButtonId }).then(
-        ({ html, htmlScript, style }) => {
+        ({ html, htmlScript, style, popupFallback }) => {
           const { onInit, onClick } = renderForm({
             hostedButtonId,
             html,
             htmlScript,
             selector,
           });
+
+          const openPopup = buildOpenPopup({ selector, popupFallback });
 
           // $FlowFixMe
           Buttons({
@@ -45,6 +48,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
             onApprove: buildHostedButtonOnApprove({
               hostedButtonId,
               merchantId,
+              openPopup,
             }),
           }).render(selector);
         }

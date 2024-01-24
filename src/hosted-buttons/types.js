@@ -9,6 +9,7 @@ export type HostedButtonsComponentProps = {|
 export type GetCallbackProps = {|
   hostedButtonId: string,
   merchantId?: string,
+  openPopup?: (url: string) => void,
 |};
 
 export type HostedButtonsInstance = {|
@@ -25,6 +26,7 @@ export type HostedButtonDetailsParams =
       color: string,
       label: string,
     |},
+    popupFallback: string,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
@@ -34,7 +36,7 @@ export type ButtonVariables = $ReadOnlyArray<{|
 
 export type CreateOrder = (data: {|
   paymentSource: string,
-|}) => ZalgoPromise<string>;
+|}) => ZalgoPromise<string | void>;
 
 export type OnApprove = (data: {|
   orderID: string,
@@ -55,3 +57,8 @@ export type RenderForm = ({|
   onInit: (data: mixed, actions: mixed) => void,
   onClick: (data: mixed, actions: mixed) => void,
 |};
+
+export type BuildOpenPopup = ({|
+  popupFallback: string,
+  selector: string | HTMLElement,
+|}) => (url: string) => void;
