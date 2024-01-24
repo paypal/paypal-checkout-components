@@ -1,3 +1,9 @@
+## <small>5.0.295 (2024-01-24)</small>
+
+* remove customer wrapper from getRecommendedPaymentMethods (#2318) ([6f530be](https://github.com/paypal/paypal-checkout-components/commit/6f530be)), closes [#2318](https://github.com/paypal/paypal-checkout-components/issues/2318)
+
+
+
 ## <small>5.0.294 (2024-01-17)</small>
 
 * Axo is expected clientId to be passed, currently it is being passed as clientID (#2313) ([10689f9](https://github.com/paypal/paypal-checkout-components/commit/10689f9)), closes [#2313](https://github.com/paypal/paypal-checkout-components/issues/2313)
