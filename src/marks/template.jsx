@@ -78,7 +78,7 @@ export function MarksElement({
       <style>
         {`
                     .${CLASS.TEXT} {
-                        font-family: "PayPalOpen-Regular", "Helvetica Neue", Arial, sans-serif;
+                        font-family: PayPalOpen-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
                         font-size: 12px;
                         vertical-align: middle;
                     }
