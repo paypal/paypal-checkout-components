@@ -4,6 +4,7 @@ import { CLASS } from "../../../constants";
 
 export const pageStyle = `
     html, body {
+        font-family: PayPalOpen-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
         padding: 0;
         margin: 0;
         width: 100%;
