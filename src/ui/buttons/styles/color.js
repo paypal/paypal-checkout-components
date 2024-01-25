@@ -8,7 +8,7 @@ export const buttonColorStyle = `
 
 
     .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} {
-        color: #2C2E2F;
+        color: #001435;
     }
 
     .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} {
@@ -27,7 +27,7 @@ export const buttonColorStyle = `
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD} .menu-button {
-        background: #ffc439;
+        background: #FFD140;
     }
 
     @media (hover:hover) {
@@ -321,7 +321,7 @@ export const buttonColorStyle = `
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE} .menu-button {
         background: #fff;
-        border: 1px solid #555;
+        border: 1px solid #001435;
     }
 
     @media (hover:hover) {
