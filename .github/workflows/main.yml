@@ -41,8 +41,9 @@ jobs:
       - name: ▶️ Run Jest SSR
         run: npm run jest-ssr
 
-      - name: ▶️ Run Jest Screenshot
-        run: npm run jest-screenshot
+      # Temporarily disable this until after button redesign project
+      # - name: ▶️ Run Jest Screenshot
+      #   run: npm run jest-screenshot
 
       - name: ▶️ Run Percy Screenshot
         if: ${{ github.actor != 'renovate[bot]' }}
