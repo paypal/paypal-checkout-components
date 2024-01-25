@@ -319,6 +319,7 @@ export type ButtonStyle = {|
   period?: number,
   height?: number,
   disableMaxWidth?: boolean,
+  borderRadius?: number,
 |};
 
 export type ButtonStyleInputs = {|
@@ -330,6 +331,7 @@ export type ButtonStyleInputs = {|
   period?: number | void,
   height?: number | void,
   disableMaxWidth?: boolean | void,
+  borderRadius?: number | void,
 |};
 
 type PersonalizationComponentProps = {|
@@ -621,6 +623,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,
     disableMaxWidth,
+    borderRadius,
   } = style;
 
   // $FlowFixMe
@@ -675,6 +678,20 @@ export function normalizeButtonStyle(
     }
   }
 
+  if (borderRadius !== undefined) {
+    if (typeof borderRadius !== "number") {
+      throw new TypeError(
+        `Expected style.borderRadius to be a number, got: ${borderRadius}`
+      );
+    }
+
+    if (borderRadius < 0) {
+      throw new Error(
+        `Expected style.borderRadius to be greater than or equal to 0, got: ${borderRadius}`
+      );
+    }
+  }
+
   if (layout === BUTTON_LAYOUT.VERTICAL) {
     if (tagline) {
       throw new Error(
@@ -693,6 +710,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement,
     disableMaxWidth,
+    borderRadius,
   };
 }
 

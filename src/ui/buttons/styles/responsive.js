@@ -25,10 +25,12 @@ export function buttonResponsiveStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
+  borderRadius,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
+  borderRadius?: ?number,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
@@ -55,6 +57,7 @@ export function buttonResponsiveStyle({
       );
 
       const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+      const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
@@ -147,6 +150,10 @@ export function buttonResponsiveStyle({
       }] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
                     line-height: ${perc(buttonHeight, 50) + 5}px;
                 }
+                
+                .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
+                  ${borderRadius >= 0 ? `border-radius: ${borderRadius}px` : ""}
+                }
 
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
                   border-radius: 0px;
@@ -157,11 +164,15 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
-                    border-radius: ${Math.ceil(buttonHeight / 2)}px;
+                    border-radius: ${pillBorderRadius}px;
+                }
+
+                .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
+                  ${borderRadius >= 0 ? `border-radius: ${borderRadius}px` : ""}
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.RECT
+        BUTTON_SHAPE.SHARP
       } .menu-button {
                               border-top-right-radius: 0px;
                               border-bottom-right-radius: 0px;
@@ -177,10 +188,8 @@ export function buttonResponsiveStyle({
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
         BUTTON_SHAPE.PILL
       } .menu-button {
-                    border-top-right-radius: ${Math.ceil(buttonHeight / 2)}px;
-                    border-bottom-right-radius: ${Math.ceil(
-                      buttonHeight / 2
-                    )}px;
+                    border-top-right-radius: ${pillBorderRadius}px;
+                    border-bottom-right-radius: ${pillBorderRadius}px;
                 }
                 
                 .${CLASS.TAGLINE} .${CLASS.TEXT} {
