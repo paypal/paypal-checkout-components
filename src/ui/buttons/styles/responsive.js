@@ -148,6 +148,10 @@ export function buttonResponsiveStyle({
                     line-height: ${perc(buttonHeight, 50) + 5}px;
                 }
 
+                .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
+                  border-radius: 0px;
+                }
+
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
                     border-radius: 4px;
                 }
@@ -155,6 +159,13 @@ export function buttonResponsiveStyle({
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
                     border-radius: ${Math.ceil(buttonHeight / 2)}px;
                 }
+
+                .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
+        BUTTON_SHAPE.RECT
+      } .menu-button {
+                              border-top-right-radius: 0px;
+                              border-bottom-right-radius: 0px;
+                          }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
         BUTTON_SHAPE.RECT
