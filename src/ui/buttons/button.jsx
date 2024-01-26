@@ -262,7 +262,9 @@ export function Button({
   const shouldShowWalletMenu =
     isWallet && instrument && showWalletMenu({ instrument, userIDToken });
   const borderRadiusClass =
-    borderRadius >= 0 ? CLASS.BORDER_RADIUS : `${CLASS.SHAPE}-${shape}`;
+    typeof borderRadius === "number"
+      ? CLASS.BORDER_RADIUS
+      : `${CLASS.SHAPE}-${shape}`;
 
   return (
     <div

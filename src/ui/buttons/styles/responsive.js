@@ -57,7 +57,12 @@ export function buttonResponsiveStyle({
       );
 
       const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+
       const pillBorderRadius = Math.ceil(buttonHeight / 2);
+      const borderRadiusStyles =
+        typeof borderRadius === "number"
+          ? `border-radius: ${borderRadius}px`
+          : "";
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
@@ -152,7 +157,7 @@ export function buttonResponsiveStyle({
                 }
                 
                 .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
-                  ${borderRadius >= 0 ? `border-radius: ${borderRadius}px` : ""}
+                  ${borderRadiusStyles}
                 }
 
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
@@ -168,7 +173,7 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
-                  ${borderRadius >= 0 ? `border-radius: ${borderRadius}px` : ""}
+                  ${borderRadiusStyles}
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
