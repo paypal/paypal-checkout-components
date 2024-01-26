@@ -38,6 +38,7 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
+  getRecommendedPaymentMethodsUsed,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -359,6 +360,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         sendToChild: false,
         value: getSDKMeta,
+      },
+
+      getRecommendedPaymentMethodsUsed: {
+        type: "boolean",
+        value: getRecommendedPaymentMethodsUsed,
       },
 
       createOrder: {
