@@ -865,7 +865,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       pageType: {
         type: "string",
         required: false,
-        queryParam: false,
+        queryParam: true,
         value: () => getSDKAttribute(SDK_SETTINGS.PAGE_TYPE),
       },
 
