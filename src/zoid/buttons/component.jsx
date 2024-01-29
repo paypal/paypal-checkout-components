@@ -38,6 +38,7 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
+  getSDKAttribute,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -60,6 +61,7 @@ import {
   QUERY_BOOL,
   ENV,
   FPTI_KEY,
+  SDK_SETTINGS,
 } from "@paypal/sdk-constants/src";
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 
@@ -858,6 +860,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
+      },
+
+      pageType: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: () => getSDKAttribute(SDK_SETTINGS.PAGE_TYPE),
       },
 
       displayOnly: {
