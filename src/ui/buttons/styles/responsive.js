@@ -14,6 +14,7 @@ import {
   ATTRIBUTE,
 } from "../../../constants";
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
+import { hasBorderRadius } from "../util";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -59,10 +60,6 @@ export function buttonResponsiveStyle({
       const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
       const pillBorderRadius = Math.ceil(buttonHeight / 2);
-      const borderRadiusStyles =
-        typeof borderRadius === "number"
-          ? `border-radius: ${borderRadius}px`
-          : "";
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
@@ -158,7 +155,7 @@ export function buttonResponsiveStyle({
                 
                 .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
                   ${
-                    typeof borderRadius === "number"
+                    hasBorderRadius(borderRadius)
                       ? `border-radius: ${borderRadius}px`
                       : ""
                   }
@@ -178,7 +175,7 @@ export function buttonResponsiveStyle({
 
                 .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
                   ${
-                    typeof borderRadius === "number"
+                    hasBorderRadius(borderRadius)
                       ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
                       : ""
                   }

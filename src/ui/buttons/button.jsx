@@ -39,6 +39,7 @@ import type {
 } from "./props";
 import { Spinner } from "./spinner";
 import { MenuButton } from "./menu-button";
+import { hasBorderRadius } from "./util";
 
 type IndividualButtonProps = {|
   style: ButtonStyle,
@@ -261,10 +262,9 @@ export function Button({
 
   const shouldShowWalletMenu =
     isWallet && instrument && showWalletMenu({ instrument, userIDToken });
-  const borderRadiusClass =
-    typeof borderRadius === "number"
-      ? CLASS.BORDER_RADIUS
-      : `${CLASS.SHAPE}-${shape}`;
+  const borderRadiusClass = hasBorderRadius(borderRadius)
+    ? CLASS.BORDER_RADIUS
+    : `${CLASS.SHAPE}-${shape}`;
 
   return (
     <div
