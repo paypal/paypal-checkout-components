@@ -157,7 +157,11 @@ export function buttonResponsiveStyle({
                 }
                 
                 .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
-                  ${borderRadiusStyles}
+                  ${
+                    typeof borderRadius === "number"
+                      ? `border-radius: ${borderRadius}px`
+                      : ""
+                  }
                 }
 
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
@@ -173,7 +177,11 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
-                  ${borderRadiusStyles}
+                  ${
+                    typeof borderRadius === "number"
+                      ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
+                      : ""
+                  }
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
