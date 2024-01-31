@@ -1,14 +1,11 @@
 /* @flow */
 
-import { request, memoize, popup, supportsPopups } from "@krakenjs/belter/src";
+import { request, memoize } from "@krakenjs/belter/src";
 import {
   getSDKHost,
   getClientID,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
-
-import { DEFAULT_POPUP_SIZE } from "../zoid/checkout";
 
 import type {
   ButtonVariables,
@@ -115,6 +112,7 @@ export const buildHostedButtonCreateOrder = ({
   return (data) => {
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
+    const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
     return createAccessToken(getClientID()).then((accessToken) => {
       return request({
         url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`,
@@ -126,9 +124,9 @@ export const buildHostedButtonCreateOrder = ({
           merchant_id: merchantId,
           ...userInputs,
         }),
-      }).then(({ body }) => {
-        return body.context_id;
-      });
+      })
+        .then(({ body }) => body.context_id || onError(body.name))
+        .catch(() => onError("REQUEST_FAILED"));
     });
   };
 };
@@ -148,22 +146,6 @@ export const buildHostedButtonOnApprove = ({
           merchant_id: merchantId,
           context_id: data.orderID,
         }),
-      }).then((response) => {
-        // The "Debit or Credit Card" button does not open a popup
-        // so we need to open a new popup for buyers who complete
-        // a checkout via "Debit or Credit Card".
-        if (data.paymentSource === FUNDING.CARD) {
-          const url = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
-          if (supportsPopups()) {
-            popup(url, {
-              width: DEFAULT_POPUP_SIZE.WIDTH,
-              height: DEFAULT_POPUP_SIZE.HEIGHT,
-            });
-          } else {
-            window.location = url;
-          }
-        }
-        return response;
       });
     });
   };

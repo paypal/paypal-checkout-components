@@ -34,7 +34,7 @@ export type ButtonVariables = $ReadOnlyArray<{|
 
 export type CreateOrder = (data: {|
   paymentSource: string,
-|}) => ZalgoPromise<string>;
+|}) => ZalgoPromise<string | void>;
 
 export type OnApprove = (data: {|
   orderID: string,

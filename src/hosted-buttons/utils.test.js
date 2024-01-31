@@ -1,7 +1,7 @@
 /* @flow */
 
 import { test, expect, vi } from "vitest";
-import { request, popup, supportsPopups } from "@krakenjs/belter/src";
+import { request } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import {
@@ -14,8 +14,6 @@ vi.mock("@krakenjs/belter/src", async () => {
   return {
     ...(await vi.importActual("@krakenjs/belter/src")),
     request: vi.fn(),
-    popup: vi.fn(),
-    supportsPopups: vi.fn(),
   };
 });
 
@@ -101,6 +99,31 @@ test("buildHostedButtonCreateOrder", async () => {
   expect.assertions(1);
 });
 
+test("buildHostedButtonCreateOrder error handling", async () => {
+  const createOrder = buildHostedButtonCreateOrder({
+    hostedButtonId,
+    merchantId,
+  });
+
+  // $FlowIssue
+  request.mockImplementation(() =>
+    ZalgoPromise.resolve({
+      body: {
+        name: "RESOURCE_NOT_FOUND",
+      },
+    })
+  );
+
+  const onError = vi.fn();
+  window[`__pp_form_fields_${hostedButtonId}`] = {
+    onError,
+  };
+
+  await createOrder({ paymentSource: "paypal" });
+  expect(onError).toHaveBeenCalledWith("RESOURCE_NOT_FOUND");
+  expect.assertions(1);
+});
+
 describe("buildHostedButtonOnApprove", () => {
   test("makes a request to the Hosted Buttons API", async () => {
     const onApprove = buildHostedButtonOnApprove({
@@ -125,33 +148,5 @@ describe("buildHostedButtonOnApprove", () => {
       })
     );
     expect.assertions(1);
-  });
-
-  test("provides its own popup for inline guest", async () => {
-    const onApprove = buildHostedButtonOnApprove({
-      hostedButtonId,
-      merchantId,
-    });
-    // $FlowIssue
-    request.mockImplementation(() =>
-      ZalgoPromise.resolve({
-        body: {},
-      })
-    );
-
-    // $FlowIssue
-    supportsPopups.mockImplementation(() => true);
-    await onApprove({ orderID, paymentSource: "card" });
-    expect(popup).toHaveBeenCalled();
-
-    // but redirects if popups are not supported
-    // $FlowIssue
-    supportsPopups.mockImplementation(() => false);
-    await onApprove({ orderID, paymentSource: "card" });
-    expect(window.location).toMatch(
-      `/ncp/payment/${hostedButtonId}/${orderID}`
-    );
-
-    expect.assertions(2);
   });
 });
