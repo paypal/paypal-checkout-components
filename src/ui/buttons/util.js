@@ -1,5 +1,5 @@
 /* @flow */
 
-export function hasBorderRadius(borderRadius?: number): boolean {
+export function isBorderRadiusNumber(borderRadius?: number): boolean {
   return typeof borderRadius === "number";
 }

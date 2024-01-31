@@ -44,6 +44,7 @@ import {
 import { getFundingConfig, isFundingEligible } from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
+import { isBorderRadiusNumber } from "./util";
 
 export type CreateOrderData = {||} | {||};
 
@@ -679,7 +680,7 @@ export function normalizeButtonStyle(
   }
 
   if (borderRadius !== undefined) {
-    if (typeof borderRadius !== "number") {
+    if (!isBorderRadiusNumber(borderRadius)) {
       throw new TypeError(
         `Expected style.borderRadius to be a number, got: ${borderRadius}`
       );

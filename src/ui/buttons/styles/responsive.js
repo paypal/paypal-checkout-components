@@ -14,7 +14,7 @@ import {
   ATTRIBUTE,
 } from "../../../constants";
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
-import { hasBorderRadius } from "../util";
+import { isBorderRadiusNumber } from "../util";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -155,7 +155,7 @@ export function buttonResponsiveStyle({
                 
                 .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
                   ${
-                    hasBorderRadius(borderRadius)
+                    borderRadius && isBorderRadiusNumber(borderRadius)
                       ? `border-radius: ${borderRadius}px`
                       : ""
                   }
@@ -175,7 +175,7 @@ export function buttonResponsiveStyle({
 
                 .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
                   ${
-                    hasBorderRadius(borderRadius)
+                    borderRadius && isBorderRadiusNumber(borderRadius)
                       ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
                       : ""
                   }
