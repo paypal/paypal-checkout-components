@@ -1,3 +1,9 @@
+## <small>5.0.296 (2024-02-01)</small>
+
+* Revert "Button Redesign: Colors 👾 (#2317)" (#2326) ([513b096](https://github.com/paypal/paypal-checkout-components/commit/513b096)), closes [#2317](https://github.com/paypal/paypal-checkout-components/issues/2317) [#2326](https://github.com/paypal/paypal-checkout-components/issues/2326)
+
+
+
 ## <small>5.0.295 (2024-01-24)</small>
 
 * remove customer wrapper from getRecommendedPaymentMethods (#2318) ([6f530be](https://github.com/paypal/paypal-checkout-components/commit/6f530be)), closes [#2318](https://github.com/paypal/paypal-checkout-components/issues/2318)
