@@ -179,6 +179,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
+    message,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -285,6 +286,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           vault={vault}
           instrument={instruments[source]}
           showPayLabel={showPayLabel}
+          message={message}
         />
       ))}
 
