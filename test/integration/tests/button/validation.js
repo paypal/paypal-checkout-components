@@ -871,7 +871,7 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: ["PAY_LATER_LONG_TERM"],
+          offer: ["pay_later_long_term"],
           color: "black",
           position: "top",
           align: "left",
@@ -882,7 +882,7 @@ const buttonConfigs = [
       {
         message: {
           amount: "100", // invalid: should be num
-          offer: ["PAY_LATER_LONG_TERM"],
+          offer: ["pay_later_long_term"],
           color: "black",
           position: "top",
           align: "left",
@@ -904,7 +904,7 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: ["PAY_LATER_LONG_TERM"],
+          offer: ["pay_later_long_term"],
           color: "blue", // invalid: value not in enum
           position: "top",
           align: "left",
@@ -915,7 +915,7 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: ["PAY_LATER_LONG_TERM"],
+          offer: ["pay_later_long_term"],
           color: "black",
           position: "right", // invalid: value not in enum
           align: "left",
@@ -926,7 +926,7 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: ["PAY_LATER_LONG_TERM"],
+          offer: ["pay_later_long_term"],
           color: "black",
           position: "top",
           align: "middle", // invalid: value not in enum
