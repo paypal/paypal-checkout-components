@@ -863,6 +863,93 @@ const buttonConfigs = [
       },
     })),
   },
+
+  {
+    name: "message",
+
+    cases: [
+      {
+        message: {
+          amount: 100,
+          offer: ["PAY_LATER_LONG_TERM"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
+
+      {
+        message: {
+          amount: "100", // invalid: should be num
+          offer: ["PAY_LATER_LONG_TERM"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
+        message: {
+          amount: 100,
+          offer: "PAY_LATER_LONG_TERM", // invalid: should be in an array
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
+        message: {
+          amount: 100,
+          offer: ["PAY_LATER_LONG_TERM"],
+          color: "blue", // invalid: value not in enum
+          position: "top",
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
+        message: {
+          amount: 100,
+          offer: ["PAY_LATER_LONG_TERM"],
+          color: "black",
+          position: "right", // invalid: value not in enum
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
+        message: {
+          amount: 100,
+          offer: ["PAY_LATER_LONG_TERM"],
+          color: "black",
+          position: "top",
+          align: "middle", // invalid: value not in enum
+        },
+        valid: false,
+      },
+
+      {
+        message: {},
+        valid: true,
+      },
+    ].map(({ message, valid }) => ({
+      desc: `message ${JSON.stringify(message)}`,
+
+      valid,
+
+      conf: {
+        createOrder: noop,
+        onApprove: noop,
+        message,
+      },
+    })),
+  },
 ];
 
 for (const group of buttonConfigs) {
