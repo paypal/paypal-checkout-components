@@ -36,7 +36,6 @@ import type {
   OnShippingChange,
   OnShippingAddressChange,
   OnShippingOptionsChange,
-  ButtonMessage,
 } from "./props";
 import { Spinner } from "./spinner";
 import { MenuButton } from "./menu-button";
@@ -66,7 +65,6 @@ type IndividualButtonProps = {|
   merchantFundingSource: ?$Values<typeof FUNDING>,
   instrument: ?WalletInstrument,
   showPayLabel: boolean,
-  message?: ButtonMessage,
 |};
 
 export function Button({
@@ -89,8 +87,6 @@ export function Button({
   experiment,
   instrument,
   showPayLabel,
-  // eslint-disable-next-line no-unused-vars
-  message,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape } = style;
 

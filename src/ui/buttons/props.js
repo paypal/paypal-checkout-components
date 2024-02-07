@@ -435,7 +435,7 @@ export type ApplePaySessionConfigRequest = (
 
 export type ButtonMessage = {|
   amount?: number,
-  offer?: $ReadOnlyArray<?$Values<typeof MESSAGE_OFFER>>,
+  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
   color?: $Values<typeof MESSAGE_COLOR>,
   position?: $Values<typeof MESSAGE_POSITION>,
   align?: $Values<typeof MESSAGE_ALIGN>,
@@ -443,7 +443,7 @@ export type ButtonMessage = {|
 
 export type ButtonMessageInputs = {|
   amount?: number | void,
-  offer?: $ReadOnlyArray<?$Values<typeof MESSAGE_OFFER>> | void,
+  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>> | void,
   color?: $Values<typeof MESSAGE_COLOR> | void,
   position?: $Values<typeof MESSAGE_POSITION> | void,
   align?: $Values<typeof MESSAGE_ALIGN> | void,
@@ -719,7 +719,7 @@ export function normalizeButtonStyle(
   };
 }
 
-export function validateButtonMessage(
+export function normalizeButtonMessage(
   props: ?ButtonPropsInputs,
   message: ButtonMessageInputs
 ): ButtonMessage {
@@ -727,19 +727,27 @@ export function validateButtonMessage(
     throw new Error(`Expected props.message to be set`);
   }
 
-  props = props || getDefaultButtonPropsInput();
-
   const { amount, offer, color, position, align } = message;
 
-  if (amount !== undefined) {
+  if (typeof amount !== "undefined") {
     if (typeof amount !== "number") {
       throw new TypeError(
-        `Expected style.height to be a number, got: ${amount}`
+        `Expected message.amount to be a number, got: ${amount}`
+      );
+    }
+    if (amount < 0) {
+      throw new TypeError(
+        `Expected message.amount to be a positive number, got: ${amount}`
       );
     }
   }
 
   if (offer) {
+    if (offer.constructor.name !== "Array") {
+      throw new TypeError(
+        `Expected message.offer to be an array of strings, got: ${offer}`
+      );
+    }
     const invalidOffers = offer.filter(
       (o) => values(MESSAGE_OFFER).indexOf(o) === -1
     );
@@ -882,7 +890,7 @@ export function normalizeButtonProps(
   }
 
   if (message) {
-    validateButtonMessage(props, message);
+    message = normalizeButtonMessage(props, message);
   }
 
   style = normalizeButtonStyle(props, style);

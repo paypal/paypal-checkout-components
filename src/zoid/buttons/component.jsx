@@ -74,7 +74,7 @@ import {
 } from "../../lib";
 import {
   normalizeButtonStyle,
-  validateButtonMessage,
+  normalizeButtonMessage,
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
@@ -886,11 +886,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "object",
         queryParam: true,
         required: false,
-        validate: ({ props, value = {} }) => {
+        decorate: ({ props, value }) => {
           // $FlowFixMe
-          validateButtonMessage(props, value);
+          return normalizeButtonMessage(props, value);
         },
-        default: () => ({}),
+        validate: ({ props, value }) => {
+          // $FlowFixMe
+          normalizeButtonMessage(props, value);
+        },
       },
     },
   });
