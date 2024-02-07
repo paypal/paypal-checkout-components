@@ -108,9 +108,11 @@
     "@krakenjs/post-robot": "^11.0.0",
     "@krakenjs/zalgo-promise": "^2.0.0",
     "@krakenjs/zoid": "^10.3.1",
+    "@paypal/applepay-components": "^1.6.0",
     "@paypal/common-components": "^1.0.35",
-    "@paypal/funding-components": "^1.0.31",
     "@paypal/connect-loader-component": "1.1.1",
+    "@paypal/funding-components": "^1.0.31",
+    "@paypal/googlepay-components": "^1.2.3",
     "@paypal/sdk-client": "^4.0.179",
     "@paypal/sdk-constants": "^1.0.133",
     "@paypal/sdk-logos": "^2.2.6"

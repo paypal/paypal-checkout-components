@@ -1,5 +1,8 @@
 /* @flow */
 
+import { Applepay } from "@paypal/applepay-components/src";
+import { Googlepay } from "@paypal/googlepay-components/src";
+
 import { getHostedButtonsComponent } from "../hosted-buttons";
 import type { HostedButtonsComponent } from "../hosted-buttons/types";
 import { getButtonsComponent } from "../zoid/buttons";
@@ -12,7 +15,10 @@ import type { LazyExport, LazyProtectedExport } from "../types";
 import { protectedExport } from "../lib";
 
 export const HostedButtons: LazyExport<HostedButtonsComponent> = {
-  __get__: () => getHostedButtonsComponent(),
+  __get__: () => {
+    console.log(Applepay, Googlepay);
+    return getHostedButtonsComponent();
+  },
 };
 
 export const Checkout: LazyProtectedExport<CheckoutComponent> = {
