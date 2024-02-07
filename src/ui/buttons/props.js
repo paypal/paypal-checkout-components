@@ -745,7 +745,9 @@ export function normalizeButtonMessage(
   if (offer) {
     if (offer.constructor.name !== "Array") {
       throw new TypeError(
-        `Expected message.offer to be an array of strings, got: ${offer}`
+        `Expected message.offer to be an array of strings, got: ${String(
+          offer
+        )}`
       );
     }
     const invalidOffers = offer.filter(
