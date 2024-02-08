@@ -904,7 +904,18 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: "PAY_LATER_LONG_TERM", // invalid: should be in an array and lowercase
+          offer: "pay_later_long_term", // invalid: should be in an array
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
+        message: {
+          amount: 100,
+          offer: ["PAY_LATER_LONG_TERM"], // invalid: should be lowercase to match enum values
           color: "black",
           position: "top",
           align: "left",
