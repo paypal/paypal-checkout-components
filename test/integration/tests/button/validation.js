@@ -892,7 +892,7 @@ const buttonConfigs = [
 
       {
         message: {
-          amount: -100, // invalid: should be positive
+          amount: -100, //  invalid: should be positive
           offer: ["pay_later_long_term"],
           color: "black",
           position: "top",
