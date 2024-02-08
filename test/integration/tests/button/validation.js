@@ -892,8 +892,19 @@ const buttonConfigs = [
 
       {
         message: {
+          amount: -100, // invalid: should be positive
+          offer: ["pay_later_long_term"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
+        message: {
           amount: 100,
-          offer: "PAY_LATER_LONG_TERM", // invalid: should be in an array
+          offer: "PAY_LATER_LONG_TERM", // invalid: should be in an array and lowercase
           color: "black",
           position: "top",
           align: "left",

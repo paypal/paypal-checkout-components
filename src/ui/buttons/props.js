@@ -543,7 +543,7 @@ export type ButtonProps = {|
   createVaultSetupToken: CreateVaultSetupToken,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   hostedButtonId?: string,
-  message: ButtonMessage,
+  message?: ButtonMessage,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -723,10 +723,6 @@ export function normalizeButtonMessage(
   props: ?ButtonPropsInputs,
   message: ButtonMessageInputs
 ): ButtonMessage {
-  if (!message) {
-    throw new Error(`Expected props.message to be set`);
-  }
-
   const { amount, offer, color, position, align } = message;
 
   if (typeof amount !== "undefined") {
@@ -736,14 +732,14 @@ export function normalizeButtonMessage(
       );
     }
     if (amount < 0) {
-      throw new TypeError(
+      throw new Error(
         `Expected message.amount to be a positive number, got: ${amount}`
       );
     }
   }
 
   if (offer) {
-    if (offer.constructor.name !== "Array") {
+    if (!Array.isArray(offer)) {
       throw new TypeError(
         `Expected message.offer to be an array of strings, got: ${String(
           offer
