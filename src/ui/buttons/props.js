@@ -746,23 +746,23 @@ export function normalizeButtonMessage(
         )}`
       );
     }
-    const invalidOffers = offer.filter(
-      (o) => values(MESSAGE_OFFER).indexOf(o) === -1
+    const invalidOffers = offer.filter((o) =>
+      values(MESSAGE_OFFER).includes(o)
     );
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
     }
   }
 
-  if (color && values(MESSAGE_COLOR).indexOf(color) === -1) {
+  if (color && values(MESSAGE_COLOR).includes(color)) {
     throw new Error(`Invalid color: ${color}`);
   }
 
-  if (position && values(MESSAGE_POSITION).indexOf(position) === -1) {
+  if (position && values(MESSAGE_POSITION).includes(position)) {
     throw new Error(`Invalid position: ${position}`);
   }
 
-  if (align && values(MESSAGE_ALIGN).indexOf(align) === -1) {
+  if (align && values(MESSAGE_ALIGN).includes(align)) {
     throw new Error(`Invalid align: ${align}`);
   }
 
@@ -887,10 +887,6 @@ export function normalizeButtonProps(
     }
   }
 
-  if (message) {
-    message = normalizeButtonMessage(props, message);
-  }
-
   style = normalizeButtonStyle(props, style);
 
   return {
@@ -925,6 +921,6 @@ export function normalizeButtonProps(
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
-    message,
+    message: message ? normalizeButtonMessage(props, message) : undefined,
   };
 }

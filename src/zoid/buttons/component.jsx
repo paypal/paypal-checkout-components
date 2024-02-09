@@ -890,10 +890,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           // $FlowFixMe
           return normalizeButtonMessage(props, value);
         },
-        validate: ({ props, value }) => {
-          // $FlowFixMe
-          normalizeButtonMessage(props, value);
-        },
       },
     },
   });
