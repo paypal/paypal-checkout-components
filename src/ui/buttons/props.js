@@ -746,23 +746,23 @@ export function normalizeButtonMessage(
         )}`
       );
     }
-    const invalidOffers = offer.filter((o) =>
-      values(MESSAGE_OFFER).includes(o)
+    const invalidOffers = offer.filter(
+      (o) => !values(MESSAGE_OFFER).includes(o)
     );
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
     }
   }
 
-  if (color && values(MESSAGE_COLOR).includes(color)) {
+  if (color && !values(MESSAGE_COLOR).includes(color)) {
     throw new Error(`Invalid color: ${color}`);
   }
 
-  if (position && values(MESSAGE_POSITION).includes(position)) {
+  if (position && !values(MESSAGE_POSITION).includes(position)) {
     throw new Error(`Invalid position: ${position}`);
   }
 
-  if (align && values(MESSAGE_ALIGN).includes(align)) {
+  if (align && !values(MESSAGE_ALIGN).includes(align)) {
     throw new Error(`Invalid align: ${align}`);
   }
 
