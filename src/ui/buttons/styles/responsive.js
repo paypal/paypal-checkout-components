@@ -14,6 +14,7 @@ import {
   ATTRIBUTE,
 } from "../../../constants";
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
+import { isBorderRadiusNumber } from "../util";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -25,10 +26,12 @@ export function buttonResponsiveStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
+  borderRadius,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
+  borderRadius?: ?number,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
@@ -55,6 +58,8 @@ export function buttonResponsiveStyle({
       );
 
       const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+
+      const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
@@ -147,14 +152,41 @@ export function buttonResponsiveStyle({
       }] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
                     line-height: ${perc(buttonHeight, 50) + 5}px;
                 }
+                
+                .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
+                  ${
+                    borderRadius && isBorderRadiusNumber(borderRadius)
+                      ? `border-radius: ${borderRadius}px`
+                      : ""
+                  }
+                }
+
+                .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
+                  border-radius: 0px;
+                }
 
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
                     border-radius: 4px;
                 }
 
                 .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
-                    border-radius: ${Math.ceil(buttonHeight / 2)}px;
+                    border-radius: ${pillBorderRadius}px;
                 }
+
+                .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
+                  ${
+                    borderRadius && isBorderRadiusNumber(borderRadius)
+                      ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
+                      : ""
+                  }
+                }
+
+                .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
+        BUTTON_SHAPE.SHARP
+      } .menu-button {
+                              border-top-right-radius: 0px;
+                              border-bottom-right-radius: 0px;
+                          }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
         BUTTON_SHAPE.RECT
@@ -166,10 +198,8 @@ export function buttonResponsiveStyle({
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
         BUTTON_SHAPE.PILL
       } .menu-button {
-                    border-top-right-radius: ${Math.ceil(buttonHeight / 2)}px;
-                    border-bottom-right-radius: ${Math.ceil(
-                      buttonHeight / 2
-                    )}px;
+                    border-top-right-radius: ${pillBorderRadius}px;
+                    border-bottom-right-radius: ${pillBorderRadius}px;
                 }
                 
                 .${CLASS.TAGLINE} .${CLASS.TEXT} {
