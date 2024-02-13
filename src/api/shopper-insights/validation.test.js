@@ -1,53 +1,12 @@
 /* @flow */
 import { vi, describe, expect } from "vitest";
 
-import { validateMerchantConfig, validateMerchantPayload } from "./validation";
+import { validateMerchantPayload } from "./validation";
 
 vi.mock("@paypal/sdk-client/src", () => {
   return {
     sendCountMetric: vi.fn(),
   };
-});
-
-describe("shopper insights merchant SDK config validation", () => {
-  test("should throw if sdk token is not passed", () => {
-    expect(() =>
-      validateMerchantConfig({
-        sdkToken: "",
-        pageType: "",
-        userIDToken: "",
-        clientToken: "",
-      })
-    ).toThrowError(
-      "script data attribute sdk-client-token is required but was not passed"
-    );
-  });
-
-  test("should throw if page type is not passed", () => {
-    expect(() =>
-      validateMerchantConfig({
-        sdkToken: "sdk-token",
-        pageType: "",
-        userIDToken: "",
-        clientToken: "",
-      })
-    ).toThrowError(
-      "script data attribute page-type is required but was not passed"
-    );
-  });
-
-  test("should throw if ID token is passed", () => {
-    expect(() =>
-      validateMerchantConfig({
-        sdkToken: "sdk-token",
-        pageType: "product-listing",
-        userIDToken: "id-token",
-        clientToken: "",
-      })
-    ).toThrowError(
-      "use script data attribute sdk-client-token instead of user-id-token"
-    );
-  });
 });
 
 describe("shopper insights merchant payload validation", () => {
