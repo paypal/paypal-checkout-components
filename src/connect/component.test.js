@@ -9,7 +9,6 @@ import {
   getSdkVersion,
   MIN_BT_VERSION,
 } from "./component";
-import { sendCountMetric } from "./sendCountMetric";
 
 vi.mock("@paypal/sdk-client/src", () => {
   return {
@@ -23,6 +22,7 @@ vi.mock("@paypal/sdk-client/src", () => {
       error: vi.fn().mockReturnThis(),
       track: vi.fn().mockReturnThis(),
       flush: vi.fn().mockReturnThis(),
+      metricCounter: vi.fn().mockReturnThis(),
     })),
     getEnv: vi.fn().mockReturnValue("mock-env"),
     getCSPNonce: vi.fn(),
@@ -36,15 +36,10 @@ vi.mock("@paypal/connect-loader-component", () => {
   };
 });
 
-vi.mock("./sendCountMetric", () => {
-  return {
-    sendCountMetric: vi.fn(),
-  };
-});
-
 describe("getConnectComponent: returns ConnectComponent", () => {
   const mockAxoMetadata = { someData: "data" };
   const mockProps = { someProp: "value" };
+
   beforeEach(() => {
     vi.clearAllMocks();
     window.braintree = {
@@ -99,7 +94,6 @@ describe("getConnectComponent: returns ConnectComponent", () => {
         env: "mock-env",
       },
     });
-    expect(sendCountMetric).toBeCalledTimes(2);
   });
 
   test("loadAxo failure is handled", async () => {
@@ -109,7 +103,6 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
       errorMessage
     );
-    expect(sendCountMetric).toHaveBeenCalledTimes(2);
   });
 
   test("connect create failure is handled", async () => {
@@ -119,7 +112,6 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
       expectedError
     );
-    expect(sendCountMetric).toBeCalledTimes(2);
   });
 
   test("minified is set according to debug value", async () => {
