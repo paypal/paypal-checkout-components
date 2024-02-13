@@ -27,7 +27,7 @@ vi.mock("@paypal/sdk-client/src", () => {
       track: vi.fn().mockReturnThis(),
       flush: vi.fn().mockReturnThis(),
     })),
-    getEnv: vi.fn(),
+    getEnv: vi.fn().mockReturnValue("mock-env"),
     getCSPNonce: vi.fn(),
     loadFraudnet: vi.fn(() => ({ collect: vi.fn() })),
   };
@@ -132,12 +132,8 @@ describe("getSdkVersion", () => {
   });
 
   test("throws error if the version passed is not supported for AXO and is not null", () => {
-    const result1 = getSdkVersion("3.96.00");
-    const result2 = getSdkVersion("2.87.alpha-test");
-    const result3 = getSdkVersion("3.34.beta-test");
-
-    expect(result1).toThrowError();
-    expect(result2).toThrowError();
-    expect(result3).toThrowError();
+    expect(() => getSdkVersion("3.96.00")).toThrowError();
+    expect(() => getSdkVersion("2.87.alpha-test")).toThrowError();
+    expect(() => getSdkVersion("3.34.beta-test")).toThrowError();
   });
 });

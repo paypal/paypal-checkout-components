@@ -62,9 +62,12 @@ module.exports = {
     entry: "./src/interface/wallet",
     globals,
   },
+  // in process of being renamed to fastlane
   connect: {
     entry: "./src/connect/interface",
-    globals,
+  },
+  fastlane: {
+    entry: "./src/connect/interface",
   },
   // @deprecated - renamed to payment-fields to be removed
   fields: {
