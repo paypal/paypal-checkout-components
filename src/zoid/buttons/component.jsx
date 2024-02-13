@@ -72,7 +72,11 @@ import {
   logLatencyInstrumentationPhase,
   prepareInstrumentationPayload,
 } from "../../lib";
-import { normalizeButtonStyle, type ButtonProps } from "../../ui/buttons/props";
+import {
+  normalizeButtonStyle,
+  normalizeButtonMessage,
+  type ButtonProps,
+} from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
 
 import { containerTemplate } from "./container";
@@ -875,6 +879,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: ({ props }) => {
           return props?.displayOnly || [];
+        },
+      },
+
+      message: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        decorate: ({ props, value }) => {
+          // $FlowFixMe
+          return normalizeButtonMessage(props, value);
         },
       },
     },

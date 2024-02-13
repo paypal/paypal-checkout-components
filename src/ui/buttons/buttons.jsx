@@ -179,6 +179,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
+    // eslint-disable-next-line no-unused-vars
+    message,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 

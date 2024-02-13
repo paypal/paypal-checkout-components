@@ -40,6 +40,10 @@ import {
   BUTTON_SIZE,
   BUTTON_FLOW,
   MENU_PLACEMENT,
+  MESSAGE_OFFER,
+  MESSAGE_COLOR,
+  MESSAGE_POSITION,
+  MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
 
@@ -429,6 +433,22 @@ export type ApplePaySessionConfigRequest = (
   request: Object
 ) => ApplePaySessionConfig;
 
+export type ButtonMessage = {|
+  amount?: number,
+  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
+  color?: $Values<typeof MESSAGE_COLOR>,
+  position?: $Values<typeof MESSAGE_POSITION>,
+  align?: $Values<typeof MESSAGE_ALIGN>,
+|};
+
+export type ButtonMessageInputs = {|
+  amount?: number | void,
+  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>> | void,
+  color?: $Values<typeof MESSAGE_COLOR> | void,
+  position?: $Values<typeof MESSAGE_POSITION> | void,
+  align?: $Values<typeof MESSAGE_ALIGN> | void,
+|};
+
 export type RenderButtonProps = {|
   style: ButtonStyle,
   locale: LocaleType,
@@ -463,6 +483,7 @@ export type RenderButtonProps = {|
   supportedNativeBrowser: boolean,
   showPayLabel: boolean,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  message?: ButtonMessage,
 |};
 
 export type PrerenderDetails = {|
@@ -522,6 +543,7 @@ export type ButtonProps = {|
   createVaultSetupToken: CreateVaultSetupToken,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   hostedButtonId?: string,
+  message?: ButtonMessage,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -564,6 +586,7 @@ export type ButtonPropsInputs = {
   supportedNativeBrowser: boolean,
   showPayLabel: boolean,
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  message?: ButtonMessageInputs | void,
 };
 
 export const DEFAULT_STYLE = {
@@ -696,6 +719,62 @@ export function normalizeButtonStyle(
   };
 }
 
+export function normalizeButtonMessage(
+  props: ?ButtonPropsInputs,
+  message: ButtonMessageInputs
+): ButtonMessage {
+  const { amount, offer, color, position, align } = message;
+
+  if (typeof amount !== "undefined") {
+    if (typeof amount !== "number") {
+      throw new TypeError(
+        `Expected message.amount to be a number, got: ${amount}`
+      );
+    }
+    if (amount < 0) {
+      throw new Error(
+        `Expected message.amount to be a positive number, got: ${amount}`
+      );
+    }
+  }
+
+  if (offer) {
+    if (!Array.isArray(offer)) {
+      throw new TypeError(
+        `Expected message.offer to be an array of strings, got: ${String(
+          offer
+        )}`
+      );
+    }
+    const invalidOffers = offer.filter(
+      (o) => !values(MESSAGE_OFFER).includes(o)
+    );
+    if (invalidOffers.length > 0) {
+      throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
+    }
+  }
+
+  if (color && !values(MESSAGE_COLOR).includes(color)) {
+    throw new Error(`Invalid color: ${color}`);
+  }
+
+  if (position && !values(MESSAGE_POSITION).includes(position)) {
+    throw new Error(`Invalid position: ${position}`);
+  }
+
+  if (align && !values(MESSAGE_ALIGN).includes(align)) {
+    throw new Error(`Invalid align: ${align}`);
+  }
+
+  return {
+    amount,
+    offer,
+    color,
+    position,
+    align,
+  };
+}
+
 const COUNTRIES = values(COUNTRY);
 const FUNDING_SOURCES = values(FUNDING);
 const ENVS = values(ENV);
@@ -750,6 +829,7 @@ export function normalizeButtonProps(
     supportedNativeBrowser = false,
     showPayLabel = true,
     displayOnly = [],
+    message,
   } = props;
 
   const { country, lang } = locale;
@@ -841,5 +921,6 @@ export function normalizeButtonProps(
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
+    message: message ? normalizeButtonMessage(props, message) : undefined,
   };
 }
