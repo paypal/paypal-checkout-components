@@ -59,6 +59,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
   test("uses user id token if no sdk token is present", async () => {
     // $FlowIssue
     getUserIDToken.mockReturnValue("user-id-token");
+    // $FlowIssue
     getSDKToken.mockReturnValue(undefined);
 
     await getConnectComponent(mockProps);
@@ -81,6 +82,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
   test("uses sdk token if present", async () => {
     // $FlowIssue
     getUserIDToken.mockReturnValue("user-id-token");
+    // $FlowIssue
     getSDKToken.mockReturnValue("sdk-client-token");
 
     await getConnectComponent(mockProps);
