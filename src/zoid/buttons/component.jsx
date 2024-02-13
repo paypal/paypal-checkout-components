@@ -776,7 +776,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
-      sdkIntegrationSource: {
+      jsSdkLibrary: {
         type: "string",
         queryParam: true,
         required: false,
