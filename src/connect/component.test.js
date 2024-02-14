@@ -1,10 +1,6 @@
 /* @flow */
 
-import {
-  getClientID,
-  getClientMetadataID,
-  getUserIDToken,
-} from "@paypal/sdk-client/src";
+import { getUserIDToken, getSDKToken } from "@paypal/sdk-client/src";
 import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
 
@@ -20,6 +16,7 @@ vi.mock("@paypal/sdk-client/src", () => {
     getClientID: vi.fn(() => "mock-client-id"),
     getClientMetadataID: vi.fn(() => "mock-cmid"),
     getUserIDToken: vi.fn(() => "mock-uid"),
+    getSDKToken: vi.fn().mockReturnValue("mock-sdk-token"),
     getDebug: vi.fn(() => false),
     getLogger: vi.fn(() => ({
       metric: vi.fn().mockReturnThis(),
@@ -27,7 +24,7 @@ vi.mock("@paypal/sdk-client/src", () => {
       track: vi.fn().mockReturnThis(),
       flush: vi.fn().mockReturnThis(),
     })),
-    getEnv: vi.fn(),
+    getEnv: vi.fn().mockReturnValue("mock-env"),
     getCSPNonce: vi.fn(),
     loadFraudnet: vi.fn(() => ({ collect: vi.fn() })),
   };
@@ -59,13 +56,13 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     loadAxo.mockResolvedValue({ metadata: mockAxoMetadata });
   });
 
-  test("loadAxo and window.braintree.connect.create are called with proper data", async () => {
-    await getConnectComponent(mockProps);
+  test("uses user id token if no sdk token is present", async () => {
+    // $FlowIssue
+    getUserIDToken.mockReturnValue("user-id-token");
+    // $FlowIssue
+    getSDKToken.mockReturnValue(undefined);
 
-    expect(getClientID).toHaveBeenCalled();
-    expect(getClientMetadataID).toHaveBeenCalled();
-    expect(getUserIDToken).toHaveBeenCalled();
-    expect(loadAxo).toHaveBeenCalled();
+    await getConnectComponent(mockProps);
 
     expect(window.braintree.connect.create).toHaveBeenCalledWith({
       ...mockAxoMetadata,
@@ -74,7 +71,30 @@ describe("getConnectComponent: returns ConnectComponent", () => {
         platform: "PPCP",
         clientId: "mock-client-id",
         clientMetadataId: "mock-cmid",
-        userIdToken: "mock-uid",
+        userIdToken: "user-id-token",
+        fraudnet: expect.any(Function),
+        env: "mock-env",
+      },
+    });
+    expect(sendCountMetric).toBeCalledTimes(2);
+  });
+
+  test("uses sdk token if present", async () => {
+    // $FlowIssue
+    getUserIDToken.mockReturnValue("user-id-token");
+    // $FlowIssue
+    getSDKToken.mockReturnValue("sdk-client-token");
+
+    await getConnectComponent(mockProps);
+
+    expect(window.braintree.connect.create).toHaveBeenCalledWith({
+      ...mockAxoMetadata,
+      ...mockProps,
+      platformOptions: {
+        platform: "PPCP",
+        clientId: "mock-client-id",
+        clientMetadataId: "mock-cmid",
+        userIdToken: "sdk-client-token",
         fraudnet: expect.any(Function),
         env: "mock-env",
       },
@@ -132,12 +152,8 @@ describe("getSdkVersion", () => {
   });
 
   test("throws error if the version passed is not supported for AXO and is not null", () => {
-    const result1 = getSdkVersion("3.96.00");
-    const result2 = getSdkVersion("2.87.alpha-test");
-    const result3 = getSdkVersion("3.34.beta-test");
-
-    expect(result1).toThrowError();
-    expect(result2).toThrowError();
-    expect(result3).toThrowError();
+    expect(() => getSdkVersion("3.96.00")).toThrowError();
+    expect(() => getSdkVersion("2.87.alpha-test")).toThrowError();
+    expect(() => getSdkVersion("3.34.beta-test")).toThrowError();
   });
 });
