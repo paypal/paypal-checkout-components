@@ -891,6 +891,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return normalizeButtonMessage(props, value);
         },
       },
+
+      messageMarkup: {
+        type: "string",
+        queryParam: true,
+        required: false,
+      },
     },
   });
 });

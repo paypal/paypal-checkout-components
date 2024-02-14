@@ -15,6 +15,7 @@ import {
   BUTTON_NUMBER,
   BUTTON_LAYOUT,
   BUTTON_FLOW,
+  MESSAGE_POSITION,
 } from "../../constants";
 import {
   determineEligibleFunding,
@@ -36,6 +37,7 @@ import { Button } from "./button";
 import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
+import { Message } from "./message";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -150,6 +152,47 @@ export function validateButtonProps(props: ButtonPropsInputs) {
   normalizeButtonProps(props);
 }
 
+function calculateMsgPosition({
+  message,
+  tagline,
+  layout,
+  fundingSources,
+  fundingSource,
+}): string {
+  if (!message) {
+    return null;
+  }
+  const { position } = message;
+  // Cases for throwing an error
+  if (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource) {
+    throw new ValidationError("Button cannot show both Message and Tagline.");
+  }
+  if (
+    fundingSources.indexOf(FUNDING.CARD) !== -1 &&
+    position === MESSAGE_POSITION.BOTTOM
+  ) {
+    throw new ValidationError(
+      "Message position must be 'top' when Debit and/or Credit Card is a funding source"
+    );
+  }
+  // Position selection
+  if (
+    fundingSources.indexOf(FUNDING.CARD) !== -1 ||
+    position === MESSAGE_POSITION.TOP ||
+    (layout === BUTTON_LAYOUT.VERTICAL && !position)
+  ) {
+    return MESSAGE_POSITION.TOP;
+  } else if (
+    (layout === BUTTON_LAYOUT.VERTICAL &&
+      position === MESSAGE_POSITION.BOTTOM) ||
+    position === MESSAGE_POSITION.BOTTOM ||
+    layout === BUTTON_LAYOUT.HORIZONTAL ||
+    layout
+  ) {
+    return MESSAGE_POSITION.BOTTOM;
+  }
+}
+
 export function Buttons(props: ButtonsProps): ElementNode {
   const { onClick = noop } = props;
   const {
@@ -179,8 +222,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
-    // eslint-disable-next-line no-unused-vars
     message,
+    messageMarkup,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -242,6 +285,14 @@ export function Buttons(props: ButtonsProps): ElementNode {
     return i;
   };
 
+  const calculatedMsgPosition = calculateMsgPosition({
+    message,
+    tagline,
+    layout,
+    fundingSources,
+    fundingSource,
+  });
+
   return (
     <div
       class={[
@@ -260,6 +311,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
         style={style}
         fundingEligibility={fundingEligibility}
       />
+
+      {message && calculatedMsgPosition === MESSAGE_POSITION.TOP ? (
+        <Message messageMarkup={messageMarkup} />
+      ) : null}
 
       {fundingSources.map((source, i) => (
         <Button
@@ -315,6 +370,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
       {layout === BUTTON_LAYOUT.VERTICAL &&
       fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
         <PoweredByPayPal locale={locale} nonce={nonce} />
+      ) : null}
+
+      {message && calculatedMsgPosition === MESSAGE_POSITION.BOTTOM ? (
+        <Message messageMarkup={messageMarkup} />
       ) : null}
 
       {buttonDesignScript ? (
