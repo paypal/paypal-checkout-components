@@ -39,6 +39,7 @@ import type {
 } from "./props";
 import { Spinner } from "./spinner";
 import { MenuButton } from "./menu-button";
+import { isBorderRadiusNumber } from "./util";
 
 type IndividualButtonProps = {|
   style: ButtonStyle,
@@ -88,7 +89,7 @@ export function Button({
   instrument,
   showPayLabel,
 }: IndividualButtonProps): ElementNode {
-  const { layout, shape } = style;
+  const { layout, shape, borderRadius } = style;
 
   const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -261,6 +262,9 @@ export function Button({
 
   const shouldShowWalletMenu =
     isWallet && instrument && showWalletMenu({ instrument, userIDToken });
+  const borderRadiusClass = isBorderRadiusNumber(borderRadius)
+    ? CLASS.BORDER_RADIUS
+    : `${CLASS.SHAPE}-${shape}`;
 
   return (
     <div
@@ -268,7 +272,6 @@ export function Button({
         CLASS.BUTTON_ROW,
         `${CLASS.NUMBER}-${i}`,
         `${CLASS.LAYOUT}-${layout}`,
-        `${CLASS.SHAPE}-${shape}`,
         `${CLASS.NUMBER}-${
           multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE
         }`,
@@ -279,6 +282,7 @@ export function Button({
         `${isWallet ? CLASS.WALLET : ""}`,
         `${shouldShowWalletMenu ? CLASS.WALLET_MENU : ""}`,
         `${buttonDesignContainerClass}`,
+        `${borderRadiusClass}`,
       ].join(" ")}
     >
       <div
@@ -300,7 +304,6 @@ export function Button({
           CLASS.BUTTON,
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,
-          `${CLASS.SHAPE}-${shape}`,
           `${CLASS.NUMBER}-${
             multiple ? BUTTON_NUMBER.MULTIPLE : BUTTON_NUMBER.SINGLE
           }`,
@@ -309,6 +312,7 @@ export function Button({
           `${CLASS.TEXT_COLOR}-${textColor}`,
           `${LOGO_CLASS.LOGO_COLOR}-${logoColor}`,
           `${isWallet ? CLASS.WALLET : ""}`,
+          `${borderRadiusClass}`,
         ].join(" ")}
         onClick={clickHandler}
         onRender={onButtonRender}

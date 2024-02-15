@@ -5,6 +5,7 @@ import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
+  getSDKToken,
   getLogger,
   getEnv,
   loadFraudnet,
@@ -52,7 +53,7 @@ export function getSdkVersion(version: string | null): string {
 export const getConnectComponent = async (merchantProps = {}) => {
   const cmid = getClientMetadataID() || getSessionID();
   const clientId = getClientID();
-  const userIdToken = getUserIDToken();
+  const sdkToken = getSDKToken() || getUserIDToken();
   const env = getEnv();
   const cspNonce = getCSPNonce();
 
@@ -107,7 +108,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
       ...merchantProps, // AXO specific props
       platformOptions: {
         platform: "PPCP",
-        userIdToken,
+        userIdToken: sdkToken,
         clientId,
         fraudnet: collect,
         clientMetadataId: cmid,
