@@ -1,9 +1,10 @@
 ---
-name: 📙 Documentation issue report
+name: "\U0001F4D9 Documentation issue report"
 about: Report an issue in PayPal Developer Docs.
 title: "[Documentation] Documentation issue report"
-labels: "docs"
-assignees: ""
+labels: ''
+assignees: ''
+
 ---
 
 ### 📙 Describe the Issue
