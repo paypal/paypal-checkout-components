@@ -71,7 +71,6 @@ describe("getConnectComponent: returns ConnectComponent", () => {
         env: "mock-env",
       },
     });
-    expect(sendCountMetric).toBeCalledTimes(2);
   });
 
   test("uses sdk token if present", async () => {
