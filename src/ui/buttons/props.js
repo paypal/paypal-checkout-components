@@ -623,7 +623,7 @@ export function normalizeButtonStyle(
   }
 
   props = props || getDefaultButtonPropsInput();
-  const { fundingSource } = props;
+  const { fundingSource, message } = props;
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -642,7 +642,7 @@ export function normalizeButtonStyle(
       ? BUTTON_LAYOUT.HORIZONTAL
       : fundingConfig.layouts[0],
     shape = fundingConfig.shapes[0],
-    tagline = layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource,
+    tagline = layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource && !message,
     height,
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,

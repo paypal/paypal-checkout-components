@@ -152,23 +152,22 @@ export function validateButtonProps(props: ButtonPropsInputs) {
   normalizeButtonProps(props);
 }
 
-function calculateMsgPosition({
+function calculateMessagePosition({
   message,
-  tagline,
-  layout,
+  showTagline,
   fundingSources,
-  fundingSource,
+  layout,
 }): string {
   if (!message) {
     return null;
   }
   const { position } = message;
   // Cases for throwing an error
-  if (tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource) {
+  if (showTagline) {
     throw new ValidationError("Button cannot show both Message and Tagline.");
   }
   if (
-    fundingSources.indexOf(FUNDING.CARD) !== -1 &&
+    fundingSources.includes(FUNDING.CARD) &&
     position === MESSAGE_POSITION.BOTTOM
   ) {
     throw new ValidationError(
@@ -177,20 +176,13 @@ function calculateMsgPosition({
   }
   // Position selection
   if (
-    fundingSources.indexOf(FUNDING.CARD) !== -1 ||
+    fundingSources.includes(FUNDING.CARD) ||
     position === MESSAGE_POSITION.TOP ||
     (layout === BUTTON_LAYOUT.VERTICAL && !position)
   ) {
     return MESSAGE_POSITION.TOP;
-  } else if (
-    (layout === BUTTON_LAYOUT.VERTICAL &&
-      position === MESSAGE_POSITION.BOTTOM) ||
-    position === MESSAGE_POSITION.BOTTOM ||
-    layout === BUTTON_LAYOUT.HORIZONTAL ||
-    layout
-  ) {
-    return MESSAGE_POSITION.BOTTOM;
   }
+  return MESSAGE_POSITION.BOTTOM;
 }
 
 export function Buttons(props: ButtonsProps): ElementNode {
@@ -285,12 +277,17 @@ export function Buttons(props: ButtonsProps): ElementNode {
     return i;
   };
 
-  const calculatedMsgPosition = calculateMsgPosition({
+  const showTagline =
+    tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource;
+
+  const showPoweredBy =
+    layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD);
+
+  const calculatedMessagePosition = calculateMessagePosition({
     message,
-    tagline,
-    layout,
+    showTagline,
     fundingSources,
-    fundingSource,
+    layout,
   });
 
   return (
@@ -312,9 +309,13 @@ export function Buttons(props: ButtonsProps): ElementNode {
         fundingEligibility={fundingEligibility}
       />
 
-      {message && calculatedMsgPosition === MESSAGE_POSITION.TOP ? (
-        <Message messageMarkup={messageMarkup} />
-      ) : null}
+      {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
+        <Message
+          messageMarkup={messageMarkup}
+          calculatedMessagePosition={calculatedMessagePosition}
+        />
+      ) : // <Message props={{messageMarkup, calculatedMessagePosition}} />
+      null}
 
       {fundingSources.map((source, i) => (
         <Button
@@ -345,7 +346,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ))}
 
-      {tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource ? (
+      {showTagline ? (
         <TagLine
           fundingSource={fundingSources[0]}
           style={style}
@@ -367,14 +368,15 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {layout === BUTTON_LAYOUT.VERTICAL &&
-      fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
-        <PoweredByPayPal locale={locale} nonce={nonce} />
-      ) : null}
+      {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
 
-      {message && calculatedMsgPosition === MESSAGE_POSITION.BOTTOM ? (
-        <Message messageMarkup={messageMarkup} />
-      ) : null}
+      {message && calculatedMessagePosition === MESSAGE_POSITION.BOTTOM ? (
+        <Message
+          messageMarkup={messageMarkup}
+          calculatedMessagePosition={calculatedMessagePosition}
+        />
+      ) : // <Message props={{messageMarkup, calculatedMessagePosition}} />
+      null}
 
       {buttonDesignScript ? (
         <ButtonDesignExperimentScriptWrapper
