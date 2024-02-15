@@ -5,7 +5,9 @@ import { validateMerchantConfig, validateMerchantPayload } from "./validation";
 
 vi.mock("@paypal/sdk-client/src", () => {
   return {
-    sendCountMetric: vi.fn(),
+    getLogger: () => ({
+      metricCounter: vi.fn().mockReturnThis(),
+    }),
   };
 });
 

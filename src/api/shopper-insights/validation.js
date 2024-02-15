@@ -1,7 +1,6 @@
 /* @flow */
 
-// eslint-disable-next-line import/no-deprecated
-import { sendCountMetric } from "@paypal/sdk-client/src";
+import { getLogger } from "@paypal/sdk-client/src";
 
 import {
   SHOPPER_INSIGHTS_METRIC_NAME,
@@ -22,10 +21,10 @@ export function validateMerchantConfig({
   userIDToken,
   clientToken,
 }: MerchantConfigParams) {
+  const logger = getLogger();
   if (!sdkToken) {
-    // eslint-disable-next-line import/no-deprecated
-    sendCountMetric({
-      name: SHOPPER_INSIGHTS_METRIC_NAME,
+    logger.metricCounter({
+      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
@@ -39,9 +38,8 @@ export function validateMerchantConfig({
   }
 
   if (!pageType) {
-    // eslint-disable-next-line import/no-deprecated
-    sendCountMetric({
-      name: SHOPPER_INSIGHTS_METRIC_NAME,
+    logger.metricCounter({
+      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
@@ -55,9 +53,8 @@ export function validateMerchantConfig({
   }
 
   if (userIDToken) {
-    // eslint-disable-next-line import/no-deprecated
-    sendCountMetric({
-      name: SHOPPER_INSIGHTS_METRIC_NAME,
+    logger.metricCounter({
+      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
