@@ -39,7 +39,7 @@ import {
   getDisableSetCookie,
   getExperimentation,
   getSDKAttribute,
-  getSDKIntegrationSource,
+  getJsSdkLibrary,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -614,7 +614,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         queryParam: true,
         required: false,
-        value: getSDKIntegrationSource,
+        value: getJsSdkLibrary,
       },
 
       locale: {
