@@ -8,25 +8,19 @@ import { CLASS } from "../../constants";
 const INITIAL_RESERVED_HEIGHT = "36px";
 
 type MessageProps = {|
-  messageMarkup: ?string,
-  calculatedMsgPosition: string,
+  markup: ?string,
+  position: string,
 |};
 
-export function Message({
-  messageMarkup,
-  calculatedMessagePosition,
-}: MessageProps): ChildType {
-  const reservationDiv = `<div class="${CLASS.BUTTON_MESSAGE_RESERVE}" style="height:${INITIAL_RESERVED_HEIGHT}" ><p>test</p></div>`;
+export function Message({ markup, position }: MessageProps): ChildType {
+  const reservationDiv = `<div class="${CLASS.BUTTON_MESSAGE_RESERVE}" style="height:${INITIAL_RESERVED_HEIGHT}" ></div>`;
 
   return (
     <div
-      class={[
-        CLASS.BUTTON_MESSAGE,
-        `${CLASS.BUTTON_MESSAGE}-${calculatedMessagePosition}`,
-      ].join(" ")}
-      innerHTML={
-        typeof messageMarkup === "string" ? messageMarkup : reservationDiv
-      }
+      class={[CLASS.BUTTON_MESSAGE, `${CLASS.BUTTON_MESSAGE}-${position}`].join(
+        " "
+      )}
+      innerHTML={typeof markup === "string" ? markup : reservationDiv}
     />
   );
 }

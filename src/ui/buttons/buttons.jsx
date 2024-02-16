@@ -152,31 +152,20 @@ export function validateButtonProps(props: ButtonPropsInputs) {
   normalizeButtonProps(props);
 }
 
-function calculateMessagePosition({
-  message,
-  showTagline,
-  fundingSources,
-  layout,
-}): string {
+function calculateMessagePosition({ message, showPoweredBy, layout }): string {
   if (!message) {
-    return null;
+    return "no message";
   }
   const { position } = message;
-  // Cases for throwing an error
-  if (showTagline) {
-    throw new ValidationError("Button cannot show both Message and Tagline.");
-  }
-  if (
-    fundingSources.includes(FUNDING.CARD) &&
-    position === MESSAGE_POSITION.BOTTOM
-  ) {
+
+  if (showPoweredBy && position === MESSAGE_POSITION.BOTTOM) {
     throw new ValidationError(
       "Message position must be 'top' when Debit and/or Credit Card is a funding source"
     );
   }
-  // Position selection
+
   if (
-    fundingSources.includes(FUNDING.CARD) ||
+    showPoweredBy ||
     position === MESSAGE_POSITION.TOP ||
     (layout === BUTTON_LAYOUT.VERTICAL && !position)
   ) {
@@ -278,15 +267,16 @@ export function Buttons(props: ButtonsProps): ElementNode {
   };
 
   const showTagline =
-    tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource;
-
+    tagline &&
+    layout === BUTTON_LAYOUT.HORIZONTAL &&
+    !fundingSource &&
+    !message;
   const showPoweredBy =
     layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD);
 
   const calculatedMessagePosition = calculateMessagePosition({
     message,
-    showTagline,
-    fundingSources,
+    showPoweredBy,
     layout,
   });
 
@@ -310,12 +300,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
       />
 
       {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
-        <Message
-          messageMarkup={messageMarkup}
-          calculatedMessagePosition={calculatedMessagePosition}
-        />
-      ) : // <Message props={{messageMarkup, calculatedMessagePosition}} />
-      null}
+        <Message markup={messageMarkup} position={calculatedMessagePosition} />
+      ) : null}
 
       {fundingSources.map((source, i) => (
         <Button
@@ -371,12 +357,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
       {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
 
       {message && calculatedMessagePosition === MESSAGE_POSITION.BOTTOM ? (
-        <Message
-          messageMarkup={messageMarkup}
-          calculatedMessagePosition={calculatedMessagePosition}
-        />
-      ) : // <Message props={{messageMarkup, calculatedMessagePosition}} />
-      null}
+        <Message markup={messageMarkup} position={calculatedMessagePosition} />
+      ) : null}
 
       {buttonDesignScript ? (
         <ButtonDesignExperimentScriptWrapper

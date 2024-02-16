@@ -1,9 +1,10 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { wrapPromise } from "@krakenjs/belter/src";
+import { wrapPromise, getElement } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 
+import { CLASS } from "../../../../src/constants";
 import {
   assert,
   getElementRecursive,
@@ -120,20 +121,6 @@ describe(`paypal button message`, () => {
   });
 
   describe("error handling", () => {
-    it("should throw error when tagline would also appear", () => {
-      return wrapPromise(({ expect }) => {
-        window.paypal
-          .Buttons({
-            message: {},
-            style: {
-              tagline: true,
-              layout: "horizontal",
-            },
-            onError: expect("onError"),
-          })
-          .render("#testContainer");
-      });
-    });
     it("should throw error when position is bottom and credit/debit is a funding source", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -151,9 +138,38 @@ describe(`paypal button message`, () => {
     });
   });
 
+  describe(`prop considerations`, () => {
+    it("message should take precedence over tagline when both are truthy", (done) => {
+      window.paypal
+        .Buttons({
+          style: {
+            layout: "horizontal",
+            tagline: true,
+          },
+          message: {},
+          test: {
+            onRender() {
+              const frame = getElement("#testContainer iframe");
+              // $FlowFixMe
+              const win = frame.contentWindow;
+              const tagline = win.document.body.querySelector(CLASS.TAGLINE);
+
+              if (tagline) {
+                done(new Error(`Expected tagline not to render`));
+              }
+
+              assert.ok(getElementRecursive(".paypal-button-message-bottom"));
+              done();
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+  });
+
   describe(`placement`, () => {
     describe("horizontal layout", () => {
-      it("should place button on bottom by default", (done) => {
+      it("should place message on bottom by default", (done) => {
         window.paypal
           .Buttons({
             style: {
@@ -169,7 +185,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on top when position is top", (done) => {
+      it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
             style: {
@@ -187,7 +203,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on bottom when position is bottom", (done) => {
+      it("should place message on bottom when position is bottom", (done) => {
         window.paypal
           .Buttons({
             style: {
@@ -205,16 +221,27 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it.skip("should place button on top when no position is specified and credit/debit is a funding source", (done) => {
+      it("should place message on bottom when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
             style: {
               layout: "horizontal",
             },
             message: {},
+            fundingEligibility: {
+              credit: {
+                eligible: false,
+              },
+              paypal: {
+                eligible: true,
+              },
+              card: {
+                eligible: true,
+              },
+            },
             test: {
               onRender() {
-                assert.ok(getElementRecursive(".paypal-button-message-top"));
+                assert.ok(getElementRecursive(".paypal-button-message-bottom"));
                 done();
               },
             },
@@ -223,7 +250,7 @@ describe(`paypal button message`, () => {
       });
     });
     describe("vertical layout", () => {
-      it("should place button on top by default", (done) => {
+      it("should place message on top by default", (done) => {
         window.paypal
           .Buttons({
             style: {
@@ -239,7 +266,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on top when position is top", (done) => {
+      it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
             style: {
@@ -257,7 +284,8 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it.skip("should place button on bottom when position is bottom", (done) => {
+      it.skip("should place message on bottom when position is bottom and credit/debit is NOT a funding source", (done) => {
+        // skipped because fundingEligibility doesn't seem to be respected as passed in in this test, but confirmed to work as intended on demo page
         window.paypal
           .Buttons({
             style: {
@@ -265,6 +293,17 @@ describe(`paypal button message`, () => {
             },
             message: {
               position: "bottom",
+            },
+            fundingEligibility: {
+              credit: {
+                eligible: true,
+              },
+              paypal: {
+                eligible: true,
+              },
+              card: {
+                eligible: false,
+              },
             },
             test: {
               onRender() {
@@ -275,13 +314,24 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on top when no position is specified and credit/debit is a funding source", (done) => {
+      it("should place message on top when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
             style: {
               layout: "vertical",
             },
             message: {},
+            fundingEligibility: {
+              credit: {
+                eligible: false,
+              },
+              paypal: {
+                eligible: true,
+              },
+              card: {
+                eligible: true,
+              },
+            },
             test: {
               onRender() {
                 assert.ok(getElementRecursive(".paypal-button-message-top"));
@@ -293,7 +343,7 @@ describe(`paypal button message`, () => {
       });
     });
     describe("standalone layout", () => {
-      it("should place button on bottom by default", (done) => {
+      it("should place message on bottom by default", (done) => {
         window.paypal
           .Buttons({
             fundingSource: FUNDING.PAYPAL,
@@ -307,7 +357,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on top when position is top", (done) => {
+      it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
             fundingSource: FUNDING.PAYPAL,
@@ -323,7 +373,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on bottom when position is bottom", (done) => {
+      it("should place message on bottom when position is bottom", (done) => {
         window.paypal
           .Buttons({
             fundingSource: FUNDING.PAYPAL,
@@ -339,14 +389,14 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should place button on top when no position is specified and credit/debit is a funding source", (done) => {
+      it("should place message on bottom when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
             fundingSource: FUNDING.CARD,
             message: {},
             test: {
               onRender() {
-                assert.ok(getElementRecursive(".paypal-button-message-top"));
+                assert.ok(getElementRecursive(".paypal-button-message-bottom"));
                 done();
               },
             },
