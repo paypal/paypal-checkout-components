@@ -1,5 +1,6 @@
 /* @flow */
 
+// eslint-disable-next-line import/no-deprecated
 import { sendCountMetric } from "@paypal/sdk-client/src";
 
 import {
@@ -22,6 +23,7 @@ export function validateMerchantConfig({
   clientToken,
 }: MerchantConfigParams) {
   if (!sdkToken) {
+    // eslint-disable-next-line import/no-deprecated
     sendCountMetric({
       name: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
@@ -37,6 +39,7 @@ export function validateMerchantConfig({
   }
 
   if (!pageType) {
+    // eslint-disable-next-line import/no-deprecated
     sendCountMetric({
       name: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
@@ -52,6 +55,7 @@ export function validateMerchantConfig({
   }
 
   if (userIDToken) {
+    // eslint-disable-next-line import/no-deprecated
     sendCountMetric({
       name: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
