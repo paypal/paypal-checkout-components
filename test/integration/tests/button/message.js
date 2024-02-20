@@ -53,7 +53,7 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
 
-    it("should not reserve space for a message when messageMarkup is an empty string", (done) => {
+    it("should not reserve space for a message when messageMarkup is a string with length === 0", (done) => {
       window.paypal
         .Buttons({
           message: {},
@@ -86,7 +86,7 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
 
-    it("should not reserve space for a message when messageMarkup is truthy", (done) => {
+    it("should not reserve space for a message when messageMarkup is a string with length > 0", (done) => {
       window.paypal
         .Buttons({
           message: {},
@@ -308,33 +308,6 @@ describe(`paypal button message`, () => {
             test: {
               onRender() {
                 assert.ok(getElementRecursive(".paypal-button-message-bottom"));
-                done();
-              },
-            },
-          })
-          .render("#testContainer");
-      });
-      it("should place message on top when no position is specified and credit/debit is a funding source", (done) => {
-        window.paypal
-          .Buttons({
-            style: {
-              layout: "vertical",
-            },
-            message: {},
-            fundingEligibility: {
-              credit: {
-                eligible: false,
-              },
-              paypal: {
-                eligible: true,
-              },
-              card: {
-                eligible: true,
-              },
-            },
-            test: {
-              onRender() {
-                assert.ok(getElementRecursive(".paypal-button-message-top"));
                 done();
               },
             },

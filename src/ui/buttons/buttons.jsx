@@ -154,13 +154,13 @@ export function validateButtonProps(props: ButtonPropsInputs) {
 
 function calculateMessagePosition({ message, showPoweredBy, layout }): string {
   if (!message) {
-    return "no message";
+    return "none";
   }
   const { position } = message;
 
   if (showPoweredBy && position === MESSAGE_POSITION.BOTTOM) {
     throw new ValidationError(
-      "Message position must be 'top' when Debit and/or Credit Card is a funding source"
+      "Message position must be 'top' when Debit and/or Credit Card button is present"
     );
   }
 
@@ -300,7 +300,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
       />
 
       {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
-        <Message markup={messageMarkup} position={calculatedMessagePosition} />
+        <Message
+          markup={messageMarkup}
+          position={(calculatedMessagePosition: string)}
+        />
       ) : null}
 
       {fundingSources.map((source, i) => (
@@ -356,7 +359,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
       {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
 
-      {message && calculatedMessagePosition === MESSAGE_POSITION.BOTTOM ? (
+      {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
         <Message markup={messageMarkup} position={calculatedMessagePosition} />
       ) : null}
 
