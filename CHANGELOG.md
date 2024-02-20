@@ -1,3 +1,9 @@
+## <small>5.0.298 (2024-02-20)</small>
+
+* update metrics with new interface and namespace (#2332) ([e871cfe](https://github.com/paypal/paypal-checkout-components/commit/e871cfe)), closes [#2332](https://github.com/paypal/paypal-checkout-components/issues/2332)
+
+
+
 ## <small>5.0.297 (2024-02-14)</small>
 
 * prepare to move Connect name to Fastlane (#2333) ([d8d1f3c](https://github.com/paypal/paypal-checkout-components/commit/d8d1f3c)), closes [#2333](https://github.com/paypal/paypal-checkout-components/issues/2333)
