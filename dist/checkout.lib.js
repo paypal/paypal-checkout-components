@@ -854,10 +854,10 @@
             };
             return JsxHTMLNode;
         }();
-        var JsxHTMLNodeContainer = function(_JsxHTMLNode) {
-            Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode);
+        var JsxHTMLNodeContainer = function(_JsxHTMLNode2) {
+            Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode2);
             function JsxHTMLNodeContainer(children) {
-                return _JsxHTMLNode.call(this, "", {}, children) || this;
+                return _JsxHTMLNode2.call(this, "", {}, children) || this;
             }
             JsxHTMLNodeContainer.prototype.toString = function() {
                 return this.childrenToString();
@@ -1634,7 +1634,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.338";
+            return "4.0.339";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1644,7 +1644,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.338.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.339.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1692,7 +1692,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.338"
+                    ver: "4.0.339"
                 };
             }));
             Object(client.a)((function() {
@@ -2019,7 +2019,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.338"
+                        version: "4.0.339"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2658,7 +2658,7 @@
             locales: constants.A,
             scriptUrl: "//www.paypalobjects.com/api/checkout.lib.js",
             paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-            version: "4.0.338",
+            version: "4.0.339",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
             state: "checkoutjs",
@@ -3731,7 +3731,7 @@
             if ("object" == typeof item && null !== item) {
                 var _result = {};
                 var _loop2 = function(key) {
-                    if (!item.hasOwnProperty(key)) return "continue";
+                    if (!item.hasOwnProperty(key)) return 1;
                     Object.defineProperty(_result, key, {
                         configurable: !0,
                         enumerable: !0,
@@ -10118,10 +10118,10 @@
                 return "function" == typeof prop.queryValue ? prop.queryValue(value) : value;
             }));
         }
-        var _class, _class2;
+        var _class, _ParentComponent;
         lib.v.props = lib.v.props || {};
         lib.v.windows = lib.v.windows || {};
-        var parent_ParentComponent = (_applyDecoratedDescriptor((_class = ((_class2 = function(_BaseComponent) {
+        var parent_ParentComponent = (_applyDecoratedDescriptor((_class = ((_ParentComponent = function(_BaseComponent) {
             Object(inheritsLoose.a)(ParentComponent, _BaseComponent);
             function ParentComponent(component, context, _ref) {
                 var _this;
@@ -10618,7 +10618,7 @@
                 var _loop = function() {
                     var key = _Object$keys4[_i6];
                     var val = overrides[key];
-                    if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
+                    if (val === constants.DELEGATE.CALL_ORIGINAL) return 1;
                     var original = _this14[key];
                     _this14[key] = function() {
                         var _arguments = arguments, _this15 = this;
@@ -11023,7 +11023,7 @@
                 }
             } ]);
             return ParentComponent;
-        }(base_BaseComponent)).activeComponents = [], _class2)).prototype, "getOutlet", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+        }(base_BaseComponent)).activeComponents = [], _ParentComponent)).prototype, "getOutlet", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
         _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
@@ -11139,7 +11139,7 @@
                 class: "loader"
             }))));
         }
-        var component_class, component_class2;
+        var component_class, _Component;
         var component_drivers = {
             angular: drivers.angular,
             angular2: drivers.angular2,
@@ -11148,7 +11148,7 @@
             vue: drivers.vue,
             script: drivers.script
         };
-        var component_Component = (_applyDecoratedDescriptor((component_class = ((component_class2 = function(_BaseComponent) {
+        var component_Component = (_applyDecoratedDescriptor((component_class = ((_Component = function(_BaseComponent) {
             Object(inheritsLoose.a)(Component, _BaseComponent);
             function Component(options) {
                 var _this;
@@ -11602,7 +11602,7 @@
                 return Component.components[tag];
             };
             return Component;
-        }(base_BaseComponent)).components = {}, component_class2)).prototype, "getPropNames", [ lib.D ], Object.getOwnPropertyDescriptor(component_class.prototype, "getPropNames"), component_class.prototype), 
+        }(base_BaseComponent)).components = {}, _Component)).prototype, "getPropNames", [ lib.D ], Object.getOwnPropertyDescriptor(component_class.prototype, "getPropNames"), component_class.prototype), 
         component_class);
         function create(options) {
             return new component_Component(options);
@@ -16080,11 +16080,7 @@
                     for (var _i2 = 0; _i2 < scriptTags.length; _i2++) render(scriptTags[_i2]);
                 }
                 scan();
-                document.addEventListener("DOMContentLoaded", scan);
                 window.addEventListener("load", scan);
-                document.addEventListener("DOMNodeInserted", (function(event) {
-                    render(event.target);
-                }));
             }
         };
     }, function(module, __webpack_exports__, __webpack_require__) {
@@ -23951,7 +23947,7 @@
                     logoColor: "blue"
                 })));
             }(Object(button_props.a)(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.338", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.339", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -23999,7 +23995,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.338", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.339", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -25225,7 +25221,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.338";
+        var interface_version = "4.0.339";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(49);

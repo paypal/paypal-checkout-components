@@ -1744,14 +1744,14 @@
         };
         return JsxHTMLNode;
     }();
-    var jsx_JsxHTMLNodeContainer = function(_JsxHTMLNode) {
+    var jsx_JsxHTMLNodeContainer = function(_JsxHTMLNode2) {
         !function(subClass, superClass) {
             subClass.prototype = Object.create(superClass.prototype);
             subClass.prototype.constructor = subClass;
             _setPrototypeOf(subClass, superClass);
-        }(JsxHTMLNodeContainer, _JsxHTMLNode);
+        }(JsxHTMLNodeContainer, _JsxHTMLNode2);
         function JsxHTMLNodeContainer(children) {
-            return _JsxHTMLNode.call(this, "", {}, children) || this;
+            return _JsxHTMLNode2.call(this, "", {}, children) || this;
         }
         JsxHTMLNodeContainer.prototype.toString = function() {
             return this.childrenToString();
@@ -9307,7 +9307,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.338", 
+        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.339", 
         _ref21), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
