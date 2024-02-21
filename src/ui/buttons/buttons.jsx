@@ -300,10 +300,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
       />
 
       {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
-        <Message
-          markup={messageMarkup}
-          position={(calculatedMessagePosition: string)}
-        />
+        <Message markup={messageMarkup} position={calculatedMessagePosition} />
       ) : null}
 
       {fundingSources.map((source, i) => (
@@ -359,7 +356,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
       {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
 
-      {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
+      {message && calculatedMessagePosition === MESSAGE_POSITION.BOTTOM ? (
         <Message markup={messageMarkup} position={calculatedMessagePosition} />
       ) : null}
 
