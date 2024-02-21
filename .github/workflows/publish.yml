@@ -1,0 +1,38 @@
+name: publish to npm
+# manually run this action using the GitHub UI
+# https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+on: workflow_dispatch
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: 🤝 Set Node version from .nvmrc
+        run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
+
+      - name: ⎔ Setup node
+        # sets up the .npmrc file to publish to npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NVMRC }}
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: Configure git user
+        run: |
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git config --global user.name ${{ github.actor }}
+
+      - name: Publish to npm
+        run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
