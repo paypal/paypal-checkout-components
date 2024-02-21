@@ -21,6 +21,10 @@ A set of components allowing easy integration of PayPal Buttons and PayPal Check
 
 See [**developer.paypal.com/docs/checkout**](https://developer.paypal.com/docs/checkout/)
 
+## Issues
+
+Please submit any issues about the JS SDK here: https://github.com/paypal/paypal-js/issues
+
 ---
 
 ## Development

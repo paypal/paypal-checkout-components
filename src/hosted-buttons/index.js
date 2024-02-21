@@ -20,35 +20,34 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
     hostedButtonId,
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
-    const render = (selector) => {
+    const render = async (selector) => {
       const merchantId = getMerchantID();
+      const { html, htmlScript, style } = await getHostedButtonDetails({
+        hostedButtonId,
+      });
 
-      getHostedButtonDetails({ hostedButtonId }).then(
-        ({ html, htmlScript, style }) => {
-          const { onInit, onClick } = renderForm({
-            hostedButtonId,
-            html,
-            htmlScript,
-            selector,
-          });
+      const { onInit, onClick } = renderForm({
+        hostedButtonId,
+        html,
+        htmlScript,
+        selector,
+      });
 
-          // $FlowFixMe
-          Buttons({
-            hostedButtonId,
-            style,
-            onInit,
-            onClick,
-            createOrder: buildHostedButtonCreateOrder({
-              hostedButtonId,
-              merchantId,
-            }),
-            onApprove: buildHostedButtonOnApprove({
-              hostedButtonId,
-              merchantId,
-            }),
-          }).render(selector);
-        }
-      );
+      // $FlowFixMe
+      Buttons({
+        hostedButtonId,
+        style,
+        onInit,
+        onClick,
+        createOrder: buildHostedButtonCreateOrder({
+          hostedButtonId,
+          merchantId,
+        }),
+        onApprove: buildHostedButtonOnApprove({
+          hostedButtonId,
+          merchantId,
+        }),
+      }).render(selector);
     };
     return {
       render,

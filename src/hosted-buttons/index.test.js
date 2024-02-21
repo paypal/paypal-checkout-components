@@ -1,8 +1,8 @@
 /* @flow */
+/* eslint-disable no-restricted-globals, promise/no-native */
 
 import { describe, test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
-import { ZalgoPromise } from "@krakenjs/zalgo-promise";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
@@ -61,16 +61,17 @@ const getHostedButtonDetailsResponse = {
 };
 
 describe("HostedButtons", () => {
-  test("paypal.Buttons calls getHostedButtonDetails and invokes v5 of the SDK", () => {
+  test("paypal.Buttons calls getHostedButtonDetails and invokes v5 of the SDK", async () => {
     const Buttons = vi.fn(() => ({ render: vi.fn() }));
     // $FlowIssue
     getButtonsComponent.mockImplementationOnce(() => Buttons);
     const HostedButtons = getHostedButtonsComponent();
     // $FlowIssue
     request.mockImplementationOnce(() =>
-      ZalgoPromise.resolve(getHostedButtonDetailsResponse)
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse)
     );
-    HostedButtons({
+    await HostedButtons({
       hostedButtonId: "B1234567890",
     }).render("#example");
     expect(Buttons).toHaveBeenCalledWith(
@@ -81,3 +82,5 @@ describe("HostedButtons", () => {
     expect.assertions(1);
   });
 });
+
+/* eslint-enable no-restricted-globals, promise/no-native */

@@ -1,6 +1,5 @@
 /* @flow */
-
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+/* eslint-disable no-restricted-globals, promise/no-native */
 
 export type HostedButtonsComponentProps = {|
   hostedButtonId: string,
@@ -12,11 +11,11 @@ export type GetCallbackProps = {|
 |};
 
 export type HostedButtonsInstance = {|
-  render: (string | HTMLElement) => void,
+  render: (string | HTMLElement) => Promise<void>,
 |};
 
 export type HostedButtonDetailsParams =
-  (HostedButtonsComponentProps) => ZalgoPromise<{|
+  (HostedButtonsComponentProps) => Promise<{|
     html: string,
     htmlScript: string,
     style: {|
@@ -34,14 +33,14 @@ export type ButtonVariables = $ReadOnlyArray<{|
 
 export type CreateOrder = (data: {|
   paymentSource: string,
-|}) => ZalgoPromise<string | void>;
+|}) => Promise<string | void>;
 
 export type OnApprove = (data: {|
   orderID: string,
   paymentSource: string,
-|}) => ZalgoPromise<mixed>;
+|}) => Promise<mixed>;
 
-export type CreateAccessToken = (clientID: string) => ZalgoPromise<string>;
+export type CreateAccessToken = (clientID: string) => Promise<string>;
 
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;
@@ -55,3 +54,5 @@ export type RenderForm = ({|
   onInit: (data: mixed, actions: mixed) => void,
   onClick: (data: mixed, actions: mixed) => void,
 |};
+
+/* eslint-enable no-restricted-globals, promise/no-native */

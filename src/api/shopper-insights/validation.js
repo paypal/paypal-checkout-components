@@ -1,6 +1,6 @@
 /* @flow */
 
-import { sendCountMetric } from "@paypal/sdk-client/src";
+import { getLogger } from "@paypal/sdk-client/src";
 
 import {
   SHOPPER_INSIGHTS_METRIC_NAME,
@@ -21,9 +21,10 @@ export function validateMerchantConfig({
   userIDToken,
   clientToken,
 }: MerchantConfigParams) {
+  const logger = getLogger();
   if (!sdkToken) {
-    sendCountMetric({
-      name: SHOPPER_INSIGHTS_METRIC_NAME,
+    logger.metricCounter({
+      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
@@ -37,8 +38,8 @@ export function validateMerchantConfig({
   }
 
   if (!pageType) {
-    sendCountMetric({
-      name: SHOPPER_INSIGHTS_METRIC_NAME,
+    logger.metricCounter({
+      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
@@ -52,8 +53,8 @@ export function validateMerchantConfig({
   }
 
   if (userIDToken) {
-    sendCountMetric({
-      name: SHOPPER_INSIGHTS_METRIC_NAME,
+    logger.metricCounter({
+      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",

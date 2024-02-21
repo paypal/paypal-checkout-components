@@ -151,6 +151,11 @@ const buttonConfigs = [
       },
 
       {
+        shape: `sharp`,
+        valid: true,
+      },
+
+      {
         shape: `zomg`,
         valid: false,
       },
@@ -858,6 +863,49 @@ const buttonConfigs = [
 
       conf: {
         style: { height, size },
+        createOrder: noop,
+        onApprove: noop,
+      },
+    })),
+  },
+
+  {
+    name: "borderRadius",
+
+    cases: [
+      {
+        borderRadius: 0,
+        valid: true,
+      },
+
+      {
+        borderRadius: 10,
+        valid: true,
+      },
+
+      {
+        borderRadius: 100,
+        valid: true,
+      },
+
+      {
+        borderRadius: -2,
+        valid: false,
+      },
+
+      {
+        borderRadius: "abcd",
+        valid: false,
+      },
+
+      // $FlowFixMe
+    ].map(({ borderRadius, valid }) => ({
+      desc: `borderRadius ${borderRadius}`,
+
+      valid,
+
+      conf: {
+        style: { borderRadius },
         createOrder: noop,
         onApprove: noop,
       },

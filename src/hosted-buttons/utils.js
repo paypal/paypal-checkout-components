@@ -39,8 +39,8 @@ export const getMerchantID = (): string | void => {
 };
 
 export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
-  (clientId) => {
-    return request({
+  async (clientId) => {
+    const response = await request({
       url: `${apiUrl}/v1/oauth2/token`,
       method: "POST",
       body: "grant_type=client_credentials",
@@ -48,32 +48,36 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
         Authorization: `Basic ${btoa(clientId)}`,
         "Content-Type": "application/json",
       },
-    }).then((response) => response.body.access_token);
+    });
+    // $FlowIssue request returns ZalgoPromise
+    return response.body.access_token;
   }
 );
 
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
   variables?.find((variable) => variable.name === key)?.value ?? "";
 
-export const getHostedButtonDetails: HostedButtonDetailsParams = ({
+export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   hostedButtonId,
 }) => {
-  return request({
+  const response = await request({
     url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}`,
     headers: getHeaders(),
-  }).then(({ body }) => {
-    const variables = body.button_details.link_variables;
-    return {
-      style: {
-        layout: getButtonVariable(variables, "layout"),
-        shape: getButtonVariable(variables, "shape"),
-        color: getButtonVariable(variables, "color"),
-        label: getButtonVariable(variables, "button_text"),
-      },
-      html: body.html,
-      htmlScript: body.html_script,
-    };
   });
+
+  // $FlowIssue request returns ZalgoPromise
+  const { body } = response;
+  const variables = body.button_details.link_variables;
+  return {
+    style: {
+      layout: getButtonVariable(variables, "layout"),
+      shape: getButtonVariable(variables, "shape"),
+      color: getButtonVariable(variables, "color"),
+      label: getButtonVariable(variables, "button_text"),
+    },
+    html: body.html,
+    htmlScript: body.html_script,
+  };
 };
 
 /**
@@ -109,12 +113,13 @@ export const buildHostedButtonCreateOrder = ({
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): CreateOrder => {
-  return (data) => {
+  return async (data) => {
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
-    return createAccessToken(getClientID()).then((accessToken) => {
-      return request({
+    const accessToken = await createAccessToken(getClientID());
+    try {
+      const response = await request({
         url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`,
         headers: getHeaders(accessToken),
         method: "POST",
@@ -124,10 +129,13 @@ export const buildHostedButtonCreateOrder = ({
           merchant_id: merchantId,
           ...userInputs,
         }),
-      })
-        .then(({ body }) => body.context_id || onError(body.name))
-        .catch(() => onError("REQUEST_FAILED"));
-    });
+      });
+      // $FlowIssue request returns ZalgoPromise
+      const { body } = response;
+      return body.context_id || onError(body.name);
+    } catch (e) {
+      return onError("REQUEST_FAILED");
+    }
   };
 };
 
@@ -135,18 +143,17 @@ export const buildHostedButtonOnApprove = ({
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): OnApprove => {
-  return (data) => {
-    return createAccessToken(getClientID()).then((accessToken) => {
-      return request({
-        url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`,
-        headers: getHeaders(accessToken),
-        method: "POST",
-        body: JSON.stringify({
-          entry_point: entryPoint,
-          merchant_id: merchantId,
-          context_id: data.orderID,
-        }),
-      });
+  return async (data) => {
+    const accessToken = await createAccessToken(getClientID());
+    return request({
+      url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`,
+      headers: getHeaders(accessToken),
+      method: "POST",
+      body: JSON.stringify({
+        entry_point: entryPoint,
+        merchant_id: merchantId,
+        context_id: data.orderID,
+      }),
     });
   };
 };
