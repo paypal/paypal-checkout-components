@@ -39,6 +39,7 @@ export const BUTTON_SIZE = {
 export const BUTTON_SHAPE = {
   PILL: ("pill": "pill"),
   RECT: ("rect": "rect"),
+  SHARP: ("sharp": "sharp"),
 };
 
 export const BUTTON_LAYOUT = {

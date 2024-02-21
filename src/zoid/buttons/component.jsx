@@ -39,6 +39,7 @@ import {
   getDisableSetCookie,
   getExperimentation,
   getSDKAttribute,
+  getSDKIntegrationSource,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -255,17 +256,249 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     props: {
-      /**
-       * Version of the SDK used in first render.
-       * This is passed to the `/smart/buttons` endpoint in order for the second render
-       * to be aware of what sdk version to load during SSR of the buttons
-       */
-      sdkVersion: {
+      // allowBillingPayments prop is used by Honey Extension to render the one-click button
+      // with payment methods & to use the payment methods instead of the Billing Agreement
+      allowBillingPayments: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        default: () => true,
+      },
+
+      amount: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getAmount,
+      },
+
+      apiStageHost: {
+        type: "string",
+        value: getAPIStageHost,
+        required: false,
+      },
+
+      applePay: {
+        type: "function",
+        required: false,
+        value: applePaySession,
+      },
+
+      applePaySupport: {
+        type: "boolean",
+        value: ({ props }) => {
+          return props?.fundingEligibility?.applepay?.eligible
+            ? isApplePaySupported()
+            : false;
+        },
+        queryParam: true,
+      },
+
+      branded: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+      },
+
+      buttonLocation: {
+        type: "string",
+        value: () => window.location.hostname,
+        queryParam: false,
+      },
+
+      buttonSessionID: {
+        type: "string",
+        value: uniqueID,
+        queryParam: true,
+      },
+
+      buttonSize: {
+        type: "string",
+        required: false,
+        value: ({ props, container }) => {
+          return getButtonSize(props, container);
+        },
+        queryParam: true,
+      },
+
+      buyerCountry: {
         type: "string",
         queryParam: true,
-        sendToChild: false,
-        value: getVersion,
+        required: false,
+        value: getBuyerCountry,
       },
+
+      clientAccessToken: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getClientAccessToken,
+      },
+
+      clientID: {
+        type: "string",
+        value: getClientID,
+        queryParam: true,
+      },
+
+      clientMetadataID: {
+        type: "string",
+        required: false,
+        default: () => {
+          const clientMetadataId = getClientMetadataID();
+          const sessionID = getSessionID();
+
+          return clientMetadataId || sessionID;
+        },
+        queryParam: true,
+      },
+
+      commit: {
+        type: "boolean",
+        queryParam: true,
+        value: getCommit,
+      },
+
+      components: {
+        type: "array",
+        queryParam: true,
+        value: getComponents,
+      },
+
+      createBillingAgreement: {
+        type: "function",
+        required: false,
+      },
+
+      createOrder: {
+        type: "function",
+        required: false,
+      },
+
+      createSubscription: {
+        type: "function",
+        required: false,
+      },
+
+      createVaultSetupToken: {
+        type: "function",
+        required: false,
+      },
+
+      csp: {
+        type: "object",
+        required: false,
+        value: () => {
+          return {
+            nonce: getCSPNonce(),
+          };
+        },
+      },
+
+      currency: {
+        type: "string",
+        queryParam: true,
+        value: getCurrency,
+      },
+
+      debug: {
+        type: "boolean",
+        value: getDebug,
+        queryParam: true,
+      },
+
+      disableCard: {
+        type: "array",
+        queryParam: true,
+        value: getDisableCard,
+      },
+
+      disableFunding: {
+        type: "array",
+        queryParam: true,
+        value: getDisableFunding,
+      },
+
+      disableSetCookie: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: getDisableSetCookie,
+      },
+
+      displayOnly: {
+        type: "array",
+        queryParam: true,
+        required: false,
+        value: ({ props }) => {
+          return props?.displayOnly || [];
+        },
+      },
+
+      enableFunding: {
+        type: "array",
+        queryParam: true,
+        value: getEnableFunding,
+      },
+
+      enableThreeDomainSecure: {
+        type: "boolean",
+        value: getEnableThreeDomainSecure,
+      },
+
+      enableVault: {
+        type: "boolean",
+        required: false,
+        queryParam: true,
+      },
+
+      env: {
+        type: "string",
+        queryParam: true,
+        value: getEnv,
+      },
+
+      experiment: {
+        type: "object",
+        queryParam: true,
+        value: () => {
+          const experiments = getButtonExperiments();
+          return experiments;
+        },
+      },
+
+      experimentation: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        value: getExperimentation,
+      },
+
+      flow: {
+        type: "string",
+        queryParam: true,
+        value: ({ props }) => {
+          const {
+            createBillingAgreement,
+            createSubscription,
+            createVaultSetupToken,
+          } = props;
+          return determineFlow({
+            createBillingAgreement,
+            createSubscription,
+            createVaultSetupToken,
+          });
+        },
+      },
+
+      fundingEligibility: {
+        type: "object",
+        default: getRefinedFundingEligibility,
+        value: __ENV__ === ENV.LOCAL ? undefined : getRefinedFundingEligibility,
+        queryParam: true,
+        serialization: "base64",
+      },
+
       fundingSource: {
         type: "string",
         queryParam: true,
@@ -321,112 +554,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      style: {
-        type: "object",
-        queryParam: true,
-        required: false,
-        decorate: ({ props, value }) => {
-          // $FlowFixMe
-          return normalizeButtonStyle(props, value);
+      getPageUrl: {
+        type: "function",
+        value: () => {
+          return () => window.location.href;
         },
-
-        validate: ({ props, value = {} }) => {
-          // $FlowFixMe
-          normalizeButtonStyle(props, value);
-        },
-
-        default: () => ({}),
-      },
-
-      storageState: {
-        type: "object",
-        value: () => storageState,
-      },
-
-      sessionState: {
-        type: "object",
-        value: () => sessionState,
-      },
-
-      components: {
-        type: "array",
-        queryParam: true,
-        value: getComponents,
-      },
-
-      locale: {
-        type: "object",
-        queryParam: true,
-        value: getLocale,
-      },
-
-      sdkMeta: {
-        type: "string",
-        queryParam: true,
-        sendToChild: false,
-        value: getSDKMeta,
-      },
-
-      createOrder: {
-        type: "function",
-        required: false,
-      },
-
-      createBillingAgreement: {
-        type: "function",
-        required: false,
-      },
-
-      createSubscription: {
-        type: "function",
-        required: false,
-      },
-
-      onApprove: {
-        type: "function",
-        required: false,
-      },
-
-      onComplete: {
-        type: "function",
-        required: false,
-      },
-
-      onShippingChange: {
-        type: "function",
-        required: false,
-        queryParam: true,
-        queryValue: ({ value }) => {
-          return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
-        },
-      },
-
-      onShippingAddressChange: {
-        type: "function",
-        required: false,
-      },
-
-      onShippingOptionsChange: {
-        type: "function",
-        required: false,
-      },
-
-      onCancel: {
-        type: "function",
-        required: false,
-      },
-
-      onClick: {
-        type: "function",
-        required: false,
-      },
-
-      getPrerenderDetails: {
-        type: "function",
-        value:
-          ({ state }) =>
-          () =>
-            state.prerenderDetails,
       },
 
       getPopupBridge: {
@@ -455,6 +587,76 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
+      getPrerenderDetails: {
+        type: "function",
+        value:
+          ({ state }) =>
+          () =>
+            state.prerenderDetails,
+      },
+
+      getQueriedEligibleFunding: {
+        type: "function",
+        value: () => {
+          return () => queriedEligibleFunding;
+        },
+      },
+
+      hostedButtonId: {
+        type: "string",
+        required: false,
+        queryParam: true,
+      },
+
+      intent: {
+        type: "string",
+        queryParam: true,
+        value: getIntent,
+      },
+
+      locale: {
+        type: "object",
+        queryParam: true,
+        value: getLocale,
+      },
+
+      merchantID: {
+        type: "array",
+        queryParam: true,
+        value: getMerchantID,
+      },
+
+      merchantRequestedPopupsDisabled: {
+        type: "boolean",
+        required: false,
+        value: getMerchantRequestedPopupsDisabled,
+      },
+
+      nonce: {
+        type: "string",
+        default: getCSPNonce,
+      },
+
+      onApprove: {
+        type: "function",
+        required: false,
+      },
+
+      onCancel: {
+        type: "function",
+        required: false,
+      },
+
+      onClick: {
+        type: "function",
+        required: false,
+      },
+
+      onComplete: {
+        type: "function",
+        required: false,
+      },
+
       onInit: {
         type: "function",
         required: false,
@@ -479,306 +681,36 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      getQueriedEligibleFunding: {
+      onShippingAddressChange: {
         type: "function",
-        value: () => {
-          return () => queriedEligibleFunding;
+        required: false,
+      },
+
+      onShippingChange: {
+        type: "function",
+        required: false,
+        queryParam: true,
+        queryValue: ({ value }) => {
+          return value ? QUERY_BOOL.TRUE : QUERY_BOOL.FALSE;
         },
       },
 
-      clientID: {
-        type: "string",
-        value: getClientID,
-        queryParam: true,
+      onShippingOptionsChange: {
+        type: "function",
+        required: false,
       },
 
-      clientAccessToken: {
+      pageType: {
         type: "string",
         required: false,
         queryParam: true,
-        value: getClientAccessToken,
+        value: () => getSDKAttribute(SDK_SETTINGS.PAGE_TYPE),
       },
 
       partnerAttributionID: {
         type: "string",
         required: false,
         value: getPartnerAttributionID,
-      },
-
-      merchantRequestedPopupsDisabled: {
-        type: "boolean",
-        required: false,
-        value: getMerchantRequestedPopupsDisabled,
-      },
-
-      enableThreeDomainSecure: {
-        type: "boolean",
-        value: getEnableThreeDomainSecure,
-      },
-
-      sdkCorrelationID: {
-        type: "string",
-        required: false,
-        value: getCorrelationID,
-        queryParam: true,
-      },
-
-      storageID: {
-        type: "string",
-        value: getStorageID,
-        queryParam: true,
-      },
-
-      sessionID: {
-        type: "string",
-        value: getSessionID,
-        queryParam: true,
-      },
-
-      buttonLocation: {
-        type: "string",
-        value: () => window.location.hostname,
-        queryParam: false,
-      },
-
-      buttonSessionID: {
-        type: "string",
-        value: uniqueID,
-        queryParam: true,
-      },
-
-      enableVault: {
-        type: "boolean",
-        required: false,
-        queryParam: true,
-      },
-
-      env: {
-        type: "string",
-        queryParam: true,
-        value: getEnv,
-      },
-
-      amount: {
-        type: "string",
-        required: false,
-        queryParam: true,
-        value: getAmount,
-      },
-
-      stageHost: {
-        type: "string",
-        value: getStageHost,
-        required: false,
-      },
-
-      buttonSize: {
-        type: "string",
-        required: false,
-        value: ({ props, container }) => {
-          return getButtonSize(props, container);
-        },
-        queryParam: true,
-      },
-
-      apiStageHost: {
-        type: "string",
-        value: getAPIStageHost,
-        required: false,
-      },
-
-      fundingEligibility: {
-        type: "object",
-        default: getRefinedFundingEligibility,
-        value: __ENV__ === ENV.LOCAL ? undefined : getRefinedFundingEligibility,
-        queryParam: true,
-        serialization: "base64",
-      },
-
-      platform: {
-        type: "string",
-        queryParam: true,
-        value: getPlatform,
-      },
-
-      remembered: {
-        type: "array",
-        queryParam: true,
-        value: getRememberedFunding,
-      },
-
-      experiment: {
-        type: "object",
-        queryParam: true,
-        value: () => {
-          const experiments = getButtonExperiments();
-          return experiments;
-        },
-      },
-
-      paymentRequest: {
-        type: "object",
-        queryParam: false,
-        required: false,
-      },
-
-      flow: {
-        type: "string",
-        queryParam: true,
-        value: ({ props }) => {
-          const {
-            createBillingAgreement,
-            createSubscription,
-            createVaultSetupToken,
-          } = props;
-          return determineFlow({
-            createBillingAgreement,
-            createSubscription,
-            createVaultSetupToken,
-          });
-        },
-      },
-
-      remember: {
-        type: "function",
-        value: () => {
-          return (fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>) =>
-            rememberFunding(fundingSources, { cookie: false });
-        },
-      },
-
-      currency: {
-        type: "string",
-        queryParam: true,
-        value: getCurrency,
-      },
-
-      intent: {
-        type: "string",
-        queryParam: true,
-        value: getIntent,
-      },
-
-      buyerCountry: {
-        type: "string",
-        queryParam: true,
-        required: false,
-        value: getBuyerCountry,
-      },
-
-      commit: {
-        type: "boolean",
-        queryParam: true,
-        value: getCommit,
-      },
-
-      vault: {
-        type: "boolean",
-        queryParam: true,
-        value: getVault,
-      },
-
-      enableFunding: {
-        type: "array",
-        queryParam: true,
-        value: getEnableFunding,
-      },
-
-      disableFunding: {
-        type: "array",
-        queryParam: true,
-        value: getDisableFunding,
-      },
-
-      disableCard: {
-        type: "array",
-        queryParam: true,
-        value: getDisableCard,
-      },
-
-      merchantID: {
-        type: "array",
-        queryParam: true,
-        value: getMerchantID,
-      },
-
-      renderedButtons: {
-        type: "array",
-        queryParam: true,
-        value: ({ props }) => getRenderedButtons(props),
-      },
-
-      csp: {
-        type: "object",
-        required: false,
-        value: () => {
-          return {
-            nonce: getCSPNonce(),
-          };
-        },
-      },
-
-      nonce: {
-        type: "string",
-        default: getCSPNonce,
-      },
-
-      getPageUrl: {
-        type: "function",
-        value: () => {
-          return () => window.location.href;
-        },
-      },
-
-      referrerDomain: {
-        type: "string",
-        required: false,
-        value: () => {
-          if (window.document.referrer) {
-            return new URL(window.document.referrer).host || undefined;
-          }
-        },
-      },
-
-      userIDToken: {
-        type: "string",
-        default: getUserIDToken,
-        required: false,
-        queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
-        bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
-      },
-
-      clientMetadataID: {
-        type: "string",
-        required: false,
-        default: () => {
-          const clientMetadataId = getClientMetadataID();
-          const sessionID = getSessionID();
-
-          return clientMetadataId || sessionID;
-        },
-        queryParam: true,
-      },
-
-      debug: {
-        type: "boolean",
-        value: getDebug,
-        queryParam: true,
-      },
-
-      test: {
-        type: "object",
-        default(): Object {
-          return {
-            action: "checkout",
-          };
-        },
-      },
-
-      wallet: {
-        type: "object",
-        required: false,
-        default: () => window.__TEST_WALLET__,
       },
 
       paymentMethodNonce: {
@@ -793,19 +725,129 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
       },
 
-      branded: {
-        type: "boolean",
-        queryParam: true,
+      paymentRequest: {
+        type: "object",
+        queryParam: false,
         required: false,
       },
 
-      applePaySupport: {
-        type: "boolean",
-        value: ({ props }) => {
-          return props?.fundingEligibility?.applepay?.eligible
-            ? isApplePaySupported()
-            : false;
+      platform: {
+        type: "string",
+        queryParam: true,
+        value: getPlatform,
+      },
+
+      referrerDomain: {
+        type: "string",
+        required: false,
+        value: () => {
+          if (window.document.referrer) {
+            return new URL(window.document.referrer).host || undefined;
+          }
         },
+      },
+
+      remember: {
+        type: "function",
+        value: () => {
+          return (fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>) =>
+            rememberFunding(fundingSources, { cookie: false });
+        },
+      },
+
+      remembered: {
+        type: "array",
+        queryParam: true,
+        value: getRememberedFunding,
+      },
+
+      renderedButtons: {
+        type: "array",
+        queryParam: true,
+        value: ({ props }) => getRenderedButtons(props),
+      },
+
+      sessionID: {
+        type: "string",
+        value: getSessionID,
+        queryParam: true,
+      },
+
+      sdkCorrelationID: {
+        type: "string",
+        required: false,
+        value: getCorrelationID,
+        queryParam: true,
+      },
+
+      sdkIntegrationSource: {
+        type: "string",
+        queryParam: true,
+        required: false,
+        value: getSDKIntegrationSource,
+      },
+
+      sdkMeta: {
+        type: "string",
+        queryParam: true,
+        sendToChild: false,
+        value: getSDKMeta,
+      },
+
+      /**
+       * Version of the SDK used in first render.
+       * This is passed to the `/smart/buttons` endpoint in order for the second render
+       * to be aware of what sdk version to load during SSR of the buttons
+       */
+      sdkVersion: {
+        type: "string",
+        queryParam: true,
+        sendToChild: false,
+        value: getVersion,
+      },
+
+      sessionState: {
+        type: "object",
+        value: () => sessionState,
+      },
+
+      stageHost: {
+        type: "string",
+        value: getStageHost,
+        required: false,
+      },
+
+      storageID: {
+        type: "string",
+        value: getStorageID,
+        queryParam: true,
+      },
+
+      storageState: {
+        type: "object",
+        value: () => storageState,
+      },
+
+      style: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        decorate: ({ props, value }) => {
+          // $FlowFixMe
+          return normalizeButtonStyle(props, value);
+        },
+
+        validate: ({ props, value = {} }) => {
+          // $FlowFixMe
+          normalizeButtonStyle(props, value);
+        },
+
+        default: () => ({}),
+      },
+
+      supportedNativeBrowser: {
+        type: "boolean",
+        value: isSupportedNativeBrowser,
         queryParam: true,
       },
 
@@ -815,10 +857,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
-      supportedNativeBrowser: {
-        type: "boolean",
-        value: isSupportedNativeBrowser,
-        queryParam: true,
+      test: {
+        type: "object",
+        default(): Object {
+          return {
+            action: "checkout",
+          };
+        },
       },
 
       userExperienceFlow: {
@@ -827,59 +872,24 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getUserExperienceFlow,
       },
 
-      applePay: {
-        type: "function",
+      userIDToken: {
+        type: "string",
+        default: getUserIDToken,
         required: false,
-        value: applePaySession,
+        queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
+        bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
       },
 
-      // allowBillingPayments prop is used by Honey Extension to render the one-click button
-      // with payment methods & to use the payment methods instead of the Billing Agreement
-      allowBillingPayments: {
+      vault: {
         type: "boolean",
         queryParam: true,
-        required: false,
-        default: () => true,
-      },
-      createVaultSetupToken: {
-        type: "function",
-        required: false,
+        value: getVault,
       },
 
-      disableSetCookie: {
-        type: "boolean",
-        queryParam: true,
-        required: false,
-        value: getDisableSetCookie,
-      },
-
-      experimentation: {
+      wallet: {
         type: "object",
-        queryParam: true,
         required: false,
-        value: getExperimentation,
-      },
-
-      hostedButtonId: {
-        type: "string",
-        required: false,
-        queryParam: true,
-      },
-
-      pageType: {
-        type: "string",
-        required: false,
-        queryParam: true,
-        value: () => getSDKAttribute(SDK_SETTINGS.PAGE_TYPE),
-      },
-
-      displayOnly: {
-        type: "array",
-        queryParam: true,
-        required: false,
-        value: ({ props }) => {
-          return props?.displayOnly || [];
-        },
+        default: () => window.__TEST_WALLET__,
       },
 
       message: {

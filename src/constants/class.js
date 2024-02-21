@@ -12,6 +12,7 @@ export const CLASS = {
   COLOR: ("paypal-button-color": "paypal-button-color"),
   TEXT_COLOR: ("paypal-button-text-color": "paypal-button-text-color"),
   SHAPE: ("paypal-button-shape": "paypal-button-shape"),
+  BORDER_RADIUS: ("paypal-button-border-radius": "paypal-button-border-radius"),
   LAYOUT: ("paypal-button-layout": "paypal-button-layout"),
   NUMBER: ("paypal-button-number": "paypal-button-number"),
   ENV: ("paypal-button-env": "paypal-button-env"),

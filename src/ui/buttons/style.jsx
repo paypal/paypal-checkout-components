@@ -18,8 +18,13 @@ export function Style({
   nonce,
   fundingEligibility,
 }: StyleProps): ElementNode {
-  const { height, disableMaxWidth } = style;
-  const css = componentStyle({ height, fundingEligibility, disableMaxWidth });
+  const { height, disableMaxWidth, borderRadius } = style;
+  const css = componentStyle({
+    height,
+    fundingEligibility,
+    disableMaxWidth,
+    borderRadius,
+  });
 
   return <style nonce={nonce} innerHTML={css} />;
 }

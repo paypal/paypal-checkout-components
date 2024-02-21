@@ -15,8 +15,7 @@ export const FPTI_TRANSITION = {
   SHOPPER_INSIGHTS_API_ERROR: "sdk_shopper_insights_recommended_error",
 };
 
-export const SHOPPER_INSIGHTS_METRIC_NAME =
-  "pp.app.paypal_sdk.api.shopper_insights.count";
+export const SHOPPER_INSIGHTS_METRIC_NAME = "shopper_insights.count";
 
 export type MerchantPayloadData = {|
   email?: string,

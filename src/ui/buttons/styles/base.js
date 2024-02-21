@@ -12,10 +12,12 @@ export function componentStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
+  borderRadius,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
+  borderRadius?: ?number,
 |}): string {
   return `
         ${pageStyle}
@@ -26,6 +28,7 @@ export function componentStyle({
           height,
           fundingEligibility,
           disableMaxWidth,
+          borderRadius,
         })}
     `;
 }

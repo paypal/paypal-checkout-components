@@ -58,16 +58,16 @@ module.exports = {
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
-  "shopper-insights": {
-    entry: "./src/api/shopper-insights/interface",
-  },
   wallet: {
     entry: "./src/interface/wallet",
     globals,
   },
+  // in process of being renamed to fastlane
   connect: {
     entry: "./src/connect/interface",
-    globals,
+  },
+  fastlane: {
+    entry: "./src/connect/interface",
   },
   // @deprecated - renamed to payment-fields to be removed
   fields: {

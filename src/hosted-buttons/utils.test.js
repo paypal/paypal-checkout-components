@@ -1,8 +1,7 @@
 /* @flow */
-
+/* eslint-disable no-restricted-globals, promise/no-native */
 import { test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import {
   buildHostedButtonCreateOrder,
@@ -62,7 +61,8 @@ const getHostedButtonDetailsResponse = {
 test("getHostedButtonDetails", async () => {
   // $FlowIssue
   request.mockImplementationOnce(() =>
-    ZalgoPromise.resolve(getHostedButtonDetailsResponse)
+    // eslint-disable-next-line compat/compat
+    Promise.resolve(getHostedButtonDetailsResponse)
   );
   await getHostedButtonDetails({
     hostedButtonId,
@@ -85,7 +85,8 @@ test("buildHostedButtonCreateOrder", async () => {
 
   // $FlowIssue
   request.mockImplementation(() =>
-    ZalgoPromise.resolve({
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
       body: {
         link_id: hostedButtonId,
         merchant_id: merchantId,
@@ -107,7 +108,8 @@ test("buildHostedButtonCreateOrder error handling", async () => {
 
   // $FlowIssue
   request.mockImplementation(() =>
-    ZalgoPromise.resolve({
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
       body: {
         name: "RESOURCE_NOT_FOUND",
       },
@@ -133,7 +135,8 @@ describe("buildHostedButtonOnApprove", () => {
 
     // $FlowIssue
     request.mockImplementation(() =>
-      ZalgoPromise.resolve({
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
         body: {},
       })
     );
@@ -150,3 +153,5 @@ describe("buildHostedButtonOnApprove", () => {
     expect.assertions(1);
   });
 });
+
+/* eslint-enable no-restricted-globals, promise/no-native */

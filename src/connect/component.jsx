@@ -5,6 +5,7 @@ import {
   getClientID,
   getClientMetadataID,
   getUserIDToken,
+  getSDKToken,
   getLogger,
   getEnv,
   loadFraudnet,
@@ -13,8 +14,6 @@ import {
   getSessionID,
 } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants";
-
-import { sendCountMetric } from "./sendCountMetric";
 
 const MIN_MAJOR_VERSION = 3;
 const MIN_MINOR_VERSION = 97;
@@ -32,8 +31,8 @@ export function getSdkVersion(version: string | null): string {
     majorVersion < MIN_MAJOR_VERSION ||
     (majorVersion === MIN_MAJOR_VERSION && minorVersion < MIN_MINOR_VERSION)
   ) {
-    sendCountMetric({
-      name: "pp.app.paypal_sdk.connect.init.error.count",
+    getLogger().metricCounter({
+      namespace: "connect.init.count",
       event: "error",
       dimensions: {
         errorName: "braintree_version_not_supported_error",
@@ -41,7 +40,7 @@ export function getSdkVersion(version: string | null): string {
     });
 
     throw new Error(
-      `The braintree version used does not support Connect. Please use version ${MIN_BT_VERSION} or above`
+      `The braintree version: ${version} does not support Connect. Please use version ${MIN_BT_VERSION} or above`
     );
   }
 
@@ -52,7 +51,7 @@ export function getSdkVersion(version: string | null): string {
 export const getConnectComponent = async (merchantProps = {}) => {
   const cmid = getClientMetadataID() || getSessionID();
   const clientId = getClientID();
-  const userIdToken = getUserIDToken();
+  const sdkToken = getSDKToken() || getUserIDToken();
   const env = getEnv();
   const cspNonce = getCSPNonce();
 
@@ -64,9 +63,9 @@ export const getConnectComponent = async (merchantProps = {}) => {
     // queryStringParams = {}, // TODO: what do we need here in this case?
   });
 
-  sendCountMetric({
-    name: "pp.app.paypal_sdk.connect.init.count",
-    dimensions: {},
+  getLogger().metricCounter({
+    namespace: "connect.init.count",
+    event: "init",
   });
 
   const debugEnabled = getDebug() || false;
@@ -81,21 +80,20 @@ export const getConnectComponent = async (merchantProps = {}) => {
       metadata,
     });
   } catch (error) {
-    sendCountMetric({
-      name: "pp.app.paypal_sdk.connect.init.error.count",
-      event: "error",
-      dimensions: {
-        errorName: "connect_load_error",
-      },
-    });
-
     getLogger()
+      .error("load_connect_error", { err: stringifyError(error) })
       .track({
         [FPTI_KEY.CONTEXT_TYPE]: "CMID",
         [FPTI_KEY.CONTEXT_ID]: cmid,
         [FPTI_KEY.EVENT_NAME]: `ppcp_axo_failure`,
       })
-      .error("load_connect_error", { err: stringifyError(error) })
+      .metricCounter({
+        namespace: "connect.init.count",
+        event: "error",
+        dimensions: {
+          errorName: "connect_load_error",
+        },
+      })
       .flush();
 
     throw new Error(error);
@@ -107,7 +105,7 @@ export const getConnectComponent = async (merchantProps = {}) => {
       ...merchantProps, // AXO specific props
       platformOptions: {
         platform: "PPCP",
-        userIdToken,
+        userIdToken: sdkToken,
         clientId,
         fraudnet: collect,
         clientMetadataId: cmid,
@@ -120,23 +118,14 @@ export const getConnectComponent = async (merchantProps = {}) => {
         [FPTI_KEY.CONTEXT_ID]: cmid,
         [FPTI_KEY.EVENT_NAME]: `ppcp_connect_success`,
       })
+      .metricCounter({
+        namespace: "connect.init.count",
+        event: "success",
+      })
       .flush();
-    sendCountMetric({
-      name: "pp.app.paypal_sdk.connect.init.success.count",
-      event: "success",
-      dimensions: {},
-    });
 
     return connect;
   } catch (error) {
-    sendCountMetric({
-      name: "pp.app.paypal_sdk.connect.init.error.count",
-      event: "error",
-      dimensions: {
-        errorName: "connect_init_error",
-      },
-    });
-
     getLogger()
       .track({
         [FPTI_KEY.CONTEXT_TYPE]: "CMID",
@@ -144,6 +133,13 @@ export const getConnectComponent = async (merchantProps = {}) => {
         [FPTI_KEY.EVENT_NAME]: `ppcp_connect_failure`,
       })
       .error("init_connect_error", { err: stringifyError(error) })
+      .metricCounter({
+        namespace: "connect.init.count",
+        event: "error",
+        dimensions: {
+          errorName: "connect_init_error",
+        },
+      })
       .flush();
 
     throw new Error(error);
