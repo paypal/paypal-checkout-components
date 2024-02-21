@@ -17,6 +17,7 @@ import type {
 
 export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
+    enableDPoP = false,
     hostedButtonId,
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
@@ -40,10 +41,12 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         onInit,
         onClick,
         createOrder: buildHostedButtonCreateOrder({
+          enableDPoP,
           hostedButtonId,
           merchantId,
         }),
         onApprove: buildHostedButtonOnApprove({
+          enableDPoP,
           hostedButtonId,
           merchantId,
         }),

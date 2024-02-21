@@ -6,6 +6,7 @@ export type HostedButtonsComponentProps = {|
 |};
 
 export type GetCallbackProps = {|
+  enableDPoP?: boolean,
   hostedButtonId: string,
   merchantId?: string,
 |};
@@ -40,7 +41,10 @@ export type OnApprove = (data: {|
   paymentSource: string,
 |}) => Promise<mixed>;
 
-export type CreateAccessToken = (clientID: string) => Promise<string>;
+export type CreateAccessToken = ({|
+  clientId: string,
+  enableDPoP?: boolean,
+|}) => Promise<{| accessToken: string, nonce: string |}>;
 
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;
@@ -55,4 +59,21 @@ export type RenderForm = ({|
   onClick: (data: mixed, actions: mixed) => void,
 |};
 
+type Request = {|
+  url: string,
+  headers: {|
+    [key: string]: string,
+    Authorization?: string,
+  |},
+  method: string,
+  body: string,
+|};
+
+type Response = {|
+  status: number,
+  headers: { [string]: string },
+  body: Object,
+|};
+
+export type RequestWithDPoP = (Request) => Response;
 /* eslint-enable no-restricted-globals, promise/no-native */

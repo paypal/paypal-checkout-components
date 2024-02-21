@@ -1,4 +1,7 @@
 /* @flow */
+// eslint-disable-next-line import/no-nodejs-modules
+import crypto from "crypto";
+
 import { vi } from "vitest";
 
 Object.defineProperty(window, "matchMedia", {
@@ -14,3 +17,6 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: vi.fn(),
   })),
 });
+
+// $FlowIssue missing browser crypto typedefs
+window.crypto = crypto.webcrypto;

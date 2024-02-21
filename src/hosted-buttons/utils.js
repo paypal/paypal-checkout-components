@@ -2,6 +2,7 @@
 
 import { request, memoize } from "@krakenjs/belter/src";
 import {
+  buildDPoPHeaders,
   getSDKHost,
   getClientID,
   getMerchantID as getSDKMerchantID,
@@ -15,6 +16,7 @@ import type {
   HostedButtonDetailsParams,
   OnApprove,
   RenderForm,
+  RequestWithDPoP,
 } from "./types";
 
 const entryPoint = "SDK";
@@ -38,9 +40,43 @@ export const getMerchantID = (): string | void => {
   return merchantIds[0];
 };
 
+export const requestWithDPoP: RequestWithDPoP = async ({
+  url,
+  headers,
+  method,
+  body,
+}) => {
+  let accessToken, nonce;
+  if (!headers.Authorization?.match(/Basic/)) {
+    // eslint-disable-next-line no-use-before-define
+    const response = await createAccessToken({
+      clientId: getClientID(),
+    });
+    accessToken = response.accessToken;
+    nonce = response.nonce;
+  }
+  const DPoPHeaders = await buildDPoPHeaders({
+    method,
+    uri: url,
+    accessToken,
+    nonce,
+  });
+  // $FlowIssue request() returns ZalgoPromise
+  return request({
+    url,
+    method,
+    body,
+    headers: {
+      ...headers,
+      ...DPoPHeaders,
+    },
+  });
+};
+
 export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
-  async (clientId) => {
-    const response = await request({
+  async ({ clientId, enableDPoP }) => {
+    const requestFn = enableDPoP ? requestWithDPoP : request;
+    const response = await requestFn({
       url: `${apiUrl}/v1/oauth2/token`,
       method: "POST",
       body: "grant_type=client_credentials",
@@ -50,7 +86,11 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
       },
     });
     // $FlowIssue request returns ZalgoPromise
-    return response.body.access_token;
+    const { access_token: accessToken, nonce } = response.body;
+    return {
+      accessToken,
+      nonce,
+    };
   }
 );
 
@@ -110,6 +150,7 @@ export const renderForm: RenderForm = ({
 };
 
 export const buildHostedButtonCreateOrder = ({
+  enableDPoP,
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): CreateOrder => {
@@ -117,9 +158,13 @@ export const buildHostedButtonCreateOrder = ({
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
-    const accessToken = await createAccessToken(getClientID());
+    const { accessToken } = await createAccessToken({
+      clientId: getClientID(),
+      enableDPoP,
+    });
     try {
-      const response = await request({
+      const requestFn = enableDPoP ? requestWithDPoP : request;
+      const response = await requestFn({
         url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`,
         headers: getHeaders(accessToken),
         method: "POST",
@@ -140,12 +185,17 @@ export const buildHostedButtonCreateOrder = ({
 };
 
 export const buildHostedButtonOnApprove = ({
+  enableDPoP,
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
-    const accessToken = await createAccessToken(getClientID());
-    return request({
+    const { accessToken } = await createAccessToken({
+      clientId: getClientID(),
+      enableDPoP,
+    });
+    const requestFn = enableDPoP ? requestWithDPoP : request;
+    return requestFn({
       url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`,
       headers: getHeaders(accessToken),
       method: "POST",

@@ -7,6 +7,7 @@ import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
   getHostedButtonDetails,
+  requestWithDPoP,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -75,6 +76,51 @@ test("getHostedButtonDetails", async () => {
     });
   });
   expect.assertions(1);
+});
+
+test("requestWithDPoP", async () => {
+  const accessToken = window.crypto.randomUUID();
+  request.mockImplementation(() =>
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
+      body: {
+        access_token: accessToken,
+        nonce: "123abc",
+      },
+    })
+  );
+  const options = {
+    method: "POST",
+    url: "https://example.com/",
+    headers: {
+      Authorization: `Basic ${accessToken}`,
+    },
+    body: "",
+  };
+  await requestWithDPoP(options);
+  expect(request).toHaveBeenCalledWith(
+    expect.objectContaining({
+      headers: expect.objectContaining({
+        // does not override the basic auth scheme
+        Authorization: expect.stringContaining(`Basic ${accessToken}`),
+        // but includes a DPoP jwt
+        DPoP: expect.any(String),
+      }),
+    })
+  );
+
+  options.headers.Authorization = `Bearer ${accessToken}`;
+  await requestWithDPoP(options);
+  expect(request).toHaveBeenCalledWith(
+    expect.objectContaining({
+      headers: expect.objectContaining({
+        // overrides the Bearer auth scheme
+        Authorization: expect.stringContaining(`DPoP ${accessToken}`),
+        // and includes a DPoP jwt
+        DPoP: expect.any(String),
+      }),
+    })
+  );
 });
 
 test("buildHostedButtonCreateOrder", async () => {
