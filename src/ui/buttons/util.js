@@ -2,15 +2,23 @@
 import { BUTTON_LAYOUT, MESSAGE_POSITION } from "../../constants";
 import { ValidationError } from "../../lib";
 
+import type { ButtonMessage } from "./props";
+
 export function isBorderRadiusNumber(borderRadius?: number): boolean {
   return typeof borderRadius === "number";
 }
+
+type calculateMessagePositionProps = {|
+  message: ButtonMessage | void,
+  showPoweredBy: boolean,
+  layout: string,
+|};
 
 export function calculateMessagePosition({
   message,
   showPoweredBy,
   layout,
-}): string {
+}: calculateMessagePositionProps): string {
   if (!message) {
     return "none";
   }
