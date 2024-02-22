@@ -13,14 +13,19 @@ type MessageProps = {|
 |};
 
 export function Message({ markup, position }: MessageProps): ChildType {
-  const reservationDiv = `<div class="${CLASS.BUTTON_MESSAGE_RESERVE}" style="height:${INITIAL_RESERVED_HEIGHT}" ></div>`;
+  const messageClassNames = [
+    CLASS.BUTTON_MESSAGE,
+    `${CLASS.BUTTON_MESSAGE}-${position}`,
+  ].join(" ");
 
-  return (
-    <div
-      class={[CLASS.BUTTON_MESSAGE, `${CLASS.BUTTON_MESSAGE}-${position}`].join(
-        " "
-      )}
-      innerHTML={typeof markup === "string" ? markup : reservationDiv}
-    />
-  );
+  if (typeof markup !== "string") {
+    return (
+      <div
+        className={`${messageClassNames} ${CLASS.BUTTON_MESSAGE_RESERVE}`}
+        style={`height:${INITIAL_RESERVED_HEIGHT}`}
+      />
+    );
+  }
+
+  return <div class={messageClassNames} innerHTML={markup} />;
 }

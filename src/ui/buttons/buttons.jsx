@@ -38,6 +38,7 @@ import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
 import { Message } from "./message";
+import { calculateMessagePosition } from "./util";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -150,28 +151,6 @@ type ButtonsProps = ButtonPropsInputs & {|
 
 export function validateButtonProps(props: ButtonPropsInputs) {
   normalizeButtonProps(props);
-}
-
-function calculateMessagePosition({ message, showPoweredBy, layout }): string {
-  if (!message) {
-    return "none";
-  }
-  const { position } = message;
-
-  if (showPoweredBy && position === MESSAGE_POSITION.BOTTOM) {
-    throw new ValidationError(
-      "Message position must be 'top' when Debit and/or Credit Card button is present"
-    );
-  }
-
-  if (
-    showPoweredBy ||
-    position === MESSAGE_POSITION.TOP ||
-    (layout === BUTTON_LAYOUT.VERTICAL && !position)
-  ) {
-    return MESSAGE_POSITION.TOP;
-  }
-  return MESSAGE_POSITION.BOTTOM;
 }
 
 export function Buttons(props: ButtonsProps): ElementNode {
