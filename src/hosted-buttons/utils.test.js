@@ -80,6 +80,7 @@ test("getHostedButtonDetails", async () => {
 
 test("requestWithDPoP", async () => {
   const accessToken = window.crypto.randomUUID();
+  // $FlowIssue
   request.mockImplementation(() =>
     // eslint-disable-next-line compat/compat
     Promise.resolve({
