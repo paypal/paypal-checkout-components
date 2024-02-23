@@ -15,6 +15,7 @@ import {
   BUTTON_NUMBER,
   BUTTON_LAYOUT,
   BUTTON_FLOW,
+  MESSAGE_POSITION,
 } from "../../constants";
 import {
   determineEligibleFunding,
@@ -36,6 +37,8 @@ import { Button } from "./button";
 import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
+import { Message } from "./message";
+import { calculateMessagePosition } from "./util";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -179,8 +182,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
-    // eslint-disable-next-line no-unused-vars
     message,
+    messageMarkup,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -242,6 +245,20 @@ export function Buttons(props: ButtonsProps): ElementNode {
     return i;
   };
 
+  const showTagline =
+    tagline &&
+    layout === BUTTON_LAYOUT.HORIZONTAL &&
+    !fundingSource &&
+    !message;
+  const showPoweredBy =
+    layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD);
+
+  const calculatedMessagePosition = calculateMessagePosition({
+    message,
+    showPoweredBy,
+    layout,
+  });
+
   return (
     <div
       class={[
@@ -260,6 +277,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
         style={style}
         fundingEligibility={fundingEligibility}
       />
+
+      {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
+        <Message markup={messageMarkup} position={calculatedMessagePosition} />
+      ) : null}
 
       {fundingSources.map((source, i) => (
         <Button
@@ -290,7 +311,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ))}
 
-      {tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource ? (
+      {showTagline ? (
         <TagLine
           fundingSource={fundingSources[0]}
           style={style}
@@ -312,9 +333,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {layout === BUTTON_LAYOUT.VERTICAL &&
-      fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
-        <PoweredByPayPal locale={locale} nonce={nonce} />
+      {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
+
+      {message && calculatedMessagePosition === MESSAGE_POSITION.BOTTOM ? (
+        <Message markup={messageMarkup} position={calculatedMessagePosition} />
       ) : null}
 
       {buttonDesignScript ? (

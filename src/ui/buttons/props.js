@@ -487,6 +487,7 @@ export type RenderButtonProps = {|
   showPayLabel: boolean,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
+  messageMarkup?: string,
 |};
 
 export type PrerenderDetails = {|
@@ -547,6 +548,7 @@ export type ButtonProps = {|
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   hostedButtonId?: string,
   message?: ButtonMessage,
+  messageMarkup?: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -590,6 +592,7 @@ export type ButtonPropsInputs = {
   showPayLabel: boolean,
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessageInputs | void,
+  messageMarkup?: string | void,
 };
 
 export const DEFAULT_STYLE = {
@@ -849,6 +852,7 @@ export function normalizeButtonProps(
     showPayLabel = true,
     displayOnly = [],
     message,
+    messageMarkup,
   } = props;
 
   const { country, lang } = locale;
@@ -941,5 +945,6 @@ export function normalizeButtonProps(
     showPayLabel,
     displayOnly,
     message: message ? normalizeButtonMessage(props, message) : undefined,
+    messageMarkup,
   };
 }
