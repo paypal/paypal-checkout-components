@@ -175,6 +175,7 @@ export const buildHostedButtonOnApprove = ({
   return async (data) => {
     const { accessToken, nonce } = await createAccessToken({
       clientId: getClientID(),
+      enableDPoP,
     });
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
     const method = "POST";
