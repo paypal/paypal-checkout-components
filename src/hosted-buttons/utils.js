@@ -16,7 +16,6 @@ import type {
   HostedButtonDetailsParams,
   OnApprove,
   RenderForm,
-  RequestWithDPoP,
 } from "./types";
 
 const entryPoint = "SDK";
@@ -40,49 +39,22 @@ export const getMerchantID = (): string | void => {
   return merchantIds[0];
 };
 
-export const requestWithDPoP: RequestWithDPoP = async ({
-  url,
-  headers,
-  method,
-  body,
-}) => {
-  let accessToken, nonce;
-  if (!headers.Authorization?.match(/Basic/)) {
-    // eslint-disable-next-line no-use-before-define
-    const response = await createAccessToken({
-      clientId: getClientID(),
-    });
-    accessToken = response.accessToken;
-    nonce = response.nonce;
-  }
-  const DPoPHeaders = await buildDPoPHeaders({
-    method,
-    uri: url,
-    accessToken,
-    nonce,
-  });
-  // $FlowIssue request() returns ZalgoPromise
-  return request({
-    url,
-    method,
-    body,
-    headers: {
-      ...headers,
-      ...DPoPHeaders,
-    },
-  });
-};
-
 export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   async ({ clientId, enableDPoP }) => {
-    const requestFn = enableDPoP ? requestWithDPoP : request;
-    const response = await requestFn({
-      url: `${apiUrl}/v1/oauth2/token`,
-      method: "POST",
+    const url = `${apiUrl}/v1/oauth2/token`;
+    const method = "POST";
+    const response = await request({
+      url,
+      method,
       body: "grant_type=client_credentials",
       headers: {
         Authorization: `Basic ${btoa(clientId)}`,
         "Content-Type": "application/json",
+        ...(enableDPoP &&
+          (await buildDPoPHeaders({
+            uri: url,
+            method,
+          }))),
       },
     });
     // $FlowIssue request returns ZalgoPromise
@@ -158,16 +130,27 @@ export const buildHostedButtonCreateOrder = ({
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
-    const { accessToken } = await createAccessToken({
+    const { accessToken, nonce } = await createAccessToken({
       clientId: getClientID(),
       enableDPoP,
     });
     try {
-      const requestFn = enableDPoP ? requestWithDPoP : request;
-      const response = await requestFn({
-        url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`,
-        headers: getHeaders(accessToken),
-        method: "POST",
+      const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
+      const method = "POST";
+      const response = await request({
+        url,
+        headers: {
+          ...getHeaders(accessToken),
+          ...(enableDPoP &&
+            // $FlowIssue exponential-spread
+            (await buildDPoPHeaders({
+              uri: url,
+              method,
+              accessToken,
+              nonce,
+            }))),
+        },
+        method,
         body: JSON.stringify({
           entry_point: entryPoint,
           funding_source: data.paymentSource.toUpperCase(),
@@ -190,15 +173,25 @@ export const buildHostedButtonOnApprove = ({
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
-    const { accessToken } = await createAccessToken({
+    const { accessToken, nonce } = await createAccessToken({
       clientId: getClientID(),
-      enableDPoP,
     });
-    const requestFn = enableDPoP ? requestWithDPoP : request;
-    return requestFn({
-      url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`,
-      headers: getHeaders(accessToken),
-      method: "POST",
+    const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
+    const method = "POST";
+    return request({
+      url,
+      headers: {
+        ...getHeaders(accessToken),
+        ...(enableDPoP &&
+          // $FlowIssue exponential-spread
+          (await buildDPoPHeaders({
+            uri: url,
+            method,
+            accessToken,
+            nonce,
+          }))),
+      },
+      method,
       body: JSON.stringify({
         entry_point: entryPoint,
         merchant_id: merchantId,

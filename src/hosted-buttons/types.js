@@ -59,21 +59,4 @@ export type RenderForm = ({|
   onClick: (data: mixed, actions: mixed) => void,
 |};
 
-type Request = {|
-  url: string,
-  headers: {|
-    [key: string]: string,
-    Authorization?: string,
-  |},
-  method: string,
-  body: string,
-|};
-
-type Response = {|
-  status: number,
-  headers: { [string]: string },
-  body: Object,
-|};
-
-export type RequestWithDPoP = (Request) => Response;
 /* eslint-enable no-restricted-globals, promise/no-native */

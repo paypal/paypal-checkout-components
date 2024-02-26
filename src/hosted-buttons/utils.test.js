@@ -6,8 +6,8 @@ import { request } from "@krakenjs/belter/src";
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
+  createAccessToken,
   getHostedButtonDetails,
-  requestWithDPoP,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -26,9 +26,11 @@ vi.mock("@paypal/sdk-client/src", async () => {
   };
 });
 
+const accessToken = "AT1234567890";
 const hostedButtonId = "B1234567890";
 const merchantId = "M1234567890";
 const orderID = "EC-1234567890";
+const clientId = "C1234567890";
 
 const getHostedButtonDetailsResponse = {
   body: {
@@ -59,6 +61,14 @@ const getHostedButtonDetailsResponse = {
   },
 };
 
+const mockCreateAccessTokenRequest = () =>
+  // eslint-disable-next-line compat/compat
+  Promise.resolve({
+    body: {
+      access_token: accessToken,
+    },
+  });
+
 test("getHostedButtonDetails", async () => {
   // $FlowIssue
   request.mockImplementationOnce(() =>
@@ -78,50 +88,36 @@ test("getHostedButtonDetails", async () => {
   expect.assertions(1);
 });
 
-test("requestWithDPoP", async () => {
-  const accessToken = window.crypto.randomUUID();
-  // $FlowIssue
-  request.mockImplementation(() =>
-    // eslint-disable-next-line compat/compat
-    Promise.resolve({
-      body: {
-        access_token: accessToken,
-        nonce: "123abc",
-      },
-    })
-  );
-  const options = {
-    method: "POST",
-    url: "https://example.com/",
-    headers: {
-      Authorization: `Basic ${accessToken}`,
-    },
-    body: "",
-  };
-  await requestWithDPoP(options);
-  expect(request).toHaveBeenCalledWith(
-    expect.objectContaining({
-      headers: expect.objectContaining({
-        // does not override the basic auth scheme
-        Authorization: expect.stringContaining(`Basic ${accessToken}`),
-        // but includes a DPoP jwt
-        DPoP: expect.any(String),
-      }),
-    })
-  );
-
-  options.headers.Authorization = `Bearer ${accessToken}`;
-  await requestWithDPoP(options);
-  expect(request).toHaveBeenCalledWith(
-    expect.objectContaining({
-      headers: expect.objectContaining({
-        // overrides the Bearer auth scheme
-        Authorization: expect.stringContaining(`DPoP ${accessToken}`),
-        // and includes a DPoP jwt
-        DPoP: expect.any(String),
-      }),
-    })
-  );
+describe("createAccessToken", () => {
+  test("basic functionality", async () => {
+    request
+      // $FlowIssue
+      .mockImplementationOnce(mockCreateAccessTokenRequest);
+    await createAccessToken({ clientId });
+    expect(request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: expect.stringContaining("Basic "),
+        }),
+      })
+    );
+    expect.assertions(1);
+  });
+  test("with DPoP enabled", async () => {
+    request
+      // $FlowIssue
+      .mockImplementationOnce(mockCreateAccessTokenRequest);
+    await createAccessToken({ clientId, enableDPoP: true });
+    expect(request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: expect.stringContaining("Basic "),
+          DPoP: expect.any(String),
+        }),
+      })
+    );
+    expect.assertions(1);
+  });
 });
 
 test("buildHostedButtonCreateOrder", async () => {
@@ -130,20 +126,62 @@ test("buildHostedButtonCreateOrder", async () => {
     merchantId,
   });
 
-  // $FlowIssue
-  request.mockImplementation(() =>
-    // eslint-disable-next-line compat/compat
-    Promise.resolve({
-      body: {
-        link_id: hostedButtonId,
-        merchant_id: merchantId,
-        context_id: orderID,
-        status: "CREATED",
-      },
+  request
+    // $FlowIssue
+    .mockImplementationOnce(mockCreateAccessTokenRequest)
+    .mockImplementation(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          link_id: hostedButtonId,
+          merchant_id: merchantId,
+          context_id: orderID,
+          status: "CREATED",
+        },
+      })
+    );
+  const createdOrderID = await createOrder({ paymentSource: "paypal" });
+  expect(request).toHaveBeenCalledWith(
+    expect.objectContaining({
+      headers: expect.objectContaining({
+        Authorization: `Bearer ${accessToken}`,
+      }),
     })
   );
-  const createdOrderID = await createOrder({ paymentSource: "paypal" });
   expect(createdOrderID).toBe(orderID);
+  expect.assertions(2);
+});
+
+test("buildHostedButtonCreateOrder with DPoP enabled", async () => {
+  const createOrder = buildHostedButtonCreateOrder({
+    enableDPoP: true,
+    hostedButtonId,
+    merchantId,
+  });
+
+  request
+    // $FlowIssue
+    .mockImplementationOnce(mockCreateAccessTokenRequest)
+    .mockImplementation(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          link_id: hostedButtonId,
+          merchant_id: merchantId,
+          context_id: orderID,
+          status: "CREATED",
+        },
+      })
+    );
+  await createOrder({ paymentSource: "paypal" });
+  expect(request).toHaveBeenCalledWith(
+    expect.objectContaining({
+      headers: expect.objectContaining({
+        Authorization: `DPoP ${accessToken}`,
+        DPoP: expect.any(String),
+      }),
+    })
+  );
   expect.assertions(1);
 });
 
@@ -194,6 +232,33 @@ describe("buildHostedButtonOnApprove", () => {
           entry_point: "SDK",
           merchant_id: merchantId,
           context_id: orderID,
+        }),
+      })
+    );
+    expect.assertions(1);
+  });
+
+  test("with DPoP enabled", async () => {
+    const onApprove = buildHostedButtonOnApprove({
+      enableDPoP: true,
+      hostedButtonId,
+      merchantId,
+    });
+    request
+      // $FlowIssue
+      .mockImplementationOnce(mockCreateAccessTokenRequest)
+      .mockImplementation(() =>
+        // eslint-disable-next-line compat/compat
+        Promise.resolve({
+          body: {},
+        })
+      );
+    await onApprove({ orderID, paymentSource: "paypal" });
+    expect(request).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: `DPoP ${accessToken}`,
+          DPoP: expect.any(String),
         }),
       })
     );
