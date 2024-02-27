@@ -6,6 +6,7 @@ export type HostedButtonsComponentProps = {|
 |};
 
 export type GetCallbackProps = {|
+  enableDPoP?: boolean,
   hostedButtonId: string,
   merchantId?: string,
 |};
@@ -40,7 +41,10 @@ export type OnApprove = (data: {|
   paymentSource: string,
 |}) => Promise<mixed>;
 
-export type CreateAccessToken = (clientID: string) => Promise<string>;
+export type CreateAccessToken = ({|
+  clientId: string,
+  enableDPoP?: boolean,
+|}) => Promise<{| accessToken: string, nonce: string |}>;
 
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;
