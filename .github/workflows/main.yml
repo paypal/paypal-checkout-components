@@ -69,6 +69,12 @@ jobs:
           directory: ./coverage/jest
           flags: jest
 
+      - name: ⬆️ Upload vitest coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./coverage/vitest
+          flags: vitest
+
       - name: 🤏 Check Bundle Size
         run: npm run check-size
         env:
