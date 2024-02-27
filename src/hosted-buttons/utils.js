@@ -43,18 +43,22 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   async ({ clientId, enableDPoP }) => {
     const url = `${apiUrl}/v1/oauth2/token`;
     const method = "POST";
+    const DPoPHeaders = enableDPoP
+      ? await buildDPoPHeaders({
+          uri: url,
+          method,
+        })
+      : {};
     const response = await request({
       url,
       method,
       body: "grant_type=client_credentials",
+      // $FlowIssue optional properties are not compatible with [key: string]: string
       headers: {
         Authorization: `Basic ${btoa(clientId)}`,
         "Content-Type": "application/json",
-        ...(enableDPoP &&
-          (await buildDPoPHeaders({
-            uri: url,
-            method,
-          }))),
+        // $FlowIssue exponential-spread
+        ...DPoPHeaders,
       },
     });
     // $FlowIssue request returns ZalgoPromise
@@ -137,18 +141,21 @@ export const buildHostedButtonCreateOrder = ({
     try {
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
       const method = "POST";
+      const DPoPHeaders = enableDPoP
+        ? await buildDPoPHeaders({
+            uri: url,
+            method,
+            accessToken,
+            nonce,
+          })
+        : {};
       const response = await request({
         url,
+        // $FlowIssue optional properties are not compatible with [key: string]: string
         headers: {
           ...getHeaders(accessToken),
-          ...(enableDPoP &&
-            // $FlowIssue exponential-spread
-            (await buildDPoPHeaders({
-              uri: url,
-              method,
-              accessToken,
-              nonce,
-            }))),
+          // $FlowIssue exponential-spread
+          ...DPoPHeaders,
         },
         method,
         body: JSON.stringify({
@@ -179,18 +186,21 @@ export const buildHostedButtonOnApprove = ({
     });
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
     const method = "POST";
+    const DPoPHeaders = enableDPoP
+      ? await buildDPoPHeaders({
+          uri: url,
+          method,
+          accessToken,
+          nonce,
+        })
+      : {};
     return request({
       url,
+      // $FlowIssue optional properties are not compatible with [key: string]: string
       headers: {
         ...getHeaders(accessToken),
-        ...(enableDPoP &&
-          // $FlowIssue exponential-spread
-          (await buildDPoPHeaders({
-            uri: url,
-            method,
-            accessToken,
-            nonce,
-          }))),
+        // $FlowIssue exponential-spread
+        ...DPoPHeaders,
       },
       method,
       body: JSON.stringify({
