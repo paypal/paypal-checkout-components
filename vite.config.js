@@ -42,13 +42,6 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["vitestSetup.js"],
     include: ["**/src/**/*.test.{js,jsx}"],
-    deps: {
-      optimizer: {
-        web: {
-          include: ["@krakenjs/post-robot", "@krakenjs/zoid"],
-        },
-      },
-    },
     globals: true,
   },
   optimizeDeps: {
