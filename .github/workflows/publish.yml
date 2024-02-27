@@ -18,7 +18,7 @@ jobs:
         # sets up the .npmrc file to publish to npm
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NVMRC }}
+          node-version: '14.x'
           registry-url: "https://registry.npmjs.org"
 
       - name: 📥 Download deps
