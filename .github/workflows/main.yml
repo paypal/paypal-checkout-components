@@ -35,6 +35,9 @@ jobs:
       - name: ▶️ Run Typecheck
         run: npm run typecheck
 
+      - name: ▶️ Run Vitest
+        run: npm run test:unit
+
       - name: ▶️ Run Karma
         run: npm run karma
 
