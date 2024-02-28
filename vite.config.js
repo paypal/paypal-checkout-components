@@ -43,6 +43,13 @@ export default defineConfig({
     setupFiles: ["vitestSetup.js"],
     include: ["**/src/**/*.test.{js,jsx}"],
     globals: true,
+    coverage: {
+      // exclude untested files
+      all: false,
+      include: ["src"],
+      provider: "v8",
+      reportsDirectory: "./coverage/vitest",
+    },
   },
   optimizeDeps: {
     esbuildOptions: {
