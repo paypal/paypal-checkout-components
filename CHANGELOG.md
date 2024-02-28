@@ -1,3 +1,9 @@
+## <small>5.0.299 (2024-02-28)</small>
+
+* fix fastlane interface (#2347) ([d4be802](https://github.com/paypal/paypal-checkout-components/commit/d4be802)), closes [#2347](https://github.com/paypal/paypal-checkout-components/issues/2347)
+
+
+
 ## <small>5.0.298 (2024-02-20)</small>
 
 * update metrics with new interface and namespace (#2332) ([e871cfe](https://github.com/paypal/paypal-checkout-components/commit/e871cfe)), closes [#2332](https://github.com/paypal/paypal-checkout-components/issues/2332)
