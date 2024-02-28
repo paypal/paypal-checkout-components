@@ -14,7 +14,7 @@
     "webpack-base": "babel-node ./node_modules/.bin/webpack --progress --config webpack.base.config.js",
     "webpack-button": "babel-node ./node_modules/.bin/webpack --progress --config webpack.button.config.js",
     "test": "if [ ! $SKIP_TEST ]; then npm run lint && npm run flow-typed && npm run flow && npm run test-ssr && npm run karma && npm run buttondiff; fi;",
-    "build": "npm run test && npm run webpack",
+    "build": "npm run test",
     "release": "./scripts/publish.sh",
     "release:patch": "./scripts/publish.sh patch",
     "release:minor": "./scripts/publish.sh minor",
