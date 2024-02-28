@@ -28,7 +28,7 @@
     "debug": "cross-env NODE_ENV=debug",
     "demo": "serve . -l 1337",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
-    "buttondiff": "jest test/screenshot/screenshot.test.js --env=ci",
+    "buttondiff": "jest test/screenshot/screenshot.test.js --env=node",
     "dev": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack.dev.config.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --https --hot=false --inline=false",
     "dev-http": "babel-node ./node_modules/.bin/webpack-dev-server --config webpack.dev.config.js --port 9001 --host localhost.paypal.com --open-page demo/dev/index.htm --http --hot=false --inline=false",
     "test-ssr": "jest test/ssr/ssr.test.js --env=node",
