@@ -31,5 +31,8 @@ jobs:
       - name: ▶️ Run build script
         run: npm run build
 
+      - name: ▶️ Run jest screenshot tests
+        run: npm run buttondiff
+
       - name: ⬆️ Upload coverage report
         uses: codecov/codecov-action@v1
