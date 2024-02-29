@@ -58,6 +58,7 @@ for (const config of buttonConfigs) {
     const filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
+        console.log(">>> screenshot.test.js for loop test block log")
         const { page } = await setupBrowserPage;
 
         // fasten up the animation
@@ -66,6 +67,7 @@ for (const config of buttonConfigs) {
         const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
         const { x, y, width, height } = await page.evaluate(async (options, userAgents) => {
+            console.log(">>> screenshot.test.js for loop page.evaluate log")
 
             // $FlowFixMe
             document.body.innerHTML = '';
@@ -129,6 +131,7 @@ for (const config of buttonConfigs) {
         ]);
 
         if (existing) {
+            console.log(">>> screenshot.test.js for loop if (existing) block log")
             const delta = await diffPNG(screenshot, existing);
 
             if (delta > DIFF_THRESHOLD) {
@@ -146,9 +149,12 @@ for (const config of buttonConfigs) {
             }
 
         } else {
+            console.log(">>> screenshot.test.js for loop if (existing) else block log")
             await screenshot.write(filepath);
         }
+        console.log(`>>> screenshot.test.js for loop pre-increment index log: ${index}`)
         index += 1;
+        console.log(`>>> screenshot.test.js for loop post-increment index log: ${index}`)
         console.log(`Generating button screenshot: ${ index } / ${ total }`);
     });
 }
