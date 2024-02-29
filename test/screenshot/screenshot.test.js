@@ -14,6 +14,8 @@ import { dotifyToString } from './lib/util';
 import { diffPNG, readPNG, uploadToImgur } from './lib/image';
 import { buttonConfigs } from './config';
 
+console.log(">>> screenshot.test.js top level log")
+
 const IMAGE_DIR = `${ __dirname }/images`;
 
 const DIFF_THRESHOLD = 100;
@@ -25,6 +27,7 @@ const USER_AGENTS = {
 jest.setTimeout(120000);
 
 const setupBrowserPage = (async () => {
+    console.log(">>> screenshot.test.js setupBrowserPage log")
     const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
@@ -51,6 +54,7 @@ const total = buttonConfigs.length;
 let index = 1;
 
 for (const config of buttonConfigs) {
+    console.log(">>> screenshot.test.js for loop log")
     const filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
