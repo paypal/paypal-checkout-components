@@ -60,9 +60,11 @@ for (const config of buttonConfigs) {
     test(`Render button with ${ filename }`, async () => {
         console.log(">>> screenshot.test.js for loop test block log")
         const { page } = await setupBrowserPage;
+        console.log(">>> screenshot.test.js for loop post await setupBrowserPage log")
 
         // fasten up the animation
         await page._client.send('Animation.setPlaybackRate', { playbackRate: 12 });
+        console.log(">>> screenshot.test.js for loop post age._client.send() log")
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
