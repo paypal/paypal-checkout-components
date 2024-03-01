@@ -63,12 +63,18 @@ export function containerTemplate({
 
   // $FlowFixMe
   const { style, nonce } = props;
-  const { label, layout, height: buttonHeight, menuPlacement } = style;
+  const {
+    label,
+    layout,
+    height: buttonHeight,
+    menuPlacement,
+    disableMaxHeight,
+  } = style;
 
   let minimumSize = MINIMUM_SIZE[layout];
 
   if (buttonHeight) {
-    const possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
+    let possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
       return (
         BUTTON_SIZE_STYLE[possibleSize] &&
         buttonHeight &&
@@ -76,6 +82,12 @@ export function containerTemplate({
         BUTTON_SIZE_STYLE[possibleSize].maxHeight >= buttonHeight
       );
     });
+
+    if (disableMaxHeight) {
+      possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
+        return BUTTON_SIZE_STYLE[possibleSize];
+      });
+    }
 
     possibleSizes.sort(
       (

@@ -320,6 +320,7 @@ export type ButtonStyle = {|
   period?: number,
   height?: number,
   disableMaxWidth?: boolean,
+  disableMaxHeight?: boolean,
   borderRadius?: number,
 |};
 
@@ -332,6 +333,7 @@ export type ButtonStyleInputs = {|
   period?: number | void,
   height?: number | void,
   disableMaxWidth?: boolean | void,
+  disableMaxHeight?: boolean | void,
   borderRadius?: number | void,
 |};
 
@@ -624,6 +626,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   } = style;
 
@@ -672,11 +675,20 @@ export function normalizeButtonStyle(
       BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight,
     ];
 
-    if (height < minHeight || height > maxHeight) {
-      throw new Error(
-        `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
-      );
-    }
+    // if (disableMaxHeight && height < minHeight) {
+    //   console.log(
+    //     "*****************************************************************"
+    //   );
+    //   throw new Error(
+    //     `Expected style.height to be greater than ${minHeight}px - got ${height}px`
+    //   );
+    // }
+
+    // if (!disableMaxHeight && (height < minHeight || height > maxHeight)) {
+    //   throw new Error(
+    //     `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
+    //   );
+    // }
   }
 
   if (borderRadius !== undefined) {
@@ -711,6 +723,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   };
 }

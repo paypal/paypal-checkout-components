@@ -26,11 +26,13 @@ export function buttonResponsiveStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
+  disableMaxHeight,
   borderRadius,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
+  disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
@@ -85,7 +87,11 @@ export function buttonResponsiveStyle({
                     height: ${buttonHeight}px;
                     vertical-align: top;
                     min-height: ${height || style.minHeight}px;
-                    max-height: ${height || style.maxHeight}px;
+                    ${
+                      disableMaxHeight
+                        ? ""
+                        : `max-height: ${height || style.maxHeight}px;`
+                    };
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
