@@ -23,7 +23,7 @@ jobs:
           useLockFile: false
 
       - name: ▶️ Run lint
-        run: npm run flow-typed
+        run: npm run lint
 
       - name: ▶️ Run flow-typed script
         run: npm run flow-typed
