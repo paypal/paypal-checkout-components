@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [12, 14]
+        node: 14
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
@@ -25,8 +25,20 @@ jobs:
         with:
           useLockFile: false
 
+      - name: ▶️ Run lint
+        run: npm run flow-typed
+
       - name: ▶️ Run flow-typed script
         run: npm run flow-typed
+
+      - name: ▶️ Run flow
+        run: npm run flow
+
+      - name: ▶️ Run test-ssr
+        run: npm run test-ssr
+
+      - name: ▶️ Run karma
+        run: npm run karma
 
       - name: ▶️ Run build script
         run: npm run build

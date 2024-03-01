@@ -1,6 +1,5 @@
 [ignore]
 .*/node_modules/es-abstract
-.*/flow-typed/npm/yargs_v15.x.x.js
 .*/node_modules/grabthar-release
 .*/node_modules/@babel/core
 .*/node_modules/@babel/helper-define-polyfill-provider
