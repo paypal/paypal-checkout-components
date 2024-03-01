@@ -14,8 +14,6 @@ import { dotifyToString } from './lib/util';
 import { diffPNG, readPNG, uploadToImgur } from './lib/image';
 import { buttonConfigs } from './config';
 
-console.log(">>> screenshot.test.js top level log")
-
 const IMAGE_DIR = `${ __dirname }/images`;
 
 const DIFF_THRESHOLD = 100;
@@ -27,7 +25,6 @@ const USER_AGENTS = {
 jest.setTimeout(120000);
 
 const setupBrowserPage = (async () => {
-    console.log(">>> screenshot.test.js setupBrowserPage log")
     const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
@@ -54,22 +51,17 @@ const total = buttonConfigs.length;
 let index = 1;
 
 for (const config of buttonConfigs) {
-    console.log(">>> screenshot.test.js for loop log")
     const filename = config.filename || dotifyToString(config) || 'base';
 
     test(`Render button with ${ filename }`, async () => {
-        console.log(">>> screenshot.test.js for loop test block log")
         const { page } = await setupBrowserPage;
-        console.log(">>> screenshot.test.js for loop post await setupBrowserPage log")
 
         // fasten up the animation
         await page._client.send('Animation.setPlaybackRate', { playbackRate: 12 });
-        console.log(">>> screenshot.test.js for loop post age._client.send() log")
         const filepath = `${ IMAGE_DIR }/${ filename }.png`;
         const diffpath  = `${ IMAGE_DIR }/${ filename }-old.png`;
 
         const { x, y, width, height } = await page.evaluate(async (options, userAgents) => {
-            console.log(">>> screenshot.test.js for loop page.evaluate log")
 
             // $FlowFixMe
             document.body.innerHTML = '';
@@ -133,7 +125,6 @@ for (const config of buttonConfigs) {
         ]);
 
         if (existing) {
-            console.log(">>> screenshot.test.js for loop if (existing) block log")
             const delta = await diffPNG(screenshot, existing);
 
             if (delta > DIFF_THRESHOLD) {
@@ -151,12 +142,9 @@ for (const config of buttonConfigs) {
             }
 
         } else {
-            console.log(">>> screenshot.test.js for loop if (existing) else block log")
             await screenshot.write(filepath);
         }
-        console.log(`>>> screenshot.test.js for loop pre-increment index log: ${index}`)
         index += 1;
-        console.log(`>>> screenshot.test.js for loop post-increment index log: ${index}`)
         console.log(`Generating button screenshot: ${ index } / ${ total }`);
     });
 }
