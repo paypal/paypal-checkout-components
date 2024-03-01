@@ -8,9 +8,6 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: "14"
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
@@ -18,7 +15,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: "14"
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
