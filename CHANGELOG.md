@@ -1,3 +1,9 @@
+## <small>5.0.300 (2024-03-01)</small>
+
+* update axo loader library (#2350) ([bcdf9c3](https://github.com/paypal/paypal-checkout-components/commit/bcdf9c3)), closes [#2350](https://github.com/paypal/paypal-checkout-components/issues/2350)
+
+
+
 ## <small>5.0.299 (2024-02-28)</small>
 
 * fix fastlane interface (#2347) ([d4be802](https://github.com/paypal/paypal-checkout-components/commit/d4be802)), closes [#2347](https://github.com/paypal/paypal-checkout-components/issues/2347)
