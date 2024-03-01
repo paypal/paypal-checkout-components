@@ -37,6 +37,9 @@ jobs:
       - name: ▶️ Run karma
         run: npm run karma
 
+      - name: ▶️ Run screenshot tests
+        run: npm run buttondiff
+
       - name: ▶️ Run build script
         run: npm run build
 
