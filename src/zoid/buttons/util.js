@@ -22,6 +22,7 @@ import {
   getFundingEligibility,
   getPlatform,
   getComponents,
+  getEnv,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
@@ -355,5 +356,47 @@ export function getButtonSize(
     if (huge.minWidth < buttonWidth) {
       return BUTTON_SIZE.HUGE;
     }
+  }
+}
+
+// eslint-disable-next-line promise/no-native, no-restricted-globals
+export async function getModal(): string | Promise<Object> | void {
+  const modalBundleUrl = {
+    local:
+      "https://www.paypalobjects.com/upstream/bizcomponents/stage/modal.js",
+    test: "https://www.paypalobjects.com/upstream/bizcomponents/stage/modal.js",
+    stage:
+      "https://www.paypalobjects.com/upstream/bizcomponents/stage/modal.js",
+    sandbox:
+      "https://www.paypalobjects.com/upstream/bizcomponents/sandbox/modal.js",
+    production:
+      "https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js",
+  };
+  const env = getEnv();
+
+  try {
+    return await new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = modalBundleUrl[env];
+      script.addEventListener("load", () => {
+        document.body.removeChild(script);
+        resolve();
+      });
+      if (document.readyState === "loading") {
+        window.addEventListener("DOMContentLoaded", () => {
+          document.body.appendChild(script);
+        });
+      } else {
+        document.body.appendChild(script);
+      }
+    });
+  } catch (err) {
+    getLogger()
+      .info("button_message_modal_fetch_error")
+      .track({
+        err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
+        details: err.details,
+        stack: JSON.stringify(err.stack || err),
+      });
   }
 }

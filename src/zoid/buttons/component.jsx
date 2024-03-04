@@ -90,6 +90,7 @@ import {
   getRenderedButtons,
   getButtonSize,
   getButtonExperiments,
+  getModal,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -677,6 +678,84 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             }
 
             return value(...args);
+          };
+        },
+      },
+
+      onMessageHover: {
+        type: "function",
+        required: false,
+        value: ({ props, state }) => {
+          return async ({ offerType }) => {
+            if (!window.paypal.MessagesModal.show && !state.isModalFetching) {
+              state.isModalFetching = true;
+              await getModal();
+              state.isModalFetching = false;
+
+              if (state.isAwaitingShow === true) {
+                const { message, clientID, merchantID } = props;
+                const amount = message?.amount;
+
+                window.paypal
+                  .MessagesModal({
+                    onReady: ({ show }) => {
+                      show({
+                        amount,
+                        offer: offerType,
+                        account: clientID,
+                        merchantId: merchantID,
+                      });
+                    },
+                  })
+                  .render("body");
+
+                state.isAwaitingShow = false;
+              }
+            }
+          };
+        },
+      },
+
+      onMessageClick: {
+        type: "function",
+        required: false,
+        value: ({ props, state }) => {
+          return async ({ offerType, messageType }) => {
+            if (window.paypal.MessagesModal) {
+              const { message, clientID, merchantID, buttonSessionID } = props;
+              const amount = message?.amount || undefined;
+
+              window.paypal
+                .MessagesModal({
+                  onReady: ({ show }) => {
+                    show({
+                      amount,
+                      offer: offerType,
+                      account: clientID,
+                      merchantId: merchantID,
+                    });
+                  },
+                })
+                .render("body");
+
+              getLogger()
+                .info("button_message_clicked")
+                .track({
+                  [FPTI_KEY.MESSAGE_TYPE]: messageType,
+                  [FPTI_KEY.MESSAGE_STYLE_POSITION]: message.position,
+                  [FPTI_KEY.MESSAGE_STYLE_TEXT_ALIGN]: message.align,
+                  [FPTI_KEY.MESSAGE_STYLE_COLOR]: message.color,
+                  [FPTI_KEY.MESSAGE_OFFER]: offerType,
+                  [FPTI_KEY.AMOUNT]: amount,
+                  [FPTI_KEY.BUTTON_MESSAGE_ID]: buttonSessionID,
+                });
+            } else if (!state.isModalFetching) {
+              state.isModalFetching = true;
+              await getModal();
+              state.isModalFetching = false;
+            } else {
+              state.isAwaitingShow = true;
+            }
           };
         },
       },
