@@ -22,7 +22,7 @@ const USER_AGENTS = {
     iphone6: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1'
 };
 
-jest.setTimeout(240000);
+jest.setTimeout(120000);
 
 const setupBrowserPage = (async () => {
     const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
