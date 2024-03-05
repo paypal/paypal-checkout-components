@@ -25,6 +25,7 @@ const USER_AGENTS = {
 jest.setTimeout(120000);
 
 const setupBrowserPage = (async () => {
+    console.log('>>> setupBrowserPage has been invoked');
     const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
