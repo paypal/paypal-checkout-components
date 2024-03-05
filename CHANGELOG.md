@@ -1,3 +1,9 @@
+## <small>5.0.301 (2024-03-05)</small>
+
+* Revert "update axo loader library (#2350)" (#2353) ([914d42d](https://github.com/paypal/paypal-checkout-components/commit/914d42d)), closes [#2350](https://github.com/paypal/paypal-checkout-components/issues/2350) [#2353](https://github.com/paypal/paypal-checkout-components/issues/2353)
+
+
+
 ## <small>5.0.300 (2024-03-01)</small>
 
 * update axo loader library (#2350) ([bcdf9c3](https://github.com/paypal/paypal-checkout-components/commit/bcdf9c3)), closes [#2350](https://github.com/paypal/paypal-checkout-components/issues/2350)
