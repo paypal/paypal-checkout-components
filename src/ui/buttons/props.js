@@ -675,20 +675,17 @@ export function normalizeButtonStyle(
       BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight,
     ];
 
-    // if (disableMaxHeight && height < minHeight) {
-    //   console.log(
-    //     "*****************************************************************"
-    //   );
-    //   throw new Error(
-    //     `Expected style.height to be greater than ${minHeight}px - got ${height}px`
-    //   );
-    // }
+    if (disableMaxHeight && height < minHeight) {
+      throw new Error(
+        `Expected style.height to be greater than ${minHeight}px - got ${height}px`
+      );
+    }
 
-    // if (!disableMaxHeight && (height < minHeight || height > maxHeight)) {
-    //   throw new Error(
-    //     `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
-    //   );
-    // }
+    if (!disableMaxHeight && (height < minHeight || height > maxHeight)) {
+      throw new Error(
+        `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
+      );
+    }
   }
 
   if (borderRadius !== undefined) {

@@ -73,8 +73,8 @@ export function containerTemplate({
 
   let minimumSize = MINIMUM_SIZE[layout];
 
-  if (buttonHeight) {
-    let possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
+  if (buttonHeight && !disableMaxHeight) {
+    const possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
       return (
         BUTTON_SIZE_STYLE[possibleSize] &&
         buttonHeight &&
@@ -82,12 +82,6 @@ export function containerTemplate({
         BUTTON_SIZE_STYLE[possibleSize].maxHeight >= buttonHeight
       );
     });
-
-    if (disableMaxHeight) {
-      possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
-        return BUTTON_SIZE_STYLE[possibleSize];
-      });
-    }
 
     possibleSizes.sort(
       (
