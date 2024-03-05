@@ -1,5 +1,5 @@
 /* @flow */
-import { loadAxo } from "@paypal/accelerated-checkout-loader/dist/loader.esm";
+import { loadAxo } from "@paypal/connect-loader-component";
 import { stringifyError } from "@krakenjs/belter/src";
 import {
   getClientID,
