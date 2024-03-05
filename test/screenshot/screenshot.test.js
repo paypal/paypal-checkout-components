@@ -41,7 +41,7 @@ const setupBrowserPage = (async () => {
     return { browser, page };
 })();
 
-beforeAll(() => setupBrowserPage);
+beforeAll(async () => await setupBrowserPage);
 
 afterAll(async () => {
     const { browser } = await setupBrowserPage;
