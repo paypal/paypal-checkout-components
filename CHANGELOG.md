@@ -1,3 +1,9 @@
+## <small>5.0.302 (2024-03-06)</small>
+
+* add QRCode component to hosted buttons (#2351) ([648b54d](https://github.com/paypal/paypal-checkout-components/commit/648b54d)), closes [#2351](https://github.com/paypal/paypal-checkout-components/issues/2351)
+
+
+
 ## <small>5.0.301 (2024-03-05)</small>
 
 * Revert "update axo loader library (#2350)" (#2353) ([914d42d](https://github.com/paypal/paypal-checkout-components/commit/914d42d)), closes [#2350](https://github.com/paypal/paypal-checkout-components/issues/2350) [#2353](https://github.com/paypal/paypal-checkout-components/issues/2353)
