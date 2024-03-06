@@ -36,9 +36,9 @@ const setupBrowserPage = (async () => {
     // }
     console.log('>>> post setupBrowserPage for...of log');
 
-    await page.evaluate(() => {
-        window.paypal.setup({ env: 'test' });
-    });
+    // await page.evaluate(() => {
+    //     window.paypal.setup({ env: 'test' });
+    // });
 
     console.log(`>>> setupBrowserPage browser: ${ browser }`);
     console.log(`>>> setupBrowserPage page: ${ page }`);
