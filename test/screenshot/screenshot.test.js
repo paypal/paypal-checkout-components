@@ -49,7 +49,6 @@ afterAll(async () => {
 
 const total = buttonConfigs.length;
 let index = 1;
-const config = buttonConfigs[0];
 
 for (const config of buttonConfigs) {
     const filename = config.filename || dotifyToString(config) || 'base';
