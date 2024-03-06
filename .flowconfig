@@ -1,4 +1,5 @@
 [ignore]
+.*/node_modules/es-abstract
 .*/node_modules/grabthar-release
 .*/node_modules/@babel/core
 .*/node_modules/@babel/helper-define-polyfill-provider

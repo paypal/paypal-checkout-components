@@ -8,9 +8,6 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [12, 14]
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
@@ -18,15 +15,31 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: "14"
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
+      - name: ▶️ Run lint
+        run: npm run lint
+
       - name: ▶️ Run flow-typed script
         run: npm run flow-typed
+
+      - name: ▶️ Run flow
+        run: npm run flow
+
+      - name: ▶️ Run test-ssr
+        run: npm run test-ssr
+
+      - name: ▶️ Run karma
+        run: npm run karma
+
+      # The screenshot tests break in CI, but work locally
+      # - name: ▶️ Run screenshot tests
+      #   run: npm run buttondiff
 
       - name: ▶️ Run build script
         run: npm run build

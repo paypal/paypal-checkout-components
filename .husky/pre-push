@@ -1,0 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Check if not running in GitHub Actions
+if [ -z "$CI" ]; then
+    echo "Running pre-push hook in local environment"
+    npm run buttondiff
+    exit $?
+else
+    echo "Skipping pre-push hook in CI environment"
+    exit 0
+fi
