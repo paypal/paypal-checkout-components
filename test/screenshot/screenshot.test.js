@@ -27,12 +27,14 @@ jest.setTimeout(120000);
 const setupBrowserPage = (async () => {
     console.log('>>> setupBrowserPage has been invoked');
     const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
+    console.log('>>> post setupBrowserPage openPage log');
 
     for (const filename of await fs.readdir(IMAGE_DIR)) {
         if (filename.endsWith('-old.png')) {
             await fs.unlink(`${ IMAGE_DIR }/${ filename }`);
         }
     }
+    console.log('>>> post setupBrowserPage for...of log');
 
     await page.evaluate(() => {
         window.paypal.setup({ env: 'test' });
