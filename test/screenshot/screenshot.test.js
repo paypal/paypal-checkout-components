@@ -24,7 +24,7 @@ const USER_AGENTS = {
 
 jest.setTimeout(120000);
 
-const setupBrowserPage = async () => {
+const setupBrowserPage = (async () => {
     console.log('>>> setupBrowserPage has been invoked');
     const { browser, page } = await openPage(await webpackCompile(BASE_SCREENSHOT_TEST));
 
@@ -39,12 +39,12 @@ const setupBrowserPage = async () => {
     });
 
     return { browser, page };
-};
+})();
 
-beforeAll(async () => await setupBrowserPage());
+beforeAll(async () => await setupBrowserPage);
 
 afterAll(async () => {
-    const { browser } = await setupBrowserPage();
+    const { browser } = await setupBrowserPage;
     await browser.close();
 });
 
@@ -56,7 +56,7 @@ const config = buttonConfigs[0];
 const filename = config.filename || dotifyToString(config) || 'base';
 
 test(`Render button with ${ filename }`, async () => {
-    const { page } = await setupBrowserPage();
+    const { page } = await setupBrowserPage;
 
     // fasten up the animation
     await page._client.send('Animation.setPlaybackRate', { playbackRate: 12 });
