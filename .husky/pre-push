@@ -5,7 +5,7 @@
 if [ -z "$CI" ]; then
     echo "Running pre-push hook in local environment"
     npm run buttondiff
-    exit 0
+    exit $?
 else
     echo "Skipping pre-push hook in CI environment"
     exit 0
