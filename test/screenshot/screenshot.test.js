@@ -38,6 +38,9 @@ const setupBrowserPage = (async () => {
         window.paypal.setup({ env: 'test' });
     });
 
+    console.log(`>>> setupBrowserPage browser: ${ browser }`);
+    console.log(`>>> setupBrowserPage page: ${ page }`);
+
     return { browser, page };
 })();
 
