@@ -46,10 +46,7 @@ const setupBrowserPage = (async () => {
     return { browser, page };
 })();
 
-beforeAll(() => {
-    console.log('>>> beforeAll');
-    setupBrowserPage;
-});
+beforeAll(() => setupBrowserPage);
 
 afterAll(async () => {
     console.log('>>> afterAll');
