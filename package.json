@@ -102,10 +102,5 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run test"
-    }
   }
 }
