@@ -5,7 +5,6 @@ import { getButtonsComponent } from "../zoid/buttons";
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
-  buildOpenPopup,
   getHostedButtonDetails,
   renderForm,
   getMerchantID,
@@ -24,12 +23,9 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
     const Buttons = getButtonsComponent();
     const render = async (selector) => {
       const merchantId = getMerchantID();
-      const { html, htmlScript, popupFallback, style } =
-        await getHostedButtonDetails({
-          hostedButtonId,
-        });
-
-      const openPopup = buildOpenPopup({ selector, popupFallback });
+      const { html, htmlScript, style } = await getHostedButtonDetails({
+        hostedButtonId,
+      });
 
       const { onInit, onClick } = renderForm({
         hostedButtonId,
@@ -53,7 +49,6 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
           enableDPoP,
           hostedButtonId,
           merchantId,
-          openPopup,
         }),
       }).render(selector);
     };

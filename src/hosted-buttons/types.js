@@ -9,7 +9,6 @@ export type GetCallbackProps = {|
   enableDPoP?: boolean,
   hostedButtonId: string,
   merchantId?: string,
-  openPopup?: (url: string) => void,
 |};
 
 export type HostedButtonsInstance = {|
@@ -26,7 +25,6 @@ export type HostedButtonDetailsParams =
       color: string,
       label: string,
     |},
-    popupFallback: string,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|

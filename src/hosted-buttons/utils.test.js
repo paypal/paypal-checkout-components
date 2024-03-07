@@ -1,15 +1,13 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { test, expect, vi } from "vitest";
-import { request, popup } from "@krakenjs/belter/src";
+import { request } from "@krakenjs/belter/src";
 
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
-  buildOpenPopup,
   createAccessToken,
   getHostedButtonDetails,
-  popupFallbackClassName,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -269,19 +267,9 @@ describe("buildHostedButtonOnApprove", () => {
   });
 
   describe("inline guest", () => {
-    const url = "https://example.com/ncp/payment/B1234567890/EC-1234567890";
-    const selector = "buttons-container";
-    // $FlowIssue
-    document.body.innerHTML = `<div id="${selector}"></div>`; // eslint-disable-line compat/compat
-    const popupFallback = `<a href="#">See payment details</a>`;
-    const openPopup = buildOpenPopup({
-      popupFallback,
-      selector: `#${selector}`,
-    });
     const onApprove = buildHostedButtonOnApprove({
       hostedButtonId,
       merchantId,
-      openPopup,
     });
     // $FlowIssue
     request.mockImplementation(() =>
@@ -291,55 +279,12 @@ describe("buildHostedButtonOnApprove", () => {
       })
     );
 
-    test("provides its own popup", async () => {
+    test("redirects from the merchant's site to a thank you page", async () => {
+      expect(window.location.href).toBe("http://localhost:3000/");
       await onApprove({ orderID, paymentSource: "card" });
-      expect(popup).toHaveBeenCalledWith(url, expect.anything());
-      expect.assertions(1);
-    });
-
-    test("appends a link if the popup is blocked", async () => {
-      // $FlowIssue
-      popup.mockImplementationOnce(() => {
-        throw new Error("popup_blocked");
-      });
-      await onApprove({ orderID, paymentSource: "card" });
-      const link = document.querySelector(`.${popupFallbackClassName} a`);
-      expect(link?.getAttribute("href")).toBe(url);
-      expect.assertions(1);
-    });
-
-    test("does not append a second link if the popup is blocked a second time", async () => {
-      // still present from the previous popup open failure
-      expect(
-        document.querySelectorAll(`.${popupFallbackClassName}`).length
-      ).toBe(1);
-      // $FlowIssue
-      popup.mockImplementationOnce(() => {
-        throw new Error("popup_blocked");
-      });
-      await onApprove({ orderID, paymentSource: "card" });
-      expect(
-        document.querySelectorAll(`.${popupFallbackClassName}`).length
-      ).toBe(1);
-      expect.assertions(2);
-    });
-
-    test("removes the fallback message if a different payment source is used", async () => {
-      // still present from the previous popup open failure
-      expect(
-        document.querySelectorAll(`.${popupFallbackClassName}`).length
-      ).toBe(1);
-      // $FlowIssue
-      popup.mockImplementationOnce(() => {
-        throw new Error("popup_blocked");
-      });
-
-      // note new payment source
-      await onApprove({ orderID, paymentSource: "paypal" });
-      expect(
-        document.querySelectorAll(`.${popupFallbackClassName}`).length
-      ).toBe(0);
-      expect.assertions(2);
+      expect(window.location).toBe(
+        "https://example.com/ncp/payment/B1234567890/EC-1234567890"
+      );
     });
   });
 });
