@@ -698,27 +698,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: ({ props }) => {
           return async ({ offerType, messageType }) => {
-            const {
-              message,
-              clientID,
-              merchantID,
-              currency,
-              locale: { lang, country },
-              buttonSessionID,
-            } = props;
+            const { message, clientID, merchantID, currency, buttonSessionID } =
+              props;
             const amount = message?.amount || undefined;
 
-            const modal = await getModal();
-            const modalInstance = modal({
-              account: `client-id:${clientID}`,
-            });
+            const modalInstance = await getModal(clientID, merchantID);
             modalInstance.show({
               amount,
               offer: offerType?.join(",") || undefined,
-              account: `client-id:${clientID}`,
-              merchantId: merchantID?.join(",") || undefined,
-              language: `${lang}-${country}`,
-              buyerCountry: getBuyerCountry(),
               currency,
             });
 
