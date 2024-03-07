@@ -89,7 +89,7 @@ export function buttonResponsiveStyle({
 
                 .${CLASS.BUTTON_ROW} {
                     height: ${
-                      disableMaxHeight ? "100% !important" : buttonHeight
+                      disableMaxHeight ? "100% !important" : `${buttonHeight}px`
                     };
                     vertical-align: top;
                     min-height: ${height || style.minHeight}px;
