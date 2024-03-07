@@ -1,14 +1,18 @@
 /* @flow */
 
-import { request, memoize } from "@krakenjs/belter/src";
+import { request, memoize, popup } from "@krakenjs/belter/src";
 import {
   buildDPoPHeaders,
   getSDKHost,
   getClientID,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
+
+import { DEFAULT_POPUP_SIZE } from "../zoid/checkout";
 
 import type {
+  BuildOpenPopup,
   ButtonVariables,
   CreateAccessToken,
   CreateOrder,
@@ -21,6 +25,7 @@ import type {
 const entryPoint = "SDK";
 const baseUrl = `https://${getSDKHost()}`;
 const apiUrl = baseUrl.replace("www", "api");
+export const popupFallbackClassName = "paypal-popup-fallback";
 
 const getHeaders = (accessToken?: string) => ({
   ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
@@ -93,6 +98,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
     },
     html: body.html,
     htmlScript: body.html_script,
+    popupFallback: body.popup_fallback,
   };
 };
 
@@ -122,6 +128,26 @@ export const renderForm: RenderForm = ({
     onInit: window[`__pp_form_fields_${hostedButtonId}`]?.onInit,
     // render form errors, if present
     onClick: window[`__pp_form_fields_${hostedButtonId}`]?.onClick,
+  };
+};
+
+export const buildOpenPopup: BuildOpenPopup = ({ popupFallback, selector }) => {
+  return (url) => {
+    try {
+      popup(url, {
+        width: DEFAULT_POPUP_SIZE.WIDTH,
+        height: DEFAULT_POPUP_SIZE.HEIGHT,
+      });
+    } catch (e) {
+      const div = document.createElement("div");
+      div.classList.add(popupFallbackClassName);
+      div.innerHTML = popupFallback.replace("#", url);
+      const container =
+        typeof selector === "string"
+          ? document.querySelector(selector)
+          : selector;
+      container?.appendChild(div);
+    }
   };
 };
 
@@ -178,6 +204,7 @@ export const buildHostedButtonOnApprove = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
+  openPopup,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
     const { accessToken, nonce } = await createAccessToken({
@@ -208,6 +235,17 @@ export const buildHostedButtonOnApprove = ({
         merchant_id: merchantId,
         context_id: data.orderID,
       }),
+    }).then((response) => {
+      // remove the popup fallback message, if present
+      document.querySelector(`.${popupFallbackClassName}`)?.remove();
+      // The "Debit or Credit Card" button does not open a popup
+      // so we need to open a new popup for buyers who complete
+      // a checkout via "Debit or Credit Card".
+      if (data.paymentSource === FUNDING.CARD) {
+        const popupUrl = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+        openPopup?.(popupUrl);
+      }
+      return response;
     });
   };
 };
