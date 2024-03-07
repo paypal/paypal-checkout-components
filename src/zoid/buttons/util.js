@@ -1,3 +1,5 @@
+/* eslint-disable compat/compat */
+/* eslint-disable promise/no-native */
 /* @flow */
 import {
   supportsPopups as userAgentSupportsPopups,
@@ -13,6 +15,7 @@ import {
   getElement,
   isStandAlone,
   once,
+  memoize,
 } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import {
@@ -359,36 +362,35 @@ export function getButtonSize(
   }
 }
 
-// eslint-disable-next-line promise/no-native, no-restricted-globals
-export async function getModal(): string | Promise<Object> | void {
-  const modalBundleUrl = {
-    local:
-      "https://www.paypalobjects.com/upstream/bizcomponents/stage/modal.js",
-    test: "https://www.paypalobjects.com/upstream/bizcomponents/stage/modal.js",
-    stage:
-      "https://www.paypalobjects.com/upstream/bizcomponents/stage/modal.js",
-    sandbox:
-      "https://www.paypalobjects.com/upstream/bizcomponents/sandbox/modal.js",
-    production:
-      "https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js",
+export const getModal: () => Object = memoize(() => {
+  const modalBundleUrl = () => {
+    let envPiece;
+    switch (getEnv()) {
+      case "local":
+      case "test":
+      case "stage":
+        envPiece = "stage";
+        break;
+      case "sandbox":
+        envPiece = "sandbox";
+        break;
+      case "production":
+      default:
+        envPiece = "js";
+    }
+    return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
   };
-  const env = getEnv();
 
   try {
-    return await new Promise((resolve) => {
+    // eslint-disable-next-line no-restricted-globals
+    return new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = modalBundleUrl[env];
+      script.src = modalBundleUrl();
+      document.body.appendChild(script);
       script.addEventListener("load", () => {
         document.body.removeChild(script);
-        resolve();
+        resolve(window.paypal.MessagesModal);
       });
-      if (document.readyState === "loading") {
-        window.addEventListener("DOMContentLoaded", () => {
-          document.body.appendChild(script);
-        });
-      } else {
-        document.body.appendChild(script);
-      }
     });
   } catch (err) {
     getLogger()
@@ -399,4 +401,4 @@ export async function getModal(): string | Promise<Object> | void {
         stack: JSON.stringify(err.stack || err),
       });
   }
-}
+});
