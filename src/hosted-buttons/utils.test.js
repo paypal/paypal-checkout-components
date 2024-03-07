@@ -13,7 +13,6 @@ import {
 vi.mock("@krakenjs/belter/src", async () => {
   return {
     ...(await vi.importActual("@krakenjs/belter/src")),
-    popup: vi.fn(),
     request: vi.fn(),
   };
 });
