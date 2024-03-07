@@ -59,9 +59,4 @@ export type RenderForm = ({|
   onClick: (data: mixed, actions: mixed) => void,
 |};
 
-export type BuildOpenPopup = ({|
-  popupFallback: string,
-  selector: string | HTMLElement,
-|}) => (url: string) => void;
-
 /* eslint-enable no-restricted-globals, promise/no-native */
