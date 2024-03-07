@@ -363,42 +363,46 @@ export function getButtonSize(
 }
 
 export const getModal: () => Object = memoize(() => {
-  const modalBundleUrl = () => {
-    let envPiece;
-    switch (getEnv()) {
-      case "local":
-      case "test":
-      case "stage":
-        envPiece = "stage";
-        break;
-      case "sandbox":
-        envPiece = "sandbox";
-        break;
-      case "production":
-      default:
-        envPiece = "js";
-    }
-    return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
-  };
+  if (window.paypal?.MessagesModal) {
+    return window.paypal.MessagesModal;
+  } else {
+    const modalBundleUrl = () => {
+      let envPiece;
+      switch (getEnv()) {
+        case "local":
+        case "test":
+        case "stage":
+          envPiece = "stage";
+          break;
+        case "sandbox":
+          envPiece = "sandbox";
+          break;
+        case "production":
+        default:
+          envPiece = "js";
+      }
+      return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
+    };
 
-  try {
-    // eslint-disable-next-line no-restricted-globals
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = modalBundleUrl();
-      document.body.appendChild(script);
-      script.addEventListener("load", () => {
-        document.body.removeChild(script);
-        resolve(window.paypal.MessagesModal);
+    try {
+      // eslint-disable-next-line no-restricted-globals
+      return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = modalBundleUrl();
+        document.body?.appendChild(script);
+        script.addEventListener("load", () => {
+          document.body?.removeChild(script);
+          resolve(window.paypal.MessagesModal);
+        });
       });
-    });
-  } catch (err) {
-    getLogger()
-      .info("button_message_modal_fetch_error")
-      .track({
-        err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
-        details: err.details,
-        stack: JSON.stringify(err.stack || err),
-      });
+    } catch (err) {
+      getLogger()
+        .info("button_message_modal_fetch_error")
+        .track({
+          err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
+          details: err.details,
+          stack: JSON.stringify(err.stack || err),
+        });
+    }
   }
 });
