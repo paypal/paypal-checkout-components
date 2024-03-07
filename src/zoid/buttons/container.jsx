@@ -107,7 +107,7 @@ export function containerTemplate({
         console.log(`clientHeight: ${container?.clientHeight}`);
         console.log(`new Height: ${newHeight}`);
         // el.style.height = toCSS(container?.clientHeight);
-        el.style.height = "50%";
+        el.style.height = "100%";
       } else if (typeof newHeight === "number") {
         el.style.height = toCSS(newHeight);
       }

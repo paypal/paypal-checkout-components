@@ -38,7 +38,10 @@ export function buttonResponsiveStyle({
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
       const style = BUTTON_SIZE_STYLE[size];
+
+      // Everything calculated off buttonHeight
       const buttonHeight = height || style.defaultHeight;
+
       const minDualWidth = Math.max(
         Math.round(
           buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
