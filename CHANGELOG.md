@@ -1,3 +1,9 @@
+## <small>5.0.303 (2024-03-08)</small>
+
+* Revert "Render Debit or Credit Card when `style.layout` is "horizontal" (#2346)" (#2359) ([fbd0c27](https://github.com/paypal/paypal-checkout-components/commit/fbd0c27)), closes [#2346](https://github.com/paypal/paypal-checkout-components/issues/2346) [#2359](https://github.com/paypal/paypal-checkout-components/issues/2359)
+
+
+
 ## <small>5.0.302 (2024-03-06)</small>
 
 * add QRCode component to hosted buttons (#2351) ([648b54d](https://github.com/paypal/paypal-checkout-components/commit/648b54d)), closes [#2351](https://github.com/paypal/paypal-checkout-components/issues/2351)
