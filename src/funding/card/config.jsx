@@ -123,7 +123,7 @@ export function getCardConfig(): FundingSourceConfig {
       BUTTON_FLOW.SUBSCRIPTION_SETUP,
     ],
 
-    layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
+    layouts: [BUTTON_LAYOUT.VERTICAL],
 
     maxCards: maxCardForCountry,
 
