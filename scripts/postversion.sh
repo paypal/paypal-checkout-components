@@ -13,4 +13,3 @@ local_version=$(node --eval "
     console.log(pkg.version);
 ")
 npx grabthar-verify-npm-publish "$local_version" "latest"
-npm run cdnify
