@@ -378,4 +378,85 @@ describe(`paypal button message`, () => {
       });
     });
   });
+
+  describe("modal", () => {
+    const messageMarkup = `
+      <div className=".message__container locale__en" role="button">
+          <div className="message__content" >
+              <div className="message__logo-container">
+                  <div className="message__logo--svg"></div>
+              </div>
+              <div className=".message__messaging text__content--black">
+                  <div className="message__headline">
+                      <span style="font-size: 16px">Paypal Pay Later</span>
+                  </div>
+                  <p className="message__disclaimer">
+                      <span></span>
+                  </p>
+              </div>
+          </div>
+      </div>`;
+
+    it("should load modal on message hover when window.paypal.MessagesModal is not present", async (done) => {
+      window.paypal
+        .Buttons({
+          message: {},
+          messageMarkup,
+          test: {
+            onRender() {
+              const message = document.querySelector(".message__container");
+              message?.focus();
+              setTimeout(() => assert.ok(window.paypal.MessagesModal), 1000);
+              done();
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+    it.skip("should utilize existing MessagesModal on message hover when window.paypal.MessagesModal is present", () => {});
+    it("should open modal on message click", (done) => {
+      window.paypal.Buttons({
+        message: {},
+        messageMarkup,
+        test: {
+          onRender() {
+            const message = document.querySelector(".message__container");
+            message?.focus();
+            message?.click();
+
+            const modalWrapper = document.querySelector(".modal-wrapper");
+            assert.ok(modalWrapper);
+            done();
+          },
+        },
+      });
+    });
+    it("should show passed-in amount in modal's pay in 4 view", (done) => {
+      window.paypal
+        .Buttons({
+          message: {
+            amount: 100,
+          },
+          messageMarkup,
+          test: {
+            onRender() {
+              const message = document.querySelector(".message__container");
+              message?.focus();
+
+              const payIn4Button =
+                document.querySelector(".content__col")?.childNodes[1];
+              if (payIn4Button instanceof HTMLElement) {
+                payIn4Button.click();
+              }
+
+              const payIn4Amount =
+                document.querySelector("#donut__payment__1")?.innerHTML;
+              assert.equal(payIn4Amount, "$25.00");
+              done();
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+  });
 });

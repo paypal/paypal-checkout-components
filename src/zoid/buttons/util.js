@@ -369,13 +369,7 @@ export const getModal: (
 ) => Object = memoize((clientID, merchantID) => {
   const namespace = getNamespace();
 
-  if (window[namespace]?.MessagesModal) {
-    const modal = window[namespace].MessagesModal;
-    return modal({
-      account: `client-id:${clientID}`,
-      merchantId: merchantID?.join(",") || undefined,
-    });
-  } else {
+  if (!window[namespace]?.MessagesModal) {
     const modalBundleUrl = () => {
       let envPiece;
       switch (getEnv()) {
@@ -396,21 +390,16 @@ export const getModal: (
 
     try {
       // eslint-disable-next-line no-restricted-globals
-      return new Promise((resolve) => {
+      return new Promise(() => {
         const script = document.createElement("script");
         script.src = modalBundleUrl();
-        script.setAttribute("data-namespace", namespace);
         script.setAttribute("data-pp-namespace", namespace);
+        script.addEventListener("error", (err: Event) => {
+          throw err;
+        });
         document.body?.appendChild(script);
         script.addEventListener("load", () => {
           document.body?.removeChild(script);
-          const modal = window[namespace].MessagesModal;
-          resolve(() =>
-            modal({
-              account: `client-id:${clientID}`,
-              merchantId: merchantID?.join(",") || undefined,
-            })
-          );
         });
       });
     } catch (err) {
@@ -423,4 +412,9 @@ export const getModal: (
         });
     }
   }
+  const modal = window[namespace].MessagesModal;
+  return modal({
+    account: `client-id:${clientID}`,
+    merchantId: merchantID?.join(",") || undefined,
+  });
 });
