@@ -682,6 +682,30 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
+      onMessageReady: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return async ({ offerType, messageType }) => {
+            const { message, buttonSessionID } = props;
+            const amount = message?.amount || undefined;
+
+            getLogger()
+              .info("button_message_render")
+              .track({
+                [FPTI_KEY.EVENT_NAME]: "message_render",
+                // [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+                // [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+                // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message.position,
+                // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message.align,
+                // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message.color,
+                // [FPTI_KEY.AMOUNT]: amount,
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+              });
+          };
+        },
+      },
+
       onMessageHover: {
         type: "function",
         required: false,
