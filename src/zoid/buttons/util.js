@@ -366,55 +366,56 @@ export function getButtonSize(
 export const getModal: (
   clientID: string,
   merchantID: $ReadOnlyArray<string> | void
-) => Object = memoize((clientID, merchantID) => {
-  const namespace = getNamespace();
+) => Object = memoize(async (clientID, merchantID) => {
+  try {
+    const namespace = getNamespace();
+    if (!window[namespace]?.MessagesModal) {
+      const modalBundleUrl = () => {
+        let envPiece;
+        switch (getEnv()) {
+          case "local":
+          case "test":
+          case "stage":
+            envPiece = "stage";
+            break;
+          case "sandbox":
+            envPiece = "sandbox";
+            break;
+          case "production":
+          default:
+            envPiece = "js";
+        }
+        return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
+      };
 
-  if (!window[namespace]?.MessagesModal) {
-    const modalBundleUrl = () => {
-      let envPiece;
-      switch (getEnv()) {
-        case "local":
-        case "test":
-        case "stage":
-          envPiece = "stage";
-          break;
-        case "sandbox":
-          envPiece = "sandbox";
-          break;
-        case "production":
-        default:
-          envPiece = "js";
-      }
-      return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
-    };
-
-    try {
       // eslint-disable-next-line no-restricted-globals
-      return new Promise(() => {
+      await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = modalBundleUrl();
         script.setAttribute("data-pp-namespace", namespace);
         script.addEventListener("error", (err: Event) => {
-          throw err;
+          reject(err);
         });
-        document.body?.appendChild(script);
         script.addEventListener("load", () => {
           document.body?.removeChild(script);
+          resolve();
         });
+        document.body?.appendChild(script);
       });
-    } catch (err) {
-      getLogger()
-        .info("button_message_modal_fetch_error")
-        .track({
-          err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
-          details: err.details,
-          stack: JSON.stringify(err.stack || err),
-        });
     }
+
+    const modal = window[namespace].MessagesModal;
+    return modal({
+      account: `client-id:${clientID}`,
+      merchantId: merchantID?.join(",") || undefined,
+    });
+  } catch (err) {
+    getLogger()
+      .info("button_message_modal_fetch_error")
+      .track({
+        err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
+        details: err.details,
+        stack: JSON.stringify(err.stack || err),
+      });
   }
-  const modal = window[namespace].MessagesModal;
-  return modal({
-    account: `client-id:${clientID}`,
-    merchantId: merchantID?.join(",") || undefined,
-  });
 });

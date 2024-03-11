@@ -685,10 +685,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       onMessageHover: {
         type: "function",
         required: false,
-        value: () => {
+        value: ({ props }) => {
           return () => {
             // lazy loads the modal, to be memoized and executed onMessageClick
-            getModal();
+            const { clientID, merchantID } = props;
+            getModal(clientID, merchantID);
           };
         },
       },
