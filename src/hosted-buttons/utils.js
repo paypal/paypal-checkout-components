@@ -7,6 +7,7 @@ import {
   getClientID,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
 
 import type {
   ButtonVariables,
@@ -208,6 +209,14 @@ export const buildHostedButtonOnApprove = ({
         merchant_id: merchantId,
         context_id: data.orderID,
       }),
+    }).then((response) => {
+      // The "Debit or Credit Card" button does not open a popup
+      // so we need to redirect to the thank you page for buyers who complete
+      // a checkout via "Debit or Credit Card".
+      if (data.paymentSource === FUNDING.CARD) {
+        window.location = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+      }
+      return response;
     });
   };
 };

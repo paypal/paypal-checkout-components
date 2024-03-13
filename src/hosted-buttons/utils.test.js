@@ -264,6 +264,28 @@ describe("buildHostedButtonOnApprove", () => {
     );
     expect.assertions(1);
   });
+
+  describe("inline guest", () => {
+    const onApprove = buildHostedButtonOnApprove({
+      hostedButtonId,
+      merchantId,
+    });
+    // $FlowIssue
+    request.mockImplementation(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {},
+      })
+    );
+
+    test("redirects from the merchant's site to a thank you page", async () => {
+      expect(window.location.href).toBe("http://localhost:3000/");
+      await onApprove({ orderID, paymentSource: "card" });
+      expect(window.location).toBe(
+        "https://example.com/ncp/payment/B1234567890/EC-1234567890"
+      );
+    });
+  });
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */
