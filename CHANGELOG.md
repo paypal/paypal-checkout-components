@@ -1,3 +1,9 @@
+## <small>5.0.304 (2024-03-13)</small>
+
+* Rename sdkIntegrationSource buttons zoid prop (#2334) ([34e811a](https://github.com/paypal/paypal-checkout-components/commit/34e811a)), closes [#2334](https://github.com/paypal/paypal-checkout-components/issues/2334)
+
+
+
 ## <small>5.0.303 (2024-03-08)</small>
 
 * Revert "Render Debit or Credit Card when `style.layout` is "horizontal" (#2346)" (#2359) ([fbd0c27](https://github.com/paypal/paypal-checkout-components/commit/fbd0c27)), closes [#2346](https://github.com/paypal/paypal-checkout-components/issues/2346) [#2359](https://github.com/paypal/paypal-checkout-components/issues/2359)
