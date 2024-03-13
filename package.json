@@ -22,7 +22,6 @@
     "preversion": "./scripts/preversion.sh",
     "version": "./scripts/version.sh",
     "postversion": "./scripts/postversion.sh",
-    "cdnify": "grabthar-cdnify --cdn=https://www.paypalobjects.com --deployonly",
     "clean": "rimraf dist coverage",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
     "debug": "cross-env NODE_ENV=debug",
