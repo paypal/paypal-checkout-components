@@ -21,7 +21,7 @@ module.exports = {
   __PAYPAL_CHECKOUT__: {
     __REMEMBERED_FUNDING__: [],
     __URI__: {
-      __CHECKOUT__: "/checkoutnow",
+      __CHECKOUT__: "/pay",
       __BUTTONS__: "/smart/buttons",
       __MENU__: "/smart/menu",
       __QRCODE__: "/smart/qrcode",
