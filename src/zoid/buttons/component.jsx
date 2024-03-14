@@ -686,7 +686,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return async ({ offerType, messageType }) => {
+          return async ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
             const { message, buttonSessionID } = props;
             const amount = message?.amount || undefined;
 
@@ -694,12 +699,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               .info("button_message_render")
               .track({
                 [FPTI_KEY.EVENT_NAME]: "message_render",
-                // [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-                // [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
-                // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message.position,
-                // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message.align,
-                // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message.color,
-                // [FPTI_KEY.AMOUNT]: amount,
+                // adding temp string here for our sdk constants
+                button_message_offer_type: offerType,
+                button_message_credit_product_identifier:
+                  creditProductIdentifier,
+                button_message_type: messageType,
+                button_message_posiiton: message.position,
+                button_message_align: message.align,
+                button_message_color: message.color,
+                button_message_offer_country: offerCountryCode,
+                [FPTI_KEY.AMOUNT]: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
           };
@@ -722,7 +731,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return async ({ offerType, messageType }) => {
+          return async ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
             const { message, clientID, merchantID, currency, buttonSessionID } =
               props;
             const amount = message?.amount || undefined;
@@ -738,12 +752,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               .info("button_message_clicked")
               .track({
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                // [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-                // [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
-                // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message.position,
-                // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message.align,
-                // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message.color,
-                // [FPTI_KEY.AMOUNT]: amount,
+                // adding temp string here for our sdk constants
+                button_message_offer_type: offerType,
+                button_message_credit_product_identifier:
+                  creditProductIdentifier,
+                button_message_type: messageType,
+                button_message_posiiton: message.position,
+                button_message_align: message.align,
+                button_message_color: message.color,
+                button_message_offer_country: offerCountryCode,
+                [FPTI_KEY.AMOUNT]: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
           };
