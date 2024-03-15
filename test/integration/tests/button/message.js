@@ -3,6 +3,7 @@
 
 import { wrapPromise, getElement } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
+import { getNamespace } from "@paypal/sdk-client/src";
 
 import { CLASS } from "../../../../src/constants";
 import {
@@ -380,79 +381,106 @@ describe(`paypal button message`, () => {
   });
 
   describe("modal", () => {
-    const messageMarkup = `
-      <div className=".message__container locale__en" role="button">
-          <div className="message__content" >
-              <div className="message__logo-container">
-                  <div className="message__logo--svg"></div>
-              </div>
-              <div className=".message__messaging text__content--black">
-                  <div className="message__headline">
-                      <span style="font-size: 16px">Paypal Pay Later</span>
-                  </div>
-                  <p className="message__disclaimer">
-                      <span></span>
-                  </p>
-              </div>
-          </div>
-      </div>`;
+    // const messageMarkup = `
+    //   <div class=".message__container locale__en" role="button">
+    //       <div class="message__content" >
+    //           <div class="message__logo-container">
+    //               <div class="message__logo--svg"></div>
+    //           </div>
+    //           <div class=".message__messaging text__content--black">
+    //               <div class="message__headline">
+    //                   <span style="font-size: 16px">Paypal Pay Later</span>
+    //               </div>
+    //               <p class="message__disclaimer">
+    //                   <span></span>
+    //               </p>
+    //           </div>
+    //       </div>
+    //   </div>`;
 
-    it("should load modal on message hover when window.paypal.MessagesModal is not present", async (done) => {
+    it("should ensure data-pp-namespace passes in the namespace", (done) => {
       window.paypal
         .Buttons({
           message: {},
-          messageMarkup,
           test: {
-            onRender() {
-              const message = document.querySelector(".message__container");
-              message?.focus();
-              setTimeout(() => assert.ok(window.paypal.MessagesModal), 1000);
-              done();
+            onRender({ hoverMessage }) {
+              hoverMessage().then(() => {
+                assert.equal(getNamespace(), window.namespace);
+                done();
+              });
             },
           },
         })
         .render("#testContainer");
     });
-    it.skip("should utilize existing MessagesModal on message hover when window.paypal.MessagesModal is present", () => {});
-    it("should open modal on message click", (done) => {
-      window.paypal.Buttons({
-        message: {},
-        messageMarkup,
-        test: {
-          onRender() {
-            const message = document.querySelector(".message__container");
-            message?.focus();
-            message?.click();
-
-            const modalWrapper = document.querySelector(".modal-wrapper");
-            assert.ok(modalWrapper);
-            done();
+    it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
+      const props = { clientID: "test1", merchantID: ["test2"] };
+      window.paypal
+        .Buttons({
+          message: {},
+          test: {
+            onRender({ hoverMessage }) {
+              hoverMessage().then(() => {
+                done(
+                  new Error(
+                    `${JSON.stringify(
+                      window.paypal.MessagesModal.mock.calledWith
+                    )}`
+                  )
+                );
+                assert.equal(
+                  window.paypal.MessagesModal.mock.calledWith,
+                  props
+                );
+                done();
+              });
+            },
           },
-        },
-      });
+        })
+        .render("#testContainer");
     });
-    it("should show passed-in amount in modal's pay in 4 view", (done) => {
+    it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
+      const props = { offerType: ["PAY_LATER"], messageType: "GPL" };
       window.paypal
         .Buttons({
           message: {
-            amount: 100,
+            amount: 101,
           },
-          messageMarkup,
           test: {
-            onRender() {
-              const message = document.querySelector(".message__container");
-              message?.focus();
-
-              const payIn4Button =
-                document.querySelector(".content__col")?.childNodes[1];
-              if (payIn4Button instanceof HTMLElement) {
-                payIn4Button.click();
-              }
-
-              const payIn4Amount =
-                document.querySelector("#donut__payment__1")?.innerHTML;
-              assert.equal(payIn4Amount, "$25.00");
-              done();
+            onRender({ clickMessage, hoverMessage }) {
+              hoverMessage.then(() => {
+                clickMessage.then((props) => {
+                  assert.equal(
+                    window.paypal.MessagesModal.mock.show.calledWith.amount,
+                    101
+                  );
+                  done();
+                });
+              });
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+    it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
+      const props = { offerType: ["PAY_LATER"], messageType: "GPL" };
+      window.paypal
+        .Buttons({
+          message: {
+            amount: 101,
+          },
+          test: {
+            onRender({ clickMessage, hoverMessage }) {
+              hoverMessage.then(() => {
+                clickMessage.then((props) => {
+                  hoverMessage.then(() => {
+                    clickMessage.then((props) => {
+                      assert.equal(window.paypal.MessagesModal.mock.calls, 1);
+                      done();
+                    });
+                  });
+                });
+              });
             },
           },
         })

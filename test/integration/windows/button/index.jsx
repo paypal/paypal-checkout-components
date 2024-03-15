@@ -36,6 +36,7 @@ if (body) {
   body.appendChild(
     (<ButtonsTemplate {...window.xprops} />).render(dom({ doc: document }))
   );
+  const messageWrapper = document.createElement("div");
 }
 
 if (bridge) {
@@ -235,6 +236,12 @@ if (onRender) {
     ),
     click() {
       getElement(".paypal-button", document).click();
+    },
+    hoverMessage() {
+      window.xprops.onMessageHover();
+    },
+    clickMessage({ offerType, messageType }) {
+      window.xprops.onMessageClick({ offerType, messageType });
     },
   });
 }

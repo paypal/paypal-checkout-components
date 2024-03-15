@@ -369,12 +369,12 @@ export const getModal: (
 ) => Object = memoize(async (clientID, merchantID) => {
   try {
     const namespace = getNamespace();
-    if (!window[namespace]?.MessagesModal) {
+    if (!window[namespace].MessagesModal) {
       const modalBundleUrl = () => {
         let envPiece;
         switch (getEnv()) {
-          case "local":
           case "test":
+          case "local":
           case "stage":
             envPiece = "stage";
             break;
@@ -391,8 +391,24 @@ export const getModal: (
       // eslint-disable-next-line no-restricted-globals
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = modalBundleUrl();
         script.setAttribute("data-pp-namespace", namespace);
+        if (getEnv() === "test") {
+          script.innerHTML = `const namespace = document.currentScript.getAttribute('data-pp-namespace');
+          
+          window.namespace = namespace;
+          window[namespace].MessagesModal = (...args) => {
+
+              window[namespace].MessagesModal.mock.calls = (window[namespace].MessagesModal ?? 0) + 1;
+              window[namespace].MessagesModal.mock.calledWith = {args}
+              return {
+                  show: (...args2) => {
+                      window[namespace].MessagesModal.mock.show = { calledWith: args2 }
+                  }
+              }
+          }`;
+        } else {
+          script.src = modalBundleUrl();
+        }
         script.addEventListener("error", (err: Event) => {
           reject(err);
         });
@@ -404,8 +420,7 @@ export const getModal: (
       });
     }
 
-    const modal = window[namespace].MessagesModal;
-    return modal({
+    return window[namespace].MessagesModal({
       account: `client-id:${clientID}`,
       merchantId: merchantID?.join(",") || undefined,
     });
