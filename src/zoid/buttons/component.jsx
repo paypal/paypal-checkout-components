@@ -686,7 +686,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return async ({
+          return ({
             offerType,
             messageType,
             offerCountryCode,
@@ -698,6 +698,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             getLogger()
               .info("button_message_render")
               .track({
+                [FPTI_KEY.TRANSITION]: "button_message_render",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_render",
                 // adding temp string here for our sdk constants
                 button_message_offer_type: offerType,
@@ -708,7 +712,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 button_message_align: message.align,
                 button_message_color: message.color,
                 button_message_offer_country: offerCountryCode,
-                [FPTI_KEY.AMOUNT]: amount,
+                button_message_amount: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
           };
@@ -749,8 +753,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             });
 
             getLogger()
-              .info("button_message_clicked")
+              .info("button_message_click")
               .track({
+                [FPTI_KEY.TRANSITION]: "button_message_click",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
                 // adding temp string here for our sdk constants
                 button_message_offer_type: offerType,
@@ -761,7 +769,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 button_message_align: message.align,
                 button_message_color: message.color,
                 button_message_offer_country: offerCountryCode,
-                [FPTI_KEY.AMOUNT]: amount,
+                button_message_amount: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
           };
