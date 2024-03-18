@@ -62,6 +62,9 @@ module.exports = {
     entry: "./src/interface/wallet",
     globals,
   },
+  "shopper-insights": {
+    entry: "./src/shopper-insights/interface",
+  },
   // in process of being renamed to fastlane
   connect: {
     entry: "./src/connect/interface",
