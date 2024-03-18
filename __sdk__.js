@@ -90,4 +90,7 @@ module.exports = {
     entry: "./src/interface/hosted-buttons",
     globals,
   },
+  "shopper-insights": {
+    entry: "./src/shopper-insights/interface",
+  },
 };
