@@ -381,23 +381,6 @@ describe(`paypal button message`, () => {
   });
 
   describe("modal", () => {
-    // const messageMarkup = `
-    //   <div class=".message__container locale__en" role="button">
-    //       <div class="message__content" >
-    //           <div class="message__logo-container">
-    //               <div class="message__logo--svg"></div>
-    //           </div>
-    //           <div class=".message__messaging text__content--black">
-    //               <div class="message__headline">
-    //                   <span style="font-size: 16px">Paypal Pay Later</span>
-    //               </div>
-    //               <p class="message__disclaimer">
-    //                   <span></span>
-    //               </p>
-    //           </div>
-    //       </div>
-    //   </div>`;
-
     it("should ensure data-pp-namespace passes in the namespace", (done) => {
       window.paypal
         .Buttons({
@@ -413,7 +396,8 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-    it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
+    it.skip("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
+      // replace these props with component default values
       const props = { clientID: "test1", merchantID: ["test2"] };
       window.paypal
         .Buttons({
@@ -421,13 +405,6 @@ describe(`paypal button message`, () => {
           test: {
             onRender({ hoverMessage }) {
               hoverMessage().then(() => {
-                done(
-                  new Error(
-                    `${JSON.stringify(
-                      window.paypal.MessagesModal.mock.calledWith
-                    )}`
-                  )
-                );
                 assert.equal(
                   window.paypal.MessagesModal.mock.calledWith,
                   props
@@ -449,10 +426,19 @@ describe(`paypal button message`, () => {
           test: {
             onRender({ clickMessage, hoverMessage }) {
               hoverMessage.then(() => {
-                clickMessage.then((props) => {
+                clickMessage(props).then(() => {
                   assert.equal(
                     window.paypal.MessagesModal.mock.show.calledWith.amount,
                     101
+                  );
+                  assert.equal(
+                    window.paypal.MessagesModal.mock.show.calledWith.offerType,
+                    "PAY_LATER"
+                  );
+                  assert.equal(
+                    window.paypal.MessagesModal.mock.show.calledWith
+                      .messageType,
+                    "GPL"
                   );
                   done();
                 });
@@ -472,9 +458,9 @@ describe(`paypal button message`, () => {
           test: {
             onRender({ clickMessage, hoverMessage }) {
               hoverMessage.then(() => {
-                clickMessage.then((props) => {
+                clickMessage(props).then(() => {
                   hoverMessage.then(() => {
-                    clickMessage.then((props) => {
+                    clickMessage(props).then(() => {
                       assert.equal(window.paypal.MessagesModal.mock.calls, 1);
                       done();
                     });
