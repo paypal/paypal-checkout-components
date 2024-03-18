@@ -1,5 +1,3 @@
-/* eslint-disable compat/compat */
-/* eslint-disable promise/no-native */
 /* @flow */
 import {
   supportsPopups as userAgentSupportsPopups,
@@ -389,7 +387,7 @@ export const getModal: (
         return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
       };
 
-      // eslint-disable-next-line no-restricted-globals
+      // eslint-disable-next-line no-restricted-globals, promise/no-native
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.setAttribute("data-pp-namespace", namespace);

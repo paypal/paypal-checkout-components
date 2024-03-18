@@ -710,7 +710,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               .track({
                 [FPTI_KEY.EVENT_NAME]: "message_click",
                 // [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-                // [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+                "button message type fpti key placeholder": messageType,
                 // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message.position,
                 // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message.align,
                 // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message.color,
