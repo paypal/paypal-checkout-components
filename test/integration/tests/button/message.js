@@ -387,30 +387,40 @@ describe(`paypal button message`, () => {
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage().then(() => {
-                assert.equal(getNamespace(), window.namespace);
-                done();
-              });
+              hoverMessage()
+                .then(() => {
+                  assert.equal(getNamespace(), window.namespace);
+                  done();
+                })
+                .catch(done);
             },
           },
         })
         .render("#testContainer");
     });
-    it.skip("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
-      // replace these props with component default values
-      const props = { clientID: "test1", merchantID: ["test2"] };
+    it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
       window.paypal
         .Buttons({
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage().then(() => {
-                assert.equal(
-                  window.paypal.MessagesModal.mock.calledWith,
-                  props
-                );
-                done();
-              });
+              hoverMessage()
+                .then(() => {
+                  assert.ok(
+                    Object.keys(window.paypal.MessagesModal.mock.calledWith)
+                      .length === 2
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .account === "string"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .merchantId === "undefined"
+                  );
+                  done();
+                })
+                .catch(done);
             },
           },
         })
@@ -425,24 +435,25 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage.then(() => {
-                clickMessage(props).then(() => {
-                  assert.equal(
-                    window.paypal.MessagesModal.mock.show.calledWith.amount,
-                    101
-                  );
-                  assert.equal(
-                    window.paypal.MessagesModal.mock.show.calledWith.offerType,
-                    "PAY_LATER"
-                  );
-                  assert.equal(
-                    window.paypal.MessagesModal.mock.show.calledWith
-                      .messageType,
-                    "GPL"
-                  );
-                  done();
-                });
-              });
+              hoverMessage()
+                .then(() => {
+                  return clickMessage(props).then(() => {
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.amount,
+                      101
+                    );
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.offer,
+                      "PAY_LATER"
+                    );
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.currency,
+                      "USD"
+                    );
+                    done();
+                  });
+                })
+                .catch(done);
             },
           },
         })
@@ -457,16 +468,18 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage.then(() => {
-                clickMessage(props).then(() => {
-                  hoverMessage.then(() => {
-                    clickMessage(props).then(() => {
-                      assert.equal(window.paypal.MessagesModal.mock.calls, 1);
-                      done();
+              hoverMessage()
+                .then(() => {
+                  return clickMessage(props).then(() => {
+                    return hoverMessage().then(() => {
+                      return clickMessage(props).then(() => {
+                        assert.equal(window.paypal.MessagesModal.mock.calls, 1);
+                        done();
+                      });
                     });
                   });
-                });
-              });
+                })
+                .catch(done);
             },
           },
         })

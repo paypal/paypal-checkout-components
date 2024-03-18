@@ -689,7 +689,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return () => {
             // lazy loads the modal, to be memoized and executed onMessageClick
             const { clientID, merchantID } = props;
-            getModal(clientID, merchantID);
+            return getModal(clientID, merchantID);
           };
         },
       },
@@ -704,11 +704,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const amount = message?.amount || undefined;
 
             const modalInstance = await getModal(clientID, merchantID);
-            modalInstance.show({
-              amount,
-              offer: offerType?.join(",") || undefined,
-              currency,
-            });
 
             getLogger()
               .info("button_message_clicked")
@@ -722,6 +717,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 // [FPTI_KEY.AMOUNT]: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
+
+            return modalInstance.show({
+              amount,
+              offer: offerType?.join(",") || undefined,
+              currency,
+            });
           };
         },
       },

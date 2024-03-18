@@ -374,6 +374,7 @@ export const getModal: (
         let envPiece;
         switch (getEnv()) {
           case "test":
+            return "/base/test/integration/windows/button/modal.js";
           case "local":
           case "stage":
             envPiece = "stage";
@@ -392,23 +393,7 @@ export const getModal: (
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.setAttribute("data-pp-namespace", namespace);
-        if (getEnv() === "test") {
-          script.innerHTML = `const namespace = document.currentScript.getAttribute('data-pp-namespace');
-          
-          window.namespace = namespace;
-          window[namespace].MessagesModal = (...args) => {
-
-              window[namespace].MessagesModal.mock.calls = (window[namespace].MessagesModal ?? 0) + 1;
-              window[namespace].MessagesModal.mock.calledWith = {args}
-              return {
-                  show: (...args2) => {
-                      window[namespace].MessagesModal.mock.show = { calledWith: args2 }
-                  }
-              }
-          }`;
-        } else {
-          script.src = modalBundleUrl();
-        }
+        script.src = modalBundleUrl();
         script.addEventListener("error", (err: Event) => {
           reject(err);
         });
