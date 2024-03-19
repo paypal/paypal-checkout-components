@@ -745,13 +745,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               props;
             const amount = message?.amount || undefined;
 
-            const modalInstance = await getModal(clientID, merchantID);
-            modalInstance.show({
-              amount,
-              offer: offerType?.join(",") || undefined,
-              currency,
-            });
-
             getLogger()
               .info("button_message_click")
               .track({
@@ -772,6 +765,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 button_message_amount: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
+
+            const modalInstance = await getModal(clientID, merchantID);
+            modalInstance.show({
+              amount,
+              offer: offerType?.join(",") || undefined,
+              currency,
+            });
           };
         },
       },
