@@ -118,6 +118,7 @@ function getTestGlobals(productionGlobals) {
         __CARD_FIELD__: `/base/test/integration/windows/card-field/index.htm`,
         __WALLET__: `/base/test/integration/windows/wallet/index.htm`,
         __PAYMENT_FIELDS__: `/base/test/integration/windows/paymentfields/index.htm`,
+        __MESSAGE_MODAL__: `/base/test/integration/windows/button/modal.js`,
       },
     },
 

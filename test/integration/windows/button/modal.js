@@ -1,13 +1,6 @@
 /* @flow */
 const namespace = document.currentScript?.getAttribute("data-pp-namespace");
 
-// function createMockFn(callback = () => {}) {
-//   function mockFn(...args) {
-//     mockFn.calls.push(args);
-//     callback(...args)
-//   }
-// }
-
 window.namespace = namespace;
 window[namespace].MessagesModal = (config) => {
   window[namespace].MessagesModal.mock = {};

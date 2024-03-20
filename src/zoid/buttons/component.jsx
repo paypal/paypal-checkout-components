@@ -682,26 +682,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      onMessageHover: {
-        type: "function",
-        required: false,
-        value: ({ props }) => {
-          return () => {
-            // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
-            return getModal(clientID, merchantID);
-          };
-        },
-      },
-
       onMessageClick: {
         type: "function",
         required: false,
         value: ({ props }) => {
+          // offerCountryCode is passed in from meta and available as well
           return async ({ offerType, messageType }) => {
             const { message, clientID, merchantID, currency, buttonSessionID } =
               props;
-            const amount = message?.amount || undefined;
+            const amount = message?.amount;
 
             const modalInstance = await getModal(clientID, merchantID);
 
@@ -726,6 +715,24 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           };
         },
       },
+
+      onMessageHover: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          // offerType, messageType, and offerCountryCode are passed in from meta and available as well
+          // https://github.paypal.com/Credit-R/crcpresentmentnodeweb/pull/722/files#diff-dba2b1fdbda85f23cf48d0690d6b2dd49459c41b3f33d18b73c70ef402386f03R76
+          return () => {
+            // lazy loads the modal, to be memoized and executed onMessageClick
+            const { clientID, merchantID } = props;
+            return getModal(clientID, merchantID);
+          };
+        },
+      },
+
+      // onMessageReady
+      // offerType, messageType, and offerCountryCode are passed in from meta and available as well
+      // https://github.paypal.com/Credit-R/crcpresentmentnodeweb/pull/722/files#diff-dba2b1fdbda85f23cf48d0690d6b2dd49459c41b3f33d18b73c70ef402386f03R76
 
       onShippingAddressChange: {
         type: "function",

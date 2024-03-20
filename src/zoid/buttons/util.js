@@ -361,6 +361,16 @@ export function getButtonSize(
   }
 }
 
+function buildModalBundleUrl(): string {
+  let url = __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_MODAL__;
+  if (getEnv() === "sandbox") {
+    url = url.replace("/js/", "/sandbox/");
+  } else if (getEnv() === "stage" || getEnv() === "local") {
+    url = url.replace("/js/", "/stage/");
+  }
+  return url;
+}
+
 export const getModal: (
   clientID: string,
   merchantID: $ReadOnlyArray<string> | void
@@ -368,30 +378,11 @@ export const getModal: (
   try {
     const namespace = getNamespace();
     if (!window[namespace].MessagesModal) {
-      const modalBundleUrl = () => {
-        let envPiece;
-        switch (getEnv()) {
-          case "test":
-            return "/base/test/integration/windows/button/modal.js";
-          case "local":
-          case "stage":
-            envPiece = "stage";
-            break;
-          case "sandbox":
-            envPiece = "sandbox";
-            break;
-          case "production":
-          default:
-            envPiece = "js";
-        }
-        return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
-      };
-
       // eslint-disable-next-line no-restricted-globals, promise/no-native
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.setAttribute("data-pp-namespace", namespace);
-        script.src = modalBundleUrl();
+        script.src = buildModalBundleUrl();
         script.addEventListener("error", (err: Event) => {
           reject(err);
         });
@@ -408,8 +399,10 @@ export const getModal: (
       merchantId: merchantID?.join(",") || undefined,
     });
   } catch (err) {
+    // $FlowFixMe flow doesn't seem to understand that the reset function property exists on the function object itself
+    getModal.reset();
     getLogger()
-      .info("button_message_modal_fetch_error")
+      .error("button_message_modal_fetch_error", { err })
       .track({
         err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
         details: err.details,
