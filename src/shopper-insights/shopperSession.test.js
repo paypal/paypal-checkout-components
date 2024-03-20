@@ -24,9 +24,7 @@ const mockFindEligiblePaymentsRequest = (
   }
 ) =>
   vi.fn().mockResolvedValue({
-    body: {
-      eligible_methods: eligibility,
-    },
+    eligible_methods: eligibility,
   });
 
 const defaultSdkConfig = {

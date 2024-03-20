@@ -46,16 +46,14 @@ type RecommendedPaymentMethodsRequestData = {|
 |};
 
 type RecommendedPaymentMethodsResponse = {|
-  body: {|
-    eligible_methods: {
-      [paymentMethod: "paypal" | "venmo"]: {|
-        can_be_vaulted: boolean,
-        eligible_in_paypal_network?: boolean,
-        recommended?: boolean,
-        recommended_priority?: number,
-      |},
-    },
-  |},
+  eligible_methods: {
+    [paymentMethod: "paypal" | "venmo"]: {|
+      can_be_vaulted: boolean,
+      eligible_in_paypal_network?: boolean,
+      recommended?: boolean,
+      recommended_priority?: number,
+    |},
+  },
 |};
 
 type SdkConfig = {|
