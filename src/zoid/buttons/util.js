@@ -1,5 +1,3 @@
-/* eslint-disable compat/compat */
-/* eslint-disable promise/no-native */
 /* @flow */
 import {
   supportsPopups as userAgentSupportsPopups,
@@ -369,12 +367,13 @@ export const getModal: (
 ) => Object = memoize(async (clientID, merchantID) => {
   try {
     const namespace = getNamespace();
-    if (!window[namespace]?.MessagesModal) {
+    if (!window[namespace].MessagesModal) {
       const modalBundleUrl = () => {
         let envPiece;
         switch (getEnv()) {
-          case "local":
           case "test":
+            return "/base/test/integration/windows/button/modal.js";
+          case "local":
           case "stage":
             envPiece = "stage";
             break;
@@ -388,11 +387,11 @@ export const getModal: (
         return `https://www.paypalobjects.com/upstream/bizcomponents/${envPiece}/modal.js`;
       };
 
-      // eslint-disable-next-line no-restricted-globals
+      // eslint-disable-next-line no-restricted-globals, promise/no-native
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = modalBundleUrl();
         script.setAttribute("data-pp-namespace", namespace);
+        script.src = modalBundleUrl();
         script.addEventListener("error", (err: Event) => {
           reject(err);
         });
@@ -404,8 +403,7 @@ export const getModal: (
       });
     }
 
-    const modal = window[namespace].MessagesModal;
-    return modal({
+    return window[namespace].MessagesModal({
       account: `client-id:${clientID}`,
       merchantId: merchantID?.join(",") || undefined,
     });

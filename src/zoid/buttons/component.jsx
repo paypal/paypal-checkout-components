@@ -726,7 +726,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return () => {
             // lazy loads the modal, to be memoized and executed onMessageClick
             const { clientID, merchantID } = props;
-            getModal(clientID, merchantID);
+            return getModal(clientID, merchantID);
           };
         },
       },
@@ -767,7 +767,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               });
 
             const modalInstance = await getModal(clientID, merchantID);
-            modalInstance.show({
+
+            return modalInstance.show({
               amount,
               offer: offerType?.join(",") || undefined,
               currency,
