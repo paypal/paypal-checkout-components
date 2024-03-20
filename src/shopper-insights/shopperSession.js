@@ -299,10 +299,18 @@ export class ShopperSession {
       const isVenmoRecommended =
         (venmo?.eligible_in_paypal_network && venmo?.recommended) || false;
 
+      const fptiRecommendedPaymentPayload = {
+        paypal: isPayPalRecommended ? "1" : "0",
+        venmo: isVenmoRecommended ? "1" : "0",
+      };
+
       this.logger.track({
         [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
         [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
         [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
+        [FPTI_KEY.RECOMMENDED_PAYMENT]: JSON.stringify(
+          fptiRecommendedPaymentPayload
+        ),
       });
 
       this.logger.metricCounter({
