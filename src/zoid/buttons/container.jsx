@@ -104,17 +104,10 @@ export function containerTemplate({
         el.style.width = toCSS(newWidth);
       }
       if (disableMaxHeight) {
-        console.log(`clientHeight: ${container?.clientHeight}`);
-        console.log(`new Height: ${newHeight}`);
-        // el.style.height = toCSS(container?.clientHeight);
         el.style.height = "100%";
       } else if (typeof newHeight === "number") {
         el.style.height = toCSS(newHeight);
       }
-
-      // if (typeof newHeight === "number") {
-      //   el.style.height = toCSS(newHeight);
-      // }
     });
   };
 

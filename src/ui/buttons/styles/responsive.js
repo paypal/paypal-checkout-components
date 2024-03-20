@@ -92,12 +92,16 @@ export function buttonResponsiveStyle({
                       disableMaxHeight ? "100% !important" : `${buttonHeight}px`
                     };
                     vertical-align: top;
-                    min-height: ${height || style.minHeight}px;
+                    ${
+                      disableMaxHeight
+                        ? ""
+                        : ` min-height: ${height || style.minHeight}px;`
+                    };
                     ${
                       disableMaxHeight
                         ? ""
                         : `max-height: ${height || style.maxHeight}px;`
-                    };
+                    }
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
