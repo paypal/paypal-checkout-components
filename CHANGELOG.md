@@ -1,3 +1,9 @@
+## <small>5.0.305 (2024-03-20)</small>
+
+* Add recommended methods on FPTI log (#2362) ([a41e3f9](https://github.com/paypal/paypal-checkout-components/commit/a41e3f9)), closes [#2362](https://github.com/paypal/paypal-checkout-components/issues/2362)
+
+
+
 ## <small>5.0.304 (2024-03-13)</small>
 
 * Rename sdkIntegrationSource buttons zoid prop (#2334) ([34e811a](https://github.com/paypal/paypal-checkout-components/commit/34e811a)), closes [#2334](https://github.com/paypal/paypal-checkout-components/issues/2334)
