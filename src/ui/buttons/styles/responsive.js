@@ -39,9 +39,7 @@ export function buttonResponsiveStyle({
     .map((size) => {
       const style = BUTTON_SIZE_STYLE[size];
 
-      // Everything calculated off buttonHeight
       const buttonHeight = height || style.defaultHeight;
-
       const minDualWidth = Math.max(
         Math.round(
           buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
@@ -88,9 +86,7 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON_ROW} {
-                    height: ${
-                      disableMaxHeight ? "100% !important" : `${buttonHeight}px`
-                    };
+                    height: ${disableMaxHeight ? "100%" : `${buttonHeight}px`};
                     vertical-align: top;
                     ${
                       disableMaxHeight
