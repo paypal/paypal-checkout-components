@@ -280,7 +280,7 @@ export class ShopperSession {
       sdkConfig: this.sdkConfig,
     });
     try {
-      const { body } = await this.request<
+      const body = await this.request<
         RecommendedPaymentMethodsRequestData,
         RecommendedPaymentMethodsResponse
       >({
