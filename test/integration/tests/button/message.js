@@ -427,7 +427,7 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
     it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
-      const props = { offerType: ["PAY_LATER"], messageType: "GPL" };
+      const props = { offerType: "PAY_LATER", messageType: "GPL" };
       window.paypal
         .Buttons({
           message: {
@@ -460,7 +460,7 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
     it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
-      const props = { offerType: ["PAY_LATER"], messageType: "GPL" };
+      const props = { offerType: "PAY_LATER", messageType: "GPL" };
       window.paypal
         .Buttons({
           message: {

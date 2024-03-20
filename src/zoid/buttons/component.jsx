@@ -686,30 +686,41 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          // offerCountryCode is passed in from meta and available as well
-          return async ({ offerType, messageType }) => {
+          return async ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
             const { message, clientID, merchantID, currency, buttonSessionID } =
               props;
             const amount = message?.amount;
 
-            const modalInstance = await getModal(clientID, merchantID);
-
             getLogger()
-              .info("button_message_clicked")
+              .info("button_message_click")
               .track({
+                [FPTI_KEY.TRANSITION]: "button_message_click",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                // [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-                "button message type fpti key placeholder": messageType,
-                // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message.position,
-                // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message.align,
-                // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message.color,
-                // [FPTI_KEY.AMOUNT]: amount,
+                // adding temp string here for our sdk constants
+                button_message_offer_type: offerType,
+                button_message_credit_product_identifier:
+                  creditProductIdentifier,
+                button_message_type: messageType,
+                button_message_position: message?.position,
+                button_message_align: message?.align,
+                button_message_color: message?.color,
+                button_message_offer_country: offerCountryCode,
+                button_message_amount: amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
 
+            const modalInstance = await getModal(clientID, merchantID);
             return modalInstance.show({
               amount,
-              offer: offerType?.join(",") || undefined,
+              offer: offerType,
               currency,
             });
           };
@@ -720,9 +731,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          // offerType, messageType, and offerCountryCode are passed in from meta and available as well
-          // https://github.paypal.com/Credit-R/crcpresentmentnodeweb/pull/722/files#diff-dba2b1fdbda85f23cf48d0690d6b2dd49459c41b3f33d18b73c70ef402386f03R76
-          return () => {
+          // eslint-disable-next-line no-unused-vars
+          return ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
+            // offerType, messageType, offerCountryCode, and creditProductIdentifier may be used in an upcoming message hover logging feature
+
             // lazy loads the modal, to be memoized and executed onMessageClick
             const { clientID, merchantID } = props;
             return getModal(clientID, merchantID);
@@ -730,9 +747,42 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      // onMessageReady
-      // offerType, messageType, and offerCountryCode are passed in from meta and available as well
-      // https://github.paypal.com/Credit-R/crcpresentmentnodeweb/pull/722/files#diff-dba2b1fdbda85f23cf48d0690d6b2dd49459c41b3f33d18b73c70ef402386f03R76
+      onMessageReady: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
+            const { message, buttonSessionID } = props;
+            const amount = message?.amount || undefined;
+
+            getLogger()
+              .info("button_message_render")
+              .track({
+                [FPTI_KEY.TRANSITION]: "button_message_render",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+                [FPTI_KEY.EVENT_NAME]: "message_render",
+                // adding temp string here for our sdk constants
+                button_message_offer_type: offerType,
+                button_message_credit_product_identifier:
+                  creditProductIdentifier,
+                button_message_type: messageType,
+                button_message_posiiton: message?.position,
+                button_message_align: message?.align,
+                button_message_color: message?.color,
+                button_message_offer_country: offerCountryCode,
+                button_message_amount: amount,
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+              });
+          };
+        },
+      },
 
       onShippingAddressChange: {
         type: "function",
