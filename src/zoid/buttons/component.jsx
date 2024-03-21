@@ -731,14 +731,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          // eslint-disable-next-line no-unused-vars
-          return ({
-            offerType,
-            messageType,
-            offerCountryCode,
-            creditProductIdentifier,
-          }) => {
-            // offerType, messageType, offerCountryCode, and creditProductIdentifier may be used in an upcoming message hover logging feature
+          return () => {
+            // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
             const { clientID, merchantID } = props;
@@ -758,7 +752,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             creditProductIdentifier,
           }) => {
             const { message, buttonSessionID } = props;
-            const amount = message?.amount || undefined;
+            const amount = message?.amount;
 
             getLogger()
               .info("button_message_render")
