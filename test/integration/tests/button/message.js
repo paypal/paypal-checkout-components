@@ -22,6 +22,95 @@ describe(`paypal button message`, () => {
     destroyTestContainer();
   });
 
+  describe("sets computed default values for undefined message properties", () => {
+    it("should populate message color when it is undefined", () => {
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            message: {},
+            test: {
+              onRender: expect("onRender", ({ xprops }) => {
+                const {
+                  message: { color },
+                } = xprops;
+                if (!color) {
+                  throw new Error(
+                    `Expected message color property to be populated: ${JSON.stringify(
+                      xprops.message
+                    )}`
+                  );
+                }
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    });
+    it("should populate message align(ment) when it is undefined", () => {
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            message: {},
+            test: {
+              onRender: expect("onRender", ({ xprops }) => {
+                const {
+                  message: { align },
+                } = xprops;
+                if (!align) {
+                  throw new Error(
+                    `Expected message align property to be populated: ${JSON.stringify(
+                      xprops.message
+                    )}`
+                  );
+                }
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    });
+    it("should populate position with bottom when layout is horizontal", () => {
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            style: {
+              layout: "horizontal",
+            },
+            message: {},
+            test: {
+              onRender: expect("onRender", ({ xprops }) => {
+                const {
+                  message: { position },
+                } = xprops;
+                assert.equal(position, "bottom");
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    });
+    it("should populate position with top when layout is vertical", () => {
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            style: {
+              layout: "vertical",
+            },
+            message: {},
+            test: {
+              onRender: expect("onRender", ({ xprops }) => {
+                const {
+                  message: { position },
+                } = xprops;
+                assert.equal(position, "top");
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    });
+  });
+
   describe("reserves space for message", () => {
     it("should reserve space for a message when messageMarkup is undefined", (done) => {
       window.paypal

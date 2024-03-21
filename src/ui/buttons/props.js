@@ -48,7 +48,10 @@ import {
 import { getFundingConfig, isFundingEligible } from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
-import { isBorderRadiusNumber } from "./util";
+import {
+  isBorderRadiusNumber,
+  getCalculatedMessagePositionInProps,
+} from "./util";
 
 export type CreateOrderData = {||} | {||};
 
@@ -743,9 +746,19 @@ export function normalizeButtonStyle(
 
 export function normalizeButtonMessage(
   props: ?ButtonPropsInputs,
-  message: ButtonMessageInputs
-): ButtonMessage {
-  const { amount, offer, color, position, align } = message;
+  message: ?ButtonMessageInputs
+): ButtonMessage | void {
+  if (!message) {
+    return undefined;
+  }
+
+  const {
+    amount,
+    offer,
+    color = MESSAGE_COLOR.BLACK,
+    position = getCalculatedMessagePositionInProps(props),
+    align = MESSAGE_ALIGN.CENTER,
+  } = message;
 
   if (typeof amount !== "undefined") {
     if (typeof amount !== "number") {
@@ -914,6 +927,7 @@ export function normalizeButtonProps(
   }
 
   style = normalizeButtonStyle(props, style);
+  message = normalizeButtonMessage(props, message);
 
   return {
     clientID,
@@ -947,7 +961,7 @@ export function normalizeButtonProps(
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
-    message: message ? normalizeButtonMessage(props, message) : undefined,
+    message,
     messageMarkup,
   };
 }

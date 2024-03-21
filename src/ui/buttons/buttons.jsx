@@ -38,7 +38,7 @@ import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
 import { Message } from "./message";
-import { calculateMessagePosition } from "./util";
+import { calculateShowPoweredBy, calculateMessagePosition } from "./util";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -250,8 +250,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     layout === BUTTON_LAYOUT.HORIZONTAL &&
     !fundingSource &&
     !message;
-  const showPoweredBy =
-    layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD);
+
+  const showPoweredBy = calculateShowPoweredBy({ layout, fundingSources });
 
   const calculatedMessagePosition = calculateMessagePosition({
     message,
