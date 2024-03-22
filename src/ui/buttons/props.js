@@ -45,13 +45,14 @@ import {
   MESSAGE_POSITION,
   MESSAGE_ALIGN,
 } from "../../constants";
-import { getFundingConfig, isFundingEligible } from "../../funding";
+import {
+  getFundingConfig,
+  isFundingEligible,
+  determineEligibleFunding,
+} from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
-import {
-  isBorderRadiusNumber,
-  getCalculatedMessagePositionInProps,
-} from "./util";
+import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
 
 export type CreateOrderData = {||} | {||};
 
@@ -442,9 +443,9 @@ export type ApplePaySessionConfigRequest = (
 export type ButtonMessage = {|
   amount?: number,
   offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
-  color?: $Values<typeof MESSAGE_COLOR>,
-  position?: $Values<typeof MESSAGE_POSITION>,
-  align?: $Values<typeof MESSAGE_ALIGN>,
+  color: $Values<typeof MESSAGE_COLOR>,
+  position: $Values<typeof MESSAGE_POSITION>,
+  align: $Values<typeof MESSAGE_ALIGN>,
 |};
 
 export type ButtonMessageInputs = {|
@@ -745,18 +746,15 @@ export function normalizeButtonStyle(
 }
 
 export function normalizeButtonMessage(
-  props: ?ButtonPropsInputs,
-  message: ?ButtonMessageInputs
-): ButtonMessage | void {
-  if (!message) {
-    return undefined;
-  }
-
+  message: ButtonMessageInputs,
+  layout: $Values<typeof BUTTON_LAYOUT>,
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+): ButtonMessage {
   const {
     amount,
     offer,
     color = MESSAGE_COLOR.BLACK,
-    position = getCalculatedMessagePositionInProps(props),
+    position,
     align = MESSAGE_ALIGN.CENTER,
   } = message;
 
@@ -808,7 +806,7 @@ export function normalizeButtonMessage(
     amount,
     offer,
     color,
-    position,
+    position: calculateMessagePosition(fundingSources, layout, position),
     align,
   };
 }
@@ -927,7 +925,29 @@ export function normalizeButtonProps(
   }
 
   style = normalizeButtonStyle(props, style);
-  message = normalizeButtonMessage(props, message);
+  const { layout } = style;
+
+  const fundingSources = determineEligibleFunding({
+    fundingSource,
+    layout,
+    remembered,
+    platform,
+    fundingEligibility,
+    enableFunding,
+    components,
+    onShippingChange,
+    flow,
+    wallet,
+    applePaySupport,
+    supportsPopups,
+    supportedNativeBrowser,
+    experiment,
+    displayOnly,
+  });
+
+  message = message
+    ? normalizeButtonMessage(message, layout, fundingSources)
+    : undefined;
 
   return {
     clientID,

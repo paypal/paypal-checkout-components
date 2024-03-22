@@ -38,7 +38,7 @@ import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
 import { Message } from "./message";
-import { calculateShowPoweredBy, calculateMessagePosition } from "./util";
+import { calculateShowPoweredBy } from "./util";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -251,13 +251,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     !fundingSource &&
     !message;
 
-  const showPoweredBy = calculateShowPoweredBy({ layout, fundingSources });
-
-  const calculatedMessagePosition = calculateMessagePosition({
-    message,
-    showPoweredBy,
-    layout,
-  });
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
 
   return (
     <div
@@ -278,8 +272,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
         fundingEligibility={fundingEligibility}
       />
 
-      {message && calculatedMessagePosition === MESSAGE_POSITION.TOP ? (
-        <Message markup={messageMarkup} position={calculatedMessagePosition} />
+      {message && message.position === MESSAGE_POSITION.TOP ? (
+        <Message markup={messageMarkup} position={message.position} />
       ) : null}
 
       {fundingSources.map((source, i) => (
@@ -335,8 +329,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
       {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
 
-      {message && calculatedMessagePosition === MESSAGE_POSITION.BOTTOM ? (
-        <Message markup={messageMarkup} position={calculatedMessagePosition} />
+      {message && message.position === MESSAGE_POSITION.BOTTOM ? (
+        <Message markup={messageMarkup} position={message.position} />
       ) : null}
 
       {buttonDesignScript ? (
