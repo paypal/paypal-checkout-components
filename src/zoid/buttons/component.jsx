@@ -718,7 +718,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               });
 
             const modalInstance = await getModal(clientID, merchantID);
-            return modalInstance.show({
+            return modalInstance?.show({
               amount,
               offer: offerType,
               currency,
@@ -752,7 +752,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             creditProductIdentifier,
           }) => {
             const { message, buttonSessionID } = props;
-            const amount = message?.amount;
 
             getLogger()
               .info("button_message_render")
@@ -771,7 +770,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 button_message_align: message?.align,
                 button_message_color: message?.color,
                 button_message_offer_country: offerCountryCode,
-                button_message_amount: amount,
+                button_message_amount: message?.amount,
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
           };
