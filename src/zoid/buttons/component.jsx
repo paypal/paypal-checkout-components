@@ -994,8 +994,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         required: false,
         decorate: ({ props, value }) => {
-          // $FlowFixMe
-          return normalizeButtonMessage(props, value);
+          return normalizeButtonMessage(
+            // $FlowFixMe
+            value,
+            props.style.layout,
+            props.remembered
+          );
         },
       },
     },
