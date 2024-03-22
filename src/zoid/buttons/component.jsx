@@ -78,7 +78,7 @@ import {
   normalizeButtonMessage,
   type ButtonProps,
 } from "../../ui/buttons/props";
-import { isFundingEligible } from "../../funding";
+import { isFundingEligible, determineEligibleFunding } from "../../funding";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -994,11 +994,46 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         required: false,
         decorate: ({ props, value }) => {
+          const {
+            fundingSource,
+            style: { layout },
+            remembered,
+            platform,
+            fundingEligibility,
+            enableFunding,
+            components,
+            onShippingChange,
+            flow,
+            // $FlowFixMe
+            wallet,
+            applePaySupport,
+            supportsPopups,
+            supportedNativeBrowser,
+            experiment,
+            displayOnly,
+          } = props;
+          const fundingSources = determineEligibleFunding({
+            fundingSource,
+            layout,
+            remembered,
+            platform,
+            fundingEligibility,
+            enableFunding,
+            components,
+            onShippingChange,
+            flow,
+            wallet,
+            applePaySupport,
+            supportsPopups,
+            supportedNativeBrowser,
+            experiment,
+            displayOnly,
+          });
           return normalizeButtonMessage(
             // $FlowFixMe
             value,
-            props.style.layout,
-            props.remembered
+            layout,
+            fundingSources
           );
         },
       },

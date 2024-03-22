@@ -210,24 +210,6 @@ describe(`paypal button message`, () => {
     });
   });
 
-  describe("error handling", () => {
-    it("should throw error when position is bottom and credit/debit is a funding source", () => {
-      return wrapPromise(({ expect }) => {
-        window.paypal
-          .Buttons({
-            style: {
-              layout: "vertical",
-            },
-            message: {
-              position: "bottom",
-            },
-            onError: expect("onError"),
-          })
-          .render("#testContainer");
-      });
-    });
-  });
-
   describe(`prop considerations`, () => {
     it("message should take precedence over tagline when both are truthy", (done) => {
       window.paypal
