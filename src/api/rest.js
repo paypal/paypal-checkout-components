@@ -6,7 +6,7 @@ import { base64encode } from 'belter/src';
 import { info, track } from 'beaver-logger/client';
 import { getAncestor, isSameDomain } from 'cross-domain-utils/src';
 
-import { config } from '../config';
+import { config, paypalDomainRegex } from '../config';
 import { FPTI, PAYMENT_TYPE } from '../constants';
 import { request, memoize, isPayPalDomain, uniqueID } from '../lib';
 
@@ -401,7 +401,7 @@ export const rest = {
 const PROXY_REST = `proxy_rest`;
 const parentWin = getAncestor();
 
-on(PROXY_REST, { domain: config.paypal_domain_regex }, ({ data }) => {
+on(PROXY_REST, { domain: paypalDomainRegex }, ({ data }) => {
     proxyRest = data;
 });
 

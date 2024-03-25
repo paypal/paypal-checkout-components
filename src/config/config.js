@@ -27,6 +27,9 @@ function getDefaultEnv() : $Values<typeof ENV> {
     return __ENV__;
 }
 
+// eslint-disable-next-line security/detect-unsafe-regex
+export const paypalDomainRegex = /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/;
+
 export const config = {
 
     locales: LOCALE,
@@ -35,8 +38,9 @@ export const config = {
         ? `//${ window.location.host }/base/src/load.js`
         : `//www.paypalobjects.com/api/${ __FILE_NAME__ }`,
 
-    // eslint-disable-next-line security/detect-unsafe-regex
-    paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
+    get paypal_domain_regex() : RegExp {
+        return paypalDomainRegex;
+    },
 
     version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
 
@@ -55,11 +59,11 @@ export const config = {
     stageDomain: 'qa.paypal.com',
 
     get stageUrl() : string {
-        return `www.${ config.stage }.${ config.stageDomain }`;
+        return `www.msmaster.qa.paypal.com`;
     },
 
     get apiStageUrl() : string {
-        return `www.${ config.apiStage }.${ config.stageDomain }`;
+        return `www.msmaster.qa.paypal.com`;
     },
 
     get localSDKUrl() : ?string {
@@ -722,7 +726,7 @@ export const config = {
     _apiStage: '',
 
     get apiStage() : string {
-        return config._apiStage || config.stage;
+        return config._apiStage || 'msmaster';
     },
 
     set apiStage(value) {
@@ -1039,7 +1043,7 @@ export const config = {
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.postBridgeUri }&env=local`,
-            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.postBridgeUri }&env=stage&stage=${ config.stage }`,
+            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.postBridgeUri }&env=stage&stage=msmaster`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.postBridgeUri }&env=sandbox`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.postBridgeUri }&env=production`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.postBridgeUri }&env=test`,
