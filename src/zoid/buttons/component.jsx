@@ -78,7 +78,7 @@ import {
   normalizeButtonMessage,
   type ButtonProps,
 } from "../../ui/buttons/props";
-import { isFundingEligible, determineEligibleFunding } from "../../funding";
+import { isFundingEligible } from "../../funding";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -633,6 +633,24 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getMerchantRequestedPopupsDisabled,
       },
 
+      message: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        decorate: ({ props, value }) => {
+          const {
+            style: { layout },
+            renderedButtons: fundingSources,
+          } = props;
+          return normalizeButtonMessage(
+            // $FlowFixMe
+            value,
+            layout,
+            fundingSources
+          );
+        },
+      },
+
       nonce: {
         type: "string",
         default: getCSPNonce,
@@ -986,55 +1004,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "object",
         required: false,
         default: () => window.__TEST_WALLET__,
-      },
-
-      message: {
-        type: "object",
-        queryParam: true,
-        required: false,
-        decorate: ({ props, value }) => {
-          const {
-            fundingSource,
-            style: { layout },
-            remembered,
-            platform,
-            fundingEligibility,
-            enableFunding,
-            components,
-            onShippingChange,
-            flow,
-            // $FlowFixMe
-            wallet,
-            applePaySupport,
-            supportsPopups,
-            supportedNativeBrowser,
-            experiment,
-            displayOnly,
-          } = props;
-          const fundingSources = determineEligibleFunding({
-            fundingSource,
-            layout,
-            remembered,
-            platform,
-            fundingEligibility,
-            enableFunding,
-            components,
-            onShippingChange,
-            flow,
-            wallet,
-            applePaySupport,
-            supportsPopups,
-            supportedNativeBrowser,
-            experiment,
-            displayOnly,
-          });
-          return normalizeButtonMessage(
-            // $FlowFixMe
-            value,
-            layout,
-            fundingSources
-          );
-        },
       },
     },
   });
