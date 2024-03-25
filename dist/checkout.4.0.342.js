@@ -1,4 +1,4 @@
-/*! For license information please see checkout.4.0.341.js.LICENSE.txt */
+/*! For license information please see checkout.4.0.342.js.LICENSE.txt */
 !function(modules) {
     var installedModules = {};
     function __webpack_require__(moduleId) {
@@ -56,7 +56,7 @@
         return {}.hasOwnProperty.call(object, property);
     };
     __webpack_require__.p = "";
-    __webpack_require__(__webpack_require__.s = 50);
+    __webpack_require__(__webpack_require__.s = 49);
 }([ function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.d(__webpack_exports__, "m", (function() {
@@ -852,10 +852,10 @@
         return JsxHTMLNode;
     }();
     var JsxHTMLNodeContainer = function(_JsxHTMLNode2) {
-        Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode2);
         function JsxHTMLNodeContainer(children) {
             return _JsxHTMLNode2.call(this, "", {}, children) || this;
         }
+        Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(JsxHTMLNodeContainer, _JsxHTMLNode2);
         JsxHTMLNodeContainer.prototype.toString = function() {
             return this.childrenToString();
         };
@@ -1355,8 +1355,8 @@
     var config = __webpack_require__(5);
     var constants = __webpack_require__(0);
     var session = __webpack_require__(21);
-    var dom = __webpack_require__(26);
-    var security = __webpack_require__(27);
+    var dom = __webpack_require__(25);
+    var security = __webpack_require__(26);
     var PAGE_TYPES = {
         HOME: "home",
         PRODUCT: "product",
@@ -1381,7 +1381,7 @@
         });
     }));
     function getScriptVersion() {
-        return "4.0.341";
+        return "4.0.342";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1391,7 +1391,7 @@
             0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
             return scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.341.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.342.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(src.h)();
@@ -1414,7 +1414,7 @@
             }
             var methods = [];
             Object(post_robot_src.on)("proxy_log", {
-                domain: config.a.paypal_domain_regex
+                domain: config.b
             }, (function(_ref) {
                 methods.push(_ref.data.originalMethod);
             }));
@@ -1439,7 +1439,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.341"
+                ver: "4.0.342"
             };
         }));
         Object(client.a)((function() {
@@ -1510,8 +1510,8 @@
     function getBowser() {
         var userAgent = Object(belter_src.b)();
         if (bowserCache[userAgent]) return bowserCache[userAgent];
-        delete __webpack_require__.c[47];
-        var bowser = __webpack_require__(47);
+        delete __webpack_require__.c[46];
+        var bowser = __webpack_require__(46);
         bowserCache[userAgent] = bowser;
         return bowser;
     }
@@ -1695,7 +1695,7 @@
     request.addHeaderBuilder = function(method) {
         headerBuilders.push(method);
     };
-    __webpack_require__(33);
+    __webpack_require__(32);
     function getThrottle(name, sample, sticky) {
         void 0 === sticky && (sticky = !0);
         var uid = Object(session.e)();
@@ -1752,7 +1752,7 @@
         var payer = Object(util.g)(window.location.href, /PayerID=([A-Z0-9]+)/);
         if (token && payer) return token;
     }
-    __webpack_require__(37);
+    __webpack_require__(36);
     var openMetaFrame = Object(util.i)((function(env) {
         void 0 === env && (env = config.a.env);
         return zalgo_promise_src.a.try((function() {
@@ -1769,7 +1769,7 @@
                     domain: metaFrameDomain
                 });
                 return post_robot_src.bridge.openBridge(Object(dom.a)(metaFrameUrl, {
-                    version: "4.0.341"
+                    version: "4.0.342"
                 }), metaFrameDomain).then((function() {
                     return metaListener;
                 })).then((function(_ref) {
@@ -1778,7 +1778,7 @@
             }));
         }));
     }));
-    var button_props = __webpack_require__(29);
+    var button_props = __webpack_require__(28);
     function getRememberedFunding(handler) {
         void 0 === handler && (handler = util.e);
         return Object(session.f)((function(storage) {
@@ -2396,16 +2396,22 @@
     }));
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
+    __webpack_require__.d(__webpack_exports__, "b", (function() {
+        return paypalDomainRegex;
+    }));
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return config;
     }));
     var constants = __webpack_require__(0);
     var _altpayUris, _guestUris, _billingUris, _buttonUris, _inlinedCardFieldUris, _postBridgeUris, _legacyCheckoutUris, _buttonJSUrls;
+    var paypalDomainRegex = /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/;
     var config = {
         locales: constants.A,
-        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.341.js",
-        paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.341",
+        scriptUrl: "//www.paypalobjects.com/api/checkout.4.0.342.js",
+        get paypal_domain_regex() {
+            return paypalDomainRegex;
+        },
+        version: "4.0.342",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
         state: "checkoutjs",
@@ -2416,10 +2422,10 @@
         stage: "msmaster",
         stageDomain: "qa.paypal.com",
         get stageUrl() {
-            return "www." + config.stage + "." + config.stageDomain;
+            return "www.msmaster.qa.paypal.com";
         },
         get apiStageUrl() {
-            return "www." + config.apiStage + "." + config.stageDomain;
+            return "www.msmaster.qa.paypal.com";
         },
         get localSDKUrl() {
             var scripts = [].slice.call(document.getElementsByTagName("script"));
@@ -2916,7 +2922,7 @@
         session_uid_lifetime: 3e5,
         _apiStage: "",
         get apiStage() {
-            return config._apiStage || config.stage;
+            return config._apiStage || "msmaster";
         },
         set apiStage(value) {
             config._apiStage = value;
@@ -3119,7 +3125,7 @@
             var _ref16;
             var paypalUrls = config.paypalUrls;
             return (_ref16 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-            _ref16[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=" + config.stage, 
+            _ref16[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=msmaster", 
             _ref16[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
             _ref16[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
             _ref16[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
@@ -3410,7 +3416,7 @@
     var src = __webpack_require__(7);
     var zalgo_promise_src = __webpack_require__(2);
     var cross_domain_safe_weakmap_src = __webpack_require__(17);
-    var error = __webpack_require__(28);
+    var error = __webpack_require__(27);
     function urlEncode(str) {
         return str.replace(/\?/g, "%3F").replace(/&/g, "%26").replace(/#/g, "%23").replace(/\+/g, "%2B");
     }
@@ -5112,8 +5118,7 @@
     var zalgo_promise_src = __webpack_require__(2);
     __webpack_require__(7);
     var cross_domain_safe_weakmap_src = __webpack_require__(17);
-    __webpack_require__(25);
-    __webpack_require__(34);
+    __webpack_require__(33);
     function getFunctionName(fn) {
         return fn.name || fn.__name__ || fn.displayName || "anonymous";
     }
@@ -6218,7 +6223,7 @@
     var SEND_MESSAGE_STRATEGIES = {};
     SEND_MESSAGE_STRATEGIES[conf.b.SEND_STRATEGIES.POST_MESSAGE] = function(win, serializedMessage, domain) {
         try {
-            __webpack_require__(48).emulateIERestrictions(window, win);
+            __webpack_require__(47).emulateIERestrictions(window, win);
         } catch (err) {
             return;
         }
@@ -6439,7 +6444,7 @@
             data: event.data
         };
         try {
-            __webpack_require__(48).emulateIERestrictions(messageEvent.source, window);
+            __webpack_require__(47).emulateIERestrictions(messageEvent.source, window);
         } catch (err) {
             return;
         }
@@ -6722,7 +6727,7 @@
         global.a.methods.delete(win);
         global.a.readyPromises.delete(win);
     }
-    var bridge = __webpack_require__(51);
+    var bridge = __webpack_require__(50);
     function init() {
         if (!global.a.initialized) {
             Object(lib.a)(window, "message", messageListener);
@@ -7313,8 +7318,8 @@
         }), 100);
     };
     window.onLegacyFallback = window.watchForLegacyFallback;
-    var integrations = __webpack_require__(31);
-    var template = __webpack_require__(35);
+    var integrations = __webpack_require__(30);
+    var template = __webpack_require__(34);
     var Checkout = Object(zoid_src.c)({
         tag: "paypal-checkout",
         name: "ppcheckout",
@@ -9046,8 +9051,8 @@
     }));
     var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
     var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
-    var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
-    var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
+    var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(25);
+    var _security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
     var accessedStorage;
     function getStorageState(handler) {
         var localStorageEnabled = Object(_util__WEBPACK_IMPORTED_MODULE_1__.f)();
@@ -9114,7 +9119,7 @@
     __webpack_require__.d(__webpack_exports__, "a", (function() {
         return _inheritsLoose;
     }));
-    var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(34);
+    var _babel_runtime_helpers_esm_setPrototypeOf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
     function _inheritsLoose(subClass, superClass) {
         subClass.prototype = Object.create(superClass.prototype);
         subClass.prototype.constructor = subClass;
@@ -9164,7 +9169,6 @@
         return CONSTANTS;
     }));
     var src = __webpack_require__(15);
-    var assertThisInitialized = __webpack_require__(25);
     var inheritsLoose = __webpack_require__(22);
     function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
         var desc = {};
@@ -9347,7 +9351,7 @@
         for (;element.parentNode; ) element = element.parentNode;
         return "[object ShadowRoot]" === element.toString();
     }
-    var base32 = __webpack_require__(39);
+    var base32 = __webpack_require__(38);
     var base32_default = __webpack_require__.n(base32);
     var constants = __webpack_require__(8);
     function normalize(str) {
@@ -9401,13 +9405,12 @@
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.renderParent);
     }));
-    var src_error = __webpack_require__(28);
+    var src_error = __webpack_require__(27);
     function normalizeChildProp(component, props, key, value) {
         var prop = component.getProp(key);
         return prop ? "function" == typeof prop.childDecorate ? prop.childDecorate(value) : value : component.looseProps ? value : void 0;
     }
     var child_ChildComponent = function(_BaseComponent) {
-        Object(inheritsLoose.a)(ChildComponent, _BaseComponent);
         function ChildComponent(component) {
             var _this;
             (_this = _BaseComponent.call(this) || this).component = void 0;
@@ -9420,7 +9423,10 @@
             _this.component = component;
             if (!_this.hasValidParentDomain()) {
                 _this.error(new src_error.c("Can not be rendered by domain: " + _this.getParentDomain()));
-                return Object(assertThisInitialized.a)(_this);
+                return function(self) {
+                    if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+                    return self;
+                }(_this);
             }
             _this.component.log("construct_child");
             _this.onPropHandlers = [];
@@ -9439,7 +9445,7 @@
                     });
                 };
                 for (var _i4 = 0, _ref4 = [ [ "xchild", function() {
-                    return Object(assertThisInitialized.a)(_this);
+                    return _this;
                 } ], [ "xprops", function() {
                     return _this.props;
                 } ] ]; _i4 < _ref4.length; _i4++) _loop2();
@@ -9454,13 +9460,14 @@
                 _this.context = data.context;
                 _this.setProps(data.props, origin);
                 _this.watchForResize();
-                return Object(assertThisInitialized.a)(_this);
+                return _this;
             })).catch((function(err) {
                 _this.error(err);
                 throw err;
             }));
             return _this;
         }
+        Object(inheritsLoose.a)(ChildComponent, _BaseComponent);
         var _proto = ChildComponent.prototype;
         _proto.hasValidParentDomain = function() {
             return Object(cross_domain_utils_src.B)(this.component.allowedParentDomains, this.getParentDomain());
@@ -9954,7 +9961,6 @@
     lib.v.props = lib.v.props || {};
     lib.v.windows = lib.v.windows || {};
     var parent_ParentComponent = (_applyDecoratedDescriptor((_class = ((_ParentComponent = function(_BaseComponent) {
-        Object(inheritsLoose.a)(ParentComponent, _BaseComponent);
         function ParentComponent(component, context, _ref) {
             var _this;
             var props = _ref.props;
@@ -9995,6 +10001,7 @@
             }));
             return _this;
         }
+        Object(inheritsLoose.a)(ParentComponent, _BaseComponent);
         var _proto = ParentComponent.prototype;
         _proto.render = function(element, loadUrl) {
             var _this2 = this;
@@ -10847,14 +10854,13 @@
             for (;ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
             return zalgo_promise_src.a.all(results).then(lib.F);
         };
-        _createClass(ParentComponent, [ {
+        return _createClass(ParentComponent, [ {
             key: "driver",
             get: function() {
                 if (!this.context) throw new Error("Context not set");
                 return RENDER_DRIVERS[this.context];
             }
         } ]);
-        return ParentComponent;
     }(base_BaseComponent)).activeComponents = [], _ParentComponent)).prototype, "getOutlet", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
     _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
     _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
@@ -10874,7 +10880,6 @@
     _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
     _class);
     var delegate_DelegateComponent = function(_BaseComponent) {
-        Object(inheritsLoose.a)(DelegateComponent, _BaseComponent);
         function DelegateComponent(component, source, options) {
             var _this;
             (_this = _BaseComponent.call(this) || this).source = void 0;
@@ -10903,7 +10908,7 @@
             _this.focus = function() {
                 return zalgo_promise_src.a.all([ _this.isWindowClosed().then((function(closed) {
                     closed || window.open("", _this.childWindowName);
-                })), options.overrides.focus.call(Object(assertThisInitialized.a)(_this)) ]).then(lib.F);
+                })), options.overrides.focus.call(_this) ]).then(lib.F);
             };
             _this.clean.register("destroyFocusOverride", (function() {
                 _this.focus = lib.F;
@@ -10918,10 +10923,11 @@
             }
             _this.childWindowName = options.childWindowName;
             _this.isWindowClosed = options.isWindowClosed;
-            parent_ParentComponent.prototype.registerActiveComponent.call(Object(assertThisInitialized.a)(_this));
+            parent_ParentComponent.prototype.registerActiveComponent.call(_this);
             _this.watchForClose();
             return _this;
         }
+        Object(inheritsLoose.a)(DelegateComponent, _BaseComponent);
         var _proto = DelegateComponent.prototype;
         _proto.watchForClose = function() {
             var _this2 = this;
@@ -10945,16 +10951,15 @@
         _proto.destroy = function() {
             return this.clean.all();
         };
-        _createClass(DelegateComponent, [ {
+        return _createClass(DelegateComponent, [ {
             key: "driver",
             get: function() {
                 if (!this.context) throw new Error("Context not set");
                 return RENDER_DRIVERS[this.context];
             }
         } ]);
-        return DelegateComponent;
     }(base_BaseComponent);
-    var drivers = __webpack_require__(32);
+    var drivers = __webpack_require__(31);
     function defaultContainerTemplate(_ref) {
         var id = _ref.id, CLASS = _ref.CLASS, outlet = _ref.outlet, jsxDom = _ref.jsxDom, _ref$dimensions = _ref.dimensions;
         return jsxDom("div", {
@@ -10981,7 +10986,6 @@
         script: drivers.script
     };
     var component_Component = (_applyDecoratedDescriptor((component_class = ((_Component = function(_BaseComponent) {
-        Object(inheritsLoose.a)(Component, _BaseComponent);
         function Component(options) {
             var _this;
             (_this = _BaseComponent.call(this) || this).name = void 0;
@@ -11211,12 +11215,13 @@
             _this.addProp(options, "prerenderTemplate", defaultPrerenderTemplate);
             _this.addProp(options, "validate");
             _this.addProp(options, "unsafeRenderTo", !1);
-            Component.components[_this.tag] = Object(assertThisInitialized.a)(_this);
+            Component.components[_this.tag] = _this;
             _this.registerDrivers();
             _this.registerChild();
             _this.listenDelegate();
             return _this;
         }
+        Object(inheritsLoose.a)(Component, _BaseComponent);
         var _proto = Component.prototype;
         _proto.getPropNames = function() {
             var props = Object.keys(this.props);
@@ -11834,15 +11839,6 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    __webpack_require__.d(__webpack_exports__, "a", (function() {
-        return _assertThisInitialized;
-    }));
-    function _assertThisInitialized(self) {
-        if (void 0 === self) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-        return self;
-    }
-}, function(module, __webpack_exports__, __webpack_require__) {
-    "use strict";
     __webpack_require__.d(__webpack_exports__, "i", (function() {
         return loadScript;
     }));
@@ -12089,7 +12085,7 @@
         return !(!parentComponentWindow || !Object(cross_domain_utils_src__WEBPACK_IMPORTED_MODULE_0__.v)(parentComponentWindow));
     }
     function isPayPalDomain() {
-        return Boolean((window.location.protocol + "//" + window.location.host).match(_config__WEBPACK_IMPORTED_MODULE_2__.a.paypal_domain_regex)) || "mock://www.paypal.com" === window.mockDomain;
+        return Boolean((window.location.protocol + "//" + window.location.host).match(_config__WEBPACK_IMPORTED_MODULE_2__.b)) || "mock://www.paypal.com" === window.mockDomain;
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
@@ -12120,7 +12116,7 @@
         return normalizeProps;
     }));
     var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-    var _funding__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30);
+    var _funding__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(29);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
     var _funding_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
     var _config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
@@ -12350,7 +12346,7 @@
     __webpack_require__.d(__webpack_exports__, "e", (function() {
         return mapPaymentToBraintree;
     }));
-    var checkout = __webpack_require__(36);
+    var checkout = __webpack_require__(35);
     var src = __webpack_require__(2);
     function awaitBraintreeClient(braintree, auth) {
         return src.a.resolve(auth).then((function(authorization) {
@@ -12432,34 +12428,34 @@
     }
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
-    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(40);
+    var _script__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(39);
     __webpack_require__.d(__webpack_exports__, "script", (function() {
         return _script__WEBPACK_IMPORTED_MODULE_0__.a;
     }));
-    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(41);
+    var _react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(40);
     __webpack_require__.d(__webpack_exports__, "react", (function() {
         return _react__WEBPACK_IMPORTED_MODULE_1__.a;
     }));
-    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(42);
+    var _vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41);
     __webpack_require__.d(__webpack_exports__, "vue", (function() {
         return _vue__WEBPACK_IMPORTED_MODULE_2__.a;
     }));
-    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(43);
+    var _angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(42);
     __webpack_require__.d(__webpack_exports__, "angular", (function() {
         return _angular__WEBPACK_IMPORTED_MODULE_3__.a;
     }));
-    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(44);
+    var _ember__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(43);
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "angular2") && __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.angular2;
     }));
     __webpack_require__.o(_ember__WEBPACK_IMPORTED_MODULE_4__, "glimmer") && __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _ember__WEBPACK_IMPORTED_MODULE_4__.glimmer;
     }));
-    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(45);
+    var _glimmer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(44);
     __webpack_require__.d(__webpack_exports__, "glimmer", (function() {
         return _glimmer__WEBPACK_IMPORTED_MODULE_5__.a;
     }));
-    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(46);
+    var _angular2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(45);
     __webpack_require__.d(__webpack_exports__, "angular2", (function() {
         return _angular2__WEBPACK_IMPORTED_MODULE_6__.a;
     }));
@@ -12477,7 +12473,7 @@
         void 0 === payload && (payload = {});
         try {
             payload.event = "ppxo_" + event;
-            payload.version = "4.0.341";
+            payload.version = "4.0.342";
             payload.host = window.location.host;
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)();
             payload.appName = "checkoutjs";
@@ -12534,7 +12530,7 @@
     var zalgo_promise_src = __webpack_require__(2);
     var resources = __webpack_require__(19);
     var constants = __webpack_require__(0);
-    var containerContent = __webpack_require__(38);
+    var containerContent = __webpack_require__(37);
     function getContainerStyle(_ref) {
         var id = _ref.id, tag = _ref.tag, CONTEXT = _ref.CONTEXT, CLASS = _ref.CLASS, ANIMATION = _ref.ANIMATION;
         return "\n        #" + id + " {\n            position: absolute;\n            z-index: 2147483647;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n\n            -webkit-transform: translate3d(0, 0, 0);\n            -moz-transform: translate3d(0, 0, 0);\n            -ms-transform: translate3d(0, 0, 0);\n            -o-transform: translate3d(0, 0, 0);\n            transform: translate3d(0, 0, 0);\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " {\n            background-color: black;\n            background-color: rgba(0, 0, 0, 0.75);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,1) 1%, rgba(0,0,0,0.75) 100%);\n\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " {\n            background-color: white;\n            background-color: rgba(255, 255, 255, 0.4);\n\n            background: -webkit-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -moz-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: -ms-radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(255, 255, 255,1) 1%, rgba(255, 255, 255,0.4) 100%);\n\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " a {\n            color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " a {\n            color: #333;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.BLACK + " .paypal-checkout-close:after {\n            background-color: #fff;\n        }\n\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:before,\n        #" + id + "." + tag + "-background-color-" + constants.q.WHITE + " .paypal-checkout-close:after {\n            background-color: #111;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.POPUP + " {\n            cursor: pointer;\n        }\n\n        #" + id + " a {\n            text-decoration: none;\n        }\n\n        #" + id + ' .paypal-checkout-modal {\n            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;\n            font-size: 14px;\n            text-align: center;\n\n            -webkit-box-sizing: border-box;\n            -moz-box-sizing: border-box;\n            -ms-box-sizing: border-box;\n            box-sizing: border-box;\n            max-width: 350px;\n            top: 50%;\n            left: 50%;\n            position: absolute;\n            transform: translateX(-50%) translateY(-50%);\n            -webkit-transform: translateX(-50%) translateY(-50%);\n            -moz-transform: translateX(-50%) translateY(-50%);\n            -o-transform: translateX(-50%) translateY(-50%);\n            -ms-transform: translateX(-50%) translateY(-50%);\n            cursor: pointer;\n            text-align: center;\n        }\n\n        #' + id + "." + tag + "-loading .paypal-checkout-message, #" + id + "." + tag + "-loading .paypal-checkout-continue {\n            display: none;\n        }\n\n        .paypal-checkout-loader {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-loader {\n            display: block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo {\n            cursor: pointer;\n            margin-bottom: 30px;\n            display: inline-block;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img {\n            height: 36px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {\n            margin-right: 10px;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-message {\n            font-size: 15px;\n            line-height: 1.5;\n            padding: 10px 0;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-message, #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-continue {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue {\n            font-size: 15px;\n            line-height: 1.35;\n            padding: 10px 0;\n            font-weight: bold;\n        }\n\n        #" + id + " .paypal-checkout-modal .paypal-checkout-continue a {\n            border-bottom: 1px solid currentColor;\n        }\n\n        #" + id + " .paypal-checkout-close {\n            position: absolute;\n            right: 16px;\n            top: 16px;\n            width: 16px;\n            height: 16px;\n            opacity: 0.6;\n        }\n\n        #" + id + "." + tag + "-loading .paypal-checkout-close {\n            display: none;\n        }\n\n        #" + id + " .paypal-checkout-close:hover {\n            opacity: 1;\n        }\n\n        #" + id + " .paypal-checkout-close:before, .paypal-checkout-close:after {\n            position: absolute;\n            left: 8px;\n            content: ' ';\n            height: 16px;\n            width: 2px;\n        }\n\n        #" + id + " .paypal-checkout-close:before {\n            transform: rotate(45deg);\n            -webkit-transform: rotate(45deg);\n            -moz-transform: rotate(45deg);\n            -o-transform: rotate(45deg);\n            -ms-transform: rotate(45deg);\n        }\n\n        #" + id + " .paypal-checkout-close:after {\n            transform: rotate(-45deg);\n            -webkit-transform: rotate(-45deg);\n            -moz-transform: rotate(-45deg);\n            -o-transform: rotate(-45deg);\n            -ms-transform: rotate(-45deg);\n        }\n\n        #" + id + " .paypal-checkout-iframe-container {\n            display: none;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + ",\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container > ." + CLASS.OUTLET + " > iframe {\n            max-height: calc(95vh - 60px);\n            max-width: 95vw;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container {\n\n            display: block;\n\n            position: absolute;\n\n            top: 50%;\n            left: 50%;\n\n            min-width: 450px;\n\n            transform: translate(-50%, -50%);\n            -webkit-transform: translate(-50%, -50%);\n            -moz-transform: translate(-50%, -50%);\n            -o-transform: translate(-50%, -50%);\n            -ms-transform: translate(-50%, -50%);\n\n            transform: translate3d(-50%, -50%, 0);\n            -webkit-transform: translate3d(-50%, -50%, 0);\n            -moz-transform: translate3d(-50%, -50%, 0);\n            -o-transform: translate3d(-50%, -50%, 0);\n            -ms-transform: translate3d(-50%, -50%, 0);\n\n            border-radius: 10px;\n            overflow: hidden;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n\n            position: relative;\n\n            -webkit-transition: all 0.3s ease;\n            -moz-transition: all 0.3s ease;\n            -ms-transition: all 0.3s ease;\n            -o-transition: all 0.3 ease;\n            transition: all 0.3s ease;\n\n            -webkit-animation-duration: 0.3s;\n            animation-duration: 0.3s;\n            -webkit-animation-fill-mode: both;\n            animation-fill-mode: both;\n\n            min-width: 450px;\n            max-width: 450px;\n            width: 450px;\n            height: 535px;\n\n            background-color: white;\n\n            overflow: auto;\n            -webkit-overflow-scrolling: touch;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe {\n            position: absolute;\n            top: 0;\n            left: 0;\n            transition: opacity .4s ease-in-out;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n            z-index: 100;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n            opacity: 1;\n            z-index: 200;\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n            opacity: 0;\n            z-index: 100;\n        }\n\n        @media screen and (-ms-high-contrast: active) {\n            #" + id + " .paypal-checkout-close {\n                opacity: 1;\n            }\n\n            #" + id + " .paypal-checkout-close:before , .paypal-checkout-close:after {\n                background-color: currentColor;\n            }\n        }\n\n        @media screen and (max-width: 470px) {\n\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " .paypal-checkout-iframe-container,\n            #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " {\n                min-width: 100%;\n                min-width: calc(100% - 20px);\n                min-width: -webkit-calc(100% - 20px);\n                min-width: -moz-calc(100% - 20px);\n                min-width: -o-calc(100% - 20px);\n                min-width: -ms-calc(100% - 20px);\n\n                max-width: 100%;\n                max-width: calc(100% - 20px);\n                max-width: -webkit-calc(100% - 20px);\n                max-width: -moz-calc(100% - 20px);\n                max-width: -o-calc(100% - 20px);\n                max-width: -ms-calc(100% - 20px);\n            }\n        }\n\n        #" + id + "." + tag + "-context-" + CONTEXT.IFRAME + " ." + CLASS.OUTLET + " iframe {\n            width: 1px;\n            min-width: 100%;\n            height: 100%;\n        }\n\n        @-webkit-keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @keyframes " + ANIMATION.SHOW_COMPONENT + " {\n            from {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n\n            to {\n                opacity: 1;\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n        }\n\n        @-webkit-keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        @keyframes " + ANIMATION.HIDE_COMPONENT + " {\n            from {\n                transform: scale3d(1, 1, 1);\n                -webkit-transform: scale3d(1, 1, 1);\n            }\n\n            to {\n                opacity: 0;\n                transform: scale3d(.3, .3, .3);\n                -webkit-transform: scale3d(.3, .3, .3);\n            }\n        }\n\n        .paypal-spinner {\n            height: 30px;\n            width: 30px;\n            display: inline-block;\n            box-sizing: content-box;\n            opacity: 1;\n            filter: alpha(opacity=100);\n            -webkit-animation: rotation .7s infinite linear;\n            -moz-animation: rotation .7s infinite linear;\n            -o-animation: rotation .7s infinite linear;\n            animation: rotation .7s infinite linear;\n            border-left: 8px solid rgba(0, 0, 0, .2);\n            border-right: 8px solid rgba(0, 0, 0, .2);\n            border-bottom: 8px solid rgba(0, 0, 0, .2);\n            border-top: 8px solid #fff;\n            border-radius: 100%\n        }\n\n        @-webkit-keyframes rotation {\n            from {\n                -webkit-transform: rotate(0deg)\n            }\n            to {\n                -webkit-transform: rotate(359deg)\n            }\n        }\n        @-moz-keyframes rotation {\n            from {\n                -moz-transform: rotate(0deg)\n            }\n            to {\n                -moz-transform: rotate(359deg)\n            }\n        }\n        @-o-keyframes rotation {\n            from {\n                -o-transform: rotate(0deg)\n            }\n            to {\n                -o-transform: rotate(359deg)\n            }\n        }\n        @keyframes rotation {\n            from {\n                transform: rotate(0deg)\n            }\n            to {\n                transform: rotate(359deg)\n            }\n        }\n    ";
@@ -15916,7 +15912,7 @@
         var root = "object" == typeof window ? window : {};
         !root.HI_BASE32_NO_NODE_JS && "object" == typeof process && process.versions && process.versions.node && (root = window);
         var COMMON_JS = !root.HI_BASE32_NO_COMMON_JS && "object" == typeof module && module.exports;
-        var AMD = __webpack_require__(52);
+        var AMD = __webpack_require__(51);
         var BASE32_ENCODE_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
         var BASE32_DECODE_CHAR = {
             A: 0,
@@ -16252,10 +16248,10 @@
                     this.state && this.state.parent && this.state.parent.destroy();
                 }
             }) : function(_React$Component) {
-                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(_class, _React$Component);
                 function _class() {
                     return _React$Component.apply(this, arguments) || this;
                 }
+                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__.a)(_class, _React$Component);
                 var _proto = _class.prototype;
                 _proto.render = function() {
                     return React.createElement("div", null);
@@ -16371,10 +16367,10 @@
         global: function() {},
         register: function(component, GlimmerComponent) {
             return function(_GlimmerComponent) {
-                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__.a)(_class, _GlimmerComponent);
                 function _class() {
                     return _GlimmerComponent.apply(this, arguments) || this;
                 }
+                Object(_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__.a)(_class, _GlimmerComponent);
                 _class.prototype.didInsertElement = function() {
                     component.render(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, this.args), this.element);
                 };
@@ -16435,7 +16431,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     !function(e, t, n) {
-        module.exports ? module.exports = n() : __webpack_require__(53)("bowser", n);
+        module.exports ? module.exports = n() : __webpack_require__(52)("bowser", n);
     }(0, 0, (function() {
         function t(t) {
             function n(e) {
@@ -16786,26 +16782,26 @@
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
-    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
-    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(37);
+    var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+    var _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
     var _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
-    var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
+    var _lib_security__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26);
     if (!Object(_lib_security__WEBPACK_IMPORTED_MODULE_3__.b)()) throw new Error("Do not integrate with versioned script url");
-    if (window.paypal && "4.0.341" === window.paypal.version) {
+    if (window.paypal && "4.0.342" === window.paypal.version) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-            version: "4.0.341"
+            version: "4.0.342"
         });
-        throw new Error("PayPal Checkout Integration Script with same version (4.0.341) already loaded on page");
+        throw new Error("PayPal Checkout Integration Script with same version (4.0.342) already loaded on page");
     }
-    if (window.paypal && window.paypal.version && "4.0.341" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
+    if (window.paypal && window.paypal.version && "4.0.342" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
             existingVersion: window.paypal.version,
-            version: "4.0.341"
+            version: "4.0.342"
         });
-        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.341");
+        throw new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.342");
     }
     try {
-        var _interface = __webpack_require__(54);
+        var _interface = __webpack_require__(53);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
     } catch (err) {
         Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_error", {
@@ -17064,8 +17060,8 @@
     var constants = __webpack_require__(0);
     var config = __webpack_require__(5);
     var resources = __webpack_require__(19);
-    var containerContent = __webpack_require__(38);
-    var checkout_template = __webpack_require__(35);
+    var containerContent = __webpack_require__(37);
+    var checkout_template = __webpack_require__(34);
     var _LOGO_COLOR;
     var LOGO_COLOR = ((_LOGO_COLOR = {})[constants.q.BLACK] = constants.i.WHITE, _LOGO_COLOR[constants.q.WHITE] = constants.i.BLACK, 
     _LOGO_COLOR);
@@ -17607,7 +17603,7 @@
     };
     var parentWin = Object(cross_domain_utils_src.f)();
     Object(post_robot_src.on)("proxy_rest", {
-        domain: config.a.paypal_domain_regex
+        domain: config.b
     }, (function(_ref) {
         proxyRest = _ref.data;
     }));
@@ -17672,8 +17668,8 @@
             returnToken && logReturn(returnToken);
         }), 1);
     }
-    var integrations = __webpack_require__(31);
-    var integrations_checkout = __webpack_require__(36);
+    var integrations = __webpack_require__(30);
+    var integrations_checkout = __webpack_require__(35);
     function normalizeCheckoutProps(props) {
         return {
             env: props.env = props.env || config.a.env,
@@ -17705,9 +17701,9 @@
             }(popupBridge);
         }));
     }
-    var src_funding = __webpack_require__(30);
+    var src_funding = __webpack_require__(29);
     var button_config = __webpack_require__(12);
-    var button_props = __webpack_require__(29);
+    var button_props = __webpack_require__(28);
     var jsx = __webpack_require__(1);
     function validateButtonLocale(locale) {
         if (!locale) throw new Error("Expected props.locale to be set");
@@ -24110,7 +24106,7 @@
                 logoColor: "blue"
             })));
         }(Object(button_props.a)(props)) : null;
-        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.341", 
+        return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.342", 
         _ref21), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -24158,7 +24154,7 @@
             return jsxDom("div", Object(esm_extends.a)({
                 id: id,
                 class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.341", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+            }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.342", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
         },
         autoResize: {
             height: !0,
@@ -25384,10 +25380,10 @@
     }
     var postRobot = post_robot_src;
     var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-    var interface_version = "4.0.341";
+    var interface_version = "4.0.342";
     var interface_checkout;
     var apps;
-    var legacy = __webpack_require__(55);
+    var legacy = __webpack_require__(54);
     interface_checkout = legacy.checkout;
     apps = legacy.apps;
     var interface_Checkout;
@@ -25461,7 +25457,7 @@
     };
     var esm_extends = __webpack_require__(13);
     var src = __webpack_require__(2);
-    var form_serialize = __webpack_require__(49);
+    var form_serialize = __webpack_require__(48);
     var form_serialize_default = __webpack_require__.n(form_serialize);
     var belter_src = __webpack_require__(11);
     var checkout = __webpack_require__(18);
