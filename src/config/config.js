@@ -38,6 +38,10 @@ export const config = {
         ? `//${ window.location.host }/base/src/load.js`
         : `//www.paypalobjects.com/api/${ __FILE_NAME__ }`,
 
+    get paypal_domain_regex() : RegExp {
+        return paypalDomainRegex;
+    },
+
     version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
 
     cors: true,
@@ -51,6 +55,7 @@ export const config = {
         lang:    LANG.EN
     },
 
+    stage:       'msmaster',
     stageDomain: 'qa.paypal.com',
 
     get stageUrl() : string {
@@ -58,7 +63,7 @@ export const config = {
     },
 
     get apiStageUrl() : string {
-        return `www.${ config.apiStage }.${ config.stageDomain }`;
+        return `www.msmaster.qa.paypal.com`;
     },
 
     get localSDKUrl() : ?string {
@@ -721,7 +726,7 @@ export const config = {
     _apiStage: '',
 
     get apiStage() : string {
-        return config._apiStage || config.stage;
+        return config._apiStage || 'msmaster';
     },
 
     set apiStage(value) {
