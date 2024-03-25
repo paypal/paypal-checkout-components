@@ -27,6 +27,9 @@ function getDefaultEnv() : $Values<typeof ENV> {
     return __ENV__;
 }
 
+// eslint-disable-next-line security/detect-unsafe-regex
+export const paypalDomainRegex = /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/;
+
 export const config = {
 
     locales: LOCALE,
@@ -34,9 +37,6 @@ export const config = {
     scriptUrl: __TEST__
         ? `//${ window.location.host }/base/src/load.js`
         : `//www.paypalobjects.com/api/${ __FILE_NAME__ }`,
-
-    // eslint-disable-next-line security/detect-unsafe-regex
-    paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
 
     version: __PAYPAL_CHECKOUT__.__MINOR_VERSION__,
 
@@ -51,11 +51,10 @@ export const config = {
         lang:    LANG.EN
     },
 
-    stage:       'msmaster',
     stageDomain: 'qa.paypal.com',
 
     get stageUrl() : string {
-        return `www.${ config.stage }.${ config.stageDomain }`;
+        return `www.msmaster.qa.paypal.com`;
     },
 
     get apiStageUrl() : string {
@@ -1039,7 +1038,7 @@ export const config = {
 
         return {
             [ ENV.LOCAL ]:      `${ paypalUrls.local }${ config.postBridgeUri }&env=local`,
-            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.postBridgeUri }&env=stage&stage=${ config.stage }`,
+            [ ENV.STAGE ]:      `${ paypalUrls.stage }${ config.postBridgeUri }&env=stage&stage=msmaster`,
             [ ENV.SANDBOX ]:    `${ paypalUrls.sandbox }${ config.postBridgeUri }&env=sandbox`,
             [ ENV.PRODUCTION ]: `${ paypalUrls.production }${ config.postBridgeUri }&env=production`,
             [ ENV.TEST ]:       `${ paypalUrls.test }${ config.postBridgeUri }&env=test`,

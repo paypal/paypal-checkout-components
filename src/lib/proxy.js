@@ -3,7 +3,7 @@
 import { on, send } from 'post-robot/src';
 import { isWindowClosed, getDomain, isSameDomain, type CrossDomainWindowType } from 'cross-domain-utils/src';
 
-import { config } from '../config';
+import { config, paypalDomainRegex } from '../config';
 
 import { noop } from './util';
 
@@ -20,7 +20,7 @@ export function proxyMethod(name : string, win : ?CrossDomainWindowType, origina
 
     let methods = [];
 
-    on(`proxy_${ name }`, { domain: config.paypal_domain_regex }, ({ data }) => {
+    on(`proxy_${ name }`, { domain: paypalDomainRegex }, ({ data }) => {
         methods.push(data.originalMethod);
     });
 

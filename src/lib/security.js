@@ -3,7 +3,7 @@
 import { getParent, isSameDomain } from 'cross-domain-utils/src';
 import { supportsPopups } from 'belter/src';
 
-import { config } from '../config';
+import { paypalDomainRegex } from '../config';
 
 export function allowIframe() : boolean {
 
@@ -28,7 +28,6 @@ export function allowIframe() : boolean {
     return false;
 }
 
-
 export function isPayPalDomain() : boolean {
-    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(config.paypal_domain_regex)) || window.mockDomain === 'mock://www.paypal.com';
+    return Boolean(`${ window.location.protocol }//${ window.location.host }`.match(paypalDomainRegex)) || window.mockDomain === 'mock://www.paypal.com';
 }
