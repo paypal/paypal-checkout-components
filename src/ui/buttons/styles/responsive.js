@@ -26,16 +26,19 @@ export function buttonResponsiveStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
+  disableMaxHeight,
   borderRadius,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
+  disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
       const style = BUTTON_SIZE_STYLE[size];
+
       const buttonHeight = height || style.defaultHeight;
       const minDualWidth = Math.max(
         Math.round(
@@ -67,6 +70,7 @@ export function buttonResponsiveStyle({
                 .${CLASS.CONTAINER} {
                     min-width: ${style.minWidth}px;
                     ${disableMaxWidth ? "" : `max-width: ${style.maxWidth}px;`};
+                    ${disableMaxHeight ? "height: 100%;" : ""};
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
@@ -82,10 +86,18 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON_ROW} {
-                    height: ${buttonHeight}px;
+                    height: ${disableMaxHeight ? "100%" : `${buttonHeight}px`};
                     vertical-align: top;
-                    min-height: ${height || style.minHeight}px;
-                    max-height: ${height || style.maxHeight}px;
+                    ${
+                      disableMaxHeight
+                        ? ""
+                        : ` min-height: ${height || style.minHeight}px;`
+                    };
+                    ${
+                      disableMaxHeight
+                        ? ""
+                        : `max-height: ${height || style.maxHeight}px;`
+                    }
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {

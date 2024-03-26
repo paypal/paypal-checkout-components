@@ -12,11 +12,13 @@ export function componentStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
+  disableMaxHeight,
   borderRadius,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
+  disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
 |}): string {
   return `
@@ -28,6 +30,7 @@ export function componentStyle({
           height,
           fundingEligibility,
           disableMaxWidth,
+          disableMaxHeight,
           borderRadius,
         })}
     `;
