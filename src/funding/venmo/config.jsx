@@ -35,8 +35,12 @@ export function getVenmoConfig(): FundingSourceConfig {
       return true;
     },
 
-    requires: ({ platform }) => {
-      if (platform === PLATFORM.MOBILE) {
+    requires: ({ experiment, platform }) => {
+      if (
+        platform === PLATFORM.MOBILE &&
+        experiment &&
+        experiment.venmoWebEnabled === false
+      ) {
         return {
           native: true,
           popup: true,
