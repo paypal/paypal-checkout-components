@@ -115,7 +115,7 @@ export type FundingSourceConfig = {|
   enabled: boolean,
   automatic: boolean,
   shippingChange?: boolean,
-  requires?: ({| platform?: $Values<typeof PLATFORM> |}) => Requires,
+  requires?: ({| experiment?: ?Experiment, platform?: $Values<typeof PLATFORM> |}) => Requires,
   platforms: $ReadOnlyArray<$Values<typeof PLATFORM>>,
   layouts: $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
   flows: $ReadOnlyArray<$Values<typeof BUTTON_FLOW>>,
