@@ -754,7 +754,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             offerCountryCode,
             creditProductIdentifier,
           }) => {
-            const { message, buttonSessionID, merchantID } = props;
+            const { message, buttonSessionID, currency, merchantID } = props;
 
             getLogger()
               .info("button_message_render")
