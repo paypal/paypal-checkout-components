@@ -714,6 +714,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 button_message_color: message?.color,
                 button_message_offer_country: offerCountryCode,
                 button_message_amount: amount,
+                button_message_currency: currency,
+                // comes back as an array
+                [FPTI_KEY.SELLER_ID]: merchantID[0],
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
 
@@ -751,7 +754,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             offerCountryCode,
             creditProductIdentifier,
           }) => {
-            const { message, buttonSessionID } = props;
+            const { message, buttonSessionID, merchantID } = props;
 
             getLogger()
               .info("button_message_render")
@@ -766,11 +769,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 button_message_credit_product_identifier:
                   creditProductIdentifier,
                 button_message_type: messageType,
-                button_message_posiiton: message?.position,
+                button_message_position: message?.position,
                 button_message_align: message?.align,
                 button_message_color: message?.color,
                 button_message_offer_country: offerCountryCode,
                 button_message_amount: message?.amount,
+                button_message_currency: currency,
+                // comes back as an array
+                [FPTI_KEY.SELLER_ID]: merchantID[0],
                 [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
               });
           };
