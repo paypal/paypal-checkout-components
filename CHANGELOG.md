@@ -1,3 +1,9 @@
+## <small>5.0.306 (2024-03-27)</small>
+
+* feat(venmo): eligibility (#2366) ([530567f](https://github.com/paypal/paypal-checkout-components/commit/530567f)), closes [#2366](https://github.com/paypal/paypal-checkout-components/issues/2366)
+
+
+
 ## <small>5.0.305 (2024-03-20)</small>
 
 * Add recommended methods on FPTI log (#2362) ([a41e3f9](https://github.com/paypal/paypal-checkout-components/commit/a41e3f9)), closes [#2362](https://github.com/paypal/paypal-checkout-components/issues/2362)
