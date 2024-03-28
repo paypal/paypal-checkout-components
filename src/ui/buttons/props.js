@@ -45,11 +45,7 @@ import {
   MESSAGE_POSITION,
   MESSAGE_ALIGN,
 } from "../../constants";
-import {
-  getFundingConfig,
-  isFundingEligible,
-  determineEligibleFunding,
-} from "../../funding";
+import { getFundingConfig, isFundingEligible } from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
 import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
@@ -597,6 +593,7 @@ export type ButtonPropsInputs = {
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
+  renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
 };
 
 export const DEFAULT_STYLE = {
@@ -867,6 +864,7 @@ export function normalizeButtonProps(
     displayOnly = [],
     message,
     messageMarkup,
+    renderedButtons,
   } = props;
 
   const { country, lang } = locale;
@@ -927,26 +925,8 @@ export function normalizeButtonProps(
   style = normalizeButtonStyle(props, style);
   const { layout } = style;
 
-  const fundingSources = determineEligibleFunding({
-    fundingSource,
-    layout,
-    remembered,
-    platform,
-    fundingEligibility,
-    enableFunding,
-    components,
-    onShippingChange,
-    flow,
-    wallet,
-    applePaySupport,
-    supportsPopups,
-    supportedNativeBrowser,
-    experiment,
-    displayOnly,
-  });
-
   message = message
-    ? normalizeButtonMessage(message, layout, fundingSources)
+    ? normalizeButtonMessage(message, layout, renderedButtons)
     : undefined;
 
   return {
