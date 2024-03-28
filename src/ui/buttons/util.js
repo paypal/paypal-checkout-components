@@ -1,28 +1,28 @@
 /* @flow */
+import { FUNDING } from "@paypal/sdk-constants/src";
+
 import { BUTTON_LAYOUT, MESSAGE_POSITION } from "../../constants";
 import { ValidationError } from "../../lib";
-
-import type { ButtonMessage } from "./props";
 
 export function isBorderRadiusNumber(borderRadius?: number): boolean {
   return typeof borderRadius === "number";
 }
 
-type calculateMessagePositionProps = {|
-  message: ButtonMessage | void,
-  showPoweredBy: boolean,
-  layout: string,
-|};
+export function calculateShowPoweredBy(
+  layout: $Values<typeof BUTTON_LAYOUT>,
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+): boolean {
+  return (
+    layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD)
+  );
+}
 
-export function calculateMessagePosition({
-  message,
-  showPoweredBy,
-  layout,
-}: calculateMessagePositionProps): string {
-  if (!message) {
-    return "none";
-  }
-  const { position } = message;
+export function calculateMessagePosition(
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  layout: $Values<typeof BUTTON_LAYOUT>,
+  position?: $Values<typeof MESSAGE_POSITION>
+): $Values<typeof MESSAGE_POSITION> {
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
 
   if (showPoweredBy && position === MESSAGE_POSITION.BOTTOM) {
     throw new ValidationError(

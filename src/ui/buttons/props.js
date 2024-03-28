@@ -48,7 +48,7 @@ import {
 import { getFundingConfig, isFundingEligible } from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
-import { isBorderRadiusNumber } from "./util";
+import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
 
 export type CreateOrderData = {||} | {||};
 
@@ -439,9 +439,9 @@ export type ApplePaySessionConfigRequest = (
 export type ButtonMessage = {|
   amount?: number,
   offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
-  color?: $Values<typeof MESSAGE_COLOR>,
-  position?: $Values<typeof MESSAGE_POSITION>,
-  align?: $Values<typeof MESSAGE_ALIGN>,
+  color: $Values<typeof MESSAGE_COLOR>,
+  position: $Values<typeof MESSAGE_POSITION>,
+  align: $Values<typeof MESSAGE_ALIGN>,
 |};
 
 export type ButtonMessageInputs = {|
@@ -593,6 +593,7 @@ export type ButtonPropsInputs = {
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
+  renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
 };
 
 export const DEFAULT_STYLE = {
@@ -742,10 +743,17 @@ export function normalizeButtonStyle(
 }
 
 export function normalizeButtonMessage(
-  props: ?ButtonPropsInputs,
-  message: ButtonMessageInputs
+  message: ButtonMessageInputs,
+  layout: $Values<typeof BUTTON_LAYOUT>,
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
 ): ButtonMessage {
-  const { amount, offer, color, position, align } = message;
+  const {
+    amount,
+    offer,
+    color = MESSAGE_COLOR.BLACK,
+    position,
+    align = MESSAGE_ALIGN.CENTER,
+  } = message;
 
   if (typeof amount !== "undefined") {
     if (typeof amount !== "number") {
@@ -795,7 +803,7 @@ export function normalizeButtonMessage(
     amount,
     offer,
     color,
-    position,
+    position: calculateMessagePosition(fundingSources, layout, position),
     align,
   };
 }
@@ -856,6 +864,7 @@ export function normalizeButtonProps(
     displayOnly = [],
     message,
     messageMarkup,
+    renderedButtons,
   } = props;
 
   const { country, lang } = locale;
@@ -914,6 +923,11 @@ export function normalizeButtonProps(
   }
 
   style = normalizeButtonStyle(props, style);
+  const { layout } = style;
+
+  message = message
+    ? normalizeButtonMessage(message, layout, renderedButtons)
+    : undefined;
 
   return {
     clientID,
@@ -947,7 +961,7 @@ export function normalizeButtonProps(
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
-    message: message ? normalizeButtonMessage(props, message) : undefined,
+    message,
     messageMarkup,
   };
 }
