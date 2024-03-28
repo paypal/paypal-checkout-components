@@ -21,7 +21,7 @@ export function Message({ markup, position }: MessageProps): ChildType {
   if (typeof markup !== "string") {
     return (
       <div
-        className={`${messageClassNames} ${CLASS.BUTTON_MESSAGE_RESERVE}`}
+        class={`${messageClassNames} ${CLASS.BUTTON_MESSAGE_RESERVE}`}
         style={`height:${INITIAL_RESERVED_HEIGHT}`}
       />
     );

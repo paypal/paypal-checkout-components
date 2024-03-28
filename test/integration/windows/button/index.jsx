@@ -236,5 +236,11 @@ if (onRender) {
     click() {
       getElement(".paypal-button", document).click();
     },
+    hoverMessage(): ZalgoPromise<void> | void {
+      return window.xprops.onMessageHover();
+    },
+    clickMessage({ offerType, messageType }): ZalgoPromise<void> | void {
+      return window.xprops.onMessageClick({ offerType, messageType });
+    },
   });
 }

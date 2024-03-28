@@ -3,6 +3,7 @@
 
 import { wrapPromise, getElement } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
+import { getNamespace } from "@paypal/sdk-client/src";
 
 import { CLASS } from "../../../../src/constants";
 import {
@@ -376,6 +377,113 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+    });
+  });
+
+  describe("modal", () => {
+    it("should ensure data-pp-namespace passes in the namespace", (done) => {
+      window.paypal
+        .Buttons({
+          message: {},
+          test: {
+            onRender({ hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  assert.equal(getNamespace(), window.namespace);
+                  done();
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+    it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
+      window.paypal
+        .Buttons({
+          message: {},
+          test: {
+            onRender({ hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  assert.ok(
+                    Object.keys(window.paypal.MessagesModal.mock.calledWith)
+                      .length === 2
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .account === "string"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .merchantId === "undefined"
+                  );
+                  done();
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+    it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
+      const props = { offerType: "PAY_LATER", messageType: "GPL" };
+      window.paypal
+        .Buttons({
+          message: {
+            amount: 101,
+          },
+          test: {
+            onRender({ clickMessage, hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  return clickMessage(props).then(() => {
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.amount,
+                      101
+                    );
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.offer,
+                      "PAY_LATER"
+                    );
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.currency,
+                      "USD"
+                    );
+                    done();
+                  });
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+    it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
+      const props = { offerType: "PAY_LATER", messageType: "GPL" };
+      window.paypal
+        .Buttons({
+          message: {
+            amount: 101,
+          },
+          test: {
+            onRender({ clickMessage, hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  return clickMessage(props).then(() => {
+                    return hoverMessage().then(() => {
+                      return clickMessage(props).then(() => {
+                        assert.equal(window.paypal.MessagesModal.mock.calls, 1);
+                        done();
+                      });
+                    });
+                  });
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
     });
   });
 });

@@ -90,6 +90,7 @@ import {
   getRenderedButtons,
   getButtonSize,
   getButtonExperiments,
+  getModal,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -677,6 +678,101 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             }
 
             return value(...args);
+          };
+        },
+      },
+
+      onMessageClick: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return async ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
+            const { message, clientID, merchantID, currency, buttonSessionID } =
+              props;
+            const amount = message?.amount;
+
+            getLogger()
+              .info("button_message_click")
+              .track({
+                [FPTI_KEY.TRANSITION]: "button_message_click",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+                [FPTI_KEY.EVENT_NAME]: "message_click",
+                // adding temp string here for our sdk constants
+                button_message_offer_type: offerType,
+                button_message_credit_product_identifier:
+                  creditProductIdentifier,
+                button_message_type: messageType,
+                button_message_position: message?.position,
+                button_message_align: message?.align,
+                button_message_color: message?.color,
+                button_message_offer_country: offerCountryCode,
+                button_message_amount: amount,
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+              });
+
+            const modalInstance = await getModal(clientID, merchantID);
+            return modalInstance?.show({
+              amount,
+              offer: offerType,
+              currency,
+            });
+          };
+        },
+      },
+
+      onMessageHover: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return () => {
+            // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
+
+            // lazy loads the modal, to be memoized and executed onMessageClick
+            const { clientID, merchantID } = props;
+            return getModal(clientID, merchantID);
+          };
+        },
+      },
+
+      onMessageReady: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
+            const { message, buttonSessionID } = props;
+
+            getLogger()
+              .info("button_message_render")
+              .track({
+                [FPTI_KEY.TRANSITION]: "button_message_render",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+                [FPTI_KEY.EVENT_NAME]: "message_render",
+                // adding temp string here for our sdk constants
+                button_message_offer_type: offerType,
+                button_message_credit_product_identifier:
+                  creditProductIdentifier,
+                button_message_type: messageType,
+                button_message_posiiton: message?.position,
+                button_message_align: message?.align,
+                button_message_color: message?.color,
+                button_message_offer_country: offerCountryCode,
+                button_message_amount: message?.amount,
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+              });
           };
         },
       },

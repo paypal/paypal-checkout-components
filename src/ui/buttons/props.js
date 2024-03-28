@@ -760,7 +760,7 @@ export function normalizeButtonMessage(
     }
   }
 
-  if (offer) {
+  if (typeof offer !== "undefined") {
     if (!Array.isArray(offer)) {
       throw new TypeError(
         `Expected message.offer to be an array of strings, got: ${String(
@@ -776,15 +776,18 @@ export function normalizeButtonMessage(
     }
   }
 
-  if (color && !values(MESSAGE_COLOR).includes(color)) {
+  if (typeof color !== "undefined" && !values(MESSAGE_COLOR).includes(color)) {
     throw new Error(`Invalid color: ${color}`);
   }
 
-  if (position && !values(MESSAGE_POSITION).includes(position)) {
+  if (
+    typeof position !== "undefined" &&
+    !values(MESSAGE_POSITION).includes(position)
+  ) {
     throw new Error(`Invalid position: ${position}`);
   }
 
-  if (align && !values(MESSAGE_ALIGN).includes(align)) {
+  if (typeof align !== "undefined" && !values(MESSAGE_ALIGN).includes(align)) {
     throw new Error(`Invalid align: ${align}`);
   }
 

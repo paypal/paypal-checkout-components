@@ -6,6 +6,7 @@ import "./error";
 import "./drivers";
 import "./frame";
 import "./size";
+import "./message";
 import "./multiple";
 import "./layout";
 import "./style";
