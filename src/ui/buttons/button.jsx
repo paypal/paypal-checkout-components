@@ -27,9 +27,7 @@ import {
   BUTTON_FLOW,
 } from "../../constants";
 import { getFundingConfig } from "../../funding";
-import { DesignExperimentLabel } from "../../funding/paypal/template";
 
-import { getButtonDesign } from "./buttonDesigns";
 import type {
   ButtonStyle,
   Personalization,
@@ -199,36 +197,6 @@ export function Button({
     />
   );
 
-  // Only apply animation to the paypal button
-  const buttonDesign =
-    fundingSource === FUNDING.PAYPAL ? getButtonDesign(personalization) : {};
-
-  const { buttonDesignContainerClass = "", buttonDesignComponent = null } =
-    buttonDesign;
-
-  if (buttonDesignComponent) {
-    labelNode = (
-      <DesignExperimentLabel
-        i={i}
-        logo={logoNode}
-        label={label}
-        nonce={nonce}
-        locale={locale}
-        logoColor={logoColor}
-        period={period}
-        layout={layout}
-        multiple={multiple}
-        fundingEligibility={fundingEligibility}
-        onClick={clickHandler}
-        onKeyPress={keypressHandler}
-        personalization={personalization}
-        tagline={tagline}
-        content={content}
-        buttonDesignComponent={buttonDesignComponent}
-      />
-    );
-  }
-
   let isWallet = false;
 
   if (
@@ -281,7 +249,6 @@ export function Button({
         `${LOGO_CLASS.LOGO_COLOR}-${logoColor}`,
         `${isWallet ? CLASS.WALLET : ""}`,
         `${shouldShowWalletMenu ? CLASS.WALLET_MENU : ""}`,
-        `${buttonDesignContainerClass}`,
         `${borderRadiusClass}`,
       ].join(" ")}
     >
