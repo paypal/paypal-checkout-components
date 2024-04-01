@@ -361,14 +361,6 @@ export type Personalization = {|
       click: string,
     |},
   |},
-  buttonDesign?: {|
-    id: string,
-    text: string,
-    tracking: {|
-      impression: string,
-      click: string,
-    |},
-  |},
 |};
 
 // https://developer.apple.com/documentation/apple_pay_on_the_web/applepayerror/2970147-applepayerror

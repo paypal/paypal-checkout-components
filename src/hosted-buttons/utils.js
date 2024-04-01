@@ -2,10 +2,12 @@
 
 import { request, memoize } from "@krakenjs/belter/src";
 import {
+  buildDPoPHeaders,
   getSDKHost,
   getClientID,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
 
 import type {
   ButtonVariables,
@@ -39,18 +41,33 @@ export const getMerchantID = (): string | void => {
 };
 
 export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
-  async (clientId) => {
+  async ({ clientId, enableDPoP }) => {
+    const url = `${apiUrl}/v1/oauth2/token`;
+    const method = "POST";
+    const DPoPHeaders = enableDPoP
+      ? await buildDPoPHeaders({
+          uri: url,
+          method,
+        })
+      : {};
     const response = await request({
-      url: `${apiUrl}/v1/oauth2/token`,
-      method: "POST",
+      url,
+      method,
       body: "grant_type=client_credentials",
+      // $FlowIssue optional properties are not compatible with [key: string]: string
       headers: {
         Authorization: `Basic ${btoa(clientId)}`,
         "Content-Type": "application/json",
+        // $FlowIssue exponential-spread
+        ...DPoPHeaders,
       },
     });
     // $FlowIssue request returns ZalgoPromise
-    return response.body.access_token;
+    const { access_token: accessToken, nonce } = response.body;
+    return {
+      accessToken,
+      nonce,
+    };
   }
 );
 
@@ -110,6 +127,7 @@ export const renderForm: RenderForm = ({
 };
 
 export const buildHostedButtonCreateOrder = ({
+  enableDPoP,
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): CreateOrder => {
@@ -117,12 +135,30 @@ export const buildHostedButtonCreateOrder = ({
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
-    const accessToken = await createAccessToken(getClientID());
+    const { accessToken, nonce } = await createAccessToken({
+      clientId: getClientID(),
+      enableDPoP,
+    });
     try {
+      const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
+      const method = "POST";
+      const DPoPHeaders = enableDPoP
+        ? await buildDPoPHeaders({
+            uri: url,
+            method,
+            accessToken,
+            nonce,
+          })
+        : {};
       const response = await request({
-        url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`,
-        headers: getHeaders(accessToken),
-        method: "POST",
+        url,
+        // $FlowIssue optional properties are not compatible with [key: string]: string
+        headers: {
+          ...getHeaders(accessToken),
+          // $FlowIssue exponential-spread
+          ...DPoPHeaders,
+        },
+        method,
         body: JSON.stringify({
           entry_point: entryPoint,
           funding_source: data.paymentSource.toUpperCase(),
@@ -140,20 +176,47 @@ export const buildHostedButtonCreateOrder = ({
 };
 
 export const buildHostedButtonOnApprove = ({
+  enableDPoP,
   hostedButtonId,
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
-    const accessToken = await createAccessToken(getClientID());
+    const { accessToken, nonce } = await createAccessToken({
+      clientId: getClientID(),
+      enableDPoP,
+    });
+    const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
+    const method = "POST";
+    const DPoPHeaders = enableDPoP
+      ? await buildDPoPHeaders({
+          uri: url,
+          method,
+          accessToken,
+          nonce,
+        })
+      : {};
     return request({
-      url: `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`,
-      headers: getHeaders(accessToken),
-      method: "POST",
+      url,
+      // $FlowIssue optional properties are not compatible with [key: string]: string
+      headers: {
+        ...getHeaders(accessToken),
+        // $FlowIssue exponential-spread
+        ...DPoPHeaders,
+      },
+      method,
       body: JSON.stringify({
         entry_point: entryPoint,
         merchant_id: merchantId,
         context_id: data.orderID,
       }),
+    }).then((response) => {
+      // The "Debit or Credit Card" button does not open a popup
+      // so we need to redirect to the thank you page for buyers who complete
+      // a checkout via "Debit or Credit Card".
+      if (data.paymentSource === FUNDING.CARD) {
+        window.location = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+      }
+      return response;
     });
   };
 };
