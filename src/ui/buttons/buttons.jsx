@@ -23,8 +23,6 @@ import {
 } from "../../funding";
 import { ValidationError } from "../../lib";
 
-import { getButtonDesign } from "./buttonDesigns";
-import { ButtonDesignExperimentScriptWrapper } from "./buttonDesigns/script";
 import {
   normalizeButtonProps,
   type ButtonPropsInputs,
@@ -240,7 +238,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
     flow === BUTTON_FLOW.PURCHASE &&
     ((__WEB__ && userIDToken) || Object.keys(instruments).length);
 
-  const { buttonDesignScript = "" } = getButtonDesign(personalization);
   const index = (i) => {
     return i;
   };
@@ -339,14 +336,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         <Message markup={messageMarkup} position={calculatedMessagePosition} />
       ) : null}
 
-      {buttonDesignScript ? (
-        <ButtonDesignExperimentScriptWrapper
-          nonce={nonce}
-          buttonDesignScript={buttonDesignScript}
-        />
-      ) : (
-        <Script nonce={nonce} />
-      )}
+      <Script nonce={nonce} />
     </div>
   );
 }

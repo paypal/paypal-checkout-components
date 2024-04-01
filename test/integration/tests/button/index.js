@@ -17,4 +17,3 @@ import "./clone";
 import "./renderOrder";
 import "./nonce";
 import "./eligibility";
-import "./animation";

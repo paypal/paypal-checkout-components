@@ -35,6 +35,9 @@ jobs:
       - name: ▶️ Run Typecheck
         run: npm run typecheck
 
+      - name: ▶️ Run Vitest
+        run: npm run test:unit
+
       - name: ▶️ Run Karma
         run: npm run karma
 
@@ -65,6 +68,12 @@ jobs:
         with:
           directory: ./coverage/jest
           flags: jest
+
+      - name: ⬆️ Upload vitest coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./coverage/vitest
+          flags: vitest
 
       - name: 🤏 Check Bundle Size
         run: npm run check-size
