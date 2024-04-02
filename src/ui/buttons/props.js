@@ -737,7 +737,8 @@ export function normalizeButtonMessage(
   props: ?ButtonPropsInputs,
   message: ButtonMessageInputs
 ): ButtonMessage {
-  const { amount, offer, color, position, align } = message;
+  const { amount, color, position, align } = message;
+  let {offer} = message; 
 
   if (typeof amount !== "undefined") {
     if (typeof amount !== "number") {
@@ -766,6 +767,9 @@ export function normalizeButtonMessage(
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
     }
+
+    // Covert offer array to a comma-delimted string after validation
+    offer = offer.join(",")
   }
 
   if (typeof color !== "undefined" && !values(MESSAGE_COLOR).includes(color)) {
