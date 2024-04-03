@@ -1005,6 +1005,17 @@ const buttonConfigs = [
       },
 
       {
+        message: {
+          amount: 100,
+          offer: ["pay_later_long_term"],
+          color: "black",
+          position: "bottom", // Message position must be 'top' when Debit and/or Credit Card button is present
+          align: "left",
+        },
+        valid: false,
+      },
+
+      {
         message: {},
         valid: true,
       },
