@@ -640,6 +640,24 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getMerchantRequestedPopupsDisabled,
       },
 
+      message: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        decorate: ({ props, value }) => {
+          const {
+            style: { layout },
+            renderedButtons: fundingSources,
+          } = props;
+          return normalizeButtonMessage(
+            // $FlowFixMe
+            value,
+            layout,
+            fundingSources
+          );
+        },
+      },
+
       nonce: {
         type: "string",
         default: getCSPNonce,
@@ -986,16 +1004,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "object",
         required: false,
         default: () => window.__TEST_WALLET__,
-      },
-
-      message: {
-        type: "object",
-        queryParam: true,
-        required: false,
-        decorate: ({ props, value }) => {
-          // $FlowFixMe
-          return normalizeButtonMessage(props, value);
-        },
       },
     },
   });
