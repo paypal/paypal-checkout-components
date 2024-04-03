@@ -430,7 +430,7 @@ export type ApplePaySessionConfigRequest = (
 
 export type ButtonMessage = {|
   amount?: number,
-  offer?: $Values<typeof MESSAGE_OFFER>,
+  offer?: $Values<typeof MESSAGE_OFFER> | string,
   color: $Values<typeof MESSAGE_COLOR>,
   position: $Values<typeof MESSAGE_POSITION>,
   align: $Values<typeof MESSAGE_ALIGN>,
