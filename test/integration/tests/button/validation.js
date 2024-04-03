@@ -952,12 +952,12 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: "pay_later_long_term", // invalid: should be in an array
+          offer: "pay_later_long_term",
           color: "black",
           position: "top",
           align: "left",
         },
-        valid: false,
+        valid: true,
       },
 
       {
