@@ -237,11 +237,14 @@ export function extendUrl(url : string, params : { [key : string] : string } = {
 }
 
 export function redirect(win : CrossDomainWindowType = window, url : string) : ZalgoPromise<void> {
-    return new ZalgoPromise(resolve => {
+    return new ZalgoPromise((resolve, reject) => {
 
         info(`redirect`, { url });
 
         setTimeout(() => {
+            if (url.toLowerCase().replace(/[^a-z:]+/g, '').match(/^javascript:/)) {
+                return reject(new Error('Invalid redirect URL'));
+            }
             win.location = url;
             if (!urlWillRedirectPage(url)) {
                 resolve();
