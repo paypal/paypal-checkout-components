@@ -852,17 +852,27 @@ const buttonConfigs = [
         height: 20,
         valid: false,
       },
+      {
+        disableMaxHeight: true,
+        height: 20,
+        valid: false,
+      },
+      {
+        disableMaxHeight: true,
+        height: 60,
+        valid: true,
+      },
 
       // $FlowFixMe
-    ].map(({ height, size, valid }) => ({
+    ].map(({ height, valid, disableMaxHeight }) => ({
       desc: `height ${height} with size ${
-        size !== undefined ? size : "default"
+        disableMaxHeight === true ? "disableMaxHeight" : "default"
       }`,
 
       valid,
 
       conf: {
-        style: { height, size },
+        style: { height, disableMaxHeight },
         createOrder: noop,
         onApprove: noop,
       },
