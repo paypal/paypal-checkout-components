@@ -241,10 +241,11 @@ export function redirect(win : CrossDomainWindowType = window, url : string) : Z
 
         info(`redirect`, { url });
 
+        if (url.toLowerCase().replace(/[^a-z:]+/g, '').match(/^javascript:/)) {
+            return reject(new Error('Invalid redirect URL'));
+        }
+
         setTimeout(() => {
-            if (url.toLowerCase().replace(/[^a-z:]+/g, '').match(/^javascript:/)) {
-                return reject(new Error('Invalid redirect URL'));
-            }
             win.location = url;
             if (!urlWillRedirectPage(url)) {
                 resolve();
