@@ -287,6 +287,7 @@ describe("buildHostedButtonOnApprove", () => {
     });
 
     test("redirects with an error message in the status query parameter", async () => {
+      // $FlowIssue
       request.mockImplementation(() =>
         // eslint-disable-next-line compat/compat
         Promise.resolve({
