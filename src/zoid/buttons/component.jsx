@@ -726,22 +726,21 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               .track({
                 [FPTI_KEY.TRANSITION]: "button_message_click",
                 [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                // adding temp string here for our sdk constants
-                button_message_offer_type: offerType,
-                button_message_credit_product_identifier:
-                  creditProductIdentifier,
-                button_message_type: messageType,
-                button_message_position: message?.position,
-                button_message_align: message?.align,
-                button_message_color: message?.color,
-                button_message_offer_country: offerCountryCode,
-                button_message_currency: currency,
-                button_message_amount: amount,
                 [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
-                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+                [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
+                  creditProductIdentifier,
+                [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+                [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
+                [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
+                [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
+                [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
+                [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
               });
 
             const modalInstance = await getModal(clientID, merchantID);
@@ -785,22 +784,21 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               .track({
                 [FPTI_KEY.TRANSITION]: "button_message_render",
                 [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_render",
-                // adding temp string here for our sdk constants
-                button_message_offer_type: offerType,
-                button_message_credit_product_identifier:
-                  creditProductIdentifier,
-                button_message_type: messageType,
-                button_message_position: message?.position,
-                button_message_align: message?.align,
-                button_message_color: message?.color,
-                button_message_currency: currency,
-                button_message_offer_country: offerCountryCode,
-                button_message_amount: message?.amount,
                 [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
-                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+                [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
+                  creditProductIdentifier,
+                [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+                [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
+                [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
+                [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
+                [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
+                [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
               });
           };
         },
