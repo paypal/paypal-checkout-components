@@ -214,7 +214,12 @@ export const buildHostedButtonOnApprove = ({
       // so we need to redirect to the thank you page for buyers who complete
       // a checkout via "Debit or Credit Card".
       if (data.paymentSource === FUNDING.CARD) {
-        window.location = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+        let redirectUrl = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+        // add error messages to the payment confirmation page url
+        if (response.body?.details?.[0]?.issue) {
+          redirectUrl += `?status=${response.body.details[0].issue}`;
+        }
+        window.location = redirectUrl;
       }
       return response;
     });
