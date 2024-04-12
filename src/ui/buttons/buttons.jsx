@@ -15,6 +15,7 @@ import {
   BUTTON_NUMBER,
   BUTTON_LAYOUT,
   BUTTON_FLOW,
+  MESSAGE_POSITION,
 } from "../../constants";
 import {
   determineEligibleFunding,
@@ -34,6 +35,8 @@ import { Button } from "./button";
 import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
+import { Message } from "./message";
+import { calculateShowPoweredBy } from "./util";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -177,6 +180,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
+    message,
+    messageMarkup,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -237,6 +242,14 @@ export function Buttons(props: ButtonsProps): ElementNode {
     return i;
   };
 
+  const showTagline =
+    tagline &&
+    layout === BUTTON_LAYOUT.HORIZONTAL &&
+    !fundingSource &&
+    !message;
+
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
+
   return (
     <div
       class={[
@@ -255,6 +268,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
         style={style}
         fundingEligibility={fundingEligibility}
       />
+
+      {message && message.position === MESSAGE_POSITION.TOP ? (
+        <Message markup={messageMarkup} position={message.position} />
+      ) : null}
 
       {fundingSources.map((source, i) => (
         <Button
@@ -285,7 +302,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ))}
 
-      {tagline && layout === BUTTON_LAYOUT.HORIZONTAL && !fundingSource ? (
+      {showTagline ? (
         <TagLine
           fundingSource={fundingSources[0]}
           style={style}
@@ -307,9 +324,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {layout === BUTTON_LAYOUT.VERTICAL &&
-      fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
-        <PoweredByPayPal locale={locale} nonce={nonce} />
+      {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
+
+      {message && message.position === MESSAGE_POSITION.BOTTOM ? (
+        <Message markup={messageMarkup} position={message.position} />
       ) : null}
 
       <Script nonce={nonce} />
