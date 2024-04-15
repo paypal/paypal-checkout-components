@@ -1,8 +1,15 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
 
+export interface FlexDirection {
+  flexDirection: "column" | "row";
+}
+
+type FundingSources = "paypal" | "venmo" | "paylater";
+
 export type HostedButtonsComponentProps = {|
   hostedButtonId: string,
+  fundingSources?: $ReadOnlyArray<FundingSources>,
 |};
 
 export type GetCallbackProps = {|
