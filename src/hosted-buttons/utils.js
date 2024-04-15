@@ -85,6 +85,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   // $FlowIssue request returns ZalgoPromise
   const { body } = response;
   const variables = body.button_details.link_variables;
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
@@ -92,6 +93,11 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
     },
+    buttonOptions: {
+      layout: getButtonVariable(variables, "layout"),
+      size: "small",
+    },
+    buttonType: "stacked",
     html: body.html,
     htmlScript: body.html_script,
   };
