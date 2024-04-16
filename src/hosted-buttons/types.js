@@ -1,13 +1,23 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
 
-export interface FlexDirection {
-  flexDirection: "column" | "row";
+export type FlexDirection = string;
+export type Color = string;
+export type Layout = string;
+
+export type FundingSources = string;
+export interface GetFlexDirection {
+  flexDirection: FlexDirection;
 }
 
-export type Color = "gold" | "white" | "black" | "silver" | "blue";
+export interface GetFlexDirectionArgs {
+  layout: Layout;
+}
 
-type FundingSources = "paypal" | "venmo" | "paylater";
+export interface BuildButtonContainerArgs {
+  flexDirection: FlexDirection;
+  selector: string | HTMLElement;
+}
 
 export type HostedButtonsComponentProps = {|
   hostedButtonId: string,

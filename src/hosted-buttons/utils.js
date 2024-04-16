@@ -17,6 +17,11 @@ import type {
   HostedButtonDetailsParams,
   OnApprove,
   RenderForm,
+  GetFlexDirectionArgs,
+  GetFlexDirection,
+  BuildButtonContainerArgs,
+  Color,
+  FundingSources,
 } from "./types";
 
 const entryPoint = "SDK";
@@ -30,7 +35,7 @@ const getHeaders = (accessToken?: string) => ({
 });
 
 export const getMerchantID = (): string | void => {
-  // The SDK supports mutiple merchant IDs, but hosted buttons only
+  // The SDK supports multiple merchant IDs, but hosted buttons only
   // have one merchant id as a query parameter to the SDK script.
   // https://github.com/paypal/paypal-sdk-client/blob/c58e35f8f7adbab76523eb25b9c10543449d2d29/src/script.js#L144
   const merchantIds = getSDKMerchantID();
@@ -220,3 +225,86 @@ export const buildHostedButtonOnApprove = ({
     });
   };
 };
+
+export function getFlexDirection({
+  layout,
+}: GetFlexDirectionArgs): GetFlexDirection {
+  return { flexDirection: layout === "horizontal" ? "row" : "column" };
+}
+
+export function shouldRenderSDKButtons(
+  fundingSources: $ReadOnlyArray<FundingSources>
+): boolean {
+  return Boolean(fundingSources?.length);
+}
+
+export function getButtonColor(
+  color: Color,
+  fundingSource: FundingSources
+): Color {
+  const colorMap = {
+    gold: {
+      paypal: "gold",
+      venmo: "blue",
+      paylater: "gold",
+    },
+    blue: {
+      paypal: "blue",
+      venmo: "silver",
+      paylater: "blue",
+    },
+    black: {
+      paypal: "black",
+      venmo: "black",
+      paylater: "black",
+    },
+    white: {
+      paypal: "white",
+      venmo: "white",
+      paylater: "white",
+    },
+    silver: {
+      paypal: "silver",
+      venmo: "blue",
+      paylater: "silver",
+    },
+  };
+
+  return colorMap[color][fundingSource];
+}
+
+export function buildButtonContainer({
+  flexDirection,
+  selector,
+}: BuildButtonContainerArgs) {
+  if (typeof selector !== "string") {
+    throw new TypeError("Selector must be a string");
+  }
+
+  if (selector.charAt(0) !== "#") {
+    throw new TypeError("Selector must be referring to an id");
+  }
+
+  const buttonContainer = document.createElement("div");
+
+  buttonContainer.setAttribute(
+    "style",
+    `display: flex; flex-wrap: nowrap; gap: 16px; flex-direction: ${flexDirection}`
+  );
+
+  const primaryButton = document.createElement("div");
+  primaryButton.setAttribute("id", `ncp-primary-button`);
+  primaryButton.setAttribute("style", "flex-grow: 1");
+
+  const secondaryButton = document.createElement("div");
+  secondaryButton.setAttribute("id", `ncp-secondary-button`);
+  secondaryButton.setAttribute("style", "flex-grow: 1");
+
+  buttonContainer.appendChild(primaryButton);
+  buttonContainer.appendChild(secondaryButton);
+
+  // is this guaranteed to be an id?
+
+  const ncpButtonContainer = window.document.getElementById(selector.slice(1));
+  ncpButtonContainer.appendChild(buttonContainer);
+}
