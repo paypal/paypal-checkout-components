@@ -14,9 +14,10 @@ import type {
   HostedButtonsComponentProps,
   HostedButtonsInstance,
   FlexDirection,
+  Color,
 } from "./types";
 
-function getFlexDirection(layout): FlexDirection {
+function getFlexDirection({ layout }): FlexDirection {
   return { flexDirection: layout === "horizontal" ? "row" : "column" };
 }
 
@@ -101,11 +102,12 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       });
 
       if (shouldRenderSDKButtons(fundingSources)) {
-        const { flexDirection } = getFlexDirection();
+        const { flexDirection } = getFlexDirection({ ...style });
 
         buildButtonContainer({ flexDirection, selector });
 
-        fundingSources?.forEach((fundingSource, index) => {
+        // Only render 2 buttons max
+        fundingSources?.slice(0, 2).forEach((fundingSource, index) => {
           // $FlowFixMe
           Buttons({
             hostedButtonId,

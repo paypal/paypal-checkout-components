@@ -5,6 +5,8 @@ export interface FlexDirection {
   flexDirection: "column" | "row";
 }
 
+export type Color = "gold" | "white" | "black" | "silver" | "blue";
+
 type FundingSources = "paypal" | "venmo" | "paylater";
 
 export type HostedButtonsComponentProps = {|
