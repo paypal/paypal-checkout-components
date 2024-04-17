@@ -39,6 +39,17 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         selector,
       });
 
+      const createOrder = buildHostedButtonCreateOrder({
+        enableDPoP,
+        hostedButtonId,
+        merchantId,
+      });
+      const onApprove = buildHostedButtonOnApprove({
+        enableDPoP,
+        hostedButtonId,
+        merchantId,
+      });
+
       if (shouldRenderSDKButtons(fundingSources)) {
         const { flexDirection } = getFlexDirection({ ...style });
 
@@ -56,16 +67,8 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
             },
             onInit,
             onClick,
-            createOrder: buildHostedButtonCreateOrder({
-              enableDPoP,
-              hostedButtonId,
-              merchantId,
-            }),
-            onApprove: buildHostedButtonOnApprove({
-              enableDPoP,
-              hostedButtonId,
-              merchantId,
-            }),
+            createOrder,
+            onApprove,
           }).render(
             index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
           );
@@ -78,16 +81,8 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
           style,
           onInit,
           onClick,
-          createOrder: buildHostedButtonCreateOrder({
-            enableDPoP,
-            hostedButtonId,
-            merchantId,
-          }),
-          onApprove: buildHostedButtonOnApprove({
-            enableDPoP,
-            hostedButtonId,
-            merchantId,
-          }),
+          createOrder,
+          onApprove,
         }).render(selector);
       }
     };
