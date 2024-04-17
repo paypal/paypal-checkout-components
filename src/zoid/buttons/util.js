@@ -13,6 +13,7 @@ import {
   getElement,
   isStandAlone,
   once,
+  memoize,
 } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import {
@@ -22,6 +23,8 @@ import {
   getFundingEligibility,
   getPlatform,
   getComponents,
+  getEnv,
+  getNamespace,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
@@ -357,3 +360,53 @@ export function getButtonSize(
     }
   }
 }
+
+function buildModalBundleUrl(): string {
+  let url = __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_MODAL__;
+  if (getEnv() === "sandbox") {
+    url = url.replace("/js/", "/sandbox/");
+  } else if (getEnv() === "stage" || getEnv() === "local") {
+    url = url.replace("/js/", "/stage/");
+  }
+  return url;
+}
+
+export const getModal: (
+  clientID: string,
+  merchantID: $ReadOnlyArray<string> | void
+) => Object = memoize(async (clientID, merchantID) => {
+  try {
+    const namespace = getNamespace();
+    if (!window[namespace].MessagesModal) {
+      // eslint-disable-next-line no-restricted-globals, promise/no-native
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.setAttribute("data-pp-namespace", namespace);
+        script.src = buildModalBundleUrl();
+        script.addEventListener("error", (err: Event) => {
+          reject(err);
+        });
+        script.addEventListener("load", () => {
+          document.body?.removeChild(script);
+          resolve();
+        });
+        document.body?.appendChild(script);
+      });
+    }
+
+    return window[namespace].MessagesModal({
+      account: `client-id:${clientID}`,
+      merchantId: merchantID?.join(",") || undefined,
+    });
+  } catch (err) {
+    // $FlowFixMe flow doesn't seem to understand that the reset function property exists on the function object itself
+    getModal.reset();
+    getLogger()
+      .error("button_message_modal_fetch_error", { err })
+      .track({
+        err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
+        details: err.details,
+        stack: JSON.stringify(err.stack || err),
+      });
+  }
+});

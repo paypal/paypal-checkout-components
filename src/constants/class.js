@@ -42,4 +42,9 @@ export const CLASS = {
   HIDDEN: ("hidden": "hidden"),
 
   IMMEDIATE: ("immediate": "immediate"),
+
+  BUTTON_MESSAGE: ("paypal-button-message": "paypal-button-message"),
+
+  BUTTON_MESSAGE_RESERVE:
+    ("paypal-button-message-reserved": "paypal-button-message-reserved"),
 };

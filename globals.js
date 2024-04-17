@@ -32,6 +32,7 @@ module.exports = {
       __CARD_FIELD__: "/smart/card-field",
       __WALLET__: "/smart/wallet",
       __PAYMENT_FIELDS__: "/altpayfields",
+      __MESSAGE_MODAL__: "https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js",
     },
   },
 };

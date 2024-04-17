@@ -289,6 +289,27 @@ describe("buildHostedButtonOnApprove", () => {
         "https://example.com/ncp/payment/B1234567890/EC-1234567890"
       );
     });
+
+    test("redirects with an error message in the status query parameter", async () => {
+      // $FlowIssue
+      request.mockImplementation(() =>
+        // eslint-disable-next-line compat/compat
+        Promise.resolve({
+          body: {
+            details: [
+              {
+                issue: "DUPLICATE_INVOICE_ID",
+              },
+            ],
+          },
+        })
+      );
+
+      await onApprove({ orderID, paymentSource: "card" });
+      expect(window.location).toBe(
+        "https://example.com/ncp/payment/B1234567890/EC-1234567890?status=DUPLICATE_INVOICE_ID"
+      );
+    });
   });
 });
 

@@ -1,3 +1,9 @@
+## <small>5.0.308 (2024-04-17)</small>
+
+* feat: dynamic messaging (#2349) ([4b3d77a](https://github.com/paypal/paypal-checkout-components/commit/4b3d77a)), closes [#2349](https://github.com/paypal/paypal-checkout-components/issues/2349)
+
+
+
 ## <small>5.0.307 (2024-04-03)</small>
 
 * remove unused buttonDesign experiment (#2368) ([cb69c02](https://github.com/paypal/paypal-checkout-components/commit/cb69c02)), closes [#2368](https://github.com/paypal/paypal-checkout-components/issues/2368)

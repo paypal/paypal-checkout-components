@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.307",
+  "version": "5.0.308",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -114,7 +114,7 @@
     "@paypal/connect-loader-component": "1.1.1",
     "@paypal/funding-components": "^1.0.31",
     "@paypal/sdk-client": "^4.0.184",
-    "@paypal/sdk-constants": "^1.0.141",
+    "@paypal/sdk-constants": "^1.0.146",
     "@paypal/sdk-logos": "^2.2.6"
   },
   "lint-staged": {
