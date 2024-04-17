@@ -1,5 +1,7 @@
 /* @flow */
 
+import { getLogger } from "@paypal/sdk-client/src";
+
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
@@ -58,7 +60,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         // Only render 2 buttons max
         fundingSources?.slice(0, 2).forEach((fundingSource, index) => {
           // $FlowFixMe
-          Buttons({
+          const standaloneButton = Buttons({
             hostedButtonId,
             fundingSource,
             style: {
@@ -69,9 +71,15 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
             onClick,
             createOrder,
             onApprove,
-          }).render(
-            index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
-          );
+          });
+
+          if (standaloneButton.isEligible()) {
+            standaloneButton.render(
+              index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
+            );
+          } else {
+            getLogger().error(`${fundingSource} is not eligible.`);
+          }
         });
       } else {
         // V1 Experience
