@@ -303,8 +303,6 @@ export function buildButtonContainer({
   buttonContainer.appendChild(primaryButton);
   buttonContainer.appendChild(secondaryButton);
 
-  // is this guaranteed to be an id?
-
   const ncpButtonContainer = window.document.getElementById(selector.slice(1));
   ncpButtonContainer.appendChild(buttonContainer);
 }
