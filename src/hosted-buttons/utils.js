@@ -278,7 +278,7 @@ export function shouldRenderSDKButtons(
   return Boolean(fundingSources?.length);
 }
 
-export function buildButtonContainer({
+export function appendButtonContainer({
   flexDirection,
   selector,
 }: BuildButtonContainerArgs) {

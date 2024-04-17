@@ -10,7 +10,7 @@ import {
   getMerchantID,
   shouldRenderSDKButtons,
   getFlexDirection,
-  buildButtonContainer,
+  appendButtonContainer,
   getButtonColor,
 } from "./utils";
 import type {
@@ -42,7 +42,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       if (shouldRenderSDKButtons(fundingSources)) {
         const { flexDirection } = getFlexDirection({ ...style });
 
-        buildButtonContainer({ flexDirection, selector });
+        appendButtonContainer({ flexDirection, selector });
 
         // Only render 2 buttons max
         fundingSources?.slice(0, 2).forEach((fundingSource, index) => {

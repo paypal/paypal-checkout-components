@@ -11,7 +11,7 @@ import {
   getFlexDirection,
   getButtonColor,
   shouldRenderSDKButtons,
-  buildButtonContainer,
+  appendButtonContainer,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -377,16 +377,16 @@ test("buildButtonContainer", () => {
   const mock = vi.spyOn(document, "getElementById").mockReturnValue(selector);
 
   expect(() =>
-    buildButtonContainer({ flexDirection: "row", selector: `#${containerId}` })
+    appendButtonContainer({ flexDirection: "row", selector: `#${containerId}` })
   ).not.toThrow();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith(containerId);
 
   expect(() =>
-    buildButtonContainer({ flexDirection: "row", selector: `.${containerId}` })
+    appendButtonContainer({ flexDirection: "row", selector: `.${containerId}` })
   ).toThrow("Selector must be referring to an id");
   expect(() =>
-    buildButtonContainer({ flexDirection: "row", selector })
+    appendButtonContainer({ flexDirection: "row", selector })
   ).toThrow("Selector must be a string");
 });
 
