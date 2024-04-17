@@ -35,9 +35,10 @@ const getHeaders = (accessToken?: string) => ({
 });
 
 export const getMerchantID = (): string | void => {
-  // The SDK supports multiple merchant IDs, but hosted buttons only
-  // have one merchant id as a query parameter to the SDK script.
+  // The SDK supports Multi-Seller Payments (MSP, i.e sending multiple merchant IDs), but hosted buttons
+  // does not support this. Only one merchant id can be passed as a query parameter to the SDK script
   // https://github.com/paypal/paypal-sdk-client/blob/c58e35f8f7adbab76523eb25b9c10543449d2d29/src/script.js#L144
+  // https://developer.paypal.com/docs/multiparty/checkout/multiseller-payments/
   const merchantIds = getSDKMerchantID();
   if (merchantIds.length > 1) {
     throw new Error("Multiple merchant-ids are not supported.");
