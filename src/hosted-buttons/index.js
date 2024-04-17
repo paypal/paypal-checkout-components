@@ -73,6 +73,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
           // $FlowFixMe
           const standaloneButton = Buttons({
             ...buttonOptions,
+            fundingSource,
             style: {
               ...style,
               color: getButtonColor(style.color, fundingSource),

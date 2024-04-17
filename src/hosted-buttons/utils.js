@@ -299,7 +299,7 @@ export function appendButtonContainer({
 
   buttonContainer.setAttribute(
     "style",
-    `display: flex; flex-wrap: nowrap; gap: 16px; flex-direction: ${flexDirection}`
+    `display: flex; flex-wrap: nowrap; gap: 16px; max-width: 750px; flex-direction: ${flexDirection}`
   );
 
   const primaryButton = document.createElement("div");
