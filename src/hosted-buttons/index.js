@@ -53,6 +53,15 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         merchantId,
       });
 
+      const buttonOptions = {
+        hostedButtonId,
+        style,
+        onInit,
+        onClick,
+        createOrder,
+        onApprove,
+      };
+
       if (shouldRenderSDKButtons(fundingSources)) {
         const { flexDirection } = getFlexDirection({ ...style });
 
@@ -62,16 +71,11 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         fundingSources.slice(0, 2).forEach((fundingSource, index) => {
           // $FlowFixMe
           const standaloneButton = Buttons({
-            hostedButtonId,
-            fundingSource,
+            ...buttonOptions,
             style: {
               ...style,
               color: getButtonColor(style.color, fundingSource),
             },
-            onInit,
-            onClick,
-            createOrder,
-            onApprove,
           });
 
           if (standaloneButton.isEligible()) {
@@ -85,14 +89,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       } else {
         // V1 Experience
         // $FlowFixMe
-        Buttons({
-          hostedButtonId,
-          style,
-          onInit,
-          onClick,
-          createOrder,
-          onApprove,
-        }).render(selector);
+        Buttons(buttonOptions).render(selector);
       }
     };
 
