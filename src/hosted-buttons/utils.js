@@ -282,13 +282,16 @@ export function appendButtonContainer({
   flexDirection,
   selector,
 }: BuildButtonContainerArgs) {
-  if (typeof selector !== "string") {
-    throw new TypeError("Selector must be a string");
+  const elm =
+    typeof selector === "string" ? document.querySelector(selector) : selector;
+
+  if (!elm) {
+    throw new Error("PayPal button container selector was not found");
   }
 
-  if (selector.charAt(0) !== "#") {
-    throw new TypeError("Selector must be referring to an id");
-  }
+  // if (selector.charAt(0) !== "#") {
+  //   throw new TypeError("Selector must be referring to an id");
+  // }
 
   const buttonContainer = document.createElement("div");
 
@@ -308,6 +311,5 @@ export function appendButtonContainer({
   buttonContainer.appendChild(primaryButton);
   buttonContainer.appendChild(secondaryButton);
 
-  const ncpButtonContainer = window.document.getElementById(selector.slice(1));
-  ncpButtonContainer.appendChild(buttonContainer);
+  elm?.appendChild(buttonContainer);
 }

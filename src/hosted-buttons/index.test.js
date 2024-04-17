@@ -86,10 +86,10 @@ describe("HostedButtons", () => {
 
   describe("NCP V2", () => {
     beforeEach(() => {
-      const containerId = "container-id";
+      const containerId = "#container-id";
       const selector = document.createElement("div");
-      selector.setAttribute("id", containerId);
-      vi.spyOn(document, "getElementById").mockReturnValue(selector);
+      selector.setAttribute("id", containerId.slice(1));
+      vi.spyOn(document, "querySelector").mockReturnValue(selector);
     });
 
     test("paypal.Buttons calls getHostedButtonDetails, invokes v5 of the SDK", async () => {

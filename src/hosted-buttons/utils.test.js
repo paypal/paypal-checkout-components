@@ -370,25 +370,33 @@ test("shouldRenderSDKButtons", () => {
 });
 
 test("buildButtonContainer", () => {
-  const containerId = "container-id";
+  const containerId = "#container-id";
   const selector = document.createElement("div");
 
-  selector.setAttribute("id", containerId);
+  selector.setAttribute("id", containerId.slice(1));
 
-  const mock = vi.spyOn(document, "getElementById").mockReturnValue(selector);
+  const mock = vi
+    .spyOn(document, "querySelector")
+    .mockReturnValueOnce(selector);
 
   expect(() =>
-    appendButtonContainer({ flexDirection: "row", selector: `#${containerId}` })
+    appendButtonContainer({ flexDirection: "row", selector: containerId })
   ).not.toThrow();
   expect(mock).toHaveBeenCalledTimes(1);
   expect(mock).toHaveBeenCalledWith(containerId);
 
   expect(() =>
-    appendButtonContainer({ flexDirection: "row", selector: `.${containerId}` })
-  ).toThrow("Selector must be referring to an id");
-  expect(() =>
     appendButtonContainer({ flexDirection: "row", selector })
-  ).toThrow("Selector must be a string");
+  ).not.toThrow();
+  // querySelector shouldn't have been called if user is passing in a HTML element.
+  expect(mock).toHaveBeenCalledTimes(1);
+
+  expect(() =>
+    appendButtonContainer({
+      flexDirection: "row",
+      selector: `${containerId}-not-found`,
+    })
+  ).toThrow("PayPal button container selector was not found");
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */
