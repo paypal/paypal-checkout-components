@@ -73,6 +73,7 @@ describe("HostedButtons", () => {
     );
     await HostedButtons({
       hostedButtonId: "B1234567890",
+      fundingSources: [],
     }).render("#example");
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({

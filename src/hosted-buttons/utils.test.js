@@ -81,6 +81,7 @@ test("getHostedButtonDetails", async () => {
   );
   await getHostedButtonDetails({
     hostedButtonId,
+    fundingSources: [],
   }).then(({ style }) => {
     expect(style).toEqual({
       layout: "vertical",

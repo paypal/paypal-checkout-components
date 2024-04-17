@@ -32,6 +32,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       const merchantId = getMerchantID();
       const { html, htmlScript, style } = await getHostedButtonDetails({
         hostedButtonId,
+        fundingSources,
       });
 
       const { onInit, onClick } = renderForm({
@@ -58,7 +59,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         appendButtonContainer({ flexDirection, selector });
 
         // Only render 2 buttons max
-        fundingSources?.slice(0, 2).forEach((fundingSource, index) => {
+        fundingSources.slice(0, 2).forEach((fundingSource, index) => {
           // $FlowFixMe
           const standaloneButton = Buttons({
             hostedButtonId,
