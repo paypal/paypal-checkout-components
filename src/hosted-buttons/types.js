@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
 
-export type FlexDirection = string;
 export type Color = string;
+export type FlexDirection = string;
 export type Layout = string;
 
 export type FundingSources = string;

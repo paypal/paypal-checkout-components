@@ -232,12 +232,6 @@ export function getFlexDirection({
   return { flexDirection: layout === "horizontal" ? "row" : "column" };
 }
 
-export function shouldRenderSDKButtons(
-  fundingSources: $ReadOnlyArray<FundingSources>
-): boolean {
-  return Boolean(fundingSources?.length);
-}
-
 export function getButtonColor(
   color: Color,
   fundingSource: FundingSources
@@ -271,6 +265,12 @@ export function getButtonColor(
   };
 
   return colorMap[color][fundingSource];
+}
+
+export function shouldRenderSDKButtons(
+  fundingSources: $ReadOnlyArray<FundingSources>
+): boolean {
+  return Boolean(fundingSources?.length);
 }
 
 export function buildButtonContainer({

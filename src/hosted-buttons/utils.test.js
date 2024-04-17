@@ -8,6 +8,10 @@ import {
   buildHostedButtonOnApprove,
   createAccessToken,
   getHostedButtonDetails,
+  getFlexDirection,
+  getButtonColor,
+  shouldRenderSDKButtons,
+  buildButtonContainer,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -286,6 +290,83 @@ describe("buildHostedButtonOnApprove", () => {
       );
     });
   });
+});
+
+test("getFlexDirection", () => {
+  expect(getFlexDirection({ layout: "horizontal" })).toStrictEqual({
+    flexDirection: "row",
+  });
+  expect(getFlexDirection({ layout: "vertical" })).toStrictEqual({
+    flexDirection: "column",
+  });
+});
+
+test("getButtonColor", () => {
+  const colors = ["gold", "blue", "silver", "white", "black"];
+  const fundingSources = ["paypal", "venmo", "paylater"];
+  const colorMap = {
+    gold: {
+      paypal: "gold",
+      venmo: "blue",
+      paylater: "gold",
+    },
+    blue: {
+      paypal: "blue",
+      venmo: "silver",
+      paylater: "blue",
+    },
+    black: {
+      paypal: "black",
+      venmo: "black",
+      paylater: "black",
+    },
+    white: {
+      paypal: "white",
+      venmo: "white",
+      paylater: "white",
+    },
+    silver: {
+      paypal: "silver",
+      venmo: "blue",
+      paylater: "silver",
+    },
+  };
+
+  colors.forEach((color) => {
+    fundingSources.forEach((fundingSource) => {
+      expect(getButtonColor(color, fundingSource)).toBe(
+        colorMap[color][fundingSource]
+      );
+    });
+  });
+});
+
+test("shouldRenderSDKButtons", () => {
+  expect(shouldRenderSDKButtons([])).toBe(false);
+  expect(shouldRenderSDKButtons(["paypal"])).toBe(true);
+  expect(shouldRenderSDKButtons(["paypal", "venmo"])).toBe(true);
+});
+
+test("buildButtonContainer", () => {
+  const containerId = "container-id";
+  const selector = document.createElement("div");
+
+  selector.setAttribute("id", containerId);
+
+  const mock = vi.spyOn(document, "getElementById").mockReturnValue(selector);
+
+  expect(() =>
+    buildButtonContainer({ flexDirection: "row", selector: `#${containerId}` })
+  ).not.toThrow();
+  expect(mock).toHaveBeenCalledTimes(1);
+  expect(mock).toHaveBeenCalledWith(containerId);
+
+  expect(() =>
+    buildButtonContainer({ flexDirection: "row", selector: `.${containerId}` })
+  ).toThrow("Selector must be referring to an id");
+  expect(() =>
+    buildButtonContainer({ flexDirection: "row", selector })
+  ).toThrow("Selector must be a string");
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */

@@ -79,7 +79,36 @@ describe("HostedButtons", () => {
         hostedButtonId: "B1234567890",
       })
     );
-    expect.assertions(1);
+    expect(Buttons).toHaveBeenCalledTimes(1);
+    expect.assertions(2);
+  });
+
+  test("paypal.Buttons calls getHostedButtonDetails, invokes v5 of the SDK and renders the V2 experience", async () => {
+    const containerId = "container-id";
+    const selector = document.createElement("div");
+    selector.setAttribute("id", containerId);
+    vi.spyOn(document, "getElementById").mockReturnValue(selector);
+
+    const Buttons = vi.fn(() => ({ render: vi.fn() }));
+    // $FlowIssue
+    getButtonsComponent.mockImplementationOnce(() => Buttons);
+    const HostedButtons = getHostedButtonsComponent();
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse)
+    );
+    await HostedButtons({
+      hostedButtonId: "B1234567890",
+      fundingSources: ["paypal", "venmo"],
+    }).render("#example");
+    expect(Buttons).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hostedButtonId: "B1234567890",
+      })
+    );
+    expect(Buttons).toHaveBeenCalledTimes(2);
+    expect.assertions(2);
   });
 });
 
