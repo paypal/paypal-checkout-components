@@ -91,6 +91,7 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
+  getURIPopup,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -717,8 +718,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             offerCountryCode,
             creditProductIdentifier,
           }) => {
-            const { message, clientID, merchantID, currency, buttonSessionID } =
-              props;
+            const {
+              message,
+              clientID,
+              merchantID,
+              currency,
+              buttonSessionID,
+              merchantRequestedPopupsDisabled,
+            } = props;
             const amount = message?.amount;
 
             getLogger()
@@ -743,6 +750,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
               });
 
+            if (messageType === "purchase_protection") {
+              return getURIPopup(
+                __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__,
+                merchantRequestedPopupsDisabled
+              );
+            }
+
             const modalInstance = await getModal(clientID, merchantID);
             return modalInstance?.show({
               amount,
@@ -757,12 +771,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return () => {
-            // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
+          return (messageType) => {
+            // offerType, offerCountryCode, and creditProductIdentifier are also passed in, and may be used in an upcoming message hover logging feature
 
-            // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
-            return getModal(clientID, merchantID);
+            // no preloading the modal for purchase protection message: that opens a popup instead
+            if (messageType !== "purchase_protection") {
+              // lazy loads the modal, to be memoized and executed onMessageClick
+              const { clientID, merchantID } = props;
+              return getModal(clientID, merchantID);
+            }
           };
         },
       },

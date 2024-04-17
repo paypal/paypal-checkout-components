@@ -14,7 +14,9 @@ import {
   isStandAlone,
   once,
   memoize,
+  popup,
 } from "@krakenjs/belter/src";
+import { assertSameDomain } from "@krakenjs/cross-domain-utils/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
@@ -38,6 +40,7 @@ import type {
   CreateVaultSetupToken,
 } from "../../ui/buttons/props";
 import { determineEligibleFunding } from "../../funding";
+import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
 
 type DetermineFlowOptions = {|
@@ -405,6 +408,35 @@ export const getModal: (
       .error("button_message_modal_fetch_error", { err })
       .track({
         err: err.message || "BUTTON_MESSAGE_MODAL_FETCH_ERROR",
+        details: err.details,
+        stack: JSON.stringify(err.stack || err),
+      });
+  }
+});
+
+export const getURIPopup: (
+  URI: string,
+  merchantRequestedPopupsDisabled: ?boolean
+) => Object = memoize((URI, merchantRequestedPopupsDisabled) => {
+  try {
+    if (userAgentSupportsPopups() && !merchantRequestedPopupsDisabled) {
+      return assertSameDomain(
+        popup(__PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__, {
+          width: DEFAULT_POPUP_SIZE.WIDTH,
+          height: DEFAULT_POPUP_SIZE.HEIGHT,
+        })
+      );
+    } else {
+      return window.open(
+        __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__,
+        "_blank"
+      );
+    }
+  } catch (err) {
+    getLogger()
+      .error("button_message_purchase_protection_popup_error", { err })
+      .track({
+        err: err.message || "BUTTON_MESSAGE_PURCHASE_PROTECTION_POPUP_ERROR",
         details: err.details,
         stack: JSON.stringify(err.stack || err),
       });
