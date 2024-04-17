@@ -54,12 +54,13 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       });
 
       const buttonOptions = {
-        hostedButtonId,
-        style,
-        onInit,
-        onClick,
         createOrder,
+        hostedButtonId,
+        merchantId,
         onApprove,
+        onClick,
+        onInit,
+        style,
       };
 
       if (shouldRenderSDKButtons(fundingSources)) {

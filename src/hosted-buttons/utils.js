@@ -275,7 +275,7 @@ export function getButtonColor(
 export function shouldRenderSDKButtons(
   fundingSources: $ReadOnlyArray<FundingSources>
 ): boolean {
-  return Boolean(fundingSources?.length);
+  return Boolean(fundingSources.length);
 }
 
 export function appendButtonContainer({
