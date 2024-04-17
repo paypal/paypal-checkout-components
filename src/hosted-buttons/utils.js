@@ -102,6 +102,14 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   };
 };
 
+export function getElementFromSelector(
+  selector: string | HTMLElement
+): HTMLElement | null {
+  return typeof selector === "string"
+    ? document.querySelector(selector)
+    : selector;
+}
+
 /**
  * Attaches form fields (html) to the given selector, and
  * initializes window.__pp_form_fields (htmlScript).
@@ -112,8 +120,7 @@ export const renderForm: RenderForm = ({
   htmlScript,
   selector,
 }) => {
-  const elm =
-    typeof selector === "string" ? document.querySelector(selector) : selector;
+  const elm = getElementFromSelector(selector);
   if (elm) {
     elm.innerHTML = html + htmlScript;
     const newScriptEl = document.createElement("script");
@@ -282,8 +289,7 @@ export function appendButtonContainer({
   flexDirection,
   selector,
 }: BuildButtonContainerArgs) {
-  const elm =
-    typeof selector === "string" ? document.querySelector(selector) : selector;
+  const elm = getElementFromSelector(selector);
 
   if (!elm) {
     throw new Error("PayPal button container selector was not found");

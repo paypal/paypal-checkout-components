@@ -12,6 +12,7 @@ import {
   getButtonColor,
   shouldRenderSDKButtons,
   appendButtonContainer,
+  getElementFromSelector,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -375,21 +376,15 @@ test("buildButtonContainer", () => {
 
   selector.setAttribute("id", containerId.slice(1));
 
-  const mock = vi
-    .spyOn(document, "querySelector")
-    .mockReturnValueOnce(selector);
+  vi.spyOn(document, "querySelector").mockReturnValueOnce(selector);
 
   expect(() =>
     appendButtonContainer({ flexDirection: "row", selector: containerId })
   ).not.toThrow();
-  expect(mock).toHaveBeenCalledTimes(1);
-  expect(mock).toHaveBeenCalledWith(containerId);
 
   expect(() =>
     appendButtonContainer({ flexDirection: "row", selector })
   ).not.toThrow();
-  // querySelector shouldn't have been called if user is passing in a HTML element.
-  expect(mock).toHaveBeenCalledTimes(1);
 
   expect(() =>
     appendButtonContainer({
@@ -397,6 +392,22 @@ test("buildButtonContainer", () => {
       selector: `${containerId}-not-found`,
     })
   ).toThrow("PayPal button container selector was not found");
+});
+
+test("getElementFromSelector", () => {
+  const containerId = "#container-id";
+  const selector = document.createElement("div");
+
+  selector.setAttribute("id", containerId.slice(1));
+
+  const mockQuerySelector = vi
+    .spyOn(document, "querySelector")
+    .mockReturnValueOnce(selector);
+
+  expect(getElementFromSelector(containerId)).toBe(selector);
+  expect(getElementFromSelector(selector)).toBe(selector);
+  expect(mockQuerySelector).toBeCalledTimes(1);
+  expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */
