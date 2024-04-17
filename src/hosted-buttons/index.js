@@ -85,7 +85,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
               index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
             );
           } else {
-            getLogger().error(`${fundingSource} is not eligible.`);
+            getLogger().error(`ncps_standalone_${fundingSource}_ineligible`);
           }
         });
       } else {
