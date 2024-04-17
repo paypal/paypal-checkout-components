@@ -289,10 +289,6 @@ export function appendButtonContainer({
     throw new Error("PayPal button container selector was not found");
   }
 
-  // if (selector.charAt(0) !== "#") {
-  //   throw new TypeError("Selector must be referring to an id");
-  // }
-
   const buttonContainer = document.createElement("div");
 
   buttonContainer.setAttribute(
