@@ -84,21 +84,14 @@ describe("HostedButtons", () => {
   });
 
   describe("NCP V2", () => {
-    // beforeEach(() => {
-    //   const containerId = "container-id";
-    //   const selector = document.createElement("div");
-    //   selector.setAttribute("id", containerId);
-    //   vi.spyOn(document, "getElementById").mockReturnValue(selector);
-    // });
-    // afterEach(() => {
-    //   vi.restoreAllMocks();
-    // });
-
-    test("paypal.Buttons calls getHostedButtonDetails, invokes v5 of the SDK", async () => {
+    beforeEach(() => {
       const containerId = "container-id";
       const selector = document.createElement("div");
       selector.setAttribute("id", containerId);
       vi.spyOn(document, "getElementById").mockReturnValue(selector);
+    });
+
+    test("paypal.Buttons calls getHostedButtonDetails, invokes v5 of the SDK", async () => {
       const renderMock = vi.fn();
 
       const Buttons = vi.fn(() => ({
@@ -129,10 +122,6 @@ describe("HostedButtons", () => {
   });
 
   test("only eligible buttons are rendered", async () => {
-    const containerId = "container-id";
-    const selector = document.createElement("div");
-    selector.setAttribute("id", containerId);
-    vi.spyOn(document, "getElementById").mockReturnValue(selector);
     const renderMock = vi.fn();
 
     const Buttons = vi.fn(() => ({
