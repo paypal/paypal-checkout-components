@@ -750,7 +750,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
               });
 
-            if (messageType === "purchase_protection") {
+            if (offerType === "PURCHASE_PROTECTION") {
               return getURIPopup(
                 __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__,
                 merchantRequestedPopupsDisabled
