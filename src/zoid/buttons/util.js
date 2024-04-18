@@ -415,28 +415,25 @@ export const getModal: (
 });
 
 export const getURIPopup: (
-  URI: string,
+  uri: string,
   merchantRequestedPopupsDisabled: ?boolean
-) => Object = memoize((URI, merchantRequestedPopupsDisabled) => {
+) => Object = memoize((uri, merchantRequestedPopupsDisabled) => {
   try {
     if (userAgentSupportsPopups() && !merchantRequestedPopupsDisabled) {
       return assertSameDomain(
-        popup(__PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__, {
+        popup(uri, {
           width: DEFAULT_POPUP_SIZE.WIDTH,
           height: DEFAULT_POPUP_SIZE.HEIGHT,
         })
       );
     } else {
-      return window.open(
-        __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__,
-        "_blank"
-      );
+      return window.open(uri, "_blank");
     }
   } catch (err) {
     getLogger()
-      .error("button_message_purchase_protection_popup_error", { err })
+      .error("button_uri_popup_error", { err })
       .track({
-        err: err.message || "BUTTON_MESSAGE_PURCHASE_PROTECTION_POPUP_ERROR",
+        err: err.message || "BUTTON_URI_POPUP_ERROR",
         details: err.details,
         stack: JSON.stringify(err.stack || err),
       });

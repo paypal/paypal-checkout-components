@@ -38,7 +38,6 @@ const WEBPACK_CONFIG_DEV: WebpackConfig = getWebpackConfig({
         __MENU__: `/demo/dev/menu.htm`,
         __CARD_FIELD__: `/demo/dev/cardfield.htm`,
         __MESSAGE_MODAL__: `https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js`,
-        __MESSAGE_PURCHASE_PROTECTION__: `https://www.paypal.com/us/digital-wallet/buyer-purchase-protection`,
       },
     },
   },

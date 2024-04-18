@@ -33,7 +33,6 @@ module.exports = {
       __WALLET__: "/smart/wallet",
       __PAYMENT_FIELDS__: "/altpayfields",
       __MESSAGE_MODAL__: "https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js",
-      __MESSAGE_PURCHASE_PROTECTION__: "https://www.paypal.com/us/digital-wallet/buyer-purchase-protection" 
     },
   },
 };

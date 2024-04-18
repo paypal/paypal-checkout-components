@@ -717,6 +717,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
+            clickUrlOverride,
           }) => {
             const {
               message,
@@ -750,9 +751,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
               });
 
-            if (messageType === "purchase_protection") {
+            if (clickUrlOverride) {
               return getURIPopup(
-                __PAYPAL_CHECKOUT__.__URI__.__MESSAGE_PURCHASE_PROTECTION__,
+                clickUrlOverride,
                 merchantRequestedPopupsDisabled
               );
             }
@@ -771,11 +772,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return (messageType) => {
-            // offerType, offerCountryCode, and creditProductIdentifier are also passed in, and may be used in an upcoming message hover logging feature
+          return ({ clickUrlOverride }) => {
+            // messageType, offerType, offerCountryCode, and creditProductIdentifier are also passed in, and may be used in an upcoming message hover logging feature
 
             // no preloading the modal for purchase protection message: that opens a popup instead
-            if (messageType !== "purchase_protection") {
+            if (!clickUrlOverride) {
               // lazy loads the modal, to be memoized and executed onMessageClick
               const { clientID, merchantID } = props;
               return getModal(clientID, merchantID);
