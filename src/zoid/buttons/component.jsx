@@ -91,7 +91,7 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
-  getURIPopup,
+  openPopupAtURI,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -752,7 +752,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               });
 
             if (clickUrlOverride) {
-              return getURIPopup(
+              return openPopupAtURI(
                 clickUrlOverride,
                 merchantRequestedPopupsDisabled
               );
@@ -775,7 +775,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return ({ clickUrlOverride }) => {
             // messageType, offerType, offerCountryCode, and creditProductIdentifier are also passed in, and may be used in an upcoming message hover logging feature
 
-            // no preloading the modal for purchase protection message: that opens a popup instead
+            // messages with clickUrlOverride will open a popup instead of the modal, so don't preload the modal
             if (!clickUrlOverride) {
               // lazy loads the modal, to be memoized and executed onMessageClick
               const { clientID, merchantID } = props;

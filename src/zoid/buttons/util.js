@@ -414,10 +414,10 @@ export const getModal: (
   }
 });
 
-export const getURIPopup: (
+export const openPopupAtURI: (
   uri: string,
   merchantRequestedPopupsDisabled: ?boolean
-) => Object = memoize((uri, merchantRequestedPopupsDisabled) => {
+) => Object = (uri, merchantRequestedPopupsDisabled) => {
   try {
     if (userAgentSupportsPopups() && !merchantRequestedPopupsDisabled) {
       return assertSameDomain(
@@ -438,4 +438,4 @@ export const getURIPopup: (
         stack: JSON.stringify(err.stack || err),
       });
   }
-});
+};
