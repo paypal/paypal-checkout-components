@@ -69,6 +69,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         appendButtonContainer({ flexDirection, selector });
 
         // Only render 2 buttons max
+        // This will be refactored in https://paypal.atlassian.net/browse/DTPPCPSDK-2112 when NCPS team updates their API response
         fundingSources.slice(0, 2).forEach((fundingSource, index) => {
           // $FlowFixMe
           const standaloneButton = Buttons({
