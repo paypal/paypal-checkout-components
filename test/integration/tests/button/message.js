@@ -6,6 +6,7 @@ import { FUNDING } from "@paypal/sdk-constants/src";
 import { getNamespace } from "@paypal/sdk-client/src";
 
 import { CLASS } from "../../../../src/constants";
+import { getModal } from "../../../../src/zoid/buttons/util";
 import {
   assert,
   getElementRecursive,
@@ -451,14 +452,18 @@ describe(`paypal button message`, () => {
     });
   });
 
-  describe("modal", () => {
+  describe.only("modal", () => {
+    beforeEach(() => {
+      // $FlowFixMe
+      getModal.reset();
+    });
     it("should ensure data-pp-namespace passes in the namespace", (done) => {
       window.paypal
         .Buttons({
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage()
+              hoverMessage({})
                 .then(() => {
                   assert.equal(getNamespace(), window.namespace);
                   done();
@@ -475,7 +480,7 @@ describe(`paypal button message`, () => {
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage()
+              hoverMessage({})
                 .then(() => {
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
@@ -497,6 +502,29 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
+    it("should ensure getModal callback is not called on hover when there is a clickUrlOverride", (done) => {
+      const initModalCalls = window.paypal.MessagesModal.mock.calls;
+      const props = { clickUrlOverride: "www.paypal.com/test" };
+
+      window.paypal
+        .Buttons({
+          message: {},
+          test: {
+            onRender({ hoverMessage }) {
+              hoverMessage(props)
+                .then(() => {
+                  assert.equal(
+                    window.paypal.MessagesModal.mock.calls,
+                    initModalCalls
+                  );
+                  done();
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
+    });
     it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
       const props = { offerType: "PAY_LATER", messageType: "GPL" };
       window.paypal
@@ -506,7 +534,7 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage()
+              hoverMessage(props)
                 .then(() => {
                   return clickMessage(props).then(() => {
                     assert.equal(
@@ -532,17 +560,20 @@ describe(`paypal button message`, () => {
     });
     it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
       const props = { offerType: "PAY_LATER", messageType: "GPL" };
+
       window.paypal
         .Buttons({
           message: {
             amount: 101,
+            clientID: "test",
+            merchantID: ["test"],
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage()
+              hoverMessage(props)
                 .then(() => {
                   return clickMessage(props).then(() => {
-                    return hoverMessage().then(() => {
+                    return hoverMessage(props).then(() => {
                       return clickMessage(props).then(() => {
                         assert.equal(window.paypal.MessagesModal.mock.calls, 1);
                         done();
