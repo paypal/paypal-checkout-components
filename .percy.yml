@@ -5,6 +5,7 @@ snapshot:
     - 1280
   minHeight: 1024
   percyCSS: ""
+  disableShadowDOM: true
 discovery:
   allowedHostnames: []
   disallowedHostnames: []
