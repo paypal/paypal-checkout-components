@@ -1,5 +1,7 @@
 /* @flow */
 
+import { getLogger } from "@paypal/sdk-client/src";
+
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
@@ -8,6 +10,10 @@ import {
   getHostedButtonDetails,
   renderForm,
   getMerchantID,
+  shouldRenderSDKButtons,
+  getFlexDirection,
+  appendButtonContainer,
+  getButtonColor,
 } from "./utils";
 import type {
   HostedButtonsComponent,
@@ -19,12 +25,14 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
     enableDPoP = false,
     hostedButtonId,
+    fundingSources = [],
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = async (selector) => {
       const merchantId = getMerchantID();
       const { html, htmlScript, style } = await getHostedButtonDetails({
         hostedButtonId,
+        fundingSources,
       });
 
       const { onInit, onClick } = renderForm({
@@ -34,24 +42,60 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         selector,
       });
 
-      // $FlowFixMe
-      Buttons({
+      const createOrder = buildHostedButtonCreateOrder({
+        enableDPoP,
         hostedButtonId,
-        style,
-        onInit,
+        merchantId,
+      });
+      const onApprove = buildHostedButtonOnApprove({
+        enableDPoP,
+        hostedButtonId,
+        merchantId,
+      });
+
+      const buttonOptions = {
+        createOrder,
+        hostedButtonId,
+        merchantId,
+        onApprove,
         onClick,
-        createOrder: buildHostedButtonCreateOrder({
-          enableDPoP,
-          hostedButtonId,
-          merchantId,
-        }),
-        onApprove: buildHostedButtonOnApprove({
-          enableDPoP,
-          hostedButtonId,
-          merchantId,
-        }),
-      }).render(selector);
+        onInit,
+        style,
+      };
+
+      if (shouldRenderSDKButtons(fundingSources)) {
+        const { flexDirection } = getFlexDirection({ ...style });
+
+        appendButtonContainer({ flexDirection, selector });
+
+        // Only render 2 buttons max
+        // This will be refactored in https://paypal.atlassian.net/browse/DTPPCPSDK-2112 when NCPS team updates their API response
+        fundingSources.slice(0, 2).forEach((fundingSource, index) => {
+          // $FlowFixMe
+          const standaloneButton = Buttons({
+            ...buttonOptions,
+            fundingSource,
+            style: {
+              ...style,
+              color: getButtonColor(style.color, fundingSource),
+            },
+          });
+
+          if (standaloneButton.isEligible()) {
+            standaloneButton.render(
+              index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
+            );
+          } else {
+            getLogger().error(`ncps_standalone_${fundingSource}_ineligible`);
+          }
+        });
+      } else {
+        // V1 Experience
+        // $FlowFixMe
+        Buttons(buttonOptions).render(selector);
+      }
     };
+
     return {
       render,
     };
