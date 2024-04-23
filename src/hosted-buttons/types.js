@@ -1,8 +1,27 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
 
+export type Color = string;
+export type FlexDirection = string;
+export type Layout = string;
+
+export type FundingSources = string;
+export interface GetFlexDirection {
+  flexDirection: FlexDirection;
+}
+
+export interface GetFlexDirectionArgs {
+  layout: Layout;
+}
+
+export interface BuildButtonContainerArgs {
+  flexDirection: FlexDirection;
+  selector: string | HTMLElement;
+}
+
 export type HostedButtonsComponentProps = {|
   hostedButtonId: string,
+  fundingSources: $ReadOnlyArray<FundingSources>,
 |};
 
 export type GetCallbackProps = {|

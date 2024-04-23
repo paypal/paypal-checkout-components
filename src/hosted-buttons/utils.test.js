@@ -8,6 +8,11 @@ import {
   buildHostedButtonOnApprove,
   createAccessToken,
   getHostedButtonDetails,
+  getFlexDirection,
+  getButtonColor,
+  shouldRenderSDKButtons,
+  appendButtonContainer,
+  getElementFromSelector,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -77,6 +82,7 @@ test("getHostedButtonDetails", async () => {
   );
   await getHostedButtonDetails({
     hostedButtonId,
+    fundingSources: [],
   }).then(({ style }) => {
     expect(style).toEqual({
       layout: "vertical",
@@ -307,6 +313,101 @@ describe("buildHostedButtonOnApprove", () => {
       );
     });
   });
+});
+
+test("getFlexDirection", () => {
+  expect(getFlexDirection({ layout: "horizontal" })).toStrictEqual({
+    flexDirection: "row",
+  });
+  expect(getFlexDirection({ layout: "vertical" })).toStrictEqual({
+    flexDirection: "column",
+  });
+});
+
+test("getButtonColor", () => {
+  const colors = ["gold", "blue", "silver", "white", "black"];
+  const fundingSources = ["paypal", "venmo", "paylater"];
+  const colorMap = {
+    gold: {
+      paypal: "gold",
+      venmo: "blue",
+      paylater: "gold",
+    },
+    blue: {
+      paypal: "blue",
+      venmo: "silver",
+      paylater: "blue",
+    },
+    black: {
+      paypal: "black",
+      venmo: "black",
+      paylater: "black",
+    },
+    white: {
+      paypal: "white",
+      venmo: "white",
+      paylater: "white",
+    },
+    silver: {
+      paypal: "silver",
+      venmo: "blue",
+      paylater: "silver",
+    },
+  };
+
+  colors.forEach((color) => {
+    fundingSources.forEach((fundingSource) => {
+      expect(getButtonColor(color, fundingSource)).toBe(
+        colorMap[color][fundingSource]
+      );
+    });
+  });
+});
+
+test("shouldRenderSDKButtons", () => {
+  expect(shouldRenderSDKButtons([])).toBe(false);
+  expect(shouldRenderSDKButtons(["paypal"])).toBe(true);
+  expect(shouldRenderSDKButtons(["paypal", "venmo"])).toBe(true);
+});
+
+test("buildButtonContainer", () => {
+  const containerId = "#container-id";
+  const selector = document.createElement("div");
+
+  selector.setAttribute("id", containerId.slice(1));
+
+  vi.spyOn(document, "querySelector").mockReturnValueOnce(selector);
+
+  expect(() =>
+    appendButtonContainer({ flexDirection: "row", selector: containerId })
+  ).not.toThrow();
+
+  expect(() =>
+    appendButtonContainer({ flexDirection: "row", selector })
+  ).not.toThrow();
+
+  expect(() =>
+    appendButtonContainer({
+      flexDirection: "row",
+      selector: `${containerId}-not-found`,
+    })
+  ).toThrow("PayPal button container selector was not found");
+});
+
+test("getElementFromSelector", () => {
+  const containerId = "#container-id";
+  const selector = document.createElement("div");
+
+  selector.setAttribute("id", containerId.slice(1));
+
+  const mockQuerySelector = vi
+    .spyOn(document, "querySelector")
+    .mockReturnValueOnce(selector);
+
+  expect(getElementFromSelector(containerId)).toBe(selector);
+  expect(getElementFromSelector(selector)).toBe(selector);
+  expect(mockQuerySelector).toBeCalledTimes(1);
+  expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */
