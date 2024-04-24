@@ -43,6 +43,7 @@ export type HostedButtonDetailsParams =
       shape: string,
       color: string,
       label: string,
+      height: number,
     |},
     version: string,
     preferences: {|
