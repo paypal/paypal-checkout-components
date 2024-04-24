@@ -48,7 +48,7 @@ export type HostedButtonDetailsParams =
     version: string,
     preferences: {|
       secondButton: "recommended" | "venmo" | "paylater" | "none",
-      eligibleFundingMethods: string[],
+      eligibleFundingMethods: $ReadOnlyArray<string>,
     |},
     buttonContainerId: string,
   |}>;
