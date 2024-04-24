@@ -77,7 +77,10 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
-const getButtonVariable = (variables: ButtonVariables, key: string): string =>
+const getButtonVariable = (
+  variables: ButtonVariables,
+  key: string | number
+): string | number =>
   variables?.find((variable) => variable.name === key)?.value ?? undefined;
 
 export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
