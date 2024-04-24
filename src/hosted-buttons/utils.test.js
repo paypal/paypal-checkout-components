@@ -38,30 +38,50 @@ const orderID = "EC-1234567890";
 const clientId = "C1234567890";
 
 const getHostedButtonDetailsResponse = {
-  body: {
-    button_details: {
-      link_variables: [
-        {
-          name: "business",
-          value: merchantId,
+  v1: {
+    body: {
+      button_details: {
+        link_variables: [
+          {
+            name: "business",
+            value: merchantId,
+          },
+          {
+            name: "shape",
+            value: "rect",
+          },
+          {
+            name: "layout",
+            value: "vertical",
+          },
+          {
+            name: "color",
+            value: "gold",
+          },
+          {
+            name: "button_text",
+            value: "paypal",
+          },
+        ],
+      },
+    },
+  },
+
+  v2: {
+    body: {
+      button_details: {
+        link_variables: [
+          {
+            name: "height",
+            value: 50,
+          },
+        ],
+        preferences: {
+          second_button: "paylater",
+          eligible_funding_methods: ["venmo", "paylater"],
         },
-        {
-          name: "shape",
-          value: "rect",
-        },
-        {
-          name: "layout",
-          value: "vertical",
-        },
-        {
-          name: "color",
-          value: "gold",
-        },
-        {
-          name: "button_text",
-          value: "paypal",
-        },
-      ],
+      },
+      version: "2",
     },
   },
 };
@@ -74,24 +94,53 @@ const mockCreateAccessTokenRequest = () =>
     },
   });
 
-test("getHostedButtonDetails", async () => {
+test("getHostedButtonDetails (v1)", async () => {
   // $FlowIssue
   request.mockImplementationOnce(() =>
     // eslint-disable-next-line compat/compat
-    Promise.resolve(getHostedButtonDetailsResponse)
+    Promise.resolve(getHostedButtonDetailsResponse.v1)
   );
   await getHostedButtonDetails({
     hostedButtonId,
     fundingSources: [],
-  }).then(({ style }) => {
+  }).then(({ style, preferences }) => {
     expect(style).toEqual({
       layout: "vertical",
       shape: "rect",
       color: "gold",
       label: "paypal",
     });
+
+    expect(preferences).toEqual({
+      secondButton: undefined,
+      eligibleFundingMethods: undefined,
+    });
   });
-  expect.assertions(1);
+  expect.assertions(2);
+});
+
+test("getHostedButtonDetails (v2)", async () => {
+  // $FlowIssue
+  request.mockImplementationOnce(() =>
+    // eslint-disable-next-line compat/compat
+    Promise.resolve(getHostedButtonDetailsResponse.v2)
+  );
+  await getHostedButtonDetails({
+    hostedButtonId,
+    fundingSources: [],
+  }).then(({ style, preferences, version }) => {
+    expect(style).toEqual({
+      height: 50,
+    });
+
+    expect(preferences).toEqual({
+      secondButton: "paylater",
+      eligibleFundingMethods: ["venmo", "paylater"],
+    });
+
+    expect(version).toEqual("2");
+  });
+  expect.assertions(3);
 });
 
 describe("createAccessToken", () => {
