@@ -78,7 +78,7 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
 );
 
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
-  variables?.find((variable) => variable.name === key)?.value ?? "";
+  variables?.find((variable) => variable.name === key)?.value ?? undefined;
 
 export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   hostedButtonId,
@@ -90,14 +90,22 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 
   // $FlowIssue request returns ZalgoPromise
   const { body } = response;
-  const variables = body.button_details.link_variables;
+  const { link_variables: variables, preferences } = body.button_details;
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
       shape: getButtonVariable(variables, "shape"),
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
+      height: getButtonVariable(variables, "height"),
     },
+    version: body.version,
+    preferences: {
+      secondButton: preferences?.second_button,
+      eligibleFundingMethods: preferences?.eligible_funding_methods,
+    },
+    buttonContainerId: body.button_container_id,
     html: body.html,
     htmlScript: body.html_script,
   };

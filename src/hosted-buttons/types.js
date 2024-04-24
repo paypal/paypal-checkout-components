@@ -44,6 +44,12 @@ export type HostedButtonDetailsParams =
       color: string,
       label: string,
     |},
+    version: string,
+    preferences: {|
+      secondButton: "recommended" | "venmo" | "paylater" | "none",
+      eligibleFundingMethods: string[],
+    |},
+    buttonContainerId: string,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|

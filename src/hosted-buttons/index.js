@@ -30,7 +30,14 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
     const Buttons = getButtonsComponent();
     const render = async (selector) => {
       const merchantId = getMerchantID();
-      const { html, htmlScript, style } = await getHostedButtonDetails({
+      const {
+        html,
+        htmlScript,
+        style,
+        version,
+        buttonContainerId,
+        preferences,
+      } = await getHostedButtonDetails({
         hostedButtonId,
         fundingSources,
       });
