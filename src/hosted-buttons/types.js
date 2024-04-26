@@ -46,10 +46,7 @@ export type HostedButtonDetailsParams =
       height: number,
     |},
     version: string,
-    preferences: {|
-      secondButton: "recommended" | "venmo" | "paylater" | "none",
-      eligibleFundingMethods: $ReadOnlyArray<string>,
-    |},
+    buttonPreferences: $ReadOnlyArray<string>,
     buttonContainerId: string,
   |}>;
 
@@ -57,6 +54,11 @@ export type ButtonVariables = $ReadOnlyArray<{|
   name: string,
   value: string,
 |}>;
+
+export type HostedButtonPreferences = {|
+  second_button: "recommended" | "venmo" | "paylater" | "none",
+  eligible_funding_methods: $ReadOnlyArray<string>,
+|};
 
 export type CreateOrder = (data: {|
   paymentSource: string,

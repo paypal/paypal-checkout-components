@@ -77,11 +77,36 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
-const getButtonVariable = (
-  variables: ButtonVariables,
-  key: string | number
-): string | number =>
-  variables?.find((variable) => variable.name === key)?.value ?? undefined;
+/**
+ * Takes the preferences from the /ncp/api/form-fields response and
+ * turns it into an ordered array of preferred and eligible buttons.
+ */
+export const getButtonPreferences = (
+  preferences: HostedButtonPreferences
+): $ReadOnlyArray<string> => {
+  const {
+    second_button: secondButton,
+    eligible_funding_methods: eligibleFundingMethods,
+  } = preferences;
+
+  if (secondButton === "none" || secondButton === "recommended") {
+    return eligibleFundingMethods;
+  }
+
+  const indexOfSecondButton = eligibleFundingMethods.indexOf(secondButton);
+
+  if (indexOfSecondButton === -1) return eligibleFundingMethods;
+
+  const extractedSecondButton = eligibleFundingMethods.splice(
+    indexOfSecondButton,
+    1
+  )[0];
+
+  return [extractedSecondButton, ...eligibleFundingMethods];
+};
+
+const getButtonVariable = (variables: ButtonVariables, key: string): ?string =>
+  variables?.find((variable) => variable.name === key)?.value;
 
 export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   hostedButtonId,
@@ -104,13 +129,12 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       height: getButtonVariable(variables, "height"),
     },
     version: body.version,
-    preferences: {
-      secondButton: preferences?.second_button,
-      eligibleFundingMethods: preferences?.eligible_funding_methods,
-    },
     buttonContainerId: body.button_container_id,
     html: body.html,
     htmlScript: body.html_script,
+    ...(preferences && {
+      buttonPreferences: getButtonPreferences(preferences),
+    }),
   };
 };
 
