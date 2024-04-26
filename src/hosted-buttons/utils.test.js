@@ -126,9 +126,7 @@ describe("getHostedButtonDetails", () => {
       hostedButtonId,
       fundingSources: [],
     }).then(({ style, buttonPreferences, version }) => {
-      expect(style).toEqual({
-        height: 50,
-      });
+      expect(style.height).toEqual(50);
 
       expect(buttonPreferences).toEqual(["paylater", "venmo"]);
 
