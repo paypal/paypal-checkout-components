@@ -100,15 +100,17 @@ export const getButtonPreferences = (
     return eligibleFundingMethods;
   }
 
-  const extractedSecondButton = eligibleFundingMethods.splice(
+  const mutableEligibleFundingMethods = [...eligibleFundingMethods];
+
+  const extractedSecondButton = mutableEligibleFundingMethods.splice(
     indexOfSecondButton,
     1
   )[0];
 
-  return [extractedSecondButton, ...eligibleFundingMethods];
+  return [extractedSecondButton, ...mutableEligibleFundingMethods];
 };
 
-const getButtonVariable = (variables: ButtonVariables, key: string): ?string =>
+const getButtonVariable = (variables: ButtonVariables, key: string) =>
   variables?.find((variable) => variable.name === key)?.value;
 
 export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
@@ -125,9 +127,9 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 
   return {
     style: {
-      layout: getButtonVariable(variables, "layout"),
+      layout: getButtonVariable(variables, "layout") || "horizontal",
+      color: getButtonVariable(variables, "color") || "gold",
       shape: getButtonVariable(variables, "shape"),
-      color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
       height: getButtonVariable(variables, "height"),
     },

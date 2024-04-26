@@ -40,10 +40,10 @@ export type HostedButtonDetailsParams =
     htmlScript: string,
     style: {|
       layout: string,
-      shape: string,
       color: string,
-      label: string,
-      height: number,
+      shape: ?string,
+      label: ?string,
+      height: ?string,
     |},
     version: string,
     buttonPreferences: $ReadOnlyArray<string>,
