@@ -10,6 +10,7 @@ import {
   getHostedButtonDetails,
   getFlexDirection,
   getButtonColor,
+  getButtonPreferences,
   shouldRenderSDKButtons,
   appendButtonContainer,
   getElementFromSelector,
@@ -37,55 +38,6 @@ const merchantId = "M1234567890";
 const orderID = "EC-1234567890";
 const clientId = "C1234567890";
 
-const getHostedButtonDetailsResponse = {
-  v1: {
-    body: {
-      button_details: {
-        link_variables: [
-          {
-            name: "business",
-            value: merchantId,
-          },
-          {
-            name: "shape",
-            value: "rect",
-          },
-          {
-            name: "layout",
-            value: "vertical",
-          },
-          {
-            name: "color",
-            value: "gold",
-          },
-          {
-            name: "button_text",
-            value: "paypal",
-          },
-        ],
-      },
-    },
-  },
-
-  v2: {
-    body: {
-      button_details: {
-        link_variables: [
-          {
-            name: "height",
-            value: 50,
-          },
-        ],
-        preferences: {
-          second_button: "paylater",
-          eligible_funding_methods: ["venmo", "paylater"],
-        },
-      },
-      version: "2",
-    },
-  },
-};
-
 const mockCreateAccessTokenRequest = () =>
   // eslint-disable-next-line compat/compat
   Promise.resolve({
@@ -94,53 +46,96 @@ const mockCreateAccessTokenRequest = () =>
     },
   });
 
-test("getHostedButtonDetails (v1)", async () => {
-  // $FlowIssue
-  request.mockImplementationOnce(() =>
-    // eslint-disable-next-line compat/compat
-    Promise.resolve(getHostedButtonDetailsResponse.v1)
-  );
-  await getHostedButtonDetails({
-    hostedButtonId,
-    fundingSources: [],
-  }).then(({ style, preferences }) => {
-    expect(style).toEqual({
-      layout: "vertical",
-      shape: "rect",
-      color: "gold",
-      label: "paypal",
-    });
+describe("getHostedButtonDetails", () => {
+  const getHostedButtonDetailsResponse = {
+    v1: {
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "business",
+              value: merchantId,
+            },
+            {
+              name: "shape",
+              value: "rect",
+            },
+            {
+              name: "layout",
+              value: "vertical",
+            },
+            {
+              name: "color",
+              value: "gold",
+            },
+            {
+              name: "button_text",
+              value: "paypal",
+            },
+          ],
+        },
+      },
+    },
 
-    expect(preferences).toEqual({
-      secondButton: undefined,
-      eligibleFundingMethods: undefined,
+    v2: {
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "height",
+              value: 50,
+            },
+          ],
+          preferences: {
+            second_button: "paylater",
+            eligible_funding_methods: ["venmo", "paylater"],
+          },
+        },
+        version: "2",
+      },
+    },
+  };
+
+  test("version 1", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse.v1)
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+      fundingSources: [],
+    }).then(({ style }) => {
+      expect(style).toEqual({
+        layout: "vertical",
+        shape: "rect",
+        color: "gold",
+        label: "paypal",
+      });
     });
+    expect.assertions(1);
   });
-  expect.assertions(2);
-});
 
-test("getHostedButtonDetails (v2)", async () => {
-  // $FlowIssue
-  request.mockImplementationOnce(() =>
-    // eslint-disable-next-line compat/compat
-    Promise.resolve(getHostedButtonDetailsResponse.v2)
-  );
-  await getHostedButtonDetails({
-    hostedButtonId,
-    fundingSources: [],
-  }).then(({ style, preferences, version }) => {
-    expect(style).toEqual({
-      height: 50,
+  test("version 2", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse.v2)
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+      fundingSources: [],
+    }).then(({ style, buttonPreferences, version }) => {
+      expect(style).toEqual({
+        height: 50,
+      });
+
+      expect(buttonPreferences).toEqual(["paylater", "venmo"]);
+
+      expect(version).toEqual("2");
     });
-
-    expect(preferences).toEqual({
-      secondButton: "paylater",
-      eligibleFundingMethods: ["venmo", "paylater"],
-    });
-
-    expect(version).toEqual("2");
+    expect.assertions(3);
   });
-  expect.assertions(3);
 });
 
 describe("createAccessToken", () => {
@@ -457,6 +452,51 @@ test("getElementFromSelector", () => {
   expect(getElementFromSelector(selector)).toBe(selector);
   expect(mockQuerySelector).toBeCalledTimes(1);
   expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
+});
+
+describe("getButtonPreferences", () => {
+  const basePreferences = {
+    second_button: "recommended",
+    eligible_funding_methods: ["venmo", "paylater"],
+  };
+
+  test("returns eligible_funding_methods if second_button is 'recommended'", () => {
+    const buttonPreferences = getButtonPreferences(basePreferences);
+
+    expect(buttonPreferences).toEqual(basePreferences.eligible_funding_methods);
+  });
+
+  test("returns eligible_funding_methods if second_button is 'none'", () => {
+    const preferences = {
+      ...basePreferences,
+      second_button: "none",
+    };
+    const buttonPreferences = getButtonPreferences(preferences);
+
+    expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
+  });
+
+  test("returns eligible_funding_methods if second_button is not eligible", () => {
+    const preferences = {
+      second_button: "venmo",
+      eligible_funding_methods: ["paylater"],
+    };
+
+    const buttonPreferences = getButtonPreferences(preferences);
+
+    expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
+  });
+
+  test("pushes second_button to front of eligible_funding_methods if it exists", () => {
+    const preferences = {
+      ...basePreferences,
+      second_button: "paylater",
+    };
+
+    const buttonPreferences = getButtonPreferences(preferences);
+
+    expect(buttonPreferences[0]).toEqual(preferences.second_button);
+  });
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */
