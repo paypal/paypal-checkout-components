@@ -15,6 +15,7 @@ import type {
   CreateOrder,
   GetCallbackProps,
   HostedButtonDetailsParams,
+  HostedButtonPreferences,
   OnApprove,
   RenderForm,
   GetFlexDirectionArgs,
@@ -95,7 +96,9 @@ export const getButtonPreferences = (
 
   const indexOfSecondButton = eligibleFundingMethods.indexOf(secondButton);
 
-  if (indexOfSecondButton === -1) return eligibleFundingMethods;
+  if (indexOfSecondButton === -1) {
+    return eligibleFundingMethods;
+  }
 
   const extractedSecondButton = eligibleFundingMethods.splice(
     indexOfSecondButton,
