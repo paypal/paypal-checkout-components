@@ -948,6 +948,18 @@ const buttonConfigs = [
         },
         valid: false,
       },
+
+      {
+        message: {
+          amount: 100,
+          offer: "pay_later_long_term",
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
+
       {
         message: {
           amount: 100,
