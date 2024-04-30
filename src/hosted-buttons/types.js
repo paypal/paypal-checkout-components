@@ -47,6 +47,7 @@ export type HostedButtonDetailsParams =
     |},
     version: string,
     buttonPreferences: $ReadOnlyArray<string>,
+    buttonCount: number,
     buttonContainerId: string,
   |}>;
 
@@ -56,7 +57,7 @@ export type ButtonVariables = $ReadOnlyArray<{|
 |}>;
 
 export type HostedButtonPreferences = {|
-  second_button: "recommended" | "venmo" | "paylater" | "none",
+  button_preferences: $ReadOnlyArray<string>,
   eligible_funding_methods: $ReadOnlyArray<string>,
 |};
 

@@ -82,32 +82,40 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
  * Takes the preferences from the /ncp/api/form-fields response and
  * turns it into an ordered array of preferred and eligible buttons.
  */
-export const getButtonPreferences = (
+export const getEligibleButtonPreferences = (
   preferences: HostedButtonPreferences
 ): $ReadOnlyArray<string> => {
   const {
-    second_button: secondButton,
+    button_preferences: buttonPreferences,
     eligible_funding_methods: eligibleFundingMethods,
   } = preferences;
 
-  if (secondButton === "none" || secondButton === "recommended") {
-    return eligibleFundingMethods;
-  }
-
-  const indexOfSecondButton = eligibleFundingMethods.indexOf(secondButton);
-
-  if (indexOfSecondButton === -1) {
+  if (!buttonPreferences.length) {
     return eligibleFundingMethods;
   }
 
   const mutableEligibleFundingMethods = [...eligibleFundingMethods];
+  const preferredEligibleButtons = [];
 
-  const extractedSecondButton = mutableEligibleFundingMethods.splice(
-    indexOfSecondButton,
-    1
-  )[0];
+  for (let button of buttonPreferences) {
+    let buttonIndex = mutableEligibleFundingMethods.indexOf(button);
+    const isButtonEligible = buttonIndex >= 0;
+    const isDefault = button === "default";
 
-  return [extractedSecondButton, ...mutableEligibleFundingMethods];
+    // If button is ineligible or is "default", do nothing.
+    if (!isButtonEligible || isDefault) {
+      continue;
+    }
+
+    // Add button to the end of preferredEligibleButtons array
+    preferredEligibleButtons.push(button);
+
+    // Remove button from mutableEligibleFundingMethods array
+    mutableEligibleFundingMethods.splice(buttonIndex, 1);
+  }
+
+  // Return array, placing buttons that are both preferred & eligible at the front
+  return [...preferredEligibleButtons, ...mutableEligibleFundingMethods];
 };
 
 const getButtonVariable = (variables: ButtonVariables, key: string) =>
@@ -138,7 +146,8 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
     html: body.html,
     htmlScript: body.html_script,
     ...(preferences && {
-      buttonPreferences: getButtonPreferences(preferences),
+      buttonPreferences: getEligibleButtonPreferences(preferences),
+      buttonCount: preferences?.button_preferences.length || 1,
     }),
   };
 };

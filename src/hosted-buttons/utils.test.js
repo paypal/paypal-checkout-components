@@ -10,7 +10,7 @@ import {
   getHostedButtonDetails,
   getFlexDirection,
   getButtonColor,
-  getButtonPreferences,
+  getEligibleButtonPreferences,
   shouldRenderSDKButtons,
   appendButtonContainer,
   getElementFromSelector,
@@ -87,8 +87,8 @@ describe("getHostedButtonDetails", () => {
             },
           ],
           preferences: {
-            second_button: "paylater",
-            eligible_funding_methods: ["venmo", "paylater"],
+            button_preferences: ["paypal", "paylater"],
+            eligible_funding_methods: ["paypal", "venmo", "paylater"],
           },
         },
         version: "2",
@@ -125,14 +125,13 @@ describe("getHostedButtonDetails", () => {
     await getHostedButtonDetails({
       hostedButtonId,
       fundingSources: [],
-    }).then(({ style, buttonPreferences, version }) => {
+    }).then(({ style, buttonPreferences, buttonCount, version }) => {
       expect(style.height).toEqual(50);
-
-      expect(buttonPreferences).toEqual(["paylater", "venmo"]);
-
+      expect(buttonPreferences).toEqual(["paypal", "paylater", "venmo"]);
+      expect(buttonCount).toEqual(2);
       expect(version).toEqual("2");
     });
-    expect.assertions(3);
+    expect.assertions(4);
   });
 });
 
@@ -452,48 +451,49 @@ test("getElementFromSelector", () => {
   expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
 });
 
-describe("getButtonPreferences", () => {
-  const basePreferences = {
-    second_button: "recommended",
-    eligible_funding_methods: ["venmo", "paylater"],
-  };
-
-  test("returns eligible_funding_methods if second_button is 'recommended'", () => {
-    const buttonPreferences = getButtonPreferences(basePreferences);
-
-    expect(buttonPreferences).toEqual(basePreferences.eligible_funding_methods);
-  });
-
-  test("returns eligible_funding_methods if second_button is 'none'", () => {
+describe("getEligibleButtonPreferences", () => {
+  test("returns eligible_funding_methods if button_preferences is an empty array", () => {
     const preferences = {
-      ...basePreferences,
-      second_button: "none",
+      button_preferences: [],
+      eligible_funding_methods: ["paypal", "venmo", "paylater"],
     };
-    const buttonPreferences = getButtonPreferences(preferences);
+
+    const buttonPreferences = getEligibleButtonPreferences(preferences);
 
     expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
   });
 
-  test("returns eligible_funding_methods if second_button is not eligible", () => {
+  test("filters out funding methods that are preferred but ineligible", () => {
     const preferences = {
-      second_button: "venmo",
-      eligible_funding_methods: ["paylater"],
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "paylater"],
     };
 
-    const buttonPreferences = getButtonPreferences(preferences);
+    const buttonPreferences = getEligibleButtonPreferences(preferences);
 
     expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
   });
 
-  test("pushes second_button to front of eligible_funding_methods if it exists", () => {
+  test("pushes preferred buttons to the front of the buttonPreferences array", () => {
     const preferences = {
-      ...basePreferences,
-      second_button: "paylater",
+      button_preferences: ["paypal", "paylater"],
+      eligible_funding_methods: ["paypal", "venmo", "paylater"],
     };
 
-    const buttonPreferences = getButtonPreferences(preferences);
+    const buttonPreferences = getEligibleButtonPreferences(preferences);
 
-    expect(buttonPreferences[0]).toEqual(preferences.second_button);
+    expect(buttonPreferences).toEqual(["paypal", "paylater", "venmo"]);
+  });
+
+  test("defaults to next eligible funding method if 'default' is passed as second preferred button", () => {
+    const preferences = {
+      button_preferences: ["paypal", "default"],
+      eligible_funding_methods: ["paypal", "venmo", "paylater"],
+    };
+
+    const buttonPreferences = getEligibleButtonPreferences(preferences);
+
+    expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
   });
 });
 
