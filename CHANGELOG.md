@@ -1,3 +1,9 @@
+## <small>5.0.309 (2024-04-24)</small>
+
+* Use Standalone buttons for V2 of Hosted Buttons (#2375) ([04cca79](https://github.com/paypal/paypal-checkout-components/commit/04cca79)), closes [#2375](https://github.com/paypal/paypal-checkout-components/issues/2375)
+
+
+
 ## <small>5.0.308 (2024-04-17)</small>
 
 * feat: dynamic messaging (#2349) ([4b3d77a](https://github.com/paypal/paypal-checkout-components/commit/4b3d77a)), closes [#2349](https://github.com/paypal/paypal-checkout-components/issues/2349)
