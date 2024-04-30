@@ -97,8 +97,8 @@ export const getEligibleButtonPreferences = (
   const mutableEligibleFundingMethods = [...eligibleFundingMethods];
   const preferredEligibleButtons = [];
 
-  for (let button of buttonPreferences) {
-    let buttonIndex = mutableEligibleFundingMethods.indexOf(button);
+  for (const button of buttonPreferences) {
+    const buttonIndex = mutableEligibleFundingMethods.indexOf(button);
     const isButtonEligible = buttonIndex >= 0;
     const isDefault = button === "default";
 
