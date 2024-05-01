@@ -716,9 +716,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
+            merchantID,
           }) => {
-            const { message, clientID, merchantID, currency, buttonSessionID } =
-              props;
+            const { message, clientID, currency, buttonSessionID } = props;
             const amount = message?.amount;
 
             getLogger()
@@ -730,7 +730,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
+                [FPTI_KEY.SELLER_ID]: merchantID,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -741,7 +741,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
                 [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
-              });
+              })
+              .flush();
 
             const modalInstance = await getModal(clientID, merchantID);
             return modalInstance?.show({
@@ -757,11 +758,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return () => {
+          return ({ merchantID }) => {
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
+            const { clientID } = props;
             return getModal(clientID, merchantID);
           };
         },
@@ -776,8 +777,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
+            merchantID,
           }) => {
-            const { message, buttonSessionID, currency, merchantID } = props;
+            const { message, buttonSessionID, currency } = props;
 
             getLogger()
               .info("button_message_render")
@@ -788,7 +790,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_render",
-                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
+                [FPTI_KEY.SELLER_ID]: merchantID,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -799,7 +801,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
-              });
+              })
+              .flush();
           };
         },
       },
