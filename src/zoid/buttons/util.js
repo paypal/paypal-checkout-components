@@ -14,7 +14,6 @@ import {
   isStandAlone,
   once,
   memoize,
-  onClick,
 } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import {
