@@ -743,7 +743,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
               });
 
-            const modalInstance = await getModal(clientID, merchantID);
+            const modalInstance = await getModal(
+              clientID,
+              merchantID,
+              buttonSessionID
+            );
             return modalInstance?.show({
               amount,
               offer: offerType,
@@ -761,8 +765,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
-            return getModal(clientID, merchantID);
+            const { buttonSessionID, clientID, merchantID } = props;
+            return getModal(clientID, merchantID, buttonSessionID);
           };
         },
       },
