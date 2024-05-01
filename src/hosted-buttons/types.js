@@ -34,16 +34,24 @@ export type HostedButtonsInstance = {|
   render: (string | HTMLElement) => Promise<void>,
 |};
 
+export type HostedButtonPreferences = {
+  buttonPreferences: $ReadOnlyArray<string>,
+  eligibleFundingMethods: $ReadOnlyArray<string>,
+};
+
 export type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => Promise<{|
     html: string,
     htmlScript: string,
     style: {|
       layout: string,
-      shape: string,
-      color: string,
-      label: string,
+      shape: ?string,
+      label: ?string,
+      height: ?string,
     |},
+    version: string,
+    preferences: HostedButtonPreferences,
+    buttonContainerId: string,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
