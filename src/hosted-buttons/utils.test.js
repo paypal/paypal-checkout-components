@@ -125,13 +125,15 @@ describe("getHostedButtonDetails", () => {
     await getHostedButtonDetails({
       hostedButtonId,
       fundingSources: [],
-    }).then(({ style, buttonPreferences, buttonCount, version }) => {
+    }).then(({ style, preferences, version }) => {
       expect(style.height).toEqual(50);
-      expect(buttonPreferences).toEqual(["paypal", "paylater", "venmo"]);
-      expect(buttonCount).toEqual(2);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
       expect(version).toEqual("2");
     });
-    expect.assertions(4);
+    expect.assertions(3);
   });
 });
 
@@ -449,52 +451,6 @@ test("getElementFromSelector", () => {
   expect(getElementFromSelector(selector)).toBe(selector);
   expect(mockQuerySelector).toBeCalledTimes(1);
   expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
-});
-
-describe("getEligibleButtonPreferences", () => {
-  test("returns eligible_funding_methods if button_preferences is an empty array", () => {
-    const preferences = {
-      button_preferences: [],
-      eligible_funding_methods: ["paypal", "venmo", "paylater"],
-    };
-
-    const buttonPreferences = getEligibleButtonPreferences(preferences);
-
-    expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
-  });
-
-  test("filters out funding methods that are preferred but ineligible", () => {
-    const preferences = {
-      button_preferences: ["paypal", "venmo"],
-      eligible_funding_methods: ["paypal", "paylater"],
-    };
-
-    const buttonPreferences = getEligibleButtonPreferences(preferences);
-
-    expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
-  });
-
-  test("pushes preferred buttons to the front of the buttonPreferences array", () => {
-    const preferences = {
-      button_preferences: ["paypal", "paylater"],
-      eligible_funding_methods: ["paypal", "venmo", "paylater"],
-    };
-
-    const buttonPreferences = getEligibleButtonPreferences(preferences);
-
-    expect(buttonPreferences).toEqual(["paypal", "paylater", "venmo"]);
-  });
-
-  test("defaults to next eligible funding method if 'default' is passed as second preferred button", () => {
-    const preferences = {
-      button_preferences: ["paypal", "default"],
-      eligible_funding_methods: ["paypal", "venmo", "paylater"],
-    };
-
-    const buttonPreferences = getEligibleButtonPreferences(preferences);
-
-    expect(buttonPreferences).toEqual(preferences.eligible_funding_methods);
-  });
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */

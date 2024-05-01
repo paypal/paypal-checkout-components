@@ -6,6 +6,7 @@ import {
   getSDKHost,
   getClientID,
   getMerchantID as getSDKMerchantID,
+  getLogger,
 } from "@paypal/sdk-client/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 
@@ -78,46 +79,6 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
-/**
- * Takes the preferences from the /ncp/api/form-fields response and
- * turns it into an ordered array of preferred and eligible buttons.
- */
-export const getEligibleButtonPreferences = (
-  preferences: HostedButtonPreferences
-): $ReadOnlyArray<string> => {
-  const {
-    button_preferences: buttonPreferences,
-    eligible_funding_methods: eligibleFundingMethods,
-  } = preferences;
-
-  if (!buttonPreferences.length) {
-    return eligibleFundingMethods;
-  }
-
-  const mutableEligibleFundingMethods = [...eligibleFundingMethods];
-  const preferredEligibleButtons = [];
-
-  for (const button of buttonPreferences) {
-    const buttonIndex = mutableEligibleFundingMethods.indexOf(button);
-    const isButtonEligible = buttonIndex >= 0;
-    const isDefault = button === "default";
-
-    // If button is ineligible or is "default", do nothing.
-    if (!isButtonEligible || isDefault) {
-      continue;
-    }
-
-    // Add button to the end of preferredEligibleButtons array
-    preferredEligibleButtons.push(button);
-
-    // Remove button from mutableEligibleFundingMethods array
-    mutableEligibleFundingMethods.splice(buttonIndex, 1);
-  }
-
-  // Return array, placing buttons that are both preferred & eligible at the front
-  return [...preferredEligibleButtons, ...mutableEligibleFundingMethods];
-};
-
 const getButtonVariable = (variables: ButtonVariables, key: string) =>
   variables?.find((variable) => variable.name === key)?.value;
 
@@ -146,8 +107,10 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
     html: body.html,
     htmlScript: body.html_script,
     ...(preferences && {
-      buttonPreferences: getEligibleButtonPreferences(preferences),
-      buttonCount: preferences?.button_preferences.length || 1,
+      preferences: {
+        buttonPreferences: preferences.button_preferences,
+        eligibleFundingMethods: preferences.eligible_funding_methods,
+      },
     }),
   };
 };
