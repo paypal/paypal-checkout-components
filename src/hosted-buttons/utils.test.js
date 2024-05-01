@@ -61,6 +61,10 @@ const getHostedButtonDetailsResponse = {
           name: "button_text",
           value: "paypal",
         },
+        {
+          name: "tagline",
+          value: "true",
+        },
       ],
     },
   },
@@ -89,6 +93,107 @@ test("getHostedButtonDetails", async () => {
       shape: "rect",
       color: "gold",
       label: "paypal",
+      tagline: true,
+    });
+  });
+  expect.assertions(1);
+});
+
+test("getHostedButtonDetails handles string values for tagline", async () => {
+  // $FlowIssue
+  request.mockImplementationOnce(() =>
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "business",
+              value: merchantId,
+            },
+            {
+              name: "shape",
+              value: "rect",
+            },
+            {
+              name: "layout",
+              value: "vertical",
+            },
+            {
+              name: "color",
+              value: "gold",
+            },
+            {
+              name: "button_text",
+              value: "paypal",
+            },
+            {
+              name: "tagline",
+              value: "false",
+            },
+          ],
+        },
+      },
+    })
+  );
+  await getHostedButtonDetails({
+    hostedButtonId,
+    fundingSources: [],
+  }).then(({ style }) => {
+    expect(style).toEqual({
+      layout: "vertical",
+      shape: "rect",
+      color: "gold",
+      label: "paypal",
+      tagline: false,
+    });
+  });
+  expect.assertions(1);
+});
+
+test("getHostedButtonDetails handles missing value for tagline", async () => {
+  // $FlowIssue
+  request.mockImplementationOnce(() =>
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "business",
+              value: merchantId,
+            },
+            {
+              name: "shape",
+              value: "rect",
+            },
+            {
+              name: "layout",
+              value: "vertical",
+            },
+            {
+              name: "color",
+              value: "gold",
+            },
+            {
+              name: "button_text",
+              value: "paypal",
+            },
+          ],
+        },
+      },
+    })
+  );
+  await getHostedButtonDetails({
+    hostedButtonId,
+    fundingSources: [],
+  }).then(({ style }) => {
+    expect(style).toEqual({
+      layout: "vertical",
+      shape: "rect",
+      color: "gold",
+      label: "paypal",
+      tagline: false,
     });
   });
   expect.assertions(1);

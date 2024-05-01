@@ -97,6 +97,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       shape: getButtonVariable(variables, "shape"),
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
+      tagline: getButtonVariable(variables, "tagline") === "true",
     },
     html: body.html,
     htmlScript: body.html_script,
