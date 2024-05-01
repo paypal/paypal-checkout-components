@@ -34,10 +34,10 @@ export type HostedButtonsInstance = {|
   render: (string | HTMLElement) => Promise<void>,
 |};
 
-export type HostedButtonPreferences = {
+export type HostedButtonPreferences = {|
   buttonPreferences: $ReadOnlyArray<string>,
   eligibleFundingMethods: $ReadOnlyArray<string>,
-};
+|};
 
 export type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => Promise<{|
