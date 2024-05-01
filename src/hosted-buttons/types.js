@@ -45,13 +45,14 @@ export type HostedButtonDetailsParams =
     htmlScript: string,
     style: {|
       layout: string,
-      shape: ?string,
-      label: ?string,
-      height: ?string,
+      shape: string,
+      color: string,
+      label: string,
+      height: string,
     |},
-    version: string,
-    preferences: HostedButtonPreferences,
-    buttonContainerId: string,
+    version: ?string,
+    buttonContainerId: ?string,
+    preferences?: HostedButtonPreferences,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
