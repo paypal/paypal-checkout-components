@@ -70,6 +70,7 @@
   "devDependencies": {
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
     "@krakenjs/grumbler-scripts": "^8.1.5",
+    "@krakenjs/eslint-config-grumbler": "8.1.3",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
     "@percy/cli": "1.28.5",
     "@percy/playwright": "^1.0.4",
