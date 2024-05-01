@@ -37,35 +37,6 @@ const merchantId = "M1234567890";
 const orderID = "EC-1234567890";
 const clientId = "C1234567890";
 
-const getHostedButtonDetailsResponse = {
-  body: {
-    button_details: {
-      link_variables: [
-        {
-          name: "business",
-          value: merchantId,
-        },
-        {
-          name: "shape",
-          value: "rect",
-        },
-        {
-          name: "layout",
-          value: "vertical",
-        },
-        {
-          name: "color",
-          value: "gold",
-        },
-        {
-          name: "button_text",
-          value: "paypal",
-        },
-      ],
-    },
-  },
-};
-
 const mockCreateAccessTokenRequest = () =>
   // eslint-disable-next-line compat/compat
   Promise.resolve({
@@ -74,24 +45,96 @@ const mockCreateAccessTokenRequest = () =>
     },
   });
 
-test("getHostedButtonDetails", async () => {
-  // $FlowIssue
-  request.mockImplementationOnce(() =>
-    // eslint-disable-next-line compat/compat
-    Promise.resolve(getHostedButtonDetailsResponse)
-  );
-  await getHostedButtonDetails({
-    hostedButtonId,
-    fundingSources: [],
-  }).then(({ style }) => {
-    expect(style).toEqual({
-      layout: "vertical",
-      shape: "rect",
-      color: "gold",
-      label: "paypal",
+describe("getHostedButtonDetails", () => {
+  const getHostedButtonDetailsResponse = {
+    v1: {
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "business",
+              value: merchantId,
+            },
+            {
+              name: "shape",
+              value: "rect",
+            },
+            {
+              name: "layout",
+              value: "vertical",
+            },
+            {
+              name: "color",
+              value: "gold",
+            },
+            {
+              name: "button_text",
+              value: "paypal",
+            },
+          ],
+        },
+      },
+    },
+
+    v2: {
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "height",
+              value: 50,
+            },
+          ],
+          preferences: {
+            button_preferences: ["paypal", "paylater"],
+            eligible_funding_methods: ["paypal", "venmo", "paylater"],
+          },
+        },
+        version: "2",
+      },
+    },
+  };
+
+  test("version 1", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse.v1)
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+      fundingSources: [],
+    }).then(({ style }) => {
+      expect(style).toEqual({
+        layout: "vertical",
+        shape: "rect",
+        color: "gold",
+        label: "paypal",
+        height: "",
+      });
     });
+    expect.assertions(1);
   });
-  expect.assertions(1);
+
+  test("version 2", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse.v2)
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+      fundingSources: [],
+    }).then(({ style, preferences, version }) => {
+      expect(style.height).toEqual(50);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
+      expect(version).toEqual("2");
+    });
+    expect.assertions(3);
+  });
 });
 
 describe("createAccessToken", () => {
