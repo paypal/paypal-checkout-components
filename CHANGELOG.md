@@ -1,3 +1,9 @@
+## <small>5.0.311 (2024-05-01)</small>
+
+* Update vaulted pre-render to support customerId check (#2382) ([42eec79](https://github.com/paypal/paypal-checkout-components/commit/42eec79)), closes [#2382](https://github.com/paypal/paypal-checkout-components/issues/2382)
+
+
+
 ## <small>5.0.310 (2024-05-01)</small>
 
 * fix: add eslint-config-grumbler as dev dependency (#2383) ([05bb7b6](https://github.com/paypal/paypal-checkout-components/commit/05bb7b6)), closes [#2383](https://github.com/paypal/paypal-checkout-components/issues/2383)
