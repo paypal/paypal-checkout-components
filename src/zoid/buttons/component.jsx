@@ -38,7 +38,7 @@ import {
   getMerchantRequestedPopupsDisabled,
   getVersion,
   getDisableSetCookie,
-  getExperimentation,
+  getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
 } from "@paypal/sdk-client/src";
@@ -476,11 +476,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      experimentation: {
+      firstRenderExperiments: {
         type: "object",
         queryParam: true,
         required: false,
-        value: getExperimentation,
+        value: getFirstRenderExperiments,
       },
 
       flow: {
