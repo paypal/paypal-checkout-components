@@ -55,6 +55,10 @@ const getHostedButtonDetailsResponse = {
           name: "button_type",
           value: "FIXED_PRICE",
         },
+        {
+          name: "height",
+          value: "40",
+        },
       ],
     },
   },
