@@ -34,6 +34,13 @@ export type HostedButtonsInstance = {|
   render: (string | HTMLElement) => Promise<void>,
 |};
 
+export type EligibleHostedButtons = "paypal" | "venmo" | "paylater";
+
+export type HostedButtonPreferences = {|
+  buttonPreferences: $ReadOnlyArray<EligibleHostedButtons & "default">,
+  eligibleFundingMethods: $ReadOnlyArray<EligibleHostedButtons>,
+|};
+
 export type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => Promise<{|
     html: string,
@@ -43,7 +50,11 @@ export type HostedButtonDetailsParams =
       shape: string,
       color: string,
       label: string,
+      height: string,
     |},
+    version: ?string,
+    buttonContainerId: ?string,
+    preferences?: HostedButtonPreferences,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
