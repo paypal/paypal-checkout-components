@@ -204,7 +204,6 @@ describe("HostedButtons", () => {
     );
     await HostedButtons({
       hostedButtonId: "B1234567890",
-      fundingSources: ["paypal", "venmo"],
     }).render("#example");
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -212,8 +211,8 @@ describe("HostedButtons", () => {
         style: expect.objectContaining({ tagline: false }),
       })
     );
-    expect(Buttons).toHaveBeenCalledTimes(2);
-    expect(renderMock).toHaveBeenCalledTimes(0);
+    expect(Buttons).toHaveBeenCalledTimes(1);
+    expect(renderMock).toHaveBeenCalledTimes(1);
     expect.assertions(3);
   });
 });

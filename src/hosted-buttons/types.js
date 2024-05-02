@@ -21,7 +21,7 @@ export interface BuildButtonContainerArgs {
 
 export type HostedButtonsComponentProps = {|
   hostedButtonId: string,
-  fundingSources: $ReadOnlyArray<FundingSources>,
+  fundingSources?: $ReadOnlyArray<FundingSources>,
 |};
 
 export type GetCallbackProps = {|

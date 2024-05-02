@@ -138,7 +138,6 @@ test("getHostedButtonDetails handles string values for tagline", async () => {
   );
   await getHostedButtonDetails({
     hostedButtonId,
-    fundingSources: [],
   }).then(({ style }) => {
     expect(style).toEqual({
       layout: "vertical",
@@ -186,7 +185,6 @@ test("getHostedButtonDetails handles missing value for tagline", async () => {
   );
   await getHostedButtonDetails({
     hostedButtonId,
-    fundingSources: [],
   }).then(({ style }) => {
     expect(style).toEqual({
       layout: "vertical",
