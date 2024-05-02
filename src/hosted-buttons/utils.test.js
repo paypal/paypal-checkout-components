@@ -118,7 +118,6 @@ describe("getHostedButtonDetails", () => {
         shape: "rect",
         color: "gold",
         label: "paypal",
-        height: "",
         tagline: true,
       });
     });
@@ -172,7 +171,6 @@ describe("getHostedButtonDetails", () => {
     );
     await getHostedButtonDetails({
       hostedButtonId,
-      fundingSources: [],
     }).then(({ style }) => {
       expect(style).toEqual(
         expect.objectContaining({
@@ -208,7 +206,6 @@ describe("getHostedButtonDetails", () => {
     );
     await getHostedButtonDetails({
       hostedButtonId,
-      fundingSources: [],
     }).then(({ style, preferences, version }) => {
       expect(style.height).toEqual(50);
       expect(style.tagline).toEqual(false);
@@ -243,7 +240,6 @@ describe("getHostedButtonDetails", () => {
     );
     await getHostedButtonDetails({
       hostedButtonId,
-      fundingSources: [],
     }).then(({ style }) => {
       expect(style).toEqual(
         expect.objectContaining({
@@ -275,7 +271,6 @@ describe("getHostedButtonDetails", () => {
     );
     await getHostedButtonDetails({
       hostedButtonId,
-      fundingSources: [],
     }).then(({ style, preferences, version }) => {
       expect(style.height).toEqual(50);
       expect(style.tagline).toEqual(false);
