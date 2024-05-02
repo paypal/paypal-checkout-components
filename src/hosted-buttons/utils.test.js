@@ -86,7 +86,7 @@ describe("getHostedButtonDetails", () => {
           link_variables: [
             {
               name: "height",
-              value: 50,
+              value: "50",
             },
             {
               name: "tagline",

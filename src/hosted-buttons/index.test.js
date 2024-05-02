@@ -59,6 +59,10 @@ const getHostedButtonDetailsResponse = {
           name: "tagline",
           value: "true",
         },
+        {
+          name: "height",
+          value: "40",
+        },
       ],
     },
   },

@@ -99,7 +99,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
       tagline: getButtonVariable(variables, "tagline") === "true",
-      height: getButtonVariable(variables, "height"),
+      height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
     version: body.version,
     buttonContainerId: body.button_container_id,
