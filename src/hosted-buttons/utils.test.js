@@ -146,6 +146,7 @@ describe("getHostedButtonDetails", () => {
   });
 
   test("handles false tagline values", async () => {
+    // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
       Promise.resolve({
@@ -219,6 +220,7 @@ describe("getHostedButtonDetails", () => {
   });
 
   test("handles undefined tagline values", async () => {
+    // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
       Promise.resolve({
