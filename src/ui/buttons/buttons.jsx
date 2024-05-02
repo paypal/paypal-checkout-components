@@ -172,6 +172,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     onShippingOptionsChange,
     personalization,
     userIDToken,
+    customerId,
     content,
     flow,
     experiment,
@@ -291,6 +292,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           onShippingOptionsChange={onShippingOptionsChange}
           onClick={onClick}
           userIDToken={userIDToken}
+          customerId={customerId}
           personalization={personalization}
           tagline={tagline}
           commit={commit}

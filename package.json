@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.309",
+  "version": "5.0.311",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -119,6 +119,6 @@
     "@paypal/sdk-logos": "^2.2.6"
   },
   "lint-staged": {
-    "**/{src,test,scripts}/**/*.{js,jsx,json,sh}": "prettier --write"
+    "**/*": "prettier --write --ignore-unknown"
   }
 }

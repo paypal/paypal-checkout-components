@@ -90,7 +90,8 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 
   // $FlowIssue request returns ZalgoPromise
   const { body } = response;
-  const variables = body.button_details.link_variables;
+  const { link_variables: variables, preferences } = body.button_details;
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
@@ -98,9 +99,18 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
       tagline: getButtonVariable(variables, "tagline") === "true",
+      height: getButtonVariable(variables, "height"),
     },
+    version: body.version,
+    buttonContainerId: body.button_container_id,
     html: body.html,
     htmlScript: body.html_script,
+    ...(preferences && {
+      preferences: {
+        buttonPreferences: preferences.button_preferences,
+        eligibleFundingMethods: preferences.eligible_funding_methods,
+      },
+    }),
   };
 };
 

@@ -19,6 +19,7 @@ import {
   getCSPNonce,
   getBuyerCountry,
   getClientAccessToken,
+  getCustomerId,
   getPlatform,
   getPartnerAttributionID,
   getCorrelationID,
@@ -334,6 +335,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         queryParam: true,
         value: getClientAccessToken,
+      },
+
+      customerId: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getCustomerId,
       },
 
       clientID: {
