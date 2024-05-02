@@ -71,6 +71,10 @@ describe("getHostedButtonDetails", () => {
               name: "button_text",
               value: "paypal",
             },
+            {
+              name: "tagline",
+              value: "true",
+            },
           ],
         },
       },
@@ -83,6 +87,10 @@ describe("getHostedButtonDetails", () => {
             {
               name: "height",
               value: "50",
+            },
+            {
+              name: "tagline",
+              value: "true",
             },
           ],
           preferences: {
@@ -110,6 +118,7 @@ describe("getHostedButtonDetails", () => {
         shape: "rect",
         color: "gold",
         label: "paypal",
+        tagline: true,
       });
     });
     expect.assertions(1);
@@ -126,13 +135,154 @@ describe("getHostedButtonDetails", () => {
       fundingSources: [],
     }).then(({ style, preferences, version }) => {
       expect(style.height).toEqual(50);
+      expect(style.tagline).toEqual(true);
       expect(preferences).toEqual({
         buttonPreferences: ["paypal", "paylater"],
         eligibleFundingMethods: ["paypal", "venmo", "paylater"],
       });
       expect(version).toEqual("2");
     });
-    expect.assertions(3);
+    expect.assertions(4);
+  });
+
+  test("handles false tagline values", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "business",
+                value: merchantId,
+              },
+              {
+                name: "layout",
+                value: "horizontal",
+              },
+              {
+                name: "tagline",
+                value: "false",
+              },
+            ],
+          },
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style }) => {
+      expect(style).toEqual(
+        expect.objectContaining({
+          tagline: false,
+        })
+      );
+    });
+
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "height",
+                value: 50,
+              },
+              {
+                name: "tagline",
+                value: "false",
+              },
+            ],
+            preferences: {
+              button_preferences: ["paypal", "paylater"],
+              eligible_funding_methods: ["paypal", "venmo", "paylater"],
+            },
+          },
+          version: "2",
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style, preferences, version }) => {
+      expect(style.height).toEqual(50);
+      expect(style.tagline).toEqual(false);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
+      expect(version).toEqual("2");
+    });
+    expect.assertions(5);
+  });
+
+  test("handles undefined tagline values", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "business",
+                value: merchantId,
+              },
+              {
+                name: "layout",
+                value: "horizontal",
+              },
+            ],
+          },
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style }) => {
+      expect(style).toEqual(
+        expect.objectContaining({
+          tagline: false,
+        })
+      );
+    });
+
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "height",
+                value: 50,
+              },
+            ],
+            preferences: {
+              button_preferences: ["paypal", "paylater"],
+              eligible_funding_methods: ["paypal", "venmo", "paylater"],
+            },
+          },
+          version: "2",
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style, preferences, version }) => {
+      expect(style.height).toEqual(50);
+      expect(style.tagline).toEqual(false);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
+      expect(version).toEqual("2");
+    });
+    expect.assertions(5);
   });
 });
 
