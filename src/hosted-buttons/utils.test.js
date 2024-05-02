@@ -82,7 +82,7 @@ describe("getHostedButtonDetails", () => {
           link_variables: [
             {
               name: "height",
-              value: 50,
+              value: "50",
             },
           ],
           preferences: {
@@ -110,7 +110,6 @@ describe("getHostedButtonDetails", () => {
         shape: "rect",
         color: "gold",
         label: "paypal",
-        height: "",
       });
     });
     expect.assertions(1);
