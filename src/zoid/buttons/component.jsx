@@ -721,6 +721,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const { message, clientID, currency, buttonSessionID } = props;
             const amount = message?.amount;
 
+            // since we are adding our own merchantID
+            // this should override the default coming from sdk client
+            logger.addTrackingBuilder(() => ({
+              [FPTI_KEY.SELLER_ID]: merchantID,
+            }));
+
             getLogger()
               .info("button_message_click")
               .track({
@@ -781,6 +787,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           }) => {
             const { message, buttonSessionID, currency } = props;
 
+            // since we are adding our own merchantID
+            // this should override the default coming from sdk client
+            logger.addTrackingBuilder(() => ({
+              [FPTI_KEY.SELLER_ID]: merchantID,
+            }));
             getLogger()
               .info("button_message_render")
               .track({
