@@ -10,29 +10,35 @@ import {
   getHostedButtonDetails,
   renderForm,
   getMerchantID,
-  shouldRenderSDKButtons,
   getFlexDirection,
-  appendButtonContainer,
   getButtonColor,
+  applyContainerStyles,
+  renderStandaloneButton,
 } from "./utils";
 import type {
   HostedButtonsComponent,
   HostedButtonsComponentProps,
   HostedButtonsInstance,
+  HostedButtonOptions,
 } from "./types";
 
 export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
     enableDPoP = false,
     hostedButtonId,
-    fundingSources = [],
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = async (selector) => {
       const merchantId = getMerchantID();
-      const { html, htmlScript, style } = await getHostedButtonDetails({
+      const {
+        html,
+        htmlScript,
+        style,
+        version,
+        preferences,
+        buttonContainerId,
+      } = await getHostedButtonDetails({
         hostedButtonId,
-        fundingSources,
       });
 
       const { onInit, onClick } = renderForm({
@@ -53,7 +59,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         merchantId,
       });
 
-      const buttonOptions = {
+      const buttonOptions: HostedButtonOptions = {
         createOrder,
         hostedButtonId,
         merchantId,
@@ -63,31 +69,19 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         style,
       };
 
-      if (shouldRenderSDKButtons(fundingSources)) {
+      if (version && version === "2") {
         const { flexDirection } = getFlexDirection({ ...style });
 
-        appendButtonContainer({ flexDirection, selector });
+        applyContainerStyles({ flexDirection, buttonContainerId });
 
-        // Only render 2 buttons max
-        // This will be refactored in https://paypal.atlassian.net/browse/DTPPCPSDK-2112 when NCPS team updates their API response
-        fundingSources.slice(0, 2).forEach((fundingSource, index) => {
-          // $FlowFixMe
-          const standaloneButton = Buttons({
-            ...buttonOptions,
+        preferences?.buttonPreferences.forEach((fundingSource) => {
+          renderStandaloneButton({
             fundingSource,
-            style: {
-              ...style,
-              color: getButtonColor(style.color, fundingSource),
-            },
+            preferences,
+            buttonContainerId,
+            buttonOptions,
+            style,
           });
-
-          if (standaloneButton.isEligible()) {
-            standaloneButton.render(
-              index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
-            );
-          } else {
-            getLogger().error(`ncps_standalone_${fundingSource}_ineligible`);
-          }
         });
       } else {
         // V1 Experience
