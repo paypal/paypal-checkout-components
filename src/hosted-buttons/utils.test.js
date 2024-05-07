@@ -11,6 +11,8 @@ import {
   getFlexDirection,
   getButtonColor,
   getElementFromSelector,
+  getButtonPreferences,
+  getDefaultButton,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -570,4 +572,65 @@ test("getElementFromSelector", () => {
   expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
 });
 
+describe("getButtonPreferences", () => {
+  test("returns all button preferences if all are eligible", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "venmo", "paylater"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal", "venmo"]);
+  });
+
+  test("removes any button preferences not in the eligible funding methods", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "paylater"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal"]);
+  });
+  test("sorts eligible funding methods according to SUPPORTED_FUNDING_SOURCES", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paylater", "venmo", "paypal"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.eligibleFundingMethods).toEqual([
+      "paypal",
+      "venmo",
+      "paylater",
+    ]);
+  });
+});
+
+describe("getDefaultButton", () => {
+  test("returns first eligible funding method that is not specified in button preferences", () => {
+    const params = {
+      buttonPreferences: ["paypal", "default"],
+      eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+    };
+
+    const defaultButton = getDefaultButton(params);
+
+    expect(defaultButton).toEqual("venmo");
+  });
+
+  test("returns undefined if there's no other eligible funding methods that are not specified in button preferences", () => {
+    const params = {
+      buttonPreferences: ["paypal", "default"],
+      eligibleFundingMethods: ["paypal"],
+    };
+
+    const defaultButton = getDefaultButton(params);
+
+    expect(defaultButton).toBeUndefined();
+  });
+});
 /* eslint-enable no-restricted-globals, promise/no-native */
