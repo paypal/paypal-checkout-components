@@ -723,7 +723,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             // since we are adding our own merchantID
             // this should override the default coming from sdk client
-            logger.addTrackingBuilder(() => ({
+            getLogger().addTrackingBuilder(() => ({
               [FPTI_KEY.SELLER_ID]: merchantID,
             }));
 
@@ -789,7 +789,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             // since we are adding our own merchantID
             // this should override the default coming from sdk client
-            logger.addTrackingBuilder(() => ({
+            getLogger().addTrackingBuilder(() => ({
               [FPTI_KEY.SELLER_ID]: merchantID,
             }));
             getLogger()
