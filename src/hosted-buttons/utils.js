@@ -1,11 +1,8 @@
 /* @flow */
 
-import { getLogger } from "@paypal/sdk-client/src";
 import { request, memoize } from "@krakenjs/belter/src";
-
-import { getButtonsComponent } from "../zoid/buttons";
-
 import {
+  getLogger,
   buildDPoPHeaders,
   getSDKHost,
   getClientID,
@@ -13,6 +10,9 @@ import {
 } from "@paypal/sdk-client/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+
+import { getButtonsComponent } from "../zoid/buttons";
 
 import type {
   ButtonVariables,
@@ -24,14 +24,11 @@ import type {
   RenderForm,
   GetFlexDirectionArgs,
   GetFlexDirection,
-  BuildButtonContainerArgs,
   Color,
   FundingSources,
   RenderStandaloneButtonProps,
   ApplyButtonStylesProps,
 } from "./types";
-
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 const entryPoint = "SDK";
 const baseUrl = `https://${getSDKHost()}`;

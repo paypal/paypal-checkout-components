@@ -6,6 +6,18 @@ export type Color = string;
 export type FlexDirection = string;
 export type Layout = string;
 
+export type CreateOrder = (data: {|
+  paymentSource: string,
+|}) => Promise<string | void>;
+
+export type OnApprove = (data: {|
+  orderID: string,
+  paymentSource: string,
+|}) => Promise<mixed>;
+
+type OnInit = (data: mixed, actions: mixed) => void;
+type OnClick = (data: mixed, actions: mixed) => void;
+
 export type FundingSources = string;
 export interface GetFlexDirection {
   flexDirection: FlexDirection;
@@ -20,10 +32,10 @@ export interface BuildButtonContainerArgs {
   selector: string | HTMLElement;
 }
 
-export type ApplyButtonStylesProps = {
+export type ApplyButtonStylesProps = {|
   flexDirection: FlexDirection,
   buttonContainerId: string,
-};
+|};
 
 export type HostedButtonStyles = {|
   layout: string,
@@ -34,7 +46,7 @@ export type HostedButtonStyles = {|
   tagline: boolean,
 |};
 
-export type HostedButtonOptions = {
+export type HostedButtonOptions = {|
   createOrder: CreateOrder,
   onApprove: OnApprove,
   onClick: OnClick,
@@ -42,7 +54,12 @@ export type HostedButtonOptions = {
   style: HostedButtonStyles,
   hostedButtonId: string,
   merchantId?: string,
-};
+|};
+
+export type HostedButtonPreferences = {|
+  buttonPreferences: $ReadOnlyArray<$Values<typeof FUNDING> | "default">,
+  eligibleFundingMethods: $ReadOnlyArray<$Values<typeof FUNDING>>,
+|};
 
 export type RenderStandaloneButtonProps = {|
   fundingSource: FundingSources,
@@ -67,11 +84,6 @@ export type HostedButtonsInstance = {|
   render: (string | HTMLElement) => Promise<void>,
 |};
 
-export type HostedButtonPreferences = {|
-  buttonPreferences: $ReadOnlyArray<$Values<typeof FUNDING> | "default">,
-  eligibleFundingMethods: $ReadOnlyArray<$Values<typeof FUNDING>>,
-|};
-
 export type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => Promise<{|
     html: string,
@@ -86,18 +98,6 @@ export type ButtonVariables = $ReadOnlyArray<{|
   name: string,
   value: string,
 |}>;
-
-export type CreateOrder = (data: {|
-  paymentSource: string,
-|}) => Promise<string | void>;
-
-export type OnApprove = (data: {|
-  orderID: string,
-  paymentSource: string,
-|}) => Promise<mixed>;
-
-type OnInit = (data: mixed, actions: mixed) => void;
-type OnClick = (data: mixed, actions: mixed) => void;
 
 export type CreateAccessToken = ({|
   clientId: string,

@@ -1,7 +1,4 @@
 /* @flow */
-
-import { getLogger } from "@paypal/sdk-client/src";
-
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
@@ -11,7 +8,6 @@ import {
   renderForm,
   getMerchantID,
   getFlexDirection,
-  getButtonColor,
   applyContainerStyles,
   renderStandaloneButton,
 } from "./utils";
