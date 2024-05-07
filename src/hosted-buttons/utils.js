@@ -1,6 +1,10 @@
 /* @flow */
 
+import { getLogger } from "@paypal/sdk-client/src";
 import { request, memoize } from "@krakenjs/belter/src";
+
+import { getButtonsComponent } from "../zoid/buttons";
+
 import {
   buildDPoPHeaders,
   getSDKHost,
@@ -8,6 +12,7 @@ import {
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
+import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 
 import type {
   ButtonVariables,
@@ -22,7 +27,11 @@ import type {
   BuildButtonContainerArgs,
   Color,
   FundingSources,
+  RenderStandaloneButtonProps,
+  ApplyButtonStylesProps,
 } from "./types";
+
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 const entryPoint = "SDK";
 const baseUrl = `https://${getSDKHost()}`;
@@ -77,6 +86,26 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
+const getButtonPreferences = ({
+  button_preferences: buttonPreferences,
+  eligible_funding_methods: eligibleFundingMethods,
+}) => {
+  const filterByEligibility = (fundingMethod) =>
+    eligibleFundingMethods.includes(fundingMethod);
+
+  // Remove any buttons that are not included in eligibleFundingMethods
+  const filteredButtonPreferences =
+    buttonPreferences.filter(filterByEligibility);
+  // Sort the eligible funding methods returned from /ncp/api/form-fields in the order that they would appear in the smart stack.
+  const sortedEligibleFundingMethods =
+    SUPPORTED_FUNDING_SOURCES.filter(filterByEligibility);
+
+  return {
+    buttonPreferences: filteredButtonPreferences,
+    eligibleFundingMethods: sortedEligibleFundingMethods,
+  };
+};
+
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
   variables?.find((variable) => variable.name === key)?.value ?? "";
 
@@ -102,14 +131,11 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
     version: body.version,
-    buttonContainerId: body.button_container_id,
+    buttonContainerId: body.button_container_id || "#spb-container",
     html: body.html,
     htmlScript: body.html_script,
     ...(preferences && {
-      preferences: {
-        buttonPreferences: preferences.button_preferences,
-        eligibleFundingMethods: preferences.eligible_funding_methods,
-      },
+      preferences: getButtonPreferences(preferences),
     }),
   };
 };
@@ -250,16 +276,16 @@ export const buildHostedButtonOnApprove = ({
   };
 };
 
-export function getFlexDirection({
+export const getFlexDirection = ({
   layout,
-}: GetFlexDirectionArgs): GetFlexDirection {
+}: GetFlexDirectionArgs): GetFlexDirection => {
   return { flexDirection: layout === "horizontal" ? "row" : "column" };
-}
+};
 
-export function getButtonColor(
+export const getButtonColor = (
   color: Color,
   fundingSource: FundingSources
-): Color {
+): Color => {
   const colorMap = {
     gold: {
       paypal: "gold",
@@ -289,41 +315,98 @@ export function getButtonColor(
   };
 
   return colorMap[color][fundingSource];
-}
+};
 
-export function shouldRenderSDKButtons(
-  fundingSources: $ReadOnlyArray<FundingSources>
-): boolean {
-  return Boolean(fundingSources.length);
-}
-
-export function appendButtonContainer({
+export const applyContainerStyles = ({
   flexDirection,
-  selector,
-}: BuildButtonContainerArgs) {
-  const elm = getElementFromSelector(selector);
+  buttonContainerId,
+}: ApplyButtonStylesProps): void | Error => {
+  const buttonContainer = document.querySelector(buttonContainerId);
 
-  if (!elm) {
-    throw new Error("PayPal button container selector was not found");
+  if (!buttonContainer) {
+    throw new Error(`Button container with id ${buttonContainerId} not found.`);
   }
 
-  const buttonContainer = document.createElement("div");
-
-  buttonContainer.setAttribute(
+  buttonContainer?.setAttribute(
     "style",
     `display: flex; flex-wrap: nowrap; gap: 16px; max-width: 750px; flex-direction: ${flexDirection}`
   );
+};
 
-  const primaryButton = document.createElement("div");
-  primaryButton.setAttribute("id", `ncp-primary-button`);
-  primaryButton.setAttribute("style", "flex-grow: 1");
+const getDefaultButton = ({ buttonPreferences, eligibleFundingMethods }) => {
+  // Return first eligible funding method that is not specified in button preferences
+  return eligibleFundingMethods.find(
+    (fundingMethod) => !buttonPreferences.includes(fundingMethod)
+  );
+};
 
-  const secondaryButton = document.createElement("div");
-  secondaryButton.setAttribute("id", `ncp-secondary-button`);
-  secondaryButton.setAttribute("style", "flex-grow: 1");
+export const renderStandaloneButton = ({
+  fundingSource,
+  preferences,
+  buttonContainerId,
+  buttonOptions,
+  style,
+}: RenderStandaloneButtonProps): ZalgoPromise<void> | void => {
+  const Buttons = getButtonsComponent();
 
-  buttonContainer.appendChild(primaryButton);
-  buttonContainer.appendChild(secondaryButton);
+  const { buttonPreferences, eligibleFundingMethods } = preferences;
 
-  elm?.appendChild(buttonContainer);
-}
+  const isDefault = fundingSource === "default";
+  const isEligible =
+    !isDefault && eligibleFundingMethods.includes(fundingSource);
+
+  const fundingSourceName = isDefault
+    ? getDefaultButton({ buttonPreferences, eligibleFundingMethods })
+    : fundingSource;
+
+  if (!fundingSourceName || !isEligible) {
+    return;
+  }
+
+  // $FlowFixMe
+  const standaloneButton = Buttons({
+    ...buttonOptions,
+    fundingSource: fundingSourceName,
+    style: {
+      ...style,
+      // $FlowFixMe
+      color: getButtonColor(style.color, fundingSourceName),
+    },
+  });
+
+  if (standaloneButton.isEligible()) {
+    return standaloneButton.render(buttonContainerId);
+  }
+
+  getLogger().error(`ncps_standalone_${fundingSourceName}_ineligible`);
+
+  // If the funding source is explicitly defined, but is not eligible,
+  // don't render anything in it's place
+  if (!isDefault) {
+    return;
+  }
+
+  // Filter out ineligible funding method and everything before
+  const indexOfFundingSource =
+    eligibleFundingMethods.indexOf(fundingSourceName);
+  const filteredEligibleFundingMethods = eligibleFundingMethods.filter(
+    (_, index) => index <= indexOfFundingSource
+  );
+
+  // If no eligible funding methods remain, return nothing
+  if (!filteredEligibleFundingMethods.length) {
+    return;
+  }
+
+  // Recursively call renderStandaloneButton to attempt to render the next eligible button.
+  return renderStandaloneButton({
+    fundingSource,
+    preferences: {
+      buttonPreferences,
+      eligibleFundingMethods: filteredEligibleFundingMethods,
+    },
+    buttonContainerId,
+    buttonOptions,
+    style,
+  });
+};
