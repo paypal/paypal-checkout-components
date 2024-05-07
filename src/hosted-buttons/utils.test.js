@@ -10,8 +10,6 @@ import {
   getHostedButtonDetails,
   getFlexDirection,
   getButtonColor,
-  shouldRenderSDKButtons,
-  appendButtonContainer,
   getElementFromSelector,
 } from "./utils";
 
@@ -554,36 +552,6 @@ test("getButtonColor", () => {
       );
     });
   });
-});
-
-test("shouldRenderSDKButtons", () => {
-  expect(shouldRenderSDKButtons([])).toBe(false);
-  expect(shouldRenderSDKButtons(["paypal"])).toBe(true);
-  expect(shouldRenderSDKButtons(["paypal", "venmo"])).toBe(true);
-});
-
-test("buildButtonContainer", () => {
-  const containerId = "#container-id";
-  const selector = document.createElement("div");
-
-  selector.setAttribute("id", containerId.slice(1));
-
-  vi.spyOn(document, "querySelector").mockReturnValueOnce(selector);
-
-  expect(() =>
-    appendButtonContainer({ flexDirection: "row", selector: containerId })
-  ).not.toThrow();
-
-  expect(() =>
-    appendButtonContainer({ flexDirection: "row", selector })
-  ).not.toThrow();
-
-  expect(() =>
-    appendButtonContainer({
-      flexDirection: "row",
-      selector: `${containerId}-not-found`,
-    })
-  ).toThrow("PayPal button container selector was not found");
 });
 
 test("getElementFromSelector", () => {
