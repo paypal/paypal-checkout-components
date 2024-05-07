@@ -83,23 +83,19 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
-const getButtonPreferences = ({
+export const getButtonPreferences = ({
   button_preferences: buttonPreferences,
   eligible_funding_methods: eligibleFundingMethods,
 }) => {
   const filterByEligibility = (fundingMethod) =>
     eligibleFundingMethods.includes(fundingMethod);
 
-  // Remove any buttons that are not included in eligibleFundingMethods
-  const filteredButtonPreferences =
-    buttonPreferences.filter(filterByEligibility);
-  // Sort the eligible funding methods returned from /ncp/api/form-fields in the order that they would appear in the smart stack.
-  const sortedEligibleFundingMethods =
-    SUPPORTED_FUNDING_SOURCES.filter(filterByEligibility);
-
   return {
-    buttonPreferences: filteredButtonPreferences,
-    eligibleFundingMethods: sortedEligibleFundingMethods,
+    // Remove any buttons that are not included in eligibleFundingMethods
+    buttonPreferences: buttonPreferences.filter(filterByEligibility),
+    // Sort the eligible funding methods returned from /ncp/api/form-fields in the order that they would appear in the smart stack.
+    eligibleFundingMethods:
+      SUPPORTED_FUNDING_SOURCES.filter(filterByEligibility),
   };
 };
 
@@ -330,7 +326,10 @@ export const applyContainerStyles = ({
   );
 };
 
-const getDefaultButton = ({ buttonPreferences, eligibleFundingMethods }) => {
+export const getDefaultButton = ({
+  buttonPreferences,
+  eligibleFundingMethods,
+}) => {
   // Return first eligible funding method that is not specified in button preferences
   return eligibleFundingMethods.find(
     (fundingMethod) => !buttonPreferences.includes(fundingMethod)
