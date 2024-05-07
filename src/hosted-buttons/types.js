@@ -1,5 +1,6 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
+import { FUNDING } from "@paypal/sdk-constants/src";
 
 export type Color = string;
 export type FlexDirection = string;
@@ -19,6 +20,38 @@ export interface BuildButtonContainerArgs {
   selector: string | HTMLElement;
 }
 
+export type ApplyButtonStylesProps = {
+  flexDirection: FlexDirection,
+  buttonContainerId: string,
+};
+
+export type HostedButtonStyles = {|
+  layout: string,
+  shape: string,
+  color: string,
+  label: string,
+  height: ?number,
+  tagline: boolean,
+|};
+
+export type HostedButtonOptions = {
+  createOrder: CreateOrder,
+  onApprove: OnApprove,
+  onClick: OnClick,
+  onInit: OnInit,
+  style: HostedButtonStyles,
+  hostedButtonId: string,
+  merchantId?: string,
+};
+
+export type RenderStandaloneButtonProps = {|
+  fundingSource: FundingSources,
+  preferences: HostedButtonPreferences,
+  buttonContainerId: string,
+  buttonOptions: HostedButtonOptions,
+  style: HostedButtonStyles,
+|};
+
 export type HostedButtonsComponentProps = {|
   hostedButtonId: string,
   fundingSources?: $ReadOnlyArray<FundingSources>,
@@ -34,27 +67,18 @@ export type HostedButtonsInstance = {|
   render: (string | HTMLElement) => Promise<void>,
 |};
 
-export type EligibleHostedButtons = "paypal" | "venmo" | "paylater";
-
 export type HostedButtonPreferences = {|
-  buttonPreferences: $ReadOnlyArray<EligibleHostedButtons & "default">,
-  eligibleFundingMethods: $ReadOnlyArray<EligibleHostedButtons>,
+  buttonPreferences: $ReadOnlyArray<$Values<typeof FUNDING> | "default">,
+  eligibleFundingMethods: $ReadOnlyArray<$Values<typeof FUNDING>>,
 |};
 
 export type HostedButtonDetailsParams =
   (HostedButtonsComponentProps) => Promise<{|
     html: string,
     htmlScript: string,
-    style: {|
-      layout: string,
-      shape: string,
-      color: string,
-      label: string,
-      height: ?number,
-      tagline: boolean,
-    |},
+    style: HostedButtonStyles,
     version: ?string,
-    buttonContainerId: ?string,
+    buttonContainerId: string,
     preferences?: HostedButtonPreferences,
   |}>;
 
@@ -72,6 +96,9 @@ export type OnApprove = (data: {|
   paymentSource: string,
 |}) => Promise<mixed>;
 
+type OnInit = (data: mixed, actions: mixed) => void;
+type OnClick = (data: mixed, actions: mixed) => void;
+
 export type CreateAccessToken = ({|
   clientId: string,
   enableDPoP?: boolean,
@@ -86,8 +113,8 @@ export type RenderForm = ({|
   htmlScript: string,
   selector: string | HTMLElement,
 |}) => {|
-  onInit: (data: mixed, actions: mixed) => void,
-  onClick: (data: mixed, actions: mixed) => void,
+  onInit: OnInit,
+  onClick: OnClick,
 |};
 
 /* eslint-enable no-restricted-globals, promise/no-native */
