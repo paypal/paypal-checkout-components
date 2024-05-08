@@ -17,6 +17,7 @@ import {
   getButtonPreferences,
   getDefaultButton,
   renderStandaloneButton,
+  applyContainerStyles,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -643,6 +644,28 @@ describe("getDefaultButton", () => {
     const defaultButton = getDefaultButton(params);
 
     expect(defaultButton).toBeUndefined();
+  });
+});
+
+describe("applyContainerStyles", () => {
+  const buttonContainerId = "button-container";
+  const params = { flexDirection: "vertical", buttonContainerId };
+
+  test("successfully applies styles to container", () => {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = buttonContainerId;
+    vi.spyOn(document, "querySelector").mockReturnValueOnce(buttonContainer);
+
+    applyContainerStyles(params);
+
+    expect(buttonContainer?.style.length).toBeTruthy();
+  });
+
+  test("throws error if button container cannot be found", () => {
+    const shouldThrowError = () => applyContainerStyles(params);
+    expect(shouldThrowError).toThrowError(
+      `Button container with id ${buttonContainerId} not found.`
+    );
   });
 });
 
