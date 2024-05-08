@@ -61,12 +61,16 @@ export type HostedButtonPreferences = {|
   eligibleFundingMethods: $ReadOnlyArray<$Values<typeof FUNDING>>,
 |};
 
+export type NcpResponsePreferences = {|
+  button_preferences: $ReadOnlyArray<$Values<typeof FUNDING> | "default">,
+  eligible_funding_methods: $ReadOnlyArray<$Values<typeof FUNDING>>,
+|};
+
 export type RenderStandaloneButtonProps = {|
   fundingSource: FundingSources,
   preferences: HostedButtonPreferences,
   buttonContainerId: string,
   buttonOptions: HostedButtonOptions,
-  style: HostedButtonStyles,
 |};
 
 export type HostedButtonsComponentProps = {|

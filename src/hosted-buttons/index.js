@@ -76,7 +76,6 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
             preferences,
             buttonContainerId,
             buttonOptions,
-            style,
           });
         });
       } else {

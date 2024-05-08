@@ -28,6 +28,8 @@ import type {
   FundingSources,
   RenderStandaloneButtonProps,
   ApplyButtonStylesProps,
+  HostedButtonPreferences,
+  NcpResponsePreferences,
 } from "./types";
 
 const entryPoint = "SDK";
@@ -86,7 +88,7 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
 export const getButtonPreferences = ({
   button_preferences: buttonPreferences,
   eligible_funding_methods: eligibleFundingMethods,
-}) => {
+}: NcpResponsePreferences): HostedButtonPreferences => {
   const filterByEligibility = (fundingMethod) =>
     eligibleFundingMethods.includes(fundingMethod);
 
@@ -329,7 +331,7 @@ export const applyContainerStyles = ({
 export const getDefaultButton = ({
   buttonPreferences,
   eligibleFundingMethods,
-}) => {
+}: HostedButtonPreferences): ?string => {
   // Return first eligible funding method that is not specified in button preferences
   return eligibleFundingMethods.find(
     (fundingMethod) => !buttonPreferences.includes(fundingMethod)
@@ -341,21 +343,20 @@ export const renderStandaloneButton = ({
   preferences,
   buttonContainerId,
   buttonOptions,
-  style,
 }: RenderStandaloneButtonProps): ZalgoPromise<void> | void => {
   const Buttons = getButtonsComponent();
 
   const { buttonPreferences, eligibleFundingMethods } = preferences;
+  const { style } = buttonOptions;
 
   const isDefault = fundingSource === "default";
-  const isEligible =
-    !isDefault && eligibleFundingMethods.includes(fundingSource);
 
   const fundingSourceName = isDefault
     ? getDefaultButton({ buttonPreferences, eligibleFundingMethods })
     : fundingSource;
 
-  if (!fundingSourceName || !isEligible) {
+  // If getDefaultButton doesn't return a button, just return void
+  if (!fundingSourceName) {
     return;
   }
 
@@ -386,7 +387,7 @@ export const renderStandaloneButton = ({
   const indexOfFundingSource =
     eligibleFundingMethods.indexOf(fundingSourceName);
   const filteredEligibleFundingMethods = eligibleFundingMethods.filter(
-    (_, index) => index <= indexOfFundingSource
+    (_, index) => index > indexOfFundingSource
   );
 
   // If no eligible funding methods remain, return nothing
@@ -396,13 +397,12 @@ export const renderStandaloneButton = ({
 
   // Recursively call renderStandaloneButton to attempt to render the next eligible button.
   return renderStandaloneButton({
-    fundingSource,
+    fundingSource: filteredEligibleFundingMethods[0],
     preferences: {
       buttonPreferences,
       eligibleFundingMethods: filteredEligibleFundingMethods,
     },
     buttonContainerId,
     buttonOptions,
-    style,
   });
 };
