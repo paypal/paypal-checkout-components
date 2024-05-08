@@ -154,7 +154,7 @@ export function isFundingEligible(
   }
 
   if (fundingConfig.requires) {
-    const required = fundingConfig.requires({ platform });
+    const required = fundingConfig.requires({ experiment, platform });
 
     if (required.popup === true && supportsPopups === false) {
       return false;

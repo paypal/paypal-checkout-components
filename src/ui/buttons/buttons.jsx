@@ -15,6 +15,7 @@ import {
   BUTTON_NUMBER,
   BUTTON_LAYOUT,
   BUTTON_FLOW,
+  MESSAGE_POSITION,
 } from "../../constants";
 import {
   determineEligibleFunding,
@@ -22,8 +23,6 @@ import {
 } from "../../funding";
 import { ValidationError } from "../../lib";
 
-import { getButtonDesign } from "./buttonDesigns";
-import { ButtonDesignExperimentScriptWrapper } from "./buttonDesigns/script";
 import {
   normalizeButtonProps,
   type ButtonPropsInputs,
@@ -36,6 +35,8 @@ import { Button } from "./button";
 import { TagLine } from "./tagline";
 import { Script } from "./script";
 import { PoweredByPayPal } from "./poweredBy";
+import { Message } from "./message";
+import { calculateShowPoweredBy } from "./util";
 
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
@@ -171,6 +172,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     onShippingOptionsChange,
     personalization,
     userIDToken,
+    customerId,
     content,
     flow,
     experiment,
@@ -179,6 +181,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
+    message,
+    messageMarkup,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -235,10 +239,17 @@ export function Buttons(props: ButtonsProps): ElementNode {
     flow === BUTTON_FLOW.PURCHASE &&
     ((__WEB__ && userIDToken) || Object.keys(instruments).length);
 
-  const { buttonDesignScript = "" } = getButtonDesign(personalization);
   const index = (i) => {
     return i;
   };
+
+  const showTagline =
+    tagline &&
+    layout === BUTTON_LAYOUT.HORIZONTAL &&
+    !fundingSource &&
+    !message;
+
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
 
   return (
     <div
@@ -259,6 +270,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
         fundingEligibility={fundingEligibility}
       />
 
+      {message && message.position === MESSAGE_POSITION.TOP ? (
+        <Message markup={messageMarkup} position={message.position} />
+      ) : null}
+
       {fundingSources.map((source, i) => (
         <Button
           content={content}
@@ -277,6 +292,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           onShippingOptionsChange={onShippingOptionsChange}
           onClick={onClick}
           userIDToken={userIDToken}
+          customerId={customerId}
           personalization={personalization}
           tagline={tagline}
           commit={commit}
@@ -288,10 +304,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ))}
 
-      {tagline &&
-      layout === BUTTON_LAYOUT.HORIZONTAL &&
-      !fundingSource &&
-      !fundingSources.includes(FUNDING.CARD) ? (
+      {showTagline ? (
         <TagLine
           fundingSource={fundingSources[0]}
           style={style}
@@ -313,18 +326,13 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {fundingSources.includes(FUNDING.CARD) ? (
-        <PoweredByPayPal locale={locale} nonce={nonce} />
+      {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
+
+      {message && message.position === MESSAGE_POSITION.BOTTOM ? (
+        <Message markup={messageMarkup} position={message.position} />
       ) : null}
 
-      {buttonDesignScript ? (
-        <ButtonDesignExperimentScriptWrapper
-          nonce={nonce}
-          buttonDesignScript={buttonDesignScript}
-        />
-      ) : (
-        <Script nonce={nonce} />
-      )}
+      <Script nonce={nonce} />
     </div>
   );
 }

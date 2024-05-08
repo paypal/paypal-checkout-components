@@ -72,26 +72,6 @@ export type LabelOptions = {|
   experiment?: Experiment,
 |};
 
-export type DesignExperimentLabelOptions = {|
-  i: number,
-  logo: ChildType,
-  label: ?$Values<typeof BUTTON_LABEL>,
-  locale: LocaleType,
-  logoColor: $Values<typeof LOGO_COLOR>,
-  multiple: boolean,
-  period?: number,
-  fundingEligibility: FundingEligibilityType,
-  optional?: boolean,
-  onClick: (event: Event, ...args: $ReadOnlyArray<mixed>) => void,
-  onKeyPress?: (event: KeyboardEvent, ...args: $ReadOnlyArray<mixed>) => void,
-  layout: $Values<typeof BUTTON_LAYOUT>,
-  personalization: ?Personalization,
-  nonce: ?string,
-  tagline: ?boolean,
-  content: ?ContentType,
-  buttonDesignComponent: ?ChildType,
-|};
-
 export type WalletLabelOptions = {|
   locale: LocaleType,
   logoColor: $Values<typeof LOGO_COLOR>,
@@ -115,7 +95,10 @@ export type FundingSourceConfig = {|
   enabled: boolean,
   automatic: boolean,
   shippingChange?: boolean,
-  requires?: ({| platform?: $Values<typeof PLATFORM> |}) => Requires,
+  requires?: ({|
+    experiment?: ?Experiment,
+    platform?: $Values<typeof PLATFORM>,
+  |}) => Requires,
   platforms: $ReadOnlyArray<$Values<typeof PLATFORM>>,
   layouts: $ReadOnlyArray<$Values<typeof BUTTON_LAYOUT>>,
   flows: $ReadOnlyArray<$Values<typeof BUTTON_FLOW>>,

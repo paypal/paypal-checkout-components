@@ -7,6 +7,7 @@ import {
   getClientID,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
 
 import type {
   ButtonVariables,
@@ -16,6 +17,11 @@ import type {
   HostedButtonDetailsParams,
   OnApprove,
   RenderForm,
+  GetFlexDirectionArgs,
+  GetFlexDirection,
+  BuildButtonContainerArgs,
+  Color,
+  FundingSources,
 } from "./types";
 
 const entryPoint = "SDK";
@@ -29,9 +35,10 @@ const getHeaders = (accessToken?: string) => ({
 });
 
 export const getMerchantID = (): string | void => {
-  // The SDK supports mutiple merchant IDs, but hosted buttons only
-  // have one merchant id as a query parameter to the SDK script.
+  // The SDK supports Multi-Seller Payments (MSP, i.e sending multiple merchant IDs), but hosted buttons
+  // does not support this. Only one merchant id can be passed as a query parameter to the SDK script
   // https://github.com/paypal/paypal-sdk-client/blob/c58e35f8f7adbab76523eb25b9c10543449d2d29/src/script.js#L144
+  // https://developer.paypal.com/docs/multiparty/checkout/multiseller-payments/
   const merchantIds = getSDKMerchantID();
   if (merchantIds.length > 1) {
     throw new Error("Multiple merchant-ids are not supported.");
@@ -83,18 +90,37 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 
   // $FlowIssue request returns ZalgoPromise
   const { body } = response;
-  const variables = body.button_details.link_variables;
+  const { link_variables: variables, preferences } = body.button_details;
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
       shape: getButtonVariable(variables, "shape"),
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
+      tagline: getButtonVariable(variables, "tagline") === "true",
+      height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
+    version: body.version,
+    buttonContainerId: body.button_container_id,
     html: body.html,
     htmlScript: body.html_script,
+    ...(preferences && {
+      preferences: {
+        buttonPreferences: preferences.button_preferences,
+        eligibleFundingMethods: preferences.eligible_funding_methods,
+      },
+    }),
   };
 };
+
+export function getElementFromSelector(
+  selector: string | HTMLElement
+): HTMLElement | null {
+  return typeof selector === "string"
+    ? document.querySelector(selector)
+    : selector;
+}
 
 /**
  * Attaches form fields (html) to the given selector, and
@@ -106,8 +132,7 @@ export const renderForm: RenderForm = ({
   htmlScript,
   selector,
 }) => {
-  const elm =
-    typeof selector === "string" ? document.querySelector(selector) : selector;
+  const elm = getElementFromSelector(selector);
   if (elm) {
     elm.innerHTML = html + htmlScript;
     const newScriptEl = document.createElement("script");
@@ -208,6 +233,97 @@ export const buildHostedButtonOnApprove = ({
         merchant_id: merchantId,
         context_id: data.orderID,
       }),
+    }).then((response) => {
+      // The "Debit or Credit Card" button does not open a popup
+      // so we need to redirect to the thank you page for buyers who complete
+      // a checkout via "Debit or Credit Card".
+      if (data.paymentSource === FUNDING.CARD) {
+        let redirectUrl = `${baseUrl}/ncp/payment/${hostedButtonId}/${data.orderID}`;
+        // add error messages to the payment confirmation page url
+        if (response.body?.details?.[0]?.issue) {
+          redirectUrl += `?status=${response.body.details[0].issue}`;
+        }
+        window.location = redirectUrl;
+      }
+      return response;
     });
   };
 };
+
+export function getFlexDirection({
+  layout,
+}: GetFlexDirectionArgs): GetFlexDirection {
+  return { flexDirection: layout === "horizontal" ? "row" : "column" };
+}
+
+export function getButtonColor(
+  color: Color,
+  fundingSource: FundingSources
+): Color {
+  const colorMap = {
+    gold: {
+      paypal: "gold",
+      venmo: "blue",
+      paylater: "gold",
+    },
+    blue: {
+      paypal: "blue",
+      venmo: "silver",
+      paylater: "blue",
+    },
+    black: {
+      paypal: "black",
+      venmo: "black",
+      paylater: "black",
+    },
+    white: {
+      paypal: "white",
+      venmo: "white",
+      paylater: "white",
+    },
+    silver: {
+      paypal: "silver",
+      venmo: "blue",
+      paylater: "silver",
+    },
+  };
+
+  return colorMap[color][fundingSource];
+}
+
+export function shouldRenderSDKButtons(
+  fundingSources: $ReadOnlyArray<FundingSources>
+): boolean {
+  return Boolean(fundingSources.length);
+}
+
+export function appendButtonContainer({
+  flexDirection,
+  selector,
+}: BuildButtonContainerArgs) {
+  const elm = getElementFromSelector(selector);
+
+  if (!elm) {
+    throw new Error("PayPal button container selector was not found");
+  }
+
+  const buttonContainer = document.createElement("div");
+
+  buttonContainer.setAttribute(
+    "style",
+    `display: flex; flex-wrap: nowrap; gap: 16px; max-width: 750px; flex-direction: ${flexDirection}`
+  );
+
+  const primaryButton = document.createElement("div");
+  primaryButton.setAttribute("id", `ncp-primary-button`);
+  primaryButton.setAttribute("style", "flex-grow: 1");
+
+  const secondaryButton = document.createElement("div");
+  secondaryButton.setAttribute("id", `ncp-secondary-button`);
+  secondaryButton.setAttribute("style", "flex-grow: 1");
+
+  buttonContainer.appendChild(primaryButton);
+  buttonContainer.appendChild(secondaryButton);
+
+  elm?.appendChild(buttonContainer);
+}

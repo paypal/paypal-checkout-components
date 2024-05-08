@@ -19,6 +19,7 @@ import {
   getCSPNonce,
   getBuyerCountry,
   getClientAccessToken,
+  getCustomerId,
   getPlatform,
   getPartnerAttributionID,
   getCorrelationID,
@@ -39,7 +40,7 @@ import {
   getDisableSetCookie,
   getExperimentation,
   getSDKAttribute,
-  getSDKIntegrationSource,
+  getJsSdkLibrary,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -73,7 +74,11 @@ import {
   logLatencyInstrumentationPhase,
   prepareInstrumentationPayload,
 } from "../../lib";
-import { normalizeButtonStyle, type ButtonProps } from "../../ui/buttons/props";
+import {
+  normalizeButtonStyle,
+  normalizeButtonMessage,
+  type ButtonProps,
+} from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
 
 import { containerTemplate } from "./container";
@@ -86,6 +91,7 @@ import {
   getRenderedButtons,
   getButtonSize,
   getButtonExperiments,
+  getModal,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -329,6 +335,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         queryParam: true,
         value: getClientAccessToken,
+      },
+
+      customerId: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getCustomerId,
       },
 
       clientID: {
@@ -610,6 +623,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getIntent,
       },
 
+      jsSdkLibrary: {
+        type: "string",
+        queryParam: true,
+        required: false,
+        value: getJsSdkLibrary,
+      },
+
       locale: {
         type: "object",
         queryParam: true,
@@ -626,6 +646,24 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         required: false,
         value: getMerchantRequestedPopupsDisabled,
+      },
+
+      message: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        decorate: ({ props, value }) => {
+          const {
+            style: { layout },
+            renderedButtons: fundingSources,
+          } = props;
+          return normalizeButtonMessage(
+            // $FlowFixMe
+            value,
+            layout,
+            fundingSources
+          );
+        },
       },
 
       nonce: {
@@ -673,6 +711,103 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             }
 
             return value(...args);
+          };
+        },
+      },
+
+      onMessageClick: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return async ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
+            const { message, clientID, merchantID, currency, buttonSessionID } =
+              props;
+            const amount = message?.amount;
+
+            getLogger()
+              .info("button_message_click")
+              .track({
+                [FPTI_KEY.TRANSITION]: "button_message_click",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+                [FPTI_KEY.EVENT_NAME]: "message_click",
+                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+                [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
+                  creditProductIdentifier,
+                [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+                [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
+                [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
+                [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
+                [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
+                [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
+              });
+
+            const modalInstance = await getModal(clientID, merchantID);
+            return modalInstance?.show({
+              amount,
+              offer: offerType,
+              currency,
+            });
+          };
+        },
+      },
+
+      onMessageHover: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return () => {
+            // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
+
+            // lazy loads the modal, to be memoized and executed onMessageClick
+            const { clientID, merchantID } = props;
+            return getModal(clientID, merchantID);
+          };
+        },
+      },
+
+      onMessageReady: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return ({
+            offerType,
+            messageType,
+            offerCountryCode,
+            creditProductIdentifier,
+          }) => {
+            const { message, buttonSessionID, currency, merchantID } = props;
+
+            getLogger()
+              .info("button_message_render")
+              .track({
+                [FPTI_KEY.TRANSITION]: "button_message_render",
+                [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+                [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+                [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+                [FPTI_KEY.EVENT_NAME]: "message_render",
+                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+                [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
+                  creditProductIdentifier,
+                [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+                [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
+                [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
+                [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
+                [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
+                [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
+                [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
+              });
           };
         },
       },
@@ -774,13 +909,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: getCorrelationID,
         queryParam: true,
-      },
-
-      sdkIntegrationSource: {
-        type: "string",
-        queryParam: true,
-        required: false,
-        value: getSDKIntegrationSource,
       },
 
       sdkMeta: {

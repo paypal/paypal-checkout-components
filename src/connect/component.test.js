@@ -1,8 +1,7 @@
 /* @flow */
 
 import { getUserIDToken, getSDKToken } from "@paypal/sdk-client/src";
-// eslint-disable-next-line import/no-namespace
-import * as axo from "@paypal/accelerated-checkout-loader/dist/loader.esm";
+import { loadAxo } from "@paypal/connect-loader-component";
 import { describe, expect, test, vi } from "vitest";
 
 import {
@@ -31,6 +30,12 @@ vi.mock("@paypal/sdk-client/src", () => {
   };
 });
 
+vi.mock("@paypal/connect-loader-component", () => {
+  return {
+    loadAxo: vi.fn(),
+  };
+});
+
 describe("getConnectComponent: returns ConnectComponent", () => {
   const mockAxoMetadata = { someData: "data" };
   const mockProps = { someProp: "value" };
@@ -43,7 +48,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
       },
     };
 
-    vi.spyOn(axo, "loadAxo").mockResolvedValue({ metadata: mockAxoMetadata });
+    loadAxo.mockResolvedValue({ metadata: mockAxoMetadata });
   });
 
   test("uses user id token if no sdk token is present", async () => {
@@ -92,7 +97,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
 
   test("loadAxo failure is handled", async () => {
     const errorMessage = "Something went wrong";
-    axo.loadAxo.mockRejectedValue(errorMessage);
+    loadAxo.mockRejectedValue(errorMessage);
 
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
       errorMessage
@@ -110,7 +115,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
 
   test("minified is set according to debug value", async () => {
     await getConnectComponent(mockProps);
-    expect(axo.loadAxo).toHaveBeenCalledWith({
+    expect(loadAxo).toHaveBeenCalledWith({
       minified: true,
       btSdkVersion: "3.97.3-connect-alpha.6.1",
       metadata: undefined,

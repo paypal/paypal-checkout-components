@@ -1,3 +1,69 @@
+## <small>5.0.311 (2024-05-01)</small>
+
+* Update vaulted pre-render to support customerId check (#2382) ([42eec79](https://github.com/paypal/paypal-checkout-components/commit/42eec79)), closes [#2382](https://github.com/paypal/paypal-checkout-components/issues/2382)
+
+
+
+## <small>5.0.310 (2024-05-01)</small>
+
+* fix: add eslint-config-grumbler as dev dependency (#2383) ([05bb7b6](https://github.com/paypal/paypal-checkout-components/commit/05bb7b6)), closes [#2383](https://github.com/paypal/paypal-checkout-components/issues/2383)
+
+
+
+## <small>5.0.309 (2024-04-24)</small>
+
+* Use Standalone buttons for V2 of Hosted Buttons (#2375) ([04cca79](https://github.com/paypal/paypal-checkout-components/commit/04cca79)), closes [#2375](https://github.com/paypal/paypal-checkout-components/issues/2375)
+
+
+
+## <small>5.0.308 (2024-04-17)</small>
+
+* feat: dynamic messaging (#2349) ([4b3d77a](https://github.com/paypal/paypal-checkout-components/commit/4b3d77a)), closes [#2349](https://github.com/paypal/paypal-checkout-components/issues/2349)
+
+
+
+## <small>5.0.307 (2024-04-03)</small>
+
+* remove unused buttonDesign experiment (#2368) ([cb69c02](https://github.com/paypal/paypal-checkout-components/commit/cb69c02)), closes [#2368](https://github.com/paypal/paypal-checkout-components/issues/2368)
+
+
+
+## <small>5.0.306 (2024-03-27)</small>
+
+* feat(venmo): eligibility (#2366) ([530567f](https://github.com/paypal/paypal-checkout-components/commit/530567f)), closes [#2366](https://github.com/paypal/paypal-checkout-components/issues/2366)
+
+
+
+## <small>5.0.305 (2024-03-20)</small>
+
+* Add recommended methods on FPTI log (#2362) ([a41e3f9](https://github.com/paypal/paypal-checkout-components/commit/a41e3f9)), closes [#2362](https://github.com/paypal/paypal-checkout-components/issues/2362)
+
+
+
+## <small>5.0.304 (2024-03-13)</small>
+
+* Rename sdkIntegrationSource buttons zoid prop (#2334) ([34e811a](https://github.com/paypal/paypal-checkout-components/commit/34e811a)), closes [#2334](https://github.com/paypal/paypal-checkout-components/issues/2334)
+
+
+
+## <small>5.0.303 (2024-03-08)</small>
+
+* Revert "Render Debit or Credit Card when `style.layout` is "horizontal" (#2346)" (#2359) ([fbd0c27](https://github.com/paypal/paypal-checkout-components/commit/fbd0c27)), closes [#2346](https://github.com/paypal/paypal-checkout-components/issues/2346) [#2359](https://github.com/paypal/paypal-checkout-components/issues/2359)
+
+
+
+## <small>5.0.302 (2024-03-06)</small>
+
+* add QRCode component to hosted buttons (#2351) ([648b54d](https://github.com/paypal/paypal-checkout-components/commit/648b54d)), closes [#2351](https://github.com/paypal/paypal-checkout-components/issues/2351)
+
+
+
+## <small>5.0.301 (2024-03-05)</small>
+
+* Revert "update axo loader library (#2350)" (#2353) ([914d42d](https://github.com/paypal/paypal-checkout-components/commit/914d42d)), closes [#2350](https://github.com/paypal/paypal-checkout-components/issues/2350) [#2353](https://github.com/paypal/paypal-checkout-components/issues/2353)
+
+
+
 ## <small>5.0.300 (2024-03-01)</small>
 
 * update axo loader library (#2350) ([bcdf9c3](https://github.com/paypal/paypal-checkout-components/commit/bcdf9c3)), closes [#2350](https://github.com/paypal/paypal-checkout-components/issues/2350)
