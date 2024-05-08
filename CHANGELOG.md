@@ -1,3 +1,9 @@
+## <small>5.0.312 (2024-05-08)</small>
+
+* fix: handle tagline field on ncps hosted buttons (#2384) ([4a46749](https://github.com/paypal/paypal-checkout-components/commit/4a46749)), closes [#2384](https://github.com/paypal/paypal-checkout-components/issues/2384)
+
+
+
 ## <small>5.0.311 (2024-05-01)</small>
 
 * Update vaulted pre-render to support customerId check (#2382) ([42eec79](https://github.com/paypal/paypal-checkout-components/commit/42eec79)), closes [#2382](https://github.com/paypal/paypal-checkout-components/issues/2382)
