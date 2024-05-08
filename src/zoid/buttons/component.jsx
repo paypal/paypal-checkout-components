@@ -716,16 +716,20 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
-            merchantID,
+            merchantID: serverMerchantId,
           }) => {
-            const { message, clientID, currency, buttonSessionID } = props;
+            const {
+              message,
+              clientID,
+              currency,
+              buttonSessionID,
+              merchantID: partnerMerchantId,
+            } = props;
             const amount = message?.amount;
-
-            // since we are adding our own merchantID
-            // this should override the default coming from sdk client
-            getLogger().addTrackingBuilder(() => ({
-              [FPTI_KEY.SELLER_ID]: merchantID,
-            }));
+            const merchantID =
+              partnerMerchantId === "" || !partnerMerchantId
+                ? serverMerchantId
+                : partnerMerchantId.join();
 
             getLogger()
               .info("button_message_click")
@@ -764,11 +768,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return ({ merchantID }) => {
+          return ({ merchantID: serverMerchantId }) => {
+            const { clientID, merchantID: partnerMerchantId } = props;
+            // merchantID that comes from props is an array
+            const merchantID =
+              partnerMerchantId === "" || !partnerMerchantId
+                ? serverMerchantId
+                : partnerMerchantId.join();
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID } = props;
             return getModal(clientID, merchantID);
           };
         },
@@ -783,15 +792,27 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
-            merchantID,
+            merchantID: serverMerchantId,
           }) => {
-            const { message, buttonSessionID, currency } = props;
+            // merchantID that comes from props is an array
+            const {
+              message,
+              buttonSessionID,
+              currency,
+              merchantID: partnerMerchantId,
+            } = props;
+            // check to see if a partner merchant id integration exists
+            // if not grab the server merchant id
+            const merchantID =
+              partnerMerchantId === "" || !partnerMerchantId
+                ? serverMerchantId
+                : partnerMerchantId.join();
 
-            // since we are adding our own merchantID
-            // this should override the default coming from sdk client
+            // override with server id if partner does not exist
             getLogger().addTrackingBuilder(() => ({
               [FPTI_KEY.SELLER_ID]: merchantID,
             }));
+
             getLogger()
               .info("button_message_render")
               .track({
@@ -801,7 +822,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_render",
-                [FPTI_KEY.SELLER_ID]: merchantID,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
