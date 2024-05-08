@@ -316,7 +316,7 @@ export const applyContainerStyles = ({
   flexDirection,
   buttonContainerId,
 }: ApplyButtonStylesProps): void | Error => {
-  const buttonContainer = document.querySelector(buttonContainerId);
+  const buttonContainer = document.querySelector(`#${buttonContainerId}`);
 
   if (!buttonContainer) {
     throw new Error(`Button container with id ${buttonContainerId} not found.`);
