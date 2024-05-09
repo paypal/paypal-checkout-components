@@ -110,6 +110,7 @@ describe("getHostedButtonDetails", () => {
             button_preferences: ["paypal", "paylater"],
             eligible_funding_methods: ["paypal", "venmo", "paylater"],
           },
+          js_sdk_container_id: "spb-container",
         },
         version: "2",
       },

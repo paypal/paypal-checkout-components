@@ -6,8 +6,9 @@ import { request } from "@krakenjs/belter/src";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
-import { getHostedButtonsComponent } from ".";
 import { renderStandaloneButton } from "./utils";
+
+import { getHostedButtonsComponent } from ".";
 
 vi.mock("@krakenjs/belter/src", async () => {
   return {
@@ -200,9 +201,9 @@ describe("HostedButtons v2", () => {
   const hostedButtonDetailsResponse = {
     body: {
       version: "2",
-      button_container_id: "spb-container",
       button_details: {
         link_variables: baseLinkVariables,
+        js_sdk_container_id: "spb-container",
         preferences: {
           button_preferences: ["paypal", "default"],
           eligible_funding_methods: ["paypal", "venmo", "paylater"],
@@ -215,7 +216,8 @@ describe("HostedButtons v2", () => {
     vi.restoreAllMocks();
 
     const selector = document.createElement("div");
-    selector.id = hostedButtonDetailsResponse.button_container_id;
+    selector.id =
+      hostedButtonDetailsResponse.body.button_details.js_sdk_container_id;
     vi.spyOn(document, "querySelector").mockReturnValue(selector);
   });
 

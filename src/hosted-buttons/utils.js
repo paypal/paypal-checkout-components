@@ -116,7 +116,13 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 
   // $FlowIssue request returns ZalgoPromise
   const { body } = response;
-  const { link_variables: variables, preferences } = body.button_details;
+  const {
+    link_variables: variables,
+    preferences,
+    js_sdk_container_id: buttonContainerId,
+  } = body.button_details;
+
+  const shouldIncludePreferences = preferences && body.version === "2";
 
   return {
     style: {
@@ -128,10 +134,10 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
     version: body.version,
-    buttonContainerId: body.button_container_id || "#spb-container",
+    buttonContainerId: buttonContainerId || "spb-container",
     html: body.html,
     htmlScript: body.html_script,
-    ...(preferences && {
+    ...(shouldIncludePreferences && {
       preferences: getButtonPreferences(preferences),
     }),
   };
@@ -324,10 +330,7 @@ export const applyContainerStyles = ({
     throw new Error(`Button container with id ${buttonContainerId} not found.`);
   }
 
-  buttonContainer?.setAttribute(
-    "style",
-    `display: flex; flex-wrap: nowrap; gap: 16px; max-width: 750px; flex-direction: ${flexDirection}`
-  );
+  buttonContainer.style.cssText = `display: flex; flex-wrap: nowrap; gap: 16px; max-width: 750px; flex-direction: ${flexDirection}`;
 };
 
 export const getDefaultButton = ({
@@ -374,7 +377,7 @@ export const renderStandaloneButton = ({
   });
 
   if (standaloneButton.isEligible()) {
-    return standaloneButton.render(buttonContainerId);
+    return standaloneButton.render(`#${buttonContainerId}`);
   }
 
   getLogger().error(`ncps_standalone_${fundingSourceName}_ineligible`);
