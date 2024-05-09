@@ -571,7 +571,7 @@ test("getButtonColor", () => {
 });
 
 test("getElementFromSelector", () => {
-  const containerId = "#container-id";
+  const containerId = "container-id";
   const selector = document.createElement("div");
 
   selector.setAttribute("id", containerId.slice(1));
@@ -682,7 +682,8 @@ describe("applyContainerStyles", () => {
 });
 
 describe("renderStandaloneButton", () => {
-  const containerId = "#container-id";
+  const containerId = "container-id";
+  const expectedContainerId = `#${containerId}`;
   const renderMock = vi.fn();
   const errorMock = vi.fn();
   const baseParams = {
@@ -729,7 +730,7 @@ describe("renderStandaloneButton", () => {
     });
 
     expect(renderMock).toHaveBeenCalledTimes(1);
-    expect(renderMock).toHaveBeenCalledWith(containerId);
+    expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
         fundingSource: "paypal",
@@ -779,7 +780,7 @@ describe("renderStandaloneButton", () => {
     });
 
     expect(renderMock).toHaveBeenCalledTimes(1);
-    expect(renderMock).toHaveBeenCalledWith(containerId);
+    expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
         fundingSource: "venmo",
@@ -819,7 +820,7 @@ describe("renderStandaloneButton", () => {
       })
     );
     expect(renderMock).toHaveBeenCalledTimes(1);
-    expect(renderMock).toHaveBeenCalledWith(containerId);
+    expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
   });
 
   test("does not render any button if fundingSource is 'default' and there are no eligible buttons", () => {

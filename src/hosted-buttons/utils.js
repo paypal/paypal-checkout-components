@@ -89,6 +89,15 @@ export const getButtonPreferences = ({
   button_preferences: buttonPreferences,
   eligible_funding_methods: eligibleFundingMethods,
 }: NcpResponsePreferences): HostedButtonPreferences => {
+  if (!buttonPreferences?.length || !eligibleFundingMethods?.length) {
+    throw new Error(
+      `Expected preferences to be populated, recieved: ${JSON.stringify({
+        buttonPreferences,
+        eligibleFundingMethods,
+      })}`
+    );
+  }
+
   return {
     // Remove any buttons that are not included in eligibleFundingMethods
     buttonPreferences: buttonPreferences.filter(
@@ -118,8 +127,8 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   const { body } = response;
   const {
     link_variables: variables,
-    preferences,
     js_sdk_container_id: buttonContainerId,
+    preferences,
   } = body.button_details;
 
   const shouldIncludePreferences = preferences && body.version === "2";
