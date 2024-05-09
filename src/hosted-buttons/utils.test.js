@@ -621,6 +621,17 @@ describe("getButtonPreferences", () => {
       "paylater",
     ]);
   });
+
+  test("doesn't filter out 'default' in button preferences", () => {
+    const params = {
+      button_preferences: ["paypal", "default"],
+      eligible_funding_methods: ["paylater", "venmo", "paypal"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal", "default"]);
+  });
 });
 
 describe("getDefaultButton", () => {

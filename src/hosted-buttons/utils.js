@@ -89,15 +89,17 @@ export const getButtonPreferences = ({
   button_preferences: buttonPreferences,
   eligible_funding_methods: eligibleFundingMethods,
 }: NcpResponsePreferences): HostedButtonPreferences => {
-  const filterByEligibility = (fundingMethod) =>
-    eligibleFundingMethods.includes(fundingMethod);
-
   return {
     // Remove any buttons that are not included in eligibleFundingMethods
-    buttonPreferences: buttonPreferences.filter(filterByEligibility),
+    buttonPreferences: buttonPreferences.filter(
+      (fundingMethod) =>
+        eligibleFundingMethods.includes(fundingMethod) ||
+        fundingMethod === "default"
+    ),
     // Sort the eligible funding methods returned from /ncp/api/form-fields in the order that they would appear in the smart stack.
-    eligibleFundingMethods:
-      SUPPORTED_FUNDING_SOURCES.filter(filterByEligibility),
+    eligibleFundingMethods: SUPPORTED_FUNDING_SOURCES.filter((fundingMethod) =>
+      eligibleFundingMethods.includes(fundingMethod)
+    ),
   };
 };
 
