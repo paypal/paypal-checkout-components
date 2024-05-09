@@ -49,6 +49,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         hostedButtonId,
         merchantId,
       });
+
       const onApprove = buildHostedButtonOnApprove({
         enableDPoP,
         hostedButtonId,
