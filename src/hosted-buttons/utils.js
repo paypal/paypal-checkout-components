@@ -49,6 +49,7 @@ export const getMerchantID = (): string | void => {
   // https://developer.paypal.com/docs/multiparty/checkout/multiseller-payments/
   const merchantIds = getSDKMerchantID();
   if (merchantIds.length > 1) {
+    getLogger().error("ncps_multiple_merchant_ids", { merchantIds });
     throw new Error("Multiple merchant-ids are not supported.");
   }
   return merchantIds[0];
@@ -90,10 +91,16 @@ export const getButtonPreferences = ({
   eligible_funding_methods: eligibleFundingMethods,
 }: NcpResponsePreferences): HostedButtonPreferences => {
   if (!buttonPreferences?.length || !eligibleFundingMethods?.length) {
+    const preferences = {
+      buttonPreferences,
+      eligibleFundingMethods,
+    };
+
+    getLogger().error("ncps_missing_preferences", { preferences });
+
     throw new Error(
       `Expected preferences to be populated, received: ${JSON.stringify({
-        buttonPreferences,
-        eligibleFundingMethods,
+        preferences,
       })}`
     );
   }
@@ -338,6 +345,9 @@ export const applyContainerStyles = ({
   const buttonContainer = document.querySelector(`#${buttonContainerId}`);
 
   if (!buttonContainer) {
+    getLogger().error("ncps_button_container_id_missing", {
+      buttonContainerId,
+    });
     throw new Error(`Button container with id ${buttonContainerId} not found.`);
   }
 
