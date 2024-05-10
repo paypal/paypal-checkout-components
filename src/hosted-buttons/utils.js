@@ -91,7 +91,7 @@ export const getButtonPreferences = ({
 }: NcpResponsePreferences): HostedButtonPreferences => {
   if (!buttonPreferences?.length || !eligibleFundingMethods?.length) {
     throw new Error(
-      `Expected preferences to be populated, recieved: ${JSON.stringify({
+      `Expected preferences to be populated, received: ${JSON.stringify({
         buttonPreferences,
         eligibleFundingMethods,
       })}`
@@ -99,7 +99,9 @@ export const getButtonPreferences = ({
   }
 
   return {
-    // Remove any buttons that are not included in eligibleFundingMethods
+    // Remove any buttons that are not included in eligibleFundingMethods.
+    // If the funding method is "default", we want to keep it in the preferences, and decide which
+    // button should be rendered in its place in renderStandaloneButton()
     buttonPreferences: buttonPreferences.filter(
       (fundingMethod) =>
         eligibleFundingMethods.includes(fundingMethod) ||
@@ -290,9 +292,9 @@ export const buildHostedButtonOnApprove = ({
 
 export const getFlexDirection = ({
   layout,
-}: GetFlexDirectionArgs): GetFlexDirection => {
-  return { flexDirection: layout === "horizontal" ? "row" : "column" };
-};
+}: GetFlexDirectionArgs): GetFlexDirection => ({
+  flexDirection: layout === "horizontal" ? "row" : "column",
+});
 
 export const getButtonColor = (
   color: Color,
@@ -339,7 +341,7 @@ export const applyContainerStyles = ({
     throw new Error(`Button container with id ${buttonContainerId} not found.`);
   }
 
-  buttonContainer.style.cssText = `display: flex; flex-wrap: nowrap; gap: 16px; max-width: 750px; flex-direction: ${flexDirection}`;
+  buttonContainer.style.flexDirection = flexDirection;
 };
 
 export const getDefaultButton = ({

@@ -66,7 +66,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         style,
       };
 
-      if (version && version === "2") {
+      if (version === "2") {
         const { flexDirection } = getFlexDirection({ ...style });
 
         applyContainerStyles({ flexDirection, buttonContainerId });
