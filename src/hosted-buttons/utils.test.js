@@ -33,7 +33,9 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getSDKHost: () => "example.com",
     getClientID: () => "client_id_123",
     getMerchantID: () => ["merchant_id_123"],
-    getLogger: vi.fn(),
+    getLogger: vi.fn(() => ({
+      error: vi.fn(),
+    })),
   };
 });
 
@@ -674,9 +676,10 @@ describe("applyContainerStyles", () => {
   });
 
   test("throws error if button container cannot be found", () => {
+    // Intentionally not setting up the button container to throw the error
     const shouldThrowError = () => applyContainerStyles(params);
     expect(shouldThrowError).toThrowError(
-      `Button container with id ${buttonContainerId} not found.`
+      `Element with id ${buttonContainerId} not found.`
     );
   });
 });

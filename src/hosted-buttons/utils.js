@@ -345,10 +345,11 @@ export const applyContainerStyles = ({
   const buttonContainer = document.querySelector(`#${buttonContainerId}`);
 
   if (!buttonContainer) {
-    getLogger().error("ncps_button_container_id_missing", {
+    getLogger().error("ncps_button_container_missing", {
       buttonContainerId,
     });
-    throw new Error(`Button container with id ${buttonContainerId} not found.`);
+
+    throw new Error(`Element with id ${buttonContainerId} not found.`);
   }
 
   buttonContainer.style.flexDirection = flexDirection;
