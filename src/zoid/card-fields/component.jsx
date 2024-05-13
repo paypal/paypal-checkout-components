@@ -127,14 +127,10 @@ type CardFieldsChildren = {|
 const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
-const DEFAULT_HEIGHT = "78px";
-
 const prerenderTemplate = ({ props, doc }) => {
   if (props.parent.props.disableDefaultStyle) {
-    props.style.height = "100%";
-    console.log("it's true, baby!");
+    props.style.height = "100vh";
   }
-  console.log("mervin", props);
   return (
     <CardPrerender nonce={props.nonce} height={props.style?.height} />
   ).render(dom({ doc }));
@@ -149,12 +145,27 @@ export type CardFieldsComponent = ZoidComponent<
 export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
   (): CardFieldsComponent => {
     const genericCardField = (type) => {
+      console.log("mervin: inside checkout-comp, xprops", window.xprops);
+
+      let DEFAULT_AUTORESIZE = {
+        height: true,
+        width: false,
+      };
+
+      // if (window.xprops?.parent.props.disableDefaultStyle) {
+      //   console.log("mervin - inside conditional");
+      //   DEFAULT_AUTORESIZE = {
+      //     height: false,
+      //     width: false,
+      //   };
+      // }
+
       return create({
         tag: `paypal-card-${type}-field`,
         url,
 
         dimensions: {
-          height: DEFAULT_HEIGHT,
+          height: "100%",
           width: "100%",
         },
 
@@ -164,10 +175,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           },
         },
 
-        autoResize: {
-          height: false,
-          width: false,
-        },
+        autoResize: DEFAULT_AUTORESIZE,
 
         prerenderTemplate,
 
@@ -596,7 +604,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
 
         disableDefaultStyle: {
           type: "boolean",
-          required: true,
+          required: false,
           queryParam: true,
         },
 
