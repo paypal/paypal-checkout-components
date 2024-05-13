@@ -127,7 +127,14 @@ type CardFieldsChildren = {|
 const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
+const DEFAULT_HEIGHT = "78px";
+
 const prerenderTemplate = ({ props, doc }) => {
+  if (props.parent.props.disableDefaultStyle) {
+    props.style.height = "100%";
+    console.log("it's true, baby!");
+  }
+  console.log("mervin", props);
   return (
     <CardPrerender nonce={props.nonce} height={props.style?.height} />
   ).render(dom({ doc }));
@@ -147,7 +154,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         url,
 
         dimensions: {
-          height: "30px",
+          height: DEFAULT_HEIGHT,
           width: "100%",
         },
 
@@ -158,7 +165,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         },
 
         autoResize: {
-          height: true,
+          height: false,
           width: false,
         },
 
@@ -420,7 +427,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
       url,
 
       dimensions: {
-        height: "30px",
+        height: "100%",
         width: "100%",
       },
 
@@ -431,7 +438,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
       },
 
       autoResize: {
-        height: true,
+        height: false,
         width: false,
       },
 
@@ -587,6 +594,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           queryParam: true,
         },
 
+        disableDefaultStyle: {
+          type: "boolean",
+          required: true,
+          queryParam: true,
+        },
+
         onChange: {
           type: "function",
           required: false,
@@ -685,3 +698,5 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     return CardFields;
   }
 );
+// window.paypal.cardFields(someObject)
+// Zoid is passing someObject into the props object

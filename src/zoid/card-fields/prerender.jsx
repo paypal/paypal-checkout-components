@@ -5,7 +5,7 @@ import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
 type PrerenderedCardProps = {|
   nonce: ?string,
-  height: ?number,
+  height: ?number | ?string,
 |};
 
 const DEFAULT_HEIGHT = 78;
