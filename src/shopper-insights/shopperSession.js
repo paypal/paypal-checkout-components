@@ -244,6 +244,7 @@ export interface ShopperInsightsInterface {
   getRecommendedPaymentMethods: (
     payload: MerchantPayloadData
   ) => Promise<RecommendedPaymentMethods>;
+  isEligibleInPaypalNetwork: (payload: MerchantPayloadData) => Promise<boolean>;
 }
 
 export class ShopperSession {
@@ -270,7 +271,9 @@ export class ShopperSession {
     this.sessionState = sessionState;
   }
 
-  async isEligibleInPaypalNetwork(merchantPayload: MerchantPayloadData): Promise<boolean> {
+  async isEligibleInPaypalNetwork(
+    merchantPayload: MerchantPayloadData
+  ): Promise<boolean> {
     const startTime = Date.now();
     const data = parseMerchantPayload({
       merchantPayload,

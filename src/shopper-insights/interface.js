@@ -59,6 +59,8 @@ export const ShopperInsights: LazyExport<ShopperInsightsInterface> = {
     return {
       getRecommendedPaymentMethods: (payload) =>
         shopperSession.getRecommendedPaymentMethods(payload),
+      isEligibleInPaypalNetwork: (payload) =>
+        shopperSession.isEligibleInPaypalNetwork(payload),
     };
   },
 };
