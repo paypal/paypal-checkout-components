@@ -222,7 +222,7 @@ describe("HostedButtons v2", () => {
     vi.spyOn(document, "querySelector").mockReturnValue(selector);
   });
 
-  test("paypal.HostedButtons calls renderStandaloneButton for each eligible button preference", async () => {
+  test("paypal.HostedButtons calls renderStandaloneButton & renderDefaultButton accordingly", async () => {
     const renderMock = vi.fn();
 
     const Buttons = vi.fn(() => ({
@@ -232,8 +232,6 @@ describe("HostedButtons v2", () => {
     // $FlowIssue
     getButtonsComponent.mockImplementation(() => Buttons);
 
-    const { button_preferences: buttonPreferences } =
-      hostedButtonDetailsResponse.body.button_details.preferences;
     const HostedButtons = getHostedButtonsComponent();
 
     // $FlowIssue

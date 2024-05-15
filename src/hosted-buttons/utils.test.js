@@ -638,6 +638,8 @@ describe("getButtonPreferences", () => {
 
   test("logs & throws error if the input is bad", () => {
     const errorMock = vi.fn();
+
+    // $FlowIssue
     getLogger.mockImplementation(() => ({ error: errorMock }));
 
     const params = {
