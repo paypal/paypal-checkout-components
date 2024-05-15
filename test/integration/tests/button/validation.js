@@ -961,14 +961,23 @@ const buttonConfigs = [
       {
         message: {
           amount: 100,
-          offer: ["pay_later_long_term", "pay_later_short_term"], // invalid: should be only one offer
+          offer: ["pay_later_long_term", "pay_later_short_term"],
           color: "black",
           position: "top",
           align: "left",
         },
         valid: true,
       },
-
+      {
+        message: {
+          amount: 100,
+          offer: "pay_later_long_term,pay_later_short_term",
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
       {
         message: {
           amount: 100,
