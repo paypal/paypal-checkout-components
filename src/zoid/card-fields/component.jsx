@@ -148,7 +148,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
       console.log("mervin: inside checkout-comp, xprops", window.xprops);
 
       let DEFAULT_AUTORESIZE = {
-        height: true,
+        height: false,
         width: false,
       };
 
