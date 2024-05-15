@@ -1,3 +1,9 @@
+## <small>5.0.314 (2024-05-15)</small>
+
+* add flow-typed to repository (#2391) ([4490e14](https://github.com/paypal/paypal-checkout-components/commit/4490e14)), closes [#2391](https://github.com/paypal/paypal-checkout-components/issues/2391)
+
+
+
 ## <small>5.0.313 (2024-05-13)</small>
 
 * Ran npm run format on main & these needed formatting (#2390) ([c08c9ff](https://github.com/paypal/paypal-checkout-components/commit/c08c9ff)), closes [#2390](https://github.com/paypal/paypal-checkout-components/issues/2390)
