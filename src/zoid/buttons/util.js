@@ -15,7 +15,6 @@ import {
   once,
   memoize,
 } from "@krakenjs/belter/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
   getLogger,
@@ -26,6 +25,7 @@ import {
   getEnv,
   getNamespace,
 } from "@paypal/sdk-client/src";
+import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
 import type { Experiment as EligibilityExperiment } from "../../types";
@@ -374,8 +374,8 @@ function buildModalBundleUrl(): string {
 export const getModal: (
   clientID: string,
   merchantID: $ReadOnlyArray<string> | void,
-  buttonSessionId: string
-) => Object = memoize(async (clientID, merchantID) => {
+  buttonSessionID: string
+) => Object = memoize(async (clientID, merchantID, buttonSessionID) => {
   try {
     const namespace = getNamespace();
     if (!window[namespace].MessagesModal) {
@@ -429,7 +429,7 @@ export const getModal: (
             [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
             [FPTI_KEY.EVENT_NAME]: "modal_apply",
           }),
-      buttonSessionId,
+      buttonSessionId: buttonSessionID,
       account: `client-id:${clientID}`,
       merchantId: merchantID?.join(",") || undefined,
     });
