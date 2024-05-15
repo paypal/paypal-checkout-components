@@ -10,6 +10,8 @@ import {
   getFlexDirection,
   applyContainerStyles,
   renderStandaloneButton,
+  renderDefaultButton,
+  getDefaultButtonOptions,
 } from "./utils";
 import type {
   HostedButtonsComponent,
@@ -72,12 +74,20 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         applyContainerStyles({ flexDirection, buttonContainerId });
 
         preferences?.buttonPreferences.forEach((fundingSource) => {
-          renderStandaloneButton({
-            fundingSource,
-            preferences,
-            buttonContainerId,
-            buttonOptions,
-          });
+          if (fundingSource === "default") {
+            const eligibleDefaultButtons = getDefaultButtonOptions(preferences);
+            renderDefaultButton({
+              eligibleDefaultButtons,
+              buttonContainerId,
+              buttonOptions,
+            });
+          } else {
+            renderStandaloneButton({
+              fundingSource,
+              buttonContainerId,
+              buttonOptions,
+            });
+          }
         });
       } else {
         // V1 Experience

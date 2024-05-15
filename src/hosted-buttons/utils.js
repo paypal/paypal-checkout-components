@@ -12,7 +12,7 @@ import { FUNDING } from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
-import { getButtonsComponent } from "../zoid/buttons";
+import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
 
 import type {
   ButtonVariables,
@@ -26,10 +26,13 @@ import type {
   GetFlexDirection,
   Color,
   FundingSources,
-  RenderStandaloneButtonProps,
   ApplyButtonStylesProps,
   HostedButtonPreferences,
   NcpResponsePreferences,
+  ButtonPreferences,
+  GetButtonsProps,
+  RenderStandaloneButtonProps,
+  RenderDefaultButtonProps,
 } from "./types";
 
 const entryPoint = "SDK";
@@ -355,81 +358,91 @@ export const applyContainerStyles = ({
   buttonContainer.style.flexDirection = flexDirection;
 };
 
-export const getDefaultButton = ({
+/**
+ * Filters out all eligible funding methods that are already specified in button preferences
+ */
+export const getDefaultButtonOptions = ({
   buttonPreferences,
   eligibleFundingMethods,
-}: HostedButtonPreferences): ?string => {
-  // Return first eligible funding method that is not specified in button preferences
-  return eligibleFundingMethods.find(
-    (fundingMethod) => !buttonPreferences.includes(fundingMethod)
+}: HostedButtonPreferences): ButtonPreferences => {
+  return eligibleFundingMethods.filter(
+    (fundingSource: string) => !buttonPreferences.includes(fundingSource)
   );
 };
 
-export const renderStandaloneButton = ({
+/**
+ * Gets buttons component instance.
+ */
+export const getButtons = ({
   fundingSource,
-  preferences,
-  buttonContainerId,
   buttonOptions,
-}: RenderStandaloneButtonProps): ZalgoPromise<void> | void => {
+}: GetButtonsProps): ButtonsComponent => {
   const Buttons = getButtonsComponent();
 
-  const { buttonPreferences, eligibleFundingMethods } = preferences;
   const { style } = buttonOptions;
 
-  const isDefault = fundingSource === "default";
-
-  const fundingSourceName = isDefault
-    ? getDefaultButton({ buttonPreferences, eligibleFundingMethods })
-    : fundingSource;
-
-  // If getDefaultButton doesn't return a button, just return void
-  if (!fundingSourceName) {
-    return;
-  }
-
   // $FlowFixMe
-  const standaloneButton = Buttons({
+  return Buttons({
     ...buttonOptions,
-    fundingSource: fundingSourceName,
+    fundingSource,
     style: {
       ...style,
       // $FlowFixMe
-      color: getButtonColor(style.color, fundingSourceName),
+      color: getButtonColor(style.color, fundingSource),
     },
   });
+};
 
+/**
+ * Handles logic for each specified button preference.
+ */
+export const renderStandaloneButton = ({
+  fundingSource,
+  buttonContainerId,
+  buttonOptions,
+}: RenderStandaloneButtonProps): ZalgoPromise<void> | void => {
+  const standaloneButton = getButtons({
+    fundingSource,
+    buttonOptions,
+  });
+
+  // $FlowFixMe
   if (standaloneButton.isEligible()) {
+    // $FlowFixMe
     return standaloneButton.render(`#${buttonContainerId}`);
   }
 
-  getLogger().error(`ncps_standalone_${fundingSourceName}_ineligible`);
+  getLogger().error(`ncps_standalone_${fundingSource}_ineligible`);
+};
 
-  // If the funding source is explicitly defined, but is not eligible,
-  // don't render anything in it's place
-  if (!isDefault) {
-    return;
+/**
+ * Handles logic for "default" button preference.
+ */
+export const renderDefaultButton = ({
+  eligibleDefaultButtons,
+  buttonContainerId,
+  buttonOptions,
+}: RenderDefaultButtonProps): void => {
+  const eligibleButtons = [...eligibleDefaultButtons];
+
+  // If we exhaust all default options, we don't render any button.
+  while (eligibleButtons.length) {
+    const fundingSource = eligibleButtons[0];
+
+    const standaloneButton = getButtons({
+      fundingSource,
+      buttonOptions,
+    });
+
+    // If the funding source is eligible, render button & return to end loop.
+    // $FlowFixMe
+    if (standaloneButton.isEligible()) {
+      // $FlowFixMe
+      return standaloneButton.render(`#${buttonContainerId}`);
+    }
+
+    // If funding source is ineligible, log error and move to next funding option.
+    getLogger().error(`ncps_standalone_${fundingSource}_ineligible`);
+    eligibleButtons.shift();
   }
-
-  // Filter out ineligible funding method and everything before
-  const indexOfFundingSource =
-    eligibleFundingMethods.indexOf(fundingSourceName);
-  const filteredEligibleFundingMethods = eligibleFundingMethods.filter(
-    (_, index) => index > indexOfFundingSource
-  );
-
-  // If no eligible funding methods remain, return nothing
-  if (!filteredEligibleFundingMethods.length) {
-    return;
-  }
-
-  // Recursively call renderStandaloneButton to attempt to render the next eligible button.
-  return renderStandaloneButton({
-    fundingSource: filteredEligibleFundingMethods[0],
-    preferences: {
-      buttonPreferences,
-      eligibleFundingMethods: filteredEligibleFundingMethods,
-    },
-    buttonContainerId,
-    buttonOptions,
-  });
 };

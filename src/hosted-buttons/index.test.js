@@ -6,7 +6,7 @@ import { request } from "@krakenjs/belter/src";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
-import { renderStandaloneButton } from "./utils";
+import { renderDefaultButton, renderStandaloneButton } from "./utils";
 
 import { getHostedButtonsComponent } from ".";
 
@@ -37,6 +37,7 @@ vi.mock("./utils.js", async () => {
   return {
     ...(await vi.importActual("./utils.js")),
     renderStandaloneButton: vi.fn(),
+    renderDefaultButton: vi.fn(),
   };
 });
 
@@ -222,6 +223,15 @@ describe("HostedButtons v2", () => {
   });
 
   test("paypal.HostedButtons calls renderStandaloneButton for each eligible button preference", async () => {
+    const renderMock = vi.fn();
+
+    const Buttons = vi.fn(() => ({
+      render: renderMock,
+      isEligible: vi.fn(() => false),
+    }));
+    // $FlowIssue
+    getButtonsComponent.mockImplementation(() => Buttons);
+
     const { button_preferences: buttonPreferences } =
       hostedButtonDetailsResponse.body.button_details.preferences;
     const HostedButtons = getHostedButtonsComponent();
@@ -236,15 +246,20 @@ describe("HostedButtons v2", () => {
       hostedButtonId,
     }).render("#example");
 
-    expect(renderStandaloneButton).toHaveBeenCalledTimes(2);
+    expect(renderStandaloneButton).toHaveBeenCalledTimes(1);
+    expect(renderDefaultButton).toHaveBeenCalledTimes(1);
 
-    buttonPreferences.forEach((fundingSource) => {
-      expect(renderStandaloneButton).toHaveBeenCalledWith(
-        expect.objectContaining({
-          fundingSource,
-        })
-      );
-    });
+    expect(renderStandaloneButton).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fundingSource: "paypal",
+      })
+    );
+
+    expect(renderDefaultButton).toHaveBeenCalledWith(
+      expect.objectContaining({
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      })
+    );
   });
 });
 

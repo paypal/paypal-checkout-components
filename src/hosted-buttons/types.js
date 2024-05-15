@@ -56,19 +56,33 @@ export type HostedButtonOptions = {|
   merchantId?: string,
 |};
 
+export type ButtonPreferences = $ReadOnlyArray<
+  $Values<typeof FUNDING> | "default"
+>;
+
 export type HostedButtonPreferences = {|
-  buttonPreferences: $ReadOnlyArray<$Values<typeof FUNDING> | "default">,
+  buttonPreferences: ButtonPreferences,
   eligibleFundingMethods: $ReadOnlyArray<$Values<typeof FUNDING>>,
 |};
 
 export type NcpResponsePreferences = {|
-  button_preferences: $ReadOnlyArray<$Values<typeof FUNDING> | "default">,
+  button_preferences: ButtonPreferences,
   eligible_funding_methods: $ReadOnlyArray<$Values<typeof FUNDING>>,
+|};
+
+export type GetButtonsProps = {|
+  fundingSource: FundingSources,
+  buttonOptions: HostedButtonOptions,
 |};
 
 export type RenderStandaloneButtonProps = {|
   fundingSource: FundingSources,
-  preferences: HostedButtonPreferences,
+  buttonContainerId: string,
+  buttonOptions: HostedButtonOptions,
+|};
+
+export type RenderDefaultButtonProps = {|
+  eligibleDefaultButtons: $ReadOnlyArray<FundingSources>,
   buttonContainerId: string,
   buttonOptions: HostedButtonOptions,
 |};
