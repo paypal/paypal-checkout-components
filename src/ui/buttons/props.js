@@ -768,7 +768,7 @@ export function normalizeButtonMessage(
           )}`
         );
       }
-      offer = [offer];
+      offer = offer.split(",");
     }
     const invalidOffers = offer.filter(
       (o) => !values(MESSAGE_OFFER).includes(o)
