@@ -8,55 +8,22 @@ type PrerenderedCardProps = {|
   height: ?number | ?string,
 |};
 
-const DEFAULT_HEIGHT = 78;
+export const DEFAULT_HEIGHT = 78;
 
 export function CardPrerender({
   nonce,
   height,
+  disableDefaultStyle,
 }: PrerenderedCardProps): ChildType {
-  const newCssString = `
-html, body {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    background: #e9ebee;
-    position: absolute;
-    overflow: hidden;
-    height: ${height ?? DEFAULT_HEIGHT};
-}
-
-body::after {
-    content: "";
-    display: block;
-    background-color: #fff;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: ${height ?? DEFAULT_HEIGHT};
-    transform: translateX(0);
-    box-shadow: 0px 0px 107px 60px #dddfe2;
-    animation: 1.5s loading-placeholder ease-in-out infinite;
-}
-
-@keyframes loading-placeholder {
-    0% {
-        opacity: 0.1;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.1;
-    }
-}
-`;
-
-  const defaultCssString = `
+  return (
+    <html>
+      <body>
+        <style
+          nonce={nonce}
+          innerHTML={
+            disableDefaultStyle
+              ? ""
+              : `
 html, body {
     padding: 0;
     margin: 0;
@@ -96,11 +63,9 @@ body::after {
         opacity: 0.1;
     }
 }
-`;
-  return (
-    <html>
-      <body>
-        <style nonce={nonce} innerHTML={``} />
+`
+          }
+        />
       </body>
     </html>
   );

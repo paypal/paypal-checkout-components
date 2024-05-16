@@ -35,7 +35,7 @@ import {
 
 import { getSessionID } from "../../lib";
 
-import { CardPrerender } from "./prerender";
+import { CardPrerender, DEFAULT_HEIGHT } from "./prerender";
 
 const CARD_FIELD_TYPE = {
   SINGLE: "single",
@@ -124,15 +124,23 @@ type CardFieldsChildren = {|
   NameField: CardFieldComponent,
 |};
 
+function isDefaultStyleDisabled(props) {
+  return Boolean(props?.parent?.props?.disableDefaultStyle);
+}
+
 const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
 const prerenderTemplate = ({ props, doc }) => {
-  if (props.parent.props.disableDefaultStyle) {
+  if (isDefaultStyleDisabled(props)) {
     props.style.height = "100vh";
   }
   return (
-    <CardPrerender nonce={props.nonce} height={props.style?.height} />
+    <CardPrerender
+      nonce={props.nonce}
+      disableDefaultStyle={isDefaultStyleDisabled(props)}
+      height={props.style?.height}
+    />
   ).render(dom({ doc }));
 };
 
@@ -147,26 +155,17 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     const genericCardField = (type) => {
       console.log("mervin: inside checkout-comp, xprops", window.xprops);
 
-      let DEFAULT_AUTORESIZE = {
-        height: false,
-        width: false,
-      };
-
-      // if (window.xprops?.parent.props.disableDefaultStyle) {
-      //   console.log("mervin - inside conditional");
-      //   DEFAULT_AUTORESIZE = {
-      //     height: false,
-      //     width: false,
-      //   };
-      // }
-
       return create({
         tag: `paypal-card-${type}-field`,
         url,
 
-        dimensions: {
-          height: "100%",
-          width: "100%",
+        dimensions: ({ props }) => {
+          return {
+            height: isDefaultStyleDisabled(props)
+              ? "100%"
+              : `${DEFAULT_HEIGHT}px`,
+            width: "100%",
+          };
         },
 
         attributes: {
@@ -175,7 +174,10 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           },
         },
 
-        autoResize: DEFAULT_AUTORESIZE,
+        autoResize: {
+          height: false,
+          width: false,
+        },
 
         prerenderTemplate,
 
