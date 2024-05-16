@@ -751,6 +751,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             return modalInstance?.show({
               amount,
               offer: offerType,
+              buttonSessionId: buttonSessionID,
               currency,
             });
           };
