@@ -407,7 +407,8 @@ export const getModal: (
             [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
             [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
             [FPTI_KEY.EVENT_NAME]: "modal_render",
-          }),
+          })
+          .flush(),
       onClick: () =>
         getLogger()
           .info("button_message_modal_click")
@@ -418,7 +419,20 @@ export const getModal: (
             [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
             [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
             [FPTI_KEY.EVENT_NAME]: "modal_click",
-          }),
+          })
+          .flush(),
+      onApply: () =>
+        getLogger()
+          .info("button_message_modal_apply")
+          .track({
+            [FPTI_KEY.TRANSITION]: "button_message_modal_apply",
+            [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+            [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+            [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+            [FPTI_KEY.EVENT_NAME]: "modal_apply",
+          })
+          .flush(),
       account: `client-id:${clientID}`,
       merchantId: merchantID?.join(",") || undefined,
     });
