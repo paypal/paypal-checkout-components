@@ -430,7 +430,7 @@ export type ApplePaySessionConfigRequest = (
 
 export type ButtonMessage = {|
   amount?: number,
-  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
+  offer?: $Values<typeof MESSAGE_OFFER> | string,
   color: $Values<typeof MESSAGE_COLOR>,
   position: $Values<typeof MESSAGE_POSITION>,
   align: $Values<typeof MESSAGE_ALIGN>,
@@ -744,12 +744,11 @@ export function normalizeButtonMessage(
 ): ButtonMessage {
   const {
     amount,
-    offer,
     color = MESSAGE_COLOR.BLACK,
     position,
     align = MESSAGE_ALIGN.CENTER,
   } = message;
-
+  let offer = message.offer;
   if (typeof amount !== "undefined") {
     if (typeof amount !== "number") {
       throw new TypeError(
@@ -765,11 +764,14 @@ export function normalizeButtonMessage(
 
   if (typeof offer !== "undefined") {
     if (!Array.isArray(offer)) {
-      throw new TypeError(
-        `Expected message.offer to be an array of strings, got: ${String(
-          offer
-        )}`
-      );
+      if (typeof offer !== "string") {
+        throw new TypeError(
+          `Expected message.offer to be an array of strings, got: ${String(
+            offer
+          )}`
+        );
+      }
+      offer = offer.split(",");
     }
     const invalidOffers = offer.filter(
       (o) => !values(MESSAGE_OFFER).includes(o)
@@ -777,6 +779,7 @@ export function normalizeButtonMessage(
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
     }
+    offer = offer.join(",");
   }
 
   if (typeof color !== "undefined" && !values(MESSAGE_COLOR).includes(color)) {
