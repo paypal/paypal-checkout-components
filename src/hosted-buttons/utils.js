@@ -90,16 +90,27 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 
   // $FlowIssue request returns ZalgoPromise
   const { body } = response;
-  const variables = body.button_details.link_variables;
+  const { link_variables: variables, preferences } = body.button_details;
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
       shape: getButtonVariable(variables, "shape"),
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
+      tagline: getButtonVariable(variables, "tagline") === "true",
+      height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
+    version: body.version,
+    buttonContainerId: body.button_container_id,
     html: body.html,
     htmlScript: body.html_script,
+    ...(preferences && {
+      preferences: {
+        buttonPreferences: preferences.button_preferences,
+        eligibleFundingMethods: preferences.eligible_funding_methods,
+      },
+    }),
   };
 };
 

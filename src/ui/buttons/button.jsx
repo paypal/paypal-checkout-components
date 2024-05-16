@@ -54,6 +54,7 @@ type IndividualButtonProps = {|
   i: number,
   nonce: string,
   userIDToken: ?string,
+  customerId: ?string,
   personalization: ?Personalization,
   content: ?ContentType,
   tagline: ?boolean,
@@ -78,6 +79,7 @@ export function Button({
   flow,
   vault,
   userIDToken,
+  customerId,
   personalization,
   onClick = noop,
   content,
@@ -206,7 +208,7 @@ export function Button({
       flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE) &&
     (instrument ||
       (__WEB__ &&
-        userIDToken &&
+        (userIDToken || customerId) &&
         (fundingSource === FUNDING.PAYPAL || fundingSource === FUNDING.VENMO)))
   ) {
     labelNode = (

@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.308",
+  "version": "5.0.314",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -25,13 +25,13 @@
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
     "postversion": "./scripts/postversion.sh",
     "preversion": "./scripts/preversion.sh",
-    "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && flow-typed install",
+    "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && npm run flow-typed",
     "release": "./scripts/publish.sh",
     "start": "npm run webpack -- --progress --watch",
     "test": "npm run format:check && npm run test:unit && npm run jest-ssr && npm run karma",
     "test:unit": "vitest run --coverage",
     "percy-screenshot": "npx playwright install && babel-node ./test/percy/server/createButtonConfigs.js && percy exec -- playwright test --config=./test/percy/playwright.config.js --reporter=dot --pass-with-no-tests",
-    "typecheck": "npm run flow-typed && npm run flow",
+    "typecheck": "npm run flow",
     "version": "./scripts/version.sh",
     "vitest": "vitest",
     "webpack": "babel-node $(npm bin)/webpack",
@@ -70,8 +70,9 @@
   "devDependencies": {
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
     "@krakenjs/grumbler-scripts": "^8.1.5",
+    "@krakenjs/eslint-config-grumbler": "8.1.3",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
-    "@percy/cli": "1.27.2",
+    "@percy/cli": "1.28.5",
     "@percy/playwright": "^1.0.4",
     "@playwright/test": "^1.38.1",
     "@vitest/coverage-v8": "^1.3.1",
@@ -118,6 +119,6 @@
     "@paypal/sdk-logos": "^2.2.6"
   },
   "lint-staged": {
-    "**/{src,test,scripts}/**/*.{js,jsx,json,sh}": "prettier --write"
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
