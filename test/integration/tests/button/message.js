@@ -477,13 +477,30 @@ describe(`paypal button message`, () => {
             onRender({ hoverMessage }) {
               hoverMessage()
                 .then(() => {
+                  console.log(window.paypal.MessagesModal.mock);
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
-                      .length === 3
+                      .length === 6
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .onReady === "function"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .onClick === "function"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .onApply === "function"
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
                       .account === "string"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .buttonSessionId === "string"
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
