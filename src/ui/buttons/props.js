@@ -697,15 +697,39 @@ export function normalizeButtonStyle(
       BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight,
     ];
 
-    if (disableMaxHeight && height < minHeight) {
-      throw new Error(
-        `Expected style.height to be greater than ${minHeight}px - got ${height}px`
+    if (disableMaxHeight === true) {
+      throw new TypeError(
+        `Unexpected style.height for style.disableMaxHeight: got: ${height}, expected undefined.`
       );
     }
 
-    if (!disableMaxHeight && (height < minHeight || height > maxHeight)) {
+    if (height < minHeight || height > maxHeight) {
       throw new Error(
         `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
+      );
+    }
+  }
+
+  if (disableMaxHeight !== undefined) {
+    if (typeof disableMaxHeight !== "boolean") {
+      throw new TypeError(
+        `Expected style.disableMaxHeight to be a boolean, got: ${disableMaxHeight}`
+      );
+    }
+
+    const disableMaxHeightInvalidFundingSources = [FUNDING.CARD, undefined];
+    const disableMaxHeightValidFundingSources = [
+      FUNDING.PAYPAL,
+      FUNDING.VENMO,
+      FUNDING.PAYLATER,
+      FUNDING.CREDIT,
+    ];
+
+    if (disableMaxHeightInvalidFundingSources.includes(fundingSource)) {
+      throw new TypeError(
+        `Unexpected fundingSource for style.disableMaxHeight: got: ${
+          fundingSource ? fundingSource : "Smart Stack"
+        }, expected ${disableMaxHeightValidFundingSources.join(", ")}.`
       );
     }
   }
