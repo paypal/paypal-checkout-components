@@ -469,7 +469,7 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-    it("should ensure getModal callback with clientID, merchantID, and buttonSessionID is called on hover", (done) => {
+    it("should ensure getModal callback with clientID, merchantID, buttonSessionID, and modal callbacks is called on hover", (done) => {
       window.paypal
         .Buttons({
           message: {},
@@ -477,7 +477,6 @@ describe(`paypal button message`, () => {
             onRender({ hoverMessage }) {
               hoverMessage()
                 .then(() => {
-                  console.log(window.paypal.MessagesModal.mock);
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
                       .length === 6
