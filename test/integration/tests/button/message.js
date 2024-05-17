@@ -452,7 +452,7 @@ describe(`paypal button message`, () => {
     });
   });
 
-  describe.only("modal", () => {
+  describe("modal", () => {
     beforeEach(() => {
       // $FlowFixMe
       getModal.reset();
