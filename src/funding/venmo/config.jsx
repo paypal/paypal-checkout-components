@@ -42,7 +42,6 @@ export function getVenmoConfig(): FundingSourceConfig {
         experiment.venmoWebEnabled === false
       ) {
         return {
-          native: true,
           popup: true,
         };
       }
