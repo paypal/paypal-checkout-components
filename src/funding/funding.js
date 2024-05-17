@@ -33,7 +33,7 @@ type IsFundingEligibleOptions = {|
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
-  hasShippingCallback: boolean,
+  hasShippingCallback?: boolean,
   wallet?: ?Wallet,
   applePaySupport: boolean,
   supportsPopups: boolean,
@@ -121,7 +121,7 @@ export function isFundingEligible(
 
   if (
     fundingConfig.eligible &&
-    !fundingConfig.eligible({
+    !fundingConfig.eligible?.({
       enableFunding,
       components,
       experiment,
