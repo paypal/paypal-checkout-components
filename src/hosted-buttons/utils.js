@@ -79,7 +79,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   hostedButtonId,
 }) => {
   const { lang, country } = getLocale();
-  const locale = `${lang}_${country}`;
+  const locale = `${lang}-${country}`;
 
   const response = await request({
     url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}?locale.x=${locale}`,
