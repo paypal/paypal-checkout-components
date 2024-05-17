@@ -726,10 +726,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               merchantID: partnerMerchantId,
             } = props;
             const amount = message?.amount;
-            const merchantID =
-              partnerMerchantId && partnerMerchantId[0] === ""
-                ? serverMerchantId
-                : partnerMerchantId?.join();
+            const isPartnerMerchantIdEmpty =
+              !partnerMerchantId ||
+              partnerMerchantId.length === 0 ||
+              partnerMerchantId[0] === "";
+            // check to see if a partner merchant id integration exists
+            // if not grab the server merchant id
+            const merchantID = isPartnerMerchantIdEmpty
+              ? serverMerchantId
+              : partnerMerchantId?.join();
 
             getLogger()
               .info("button_message_click")
@@ -770,11 +775,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return ({ merchantID: serverMerchantId }) => {
             const { clientID, merchantID: partnerMerchantId } = props;
-            // merchantID that comes from props is an array
-            const merchantID =
-              partnerMerchantId && partnerMerchantId[0] === ""
-                ? serverMerchantId
-                : partnerMerchantId?.join();
+            const isPartnerMerchantIdEmpty =
+              !partnerMerchantId ||
+              partnerMerchantId.length === 0 ||
+              partnerMerchantId[0] === "";
+            // check to see if a partner merchant id integration exists
+            // if not grab the server merchant id
+            const merchantID = isPartnerMerchantIdEmpty
+              ? serverMerchantId
+              : partnerMerchantId?.join();
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
@@ -801,12 +810,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               currency,
               merchantID: partnerMerchantId,
             } = props;
+            const isPartnerMerchantIdEmpty =
+              !partnerMerchantId ||
+              partnerMerchantId.length === 0 ||
+              partnerMerchantId[0] === "";
             // check to see if a partner merchant id integration exists
             // if not grab the server merchant id
-            const merchantID =
-              partnerMerchantId && partnerMerchantId[0] === ""
-                ? serverMerchantId
-                : partnerMerchantId?.join();
+            const merchantID = isPartnerMerchantIdEmpty
+              ? serverMerchantId
+              : partnerMerchantId?.join();
 
             // override with server id if partner does not exist
             getLogger().addTrackingBuilder(() => ({

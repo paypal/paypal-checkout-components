@@ -487,7 +487,7 @@ describe(`paypal button message`, () => {
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
-                      .merchantId === "undefined"
+                      .merchantId === "string"
                   );
                   done();
                 })
