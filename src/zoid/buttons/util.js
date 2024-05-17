@@ -373,7 +373,7 @@ function buildModalBundleUrl(): string {
 
 export const getModal: (
   clientID: string,
-  merchantID: $ReadOnlyArray<string> | void
+  merchantID?: string | void
 ) => Object = memoize(async (clientID, merchantID) => {
   try {
     const namespace = getNamespace();
@@ -396,7 +396,7 @@ export const getModal: (
 
     return window[namespace].MessagesModal({
       account: `client-id:${clientID}`,
-      merchantId: merchantID,
+      merchantId: merchantID || undefined,
     });
   } catch (err) {
     // $FlowFixMe flow doesn't seem to understand that the reset function property exists on the function object itself

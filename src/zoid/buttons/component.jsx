@@ -727,9 +727,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             } = props;
             const amount = message?.amount;
             const merchantID =
-              partnerMerchantId === "" || !partnerMerchantId
+              partnerMerchantId && partnerMerchantId[0] === ""
                 ? serverMerchantId
-                : partnerMerchantId.join();
+                : partnerMerchantId?.join();
 
             getLogger()
               .info("button_message_click")
@@ -772,9 +772,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const { clientID, merchantID: partnerMerchantId } = props;
             // merchantID that comes from props is an array
             const merchantID =
-              partnerMerchantId === "" || !partnerMerchantId
+              partnerMerchantId && partnerMerchantId[0] === ""
                 ? serverMerchantId
-                : partnerMerchantId.join();
+                : partnerMerchantId?.join();
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
@@ -804,9 +804,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             // check to see if a partner merchant id integration exists
             // if not grab the server merchant id
             const merchantID =
-              partnerMerchantId === "" || !partnerMerchantId
+              partnerMerchantId && partnerMerchantId[0] === ""
                 ? serverMerchantId
-                : partnerMerchantId.join();
+                : partnerMerchantId?.join();
 
             // override with server id if partner does not exist
             getLogger().addTrackingBuilder(() => ({
