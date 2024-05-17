@@ -458,7 +458,7 @@ describe(`paypal button message`, () => {
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage()
+              hoverMessage({ merchantID: "123" })
                 .then(() => {
                   assert.equal(getNamespace(), window.namespace);
                   done();
@@ -475,7 +475,7 @@ describe(`paypal button message`, () => {
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage()
+              hoverMessage({ merchantID: "123" })
                 .then(() => {
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
@@ -487,7 +487,7 @@ describe(`paypal button message`, () => {
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
-                      .merchantId === "undefined"
+                      .merchantId === "string"
                   );
                   done();
                 })
@@ -506,7 +506,7 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage()
+              hoverMessage({ merchantID: "123" })
                 .then(() => {
                   return clickMessage(props).then(() => {
                     assert.equal(
@@ -539,10 +539,10 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage()
+              hoverMessage({ merchantID: "123" })
                 .then(() => {
                   return clickMessage(props).then(() => {
-                    return hoverMessage().then(() => {
+                    return hoverMessage({ merchantID: "123" }).then(() => {
                       return clickMessage(props).then(() => {
                         assert.equal(window.paypal.MessagesModal.mock.calls, 1);
                         done();
