@@ -33,6 +33,7 @@ type IsFundingEligibleOptions = {|
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
+  hasShippingCallback: boolean,
   wallet?: ?Wallet,
   applePaySupport: boolean,
   supportsPopups: boolean,
@@ -80,6 +81,7 @@ export function isFundingEligible(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     flow,
     wallet,
     applePaySupport,
@@ -126,9 +128,14 @@ export function isFundingEligible(
       fundingSource,
       fundingEligibility,
       layout,
-      shippingChange:
-        onShippingChange || onShippingAddressChange || onShippingOptionsChange,
+      shippingChange: Boolean(
+        hasShippingCallback ||
+          onShippingChange ||
+          onShippingAddressChange ||
+          onShippingOptionsChange
+      ),
       wallet,
+      displayOnly,
     })
   ) {
     return false;
@@ -193,6 +200,7 @@ export function determineEligibleFunding({
   onShippingChange,
   onShippingAddressChange,
   onShippingOptionsChange,
+  hasShippingCallback,
   flow,
   wallet,
   applePaySupport,
@@ -211,6 +219,7 @@ export function determineEligibleFunding({
   onShippingChange?: ?Function,
   onShippingAddressChange?: ?Function,
   onShippingOptionsChange?: ?Function,
+  hasShippingCallback: boolean,
   flow: $Values<typeof BUTTON_FLOW>,
   wallet?: ?Wallet,
   applePaySupport: boolean,
@@ -234,6 +243,7 @@ export function determineEligibleFunding({
       onShippingChange,
       onShippingAddressChange,
       onShippingOptionsChange,
+      hasShippingCallback,
       flow,
       wallet,
       applePaySupport,
