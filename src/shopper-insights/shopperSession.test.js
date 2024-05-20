@@ -32,8 +32,6 @@ const mockFindEligiblePaymentsRequest = (
 const defaultSdkConfig = {
   sdkToken: "sdk client token",
   pageType: "checkout",
-  clientToken: "",
-  userIDToken: "",
   paypalApiDomain: "https://api.paypal.com",
   environment: "test",
   buyerCountry: "US",
@@ -68,13 +66,14 @@ afterEach(() => {
 describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
   test("should get is member using the shopper insights API", async () => {
     const shopperSession = createShopperSession();
-    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
-      email: "email@test.com",
-      phone: {
-        countryCode: "1",
-        nationalNumber: "2345678901",
-      },
-    });
+    const recommendedPaymentMethods =
+      await shopperSession.isEligibleInPaypalNetwork({
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
+        },
+      });
 
     expect.assertions(1);
     expect(recommendedPaymentMethods).toEqual(true);
@@ -95,13 +94,14 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
         }),
     });
 
-    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
-      email: "email@test.com",
-      phone: {
-        countryCode: "1",
-        nationalNumber: "2345678901",
-      },
-    });
+    const recommendedPaymentMethods =
+      await shopperSession.isEligibleInPaypalNetwork({
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
+        },
+      });
 
     expect.assertions(1);
     expect(recommendedPaymentMethods).toEqual(true);
@@ -122,13 +122,14 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
         }),
     });
 
-    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
-      email: "email@test.com",
-      phone: {
-        countryCode: "1",
-        nationalNumber: "2345678901",
-      },
-    });
+    const recommendedPaymentMethods =
+      await shopperSession.isEligibleInPaypalNetwork({
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
+        },
+      });
 
     expect.assertions(1);
     expect(recommendedPaymentMethods).toEqual(false);
@@ -142,13 +143,14 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
         }),
     });
 
-    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
-      email: "email@test.com",
-      phone: {
-        countryCode: "1",
-        nationalNumber: "2345678901",
-      },
-    });
+    const recommendedPaymentMethods =
+      await shopperSession.isEligibleInPaypalNetwork({
+        email: "email@test.com",
+        phone: {
+          countryCode: "1",
+          nationalNumber: "2345678901",
+        },
+      });
 
     expect.assertions(1);
     expect(recommendedPaymentMethods).toEqual(false);
@@ -424,8 +426,6 @@ describe("shopper insights component - validateSdkConfig()", () => {
           ...defaultSdkConfig,
           sdkToken: "",
           pageType: "",
-          userIDToken: "",
-          clientToken: "",
         },
       })
     ).toThrowError(
@@ -440,28 +440,10 @@ describe("shopper insights component - validateSdkConfig()", () => {
           ...defaultSdkConfig,
           sdkToken: "sdk-token",
           pageType: "",
-          userIDToken: "",
-          clientToken: "",
         },
       })
     ).toThrowError(
       "script data attribute page-type is required but was not passed"
-    );
-  });
-
-  test("should throw if ID token is passed", () => {
-    expect(() =>
-      createShopperSession({
-        sdkConfig: {
-          ...defaultSdkConfig,
-          sdkToken: "sdk-token",
-          pageType: "product-listing",
-          userIDToken: "id-token",
-          clientToken: "",
-        },
-      })
-    ).toThrowError(
-      "use script data attribute sdk-client-token instead of user-id-token"
     );
   });
 });
