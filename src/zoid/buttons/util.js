@@ -96,11 +96,6 @@ export function isSupportedNativeBrowser(): boolean {
     return false;
   }
 
-  if (isSFVC()) {
-    logNativeScreenInformation("sfvcScreenInformation");
-    return false;
-  }
-
   if (isTablet()) {
     return false;
   }
