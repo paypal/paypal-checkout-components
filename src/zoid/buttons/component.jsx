@@ -716,25 +716,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
-            merchantID: serverMerchantId,
           }) => {
-            const {
-              message,
-              clientID,
-              currency,
-              buttonSessionID,
-              merchantID: partnerMerchantId,
-            } = props;
+            const { message, clientID, currency, buttonSessionID, merchantID } =
+              props;
             const amount = message?.amount;
-            const isPartnerMerchantIdEmpty =
-              !partnerMerchantId ||
-              partnerMerchantId.length === 0 ||
-              partnerMerchantId[0] === "";
-            // check to see if a partner merchant id integration exists
-            // if not grab the server merchant id
-            const merchantID = isPartnerMerchantIdEmpty
-              ? serverMerchantId
-              : partnerMerchantId?.join();
 
             getLogger()
               .info("button_message_click")
@@ -745,7 +730,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                [FPTI_KEY.SELLER_ID]: merchantID,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -773,17 +757,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return ({ merchantID: serverMerchantId }) => {
-            const { clientID, merchantID: partnerMerchantId } = props;
-            const isPartnerMerchantIdEmpty =
-              !partnerMerchantId ||
-              partnerMerchantId.length === 0 ||
-              partnerMerchantId[0] === "";
-            // check to see if a partner merchant id integration exists
-            // if not grab the server merchant id
-            const merchantID = isPartnerMerchantIdEmpty
-              ? serverMerchantId
-              : partnerMerchantId?.join();
+          return () => {
+            const { clientID, merchantID } = props;
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
@@ -804,25 +779,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             merchantID: serverMerchantId,
           }) => {
             // merchantID that comes from props is an array
-            const {
-              message,
-              buttonSessionID,
-              currency,
-              merchantID: partnerMerchantId,
-            } = props;
-            const isPartnerMerchantIdEmpty =
-              !partnerMerchantId ||
-              partnerMerchantId.length === 0 ||
-              partnerMerchantId[0] === "";
-            // check to see if a partner merchant id integration exists
-            // if not grab the server merchant id
-            const merchantID = isPartnerMerchantIdEmpty
-              ? serverMerchantId
-              : partnerMerchantId?.join();
+            const { message, buttonSessionID, currency, merchantID } = props;
 
             // override with server id if partner does not exist
             getLogger().addTrackingBuilder(() => ({
-              [FPTI_KEY.SELLER_ID]: merchantID,
+              [FPTI_KEY.SELLER_ID]: merchantID.toString() || serverMerchantId,
             }));
 
             getLogger()
