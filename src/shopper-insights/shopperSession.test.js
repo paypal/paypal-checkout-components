@@ -1,4 +1,6 @@
 /* @flow */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-restricted-globals, promise/no-native, compat/compat */
 import { vi, describe, expect } from "vitest";
 
 import { ValidationError } from "../lib";
@@ -55,14 +57,105 @@ const createShopperSession = ({
     // $FlowIssue
     logger,
     sessionState,
+    // $FlowIssue
     request,
   });
 
-describe("shopper insights component - getRecommendedPaymentMethods()", () => {
-  afterEach(() => {
-    vi.clearAllMocks();
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
+describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
+  test("should get is member using the shopper insights API", async () => {
+    const shopperSession = createShopperSession();
+    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
+      email: "email@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678901",
+      },
+    });
+
+    expect.assertions(1);
+    expect(recommendedPaymentMethods).toEqual(true);
   });
 
+  test("should return isEligibleInPaypalNetwork true as long as one payment method is true", async () => {
+    const shopperSession = createShopperSession({
+      request: () =>
+        Promise.resolve({
+          eligible_methods: {
+            venmo: {
+              eligible_in_paypal_network: false,
+            },
+            paypal: {
+              eligible_in_paypal_network: true,
+            },
+          },
+        }),
+    });
+
+    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
+      email: "email@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678901",
+      },
+    });
+
+    expect.assertions(1);
+    expect(recommendedPaymentMethods).toEqual(true);
+  });
+
+  test("should return isEligibleInPaypalNetwork false if all payment methods are false", async () => {
+    const shopperSession = createShopperSession({
+      request: () =>
+        Promise.resolve({
+          eligible_methods: {
+            venmo: {
+              eligible_in_paypal_network: false,
+            },
+            paypal: {
+              eligible_in_paypal_network: false,
+            },
+          },
+        }),
+    });
+
+    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
+      email: "email@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678901",
+      },
+    });
+
+    expect.assertions(1);
+    expect(recommendedPaymentMethods).toEqual(false);
+  });
+
+  test("should return isEligibleInPaypalNetwork false if no eligible payment methods", async () => {
+    const shopperSession = createShopperSession({
+      request: () =>
+        Promise.resolve({
+          eligible_methods: {},
+        }),
+    });
+
+    const recommendedPaymentMethods = await shopperSession.isEligibleInPaypalNetwork({
+      email: "email@test.com",
+      phone: {
+        countryCode: "1",
+        nationalNumber: "2345678901",
+      },
+    });
+
+    expect.assertions(1);
+    expect(recommendedPaymentMethods).toEqual(false);
+  });
+});
+
+describe("shopper insights component - getRecommendedPaymentMethods()", () => {
   test("should get recommended payment methods using the shopper insights API", async () => {
     const shopperSession = createShopperSession();
     const recommendedPaymentMethods =
