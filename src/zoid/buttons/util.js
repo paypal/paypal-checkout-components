@@ -90,6 +90,8 @@ export function determineFlow(
 }
 
 export function isSupportedNativeBrowser(): boolean {
+  logNativeScreenInformation("sfvcScreenInformation");
+
   if (typeof window === "undefined") {
     return false;
   }
