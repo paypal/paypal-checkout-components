@@ -921,7 +921,7 @@ const buttonConfigs = [
       },
     })),
   },
-  // **********
+
   {
     name: "disableMaxHeight",
 
@@ -986,7 +986,6 @@ const buttonConfigs = [
       },
     })),
   },
-  // *********
 
   {
     name: "message",
