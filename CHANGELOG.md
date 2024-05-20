@@ -1,3 +1,57 @@
+## <small>5.0.314 (2024-05-15)</small>
+
+* add flow-typed to repository (#2391) ([4490e14](https://github.com/paypal/paypal-checkout-components/commit/4490e14)), closes [#2391](https://github.com/paypal/paypal-checkout-components/issues/2391)
+
+
+
+## <small>5.0.313 (2024-05-13)</small>
+
+* Ran npm run format on main & these needed formatting (#2390) ([c08c9ff](https://github.com/paypal/paypal-checkout-components/commit/c08c9ff)), closes [#2390](https://github.com/paypal/paypal-checkout-components/issues/2390)
+
+
+
+## <small>5.0.312 (2024-05-08)</small>
+
+* fix: handle tagline field on ncps hosted buttons (#2384) ([4a46749](https://github.com/paypal/paypal-checkout-components/commit/4a46749)), closes [#2384](https://github.com/paypal/paypal-checkout-components/issues/2384)
+
+
+
+## <small>5.0.311 (2024-05-01)</small>
+
+* Update vaulted pre-render to support customerId check (#2382) ([42eec79](https://github.com/paypal/paypal-checkout-components/commit/42eec79)), closes [#2382](https://github.com/paypal/paypal-checkout-components/issues/2382)
+
+
+
+## <small>5.0.310 (2024-05-01)</small>
+
+* fix: add eslint-config-grumbler as dev dependency (#2383) ([05bb7b6](https://github.com/paypal/paypal-checkout-components/commit/05bb7b6)), closes [#2383](https://github.com/paypal/paypal-checkout-components/issues/2383)
+
+
+
+## <small>5.0.309 (2024-04-24)</small>
+
+* Use Standalone buttons for V2 of Hosted Buttons (#2375) ([04cca79](https://github.com/paypal/paypal-checkout-components/commit/04cca79)), closes [#2375](https://github.com/paypal/paypal-checkout-components/issues/2375)
+
+
+
+## <small>5.0.308 (2024-04-17)</small>
+
+* feat: dynamic messaging (#2349) ([4b3d77a](https://github.com/paypal/paypal-checkout-components/commit/4b3d77a)), closes [#2349](https://github.com/paypal/paypal-checkout-components/issues/2349)
+
+
+
+## <small>5.0.307 (2024-04-03)</small>
+
+* remove unused buttonDesign experiment (#2368) ([cb69c02](https://github.com/paypal/paypal-checkout-components/commit/cb69c02)), closes [#2368](https://github.com/paypal/paypal-checkout-components/issues/2368)
+
+
+
+## <small>5.0.306 (2024-03-27)</small>
+
+* feat(venmo): eligibility (#2366) ([530567f](https://github.com/paypal/paypal-checkout-components/commit/530567f)), closes [#2366](https://github.com/paypal/paypal-checkout-components/issues/2366)
+
+
+
 ## <small>5.0.305 (2024-03-20)</small>
 
 * Add recommended methods on FPTI log (#2362) ([a41e3f9](https://github.com/paypal/paypal-checkout-components/commit/a41e3f9)), closes [#2362](https://github.com/paypal/paypal-checkout-components/issues/2362)

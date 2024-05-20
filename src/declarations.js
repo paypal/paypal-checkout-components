@@ -18,6 +18,7 @@ declare var __PAYPAL_CHECKOUT__: {|
     __VENMO__: string,
     __WALLET__: string,
     __PAYMENT_FIELDS__: string,
+    __MESSAGE_MODAL__: string,
   |},
 |};
 

@@ -40,11 +40,15 @@ import {
   BUTTON_SIZE,
   BUTTON_FLOW,
   MENU_PLACEMENT,
+  MESSAGE_OFFER,
+  MESSAGE_COLOR,
+  MESSAGE_POSITION,
+  MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
-import { isBorderRadiusNumber } from "./util";
+import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
 
 export type CreateOrderData = {||} | {||};
 
@@ -357,14 +361,6 @@ export type Personalization = {|
       click: string,
     |},
   |},
-  buttonDesign?: {|
-    id: string,
-    text: string,
-    tracking: {|
-      impression: string,
-      click: string,
-    |},
-  |},
 |};
 
 // https://developer.apple.com/documentation/apple_pay_on_the_web/applepayerror/2970147-applepayerror
@@ -432,6 +428,22 @@ export type ApplePaySessionConfigRequest = (
   request: Object
 ) => ApplePaySessionConfig;
 
+export type ButtonMessage = {|
+  amount?: number,
+  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
+  color: $Values<typeof MESSAGE_COLOR>,
+  position: $Values<typeof MESSAGE_POSITION>,
+  align: $Values<typeof MESSAGE_ALIGN>,
+|};
+
+export type ButtonMessageInputs = {|
+  amount?: number | void,
+  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>> | void,
+  color?: $Values<typeof MESSAGE_COLOR> | void,
+  position?: $Values<typeof MESSAGE_POSITION> | void,
+  align?: $Values<typeof MESSAGE_ALIGN> | void,
+|};
+
 export type RenderButtonProps = {|
   style: ButtonStyle,
   locale: LocaleType,
@@ -455,6 +467,7 @@ export type RenderButtonProps = {|
   onShippingOptionsChange: ?OnShippingOptionsChange,
   personalization: ?Personalization,
   clientAccessToken: ?string,
+  customerId: ?string,
   content?: ContentType,
   flow: $Values<typeof BUTTON_FLOW>,
   experiment: Experiment,
@@ -466,6 +479,8 @@ export type RenderButtonProps = {|
   supportedNativeBrowser: boolean,
   showPayLabel: boolean,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  message?: ButtonMessage,
+  messageMarkup?: string,
 |};
 
 export type PrerenderDetails = {|
@@ -507,6 +522,7 @@ export type ButtonProps = {|
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
   clientAccessToken?: ?string,
+  customerId?: ?string,
   nonce: string,
   merchantID?: $ReadOnlyArray<string>,
   merchantRequestedPopupsDisabled: ?boolean,
@@ -525,6 +541,8 @@ export type ButtonProps = {|
   createVaultSetupToken: CreateVaultSetupToken,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   hostedButtonId?: string,
+  message?: ButtonMessage,
+  messageMarkup?: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -552,6 +570,7 @@ export type ButtonPropsInputs = {
   onShippingOptionsChange: ?Function,
   personalization?: Personalization,
   clientAccessToken?: ?string,
+  customerId?: ?string,
   wallet?: ?Wallet,
   csp: {|
     nonce: string,
@@ -567,6 +586,9 @@ export type ButtonPropsInputs = {
   supportedNativeBrowser: boolean,
   showPayLabel: boolean,
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  message?: ButtonMessageInputs | void,
+  messageMarkup?: string | void,
+  renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
 };
 
 export const DEFAULT_STYLE = {
@@ -715,6 +737,72 @@ export function normalizeButtonStyle(
   };
 }
 
+export function normalizeButtonMessage(
+  message: ButtonMessageInputs,
+  layout: $Values<typeof BUTTON_LAYOUT>,
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+): ButtonMessage {
+  const {
+    amount,
+    offer,
+    color = MESSAGE_COLOR.BLACK,
+    position,
+    align = MESSAGE_ALIGN.CENTER,
+  } = message;
+
+  if (typeof amount !== "undefined") {
+    if (typeof amount !== "number") {
+      throw new TypeError(
+        `Expected message.amount to be a number, got: ${amount}`
+      );
+    }
+    if (amount < 0) {
+      throw new Error(
+        `Expected message.amount to be a positive number, got: ${amount}`
+      );
+    }
+  }
+
+  if (typeof offer !== "undefined") {
+    if (!Array.isArray(offer)) {
+      throw new TypeError(
+        `Expected message.offer to be an array of strings, got: ${String(
+          offer
+        )}`
+      );
+    }
+    const invalidOffers = offer.filter(
+      (o) => !values(MESSAGE_OFFER).includes(o)
+    );
+    if (invalidOffers.length > 0) {
+      throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
+    }
+  }
+
+  if (typeof color !== "undefined" && !values(MESSAGE_COLOR).includes(color)) {
+    throw new Error(`Invalid color: ${color}`);
+  }
+
+  if (
+    typeof position !== "undefined" &&
+    !values(MESSAGE_POSITION).includes(position)
+  ) {
+    throw new Error(`Invalid position: ${position}`);
+  }
+
+  if (typeof align !== "undefined" && !values(MESSAGE_ALIGN).includes(align)) {
+    throw new Error(`Invalid align: ${align}`);
+  }
+
+  return {
+    amount,
+    offer,
+    color,
+    position: calculateMessagePosition(fundingSources, layout, position),
+    align,
+  };
+}
+
 const COUNTRIES = values(COUNTRY);
 const FUNDING_SOURCES = values(FUNDING);
 const ENVS = values(ENV);
@@ -757,6 +845,7 @@ export function normalizeButtonProps(
     onShippingOptionsChange,
     personalization,
     clientAccessToken,
+    customerId,
     content,
     wallet,
     flow = BUTTON_FLOW.PURCHASE,
@@ -769,6 +858,9 @@ export function normalizeButtonProps(
     supportedNativeBrowser = false,
     showPayLabel = true,
     displayOnly = [],
+    message,
+    messageMarkup,
+    renderedButtons,
   } = props;
 
   const { country, lang } = locale;
@@ -827,6 +919,11 @@ export function normalizeButtonProps(
   }
 
   style = normalizeButtonStyle(props, style);
+  const { layout } = style;
+
+  message = message
+    ? normalizeButtonMessage(message, layout, renderedButtons)
+    : undefined;
 
   return {
     clientID,
@@ -854,11 +951,14 @@ export function normalizeButtonProps(
     experiment,
     vault,
     userIDToken,
+    customerId,
     applePay,
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
     showPayLabel,
     displayOnly,
+    message,
+    messageMarkup,
   };
 }

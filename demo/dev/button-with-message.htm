@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD"></script>
+  <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
+  <style>
+    .paypal-button-container {
+      border: 2px solid black;
+    }
+    hr {
+      margin: 5px 0 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="buttons-1"></div>
+  <hr />
+  <div class="buttons-2"></div>
+  <hr />
+  <div class="buttons-3"></div>
+
+  <script>
+    const buttons1 = paypal.Buttons({
+      style: {
+        layout: "vertical",
+      },
+    });
+    const buttons2 = paypal.Buttons({
+      style: {
+        layout: "horizontal",
+        tagline: true,
+      },
+    });
+    const buttons3 = paypal.Buttons({
+      fundingSource: "paypal",
+      style: {
+        // layout: "horizontal",
+        // tagline: true,
+      },
+    });
+
+    buttons1.render(".buttons-1");
+    buttons2.render(".buttons-2");
+    buttons3.render(".buttons-3");
+  </script>
+</body>

@@ -1392,3 +1392,36 @@ buttonConfigs.push({
     showPayLabel: false,
   },
 });
+
+buttonConfigs.push({
+  diffThreshold: 1000,
+  container: {
+    width: 350,
+  },
+  wallet: {
+    paypal: {
+      instruments: [
+        {
+          accessToken: null,
+          instrumentID: "123",
+          label: "BALANCE",
+          logoUrl: null,
+          oneClick: true,
+          planID: null,
+          secondaryInstruments: null,
+          tokenID: null,
+          type: "balance",
+          vendor: "BALANCE",
+        },
+      ],
+    },
+  },
+  fundingEligibility: {
+    paypal: {
+      eligible: true,
+    },
+  },
+  button: {
+    customerId: "123",
+  },
+});
