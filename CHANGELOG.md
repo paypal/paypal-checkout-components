@@ -1,3 +1,9 @@
+## <small>5.0.315 (2024-05-20)</small>
+
+* is eligible in paypal network check for shopper insights (#2388) ([17d051a](https://github.com/paypal/paypal-checkout-components/commit/17d051a)), closes [#2388](https://github.com/paypal/paypal-checkout-components/issues/2388)
+
+
+
 ## <small>5.0.314 (2024-05-15)</small>
 
 * add flow-typed to repository (#2391) ([4490e14](https://github.com/paypal/paypal-checkout-components/commit/4490e14)), closes [#2391](https://github.com/paypal/paypal-checkout-components/issues/2391)
