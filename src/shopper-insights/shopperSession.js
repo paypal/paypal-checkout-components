@@ -60,8 +60,6 @@ type RecommendedPaymentMethodsResponse = {|
 type SdkConfig = {|
   sdkToken: ?string,
   pageType: ?string,
-  userIDToken: ?string,
-  clientToken: ?string,
   paypalApiDomain: string,
   environment: ?string,
   buyerCountry: string,
@@ -212,29 +210,6 @@ const parseSdkConfig = ({
     throw new ValidationError(
       `script data attribute page-type is required but was not passed`
     );
-  }
-
-  if (sdkConfig.userIDToken) {
-    logger.metricCounter({
-      namespace: shopperInsightsMetricNamespace,
-      event: "error",
-      dimensions: {
-        errorType: "merchant_configuration_validation_error",
-        validationDetails: "sdk_token_and_id_token_present",
-      },
-    });
-
-    throw new ValidationError(
-      `use script data attribute sdk-client-token instead of user-id-token`
-    );
-  }
-
-  // Client token has widely adopted integrations in the SDK that we do not want
-  // to support anymore. For now, we will be only enforcing a warning. We should
-  // expand on this warning with upgrade guides when we have them.
-  if (sdkConfig.clientToken) {
-    // eslint-disable-next-line no-console
-    console.warn(`script data attribute client-token is not recommended`);
   }
 
   return sdkConfig;
