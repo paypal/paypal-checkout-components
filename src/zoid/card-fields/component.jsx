@@ -153,8 +153,6 @@ export type CardFieldsComponent = ZoidComponent<
 export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
   (): CardFieldsComponent => {
     const genericCardField = (type) => {
-      console.log("mervin: inside checkout-comp, xprops", window.xprops);
-
       return create({
         tag: `paypal-card-${type}-field`,
         url,
