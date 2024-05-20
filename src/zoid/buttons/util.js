@@ -6,7 +6,6 @@ import {
   isIos,
   isIOS14,
   isSafari,
-  isSFVC,
   type Experiment,
   isDevice,
   isTablet,
