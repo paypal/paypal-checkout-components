@@ -49,7 +49,7 @@ const CARD_FIELD_TYPE = {
 type CardFieldsProps = {|
   clientID: string,
   style?: {|
-    height: number,
+    height: number | string,
   |},
   env?: string,
   locale?: string,
@@ -102,7 +102,10 @@ type CardFieldProps = {|
   ...CardFieldsProps,
 
   parent: {|
-    props: CardFieldsProps,
+    props: {|
+      ...CardFieldsProps,
+      disableDefaultStyle?: boolean,
+    |},
   |},
 |};
 
@@ -125,6 +128,7 @@ type CardFieldsChildren = {|
 |};
 
 function isDefaultStyleDisabled(props): boolean {
+  // $FlowFixMe
   return Boolean(props?.parent?.props?.disableDefaultStyle);
 }
 
@@ -133,6 +137,11 @@ const url = () =>
 
 const prerenderTemplate = ({ props, doc }) => {
   if (isDefaultStyleDisabled(props)) {
+    if (props.style === undefined) {
+      props.style = {
+        height: "",
+      };
+    }
     props.style.height = "100vh";
   }
   return (
