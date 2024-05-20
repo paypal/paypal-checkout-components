@@ -783,7 +783,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             // override with server id if partner does not exist
             getLogger().addTrackingBuilder(() => ({
-              [FPTI_KEY.SELLER_ID]: merchantID.toString() || serverMerchantId,
+              [FPTI_KEY.SELLER_ID]: merchantID?.toString() || serverMerchantId,
             }));
 
             getLogger()
