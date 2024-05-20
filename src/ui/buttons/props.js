@@ -763,15 +763,15 @@ export function normalizeButtonMessage(
   }
 
   if (typeof offer !== "undefined") {
-    if (!Array.isArray(offer)) {
-      if (typeof offer !== "string") {
-        throw new TypeError(
-          `Expected message.offer to be an array of strings, got: ${String(
-            offer
-          )}`
-        );
-      }
+    if (typeof offer === "string") {
       offer = offer.split(",");
+    }
+    if (!Array.isArray(offer)) {
+      throw new TypeError(
+        `Expected message.offer to be an array of strings, got: ${String(
+          offer
+        )}`
+      );
     }
     const invalidOffers = offer.filter(
       (o) => !values(MESSAGE_OFFER).includes(o)
