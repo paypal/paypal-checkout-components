@@ -124,7 +124,7 @@ type CardFieldsChildren = {|
   NameField: CardFieldComponent,
 |};
 
-function isDefaultStyleDisabled(props) {
+function isDefaultStyleDisabled(props): boolean {
   return Boolean(props?.parent?.props?.disableDefaultStyle);
 }
 
