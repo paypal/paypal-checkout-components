@@ -344,7 +344,7 @@ export const getButtonColor = (
 export const applyContainerStyles = ({
   flexDirection,
   buttonContainerId,
-}: ApplyButtonStylesProps): void | Error => {
+}: ApplyButtonStylesProps): void => {
   const buttonContainer = document.querySelector(`#${buttonContainerId}`);
 
   if (!buttonContainer) {
