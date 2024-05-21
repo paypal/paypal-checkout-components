@@ -2,6 +2,9 @@
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
+import { getLogger } from "@paypal/sdk-client/src";
+
+import { getButtonsComponent } from "../zoid/buttons";
 
 import {
   buildHostedButtonCreateOrder,
@@ -10,9 +13,11 @@ import {
   getHostedButtonDetails,
   getFlexDirection,
   getButtonColor,
-  shouldRenderSDKButtons,
-  appendButtonContainer,
   getElementFromSelector,
+  getButtonPreferences,
+  renderStandaloneButton,
+  applyContainerStyles,
+  renderDefaultButton,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -28,6 +33,16 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getSDKHost: () => "example.com",
     getClientID: () => "client_id_123",
     getMerchantID: () => ["merchant_id_123"],
+    getLogger: vi.fn(() => ({
+      error: vi.fn(),
+    })),
+  };
+});
+
+vi.mock("../zoid/buttons", async () => {
+  return {
+    ...(await vi.importActual("../zoid/buttons")),
+    getButtonsComponent: vi.fn(),
   };
 });
 
@@ -97,6 +112,7 @@ describe("getHostedButtonDetails", () => {
             button_preferences: ["paypal", "paylater"],
             eligible_funding_methods: ["paypal", "venmo", "paylater"],
           },
+          js_sdk_container_id: "spb-container",
         },
         version: "2",
       },
@@ -556,38 +572,8 @@ test("getButtonColor", () => {
   });
 });
 
-test("shouldRenderSDKButtons", () => {
-  expect(shouldRenderSDKButtons([])).toBe(false);
-  expect(shouldRenderSDKButtons(["paypal"])).toBe(true);
-  expect(shouldRenderSDKButtons(["paypal", "venmo"])).toBe(true);
-});
-
-test("buildButtonContainer", () => {
-  const containerId = "#container-id";
-  const selector = document.createElement("div");
-
-  selector.setAttribute("id", containerId.slice(1));
-
-  vi.spyOn(document, "querySelector").mockReturnValueOnce(selector);
-
-  expect(() =>
-    appendButtonContainer({ flexDirection: "row", selector: containerId })
-  ).not.toThrow();
-
-  expect(() =>
-    appendButtonContainer({ flexDirection: "row", selector })
-  ).not.toThrow();
-
-  expect(() =>
-    appendButtonContainer({
-      flexDirection: "row",
-      selector: `${containerId}-not-found`,
-    })
-  ).toThrow("PayPal button container selector was not found");
-});
-
 test("getElementFromSelector", () => {
-  const containerId = "#container-id";
+  const containerId = "container-id";
   const selector = document.createElement("div");
 
   selector.setAttribute("id", containerId.slice(1));
@@ -600,6 +586,236 @@ test("getElementFromSelector", () => {
   expect(getElementFromSelector(selector)).toBe(selector);
   expect(mockQuerySelector).toBeCalledTimes(1);
   expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
+});
+
+describe("getButtonPreferences", () => {
+  test("returns all button preferences if all are eligible", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "venmo", "paylater"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal", "venmo"]);
+  });
+
+  test("removes any button preferences not in the eligible funding methods", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "paylater"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal"]);
+  });
+  test("sorts eligible funding methods according to SUPPORTED_FUNDING_SOURCES", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paylater", "venmo", "paypal"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.eligibleFundingMethods).toEqual([
+      "paypal",
+      "venmo",
+      "paylater",
+    ]);
+  });
+
+  test("doesn't filter out 'default' in button preferences", () => {
+    const params = {
+      button_preferences: ["paypal", "default"],
+      eligible_funding_methods: ["paylater", "venmo", "paypal"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal", "default"]);
+  });
+
+  test("logs & throws error if the input is bad", () => {
+    const errorMock = vi.fn();
+
+    // $FlowIssue
+    getLogger.mockImplementation(() => ({ error: errorMock }));
+
+    const params = {
+      button_preferences: [],
+      eligible_funding_methods: [],
+    };
+
+    const shouldThrowError = () => getButtonPreferences(params);
+
+    expect(shouldThrowError).toThrowError();
+    expect(errorMock).toBeCalledTimes(1);
+  });
+});
+
+describe("applyContainerStyles", () => {
+  const buttonContainerId = "button-container";
+  const params = { flexDirection: "vertical", buttonContainerId };
+
+  test("successfully applies styles to container", () => {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = buttonContainerId;
+    vi.spyOn(document, "querySelector").mockReturnValueOnce(buttonContainer);
+
+    applyContainerStyles(params);
+
+    expect(buttonContainer?.style.length).toBeTruthy();
+  });
+
+  test("throws error if button container cannot be found", () => {
+    // Intentionally not setting up the button container to throw the error
+    const shouldThrowError = () => applyContainerStyles(params);
+    expect(shouldThrowError).toThrowError(
+      `Element with id ${buttonContainerId} not found.`
+    );
+  });
+});
+
+describe("render buttons", () => {
+  const containerId = "container-id";
+  const expectedContainerId = `#${containerId}`;
+  const renderMock = vi.fn();
+  const errorMock = vi.fn();
+  const baseParams = {
+    buttonContainerId: containerId,
+    buttonOptions: {
+      createOrder: vi.fn(),
+      onApprove: vi.fn(),
+      onClick: vi.fn(),
+      onInit: vi.fn(),
+      style: {
+        color: "gold",
+        layout: "",
+        shape: "",
+        height: 40,
+        label: "",
+        tagline: true,
+      },
+      hostedButtonId: "",
+    },
+  };
+
+  beforeEach(() => {
+    vi.resetAllMocks();
+    // $FlowIssue
+    getLogger.mockImplementation(() => ({ error: errorMock }));
+  });
+
+  describe("renderStandaloneButton", () => {
+    test("renders button if eligible", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => true),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementationOnce(() => Buttons);
+
+      renderStandaloneButton({
+        ...baseParams,
+        fundingSource: "paypal",
+      });
+
+      expect(renderMock).toHaveBeenCalledTimes(1);
+      expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
+      expect(Buttons).toHaveBeenCalledWith(
+        expect.objectContaining({
+          fundingSource: "paypal",
+        })
+      );
+    });
+
+    test("does not render button if button is ineligible", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => false),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementationOnce(() => Buttons);
+
+      renderStandaloneButton({
+        ...baseParams,
+        fundingSource: "venmo",
+      });
+
+      expect(renderMock).toHaveBeenCalledTimes(0);
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_venmo_ineligible"
+      );
+    });
+  });
+
+  describe("renderDefaultButton", () => {
+    test("renders the first eligible button", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => true),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementation(() => Buttons);
+
+      renderDefaultButton({
+        ...baseParams,
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      });
+
+      expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
+      expect(errorMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("renders the next eligible button if button fails Buttons().isEligible() check", () => {
+      const Buttons = vi.fn(({ fundingSource }) => ({
+        render: renderMock,
+        isEligible: vi.fn(() => fundingSource === "paylater"),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementation(() => Buttons);
+
+      renderDefaultButton({
+        ...baseParams,
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      });
+
+      expect(errorMock).toHaveBeenCalledTimes(1);
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_venmo_ineligible"
+      );
+      expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
+    });
+
+    test("does not render any button if all fail Buttons().isEligible()", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => false),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementation(() => Buttons);
+
+      renderDefaultButton({
+        ...baseParams,
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      });
+
+      expect(errorMock).toHaveBeenCalledTimes(2);
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_venmo_ineligible"
+      );
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_paylater_ineligible"
+      );
+      expect(renderMock).toHaveBeenCalledTimes(0);
+    });
+  });
 });
 
 /* eslint-enable no-restricted-globals, promise/no-native */
