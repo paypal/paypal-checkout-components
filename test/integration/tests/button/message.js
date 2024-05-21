@@ -458,7 +458,7 @@ describe(`paypal button message`, () => {
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage({ merchantID: "123" })
+              hoverMessage()
                 .then(() => {
                   assert.equal(getNamespace(), window.namespace);
                   done();
@@ -475,7 +475,7 @@ describe(`paypal button message`, () => {
           message: {},
           test: {
             onRender({ hoverMessage }) {
-              hoverMessage({ merchantID: "123" })
+              hoverMessage()
                 .then(() => {
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
@@ -506,7 +506,7 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage({ merchantID: "123" })
+              hoverMessage()
                 .then(() => {
                   return clickMessage(props).then(() => {
                     assert.equal(
@@ -539,10 +539,10 @@ describe(`paypal button message`, () => {
           },
           test: {
             onRender({ clickMessage, hoverMessage }) {
-              hoverMessage({ merchantID: "123" })
+              hoverMessage()
                 .then(() => {
                   return clickMessage(props).then(() => {
-                    return hoverMessage({ merchantID: "123" }).then(() => {
+                    return hoverMessage().then(() => {
                       return clickMessage(props).then(() => {
                         assert.equal(window.paypal.MessagesModal.mock.calls, 1);
                         done();
