@@ -1,3 +1,9 @@
+## <small>5.0.317 (2024-05-22)</small>
+
+* NCPS v2 👾 (#2389) ([c849191](https://github.com/paypal/paypal-checkout-components/commit/c849191)), closes [#2389](https://github.com/paypal/paypal-checkout-components/issues/2389)
+
+
+
 ## <small>5.0.316 (2024-05-20)</small>
 
 * do not validate token usage in shopper insights (#2396) ([0be4402](https://github.com/paypal/paypal-checkout-components/commit/0be4402)), closes [#2396](https://github.com/paypal/paypal-checkout-components/issues/2396)
