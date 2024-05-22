@@ -718,12 +718,10 @@ export function normalizeButtonStyle(
     }
 
     const disableMaxHeightInvalidFundingSources = [FUNDING.CARD, undefined];
-    const disableMaxHeightValidFundingSources = [
-      FUNDING.PAYPAL,
-      FUNDING.VENMO,
-      FUNDING.PAYLATER,
-      FUNDING.CREDIT,
-    ];
+    const disableMaxHeightValidFundingSources = Object.values(FUNDING).filter(
+      (fundingSourceId) =>
+        !disableMaxHeightInvalidFundingSources.includes(fundingSourceId)
+    );
 
     if (disableMaxHeightInvalidFundingSources.includes(fundingSource)) {
       throw new TypeError(
