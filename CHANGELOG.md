@@ -1,3 +1,9 @@
+## <small>5.0.318 (2024-05-23)</small>
+
+* consistent capitaliztion of paypal (#2397) ([09b9d59](https://github.com/paypal/paypal-checkout-components/commit/09b9d59)), closes [#2397](https://github.com/paypal/paypal-checkout-components/issues/2397)
+
+
+
 ## <small>5.0.317 (2024-05-22)</small>
 
 * NCPS v2 👾 (#2389) ([c849191](https://github.com/paypal/paypal-checkout-components/commit/c849191)), closes [#2389](https://github.com/paypal/paypal-checkout-components/issues/2389)
