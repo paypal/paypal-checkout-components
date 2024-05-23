@@ -63,11 +63,11 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
+describe("shopper insights component - isEligibleInPayPalNetwork()", () => {
   test("should get is member using the shopper insights API", async () => {
     const shopperSession = createShopperSession();
     const recommendedPaymentMethods =
-      await shopperSession.isEligibleInPaypalNetwork({
+      await shopperSession.isEligibleInPayPalNetwork({
         email: "email@test.com",
         phone: {
           countryCode: "1",
@@ -79,7 +79,7 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
     expect(recommendedPaymentMethods).toEqual(true);
   });
 
-  test("should return isEligibleInPaypalNetwork true as long as one payment method is true", async () => {
+  test("should return isEligibleInPayPalNetwork true as long as one payment method is true", async () => {
     const shopperSession = createShopperSession({
       request: () =>
         Promise.resolve({
@@ -95,7 +95,7 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
     });
 
     const recommendedPaymentMethods =
-      await shopperSession.isEligibleInPaypalNetwork({
+      await shopperSession.isEligibleInPayPalNetwork({
         email: "email@test.com",
         phone: {
           countryCode: "1",
@@ -107,7 +107,7 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
     expect(recommendedPaymentMethods).toEqual(true);
   });
 
-  test("should return isEligibleInPaypalNetwork false if all payment methods are false", async () => {
+  test("should return isEligibleInPayPalNetwork false if all payment methods are false", async () => {
     const shopperSession = createShopperSession({
       request: () =>
         Promise.resolve({
@@ -123,7 +123,7 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
     });
 
     const recommendedPaymentMethods =
-      await shopperSession.isEligibleInPaypalNetwork({
+      await shopperSession.isEligibleInPayPalNetwork({
         email: "email@test.com",
         phone: {
           countryCode: "1",
@@ -135,7 +135,7 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
     expect(recommendedPaymentMethods).toEqual(false);
   });
 
-  test("should return isEligibleInPaypalNetwork false if no eligible payment methods", async () => {
+  test("should return isEligibleInPayPalNetwork false if no eligible payment methods", async () => {
     const shopperSession = createShopperSession({
       request: () =>
         Promise.resolve({
@@ -144,7 +144,7 @@ describe("shopper insights component - isEligibleInPaypalNetwork()", () => {
     });
 
     const recommendedPaymentMethods =
-      await shopperSession.isEligibleInPaypalNetwork({
+      await shopperSession.isEligibleInPayPalNetwork({
         email: "email@test.com",
         phone: {
           countryCode: "1",
