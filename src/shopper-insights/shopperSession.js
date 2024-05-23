@@ -6,12 +6,13 @@ import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { stringifyError } from "@krakenjs/belter/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
-import {
-  ELIGIBLE_PAYMENT_METHODS,
-  FPTI_TRANSITION,
-  SHOPPER_INSIGHTS_METRIC_NAME,
-} from "../constants/api";
+import { ELIGIBLE_PAYMENT_METHODS, FPTI_TRANSITION } from "../constants/api";
 import { ValidationError } from "../lib";
+
+export const shopperInsightsMetricNamespace = "shopper_insights.count";
+export const recommendedPaymentsMetricNamespace =
+  "shopper_insights.recommended_payments.count";
+export const isMemberMetricNamespace = "shopper_insights.is_member.count";
 
 export type MerchantPayloadData = {|
   email?: string,
@@ -59,8 +60,6 @@ type RecommendedPaymentMethodsResponse = {|
 type SdkConfig = {|
   sdkToken: ?string,
   pageType: ?string,
-  userIDToken: ?string,
-  clientToken: ?string,
   paypalApiDomain: string,
   environment: ?string,
   buyerCountry: string,
@@ -185,7 +184,7 @@ const parseSdkConfig = ({
 |}): SdkConfig => {
   if (!sdkConfig.sdkToken) {
     logger.metricCounter({
-      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
+      namespace: shopperInsightsMetricNamespace,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
@@ -200,7 +199,7 @@ const parseSdkConfig = ({
 
   if (!sdkConfig.pageType) {
     logger.metricCounter({
-      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
+      namespace: shopperInsightsMetricNamespace,
       event: "error",
       dimensions: {
         errorType: "merchant_configuration_validation_error",
@@ -213,29 +212,6 @@ const parseSdkConfig = ({
     );
   }
 
-  if (sdkConfig.userIDToken) {
-    logger.metricCounter({
-      namespace: SHOPPER_INSIGHTS_METRIC_NAME,
-      event: "error",
-      dimensions: {
-        errorType: "merchant_configuration_validation_error",
-        validationDetails: "sdk_token_and_id_token_present",
-      },
-    });
-
-    throw new ValidationError(
-      `use script data attribute sdk-client-token instead of user-id-token`
-    );
-  }
-
-  // Client token has widely adopted integrations in the SDK that we do not want
-  // to support anymore. For now, we will be only enforcing a warning. We should
-  // expand on this warning with upgrade guides when we have them.
-  if (sdkConfig.clientToken) {
-    // eslint-disable-next-line no-console
-    console.warn(`script data attribute client-token is not recommended`);
-  }
-
   return sdkConfig;
 };
 
@@ -243,6 +219,7 @@ export interface ShopperInsightsInterface {
   getRecommendedPaymentMethods: (
     payload: MerchantPayloadData
   ) => Promise<RecommendedPaymentMethods>;
+  isEligibleInPaypalNetwork: (payload: MerchantPayloadData) => Promise<boolean>;
 }
 
 export class ShopperSession {
@@ -267,6 +244,74 @@ export class ShopperSession {
     this.request = request;
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
     this.sessionState = sessionState;
+  }
+
+  async isEligibleInPaypalNetwork(
+    merchantPayload: MerchantPayloadData
+  ): Promise<boolean> {
+    const startTime = Date.now();
+    const data = parseMerchantPayload({
+      merchantPayload,
+      sdkConfig: this.sdkConfig,
+    });
+    try {
+      const body = await this.request<
+        RecommendedPaymentMethodsRequestData,
+        RecommendedPaymentMethodsResponse
+      >({
+        method: "POST",
+        url: `${this.sdkConfig.paypalApiDomain}/${ELIGIBLE_PAYMENT_METHODS}`,
+        data,
+        accessToken: this.sdkConfig.sdkToken,
+      });
+
+      this.sessionState.set("shopperInsights", {
+        shopperInsightsIsMemberUsed: true,
+      });
+
+      const eligibleMethods = body?.eligible_methods ?? {};
+      const eligibleInPaypalNetwork = Object.keys(eligibleMethods).some(
+        (paymentMethod) =>
+          eligibleMethods[paymentMethod]?.eligible_in_paypal_network
+      );
+
+      this.logger.track({
+        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
+        [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
+        [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
+        shopper_insights_is_member: eligibleInPaypalNetwork,
+      });
+
+      this.logger.metricCounter({
+        namespace: isMemberMetricNamespace,
+        event: "success",
+        dimensions: {
+          eligibleInPaypalNetwork,
+        },
+      });
+
+      return eligibleInPaypalNetwork;
+    } catch (error) {
+      this.logger.metricCounter({
+        namespace: isMemberMetricNamespace,
+        event: "error",
+        dimensions: {
+          errorType: "api_error",
+        },
+      });
+
+      this.logger.track({
+        [FPTI_KEY.TRANSITION]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_ERROR,
+        [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_ERROR,
+        [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
+      });
+
+      this.logger.error("shopper_insights_api_error", {
+        err: stringifyError(error),
+      });
+
+      throw error;
+    }
   }
 
   async getRecommendedPaymentMethods(
@@ -314,7 +359,7 @@ export class ShopperSession {
       });
 
       this.logger.metricCounter({
-        namespace: SHOPPER_INSIGHTS_METRIC_NAME,
+        namespace: recommendedPaymentsMetricNamespace,
         event: "success",
         dimensions: {
           isPayPalRecommended: String(isPayPalRecommended),
@@ -325,7 +370,7 @@ export class ShopperSession {
       return { isPayPalRecommended, isVenmoRecommended };
     } catch (error) {
       this.logger.metricCounter({
-        namespace: SHOPPER_INSIGHTS_METRIC_NAME,
+        namespace: recommendedPaymentsMetricNamespace,
         event: "error",
         dimensions: {
           errorType: "api_error",

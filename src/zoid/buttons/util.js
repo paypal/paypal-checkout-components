@@ -6,7 +6,6 @@ import {
   isIos,
   isIOS14,
   isSafari,
-  isSFVC,
   type Experiment,
   isDevice,
   isTablet,
@@ -91,16 +90,13 @@ export function determineFlow(
 }
 
 export function isSupportedNativeBrowser(): boolean {
+  logNativeScreenInformation("sfvcScreenInformation");
+
   if (typeof window === "undefined") {
     return false;
   }
 
   if (!userAgentSupportsPopups()) {
-    return false;
-  }
-
-  if (isSFVC()) {
-    logNativeScreenInformation("sfvcScreenInformation");
     return false;
   }
 
