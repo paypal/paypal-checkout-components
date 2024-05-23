@@ -107,6 +107,10 @@ describe("getHostedButtonDetails", () => {
               name: "tagline",
               value: "true",
             },
+            {
+              name: "enable_dpop",
+              value: "true",
+            },
           ],
           preferences: {
             button_preferences: ["paypal", "paylater"],
@@ -149,7 +153,7 @@ describe("getHostedButtonDetails", () => {
     await getHostedButtonDetails({
       hostedButtonId,
       fundingSources: [],
-    }).then(({ style, preferences, version }) => {
+    }).then(({ style, preferences, version, enableDPoP }) => {
       expect(style.height).toEqual(50);
       expect(style.tagline).toEqual(true);
       expect(preferences).toEqual({
@@ -157,8 +161,9 @@ describe("getHostedButtonDetails", () => {
         eligibleFundingMethods: ["paypal", "venmo", "paylater"],
       });
       expect(version).toEqual("2");
+      expect(enableDPoP).toEqual(true);
     });
-    expect.assertions(4);
+    expect.assertions(5);
   });
 
   test("handles false tagline values", async () => {

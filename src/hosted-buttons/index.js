@@ -22,7 +22,6 @@ import type {
 
 export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
-    enableDPoP = false,
     hostedButtonId,
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
@@ -35,6 +34,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         version,
         preferences,
         buttonContainerId,
+        enableDPoP,
       } = await getHostedButtonDetails({
         hostedButtonId,
       });

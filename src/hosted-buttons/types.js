@@ -110,6 +110,7 @@ export type HostedButtonDetailsParams =
     version: ?string,
     buttonContainerId: string,
     preferences?: HostedButtonPreferences,
+    enableDPoP: boolean,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
