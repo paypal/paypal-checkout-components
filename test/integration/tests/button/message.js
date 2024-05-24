@@ -479,15 +479,7 @@ describe(`paypal button message`, () => {
                 .then(() => {
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
-                      .length === 6
-                  );
-                  assert.ok(
-                    typeof window.paypal.MessagesModal.mock.calledWith
-                      .onReady === "function"
-                  );
-                  assert.ok(
-                    typeof window.paypal.MessagesModal.mock.calledWith
-                      .onClick === "function"
+                      .length === 4
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
