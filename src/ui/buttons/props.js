@@ -465,6 +465,7 @@ export type RenderButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   personalization: ?Personalization,
   clientAccessToken: ?string,
   customerId: ?string,
@@ -521,6 +522,7 @@ export type ButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   clientAccessToken?: ?string,
   customerId?: ?string,
   nonce: string,
@@ -568,6 +570,7 @@ export type ButtonPropsInputs = {
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
+  hasShippingCallback?: boolean,
   personalization?: Personalization,
   clientAccessToken?: ?string,
   customerId?: ?string,
@@ -825,6 +828,12 @@ export function normalizeButtonProps(
     throw new Error(`Expected props`);
   }
 
+  const defaultHasShippingCallback = Boolean(
+    props.onShippingChange ||
+      props.onShippingAddressChange ||
+      props.onShippingOptionsChange
+  );
+
   let {
     clientID,
     fundingSource,
@@ -843,6 +852,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback = defaultHasShippingCallback,
     personalization,
     clientAccessToken,
     customerId,
@@ -906,6 +916,7 @@ export function normalizeButtonProps(
         onShippingChange,
         onShippingAddressChange,
         onShippingOptionsChange,
+        hasShippingCallback,
         wallet,
         flow,
         applePaySupport,
@@ -944,6 +955,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     personalization,
     content,
     wallet,

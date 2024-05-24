@@ -202,6 +202,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
+        displayOnly,
       } = props;
 
       const flow = determineFlow({
@@ -244,6 +245,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           supportsPopups,
           supportedNativeBrowser,
           experiment,
+          displayOnly,
         })
       ) {
         return {
@@ -528,6 +530,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             createBillingAgreement,
             createSubscription,
             createVaultSetupToken,
+            displayOnly,
           } = props;
 
           const flow = determineFlow({
@@ -556,6 +559,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               applePaySupport,
               supportsPopups,
               supportedNativeBrowser,
+              displayOnly,
             })
           ) {
             throw new Error(`${fundingSource} is not eligible`);
@@ -829,6 +833,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       onShippingOptionsChange: {
         type: "function",
         required: false,
+      },
+
+      hasShippingCallback: {
+        type: "boolean",
+        required: false,
+        queryParam: true,
+        value: ({ props }) => {
+          return Boolean(
+            props.onShippingChange ||
+              props.onShippingAddressChange ||
+              props.onShippingOptionsChange
+          );
+        },
       },
 
       pageType: {
