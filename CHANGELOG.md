@@ -1,3 +1,9 @@
+## <small>5.0.319 (2024-05-24)</small>
+
+* Make Venmo ineligible if shipping callback is present & displayOnly includes "vaultable"  👾 (#2394) ([841bf90](https://github.com/paypal/paypal-checkout-components/commit/841bf90)), closes [#2394](https://github.com/paypal/paypal-checkout-components/issues/2394)
+
+
+
 ## <small>5.0.318 (2024-05-23)</small>
 
 * consistent capitaliztion of paypal (#2397) ([09b9d59](https://github.com/paypal/paypal-checkout-components/commit/09b9d59)), closes [#2397](https://github.com/paypal/paypal-checkout-components/issues/2397)
