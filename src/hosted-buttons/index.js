@@ -1,5 +1,4 @@
 /* @flow */
-
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
@@ -8,22 +7,35 @@ import {
   getHostedButtonDetails,
   renderForm,
   getMerchantID,
+  getFlexDirection,
+  applyContainerStyles,
+  renderStandaloneButton,
+  renderDefaultButton,
+  getDefaultButtonOptions,
 } from "./utils";
 import type {
   HostedButtonsComponent,
   HostedButtonsComponentProps,
   HostedButtonsInstance,
+  HostedButtonOptions,
 } from "./types";
 
 export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
-    enableDPoP = false,
     hostedButtonId,
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = async (selector) => {
       const merchantId = getMerchantID();
-      const { html, htmlScript, style } = await getHostedButtonDetails({
+      const {
+        html,
+        htmlScript,
+        style,
+        version,
+        preferences,
+        buttonContainerId,
+        enableDPoP,
+      } = await getHostedButtonDetails({
         hostedButtonId,
       });
 
@@ -34,24 +46,56 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         selector,
       });
 
-      // $FlowFixMe
-      Buttons({
+      const createOrder = buildHostedButtonCreateOrder({
+        enableDPoP,
         hostedButtonId,
-        style,
-        onInit,
+        merchantId,
+      });
+
+      const onApprove = buildHostedButtonOnApprove({
+        enableDPoP,
+        hostedButtonId,
+        merchantId,
+      });
+
+      const buttonOptions: HostedButtonOptions = {
+        createOrder,
+        hostedButtonId,
+        merchantId,
+        onApprove,
         onClick,
-        createOrder: buildHostedButtonCreateOrder({
-          enableDPoP,
-          hostedButtonId,
-          merchantId,
-        }),
-        onApprove: buildHostedButtonOnApprove({
-          enableDPoP,
-          hostedButtonId,
-          merchantId,
-        }),
-      }).render(selector);
+        onInit,
+        style,
+      };
+
+      if (version === "2") {
+        const { flexDirection } = getFlexDirection({ ...style });
+
+        applyContainerStyles({ flexDirection, buttonContainerId });
+
+        preferences?.buttonPreferences.forEach((fundingSource) => {
+          if (fundingSource === "default") {
+            const eligibleDefaultButtons = getDefaultButtonOptions(preferences);
+            renderDefaultButton({
+              eligibleDefaultButtons,
+              buttonContainerId,
+              buttonOptions,
+            });
+          } else {
+            renderStandaloneButton({
+              fundingSource,
+              buttonContainerId,
+              buttonOptions,
+            });
+          }
+        });
+      } else {
+        // V1 Experience
+        // $FlowFixMe
+        Buttons(buttonOptions).render(selector);
+      }
     };
+
     return {
       render,
     };

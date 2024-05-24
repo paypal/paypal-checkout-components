@@ -2,12 +2,22 @@
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
+import { getLogger } from "@paypal/sdk-client/src";
+
+import { getButtonsComponent } from "../zoid/buttons";
 
 import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
   createAccessToken,
   getHostedButtonDetails,
+  getFlexDirection,
+  getButtonColor,
+  getElementFromSelector,
+  getButtonPreferences,
+  renderStandaloneButton,
+  applyContainerStyles,
+  renderDefaultButton,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -23,6 +33,16 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getSDKHost: () => "example.com",
     getClientID: () => "client_id_123",
     getMerchantID: () => ["merchant_id_123"],
+    getLogger: vi.fn(() => ({
+      error: vi.fn(),
+    })),
+  };
+});
+
+vi.mock("../zoid/buttons", async () => {
+  return {
+    ...(await vi.importActual("../zoid/buttons")),
+    getButtonsComponent: vi.fn(),
   };
 });
 
@@ -32,35 +52,6 @@ const merchantId = "M1234567890";
 const orderID = "EC-1234567890";
 const clientId = "C1234567890";
 
-const getHostedButtonDetailsResponse = {
-  body: {
-    button_details: {
-      link_variables: [
-        {
-          name: "business",
-          value: merchantId,
-        },
-        {
-          name: "shape",
-          value: "rect",
-        },
-        {
-          name: "layout",
-          value: "vertical",
-        },
-        {
-          name: "color",
-          value: "gold",
-        },
-        {
-          name: "button_text",
-          value: "paypal",
-        },
-      ],
-    },
-  },
-};
-
 const mockCreateAccessTokenRequest = () =>
   // eslint-disable-next-line compat/compat
   Promise.resolve({
@@ -69,23 +60,251 @@ const mockCreateAccessTokenRequest = () =>
     },
   });
 
-test("getHostedButtonDetails", async () => {
-  // $FlowIssue
-  request.mockImplementationOnce(() =>
-    // eslint-disable-next-line compat/compat
-    Promise.resolve(getHostedButtonDetailsResponse)
-  );
-  await getHostedButtonDetails({
-    hostedButtonId,
-  }).then(({ style }) => {
-    expect(style).toEqual({
-      layout: "vertical",
-      shape: "rect",
-      color: "gold",
-      label: "paypal",
+describe("getHostedButtonDetails", () => {
+  const getHostedButtonDetailsResponse = {
+    v1: {
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "business",
+              value: merchantId,
+            },
+            {
+              name: "shape",
+              value: "rect",
+            },
+            {
+              name: "layout",
+              value: "vertical",
+            },
+            {
+              name: "color",
+              value: "gold",
+            },
+            {
+              name: "button_text",
+              value: "paypal",
+            },
+            {
+              name: "tagline",
+              value: "true",
+            },
+          ],
+        },
+      },
+    },
+
+    v2: {
+      body: {
+        button_details: {
+          link_variables: [
+            {
+              name: "height",
+              value: "50",
+            },
+            {
+              name: "tagline",
+              value: "true",
+            },
+            {
+              name: "enable_dpop",
+              value: "true",
+            },
+          ],
+          preferences: {
+            button_preferences: ["paypal", "paylater"],
+            eligible_funding_methods: ["paypal", "venmo", "paylater"],
+          },
+          js_sdk_container_id: "spb-container",
+        },
+        version: "2",
+      },
+    },
+  };
+
+  test("version 1", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse.v1)
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+      fundingSources: [],
+    }).then(({ style }) => {
+      expect(style).toEqual({
+        layout: "vertical",
+        shape: "rect",
+        color: "gold",
+        label: "paypal",
+        tagline: true,
+      });
     });
+    expect.assertions(1);
   });
-  expect.assertions(1);
+
+  test("version 2", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(getHostedButtonDetailsResponse.v2)
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+      fundingSources: [],
+    }).then(({ style, preferences, version, enableDPoP }) => {
+      expect(style.height).toEqual(50);
+      expect(style.tagline).toEqual(true);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
+      expect(version).toEqual("2");
+      expect(enableDPoP).toEqual(true);
+    });
+    expect.assertions(5);
+  });
+
+  test("handles false tagline values", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "business",
+                value: merchantId,
+              },
+              {
+                name: "layout",
+                value: "horizontal",
+              },
+              {
+                name: "tagline",
+                value: "false",
+              },
+            ],
+          },
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style }) => {
+      expect(style).toEqual(
+        expect.objectContaining({
+          tagline: false,
+        })
+      );
+    });
+
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "height",
+                value: 50,
+              },
+              {
+                name: "tagline",
+                value: "false",
+              },
+            ],
+            preferences: {
+              button_preferences: ["paypal", "paylater"],
+              eligible_funding_methods: ["paypal", "venmo", "paylater"],
+            },
+          },
+          version: "2",
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style, preferences, version }) => {
+      expect(style.height).toEqual(50);
+      expect(style.tagline).toEqual(false);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
+      expect(version).toEqual("2");
+    });
+    expect.assertions(5);
+  });
+
+  test("handles undefined tagline values", async () => {
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "business",
+                value: merchantId,
+              },
+              {
+                name: "layout",
+                value: "horizontal",
+              },
+            ],
+          },
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style }) => {
+      expect(style).toEqual(
+        expect.objectContaining({
+          tagline: false,
+        })
+      );
+    });
+
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve({
+        body: {
+          button_details: {
+            link_variables: [
+              {
+                name: "height",
+                value: 50,
+              },
+            ],
+            preferences: {
+              button_preferences: ["paypal", "paylater"],
+              eligible_funding_methods: ["paypal", "venmo", "paylater"],
+            },
+          },
+          version: "2",
+        },
+      })
+    );
+    await getHostedButtonDetails({
+      hostedButtonId,
+    }).then(({ style, preferences, version }) => {
+      expect(style.height).toEqual(50);
+      expect(style.tagline).toEqual(false);
+      expect(preferences).toEqual({
+        buttonPreferences: ["paypal", "paylater"],
+        eligibleFundingMethods: ["paypal", "venmo", "paylater"],
+      });
+      expect(version).toEqual("2");
+    });
+    expect.assertions(5);
+  });
 });
 
 describe("createAccessToken", () => {
@@ -305,6 +524,301 @@ describe("buildHostedButtonOnApprove", () => {
       expect(window.location).toBe(
         "https://example.com/ncp/payment/B1234567890/EC-1234567890?status=DUPLICATE_INVOICE_ID"
       );
+    });
+  });
+});
+
+test("getFlexDirection", () => {
+  expect(getFlexDirection({ layout: "horizontal" })).toStrictEqual({
+    flexDirection: "row",
+  });
+  expect(getFlexDirection({ layout: "vertical" })).toStrictEqual({
+    flexDirection: "column",
+  });
+});
+
+test("getButtonColor", () => {
+  const colors = ["gold", "blue", "silver", "white", "black"];
+  const fundingSources = ["paypal", "venmo", "paylater"];
+  const colorMap = {
+    gold: {
+      paypal: "gold",
+      venmo: "blue",
+      paylater: "gold",
+    },
+    blue: {
+      paypal: "blue",
+      venmo: "silver",
+      paylater: "blue",
+    },
+    black: {
+      paypal: "black",
+      venmo: "black",
+      paylater: "black",
+    },
+    white: {
+      paypal: "white",
+      venmo: "white",
+      paylater: "white",
+    },
+    silver: {
+      paypal: "silver",
+      venmo: "blue",
+      paylater: "silver",
+    },
+  };
+
+  colors.forEach((color) => {
+    fundingSources.forEach((fundingSource) => {
+      expect(getButtonColor(color, fundingSource)).toBe(
+        colorMap[color][fundingSource]
+      );
+    });
+  });
+});
+
+test("getElementFromSelector", () => {
+  const containerId = "container-id";
+  const selector = document.createElement("div");
+
+  selector.setAttribute("id", containerId.slice(1));
+
+  const mockQuerySelector = vi
+    .spyOn(document, "querySelector")
+    .mockReturnValueOnce(selector);
+
+  expect(getElementFromSelector(containerId)).toBe(selector);
+  expect(getElementFromSelector(selector)).toBe(selector);
+  expect(mockQuerySelector).toBeCalledTimes(1);
+  expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
+});
+
+describe("getButtonPreferences", () => {
+  test("returns all button preferences if all are eligible", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "venmo", "paylater"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal", "venmo"]);
+  });
+
+  test("removes any button preferences not in the eligible funding methods", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paypal", "paylater"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal"]);
+  });
+  test("sorts eligible funding methods according to SUPPORTED_FUNDING_SOURCES", () => {
+    const params = {
+      button_preferences: ["paypal", "venmo"],
+      eligible_funding_methods: ["paylater", "venmo", "paypal"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.eligibleFundingMethods).toEqual([
+      "paypal",
+      "venmo",
+      "paylater",
+    ]);
+  });
+
+  test("doesn't filter out 'default' in button preferences", () => {
+    const params = {
+      button_preferences: ["paypal", "default"],
+      eligible_funding_methods: ["paylater", "venmo", "paypal"],
+    };
+
+    const preferences = getButtonPreferences(params);
+
+    expect(preferences.buttonPreferences).toEqual(["paypal", "default"]);
+  });
+
+  test("logs & throws error if the input is bad", () => {
+    const errorMock = vi.fn();
+
+    // $FlowIssue
+    getLogger.mockImplementation(() => ({ error: errorMock }));
+
+    const params = {
+      button_preferences: [],
+      eligible_funding_methods: [],
+    };
+
+    const shouldThrowError = () => getButtonPreferences(params);
+
+    expect(shouldThrowError).toThrowError();
+    expect(errorMock).toBeCalledTimes(1);
+  });
+});
+
+describe("applyContainerStyles", () => {
+  const buttonContainerId = "button-container";
+  const params = { flexDirection: "vertical", buttonContainerId };
+
+  test("successfully applies styles to container", () => {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = buttonContainerId;
+    vi.spyOn(document, "querySelector").mockReturnValueOnce(buttonContainer);
+
+    applyContainerStyles(params);
+
+    expect(buttonContainer?.style.length).toBeTruthy();
+  });
+
+  test("throws error if button container cannot be found", () => {
+    // Intentionally not setting up the button container to throw the error
+    const shouldThrowError = () => applyContainerStyles(params);
+    expect(shouldThrowError).toThrowError(
+      `Element with id ${buttonContainerId} not found.`
+    );
+  });
+});
+
+describe("render buttons", () => {
+  const containerId = "container-id";
+  const expectedContainerId = `#${containerId}`;
+  const renderMock = vi.fn();
+  const errorMock = vi.fn();
+  const baseParams = {
+    buttonContainerId: containerId,
+    buttonOptions: {
+      createOrder: vi.fn(),
+      onApprove: vi.fn(),
+      onClick: vi.fn(),
+      onInit: vi.fn(),
+      style: {
+        color: "gold",
+        layout: "",
+        shape: "",
+        height: 40,
+        label: "",
+        tagline: true,
+      },
+      hostedButtonId: "",
+    },
+  };
+
+  beforeEach(() => {
+    vi.resetAllMocks();
+    // $FlowIssue
+    getLogger.mockImplementation(() => ({ error: errorMock }));
+  });
+
+  describe("renderStandaloneButton", () => {
+    test("renders button if eligible", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => true),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementationOnce(() => Buttons);
+
+      renderStandaloneButton({
+        ...baseParams,
+        fundingSource: "paypal",
+      });
+
+      expect(renderMock).toHaveBeenCalledTimes(1);
+      expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
+      expect(Buttons).toHaveBeenCalledWith(
+        expect.objectContaining({
+          fundingSource: "paypal",
+        })
+      );
+    });
+
+    test("does not render button if button is ineligible", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => false),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementationOnce(() => Buttons);
+
+      renderStandaloneButton({
+        ...baseParams,
+        fundingSource: "venmo",
+      });
+
+      expect(renderMock).toHaveBeenCalledTimes(0);
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_venmo_ineligible"
+      );
+    });
+  });
+
+  describe("renderDefaultButton", () => {
+    test("renders the first eligible button", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => true),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementation(() => Buttons);
+
+      renderDefaultButton({
+        ...baseParams,
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      });
+
+      expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
+      expect(errorMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("renders the next eligible button if button fails Buttons().isEligible() check", () => {
+      const Buttons = vi.fn(({ fundingSource }) => ({
+        render: renderMock,
+        isEligible: vi.fn(() => fundingSource === "paylater"),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementation(() => Buttons);
+
+      renderDefaultButton({
+        ...baseParams,
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      });
+
+      expect(errorMock).toHaveBeenCalledTimes(1);
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_venmo_ineligible"
+      );
+      expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
+    });
+
+    test("does not render any button if all fail Buttons().isEligible()", () => {
+      const Buttons = vi.fn(() => ({
+        render: renderMock,
+        isEligible: vi.fn(() => false),
+      }));
+
+      // $FlowIssue
+      getButtonsComponent.mockImplementation(() => Buttons);
+
+      renderDefaultButton({
+        ...baseParams,
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      });
+
+      expect(errorMock).toHaveBeenCalledTimes(2);
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_venmo_ineligible"
+      );
+      expect(errorMock).toHaveBeenCalledWith(
+        "ncps_standalone_paylater_ineligible"
+      );
+      expect(renderMock).toHaveBeenCalledTimes(0);
     });
   });
 });
