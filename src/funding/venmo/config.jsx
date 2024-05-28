@@ -6,7 +6,7 @@ import {
   VenmoLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
-import { PLATFORM } from "@paypal/sdk-constants/src";
+import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -19,7 +19,7 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange }) => {
+    eligible: ({ experiment, shippingChange, displayOnly }) => {
       if (experiment && experiment.enableVenmo === false) {
         return false;
       }
@@ -28,6 +28,13 @@ export function getVenmoConfig(): FundingSourceConfig {
         experiment &&
         experiment.venmoWebEnabled === false &&
         shippingChange
+      ) {
+        return false;
+      }
+
+      if (
+        shippingChange &&
+        displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)
       ) {
         return false;
       }

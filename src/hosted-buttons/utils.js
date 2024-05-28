@@ -154,6 +154,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       tagline: getButtonVariable(variables, "tagline") === "true",
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
+    enableDPoP: getButtonVariable(variables, "enable_dpop") === "true",
     version: body.version,
     buttonContainerId: buttonContainerId || "spb-container",
     html: body.html,
