@@ -180,6 +180,7 @@ export function getRenderedButtons(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     style = {},
     enableFunding = getEnableFunding(),
     fundingEligibility = getRefinedFundingEligibility(),
@@ -190,6 +191,7 @@ export function getRenderedButtons(
     createBillingAgreement,
     createSubscription,
     createVaultSetupToken,
+    displayOnly,
   } = props;
 
   const flow = determineFlow({
@@ -213,11 +215,13 @@ export function getRenderedButtons(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     flow,
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
     experiment,
+    displayOnly,
   });
   return renderedButtons;
 }

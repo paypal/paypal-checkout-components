@@ -1,3 +1,27 @@
+## <small>5.0.319 (2024-05-24)</small>
+
+* Make Venmo ineligible if shipping callback is present & displayOnly includes "vaultable"  👾 (#2394) ([841bf90](https://github.com/paypal/paypal-checkout-components/commit/841bf90)), closes [#2394](https://github.com/paypal/paypal-checkout-components/issues/2394)
+
+
+
+## <small>5.0.318 (2024-05-23)</small>
+
+* consistent capitaliztion of paypal (#2397) ([09b9d59](https://github.com/paypal/paypal-checkout-components/commit/09b9d59)), closes [#2397](https://github.com/paypal/paypal-checkout-components/issues/2397)
+
+
+
+## <small>5.0.317 (2024-05-22)</small>
+
+* NCPS v2 👾 (#2389) ([c849191](https://github.com/paypal/paypal-checkout-components/commit/c849191)), closes [#2389](https://github.com/paypal/paypal-checkout-components/issues/2389)
+
+
+
+## <small>5.0.316 (2024-05-20)</small>
+
+* do not validate token usage in shopper insights (#2396) ([0be4402](https://github.com/paypal/paypal-checkout-components/commit/0be4402)), closes [#2396](https://github.com/paypal/paypal-checkout-components/issues/2396)
+
+
+
 ## <small>5.0.315 (2024-05-20)</small>
 
 * is eligible in paypal network check for shopper insights (#2388) ([17d051a](https://github.com/paypal/paypal-checkout-components/commit/17d051a)), closes [#2388](https://github.com/paypal/paypal-checkout-components/issues/2388)
