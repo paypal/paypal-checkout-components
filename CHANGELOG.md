@@ -1,3 +1,9 @@
+## <small>5.0.320 (2024-05-29)</small>
+
+* add atomics waiting state xprop for checkout (#2402) ([6bad872](https://github.com/paypal/paypal-checkout-components/commit/6bad872)), closes [#2402](https://github.com/paypal/paypal-checkout-components/issues/2402)
+
+
+
 ## <small>5.0.319 (2024-05-24)</small>
 
 * Make Venmo ineligible if shipping callback is present & displayOnly includes "vaultable"  👾 (#2394) ([841bf90](https://github.com/paypal/paypal-checkout-components/commit/841bf90)), closes [#2394](https://github.com/paypal/paypal-checkout-components/issues/2394)
