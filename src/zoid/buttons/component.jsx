@@ -472,10 +472,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       experiment: {
         type: "object",
         queryParam: true,
-        value: () => {
-          const experiments = getButtonExperiments();
-          return experiments;
-        },
+        value: () => ({
+          ...getButtonExperiments(),
+          ...getFirstRenderExperiments(),
+        }),
       },
 
       firstRenderExperiments: {
