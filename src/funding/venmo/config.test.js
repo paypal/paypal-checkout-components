@@ -3,6 +3,8 @@
 import { describe, expect } from "vitest";
 
 import { getVenmoConfig } from "./config";
+import { BUTTON_FLOW } from "../../constants";
+import { experiment } from "@krakenjs/belter/src";
 
 describe("Venmo eligibility", () => {
   const baseEligibilityProps = {
@@ -43,6 +45,27 @@ describe("Venmo eligibility", () => {
 
   test("should be eligible if neither a shipping callback nor displayOnly is present", () => {
     const isVenmoEligible = venmoConfig.eligible?.(baseEligibilityProps);
+
+    expect(isVenmoEligible).toEqual(true);
+  });
+
+  test("should not be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is false", () => {
+    const isVenmoEligible = venmoConfig.eligible?.({
+      ...baseEligibilityProps,
+      flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
+    });
+
+    expect(isVenmoEligible).toEqual(false);
+  });
+
+  test("should be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is true", () => {
+    const isVenmoEligible = venmoConfig.eligible?.({
+      ...baseEligibilityProps,
+      flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
+      experiment: {
+        venmoVaultWithoutPurchase: true,
+      },
+    });
 
     expect(isVenmoEligible).toEqual(true);
   });
