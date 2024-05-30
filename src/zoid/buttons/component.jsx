@@ -478,7 +478,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ...getFirstRenderExperiments(),
         }),
       },
-
+      // TODO first-render-experiment-cleanup
+      // verify if this is needed/used now that were putting the first render experiments in experiment param above
       experimentation: {
         type: "object",
         queryParam: true,
