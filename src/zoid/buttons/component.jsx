@@ -38,6 +38,7 @@ import {
   getMerchantRequestedPopupsDisabled,
   getVersion,
   getDisableSetCookie,
+  getExperimentation,
   getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
@@ -478,11 +479,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         }),
       },
 
-      firstRenderExperiments: {
+      experimentation: {
         type: "object",
         queryParam: true,
         required: false,
-        value: getFirstRenderExperiments,
+        value: getExperimentation,
       },
 
       flow: {

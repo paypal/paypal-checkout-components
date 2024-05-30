@@ -2,9 +2,8 @@
 
 import { describe, expect } from "vitest";
 
-import { getVenmoConfig } from "./config";
 import { BUTTON_FLOW } from "../../constants";
-import { experiment } from "@krakenjs/belter/src";
+import { getVenmoConfig } from "./config";
 
 describe("Venmo eligibility", () => {
   const baseEligibilityProps = {
