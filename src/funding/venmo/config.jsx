@@ -41,9 +41,6 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      console.log("*******************");
-      console.log(experiment);
-      console.log("*******************");
       if (
         flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE &&
         experiment?.venmoVaultWithoutPurchase !== true

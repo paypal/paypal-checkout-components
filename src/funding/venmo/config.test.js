@@ -3,6 +3,7 @@
 import { describe, expect } from "vitest";
 
 import { BUTTON_FLOW } from "../../constants";
+
 import { getVenmoConfig } from "./config";
 
 describe("Venmo eligibility", () => {
