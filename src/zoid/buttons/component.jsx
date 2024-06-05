@@ -80,6 +80,7 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -107,7 +108,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     autoResize: {
       width: false,
       height: true,
-      element: ".paypal-autoresize-container",
+      element: `.${CLASS.AUTORESIZE_CONTAINER}`,
     },
 
     containerTemplate,
