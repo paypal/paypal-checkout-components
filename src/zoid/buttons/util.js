@@ -13,7 +13,9 @@ import {
   isStandAlone,
   once,
   memoize,
+  popup,
 } from "@krakenjs/belter/src";
+import { assertSameDomain } from "@krakenjs/cross-domain-utils/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
@@ -37,6 +39,7 @@ import type {
   CreateVaultSetupToken,
 } from "../../ui/buttons/props";
 import { determineEligibleFunding } from "../../funding";
+import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
 
 type DetermineFlowOptions = {|
@@ -410,3 +413,29 @@ export const getModal: (
       });
   }
 });
+
+export const openPopupAtURI: (
+  uri: string,
+  merchantRequestedPopupsDisabled: ?boolean
+) => Object = (uri, merchantRequestedPopupsDisabled) => {
+  try {
+    if (userAgentSupportsPopups() && !merchantRequestedPopupsDisabled) {
+      return assertSameDomain(
+        popup(uri, {
+          width: DEFAULT_POPUP_SIZE.WIDTH,
+          height: DEFAULT_POPUP_SIZE.HEIGHT,
+        })
+      );
+    } else {
+      return window.open(uri, "_blank");
+    }
+  } catch (err) {
+    getLogger()
+      .error("button_uri_popup_error", { err })
+      .track({
+        err: err.message || "BUTTON_URI_POPUP_ERROR",
+        details: err.details,
+        stack: JSON.stringify(err.stack || err),
+      });
+  }
+};

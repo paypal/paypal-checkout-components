@@ -92,6 +92,7 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
+  openPopupAtURI,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -728,9 +729,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
+            clickUrlOverride,
           }) => {
-            const { message, clientID, merchantID, currency, buttonSessionID } =
-              props;
+            const {
+              message,
+              clientID,
+              merchantID,
+              currency,
+              buttonSessionID,
+              merchantRequestedPopupsDisabled,
+            } = props;
             const amount = message?.amount;
 
             getLogger()
@@ -755,6 +763,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
               });
 
+            if (clickUrlOverride) {
+              return openPopupAtURI(
+                clickUrlOverride,
+                merchantRequestedPopupsDisabled
+              );
+            }
+
             const modalInstance = await getModal(clientID, merchantID);
             return modalInstance?.show({
               amount,
@@ -769,12 +784,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         required: false,
         value: ({ props }) => {
-          return () => {
-            // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
+          return ({ clickUrlOverride }) => {
+            // messageType, offerType, offerCountryCode, and creditProductIdentifier are also passed in, and may be used in an upcoming message hover logging feature
 
-            // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
-            return getModal(clientID, merchantID);
+            // messages with clickUrlOverride will open a popup instead of the modal, so don't preload the modal
+            if (!clickUrlOverride) {
+              // lazy loads the modal, to be memoized and executed onMessageClick
+              const { clientID, merchantID } = props;
+              return getModal(clientID, merchantID);
+            }
           };
         },
       },
