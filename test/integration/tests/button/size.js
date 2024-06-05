@@ -810,6 +810,75 @@ describe(`paypal button component sizes`, () => {
       .render(container);
   });
 
+  it("should render a responsive button and resize the zoid container when the button resizes", (done) => {
+    done = once(done);
+
+    const container = createElement(
+      "div",
+      {
+        style: {
+          width: "162px",
+          height: "100px",
+        },
+      },
+      getElement("#testContainer")
+    );
+
+    const expectedWidth = 255;
+    const expectedHeight = 35;
+
+    window.paypal
+      .Buttons({
+        test: {},
+
+        style: {
+          layout: "horizontal",
+          label: "pay",
+          tagline: false,
+        },
+
+        createOrder() {
+          done(new Error("Expected createOrder() to not be called"));
+        },
+
+        onApprove() {
+          done(new Error("Expected onApprove() to not be called"));
+        },
+
+        onRendered() {
+          const frame = getElement("#testContainer iframe");
+
+          onElementResize(frame, {})
+            .then(() => {
+              const height = frame.offsetHeight;
+
+              if (height === 42) {
+                return onElementResize(frame, {
+                  height: expectedHeight,
+                  width: expectedWidth,
+                });
+              }
+            })
+            .then(() => {
+              const zoidContainer = container.querySelector(
+                ".paypal-buttons-context-iframe"
+              );
+              if (parseInt(zoidContainer.style.height, 10) !== expectedHeight) {
+                done(
+                  new Error(
+                    `Expected zoid container height to be ${expectedHeight}. Received: ${zoidContainer.style.height}`
+                  )
+                );
+              }
+            })
+            .then(done, done);
+
+          container.style.width = "255px";
+        },
+      })
+      .render(container);
+  });
+
   it("should render a responsive button in a hidden element then display it", (done) => {
     done = once(done);
 

@@ -107,6 +107,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     autoResize: {
       width: false,
       height: true,
+      element: ".paypal-autoresize-container",
     },
 
     containerTemplate,
