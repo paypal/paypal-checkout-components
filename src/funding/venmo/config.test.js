@@ -12,6 +12,7 @@ describe("Venmo eligibility", () => {
     components: ["buttons"],
     fundingEligibility: {},
     wallet: expect.any,
+    flow: BUTTON_FLOW.PURCHASE,
   };
   const venmoConfig = getVenmoConfig();
 
