@@ -60,6 +60,8 @@ export type Experiment = {|
   enableVenmo?: boolean,
   disablePaylater?: boolean,
   venmoWebEnabled?: boolean,
+  // first render experiments
+  venmoVaultWithoutPurchase?: boolean,
 |};
 
 export type Requires = {|
