@@ -863,9 +863,13 @@ describe(`paypal button component sizes`, () => {
               const zoidContainer = container.querySelector(
                 ".paypal-buttons-context-iframe"
               );
-              if (parseInt(zoidContainer.style.height, 10) !== expectedHeight) {
+              if (
+                !zoidContainer ||
+                parseInt(zoidContainer.style.height, 10) !== expectedHeight
+              ) {
                 done(
                   new Error(
+                    // $FlowFixMe
                     `Expected zoid container height to be ${expectedHeight}. Received: ${zoidContainer.style.height}`
                   )
                 );
