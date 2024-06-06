@@ -50,7 +50,7 @@ type DetermineFlowOptions = {|
  *
  * @param {string} key for logging
  */
-const logNativeScreenInformation = once((key = "screenInformation") => {
+const logNativeScreenInformation = once(() => {
   if (window) {
     const height = window.innerHeight;
     const outerHeight = window.outerHeight;
@@ -60,18 +60,16 @@ const logNativeScreenInformation = once((key = "screenInformation") => {
     const ios14 = isIOS14();
     const standAlone = isStandAlone();
 
-    const screenInformation = {
-      computedHeight,
-      height,
-      ios14,
-      outerHeight,
-      scale,
-      standAlone,
-    };
-
     getLogger()
       // $FlowFixMe - object is mixed values when this expects all of the same value types
-      .info(key, screenInformation);
+      .info("sfvcScreenInformation", {
+        computedHeight,
+        height,
+        ios14,
+        outerHeight,
+        scale,
+        standAlone,
+      });
   }
 });
 
@@ -90,7 +88,7 @@ export function determineFlow(
 }
 
 export function isSupportedNativeBrowser(): boolean {
-  logNativeScreenInformation("sfvcScreenInformation");
+  logNativeScreenInformation();
 
   if (typeof window === "undefined") {
     return false;
