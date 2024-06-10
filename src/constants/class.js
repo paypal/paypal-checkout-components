@@ -2,6 +2,8 @@
 
 export const CLASS = {
   CONTAINER: ("paypal-button-container": "paypal-button-container"),
+  AUTORESIZE_CONTAINER:
+    ("paypal-autoresize-container": "paypal-autoresize-container"),
   BUTTON_ROW: ("paypal-button-row": "paypal-button-row"),
   BUTTON: ("paypal-button": "paypal-button"),
   BUTTON_LABEL:
