@@ -1,3 +1,9 @@
+## <small>5.0.321 (2024-06-10)</small>
+
+* Button autoResize by button container (#2404) ([80f48b0](https://github.com/paypal/paypal-checkout-components/commit/80f48b0)), closes [#2404](https://github.com/paypal/paypal-checkout-components/issues/2404)
+
+
+
 ## <small>5.0.320 (2024-05-29)</small>
 
 * add atomics waiting state xprop for checkout (#2402) ([6bad872](https://github.com/paypal/paypal-checkout-components/commit/6bad872)), closes [#2402](https://github.com/paypal/paypal-checkout-components/issues/2402)
