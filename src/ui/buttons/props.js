@@ -1,4 +1,5 @@
 /* eslint-disable eslint-comments/disable-enable-pair  */
+/* eslint-disable max-lines */
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
