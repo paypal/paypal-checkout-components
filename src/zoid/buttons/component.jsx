@@ -779,12 +779,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             merchantID: serverMerchantId,
           }) => {
             // merchantID that comes from props is an array
-            const { message, buttonSessionID, currency, merchantID } = props;
+            const { message, buttonSessionID, currency } = props;
 
             // override with server id if partner does not exist
-            getLogger().addTrackingBuilder(() => ({
-              [FPTI_KEY.SELLER_ID]: merchantID?.toString() || serverMerchantId,
-            }));
+            if (serverMerchantId) {
+              getLogger().addTrackingBuilder(() => ({
+                [FPTI_KEY.SELLER_ID]: serverMerchantId,
+              }));
+            }
 
             getLogger()
               .info("button_message_render")

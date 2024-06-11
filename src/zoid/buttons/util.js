@@ -396,7 +396,7 @@ export const getModal: (
 
     return window[namespace].MessagesModal({
       account: `client-id:${clientID}`,
-      merchantId: merchantID?.join() || undefined,
+      merchantId: merchantID?.join(",") || undefined,
     });
   } catch (err) {
     // $FlowFixMe flow doesn't seem to understand that the reset function property exists on the function object itself
