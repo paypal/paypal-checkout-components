@@ -241,6 +241,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
   const isWallet =
     flow === BUTTON_FLOW.PURCHASE &&
+    !hasShippingCallback &&
     ((__WEB__ && userIDToken) || Object.keys(instruments).length);
 
   const index = (i) => {
@@ -295,6 +296,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           onShippingChange={onShippingChange}
           onShippingAddressChange={onShippingAddressChange}
           onShippingOptionsChange={onShippingOptionsChange}
+          hasShippingCallback={hasShippingCallback}
           onClick={onClick}
           userIDToken={userIDToken}
           customerId={customerId}

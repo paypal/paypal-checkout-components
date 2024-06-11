@@ -51,6 +51,7 @@ type IndividualButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   i: number,
   nonce: string,
   userIDToken: ?string,
@@ -88,6 +89,7 @@ export function Button({
   experiment,
   instrument,
   showPayLabel,
+  hasShippingCallback,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
 
@@ -203,6 +205,7 @@ export function Button({
 
   if (
     WalletLabel &&
+    !hasShippingCallback &&
     (!showPayLabel ||
       flow === BUTTON_FLOW.PURCHASE ||
       flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE) &&
