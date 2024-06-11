@@ -120,6 +120,11 @@ export function getCheckoutComponent(): CheckoutComponent {
       },
 
       props: {
+        atomicsWaitingState: {
+          type: "object",
+          required: false,
+          queryParam: false,
+        },
         clientID: {
           type: "string",
           value: () => getClientID(),

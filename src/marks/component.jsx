@@ -10,7 +10,11 @@ import {
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
 } from "@krakenjs/belter/src";
-import { PLATFORM, FUNDING } from "@paypal/sdk-constants/src";
+import {
+  PLATFORM,
+  FUNDING,
+  DISPLAY_ONLY_VALUES,
+} from "@paypal/sdk-constants/src";
 import { getRememberedFunding } from "@paypal/funding-components/src";
 import {
   getEnableFunding,
@@ -45,6 +49,7 @@ type MarksProps = {|
   onShippingChange?: OnShippingChange,
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,
+  displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
 |};
 
 export type MarksComponent = (MarksProps) => MarksInstance;
@@ -55,6 +60,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    displayOnly,
   }: MarksProps = {}): MarksInstance {
     const height = DEFAULT_HEIGHT;
     const fundingEligibility = getFundingEligibility();
@@ -70,6 +76,9 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const supportsPopups = userAgentSupportsPopups();
     const supportedNativeBrowser = isSupportedNativeBrowser();
     const experiment = getVenmoExperiment();
+    const hasShippingCallback = Boolean(
+      onShippingChange || onShippingAddressChange || onShippingOptionsChange
+    );
     const fundingSources = determineEligibleFunding({
       fundingSource,
       fundingEligibility,
@@ -80,9 +89,14 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       layout,
       flow,
       applePaySupport,
+      onShippingChange,
+      onShippingAddressChange,
+      onShippingOptionsChange,
+      hasShippingCallback,
       supportsPopups,
       supportedNativeBrowser,
       experiment,
+      displayOnly,
     });
     const env = getEnv();
 
@@ -106,6 +120,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         supportsPopups,
         supportedNativeBrowser,
         experiment,
+        displayOnly,
       });
     };
 

@@ -1,8 +1,6 @@
 /* @flow */
 import {
-  getUserIDToken,
   getPageType,
-  getClientToken,
   getSDKToken,
   getLogger,
   getPayPalAPIDomain,
@@ -46,8 +44,6 @@ export const ShopperInsights: LazyExport<ShopperInsightsInterface> = {
       sdkConfig: {
         sdkToken: getSDKToken(),
         pageType: getPageType(),
-        userIDToken: getUserIDToken(),
-        clientToken: getClientToken(),
         paypalApiDomain: getPayPalAPIDomain(),
         environment: getEnv(),
         buyerCountry: getBuyerCountry() || "US",
@@ -59,6 +55,8 @@ export const ShopperInsights: LazyExport<ShopperInsightsInterface> = {
     return {
       getRecommendedPaymentMethods: (payload) =>
         shopperSession.getRecommendedPaymentMethods(payload),
+      isEligibleInPayPalNetwork: (payload) =>
+        shopperSession.isEligibleInPayPalNetwork(payload),
     };
   },
 };
