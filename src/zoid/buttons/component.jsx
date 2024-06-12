@@ -39,6 +39,7 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
+  getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
 } from "@paypal/sdk-client/src";
@@ -457,12 +458,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       experiment: {
         type: "object",
         queryParam: true,
-        value: () => {
-          const experiments = getButtonExperiments();
-          return experiments;
-        },
+        value: () => ({
+          ...getButtonExperiments(),
+          ...getFirstRenderExperiments(),
+        }),
       },
-
+      // TODO first-render-experiment-cleanup
+      // verify if this is needed/used now that were putting the first render experiments in experiment param above
       experimentation: {
         type: "object",
         queryParam: true,

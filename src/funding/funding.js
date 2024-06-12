@@ -125,6 +125,7 @@ export function isFundingEligible(
       enableFunding,
       components,
       experiment,
+      flow,
       fundingSource,
       fundingEligibility,
       layout,
