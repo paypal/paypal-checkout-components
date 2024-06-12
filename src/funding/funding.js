@@ -265,20 +265,16 @@ export function determineEligibleFunding({
 
 export function isWalletFundingEligible({
   wallet,
-  onShippingChange,
-  onShippingAddressChange,
-  onShippingOptionsChange,
+  hasShippingCallback,
 }: {|
   wallet: ?Wallet,
-  onShippingChange: ?OnShippingChange,
-  onShippingAddressChange: ?OnShippingAddressChange,
-  onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
 |}): boolean {
   if (!wallet) {
     return false;
   }
 
-  if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
+  if (hasShippingCallback) {
     return false;
   }
 
