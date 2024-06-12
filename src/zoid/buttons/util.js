@@ -371,7 +371,7 @@ function buildModalBundleUrl(): string {
 
 export const getModal: (
   clientID: string,
-  merchantID: $ReadOnlyArray<string> | void
+  merchantID?: $ReadOnlyArray<string> | void
 ) => Object = memoize(async (clientID, merchantID) => {
   try {
     const namespace = getNamespace();
