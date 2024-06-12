@@ -140,7 +140,13 @@ describe("Funding eligibility", () => {
 });
 
 describe("isWalletFundingEligible", () => {
-  const mockWallet = { paypal: [] };
+  const mockWalletValue = { instruments: [] };
+  const mockWallet = {
+    paypal: mockWalletValue,
+    card: mockWalletValue,
+    credit: mockWalletValue,
+    venmo: mockWalletValue,
+  };
 
   test("should not be eligible if a shipping callback is present", () => {
     const result = isWalletFundingEligible({

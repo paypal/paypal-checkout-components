@@ -14,11 +14,6 @@ import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 
 import type { Wallet, Experiment } from "../types";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
-import type {
-  OnShippingChange,
-  OnShippingAddressChange,
-  OnShippingOptionsChange,
-} from "../ui/buttons/props";
 
 import { getFundingConfig } from "./config";
 

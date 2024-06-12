@@ -23,13 +23,7 @@ import {
 } from "../../funding";
 import { ValidationError } from "../../lib";
 
-import {
-  normalizeButtonProps,
-  type ButtonPropsInputs,
-  type OnShippingChange,
-  type OnShippingAddressChange,
-  type OnShippingOptionsChange,
-} from "./props";
+import { normalizeButtonProps, type ButtonPropsInputs } from "./props";
 import { Style } from "./style";
 import { Button } from "./button";
 import { TagLine } from "./tagline";
