@@ -4,7 +4,7 @@ import { describe, expect } from "vitest";
 
 import { BUTTON_FLOW } from "../constants";
 
-import { isFundingEligible } from "./funding";
+import { isFundingEligible, isWalletFundingEligible } from "./funding";
 
 const defaultMockFundingOptions = {
   platform: "desktop",
@@ -136,5 +136,33 @@ describe("Funding eligibility", () => {
     );
 
     expect(fundingEligible).toBe(false);
+  });
+});
+
+describe("isWalletFundingEligible", () => {
+  const mockWallet = { paypal: [] };
+
+  test("should not be eligible if a shipping callback is present", () => {
+    const result = isWalletFundingEligible({
+      wallet: mockWallet,
+      hasShippingCallback: true,
+    });
+    expect(result).toBe(false);
+  });
+
+  test("should not be eligible if wallet does not exist", () => {
+    const result = isWalletFundingEligible({
+      wallet: null,
+      hasShippingCallback: false,
+    });
+    expect(result).toBe(false);
+  });
+
+  test("should be eligible if a shipping callback is not present & wallet exists", () => {
+    const result = isWalletFundingEligible({
+      wallet: mockWallet,
+      hasShippingCallback: false,
+    });
+    expect(result).toBe(true);
   });
 });
