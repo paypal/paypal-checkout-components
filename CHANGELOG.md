@@ -1,3 +1,9 @@
+## <small>5.0.323 (2024-06-12)</small>
+
+* fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
+
+
+
 ## <small>5.0.322 (2024-06-12)</small>
 
 * Support Venmo vault without purchase with a feature flag (#2403) ([f2e7067](https://github.com/paypal/paypal-checkout-components/commit/f2e7067)), closes [#2403](https://github.com/paypal/paypal-checkout-components/issues/2403)
