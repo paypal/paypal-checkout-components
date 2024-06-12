@@ -953,7 +953,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: () => sessionState,
       },
 
-      shopperInsightsUsed: {
+      getShopperInsightsUsed: {
         type: "function",
         value: () => {
           return () => wasShopperInsightsUsed();
