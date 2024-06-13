@@ -23,13 +23,7 @@ import {
 } from "../../funding";
 import { ValidationError } from "../../lib";
 
-import {
-  normalizeButtonProps,
-  type ButtonPropsInputs,
-  type OnShippingChange,
-  type OnShippingAddressChange,
-  type OnShippingOptionsChange,
-} from "./props";
+import { normalizeButtonProps, type ButtonPropsInputs } from "./props";
 import { Style } from "./style";
 import { Button } from "./button";
 import { TagLine } from "./tagline";
@@ -41,24 +35,18 @@ import { calculateShowPoweredBy } from "./util";
 type GetWalletInstrumentOptions = {|
   wallet: ?Wallet,
   fundingSource: $Values<typeof FUNDING>,
-  onShippingChange: ?OnShippingChange,
-  onShippingAddressChange: ?OnShippingAddressChange,
-  onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
 |};
 
 function getWalletInstrument({
   wallet,
   fundingSource,
-  onShippingChange,
-  onShippingAddressChange,
-  onShippingOptionsChange,
+  hasShippingCallback,
 }: GetWalletInstrumentOptions): ?WalletInstrument {
   if (
     !isWalletFundingEligible({
       wallet,
-      onShippingChange,
-      onShippingAddressChange,
-      onShippingOptionsChange,
+      hasShippingCallback,
     })
   ) {
     return;
@@ -81,9 +69,7 @@ const FUNDING_TO_INSTRUMENT = {
 type GetWalletInstrumentsOptions = {|
   wallet: ?Wallet,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  onShippingChange: ?OnShippingChange,
-  onShippingAddressChange: ?OnShippingAddressChange,
-  onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   layout: $Values<typeof BUTTON_LAYOUT>,
 |};
 
@@ -91,9 +77,7 @@ function getWalletInstruments({
   wallet,
   layout,
   fundingSources,
-  onShippingChange,
-  onShippingAddressChange,
-  onShippingOptionsChange,
+  hasShippingCallback,
 }: GetWalletInstrumentsOptions): {|
   [$Values<typeof FUNDING>]: WalletInstrument,
 |} {
@@ -102,9 +86,7 @@ function getWalletInstruments({
     const instrument = getWalletInstrument({
       wallet,
       fundingSource: source,
-      onShippingChange,
-      onShippingAddressChange,
-      onShippingOptionsChange,
+      hasShippingCallback,
     });
 
     if (instrument) {
@@ -170,8 +152,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     personalization,
     userIDToken,
+    customerId,
     content,
     flow,
     experiment,
@@ -194,6 +178,9 @@ export function Buttons(props: ButtonsProps): ElementNode {
     enableFunding,
     components,
     onShippingChange,
+    onShippingAddressChange,
+    onShippingOptionsChange,
+    hasShippingCallback,
     flow,
     wallet,
     applePaySupport,
@@ -229,9 +216,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     wallet,
     fundingSources,
     layout,
-    onShippingChange,
-    onShippingAddressChange,
-    onShippingOptionsChange,
+    hasShippingCallback,
   });
 
   const isWallet =
@@ -254,6 +239,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     <div
       class={[
         CLASS.CONTAINER,
+        CLASS.AUTORESIZE_CONTAINER,
         `${CLASS.LAYOUT}-${layout}`,
         `${CLASS.SHAPE}-${shape}`,
         `${CLASS.NUMBER}-${
@@ -291,6 +277,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           onShippingOptionsChange={onShippingOptionsChange}
           onClick={onClick}
           userIDToken={userIDToken}
+          customerId={customerId}
           personalization={personalization}
           tagline={tagline}
           commit={commit}

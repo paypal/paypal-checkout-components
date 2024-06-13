@@ -465,8 +465,10 @@ export type RenderButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   personalization: ?Personalization,
   clientAccessToken: ?string,
+  customerId: ?string,
   content?: ContentType,
   flow: $Values<typeof BUTTON_FLOW>,
   experiment: Experiment,
@@ -520,7 +522,9 @@ export type ButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   clientAccessToken?: ?string,
+  customerId?: ?string,
   nonce: string,
   merchantID?: $ReadOnlyArray<string>,
   merchantRequestedPopupsDisabled: ?boolean,
@@ -566,8 +570,10 @@ export type ButtonPropsInputs = {
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
+  hasShippingCallback?: boolean,
   personalization?: Personalization,
   clientAccessToken?: ?string,
+  customerId?: ?string,
   wallet?: ?Wallet,
   csp: {|
     nonce: string,
@@ -822,6 +828,12 @@ export function normalizeButtonProps(
     throw new Error(`Expected props`);
   }
 
+  const defaultHasShippingCallback = Boolean(
+    props.onShippingChange ||
+      props.onShippingAddressChange ||
+      props.onShippingOptionsChange
+  );
+
   let {
     clientID,
     fundingSource,
@@ -840,8 +852,10 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback = defaultHasShippingCallback,
     personalization,
     clientAccessToken,
+    customerId,
     content,
     wallet,
     flow = BUTTON_FLOW.PURCHASE,
@@ -902,6 +916,7 @@ export function normalizeButtonProps(
         onShippingChange,
         onShippingAddressChange,
         onShippingOptionsChange,
+        hasShippingCallback,
         wallet,
         flow,
         applePaySupport,
@@ -940,6 +955,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     personalization,
     content,
     wallet,
@@ -947,6 +963,7 @@ export function normalizeButtonProps(
     experiment,
     vault,
     userIDToken,
+    customerId,
     applePay,
     applePaySupport,
     supportsPopups,

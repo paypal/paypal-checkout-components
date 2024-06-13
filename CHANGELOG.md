@@ -1,3 +1,99 @@
+## <small>5.0.323 (2024-06-12)</small>
+
+* fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
+
+
+
+## <small>5.0.322 (2024-06-12)</small>
+
+* Support Venmo vault without purchase with a feature flag (#2403) ([f2e7067](https://github.com/paypal/paypal-checkout-components/commit/f2e7067)), closes [#2403](https://github.com/paypal/paypal-checkout-components/issues/2403)
+
+
+
+## <small>5.0.321 (2024-06-10)</small>
+
+* Button autoResize by button container (#2404) ([80f48b0](https://github.com/paypal/paypal-checkout-components/commit/80f48b0)), closes [#2404](https://github.com/paypal/paypal-checkout-components/issues/2404)
+
+
+
+## <small>5.0.320 (2024-05-29)</small>
+
+* add atomics waiting state xprop for checkout (#2402) ([6bad872](https://github.com/paypal/paypal-checkout-components/commit/6bad872)), closes [#2402](https://github.com/paypal/paypal-checkout-components/issues/2402)
+
+
+
+## <small>5.0.319 (2024-05-24)</small>
+
+* Make Venmo ineligible if shipping callback is present & displayOnly includes "vaultable"  👾 (#2394) ([841bf90](https://github.com/paypal/paypal-checkout-components/commit/841bf90)), closes [#2394](https://github.com/paypal/paypal-checkout-components/issues/2394)
+
+
+
+## <small>5.0.318 (2024-05-23)</small>
+
+* consistent capitaliztion of paypal (#2397) ([09b9d59](https://github.com/paypal/paypal-checkout-components/commit/09b9d59)), closes [#2397](https://github.com/paypal/paypal-checkout-components/issues/2397)
+
+
+
+## <small>5.0.317 (2024-05-22)</small>
+
+* NCPS v2 👾 (#2389) ([c849191](https://github.com/paypal/paypal-checkout-components/commit/c849191)), closes [#2389](https://github.com/paypal/paypal-checkout-components/issues/2389)
+
+
+
+## <small>5.0.316 (2024-05-20)</small>
+
+* do not validate token usage in shopper insights (#2396) ([0be4402](https://github.com/paypal/paypal-checkout-components/commit/0be4402)), closes [#2396](https://github.com/paypal/paypal-checkout-components/issues/2396)
+
+
+
+## <small>5.0.315 (2024-05-20)</small>
+
+* is eligible in paypal network check for shopper insights (#2388) ([17d051a](https://github.com/paypal/paypal-checkout-components/commit/17d051a)), closes [#2388](https://github.com/paypal/paypal-checkout-components/issues/2388)
+
+
+
+## <small>5.0.314 (2024-05-15)</small>
+
+* add flow-typed to repository (#2391) ([4490e14](https://github.com/paypal/paypal-checkout-components/commit/4490e14)), closes [#2391](https://github.com/paypal/paypal-checkout-components/issues/2391)
+
+
+
+## <small>5.0.313 (2024-05-13)</small>
+
+* Ran npm run format on main & these needed formatting (#2390) ([c08c9ff](https://github.com/paypal/paypal-checkout-components/commit/c08c9ff)), closes [#2390](https://github.com/paypal/paypal-checkout-components/issues/2390)
+
+
+
+## <small>5.0.312 (2024-05-08)</small>
+
+* fix: handle tagline field on ncps hosted buttons (#2384) ([4a46749](https://github.com/paypal/paypal-checkout-components/commit/4a46749)), closes [#2384](https://github.com/paypal/paypal-checkout-components/issues/2384)
+
+
+
+## <small>5.0.311 (2024-05-01)</small>
+
+* Update vaulted pre-render to support customerId check (#2382) ([42eec79](https://github.com/paypal/paypal-checkout-components/commit/42eec79)), closes [#2382](https://github.com/paypal/paypal-checkout-components/issues/2382)
+
+
+
+## <small>5.0.310 (2024-05-01)</small>
+
+* fix: add eslint-config-grumbler as dev dependency (#2383) ([05bb7b6](https://github.com/paypal/paypal-checkout-components/commit/05bb7b6)), closes [#2383](https://github.com/paypal/paypal-checkout-components/issues/2383)
+
+
+
+## <small>5.0.309 (2024-04-24)</small>
+
+* Use Standalone buttons for V2 of Hosted Buttons (#2375) ([04cca79](https://github.com/paypal/paypal-checkout-components/commit/04cca79)), closes [#2375](https://github.com/paypal/paypal-checkout-components/issues/2375)
+
+
+
+## <small>5.0.308 (2024-04-17)</small>
+
+* feat: dynamic messaging (#2349) ([4b3d77a](https://github.com/paypal/paypal-checkout-components/commit/4b3d77a)), closes [#2349](https://github.com/paypal/paypal-checkout-components/issues/2349)
+
+
+
 ## <small>5.0.307 (2024-04-03)</small>
 
 * remove unused buttonDesign experiment (#2368) ([cb69c02](https://github.com/paypal/paypal-checkout-components/commit/cb69c02)), closes [#2368](https://github.com/paypal/paypal-checkout-components/issues/2368)
