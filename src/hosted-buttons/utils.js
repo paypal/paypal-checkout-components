@@ -21,6 +21,7 @@ import type {
   GetCallbackProps,
   HostedButtonDetailsParams,
   OnApprove,
+  OnShippingAddressChange,
   RenderForm,
   GetFlexDirectionArgs,
   GetFlexDirection,
@@ -144,6 +145,12 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   } = body.button_details;
 
   const shouldIncludePreferences = preferences && body.version === "2";
+  const shippingFromProfile =
+    getButtonVariable(variables, "shipping_preference") ===
+    "shipping_from_profile";
+  const taxRateFromProfile =
+    getButtonVariable(variables, "tax_rate_preference") ===
+    "tax_rate_from_profile";
 
   return {
     style: {
@@ -155,6 +162,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
     enableDPoP: getButtonVariable(variables, "enable_dpop") === "true",
+    shouldIncludeShippingCallbacks: shippingFromProfile || taxRateFromProfile,
     version: body.version,
     buttonContainerId: buttonContainerId || "spb-container",
     html: body.html,
@@ -299,6 +307,90 @@ export const buildHostedButtonOnApprove = ({
       return response;
     });
   };
+};
+
+// onShippingAddressChange(data, actions) {
+//   if (data.shipping_address.country_code !== "US") {
+//     return actions.reject(data.errors.COUNTRY_ERROR);
+//   }
+// },
+
+export const buildHostedButtonOnShippingAddressChange = ({
+  enableDPoP,
+  hostedButtonId,
+  merchantId,
+  shouldIncludeShippingCallbacks,
+}: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
+  if (shouldIncludeShippingCallbacks) {
+    return async (data) => {
+      const { shippingAddress, orderID } = data;
+      const body = {
+        context_id: orderID,
+        shipping_address: {},
+      };
+
+      const { city, state, countryCode, postalCode } = shippingAddress;
+      if (shippingAddress) {
+        // const { city, state, countryCode, postalCode } = shippingAddress;
+
+        body.shipping_address = {
+          admin_area1: state,
+          admin_area2: city,
+          country_code: countryCode,
+          postal_code: postalCode,
+        };
+      }
+      console.log(body);
+      console.log(JSON.stringify(body));
+
+      const { accessToken, nonce } = await createAccessToken({
+        clientId: getClientID(),
+        enableDPoP,
+      });
+      const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/shipping-options`;
+      // const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/acquire-shipping-options`;
+      // const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/acquire-shipping-options`;
+      const method = "POST";
+      const DPoPHeaders = enableDPoP
+        ? await buildDPoPHeaders({
+            uri: url,
+            method,
+            accessToken,
+            nonce,
+          })
+        : {};
+      const shippingCallbacksUpdate = await request({
+        url,
+        // $FlowIssue optional properties are not compatible with [key: string]: string
+        headers: {
+          ...getHeaders(accessToken),
+          // $FlowIssue exponential-spread
+          ...DPoPHeaders,
+        },
+        method,
+        body: `{\n  \"context_id\": \"${orderID}\",\n  \"shipping_address\": {\n    \"admin_area1\": \"${state}\",\n    \"admin_area2\": \"${city}\",\n    \"country_code\": \"${countryCode}\",\n    \"postal_code\": \"${postalCode}\"\n  }\n}`,
+      });
+
+      // const shippingCallbacksUpdate = await fetch(
+      //   "https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/SN642YSHH3TWS/aquire-shipping-options",
+      //   {
+      //     headers: {
+      //       accept: "application/json",
+      //       "accept-language": "en-US,en;q=0.9",
+      //       authorization:
+      //         "DPoP A21_A.AAfByucbkRffSzjj8vHqgKe1ZDYkoho4fjJHXTw7iA_MqI_oEt3HcQvKtRHDQhb1Npbs9LpOXeEA2y9k1TXm2LPb65raDw",
+      //       "cache-control": "no-cache",
+      //       "content-type": "application/json",
+      //     },
+      //     referrerPolicy: "strict-origin-when-cross-origin",
+      //     body: '{\n  "context_id": "3LJ25682DB9306912",\n  "shipping_address": {\n    "admin_area1": "UT",\n    "admin_area2": "Ogden",\n    "country_code": "US",\n    "postal_code": "84401"\n  }\n}',
+      //     method: "POST",
+      //   }
+      // );
+
+      console.log(shippingCallbacksUpdate);
+    };
+  }
 };
 
 export const getFlexDirection = ({

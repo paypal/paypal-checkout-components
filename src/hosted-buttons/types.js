@@ -17,6 +17,16 @@ export type OnApprove = (data: {|
 
 type OnInit = (data: mixed, actions: mixed) => void;
 type OnClick = (data: mixed, actions: mixed) => void;
+export type OnShippingAddressChange = (data: {|
+  errors: mixed,
+  orderID: string,
+  shippingAddress: {|
+    city: string,
+    state: string,
+    countryCode: string,
+    postalCode: string,
+  |},
+|}) => Promise<mixed>;
 
 export type FundingSources = string;
 export interface GetFlexDirection {
@@ -51,6 +61,7 @@ export type HostedButtonOptions = {|
   onApprove: OnApprove,
   onClick: OnClick,
   onInit: OnInit,
+  onShippingAddressChange: OnShippingAddressChange | typeof undefined,
   style: HostedButtonStyles,
   hostedButtonId: string,
   merchantId?: string,
@@ -96,6 +107,7 @@ export type GetCallbackProps = {|
   enableDPoP?: boolean,
   hostedButtonId: string,
   merchantId?: string,
+  shouldIncludeShippingCallbacks?: boolean,
 |};
 
 export type HostedButtonsInstance = {|
@@ -111,6 +123,7 @@ export type HostedButtonDetailsParams =
     buttonContainerId: string,
     preferences?: HostedButtonPreferences,
     enableDPoP: boolean,
+    shouldIncludeShippingCallbacks: boolean,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
