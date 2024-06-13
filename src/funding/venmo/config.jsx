@@ -63,7 +63,9 @@ export function getVenmoConfig(): FundingSourceConfig {
         };
       }
 
-      return {};
+      return {
+        popup: true,
+      };
     },
 
     Logo: ({ logoColor, optional }) => {
