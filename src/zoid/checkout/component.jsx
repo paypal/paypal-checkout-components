@@ -123,7 +123,9 @@ export function getCheckoutComponent(): CheckoutComponent {
         atomicsWaitingState: {
           type: "object",
           required: false,
-          queryParam: false,
+          queryParam: ({ value }) =>
+            value?.searchParameter || "atomicsWaitingState",
+          queryValue: ({ value }) => value?.encodedState || "",
         },
         clientID: {
           type: "string",
