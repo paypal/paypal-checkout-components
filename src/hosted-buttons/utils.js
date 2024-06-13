@@ -22,6 +22,7 @@ import type {
   HostedButtonDetailsParams,
   OnApprove,
   OnShippingAddressChange,
+  OnShippingOptionsChange,
   RenderForm,
   GetFlexDirectionArgs,
   GetFlexDirection,
@@ -89,6 +90,28 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
     };
   }
 );
+
+const buildRequestHeaders = async ({ enableDPoP, url, method }) => {
+  const { accessToken, nonce } = await createAccessToken({
+    clientId: getClientID(),
+    enableDPoP,
+  });
+
+  const DPoPHeaders = enableDPoP
+    ? await buildDPoPHeaders({
+        uri: url,
+        method,
+        accessToken,
+        nonce,
+      })
+    : {};
+
+  return {
+    ...getHeaders(accessToken),
+    // $FlowIssue exponential-spread
+    ...DPoPHeaders,
+  };
+};
 
 export const getButtonPreferences = ({
   button_preferences: buttonPreferences,
@@ -218,29 +241,16 @@ export const buildHostedButtonCreateOrder = ({
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
-    const { accessToken, nonce } = await createAccessToken({
-      clientId: getClientID(),
-      enableDPoP,
-    });
+
     try {
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
       const method = "POST";
-      const DPoPHeaders = enableDPoP
-        ? await buildDPoPHeaders({
-            uri: url,
-            method,
-            accessToken,
-            nonce,
-          })
-        : {};
+      const headers = await buildRequestHeaders({ url, method, enableDPoP });
+
       const response = await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
-        headers: {
-          ...getHeaders(accessToken),
-          // $FlowIssue exponential-spread
-          ...DPoPHeaders,
-        },
+        headers,
         method,
         body: JSON.stringify({
           entry_point: entryPoint,
@@ -264,28 +274,14 @@ export const buildHostedButtonOnApprove = ({
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
-    const { accessToken, nonce } = await createAccessToken({
-      clientId: getClientID(),
-      enableDPoP,
-    });
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
     const method = "POST";
-    const DPoPHeaders = enableDPoP
-      ? await buildDPoPHeaders({
-          uri: url,
-          method,
-          accessToken,
-          nonce,
-        })
-      : {};
+    const headers = await buildRequestHeaders({ url, method, enableDPoP });
+
     return request({
       url,
       // $FlowIssue optional properties are not compatible with [key: string]: string
-      headers: {
-        ...getHeaders(accessToken),
-        // $FlowIssue exponential-spread
-        ...DPoPHeaders,
-      },
+      headers,
       method,
       body: JSON.stringify({
         entry_point: entryPoint,
@@ -309,29 +305,25 @@ export const buildHostedButtonOnApprove = ({
   };
 };
 
-// onShippingAddressChange(data, actions) {
-//   if (data.shipping_address.country_code !== "US") {
-//     return actions.reject(data.errors.COUNTRY_ERROR);
-//   }
-// },
-
 export const buildHostedButtonOnShippingAddressChange = ({
   enableDPoP,
   hostedButtonId,
-  merchantId,
   shouldIncludeShippingCallbacks,
 }: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data) => {
+      // const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/shipping-options`;
+      const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
+      const method = "POST";
+      const headers = await buildRequestHeaders({ url, method, enableDPoP });
       const { shippingAddress, orderID } = data;
       const body = {
         context_id: orderID,
         shipping_address: {},
       };
 
-      const { city, state, countryCode, postalCode } = shippingAddress;
       if (shippingAddress) {
-        // const { city, state, countryCode, postalCode } = shippingAddress;
+        const { city, state, countryCode, postalCode } = shippingAddress;
 
         body.shipping_address = {
           admin_area1: state,
@@ -340,55 +332,42 @@ export const buildHostedButtonOnShippingAddressChange = ({
           postal_code: postalCode,
         };
       }
-      console.log(body);
-      console.log(JSON.stringify(body));
 
-      const { accessToken, nonce } = await createAccessToken({
-        clientId: getClientID(),
-        enableDPoP,
-      });
-      const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/shipping-options`;
-      // const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/acquire-shipping-options`;
-      // const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/acquire-shipping-options`;
-      const method = "POST";
-      const DPoPHeaders = enableDPoP
-        ? await buildDPoPHeaders({
-            uri: url,
-            method,
-            accessToken,
-            nonce,
-          })
-        : {};
-      const shippingCallbacksUpdate = await request({
+      await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
-        headers: {
-          ...getHeaders(accessToken),
-          // $FlowIssue exponential-spread
-          ...DPoPHeaders,
-        },
+        headers,
         method,
-        body: `{\n  \"context_id\": \"${orderID}\",\n  \"shipping_address\": {\n    \"admin_area1\": \"${state}\",\n    \"admin_area2\": \"${city}\",\n    \"country_code\": \"${countryCode}\",\n    \"postal_code\": \"${postalCode}\"\n  }\n}`,
+        body: JSON.stringify(body),
       });
+    };
+  }
+};
 
-      // const shippingCallbacksUpdate = await fetch(
-      //   "https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/SN642YSHH3TWS/aquire-shipping-options",
-      //   {
-      //     headers: {
-      //       accept: "application/json",
-      //       "accept-language": "en-US,en;q=0.9",
-      //       authorization:
-      //         "DPoP A21_A.AAfByucbkRffSzjj8vHqgKe1ZDYkoho4fjJHXTw7iA_MqI_oEt3HcQvKtRHDQhb1Npbs9LpOXeEA2y9k1TXm2LPb65raDw",
-      //       "cache-control": "no-cache",
-      //       "content-type": "application/json",
-      //     },
-      //     referrerPolicy: "strict-origin-when-cross-origin",
-      //     body: '{\n  "context_id": "3LJ25682DB9306912",\n  "shipping_address": {\n    "admin_area1": "UT",\n    "admin_area2": "Ogden",\n    "country_code": "US",\n    "postal_code": "84401"\n  }\n}',
-      //     method: "POST",
-      //   }
-      // );
+export const buildHostedButtonOnShippingOptionsChange = ({
+  enableDPoP,
+  hostedButtonId,
+  shouldIncludeShippingCallbacks,
+}: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
+  if (shouldIncludeShippingCallbacks) {
+    return async (data) => {
+      const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/shipping-options`;
+      // const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/acquire-shipping-options`;
+      const method = "POST";
+      const headers = await buildRequestHeaders({ url, method, enableDPoP });
+      const { selectedShippingOption, orderID } = data;
+      const body = {
+        context_id: orderID,
+        selected_shipping_option_id: selectedShippingOption?.id,
+      };
 
-      console.log(shippingCallbacksUpdate);
+      await request({
+        url,
+        // $FlowIssue optional properties are not compatible with [key: string]: string
+        headers,
+        method,
+        body: JSON.stringify(body),
+      });
     };
   }
 };

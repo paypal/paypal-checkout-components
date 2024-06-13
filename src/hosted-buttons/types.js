@@ -28,6 +28,14 @@ export type OnShippingAddressChange = (data: {|
   |},
 |}) => Promise<mixed>;
 
+export type OnShippingOptionsChange = (data: {|
+  errors: mixed,
+  orderID: string,
+  selectedShippingOption: {|
+    id: string,
+  |},
+|}) => Promise<mixed>;
+
 export type FundingSources = string;
 export interface GetFlexDirection {
   flexDirection: FlexDirection;
@@ -61,7 +69,8 @@ export type HostedButtonOptions = {|
   onApprove: OnApprove,
   onClick: OnClick,
   onInit: OnInit,
-  onShippingAddressChange: OnShippingAddressChange | typeof undefined,
+  onShippingAddressChange?: OnShippingAddressChange,
+  onShippingOptionsChange?: OnShippingOptionsChange,
   style: HostedButtonStyles,
   hostedButtonId: string,
   merchantId?: string,

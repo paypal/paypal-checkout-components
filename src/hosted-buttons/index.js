@@ -6,6 +6,7 @@ import {
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
   buildHostedButtonOnShippingAddressChange,
+  buildHostedButtonOnShippingOptionsChange,
   getDefaultButtonOptions,
   getFlexDirection,
   getHostedButtonDetails,
@@ -63,7 +64,12 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
       const onShippingAddressChange = buildHostedButtonOnShippingAddressChange({
         enableDPoP,
         hostedButtonId,
-        merchantId,
+        shouldIncludeShippingCallbacks,
+      });
+
+      const onShippingOptionsChange = buildHostedButtonOnShippingOptionsChange({
+        enableDPoP,
+        hostedButtonId,
         shouldIncludeShippingCallbacks,
       });
 
@@ -74,6 +80,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         onApprove,
         onClick,
         onShippingAddressChange,
+        onShippingOptionsChange,
         onInit,
         style,
       };
