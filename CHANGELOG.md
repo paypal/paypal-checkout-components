@@ -1,3 +1,21 @@
+## <small>5.0.323 (2024-06-12)</small>
+
+* fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
+
+
+
+## <small>5.0.322 (2024-06-12)</small>
+
+* Support Venmo vault without purchase with a feature flag (#2403) ([f2e7067](https://github.com/paypal/paypal-checkout-components/commit/f2e7067)), closes [#2403](https://github.com/paypal/paypal-checkout-components/issues/2403)
+
+
+
+## <small>5.0.321 (2024-06-10)</small>
+
+* Button autoResize by button container (#2404) ([80f48b0](https://github.com/paypal/paypal-checkout-components/commit/80f48b0)), closes [#2404](https://github.com/paypal/paypal-checkout-components/issues/2404)
+
+
+
 ## <small>5.0.320 (2024-05-29)</small>
 
 * add atomics waiting state xprop for checkout (#2402) ([6bad872](https://github.com/paypal/paypal-checkout-components/commit/6bad872)), closes [#2402](https://github.com/paypal/paypal-checkout-components/issues/2402)

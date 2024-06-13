@@ -259,6 +259,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     <div
       class={[
         CLASS.CONTAINER,
+        CLASS.AUTORESIZE_CONTAINER,
         `${CLASS.LAYOUT}-${layout}`,
         `${CLASS.SHAPE}-${shape}`,
         `${CLASS.NUMBER}-${
