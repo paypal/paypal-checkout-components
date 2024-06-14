@@ -12,7 +12,6 @@ import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { WalletLabel, Label } from "./template";
-import { getLogger } from "@paypal/sdk-client/src";
 
 export function getVenmoConfig(): FundingSourceConfig {
   return {
