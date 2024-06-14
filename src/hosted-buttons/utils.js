@@ -267,10 +267,8 @@ export const buildHostedButtonCreateOrder = ({
       });
       // $FlowIssue request returns ZalgoPromise
       const { body } = response;
-      console.log(body);
       return body.context_id || onError(body.name);
     } catch (e) {
-      console.log(e);
       return onError("REQUEST_FAILED");
     }
   };
