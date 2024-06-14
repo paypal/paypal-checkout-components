@@ -311,12 +311,11 @@ export const buildHostedButtonOnShippingAddressChange = ({
   shouldIncludeShippingCallbacks,
 }: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
-    return async (data) => {
-      // const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/shipping-options`;
+    return async (data, actions) => {
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
-      const { shippingAddress, orderID } = data;
+      const { shippingAddress, orderID, errors } = data;
       const body = {
         context_id: orderID,
         shipping_address: {},
@@ -333,13 +332,18 @@ export const buildHostedButtonOnShippingAddressChange = ({
         };
       }
 
-      await request({
+      const response = await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
         headers,
         method,
         body: JSON.stringify(body),
       });
+
+      // $FlowIssue zalgoPromis is type mixed
+      if (response.status !== 200) {
+        actions.reject(errors?.ADDRESS_ERROR);
+      }
     };
   }
 };
@@ -350,24 +354,28 @@ export const buildHostedButtonOnShippingOptionsChange = ({
   shouldIncludeShippingCallbacks,
 }: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
-    return async (data) => {
-      const url = `https://www.te-ncps-shiptax.qa.paypal.com/ncp/v1/checkout/links/${hostedButtonId}/shipping-options`;
-      // const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/acquire-shipping-options`;
+    return async (data, actions) => {
+      const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
-      const { selectedShippingOption, orderID } = data;
+      const { selectedShippingOption, orderID, errors } = data;
       const body = {
         context_id: orderID,
-        selected_shipping_option_id: selectedShippingOption?.id,
+        shipping_option_id: selectedShippingOption?.id,
       };
 
-      await request({
+      const response = await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
         headers,
         method,
         body: JSON.stringify(body),
       });
+
+      // $FlowIssue zalgoPromis is type mixed
+      if (response.status !== 200) {
+        actions.reject(errors?.METHOD_UNAVAILABLE);
+      }
     };
   }
 };

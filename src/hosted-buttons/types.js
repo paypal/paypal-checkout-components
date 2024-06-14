@@ -17,24 +17,39 @@ export type OnApprove = (data: {|
 
 type OnInit = (data: mixed, actions: mixed) => void;
 type OnClick = (data: mixed, actions: mixed) => void;
-export type OnShippingAddressChange = (data: {|
-  errors: mixed,
-  orderID: string,
-  shippingAddress: {|
-    city: string,
-    state: string,
-    countryCode: string,
-    postalCode: string,
-  |},
-|}) => Promise<mixed>;
 
-export type OnShippingOptionsChange = (data: {|
-  errors: mixed,
-  orderID: string,
-  selectedShippingOption: {|
-    id: string,
+export type OnShippingAddressChange = (
+  data: {|
+    errors: {|
+      ADDRESS_ERROR: string,
+    |},
+    orderID: string,
+    shippingAddress: {|
+      city: string,
+      state: string,
+      countryCode: string,
+      postalCode: string,
+    |},
   |},
-|}) => Promise<mixed>;
+  actions: {|
+    reject: (arg: string) => void,
+  |}
+) => Promise<mixed>;
+
+export type OnShippingOptionsChange = (
+  data: {|
+    errors: {|
+      METHOD_UNAVAILABLE: string,
+    |},
+    orderID: string,
+    selectedShippingOption: {|
+      id: string,
+    |},
+  |},
+  actions: {|
+    reject: (arg: string) => void,
+  |}
+) => Promise<mixed>;
 
 export type FundingSources = string;
 export interface GetFlexDirection {
