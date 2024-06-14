@@ -18,11 +18,12 @@ export function Style({
   nonce,
   fundingEligibility,
 }: StyleProps): ElementNode {
-  const { height, disableMaxWidth, borderRadius } = style;
+  const { height, disableMaxWidth, disableMaxHeight, borderRadius } = style;
   const css = componentStyle({
     height,
     fundingEligibility,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   });
 
