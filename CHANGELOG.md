@@ -1,3 +1,9 @@
+## <small>5.0.324 (2024-06-14)</small>
+
+* New Feature: disableMaxHeight (#2361) ([f2e74da](https://github.com/paypal/paypal-checkout-components/commit/f2e74da)), closes [#2361](https://github.com/paypal/paypal-checkout-components/issues/2361)
+
+
+
 ## <small>5.0.323 (2024-06-12)</small>
 
 * fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
