@@ -35,7 +35,7 @@ export function getVenmoConfig(): FundingSourceConfig {
        * if a merchant passes a shipping callback but does not have a client ID
        * that has Venmo Web enabled.
        */
-      if (!experiment.venmoWebEnabled && shippingChange) {
+      if (!experiment?.venmoWebEnabled && shippingChange) {
         return false;
       }
 
