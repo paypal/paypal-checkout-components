@@ -12,6 +12,7 @@ import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { WalletLabel, Label } from "./template";
+import { getLogger } from "@paypal/sdk-client/src";
 
 export function getVenmoConfig(): FundingSourceConfig {
   return {
@@ -20,15 +21,22 @@ export function getVenmoConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
     eligible: ({ experiment, shippingChange, displayOnly }) => {
+      /**
+       * This could probably be removed if the enableVenmo experiment is
+       * rolled out to 100%.
+       */
       if (experiment && experiment.enableVenmo === false) {
         return false;
       }
 
-      if (
-        experiment &&
-        experiment.venmoWebEnabled === false &&
-        shippingChange
-      ) {
+      /**
+       * Shipping callbacks will not work with Venmo unless venmo web is enabled.
+       *
+       * Note that this could cause the Venmo button to not show up on first render
+       * if a merchant passes a shipping callback but does not have a client ID
+       * that has Venmo Web enabled.
+       */
+      if (!experiment.venmoWebEnabled && shippingChange) {
         return false;
       }
 
