@@ -16,6 +16,7 @@ import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
 
 import type {
   ButtonVariables,
+  BuildRequestHeaders,
   CreateAccessToken,
   CreateOrder,
   GetCallbackProps,
@@ -91,7 +92,11 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
-const buildRequestHeaders = async ({ enableDPoP, url, method }) => {
+export const buildRequestHeaders: BuildRequestHeaders = async ({
+  enableDPoP,
+  url,
+  method,
+}) => {
   const { accessToken, nonce } = await createAccessToken({
     clientId: getClientID(),
     enableDPoP,
@@ -106,6 +111,7 @@ const buildRequestHeaders = async ({ enableDPoP, url, method }) => {
       })
     : {};
 
+  // $FlowIssue
   return {
     ...getHeaders(accessToken),
     // $FlowIssue exponential-spread
@@ -261,8 +267,10 @@ export const buildHostedButtonCreateOrder = ({
       });
       // $FlowIssue request returns ZalgoPromise
       const { body } = response;
+      console.log(body);
       return body.context_id || onError(body.name);
     } catch (e) {
+      console.log(e);
       return onError("REQUEST_FAILED");
     }
   };

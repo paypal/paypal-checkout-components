@@ -160,6 +160,17 @@ export type CreateAccessToken = ({|
   enableDPoP?: boolean,
 |}) => Promise<{| accessToken: string, nonce: string |}>;
 
+export type BuildRequestHeaders = ({|
+  enableDPoP?: boolean,
+  url: string,
+  method: string,
+|}) => Promise<{|
+  Authorization: string,
+  "Content-Type": string,
+  "PayPal-Entry-Point": string,
+  DPoP?: string,
+|}>;
+
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;
 
