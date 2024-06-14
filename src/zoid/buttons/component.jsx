@@ -39,6 +39,7 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
+  getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
 } from "@paypal/sdk-client/src";
@@ -457,12 +458,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       experiment: {
         type: "object",
         queryParam: true,
-        value: () => {
-          const experiments = getButtonExperiments();
-          return experiments;
-        },
+        value: () => ({
+          ...getButtonExperiments(),
+          ...getFirstRenderExperiments(),
+        }),
       },
-
+      // TODO first-render-experiment-cleanup
+      // verify if this is needed/used now that were putting the first render experiments in experiment param above
       experimentation: {
         type: "object",
         queryParam: true,
@@ -714,7 +716,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             offerCountryCode,
             creditProductIdentifier,
           }) => {
-            const { message, clientID, merchantID, currency, buttonSessionID } =
+            const { message, clientID, currency, buttonSessionID, merchantID } =
               props;
             const amount = message?.amount;
 
@@ -727,7 +729,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -738,7 +739,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
                 [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
-              });
+              })
+              .flush();
 
             const modalInstance = await getModal(clientID, merchantID);
             return modalInstance?.show({
@@ -755,10 +757,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: ({ props }) => {
           return () => {
+            const { clientID, merchantID } = props;
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
 
             // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
             return getModal(clientID, merchantID);
           };
         },
@@ -773,8 +775,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
+            merchantID: serverMerchantId,
           }) => {
-            const { message, buttonSessionID, currency, merchantID } = props;
+            // merchantID that comes from props is an array
+            const { message, buttonSessionID, currency } = props;
+
+            // override with server id if partner does not exist
+            if (serverMerchantId) {
+              getLogger().addTrackingBuilder(() => ({
+                [FPTI_KEY.SELLER_ID]: serverMerchantId,
+              }));
+            }
 
             getLogger()
               .info("button_message_render")
@@ -785,7 +796,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_render",
-                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -796,7 +806,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
-              });
+              })
+              .flush();
           };
         },
       },

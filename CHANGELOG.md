@@ -1,3 +1,27 @@
+## <small>5.0.325 (2024-06-14)</small>
+
+* use query param for atomics waiting state (#2410) ([9b1de91](https://github.com/paypal/paypal-checkout-components/commit/9b1de91)), closes [#2410](https://github.com/paypal/paypal-checkout-components/issues/2410)
+
+
+
+## <small>5.0.324 (2024-06-14)</small>
+
+* New Feature: disableMaxHeight (#2361) ([f2e74da](https://github.com/paypal/paypal-checkout-components/commit/f2e74da)), closes [#2361](https://github.com/paypal/paypal-checkout-components/issues/2361)
+
+
+
+## <small>5.0.323 (2024-06-12)</small>
+
+* fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
+
+
+
+## <small>5.0.322 (2024-06-12)</small>
+
+* Support Venmo vault without purchase with a feature flag (#2403) ([f2e7067](https://github.com/paypal/paypal-checkout-components/commit/f2e7067)), closes [#2403](https://github.com/paypal/paypal-checkout-components/issues/2403)
+
+
+
 ## <small>5.0.321 (2024-06-10)</small>
 
 * Button autoResize by button container (#2404) ([80f48b0](https://github.com/paypal/paypal-checkout-components/commit/80f48b0)), closes [#2404](https://github.com/paypal/paypal-checkout-components/issues/2404)
