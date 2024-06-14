@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint-disable no-restricted-globals, promise/no-native */
+/* eslint-disable no-restricted-globals, promise/no-native, max-lines */
 import { test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
 import { getLogger } from "@paypal/sdk-client/src";
@@ -716,7 +716,7 @@ describe("buildHostedButtonOnShippingOptionsChange", () => {
     expect.assertions(1);
   });
 
-  test("return undefined when shouldIncludeShippingCallbacks is false", async () => {
+  test("return undefined when shouldIncludeShippingCallbacks is false", () => {
     const onShippingOptionsChange = buildHostedButtonOnShippingOptionsChange({
       hostedButtonId,
       shouldIncludeShippingCallbacks: false,
@@ -1022,4 +1022,4 @@ describe("render buttons", () => {
   });
 });
 
-/* eslint-enable no-restricted-globals, promise/no-native */
+/* eslint-enable no-restricted-globals,promise/no-native, max-lines  */
