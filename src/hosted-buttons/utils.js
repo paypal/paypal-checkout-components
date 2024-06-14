@@ -6,6 +6,7 @@ import {
   buildDPoPHeaders,
   getSDKHost,
   getClientID,
+  getLocale,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
@@ -160,8 +161,11 @@ const getButtonVariable = (variables: ButtonVariables, key: string): string =>
 export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   hostedButtonId,
 }) => {
+  const { lang, country } = getLocale();
+  const locale = `${lang}-${country}`;
+
   const response = await request({
-    url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}`,
+    url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}?locale.x=${locale}`,
     headers: getHeaders(),
   });
 
