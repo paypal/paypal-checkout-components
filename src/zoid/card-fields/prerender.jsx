@@ -16,8 +16,10 @@ export function CardPrerender({
   height,
   isDisabled,
 }: PrerenderedCardProps): ChildType {
-  // $FlowFixMe
-  if (isDisabled) return <></>;
+  if (isDisabled) {
+    // $FlowFixMe empty fragment gives flow error.
+    return <></>;
+  }
   return (
     <html>
       <body>
