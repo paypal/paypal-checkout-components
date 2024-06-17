@@ -1,7 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
+import { node, type NullableChildType } from "@krakenjs/jsx-pragmatic/src";
 
 type PrerenderedCardProps = {|
   nonce: ?string,
@@ -15,10 +15,9 @@ export function CardPrerender({
   nonce,
   height,
   isDisabled,
-}: PrerenderedCardProps): ChildType {
+}: PrerenderedCardProps): NullableChildType {
   if (isDisabled) {
-    // $FlowFixMe empty fragment gives flow error.
-    return <></>;
+    return null;
   }
   return (
     <html>
