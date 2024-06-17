@@ -130,10 +130,7 @@ type CardFieldsChildren = {|
 const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
-const prerenderTemplate = (data) => {
-  const props = data.props;
-  const doc = data.doc;
-  console.log({ heeeeelllo: data });
+const prerenderTemplate = ({ props, doc }) => {
   return (
     <CardPrerender
       nonce={props.nonce}
