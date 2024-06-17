@@ -135,7 +135,7 @@ const prerenderTemplate = ({ props, doc }) => {
     <CardPrerender
       nonce={props.nonce}
       height={props.style?.height}
-      isDisabled={props.styleOptions?.disablePrerender}
+      isDisabled={!!props.styleOptions?.disablePrerender}
     />
   ).render(dom({ doc }));
 };
