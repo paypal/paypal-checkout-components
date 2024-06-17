@@ -11,6 +11,9 @@ describe("Venmo eligibility", () => {
     fundingSource: undefined,
     components: ["buttons"],
     fundingEligibility: {},
+    experiment: {
+      venmoWebEnabled: true,
+    },
     wallet: expect.any,
     flow: BUTTON_FLOW.PURCHASE,
   };
@@ -66,6 +69,25 @@ describe("Venmo eligibility", () => {
       experiment: {
         venmoVaultWithoutPurchase: true,
       },
+    });
+
+    expect(isVenmoEligible).toEqual(true);
+  });
+
+  test("should not be eligible if a shipping callback is passed & experiment does not include venmoWebEnabled", () => {
+    const isVenmoEligible = venmoConfig.eligible?.({
+      ...baseEligibilityProps,
+      experiment: {},
+      shippingChange: true,
+    });
+
+    expect(isVenmoEligible).toEqual(false);
+  });
+
+  test("should be eligible if shipping callback exists & experiment includes venmoWebEnabled", () => {
+    const isVenmoEligible = venmoConfig.eligible?.({
+      ...baseEligibilityProps,
+      shippingChange: true,
     });
 
     expect(isVenmoEligible).toEqual(true);

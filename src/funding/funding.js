@@ -1,8 +1,9 @@
 /* @flow */
 
-import type {
-  FundingEligibilityType,
-  CardEligibility,
+import {
+  type FundingEligibilityType,
+  type CardEligibility,
+  getLogger,
 } from "@paypal/sdk-client/src";
 import {
   PLATFORM,
@@ -114,26 +115,30 @@ export function isFundingEligible(
     return false;
   }
 
-  if (
-    fundingConfig.eligible &&
-    !fundingConfig.eligible?.({
-      enableFunding,
-      components,
-      experiment,
-      flow,
-      fundingSource,
-      fundingEligibility,
-      layout,
-      shippingChange: Boolean(
-        hasShippingCallback ||
-          onShippingChange ||
-          onShippingAddressChange ||
-          onShippingOptionsChange
-      ),
-      wallet,
-      displayOnly,
-    })
-  ) {
+  const eligibilityProps = {
+    enableFunding,
+    components,
+    experiment,
+    flow,
+    fundingSource,
+    fundingEligibility,
+    layout,
+    shippingChange: Boolean(
+      hasShippingCallback ||
+        onShippingChange ||
+        onShippingAddressChange ||
+        onShippingOptionsChange
+    ),
+    wallet,
+    displayOnly,
+  };
+
+  if (fundingConfig.eligible && !fundingConfig.eligible?.(eligibilityProps)) {
+    getLogger().info(`${source}_ineligible`, {
+      determiner: "Funding config eligibility check",
+      data: eligibilityProps,
+    });
+
     return false;
   }
 
