@@ -42,6 +42,7 @@ import {
   getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
+  wasShopperInsightsUsed,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -946,6 +947,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       sessionState: {
         type: "object",
         value: () => sessionState,
+      },
+
+      getShopperInsightsUsed: {
+        type: "function",
+        value: () => wasShopperInsightsUsed,
       },
 
       stageHost: {
