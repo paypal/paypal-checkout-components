@@ -51,6 +51,9 @@ type CardFieldsProps = {|
   style?: {|
     height: number,
   |},
+  styleOptions?: {|
+    disablePrerender?: boolean,
+  |},
   env?: string,
   locale?: string,
   nonce: string,
@@ -129,7 +132,11 @@ const url = () =>
 
 const prerenderTemplate = ({ props, doc }) => {
   return (
-    <CardPrerender nonce={props.nonce} height={props.style?.height} />
+    <CardPrerender
+      nonce={props.nonce}
+      height={props.style?.height}
+      isDisabled={props.styleOptions?.disablePrerender}
+    />
   ).render(dom({ doc }));
 };
 
