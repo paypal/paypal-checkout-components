@@ -1,3 +1,9 @@
+## <small>5.0.326 (2024-06-17)</small>
+
+* Fix Venmo Eligibility for Venmo Web & Shipping Callbacks 👾 (#2412) ([a79bfc1](https://github.com/paypal/paypal-checkout-components/commit/a79bfc1)), closes [#2412](https://github.com/paypal/paypal-checkout-components/issues/2412)
+
+
+
 ## <small>5.0.325 (2024-06-14)</small>
 
 * use query param for atomics waiting state (#2410) ([9b1de91](https://github.com/paypal/paypal-checkout-components/commit/9b1de91)), closes [#2410](https://github.com/paypal/paypal-checkout-components/issues/2410)
