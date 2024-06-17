@@ -8,7 +8,7 @@ import {
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
+import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { WalletLabel, Label } from "./template";
@@ -17,24 +17,40 @@ export function getVenmoConfig(): FundingSourceConfig {
   return {
     ...DEFAULT_FUNDING_CONFIG,
 
+    flows: [BUTTON_FLOW.PURCHASE, BUTTON_FLOW.VAULT_WITHOUT_PURCHASE],
+
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange, displayOnly }) => {
+    eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+      /**
+       * This could probably be removed if the enableVenmo experiment is
+       * rolled out to 100%.
+       */
       if (experiment && experiment.enableVenmo === false) {
         return false;
       }
 
-      if (
-        experiment &&
-        experiment.venmoWebEnabled === false &&
-        shippingChange
-      ) {
+      /**
+       * Shipping callbacks will not work with Venmo unless venmo web is enabled.
+       *
+       * Note that this could cause the Venmo button to not show up on first render
+       * if a merchant passes a shipping callback but does not have a client ID
+       * that has Venmo Web enabled.
+       */
+      if (!experiment?.venmoWebEnabled && shippingChange) {
         return false;
       }
 
       if (
         shippingChange &&
         displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)
+      ) {
+        return false;
+      }
+
+      if (
+        flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE &&
+        experiment?.venmoVaultWithoutPurchase !== true
       ) {
         return false;
       }
@@ -54,7 +70,9 @@ export function getVenmoConfig(): FundingSourceConfig {
         };
       }
 
-      return {};
+      return {
+        popup: true,
+      };
     },
 
     Logo: ({ logoColor, optional }) => {

@@ -6,6 +6,7 @@ import {
   buildDPoPHeaders,
   getSDKHost,
   getClientID,
+  getLocale,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
@@ -16,11 +17,14 @@ import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
 
 import type {
   ButtonVariables,
+  BuildRequestHeaders,
   CreateAccessToken,
   CreateOrder,
   GetCallbackProps,
   HostedButtonDetailsParams,
   OnApprove,
+  OnShippingAddressChange,
+  OnShippingOptionsChange,
   RenderForm,
   GetFlexDirectionArgs,
   GetFlexDirection,
@@ -89,6 +93,33 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
   }
 );
 
+export const buildRequestHeaders: BuildRequestHeaders = async ({
+  enableDPoP,
+  url,
+  method,
+}) => {
+  const { accessToken, nonce } = await createAccessToken({
+    clientId: getClientID(),
+    enableDPoP,
+  });
+
+  const DPoPHeaders = enableDPoP
+    ? await buildDPoPHeaders({
+        uri: url,
+        method,
+        accessToken,
+        nonce,
+      })
+    : {};
+
+  // $FlowIssue
+  return {
+    ...getHeaders(accessToken),
+    // $FlowIssue exponential-spread
+    ...DPoPHeaders,
+  };
+};
+
 export const getButtonPreferences = ({
   button_preferences: buttonPreferences,
   eligible_funding_methods: eligibleFundingMethods,
@@ -130,8 +161,11 @@ const getButtonVariable = (variables: ButtonVariables, key: string): string =>
 export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   hostedButtonId,
 }) => {
+  const { lang, country } = getLocale();
+  const locale = `${lang}-${country}`;
+
   const response = await request({
-    url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}`,
+    url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}?locale.x=${locale}`,
     headers: getHeaders(),
   });
 
@@ -144,6 +178,12 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   } = body.button_details;
 
   const shouldIncludePreferences = preferences && body.version === "2";
+  const shippingFromProfile =
+    getButtonVariable(variables, "shipping_preference") ===
+    "shipping_from_profile";
+  const taxRateFromProfile =
+    getButtonVariable(variables, "tax_rate_preference") ===
+    "tax_rate_from_profile";
 
   return {
     style: {
@@ -155,6 +195,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
     },
     enableDPoP: getButtonVariable(variables, "enable_dpop") === "true",
+    shouldIncludeShippingCallbacks: shippingFromProfile || taxRateFromProfile,
     version: body.version,
     buttonContainerId: buttonContainerId || "spb-container",
     html: body.html,
@@ -210,29 +251,16 @@ export const buildHostedButtonCreateOrder = ({
     const userInputs =
       window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
     const onError = window[`__pp_form_fields_${hostedButtonId}`]?.onError;
-    const { accessToken, nonce } = await createAccessToken({
-      clientId: getClientID(),
-      enableDPoP,
-    });
+
     try {
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
       const method = "POST";
-      const DPoPHeaders = enableDPoP
-        ? await buildDPoPHeaders({
-            uri: url,
-            method,
-            accessToken,
-            nonce,
-          })
-        : {};
+      const headers = await buildRequestHeaders({ url, method, enableDPoP });
+
       const response = await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
-        headers: {
-          ...getHeaders(accessToken),
-          // $FlowIssue exponential-spread
-          ...DPoPHeaders,
-        },
+        headers,
         method,
         body: JSON.stringify({
           entry_point: entryPoint,
@@ -256,28 +284,14 @@ export const buildHostedButtonOnApprove = ({
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
-    const { accessToken, nonce } = await createAccessToken({
-      clientId: getClientID(),
-      enableDPoP,
-    });
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
     const method = "POST";
-    const DPoPHeaders = enableDPoP
-      ? await buildDPoPHeaders({
-          uri: url,
-          method,
-          accessToken,
-          nonce,
-        })
-      : {};
+    const headers = await buildRequestHeaders({ url, method, enableDPoP });
+
     return request({
       url,
       // $FlowIssue optional properties are not compatible with [key: string]: string
-      headers: {
-        ...getHeaders(accessToken),
-        // $FlowIssue exponential-spread
-        ...DPoPHeaders,
-      },
+      headers,
       method,
       body: JSON.stringify({
         entry_point: entryPoint,
@@ -299,6 +313,81 @@ export const buildHostedButtonOnApprove = ({
       return response;
     });
   };
+};
+
+export const buildHostedButtonOnShippingAddressChange = ({
+  enableDPoP,
+  hostedButtonId,
+  shouldIncludeShippingCallbacks,
+}: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
+  if (shouldIncludeShippingCallbacks) {
+    return async (data, actions) => {
+      const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
+      const method = "POST";
+      const headers = await buildRequestHeaders({ url, method, enableDPoP });
+      const { shippingAddress, orderID, errors } = data;
+      const body = {
+        context_id: orderID,
+        shipping_address: {},
+      };
+
+      if (shippingAddress) {
+        const { city, state, countryCode, postalCode } = shippingAddress;
+
+        body.shipping_address = {
+          admin_area1: state,
+          admin_area2: city,
+          country_code: countryCode,
+          postal_code: postalCode,
+        };
+      }
+
+      const response = await request({
+        url,
+        // $FlowIssue optional properties are not compatible with [key: string]: string
+        headers,
+        method,
+        body: JSON.stringify(body),
+      });
+
+      // $FlowIssue zalgoPromis is type mixed
+      if (response.status !== 200) {
+        actions.reject(errors?.ADDRESS_ERROR);
+      }
+    };
+  }
+};
+
+export const buildHostedButtonOnShippingOptionsChange = ({
+  enableDPoP,
+  hostedButtonId,
+  shouldIncludeShippingCallbacks,
+}: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
+  if (shouldIncludeShippingCallbacks) {
+    return async (data, actions) => {
+      const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
+      const method = "POST";
+      const headers = await buildRequestHeaders({ url, method, enableDPoP });
+      const { selectedShippingOption, orderID, errors } = data;
+      const body = {
+        context_id: orderID,
+        shipping_option_id: selectedShippingOption?.id,
+      };
+
+      const response = await request({
+        url,
+        // $FlowIssue optional properties are not compatible with [key: string]: string
+        headers,
+        method,
+        body: JSON.stringify(body),
+      });
+
+      // $FlowIssue zalgoPromis is type mixed
+      if (response.status !== 200) {
+        actions.reject(errors?.METHOD_UNAVAILABLE);
+      }
+    };
+  }
 };
 
 export const getFlexDirection = ({

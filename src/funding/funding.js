@@ -1,8 +1,9 @@
 /* @flow */
 
-import type {
-  FundingEligibilityType,
-  CardEligibility,
+import {
+  type FundingEligibilityType,
+  type CardEligibility,
+  getLogger,
 } from "@paypal/sdk-client/src";
 import {
   PLATFORM,
@@ -14,11 +15,6 @@ import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 
 import type { Wallet, Experiment } from "../types";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
-import type {
-  OnShippingChange,
-  OnShippingAddressChange,
-  OnShippingOptionsChange,
-} from "../ui/buttons/props";
 
 import { getFundingConfig } from "./config";
 
@@ -119,25 +115,30 @@ export function isFundingEligible(
     return false;
   }
 
-  if (
-    fundingConfig.eligible &&
-    !fundingConfig.eligible?.({
-      enableFunding,
-      components,
-      experiment,
-      fundingSource,
-      fundingEligibility,
-      layout,
-      shippingChange: Boolean(
-        hasShippingCallback ||
-          onShippingChange ||
-          onShippingAddressChange ||
-          onShippingOptionsChange
-      ),
-      wallet,
-      displayOnly,
-    })
-  ) {
+  const eligibilityProps = {
+    enableFunding,
+    components,
+    experiment,
+    flow,
+    fundingSource,
+    fundingEligibility,
+    layout,
+    shippingChange: Boolean(
+      hasShippingCallback ||
+        onShippingChange ||
+        onShippingAddressChange ||
+        onShippingOptionsChange
+    ),
+    wallet,
+    displayOnly,
+  };
+
+  if (fundingConfig.eligible && !fundingConfig.eligible?.(eligibilityProps)) {
+    getLogger().info(`${source}_ineligible`, {
+      determiner: "Funding config eligibility check",
+      data: eligibilityProps,
+    });
+
     return false;
   }
 
@@ -265,20 +266,16 @@ export function determineEligibleFunding({
 
 export function isWalletFundingEligible({
   wallet,
-  onShippingChange,
-  onShippingAddressChange,
-  onShippingOptionsChange,
+  hasShippingCallback,
 }: {|
   wallet: ?Wallet,
-  onShippingChange: ?OnShippingChange,
-  onShippingAddressChange: ?OnShippingAddressChange,
-  onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
 |}): boolean {
   if (!wallet) {
     return false;
   }
 
-  if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
+  if (hasShippingCallback) {
     return false;
   }
 

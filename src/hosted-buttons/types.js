@@ -18,6 +18,39 @@ export type OnApprove = (data: {|
 type OnInit = (data: mixed, actions: mixed) => void;
 type OnClick = (data: mixed, actions: mixed) => void;
 
+export type OnShippingAddressChange = (
+  data: {|
+    errors: {|
+      ADDRESS_ERROR: string,
+    |},
+    orderID: string,
+    shippingAddress: {|
+      city: string,
+      state: string,
+      countryCode: string,
+      postalCode: string,
+    |},
+  |},
+  actions: {|
+    reject: (arg: string) => void,
+  |}
+) => Promise<mixed>;
+
+export type OnShippingOptionsChange = (
+  data: {|
+    errors: {|
+      METHOD_UNAVAILABLE: string,
+    |},
+    orderID: string,
+    selectedShippingOption: {|
+      id: string,
+    |},
+  |},
+  actions: {|
+    reject: (arg: string) => void,
+  |}
+) => Promise<mixed>;
+
 export type FundingSources = string;
 export interface GetFlexDirection {
   flexDirection: FlexDirection;
@@ -51,6 +84,8 @@ export type HostedButtonOptions = {|
   onApprove: OnApprove,
   onClick: OnClick,
   onInit: OnInit,
+  onShippingAddressChange?: OnShippingAddressChange,
+  onShippingOptionsChange?: OnShippingOptionsChange,
   style: HostedButtonStyles,
   hostedButtonId: string,
   merchantId?: string,
@@ -96,6 +131,7 @@ export type GetCallbackProps = {|
   enableDPoP?: boolean,
   hostedButtonId: string,
   merchantId?: string,
+  shouldIncludeShippingCallbacks?: boolean,
 |};
 
 export type HostedButtonsInstance = {|
@@ -111,6 +147,7 @@ export type HostedButtonDetailsParams =
     buttonContainerId: string,
     preferences?: HostedButtonPreferences,
     enableDPoP: boolean,
+    shouldIncludeShippingCallbacks: boolean,
   |}>;
 
 export type ButtonVariables = $ReadOnlyArray<{|
@@ -122,6 +159,17 @@ export type CreateAccessToken = ({|
   clientId: string,
   enableDPoP?: boolean,
 |}) => Promise<{| accessToken: string, nonce: string |}>;
+
+export type BuildRequestHeaders = ({|
+  enableDPoP?: boolean,
+  url: string,
+  method: string,
+|}) => Promise<{|
+  Authorization: string,
+  "Content-Type": string,
+  "PayPal-Entry-Point": string,
+  DPoP?: string,
+|}>;
 
 export type HostedButtonsComponent =
   (HostedButtonsComponentProps) => HostedButtonsInstance;

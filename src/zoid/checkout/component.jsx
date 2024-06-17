@@ -120,6 +120,13 @@ export function getCheckoutComponent(): CheckoutComponent {
       },
 
       props: {
+        atomicsWaitingState: {
+          type: "object",
+          required: false,
+          queryParam: ({ value }) =>
+            value?.searchParameter || "atomicsWaitingState",
+          queryValue: ({ value }) => value?.encodedState || "",
+        },
         clientID: {
           type: "string",
           value: () => getClientID(),
