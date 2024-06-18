@@ -952,6 +952,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       getShopperInsightsUsed: {
         type: "function",
         value: () => wasShopperInsightsUsed,
+        required: false,
       },
 
       stageHost: {
