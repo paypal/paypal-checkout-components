@@ -1,3 +1,9 @@
+## <small>5.0.327 (2024-06-18)</small>
+
+* Remove logger from funding (#2415) ([1e7ae8e](https://github.com/paypal/paypal-checkout-components/commit/1e7ae8e)), closes [#2415](https://github.com/paypal/paypal-checkout-components/issues/2415)
+
+
+
 ## <small>5.0.326 (2024-06-17)</small>
 
 * Fix Venmo Eligibility for Venmo Web & Shipping Callbacks 👾 (#2412) ([a79bfc1](https://github.com/paypal/paypal-checkout-components/commit/a79bfc1)), closes [#2412](https://github.com/paypal/paypal-checkout-components/issues/2412)
