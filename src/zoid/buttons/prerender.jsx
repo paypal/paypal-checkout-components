@@ -62,6 +62,9 @@ export function PrerenderedButtons({
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
       });
 
+      // Call updateProps to update the position
+    updateProps({ position: props.message.position });
+    
     if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load
     } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {

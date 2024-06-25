@@ -639,6 +639,33 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: getMerchantRequestedPopupsDisabled,
       },
+      
+      onProps: {
+        type: "function",
+        required: false,
+        decorate: ({ props, value }) => {
+          const {
+            style: { layout },
+            message: { position },
+            renderedButtons: fundingSources,
+          } = props;
+
+          // Automatically update position using updateProps
+          updateProps({ position }).catch((err) => {
+            if (err.message !== "position_validation_error") {
+              throw err;
+            }
+          });
+
+          // Normalize the button message
+          return normalizeButtonMessage(
+            position,
+            value,
+            layout,
+            fundingSources
+          );
+        },
+      },
 
       message: {
         type: "object",

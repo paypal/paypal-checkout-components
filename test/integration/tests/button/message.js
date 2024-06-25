@@ -1,10 +1,8 @@
 /* @flow */
 /* eslint max-lines: 0 */
-
 import { wrapPromise, getElement } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { getNamespace } from "@paypal/sdk-client/src";
-
 import { CLASS } from "../../../../src/constants";
 import {
   assert,
@@ -12,16 +10,32 @@ import {
   createTestContainer,
   destroyTestContainer,
 } from "../common";
-
 describe(`paypal button message`, () => {
   beforeEach(() => {
     createTestContainer();
+    const propListeners = new Set();
+    window.actions = {
+        updateProps: newProps => {
+            if (newProps && typeof newProps === 'object') {
+                [...propListeners.values()].forEach(listener => {
+                    listener({
+                        ...window.xprops,
+                        ...newProps
+                    });
+                });
+                Object.assign(window.xprops, newProps);
+            }
+        }
+    };
+    window.xprops = {
+        onProps: listener => propListeners.add(listener),
+        message: { amount: 0, positon: 'bottom' },
+        getParent: () => window,
+    };
   });
-
   afterEach(() => {
     destroyTestContainer();
   });
-
   describe("sets computed default values for undefined message properties", () => {
     it("should populate message color when it is undefined", () => {
       return wrapPromise(({ expect }) => {
@@ -110,7 +124,6 @@ describe(`paypal button message`, () => {
       });
     });
   });
-
   describe("reserves space for message", () => {
     it("should reserve space for a message when messageMarkup is undefined", (done) => {
       window.paypal
@@ -142,7 +155,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should not reserve space for a message when messageMarkup is a string with length === 0", (done) => {
       window.paypal
         .Buttons({
@@ -154,7 +166,6 @@ describe(`paypal button message`, () => {
               if (!frame) {
                 throw new Error(`Cannot find frame`);
               }
-
               // $FlowFixMe
               const win = frame.contentWindow;
               const message = win.document.querySelector(
@@ -175,7 +186,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should not reserve space for a message when messageMarkup is a string with length > 0", (done) => {
       window.paypal
         .Buttons({
@@ -187,7 +197,6 @@ describe(`paypal button message`, () => {
               if (!frame) {
                 throw new Error(`Cannot find frame`);
               }
-
               // $FlowFixMe
               const win = frame.contentWindow;
               const message = win.document.querySelector(
@@ -209,7 +218,6 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
   });
-
   describe(`prop considerations`, () => {
     it("message should take precedence over tagline when both are truthy", (done) => {
       window.paypal
@@ -225,11 +233,9 @@ describe(`paypal button message`, () => {
               // $FlowFixMe
               const win = frame.contentWindow;
               const tagline = win.document.body.querySelector(CLASS.TAGLINE);
-
               if (tagline) {
                 done(new Error(`Expected tagline not to render`));
               }
-
               assert.ok(getElementRecursive(".paypal-button-message-bottom"));
               done();
             },
@@ -238,7 +244,6 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
   });
-
   describe(`placement`, () => {
     describe("horizontal layout", () => {
       it("should place message on bottom by default", (done) => {
@@ -449,8 +454,33 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
-  });
+    it("should update message position via updateProps", (done) => {
+      window.paypal
+        .Buttons({
+          fundingSource: FUNDING.PAYPAL,
+          style: {
+            layout: "horizontal",
+          },
+          message: {
+            position: "top",
+          },
+          test: {
+            async onRender() {
+              assert.ok(getElementRecursive(".paypal-button-message-top"));
+              window.actions.updateProps({ message: { position: "bottom" } });
+              await new Promise((resolve) => setTimeout(resolve, 0));
+              jest.runAllTimers(); // Ensure all timers have run
+              assert.ok(getElementRecursive(".paypal-button-message-bottom"));
+              console.log("New position:", window.xprops.message.position);
 
+              done();
+            },
+          },
+        })
+        .render("#testContainer");
+      jest.runAllTimers();
+    });
+  });
   describe("modal", () => {
     it("should ensure data-pp-namespace passes in the namespace", (done) => {
       window.paypal
