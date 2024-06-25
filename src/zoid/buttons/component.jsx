@@ -162,6 +162,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               hostedButtonId,
             };
           }}
+          updateProps={updateProps} // Pass updateProps
         />
       ).render(dom({ doc }));
     },
@@ -639,7 +640,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: getMerchantRequestedPopupsDisabled,
       },
-      
+
       onProps: {
         type: "function",
         required: false,

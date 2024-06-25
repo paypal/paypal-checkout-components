@@ -64,7 +64,7 @@ export function PrerenderedButtons({
 
       // Call updateProps to update the position
     updateProps({ position: props.message.position });
-    
+
     if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load
     } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {
@@ -103,4 +103,10 @@ export function PrerenderedButtons({
       </body>
     </html>
   );
+
+  const updateProps = (newProps) => {
+    if (newProps && typeof newProps === 'object') {
+      Object.assign(window.xprops, newProps);
+    }
+  };
 }
