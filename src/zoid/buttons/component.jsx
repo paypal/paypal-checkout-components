@@ -762,7 +762,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: ({ props }) => {
           return () => {
-            const { clientID, merchantID } = props;
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
             // lazy loads the modal, to be memoized and executed onMessageClick
             const { buttonSessionID, clientID, merchantID } = props;
