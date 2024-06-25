@@ -23,6 +23,7 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getSDKHost: () => "example.com",
     getClientID: () => "client_id_123",
     getMerchantID: () => ["merchant_id_123"],
+    getLocale: () => ({ lang: "en", country: "US" }),
   };
 });
 

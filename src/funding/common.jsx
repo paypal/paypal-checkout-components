@@ -12,6 +12,7 @@ import {
   COMPONENTS,
   FUNDING,
   ENV,
+  DISPLAY_ONLY_VALUES,
 } from "@paypal/sdk-constants/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 
@@ -108,12 +109,14 @@ export type FundingSourceConfig = {|
   eligible?: ({|
     components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
     experiment?: ?Experiment,
+    flow: $Values<typeof BUTTON_FLOW>,
     enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
     fundingEligibility: FundingEligibilityType,
     fundingSource: ?$Values<typeof FUNDING>,
     layout?: ?$Values<typeof BUTTON_LAYOUT>,
     shippingChange?: ?boolean,
     wallet: ?Wallet,
+    displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   |}) => boolean,
   Logo: (LogoOptions) => ChildType,
   Mark?: () => ChildType,

@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.318",
+  "version": "5.0.327",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "debug": "cross-env NODE_ENV=debug",
     "delete-size": "rm dist/size.* dist/report.html",
     "demo": "serve ./demo -l 1337",
-    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open /index.htm --https --hot=false --static './demo/dev'",
+    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server -- --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open /index.htm --https --hot=false --static './demo/dev'",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "flow": "flow",
     "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
@@ -34,7 +34,7 @@
     "typecheck": "npm run flow",
     "version": "./scripts/version.sh",
     "vitest": "vitest",
-    "webpack": "babel-node $(npm bin)/webpack",
+    "webpack": "babel-node $(npm bin)/webpack --",
     "webpack-size": "npm run webpack -- --config webpack.config.size",
     "prepare": "husky install",
     "screenshot-server": "babel-node ./test/percy/server/index.js"
@@ -69,8 +69,8 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "@bunchtogether/vite-plugin-flow": "^1.0.2",
-    "@krakenjs/grumbler-scripts": "^8.1.5",
     "@krakenjs/eslint-config-grumbler": "8.1.3",
+    "@krakenjs/grumbler-scripts": "^8.1.5",
     "@krakenjs/sync-browser-mocks": "^3.0.0",
     "@percy/cli": "1.28.5",
     "@percy/playwright": "^1.0.4",
@@ -114,7 +114,7 @@
     "@paypal/common-components": "^1.0.35",
     "@paypal/connect-loader-component": "1.1.1",
     "@paypal/funding-components": "^1.0.31",
-    "@paypal/sdk-client": "^4.0.184",
+    "@paypal/sdk-client": "^4.0.194",
     "@paypal/sdk-constants": "^1.0.146",
     "@paypal/sdk-logos": "^2.2.6"
   },

@@ -2,16 +2,18 @@
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
+  applyContainerStyles,
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
-  getHostedButtonDetails,
-  renderForm,
-  getMerchantID,
-  getFlexDirection,
-  applyContainerStyles,
-  renderStandaloneButton,
-  renderDefaultButton,
+  buildHostedButtonOnShippingAddressChange,
+  buildHostedButtonOnShippingOptionsChange,
   getDefaultButtonOptions,
+  getFlexDirection,
+  getHostedButtonDetails,
+  getMerchantID,
+  renderDefaultButton,
+  renderForm,
+  renderStandaloneButton,
 } from "./utils";
 import type {
   HostedButtonsComponent,
@@ -35,6 +37,7 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         preferences,
         buttonContainerId,
         enableDPoP,
+        shouldIncludeShippingCallbacks,
       } = await getHostedButtonDetails({
         hostedButtonId,
       });
@@ -58,12 +61,26 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         merchantId,
       });
 
+      const onShippingAddressChange = buildHostedButtonOnShippingAddressChange({
+        enableDPoP,
+        hostedButtonId,
+        shouldIncludeShippingCallbacks,
+      });
+
+      const onShippingOptionsChange = buildHostedButtonOnShippingOptionsChange({
+        enableDPoP,
+        hostedButtonId,
+        shouldIncludeShippingCallbacks,
+      });
+
       const buttonOptions: HostedButtonOptions = {
         createOrder,
         hostedButtonId,
         merchantId,
         onApprove,
         onClick,
+        onShippingAddressChange,
+        onShippingOptionsChange,
         onInit,
         style,
       };

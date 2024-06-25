@@ -852,17 +852,27 @@ const buttonConfigs = [
         height: 20,
         valid: false,
       },
+      {
+        disableMaxHeight: true,
+        height: 20,
+        valid: false,
+      },
+      {
+        disableMaxHeight: true,
+        height: 60,
+        valid: false,
+      },
 
       // $FlowFixMe
-    ].map(({ height, size, valid }) => ({
+    ].map(({ height, valid, disableMaxHeight }) => ({
       desc: `height ${height} with size ${
-        size !== undefined ? size : "default"
+        disableMaxHeight === true ? "disableMaxHeight" : "default"
       }`,
 
       valid,
 
       conf: {
-        style: { height, size },
+        style: { height, disableMaxHeight },
         createOrder: noop,
         onApprove: noop,
       },
@@ -906,6 +916,71 @@ const buttonConfigs = [
 
       conf: {
         style: { borderRadius },
+        createOrder: noop,
+        onApprove: noop,
+      },
+    })),
+  },
+
+  {
+    name: "disableMaxHeight",
+
+    cases: [
+      {
+        disableMaxHeight: true,
+        fundingSource: "paypal",
+        valid: true,
+      },
+      // this case would pass if venmo was eligible during this test run
+      // {
+      //   disableMaxHeight: true,
+      //   fundingSource: "venmo",
+      //   valid: true,
+      // },
+
+      // this case would pass if paylater was eligible during this test run
+      // {
+      //   disableMaxHeight: true,
+      //   fundingSource: "paylater",
+      //   valid: true,
+      // },
+
+      // this case would pass if credit was eligible during this test run
+      // {
+      //   disableMaxHeight: true,
+      //   fundingSource: "credit",
+      //   valid: true,
+      // },
+
+      {
+        disableMaxHeight: true,
+        fundingSource: "card",
+        valid: false,
+      },
+
+      {
+        disableMaxHeight: true,
+        valid: false,
+      },
+
+      {
+        disableMaxHeight: true,
+        fundingSource: "paypal",
+        height: 45,
+        valid: false,
+      },
+
+      // $FlowFixMe
+    ].map(({ disableMaxHeight, valid, fundingSource, height }) => ({
+      desc: `disableMaxHeight ${String(disableMaxHeight)} with fundingSource ${
+        fundingSource ? fundingSource : "Smart Stack"
+      }`,
+
+      valid,
+
+      conf: {
+        style: { disableMaxHeight, height },
+        fundingSource,
         createOrder: noop,
         onApprove: noop,
       },
