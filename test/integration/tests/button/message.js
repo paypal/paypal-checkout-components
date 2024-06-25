@@ -3,8 +3,8 @@
 import { wrapPromise, getElement } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { getNamespace } from "@paypal/sdk-client/src";
-import { CLASS } from "../../../../src/constants";
 
+import { CLASS } from "../../../../src/constants";
 import {
   assert,
   getElementRecursive,
