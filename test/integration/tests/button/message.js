@@ -4,12 +4,14 @@ import { wrapPromise, getElement } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { getNamespace } from "@paypal/sdk-client/src";
 import { CLASS } from "../../../../src/constants";
+
 import {
   assert,
   getElementRecursive,
   createTestContainer,
   destroyTestContainer,
 } from "../common";
+
 describe(`paypal button message`, () => {
   beforeEach(() => {
     createTestContainer();
@@ -471,7 +473,7 @@ describe(`paypal button message`, () => {
               await new Promise((resolve) => setTimeout(resolve, 0));
               jest.runAllTimers(); // Ensure all timers have run
               assert.ok(getElementRecursive(".paypal-button-message-bottom"));
-              console.log("New position:", window.xprops.message.position);
+              // console.log("New position:", window.xprops.message.position);
 
               done();
             },
