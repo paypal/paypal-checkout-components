@@ -50,6 +50,7 @@ type CardFieldsProps = {|
   clientID: string,
   style?: {|
     height: number,
+    input: {| height: number |},
   |},
   env?: string,
   locale?: string,
