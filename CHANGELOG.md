@@ -1,3 +1,9 @@
+## <small>5.0.328 (2024-06-26)</small>
+
+* chore(release): 5.0.327 🎉 ([973267f](https://github.com/paypal/paypal-checkout-components/commit/973267f))
+
+
+
 ## <small>5.0.327 (2024-06-18)</small>
 
 * Remove logger from funding (#2415) ([1e7ae8e](https://github.com/paypal/paypal-checkout-components/commit/1e7ae8e)), closes [#2415](https://github.com/paypal/paypal-checkout-components/issues/2415)
