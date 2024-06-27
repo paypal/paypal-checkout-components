@@ -149,11 +149,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
         }
       });
-      const updateProps = (newProps) => {
-        if (newProps && typeof newProps === 'object') {
-          Object.assign(window.xprops, newProps);
-        }
-      };
 
       return (
   
