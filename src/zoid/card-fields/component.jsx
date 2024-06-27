@@ -129,7 +129,7 @@ const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
 const prerenderTemplate = ({ props, doc }) => {
-  const height = props.style?.height || props.style?.input?.height || null;
+  const height = props.style?.height ?? props.style?.input?.height ?? null;
   return (<CardPrerender nonce={props.nonce} height={height} />).render(
     dom({ doc })
   );
