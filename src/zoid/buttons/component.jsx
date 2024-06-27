@@ -84,7 +84,7 @@ import { isFundingEligible } from "../../funding";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
-import { PrerenderedButtons } from "./prerender";
+import { PrerenderedButtons, updateProps } from "./prerender";
 import {
   applePaySession,
   determineFlow,
@@ -149,8 +149,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
         }
       });
+      const updateProps = (newProps) => {
+        if (newProps && typeof newProps === 'object') {
+          Object.assign(window.xprops, newProps);
+        }
+      };
 
       return (
+  
         <PrerenderedButtons
           nonce={props.nonce}
           props={props}

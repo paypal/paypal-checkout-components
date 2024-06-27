@@ -30,6 +30,12 @@ type PrerenderedButtonsProps = {|
     hostedButtonId?: string,
   |}) => void,
 |};
+// Define updateProps at the top
+export const updateProps = (newProps) => {
+  if (newProps && typeof newProps === 'object') {
+    Object.assign(window.xprops, newProps);
+  }
+};
 
 export function PrerenderedButtons({
   nonce,
@@ -104,9 +110,4 @@ export function PrerenderedButtons({
     </html>
   );
 
-  const updateProps = (newProps) => {
-    if (newProps && typeof newProps === 'object') {
-      Object.assign(window.xprops, newProps);
-    }
-  };
 }
