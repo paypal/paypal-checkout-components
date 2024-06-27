@@ -472,7 +472,6 @@ describe(`paypal button message`, () => {
               await new Promise((resolve) => setTimeout(resolve, 0));
               jest.runAllTimers(); // Ensure all timers have run
               assert.ok(getElementRecursive(".paypal-button-message-bottom"));
-              // console.log("New position:", window.xprops.message.position);
 
               done();
             },

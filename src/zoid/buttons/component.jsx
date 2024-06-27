@@ -652,13 +652,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
           // Automatically update position using updateProps
           if (value.position) {
-            updateProps({ message: { position: value.position } }).catch(
-              (err) => {
-                if (err.message !== "position_validation_error") {
-                  throw err;
-                }
-              }
-            );
+            updateProps({ message: { position: value.position } });
           }
           return normalizeButtonMessage(
             // $FlowFixMe

@@ -1,6 +1,5 @@
 /* @flow */
 /** @jsx node */
-
 import { node, dom, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { FUNDING, CARD, FPTI_KEY } from "@paypal/sdk-constants/src";
 import {
@@ -21,20 +20,13 @@ import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
 
 // Define the type for updateProps
-type UpdatePropsType = (newProps: { [string]: any }) => Promise<void>;
+type NewPropsType = { [string]: mixed }; // Use 'mixed' instead of 'any'
 
 // Define updateProps function
-export const updateProps: UpdatePropsType = (newProps) => {
-  return new Promise((resolve, reject) => {
-    try {
-      if (newProps && typeof newProps === "object") {
-        Object.assign(window.xprops, newProps);
-      }
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
+export const updateProps = (newProps: NewPropsType) => {
+  if (newProps && typeof newProps === "object") {
+    Object.assign(window.xprops, newProps);
+  }
 };
 
 type PrerenderedButtonsProps = {|
@@ -81,7 +73,7 @@ export function PrerenderedButtons({
 
     // Check if props.message and props.message.position are defined
     if (props.message && props.message.position) {
-      updateProps({ position: props.message.position });
+      updateProps({ message: { position: props.message.position } });
     }
 
     if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
