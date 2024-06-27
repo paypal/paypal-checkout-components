@@ -151,7 +151,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       });
 
       return (
-  
         <PrerenderedButtons
           nonce={props.nonce}
           props={props}
@@ -163,7 +162,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               hostedButtonId,
             };
           }}
-          updateProps={updateProps} // Pass updateProps
         />
       ).render(dom({ doc }));
     },
@@ -642,33 +640,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getMerchantRequestedPopupsDisabled,
       },
 
-      onProps: {
-        type: "function",
-        required: false,
-        decorate: ({ props, value }) => {
-          const {
-            style: { layout },
-            message: { position },
-            renderedButtons: fundingSources,
-          } = props;
-
-          // Automatically update position using updateProps
-          updateProps({ position }).catch((err) => {
-            if (err.message !== "position_validation_error") {
-              throw err;
-            }
-          });
-
-          // Normalize the button message
-          return normalizeButtonMessage(
-            position,
-            value,
-            layout,
-            fundingSources
-          );
-        },
-      },
-
       message: {
         type: "object",
         queryParam: true,
@@ -678,6 +649,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             style: { layout },
             renderedButtons: fundingSources,
           } = props;
+
+          // Automatically update position using updateProps
+          if (value.position) {
+            updateProps({ message: { position: value.position } }).catch(
+              (err) => {
+                if (err.message !== "position_validation_error") {
+                  throw err;
+                }
+              }
+            );
+          }
           return normalizeButtonMessage(
             // $FlowFixMe
             value,

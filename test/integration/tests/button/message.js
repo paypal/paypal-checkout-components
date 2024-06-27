@@ -17,22 +17,22 @@ describe(`paypal button message`, () => {
     createTestContainer();
     const propListeners = new Set();
     window.actions = {
-        updateProps: newProps => {
-            if (newProps && typeof newProps === 'object') {
-                [...propListeners.values()].forEach(listener => {
-                    listener({
-                        ...window.xprops,
-                        ...newProps
-                    });
-                });
-                Object.assign(window.xprops, newProps);
-            }
+      updateProps: (newProps) => {
+        if (newProps && typeof newProps === "object") {
+          [...propListeners.values()].forEach((listener) => {
+            listener({
+              ...window.xprops,
+              ...newProps,
+            });
+          });
+          Object.assign(window.xprops, newProps);
         }
+      },
     };
     window.xprops = {
-        onProps: listener => propListeners.add(listener),
-        message: { amount: 0, positon: 'bottom' },
-        getParent: () => window,
+      onProps: (listener) => propListeners.add(listener),
+      message: { amount: 0, positon: "bottom" },
+      getParent: () => window,
     };
   });
   afterEach(() => {
@@ -459,7 +459,6 @@ describe(`paypal button message`, () => {
     it("should update message position via updateProps", (done) => {
       window.paypal
         .Buttons({
-          fundingSource: FUNDING.PAYPAL,
           style: {
             layout: "horizontal",
           },

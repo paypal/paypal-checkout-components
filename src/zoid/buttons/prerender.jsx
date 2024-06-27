@@ -20,6 +20,23 @@ import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
 
+// Define the type for updateProps
+type UpdatePropsType = (newProps: { [string]: any }) => Promise<void>;
+
+// Define updateProps function
+export const updateProps: UpdatePropsType = (newProps) => {
+  return new Promise((resolve, reject) => {
+    try {
+      if (newProps && typeof newProps === "object") {
+        Object.assign(window.xprops, newProps);
+      }
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 type PrerenderedButtonsProps = {|
   nonce: ?string,
   props: ZoidProps<ButtonProps>,
@@ -30,12 +47,6 @@ type PrerenderedButtonsProps = {|
     hostedButtonId?: string,
   |}) => void,
 |};
-// Define updateProps at the top
-export const updateProps = (newProps) => {
-  if (newProps && typeof newProps === 'object') {
-    Object.assign(window.xprops, newProps);
-  }
-};
 
 export function PrerenderedButtons({
   nonce,
@@ -68,8 +79,10 @@ export function PrerenderedButtons({
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
       });
 
-      // Call updateProps to update the position
-    updateProps({ position: props.message.position });
+    // Check if props.message and props.message.position are defined
+    if (props.message && props.message.position) {
+      updateProps({ position: props.message.position });
+    }
 
     if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load
@@ -109,5 +122,4 @@ export function PrerenderedButtons({
       </body>
     </html>
   );
-
 }
