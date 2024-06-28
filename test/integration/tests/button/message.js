@@ -65,7 +65,6 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
-
     it("should populate message align(ment) when it is undefined", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -89,7 +88,6 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
-
     it("should populate position with bottom when layout is horizontal", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -110,7 +108,6 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
-
     it("should populate position with top when layout is vertical", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -164,7 +161,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should not reserve space for a message when messageMarkup is a string with length === 0", (done) => {
       window.paypal
         .Buttons({
@@ -196,7 +192,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should not reserve space for a message when messageMarkup is a string with length > 0", (done) => {
       window.paypal
         .Buttons({
@@ -275,7 +270,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
@@ -294,7 +288,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on bottom when position is bottom", (done) => {
         window.paypal
           .Buttons({
@@ -313,7 +306,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on bottom when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
@@ -360,7 +352,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
@@ -379,7 +370,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it.skip("should place message on bottom when position is bottom and credit/debit is NOT a funding source", (done) => {
         // skipped because fundingEligibility doesn't seem to be respected as passed in in this test, but confirmed to work as intended on demo page
         window.paypal
@@ -427,7 +417,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
@@ -444,7 +433,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on bottom when position is bottom", (done) => {
         window.paypal
           .Buttons({
@@ -461,7 +449,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-
       it("should place message on bottom when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
@@ -477,7 +464,6 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
-
     it("should update message position via updateProps", (done) => {
       window.paypal
         .Buttons({
@@ -519,7 +505,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
       window.paypal
         .Buttons({
@@ -548,7 +533,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
       const props = { offerType: "PAY_LATER", messageType: "GPL" };
       window.paypal
@@ -582,7 +566,6 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-
     it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
       const props = { offerType: "PAY_LATER", messageType: "GPL" };
       window.paypal
