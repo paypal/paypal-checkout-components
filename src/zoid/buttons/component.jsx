@@ -651,7 +651,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           } = props;
 
           // Automatically update position using updateProps
-          if (value.position) {
+          if (value && value.position) {
             updateProps({ message: { position: value.position } });
           }
           return normalizeButtonMessage(

@@ -20,7 +20,7 @@ import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
 
 // Define the type for updateProps
-type NewPropsType = { [string]: mixed }; // Use 'mixed' instead of 'any'
+type NewPropsType = { [string]: mixed };
 
 // Define updateProps function
 export const updateProps = (newProps: NewPropsType) => {
