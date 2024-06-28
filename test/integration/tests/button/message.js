@@ -65,6 +65,7 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
+
     it("should populate message align(ment) when it is undefined", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -88,6 +89,7 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
+
     it("should populate position with bottom when layout is horizontal", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -108,6 +110,7 @@ describe(`paypal button message`, () => {
           .render("#testContainer");
       });
     });
+
     it("should populate position with top when layout is vertical", () => {
       return wrapPromise(({ expect }) => {
         window.paypal
@@ -161,6 +164,7 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
+
     it("should not reserve space for a message when messageMarkup is a string with length === 0", (done) => {
       window.paypal
         .Buttons({
@@ -192,6 +196,7 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
+
     it("should not reserve space for a message when messageMarkup is a string with length > 0", (done) => {
       window.paypal
         .Buttons({
@@ -270,6 +275,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
@@ -288,6 +294,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on bottom when position is bottom", (done) => {
         window.paypal
           .Buttons({
@@ -306,6 +313,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on bottom when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
@@ -333,26 +341,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-      it("should update message position via updateProps", (done) => {
-        window.paypal
-          .Buttons({
-            style: {
-              layout: "horizontal",
-            },
-            message: {
-              position: "top",
-            },
-            test: {
-              onRender() {
-                assert.ok(getElementRecursive(".paypal-button-message-top"));
-                window.actions.updateProps({ message: { position: "bottom" } });
-                assert.ok(getElementRecursive(".paypal-button-message-bottom"));
-                done();
-              },
-            },
-          })
-          .render("#testContainer");
-      });
     });
 
     describe("vertical layout", () => {
@@ -372,6 +360,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
@@ -390,6 +379,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it.skip("should place message on bottom when position is bottom and credit/debit is NOT a funding source", (done) => {
         // skipped because fundingEligibility doesn't seem to be respected as passed in in this test, but confirmed to work as intended on demo page
         window.paypal
@@ -437,6 +427,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on top when position is top", (done) => {
         window.paypal
           .Buttons({
@@ -453,6 +444,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on bottom when position is bottom", (done) => {
         window.paypal
           .Buttons({
@@ -469,6 +461,7 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+
       it("should place message on bottom when no position is specified and credit/debit is a funding source", (done) => {
         window.paypal
           .Buttons({
@@ -485,115 +478,136 @@ describe(`paypal button message`, () => {
       });
     });
 
-    describe("modal", () => {
-      it("should ensure data-pp-namespace passes in the namespace", (done) => {
-        window.paypal
-          .Buttons({
-            message: {},
-            test: {
-              onRender({ hoverMessage }) {
-                hoverMessage()
-                  .then(() => {
-                    assert.equal(getNamespace(), window.namespace);
+    it("should update message position via updateProps", (done) => {
+      window.paypal
+        .Buttons({
+          fundingSource: FUNDING.PAYPAL,
+          style: {
+            layout: "horizontal",
+          },
+          message: {
+            position: "top",
+          },
+          test: {
+            onRender() {
+              assert.ok(getElementRecursive(".paypal-button-message-top"));
+              window.actions.updateProps({ message: { position: "bottom" } });
+              assert.ok(getElementRecursive(".paypal-button-message-bottom"));
+              done();
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+  });
+
+  describe("modal", () => {
+    it("should ensure data-pp-namespace passes in the namespace", (done) => {
+      window.paypal
+        .Buttons({
+          message: {},
+          test: {
+            onRender({ hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  assert.equal(getNamespace(), window.namespace);
+                  done();
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+
+    it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
+      window.paypal
+        .Buttons({
+          message: {},
+          test: {
+            onRender({ hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  assert.ok(
+                    Object.keys(window.paypal.MessagesModal.mock.calledWith)
+                      .length === 2
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .account === "string"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .merchantId === "undefined"
+                  );
+                  done();
+                })
+                .catch(done);
+            },
+          },
+        })
+        .render("#testContainer");
+    });
+
+    it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
+      const props = { offerType: "PAY_LATER", messageType: "GPL" };
+      window.paypal
+        .Buttons({
+          message: {
+            amount: 101,
+          },
+          test: {
+            onRender({ clickMessage, hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  return clickMessage(props).then(() => {
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.amount,
+                      101
+                    );
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.offer,
+                      "PAY_LATER"
+                    );
+                    assert.equal(
+                      window.paypal.MessagesModal.mock.show.calledWith.currency,
+                      "USD"
+                    );
                     done();
-                  })
-                  .catch(done);
-              },
+                  });
+                })
+                .catch(done);
             },
-          })
-          .render("#testContainer");
-      });
-      it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
-        window.paypal
-          .Buttons({
-            message: {},
-            test: {
-              onRender({ hoverMessage }) {
-                hoverMessage()
-                  .then(() => {
-                    assert.ok(
-                      Object.keys(window.paypal.MessagesModal.mock.calledWith)
-                        .length === 2
-                    );
-                    assert.ok(
-                      typeof window.paypal.MessagesModal.mock.calledWith
-                        .account === "string"
-                    );
-                    assert.ok(
-                      typeof window.paypal.MessagesModal.mock.calledWith
-                        .merchantId === "undefined"
-                    );
-                    done();
-                  })
-                  .catch(done);
-              },
-            },
-          })
-          .render("#testContainer");
-      });
-      it("should ensure getModal calls create a script with modal data and called with amount, offer, and currency from props", (done) => {
-        const props = { offerType: "PAY_LATER", messageType: "GPL" };
-        window.paypal
-          .Buttons({
-            message: {
-              amount: 101,
-            },
-            test: {
-              onRender({ clickMessage, hoverMessage }) {
-                hoverMessage()
-                  .then(() => {
-                    return clickMessage(props).then(() => {
-                      assert.equal(
-                        window.paypal.MessagesModal.mock.show.calledWith.amount,
-                        101
-                      );
-                      assert.equal(
-                        window.paypal.MessagesModal.mock.show.calledWith.offer,
-                        "PAY_LATER"
-                      );
-                      assert.equal(
-                        window.paypal.MessagesModal.mock.show.calledWith
-                          .currency,
-                        "USD"
-                      );
-                      done();
-                    });
-                  })
-                  .catch(done);
-              },
-            },
-          })
-          .render("#testContainer");
-      });
-      it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
-        const props = { offerType: "PAY_LATER", messageType: "GPL" };
-        window.paypal
-          .Buttons({
-            message: {
-              amount: 101,
-            },
-            test: {
-              onRender({ clickMessage, hoverMessage }) {
-                hoverMessage()
-                  .then(() => {
-                    return clickMessage(props).then(() => {
-                      return hoverMessage().then(() => {
-                        return clickMessage(props).then(() => {
-                          assert.equal(
-                            window.paypal.MessagesModal.mock.calls,
-                            1
-                          );
-                          done();
-                        });
+          },
+        })
+        .render("#testContainer");
+    });
+
+    it("should ensure getModal calls utilize a single modal instance, not creating multiple modals", (done) => {
+      const props = { offerType: "PAY_LATER", messageType: "GPL" };
+      window.paypal
+        .Buttons({
+          message: {
+            amount: 101,
+          },
+          test: {
+            onRender({ clickMessage, hoverMessage }) {
+              hoverMessage()
+                .then(() => {
+                  return clickMessage(props).then(() => {
+                    return hoverMessage().then(() => {
+                      return clickMessage(props).then(() => {
+                        assert.equal(window.paypal.MessagesModal.mock.calls, 1);
+                        done();
                       });
                     });
-                  })
-                  .catch(done);
-              },
+                  });
+                })
+                .catch(done);
             },
-          })
-          .render("#testContainer");
-      });
+          },
+        })
+        .render("#testContainer");
     });
   });
 });
