@@ -1,3 +1,9 @@
+## <small>5.0.329 (2024-07-01)</small>
+
+* feat/DTXOUP-3505/update-accelerated-loader (#2408) ([7c38548](https://github.com/paypal/paypal-checkout-components/commit/7c38548)), closes [#2408](https://github.com/paypal/paypal-checkout-components/issues/2408)
+
+
+
 ## <small>5.0.328 (2024-06-26)</small>
 
 * chore(release): 5.0.327 🎉 ([973267f](https://github.com/paypal/paypal-checkout-components/commit/973267f))
