@@ -640,20 +640,38 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getMerchantRequestedPopupsDisabled,
       },
 
+      onProps: {
+        type: "function",
+        required: false,
+        value: ({ props }) => {
+          return async () => {
+            const { message } = props;
+
+            // Automatically update position using updateProps
+            if (message && message.position) {
+              const updatedProps = await updateProps({
+                message: { position: message.position },
+              });
+              return updatedProps.message.position; // Return updated position
+            }
+
+            // Handle case where message.position is not defined or not updated
+            return undefined; // Or handle based on your application logic
+          };
+        },
+      },
+
       message: {
         type: "object",
         queryParam: true,
         required: false,
+
         decorate: ({ props, value }) => {
           const {
             style: { layout },
             renderedButtons: fundingSources,
           } = props;
 
-          // Automatically update position using updateProps
-          if (value && value.position) {
-            updateProps({ message: { position: value.position } });
-          }
           return normalizeButtonMessage(
             // $FlowFixMe
             value,

@@ -19,14 +19,25 @@ import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
 
-// Define the type for updateProps
-type NewPropsType = { [string]: mixed };
+// Define the type for newProps
+type NewPropsType = {|
+  message?: {|
+    position?: string,
+  |},
+|};
 
 // Define updateProps function
-export const updateProps = (newProps: NewPropsType) => {
-  if (newProps && typeof newProps === "object") {
-    Object.assign(window.xprops, newProps);
+export const updateProps = (newProps: NewPropsType): typeof window.xprops => {
+  if (newProps && typeof newProps.message === "object") {
+    // Ensure window.xprops.message is initialized as an object if it doesn't exist
+    window.xprops.message = window.xprops.message || {};
+
+    // Update position only if newProps.message.position is defined
+    if (newProps.message && newProps.message.position !== undefined) {
+      window.xprops.message.position = newProps.message.position;
+    }
   }
+  return window.xprops;
 };
 
 type PrerenderedButtonsProps = {|
@@ -71,7 +82,6 @@ export function PrerenderedButtons({
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
       });
 
-    // Check if props.message and props.message.position are defined
     if (props.message && props.message.position) {
       updateProps({ message: { position: props.message.position } });
     }

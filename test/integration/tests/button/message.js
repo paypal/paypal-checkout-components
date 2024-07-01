@@ -16,23 +16,27 @@ import {
 describe(`paypal button message`, () => {
   beforeEach(() => {
     createTestContainer();
-    const propListeners = new Set();
+    // Mock window.actions.updateProps
     window.actions = {
       updateProps: (newProps) => {
-        if (newProps && typeof newProps === "object") {
-          [...propListeners.values()].forEach((listener) => {
-            listener({
-              ...window.xprops,
-              ...newProps,
+        return new Promise((resolve) => {
+          if (newProps && typeof newProps === "object") {
+            [...window.propListeners.values()].forEach((listener) => {
+              listener({
+                ...window.xprops,
+                ...newProps,
+              });
             });
-          });
-          Object.assign(window.xprops, newProps);
-        }
+            Object.assign(window.xprops, newProps);
+          }
+          resolve();
+        });
       },
     };
+    window.propListeners = new Set();
     window.xprops = {
-      onProps: (listener) => propListeners.add(listener),
-      message: { amount: 0, positon: "bottom" },
+      onProps: (listener) => window.propListeners.add(listener),
+      message: { amount: 0, position: "bottom" },
       getParent: () => window,
     };
   });
@@ -122,6 +126,30 @@ describe(`paypal button message`, () => {
                   message: { position },
                 } = xprops;
                 assert.equal(position, "top");
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    });
+    it("should update message position via updateProps", (done) => {
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            style: {
+              layout: "horizontal",
+            },
+            message: {
+              position: "top",
+            },
+            test: {
+              onRender: expect("onRender", async ({ xprops }) => {
+                assert.equal(xprops.message.position, "top");
+                await window.actions.updateProps({
+                  message: { position: "bottom" },
+                });
+                assert.equal(xprops.message.position, "bottom");
+                done();
               }),
             },
           })
@@ -463,27 +491,6 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
-    });
-    it("should update message position via updateProps", (done) => {
-      window.paypal
-        .Buttons({
-          fundingSource: FUNDING.PAYPAL,
-          style: {
-            layout: "horizontal",
-          },
-          message: {
-            position: "top",
-          },
-          test: {
-            onRender() {
-              assert.ok(getElementRecursive(".paypal-button-message-top"));
-              window.actions.updateProps({ message: { position: "bottom" } });
-              assert.ok(getElementRecursive(".paypal-button-message-bottom"));
-              done();
-            },
-          },
-        })
-        .render("#testContainer");
     });
   });
 
