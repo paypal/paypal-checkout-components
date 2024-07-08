@@ -44,12 +44,10 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
     },
 
-    labelText: ({ content, label, period }) => {
+    labelText: ({ content, label, period, buyerCountry }) => {
       let text = `${FUNDING_BRAND_LABEL.PAYPAL}`;
 
       if (content && label === BUTTON_LABEL.INSTALLMENT) {
-        const buyerCountry = getBuyerCountry();
-
         const eligibleCountriesForInstallmentLabel = ["BR", "MX"];
 
         if (eligibleCountriesForInstallmentLabel.includes(buyerCountry)) {

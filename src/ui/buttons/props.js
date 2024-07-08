@@ -450,6 +450,7 @@ export type ButtonMessageInputs = {|
 export type RenderButtonProps = {|
   style: ButtonStyle,
   locale: LocaleType,
+  buyerCountry: $Values<typeof COUNTRY>,
   commit: boolean,
   fundingSource: ?$Values<typeof FUNDING>,
   env: $Values<typeof ENV>,
@@ -555,6 +556,7 @@ export type ButtonPropsInputs = {
   clientID: string,
   fundingSource?: ?$Values<typeof FUNDING>,
   style?: ButtonStyleInputs | void,
+  buyerCountry: $Values<typeof COUNTRY>,
   locale?: $PropertyType<ButtonProps, "locale"> | void,
   commit?: $PropertyType<ButtonProps, "commit"> | void,
   env?: $PropertyType<ButtonProps, "env"> | void,
@@ -868,6 +870,7 @@ export function normalizeButtonProps(
   );
 
   let {
+    buyerCountry,
     clientID,
     fundingSource,
     style = getDefaultStyle(),
@@ -970,6 +973,7 @@ export function normalizeButtonProps(
     : undefined;
 
   return {
+    buyerCountry,
     clientID,
     fundingSource,
     style,

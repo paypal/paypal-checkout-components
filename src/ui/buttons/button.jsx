@@ -2,7 +2,12 @@
 /** @jsx node */
 
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
-import { FUNDING, ENV, type LocaleType } from "@paypal/sdk-constants/src";
+import {
+  COUNTRY,
+  FUNDING,
+  ENV,
+  type LocaleType,
+} from "@paypal/sdk-constants/src";
 import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 import { LOGO_COLOR, LOGO_CLASS } from "@paypal/sdk-logos/src";
 import {
@@ -43,6 +48,7 @@ type IndividualButtonProps = {|
   style: ButtonStyle,
   fundingSource: $Values<typeof FUNDING>,
   multiple: boolean,
+  buyerCountry: $Values<typeof COUNTRY>,
   locale: LocaleType,
   onClick?: Function,
   env: $Values<typeof ENV>,
@@ -68,26 +74,27 @@ type IndividualButtonProps = {|
 |};
 
 export function Button({
-  fundingSource,
-  style,
-  multiple,
-  locale,
-  env,
-  fundingEligibility,
-  i,
-  nonce,
-  flow,
-  vault,
-  userIDToken,
-  customerId,
-  personalization,
-  onClick = noop,
-  content,
-  tagline,
+  buyerCountry,
   commit,
+  content,
+  customerId,
+  env,
   experiment,
+  flow,
+  fundingEligibility,
+  fundingSource,
+  i,
   instrument,
+  locale,
+  multiple,
+  nonce,
+  onClick = noop,
+  personalization,
   showPayLabel,
+  style,
+  tagline,
+  userIDToken,
+  vault,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
 
@@ -146,6 +153,7 @@ export function Button({
     let labelText =
       typeof fundingConfig.labelText === "function"
         ? fundingConfig.labelText({
+            buyerCountry,
             content,
             fundingEligibility,
             label,
