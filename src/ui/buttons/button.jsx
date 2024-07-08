@@ -42,7 +42,7 @@ import type {
 } from "./props";
 import { Spinner } from "./spinner";
 import { MenuButton } from "./menu-button";
-import { isBorderRadiusNumber } from "./util";
+import { isBorderRadiusNumber, checkLabelEligibility } from "./util";
 
 type IndividualButtonProps = {|
   style: ButtonStyle,
@@ -149,6 +149,8 @@ export function Button({
     }
   };
 
+  const eligibleLabel = checkLabelEligibility(label, buyerCountry);
+
   function getAriaLabel(): string {
     let labelText =
       typeof fundingConfig.labelText === "function"
@@ -156,7 +158,7 @@ export function Button({
             buyerCountry,
             content,
             fundingEligibility,
-            label,
+            eligibleLabel,
             period,
           })
         : fundingConfig.labelText || fundingSource;
@@ -174,7 +176,7 @@ export function Button({
 
   const logoNode = (
     <Logo
-      label={label}
+      label={eligibleLabel}
       locale={locale}
       logoColor={logoColor}
       fundingEligibility={fundingEligibility}
@@ -190,7 +192,7 @@ export function Button({
     <Label
       i={i}
       logo={logoNode}
-      label={label}
+      label={eligibleLabel}
       nonce={nonce}
       locale={locale}
       logoColor={logoColor}

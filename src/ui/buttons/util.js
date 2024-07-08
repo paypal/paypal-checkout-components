@@ -1,7 +1,7 @@
 /* @flow */
-import { FUNDING } from "@paypal/sdk-constants/src";
+import { COUNTRY, FUNDING } from "@paypal/sdk-constants/src";
 
-import { BUTTON_LAYOUT, MESSAGE_POSITION } from "../../constants";
+import { BUTTON_LABEL, BUTTON_LAYOUT, MESSAGE_POSITION } from "../../constants";
 import { ValidationError } from "../../lib";
 
 export function isBorderRadiusNumber(borderRadius?: number): boolean {
@@ -38,4 +38,21 @@ export function calculateMessagePosition(
     return MESSAGE_POSITION.TOP;
   }
   return MESSAGE_POSITION.BOTTOM;
+}
+
+export function checkLabelEligibility(
+  label?: $Values<typeof BUTTON_LABEL>,
+  buyerCountry: $Values<typeof COUNTRY>
+): $Values<typeof BUTTON_LABEL> | typeof undefined {
+  const eligibleCountriesForInstallmentLabel = ["BR", "MX"];
+
+  // Don't render the installment label if buyerCountry is not eligible for installment product
+  if (
+    label === BUTTON_LABEL.INSTALLMENT &&
+    !eligibleCountriesForInstallmentLabel.includes(buyerCountry)
+  ) {
+    return BUTTON_LABEL.PAYPAL;
+  }
+
+  return label;
 }
