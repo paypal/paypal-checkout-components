@@ -158,7 +158,7 @@ export function Button({
             buyerCountry,
             content,
             fundingEligibility,
-            eligibleLabel,
+            label: eligibleLabel,
             period,
           })
         : fundingConfig.labelText || fundingSource;
