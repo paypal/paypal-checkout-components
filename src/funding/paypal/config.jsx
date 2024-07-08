@@ -3,6 +3,7 @@
 
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 import { FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
+import { getBuyerCountry } from "@paypal/sdk-client/src";
 
 import {
   BUTTON_COLOR,
@@ -45,15 +46,25 @@ export function getPayPalConfig(): FundingSourceConfig {
 
     labelText: ({ content, label, period }) => {
       let text = `${FUNDING_BRAND_LABEL.PAYPAL}`;
+
       if (content && label === BUTTON_LABEL.INSTALLMENT) {
-        if (period) {
-          text = content["label.installment.withPeriod"].replace(
-            "{period}",
-            String(period)
-          );
-        } else {
-          text = content["label.installment.withoutPeriod"];
+        const buyerCountry = getBuyerCountry();
+
+        const eligibleCountriesForInstallmentLabel = ["BR", "MX"];
+
+        if (eligibleCountriesForInstallmentLabel.includes(buyerCountry)) {
+          if (period) {
+            const rawLabel = content["label.installment.withPeriod"];
+
+            if (typeof rawLabel === "string") {
+              text = rawLabel.replace("{period}", String(period));
+            }
+          } else {
+            text = content["label.installment.withoutPeriod"];
+          }
         }
+        // Don't render the installment label if buyerCountry is not eligible for installment product
+        text = "";
       } else if (content && label && content[`label.${label}`]) {
         text = content[`label.${label}`];
       }
