@@ -45,18 +45,21 @@ export function getPayPalConfig(): FundingSourceConfig {
 
     labelText: ({ content, label, period }) => {
       let text = `${FUNDING_BRAND_LABEL.PAYPAL}`;
+
       if (content && label === BUTTON_LABEL.INSTALLMENT) {
         if (period) {
-          text = content["label.installment.withPeriod"].replace(
-            "{period}",
-            String(period)
-          );
+          const rawLabel = content["label.installment.withPeriod"];
+
+          if (typeof rawLabel === "string") {
+            text = rawLabel.replace("{period}", String(period));
+          }
         } else {
           text = content["label.installment.withoutPeriod"];
         }
       } else if (content && label && content[`label.${label}`]) {
         text = content[`label.${label}`];
       }
+
       return text;
     },
     Logo,

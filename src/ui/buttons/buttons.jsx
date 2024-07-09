@@ -136,36 +136,37 @@ export function validateButtonProps(props: ButtonPropsInputs) {
 export function Buttons(props: ButtonsProps): ElementNode {
   const { onClick = noop } = props;
   const {
-    wallet,
-    fundingSource,
-    style,
-    locale,
-    remembered,
-    env,
-    fundingEligibility,
-    platform,
-    commit,
-    vault,
-    nonce,
-    enableFunding,
-    components,
-    onShippingChange,
-    onShippingAddressChange,
-    onShippingOptionsChange,
-    hasShippingCallback,
-    personalization,
-    userIDToken,
-    customerId,
-    content,
-    flow,
-    experiment,
     applePaySupport,
-    supportsPopups,
-    supportedNativeBrowser,
-    showPayLabel,
+    buyerCountry,
+    commit,
+    components,
+    content,
+    customerId,
     displayOnly,
+    enableFunding,
+    env,
+    experiment,
+    flow,
+    fundingEligibility,
+    fundingSource,
+    hasShippingCallback,
+    locale,
     message,
     messageMarkup,
+    nonce,
+    onShippingAddressChange,
+    onShippingChange,
+    onShippingOptionsChange,
+    personalization,
+    platform,
+    remembered,
+    showPayLabel,
+    style,
+    supportedNativeBrowser,
+    supportsPopups,
+    userIDToken,
+    vault,
+    wallet,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -268,6 +269,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           fundingSource={source}
           multiple={multiple}
           env={env}
+          buyerCountry={buyerCountry}
           locale={locale}
           nonce={nonce}
           fundingEligibility={fundingEligibility}

@@ -136,6 +136,7 @@ export type FundingSourceConfig = {|
   labelText?:
     | string
     | (({|
+        buyerCountry: $Values<typeof COUNTRY>,
         content: ?ContentType,
         fundingEligibility: ?FundingEligibilityType,
         label?: string,
