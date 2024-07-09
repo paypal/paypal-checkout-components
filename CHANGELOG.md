@@ -1,3 +1,9 @@
+## <small>5.0.330 (2024-07-09)</small>
+
+* Update eligibility check for installment label (#2418) ([1bdc9b4](https://github.com/paypal/paypal-checkout-components/commit/1bdc9b4)), closes [#2418](https://github.com/paypal/paypal-checkout-components/issues/2418)
+
+
+
 ## <small>5.0.329 (2024-07-01)</small>
 
 * feat/DTXOUP-3505/update-accelerated-loader (#2408) ([7c38548](https://github.com/paypal/paypal-checkout-components/commit/7c38548)), closes [#2408](https://github.com/paypal/paypal-checkout-components/issues/2408)
