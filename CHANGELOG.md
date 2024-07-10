@@ -1,3 +1,75 @@
+## <small>5.0.330 (2024-07-09)</small>
+
+* Update eligibility check for installment label (#2418) ([1bdc9b4](https://github.com/paypal/paypal-checkout-components/commit/1bdc9b4)), closes [#2418](https://github.com/paypal/paypal-checkout-components/issues/2418)
+
+
+
+## <small>5.0.329 (2024-07-01)</small>
+
+* feat/DTXOUP-3505/update-accelerated-loader (#2408) ([7c38548](https://github.com/paypal/paypal-checkout-components/commit/7c38548)), closes [#2408](https://github.com/paypal/paypal-checkout-components/issues/2408)
+
+
+
+## <small>5.0.328 (2024-06-26)</small>
+
+* chore(release): 5.0.327 🎉 ([973267f](https://github.com/paypal/paypal-checkout-components/commit/973267f))
+
+
+
+## <small>5.0.327 (2024-06-18)</small>
+
+* Remove logger from funding (#2415) ([1e7ae8e](https://github.com/paypal/paypal-checkout-components/commit/1e7ae8e)), closes [#2415](https://github.com/paypal/paypal-checkout-components/issues/2415)
+
+
+
+## <small>5.0.326 (2024-06-17)</small>
+
+* Fix Venmo Eligibility for Venmo Web & Shipping Callbacks 👾 (#2412) ([a79bfc1](https://github.com/paypal/paypal-checkout-components/commit/a79bfc1)), closes [#2412](https://github.com/paypal/paypal-checkout-components/issues/2412)
+
+
+
+## <small>5.0.325 (2024-06-14)</small>
+
+* use query param for atomics waiting state (#2410) ([9b1de91](https://github.com/paypal/paypal-checkout-components/commit/9b1de91)), closes [#2410](https://github.com/paypal/paypal-checkout-components/issues/2410)
+
+
+
+## <small>5.0.324 (2024-06-14)</small>
+
+* New Feature: disableMaxHeight (#2361) ([f2e74da](https://github.com/paypal/paypal-checkout-components/commit/f2e74da)), closes [#2361](https://github.com/paypal/paypal-checkout-components/issues/2361)
+
+
+
+## <small>5.0.323 (2024-06-12)</small>
+
+* fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
+
+
+
+## <small>5.0.322 (2024-06-12)</small>
+
+* Support Venmo vault without purchase with a feature flag (#2403) ([f2e7067](https://github.com/paypal/paypal-checkout-components/commit/f2e7067)), closes [#2403](https://github.com/paypal/paypal-checkout-components/issues/2403)
+
+
+
+## <small>5.0.321 (2024-06-10)</small>
+
+* Button autoResize by button container (#2404) ([80f48b0](https://github.com/paypal/paypal-checkout-components/commit/80f48b0)), closes [#2404](https://github.com/paypal/paypal-checkout-components/issues/2404)
+
+
+
+## <small>5.0.320 (2024-05-29)</small>
+
+* add atomics waiting state xprop for checkout (#2402) ([6bad872](https://github.com/paypal/paypal-checkout-components/commit/6bad872)), closes [#2402](https://github.com/paypal/paypal-checkout-components/issues/2402)
+
+
+
+## <small>5.0.319 (2024-05-24)</small>
+
+* Make Venmo ineligible if shipping callback is present & displayOnly includes "vaultable"  👾 (#2394) ([841bf90](https://github.com/paypal/paypal-checkout-components/commit/841bf90)), closes [#2394](https://github.com/paypal/paypal-checkout-components/issues/2394)
+
+
+
 ## <small>5.0.318 (2024-05-23)</small>
 
 * consistent capitaliztion of paypal (#2397) ([09b9d59](https://github.com/paypal/paypal-checkout-components/commit/09b9d59)), closes [#2397](https://github.com/paypal/paypal-checkout-components/issues/2397)

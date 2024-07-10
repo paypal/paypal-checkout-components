@@ -1,4 +1,5 @@
 /* eslint-disable eslint-comments/disable-enable-pair  */
+/* eslint-disable max-lines */
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
@@ -324,6 +325,7 @@ export type ButtonStyle = {|
   period?: number,
   height?: number,
   disableMaxWidth?: boolean,
+  disableMaxHeight?: boolean,
   borderRadius?: number,
 |};
 
@@ -336,6 +338,7 @@ export type ButtonStyleInputs = {|
   period?: number | void,
   height?: number | void,
   disableMaxWidth?: boolean | void,
+  disableMaxHeight?: boolean | void,
   borderRadius?: number | void,
 |};
 
@@ -447,6 +450,7 @@ export type ButtonMessageInputs = {|
 export type RenderButtonProps = {|
   style: ButtonStyle,
   locale: LocaleType,
+  buyerCountry: $Values<typeof COUNTRY>,
   commit: boolean,
   fundingSource: ?$Values<typeof FUNDING>,
   env: $Values<typeof ENV>,
@@ -465,6 +469,7 @@ export type RenderButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   personalization: ?Personalization,
   clientAccessToken: ?string,
   customerId: ?string,
@@ -521,6 +526,7 @@ export type ButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   clientAccessToken?: ?string,
   customerId?: ?string,
   nonce: string,
@@ -550,6 +556,7 @@ export type ButtonPropsInputs = {
   clientID: string,
   fundingSource?: ?$Values<typeof FUNDING>,
   style?: ButtonStyleInputs | void,
+  buyerCountry: $Values<typeof COUNTRY>,
   locale?: $PropertyType<ButtonProps, "locale"> | void,
   commit?: $PropertyType<ButtonProps, "commit"> | void,
   env?: $PropertyType<ButtonProps, "env"> | void,
@@ -568,6 +575,7 @@ export type ButtonPropsInputs = {
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
+  hasShippingCallback?: boolean,
   personalization?: Personalization,
   clientAccessToken?: ?string,
   customerId?: ?string,
@@ -646,6 +654,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   } = style;
 
@@ -694,9 +703,37 @@ export function normalizeButtonStyle(
       BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight,
     ];
 
+    if (disableMaxHeight === true) {
+      throw new TypeError(
+        `Unexpected style.height for style.disableMaxHeight: got: ${height}, expected undefined.`
+      );
+    }
+
     if (height < minHeight || height > maxHeight) {
       throw new Error(
         `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
+      );
+    }
+  }
+
+  if (disableMaxHeight !== undefined) {
+    if (typeof disableMaxHeight !== "boolean") {
+      throw new TypeError(
+        `Expected style.disableMaxHeight to be a boolean, got: ${disableMaxHeight}`
+      );
+    }
+
+    const disableMaxHeightInvalidFundingSources = [FUNDING.CARD, undefined];
+    const disableMaxHeightValidFundingSources = Object.values(FUNDING).filter(
+      (fundingSourceId) =>
+        !disableMaxHeightInvalidFundingSources.includes(fundingSourceId)
+    );
+
+    if (disableMaxHeightInvalidFundingSources.includes(fundingSource)) {
+      throw new TypeError(
+        `Unexpected fundingSource for style.disableMaxHeight: got: ${
+          fundingSource ? fundingSource : "Smart Stack"
+        }, expected ${disableMaxHeightValidFundingSources.join(", ")}.`
       );
     }
   }
@@ -733,6 +770,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   };
 }
@@ -825,7 +863,14 @@ export function normalizeButtonProps(
     throw new Error(`Expected props`);
   }
 
+  const defaultHasShippingCallback = Boolean(
+    props.onShippingChange ||
+      props.onShippingAddressChange ||
+      props.onShippingOptionsChange
+  );
+
   let {
+    buyerCountry,
     clientID,
     fundingSource,
     style = getDefaultStyle(),
@@ -843,6 +888,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback = defaultHasShippingCallback,
     personalization,
     clientAccessToken,
     customerId,
@@ -906,6 +952,7 @@ export function normalizeButtonProps(
         onShippingChange,
         onShippingAddressChange,
         onShippingOptionsChange,
+        hasShippingCallback,
         wallet,
         flow,
         applePaySupport,
@@ -926,6 +973,7 @@ export function normalizeButtonProps(
     : undefined;
 
   return {
+    buyerCountry,
     clientID,
     fundingSource,
     style,
@@ -944,6 +992,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     personalization,
     content,
     wallet,
