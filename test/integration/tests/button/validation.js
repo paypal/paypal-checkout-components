@@ -1102,10 +1102,10 @@ const buttonConfigs = [
           amount: 100,
           offer: ["pay_later_long_term"],
           color: "black",
-          position: "bottom", // Message position must be 'top' when Debit and/or Credit Card button is present
+          position: "bottom", // Used to be invalid, now just throws a console.warn
           align: "left",
         },
-        valid: false,
+        valid: true,
       },
 
       {
