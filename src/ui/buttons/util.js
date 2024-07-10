@@ -2,7 +2,6 @@
 import { COUNTRY, FUNDING } from "@paypal/sdk-constants/src";
 
 import { BUTTON_LABEL, BUTTON_LAYOUT, MESSAGE_POSITION } from "../../constants";
-import { ValidationError } from "../../lib";
 
 export function isBorderRadiusNumber(borderRadius?: number): boolean {
   return typeof borderRadius === "number";
