@@ -295,6 +295,12 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           queryParam: true,
           required: false,
         },
+
+        venmoVaultEnabled: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
       },
 
       dimensions: ({ props }) => {
