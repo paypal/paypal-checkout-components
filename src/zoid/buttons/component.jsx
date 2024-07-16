@@ -743,7 +743,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               })
               .flush();
 
-            const modalInstance = await getModal(clientID, merchantID);
+            const modalInstance = await getModal(
+              clientID,
+              merchantID,
+              buttonSessionID
+            );
             return modalInstance?.show({
               amount,
               offer: offerType,
@@ -758,11 +762,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: ({ props }) => {
           return () => {
-            const { clientID, merchantID } = props;
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
-
             // lazy loads the modal, to be memoized and executed onMessageClick
-            return getModal(clientID, merchantID);
+            const { buttonSessionID, clientID, merchantID } = props;
+            return getModal(clientID, merchantID, buttonSessionID);
           };
         },
       },
@@ -952,6 +955,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       getShopperInsightsUsed: {
         type: "function",
         value: () => wasShopperInsightsUsed,
+        required: false,
       },
 
       stageHost: {

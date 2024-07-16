@@ -50,6 +50,7 @@ type CardFieldsProps = {|
   clientID: string,
   style?: {|
     height: number,
+    input: {| height: number |},
   |},
   styleOptions?: {|
     disablePrerender?: boolean,
@@ -131,10 +132,11 @@ const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
 const prerenderTemplate = ({ props, doc }) => {
+  const height = props.style?.height ?? props.style?.input?.height ?? null;
   return (
     <CardPrerender
       nonce={props.nonce}
-      height={props.style?.height}
+      height={height}
       isDisabled={Boolean(props.styleOptions?.disablePrerender)}
     />
   ).render(dom({ doc }));

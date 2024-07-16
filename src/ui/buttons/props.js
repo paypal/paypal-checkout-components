@@ -433,7 +433,7 @@ export type ApplePaySessionConfigRequest = (
 
 export type ButtonMessage = {|
   amount?: number,
-  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
+  offer?: string,
   color: $Values<typeof MESSAGE_COLOR>,
   position: $Values<typeof MESSAGE_POSITION>,
   align: $Values<typeof MESSAGE_ALIGN>,
@@ -450,6 +450,7 @@ export type ButtonMessageInputs = {|
 export type RenderButtonProps = {|
   style: ButtonStyle,
   locale: LocaleType,
+  buyerCountry: $Values<typeof COUNTRY>,
   commit: boolean,
   fundingSource: ?$Values<typeof FUNDING>,
   env: $Values<typeof ENV>,
@@ -555,6 +556,7 @@ export type ButtonPropsInputs = {
   clientID: string,
   fundingSource?: ?$Values<typeof FUNDING>,
   style?: ButtonStyleInputs | void,
+  buyerCountry: $Values<typeof COUNTRY>,
   locale?: $PropertyType<ButtonProps, "locale"> | void,
   commit?: $PropertyType<ButtonProps, "commit"> | void,
   env?: $PropertyType<ButtonProps, "env"> | void,
@@ -780,12 +782,11 @@ export function normalizeButtonMessage(
 ): ButtonMessage {
   const {
     amount,
-    offer,
     color = MESSAGE_COLOR.BLACK,
     position,
     align = MESSAGE_ALIGN.CENTER,
   } = message;
-
+  let offer = message.offer;
   if (typeof amount !== "undefined") {
     if (typeof amount !== "number") {
       throw new TypeError(
@@ -800,6 +801,9 @@ export function normalizeButtonMessage(
   }
 
   if (typeof offer !== "undefined") {
+    if (typeof offer === "string") {
+      offer = offer.split(",");
+    }
     if (!Array.isArray(offer)) {
       throw new TypeError(
         `Expected message.offer to be an array of strings, got: ${String(
@@ -813,6 +817,7 @@ export function normalizeButtonMessage(
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
     }
+    offer = offer.join(",");
   }
 
   if (typeof color !== "undefined" && !values(MESSAGE_COLOR).includes(color)) {
@@ -868,6 +873,7 @@ export function normalizeButtonProps(
   );
 
   let {
+    buyerCountry,
     clientID,
     fundingSource,
     style = getDefaultStyle(),
@@ -970,6 +976,7 @@ export function normalizeButtonProps(
     : undefined;
 
   return {
+    buyerCountry,
     clientID,
     fundingSource,
     style,

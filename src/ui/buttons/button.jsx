@@ -2,7 +2,12 @@
 /** @jsx node */
 
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
-import { FUNDING, ENV, type LocaleType } from "@paypal/sdk-constants/src";
+import {
+  COUNTRY,
+  FUNDING,
+  ENV,
+  type LocaleType,
+} from "@paypal/sdk-constants/src";
 import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 import { LOGO_COLOR, LOGO_CLASS } from "@paypal/sdk-logos/src";
 import {
@@ -37,12 +42,13 @@ import type {
 } from "./props";
 import { Spinner } from "./spinner";
 import { MenuButton } from "./menu-button";
-import { isBorderRadiusNumber } from "./util";
+import { isBorderRadiusNumber, checkLabelEligibility } from "./util";
 
 type IndividualButtonProps = {|
   style: ButtonStyle,
   fundingSource: $Values<typeof FUNDING>,
   multiple: boolean,
+  buyerCountry: $Values<typeof COUNTRY>,
   locale: LocaleType,
   onClick?: Function,
   env: $Values<typeof ENV>,
@@ -68,26 +74,27 @@ type IndividualButtonProps = {|
 |};
 
 export function Button({
-  fundingSource,
-  style,
-  multiple,
-  locale,
-  env,
-  fundingEligibility,
-  i,
-  nonce,
-  flow,
-  vault,
-  userIDToken,
-  customerId,
-  personalization,
-  onClick = noop,
-  content,
-  tagline,
+  buyerCountry,
   commit,
+  content,
+  customerId,
+  env,
   experiment,
+  flow,
+  fundingEligibility,
+  fundingSource,
+  i,
   instrument,
+  locale,
+  multiple,
+  nonce,
+  onClick = noop,
+  personalization,
   showPayLabel,
+  style,
+  tagline,
+  userIDToken,
+  vault,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
 
@@ -142,13 +149,16 @@ export function Button({
     }
   };
 
+  const eligibleLabel = checkLabelEligibility(label, buyerCountry);
+
   function getAriaLabel(): string {
     let labelText =
       typeof fundingConfig.labelText === "function"
         ? fundingConfig.labelText({
+            buyerCountry,
             content,
             fundingEligibility,
-            label,
+            label: eligibleLabel,
             period,
           })
         : fundingConfig.labelText || fundingSource;
@@ -166,7 +176,7 @@ export function Button({
 
   const logoNode = (
     <Logo
-      label={label}
+      label={eligibleLabel}
       locale={locale}
       logoColor={logoColor}
       fundingEligibility={fundingEligibility}
@@ -182,7 +192,7 @@ export function Button({
     <Label
       i={i}
       logo={logoNode}
-      label={label}
+      label={eligibleLabel}
       nonce={nonce}
       locale={locale}
       logoColor={logoColor}

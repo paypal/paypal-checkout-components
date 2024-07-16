@@ -14,7 +14,6 @@ import {
   once,
   memoize,
 } from "@krakenjs/belter/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
   getLogger,
@@ -25,6 +24,7 @@ import {
   getEnv,
   getNamespace,
 } from "@paypal/sdk-client/src";
+import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
 import type { Experiment as EligibilityExperiment } from "../../types";
@@ -371,8 +371,9 @@ function buildModalBundleUrl(): string {
 
 export const getModal: (
   clientID: string,
-  merchantID?: $ReadOnlyArray<string> | void
-) => Object = memoize(async (clientID, merchantID) => {
+  merchantID: $ReadOnlyArray<string> | void,
+  buttonSessionID: string
+) => Object = memoize(async (clientID, merchantID, buttonSessionID) => {
   try {
     const namespace = getNamespace();
     if (!window[namespace].MessagesModal) {
@@ -393,6 +394,19 @@ export const getModal: (
     }
 
     return window[namespace].MessagesModal({
+      buttonSessionId: buttonSessionID,
+      onApply: () =>
+        getLogger()
+          .info("button_message_modal_apply")
+          .track({
+            [FPTI_KEY.TRANSITION]: "button_message_modal_apply",
+            [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+            [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+            [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+            [FPTI_KEY.EVENT_NAME]: "modal_apply",
+          })
+          .flush(),
       account: `client-id:${clientID}`,
       merchantId: merchantID?.join(",") || undefined,
     });

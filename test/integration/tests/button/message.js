@@ -386,6 +386,35 @@ describe(`paypal button message`, () => {
           })
           .render("#testContainer");
       });
+      it("should place message on top when position is bottom and credit/debit IS a funding source", (done) => {
+        window.paypal
+          .Buttons({
+            style: {
+              layout: "vertical",
+            },
+            message: {
+              position: "bottom",
+            },
+            fundingEligibility: {
+              credit: {
+                eligible: true,
+              },
+              paypal: {
+                eligible: true,
+              },
+              card: {
+                eligible: true,
+              },
+            },
+            test: {
+              onRender() {
+                assert.ok(getElementRecursive(".paypal-button-message-top"));
+                done();
+              },
+            },
+          })
+          .render("#testContainer");
+      });
     });
     describe("standalone layout", () => {
       it("should place message on bottom by default", (done) => {
@@ -469,7 +498,7 @@ describe(`paypal button message`, () => {
         })
         .render("#testContainer");
     });
-    it("should ensure getModal callback with clientID and merchantID is called on hover", (done) => {
+    it("should ensure getModal callback with clientID, merchantID, buttonSessionID, and modal callbacks is called on hover", (done) => {
       window.paypal
         .Buttons({
           message: {},
@@ -479,11 +508,19 @@ describe(`paypal button message`, () => {
                 .then(() => {
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
-                      .length === 2
+                      .length === 4
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .onApply === "function"
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
                       .account === "string"
+                  );
+                  assert.ok(
+                    typeof window.paypal.MessagesModal.mock.calledWith
+                      .buttonSessionId === "string"
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith

@@ -1023,18 +1023,36 @@ const buttonConfigs = [
         },
         valid: false,
       },
-
       {
         message: {
           amount: 100,
-          offer: "pay_later_long_term", // invalid: should be in an array
+          offer: "pay_later_long_term",
           color: "black",
           position: "top",
           align: "left",
         },
-        valid: false,
+        valid: true,
       },
-
+      {
+        message: {
+          amount: 100,
+          offer: ["pay_later_long_term", "pay_later_short_term"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
+      {
+        message: {
+          amount: 100,
+          offer: "pay_later_long_term,pay_later_short_term",
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
       {
         message: {
           amount: 100,
@@ -1084,10 +1102,10 @@ const buttonConfigs = [
           amount: 100,
           offer: ["pay_later_long_term"],
           color: "black",
-          position: "bottom", // Message position must be 'top' when Debit and/or Credit Card button is present
+          position: "bottom", // Used to be invalid, now just throws a console.warn
           align: "left",
         },
-        valid: false,
+        valid: true,
       },
 
       {
