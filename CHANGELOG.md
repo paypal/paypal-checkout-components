@@ -1,3 +1,9 @@
+## <small>5.0.331 (2024-07-17)</small>
+
+* Add venmoVaultEnabled prop to venmo zoid component (#2419) ([75454c7](https://github.com/paypal/paypal-checkout-components/commit/75454c7)), closes [#2419](https://github.com/paypal/paypal-checkout-components/issues/2419)
+
+
+
 ## <small>5.0.330 (2024-07-09)</small>
 
 * Update eligibility check for installment label (#2418) ([1bdc9b4](https://github.com/paypal/paypal-checkout-components/commit/1bdc9b4)), closes [#2418](https://github.com/paypal/paypal-checkout-components/issues/2418)
