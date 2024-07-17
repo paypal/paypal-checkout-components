@@ -52,6 +52,9 @@ type CardFieldsProps = {|
     height: number,
     input: {| height: number |},
   |},
+  styleOptions?: {|
+    disablePrerender?: boolean,
+  |},
   env?: string,
   locale?: string,
   nonce: string,
@@ -130,9 +133,13 @@ const url = () =>
 
 const prerenderTemplate = ({ props, doc }) => {
   const height = props.style?.height ?? props.style?.input?.height ?? null;
-  return (<CardPrerender nonce={props.nonce} height={height} />).render(
-    dom({ doc })
-  );
+  return (
+    <CardPrerender
+      nonce={props.nonce}
+      height={height}
+      isDisabled={Boolean(props.styleOptions?.disablePrerender)}
+    />
+  ).render(dom({ doc }));
 };
 
 export type CardFieldsComponent = ZoidComponent<
@@ -292,6 +299,19 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
                 ...props.parent.props.style,
                 // $FlowFixMe
                 ...props.style,
+              };
+            },
+          },
+
+          styleOptions: {
+            type: "object",
+            required: false,
+            queryParam: true,
+            value: ({ props }) => {
+              return {
+                ...props.parent.props.styleOptions,
+                // $FlowFixMe
+                ...props.styleOptions,
               };
             },
           },
