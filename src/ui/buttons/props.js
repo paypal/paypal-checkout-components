@@ -317,7 +317,7 @@ export type OnClick = (OnClickData, OnClickActions) => void;
 
 export type ButtonStyle = {|
   label: $Values<typeof BUTTON_LABEL> | void,
-  color: $Values<typeof BUTTON_COLOR>,
+  color?: $Values<typeof BUTTON_COLOR>,
   shape: $Values<typeof BUTTON_SHAPE>,
   tagline: boolean,
   layout: $Values<typeof BUTTON_LAYOUT>,
@@ -644,6 +644,7 @@ export function normalizeButtonStyle(
   }
 
   let {
+    color,
     label,
     layout = fundingSource
       ? BUTTON_LAYOUT.HORIZONTAL
@@ -663,9 +664,6 @@ export function normalizeButtonStyle(
     // $FlowFixMe
     tagline = false;
   }
-
-  // if color is a falsy value, set it to the default color from the funding config
-  const color = style.color ? style.color : fundingConfig.colors[0];
 
   if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
     throw new Error(`Invalid layout: ${layout}`);
