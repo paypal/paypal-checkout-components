@@ -107,7 +107,11 @@ export function Button({
   const colors = fundingConfig.colors;
   const secondaryColors = fundingConfig.secondaryColors || {};
 
-  let { color = colors[0], period, label } = style;
+  let { color, period, label } = style;
+
+  if (color === "" || typeof color === "undefined") {
+    color = colors[0];
+  }
 
   if (multiple && i > 0) {
     if (

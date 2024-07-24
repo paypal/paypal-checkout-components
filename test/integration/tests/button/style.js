@@ -3,6 +3,7 @@
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { once } from "@krakenjs/belter/src";
+import { FUNDING } from "@paypal/sdk-constants/src";
 
 import {
   generateOrderID,
@@ -11,6 +12,7 @@ import {
   getElementRecursive,
   assert,
   WEBVIEW_USER_AGENT,
+  mockProp,
 } from "../common";
 
 for (const flow of ["popup", "iframe"]) {
@@ -58,7 +60,7 @@ for (const flow of ["popup", "iframe"]) {
   });
 }
 
-describe("paypal button color", () => {
+describe.only("paypal button color", () => {
   beforeEach(() => {
     createTestContainer();
   });
@@ -67,13 +69,22 @@ describe("paypal button color", () => {
     destroyTestContainer();
   });
 
-  it("should render a button with gold background when no color is specified", () => {
+  it("should render a button with gold background when empty string is passed in for color", () => {
     return window.paypal
       .Buttons({
         style: {
           color: "",
         },
       })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive(".paypal-button-color-gold"));
+      });
+  });
+
+  it("should render a button with gold background when no color is specified", () => {
+    return window.paypal
+      .Buttons()
       .render("#testContainer")
       .then(() => {
         assert.ok(getElementRecursive(".paypal-button-color-gold"));
@@ -97,7 +108,7 @@ describe("paypal button color", () => {
     return window.paypal
       .Buttons({
         style: {
-          color: "",
+          color: "gold",
         },
       })
       .render("#testContainer")
