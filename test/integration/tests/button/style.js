@@ -3,7 +3,6 @@
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { once } from "@krakenjs/belter/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
 
 import {
   generateOrderID,
@@ -12,7 +11,6 @@ import {
   getElementRecursive,
   assert,
   WEBVIEW_USER_AGENT,
-  mockProp,
 } from "../common";
 
 for (const flow of ["popup", "iframe"]) {
