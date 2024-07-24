@@ -60,7 +60,7 @@ for (const flow of ["popup", "iframe"]) {
   });
 }
 
-describe.only("paypal button color", () => {
+describe("paypal button color", () => {
   beforeEach(() => {
     createTestContainer();
   });
