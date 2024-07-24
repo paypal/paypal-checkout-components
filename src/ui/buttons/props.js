@@ -440,7 +440,7 @@ export type ButtonMessage = {|
 |};
 
 export type ButtonMessageInputs = {|
-  amount?: number | void,
+  amount?: number | string | void,
   offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>> | void,
   color?: $Values<typeof MESSAGE_COLOR> | void,
   position?: $Values<typeof MESSAGE_POSITION> | void,
@@ -787,15 +787,20 @@ export function normalizeButtonMessage(
     align = MESSAGE_ALIGN.CENTER,
   } = message;
   let offer = message.offer;
-  if (typeof amount !== "undefined") {
-    if (typeof amount !== "number") {
+
+  var numericAmount = amount;
+  if (typeof numericAmount !== "undefined") {
+    if (typeof numericAmount === "string") {
+      numericAmount = Number(amount);
+    }
+    if (typeof numericAmount !== "number" || isNaN(numericAmount)) {
       throw new TypeError(
         `Expected message.amount to be a number, got: ${amount}`
       );
     }
-    if (amount < 0) {
+    if (numericAmount < 0) {
       throw new Error(
-        `Expected message.amount to be a positive number, got: ${amount}`
+        `Expected message.amount to be a positive number, got: ${numericAmount}`
       );
     }
   }
@@ -836,7 +841,7 @@ export function normalizeButtonMessage(
   }
 
   return {
-    amount,
+    amount: numericAmount,
     offer,
     color,
     position: calculateMessagePosition(fundingSources, layout, position),
