@@ -131,7 +131,6 @@ export function Button({
     }
   }
 
-  console.log(`actual color: ${color}`);
   const { logoColors, textColors } = fundingConfig;
 
   const logoColor =
