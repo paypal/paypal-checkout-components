@@ -67,13 +67,22 @@ describe("paypal button color", () => {
     destroyTestContainer();
   });
 
-  it("should render a button with gold background when no color is specified", () => {
+  it("should render a button with gold background when empty string is passed in for color", () => {
     return window.paypal
       .Buttons({
         style: {
           color: "",
         },
       })
+      .render("#testContainer")
+      .then(() => {
+        assert.ok(getElementRecursive(".paypal-button-color-gold"));
+      });
+  });
+
+  it("should render a button with gold background when no color is specified", () => {
+    return window.paypal
+      .Buttons()
       .render("#testContainer")
       .then(() => {
         assert.ok(getElementRecursive(".paypal-button-color-gold"));
@@ -97,7 +106,7 @@ describe("paypal button color", () => {
     return window.paypal
       .Buttons({
         style: {
-          color: "",
+          color: "gold",
         },
       })
       .render("#testContainer")
