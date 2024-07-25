@@ -39,7 +39,6 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
-  getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
