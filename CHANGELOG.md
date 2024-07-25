@@ -1,3 +1,9 @@
+## <small>5.0.332 (2024-07-25)</small>
+
+* Fix button styles when paypal button is not vaultable (#2420) ([92006e4](https://github.com/paypal/paypal-checkout-components/commit/92006e4)), closes [#2420](https://github.com/paypal/paypal-checkout-components/issues/2420)
+
+
+
 ## <small>5.0.331 (2024-07-17)</small>
 
 * Add venmoVaultEnabled prop to venmo zoid component (#2419) ([75454c7](https://github.com/paypal/paypal-checkout-components/commit/75454c7)), closes [#2419](https://github.com/paypal/paypal-checkout-components/issues/2419)
