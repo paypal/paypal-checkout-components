@@ -109,11 +109,15 @@ export function Button({
 
   let { color, period, label } = style;
 
-  // if no color option is passed in via style props, use the default color value from the funding source config
+  // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
-    color = colors[0];
+    // if multiple buttons are being rendered (smart stack), we set default color as gold
+    // if a single button is rendered, we set color to first option in the fundingSource config
+    color = multiple ? "gold" : colors[0];
   }
 
+  // The secondary colors are used to render the smart stack (multiple buttons)
+  // they keep track of the mapping of the color style prop to the
   if (multiple && i > 0) {
     if (
       secondaryColors[color] &&
@@ -127,6 +131,7 @@ export function Button({
     }
   }
 
+  console.log(`actual color: ${color}`);
   const { logoColors, textColors } = fundingConfig;
 
   const logoColor =
