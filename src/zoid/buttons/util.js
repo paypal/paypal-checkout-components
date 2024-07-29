@@ -23,6 +23,7 @@ import {
   getComponents,
   getEnv,
   getNamespace,
+  getFirstRenderExperiments,
 } from "@paypal/sdk-client/src";
 import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
@@ -306,6 +307,7 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
 export function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getVenmoExperiment(),
+    ...getFirstRenderExperiments(),
   };
 }
 

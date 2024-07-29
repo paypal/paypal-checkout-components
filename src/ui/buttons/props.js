@@ -949,6 +949,7 @@ export function normalizeButtonProps(
         fundingSource,
         fundingEligibility,
         enableFunding,
+        experiment,
         components,
         onShippingChange,
         onShippingAddressChange,
