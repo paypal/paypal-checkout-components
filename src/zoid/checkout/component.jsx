@@ -195,6 +195,17 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: getLocale,
         },
 
+        country: {
+          type: "object",
+          queryParam: "country.x",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            const { country } = value;
+            return country;
+          },
+          value: getLocale,
+        },
+
         createOrder: {
           type: "function",
           queryParam: "token",
