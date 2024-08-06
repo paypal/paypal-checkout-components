@@ -1635,7 +1635,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.343";
+            return "4.0.344";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1645,7 +1645,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.343.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.344.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1693,7 +1693,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.343"
+                    ver: "4.0.344"
                 };
             }));
             Object(client.a)((function() {
@@ -2020,7 +2020,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.343"
+                        version: "4.0.344"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2665,7 +2665,7 @@
             get paypal_domain_regex() {
                 return paypalDomainRegex;
             },
-            version: "4.0.343",
+            version: "4.0.344",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
             state: "checkoutjs",
@@ -4838,16 +4838,17 @@
             void 0 === delay && (delay = 1e3);
             void 0 === maxtime && (maxtime = 1 / 0);
             var timeout;
-            !function check() {
+            var _check = function() {
                 if (isWindowClosed(win)) {
                     timeout && clearTimeout(timeout);
                     return callback();
                 }
                 if (maxtime <= 0) clearTimeout(timeout); else {
                     maxtime -= delay;
-                    timeout = setTimeout(check, delay);
+                    timeout = setTimeout(_check, delay);
                 }
-            }();
+            };
+            _check();
             return {
                 cancel: function() {
                     timeout && clearTimeout(timeout);
@@ -6771,7 +6772,7 @@
                         var ackTimeout = conf.a.ACK_TIMEOUT;
                         var resTimeout = options.timeout || conf.a.RES_TIMEOUT;
                         var cycleTime = 100;
-                        setTimeout((function cycle() {
+                        var _cycle = function() {
                             if (!hasResult) {
                                 if (Object(src.z)(win)) return reject(responseListener.ack ? new Error("Window closed for " + name + " before response") : new Error("Window closed for " + name + " before ack"));
                                 ackTimeout = Math.max(ackTimeout - cycleTime, 0);
@@ -6783,9 +6784,10 @@
                                     if (0 === ackTimeout) return reject(new Error("No ack for postMessage " + name + " in " + Object(src.h)() + " in " + conf.a.ACK_TIMEOUT + "ms"));
                                     if (0 === resTimeout) return reject(new Error("No response for postMessage " + name + " in " + Object(src.h)() + " in " + (options.timeout || conf.a.RES_TIMEOUT) + "ms"));
                                 }
-                                setTimeout(cycle, cycleTime);
+                                setTimeout(_cycle, cycleTime);
                             }
-                        }), cycleTime);
+                        };
+                        setTimeout(_cycle, cycleTime);
                     }));
                 }));
                 requestPromise.catch((function() {
@@ -9504,10 +9506,13 @@
                     characterData: !1
                 });
                 win.addEventListener("resize", check);
-            } else !function loop() {
-                check();
-                timeout = setTimeout(loop, interval);
-            }();
+            } else {
+                var _loop = function() {
+                    check();
+                    timeout = setTimeout(_loop, interval);
+                };
+                _loop();
+            }
             return {
                 cancel: function() {
                     observer.disconnect();
@@ -11906,7 +11911,16 @@
                     var iframe = document.createElement("iframe");
                     iframe.setAttribute("name", name);
                     iframe.setAttribute("id", name);
-                    iframe.setAttribute("style", "display: none; margin: 0; padding: 0; border: 0px none; overflow: hidden;");
+                    !function(element, styles) {
+                        void 0 === styles && (styles = {});
+                        if (element) for (var _key in styles) ({}).hasOwnProperty.call(styles, _key) && (element.style[_key] = styles[_key]);
+                    }(iframe, {
+                        display: "none",
+                        margin: 0,
+                        padding: 0,
+                        border: "0px none",
+                        overflow: "hidden"
+                    });
                     iframe.setAttribute("frameborder", "0");
                     iframe.setAttribute("border", "0");
                     iframe.setAttribute("scrolling", "no");
@@ -17157,12 +17171,13 @@
         var pptm = (noContentFoundInContainer = !1, callback = "__pptmLoadedWithNoContent", 
         obj = {
             reloadPptmScript: function(clientId) {
-                !function tryCreatePptmScript() {
+                var _tryCreatePptmScript = function() {
                     if (obj.shouldReloadPptmScript(clientId)) {
                         obj.removePptm();
                         obj.createPptmScript(clientId);
-                    } else listener = tryCreatePptmScript;
-                }();
+                    } else listener = _tryCreatePptmScript;
+                };
+                _tryCreatePptmScript();
             },
             listenForLoadWithNoContent: function() {
                 window[callback] = function() {
@@ -23944,7 +23959,7 @@
                     logoColor: "blue"
                 })));
             }(Object(button_props.a)(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.343", 
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.344", 
             _ref21), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
@@ -23992,7 +24007,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.343", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.344", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -25218,7 +25233,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.343";
+        var interface_version = "4.0.344";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(48);
