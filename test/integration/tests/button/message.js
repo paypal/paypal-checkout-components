@@ -594,4 +594,24 @@ describe(`paypal button message`, () => {
         .render("#testContainer");
     });
   });
+
+  describe("property normalization", () => {
+    it("should convert string type amount to number", () => {
+      return wrapPromise(({ expect }) => {
+        window.paypal
+          .Buttons({
+            message: { amount: "100" },
+            test: {
+              onRender: expect("onRender", ({ xprops }) => {
+                const {
+                  message: { amount },
+                } = xprops;
+                assert.equal(amount, 100);
+              }),
+            },
+          })
+          .render("#testContainer");
+      });
+    });
+  });
 });
