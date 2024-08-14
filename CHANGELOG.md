@@ -1,3 +1,15 @@
+## <small>5.0.334 (2024-08-07)</small>
+
+* feat: add country prop/param to checkout (#2425) ([c16b503](https://github.com/paypal/paypal-checkout-components/commit/c16b503)), closes [#2425](https://github.com/paypal/paypal-checkout-components/issues/2425)
+
+
+
+## <small>5.0.333 (2024-07-29)</small>
+
+* Fix default button color logic for smart stack (#2424) ([5344807](https://github.com/paypal/paypal-checkout-components/commit/5344807)), closes [#2424](https://github.com/paypal/paypal-checkout-components/issues/2424)
+
+
+
 ## <small>5.0.332 (2024-07-25)</small>
 
 * Fix button styles when paypal button is not vaultable (#2420) ([92006e4](https://github.com/paypal/paypal-checkout-components/commit/92006e4)), closes [#2420](https://github.com/paypal/paypal-checkout-components/issues/2420)

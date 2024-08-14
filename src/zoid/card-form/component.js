@@ -119,6 +119,18 @@ export function getCardFormComponent(): CardFormComponent {
           value: getLocale,
         },
 
+        country: {
+          type: "object",
+          queryParam: "country.x",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            // $FlowFixMe
+            const { country } = value;
+            return country;
+          },
+          value: getLocale,
+        },
+
         onApprove: {
           type: "function",
           alias: "onAuthorize",
