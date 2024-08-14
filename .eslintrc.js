@@ -1,7 +1,10 @@
 /* @flow */
 
 module.exports = {
-  extends: "@krakenjs/eslint-config-grumbler/eslintrc-browser",
+  extends: [
+    "@krakenjs/eslint-config-grumbler/eslintrc-browser",
+    "plugin:storybook/recommended",
+  ],
 
   globals: {
     Promise: false,

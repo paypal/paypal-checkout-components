@@ -165,7 +165,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
   const locale = `${lang}-${country}`;
 
   const response = await request({
-    url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}?locale.x=${locale}`,
+    url: `${baseUrl}/ncp/api/form-fields/${hostedButtonId}?locale.x=${locale}&force_phase_2=true`,
     headers: getHeaders(),
   });
 
@@ -192,7 +192,9 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       color: getButtonVariable(variables, "color"),
       label: getButtonVariable(variables, "button_text"),
       tagline: getButtonVariable(variables, "tagline") === "true",
-      height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
+      height:
+        parseInt(getButtonVariable(variables, "button-height"), 10) ||
+        undefined,
     },
     enableDPoP: getButtonVariable(variables, "enable_dpop") === "true",
     shouldIncludeShippingCallbacks: shippingFromProfile || taxRateFromProfile,
@@ -470,6 +472,7 @@ export const getButtons = ({
   const Buttons = getButtonsComponent();
 
   const { style } = buttonOptions;
+  console.log(style);
 
   // $FlowFixMe
   return Buttons({
