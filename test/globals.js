@@ -145,6 +145,8 @@ function getTestGlobals(productionGlobals) {
       __EXPERIENCE__: "1432",
       __TREATMENT__: "1122",
     },
+    __FIRST_RENDER_EXPERIMENTS__: () =>
+      `window.__TEST_FIRST_RENDER_EXPERIMENTS__ || null`,
 
     __ZOID__: {
       ...productionGlobals.__ZOID__,

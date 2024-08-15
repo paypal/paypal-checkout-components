@@ -39,7 +39,6 @@ import {
   getVersion,
   getDisableSetCookie,
   getExperimentation,
-  getFirstRenderExperiments,
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
@@ -459,10 +458,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       experiment: {
         type: "object",
         queryParam: true,
-        value: () => ({
-          ...getButtonExperiments(),
-          ...getFirstRenderExperiments(),
-        }),
+        value: getButtonExperiments,
       },
       // TODO first-render-experiment-cleanup
       // verify if this is needed/used now that were putting the first render experiments in experiment param above
@@ -512,6 +508,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             style = {},
             fundingEligibility = getRefinedFundingEligibility(),
             enableFunding = getEnableFunding(),
+            experiment = getButtonExperiments(),
             applePaySupport,
             supportsPopups,
             supportedNativeBrowser,
@@ -539,6 +536,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               fundingSource,
               fundingEligibility,
               enableFunding,
+              experiment,
               components,
               onShippingChange,
               onShippingAddressChange,

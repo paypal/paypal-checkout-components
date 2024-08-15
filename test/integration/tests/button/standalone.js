@@ -20,6 +20,7 @@ describe(`paypal standalone buttons`, () => {
 
   afterEach(() => {
     destroyTestContainer();
+    window.localStorage.removeItem("enable_venmo_desktop");
   });
 
   for (const fundingSource of SUPPORTED_FUNDING_SOURCES) {
@@ -157,6 +158,69 @@ describe(`paypal standalone buttons`, () => {
         .catch(expect("buttonRenderCatch"))
         .then(() => {
           window.navigator.mockUserAgent = "";
+        });
+    });
+  });
+
+  it(`should render a standalone venmo button with a shipping callback and venmo web enabled`, () => {
+    return wrapPromise(({ avoid }) => {
+      const fundingSource = FUNDING.VENMO;
+
+      window.localStorage.setItem("enable_venmo_desktop", true);
+
+      const mockEligibility = mockProp(
+        window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+        "eligible",
+        true
+      );
+      const mockVenmoWebExperiment = mockProp(
+        window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+        "venmoWebEnabled",
+        true
+      );
+
+      const button = window.paypal.Buttons({
+        fundingSource,
+        onShippingChange: avoid("onShippingChange"),
+      });
+
+      if (!button.isEligible()) {
+        throw new Error("Expected venmo to be eligible");
+      }
+
+      return button.render("#testContainer").then(() => {
+        mockEligibility.cancel();
+        mockVenmoWebExperiment.cancel();
+      });
+    });
+  });
+
+  it(`should throw error if attempting to render a standalone venmo button with a shipping callback if venmo web is not enabled`, () => {
+    return wrapPromise(({ expect, avoid }) => {
+      const fundingSource = FUNDING.VENMO;
+
+      window.localStorage.setItem("enable_venmo_desktop", true);
+
+      const mockEligibility = mockProp(
+        window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+        "eligible",
+        true
+      );
+
+      const button = window.paypal.Buttons({
+        fundingSource,
+        onShippingChange: avoid("onShippingChange"),
+      });
+
+      if (button.isEligible()) {
+        throw new Error("Expected venmo to be ineligible");
+      }
+
+      return button
+        .render("#testContainer")
+        .catch(expect("buttonRenderCatch"))
+        .then(() => {
+          mockEligibility.cancel();
         });
     });
   });
