@@ -1,3 +1,9 @@
+## <small>5.0.335 (2024-08-15)</small>
+
+* Add experiment prop to funding source validation 👾 (#2423) ([e36accc](https://github.com/paypal/paypal-checkout-components/commit/e36accc)), closes [#2423](https://github.com/paypal/paypal-checkout-components/issues/2423)
+
+
+
 ## <small>5.0.334 (2024-08-07)</small>
 
 * feat: add country prop/param to checkout (#2425) ([c16b503](https://github.com/paypal/paypal-checkout-components/commit/c16b503)), closes [#2425](https://github.com/paypal/paypal-checkout-components/issues/2425)
