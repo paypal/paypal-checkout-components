@@ -163,7 +163,7 @@ describe(`paypal standalone buttons`, () => {
   });
 
   it(`should render a standalone venmo button with a shipping callback and venmo web enabled`, () => {
-    return wrapPromise(({ expect }) => {
+    return wrapPromise(({ avoid }) => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
@@ -181,7 +181,7 @@ describe(`paypal standalone buttons`, () => {
 
       const button = window.paypal.Buttons({
         fundingSource,
-        onShippingChange: () => {},
+        onShippingChange: avoid("onShippingChange"),
       });
 
       if (!button.isEligible()) {
@@ -196,7 +196,7 @@ describe(`paypal standalone buttons`, () => {
   });
 
   it(`should throw error if attempting to render a standalone venmo button with a shipping callback if venmo web is not enabled`, () => {
-    return wrapPromise(({ expect }) => {
+    return wrapPromise(({ expect, avoid }) => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
@@ -209,7 +209,7 @@ describe(`paypal standalone buttons`, () => {
 
       const button = window.paypal.Buttons({
         fundingSource,
-        onShippingChange: () => {},
+        onShippingChange: avoid("onShippingChange"),
       });
 
       if (button.isEligible()) {
