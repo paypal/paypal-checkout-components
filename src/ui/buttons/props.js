@@ -440,7 +440,7 @@ export type ButtonMessage = {|
 |};
 
 export type ButtonMessageInputs = {|
-  amount?: number | void,
+  amount?: number | string | void,
   offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>> | void,
   color?: $Values<typeof MESSAGE_COLOR> | void,
   position?: $Values<typeof MESSAGE_POSITION> | void,
@@ -779,14 +779,18 @@ export function normalizeButtonMessage(
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
 ): ButtonMessage {
   const {
-    amount,
     color = MESSAGE_COLOR.BLACK,
     position,
     align = MESSAGE_ALIGN.CENTER,
   } = message;
   let offer = message.offer;
+  let amount = message.amount;
+
   if (typeof amount !== "undefined") {
-    if (typeof amount !== "number") {
+    if (typeof amount === "string") {
+      amount = Number(amount);
+    }
+    if (typeof amount !== "number" || isNaN(amount)) {
       throw new TypeError(
         `Expected message.amount to be a number, got: ${amount}`
       );

@@ -1004,7 +1004,18 @@ const buttonConfigs = [
 
       {
         message: {
-          amount: "100", // invalid: should be num
+          amount: "100", // valid: is converted to num
+          offer: ["pay_later_long_term"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
+
+      {
+        message: {
+          amount: "one hundred", // invalid: string not convertible to number
           offer: ["pay_later_long_term"],
           color: "black",
           position: "top",
