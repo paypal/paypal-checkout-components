@@ -109,11 +109,18 @@ export function Button({
 
   let { color, period, label } = style;
 
+  const colorsHasGold =
+    (Array.isArray(colors) && colors.includes("gold")) ?? false;
+
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
-    // if multiple buttons are being rendered (smart stack), we set default color as gold
     // if a single button is rendered, we set color to first option in the fundingSource config
-    color = multiple ? "gold" : colors[0];
+    color = colors[0];
+
+    // if multiple buttons are being rendered (smart stack), we set default color as gold > first
+    if (multiple && colorsHasGold) {
+      color = "gold";
+    }
   }
 
   // The secondary colors are used to render the smart stack (multiple buttons)
@@ -137,6 +144,8 @@ export function Button({
     logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
   const textColor =
     textColors[color] || textColors[TEXT_COLOR.DEFAULT] || TEXT_COLOR.DEFAULT;
+
+  console.log({ fundingSource, logoColor, textColor, color });
 
   const { Label, WalletLabel, Logo, showWalletMenu } = fundingConfig;
 
