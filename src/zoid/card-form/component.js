@@ -18,6 +18,10 @@ import {
 } from "@paypal/sdk-client/src";
 
 import { getSessionID } from "../../lib";
+import type {
+  OnShippingOptionsChange,
+  OnShippingAddressChange,
+} from "../../ui/buttons/props";
 
 type CardProps = {|
   client: {
@@ -39,6 +43,9 @@ type CardProps = {|
   meta: Object,
   commit: boolean,
   token: string,
+  onShippingAddressChange?: OnShippingAddressChange,
+  onShippingOptionsChange?: OnShippingOptionsChange,
+  hasShippingCallback?: boolean,
 |};
 
 export type CardFormComponent = ZoidComponent<CardProps>;
@@ -91,6 +98,17 @@ export function getCardFormComponent(): CardFormComponent {
         onShippingOptionsChange: {
           type: "function",
           required: false,
+        },
+
+        hasShippingCallback: {
+          type: "boolean",
+          required: false,
+          queryParam: true,
+          value: ({ props }) => {
+            return Boolean(
+              props.onShippingAddressChange || props.onShippingOptionsChange
+            );
+          },
         },
 
         buttonSessionID: {
