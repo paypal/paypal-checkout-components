@@ -148,8 +148,6 @@ export function Button({
   const textColor =
     textColors[color] || textColors[TEXT_COLOR.DEFAULT] || TEXT_COLOR.DEFAULT;
 
-  console.log({ fundingSource, logoColor, textColor, color });
-
   const { Label, WalletLabel, Logo, showWalletMenu } = fundingConfig;
 
   const clickHandler = (event, opts) => {
