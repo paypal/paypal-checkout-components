@@ -636,10 +636,20 @@ describe("buildHostedButtonOnShippingAddressChange", () => {
         status: 500,
       })
     );
-    // $FlowIssue
-    await onShippingAddressChange(data, actions);
-    expect(actions.reject).toHaveBeenCalledWith(errors.ADDRESS_ERROR);
-    expect.assertions(1);
+
+    const localActions = {
+      // eslint-disable-next-line compat/compat
+      reject: vi.fn((message) => Promise.reject(message)),
+    };
+
+    // $FlowIssueeslint-disable-next-line compat/compat
+    await expect(onShippingAddressChange(data, localActions)).rejects.toThrow(
+      errors.ADDRESS_ERROR
+    );
+
+    expect(localActions.reject).toHaveBeenCalledWith(errors.ADDRESS_ERROR);
+
+    expect.assertions(2);
   });
 
   test("return undefined when shouldIncludeShippingCallbacks is false", () => {

@@ -352,7 +352,7 @@ export const buildHostedButtonOnShippingAddressChange = ({
 
       // $FlowIssue zalgoPromis is type mixed
       if (response.status !== 200) {
-        actions.reject(errors?.ADDRESS_ERROR);
+        return actions.reject(errors?.ADDRESS_ERROR);
       }
     };
   }
@@ -384,7 +384,7 @@ export const buildHostedButtonOnShippingOptionsChange = ({
 
       // $FlowIssue zalgoPromis is type mixed
       if (response.status !== 200) {
-        actions.reject(errors?.METHOD_UNAVAILABLE);
+        return actions.reject(errors?.METHOD_UNAVAILABLE);
       }
     };
   }
