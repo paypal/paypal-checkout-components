@@ -83,6 +83,16 @@ export function getCardFormComponent(): CardFormComponent {
           queryValue: ({ value }) => ZalgoPromise.try(value),
         },
 
+        onShippingAddressChange: {
+          type: "function",
+          required: false,
+        },
+
+        onShippingOptionsChange: {
+          type: "function",
+          required: false,
+        },
+
         buttonSessionID: {
           type: "string",
           queryParam: true,
