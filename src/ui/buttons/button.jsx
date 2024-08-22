@@ -111,9 +111,19 @@ export function Button({
 
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
-    // if multiple buttons are being rendered (smart stack), we set default color as gold
     // if a single button is rendered, we set color to first option in the fundingSource config
-    color = multiple ? "gold" : colors[0];
+    color = colors[0];
+
+    // if multiple buttons are being rendered (smart stack), we set default color as gold > first
+    if (multiple) {
+      color = "gold";
+    }
+  }
+
+  // validate the first button rendered has a valid color
+  // this check is needed to validate the first button in a smart stack gets the correct color
+  if (i === 0 && !colors.includes(color)) {
+    color = colors[0];
   }
 
   // The secondary colors are used to render the smart stack (multiple buttons)
