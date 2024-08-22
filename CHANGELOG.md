@@ -1,3 +1,9 @@
+## <small>5.0.336 (2024-08-22)</small>
+
+* fature(CardForm): add hasShippingCallback prop (#2429) ([99869c8](https://github.com/paypal/paypal-checkout-components/commit/99869c8)), closes [#2429](https://github.com/paypal/paypal-checkout-components/issues/2429)
+
+
+
 ## <small>5.0.335 (2024-08-15)</small>
 
 * Add experiment prop to funding source validation 👾 (#2423) ([e36accc](https://github.com/paypal/paypal-checkout-components/commit/e36accc)), closes [#2423](https://github.com/paypal/paypal-checkout-components/issues/2423)
