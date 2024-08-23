@@ -1,3 +1,9 @@
+## <small>5.0.337 (2024-08-23)</small>
+
+* Fix button color styles being applied incorrectly for vaulted flows (#2426) ([6f8e7b9](https://github.com/paypal/paypal-checkout-components/commit/6f8e7b9)), closes [#2426](https://github.com/paypal/paypal-checkout-components/issues/2426)
+
+
+
 ## <small>5.0.336 (2024-08-22)</small>
 
 * fature(CardForm): add hasShippingCallback prop (#2429) ([99869c8](https://github.com/paypal/paypal-checkout-components/commit/99869c8)), closes [#2429](https://github.com/paypal/paypal-checkout-components/issues/2429)
