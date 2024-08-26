@@ -1,5 +1,5 @@
 /* @flow */
-import { getButtonsComponent } from "../zoid/buttons";
+import { getButtonsComponent } from "../../checkout-components/src/zoid/buttons";
 
 import {
   applyContainerStyles,

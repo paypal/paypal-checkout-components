@@ -13,7 +13,10 @@ import { FUNDING } from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
-import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
+import {
+  getButtonsComponent,
+  type ButtonsComponent,
+} from "../../checkout-components/src/zoid/buttons";
 
 import type {
   ButtonVariables,

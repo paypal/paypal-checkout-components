@@ -1,0 +1,15 @@
+{
+  "name": "@paypal/hosted-buttons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write --ignore-unknown .",
+    "format:check": "prettier --check ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^3.3.3"
+  }
+}
