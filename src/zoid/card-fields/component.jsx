@@ -46,6 +46,14 @@ const CARD_FIELD_TYPE = {
   POSTAL: "postal",
 };
 
+type InstallmentsConfiguration = {|
+  financingCountryCode : string,
+  currencyCode : string,
+  billingCountryCode : string,
+  amount : string,
+  includeBuyerInstallments ? : boolean
+|};
+
 type CardFieldsProps = {|
   clientID: string,
   style?: {|
@@ -100,6 +108,11 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
+  installments? : {|
+    onInstallmentsRequested : () => InstallmentsConfiguration | ZalgoPromise<InstallmentsConfiguration>,
+    onInstallmentsAvailable : (Object) => void,
+    onInstallmentsError? : (Object) => void
+  |},
 |};
 
 type CardFieldProps = {|
@@ -423,6 +436,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             default: getUserIDToken,
             required: false,
           },
+          installments: {
+            type: "object",
+            required: false,
+            value: ({ props }) => props.parent.props.installments
+          },
         },
       });
     };
@@ -699,6 +717,10 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         userIDToken: {
           type: "string",
           default: getUserIDToken,
+          required: false,
+        },
+        installments: {
+          type: "object",
           required: false,
         },
       },
