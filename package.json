@@ -4,6 +4,7 @@
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
+    "clean": "npm exec -ws -- npx rimraf node_modules && npx rimraf node_modules",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check .",
     "cc:build": "nx build checkout-components",

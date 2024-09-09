@@ -16,6 +16,10 @@
   },
   "devDependencies": {
     "prettier": "^2.5.1",
-    "prettier-plugin-sh": "^0.10.0"
+    "prettier-plugin-sh": "^0.10.0",
+    "lint-staged": "^13.0.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
