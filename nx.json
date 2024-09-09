@@ -3,74 +3,12 @@
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/package/checkout-components/dist"],
-      "cache": true
-    },
-    "flow-typed": {
-      "outputs": ["{projectRoot}/package/checkout-components/flow-typed"],
-      "cache": true
-    },
-    "jest-e2e": {
-      "outputs": [
-        "{projectRoot}/package/checkout-components/test/e2e/screenshots"
-      ],
-      "cache": true
-    },
-    "jest-ssr": {
-      "outputs": ["{projectRoot}/packages/checkout-components/coverage/jest"],
-      "cache": true
-    },
-    "karma": {
-      "outputs": ["{projectRoot}/package/checkout-components/coverage/karma"],
-      "cache": true
-    },
-    "start": {
       "outputs": ["{projectRoot}/packages/checkout-components/dist"],
       "cache": true
     },
-    "test": {
-      "outputs": ["{projectRoot}/package/checkout-components/coverage"],
-      "cache": true
-    },
-    "all-ci": {
-      "cache": true
-    },
-    "check-node-version": {
-      "cache": true
-    },
-    "eslint-find-rules": {
-      "cache": true
-    },
-    "flow": {
-      "cache": true
-    },
-    "jest-screenshot": {
-      "cache": true
-    },
-    "lint": {
-      "cache": true
-    },
-    "test:unit": {
-      "cache": true
-    },
-    "percy-screenshot": {
-      "cache": true
-    },
-    "typecheck": {
-      "cache": true
-    },
-    "vitest": {
-      "cache": true
-    },
-    "webpack": {
-      "outputs": ["{projectRoot}/package/checkout-components/dist"],
-      "cache": true
-    },
-    "format": {
-      "cache": true
-    },
-    "format:check": {
-      "cache": true
+    "build:all": {
+      "cache": true,
+      "outputs": ["{projectRoot}/packages/checkout-components/dist"]
     }
   },
   "defaultBase": "main"

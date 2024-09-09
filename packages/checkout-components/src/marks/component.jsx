@@ -77,7 +77,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const supportedNativeBrowser = isSupportedNativeBrowser();
     const experiment = getVenmoExperiment();
     const hasShippingCallback = Boolean(
-      onShippingChange || onShippingAddressChange || onShippingOptionsChange
+      onShippingChange || onShippingAddressChange || onShippingOptionsChange,
     );
     const fundingSources = determineEligibleFunding({
       fundingSource,
@@ -141,7 +141,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
                 env={env}
               />
             </div>
-          ).render(dom({ doc: document }))
+          ).render(dom({ doc: document })),
         );
       });
     };

@@ -23,6 +23,10 @@ export function allowIframe(): boolean {
   return false;
 }
 
+export type LazyProtectedExport<T> = {|
+  __get__: () => ?T,
+|};
+
 /* eslint-disable no-confusing-arrow */
 // $FlowIssue
 export const protectedExport = (unprotectedExport) =>

@@ -35,7 +35,7 @@ describe("venmo button eligibility", () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO],
         "eligible",
-        true
+        true,
       );
 
       const instance = window.paypal.Buttons({
@@ -47,22 +47,22 @@ describe("venmo button eligibility", () => {
             if (!enableVenmo) {
               throw new Error(
                 `Expected venmo experiment to be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
+                  xprops.experiment,
+                )}`,
               );
             }
 
             if (venmoWebEnabled) {
               throw new Error(
                 `Expected venmo web experiment to not be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
+                  xprops.experiment,
+                )}`,
               );
             }
 
             if (!fundingSources.includes(FUNDING.VENMO)) {
               throw new Error(
-                `Venmo is missing from the list of funding sources: ${fundingSources}`
+                `Venmo is missing from the list of funding sources: ${fundingSources}`,
               );
             }
 
@@ -87,7 +87,7 @@ describe("venmo button eligibility", () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO],
         "eligible",
-        true
+        true,
       );
 
       const instance = window.paypal.Buttons({
@@ -99,14 +99,14 @@ describe("venmo button eligibility", () => {
             if (!enableVenmo) {
               throw new Error(
                 `Expected venmo experiment to be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
+                  xprops.experiment,
+                )}`,
               );
             }
 
             if (!fundingSources.includes(FUNDING.VENMO)) {
               throw new Error(
-                `Venmo is missing from the list of funding sources: ${fundingSources}`
+                `Venmo is missing from the list of funding sources: ${fundingSources}`,
               );
             }
 
@@ -129,7 +129,7 @@ describe("venmo button eligibility", () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO],
         "eligible",
-        false
+        false,
       );
 
       const instance = window.paypal.Buttons({
@@ -141,14 +141,14 @@ describe("venmo button eligibility", () => {
             if (enableVenmo) {
               throw new Error(
                 `Expected venmo experiment to be ineligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
+                  xprops.experiment,
+                )}`,
               );
             }
 
             if (fundingSources.includes(FUNDING.VENMO)) {
               throw new Error(
-                `Venmo shound not be rendered: ${fundingSources}`
+                `Venmo shound not be rendered: ${fundingSources}`,
               );
             }
 
@@ -173,7 +173,7 @@ describe("venmo button eligibility", () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO],
         "eligible",
-        true
+        true,
       );
 
       const instance = window.paypal.Buttons({
@@ -185,14 +185,14 @@ describe("venmo button eligibility", () => {
             if (!enableVenmo) {
               throw new Error(
                 `Expected venmo experiment to be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
+                  xprops.experiment,
+                )}`,
               );
             }
 
             if (!fundingSources.includes(FUNDING.VENMO)) {
               throw new Error(
-                `Venmo is missing from the list of funding sources: ${fundingSources}`
+                `Venmo is missing from the list of funding sources: ${fundingSources}`,
               );
             }
 
@@ -215,7 +215,7 @@ describe("venmo button eligibility", () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.VENMO],
         "eligible",
-        true
+        true,
       );
 
       const instance = window.paypal.Buttons({
@@ -227,14 +227,14 @@ describe("venmo button eligibility", () => {
             if (!enableVenmo) {
               throw new Error(
                 `Expected venmo experiment to be eligible: ${JSON.stringify(
-                  xprops.experiment
-                )}`
+                  xprops.experiment,
+                )}`,
               );
             }
 
             if (!fundingSources.includes(FUNDING.VENMO)) {
               throw new Error(
-                `Venmo is missing from the list of funding sources: ${fundingSources}`
+                `Venmo is missing from the list of funding sources: ${fundingSources}`,
               );
             }
 
@@ -280,8 +280,8 @@ describe("venmo button eligibility", () => {
                 if (enableVenmo) {
                   throw new Error(
                     `Expected venmo experiment to be ineligible: ${JSON.stringify(
-                      xprops.experiment
-                    )}`
+                      xprops.experiment,
+                    )}`,
                   );
                 }
 
@@ -350,15 +350,15 @@ describe("paypal on file eligibility", () => {
           onRender: () => {
             assert.equal(
               getElementRecursive(".balance .paypal-button-text").innerHTML,
-              "Balance &amp;"
+              "Balance &amp;",
             );
             assert.equal(
               getElementRecursive(".fi-label .paypal-button-text").innerHTML,
-              "••1234"
+              "••1234",
             );
             assert.equal(
               getElementRecursive(".menu-button").getAttribute("aria-label"),
-              "More options"
+              "More options",
             );
             done();
           },

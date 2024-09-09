@@ -76,7 +76,7 @@ export function runOnClick<T>(handler: () => T): T {
   const testButton = createElement(
     "button",
     { id: "testButton" },
-    document.body
+    document.body,
   );
   let didError = false;
   let result;
@@ -101,7 +101,7 @@ export function runOnClick<T>(handler: () => T): T {
 
 export function getElements(
   selector: string,
-  container: HTMLElement | Document = document
+  container: HTMLElement | Document = document,
 ): $ReadOnlyArray<HTMLElement> {
   if (!selector) {
     throw new Error(`No element passed`);
@@ -109,7 +109,7 @@ export function getElements(
 
   // $FlowFixMe[method-unbinding]
   const elements = Array.prototype.slice.call(
-    container.querySelectorAll(selector)
+    container.querySelectorAll(selector),
   );
 
   if (!elements) {
@@ -121,7 +121,7 @@ export function getElements(
 
 export function getElementRecursive(
   selector: string,
-  win: SameDomainWindowType = window
+  win: SameDomainWindowType = window,
 ): HTMLElement {
   try {
     return getElement(selector, win.document);
@@ -146,7 +146,7 @@ export function createTestContainer(): HTMLElement {
     {
       id: "testContainer",
     },
-    getElement("body")
+    getElement("body"),
   );
 }
 
@@ -175,13 +175,13 @@ export const authApiMock: typeof $mockEndpoint = $mockEndpoint.register({
 
     if (!headers.authorization.match(/^Basic .+$/)) {
       throw new Error(
-        `Expected authorization header to be Basic XXXX, got "${headers.authorization}"`
+        `Expected authorization header to be Basic XXXX, got "${headers.authorization}"`,
       );
     }
 
     if (data !== "grant_type=client_credentials") {
       throw new Error(
-        `Expected grant_type to be client_credentials, got "${data.grant_type}"`
+        `Expected grant_type to be client_credentials, got "${data.grant_type}"`,
       );
     }
 
@@ -191,7 +191,7 @@ export const authApiMock: typeof $mockEndpoint = $mockEndpoint.register({
 
     if (clientID !== MERCHANT_CLIENT_ID) {
       throw new Error(
-        `Expected client id to be ${MERCHANT_CLIENT_ID}, got ${clientID}`
+        `Expected client id to be ${MERCHANT_CLIENT_ID}, got ${clientID}`,
       );
     }
 
@@ -211,7 +211,7 @@ export const orderApiMock: typeof $mockEndpoint = $mockEndpoint.register({
 
     if (!headers.authorization.match(/^Bearer .+$/)) {
       throw new Error(
-        `Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`
+        `Expected authorization header to be Bearer XXXX, got "${headers.authorization}"`,
       );
     }
 
@@ -398,7 +398,7 @@ type OnElementResizeOptions = {|
 export function onElementResize(
   el: HTMLElement,
   // $FlowFixMe
-  opts?: OnElementResizeOptions = {}
+  opts?: OnElementResizeOptions = {},
 ): ZalgoPromise<void> {
   const { width: expectedWidth, height: expectedHeight, timeout = 1000 } = opts;
 
@@ -442,8 +442,8 @@ export function onElementResize(
       clearInterval(interval);
       reject(
         new Error(
-          `Element did not resize in ${timeout}ms. Final dimensions: ${el.offsetWidth}x${el.offsetHeight}`
-        )
+          `Element did not resize in ${timeout}ms. Final dimensions: ${el.offsetWidth}x${el.offsetHeight}`,
+        ),
       );
     }, timeout);
   });
@@ -452,7 +452,7 @@ export function onElementResize(
 export function mockProp<T>(
   namespace: Object,
   name: string,
-  value: T
+  value: T,
 ): {| cancel: () => void |} {
   const descriptor = Object.getOwnPropertyDescriptor(namespace, name);
   delete namespace[name];
@@ -470,14 +470,14 @@ export const assert = {
   ok(item: mixed, message?: string) {
     if (!item) {
       throw new Error(
-        message || `Expected truthy value, got ${stringify(item)}`
+        message || `Expected truthy value, got ${stringify(item)}`,
       );
     }
   },
   equal(one: mixed, two: mixed, message?: string) {
     if (one !== two) {
       throw new Error(
-        message || `Expected "${stringify(one)}" to equal "${stringify(two)}"`
+        message || `Expected "${stringify(one)}" to equal "${stringify(two)}"`,
       );
     }
   },
@@ -485,7 +485,7 @@ export const assert = {
     if (one === two) {
       throw new Error(
         message ||
-          `Expected "${stringify(one)}" to not equal "${stringify(two)}"`
+          `Expected "${stringify(one)}" to not equal "${stringify(two)}"`,
       );
     }
   },

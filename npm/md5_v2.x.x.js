@@ -11,6 +11,6 @@ declare module "md5" {
       asBytes?: boolean,
       encoding?: string,
       ...
-    }
+    },
   ) => string;
 }

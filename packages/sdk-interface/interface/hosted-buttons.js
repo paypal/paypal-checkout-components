@@ -1,16 +1,22 @@
 /* @flow */
 
-import { getHostedButtonsComponent } from "../hosted-buttons";
-import type { HostedButtonsComponent } from "../hosted-buttons/types";
-import { getButtonsComponent } from "../zoid/buttons";
+import { getHostedButtonsComponent } from "hosted-buttons/src";
+import type { HostedButtonsComponent } from "hosted-buttons/src/types";
 import {
+  getButtonsComponent,
   getCardFormComponent,
+  getQRCodeComponent,
+  getCheckoutComponent,
   type CardFormComponent,
-} from "../zoid/card-form";
-import { getQRCodeComponent, type QRCodeComponent } from "../zoid/qr-code";
-import { getCheckoutComponent, type CheckoutComponent } from "../zoid/checkout";
-import type { LazyExport, LazyProtectedExport } from "../types";
-import { protectedExport } from "../lib";
+  type QRCodeComponent,
+  type CheckoutComponent,
+} from "checkout-components/src/zoid";
+
+import type {
+  LazyExport,
+  LazyProtectedExport,
+} from "checkout-components/src/types";
+import { protectedExport } from "./lib";
 
 export const HostedButtons: LazyExport<HostedButtonsComponent> = {
   __get__: () => getHostedButtonsComponent(),

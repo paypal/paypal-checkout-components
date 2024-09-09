@@ -36,7 +36,7 @@ for (const flow of ["popup", "iframe"]) {
           .render("#testContainer");
 
         const frame = document.querySelector(
-          "#testContainer iframe.prerender-frame"
+          "#testContainer iframe.prerender-frame",
         );
 
         if (!frame) {
@@ -68,7 +68,7 @@ for (const flow of ["popup", "iframe"]) {
           .render("#testContainer");
 
         const frame = document.querySelector(
-          "#testContainer iframe.prerender-frame"
+          "#testContainer iframe.prerender-frame",
         );
 
         if (!frame) {
@@ -100,7 +100,7 @@ for (const flow of ["popup", "iframe"]) {
           .render("#testContainer");
 
         const frame = document.querySelector(
-          "#testContainer iframe.prerender-frame"
+          "#testContainer iframe.prerender-frame",
         );
 
         if (!frame) {

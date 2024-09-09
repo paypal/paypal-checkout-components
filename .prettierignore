@@ -1,4 +1,6 @@
-build
-dist
-coverage
+**/build
+**/dist
+**/coverage
 CHANGELOG.md
+.github
+npm

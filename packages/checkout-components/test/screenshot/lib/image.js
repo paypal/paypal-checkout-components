@@ -29,17 +29,17 @@ export function writePNG(png: Object, path: string): Promise<void> {
                 new Error(
                   `imagemagick: ${path} - ${
                     err.stack || err.message || err.toString()
-                  }`
-                )
+                  }`,
+                ),
               )
             : resolve();
-        }
+        },
       );
     });
 
     stream.on("error", (err) => {
       return reject(
-        new Error(`${path} - ${err.stack || err.message || err.toString()}`)
+        new Error(`${path} - ${err.stack || err.message || err.toString()}`),
       );
     });
   });
@@ -55,7 +55,7 @@ export function readPNG(path: string): Promise<PngType> {
         width: png.width,
         height: png.height,
         write: (outpath) => writePNG(png, outpath),
-      })
+      }),
     );
 
     png.on("error", (err) => reject(err));

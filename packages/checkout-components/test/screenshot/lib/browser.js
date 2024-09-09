@@ -17,7 +17,7 @@ export async function openPage(
   {
     headless = true,
     devtools = false,
-  }: {| headless?: boolean, devtools?: boolean |}
+  }: {| headless?: boolean, devtools?: boolean |},
 ): Promise<Object> {
   const browser = await puppeteer.launch({
     headless,
@@ -65,7 +65,7 @@ export async function takeScreenshot(
     y,
     width,
     height,
-  }: {| x: number, y: number, width: number, height: number |}
+  }: {| x: number, y: number, width: number, height: number |},
 ): Promise<PngType> {
   const path = `${os.tmpdir()}/${Math.random().toString()}.png`;
 

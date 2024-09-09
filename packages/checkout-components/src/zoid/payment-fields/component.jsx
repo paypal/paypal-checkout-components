@@ -76,7 +76,7 @@ export function getPaymentFieldsComponent(): PaymentFieldsComponent {
 
       prerenderTemplate: ({ props, doc }) => {
         return (<PaymentFieldsPrerender nonce={props.nonce} />).render(
-          dom({ doc })
+          dom({ doc }),
         );
       },
 

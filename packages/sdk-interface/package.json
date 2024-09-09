@@ -1,0 +1,21 @@
+{
+  "name": "sdk-interface",
+  "version": "1.0.0",
+  "description": "",
+  "main": "__sdk__.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@krakenjs/belter": "^2.6.0",
+    "@krakenjs/cross-domain-utils": "^3.1.0",
+    "@krakenjs/zoid": "^10.3.3",
+    "@paypal/sdk-client": "^4.0.194",
+    "checkout-components": "*",
+    "hosted-buttons": "*"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1",
+    "prettier-plugin-sh": "^0.10.0"
+  }
+}

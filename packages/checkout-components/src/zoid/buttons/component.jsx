@@ -651,7 +651,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             // $FlowFixMe
             value,
             layout,
-            fundingSources
+            fundingSources,
           );
         },
       },
@@ -744,7 +744,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const modalInstance = await getModal(
               clientID,
               merchantID,
-              buttonSessionID
+              buttonSessionID,
             );
             return modalInstance?.show({
               amount,
@@ -841,7 +841,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return Boolean(
             props.onShippingChange ||
               props.onShippingAddressChange ||
-              props.onShippingOptionsChange
+              props.onShippingOptionsChange,
           );
         },
       },

@@ -1,5 +1,5 @@
 {
-  "name": "@paypal/checkout-components",
+  "name": "checkout-components",
   "version": "5.0.337",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
@@ -36,13 +36,11 @@
     "vitest": "vitest",
     "webpack": "babel-node $(npm bin)/webpack --",
     "webpack-size": "npm run webpack -- --config webpack.config.size",
-    "prepare": "husky install",
     "screenshot-server": "babel-node ./test/percy/server/index.js"
   },
   "files": [
     "src/",
     "dist/",
-    "__sdk__.js",
     "globals.js"
   ],
   "browserslist": [
@@ -83,7 +81,6 @@
     "flow-bin": "0.155.0",
     "flow-typed": "^3.8.0",
     "fs-extra": "^10.0.0",
-    "husky": "^7.0.4",
     "imagemagick": "^0.1.3",
     "imgur": "^0.3.1",
     "jest": "^29.3.1",
@@ -96,8 +93,6 @@
     "pixelmatch": "^5.2.1",
     "playwright": "^1.29.1",
     "pngjs": "^6.0.0",
-    "prettier": "^2.5.1",
-    "prettier-plugin-sh": "^0.10.0",
     "puppeteer": "^1.20.0",
     "serve": "^14.0.0",
     "vite": "^3.2.4",

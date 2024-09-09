@@ -27,7 +27,7 @@ for (const flow of ["popup", "iframe"]) {
       return wrapPromise(({ expect, avoid }) => {
         if (window.paypal.Buttons.instances.length) {
           throw new Error(
-            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`
+            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`,
           );
         }
 
@@ -60,7 +60,7 @@ for (const flow of ["popup", "iframe"]) {
       return wrapPromise(({ expect, avoid }) => {
         if (window.paypal.Buttons.instances.length) {
           throw new Error(
-            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`
+            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`,
           );
         }
 
@@ -91,7 +91,7 @@ for (const flow of ["popup", "iframe"]) {
       return wrapPromise(({ expect, avoid }) => {
         if (window.paypal.Buttons.instances.length) {
           throw new Error(
-            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`
+            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`,
           );
         }
 
@@ -124,7 +124,7 @@ for (const flow of ["popup", "iframe"]) {
       return wrapPromise(({ expect, avoid }) => {
         if (window.paypal.Buttons.instances.length) {
           throw new Error(
-            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`
+            `Expected no existing button instances, found ${window.paypal.Buttons.instances.length}`,
           );
         }
 

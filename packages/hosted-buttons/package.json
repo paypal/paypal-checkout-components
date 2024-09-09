@@ -1,16 +1,16 @@
 {
-  "name": "@paypal/hosted-buttons",
+  "name": "hosted-buttons",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "echo 'hey from hosted'",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "prettier": "^3.3.3",
-    "@paypal/checkout-components": "*"
+    "checkout-components": "*"
   }
 }

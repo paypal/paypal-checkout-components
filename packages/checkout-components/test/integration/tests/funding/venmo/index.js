@@ -28,7 +28,7 @@ describe(`venmo native button test `, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
 
     window.paypal
@@ -39,7 +39,7 @@ describe(`venmo native button test `, () => {
             setTimeout(() => {
               assert.ok(
                 getElementRecursive(`[data-funding-source="${fundingSource}"]`),
-                "Button"
+                "Button",
               );
               done();
             }, 1000);
@@ -63,7 +63,7 @@ describe(`venmo native button test `, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
 
     window.paypal
@@ -75,7 +75,7 @@ describe(`venmo native button test `, () => {
             setTimeout(() => {
               assert.equal(
                 getElementRecursive(".paypal-button-text").innerHTML,
-                "@foo"
+                "@foo",
               );
               done();
             }, 1000);
@@ -100,7 +100,7 @@ describe(`venmo desktop web button test `, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
 
     const paypalButtons = window.paypal.Buttons({
@@ -126,7 +126,7 @@ describe(`venmo on tablet `, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
 
     const paypalButtons = window.paypal.Buttons({

@@ -138,7 +138,7 @@ test(`Button should fail to render with ssr, with no fundingSources available`, 
   }
   if (expectedErr.code !== ERROR_CODE.VALIDATION_ERROR) {
     throw new Error(
-      `Expected button render to error out with err.code = ${ERROR_CODE.VALIDATION_ERROR}`
+      `Expected button render to error out with err.code = ${ERROR_CODE.VALIDATION_ERROR}`,
     );
   }
 });

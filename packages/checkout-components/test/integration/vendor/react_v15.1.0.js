@@ -43,7 +43,7 @@
           e,
           t,
           n,
-          r
+          r,
         );
       }
       return n[o].exports;
@@ -313,7 +313,7 @@
             topLevelType,
             targetInst,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             var eventType;
             var fallbackData;
@@ -352,7 +352,7 @@
               eventType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
 
             if (fallbackData) {
@@ -488,7 +488,7 @@
             topLevelType,
             targetInst,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             var chars;
 
@@ -508,7 +508,7 @@
               eventTypes.beforeInput,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
 
             event.data = chars;
@@ -541,20 +541,20 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               return [
                 extractCompositionEvent(
                   topLevelType,
                   targetInst,
                   nativeEvent,
-                  nativeEventTarget
+                  nativeEventTarget,
                 ),
                 extractBeforeInputEvent(
                   topLevelType,
                   targetInst,
                   nativeEvent,
-                  nativeEventTarget
+                  nativeEventTarget,
                 ),
               ];
             },
@@ -789,7 +789,7 @@
                     "Unsupported style property %s. Did you mean %s?%s",
                     name,
                     camelizeStyleName(name),
-                    checkRenderMessage(owner)
+                    checkRenderMessage(owner),
                   )
                 : void 0;
             };
@@ -809,7 +809,7 @@
                     "Unsupported vendor-prefixed style property %s. Did you mean %s?%s",
                     name,
                     name.charAt(0).toUpperCase() + name.slice(1),
-                    checkRenderMessage(owner)
+                    checkRenderMessage(owner),
                   )
                 : void 0;
             };
@@ -830,7 +830,7 @@
                       'Try "%s: %s" instead.',
                     checkRenderMessage(owner),
                     name,
-                    value.replace(badStyleValueWithSemicolonPattern, "")
+                    value.replace(badStyleValueWithSemicolonPattern, ""),
                   )
                 : void 0;
             };
@@ -846,7 +846,7 @@
                     false,
                     "`NaN` is an invalid value for the `%s` css style property.%s",
                     name,
-                    checkRenderMessage(owner)
+                    checkRenderMessage(owner),
                   )
                 : void 0;
             };
@@ -934,7 +934,7 @@
                 ReactInstrumentation.debugTool.onNativeOperation(
                   component._debugID,
                   "update styles",
-                  styles
+                  styles,
                 );
               }
 
@@ -949,7 +949,7 @@
                 var styleValue = dangerousStyleValue(
                   styleName,
                   styles[styleName],
-                  component
+                  component,
                 );
                 if (styleName === "float" || styleName === "cssFloat") {
                   styleName = styleFloatAccessor;
@@ -1053,7 +1053,7 @@
                   ? "development" !== "production"
                     ? invariant(
                         false,
-                        "Mismatched list of contexts in callback queue"
+                        "Mismatched list of contexts in callback queue",
                       )
                     : invariant(false)
                   : void 0;
@@ -1183,7 +1183,7 @@
               eventTypes.change,
               activeElementInst,
               nativeEvent,
-              getEventTarget(nativeEvent)
+              getEventTarget(nativeEvent),
             );
             EventPropagators.accumulateTwoPhaseDispatches(event);
 
@@ -1229,7 +1229,7 @@
           function handleEventsForChangeEventIE8(
             topLevelType,
             target,
-            targetInst
+            targetInst,
           ) {
             if (topLevelType === topLevelTypes.topFocus) {
               // stopWatching() should be a noop here but we call it just in case we
@@ -1281,7 +1281,7 @@
             activeElementValue = target.value;
             activeElementValueProp = Object.getOwnPropertyDescriptor(
               target.constructor.prototype,
-              "value"
+              "value",
             );
 
             // Not guarded in a canDefineProperty check: IE8 supports defineProperty only
@@ -1290,13 +1290,13 @@
             if (activeElement.attachEvent) {
               activeElement.attachEvent(
                 "onpropertychange",
-                handlePropertyChange
+                handlePropertyChange,
               );
             } else {
               activeElement.addEventListener(
                 "propertychange",
                 handlePropertyChange,
-                false
+                false,
               );
             }
           }
@@ -1316,13 +1316,13 @@
             if (activeElement.detachEvent) {
               activeElement.detachEvent(
                 "onpropertychange",
-                handlePropertyChange
+                handlePropertyChange,
               );
             } else {
               activeElement.removeEventListener(
                 "propertychange",
                 handlePropertyChange,
-                false
+                false,
               );
             }
 
@@ -1363,7 +1363,7 @@
           function handleEventsForInputEventIE(
             topLevelType,
             target,
-            targetInst
+            targetInst,
           ) {
             if (topLevelType === topLevelTypes.topFocus) {
               // In IE8, we can capture almost all .value changes by adding a
@@ -1447,7 +1447,7 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               var targetNode = targetInst
                 ? ReactDOMComponentTree.getNodeFromInstance(targetInst)
@@ -1478,7 +1478,7 @@
                     eventTypes.change,
                     inst,
                     nativeEvent,
-                    nativeEventTarget
+                    nativeEventTarget,
                   );
                   event.type = "change";
                   EventPropagators.accumulateTwoPhaseDispatches(event);
@@ -1550,16 +1550,14 @@
            * @param {number} index Index at which to insert the child.
            * @internal
            */
-          var insertChildAt = createMicrosoftUnsafeLocalFunction(function (
-            parentNode,
-            childNode,
-            referenceNode
-          ) {
-            // We rely exclusively on `insertBefore(node, null)` instead of also using
-            // `appendChild(node)`. (Using `undefined` is not allowed by all browsers so
-            // we are careful to use `null`.)
-            parentNode.insertBefore(childNode, referenceNode);
-          });
+          var insertChildAt = createMicrosoftUnsafeLocalFunction(
+            function (parentNode, childNode, referenceNode) {
+              // We rely exclusively on `insertBefore(node, null)` instead of also using
+              // `appendChild(node)`. (Using `undefined` is not allowed by all browsers so
+              // we are careful to use `null`.)
+              parentNode.insertBefore(childNode, referenceNode);
+            },
+          );
 
           function insertLazyTreeChildAt(parentNode, childTree, referenceNode) {
             DOMLazyTree.insertTreeBefore(parentNode, childTree, referenceNode);
@@ -1571,7 +1569,7 @@
                 parentNode,
                 childNode[0],
                 childNode[1],
-                referenceNode
+                referenceNode,
               );
             } else {
               insertChildAt(parentNode, childNode, referenceNode);
@@ -1592,7 +1590,7 @@
             parentNode,
             openingComment,
             closingComment,
-            referenceNode
+            referenceNode,
           ) {
             var node = openingComment;
             while (true) {
@@ -1620,7 +1618,7 @@
           function replaceDelimitedText(
             openingComment,
             closingComment,
-            stringText
+            stringText,
           ) {
             var parentNode = openingComment.parentNode;
             var nodeAfterComment = openingComment.nextSibling;
@@ -1631,7 +1629,7 @@
                 insertChildAt(
                   parentNode,
                   document.createTextNode(stringText),
-                  nodeAfterComment
+                  nodeAfterComment,
                 );
               }
             } else {
@@ -1642,7 +1640,7 @@
                 removeDelimitedText(
                   parentNode,
                   nodeAfterComment,
-                  closingComment
+                  closingComment,
                 );
               } else {
                 removeDelimitedText(parentNode, openingComment, closingComment);
@@ -1654,7 +1652,7 @@
                 ReactDOMComponentTree.getInstanceFromNode(openingComment)
                   ._debugID,
                 "replace text",
-                stringText
+                stringText,
               );
             }
           }
@@ -1665,24 +1663,24 @@
             dangerouslyReplaceNodeWithMarkup = function (
               oldChild,
               markup,
-              prevInstance
+              prevInstance,
             ) {
               Danger.dangerouslyReplaceNodeWithMarkup(oldChild, markup);
               if (prevInstance._debugID !== 0) {
                 ReactInstrumentation.debugTool.onNativeOperation(
                   prevInstance._debugID,
                   "replace with",
-                  markup.toString()
+                  markup.toString(),
                 );
               } else {
                 var nextInstance = ReactDOMComponentTree.getInstanceFromNode(
-                  markup.node
+                  markup.node,
                 );
                 if (nextInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onNativeOperation(
                     nextInstance._debugID,
                     "mount",
-                    markup.toString()
+                    markup.toString(),
                   );
                 }
               }
@@ -1708,7 +1706,7 @@
               if ("development" !== "production") {
                 var parentNodeDebugID =
                   ReactDOMComponentTree.getInstanceFromNode(
-                    parentNode
+                    parentNode,
                   )._debugID;
               }
 
@@ -1719,7 +1717,7 @@
                     insertLazyTreeChildAt(
                       parentNode,
                       update.content,
-                      getNodeAfter(parentNode, update.afterNode)
+                      getNodeAfter(parentNode, update.afterNode),
                     );
                     if ("development" !== "production") {
                       ReactInstrumentation.debugTool.onNativeOperation(
@@ -1728,7 +1726,7 @@
                         {
                           toIndex: update.toIndex,
                           content: update.content.toString(),
-                        }
+                        },
                       );
                     }
                     break;
@@ -1736,13 +1734,16 @@
                     moveChild(
                       parentNode,
                       update.fromNode,
-                      getNodeAfter(parentNode, update.afterNode)
+                      getNodeAfter(parentNode, update.afterNode),
                     );
                     if ("development" !== "production") {
                       ReactInstrumentation.debugTool.onNativeOperation(
                         parentNodeDebugID,
                         "move child",
-                        { fromIndex: update.fromIndex, toIndex: update.toIndex }
+                        {
+                          fromIndex: update.fromIndex,
+                          toIndex: update.toIndex,
+                        },
                       );
                     }
                     break;
@@ -1752,7 +1753,7 @@
                       ReactInstrumentation.debugTool.onNativeOperation(
                         parentNodeDebugID,
                         "replace children",
-                        update.content.toString()
+                        update.content.toString(),
                       );
                     }
                     break;
@@ -1762,7 +1763,7 @@
                       ReactInstrumentation.debugTool.onNativeOperation(
                         parentNodeDebugID,
                         "replace text",
-                        update.content.toString()
+                        update.content.toString(),
                       );
                     }
                     break;
@@ -1772,7 +1773,7 @@
                       ReactInstrumentation.debugTool.onNativeOperation(
                         parentNodeDebugID,
                         "remove child",
-                        { fromIndex: update.fromIndex }
+                        { fromIndex: update.fromIndex },
                       );
                     }
                     break;
@@ -1843,31 +1844,29 @@
             }
           }
 
-          var insertTreeBefore = createMicrosoftUnsafeLocalFunction(function (
-            parentNode,
-            tree,
-            referenceNode
-          ) {
-            // DocumentFragments aren't actually part of the DOM after insertion so
-            // appending children won't update the DOM. We need to ensure the fragment
-            // is properly populated first, breaking out of our lazy approach for just
-            // this level. Also, some <object> plugins (like Flash Player) will read
-            // <param> nodes immediately upon insertion into the DOM, so <object>
-            // must also be populated prior to insertion into the DOM.
-            if (
-              tree.node.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE ||
-              (tree.node.nodeType === ELEMENT_NODE_TYPE &&
-                tree.node.nodeName.toLowerCase() === "object" &&
-                (tree.node.namespaceURI == null ||
-                  tree.node.namespaceURI === DOMNamespaces.html))
-            ) {
-              insertTreeChildren(tree);
-              parentNode.insertBefore(tree.node, referenceNode);
-            } else {
-              parentNode.insertBefore(tree.node, referenceNode);
-              insertTreeChildren(tree);
-            }
-          });
+          var insertTreeBefore = createMicrosoftUnsafeLocalFunction(
+            function (parentNode, tree, referenceNode) {
+              // DocumentFragments aren't actually part of the DOM after insertion so
+              // appending children won't update the DOM. We need to ensure the fragment
+              // is properly populated first, breaking out of our lazy approach for just
+              // this level. Also, some <object> plugins (like Flash Player) will read
+              // <param> nodes immediately upon insertion into the DOM, so <object>
+              // must also be populated prior to insertion into the DOM.
+              if (
+                tree.node.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE ||
+                (tree.node.nodeType === ELEMENT_NODE_TYPE &&
+                  tree.node.nodeName.toLowerCase() === "object" &&
+                  (tree.node.namespaceURI == null ||
+                    tree.node.namespaceURI === DOMNamespaces.html))
+              ) {
+                insertTreeChildren(tree);
+                parentNode.insertBefore(tree.node, referenceNode);
+              } else {
+                parentNode.insertBefore(tree.node, referenceNode);
+                insertTreeChildren(tree);
+              }
+            },
+          );
 
           function replaceChildWithTree(oldNode, newTree) {
             oldNode.parentNode.replaceChild(newTree.node, oldNode);
@@ -2020,7 +2019,7 @@
 
               if (domPropertyConfig.isCustomAttribute) {
                 DOMProperty._isCustomAttributeFunctions.push(
-                  domPropertyConfig.isCustomAttribute
+                  domPropertyConfig.isCustomAttribute,
                 );
               }
 
@@ -2033,7 +2032,7 @@
                           "'%s' which has already been injected. You may be accidentally " +
                           "injecting the same DOM property config twice, or you may be " +
                           "injecting two configs that have conflicting property names.",
-                        propName
+                        propName,
                       )
                     : invariant(false)
                   : void 0;
@@ -2049,27 +2048,27 @@
 
                   mustUseProperty: checkMask(
                     propConfig,
-                    Injection.MUST_USE_PROPERTY
+                    Injection.MUST_USE_PROPERTY,
                   ),
                   hasSideEffects: checkMask(
                     propConfig,
-                    Injection.HAS_SIDE_EFFECTS
+                    Injection.HAS_SIDE_EFFECTS,
                   ),
                   hasBooleanValue: checkMask(
                     propConfig,
-                    Injection.HAS_BOOLEAN_VALUE
+                    Injection.HAS_BOOLEAN_VALUE,
                   ),
                   hasNumericValue: checkMask(
                     propConfig,
-                    Injection.HAS_NUMERIC_VALUE
+                    Injection.HAS_NUMERIC_VALUE,
                   ),
                   hasPositiveNumericValue: checkMask(
                     propConfig,
-                    Injection.HAS_POSITIVE_NUMERIC_VALUE
+                    Injection.HAS_POSITIVE_NUMERIC_VALUE,
                   ),
                   hasOverloadedBooleanValue: checkMask(
                     propConfig,
-                    Injection.HAS_OVERLOADED_BOOLEAN_VALUE
+                    Injection.HAS_OVERLOADED_BOOLEAN_VALUE,
                   ),
                 };
 
@@ -2078,7 +2077,7 @@
                     ? invariant(
                         false,
                         "DOMProperty: Properties that have side effects must use property: %s",
-                        propName
+                        propName,
                       )
                     : invariant(false)
                   : void 0;
@@ -2093,7 +2092,7 @@
                         false,
                         "DOMProperty: Value can be one of boolean, overloaded boolean, or " +
                           "numeric value, but not a combination: %s",
-                        propName
+                        propName,
                       )
                     : invariant(false)
                   : void 0;
@@ -2257,7 +2256,7 @@
               DOMProperty.ATTRIBUTE_NAME_START_CHAR +
               "][" +
               DOMProperty.ATTRIBUTE_NAME_CHAR +
-              "]*$"
+              "]*$",
           );
           var illegalAttributeNameCache = {};
           var validatedAttributeNameCache = {};
@@ -2331,7 +2330,7 @@
               if ("development" !== "production") {
                 ReactDOMInstrumentation.debugTool.onCreateMarkupForProperty(
                   name,
-                  value
+                  value,
                 );
               }
               var propertyInfo = DOMProperty.properties.hasOwnProperty(name)
@@ -2429,14 +2428,14 @@
                 ReactDOMInstrumentation.debugTool.onSetValueForProperty(
                   node,
                   name,
-                  value
+                  value,
                 );
                 var payload = {};
                 payload[name] = value;
                 ReactInstrumentation.debugTool.onNativeOperation(
                   ReactDOMComponentTree.getInstanceFromNode(node)._debugID,
                   "update attribute",
-                  payload
+                  payload,
                 );
               }
             },
@@ -2457,7 +2456,7 @@
                 ReactInstrumentation.debugTool.onNativeOperation(
                   ReactDOMComponentTree.getInstanceFromNode(node)._debugID,
                   "update attribute",
-                  payload
+                  payload,
                 );
               }
             },
@@ -2499,12 +2498,12 @@
               if ("development" !== "production") {
                 ReactDOMInstrumentation.debugTool.onDeleteValueForProperty(
                   node,
-                  name
+                  name,
                 );
                 ReactInstrumentation.debugTool.onNativeOperation(
                   ReactDOMComponentTree.getInstanceFromNode(node)._debugID,
                   "remove attribute",
-                  name
+                  name,
                 );
               }
             },
@@ -2573,7 +2572,7 @@
                       "dangerouslyRenderMarkup(...): Cannot render markup in a worker " +
                         "thread. Make sure `window` and `document` are available globally " +
                         "before requiring React when unit testing or use " +
-                        "ReactDOMServer.renderToString for server rendering."
+                        "ReactDOMServer.renderToString for server rendering.",
                     )
                   : invariant(false)
                 : void 0;
@@ -2585,7 +2584,7 @@
                   ? "development" !== "production"
                     ? invariant(
                         false,
-                        "dangerouslyRenderMarkup(...): Missing markup."
+                        "dangerouslyRenderMarkup(...): Missing markup.",
                       )
                     : invariant(false)
                   : void 0;
@@ -2616,7 +2615,7 @@
                     markupListByNodeName[resultIndex] = markup.replace(
                       OPEN_TAG_NAME_EXP,
                       // This index will be parsed back out below.
-                      "$1 " + RESULT_INDEX_ATTR + '="' + resultIndex + '" '
+                      "$1 " + RESULT_INDEX_ATTR + '="' + resultIndex + '" ',
                     );
                   }
                 }
@@ -2624,7 +2623,7 @@
                 // Render each group of markup with similar wrapping `nodeName`.
                 var renderNodes = createNodesFromMarkup(
                   markupListByNodeName.join(""),
-                  emptyFunction // Do nothing special with <script> tags.
+                  emptyFunction, // Do nothing special with <script> tags.
                 );
 
                 for (var j = 0; j < renderNodes.length; ++j) {
@@ -2640,7 +2639,7 @@
                       ? "development" !== "production"
                         ? invariant(
                             false,
-                            "Danger: Assigning to an already-occupied result index."
+                            "Danger: Assigning to an already-occupied result index.",
                           )
                         : invariant(false)
                       : void 0;
@@ -2653,7 +2652,7 @@
                   } else if ("development" !== "production") {
                     console.error(
                       "Danger: Discarding unexpected node:",
-                      renderNode
+                      renderNode,
                     );
                   }
                 }
@@ -2665,7 +2664,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "Danger: Did not assign to every index of resultList."
+                      "Danger: Did not assign to every index of resultList.",
                     )
                   : invariant(false)
                 : void 0;
@@ -2676,7 +2675,7 @@
                       false,
                       "Danger: Expected markup to render %s nodes, but rendered %s.",
                       markupList.length,
-                      resultList.length
+                      resultList.length,
                     )
                   : invariant(false)
                 : void 0;
@@ -2700,7 +2699,7 @@
                       "dangerouslyReplaceNodeWithMarkup(...): Cannot render markup in a " +
                         "worker thread. Make sure `window` and `document` are available " +
                         "globally before requiring React when unit testing or use " +
-                        "ReactDOMServer.renderToString() for server rendering."
+                        "ReactDOMServer.renderToString() for server rendering.",
                     )
                   : invariant(false)
                 : void 0;
@@ -2708,7 +2707,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "dangerouslyReplaceNodeWithMarkup(...): Missing markup."
+                      "dangerouslyReplaceNodeWithMarkup(...): Missing markup.",
                     )
                   : invariant(false)
                 : void 0;
@@ -2719,7 +2718,7 @@
                       "dangerouslyReplaceNodeWithMarkup(...): Cannot replace markup of the " +
                         "<html> node. This is because browser quirks make this unreliable " +
                         "and/or slow. If you want to render to the root you must use " +
-                        "server rendering. See ReactDOMServer.renderToString()."
+                        "server rendering. See ReactDOMServer.renderToString().",
                     )
                   : invariant(false)
                 : void 0;
@@ -2890,7 +2889,7 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               if (
                 topLevelType === topLevelTypes.topMouseOver &&
@@ -2953,7 +2952,7 @@
                 eventTypes.mouseLeave,
                 from,
                 nativeEvent,
-                nativeEventTarget
+                nativeEventTarget,
               );
               leave.type = "mouseleave";
               leave.target = fromNode;
@@ -2963,7 +2962,7 @@
                 eventTypes.mouseEnter,
                 to,
                 nativeEvent,
-                nativeEventTarget
+                nativeEventTarget,
               );
               enter.type = "mouseenter";
               enter.target = toNode;
@@ -2973,7 +2972,7 @@
                 leave,
                 enter,
                 from,
-                to
+                to,
               );
 
               return [leave, enter];
@@ -3198,7 +3197,7 @@
                       false,
                       "Expected %s listener to be a function, instead got type %s",
                       registrationName,
-                      typeof listener
+                      typeof listener,
                     )
                   : invariant(false)
                 : void 0;
@@ -3280,7 +3279,7 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               var events;
               var plugins = EventPluginRegistry.plugins;
@@ -3292,7 +3291,7 @@
                     topLevelType,
                     targetInst,
                     nativeEvent,
-                    nativeEventTarget
+                    nativeEventTarget,
                   );
                   if (extractedEvents) {
                     events = accumulateInto(events, extractedEvents);
@@ -3328,12 +3327,12 @@
               if (simulated) {
                 forEachAccumulated(
                   processingEventQueue,
-                  executeDispatchesAndReleaseSimulated
+                  executeDispatchesAndReleaseSimulated,
                 );
               } else {
                 forEachAccumulated(
                   processingEventQueue,
-                  executeDispatchesAndReleaseTopLevel
+                  executeDispatchesAndReleaseTopLevel,
                 );
               }
               !!eventQueue
@@ -3341,7 +3340,7 @@
                   ? invariant(
                       false,
                       "processEventQueue(): Additional events were enqueued while processing " +
-                        "an event queue. Support for this has not yet been implemented."
+                        "an event queue. Support for this has not yet been implemented.",
                     )
                   : invariant(false)
                 : void 0;
@@ -3411,7 +3410,7 @@
                       false,
                       "EventPluginRegistry: Cannot inject event plugins that do not exist in " +
                         "the plugin ordering, `%s`.",
-                      pluginName
+                      pluginName,
                     )
                   : invariant(false)
                 : void 0;
@@ -3424,7 +3423,7 @@
                       false,
                       "EventPluginRegistry: Event plugins must implement an `extractEvents` " +
                         "method, but `%s` does not.",
-                      pluginName
+                      pluginName,
                     )
                   : invariant(false)
                 : void 0;
@@ -3434,14 +3433,14 @@
                 !publishEventForPlugin(
                   publishedEvents[eventName],
                   PluginModule,
-                  eventName
+                  eventName,
                 )
                   ? "development" !== "production"
                     ? invariant(
                         false,
                         "EventPluginRegistry: Failed to publish event `%s` for plugin `%s`.",
                         eventName,
-                        pluginName
+                        pluginName,
                       )
                     : invariant(false)
                   : void 0;
@@ -3460,17 +3459,17 @@
           function publishEventForPlugin(
             dispatchConfig,
             PluginModule,
-            eventName
+            eventName,
           ) {
             !!EventPluginRegistry.eventNameDispatchConfigs.hasOwnProperty(
-              eventName
+              eventName,
             )
               ? "development" !== "production"
                 ? invariant(
                     false,
                     "EventPluginHub: More than one plugin attempted to publish the same " +
                       "event name, `%s`.",
-                    eventName
+                    eventName,
                   )
                 : invariant(false)
               : void 0;
@@ -3487,7 +3486,7 @@
                   publishRegistrationName(
                     phasedRegistrationName,
                     PluginModule,
-                    eventName
+                    eventName,
                   );
                 }
               }
@@ -3496,7 +3495,7 @@
               publishRegistrationName(
                 dispatchConfig.registrationName,
                 PluginModule,
-                eventName
+                eventName,
               );
               return true;
             }
@@ -3514,7 +3513,7 @@
           function publishRegistrationName(
             registrationName,
             PluginModule,
-            eventName
+            eventName,
           ) {
             !!EventPluginRegistry.registrationNameModules[registrationName]
               ? "development" !== "production"
@@ -3522,7 +3521,7 @@
                     false,
                     "EventPluginHub: More than one plugin attempted to publish the same " +
                       "registration name, `%s`.",
-                    registrationName
+                    registrationName,
                   )
                 : invariant(false)
               : void 0;
@@ -3588,13 +3587,13 @@
                   ? invariant(
                       false,
                       "EventPluginRegistry: Cannot inject event plugin ordering more than " +
-                        "once. You are likely trying to load more than one copy of React."
+                        "once. You are likely trying to load more than one copy of React.",
                     )
                   : invariant(false)
                 : void 0;
               // Clone the ordering so it cannot be dynamically mutated.
               EventPluginOrder = Array.prototype.slice.call(
-                InjectedEventPluginOrder
+                InjectedEventPluginOrder,
               );
               recomputePluginOrdering();
             },
@@ -3626,7 +3625,7 @@
                           false,
                           "EventPluginRegistry: Cannot inject two different event plugins " +
                             "using the same name, `%s`.",
-                          pluginName
+                          pluginName,
                         )
                       : invariant(false)
                     : void 0;
@@ -3760,7 +3759,7 @@
                         Injected.getNodeFromInstance &&
                         Injected.getInstanceFromNode,
                       "EventPluginUtils.injection.injectComponentTree(...): Injected " +
-                        "module is missing getNodeFromInstance or getInstanceFromNode."
+                        "module is missing getNodeFromInstance or getInstanceFromNode.",
                     )
                   : void 0;
               }
@@ -3774,7 +3773,7 @@
                         Injected.isAncestor &&
                         Injected.getLowestCommonAncestor,
                       "EventPluginUtils.injection.injectTreeTraversal(...): Injected " +
-                        "module is missing isAncestor or getLowestCommonAncestor."
+                        "module is missing isAncestor or getLowestCommonAncestor.",
                     )
                   : void 0;
               }
@@ -3814,21 +3813,21 @@
               var listenersLen = listenersIsArr
                 ? dispatchListeners.length
                 : dispatchListeners
-                ? 1
-                : 0;
+                  ? 1
+                  : 0;
 
               var instancesIsArr = Array.isArray(dispatchInstances);
               var instancesLen = instancesIsArr
                 ? dispatchInstances.length
                 : dispatchInstances
-                ? 1
-                : 0;
+                  ? 1
+                  : 0;
 
               "development" !== "production"
                 ? warning(
                     instancesIsArr === listenersIsArr &&
                       instancesLen === listenersLen,
-                    "EventPluginUtils: Invalid `event`."
+                    "EventPluginUtils: Invalid `event`.",
                   )
                 : void 0;
             };
@@ -3848,7 +3847,7 @@
               ReactErrorUtils.invokeGuardedCallbackWithCatch(
                 type,
                 listener,
-                event
+                event,
               );
             } else {
               ReactErrorUtils.invokeGuardedCallback(type, listener, event);
@@ -3875,7 +3874,7 @@
                   event,
                   simulated,
                   dispatchListeners[i],
-                  dispatchInstances[i]
+                  dispatchInstances[i],
                 );
               }
             } else if (dispatchListeners) {
@@ -3883,7 +3882,7 @@
                 event,
                 simulated,
                 dispatchListeners,
-                dispatchInstances
+                dispatchInstances,
               );
             }
             event._dispatchListeners = null;
@@ -3950,7 +3949,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "executeDirectDispatch(...): Invalid `event`."
+                    "executeDirectDispatch(...): Invalid `event`.",
                   )
                 : invariant(false)
               : void 0;
@@ -4010,7 +4009,7 @@
                 to,
                 fn,
                 argFrom,
-                argTo
+                argTo,
               );
             },
 
@@ -4076,11 +4075,11 @@
             if (listener) {
               event._dispatchListeners = accumulateInto(
                 event._dispatchListeners,
-                listener
+                listener,
               );
               event._dispatchInstances = accumulateInto(
                 event._dispatchInstances,
-                inst
+                inst,
               );
             }
           }
@@ -4097,7 +4096,7 @@
               EventPluginUtils.traverseTwoPhase(
                 event._targetInst,
                 accumulateDirectionalDispatches,
-                event
+                event,
               );
             }
           }
@@ -4114,7 +4113,7 @@
               EventPluginUtils.traverseTwoPhase(
                 parentInst,
                 accumulateDirectionalDispatches,
-                event
+                event,
               );
             }
           }
@@ -4131,11 +4130,11 @@
               if (listener) {
                 event._dispatchListeners = accumulateInto(
                   event._dispatchListeners,
-                  listener
+                  listener,
                 );
                 event._dispatchInstances = accumulateInto(
                   event._dispatchInstances,
-                  inst
+                  inst,
                 );
               }
             }
@@ -4159,7 +4158,7 @@
           function accumulateTwoPhaseDispatchesSkipTarget(events) {
             forEachAccumulated(
               events,
-              accumulateTwoPhaseDispatchesSingleSkipTarget
+              accumulateTwoPhaseDispatchesSingleSkipTarget,
             );
           }
 
@@ -4169,7 +4168,7 @@
               to,
               accumulateDispatches,
               leave,
-              enter
+              enter,
             );
           }
 
@@ -4331,8 +4330,8 @@
           var HTMLDOMPropertyConfig = {
             isCustomAttribute: RegExp.prototype.test.bind(
               new RegExp(
-                "^(data|aria)-[" + DOMProperty.ATTRIBUTE_NAME_CHAR + "]*$"
-              )
+                "^(data|aria)-[" + DOMProperty.ATTRIBUTE_NAME_CHAR + "]*$",
+              ),
             ),
             Properties: {
               /**
@@ -4554,7 +4553,7 @@
               escapeRegex,
               function (match) {
                 return escaperLookup[match];
-              }
+              },
             );
 
             return "$" + escapedString;
@@ -4628,7 +4627,7 @@
                 ? invariant(
                     false,
                     "Cannot provide a checkedLink and a valueLink. If you want to use " +
-                      "checkedLink, you probably don't want to use valueLink and vice versa."
+                      "checkedLink, you probably don't want to use valueLink and vice versa.",
                   )
                 : invariant(false)
               : void 0;
@@ -4640,7 +4639,7 @@
                 ? invariant(
                     false,
                     "Cannot provide a valueLink and a value or onChange event. If you want " +
-                      "to use value or onChange, you probably don't want to use valueLink."
+                      "to use value or onChange, you probably don't want to use valueLink.",
                   )
                 : invariant(false)
               : void 0;
@@ -4654,7 +4653,7 @@
                     false,
                     "Cannot provide a checkedLink and a checked property or onChange event. " +
                       "If you want to use checked or onChange, you probably don't want to " +
-                      "use checkedLink"
+                      "use checkedLink",
                   )
                 : invariant(false)
               : void 0;
@@ -4675,7 +4674,7 @@
                 "You provided a `value` prop to a form field without an " +
                   "`onChange` handler. This will render a read-only field. If " +
                   "the field should be mutable use `defaultValue`. Otherwise, " +
-                  "set either `onChange` or `readOnly`."
+                  "set either `onChange` or `readOnly`.",
               );
             },
             checked: function (props, propName, componentName) {
@@ -4691,7 +4690,7 @@
                 "You provided a `checked` prop to a form field without an " +
                   "`onChange` handler. This will render a read-only field. If " +
                   "the field should be mutable use `defaultChecked`. Otherwise, " +
-                  "set either `onChange` or `readOnly`."
+                  "set either `onChange` or `readOnly`.",
               );
             },
             onChange: ReactPropTypes.func,
@@ -4720,7 +4719,7 @@
                     props,
                     propName,
                     tagName,
-                    ReactPropTypeLocations.prop
+                    ReactPropTypeLocations.prop,
                   );
                 }
                 if (
@@ -4737,7 +4736,7 @@
                         false,
                         "Failed form propType: %s%s",
                         error.message,
-                        addendum
+                        addendum,
                       )
                     : void 0;
                 }
@@ -4780,7 +4779,7 @@
               } else if (inputProps.checkedLink) {
                 _assertCheckedLink(inputProps);
                 return inputProps.checkedLink.requestChange(
-                  event.target.checked
+                  event.target.checked,
                 );
               } else if (inputProps.onChange) {
                 return inputProps.onChange.call(undefined, event);
@@ -4877,7 +4876,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "Trying to release an instance into a pool of a different type."
+                    "Trying to release an instance into a pool of a different type.",
                   )
                 : invariant(false)
               : void 0;
@@ -4973,7 +4972,7 @@
                     "React.__spread is deprecated and should not be used. Use " +
                       "Object.assign directly or another helper function with similar " +
                       "semantics. You may be seeing this warning due to your compiler. " +
-                      "See https://fb.me/react-spread-deprecation for more details."
+                      "See https://fb.me/react-spread-deprecation for more details.",
                   )
                 : void 0;
               warned = true;
@@ -5234,7 +5233,7 @@
                */
               injectReactEventListener: function (ReactEventListener) {
                 ReactEventListener.setHandleTopLevel(
-                  ReactBrowserEventEmitter.handleTopLevel
+                  ReactBrowserEventEmitter.handleTopLevel,
                 );
                 ReactBrowserEventEmitter.ReactEventListener =
                   ReactEventListener;
@@ -5305,13 +5304,13 @@
                       ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                         topLevelTypes.topWheel,
                         "wheel",
-                        mountAt
+                        mountAt,
                       );
                     } else if (isEventSupported("mousewheel")) {
                       ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                         topLevelTypes.topWheel,
                         "mousewheel",
-                        mountAt
+                        mountAt,
                       );
                     } else {
                       // Firefox needs to capture a different mouse scroll event.
@@ -5319,7 +5318,7 @@
                       ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                         topLevelTypes.topWheel,
                         "DOMMouseScroll",
-                        mountAt
+                        mountAt,
                       );
                     }
                   } else if (dependency === topLevelTypes.topScroll) {
@@ -5327,14 +5326,14 @@
                       ReactBrowserEventEmitter.ReactEventListener.trapCapturedEvent(
                         topLevelTypes.topScroll,
                         "scroll",
-                        mountAt
+                        mountAt,
                       );
                     } else {
                       ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                         topLevelTypes.topScroll,
                         "scroll",
                         ReactBrowserEventEmitter.ReactEventListener
-                          .WINDOW_HANDLE
+                          .WINDOW_HANDLE,
                       );
                     }
                   } else if (
@@ -5345,12 +5344,12 @@
                       ReactBrowserEventEmitter.ReactEventListener.trapCapturedEvent(
                         topLevelTypes.topFocus,
                         "focus",
-                        mountAt
+                        mountAt,
                       );
                       ReactBrowserEventEmitter.ReactEventListener.trapCapturedEvent(
                         topLevelTypes.topBlur,
                         "blur",
-                        mountAt
+                        mountAt,
                       );
                     } else if (isEventSupported("focusin")) {
                       // IE has `focusin` and `focusout` events which bubble.
@@ -5358,12 +5357,12 @@
                       ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                         topLevelTypes.topFocus,
                         "focusin",
-                        mountAt
+                        mountAt,
                       );
                       ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                         topLevelTypes.topBlur,
                         "focusout",
-                        mountAt
+                        mountAt,
                       );
                     }
 
@@ -5374,7 +5373,7 @@
                     ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                       dependency,
                       topEventMapping[dependency],
-                      mountAt
+                      mountAt,
                     );
                   }
 
@@ -5387,19 +5386,19 @@
               return ReactBrowserEventEmitter.ReactEventListener.trapBubbledEvent(
                 topLevelType,
                 handlerBaseName,
-                handle
+                handle,
               );
             },
 
             trapCapturedEvent: function (
               topLevelType,
               handlerBaseName,
-              handle
+              handle,
             ) {
               return ReactBrowserEventEmitter.ReactEventListener.trapCapturedEvent(
                 topLevelType,
                 handlerBaseName,
-                handle
+                handle,
               );
             },
 
@@ -5423,7 +5422,7 @@
               if (!hasEventPageXY && !isMonitoringScrollValue) {
                 var refresh = ViewportMetrics.refreshScrollValues;
                 ReactBrowserEventEmitter.ReactEventListener.monitorScrollValue(
-                  refresh
+                  refresh,
                 );
                 isMonitoringScrollValue = true;
               }
@@ -5467,7 +5466,7 @@
                     "flattenChildren(...): Encountered two children with the same key, " +
                       "`%s`. Child keys must be unique; when two children share a key, only " +
                       "the first child will be used.",
-                    KeyEscapeUtils.unescape(name)
+                    KeyEscapeUtils.unescape(name),
                   )
                 : void 0;
             }
@@ -5493,7 +5492,7 @@
             instantiateChildren: function (
               nestedChildNodes,
               transaction,
-              context
+              context,
             ) {
               if (nestedChildNodes == null) {
                 return null;
@@ -5502,7 +5501,7 @@
               traverseAllChildren(
                 nestedChildNodes,
                 instantiateChild,
-                childInstances
+                childInstances,
               );
               return childInstances;
             },
@@ -5522,7 +5521,7 @@
               nextChildren,
               removedNodes,
               transaction,
-              context
+              context,
             ) {
               // We currently don't have a way to track moves here but if we use iterators
               // instead of for..in we can zip the iterators and check if an item has
@@ -5549,7 +5548,7 @@
                     prevChild,
                     nextElement,
                     transaction,
-                    context
+                    context,
                   );
                   nextChildren[name] = prevChild;
                 } else {
@@ -5672,7 +5671,7 @@
             }
             var traverseContext = ForEachBookKeeping.getPooled(
               forEachFunc,
-              forEachContext
+              forEachContext,
             );
             traverseAllChildren(children, forEachSingleChild, traverseContext);
             ForEachBookKeeping.release(traverseContext);
@@ -5691,7 +5690,7 @@
             mapResult,
             keyPrefix,
             mapFunction,
-            mapContext
+            mapContext,
           ) {
             this.result = mapResult;
             this.keyPrefix = keyPrefix;
@@ -5720,7 +5719,7 @@
                 mappedChild,
                 result,
                 childKey,
-                emptyFunction.thatReturnsArgument
+                emptyFunction.thatReturnsArgument,
               );
             } else if (mappedChild != null) {
               if (ReactElement.isValidElement(mappedChild)) {
@@ -5733,7 +5732,7 @@
                     (!child || child.key !== mappedChild.key)
                       ? escapeUserProvidedKey(mappedChild.key) + "/"
                       : "") +
-                    childKey
+                    childKey,
                 );
               }
               result.push(mappedChild);
@@ -5745,7 +5744,7 @@
             array,
             prefix,
             func,
-            context
+            context,
           ) {
             var escapedPrefix = "";
             if (prefix != null) {
@@ -5755,12 +5754,12 @@
               array,
               escapedPrefix,
               func,
-              context
+              context,
             );
             traverseAllChildren(
               children,
               mapSingleChildIntoContext,
-              traverseContext
+              traverseContext,
             );
             MapBookKeeping.release(traverseContext);
           }
@@ -5816,7 +5815,7 @@
               children,
               result,
               null,
-              emptyFunction.thatReturnsArgument
+              emptyFunction.thatReturnsArgument,
             );
             return result;
           }
@@ -6159,13 +6158,13 @@
                 validateTypeDef(
                   Constructor,
                   childContextTypes,
-                  ReactPropTypeLocations.childContext
+                  ReactPropTypeLocations.childContext,
                 );
               }
               Constructor.childContextTypes = _assign(
                 {},
                 Constructor.childContextTypes,
-                childContextTypes
+                childContextTypes,
               );
             },
             contextTypes: function (Constructor, contextTypes) {
@@ -6173,13 +6172,13 @@
                 validateTypeDef(
                   Constructor,
                   contextTypes,
-                  ReactPropTypeLocations.context
+                  ReactPropTypeLocations.context,
                 );
               }
               Constructor.contextTypes = _assign(
                 {},
                 Constructor.contextTypes,
-                contextTypes
+                contextTypes,
               );
             },
             /**
@@ -6190,7 +6189,7 @@
               if (Constructor.getDefaultProps) {
                 Constructor.getDefaultProps = createMergedResultFunction(
                   Constructor.getDefaultProps,
-                  getDefaultProps
+                  getDefaultProps,
                 );
               } else {
                 Constructor.getDefaultProps = getDefaultProps;
@@ -6201,13 +6200,13 @@
                 validateTypeDef(
                   Constructor,
                   propTypes,
-                  ReactPropTypeLocations.prop
+                  ReactPropTypeLocations.prop,
                 );
               }
               Constructor.propTypes = _assign(
                 {},
                 Constructor.propTypes,
-                propTypes
+                propTypes,
               );
             },
             statics: function (Constructor, statics) {
@@ -6229,7 +6228,7 @@
                         "React.PropTypes.",
                       Constructor.displayName || "ReactClass",
                       ReactPropTypeLocationNames[location],
-                      propName
+                      propName,
                     )
                   : void 0;
               }
@@ -6250,7 +6249,7 @@
                       "ReactClassInterface: You are attempting to override " +
                         "`%s` from your class specification. Ensure that your method names " +
                         "do not overlap with React methods.",
-                      name
+                      name,
                     )
                   : invariant(false)
                 : void 0;
@@ -6268,7 +6267,7 @@
                       "ReactClassInterface: You are attempting to define " +
                         "`%s` on your component more than once. This conflict may be due " +
                         "to a mixin.",
-                      name
+                      name,
                     )
                   : invariant(false)
                 : void 0;
@@ -6290,7 +6289,7 @@
                     false,
                     "ReactClass: You're attempting to " +
                       "use a component class or function as a mixin. Instead, just use a " +
-                      "regular object."
+                      "regular object.",
                   )
                 : invariant(false)
               : void 0;
@@ -6299,7 +6298,7 @@
                 ? invariant(
                     false,
                     "ReactClass: You're attempting to " +
-                      "use a component as a mixin. Instead, just use a regular object."
+                      "use a component as a mixin. Instead, just use a regular object.",
                   )
                 : invariant(false)
               : void 0;
@@ -6363,7 +6362,7 @@
                             "ReactClass: Unexpected spec policy %s for key %s " +
                               "when mixing in component specs.",
                             specPolicy,
-                            name
+                            name,
                           )
                         : invariant(false)
                       : void 0;
@@ -6373,12 +6372,12 @@
                     if (specPolicy === SpecPolicy.DEFINE_MANY_MERGED) {
                       proto[name] = createMergedResultFunction(
                         proto[name],
-                        property
+                        property,
                       );
                     } else if (specPolicy === SpecPolicy.DEFINE_MANY) {
                       proto[name] = createChainedFunction(
                         proto[name],
-                        property
+                        property,
                       );
                     }
                   } else {
@@ -6415,7 +6414,7 @@
                         'property, `%s`, that shouldn\'t be on the "statics" key. Define it ' +
                         "as an instance property instead; it will still be accessible on the " +
                         "constructor.",
-                      name
+                      name,
                     )
                   : invariant(false)
                 : void 0;
@@ -6428,7 +6427,7 @@
                       "ReactClass: You are attempting to define " +
                         "`%s` on your component more than once. This conflict may be " +
                         "due to a mixin.",
-                      name
+                      name,
                     )
                   : invariant(false)
                 : void 0;
@@ -6448,7 +6447,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects."
+                    "mergeIntoWithNoDuplicateKeys(): Cannot merge non-objects.",
                   )
                 : invariant(false)
               : void 0;
@@ -6464,7 +6463,7 @@
                           "may be due to a mixin; in particular, this may be caused by two " +
                           "getInitialState() or getDefaultProps() methods returning objects " +
                           "with clashing keys.",
-                        key
+                        key,
                       )
                     : invariant(false)
                   : void 0;
@@ -6548,7 +6547,7 @@
                         false,
                         "bind(): React component methods may only be bound to the " +
                           "component instance. See %s",
-                        componentName
+                        componentName,
                       )
                     : void 0;
                 } else if (!args.length) {
@@ -6558,7 +6557,7 @@
                         "bind(): You are binding a component method to the component. " +
                           "React does this for you automatically in a high-performance " +
                           "way, so you can safely remove this call. See %s",
-                        componentName
+                        componentName,
                       )
                     : void 0;
                   return boundMethod;
@@ -6618,7 +6617,7 @@
           _assign(
             ReactClassComponent.prototype,
             ReactComponent.prototype,
-            ReactClassMixin
+            ReactClassMixin,
           );
 
           /**
@@ -6645,7 +6644,7 @@
                     ? warning(
                         this instanceof Constructor,
                         "Something is calling a React component directly. Use a factory or " +
-                          "JSX instead. See: https://fb.me/react-legacyfactory"
+                          "JSX instead. See: https://fb.me/react-legacyfactory",
                       )
                     : void 0;
                 }
@@ -6687,7 +6686,7 @@
                     ? invariant(
                         false,
                         "%s.getInitialState(): must return an object or null",
-                        Constructor.displayName || "ReactCompositeComponent"
+                        Constructor.displayName || "ReactCompositeComponent",
                       )
                     : invariant(false)
                   : void 0;
@@ -6699,7 +6698,7 @@
               Constructor.prototype.__reactAutoBindPairs = [];
 
               injectedMixins.forEach(
-                mixSpecIntoComponent.bind(null, Constructor)
+                mixSpecIntoComponent.bind(null, Constructor),
               );
 
               mixSpecIntoComponent(Constructor, spec);
@@ -6727,7 +6726,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "createClass(...): Class specification must implement a `render` method."
+                      "createClass(...): Class specification must implement a `render` method.",
                     )
                   : invariant(false)
                 : void 0;
@@ -6740,7 +6739,7 @@
                         "componentShouldUpdate(). Did you mean shouldComponentUpdate()? " +
                         "The name is phrased as a question because the function is " +
                         "expected to return a value.",
-                      spec.displayName || "A component"
+                      spec.displayName || "A component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -6748,7 +6747,7 @@
                       !Constructor.prototype.componentWillRecieveProps,
                       "%s has a method called " +
                         "componentWillRecieveProps(). Did you mean componentWillReceiveProps()?",
-                      spec.displayName || "A component"
+                      spec.displayName || "A component",
                     )
                   : void 0;
               }
@@ -6850,7 +6849,7 @@
            */
           ReactComponent.prototype.setState = function (
             partialState,
-            callback
+            callback,
           ) {
             !(
               typeof partialState === "object" ||
@@ -6861,7 +6860,7 @@
                 ? invariant(
                     false,
                     "setState(...): takes an object of state variables to update or a " +
-                      "function which returns an object of state variables."
+                      "function which returns an object of state variables.",
                   )
                 : invariant(false)
               : void 0;
@@ -6871,7 +6870,7 @@
                 ? warning(
                     partialState != null,
                     "setState(...): You passed an undefined or null state object; " +
-                      "instead, use forceUpdate()."
+                      "instead, use forceUpdate().",
                   )
                 : void 0;
             }
@@ -6929,7 +6928,7 @@
                           false,
                           "%s(...) is deprecated in plain JavaScript React classes. %s",
                           info[0],
-                          info[1]
+                          info[1],
                         )
                       : void 0;
                     return undefined;
@@ -7037,7 +7036,7 @@
                   ? "development" !== "production"
                     ? invariant(
                         false,
-                        "ReactCompositeComponent: injectEnvironment() can only be called once."
+                        "ReactCompositeComponent: injectEnvironment() can only be called once.",
                       )
                     : invariant(false)
                   : void 0;
@@ -7119,7 +7118,7 @@
                       ? invariant(
                           false,
                           "Expected devtool events to fire for the child " +
-                            "before its parent includes it in onSetChildren()."
+                            "before its parent includes it in onSetChildren().",
                         )
                       : invariant(false)
                     : void 0;
@@ -7128,7 +7127,7 @@
                       ? invariant(
                           false,
                           "Expected onSetDisplayName() to fire for the child " +
-                            "before its parent includes it in onSetChildren()."
+                            "before its parent includes it in onSetChildren().",
                         )
                       : invariant(false)
                     : void 0;
@@ -7137,7 +7136,7 @@
                       ? invariant(
                           false,
                           "Expected onSetChildren() or onSetText() to fire for the child " +
-                            "before its parent includes it in onSetChildren()."
+                            "before its parent includes it in onSetChildren().",
                         )
                       : invariant(false)
                     : void 0;
@@ -7146,7 +7145,7 @@
                       ? invariant(
                           false,
                           "Expected onMountComponent() to fire for the child " +
-                            "before its parent includes it in onSetChildren()."
+                            "before its parent includes it in onSetChildren().",
                         )
                       : invariant(false)
                     : void 0;
@@ -7302,7 +7301,7 @@
                       ReactElement.isValidElement(element),
                     "%s(...): A valid React element (or null) must be returned. You may have " +
                       "returned undefined, an array or some other invalid object.",
-                    Component.displayName || Component.name || "Component"
+                    Component.displayName || Component.name || "Component",
                   )
                 : void 0;
             }
@@ -7313,14 +7312,14 @@
             if (this._debugID !== 0) {
               ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                 this._debugID,
-                "componentDidMount"
+                "componentDidMount",
               );
             }
             publicInstance.componentDidMount();
             if (this._debugID !== 0) {
               ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                 this._debugID,
-                "componentDidMount"
+                "componentDidMount",
               );
             }
           }
@@ -7328,24 +7327,24 @@
           function invokeComponentDidUpdateWithTimer(
             prevProps,
             prevState,
-            prevContext
+            prevContext,
           ) {
             var publicInstance = this._instance;
             if (this._debugID !== 0) {
               ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                 this._debugID,
-                "componentDidUpdate"
+                "componentDidUpdate",
               );
             }
             publicInstance.componentDidUpdate(
               prevProps,
               prevState,
-              prevContext
+              prevContext,
             );
             if (this._debugID !== 0) {
               ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                 this._debugID,
-                "componentDidUpdate"
+                "componentDidUpdate",
               );
             }
           }
@@ -7442,7 +7441,7 @@
               transaction,
               nativeParent,
               nativeContainerInfo,
-              context
+              context,
             ) {
               this._context = context;
               this._mountOrder = nextMountID++;
@@ -7475,7 +7474,7 @@
                         false,
                         "%s(...): A valid React element (or null) must be returned. You may have " +
                           "returned undefined, an array or some other invalid object.",
-                        Component.displayName || Component.name || "Component"
+                        Component.displayName || Component.name || "Component",
                       )
                     : invariant(false)
                   : void 0;
@@ -7491,7 +7490,7 @@
                         false,
                         "%s(...): No `render` method found on the returned component " +
                           "instance: you may have forgotten to define `render`.",
-                        Component.displayName || Component.name || "Component"
+                        Component.displayName || Component.name || "Component",
                       )
                     : void 0;
                 }
@@ -7506,7 +7505,7 @@
                       "%s(...): When calling super() in `%s`, make sure to pass " +
                         "up the same props that your component's constructor was passed.",
                       componentName,
-                      componentName
+                      componentName,
                     )
                   : void 0;
               }
@@ -7534,7 +7533,7 @@
                       "getInitialState was defined on %s, a plain JavaScript class. " +
                         "This is only supported for classes created using React.createClass. " +
                         "Did you mean to define a state property instead?",
-                      this.getName() || "a component"
+                      this.getName() || "a component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -7544,7 +7543,7 @@
                       "getDefaultProps was defined on %s, a plain JavaScript class. " +
                         "This is only supported for classes created using React.createClass. " +
                         "Use a static property to define defaultProps instead.",
-                      this.getName() || "a component"
+                      this.getName() || "a component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -7552,7 +7551,7 @@
                       !inst.propTypes,
                       "propTypes was defined as an instance property on %s. Use a static " +
                         "property to define propTypes instead.",
-                      this.getName() || "a component"
+                      this.getName() || "a component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -7560,7 +7559,7 @@
                       !inst.contextTypes,
                       "contextTypes was defined as an instance property on %s. Use a " +
                         "static property to define contextTypes instead.",
-                      this.getName() || "a component"
+                      this.getName() || "a component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -7570,7 +7569,7 @@
                         "componentShouldUpdate(). Did you mean shouldComponentUpdate()? " +
                         "The name is phrased as a question because the function is " +
                         "expected to return a value.",
-                      this.getName() || "A component"
+                      this.getName() || "A component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -7579,7 +7578,7 @@
                       "%s has a method called " +
                         "componentDidUnmount(). But there is no such lifecycle method. " +
                         "Did you mean componentWillUnmount()?",
-                      this.getName() || "A component"
+                      this.getName() || "A component",
                     )
                   : void 0;
                 "development" !== "production"
@@ -7587,7 +7586,7 @@
                       typeof inst.componentWillRecieveProps !== "function",
                       "%s has a method called " +
                         "componentWillRecieveProps(). Did you mean componentWillReceiveProps()?",
-                      this.getName() || "A component"
+                      this.getName() || "A component",
                     )
                   : void 0;
               }
@@ -7603,7 +7602,7 @@
                   ? invariant(
                       false,
                       "%s.state: must be set to an object or null",
-                      this.getName() || "ReactCompositeComponent"
+                      this.getName() || "ReactCompositeComponent",
                     )
                   : invariant(false)
                 : void 0;
@@ -7619,7 +7618,7 @@
                   nativeParent,
                   nativeContainerInfo,
                   transaction,
-                  context
+                  context,
                 );
               } else {
                 markup = this.performInitialMount(
@@ -7627,7 +7626,7 @@
                   nativeParent,
                   nativeContainerInfo,
                   transaction,
-                  context
+                  context,
                 );
               }
 
@@ -7652,7 +7651,7 @@
                 try {
                   return this._constructComponentWithoutOwner(
                     publicProps,
-                    publicContext
+                    publicContext,
                   );
                 } finally {
                   ReactCurrentOwner.current = null;
@@ -7660,14 +7659,14 @@
               } else {
                 return this._constructComponentWithoutOwner(
                   publicProps,
-                  publicContext
+                  publicContext,
                 );
               }
             },
 
             _constructComponentWithoutOwner: function (
               publicProps,
-              publicContext
+              publicContext,
             ) {
               var Component = this._currentElement.type;
               var instanceOrElement;
@@ -7676,20 +7675,20 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "ctor"
+                      "ctor",
                     );
                   }
                 }
                 instanceOrElement = new Component(
                   publicProps,
                   publicContext,
-                  ReactUpdateQueue
+                  ReactUpdateQueue,
                 );
                 if ("development" !== "production") {
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "ctor"
+                      "ctor",
                     );
                   }
                 }
@@ -7700,20 +7699,20 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "render"
+                      "render",
                     );
                   }
                 }
                 instanceOrElement = Component(
                   publicProps,
                   publicContext,
-                  ReactUpdateQueue
+                  ReactUpdateQueue,
                 );
                 if ("development" !== "production") {
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "render"
+                      "render",
                     );
                   }
                 }
@@ -7726,7 +7725,7 @@
               nativeParent,
               nativeContainerInfo,
               transaction,
-              context
+              context,
             ) {
               var markup;
               var checkpoint = transaction.checkpoint();
@@ -7736,7 +7735,7 @@
                   nativeParent,
                   nativeContainerInfo,
                   transaction,
-                  context
+                  context,
                 );
               } catch (e) {
                 // Roll back to checkpoint, handle error (which may add items to the transaction), and take a new checkpoint
@@ -7745,7 +7744,7 @@
                 if (this._pendingStateQueue) {
                   this._instance.state = this._processPendingState(
                     this._instance.props,
-                    this._instance.context
+                    this._instance.context,
                   );
                 }
                 checkpoint = transaction.checkpoint();
@@ -7760,7 +7759,7 @@
                   nativeParent,
                   nativeContainerInfo,
                   transaction,
-                  context
+                  context,
                 );
               }
               return markup;
@@ -7771,7 +7770,7 @@
               nativeParent,
               nativeContainerInfo,
               transaction,
-              context
+              context,
             ) {
               var inst = this._instance;
               if (inst.componentWillMount) {
@@ -7779,7 +7778,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "componentWillMount"
+                      "componentWillMount",
                     );
                   }
                 }
@@ -7788,7 +7787,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "componentWillMount"
+                      "componentWillMount",
                     );
                   }
                 }
@@ -7797,7 +7796,7 @@
                 if (this._pendingStateQueue) {
                   inst.state = this._processPendingState(
                     inst.props,
-                    inst.context
+                    inst.context,
                   );
                 }
               }
@@ -7816,7 +7815,7 @@
                 transaction,
                 nativeParent,
                 nativeContainerInfo,
-                this._processChildContext(context)
+                this._processChildContext(context),
               );
 
               if ("development" !== "production") {
@@ -7825,7 +7824,7 @@
                     this._debugID,
                     this._renderedComponent._debugID !== 0
                       ? [this._renderedComponent._debugID]
-                      : []
+                      : [],
                   );
                 }
               }
@@ -7858,7 +7857,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "componentWillUnmount"
+                      "componentWillUnmount",
                     );
                   }
                 }
@@ -7866,7 +7865,7 @@
                   var name = this.getName() + ".componentWillUnmount()";
                   ReactErrorUtils.invokeGuardedCallback(
                     name,
-                    inst.componentWillUnmount.bind(inst)
+                    inst.componentWillUnmount.bind(inst),
                   );
                 } else {
                   inst.componentWillUnmount();
@@ -7875,7 +7874,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "componentWillUnmount"
+                      "componentWillUnmount",
                     );
                   }
                 }
@@ -7884,7 +7883,7 @@
               if (this._renderedComponent) {
                 ReactReconciler.unmountComponent(
                   this._renderedComponent,
-                  safely
+                  safely,
                 );
                 this._renderedNodeType = null;
                 this._renderedComponent = null;
@@ -7955,7 +7954,7 @@
                   this._checkPropTypes(
                     Component.contextTypes,
                     maskedContext,
-                    ReactPropTypeLocations.context
+                    ReactPropTypeLocations.context,
                   );
                 }
               }
@@ -7984,7 +7983,7 @@
                         false,
                         "%s.getChildContext(): childContextTypes must be defined in order to " +
                           "use getChildContext().",
-                        this.getName() || "ReactCompositeComponent"
+                        this.getName() || "ReactCompositeComponent",
                       )
                     : invariant(false)
                   : void 0;
@@ -7992,7 +7991,7 @@
                   this._checkPropTypes(
                     Component.childContextTypes,
                     childContext,
-                    ReactPropTypeLocations.childContext
+                    ReactPropTypeLocations.childContext,
                   );
                 }
                 for (var name in childContext) {
@@ -8002,7 +8001,7 @@
                           false,
                           '%s.getChildContext(): key "%s" is not defined in childContextTypes.',
                           this.getName() || "ReactCompositeComponent",
-                          name
+                          name,
                         )
                       : invariant(false)
                     : void 0;
@@ -8028,7 +8027,7 @@
                   this._checkPropTypes(
                     Component.propTypes,
                     newProps,
-                    ReactPropTypeLocations.prop
+                    ReactPropTypeLocations.prop,
                   );
                 }
               }
@@ -8061,7 +8060,7 @@
                               "from React.PropTypes.",
                             componentName || "React class",
                             ReactPropTypeLocationNames[location],
-                            propName
+                            propName,
                           )
                         : invariant(false)
                       : void 0;
@@ -8069,7 +8068,7 @@
                       props,
                       propName,
                       componentName,
-                      location
+                      location,
                     );
                   } catch (ex) {
                     error = ex;
@@ -8087,7 +8086,7 @@
                             false,
                             "Failed Composite propType: %s%s",
                             error.message,
-                            addendum
+                            addendum,
                           )
                         : void 0;
                     } else {
@@ -8096,7 +8095,7 @@
                             false,
                             "Failed Context Types: %s%s",
                             error.message,
-                            addendum
+                            addendum,
                           )
                         : void 0;
                     }
@@ -8116,7 +8115,7 @@
                 prevElement,
                 nextElement,
                 prevContext,
-                nextContext
+                nextContext,
               );
             },
 
@@ -8133,7 +8132,7 @@
                   this,
                   this._pendingElement,
                   transaction,
-                  this._context
+                  this._context,
                 );
               } else if (
                 this._pendingStateQueue !== null ||
@@ -8144,7 +8143,7 @@
                   this._currentElement,
                   this._currentElement,
                   this._context,
-                  this._context
+                  this._context,
                 );
               } else {
                 this._updateBatchNumber = null;
@@ -8171,7 +8170,7 @@
               prevParentElement,
               nextParentElement,
               prevUnmaskedContext,
-              nextUnmaskedContext
+              nextUnmaskedContext,
             ) {
               var inst = this._instance;
               var willReceive = false;
@@ -8204,7 +8203,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "componentWillReceiveProps"
+                      "componentWillReceiveProps",
                     );
                   }
                 }
@@ -8213,7 +8212,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "componentWillReceiveProps"
+                      "componentWillReceiveProps",
                     );
                   }
                 }
@@ -8227,20 +8226,20 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "shouldComponentUpdate"
+                      "shouldComponentUpdate",
                     );
                   }
                 }
                 shouldUpdate = inst.shouldComponentUpdate(
                   nextProps,
                   nextState,
-                  nextContext
+                  nextContext,
                 );
                 if ("development" !== "production") {
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "shouldComponentUpdate"
+                      "shouldComponentUpdate",
                     );
                   }
                 }
@@ -8252,7 +8251,7 @@
                       shouldUpdate !== undefined,
                       "%s.shouldComponentUpdate(): Returned undefined instead of a " +
                         "boolean value. Make sure to return true or false.",
-                      this.getName() || "ReactCompositeComponent"
+                      this.getName() || "ReactCompositeComponent",
                     )
                   : void 0;
               }
@@ -8267,7 +8266,7 @@
                   nextState,
                   nextContext,
                   transaction,
-                  nextUnmaskedContext
+                  nextUnmaskedContext,
                 );
               } else {
                 // If it's determined that a component should not update, we still want
@@ -8302,7 +8301,7 @@
                   nextState,
                   typeof partial === "function"
                     ? partial.call(inst, nextState, props, context)
-                    : partial
+                    : partial,
                 );
               }
 
@@ -8327,7 +8326,7 @@
               nextState,
               nextContext,
               transaction,
-              unmaskedContext
+              unmaskedContext,
             ) {
               var inst = this._instance;
 
@@ -8346,7 +8345,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                       this._debugID,
-                      "componentWillUpdate"
+                      "componentWillUpdate",
                     );
                   }
                 }
@@ -8355,7 +8354,7 @@
                   if (this._debugID !== 0) {
                     ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                       this._debugID,
-                      "componentWillUpdate"
+                      "componentWillUpdate",
                     );
                   }
                 }
@@ -8378,9 +8377,9 @@
                         this,
                         prevProps,
                         prevState,
-                        prevContext
+                        prevContext,
                       ),
-                      this
+                      this,
                     );
                 } else {
                   transaction
@@ -8390,9 +8389,9 @@
                         inst,
                         prevProps,
                         prevState,
-                        prevContext
+                        prevContext,
                       ),
-                      inst
+                      inst,
                     );
                 }
               }
@@ -8411,18 +8410,18 @@
               if (
                 shouldUpdateReactComponent(
                   prevRenderedElement,
-                  nextRenderedElement
+                  nextRenderedElement,
                 )
               ) {
                 ReactReconciler.receiveComponent(
                   prevComponentInstance,
                   nextRenderedElement,
                   transaction,
-                  this._processChildContext(context)
+                  this._processChildContext(context),
                 );
               } else {
                 var oldNativeNode = ReactReconciler.getNativeNode(
-                  prevComponentInstance
+                  prevComponentInstance,
                 );
                 ReactReconciler.unmountComponent(prevComponentInstance, false);
 
@@ -8436,7 +8435,7 @@
                   transaction,
                   this._nativeParent,
                   this._nativeContainerInfo,
-                  this._processChildContext(context)
+                  this._processChildContext(context),
                 );
 
                 if ("development" !== "production") {
@@ -8445,7 +8444,7 @@
                       this._debugID,
                       this._renderedComponent._debugID !== 0
                         ? [this._renderedComponent._debugID]
-                        : []
+                        : [],
                     );
                   }
                 }
@@ -8453,7 +8452,7 @@
                 this._replaceNodeWithMarkup(
                   oldNativeNode,
                   nextMarkup,
-                  prevComponentInstance
+                  prevComponentInstance,
                 );
               }
             },
@@ -8466,12 +8465,12 @@
             _replaceNodeWithMarkup: function (
               oldNativeNode,
               nextMarkup,
-              prevInstance
+              prevInstance,
             ) {
               ReactComponentEnvironment.replaceNodeWithMarkup(
                 oldNativeNode,
                 nextMarkup,
-                prevInstance
+                prevInstance,
               );
             },
 
@@ -8485,7 +8484,7 @@
                 if (this._debugID !== 0) {
                   ReactInstrumentation.debugTool.onBeginLifeCycleTimer(
                     this._debugID,
-                    "render"
+                    "render",
                   );
                 }
               }
@@ -8494,7 +8493,7 @@
                 if (this._debugID !== 0) {
                   ReactInstrumentation.debugTool.onEndLifeCycleTimer(
                     this._debugID,
-                    "render"
+                    "render",
                   );
                 }
               }
@@ -8539,7 +8538,7 @@
                       false,
                       "%s.render(): A valid React element (or null) must be returned. You may have " +
                         "returned undefined, an array or some other invalid object.",
-                      this.getName() || "ReactCompositeComponent"
+                      this.getName() || "ReactCompositeComponent",
                     )
                   : invariant(false)
                 : void 0;
@@ -8561,7 +8560,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "Stateless function components cannot have refs."
+                      "Stateless function components cannot have refs.",
                     )
                   : invariant(false)
                 : void 0;
@@ -8579,7 +8578,7 @@
                         "Attempts to access this ref will fail.",
                       ref,
                       componentName,
-                      this.getName()
+                      this.getName(),
                     )
                   : void 0;
               }
@@ -8788,7 +8787,7 @@
                         ? "and use an HTTP server (instead of a file: URL) "
                         : "") +
                       "for a better development experience: " +
-                      "https://fb.me/react-devtools"
+                      "https://fb.me/react-devtools",
                   );
                 }
               }
@@ -8801,7 +8800,7 @@
                     "It looks like you're using a minified copy of the development build " +
                       "of React. When deploying React apps to production, make sure to use " +
                       "the production build which skips development warnings and is faster. " +
-                      "See https://fb.me/react-minification for more details."
+                      "See https://fb.me/react-minification for more details.",
                   )
                 : void 0;
 
@@ -8815,7 +8814,7 @@
                     !ieCompatibilityMode,
                     "Internet Explorer is running in compatibility mode; please add the " +
                       "following tag to your HTML to prevent this from happening: " +
-                      '<meta http-equiv="X-UA-Compatible" content="IE=edge" />'
+                      '<meta http-equiv="X-UA-Compatible" content="IE=edge" />',
                   )
                 : void 0;
 
@@ -8839,7 +8838,7 @@
                     ? warning(
                         false,
                         "One or more ES5 shims expected by React are not available: " +
-                          "https://fb.me/react-warning-polyfills"
+                          "https://fb.me/react-warning-polyfills",
                       )
                     : void 0;
                   break;
@@ -9039,7 +9038,7 @@
                     ? "of `" + ownerName + "`"
                     : "using <" + componentName + ">",
                   friendlyStringify(style1),
-                  friendlyStringify(style2)
+                  friendlyStringify(style2),
                 )
               : void 0;
           }
@@ -9065,7 +9064,7 @@
                         ? " Check the render method of " +
                             component._currentElement._owner.getName() +
                             "."
-                        : ""
+                        : "",
                     )
                   : invariant(false)
                 : void 0;
@@ -9075,7 +9074,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "Can only set one of `children` or `props.dangerouslySetInnerHTML`."
+                      "Can only set one of `children` or `props.dangerouslySetInnerHTML`.",
                     )
                   : invariant(false)
                 : void 0;
@@ -9088,7 +9087,7 @@
                       false,
                       "`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. " +
                         "Please visit https://fb.me/react-invariant-dangerously-set-inner-html " +
-                        "for more information."
+                        "for more information.",
                     )
                   : invariant(false)
                 : void 0;
@@ -9098,7 +9097,7 @@
                 ? warning(
                     props.innerHTML == null,
                     "Directly setting property `innerHTML` is not permitted. " +
-                      "For more information, lookup documentation on `dangerouslySetInnerHTML`."
+                      "For more information, lookup documentation on `dangerouslySetInnerHTML`.",
                   )
                 : void 0;
               "development" !== "production"
@@ -9109,7 +9108,7 @@
                     "A component is `contentEditable` and contains `children` managed by " +
                       "React. It is now your responsibility to guarantee that none of " +
                       "those nodes are unexpectedly modified or duplicated. This is " +
-                      "probably not intentional."
+                      "probably not intentional.",
                   )
                 : void 0;
               "development" !== "production"
@@ -9117,7 +9116,7 @@
                     props.onFocusIn == null && props.onFocusOut == null,
                     "React uses onFocus and onBlur instead of onFocusIn and onFocusOut. " +
                       "All React events are normalized to bubble, so onFocusIn and onFocusOut " +
-                      "are not needed/supported by React."
+                      "are not needed/supported by React.",
                   )
                 : void 0;
             }
@@ -9128,7 +9127,7 @@
                     "The `style` prop expects a mapping from style properties to values, " +
                       "not a string. For example, style={{marginRight: spacing + 'em'}} when " +
                       "using JSX.%s",
-                    getDeclarationErrorAddendum(component)
+                    getDeclarationErrorAddendum(component),
                   )
                 : invariant(false)
               : void 0;
@@ -9138,7 +9137,7 @@
             inst,
             registrationName,
             listener,
-            transaction
+            transaction,
           ) {
             if (transaction instanceof ReactServerRenderingTransaction) {
               return;
@@ -9150,7 +9149,7 @@
                 ? warning(
                     registrationName !== "onScroll" ||
                       isEventSupported("scroll", true),
-                    "This browser doesn't support the `onScroll` event"
+                    "This browser doesn't support the `onScroll` event",
                   )
                 : void 0;
             }
@@ -9174,7 +9173,7 @@
             EventPluginHub.putListener(
               listenerToPut.inst,
               listenerToPut.registrationName,
-              listenerToPut.listener
+              listenerToPut.listener,
             );
           }
 
@@ -9191,11 +9190,11 @@
               this._contentDebugID = contentDebugID;
               ReactInstrumentation.debugTool.onSetDisplayName(
                 contentDebugID,
-                "#text"
+                "#text",
               );
               ReactInstrumentation.debugTool.onSetText(
                 contentDebugID,
-                "" + contentToUse
+                "" + contentToUse,
               );
               ReactInstrumentation.debugTool.onMountComponent(contentDebugID);
               ReactInstrumentation.debugTool.onSetChildren(debugID, [
@@ -9246,7 +9245,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "trapBubbledEvent(...): Requires node to be rendered."
+                    "trapBubbledEvent(...): Requires node to be rendered.",
                   )
                 : invariant(false)
               : void 0;
@@ -9258,7 +9257,7 @@
                   ReactBrowserEventEmitter.trapBubbledEvent(
                     EventConstants.topLevelTypes.topLoad,
                     "load",
-                    node
+                    node,
                   ),
                 ];
                 break;
@@ -9272,8 +9271,8 @@
                       ReactBrowserEventEmitter.trapBubbledEvent(
                         EventConstants.topLevelTypes[event],
                         mediaEvents[event],
-                        node
-                      )
+                        node,
+                      ),
                     );
                   }
                 }
@@ -9284,12 +9283,12 @@
                   ReactBrowserEventEmitter.trapBubbledEvent(
                     EventConstants.topLevelTypes.topError,
                     "error",
-                    node
+                    node,
                   ),
                   ReactBrowserEventEmitter.trapBubbledEvent(
                     EventConstants.topLevelTypes.topLoad,
                     "load",
-                    node
+                    node,
                   ),
                 ];
                 break;
@@ -9298,12 +9297,12 @@
                   ReactBrowserEventEmitter.trapBubbledEvent(
                     EventConstants.topLevelTypes.topReset,
                     "reset",
-                    node
+                    node,
                   ),
                   ReactBrowserEventEmitter.trapBubbledEvent(
                     EventConstants.topLevelTypes.topSubmit,
                     "submit",
-                    node
+                    node,
                   ),
                 ];
                 break;
@@ -9314,7 +9313,7 @@
                   ReactBrowserEventEmitter.trapBubbledEvent(
                     EventConstants.topLevelTypes.topInvalid,
                     "invalid",
-                    node
+                    node,
                   ),
                 ];
                 break;
@@ -9360,7 +9359,7 @@
             {
               menuitem: true,
             },
-            omittedCloseTags
+            omittedCloseTags,
           );
 
           // We accept any tag to be rendered but since this gets injected into arbitrary
@@ -9443,7 +9442,7 @@
               transaction,
               nativeParent,
               nativeContainerInfo,
-              context
+              context,
             ) {
               this._rootNodeID = globalIdCounter++;
               this._domID = nativeContainerInfo._idCounter++;
@@ -9470,7 +9469,7 @@
                   props = ReactDOMButton.getNativeProps(
                     this,
                     props,
-                    nativeParent
+                    nativeParent,
                   );
                   break;
                 case "input":
@@ -9544,7 +9543,7 @@
                 this._ancestorInfo = validateDOMNesting.updatedAncestorInfo(
                   parentInfo,
                   this._tag,
-                  this
+                  this,
                 );
               }
 
@@ -9563,13 +9562,13 @@
                   } else {
                     el = ownerDocument.createElement(
                       this._currentElement.type,
-                      props.is || null
+                      props.is || null,
                     );
                   }
                 } else {
                   el = ownerDocument.createElementNS(
                     namespaceURI,
-                    this._currentElement.type
+                    this._currentElement.type,
                   );
                 }
                 ReactDOMComponentTree.precacheNode(this, el);
@@ -9583,18 +9582,18 @@
                   transaction,
                   props,
                   context,
-                  lazyTree
+                  lazyTree,
                 );
                 mountImage = lazyTree;
               } else {
                 var tagOpen = this._createOpenTagMarkupAndPutListeners(
                   transaction,
-                  props
+                  props,
                 );
                 var tagContent = this._createContentMarkup(
                   transaction,
                   props,
-                  context
+                  context,
                 );
                 if (!tagContent && omittedCloseTags[this._tag]) {
                   mountImage = tagOpen + "/>";
@@ -9666,12 +9665,12 @@
                       }
                       propValue = this._previousStyleCopy = _assign(
                         {},
-                        props.style
+                        props.style,
                       );
                     }
                     propValue = CSSPropertyOperations.createMarkupForStyles(
                       propValue,
-                      this
+                      this,
                     );
                   }
                   var markup = null;
@@ -9683,13 +9682,13 @@
                       markup =
                         DOMPropertyOperations.createMarkupForCustomAttribute(
                           propKey,
-                          propValue
+                          propValue,
                         );
                     }
                   } else {
                     markup = DOMPropertyOperations.createMarkupForProperty(
                       propKey,
-                      propValue
+                      propValue,
                     );
                   }
                   if (markup) {
@@ -9745,7 +9744,7 @@
                   var mountImages = this.mountChildren(
                     childrenToUse,
                     transaction,
-                    context
+                    context,
                   );
                   ret = mountImages.join("");
                 }
@@ -9771,7 +9770,7 @@
               transaction,
               props,
               context,
-              lazyTree
+              lazyTree,
             ) {
               // Intentional use of != to avoid catching zero/false.
               var innerHTML = props.dangerouslySetInnerHTML;
@@ -9795,7 +9794,7 @@
                   var mountImages = this.mountChildren(
                     childrenToUse,
                     transaction,
-                    context
+                    context,
                   );
                   for (var i = 0; i < mountImages.length; i++) {
                     DOMLazyTree.queueChild(lazyTree, mountImages[i]);
@@ -9819,7 +9818,7 @@
                 transaction,
                 prevElement,
                 nextElement,
-                context
+                context,
               );
             },
 
@@ -9837,7 +9836,7 @@
               transaction,
               prevElement,
               nextElement,
-              context
+              context,
             ) {
               var lastProps = prevElement.props;
               var nextProps = this._currentElement.props;
@@ -9873,7 +9872,7 @@
                 lastProps,
                 nextProps,
                 transaction,
-                context
+                context,
               );
 
               if (this._tag === "select") {
@@ -9935,7 +9934,7 @@
                 ) {
                   DOMPropertyOperations.deleteValueForProperty(
                     getNode(this),
-                    propKey
+                    propKey,
                   );
                 }
               }
@@ -9945,8 +9944,8 @@
                   propKey === STYLE
                     ? this._previousStyleCopy
                     : lastProps != null
-                    ? lastProps[propKey]
-                    : undefined;
+                      ? lastProps[propKey]
+                      : undefined;
                 if (
                   !nextProps.hasOwnProperty(propKey) ||
                   nextProp === lastProp ||
@@ -9960,7 +9959,7 @@
                       checkAndWarnForMutatedStyle(
                         this._previousStyleCopy,
                         this._previousStyle,
-                        this
+                        this,
                       );
                       this._previousStyle = nextProp;
                     }
@@ -10004,7 +10003,7 @@
                     DOMPropertyOperations.setValueForAttribute(
                       getNode(this),
                       propKey,
-                      nextProp
+                      nextProp,
                     );
                   }
                 } else if (
@@ -10019,7 +10018,7 @@
                     DOMPropertyOperations.setValueForProperty(
                       node,
                       propKey,
-                      nextProp
+                      nextProp,
                     );
                   } else {
                     DOMPropertyOperations.deleteValueForProperty(node, propKey);
@@ -10030,7 +10029,7 @@
                 CSSPropertyOperations.setValueForStyles(
                   getNode(this),
                   styleUpdates,
-                  this
+                  this,
                 );
               }
             },
@@ -10048,7 +10047,7 @@
               lastProps,
               nextProps,
               transaction,
-              context
+              context,
             ) {
               var lastContent = CONTENT_TYPES[typeof lastProps.children]
                 ? lastProps.children
@@ -10083,7 +10082,7 @@
                 if ("development" !== "production") {
                   ReactInstrumentation.debugTool.onSetChildren(
                     this._debugID,
-                    []
+                    [],
                   );
                 }
               }
@@ -10103,14 +10102,14 @@
                 if ("development" !== "production") {
                   ReactInstrumentation.debugTool.onSetChildren(
                     this._debugID,
-                    []
+                    [],
                   );
                 }
               } else if (nextChildren != null) {
                 if ("development" !== "production") {
                   if (this._contentDebugID) {
                     ReactInstrumentation.debugTool.onUnmountComponent(
-                      this._contentDebugID
+                      this._contentDebugID,
                     );
                     this._contentDebugID = null;
                   }
@@ -10163,7 +10162,7 @@
                             "<head>, and <body>) reliably and efficiently. To fix this, have a " +
                             "single top-level component that never unmounts render these " +
                             "elements.",
-                          this._tag
+                          this._tag,
                         )
                       : invariant(false)
                     : void 0;
@@ -10174,7 +10173,7 @@
               ReactDOMComponentTree.uncacheNode(this);
               EventPluginHub.deleteAllListeners(this);
               ReactComponentBrowserEnvironment.unmountIDFromEnvironment(
-                this._rootNodeID
+                this._rootNodeID,
               );
               this._rootNodeID = null;
               this._domID = null;
@@ -10183,7 +10182,7 @@
               if ("development" !== "production") {
                 if (this._contentDebugID) {
                   ReactInstrumentation.debugTool.onUnmountComponent(
-                    this._contentDebugID
+                    this._contentDebugID,
                   );
                   this._contentDebugID = null;
                 }
@@ -10198,7 +10197,7 @@
           _assign(
             ReactDOMComponent.prototype,
             ReactDOMComponent.Mixin,
-            ReactMultiChild.Mixin
+            ReactMultiChild.Mixin,
           );
 
           module.exports = ReactDOMComponent;
@@ -10369,7 +10368,7 @@
                   ? invariant(
                       false,
                       "Unable to find element with ID %s.",
-                      childID
+                      childID,
                     )
                   : invariant(false)
                 : void 0;
@@ -10453,7 +10452,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "React DOM tree root should always have a node reference."
+                      "React DOM tree root should always have a node reference.",
                     )
                   : invariant(false)
                 : void 0;
@@ -10554,7 +10553,7 @@
             arg2,
             arg3,
             arg4,
-            arg5
+            arg5,
           ) {
             if ("development" !== "production") {
               eventHandlers.forEach(function (handler) {
@@ -10568,7 +10567,7 @@
                         !handlerDoesThrowForEvent[handlerFunctionName],
                         "exception thrown by devtool while handling %s: %s",
                         handlerFunctionName,
-                        e.message
+                        e.message,
                       )
                     : void 0;
                   handlerDoesThrowForEvent[handlerFunctionName] = true;
@@ -10640,7 +10639,7 @@
               transaction,
               nativeParent,
               nativeContainerInfo,
-              context
+              context,
             ) {
               var domID = nativeContainerInfo._idCounter++;
               this._domID = domID;
@@ -10852,7 +10851,7 @@
               text: "text",
               tspan: "tspan",
             },
-            createDOMFactory
+            createDOMFactory,
           );
 
           module.exports = ReactDOMFactories;
@@ -10968,7 +10967,7 @@
                     false,
                     "`value` prop on `input` should not be null. " +
                       "Consider using the empty string to clear the component or `undefined` " +
-                      "for uncontrolled components."
+                      "for uncontrolled components.",
                   )
                 : void 0;
 
@@ -11014,7 +11013,7 @@
                       ? checked
                       : inst._wrapperState.initialChecked,
                   onChange: inst._wrapperState.onChange,
-                }
+                },
               );
 
               return nativeProps;
@@ -11025,7 +11024,7 @@
                 LinkedValueUtils.checkPropTypes(
                   "input",
                   props,
-                  inst._currentElement._owner
+                  inst._currentElement._owner,
                 );
 
                 var owner = inst._currentElement._owner;
@@ -11034,7 +11033,7 @@
                   "development" !== "production"
                     ? warning(
                         false,
-                        "`valueLink` prop on `input` is deprecated; set `value` and `onChange` instead."
+                        "`valueLink` prop on `input` is deprecated; set `value` and `onChange` instead.",
                       )
                     : void 0;
                   didWarnValueLink = true;
@@ -11043,7 +11042,7 @@
                   "development" !== "production"
                     ? warning(
                         false,
-                        "`checkedLink` prop on `input` is deprecated; set `value` and `onChange` instead."
+                        "`checkedLink` prop on `input` is deprecated; set `value` and `onChange` instead.",
                       )
                     : void 0;
                   didWarnCheckedLink = true;
@@ -11063,7 +11062,7 @@
                           "element and remove one of these props. More info: " +
                           "https://fb.me/react-controlled-components",
                         (owner && owner.getName()) || "A component",
-                        props.type
+                        props.type,
                       )
                     : void 0;
                   didWarnCheckedDefaultChecked = true;
@@ -11083,7 +11082,7 @@
                           "element and remove one of these props. More info: " +
                           "https://fb.me/react-controlled-components",
                         (owner && owner.getName()) || "A component",
-                        props.type
+                        props.type,
                       )
                     : void 0;
                   didWarnValueDefaultValue = true;
@@ -11132,7 +11131,7 @@
                           "Decide between using a controlled or uncontrolled input " +
                           "element for the lifetime of the component. More info: https://fb.me/react-controlled-components",
                         (owner && owner.getName()) || "A component",
-                        props.type
+                        props.type,
                       )
                     : void 0;
                   didWarnUncontrolledToControlled = true;
@@ -11150,7 +11149,7 @@
                           "Decide between using a controlled or uncontrolled input " +
                           "element for the lifetime of the component. More info: https://fb.me/react-controlled-components",
                         (owner && owner.getName()) || "A component",
-                        props.type
+                        props.type,
                       )
                     : void 0;
                   didWarnControlledToUncontrolled = true;
@@ -11163,7 +11162,7 @@
                 DOMPropertyOperations.setValueForProperty(
                   ReactDOMComponentTree.getNodeFromInstance(inst),
                   "checked",
-                  checked || false
+                  checked || false,
                 );
               }
 
@@ -11174,7 +11173,7 @@
                 DOMPropertyOperations.setValueForProperty(
                   ReactDOMComponentTree.getNodeFromInstance(inst),
                   "value",
-                  "" + value
+                  "" + value,
                 );
               }
             },
@@ -11206,7 +11205,7 @@
               // the input might not even be in a form, let's just use the global
               // `querySelectorAll` to ensure we don't miss anything.
               var group = queryRoot.querySelectorAll(
-                "input[name=" + JSON.stringify("" + name) + '][type="radio"]'
+                "input[name=" + JSON.stringify("" + name) + '][type="radio"]',
               );
 
               for (var i = 0; i < group.length; i++) {
@@ -11228,7 +11227,7 @@
                     ? invariant(
                         false,
                         "ReactDOMInput: Mixing React and non-React radio inputs with the " +
-                          "same `name` is not supported."
+                          "same `name` is not supported.",
                       )
                     : invariant(false)
                   : void 0;
@@ -11310,7 +11309,7 @@
                   ? warning(
                       props.selected == null,
                       "Use the `defaultValue` or `value` props on <select> instead of " +
-                        "setting `selected` on <option>."
+                        "setting `selected` on <option>.",
                     )
                   : void 0;
               }
@@ -11363,7 +11362,7 @@
             getNativeProps: function (inst, props) {
               var nativeProps = _assign(
                 { selected: undefined, children: undefined },
-                props
+                props,
               );
 
               // Read state only from initial mount because <select> updates value
@@ -11386,7 +11385,7 @@
                   "development" !== "production"
                     ? warning(
                         false,
-                        "Only strings and numbers are supported as <option> children."
+                        "Only strings and numbers are supported as <option> children.",
                       )
                     : void 0;
                 }
@@ -11462,7 +11461,7 @@
                     false,
                     "`value` prop on `select` should not be null. " +
                       "Consider using the empty string to clear the component or `undefined` " +
-                      "for uncontrolled components."
+                      "for uncontrolled components.",
                   )
                 : void 0;
 
@@ -11484,7 +11483,7 @@
               "development" !== "production"
                 ? warning(
                     false,
-                    "`valueLink` prop on `select` is deprecated; set `value` and `onChange` instead."
+                    "`valueLink` prop on `select` is deprecated; set `value` and `onChange` instead.",
                   )
                 : void 0;
               didWarnValueLink = true;
@@ -11502,7 +11501,7 @@
                       "The `%s` prop supplied to <select> must be an array if " +
                         "`multiple` is true.%s",
                       propName,
-                      getDeclarationErrorAddendum(owner)
+                      getDeclarationErrorAddendum(owner),
                     )
                   : void 0;
               } else {
@@ -11512,7 +11511,7 @@
                       "The `%s` prop supplied to <select> must be a scalar " +
                         "value if `multiple` is false.%s",
                       propName,
-                      getDeclarationErrorAddendum(owner)
+                      getDeclarationErrorAddendum(owner),
                     )
                   : void 0;
               }
@@ -11580,7 +11579,7 @@
                 {
                   onChange: inst._wrapperState.onChange,
                   value: undefined,
-                }
+                },
               );
             },
 
@@ -11611,7 +11610,7 @@
                         "(specify either the value prop, or the defaultValue prop, but not " +
                         "both). Decide between using a controlled or uncontrolled select " +
                         "element and remove one of these props. More info: " +
-                        "https://fb.me/react-controlled-components"
+                        "https://fb.me/react-controlled-components",
                     )
                   : void 0;
                 didWarnValueDefaultValue = true;
@@ -11647,14 +11646,14 @@
                   updateOptions(
                     inst,
                     Boolean(props.multiple),
-                    props.defaultValue
+                    props.defaultValue,
                   );
                 } else {
                   // Revert the select back to its default unselected state.
                   updateOptions(
                     inst,
                     Boolean(props.multiple),
-                    props.multiple ? [] : ""
+                    props.multiple ? [] : "",
                   );
                 }
               }
@@ -11705,7 +11704,7 @@
             anchorNode,
             anchorOffset,
             focusNode,
-            focusOffset
+            focusOffset,
           ) {
             return anchorNode === focusNode && anchorOffset === focusOffset;
           }
@@ -11784,7 +11783,7 @@
               selection.anchorNode,
               selection.anchorOffset,
               selection.focusNode,
-              selection.focusOffset
+              selection.focusOffset,
             );
 
             var rangeLength = isSelectionCollapsed
@@ -11795,14 +11794,14 @@
             tempRange.selectNodeContents(node);
             tempRange.setEnd(
               currentRange.startContainer,
-              currentRange.startOffset
+              currentRange.startOffset,
             );
 
             var isTempRangeCollapsed = isCollapsed(
               tempRange.startContainer,
               tempRange.startOffset,
               tempRange.endContainer,
-              tempRange.endOffset
+              tempRange.endOffset,
             );
 
             var start = isTempRangeCollapsed ? 0 : tempRange.toString().length;
@@ -12017,12 +12016,12 @@
               transaction,
               nativeParent,
               nativeContainerInfo,
-              context
+              context,
             ) {
               if ("development" !== "production") {
                 ReactInstrumentation.debugTool.onSetText(
                   this._debugID,
-                  this._stringText
+                  this._stringText,
                 );
 
                 var parentInfo;
@@ -12048,13 +12047,13 @@
                 var openingComment = ownerDocument.createComment(openingValue);
                 var closingComment = ownerDocument.createComment(closingValue);
                 var lazyTree = DOMLazyTree(
-                  ownerDocument.createDocumentFragment()
+                  ownerDocument.createDocumentFragment(),
                 );
                 DOMLazyTree.queueChild(lazyTree, DOMLazyTree(openingComment));
                 if (this._stringText) {
                   DOMLazyTree.queueChild(
                     lazyTree,
-                    DOMLazyTree(ownerDocument.createTextNode(this._stringText))
+                    DOMLazyTree(ownerDocument.createTextNode(this._stringText)),
                   );
                 }
                 DOMLazyTree.queueChild(lazyTree, DOMLazyTree(closingComment));
@@ -12103,13 +12102,13 @@
                   DOMChildrenOperations.replaceDelimitedText(
                     commentNodes[0],
                     commentNodes[1],
-                    nextStringText
+                    nextStringText,
                   );
 
                   if ("development" !== "production") {
                     ReactInstrumentation.debugTool.onSetText(
                       this._debugID,
-                      nextStringText
+                      nextStringText,
                     );
                   }
                 }
@@ -12131,7 +12130,7 @@
                       ? invariant(
                           false,
                           "Missing closing comment for text component %s",
-                          this._domID
+                          this._domID,
                         )
                       : invariant(false)
                     : void 0;
@@ -12205,7 +12204,7 @@
                     false,
                     "`value` prop on `textarea` should not be null. " +
                       "Consider using the empty string to clear the component or `undefined` " +
-                      "for uncontrolled components."
+                      "for uncontrolled components.",
                   )
                 : void 0;
 
@@ -12234,7 +12233,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "`dangerouslySetInnerHTML` does not make sense on <textarea>."
+                      "`dangerouslySetInnerHTML` does not make sense on <textarea>.",
                     )
                   : invariant(false)
                 : void 0;
@@ -12249,7 +12248,7 @@
                   value: undefined,
                   children: inst._wrapperState.initialValue,
                   onChange: inst._wrapperState.onChange,
-                }
+                },
               );
 
               return nativeProps;
@@ -12260,13 +12259,13 @@
                 LinkedValueUtils.checkPropTypes(
                   "textarea",
                   props,
-                  inst._currentElement._owner
+                  inst._currentElement._owner,
                 );
                 if (props.valueLink !== undefined && !didWarnValueLink) {
                   "development" !== "production"
                     ? warning(
                         false,
-                        "`valueLink` prop on `textarea` is deprecated; set `value` and `onChange` instead."
+                        "`valueLink` prop on `textarea` is deprecated; set `value` and `onChange` instead.",
                       )
                     : void 0;
                   didWarnValueLink = true;
@@ -12283,7 +12282,7 @@
                           "(specify either the value prop, or the defaultValue prop, but not " +
                           "both). Decide between using a controlled or uncontrolled textarea " +
                           "and remove one of these props. More info: " +
-                          "https://fb.me/react-controlled-components"
+                          "https://fb.me/react-controlled-components",
                       )
                     : void 0;
                   didWarnValDefaultVal = true;
@@ -12300,7 +12299,7 @@
                     ? warning(
                         false,
                         "Use the `defaultValue` or `value` props instead of setting " +
-                          "children on <textarea>."
+                          "children on <textarea>.",
                       )
                     : void 0;
                 }
@@ -12308,7 +12307,7 @@
                   ? "development" !== "production"
                     ? invariant(
                         false,
-                        "If you supply `defaultValue` on a <textarea>, do not pass children."
+                        "If you supply `defaultValue` on a <textarea>, do not pass children.",
                       )
                     : invariant(false)
                   : void 0;
@@ -12317,7 +12316,7 @@
                     ? "development" !== "production"
                       ? invariant(
                           false,
-                          "<textarea> can only have at most one child."
+                          "<textarea> can only have at most one child.",
                         )
                       : invariant(false)
                     : void 0;
@@ -12355,7 +12354,7 @@
                 DOMPropertyOperations.setValueForProperty(
                   ReactDOMComponentTree.getNodeFromInstance(inst),
                   "value",
-                  "" + value
+                  "" + value,
                 );
               }
             },
@@ -12591,10 +12590,10 @@
               var standardName = DOMProperty.isCustomAttribute(lowerCasedName)
                 ? lowerCasedName
                 : DOMProperty.getPossibleStandardName.hasOwnProperty(
-                    lowerCasedName
-                  )
-                ? DOMProperty.getPossibleStandardName[lowerCasedName]
-                : null;
+                      lowerCasedName,
+                    )
+                  ? DOMProperty.getPossibleStandardName[lowerCasedName]
+                  : null;
 
               // For now, only warn when we have a suggested correction. This prevents
               // logging too much when using transferPropsTo.
@@ -12603,13 +12602,13 @@
                     standardName == null,
                     "Unknown DOM property %s. Did you mean %s?",
                     name,
-                    standardName
+                    standardName,
                   )
                 : void 0;
 
               var registrationName =
                 EventPluginRegistry.possibleRegistrationNames.hasOwnProperty(
-                  lowerCasedName
+                  lowerCasedName,
                 )
                   ? EventPluginRegistry.possibleRegistrationNames[
                       lowerCasedName
@@ -12621,7 +12620,7 @@
                     registrationName == null,
                     "Unknown event handler property %s. Did you mean `%s`?",
                     name,
-                    registrationName
+                    registrationName,
                   )
                 : void 0;
             };
@@ -12672,7 +12671,7 @@
             arg2,
             arg3,
             arg4,
-            arg5
+            arg5,
           ) {
             if ("development" !== "production") {
               eventHandlers.forEach(function (handler) {
@@ -12686,7 +12685,7 @@
                         !handlerDoesThrowForEvent[handlerFunctionName],
                         "exception thrown by devtool while handling %s: %s",
                         handlerFunctionName,
-                        e.message
+                        e.message,
                       )
                     : void 0;
                   handlerDoesThrowForEvent[handlerFunctionName] = true;
@@ -12829,7 +12828,9 @@
                           "progress for %s instance.",
                         timerType,
                         currentTimerType || "no",
-                        debugID === currentTimerDebugID ? "the same" : "another"
+                        debugID === currentTimerDebugID
+                          ? "the same"
+                          : "another",
                       )
                     : void 0;
                   currentTimerStartTime = performanceNow();
@@ -12850,7 +12851,9 @@
                           "progress for %s instance. Please report this as a bug in React.",
                         timerType,
                         currentTimerType || "no",
-                        debugID === currentTimerDebugID ? "the same" : "another"
+                        debugID === currentTimerDebugID
+                          ? "the same"
+                          : "another",
                       )
                     : void 0;
                   currentFlushMeasurements.push({
@@ -12988,7 +12991,7 @@
               getTransactionWrappers: function () {
                 return TRANSACTION_WRAPPERS;
               },
-            }
+            },
           );
 
           var transaction = new ReactDefaultBatchingStrategyTransaction();
@@ -13065,20 +13068,20 @@
             alreadyInjected = true;
 
             ReactInjection.EventEmitter.injectReactEventListener(
-              ReactEventListener
+              ReactEventListener,
             );
 
             /**
              * Inject modules for resolving DOM hierarchy and plugin ordering.
              */
             ReactInjection.EventPluginHub.injectEventPluginOrder(
-              DefaultEventPluginOrder
+              DefaultEventPluginOrder,
             );
             ReactInjection.EventPluginUtils.injectComponentTree(
-              ReactDOMComponentTree
+              ReactDOMComponentTree,
             );
             ReactInjection.EventPluginUtils.injectTreeTraversal(
-              ReactDOMTreeTraversal
+              ReactDOMTreeTraversal,
             );
 
             /**
@@ -13094,35 +13097,35 @@
             });
 
             ReactInjection.NativeComponent.injectGenericComponentClass(
-              ReactDOMComponent
+              ReactDOMComponent,
             );
 
             ReactInjection.NativeComponent.injectTextComponentClass(
-              ReactDOMTextComponent
+              ReactDOMTextComponent,
             );
 
             ReactInjection.DOMProperty.injectDOMPropertyConfig(
-              HTMLDOMPropertyConfig
+              HTMLDOMPropertyConfig,
             );
             ReactInjection.DOMProperty.injectDOMPropertyConfig(
-              SVGDOMPropertyConfig
+              SVGDOMPropertyConfig,
             );
 
-            ReactInjection.EmptyComponent.injectEmptyComponentFactory(function (
-              instantiate
-            ) {
-              return new ReactDOMEmptyComponent(instantiate);
-            });
+            ReactInjection.EmptyComponent.injectEmptyComponentFactory(
+              function (instantiate) {
+                return new ReactDOMEmptyComponent(instantiate);
+              },
+            );
 
             ReactInjection.Updates.injectReconcileTransaction(
-              ReactReconcileTransaction
+              ReactReconcileTransaction,
             );
             ReactInjection.Updates.injectBatchingStrategy(
-              ReactDefaultBatchingStrategy
+              ReactDefaultBatchingStrategy,
             );
 
             ReactInjection.Component.injectEnvironment(
-              ReactComponentBrowserEnvironment
+              ReactComponentBrowserEnvironment,
             );
           }
 
@@ -13217,7 +13220,7 @@
             self,
             source,
             owner,
-            props
+            props,
           ) {
             var element = {
               // This tag allow us to uniquely identify this as a React Element
@@ -13304,7 +13307,7 @@
                         config.__proto__ === Object.prototype,
                       /* eslint-enable no-proto */
                       "React.createElement(...): Expected props argument to be a plain object. " +
-                        "Properties defined in its prototype chain will be ignored."
+                        "Properties defined in its prototype chain will be ignored.",
                     )
                   : void 0;
                 ref =
@@ -13378,7 +13381,7 @@
                               typeof type === "function" &&
                                 "displayName" in type
                                 ? type.displayName
-                                : "Element"
+                                : "Element",
                             )
                           : void 0;
                       }
@@ -13402,7 +13405,7 @@
                               typeof type === "function" &&
                                 "displayName" in type
                                 ? type.displayName
-                                : "Element"
+                                : "Element",
                             )
                           : void 0;
                       }
@@ -13420,7 +13423,7 @@
               self,
               source,
               ReactCurrentOwner.current,
-              props
+              props,
             );
           };
 
@@ -13447,7 +13450,7 @@
               oldElement._self,
               oldElement._source,
               oldElement._owner,
-              oldElement.props
+              oldElement.props,
             );
 
             return newElement;
@@ -13485,7 +13488,7 @@
                         config.__proto__ === Object.prototype,
                       /* eslint-enable no-proto */
                       "React.cloneElement(...): Expected props argument to be a plain object. " +
-                        "Properties defined in its prototype chain will be ignored."
+                        "Properties defined in its prototype chain will be ignored.",
                     )
                   : void 0;
               }
@@ -13540,7 +13543,7 @@
               self,
               source,
               owner,
-              props
+              props,
             );
           };
 
@@ -13646,7 +13649,7 @@
                     "%s%s%s",
                   addenda.parentOrOwner || "",
                   addenda.childOwner || "",
-                  addenda.url || ""
+                  addenda.url || "",
                 )
               : void 0;
           }
@@ -13775,7 +13778,7 @@
                             "React.PropTypes.",
                           componentName || "React class",
                           ReactPropTypeLocationNames[location],
-                          propName
+                          propName,
                         )
                       : invariant(false)
                     : void 0;
@@ -13783,7 +13786,7 @@
                     props,
                     propName,
                     componentName,
-                    location
+                    location,
                   );
                 } catch (ex) {
                   error = ex;
@@ -13799,7 +13802,7 @@
                       componentName || "React class",
                       ReactPropTypeLocationNames[location],
                       propName,
-                      typeof error
+                      typeof error,
                     )
                   : void 0;
                 if (
@@ -13816,7 +13819,7 @@
                         false,
                         "Failed propType: %s%s",
                         error.message,
-                        addendum
+                        addendum,
                       )
                     : void 0;
                 }
@@ -13841,7 +13844,7 @@
                 name,
                 componentClass.propTypes,
                 element.props,
-                ReactPropTypeLocations.prop
+                ReactPropTypeLocations.prop,
               );
             }
             if (typeof componentClass.getDefaultProps === "function") {
@@ -13849,7 +13852,7 @@
                 ? warning(
                     componentClass.getDefaultProps.isReactClassApproved,
                     "getDefaultProps is only used on classic React.createClass " +
-                      "definitions. Use a static property named `defaultProps` instead."
+                      "definitions. Use a static property named `defaultProps` instead.",
                   )
                 : void 0;
             }
@@ -13867,7 +13870,7 @@
                     "React.createElement: type should not be null, undefined, boolean, or " +
                       "number. It should be a string (for DOM elements) or a ReactClass " +
                       "(for composite components).%s",
-                    getDeclarationErrorAddendum()
+                    getDeclarationErrorAddendum(),
                   )
                 : void 0;
 
@@ -13898,7 +13901,7 @@
             createFactory: function (type) {
               var validatedFactory = ReactElementValidator.createElement.bind(
                 null,
-                type
+                type,
               );
               // Legacy hook TODO: Warn if this is accessed
               validatedFactory.type = type;
@@ -13912,7 +13915,7 @@
                         ? warning(
                             false,
                             "Factory.type is deprecated. Access the class directly " +
-                              "before passing it to createFactory."
+                              "before passing it to createFactory.",
                           )
                         : void 0;
                       Object.defineProperty(this, "type", {
@@ -14059,7 +14062,7 @@
                 name,
                 func,
                 a,
-                b
+                b,
               ) {
                 var boundFunc = func.bind(null, a, b);
                 var evtType = "react-" + name;
@@ -14107,13 +14110,13 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               var events = EventPluginHub.extractEvents(
                 topLevelType,
                 targetInst,
                 nativeEvent,
-                nativeEventTarget
+                nativeEventTarget,
               );
               runEventQueueInBatch(events);
             },
@@ -14181,14 +14184,14 @@
           });
           PooledClass.addPoolingTo(
             TopLevelCallbackBookKeeping,
-            PooledClass.twoArgumentPooler
+            PooledClass.twoArgumentPooler,
           );
 
           function handleTopLevelImpl(bookKeeping) {
             var nativeEventTarget = getEventTarget(bookKeeping.nativeEvent);
             var targetInst =
               ReactDOMComponentTree.getClosestInstanceFromNode(
-                nativeEventTarget
+                nativeEventTarget,
               );
 
             // Loop through the hierarchy, in case there's any nested components.
@@ -14207,7 +14210,7 @@
                 bookKeeping.topLevelType,
                 targetInst,
                 bookKeeping.nativeEvent,
-                getEventTarget(bookKeeping.nativeEvent)
+                getEventTarget(bookKeeping.nativeEvent),
               );
             }
           }
@@ -14253,7 +14256,7 @@
               return EventListener.listen(
                 element,
                 handlerBaseName,
-                ReactEventListener.dispatchEvent.bind(null, topLevelType)
+                ReactEventListener.dispatchEvent.bind(null, topLevelType),
               );
             },
 
@@ -14270,7 +14273,7 @@
             trapCapturedEvent: function (
               topLevelType,
               handlerBaseName,
-              handle
+              handle,
             ) {
               var element = handle;
               if (!element) {
@@ -14279,7 +14282,7 @@
               return EventListener.capture(
                 element,
                 handlerBaseName,
-                ReactEventListener.dispatchEvent.bind(null, topLevelType)
+                ReactEventListener.dispatchEvent.bind(null, topLevelType),
               );
             },
 
@@ -14295,7 +14298,7 @@
 
               var bookKeeping = TopLevelCallbackBookKeeping.getPooled(
                 topLevelType,
-                nativeEvent
+                nativeEvent,
               );
               try {
                 // Event queue being processed in the same cycle allows
@@ -14445,7 +14448,7 @@
               return {
                 focusedElem: focusedElem,
                 selectionRange: ReactInputSelection.hasSelectionCapabilities(
-                  focusedElem
+                  focusedElem,
                 )
                   ? ReactInputSelection.getSelection(focusedElem)
                   : null,
@@ -14471,7 +14474,7 @@
                 ) {
                   ReactInputSelection.setSelection(
                     priorFocusedElem,
-                    priorSelectionRange
+                    priorSelectionRange,
                   );
                 }
                 focusNode(priorFocusedElem);
@@ -14648,7 +14651,7 @@
               "development" !== "production"
                 ? warning(
                     !processingChildContext,
-                    "setState(...): Cannot call setState() inside getChildContext()"
+                    "setState(...): Cannot call setState() inside getChildContext()",
                   )
                 : void 0;
             };
@@ -14710,7 +14713,7 @@
                     ReactMarkupChecksum.CHECKSUM_ATTR_NAME +
                     '="' +
                     checksum +
-                    '"$&'
+                    '"$&',
                 );
               }
             },
@@ -14722,7 +14725,7 @@
              */
             canReuseMarkup: function (markup, element) {
               var existingChecksum = element.getAttribute(
-                ReactMarkupChecksum.CHECKSUM_ATTR_NAME
+                ReactMarkupChecksum.CHECKSUM_ATTR_NAME,
               );
               existingChecksum =
                 existingChecksum && parseInt(existingChecksum, 10);
@@ -14834,7 +14837,7 @@
             container,
             transaction,
             shouldReuseMarkup,
-            context
+            context,
           ) {
             var markerName;
             if (ReactFeatureFlags.logTopLevelRenders) {
@@ -14853,7 +14856,7 @@
               transaction,
               null,
               ReactDOMContainerInfo(wrapperInstance, container),
-              context
+              context,
             );
 
             if (markerName) {
@@ -14867,7 +14870,7 @@
               container,
               wrapperInstance,
               shouldReuseMarkup,
-              transaction
+              transaction,
             );
           }
 
@@ -14882,11 +14885,11 @@
             componentInstance,
             container,
             shouldReuseMarkup,
-            context
+            context,
           ) {
             var transaction = ReactUpdates.ReactReconcileTransaction.getPooled(
               /* useCreateElement */
-              !shouldReuseMarkup && ReactDOMFeatureFlags.useCreateElement
+              !shouldReuseMarkup && ReactDOMFeatureFlags.useCreateElement,
             );
             transaction.perform(
               mountComponentIntoNode,
@@ -14895,7 +14898,7 @@
               container,
               transaction,
               shouldReuseMarkup,
-              context
+              context,
             );
             ReactUpdates.ReactReconcileTransaction.release(transaction);
           }
@@ -15021,17 +15024,17 @@
               prevComponent,
               nextElement,
               container,
-              callback
+              callback,
             ) {
               ReactMount.scrollMonitor(container, function () {
                 ReactUpdateQueue.enqueueElementInternal(
                   prevComponent,
-                  nextElement
+                  nextElement,
                 );
                 if (callback) {
                   ReactUpdateQueue.enqueueCallbackInternal(
                     prevComponent,
-                    callback
+                    callback,
                   );
                 }
               });
@@ -15051,7 +15054,7 @@
               nextElement,
               container,
               shouldReuseMarkup,
-              context
+              context,
             ) {
               if ("development" !== "production") {
                 ReactInstrumentation.debugTool.onBeginFlush();
@@ -15069,7 +15072,7 @@
                       "componentDidUpdate. Check the render method of %s.",
                     (ReactCurrentOwner.current &&
                       ReactCurrentOwner.current.getName()) ||
-                      "ReactCompositeComponent"
+                      "ReactCompositeComponent",
                   )
                 : void 0;
 
@@ -15082,7 +15085,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "_registerComponent(...): Target container is not a DOM element."
+                      "_registerComponent(...): Target container is not a DOM element.",
                     )
                   : invariant(false)
                 : void 0;
@@ -15105,7 +15108,7 @@
                 componentInstance,
                 container,
                 shouldReuseMarkup,
-                context
+                context,
               );
 
               var wrapperID = componentInstance._instance.rootID;
@@ -15114,7 +15117,7 @@
               if ("development" !== "production") {
                 // The instance here is TopLevelWrapper so we report mount for its child.
                 ReactInstrumentation.debugTool.onMountRootComponent(
-                  componentInstance._renderedComponent._debugID
+                  componentInstance._renderedComponent._debugID,
                 );
                 ReactInstrumentation.debugTool.onEndFlush();
               }
@@ -15139,7 +15142,7 @@
               parentComponent,
               nextElement,
               container,
-              callback
+              callback,
             ) {
               !(
                 parentComponent != null &&
@@ -15148,7 +15151,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "parentComponent must be a valid React Component"
+                      "parentComponent must be a valid React Component",
                     )
                   : invariant(false)
                 : void 0;
@@ -15156,7 +15159,7 @@
                 parentComponent,
                 nextElement,
                 container,
-                callback
+                callback,
               );
             },
 
@@ -15164,7 +15167,7 @@
               parentComponent,
               nextElement,
               container,
-              callback
+              callback,
             ) {
               ReactUpdateQueue.validateCallback(callback, "ReactDOM.render");
               !ReactElement.isValidElement(nextElement)
@@ -15176,13 +15179,14 @@
                         ? " Instead of passing a string like 'div', pass " +
                             "React.createElement('div') or <div />."
                         : typeof nextElement === "function"
-                        ? " Instead of passing a class like Foo, pass " +
-                          "React.createElement(Foo) or <Foo />."
-                        : // Check if it quacks like an element
-                        nextElement != null && nextElement.props !== undefined
-                        ? " This may be caused by unintentionally loading two independent " +
-                          "copies of React."
-                        : ""
+                          ? " Instead of passing a class like Foo, pass " +
+                            "React.createElement(Foo) or <Foo />."
+                          : // Check if it quacks like an element
+                            nextElement != null &&
+                              nextElement.props !== undefined
+                            ? " This may be caused by unintentionally loading two independent " +
+                              "copies of React."
+                            : "",
                     )
                   : invariant(false)
                 : void 0;
@@ -15196,7 +15200,7 @@
                       "discouraged, since its children are often manipulated by third-party " +
                       "scripts and browser extensions. This may lead to subtle " +
                       "reconciliation issues. Try rendering into a container element created " +
-                      "for your app."
+                      "for your app.",
                   )
                 : void 0;
 
@@ -15207,7 +15211,7 @@
                 null,
                 null,
                 null,
-                nextElement
+                nextElement,
               );
 
               var prevComponent = getTopLevelWrapperInContainer(container);
@@ -15227,7 +15231,7 @@
                     prevComponent,
                     nextWrappedElement,
                     container,
-                    updatedCallback
+                    updatedCallback,
                   );
                   return publicInst;
                 } else {
@@ -15248,7 +15252,7 @@
                       "render(...): Replacing React-rendered children with a new root " +
                         "component. If you intended to update the children of this node, " +
                         "you should instead have the existing children update their state " +
-                        "and render the new components instead of calling ReactDOM.render."
+                        "and render the new components instead of calling ReactDOM.render.",
                     )
                   : void 0;
 
@@ -15261,7 +15265,7 @@
                             false,
                             "render(): Target node has markup rendered by React, but there " +
                               "are unrelated nodes as well. This is most commonly caused by " +
-                              "white-space inserted around server-rendered markup."
+                              "white-space inserted around server-rendered markup.",
                           )
                         : void 0;
                       break;
@@ -15281,9 +15285,9 @@
                 shouldReuseMarkup,
                 parentComponent != null
                   ? parentComponent._reactInternalInstance._processChildContext(
-                      parentComponent._reactInternalInstance._context
+                      parentComponent._reactInternalInstance._context,
                     )
-                  : emptyObject
+                  : emptyObject,
               )._renderedComponent.getPublicInstance();
               if (callback) {
                 callback.call(component);
@@ -15309,7 +15313,7 @@
                 null,
                 nextElement,
                 container,
-                callback
+                callback,
               );
             },
 
@@ -15335,7 +15339,7 @@
                       "componentDidUpdate. Check the render method of %s.",
                     (ReactCurrentOwner.current &&
                       ReactCurrentOwner.current.getName()) ||
-                      "ReactCompositeComponent"
+                      "ReactCompositeComponent",
                   )
                 : void 0;
 
@@ -15348,7 +15352,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "unmountComponentAtNode(...): Target container is not a DOM element."
+                      "unmountComponentAtNode(...): Target container is not a DOM element.",
                     )
                   : invariant(false)
                 : void 0;
@@ -15375,7 +15379,7 @@
                           ? "You may have accidentally passed in a React root node instead " +
                               "of its container."
                           : "Instead, have the parent component update its state and " +
-                              "rerender in order to remove this component."
+                              "rerender in order to remove this component.",
                       )
                     : void 0;
                 }
@@ -15387,7 +15391,7 @@
                 unmountComponentFromNode,
                 prevComponent,
                 container,
-                false
+                false,
               );
               return true;
             },
@@ -15397,7 +15401,7 @@
               container,
               instance,
               shouldReuseMarkup,
-              transaction
+              transaction,
             ) {
               !(
                 container &&
@@ -15408,7 +15412,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "mountComponentIntoNode(...): Target container is not valid."
+                      "mountComponentIntoNode(...): Target container is not valid.",
                     )
                   : invariant(false)
                 : void 0;
@@ -15420,16 +15424,16 @@
                   return;
                 } else {
                   var checksum = rootElement.getAttribute(
-                    ReactMarkupChecksum.CHECKSUM_ATTR_NAME
+                    ReactMarkupChecksum.CHECKSUM_ATTR_NAME,
                   );
                   rootElement.removeAttribute(
-                    ReactMarkupChecksum.CHECKSUM_ATTR_NAME
+                    ReactMarkupChecksum.CHECKSUM_ATTR_NAME,
                   );
 
                   var rootMarkup = rootElement.outerHTML;
                   rootElement.setAttribute(
                     ReactMarkupChecksum.CHECKSUM_ATTR_NAME,
-                    checksum
+                    checksum,
                   );
 
                   var normalizedMarkup = markup;
@@ -15455,7 +15459,7 @@
 
                   var diffIndex = firstDifferenceIndex(
                     normalizedMarkup,
-                    rootMarkup
+                    rootMarkup,
                   );
                   var difference =
                     " (client) " +
@@ -15475,7 +15479,7 @@
                             "cross-browser quirks by rendering at the document root. You " +
                             "should look for environment dependent code in your components " +
                             "and ensure the props are the same client and server side:\n%s",
-                          difference
+                          difference,
                         )
                       : invariant(false)
                     : void 0;
@@ -15492,7 +15496,7 @@
                             "of the benefits of server rendering. Instead, figure out " +
                             "why the markup being generated is different on the client " +
                             "or server:\n%s",
-                          difference
+                          difference,
                         )
                       : void 0;
                   }
@@ -15506,7 +15510,7 @@
                       "You're trying to render a component to the document but " +
                         "you didn't use server rendering. We can't do this " +
                         "without using server rendering due to cross-browser quirks. " +
-                        "See ReactDOMServer.renderToString() for server rendering."
+                        "See ReactDOMServer.renderToString() for server rendering.",
                     )
                   : invariant(false)
                 : void 0;
@@ -15520,19 +15524,19 @@
                 setInnerHTML(container, markup);
                 ReactDOMComponentTree.precacheNode(
                   instance,
-                  container.firstChild
+                  container.firstChild,
                 );
               }
 
               if ("development" !== "production") {
                 var nativeNode = ReactDOMComponentTree.getInstanceFromNode(
-                  container.firstChild
+                  container.firstChild,
                 );
                 if (nativeNode._debugID !== 0) {
                   ReactInstrumentation.debugTool.onNativeOperation(
                     nativeNode._debugID,
                     "mount",
-                    markup.toString()
+                    markup.toString(),
                   );
                 }
               }
@@ -15713,7 +15717,7 @@
                   ? Object.keys(children).map(function (key) {
                       return children[key]._debugID;
                     })
-                  : []
+                  : [],
               );
             };
           }
@@ -15736,7 +15740,7 @@
               _reconcilerInstantiateChildren: function (
                 nestedChildren,
                 transaction,
-                context
+                context,
               ) {
                 if ("development" !== "production") {
                   if (this._currentElement) {
@@ -15745,7 +15749,7 @@
                       return ReactChildReconciler.instantiateChildren(
                         nestedChildren,
                         transaction,
-                        context
+                        context,
                       );
                     } finally {
                       ReactCurrentOwner.current = null;
@@ -15755,7 +15759,7 @@
                 return ReactChildReconciler.instantiateChildren(
                   nestedChildren,
                   transaction,
-                  context
+                  context,
                 );
               },
 
@@ -15764,7 +15768,7 @@
                 nextNestedChildrenElements,
                 removedNodes,
                 transaction,
-                context
+                context,
               ) {
                 var nextChildren;
                 if ("development" !== "production") {
@@ -15772,7 +15776,7 @@
                     try {
                       ReactCurrentOwner.current = this._currentElement._owner;
                       nextChildren = flattenChildren(
-                        nextNestedChildrenElements
+                        nextNestedChildrenElements,
                       );
                     } finally {
                       ReactCurrentOwner.current = null;
@@ -15782,7 +15786,7 @@
                       nextChildren,
                       removedNodes,
                       transaction,
-                      context
+                      context,
                     );
                     return nextChildren;
                   }
@@ -15793,7 +15797,7 @@
                   nextChildren,
                   removedNodes,
                   transaction,
-                  context
+                  context,
                 );
                 return nextChildren;
               },
@@ -15810,7 +15814,7 @@
                 var children = this._reconcilerInstantiateChildren(
                   nestedChildren,
                   transaction,
-                  context
+                  context,
                 );
                 this._renderedChildren = children;
 
@@ -15824,7 +15828,7 @@
                       transaction,
                       this,
                       this._nativeContainerInfo,
-                      context
+                      context,
                     );
                     child._mountIndex = index++;
                     mountImages.push(mountImage);
@@ -15854,7 +15858,7 @@
                       ? "development" !== "production"
                         ? invariant(
                             false,
-                            "updateTextContent called on non-empty component."
+                            "updateTextContent called on non-empty component.",
                           )
                         : invariant(false)
                       : void 0;
@@ -15881,7 +15885,7 @@
                       ? "development" !== "production"
                         ? invariant(
                             false,
-                            "updateTextContent called on non-empty component."
+                            "updateTextContent called on non-empty component.",
                           )
                         : invariant(false)
                       : void 0;
@@ -15901,13 +15905,13 @@
               updateChildren: function (
                 nextNestedChildrenElements,
                 transaction,
-                context
+                context,
               ) {
                 // Hook used by React ART
                 this._updateChildren(
                   nextNestedChildrenElements,
                   transaction,
-                  context
+                  context,
                 );
               },
 
@@ -15920,7 +15924,7 @@
               _updateChildren: function (
                 nextNestedChildrenElements,
                 transaction,
-                context
+                context,
               ) {
                 var prevChildren = this._renderedChildren;
                 var removedNodes = {};
@@ -15929,7 +15933,7 @@
                   nextNestedChildrenElements,
                   removedNodes,
                   transaction,
-                  context
+                  context,
                 );
                 if (!nextChildren && !prevChildren) {
                   return;
@@ -15954,8 +15958,8 @@
                         prevChild,
                         lastPlacedNode,
                         nextIndex,
-                        lastIndex
-                      )
+                        lastIndex,
+                      ),
                     );
                     lastIndex = Math.max(prevChild._mountIndex, lastIndex);
                     prevChild._mountIndex = nextIndex;
@@ -15973,8 +15977,8 @@
                         lastPlacedNode,
                         nextIndex,
                         transaction,
-                        context
-                      )
+                        context,
+                      ),
                     );
                   }
                   nextIndex++;
@@ -15985,7 +15989,10 @@
                   if (removedNodes.hasOwnProperty(name)) {
                     updates = enqueue(
                       updates,
-                      this._unmountChild(prevChildren[name], removedNodes[name])
+                      this._unmountChild(
+                        prevChildren[name],
+                        removedNodes[name],
+                      ),
                     );
                   }
                 }
@@ -16040,7 +16047,7 @@
                 return makeInsertMarkup(
                   mountImage,
                   afterNode,
-                  child._mountIndex
+                  child._mountIndex,
                 );
               },
 
@@ -16070,14 +16077,14 @@
                 afterNode,
                 index,
                 transaction,
-                context
+                context,
               ) {
                 var mountImage = ReactReconciler.mountComponent(
                   child,
                   transaction,
                   this,
                   this._nativeContainerInfo,
-                  context
+                  context,
                 );
                 child._mountIndex = index;
                 return this.createChild(child, afterNode, mountImage);
@@ -16224,7 +16231,7 @@
                 ? invariant(
                     false,
                     "There is no registered component for the tag %s",
-                    element.type
+                    element.type,
                   )
                 : invariant(false)
               : void 0;
@@ -16376,7 +16383,7 @@
                     callerName,
                     (publicInstance.constructor &&
                       publicInstance.constructor.displayName) ||
-                      ""
+                      "",
                   )
                 : void 0;
             }
@@ -16536,7 +16543,7 @@
                       "addComponentAsRefTo(...): Only a ReactOwner can have refs. You might " +
                         "be adding a ref to a component that was not created inside a component's " +
                         "`render` method, or you have multiple copies of React loaded " +
-                        "(details: https://fb.me/react-refs-must-have-owner)."
+                        "(details: https://fb.me/react-refs-must-have-owner).",
                     )
                   : invariant(false)
                 : void 0;
@@ -16560,7 +16567,7 @@
                       "removeComponentAsRefFrom(...): Only a ReactOwner can have refs. You might " +
                         "be removing a ref to a component that was not created inside a component's " +
                         "`render` method, or you have multiple copies of React loaded " +
-                        "(details: https://fb.me/react-refs-must-have-owner)."
+                        "(details: https://fb.me/react-refs-must-have-owner).",
                     )
                   : invariant(false)
                 : void 0;
@@ -16750,7 +16757,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               componentName = componentName || ANONYMOUS;
               propFullName = propFullName || propName;
@@ -16763,7 +16770,7 @@
                       " `" +
                       propFullName +
                       "` was not specified in " +
-                      ("`" + componentName + "`.")
+                      ("`" + componentName + "`."),
                   );
                 }
                 return null;
@@ -16773,7 +16780,7 @@
                   propName,
                   componentName,
                   location,
-                  propFullName
+                  propFullName,
                 );
               }
             }
@@ -16790,7 +16797,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               var propValue = props[propName];
               var propType = getPropType(propValue);
@@ -16812,7 +16819,7 @@
                       "` supplied to `" +
                       componentName +
                       "`, expected ") +
-                    ("`" + expectedType + "`.")
+                    ("`" + expectedType + "`."),
                 );
               }
               return null;
@@ -16830,7 +16837,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               if (typeof typeChecker !== "function") {
                 return new Error(
@@ -16838,7 +16845,7 @@
                     propFullName +
                     "` of component `" +
                     componentName +
-                    "` has invalid PropType notation inside arrayOf."
+                    "` has invalid PropType notation inside arrayOf.",
                 );
               }
               var propValue = props[propName];
@@ -16855,7 +16862,7 @@
                       propType +
                       "` supplied to `" +
                       componentName +
-                      "`, expected an array.")
+                      "`, expected an array."),
                 );
               }
               for (var i = 0; i < propValue.length; i++) {
@@ -16864,7 +16871,7 @@
                   i,
                   componentName,
                   location,
-                  propFullName + "[" + i + "]"
+                  propFullName + "[" + i + "]",
                 );
                 if (error instanceof Error) {
                   return error;
@@ -16881,7 +16888,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               if (!ReactElement.isValidElement(props[propName])) {
                 var locationName = ReactPropTypeLocationNames[location];
@@ -16891,7 +16898,9 @@
                     " `" +
                     propFullName +
                     "` supplied to " +
-                    ("`" + componentName + "`, expected a single ReactElement.")
+                    ("`" +
+                      componentName +
+                      "`, expected a single ReactElement."),
                 );
               }
               return null;
@@ -16905,7 +16914,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               if (!(props[propName] instanceof expectedClass)) {
                 var locationName = ReactPropTypeLocationNames[location];
@@ -16922,7 +16931,7 @@
                       "` supplied to `" +
                       componentName +
                       "`, expected ") +
-                    ("instance of `" + expectedClassName + "`.")
+                    ("instance of `" + expectedClassName + "`."),
                 );
               }
               return null;
@@ -16934,7 +16943,7 @@
             if (!Array.isArray(expectedValues)) {
               return createChainableTypeChecker(function () {
                 return new Error(
-                  "Invalid argument supplied to oneOf, expected an instance of array."
+                  "Invalid argument supplied to oneOf, expected an instance of array.",
                 );
               });
             }
@@ -16944,7 +16953,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               var propValue = props[propName];
               for (var i = 0; i < expectedValues.length; i++) {
@@ -16967,7 +16976,7 @@
                     componentName +
                     "`, expected one of " +
                     valuesString +
-                    ".")
+                    "."),
               );
             }
             return createChainableTypeChecker(validate);
@@ -16979,7 +16988,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               if (typeof typeChecker !== "function") {
                 return new Error(
@@ -16987,7 +16996,7 @@
                     propFullName +
                     "` of component `" +
                     componentName +
-                    "` has invalid PropType notation inside objectOf."
+                    "` has invalid PropType notation inside objectOf.",
                 );
               }
               var propValue = props[propName];
@@ -17004,7 +17013,7 @@
                       propType +
                       "` supplied to `" +
                       componentName +
-                      "`, expected an object.")
+                      "`, expected an object."),
                 );
               }
               for (var key in propValue) {
@@ -17014,7 +17023,7 @@
                     key,
                     componentName,
                     location,
-                    propFullName + "." + key
+                    propFullName + "." + key,
                   );
                   if (error instanceof Error) {
                     return error;
@@ -17030,7 +17039,7 @@
             if (!Array.isArray(arrayOfTypeCheckers)) {
               return createChainableTypeChecker(function () {
                 return new Error(
-                  "Invalid argument supplied to oneOfType, expected an instance of array."
+                  "Invalid argument supplied to oneOfType, expected an instance of array.",
                 );
               });
             }
@@ -17040,7 +17049,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
                 var checker = arrayOfTypeCheckers[i];
@@ -17050,7 +17059,7 @@
                     propName,
                     componentName,
                     location,
-                    propFullName
+                    propFullName,
                   ) == null
                 ) {
                   return null;
@@ -17064,7 +17073,7 @@
                   " `" +
                   propFullName +
                   "` supplied to " +
-                  ("`" + componentName + "`.")
+                  ("`" + componentName + "`."),
               );
             }
             return createChainableTypeChecker(validate);
@@ -17076,7 +17085,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               if (!isNode(props[propName])) {
                 var locationName = ReactPropTypeLocationNames[location];
@@ -17086,7 +17095,7 @@
                     " `" +
                     propFullName +
                     "` supplied to " +
-                    ("`" + componentName + "`, expected a ReactNode.")
+                    ("`" + componentName + "`, expected a ReactNode."),
                 );
               }
               return null;
@@ -17100,7 +17109,7 @@
               propName,
               componentName,
               location,
-              propFullName
+              propFullName,
             ) {
               var propValue = props[propName];
               var propType = getPropType(propValue);
@@ -17114,7 +17123,7 @@
                     "` of type `" +
                     propType +
                     "` " +
-                    ("supplied to `" + componentName + "`, expected `object`.")
+                    ("supplied to `" + componentName + "`, expected `object`."),
                 );
               }
               for (var key in shapeTypes) {
@@ -17127,7 +17136,7 @@
                   key,
                   componentName,
                   location,
-                  propFullName + "." + key
+                  propFullName + "." + key,
                 );
                 if (error) {
                   return error;
@@ -17395,7 +17404,7 @@
           _assign(
             ReactReconcileTransaction.prototype,
             Transaction.Mixin,
-            Mixin
+            Mixin,
           );
 
           PooledClass.addPoolingTo(ReactReconcileTransaction);
@@ -17449,13 +17458,13 @@
               transaction,
               nativeParent,
               nativeContainerInfo,
-              context
+              context,
             ) {
               if ("development" !== "production") {
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onBeginReconcilerTimer(
                     internalInstance._debugID,
-                    "mountComponent"
+                    "mountComponent",
                   );
                 }
               }
@@ -17463,7 +17472,7 @@
                 transaction,
                 nativeParent,
                 nativeContainerInfo,
-                context
+                context,
               );
               if (
                 internalInstance._currentElement &&
@@ -17477,10 +17486,10 @@
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onEndReconcilerTimer(
                     internalInstance._debugID,
-                    "mountComponent"
+                    "mountComponent",
                   );
                   ReactInstrumentation.debugTool.onMountComponent(
-                    internalInstance._debugID
+                    internalInstance._debugID,
                   );
                 }
               }
@@ -17506,23 +17515,23 @@
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onBeginReconcilerTimer(
                     internalInstance._debugID,
-                    "unmountComponent"
+                    "unmountComponent",
                   );
                 }
               }
               ReactRef.detachRefs(
                 internalInstance,
-                internalInstance._currentElement
+                internalInstance._currentElement,
               );
               internalInstance.unmountComponent(safely);
               if ("development" !== "production") {
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onEndReconcilerTimer(
                     internalInstance._debugID,
-                    "unmountComponent"
+                    "unmountComponent",
                   );
                   ReactInstrumentation.debugTool.onUnmountComponent(
-                    internalInstance._debugID
+                    internalInstance._debugID,
                   );
                 }
               }
@@ -17541,7 +17550,7 @@
               internalInstance,
               nextElement,
               transaction,
-              context
+              context,
             ) {
               var prevElement = internalInstance._currentElement;
 
@@ -17566,14 +17575,14 @@
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onBeginReconcilerTimer(
                     internalInstance._debugID,
-                    "receiveComponent"
+                    "receiveComponent",
                   );
                 }
               }
 
               var refsChanged = ReactRef.shouldUpdateRefs(
                 prevElement,
-                nextElement
+                nextElement,
               );
 
               if (refsChanged) {
@@ -17583,7 +17592,7 @@
               internalInstance.receiveComponent(
                 nextElement,
                 transaction,
-                context
+                context,
               );
 
               if (
@@ -17600,10 +17609,10 @@
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onEndReconcilerTimer(
                     internalInstance._debugID,
-                    "receiveComponent"
+                    "receiveComponent",
                   );
                   ReactInstrumentation.debugTool.onUpdateComponent(
-                    internalInstance._debugID
+                    internalInstance._debugID,
                   );
                 }
               }
@@ -17619,7 +17628,7 @@
             performUpdateIfNecessary: function (
               internalInstance,
               transaction,
-              updateBatchNumber
+              updateBatchNumber,
             ) {
               if (internalInstance._updateBatchNumber !== updateBatchNumber) {
                 // The component's enqueued batch number should always be the current
@@ -17634,7 +17643,7 @@
                         "performUpdateIfNecessary: Unexpected batch number (current %s, " +
                           "pending %s)",
                         updateBatchNumber,
-                        internalInstance._updateBatchNumber
+                        internalInstance._updateBatchNumber,
                       )
                     : invariant(false)
                   : void 0;
@@ -17644,7 +17653,7 @@
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onBeginReconcilerTimer(
                     internalInstance._debugID,
-                    "performUpdateIfNecessary"
+                    "performUpdateIfNecessary",
                   );
                 }
               }
@@ -17653,10 +17662,10 @@
                 if (internalInstance._debugID !== 0) {
                   ReactInstrumentation.debugTool.onEndReconcilerTimer(
                     internalInstance._debugID,
-                    "performUpdateIfNecessary"
+                    "performUpdateIfNecessary",
                   );
                   ReactInstrumentation.debugTool.onUpdateComponent(
-                    internalInstance._debugID
+                    internalInstance._debugID,
                   );
                 }
               }
@@ -17816,7 +17825,7 @@
             var transaction;
             try {
               ReactUpdates.injection.injectBatchingStrategy(
-                ReactServerBatchingStrategy
+                ReactServerBatchingStrategy,
               );
 
               transaction =
@@ -17832,11 +17841,11 @@
                   transaction,
                   null,
                   ReactDOMContainerInfo(),
-                  emptyObject
+                  emptyObject,
                 );
                 if ("development" !== "production") {
                   ReactInstrumentation.debugTool.onUnmountComponent(
-                    componentInstance._debugID
+                    componentInstance._debugID,
                   );
                   ReactInstrumentation.debugTool.onEndFlush();
                 }
@@ -17850,7 +17859,7 @@
               // Revert to the DOM batching strategy since these two renderers
               // currently share these stateful modules.
               ReactUpdates.injection.injectBatchingStrategy(
-                ReactDefaultBatchingStrategy
+                ReactDefaultBatchingStrategy,
               );
             }
           }
@@ -17865,7 +17874,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "renderToString(): You must pass a valid ReactElement."
+                    "renderToString(): You must pass a valid ReactElement.",
                   )
                 : invariant(false)
               : void 0;
@@ -17882,7 +17891,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "renderToStaticMarkup(): You must pass a valid ReactElement."
+                    "renderToStaticMarkup(): You must pass a valid ReactElement.",
                   )
                 : invariant(false)
               : void 0;
@@ -17982,7 +17991,7 @@
           _assign(
             ReactServerRenderingTransaction.prototype,
             Transaction.Mixin,
-            Mixin
+            Mixin,
           );
 
           PooledClass.addPoolingTo(ReactServerRenderingTransaction);
@@ -18019,7 +18028,7 @@
               __SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:
                 ReactDOMServer,
             },
-            React
+            React,
           );
 
           module.exports = ReactUMDEntry;
@@ -18067,7 +18076,7 @@
 
           function getInternalInstanceReadyForUpdate(
             publicInstance,
-            callerName
+            callerName,
           ) {
             var internalInstance = ReactInstanceMap.get(publicInstance);
             if (!internalInstance) {
@@ -18083,7 +18092,7 @@
                         "This is a no-op. Please check the code for the %s component.",
                       callerName,
                       callerName,
-                      publicInstance.constructor.displayName
+                      publicInstance.constructor.displayName,
                     )
                   : void 0;
               }
@@ -18099,7 +18108,7 @@
                       "should be a pure function of props and state; constructor " +
                       "side-effects are an anti-pattern, but can be moved to " +
                       "`componentWillMount`.",
-                    callerName
+                    callerName,
                   )
                 : void 0;
             }
@@ -18131,7 +18140,7 @@
                           "never access something that requires stale data from the previous " +
                           "render, such as refs. Move this logic to componentDidMount and " +
                           "componentDidUpdate instead.",
-                        owner.getName() || "A component"
+                        owner.getName() || "A component",
                       )
                     : void 0;
                   owner._warnedAboutRefsInRender = true;
@@ -18208,7 +18217,7 @@
             enqueueForceUpdate: function (publicInstance) {
               var internalInstance = getInternalInstanceReadyForUpdate(
                 publicInstance,
-                "forceUpdate"
+                "forceUpdate",
               );
 
               if (!internalInstance) {
@@ -18234,7 +18243,7 @@
             enqueueReplaceState: function (publicInstance, completeState) {
               var internalInstance = getInternalInstanceReadyForUpdate(
                 publicInstance,
-                "replaceState"
+                "replaceState",
               );
 
               if (!internalInstance) {
@@ -18260,7 +18269,7 @@
             enqueueSetState: function (publicInstance, partialState) {
               var internalInstance = getInternalInstanceReadyForUpdate(
                 publicInstance,
-                "setState"
+                "setState",
               );
 
               if (!internalInstance) {
@@ -18288,7 +18297,7 @@
                       "%s(...): Expected the last optional `callback` argument to be a " +
                         "function. Instead received: %s.",
                       callerName,
-                      formatUnexpectedArgument(callback)
+                      formatUnexpectedArgument(callback),
                     )
                   : invariant(false)
                 : void 0;
@@ -18338,7 +18347,7 @@
                 ? invariant(
                     false,
                     "ReactUpdates: must inject a reconcile transaction class and batching " +
-                      "strategy"
+                      "strategy",
                   )
                 : invariant(false)
               : void 0;
@@ -18380,7 +18389,7 @@
             this.callbackQueue = CallbackQueue.getPooled();
             this.reconcileTransaction =
               ReactUpdates.ReactReconcileTransaction.getPooled(
-                /* useCreateElement */ true
+                /* useCreateElement */ true,
               );
           }
 
@@ -18394,7 +18403,7 @@
               CallbackQueue.release(this.callbackQueue);
               this.callbackQueue = null;
               ReactUpdates.ReactReconcileTransaction.release(
-                this.reconcileTransaction
+                this.reconcileTransaction,
               );
               this.reconcileTransaction = null;
             },
@@ -18408,7 +18417,7 @@
                 this.reconcileTransaction,
                 method,
                 scope,
-                a
+                a,
               );
             },
           });
@@ -18440,7 +18449,7 @@
                     "Expected flush transaction's stored dirty-components length (%s) to " +
                       "match dirty-components array length (%s).",
                     len,
-                    dirtyComponents.length
+                    dirtyComponents.length,
                   )
                 : invariant(false)
               : void 0;
@@ -18486,7 +18495,7 @@
               ReactReconciler.performUpdateIfNecessary(
                 component,
                 transaction.reconcileTransaction,
-                updateBatchNumber
+                updateBatchNumber,
               );
 
               if (markerName) {
@@ -18497,7 +18506,7 @@
                 for (var j = 0; j < callbacks.length; j++) {
                   transaction.callbackQueue.enqueue(
                     callbacks[j],
-                    component.getPublicInstance()
+                    component.getPublicInstance(),
                   );
                 }
               }
@@ -18568,7 +18577,7 @@
                 ? invariant(
                     false,
                     "ReactUpdates.asap: Can't enqueue an asap callback in a context where" +
-                      "updates are not being batched."
+                      "updates are not being batched.",
                   )
                 : invariant(false)
               : void 0;
@@ -18582,7 +18591,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "ReactUpdates: must provide a reconcile transaction class"
+                      "ReactUpdates: must provide a reconcile transaction class",
                     )
                   : invariant(false)
                 : void 0;
@@ -18594,7 +18603,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "ReactUpdates: must provide a batching strategy"
+                      "ReactUpdates: must provide a batching strategy",
                     )
                   : invariant(false)
                 : void 0;
@@ -18602,7 +18611,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "ReactUpdates: must provide a batchedUpdates() function"
+                      "ReactUpdates: must provide a batchedUpdates() function",
                     )
                   : invariant(false)
                 : void 0;
@@ -18610,7 +18619,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "ReactUpdates: must provide an isBatchingUpdates boolean attribute"
+                      "ReactUpdates: must provide an isBatchingUpdates boolean attribute",
                     )
                   : invariant(false)
                 : void 0;
@@ -19092,7 +19101,7 @@
                 eventTypes.select,
                 activeElementInst,
                 nativeEvent,
-                nativeEventTarget
+                nativeEventTarget,
               );
 
               syntheticEvent.type = "select";
@@ -19127,7 +19136,7 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               if (!hasListener) {
                 return null;
@@ -19703,7 +19712,7 @@
               topLevelType,
               targetInst,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             ) {
               var dispatchConfig = topLevelEventsToDispatchConfig[topLevelType];
               if (!dispatchConfig) {
@@ -19816,7 +19825,7 @@
                   ? invariant(
                       false,
                       "SimpleEventPlugin: Unhandled event type, `%s`.",
-                      topLevelType
+                      topLevelType,
                     )
                   : invariant(false)
                 : void 0;
@@ -19824,7 +19833,7 @@
                 dispatchConfig,
                 targetInst,
                 nativeEvent,
-                nativeEventTarget
+                nativeEventTarget,
               );
               EventPropagators.accumulateTwoPhaseDispatches(event);
               return event;
@@ -19842,7 +19851,7 @@
                   onClickListeners[id] = EventListener.listen(
                     node,
                     "click",
-                    emptyFunction
+                    emptyFunction,
                   );
                 }
               }
@@ -19919,20 +19928,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticEvent.augmentClass(
             SyntheticAnimationEvent,
-            AnimationEventInterface
+            AnimationEventInterface,
           );
 
           module.exports = SyntheticAnimationEvent;
@@ -19978,20 +19987,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticEvent.augmentClass(
             SyntheticClipboardEvent,
-            ClipboardEventInterface
+            ClipboardEventInterface,
           );
 
           module.exports = SyntheticClipboardEvent;
@@ -20033,20 +20042,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticEvent.augmentClass(
             SyntheticCompositionEvent,
-            CompositionEventInterface
+            CompositionEventInterface,
           );
 
           module.exports = SyntheticCompositionEvent;
@@ -20088,20 +20097,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticMouseEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticMouseEvent.augmentClass(
             SyntheticDragEvent,
-            DragEventInterface
+            DragEventInterface,
           );
 
           module.exports = SyntheticDragEvent;
@@ -20184,7 +20193,7 @@
             dispatchConfig,
             targetInst,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             if ("development" !== "production") {
               // these have a getter/setter for warnings
@@ -20288,8 +20297,8 @@
                     propName,
                     getPooledWarningPropertyDefinition(
                       propName,
-                      Interface[propName]
-                    )
+                      Interface[propName],
+                    ),
                   );
                 } else {
                   this[propName] = null;
@@ -20303,17 +20312,17 @@
                 Object.defineProperty(
                   this,
                   "nativeEvent",
-                  getPooledWarningPropertyDefinition("nativeEvent", null)
+                  getPooledWarningPropertyDefinition("nativeEvent", null),
                 );
                 Object.defineProperty(
                   this,
                   "preventDefault",
-                  getPooledWarningPropertyDefinition("preventDefault", noop)
+                  getPooledWarningPropertyDefinition("preventDefault", noop),
                 );
                 Object.defineProperty(
                   this,
                   "stopPropagation",
-                  getPooledWarningPropertyDefinition("stopPropagation", noop)
+                  getPooledWarningPropertyDefinition("stopPropagation", noop),
                 );
               }
             },
@@ -20329,7 +20338,7 @@
                   return this.apply(
                     target,
                     Object.create(target.prototype),
-                    args
+                    args,
                   );
                 },
                 apply: function (constructor, that, args) {
@@ -20347,7 +20356,7 @@
                               "This synthetic event is reused for performance reasons. If you're " +
                                 "seeing this, you're adding a new property in the synthetic event object. " +
                                 "The property is never released. See " +
-                                "https://fb.me/react-event-pooling for more information."
+                                "https://fb.me/react-event-pooling for more information.",
                             )
                           : void 0;
                         didWarnForAddedNewProperty = true;
@@ -20386,7 +20395,7 @@
 
           PooledClass.addPoolingTo(
             SyntheticEvent,
-            PooledClass.fourArgumentPooler
+            PooledClass.fourArgumentPooler,
           );
 
           module.exports = SyntheticEvent;
@@ -20436,7 +20445,7 @@
                       "See https://fb.me/react-event-pooling for more information.",
                     action,
                     propName,
-                    result
+                    result,
                   )
                 : void 0;
             }
@@ -20479,20 +20488,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticUIEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticUIEvent.augmentClass(
             SyntheticFocusEvent,
-            FocusEventInterface
+            FocusEventInterface,
           );
 
           module.exports = SyntheticFocusEvent;
@@ -20535,14 +20544,14 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
@@ -20635,20 +20644,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticUIEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticUIEvent.augmentClass(
             SyntheticKeyboardEvent,
-            KeyboardEventInterface
+            KeyboardEventInterface,
           );
 
           module.exports = SyntheticKeyboardEvent;
@@ -20735,20 +20744,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticUIEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticUIEvent.augmentClass(
             SyntheticMouseEvent,
-            MouseEventInterface
+            MouseEventInterface,
           );
 
           module.exports = SyntheticMouseEvent;
@@ -20799,20 +20808,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticUIEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticUIEvent.augmentClass(
             SyntheticTouchEvent,
-            TouchEventInterface
+            TouchEventInterface,
           );
 
           module.exports = SyntheticTouchEvent;
@@ -20857,20 +20866,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticEvent.augmentClass(
             SyntheticTransitionEvent,
-            TransitionEventInterface
+            TransitionEventInterface,
           );
 
           module.exports = SyntheticTransitionEvent;
@@ -20935,14 +20944,14 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
@@ -20978,20 +20987,20 @@
               return "deltaX" in event
                 ? event.deltaX
                 : // Fallback to `wheelDeltaX` for Webkit and normalize (right is positive).
-                "wheelDeltaX" in event
-                ? -event.wheelDeltaX
-                : 0;
+                  "wheelDeltaX" in event
+                  ? -event.wheelDeltaX
+                  : 0;
             },
             deltaY: function (event) {
               return "deltaY" in event
                 ? event.deltaY
                 : // Fallback to `wheelDeltaY` for Webkit and normalize (down is positive).
-                "wheelDeltaY" in event
-                ? -event.wheelDeltaY
-                : // Fallback to `wheelDelta` for IE<9 and normalize (down is positive).
-                "wheelDelta" in event
-                ? -event.wheelDelta
-                : 0;
+                  "wheelDeltaY" in event
+                  ? -event.wheelDeltaY
+                  : // Fallback to `wheelDelta` for IE<9 and normalize (down is positive).
+                    "wheelDelta" in event
+                    ? -event.wheelDelta
+                    : 0;
             },
             deltaZ: null,
 
@@ -21012,20 +21021,20 @@
             dispatchConfig,
             dispatchMarker,
             nativeEvent,
-            nativeEventTarget
+            nativeEventTarget,
           ) {
             return SyntheticMouseEvent.call(
               this,
               dispatchConfig,
               dispatchMarker,
               nativeEvent,
-              nativeEventTarget
+              nativeEventTarget,
             );
           }
 
           SyntheticMouseEvent.augmentClass(
             SyntheticWheelEvent,
-            WheelEventInterface
+            WheelEventInterface,
           );
 
           module.exports = SyntheticWheelEvent;
@@ -21163,7 +21172,7 @@
                   ? invariant(
                       false,
                       "Transaction.perform(...): Cannot initialize a transaction when there " +
-                        "is already an outstanding transaction."
+                        "is already an outstanding transaction.",
                     )
                   : invariant(false)
                 : void 0;
@@ -21236,7 +21245,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "Transaction.closeAll(): Cannot close transaction when none are open."
+                      "Transaction.closeAll(): Cannot close transaction when none are open.",
                     )
                   : invariant(false)
                 : void 0;
@@ -21352,7 +21361,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "accumulateInto(...): Accumulated items must not be null or undefined."
+                    "accumulateInto(...): Accumulated items must not be null or undefined.",
                   )
                 : invariant(false)
               : void 0;
@@ -21588,7 +21597,7 @@
                           component._currentElement.type,
                           ownerName || "unknown",
                           name,
-                          value
+                          value,
                         )
                       : void 0;
                   }
@@ -21689,7 +21698,7 @@
                         "never access something that requires stale data from the previous " +
                         "render, such as refs. Move this logic to componentDidMount and " +
                         "componentDidUpdate instead.",
-                      owner.getName() || "A component"
+                      owner.getName() || "A component",
                     )
                   : void 0;
                 owner._warnedAboutRefsInRender = true;
@@ -21715,7 +21724,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "findDOMNode was called on an unmounted component."
+                      "findDOMNode was called on an unmounted component.",
                     )
                   : invariant(false)
                 : void 0;
@@ -21725,7 +21734,7 @@
                   ? invariant(
                       false,
                       "Element appears to be neither ReactComponent nor DOMNode (keys: %s)",
-                      Object.keys(componentOrElement)
+                      Object.keys(componentOrElement),
                     )
                   : invariant(false)
                 : void 0;
@@ -21771,7 +21780,7 @@
                     "flattenChildren(...): Encountered two children with the same key, " +
                       "`%s`. Child keys must be unique; when two children share a key, only " +
                       "the first child will be used.",
-                    KeyEscapeUtils.unescape(name)
+                    KeyEscapeUtils.unescape(name),
                   )
                 : void 0;
             }
@@ -21793,7 +21802,7 @@
             traverseAllChildren(
               children,
               flattenSingleChildIntoContext,
-              result
+              result,
             );
             return result;
           }
@@ -22348,7 +22357,7 @@
             animationend: makePrefixMap("Animation", "AnimationEnd"),
             animationiteration: makePrefixMap(
               "Animation",
-              "AnimationIteration"
+              "AnimationIteration",
             ),
             animationstart: makePrefixMap("Animation", "AnimationStart"),
             transitionend: makePrefixMap("Transition", "TransitionEnd"),
@@ -22448,7 +22457,7 @@
             ReactCompositeComponent.Mixin,
             {
               _instantiateReactComponent: instantiateReactComponent,
-            }
+            },
           );
 
           function getDeclarationErrorAddendum(owner) {
@@ -22523,7 +22532,7 @@
                       "Element type is invalid: expected a string (for built-in components) " +
                         "or a class/function (for composite components) but got: %s.%s",
                       element.type == null ? element.type : typeof element.type,
-                      getDeclarationErrorAddendum(element._owner)
+                      getDeclarationErrorAddendum(element._owner),
                     )
                   : invariant(false)
                 : void 0;
@@ -22548,7 +22557,7 @@
                   ? invariant(
                       false,
                       "Encountered invalid React node of type %s",
-                      typeof node
+                      typeof node,
                     )
                   : invariant(false)
                 : void 0;
@@ -22561,7 +22570,7 @@
                       typeof instance.receiveComponent === "function" &&
                       typeof instance.getNativeNode === "function" &&
                       typeof instance.unmountComponent === "function",
-                    "Only React Components can be mounted."
+                    "Only React Components can be mounted.",
                   )
                 : void 0;
             }
@@ -22585,13 +22594,13 @@
                 var displayName = getDisplayName(instance);
                 ReactInstrumentation.debugTool.onSetDisplayName(
                   debugID,
-                  displayName
+                  displayName,
                 );
                 var owner = node && node._owner;
                 if (owner) {
                   ReactInstrumentation.debugTool.onSetOwner(
                     debugID,
-                    owner._debugID
+                    owner._debugID,
                   );
                 }
               }
@@ -22674,7 +22683,7 @@
               // This is the only way to test support for the `wheel` event in IE9+.
               isSupported = document.implementation.hasFeature(
                 "Events.wheel",
-                "3.0"
+                "3.0",
               );
             }
 
@@ -22772,7 +22781,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "onlyChild must be passed a children with exactly one child."
+                    "onlyChild must be passed a children with exactly one child.",
                   )
                 : invariant(false)
               : void 0;
@@ -22866,12 +22875,11 @@
            * @param {string} html
            * @internal
            */
-          var setInnerHTML = createMicrosoftUnsafeLocalFunction(function (
-            node,
-            html
-          ) {
-            node.innerHTML = html;
-          });
+          var setInnerHTML = createMicrosoftUnsafeLocalFunction(
+            function (node, html) {
+              node.innerHTML = html;
+            },
+          );
 
           if (ExecutionEnvironment.canUseDOM) {
             // IE8: When updating a just created node with innerHTML only leading
@@ -23092,7 +23100,7 @@
             children,
             nameSoFar,
             callback,
-            traverseContext
+            traverseContext,
           ) {
             var type = typeof children;
 
@@ -23114,7 +23122,7 @@
                 // so that it's consistent if the number of children grows.
                 nameSoFar === ""
                   ? SEPARATOR + getComponentKey(children, 0)
-                  : nameSoFar
+                  : nameSoFar,
               );
               return 1;
             }
@@ -23133,7 +23141,7 @@
                   child,
                   nextName,
                   callback,
-                  traverseContext
+                  traverseContext,
                 );
               }
             } else {
@@ -23150,7 +23158,7 @@
                       child,
                       nextName,
                       callback,
-                      traverseContext
+                      traverseContext,
                     );
                   }
                 } else {
@@ -23160,7 +23168,7 @@
                           didWarnAboutMaps,
                           "Using Maps as children is not yet fully supported. It is an " +
                             "experimental feature that might be removed. Convert it to a " +
-                            "sequence / iterable of keyed ReactElements instead."
+                            "sequence / iterable of keyed ReactElements instead.",
                         )
                       : void 0;
                     didWarnAboutMaps = true;
@@ -23179,7 +23187,7 @@
                         child,
                         nextName,
                         callback,
-                        traverseContext
+                        traverseContext,
                       );
                     }
                   }
@@ -23214,7 +23222,7 @@
                               Object.keys(children).join(", ") +
                               "}"
                           : childrenString,
-                        addendum
+                        addendum,
                       )
                     : invariant(false)
                   : void 0;
@@ -23249,7 +23257,7 @@
               children,
               "",
               callback,
-              traverseContext
+              traverseContext,
             );
           }
 
@@ -23702,7 +23710,7 @@
             validateDOMNesting = function (
               childTag,
               childInstance,
-              ancestorInfo
+              ancestorInfo,
             ) {
               ancestorInfo = ancestorInfo || emptyAncestorInfo;
               var parentInfo = ancestorInfo.current;
@@ -23730,7 +23738,7 @@
 
                 var minStackLen = Math.min(
                   childOwners.length,
-                  ancestorOwners.length
+                  ancestorOwners.length,
                 );
                 var i;
 
@@ -23766,7 +23774,7 @@
                     // If we're warning about an invalid (non-parent) ancestry, add '...'
                     invalidAncestor ? ["..."] : [],
                     childOwnerNames,
-                    childTag
+                    childTag,
                   )
                   .join(" > ");
 
@@ -23803,7 +23811,7 @@
                         tagDisplayName,
                         ancestorTag,
                         ownerInfo,
-                        info
+                        info,
                       )
                     : void 0;
                 } else {
@@ -23814,7 +23822,7 @@
                           "<%s>. See %s.",
                         tagDisplayName,
                         ancestorTag,
-                        ownerInfo
+                        ownerInfo,
                       )
                     : void 0;
                 }
@@ -23826,7 +23834,7 @@
             // For testing
             validateDOMNesting.isTagValidInContext = function (
               tag,
-              ancestorInfo
+              ancestorInfo,
             ) {
               ancestorInfo = ancestorInfo || emptyAncestorInfo;
               var parentInfo = ancestorInfo.current;
@@ -23918,7 +23926,7 @@
                   console.error(
                     "Attempted to listen to events during the capture phase on a " +
                       "browser that does not support the capture phase. Your application " +
-                      "will not receive some events."
+                      "will not receive some events.",
                   );
                 }
                 return {
@@ -24155,7 +24163,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "toArray: Object should have keys for indices"
+                    "toArray: Object should have keys for indices",
                   )
                 : invariant(false)
               : void 0;
@@ -24165,7 +24173,7 @@
                 ? invariant(
                     false,
                     "toArray: Object can't be `arguments`. Use rest params " +
-                      "(function(...args) {}) or Array.from() instead."
+                      "(function(...args) {}) or Array.from() instead.",
                   )
                 : invariant(false)
               : void 0;
@@ -24324,7 +24332,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "createNodesFromMarkup dummy not initialized"
+                    "createNodesFromMarkup dummy not initialized",
                   )
                 : invariant(false)
               : void 0;
@@ -24348,7 +24356,7 @@
                 ? "development" !== "production"
                   ? invariant(
                       false,
-                      "createNodesFromMarkup(...): Unexpected <script> element rendered."
+                      "createNodesFromMarkup(...): Unexpected <script> element rendered.",
                     )
                   : invariant(false)
                 : void 0;
@@ -24790,7 +24798,7 @@
               if (format === undefined) {
                 error = new Error(
                   "Minified exception occurred; use the non-minified dev environment " +
-                    "for the full error message and additional helpful warnings."
+                    "for the full error message and additional helpful warnings.",
                 );
               } else {
                 var args = [a, b, c, d, e, f];
@@ -24798,7 +24806,7 @@
                 error = new Error(
                   format.replace(/%s/g, function () {
                     return args[argIndex++];
-                  })
+                  }),
                 );
                 error.name = "Invariant Violation";
               }
@@ -24917,7 +24925,7 @@
               ? "development" !== "production"
                 ? invariant(
                     false,
-                    "keyMirror(...): Argument must be an object."
+                    "keyMirror(...): Argument must be an object.",
                   )
                 : invariant(false)
               : void 0;
@@ -25022,7 +25030,7 @@
                   context,
                   object[name],
                   name,
-                  object
+                  object,
                 );
               }
             }
@@ -25256,7 +25264,7 @@
               if (format === undefined) {
                 throw new Error(
                   "`warning(condition, format, ...args)` requires a warning " +
-                    "message argument"
+                    "message argument",
                 );
               }
 
@@ -25298,7 +25306,7 @@
           function toObject(val) {
             if (val === null || val === undefined) {
               throw new TypeError(
-                "Object.assign cannot be called with null or undefined"
+                "Object.assign cannot be called with null or undefined",
               );
             }
 
@@ -25384,6 +25392,6 @@
       ],
     },
     {},
-    [91]
+    [91],
   )(91);
 });

@@ -6,33 +6,32 @@ import {
   destroyComponents,
 } from "@krakenjs/zoid/src";
 
-import type { LazyExport, LazyProtectedExport } from "../types";
-import { allowIframe as _allowIframe, protectedExport } from "../lib";
-import { getCheckoutComponent, type CheckoutComponent } from "../zoid/checkout";
-import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
+import type {
+  LazyExport,
+  LazyProtectedExport,
+} from "checkout-components/src/types";
 import {
+  getCheckoutComponent,
+  getButtonsComponent,
   getCardFormComponent,
-  type CardFormComponent,
-} from "../zoid/card-form";
-import {
   getPaymentFieldsComponent,
-  type PaymentFieldsComponent,
-} from "../zoid/payment-fields";
-import { getMenuComponent, type MenuComponent } from "../zoid/menu";
-import {
+  getMenuComponent,
   getInstallmentsComponent,
-  type InstallmentsComponent,
-} from "../zoid/installments";
-import { Buttons as _ButtonsTemplate } from "../ui/buttons";
-import { getQRCodeComponent, type QRCodeComponent } from "../zoid/qr-code";
-import {
+  getQRCodeComponent,
   getVenmoCheckoutComponent,
-  type VenmoCheckoutComponent,
-} from "../zoid/venmo";
-import {
   getModalComponent,
+  type CheckoutComponent,
+  type ButtonsComponent,
+  type CardFormComponent,
+  type PaymentFieldsComponent,
+  type MenuComponent,
+  type InstallmentsComponent,
+  type QRCodeComponent,
+  type VenmoCheckoutComponent,
   type ModalComponent,
-} from "../zoid/modal/component";
+} from "checkout-components/src/zoid";
+import { Buttons as _ButtonsTemplate } from "checkout-components/src/ui/buttons";
+import { allowIframe as _allowIframe, protectedExport } from "../lib";
 
 export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),

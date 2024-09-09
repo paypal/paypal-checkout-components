@@ -3,7 +3,7 @@
 
 const { FUNDING, CARD } = require("@paypal/sdk-constants");
 
-const globals = require("./globals");
+const globals = require("./packages/checkout-components/globals");
 
 const SMART_FUNDING_SOURCES = [
   FUNDING.PAYPAL,
@@ -46,51 +46,51 @@ const SMART_CARDS = [
 
 module.exports = {
   buttons: {
-    entry: "./src/interface/button",
+    entry: "./packages/sdk-interface/interface/button",
     setupHandler: "setupButtons",
     globals,
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
   marks: {
-    entry: "./src/interface/marks",
+    entry: "./packages/sdk-interface/interface/marks",
     globals,
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
   wallet: {
-    entry: "./src/interface/wallet",
+    entry: "./packages/sdk-interface/interface/wallet",
     globals,
   },
   // in process of being renamed to fastlane
   connect: {
-    entry: "./src/connect/interface",
+    entry: "./packages/sdk-interface/connect/interface",
   },
   fastlane: {
-    entry: "./src/connect/interface",
+    entry: "./packages/sdk-interface/connect/interface",
   },
   // @deprecated - renamed to payment-fields to be removed
   fields: {
-    entry: "./src/interface/fields",
+    entry: "./packages/sdk-interface/interface/fields",
     globals,
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
   "payment-fields": {
-    entry: "./src/interface/payment-fields",
+    entry: "./packages/sdk-interface/interface/payment-fields",
     globals,
     fundingSources: SMART_FUNDING_SOURCES,
     cards: SMART_CARDS,
   },
   "card-fields": {
-    entry: "./src/interface/card-fields",
+    entry: "./packages/sdk-interface/interface/card-fields",
     globals,
   },
   "hosted-buttons": {
-    entry: "./src/interface/hosted-buttons",
+    entry: "./packages/sdk-interface/interface/hosted-buttons",
     globals,
   },
   "shopper-insights": {
-    entry: "./src/shopper-insights/interface",
+    entry: "./packages/sdk-interface/shopper-insights/interface",
   },
 };

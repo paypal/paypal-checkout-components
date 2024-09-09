@@ -73,7 +73,3 @@ export type Requires = {|
 export type LazyExport<T> = {|
   __get__: () => T,
 |};
-
-export type LazyProtectedExport<T> = {|
-  __get__: () => ?T,
-|};

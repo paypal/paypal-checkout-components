@@ -35,7 +35,7 @@ for (const flow of ["popup", "iframe"]) {
             action: "checkout",
             onRender() {
               assert.ok(
-                getElementRecursive(".paypal-checkout-background-color-black")
+                getElementRecursive(".paypal-checkout-background-color-black"),
               );
               done();
             },
@@ -130,9 +130,9 @@ describe("paypal button color", () => {
               done(
                 new Error(
                   `Expected style object ${JSON.stringify(
-                    style
-                  )} to remain unmodified as ${expected}`
-                )
+                    style,
+                  )} to remain unmodified as ${expected}`,
+                ),
               );
             }
             done();
@@ -170,8 +170,8 @@ describe("paypal button aria-label", () => {
       .then(() => {
         assert.ok(
           getElementRecursive(
-            ".paypal-button[aria-label='Pay up to 3x without interest']"
-          )
+            ".paypal-button[aria-label='Pay up to 3x without interest']",
+          ),
         );
         done();
       });
@@ -190,8 +190,8 @@ describe("paypal button aria-label", () => {
       .then(() => {
         assert.ok(
           getElementRecursive(
-            ".paypal-button[aria-label='Interest free payments']"
-          )
+            ".paypal-button[aria-label='Interest free payments']",
+          ),
         );
         done();
       });

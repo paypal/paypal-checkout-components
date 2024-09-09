@@ -65,7 +65,7 @@ export function getCardConfig(): FundingSourceConfig {
         wallet &&
           wallet.card &&
           wallet.card.instruments &&
-          wallet.card.instruments.length
+          wallet.card.instruments.length,
       );
 
       // If card is not eligible, never show card buttons

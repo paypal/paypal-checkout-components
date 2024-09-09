@@ -84,16 +84,16 @@ type CardFieldsProps = {|
   createVaultSetupToken: () => ZalgoPromise<string>,
   onApprove: (
     {| returnUrl?: string, vaultSetupToken?: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   onError?: () => ZalgoPromise<Object> | Object,
   onComplete: (
     {| returnUrl: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   onCancel?: (
     {| cancelUrl: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   action: Object,
   sdkCorrelationID: string,
@@ -145,7 +145,7 @@ const prerenderTemplate = ({ props, doc }) => {
 export type CardFieldsComponent = ZoidComponent<
   CardFieldsProps,
   CardFieldsExports,
-  CardFieldsChildren
+  CardFieldsChildren,
 >;
 
 export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
@@ -705,5 +705,5 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     });
 
     return CardFields;
-  }
+  },
 );

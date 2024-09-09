@@ -56,7 +56,7 @@ for (const flow of ["popup", "iframe"]) {
               onCancel(): void {
                 return done(new Error("Expected onCancel to not be called"));
               },
-            })
+            }),
           );
         },
       });
@@ -101,7 +101,7 @@ for (const flow of ["popup", "iframe"]) {
               onCancel(): void {
                 return done(new Error("Expected onCancel to not be called"));
               },
-            })
+            }),
           );
         },
       });
@@ -149,7 +149,7 @@ for (const flow of ["popup", "iframe"]) {
               onCancel(): void {
                 return done(new Error("Expected onCancel to not be called"));
               },
-            })
+            }),
           );
         },
       });

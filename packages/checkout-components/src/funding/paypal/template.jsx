@@ -112,16 +112,16 @@ function getButtonPersonalizationStyle(opts: LabelOptions): ?ChildType {
       innerHTML={`
             @media only screen and (max-width: ${MIN_WIDTH}px) {
                 .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${
-        CLASS.PERSONALIZATION_TEXT
-      } {
+                  CLASS.PERSONALIZATION_TEXT
+                } {
                     ${HIDDEN}
                 }
             }
 
             @media only screen and (min-width: ${MIN_WIDTH}px) {
                 .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${LOGO_CLASS.LOGO}.${
-        LOGO_CLASS.LOGO
-      }-${FUNDING.PAYPAL} {
+                  LOGO_CLASS.LOGO
+                }-${FUNDING.PAYPAL} {
                     animation: ${
                       personalizationText
                         ? `toggle-paypal-logo ${PERSONALIZATION_DURATION}s 0s forwards`
@@ -130,8 +130,8 @@ function getButtonPersonalizationStyle(opts: LabelOptions): ?ChildType {
                 }
 
                 .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${CLASS.TEXT}:not(.${
-        CLASS.PERSONALIZATION_TEXT
-      }):not(.${CLASS.HIDDEN}) {
+                  CLASS.PERSONALIZATION_TEXT
+                }):not(.${CLASS.HIDDEN}) {
                     ${COMPRESSED}
                     ${VISIBLE}
                     animation: ${
@@ -142,8 +142,8 @@ function getButtonPersonalizationStyle(opts: LabelOptions): ?ChildType {
                 }
 
                 .${CLASS.DOM_READY} ${PAYPAL_BUTTON} .${
-        CLASS.PERSONALIZATION_TEXT
-      } {
+                  CLASS.PERSONALIZATION_TEXT
+                } {
                     ${COMPRESSED}
                     ${VISIBLE}
                     animation: show-personalization-text ${PERSONALIZATION_DURATION}s 0s forwards;

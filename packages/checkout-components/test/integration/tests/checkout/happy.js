@@ -65,7 +65,7 @@ describe(`paypal checkout component happy path`, () => {
             buttonSessionID: uniqueID(),
             fundingSource: FUNDING.PAYPAL,
             createOrder: expect("createOrder", () =>
-              ZalgoPromise.try(generateOrderID)
+              ZalgoPromise.try(generateOrderID),
             ),
             onApprove: expect("onApprove"),
             onCancel: error("onCancel"),
@@ -88,13 +88,13 @@ describe(`paypal checkout component happy path`, () => {
             onApprove: expect("onApprove", (data) => {
               if (data.currentUrl.indexOf(`token=${orderID}`) === -1) {
                 throw new Error(
-                  `Expected to find order id in url, got ${data.currentUrl}`
+                  `Expected to find order id in url, got ${data.currentUrl}`,
                 );
               }
 
               if (data.currentUrl.indexOf(`checkouturl=true`) === -1) {
                 throw new Error(
-                  `Expected url to contain checkouturl, got ${data.currentUrl}`
+                  `Expected url to contain checkouturl, got ${data.currentUrl}`,
                 );
               }
             }),
@@ -119,7 +119,7 @@ describe(`paypal checkout component happy path`, () => {
             onApprove: expect("onApprove", (data) => {
               if (data.currentUrl.indexOf(`sign_out_user=true`) === -1) {
                 throw new Error(
-                  `Expected to find sign_out_user=true in url, got ${data.currentUrl}`
+                  `Expected to find sign_out_user=true in url, got ${data.currentUrl}`,
                 );
               }
             }),
@@ -160,7 +160,7 @@ describe(`paypal checkout component happy path`, () => {
         onWindowOpen().then(
           expect("windowOpen", (win) => {
             childWindow = win;
-          })
+          }),
         );
 
         return window.paypal
@@ -206,7 +206,7 @@ describe(`paypal checkout component happy path`, () => {
             .render("body");
         });
       },
-      { timeout: 5000 }
+      { timeout: 5000 },
     );
   });
 
@@ -230,7 +230,7 @@ describe(`paypal checkout component happy path`, () => {
             .render("body", "iframe");
         });
       },
-      { timeout: 8000 }
+      { timeout: 8000 },
     );
   });
 
@@ -268,15 +268,15 @@ describe(`paypal checkout component happy path`, () => {
         if (height !== DEFAULT_POPUP_SIZE.HEIGHT) {
           done(
             new Error(
-              `height does not match. expected ${DEFAULT_POPUP_SIZE.HEIGHT}, got ${height}`
-            )
+              `height does not match. expected ${DEFAULT_POPUP_SIZE.HEIGHT}, got ${height}`,
+            ),
           );
         }
         if (width !== DEFAULT_POPUP_SIZE.WIDTH) {
           done(
             new Error(
-              `width does not match. expected ${DEFAULT_POPUP_SIZE.WIDTH}, got ${width}`
-            )
+              `width does not match. expected ${DEFAULT_POPUP_SIZE.WIDTH}, got ${width}`,
+            ),
           );
         }
         done();
@@ -310,15 +310,15 @@ describe(`paypal checkout component happy path`, () => {
         if (height !== CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT) {
           done(
             new Error(
-              `height does not match. expected ${CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT}, got ${height}`
-            )
+              `height does not match. expected ${CUSTOM_DEFAULT_POPUP_SIZE.HEIGHT}, got ${height}`,
+            ),
           );
         }
         if (width !== CUSTOM_DEFAULT_POPUP_SIZE.WIDTH) {
           done(
             new Error(
-              `width does not match. expected ${CUSTOM_DEFAULT_POPUP_SIZE.WIDTH}, got ${width}`
-            )
+              `width does not match. expected ${CUSTOM_DEFAULT_POPUP_SIZE.WIDTH}, got ${width}`,
+            ),
           );
         }
         done();

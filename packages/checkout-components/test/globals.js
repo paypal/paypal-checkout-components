@@ -124,7 +124,7 @@ function getTestGlobals(productionGlobals) {
 
     __FUNDING_ELIGIBILITY__: () =>
       `window.__TEST_FUNDING_ELIGIBILITY__ || ${JSON.stringify(
-        fundingEligibility
+        fundingEligibility,
       )}`,
 
     __PROTOCOL__: "http",

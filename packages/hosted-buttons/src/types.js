@@ -33,7 +33,7 @@ export type OnShippingAddressChange = (
   |},
   actions: {|
     reject: (arg: string) => void,
-  |}
+  |},
 ) => Promise<mixed>;
 
 export type OnShippingOptionsChange = (
@@ -48,7 +48,7 @@ export type OnShippingOptionsChange = (
   |},
   actions: {|
     reject: (arg: string) => void,
-  |}
+  |},
 ) => Promise<mixed>;
 
 export type FundingSources = string;
@@ -92,7 +92,7 @@ export type HostedButtonOptions = {|
 |};
 
 export type ButtonPreferences = $ReadOnlyArray<
-  $Values<typeof FUNDING> | "default"
+  $Values<typeof FUNDING> | "default",
 >;
 
 export type HostedButtonPreferences = {|

@@ -92,7 +92,7 @@ describe("HostedButtons v1", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(hostedButtonDetailsResponse)
+      Promise.resolve(hostedButtonDetailsResponse),
     );
     await HostedButtons({
       hostedButtonId,
@@ -102,7 +102,7 @@ describe("HostedButtons v1", () => {
       expect.objectContaining({
         hostedButtonId,
         style: expect.objectContaining({ tagline: true }),
-      })
+      }),
     );
     expect(Buttons).toHaveBeenCalledTimes(1);
     expect.assertions(2);
@@ -121,7 +121,7 @@ describe("HostedButtons v1", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(hostedButtonDetailsResponse)
+      Promise.resolve(hostedButtonDetailsResponse),
     );
     await HostedButtons({
       hostedButtonId,
@@ -130,7 +130,7 @@ describe("HostedButtons v1", () => {
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
         hostedButtonId,
-      })
+      }),
     );
     expect(Buttons).toHaveBeenCalledTimes(1);
     expect(renderMock).toHaveBeenCalledTimes(1);
@@ -181,7 +181,7 @@ describe("HostedButtons v1", () => {
             ],
           },
         },
-      })
+      }),
     );
     await HostedButtons({
       hostedButtonId,
@@ -191,7 +191,7 @@ describe("HostedButtons v1", () => {
       expect.objectContaining({
         hostedButtonId,
         style: expect.objectContaining({ tagline: false }),
-      })
+      }),
     );
     expect(Buttons).toHaveBeenCalledTimes(1);
     expect(renderMock).toHaveBeenCalledTimes(1);
@@ -238,7 +238,7 @@ describe("HostedButtons v2", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(hostedButtonDetailsResponse)
+      Promise.resolve(hostedButtonDetailsResponse),
     );
 
     await HostedButtons({
@@ -251,13 +251,13 @@ describe("HostedButtons v2", () => {
     expect(renderStandaloneButton).toHaveBeenCalledWith(
       expect.objectContaining({
         fundingSource: "paypal",
-      })
+      }),
     );
 
     expect(renderDefaultButton).toHaveBeenCalledWith(
       expect.objectContaining({
         eligibleDefaultButtons: ["venmo", "paylater"],
-      })
+      }),
     );
   });
 });

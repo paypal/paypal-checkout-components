@@ -68,7 +68,7 @@ for (const flow of ["popup", "iframe"]) {
             },
             createBillingAgreement: expect(
               "createBillingAgreement",
-              generateBillingAgreementToken
+              generateBillingAgreementToken,
             ),
             onCancel: avoid("onCancel"),
           })
@@ -447,7 +447,7 @@ for (const flow of ["popup", "iframe"]) {
         {
           id: "lateContainer",
         },
-        getElement("#testContainer")
+        getElement("#testContainer"),
       );
 
       Object.defineProperty(document, "readyState", {
@@ -618,7 +618,7 @@ for (const flow of ["popup", "iframe"]) {
               })
               .render("#testContainer");
           },
-          { timeout: 5000 }
+          { timeout: 5000 },
         );
       });
     }
@@ -643,8 +643,8 @@ for (const flow of ["popup", "iframe"]) {
               if (createOrderCalls !== 1) {
                 return done(
                   new Error(
-                    `Expected createOrder to be called one time, got ${createOrderCalls} calls`
-                  )
+                    `Expected createOrder to be called one time, got ${createOrderCalls} calls`,
+                  ),
                 );
               }
 

@@ -27,7 +27,7 @@ describe(`paypal button layouts`, () => {
           onRender({ fundingSources }) {
             if (fundingSources.length > 2) {
               throw new Error(
-                `Expected a maximum of 2 buttons to be rendered horizontally, got ${fundingSources.length}`
+                `Expected a maximum of 2 buttons to be rendered horizontally, got ${fundingSources.length}`,
               );
             }
 
@@ -61,7 +61,7 @@ describe(`paypal button layouts`, () => {
           onRender({ fundingSources }) {
             if (fundingSources.length > 4) {
               throw new Error(
-                `Expected a maximum of 4 buttons to be rendered vertically, got ${fundingSources.length}`
+                `Expected a maximum of 4 buttons to be rendered vertically, got ${fundingSources.length}`,
               );
             }
 

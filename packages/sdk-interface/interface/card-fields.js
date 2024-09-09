@@ -2,11 +2,11 @@
 
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
-import type { LazyExport } from "../types";
+import type { LazyExport } from "checkout-components/src/types";
 import {
   getCardFieldsComponent,
   type CardFieldsComponent,
-} from "../zoid/card-fields/component";
+} from "checkout-components/src/zoid/card-fields/component";
 
 export const CardFields: LazyExport<CardFieldsComponent> = {
   __get__: getCardFieldsComponent,

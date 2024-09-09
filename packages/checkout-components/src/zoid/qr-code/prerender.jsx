@@ -47,6 +47,6 @@ export function prerenderTemplate({
   ];
 
   return new SpinnerPage({ nonce: props.cspNonce }, children).render(
-    dom({ doc })
+    dom({ doc }),
   );
 }

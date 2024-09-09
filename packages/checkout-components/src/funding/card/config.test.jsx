@@ -46,7 +46,7 @@ describe("card eligibility", () => {
         // $FlowIssue
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -58,7 +58,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility({ branded: true }),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 
@@ -70,7 +70,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 
@@ -83,7 +83,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -98,7 +98,7 @@ describe("card eligibility", () => {
           card: ["some instrument"],
         }),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -112,7 +112,7 @@ describe("card eligibility", () => {
           card: ["some instrument"],
         }),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 
@@ -124,7 +124,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -136,7 +136,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 });

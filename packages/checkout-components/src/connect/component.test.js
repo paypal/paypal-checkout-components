@@ -100,7 +100,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     loadAxo.mockRejectedValue(errorMessage);
 
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
-      errorMessage
+      errorMessage,
     );
   });
 
@@ -109,7 +109,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     window.braintree.connect.create.mockRejectedValue(expectedError);
 
     await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
-      expectedError
+      expectedError,
     );
   });
 

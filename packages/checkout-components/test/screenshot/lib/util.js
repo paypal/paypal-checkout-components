@@ -9,7 +9,7 @@ import fs from "fs-extra";
 
 export async function createTempFile(
   filename: string,
-  text: string = ""
+  text: string = "",
 ): Promise<string> {
   const path = `${os.tmpdir()}/${filename}`;
   await fs.writeFile(path, text);
@@ -19,7 +19,7 @@ export async function createTempFile(
 export function dotify(
   obj: Object,
   prefix: string = "",
-  newobj: Object = {}
+  newobj: Object = {},
 ): { [string]: string } {
   prefix = prefix ? `${prefix}.` : prefix;
   for (const key in obj) {

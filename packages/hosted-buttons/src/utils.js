@@ -93,7 +93,7 @@ export const createAccessToken: CreateAccessToken = memoize<CreateAccessToken>(
       accessToken,
       nonce,
     };
-  }
+  },
 );
 
 export const buildRequestHeaders: BuildRequestHeaders = async ({
@@ -138,7 +138,7 @@ export const getButtonPreferences = ({
     throw new Error(
       `Expected preferences to be populated, received: ${JSON.stringify({
         preferences,
-      })}`
+      })}`,
     );
   }
 
@@ -149,11 +149,11 @@ export const getButtonPreferences = ({
     buttonPreferences: buttonPreferences.filter(
       (fundingMethod) =>
         eligibleFundingMethods.includes(fundingMethod) ||
-        fundingMethod === "default"
+        fundingMethod === "default",
     ),
     // Sort the eligible funding methods returned from /ncp/api/form-fields in the order that they would appear in the smart stack.
     eligibleFundingMethods: SUPPORTED_FUNDING_SOURCES.filter((fundingMethod) =>
-      eligibleFundingMethods.includes(fundingMethod)
+      eligibleFundingMethods.includes(fundingMethod),
     ),
   };
 };
@@ -210,7 +210,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
 };
 
 export function getElementFromSelector(
-  selector: string | HTMLElement
+  selector: string | HTMLElement,
 ): HTMLElement | null {
   return typeof selector === "string"
     ? document.querySelector(selector)
@@ -401,7 +401,7 @@ export const getFlexDirection = ({
 
 export const getButtonColor = (
   color: Color,
-  fundingSource: FundingSources
+  fundingSource: FundingSources,
 ): Color => {
   const colorMap = {
     gold: {
@@ -459,7 +459,7 @@ export const getDefaultButtonOptions = ({
   eligibleFundingMethods,
 }: HostedButtonPreferences): ButtonPreferences => {
   return eligibleFundingMethods.filter(
-    (fundingSource: string) => !buttonPreferences.includes(fundingSource)
+    (fundingSource: string) => !buttonPreferences.includes(fundingSource),
   );
 };
 

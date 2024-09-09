@@ -11,17 +11,17 @@ export const DOMAIN: string =
   process.env.SPB_DOMAIN || "https://www.mock-spb-merchant.com";
 
 export const HEADLESS: boolean = Boolean(
-  process.env.HEADLESS !== "0" && process.env.HEADLESS !== "false"
+  process.env.HEADLESS !== "0" && process.env.HEADLESS !== "false",
 );
 export const DEVTOOLS: boolean = Boolean(
   HEADLESS &&
-    (process.env.DEV_TOOLS === "1" || process.env.DEV_TOOLS === "true")
+    (process.env.DEV_TOOLS === "1" || process.env.DEV_TOOLS === "true"),
 );
 export const RETRIES: number = process.env.RETRIES
   ? parseInt(process.env.RETRIES, 10)
   : 5;
 export const LOG: boolean = Boolean(
-  process.env.LOG === "1" || process.env.LOG === "true"
+  process.env.LOG === "1" || process.env.LOG === "true",
 );
 export const TIMEOUT: number = process.env.TIMEOUT
   ? parseInt(process.env.TIMEOUT, 10)

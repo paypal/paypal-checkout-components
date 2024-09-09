@@ -40,7 +40,7 @@ export function getSdkVersion(version: string | null): string {
     });
 
     throw new Error(
-      `The braintree version: ${version} does not support Connect. Please use version ${MIN_BT_VERSION} or above`
+      `The braintree version: ${version} does not support Connect. Please use version ${MIN_BT_VERSION} or above`,
     );
   }
 

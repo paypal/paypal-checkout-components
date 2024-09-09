@@ -38,12 +38,12 @@ describe("PayPal end to end tests", () => {
                         window.capturePromise = actions.order.capture();
                     }
                 }
-            `
+            `,
       );
 
       const button = await getButtonByFundingSource(
         buttonFrame,
-        FUNDING.PAYPAL
+        FUNDING.PAYPAL,
       );
       const checkoutPopup = await clickButton(page, button);
 
@@ -92,12 +92,12 @@ describe("PayPal end to end tests", () => {
                         window.capturePromise = actions.order.capture();
                     }
                 }
-            `
+            `,
       );
 
       const button = await getButtonByFundingSource(
         buttonFrame,
-        FUNDING.CREDIT
+        FUNDING.CREDIT,
       );
       const checkoutPopup = await clickButton(page, button);
 
@@ -146,12 +146,12 @@ describe("PayPal end to end tests", () => {
                         window.capturePromise = actions.order.capture();
                     }
                 }
-            `
+            `,
       );
 
       const button = await getButtonByFundingSource(
         buttonFrame,
-        FUNDING.CREDIT
+        FUNDING.CREDIT,
       );
       const checkoutPopup = await clickButton(page, button);
 

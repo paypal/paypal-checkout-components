@@ -24,7 +24,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       payIn4: {
@@ -44,11 +44,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Pay in 4"
+        "Pay in 4",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Pay in 4"
+        "Pay in 4",
       );
     });
   });
@@ -58,7 +58,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       payIn4: {
@@ -77,11 +77,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Pay Later"
+        "Pay Later",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "paypal paylater"
+        "paypal paylater",
       );
     });
   });
@@ -91,7 +91,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       paylater: {
@@ -111,11 +111,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Später Bezahlen"
+        "Später Bezahlen",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Später Bezahlen"
+        "Später Bezahlen",
       );
     });
   });
@@ -125,7 +125,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       payIn4: {
@@ -145,11 +145,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "4X PayPal"
+        "4X PayPal",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "4X PayPal"
+        "4X PayPal",
       );
     });
   });
@@ -159,7 +159,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       payIn3: {
@@ -179,11 +179,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Paga in 3 rate"
+        "Paga in 3 rate",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Paga in 3 rate"
+        "Paga in 3 rate",
       );
     });
   });
@@ -193,7 +193,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       payIn3: {
@@ -213,11 +213,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Paga en 3 plazos"
+        "Paga en 3 plazos",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Paga en 3 plazos"
+        "Paga en 3 plazos",
       );
     });
   });
@@ -227,12 +227,12 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "products",
-      undefined
+      undefined,
     );
 
     const button = window.paypal.Buttons({
@@ -246,11 +246,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Pay Later"
+        "Pay Later",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "paypal paylater"
+        "paypal paylater",
       );
     });
   });

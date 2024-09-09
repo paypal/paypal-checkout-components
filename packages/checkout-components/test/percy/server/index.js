@@ -23,7 +23,7 @@ const port = 8111;
       test: true,
       web: false,
       vars: { ...getTestGlobals(globals) },
-    })
+    }),
   );
 
   const server = http.createServer((req, res) => {
@@ -36,7 +36,7 @@ const port = 8111;
       res.statusCode = 200;
       res.setHeader("Content-Type", "text/html");
       const readStream = fs.createReadStream(
-        path.resolve(__dirname, "./index.html")
+        path.resolve(__dirname, "./index.html"),
       );
       readStream.pipe(res);
     }

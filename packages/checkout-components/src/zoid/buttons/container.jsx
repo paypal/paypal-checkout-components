@@ -86,13 +86,13 @@ export function containerTemplate({
     possibleSizes.sort(
       (
         sizeA: $Values<typeof BUTTON_SIZE>,
-        sizeB: $Values<typeof BUTTON_SIZE>
+        sizeB: $Values<typeof BUTTON_SIZE>,
       ): number => {
         return (
           BUTTON_SIZE_STYLE[sizeA].defaultWidth -
           BUTTON_SIZE_STYLE[sizeB].defaultWidth
         );
-      }
+      },
     );
 
     minimumSize = possibleSizes[0];

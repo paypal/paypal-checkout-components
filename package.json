@@ -6,16 +6,14 @@
   "scripts": {
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check .",
-    "cc:format": "npm run format -w @paypal/checkout-components",
-    "cc:test": "npm run test -w @paypal/checkout-components",
-    "hb:format": "npm run format -w @paypal/hosted-buttons"
+    "cc:build": "nx build checkout-components",
+    "cc:format": "npm run format -w checkout-components",
+    "cc:test": "npm run test -w checkout-components",
+    "hb:build": "nx build hosted-buttons",
+    "hb:format": "npm run format -w hosted-buttons",
+    "prepare": "husky install",
+    "build": "nx run-many -t build --exclude @paypal/checkout-components --verbose"
   },
-  "files": [
-    "src/",
-    "dist/",
-    "__sdk__.js",
-    "globals.js"
-  ],
   "browserslist": [
     "IE >= 9",
     "chrome >= 27",
@@ -45,6 +43,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "dependencies": {
+    "husky": "^7.0.4"
+  },
   "devDependencies": {
     "nx": "19.6.2"
   }

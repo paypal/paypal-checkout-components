@@ -25,7 +25,7 @@ export const WEBPACK_CONFIG_TEST: WebpackConfig = getWebpackConfig({
 
 export const WEBPACK_CONFIG_BUTTON_RENDER: WebpackConfig = getWebpackConfig({
   context: __dirname,
-  entry: "./packages/checkout-components/src/ui/buttons",
+  entry: "./src/ui/buttons",
   filename: "button.js",
   modulename: MODULE_NAME,
   web: false,
@@ -36,7 +36,7 @@ export const WEBPACK_CONFIG_BUTTON_RENDER: WebpackConfig = getWebpackConfig({
 export const WEBPACK_CONFIG_TEST_BUTTON_RENDER: WebpackConfig =
   getWebpackConfig({
     context: __dirname,
-    entry: "./packages/checkout-components/src/ui/buttons",
+    entry: "./src/ui/buttons",
     filename: "./test/button.js",
     modulename: MODULE_NAME,
     web: false,

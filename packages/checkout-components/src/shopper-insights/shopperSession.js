@@ -98,7 +98,7 @@ const parseEmail = (merchantPayload): ?{| email: string |} => {
 
   if (!isValidEmail) {
     throw new ValidationError(
-      `Expected shopper information to include a valid email format`
+      `Expected shopper information to include a valid email format`,
     );
   }
 
@@ -108,7 +108,7 @@ const parseEmail = (merchantPayload): ?{| email: string |} => {
 };
 
 const parsePhone = (
-  merchantPayload
+  merchantPayload,
 ): ?{| phone: {| country_code: string, national_number: string |} |} => {
   if (!merchantPayload.phone) {
     return;
@@ -119,7 +119,7 @@ const parsePhone = (
     !merchantPayload.phone.countryCode
   ) {
     throw new ValidationError(
-      `Expected phone number for shopper insights to include nationalNumber and countryCode`
+      `Expected phone number for shopper insights to include nationalNumber and countryCode`,
     );
   }
 
@@ -130,7 +130,7 @@ const parsePhone = (
 
   if (!isValidPhone) {
     throw new ValidationError(
-      `Expected shopper information to be a valid phone number format`
+      `Expected shopper information to be a valid phone number format`,
     );
   }
 
@@ -193,7 +193,7 @@ const parseSdkConfig = ({
     });
 
     throw new ValidationError(
-      `script data attribute sdk-client-token is required but was not passed`
+      `script data attribute sdk-client-token is required but was not passed`,
     );
   }
 
@@ -208,7 +208,7 @@ const parseSdkConfig = ({
     });
 
     throw new ValidationError(
-      `script data attribute page-type is required but was not passed`
+      `script data attribute page-type is required but was not passed`,
     );
   }
 
@@ -217,7 +217,7 @@ const parseSdkConfig = ({
 
 export interface ShopperInsightsInterface {
   getRecommendedPaymentMethods: (
-    payload: MerchantPayloadData
+    payload: MerchantPayloadData,
   ) => Promise<RecommendedPaymentMethods>;
   isEligibleInPayPalNetwork: (payload: MerchantPayloadData) => Promise<boolean>;
 }
@@ -247,7 +247,7 @@ export class ShopperSession {
   }
 
   async isEligibleInPayPalNetwork(
-    merchantPayload: MerchantPayloadData
+    merchantPayload: MerchantPayloadData,
   ): Promise<boolean> {
     const startTime = Date.now();
     const data = parseMerchantPayload({
@@ -257,7 +257,7 @@ export class ShopperSession {
     try {
       const body = await this.request<
         RecommendedPaymentMethodsRequestData,
-        RecommendedPaymentMethodsResponse
+        RecommendedPaymentMethodsResponse,
       >({
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/${ELIGIBLE_PAYMENT_METHODS}`,
@@ -272,7 +272,7 @@ export class ShopperSession {
       const eligibleMethods = body?.eligible_methods ?? {};
       const eligibleInPaypalNetwork = Object.keys(eligibleMethods).some(
         (paymentMethod) =>
-          eligibleMethods[paymentMethod]?.eligible_in_paypal_network
+          eligibleMethods[paymentMethod]?.eligible_in_paypal_network,
       );
 
       this.logger.track({
@@ -315,7 +315,7 @@ export class ShopperSession {
   }
 
   async getRecommendedPaymentMethods(
-    merchantPayload: MerchantPayloadData
+    merchantPayload: MerchantPayloadData,
   ): Promise<RecommendedPaymentMethods> {
     const startTime = Date.now();
     const data = parseMerchantPayload({
@@ -325,7 +325,7 @@ export class ShopperSession {
     try {
       const body = await this.request<
         RecommendedPaymentMethodsRequestData,
-        RecommendedPaymentMethodsResponse
+        RecommendedPaymentMethodsResponse,
       >({
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/${ELIGIBLE_PAYMENT_METHODS}`,
@@ -354,7 +354,7 @@ export class ShopperSession {
         [FPTI_KEY.EVENT_NAME]: FPTI_TRANSITION.SHOPPER_INSIGHTS_API_SUCCESS,
         [FPTI_KEY.RESPONSE_DURATION]: (Date.now() - startTime).toString(),
         [FPTI_KEY.RECOMMENDED_PAYMENT]: JSON.stringify(
-          fptiRecommendedPaymentPayload
+          fptiRecommendedPaymentPayload,
         ),
       });
 

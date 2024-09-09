@@ -53,7 +53,7 @@ export function getComponentScript(): () => void {
       elements:
         | HTMLCollection<HTMLElement>
         | NodeList<HTMLElement>
-        | $ReadOnlyArray<HTMLElement>
+        | $ReadOnlyArray<HTMLElement>,
     ): $ReadOnlyArray<HTMLElement> {
       return toArray(elements).filter((el) => {
         return el.tagName.toLowerCase() !== TAG.STYLE;
@@ -107,24 +107,24 @@ export function getComponentScript(): () => void {
     }
 
     function getElementsTotalWidth(
-      elements: $ReadOnlyArray<HTMLElement>
+      elements: $ReadOnlyArray<HTMLElement>,
     ): number {
       return sum(elements.map((child) => child.offsetWidth));
     }
 
     function getOptionalParents(): $ReadOnlyArray<HTMLElement> {
       return unique(
-        getElements(SELECTOR.OPTIONAL).map(getParent).filter(Boolean)
+        getElements(SELECTOR.OPTIONAL).map(getParent).filter(Boolean),
       );
     }
 
     function getOptionalChildren(
-      parent: HTMLElement
+      parent: HTMLElement,
     ): $ReadOnlyArray<HTMLElement> {
       return toArray(getElements(SELECTOR.OPTIONAL, parent)).sort(
         (first, second) => {
           return getOptionalIndex(first) - getOptionalIndex(second);
-        }
+        },
       );
     }
 
@@ -169,7 +169,7 @@ export function getComponentScript(): () => void {
         if (document.body) {
           document.body.classList.add(CLASS.DOM_READY);
         }
-      })
+      }),
     );
 
     const load = () => {

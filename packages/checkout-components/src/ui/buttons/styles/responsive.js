@@ -42,9 +42,9 @@ export function buttonResponsiveStyle({
       const buttonHeight = height || style.defaultHeight;
       const minDualWidth = Math.max(
         Math.round(
-          buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+          buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC),
         ),
-        MIN_SPLIT_BUTTON_WIDTH
+        MIN_SPLIT_BUTTON_WIDTH,
       );
 
       const { paylater } = fundingEligibility;
@@ -57,7 +57,7 @@ export function buttonResponsiveStyle({
       const labelPercPercentage = shouldResizeLabel ? 32 : 35;
       const smallerLabelHeight = max(
         roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
-        12
+        12,
       );
 
       const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
@@ -74,8 +74,8 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
-        CLASS.CONTAINER
-      } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+                  CLASS.CONTAINER
+                } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
                     font-size: ${max(perc(buttonHeight, 36), 10)}px;
                     margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
                     line-height: ${labelHeight}px;
@@ -103,13 +103,13 @@ export function buttonResponsiveStyle({
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
                     margin-bottom: ${perc(
                       buttonHeight,
-                      BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
+                      BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN,
                     )}px;
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.VERTICAL
-      }:last-of-type {
+                  BUTTON_LAYOUT.VERTICAL
+                }:last-of-type {
                     margin-bottom: 0;
                 }
 
@@ -130,38 +130,38 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
-        FUNDING.APPLEPAY
-      }] .${CLASS.BUTTON_LABEL} {
+                  FUNDING.APPLEPAY
+                }] .${CLASS.BUTTON_LABEL} {
                     height: ${perc(buttonHeight, 80) + 5}px;
                 }
 
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
-        FUNDING.APPLEPAY
-      }] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT} {
+                  FUNDING.APPLEPAY
+                }] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT} {
                     line-height: ${perc(buttonHeight, 80) + 5}px;
                 }
 
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      },
+                  CLASS.BUTTON_LABEL
+                },
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
-        FUNDING.MYBANK
-      }] .${CLASS.BUTTON_LABEL} {
+                  FUNDING.MYBANK
+                }] .${CLASS.BUTTON_LABEL} {
                     height: ${perc(buttonHeight, 50) + 5}px;
                 }
 
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT},
+                  CLASS.BUTTON_LABEL
+                } .${CLASS.TEXT},
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.SPACE},
+                  CLASS.BUTTON_LABEL
+                } .${CLASS.SPACE},
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
-        FUNDING.MYBANK
-      }] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+                  FUNDING.MYBANK
+                }] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
                 .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
-        FUNDING.MYBANK
-      }] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
+                  FUNDING.MYBANK
+                }] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
                     line-height: ${perc(buttonHeight, 50) + 5}px;
                 }
                 
@@ -194,22 +194,22 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.SHARP
-      } .menu-button {
+                  BUTTON_SHAPE.SHARP
+                } .menu-button {
                               border-top-right-radius: 0px;
                               border-bottom-right-radius: 0px;
                           }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.RECT
-      } .menu-button {
+                  BUTTON_SHAPE.RECT
+                } .menu-button {
                     border-top-right-radius: 4px;
                     border-bottom-right-radius: 4px;
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.PILL
-      } .menu-button {
+                  BUTTON_SHAPE.PILL
+                } .menu-button {
                     border-top-right-radius: ${pillBorderRadius}px;
                     border-bottom-right-radius: ${pillBorderRadius}px;
                 }
@@ -217,11 +217,11 @@ export function buttonResponsiveStyle({
                 .${CLASS.TAGLINE} .${CLASS.TEXT} {
                     height: ${perc(
                       buttonHeight,
-                      BUTTON_RELATIVE_STYLE.TAGLINE
+                      BUTTON_RELATIVE_STYLE.TAGLINE,
                     )}px;
                     line-height: ${perc(
                       buttonHeight,
-                      BUTTON_RELATIVE_STYLE.TAGLINE
+                      BUTTON_RELATIVE_STYLE.TAGLINE,
                     )}px;
                 }
 
@@ -231,8 +231,8 @@ export function buttonResponsiveStyle({
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} .${
-        CLASS.BUTTON
-      } {
+                  CLASS.BUTTON
+                } {
                     width: calc(100% - ${buttonHeight + 2}px);
                     border-top-right-radius: 0px;
                     border-bottom-right-radius: 0px;
@@ -249,15 +249,15 @@ export function buttonResponsiveStyle({
             }px) and (max-width: 320px) {
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
-        CLASS.CONTAINER
-      } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+                  CLASS.CONTAINER
+                } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
                     font-size: ${max(
                       perc(buttonHeight, textPercPercentage),
-                      10
+                      10,
                     )}px;
                     margin-top: -${perc(
                       max(perc(buttonHeight, textPercPercentage), 10),
-                      10
+                      10,
                     )}px;
                     line-height: ${smallerLabelHeight}px;
                 }
@@ -266,7 +266,7 @@ export function buttonResponsiveStyle({
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
                     margin-top: ${perc(
                       max(perc(buttonHeight, textPercPercentage), 10),
-                      10
+                      10,
                     )}px;
                 }
 
@@ -281,76 +281,76 @@ export function buttonResponsiveStyle({
             }px) and (max-width: ${minDualWidth}px) {
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.HORIZONTAL
-      }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
+                  BUTTON_LAYOUT.HORIZONTAL
+                }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
                     width: 100%;
                     margin-right: 0;
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.HORIZONTAL
-      }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
+                  BUTTON_LAYOUT.HORIZONTAL
+                }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
                     display: none;
                 }
 
                 .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.HORIZONTAL
-      }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
+                  BUTTON_LAYOUT.HORIZONTAL
+                }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
                     display: none;
                 }
             }
 
             @media only screen and (min-width: ${max(
               style.minWidth,
-              minDualWidth
+              minDualWidth,
             )}px) {
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.HORIZONTAL
-      }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
+                  BUTTON_LAYOUT.HORIZONTAL
+                }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
                     display: inline-block;
                     width: calc(${FIRST_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
+                      buttonHeight,
+                      7,
+                    )}px);
                     margin-right: ${perc(buttonHeight, 7) * 2}px;
                 }
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.HORIZONTAL
-      }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
+                  BUTTON_LAYOUT.HORIZONTAL
+                }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
                     display: inline-block;
                     width: calc(${100 - FIRST_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
+                      buttonHeight,
+                      7,
+                    )}px);
                 }
 
                 .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}.${
-        CLASS.WALLET
-      }.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
-        BUTTON_NUMBER.MULTIPLE
-      } {
+                  CLASS.WALLET
+                }.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
+                  BUTTON_NUMBER.MULTIPLE
+                } {
                     width: calc(${WALLET_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
+                      buttonHeight,
+                      7,
+                    )}px);
                 }
 
                 .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}:not(.${
-        CLASS.WALLET
-      }).${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
-        BUTTON_NUMBER.MULTIPLE
-      } {
+                  CLASS.WALLET
+                }).${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
+                  BUTTON_NUMBER.MULTIPLE
+                } {
                     width: calc(${100 - WALLET_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
+                      buttonHeight,
+                      7,
+                    )}px);
                 }
 
                 .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.HORIZONTAL
-      }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
+                  BUTTON_LAYOUT.HORIZONTAL
+                }.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
                     display: block;
                 }
             }
