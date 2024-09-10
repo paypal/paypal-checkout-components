@@ -16,7 +16,7 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import {
   getButtonsComponent,
   type ButtonsComponent,
-} from "../../checkout-components/src/zoid/buttons";
+} from "checkout-components/src/zoid/buttons";
 
 import type {
   ButtonVariables,

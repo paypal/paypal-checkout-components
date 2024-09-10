@@ -13,7 +13,8 @@
     "hb:build": "nx build hosted-buttons",
     "hb:format": "npm run format -w hosted-buttons",
     "prepare": "husky install",
-    "build": "nx run-many -t build --exclude @paypal/checkout-components --verbose"
+    "build": "nx run-many -t build --exclude @paypal/checkout-components --verbose",
+    "test": "nx run-many -t test --exclude @paypal/checkout-components --verbose"
   },
   "browserslist": [
     "IE >= 9",
@@ -48,6 +49,8 @@
     "husky": "^7.0.4"
   },
   "devDependencies": {
-    "nx": "19.6.2"
+    "hosted-buttons": "^1.0.0",
+    "nx": "19.6.2",
+    "vite": "^5.4.3"
   }
 }

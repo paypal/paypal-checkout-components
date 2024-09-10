@@ -4,7 +4,7 @@
 import { describe, test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
 
-import { getButtonsComponent } from "../../checkout-components/src/zoid/buttons";
+import { getButtonsComponent } from "checkout-components/src/zoid/buttons";
 
 import { renderDefaultButton, renderStandaloneButton } from "./utils";
 
@@ -27,9 +27,9 @@ vi.mock("@paypal/sdk-client/src", async () => {
   };
 });
 
-vi.mock("../../checkout-components/src/zoid/buttons", async () => {
+vi.mock("checkout-components/src/zoid/buttons", async () => {
   return {
-    ...(await vi.importActual("../zoid/buttons")),
+    ...(await vi.importActual("checkout-components/src/zoid/buttons")),
     getButtonsComponent: vi.fn(),
   };
 });

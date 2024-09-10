@@ -4,7 +4,7 @@ import { test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
 import { getLogger } from "@paypal/sdk-client/src";
 
-import { getButtonsComponent } from "../../checkout-components/src/zoid/buttons";
+import { getButtonsComponent } from "checkout-components/src/zoid/buttons";
 
 import {
   buildHostedButtonCreateOrder,
@@ -43,9 +43,9 @@ vi.mock("@paypal/sdk-client/src", async () => {
   };
 });
 
-vi.mock("../../checkout-components/src/zoid/buttons", async () => {
+vi.mock("checkout-components/src/zoid/buttons", async () => {
   return {
-    ...(await vi.importActual("../../checkout-components/src/zoid/buttons")),
+    ...(await vi.importActual("checkout-components/src/zoid/buttons")),
     getButtonsComponent: vi.fn(),
   };
 });
