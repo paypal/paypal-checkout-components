@@ -1,9 +1,9 @@
 /* @flow */
 
 export const getThreeDomainSecure = async (threeDSProps = {}) => {
-  const ThreeDomainSecureComp = () => {
+  const ThreeDomainSecureAuth = () => {
     // eslint-disable-next-line no-console
     console.log("Three Domain Secure Called");
   };
-  return ThreeDomainSecureComp;
+  return ThreeDomainSecureAuth;
 };

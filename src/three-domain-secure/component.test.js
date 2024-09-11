@@ -1,19 +1,19 @@
-import { describe, expect, test, vi } from "vitest";
+/* @flow */
+import { describe, expect, it, vi } from "vitest";
 
 import { getThreeDomainSecure } from "./component";
 
-describe("getThreeDomainSecure returns ThreeDomainSecureComp", () => {
-  const getThreeDomainSecureSpy = vi.fn(getThreeDomainSecure);
-  const ThreeDomainSecureComp = vi.fn();
+describe("getThreeDomainSecure returns ThreeDomainSecureComponent", () => {
+  it("should return the ThreeDomainSecure component and log the correct message", async () => {
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
-  window.paypal = {
-    ThreeDomainSecureComp: {
-      ThreeDomainSecureComp,
-    },
-  };
+    const ThreeDomainSecureComponent = await getThreeDomainSecure();
+    expect(typeof ThreeDomainSecureComponent).toBe("function");
 
-  test("returns ThreeDomainSecureComp", async () => {
-    console.log("inside test", ThreeDomainSecureComp);
-    expect(getThreeDomainSecureSpy).toHaveReturnedWith(ThreeDomainSecureComp);
+    // Call the returned component and check the console log
+    ThreeDomainSecureComponent();
+    expect(consoleSpy).toHaveBeenCalledWith("Three Domain Secure Called");
+
+    consoleSpy.mockRestore();
   });
 });
