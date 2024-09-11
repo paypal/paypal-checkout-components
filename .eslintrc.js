@@ -33,7 +33,7 @@ module.exports = {
 
   overrides: [
     {
-      files: ["test/**/*"],
+      files: ["./**/test/**/*"],
       rules: {
         "compat/compat": "off",
         "max-lines": "off",

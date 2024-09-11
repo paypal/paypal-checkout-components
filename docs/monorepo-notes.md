@@ -33,6 +33,12 @@ This doc is just to keep track of some notes as I monorepotize checkout-componen
 - We can have the dist directoy built at the root of the project...
 - Or we can change the path in SCNW to grab it from /packages/checkout-components/dist.
 
+**_Figure out why eslint is breaking_**
+
+- Flow seems to be breaking eslint. I think I've added all the necessary linting deps back to the root.
+- Thinking maybe I should've kept the structure at the root level, and only moved / removed things around as necessary.
+- Next step: ask for help but time box it. If we can't figure it out quick, maybe try starting on a fresh branch and only move what is necessary
+
 ## Future Improvements
 
 **_Move e2e tests to their own package_**
@@ -46,3 +52,7 @@ This doc is just to keep track of some notes as I monorepotize checkout-componen
 **_Audit the nx config for ways we can improve the workflow_**
 
 - Nx provides many other ways we can enhance our workflow and CI. We should look for other ways we can improve this monorepo with Nx.
+
+## Questions
+
+- What will be the best way to setup flow in a way that allows us to slowly move to typescript package-by-package?

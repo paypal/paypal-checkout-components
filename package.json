@@ -4,16 +4,16 @@
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
+    "build": "nx run-many -t build --exclude @paypal/checkout-components --verbose",
+    "cc:build": "nx build checkout-components",
+    "cc:test": "npm run test -w checkout-components",
     "clean": "npm exec -ws -- npx rimraf node_modules && npx rimraf node_modules",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check .",
-    "cc:build": "nx build checkout-components",
-    "cc:format": "npm run format -w checkout-components",
-    "cc:test": "npm run test -w checkout-components",
     "hb:build": "nx build hosted-buttons",
-    "hb:format": "npm run format -w hosted-buttons",
+    "hb:test": "nx test hosted-buttons",
+    "lint": "eslint --ext .js --ext .jsx packages/**/src/ packages/**/test/ *.js",
     "prepare": "husky install",
-    "build": "nx run-many -t build --exclude @paypal/checkout-components --verbose",
     "test": "nx run-many -t test --exclude @paypal/checkout-components --verbose"
   },
   "browserslist": [
@@ -49,6 +49,13 @@
     "husky": "^7.0.4"
   },
   "devDependencies": {
+    "@bunchtogether/vite-plugin-flow": "^1.0.2",
+    "@krakenjs/eslint-config-grumbler": "^8.2.0",
+    "@krakenjs/grumbler-scripts": "^8.1.5",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-unicorn": "^55.0.0",
+    "flow-bin": "0.155.0",
+    "flow-typed": "^3.8.0",
     "hosted-buttons": "^1.0.0",
     "nx": "19.6.2",
     "vite": "^5.4.3"
