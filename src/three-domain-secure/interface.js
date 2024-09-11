@@ -1,8 +1,13 @@
 /* @flow */
+import { type ZoidComponent } from "@krakenjs/zoid/src";
+
 import type { LazyExport } from "../types";
-import { getThreeDomainSecure } from "./component";
 import { protectedExport } from "../lib";
 
-export const ThreeDomainSecureComponent: LazyExport<> = {
+import { getThreeDomainSecure } from "./component";
+
+type ThreeDomainSecureAuth = ZoidComponent<void>;
+
+export const ThreeDomainSecureComponent: LazyExport<ThreeDomainSecureAuth> = {
   __get__: () => protectedExport(getThreeDomainSecure()),
 };

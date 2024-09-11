@@ -5,6 +5,7 @@ import { getThreeDomainSecure } from "./component";
 
 describe("getThreeDomainSecure returns ThreeDomainSecureComponent", () => {
   it("should return the ThreeDomainSecure component and log the correct message", async () => {
+    // eslint-disable-next-line no-empty-function
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
     const ThreeDomainSecureComponent = await getThreeDomainSecure();
