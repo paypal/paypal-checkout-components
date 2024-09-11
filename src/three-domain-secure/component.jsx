@@ -1,6 +1,6 @@
 /* @flow */
 
-export const getThreeDomainSecure = () => {
+export const getThreeDomainSecure = (): Function => {
   const ThreeDomainSecureAuth = () => {
     // eslint-disable-next-line no-console
     console.log("Three Domain Secure Called");
