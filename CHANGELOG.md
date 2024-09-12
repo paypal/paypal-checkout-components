@@ -1,3 +1,9 @@
+## <small>5.0.338 (2024-09-12)</small>
+
+* feat(qrcode): remove onEscapePath (#2434) ([48b1f57](https://github.com/paypal/paypal-checkout-components/commit/48b1f57)), closes [#2434](https://github.com/paypal/paypal-checkout-components/issues/2434)
+
+
+
 ## <small>5.0.337 (2024-08-23)</small>
 
 * Fix button color styles being applied incorrectly for vaulted flows (#2426) ([6f8e7b9](https://github.com/paypal/paypal-checkout-components/commit/6f8e7b9)), closes [#2426](https://github.com/paypal/paypal-checkout-components/issues/2426)
