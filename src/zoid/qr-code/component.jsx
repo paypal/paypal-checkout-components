@@ -58,10 +58,6 @@ export function getQRCodeComponent(): QRCodeComponent {
         },
       },
       props: {
-        onEscapePath: {
-          type: "function",
-          required: true,
-        },
         qrPath: {
           type: "string",
           queryParam: true,
