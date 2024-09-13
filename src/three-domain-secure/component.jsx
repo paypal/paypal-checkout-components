@@ -1,4 +1,6 @@
 /* @flow */
+import { getLogger } from "@paypal/sdk-client/src";
+import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 export const getThreeDomainSecure = (): Function => {
   const ThreeDomainSecureAuth = () => {
@@ -8,6 +10,11 @@ export const getThreeDomainSecure = (): Function => {
     // onSuccess
     // onCancel
     // onClose
+    getLogger()
+      .info("three domain secure v2 invoked")
+      .track({
+        [FPTI_KEY.TRANSITION]: "three_DS_auth_v2",
+      });
   };
   return ThreeDomainSecureAuth;
 };
