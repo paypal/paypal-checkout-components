@@ -117,7 +117,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     await getConnectComponent(mockProps);
     expect(loadAxo).toHaveBeenCalledWith({
       minified: true,
-      btSdkVersion: "3.97.3-connect-alpha.6.1",
+      btSdkVersion: "3.107.1",
       metadata: undefined,
       platform: "PPCP",
     });
@@ -131,20 +131,23 @@ describe("getSdkVersion", () => {
     expect(version).toEqual(MIN_BT_VERSION);
   });
   test("returns the version passed if it is supported for AXO", () => {
-    const result1 = getSdkVersion("3.97.00");
-    const result2 = getSdkVersion("3.97.alpha-test");
-    const result3 = getSdkVersion("4.34.beta-test");
+    const result1 = getSdkVersion("3.107.1");
+    const result2 = getSdkVersion("3.107.1-alpha-test");
+    const result3 = getSdkVersion("4.34.3-beta-test");
     const result4 = getSdkVersion("4.34.47");
+    const result5 = getSdkVersion("3.108.0");
 
-    expect(result1).toEqual("3.97.00");
-    expect(result2).toEqual("3.97.alpha-test");
-    expect(result3).toEqual("4.34.beta-test");
+    expect(result1).toEqual("3.107.1");
+    expect(result2).toEqual("3.107.1-alpha-test");
+    expect(result3).toEqual("4.34.3-beta-test");
     expect(result4).toEqual("4.34.47");
+    expect(result5).toEqual("3.108.0");
   });
 
   test("throws error if the version passed is not supported for AXO and is not null", () => {
     expect(() => getSdkVersion("3.96.00")).toThrowError();
-    expect(() => getSdkVersion("2.87.alpha-test")).toThrowError();
-    expect(() => getSdkVersion("3.34.beta-test")).toThrowError();
+    expect(() => getSdkVersion("2.87.2-alpha-test")).toThrowError();
+    expect(() => getSdkVersion("3.34.1-beta-test")).toThrowError();
+    expect(() => getSdkVersion("3.107.0-alpha-test")).toThrowError();
   });
 });

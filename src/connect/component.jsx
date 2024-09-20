@@ -16,20 +16,34 @@ import {
 import { FPTI_KEY } from "@paypal/sdk-constants";
 
 const MIN_MAJOR_VERSION = 3;
-const MIN_MINOR_VERSION = 97;
-export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.3-connect-alpha.6.1`; // Minimum for supporting AXO
+const MIN_MINOR_VERSION = 107;
+const MIN_PATCH_VERSION = 1;
+export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.${MIN_PATCH_VERSION}`; // Minimum for supporting AXO
 
 export function getSdkVersion(version: string | null): string {
   if (!version) {
     return MIN_BT_VERSION;
   }
   const versionSplit = version.split(".");
+  // patch could have an alpha tag
+  const patchSplit = versionSplit[2].split("-");
+
   const majorVersion = Number(versionSplit[0]);
   const minorVersion = Number(versionSplit[1]);
+  const patchVersion = Number(patchSplit[0]);
+
+  const isMajorVersionSmaller = majorVersion < MIN_MAJOR_VERSION;
+  const isMajorVersionEqual = majorVersion === MIN_MAJOR_VERSION;
+
+  const isMinorVersionSmaller = minorVersion < MIN_MINOR_VERSION;
+  const isMinorVersionEqual = minorVersion === MIN_MINOR_VERSION;
+
+  const isPatchVersionSmaller = patchVersion < MIN_PATCH_VERSION;
 
   if (
-    majorVersion < MIN_MAJOR_VERSION ||
-    (majorVersion === MIN_MAJOR_VERSION && minorVersion < MIN_MINOR_VERSION)
+    isMajorVersionSmaller ||
+    (isMajorVersionEqual && isMinorVersionSmaller) ||
+    (isMajorVersionEqual && isMinorVersionEqual && isPatchVersionSmaller)
   ) {
     getLogger().metricCounter({
       namespace: "connect.init.count",
