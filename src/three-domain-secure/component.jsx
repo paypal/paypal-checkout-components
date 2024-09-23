@@ -5,7 +5,6 @@ import { FPTI_KEY } from "@paypal/sdk-constants/src";
 import { ValidationError } from "../lib";
 
 export const getThreeDomainSecure = (): Function => {
-  console.log("getThreeDomainSecure");
   const sdkToken = getSDKToken();
   const ThreeDomainSecureAuth = () => {
     if (sdkToken) {
