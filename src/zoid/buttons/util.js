@@ -6,7 +6,6 @@ import {
   isIos,
   isIOS14,
   isSafari,
-  isSFVC,
   type Experiment,
   isDevice,
   isTablet,
@@ -15,7 +14,6 @@ import {
   once,
   memoize,
 } from "@krakenjs/belter/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
 import {
   getEnableFunding,
   getLogger,
@@ -25,7 +23,9 @@ import {
   getComponents,
   getEnv,
   getNamespace,
+  getFirstRenderExperiments,
 } from "@paypal/sdk-client/src";
+import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
 import type { Experiment as EligibilityExperiment } from "../../types";
@@ -51,7 +51,7 @@ type DetermineFlowOptions = {|
  *
  * @param {string} key for logging
  */
-const logNativeScreenInformation = once((key = "screenInformation") => {
+const logNativeScreenInformation = once(() => {
   if (window) {
     const height = window.innerHeight;
     const outerHeight = window.outerHeight;
@@ -61,18 +61,16 @@ const logNativeScreenInformation = once((key = "screenInformation") => {
     const ios14 = isIOS14();
     const standAlone = isStandAlone();
 
-    const screenInformation = {
-      computedHeight,
-      height,
-      ios14,
-      outerHeight,
-      scale,
-      standAlone,
-    };
-
     getLogger()
       // $FlowFixMe - object is mixed values when this expects all of the same value types
-      .info(key, screenInformation);
+      .info("sfvcScreenInformation", {
+        computedHeight,
+        height,
+        ios14,
+        outerHeight,
+        scale,
+        standAlone,
+      });
   }
 });
 
@@ -91,16 +89,13 @@ export function determineFlow(
 }
 
 export function isSupportedNativeBrowser(): boolean {
+  logNativeScreenInformation();
+
   if (typeof window === "undefined") {
     return false;
   }
 
   if (!userAgentSupportsPopups()) {
-    return false;
-  }
-
-  if (isSFVC()) {
-    logNativeScreenInformation("sfvcScreenInformation");
     return false;
   }
 
@@ -184,6 +179,7 @@ export function getRenderedButtons(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     style = {},
     enableFunding = getEnableFunding(),
     fundingEligibility = getRefinedFundingEligibility(),
@@ -194,6 +190,7 @@ export function getRenderedButtons(
     createBillingAgreement,
     createSubscription,
     createVaultSetupToken,
+    displayOnly,
   } = props;
 
   const flow = determineFlow({
@@ -217,11 +214,13 @@ export function getRenderedButtons(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     flow,
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
     experiment,
+    displayOnly,
   });
   return renderedButtons;
 }
@@ -308,6 +307,7 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
 export function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getVenmoExperiment(),
+    ...getFirstRenderExperiments(),
   };
 }
 
@@ -373,8 +373,9 @@ function buildModalBundleUrl(): string {
 
 export const getModal: (
   clientID: string,
-  merchantID: $ReadOnlyArray<string> | void
-) => Object = memoize(async (clientID, merchantID) => {
+  merchantID: $ReadOnlyArray<string> | void,
+  buttonSessionID: string
+) => Object = memoize(async (clientID, merchantID, buttonSessionID) => {
   try {
     const namespace = getNamespace();
     if (!window[namespace].MessagesModal) {
@@ -395,6 +396,19 @@ export const getModal: (
     }
 
     return window[namespace].MessagesModal({
+      buttonSessionId: buttonSessionID,
+      onApply: () =>
+        getLogger()
+          .info("button_message_modal_apply")
+          .track({
+            [FPTI_KEY.TRANSITION]: "button_message_modal_apply",
+            [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+            [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+            [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+            [FPTI_KEY.EVENT_NAME]: "modal_apply",
+          })
+          .flush(),
       account: `client-id:${clientID}`,
       merchantId: merchantID?.join(",") || undefined,
     });

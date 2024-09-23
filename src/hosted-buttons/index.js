@@ -1,38 +1,45 @@
 /* @flow */
-
-import { getLogger } from "@paypal/sdk-client/src";
-
 import { getButtonsComponent } from "../zoid/buttons";
 
 import {
+  applyContainerStyles,
   buildHostedButtonCreateOrder,
   buildHostedButtonOnApprove,
-  getHostedButtonDetails,
-  renderForm,
-  getMerchantID,
-  shouldRenderSDKButtons,
+  buildHostedButtonOnShippingAddressChange,
+  buildHostedButtonOnShippingOptionsChange,
+  getDefaultButtonOptions,
   getFlexDirection,
-  appendButtonContainer,
-  getButtonColor,
+  getHostedButtonDetails,
+  getMerchantID,
+  renderDefaultButton,
+  renderForm,
+  renderStandaloneButton,
 } from "./utils";
 import type {
   HostedButtonsComponent,
   HostedButtonsComponentProps,
   HostedButtonsInstance,
+  HostedButtonOptions,
 } from "./types";
 
 export const getHostedButtonsComponent = (): HostedButtonsComponent => {
   function HostedButtons({
-    enableDPoP = false,
     hostedButtonId,
-    fundingSources = [],
   }: HostedButtonsComponentProps): HostedButtonsInstance {
     const Buttons = getButtonsComponent();
     const render = async (selector) => {
       const merchantId = getMerchantID();
-      const { html, htmlScript, style } = await getHostedButtonDetails({
+      const {
+        html,
+        htmlScript,
+        style,
+        version,
+        preferences,
+        buttonContainerId,
+        enableDPoP,
+        shouldIncludeShippingCallbacks,
+      } = await getHostedButtonDetails({
         hostedButtonId,
-        fundingSources,
       });
 
       const { onInit, onClick } = renderForm({
@@ -47,46 +54,56 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         hostedButtonId,
         merchantId,
       });
+
       const onApprove = buildHostedButtonOnApprove({
         enableDPoP,
         hostedButtonId,
         merchantId,
       });
 
-      const buttonOptions = {
+      const onShippingAddressChange = buildHostedButtonOnShippingAddressChange({
+        enableDPoP,
+        hostedButtonId,
+        shouldIncludeShippingCallbacks,
+      });
+
+      const onShippingOptionsChange = buildHostedButtonOnShippingOptionsChange({
+        enableDPoP,
+        hostedButtonId,
+        shouldIncludeShippingCallbacks,
+      });
+
+      const buttonOptions: HostedButtonOptions = {
         createOrder,
         hostedButtonId,
         merchantId,
         onApprove,
         onClick,
+        onShippingAddressChange,
+        onShippingOptionsChange,
         onInit,
         style,
       };
 
-      if (shouldRenderSDKButtons(fundingSources)) {
+      if (version === "2") {
         const { flexDirection } = getFlexDirection({ ...style });
 
-        appendButtonContainer({ flexDirection, selector });
+        applyContainerStyles({ flexDirection, buttonContainerId });
 
-        // Only render 2 buttons max
-        // This will be refactored in https://paypal.atlassian.net/browse/DTPPCPSDK-2112 when NCPS team updates their API response
-        fundingSources.slice(0, 2).forEach((fundingSource, index) => {
-          // $FlowFixMe
-          const standaloneButton = Buttons({
-            ...buttonOptions,
-            fundingSource,
-            style: {
-              ...style,
-              color: getButtonColor(style.color, fundingSource),
-            },
-          });
-
-          if (standaloneButton.isEligible()) {
-            standaloneButton.render(
-              index === 0 ? "#ncp-primary-button" : "#ncp-secondary-button"
-            );
+        preferences?.buttonPreferences.forEach((fundingSource) => {
+          if (fundingSource === "default") {
+            const eligibleDefaultButtons = getDefaultButtonOptions(preferences);
+            renderDefaultButton({
+              eligibleDefaultButtons,
+              buttonContainerId,
+              buttonOptions,
+            });
           } else {
-            getLogger().error(`ncps_standalone_${fundingSource}_ineligible`);
+            renderStandaloneButton({
+              fundingSource,
+              buttonContainerId,
+              buttonOptions,
+            });
           }
         });
       } else {

@@ -49,15 +49,18 @@ export function PrerenderedButtons({
     |}
   ) => {
     getLogger()
-      .info("button_prerender_click")
+      .info("paypal_js_sdk_v5_button_prerender_click", {
+        fundingSource,
+        card,
+        buttonsSessionID: props.buttonSessionID,
+      })
       .track({
         [FPTI_KEY.BUTTON_SESSION_UID]: props.buttonSessionID,
         [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
         [FPTI_KEY.CONTEXT_ID]: props.buttonSessionID,
         [FPTI_KEY.TRANSITION]: "process_button_prerender_click",
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
-      })
-      .flush();
+      });
 
     if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load

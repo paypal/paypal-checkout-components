@@ -39,4 +39,8 @@ export type CheckoutPropsType = {|
   csp: {|
     nonce: string,
   |},
+  atomicsWaitingState: {|
+    searchParameter: string,
+    encodedState: string,
+  |},
 |};

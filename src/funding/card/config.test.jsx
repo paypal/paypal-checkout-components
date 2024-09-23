@@ -2,6 +2,8 @@
 import { describe, test, expect } from "vitest";
 import { FUNDING, COMPONENTS } from "@paypal/sdk-constants/src";
 
+import { BUTTON_FLOW } from "../../constants";
+
 import { getCardConfig } from "./config";
 
 const getEligibility = ({
@@ -43,6 +45,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility({ eligible: false }),
         // $FlowIssue
         wallet: getWallet(),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(false);
   });
@@ -54,6 +57,7 @@ describe("card eligibility", () => {
         fundingSource: FUNDING.PAYPAL,
         fundingEligibility: getEligibility({ branded: true }),
         wallet: getWallet(),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(true);
   });
@@ -65,6 +69,7 @@ describe("card eligibility", () => {
         fundingSource: FUNDING.CARD,
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(true);
   });
@@ -77,6 +82,7 @@ describe("card eligibility", () => {
         fundingSource: FUNDING.PAYPAL,
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(false);
   });
@@ -91,6 +97,7 @@ describe("card eligibility", () => {
         wallet: getWallet({
           card: ["some instrument"],
         }),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(false);
   });
@@ -104,6 +111,7 @@ describe("card eligibility", () => {
         wallet: getWallet({
           card: ["some instrument"],
         }),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(true);
   });
@@ -115,6 +123,7 @@ describe("card eligibility", () => {
         fundingSource: FUNDING.PAYPAL,
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(false);
   });
@@ -126,6 +135,7 @@ describe("card eligibility", () => {
         fundingSource: FUNDING.PAYPAL,
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
+        flow: BUTTON_FLOW.PURCHASE,
       })
     ).toEqual(true);
   });

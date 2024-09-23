@@ -852,17 +852,27 @@ const buttonConfigs = [
         height: 20,
         valid: false,
       },
+      {
+        disableMaxHeight: true,
+        height: 20,
+        valid: false,
+      },
+      {
+        disableMaxHeight: true,
+        height: 60,
+        valid: false,
+      },
 
       // $FlowFixMe
-    ].map(({ height, size, valid }) => ({
+    ].map(({ height, valid, disableMaxHeight }) => ({
       desc: `height ${height} with size ${
-        size !== undefined ? size : "default"
+        disableMaxHeight === true ? "disableMaxHeight" : "default"
       }`,
 
       valid,
 
       conf: {
-        style: { height, size },
+        style: { height, disableMaxHeight },
         createOrder: noop,
         onApprove: noop,
       },
@@ -913,6 +923,71 @@ const buttonConfigs = [
   },
 
   {
+    name: "disableMaxHeight",
+
+    cases: [
+      {
+        disableMaxHeight: true,
+        fundingSource: "paypal",
+        valid: true,
+      },
+      // this case would pass if venmo was eligible during this test run
+      // {
+      //   disableMaxHeight: true,
+      //   fundingSource: "venmo",
+      //   valid: true,
+      // },
+
+      // this case would pass if paylater was eligible during this test run
+      // {
+      //   disableMaxHeight: true,
+      //   fundingSource: "paylater",
+      //   valid: true,
+      // },
+
+      // this case would pass if credit was eligible during this test run
+      // {
+      //   disableMaxHeight: true,
+      //   fundingSource: "credit",
+      //   valid: true,
+      // },
+
+      {
+        disableMaxHeight: true,
+        fundingSource: "card",
+        valid: false,
+      },
+
+      {
+        disableMaxHeight: true,
+        valid: false,
+      },
+
+      {
+        disableMaxHeight: true,
+        fundingSource: "paypal",
+        height: 45,
+        valid: false,
+      },
+
+      // $FlowFixMe
+    ].map(({ disableMaxHeight, valid, fundingSource, height }) => ({
+      desc: `disableMaxHeight ${String(disableMaxHeight)} with fundingSource ${
+        fundingSource ? fundingSource : "Smart Stack"
+      }`,
+
+      valid,
+
+      conf: {
+        style: { disableMaxHeight, height },
+        fundingSource,
+        createOrder: noop,
+        onApprove: noop,
+      },
+    })),
+  },
+
+  {
     name: "message",
 
     cases: [
@@ -929,7 +1004,18 @@ const buttonConfigs = [
 
       {
         message: {
-          amount: "100", // invalid: should be num
+          amount: "100", // valid: is converted to num
+          offer: ["pay_later_long_term"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
+
+      {
+        message: {
+          amount: "one hundred", // invalid: string not convertible to number
           offer: ["pay_later_long_term"],
           color: "black",
           position: "top",
@@ -948,18 +1034,36 @@ const buttonConfigs = [
         },
         valid: false,
       },
-
       {
         message: {
           amount: 100,
-          offer: "pay_later_long_term", // invalid: should be in an array
+          offer: "pay_later_long_term",
           color: "black",
           position: "top",
           align: "left",
         },
-        valid: false,
+        valid: true,
       },
-
+      {
+        message: {
+          amount: 100,
+          offer: ["pay_later_long_term", "pay_later_short_term"],
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
+      {
+        message: {
+          amount: 100,
+          offer: "pay_later_long_term,pay_later_short_term",
+          color: "black",
+          position: "top",
+          align: "left",
+        },
+        valid: true,
+      },
       {
         message: {
           amount: 100,
@@ -1009,10 +1113,10 @@ const buttonConfigs = [
           amount: 100,
           offer: ["pay_later_long_term"],
           color: "black",
-          position: "bottom", // Message position must be 'top' when Debit and/or Credit Card button is present
+          position: "bottom", // Used to be invalid, now just throws a console.warn
           align: "left",
         },
-        valid: false,
+        valid: true,
       },
 
       {

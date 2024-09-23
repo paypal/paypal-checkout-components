@@ -105,3 +105,7 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
     eligible: false,
   },
 };
+
+window.__TEST_FIRST_RENDER_EXPERIMENTS__ = {
+  venmoWebEnabled: false,
+};

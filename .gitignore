@@ -25,10 +25,10 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
-flow-typed
 
 #IDE
 **/.idea/*
 
 .DS_Store
 package-lock.json
+.vscode/settings.json

@@ -14,11 +14,6 @@ import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 
 import type { Wallet, Experiment } from "../types";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
-import type {
-  OnShippingChange,
-  OnShippingAddressChange,
-  OnShippingOptionsChange,
-} from "../ui/buttons/props";
 
 import { getFundingConfig } from "./config";
 
@@ -33,6 +28,7 @@ type IsFundingEligibleOptions = {|
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
+  hasShippingCallback?: boolean,
   wallet?: ?Wallet,
   applePaySupport: boolean,
   supportsPopups: boolean,
@@ -80,6 +76,7 @@ export function isFundingEligible(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     flow,
     wallet,
     applePaySupport,
@@ -119,16 +116,22 @@ export function isFundingEligible(
 
   if (
     fundingConfig.eligible &&
-    !fundingConfig.eligible({
+    !fundingConfig.eligible?.({
       enableFunding,
       components,
       experiment,
+      flow,
       fundingSource,
       fundingEligibility,
       layout,
-      shippingChange:
-        onShippingChange || onShippingAddressChange || onShippingOptionsChange,
+      shippingChange: Boolean(
+        hasShippingCallback ||
+          onShippingChange ||
+          onShippingAddressChange ||
+          onShippingOptionsChange
+      ),
       wallet,
+      displayOnly,
     })
   ) {
     return false;
@@ -193,6 +196,7 @@ export function determineEligibleFunding({
   onShippingChange,
   onShippingAddressChange,
   onShippingOptionsChange,
+  hasShippingCallback,
   flow,
   wallet,
   applePaySupport,
@@ -211,6 +215,7 @@ export function determineEligibleFunding({
   onShippingChange?: ?Function,
   onShippingAddressChange?: ?Function,
   onShippingOptionsChange?: ?Function,
+  hasShippingCallback: boolean,
   flow: $Values<typeof BUTTON_FLOW>,
   wallet?: ?Wallet,
   applePaySupport: boolean,
@@ -234,6 +239,7 @@ export function determineEligibleFunding({
       onShippingChange,
       onShippingAddressChange,
       onShippingOptionsChange,
+      hasShippingCallback,
       flow,
       wallet,
       applePaySupport,
@@ -255,20 +261,16 @@ export function determineEligibleFunding({
 
 export function isWalletFundingEligible({
   wallet,
-  onShippingChange,
-  onShippingAddressChange,
-  onShippingOptionsChange,
+  hasShippingCallback,
 }: {|
   wallet: ?Wallet,
-  onShippingChange: ?OnShippingChange,
-  onShippingAddressChange: ?OnShippingAddressChange,
-  onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
 |}): boolean {
   if (!wallet) {
     return false;
   }
 
-  if (onShippingChange || onShippingAddressChange || onShippingOptionsChange) {
+  if (hasShippingCallback) {
     return false;
   }
 
