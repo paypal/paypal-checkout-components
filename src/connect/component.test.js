@@ -7,7 +7,7 @@ import { describe, expect, test, vi } from "vitest";
 import {
   getConnectComponent,
   getSdkVersion,
-  MIN_BT_VERSION,
+  DEFAULT_BT_VERSION,
 } from "./component";
 
 vi.mock("@paypal/sdk-client/src", () => {
@@ -113,7 +113,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     );
   });
 
-  test("minified is set according to debug value", async () => {
+  test("loadAxo is call with default values", async () => {
     await getConnectComponent(mockProps);
     expect(loadAxo).toHaveBeenCalledWith({
       minified: true,
@@ -128,26 +128,26 @@ describe("getSdkVersion", () => {
   test("returns minimum supported braintree version for AXO if input version is null", () => {
     const version = getSdkVersion(null);
 
-    expect(version).toEqual(MIN_BT_VERSION);
+    expect(version).toEqual(DEFAULT_BT_VERSION);
   });
   test("returns the version passed if it is supported for AXO", () => {
-    const result1 = getSdkVersion("3.107.1");
-    const result2 = getSdkVersion("3.107.1-alpha-test");
+    const result2 = getSdkVersion("3.97.3-alpha-test");
     const result3 = getSdkVersion("4.34.3-beta-test");
     const result4 = getSdkVersion("4.34.47");
-    const result5 = getSdkVersion("3.108.0");
+    const result5 = getSdkVersion("3.98.3");
+    const result6 = getSdkVersion("3.97.6");
 
-    expect(result1).toEqual("3.107.1");
-    expect(result2).toEqual("3.107.1-alpha-test");
+    expect(result2).toEqual("3.97.3-alpha-test");
     expect(result3).toEqual("4.34.3-beta-test");
     expect(result4).toEqual("4.34.47");
-    expect(result5).toEqual("3.108.0");
+    expect(result5).toEqual("3.98.3");
+    expect(result6).toEqual("3.97.6");
   });
 
   test("throws error if the version passed is not supported for AXO and is not null", () => {
     expect(() => getSdkVersion("3.96.00")).toThrowError();
-    expect(() => getSdkVersion("2.87.2-alpha-test")).toThrowError();
-    expect(() => getSdkVersion("3.34.1-beta-test")).toThrowError();
-    expect(() => getSdkVersion("3.107.0-alpha-test")).toThrowError();
+    expect(() => getSdkVersion("3.97.00")).toThrowError();
+    expect(() => getSdkVersion("2.87.1-alpha-test")).toThrowError();
+    expect(() => getSdkVersion("3.34.2-beta-test")).toThrowError();
   });
 });

@@ -16,13 +16,15 @@ import {
 import { FPTI_KEY } from "@paypal/sdk-constants";
 
 const MIN_MAJOR_VERSION = 3;
-const MIN_MINOR_VERSION = 107;
-const MIN_PATCH_VERSION = 1;
-export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.${MIN_PATCH_VERSION}`; // Minimum for supporting AXO
+const MIN_MINOR_VERSION = 97;
+const MIN_PATCH_VERSION = 3;
+export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.${MIN_PATCH_VERSION}-connect-alpha.6.1`; // Minimum for supporting AXO
+
+export const DEFAULT_BT_VERSION = `3.107.1`;
 
 export function getSdkVersion(version: string | null): string {
   if (!version) {
-    return MIN_BT_VERSION;
+    return DEFAULT_BT_VERSION;
   }
   const versionSplit = version.split(".");
   // patch could have an alpha tag
