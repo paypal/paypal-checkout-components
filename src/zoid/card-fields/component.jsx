@@ -50,6 +50,10 @@ type CardFieldsProps = {|
   clientID: string,
   style?: {|
     height: number,
+    input: {| height: number |},
+  |},
+  styleOptions?: {|
+    disablePrerender?: boolean,
   |},
   env?: string,
   locale?: string,
@@ -128,8 +132,13 @@ const url = () =>
   `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__CARD_FIELD__}`;
 
 const prerenderTemplate = ({ props, doc }) => {
+  const height = props.style?.height ?? props.style?.input?.height ?? null;
   return (
-    <CardPrerender nonce={props.nonce} height={props.style?.height} />
+    <CardPrerender
+      nonce={props.nonce}
+      height={height}
+      isDisabled={Boolean(props.styleOptions?.disablePrerender)}
+    />
   ).render(dom({ doc }));
 };
 
@@ -290,6 +299,19 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
                 ...props.parent.props.style,
                 // $FlowFixMe
                 ...props.style,
+              };
+            },
+          },
+
+          styleOptions: {
+            type: "object",
+            required: false,
+            queryParam: true,
+            value: ({ props }) => {
+              return {
+                ...props.parent.props.styleOptions,
+                // $FlowFixMe
+                ...props.styleOptions,
               };
             },
           },

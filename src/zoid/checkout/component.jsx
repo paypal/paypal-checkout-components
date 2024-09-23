@@ -120,6 +120,13 @@ export function getCheckoutComponent(): CheckoutComponent {
       },
 
       props: {
+        atomicsWaitingState: {
+          type: "object",
+          required: false,
+          queryParam: ({ value }) =>
+            value?.searchParameter || "atomicsWaitingState",
+          queryValue: ({ value }) => value?.encodedState || "",
+        },
         clientID: {
           type: "string",
           value: () => getClientID(),
@@ -185,6 +192,17 @@ export function getCheckoutComponent(): CheckoutComponent {
           queryParam: "locale.x",
           allowDelegate: true,
           queryValue: ({ value }) => `${value.lang}_${value.country}`,
+          value: getLocale,
+        },
+
+        country: {
+          type: "object",
+          queryParam: "country.x",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            const { country } = value;
+            return country;
+          },
           value: getLocale,
         },
 

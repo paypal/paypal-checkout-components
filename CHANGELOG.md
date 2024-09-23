@@ -1,3 +1,159 @@
+## <small>5.0.338 (2024-09-12)</small>
+
+* feat(qrcode): remove onEscapePath (#2434) ([48b1f57](https://github.com/paypal/paypal-checkout-components/commit/48b1f57)), closes [#2434](https://github.com/paypal/paypal-checkout-components/issues/2434)
+
+
+
+## <small>5.0.337 (2024-08-23)</small>
+
+* Fix button color styles being applied incorrectly for vaulted flows (#2426) ([6f8e7b9](https://github.com/paypal/paypal-checkout-components/commit/6f8e7b9)), closes [#2426](https://github.com/paypal/paypal-checkout-components/issues/2426)
+
+
+
+## <small>5.0.336 (2024-08-22)</small>
+
+* fature(CardForm): add hasShippingCallback prop (#2429) ([99869c8](https://github.com/paypal/paypal-checkout-components/commit/99869c8)), closes [#2429](https://github.com/paypal/paypal-checkout-components/issues/2429)
+
+
+
+## <small>5.0.335 (2024-08-15)</small>
+
+* Add experiment prop to funding source validation 👾 (#2423) ([e36accc](https://github.com/paypal/paypal-checkout-components/commit/e36accc)), closes [#2423](https://github.com/paypal/paypal-checkout-components/issues/2423)
+
+
+
+## <small>5.0.334 (2024-08-07)</small>
+
+* feat: add country prop/param to checkout (#2425) ([c16b503](https://github.com/paypal/paypal-checkout-components/commit/c16b503)), closes [#2425](https://github.com/paypal/paypal-checkout-components/issues/2425)
+
+
+
+## <small>5.0.333 (2024-07-29)</small>
+
+* Fix default button color logic for smart stack (#2424) ([5344807](https://github.com/paypal/paypal-checkout-components/commit/5344807)), closes [#2424](https://github.com/paypal/paypal-checkout-components/issues/2424)
+
+
+
+## <small>5.0.332 (2024-07-25)</small>
+
+* Fix button styles when paypal button is not vaultable (#2420) ([92006e4](https://github.com/paypal/paypal-checkout-components/commit/92006e4)), closes [#2420](https://github.com/paypal/paypal-checkout-components/issues/2420)
+
+
+
+## <small>5.0.331 (2024-07-17)</small>
+
+* Add venmoVaultEnabled prop to venmo zoid component (#2419) ([75454c7](https://github.com/paypal/paypal-checkout-components/commit/75454c7)), closes [#2419](https://github.com/paypal/paypal-checkout-components/issues/2419)
+
+
+
+## <small>5.0.330 (2024-07-09)</small>
+
+* Update eligibility check for installment label (#2418) ([1bdc9b4](https://github.com/paypal/paypal-checkout-components/commit/1bdc9b4)), closes [#2418](https://github.com/paypal/paypal-checkout-components/issues/2418)
+
+
+
+## <small>5.0.329 (2024-07-01)</small>
+
+* feat/DTXOUP-3505/update-accelerated-loader (#2408) ([7c38548](https://github.com/paypal/paypal-checkout-components/commit/7c38548)), closes [#2408](https://github.com/paypal/paypal-checkout-components/issues/2408)
+
+
+
+## <small>5.0.328 (2024-06-26)</small>
+
+* chore(release): 5.0.327 🎉 ([973267f](https://github.com/paypal/paypal-checkout-components/commit/973267f))
+
+
+
+## <small>5.0.327 (2024-06-18)</small>
+
+* Remove logger from funding (#2415) ([1e7ae8e](https://github.com/paypal/paypal-checkout-components/commit/1e7ae8e)), closes [#2415](https://github.com/paypal/paypal-checkout-components/issues/2415)
+
+
+
+## <small>5.0.326 (2024-06-17)</small>
+
+* Fix Venmo Eligibility for Venmo Web & Shipping Callbacks 👾 (#2412) ([a79bfc1](https://github.com/paypal/paypal-checkout-components/commit/a79bfc1)), closes [#2412](https://github.com/paypal/paypal-checkout-components/issues/2412)
+
+
+
+## <small>5.0.325 (2024-06-14)</small>
+
+* use query param for atomics waiting state (#2410) ([9b1de91](https://github.com/paypal/paypal-checkout-components/commit/9b1de91)), closes [#2410](https://github.com/paypal/paypal-checkout-components/issues/2410)
+
+
+
+## <small>5.0.324 (2024-06-14)</small>
+
+* New Feature: disableMaxHeight (#2361) ([f2e74da](https://github.com/paypal/paypal-checkout-components/commit/f2e74da)), closes [#2361](https://github.com/paypal/paypal-checkout-components/issues/2361)
+
+
+
+## <small>5.0.323 (2024-06-12)</small>
+
+* fix: dynamic messages - pass merchant id from cpnw callback, flush logger (#2381) ([ead263f](https://github.com/paypal/paypal-checkout-components/commit/ead263f)), closes [#2381](https://github.com/paypal/paypal-checkout-components/issues/2381)
+
+
+
+## <small>5.0.322 (2024-06-12)</small>
+
+* Support Venmo vault without purchase with a feature flag (#2403) ([f2e7067](https://github.com/paypal/paypal-checkout-components/commit/f2e7067)), closes [#2403](https://github.com/paypal/paypal-checkout-components/issues/2403)
+
+
+
+## <small>5.0.321 (2024-06-10)</small>
+
+* Button autoResize by button container (#2404) ([80f48b0](https://github.com/paypal/paypal-checkout-components/commit/80f48b0)), closes [#2404](https://github.com/paypal/paypal-checkout-components/issues/2404)
+
+
+
+## <small>5.0.320 (2024-05-29)</small>
+
+* add atomics waiting state xprop for checkout (#2402) ([6bad872](https://github.com/paypal/paypal-checkout-components/commit/6bad872)), closes [#2402](https://github.com/paypal/paypal-checkout-components/issues/2402)
+
+
+
+## <small>5.0.319 (2024-05-24)</small>
+
+* Make Venmo ineligible if shipping callback is present & displayOnly includes "vaultable"  👾 (#2394) ([841bf90](https://github.com/paypal/paypal-checkout-components/commit/841bf90)), closes [#2394](https://github.com/paypal/paypal-checkout-components/issues/2394)
+
+
+
+## <small>5.0.318 (2024-05-23)</small>
+
+* consistent capitaliztion of paypal (#2397) ([09b9d59](https://github.com/paypal/paypal-checkout-components/commit/09b9d59)), closes [#2397](https://github.com/paypal/paypal-checkout-components/issues/2397)
+
+
+
+## <small>5.0.317 (2024-05-22)</small>
+
+* NCPS v2 👾 (#2389) ([c849191](https://github.com/paypal/paypal-checkout-components/commit/c849191)), closes [#2389](https://github.com/paypal/paypal-checkout-components/issues/2389)
+
+
+
+## <small>5.0.316 (2024-05-20)</small>
+
+* do not validate token usage in shopper insights (#2396) ([0be4402](https://github.com/paypal/paypal-checkout-components/commit/0be4402)), closes [#2396](https://github.com/paypal/paypal-checkout-components/issues/2396)
+
+
+
+## <small>5.0.315 (2024-05-20)</small>
+
+* is eligible in paypal network check for shopper insights (#2388) ([17d051a](https://github.com/paypal/paypal-checkout-components/commit/17d051a)), closes [#2388](https://github.com/paypal/paypal-checkout-components/issues/2388)
+
+
+
+## <small>5.0.314 (2024-05-15)</small>
+
+* add flow-typed to repository (#2391) ([4490e14](https://github.com/paypal/paypal-checkout-components/commit/4490e14)), closes [#2391](https://github.com/paypal/paypal-checkout-components/issues/2391)
+
+
+
+## <small>5.0.313 (2024-05-13)</small>
+
+* Ran npm run format on main & these needed formatting (#2390) ([c08c9ff](https://github.com/paypal/paypal-checkout-components/commit/c08c9ff)), closes [#2390](https://github.com/paypal/paypal-checkout-components/issues/2390)
+
+
+
 ## <small>5.0.312 (2024-05-08)</small>
 
 * fix: handle tagline field on ncps hosted buttons (#2384) ([4a46749](https://github.com/paypal/paypal-checkout-components/commit/4a46749)), closes [#2384](https://github.com/paypal/paypal-checkout-components/issues/2384)

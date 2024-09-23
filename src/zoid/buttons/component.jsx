@@ -41,6 +41,7 @@ import {
   getExperimentation,
   getSDKAttribute,
   getJsSdkLibrary,
+  wasShopperInsightsUsed,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -55,7 +56,6 @@ import {
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
   noop,
-  isLocalStorageEnabled,
 } from "@krakenjs/belter/src";
 import {
   FUNDING,
@@ -80,6 +80,7 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -107,6 +108,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     autoResize: {
       width: false,
       height: true,
+      element: `.${CLASS.AUTORESIZE_CONTAINER}`,
     },
 
     containerTemplate,
@@ -121,18 +123,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
     prerenderTemplate: ({ state, props, doc, event }) => {
       const { buttonSessionID } = props;
-
-      if (!isLocalStorageEnabled()) {
-        getLogger()
-          .info("localstorage_inaccessible_possible_private_browsing")
-          .track({
-            [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-            [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
-            [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
-            [FPTI_KEY.TRANSITION]:
-              "localstorage_inaccessible_possible_private_browsing",
-          });
-      }
 
       event.on(EVENT.PRERENDERED, () => {
         // CPL stands for Consumer Perceived Latency
@@ -149,17 +139,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             [FPTI_KEY.PAGE]: "main:xo:paypal-components:smart-payment-buttons",
             [FPTI_KEY.CPL_COMP_METRICS]: JSON.stringify(cplPhases?.comp || {}),
           };
-          getLogger()
-            .info("CPL_LATENCY_METRICS_FIRST_RENDER")
-            .track(cplLatencyMetrics);
+          getLogger().track(cplLatencyMetrics);
         } catch (err) {
-          getLogger()
-            .info("button_render_CPL_instrumentation_log_error")
-            .track({
-              err: err.message || "CPL_LOG_PHASE_ERROR",
-              details: err.details,
-              stack: JSON.stringify(err.stack || err),
-            });
+          getLogger().track({
+            err: err.message || "CPL_LOG_PHASE_ERROR",
+            details: err.details,
+            stack: JSON.stringify(err.stack || err),
+          });
         }
       });
 
@@ -202,6 +188,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
+        displayOnly,
       } = props;
 
       const flow = determineFlow({
@@ -244,6 +231,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           supportsPopups,
           supportedNativeBrowser,
           experiment,
+          displayOnly,
         })
       ) {
         return {
@@ -470,12 +458,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       experiment: {
         type: "object",
         queryParam: true,
-        value: () => {
-          const experiments = getButtonExperiments();
-          return experiments;
-        },
+        value: getButtonExperiments,
       },
-
+      // TODO first-render-experiment-cleanup
+      // verify if this is needed/used now that were putting the first render experiments in experiment param above
       experimentation: {
         type: "object",
         queryParam: true,
@@ -522,12 +508,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             style = {},
             fundingEligibility = getRefinedFundingEligibility(),
             enableFunding = getEnableFunding(),
+            experiment = getButtonExperiments(),
             applePaySupport,
             supportsPopups,
             supportedNativeBrowser,
             createBillingAgreement,
             createSubscription,
             createVaultSetupToken,
+            displayOnly,
           } = props;
 
           const flow = determineFlow({
@@ -548,6 +536,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               fundingSource,
               fundingEligibility,
               enableFunding,
+              experiment,
               components,
               onShippingChange,
               onShippingAddressChange,
@@ -556,6 +545,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               applePaySupport,
               supportsPopups,
               supportedNativeBrowser,
+              displayOnly,
             })
           ) {
             throw new Error(`${fundingSource} is not eligible`);
@@ -725,7 +715,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             offerCountryCode,
             creditProductIdentifier,
           }) => {
-            const { message, clientID, merchantID, currency, buttonSessionID } =
+            const { message, clientID, currency, buttonSessionID, merchantID } =
               props;
             const amount = message?.amount;
 
@@ -738,7 +728,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_click",
-                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -749,9 +738,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
                 [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
-              });
+              })
+              .flush();
 
-            const modalInstance = await getModal(clientID, merchantID);
+            const modalInstance = await getModal(
+              clientID,
+              merchantID,
+              buttonSessionID
+            );
             return modalInstance?.show({
               amount,
               offer: offerType,
@@ -767,10 +761,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return () => {
             // offerType, messageType, offerCountryCode, and creditProductIdentifier are passed in and may be used in an upcoming message hover logging feature
-
             // lazy loads the modal, to be memoized and executed onMessageClick
-            const { clientID, merchantID } = props;
-            return getModal(clientID, merchantID);
+            const { buttonSessionID, clientID, merchantID } = props;
+            return getModal(clientID, merchantID, buttonSessionID);
           };
         },
       },
@@ -784,8 +777,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             messageType,
             offerCountryCode,
             creditProductIdentifier,
+            merchantID: serverMerchantId,
           }) => {
-            const { message, buttonSessionID, currency, merchantID } = props;
+            // merchantID that comes from props is an array
+            const { message, buttonSessionID, currency } = props;
+
+            // override with server id if partner does not exist
+            if (serverMerchantId) {
+              getLogger().addTrackingBuilder(() => ({
+                [FPTI_KEY.SELLER_ID]: serverMerchantId,
+              }));
+            }
 
             getLogger()
               .info("button_message_render")
@@ -796,7 +798,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
                 [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
                 [FPTI_KEY.EVENT_NAME]: "message_render",
-                [FPTI_KEY.SELLER_ID]: merchantID?.join(","),
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
                 [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
                   creditProductIdentifier,
@@ -807,7 +808,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
                 [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
                 [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
-              });
+              })
+              .flush();
           };
         },
       },
@@ -829,6 +831,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       onShippingOptionsChange: {
         type: "function",
         required: false,
+      },
+
+      hasShippingCallback: {
+        type: "boolean",
+        required: false,
+        queryParam: true,
+        value: ({ props }) => {
+          return Boolean(
+            props.onShippingChange ||
+              props.onShippingAddressChange ||
+              props.onShippingOptionsChange
+          );
+        },
       },
 
       pageType: {
@@ -933,6 +948,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       sessionState: {
         type: "object",
         value: () => sessionState,
+      },
+
+      getShopperInsightsUsed: {
+        type: "function",
+        value: () => wasShopperInsightsUsed,
+        required: false,
       },
 
       stageHost: {

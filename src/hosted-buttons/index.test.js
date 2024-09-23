@@ -6,6 +6,8 @@ import { request } from "@krakenjs/belter/src";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
+import { renderDefaultButton, renderStandaloneButton } from "./utils";
+
 import { getHostedButtonsComponent } from ".";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -21,6 +23,7 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getSDKHost: () => "example.com",
     getClientID: () => "client_id_123",
     getMerchantID: () => ["merchant_id_123"],
+    getLocale: () => ({ lang: "en", country: "US" }),
   };
 });
 
@@ -31,44 +34,56 @@ vi.mock("../zoid/buttons", async () => {
   };
 });
 
-const getHostedButtonDetailsResponse = {
-  body: {
-    button_details: {
-      link_variables: [
-        {
-          name: "shape",
-          value: "rect",
-        },
-        {
-          name: "layout",
-          value: "vertical",
-        },
-        {
-          name: "color",
-          value: "gold",
-        },
-        {
-          name: "button_text",
-          value: "paypal",
-        },
-        {
-          name: "button_type",
-          value: "FIXED_PRICE",
-        },
-        {
-          name: "tagline",
-          value: "true",
-        },
-        {
-          name: "height",
-          value: "40",
-        },
-      ],
-    },
-  },
-};
+vi.mock("./utils.js", async () => {
+  return {
+    ...(await vi.importActual("./utils.js")),
+    renderStandaloneButton: vi.fn(),
+    renderDefaultButton: vi.fn(),
+  };
+});
 
-describe("HostedButtons", () => {
+const baseLinkVariables = [
+  {
+    name: "shape",
+    value: "rect",
+  },
+  {
+    name: "layout",
+    value: "vertical",
+  },
+  {
+    name: "color",
+    value: "gold",
+  },
+  {
+    name: "button_text",
+    value: "paypal",
+  },
+  {
+    name: "button_type",
+    value: "FIXED_PRICE",
+  },
+  {
+    name: "tagline",
+    value: "true",
+  },
+  {
+    name: "height",
+    value: "40",
+  },
+];
+
+const hostedButtonId = "B1234567890";
+
+describe("HostedButtons v1", () => {
+  const hostedButtonDetailsResponse = {
+    body: {
+      button_details: {
+        link_variables: baseLinkVariables,
+      },
+    },
+  };
+
   test("paypal.Buttons calls getHostedButtonDetails and invokes v5 of the SDK", async () => {
     const Buttons = vi.fn(() => ({ render: vi.fn() }));
     // $FlowIssue
@@ -77,58 +92,20 @@ describe("HostedButtons", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(getHostedButtonDetailsResponse)
+      Promise.resolve(hostedButtonDetailsResponse)
     );
     await HostedButtons({
-      hostedButtonId: "B1234567890",
-      fundingSources: [],
+      hostedButtonId,
     }).render("#example");
+
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
-        hostedButtonId: "B1234567890",
+        hostedButtonId,
         style: expect.objectContaining({ tagline: true }),
       })
     );
     expect(Buttons).toHaveBeenCalledTimes(1);
     expect.assertions(2);
-  });
-
-  describe("NCP V2", () => {
-    beforeEach(() => {
-      const containerId = "#container-id";
-      const selector = document.createElement("div");
-      selector.setAttribute("id", containerId.slice(1));
-      vi.spyOn(document, "querySelector").mockReturnValue(selector);
-    });
-
-    test("paypal.Buttons calls getHostedButtonDetails, invokes v5 of the SDK", async () => {
-      const renderMock = vi.fn();
-
-      const Buttons = vi.fn(() => ({
-        render: renderMock,
-        isEligible: vi.fn(() => true),
-      }));
-      // $FlowIssue
-      getButtonsComponent.mockImplementationOnce(() => Buttons);
-      const HostedButtons = getHostedButtonsComponent();
-      // $FlowIssue
-      request.mockImplementationOnce(() =>
-        // eslint-disable-next-line compat/compat
-        Promise.resolve(getHostedButtonDetailsResponse)
-      );
-      await HostedButtons({
-        hostedButtonId: "B1234567890",
-        fundingSources: ["paypal", "venmo"],
-      }).render("#example");
-      expect(Buttons).toHaveBeenCalledWith(
-        expect.objectContaining({
-          hostedButtonId: "B1234567890",
-        })
-      );
-      expect(Buttons).toHaveBeenCalledTimes(2);
-      expect(renderMock).toHaveBeenCalledTimes(2);
-      expect.assertions(3);
-    });
   });
 
   test("only eligible buttons are rendered", async () => {
@@ -144,19 +121,19 @@ describe("HostedButtons", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(getHostedButtonDetailsResponse)
+      Promise.resolve(hostedButtonDetailsResponse)
     );
     await HostedButtons({
-      hostedButtonId: "B1234567890",
-      fundingSources: ["paypal", "venmo"],
+      hostedButtonId,
     }).render("#example");
+
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
-        hostedButtonId: "B1234567890",
+        hostedButtonId,
       })
     );
-    expect(Buttons).toHaveBeenCalledTimes(2);
-    expect(renderMock).toHaveBeenCalledTimes(0);
+    expect(Buttons).toHaveBeenCalledTimes(1);
+    expect(renderMock).toHaveBeenCalledTimes(1);
     expect.assertions(3);
   });
 
@@ -207,11 +184,12 @@ describe("HostedButtons", () => {
       })
     );
     await HostedButtons({
-      hostedButtonId: "B1234567890",
+      hostedButtonId,
     }).render("#example");
+
     expect(Buttons).toHaveBeenCalledWith(
       expect.objectContaining({
-        hostedButtonId: "B1234567890",
+        hostedButtonId,
         style: expect.objectContaining({ tagline: false }),
       })
     );
@@ -220,4 +198,68 @@ describe("HostedButtons", () => {
     expect.assertions(3);
   });
 });
+
+describe("HostedButtons v2", () => {
+  const hostedButtonDetailsResponse = {
+    body: {
+      version: "2",
+      button_details: {
+        link_variables: baseLinkVariables,
+        js_sdk_container_id: "spb-container",
+        preferences: {
+          button_preferences: ["paypal", "default"],
+          eligible_funding_methods: ["paypal", "venmo", "paylater"],
+        },
+      },
+    },
+  };
+
+  beforeEach(() => {
+    vi.restoreAllMocks();
+
+    const selector = document.createElement("div");
+    selector.id =
+      hostedButtonDetailsResponse.body.button_details.js_sdk_container_id;
+    vi.spyOn(document, "querySelector").mockReturnValue(selector);
+  });
+
+  test("paypal.HostedButtons calls renderStandaloneButton & renderDefaultButton accordingly", async () => {
+    const renderMock = vi.fn();
+
+    const Buttons = vi.fn(() => ({
+      render: renderMock,
+      isEligible: vi.fn(() => false),
+    }));
+    // $FlowIssue
+    getButtonsComponent.mockImplementation(() => Buttons);
+
+    const HostedButtons = getHostedButtonsComponent();
+
+    // $FlowIssue
+    request.mockImplementationOnce(() =>
+      // eslint-disable-next-line compat/compat
+      Promise.resolve(hostedButtonDetailsResponse)
+    );
+
+    await HostedButtons({
+      hostedButtonId,
+    }).render("#example");
+
+    expect(renderStandaloneButton).toHaveBeenCalledTimes(1);
+    expect(renderDefaultButton).toHaveBeenCalledTimes(1);
+
+    expect(renderStandaloneButton).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fundingSource: "paypal",
+      })
+    );
+
+    expect(renderDefaultButton).toHaveBeenCalledWith(
+      expect.objectContaining({
+        eligibleDefaultButtons: ["venmo", "paylater"],
+      })
+    );
+  });
+});
+
 /* eslint-enable no-restricted-globals, promise/no-native */

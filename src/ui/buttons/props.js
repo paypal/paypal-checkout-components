@@ -1,4 +1,5 @@
 /* eslint-disable eslint-comments/disable-enable-pair  */
+/* eslint-disable max-lines */
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
@@ -316,7 +317,7 @@ export type OnClick = (OnClickData, OnClickActions) => void;
 
 export type ButtonStyle = {|
   label: $Values<typeof BUTTON_LABEL> | void,
-  color: $Values<typeof BUTTON_COLOR>,
+  color?: $Values<typeof BUTTON_COLOR>,
   shape: $Values<typeof BUTTON_SHAPE>,
   tagline: boolean,
   layout: $Values<typeof BUTTON_LAYOUT>,
@@ -324,6 +325,7 @@ export type ButtonStyle = {|
   period?: number,
   height?: number,
   disableMaxWidth?: boolean,
+  disableMaxHeight?: boolean,
   borderRadius?: number,
 |};
 
@@ -336,6 +338,7 @@ export type ButtonStyleInputs = {|
   period?: number | void,
   height?: number | void,
   disableMaxWidth?: boolean | void,
+  disableMaxHeight?: boolean | void,
   borderRadius?: number | void,
 |};
 
@@ -430,14 +433,14 @@ export type ApplePaySessionConfigRequest = (
 
 export type ButtonMessage = {|
   amount?: number,
-  offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>>,
+  offer?: string,
   color: $Values<typeof MESSAGE_COLOR>,
   position: $Values<typeof MESSAGE_POSITION>,
   align: $Values<typeof MESSAGE_ALIGN>,
 |};
 
 export type ButtonMessageInputs = {|
-  amount?: number | void,
+  amount?: number | string | void,
   offer?: $ReadOnlyArray<$Values<typeof MESSAGE_OFFER>> | void,
   color?: $Values<typeof MESSAGE_COLOR> | void,
   position?: $Values<typeof MESSAGE_POSITION> | void,
@@ -447,6 +450,7 @@ export type ButtonMessageInputs = {|
 export type RenderButtonProps = {|
   style: ButtonStyle,
   locale: LocaleType,
+  buyerCountry: $Values<typeof COUNTRY>,
   commit: boolean,
   fundingSource: ?$Values<typeof FUNDING>,
   env: $Values<typeof ENV>,
@@ -465,6 +469,7 @@ export type RenderButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   personalization: ?Personalization,
   clientAccessToken: ?string,
   customerId: ?string,
@@ -521,6 +526,7 @@ export type ButtonProps = {|
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   clientAccessToken?: ?string,
   customerId?: ?string,
   nonce: string,
@@ -550,6 +556,7 @@ export type ButtonPropsInputs = {
   clientID: string,
   fundingSource?: ?$Values<typeof FUNDING>,
   style?: ButtonStyleInputs | void,
+  buyerCountry: $Values<typeof COUNTRY>,
   locale?: $PropertyType<ButtonProps, "locale"> | void,
   commit?: $PropertyType<ButtonProps, "commit"> | void,
   env?: $PropertyType<ButtonProps, "env"> | void,
@@ -568,6 +575,7 @@ export type ButtonPropsInputs = {
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
   onShippingOptionsChange: ?Function,
+  hasShippingCallback?: boolean,
   personalization?: Personalization,
   clientAccessToken?: ?string,
   customerId?: ?string,
@@ -636,6 +644,7 @@ export function normalizeButtonStyle(
   }
 
   let {
+    color,
     label,
     layout = fundingSource
       ? BUTTON_LAYOUT.HORIZONTAL
@@ -646,6 +655,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement = MENU_PLACEMENT.BELOW,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   } = style;
 
@@ -654,9 +664,6 @@ export function normalizeButtonStyle(
     // $FlowFixMe
     tagline = false;
   }
-
-  // if color is a falsy value, set it to the default color from the funding config
-  const color = style.color ? style.color : fundingConfig.colors[0];
 
   if (values(BUTTON_LAYOUT).indexOf(layout) === -1) {
     throw new Error(`Invalid layout: ${layout}`);
@@ -694,9 +701,37 @@ export function normalizeButtonStyle(
       BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE].maxHeight,
     ];
 
+    if (disableMaxHeight === true) {
+      throw new TypeError(
+        `Unexpected style.height for style.disableMaxHeight: got: ${height}, expected undefined.`
+      );
+    }
+
     if (height < minHeight || height > maxHeight) {
       throw new Error(
         `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
+      );
+    }
+  }
+
+  if (disableMaxHeight !== undefined) {
+    if (typeof disableMaxHeight !== "boolean") {
+      throw new TypeError(
+        `Expected style.disableMaxHeight to be a boolean, got: ${disableMaxHeight}`
+      );
+    }
+
+    const disableMaxHeightInvalidFundingSources = [FUNDING.CARD, undefined];
+    const disableMaxHeightValidFundingSources = Object.values(FUNDING).filter(
+      (fundingSourceId) =>
+        !disableMaxHeightInvalidFundingSources.includes(fundingSourceId)
+    );
+
+    if (disableMaxHeightInvalidFundingSources.includes(fundingSource)) {
+      throw new TypeError(
+        `Unexpected fundingSource for style.disableMaxHeight: got: ${
+          fundingSource ? fundingSource : "Smart Stack"
+        }, expected ${disableMaxHeightValidFundingSources.join(", ")}.`
       );
     }
   }
@@ -733,6 +768,7 @@ export function normalizeButtonStyle(
     period,
     menuPlacement,
     disableMaxWidth,
+    disableMaxHeight,
     borderRadius,
   };
 }
@@ -743,15 +779,18 @@ export function normalizeButtonMessage(
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
 ): ButtonMessage {
   const {
-    amount,
-    offer,
     color = MESSAGE_COLOR.BLACK,
     position,
     align = MESSAGE_ALIGN.CENTER,
   } = message;
+  let offer = message.offer;
+  let amount = message.amount;
 
   if (typeof amount !== "undefined") {
-    if (typeof amount !== "number") {
+    if (typeof amount === "string") {
+      amount = Number(amount);
+    }
+    if (typeof amount !== "number" || isNaN(amount)) {
       throw new TypeError(
         `Expected message.amount to be a number, got: ${amount}`
       );
@@ -764,6 +803,9 @@ export function normalizeButtonMessage(
   }
 
   if (typeof offer !== "undefined") {
+    if (typeof offer === "string") {
+      offer = offer.split(",");
+    }
     if (!Array.isArray(offer)) {
       throw new TypeError(
         `Expected message.offer to be an array of strings, got: ${String(
@@ -777,6 +819,7 @@ export function normalizeButtonMessage(
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
     }
+    offer = offer.join(",");
   }
 
   if (typeof color !== "undefined" && !values(MESSAGE_COLOR).includes(color)) {
@@ -825,7 +868,14 @@ export function normalizeButtonProps(
     throw new Error(`Expected props`);
   }
 
+  const defaultHasShippingCallback = Boolean(
+    props.onShippingChange ||
+      props.onShippingAddressChange ||
+      props.onShippingOptionsChange
+  );
+
   let {
+    buyerCountry,
     clientID,
     fundingSource,
     style = getDefaultStyle(),
@@ -843,6 +893,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback = defaultHasShippingCallback,
     personalization,
     clientAccessToken,
     customerId,
@@ -902,10 +953,12 @@ export function normalizeButtonProps(
         fundingSource,
         fundingEligibility,
         enableFunding,
+        experiment,
         components,
         onShippingChange,
         onShippingAddressChange,
         onShippingOptionsChange,
+        hasShippingCallback,
         wallet,
         flow,
         applePaySupport,
@@ -926,6 +979,7 @@ export function normalizeButtonProps(
     : undefined;
 
   return {
+    buyerCountry,
     clientID,
     fundingSource,
     style,
@@ -944,6 +998,7 @@ export function normalizeButtonProps(
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
+    hasShippingCallback,
     personalization,
     content,
     wallet,

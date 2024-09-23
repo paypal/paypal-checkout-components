@@ -1,11 +1,12 @@
 /* @flow */
 /** @jsx node */
 
-import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
+import { node, type NullableChildType } from "@krakenjs/jsx-pragmatic/src";
 
 type PrerenderedCardProps = {|
   nonce: ?string,
   height: ?number,
+  isDisabled: ?boolean,
 |};
 
 const DEFAULT_HEIGHT = 78;
@@ -13,7 +14,11 @@ const DEFAULT_HEIGHT = 78;
 export function CardPrerender({
   nonce,
   height,
-}: PrerenderedCardProps): ChildType {
+  isDisabled,
+}: PrerenderedCardProps): NullableChildType {
+  if (isDisabled) {
+    return null;
+  }
   return (
     <html>
       <body>

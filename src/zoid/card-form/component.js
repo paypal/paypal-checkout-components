@@ -18,6 +18,10 @@ import {
 } from "@paypal/sdk-client/src";
 
 import { getSessionID } from "../../lib";
+import type {
+  OnShippingOptionsChange,
+  OnShippingAddressChange,
+} from "../../ui/buttons/props";
 
 type CardProps = {|
   client: {
@@ -39,6 +43,9 @@ type CardProps = {|
   meta: Object,
   commit: boolean,
   token: string,
+  onShippingAddressChange?: OnShippingAddressChange,
+  onShippingOptionsChange?: OnShippingOptionsChange,
+  hasShippingCallback?: boolean,
 |};
 
 export type CardFormComponent = ZoidComponent<CardProps>;
@@ -83,6 +90,27 @@ export function getCardFormComponent(): CardFormComponent {
           queryValue: ({ value }) => ZalgoPromise.try(value),
         },
 
+        onShippingAddressChange: {
+          type: "function",
+          required: false,
+        },
+
+        onShippingOptionsChange: {
+          type: "function",
+          required: false,
+        },
+
+        hasShippingCallback: {
+          type: "boolean",
+          required: false,
+          queryParam: true,
+          value: ({ props }) => {
+            return Boolean(
+              props.onShippingAddressChange || props.onShippingOptionsChange
+            );
+          },
+        },
+
         buttonSessionID: {
           type: "string",
           queryParam: true,
@@ -115,6 +143,18 @@ export function getCardFormComponent(): CardFormComponent {
             let { lang, country } = value;
             lang = lang === LANG.ZH_HANT ? LANG.ZH : lang;
             return `${lang}_${country}`;
+          },
+          value: getLocale,
+        },
+
+        country: {
+          type: "object",
+          queryParam: "country.x",
+          allowDelegate: true,
+          queryValue({ value }): string {
+            // $FlowFixMe
+            const { country } = value;
+            return country;
           },
           value: getLocale,
         },
