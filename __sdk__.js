@@ -69,10 +69,6 @@ module.exports = {
   fastlane: {
     entry: "./src/connect/interface",
   },
-  "three-domain-secure": {
-    entry: "./src/three-domain-secure/interface",
-    globals,
-  },
   // @deprecated - renamed to payment-fields to be removed
   fields: {
     entry: "./src/interface/fields",
