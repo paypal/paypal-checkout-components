@@ -67,52 +67,81 @@ describe("paypal button color", () => {
     destroyTestContainer();
   });
 
-  it("should render a button with gold background when empty string is passed in for color", () => {
-    return window.paypal
+  it("should render a button with gold background when empty string is passed in for color", (done) => {
+    window.paypal
       .Buttons({
         style: {
           color: "",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(getElementRecursive(".paypal-button-color-gold"));
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-gold"));
-      });
+      .render("#testContainer");
   });
 
-  it("should render a button with gold background when no color is specified", () => {
-    return window.paypal
-      .Buttons()
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-gold"));
-      });
+  it("should render a button with gold background when no color is specified", (done) => {
+    window.paypal
+      .Buttons({
+        test: {
+          onRender() {
+            try {
+              assert.ok(getElementRecursive(".paypal-button-color-gold"));
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
+      })
+      .render("#testContainer");
   });
 
-  it('should render a button with black background when passed "black"', () => {
-    return window.paypal
+  it('should render a button with black background when passed "black"', (done) => {
+    window.paypal
       .Buttons({
         style: {
           color: "black",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(getElementRecursive(".paypal-button-color-black"));
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-black"));
-      });
+      .render("#testContainer");
   });
 
-  it('should render a button with gold background when passed ""', () => {
-    return window.paypal
+  it('should render a button with gold background when passed ""', (done) => {
+    window.paypal
       .Buttons({
         style: {
           color: "gold",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(getElementRecursive(".paypal-button-color-gold"));
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-gold"));
-      });
+      .render("#testContainer");
   });
 
   it("should not mutate the style object", (done) => {
@@ -165,16 +194,22 @@ describe("paypal button aria-label", () => {
           label: "installment",
           period: 3,
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(
+                  ".paypal-button[aria-label='Pay up to 3x without interest']"
+                )
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(
-          getElementRecursive(
-            ".paypal-button[aria-label='Pay up to 3x without interest']"
-          )
-        );
-        done();
-      });
+      .render("#testContainer");
   });
   it("handles style.label == 'installment' without style.period", (done) => {
     window.paypal
@@ -185,16 +220,22 @@ describe("paypal button aria-label", () => {
         style: {
           label: "installment",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(
+                  ".paypal-button[aria-label='Interest free payments']"
+                )
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(
-          getElementRecursive(
-            ".paypal-button[aria-label='Interest free payments']"
-          )
-        );
-        done();
-      });
+      .render("#testContainer");
   });
   it("falls back to the funding source if content is unavailable", (done) => {
     window.paypal
@@ -202,12 +243,20 @@ describe("paypal button aria-label", () => {
         style: {
           label: "buynow",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(".paypal-button[aria-label='PayPal']")
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button[aria-label='PayPal']"));
-        done();
-      });
+      .render("#testContainer");
   });
   it("falls back to the funding source if the correct content is unavailable", (done) => {
     window.paypal
@@ -218,11 +267,19 @@ describe("paypal button aria-label", () => {
         style: {
           label: "buynow",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(".paypal-button[aria-label='PayPal']")
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button[aria-label='PayPal']"));
-        done();
-      });
+      .render("#testContainer");
   });
 });
