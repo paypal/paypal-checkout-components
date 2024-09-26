@@ -93,6 +93,7 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
+  getPerformanceProp,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<ButtonProps>;
@@ -875,6 +876,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "object",
         queryParam: false,
         required: false,
+      },
+
+      performance: {
+        type: "object",
+        queryParam: true,
+        value: ({ props }) => getPerformanceProp(props.buttonSessionID),
       },
 
       platform: {
