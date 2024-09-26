@@ -25,13 +25,13 @@ function getNavigationTimeOrigin(): number {
   }
 }
 
-function getStartTimeFromMark({
+export function getStartTimeFromMark({
   buttonSessionID,
   phase,
 }: LogLatencyInstrumentationPhaseParams): number {
   if (window.performance) {
     return performance.getEntriesByName(`${buttonSessionID}_${phase}`).pop()
-      .startTime;
+      ?.startTime;
   } else {
     throw new Error("window.performance not supported");
   }
@@ -51,6 +51,11 @@ export const logLatencyInstrumentationPhase = ({
   buttonSessionID,
   phase,
 }: LogLatencyInstrumentationPhaseParams) => {
+  console.log({
+    fn: "logLatency",
+    buttonSessionID,
+    phase,
+  });
   if (window.performance && window.performance.mark) {
     window.performance.mark(`${buttonSessionID}_${phase}`);
   }
