@@ -28,7 +28,10 @@ import {
 import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
-import type { Experiment as EligibilityExperiment } from "../../types";
+import type {
+  Experiment as EligibilityExperiment,
+  PerformanceProp,
+} from "../../types";
 import { BUTTON_FLOW, BUTTON_SIZE, BUTTON_LAYOUT } from "../../constants";
 import type {
   ApplePaySessionConfigRequest,
@@ -39,6 +42,7 @@ import type {
 } from "../../ui/buttons/props";
 import { determineEligibleFunding } from "../../funding";
 import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
+import { getStartTimeFromMark } from "../../lib/perceived-latency-instrumentation";
 
 type DetermineFlowOptions = {|
   createBillingAgreement: CreateBillingAgreement,
@@ -424,3 +428,15 @@ export const getModal: (
       });
   }
 });
+
+/**
+ * Creates an object containing any performance data we need to pass as a prop.
+ */
+export function getPerformanceProp(buttonSessionID: string): PerformanceProp {
+  return {
+    firstRenderStartTime: getStartTimeFromMark({
+      buttonSessionID,
+      phase: "buttons-first-render",
+    }),
+  };
+}
