@@ -77,3 +77,7 @@ export type LazyExport<T> = {|
 export type LazyProtectedExport<T> = {|
   __get__: () => ?T,
 |};
+
+export type PerformanceProp = {|
+  firstRenderStartTime: number,
+|};

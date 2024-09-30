@@ -25,13 +25,13 @@ function getNavigationTimeOrigin(): number {
   }
 }
 
-function getStartTimeFromMark({
+export function getStartTimeFromMark({
   buttonSessionID,
   phase,
 }: LogLatencyInstrumentationPhaseParams): number {
   if (window.performance) {
     return performance.getEntriesByName(`${buttonSessionID}_${phase}`).pop()
-      .startTime;
+      ?.startTime;
   } else {
     throw new Error("window.performance not supported");
   }
