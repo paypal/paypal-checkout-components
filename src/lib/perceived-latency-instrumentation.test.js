@@ -1,4 +1,7 @@
+/* @flow */
+/* eslint-disable compat/compat */
 import { beforeEach, describe, expect, vi } from "vitest";
+
 import { getStartTimeFromMark } from "./perceived-latency-instrumentation";
 
 describe("getStartTimeFromMark", () => {
@@ -34,3 +37,5 @@ describe("getStartTimeFromMark", () => {
     expect(startTime).toBe(expectedStartTime);
   });
 });
+
+/* eslint-enable compat/compat */

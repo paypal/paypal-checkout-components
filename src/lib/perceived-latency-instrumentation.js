@@ -51,11 +51,6 @@ export const logLatencyInstrumentationPhase = ({
   buttonSessionID,
   phase,
 }: LogLatencyInstrumentationPhaseParams) => {
-  console.log({
-    fn: "logLatency",
-    buttonSessionID,
-    phase,
-  });
   if (window.performance && window.performance.mark) {
     window.performance.mark(`${buttonSessionID}_${phase}`);
   }

@@ -1,6 +1,8 @@
 /* @flow */
+/* eslint-disable compat/compat */
 
-import { describe } from "vitest";
+import { describe, expect } from "vitest";
+
 import { getPerformanceProp } from "./util";
 
 describe("getPerformanceProp", () => {
@@ -28,3 +30,5 @@ describe("getPerformanceProp", () => {
     expect(performanceProp).toEqual({});
   });
 });
+
+/* eslint-enable compat/compat */
