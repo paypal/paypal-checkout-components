@@ -89,13 +89,24 @@ describe("paypal button color", () => {
       .render("#testContainer");
   });
 
-  it("should render a button with gold background when no color is specified", () => {
+  it("should render a button with gold background when no color is specified", (done) => {
+    done = once(done);
+
     return window.paypal
-      .Buttons()
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-gold"));
-      });
+      .Buttons({
+        test: {
+          onRender() {
+            try {
+              // assert here
+              getElementRecursive(".paypal-button-color-gold");
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
+      })
+      .render("#testContainer");
   });
 
   it('should render a button with black background when passed "black"', () => {
