@@ -92,7 +92,7 @@ describe("paypal button color", () => {
   it("should render a button with gold background when no color is specified", (done) => {
     done = once(done);
 
-    return window.paypal
+    window.paypal
       .Buttons({
         test: {
           onRender() {
