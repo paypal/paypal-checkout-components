@@ -25,7 +25,7 @@ for (const flow of ["popup", "iframe"]) {
     it("should render a button into a container and click on the button instantly, then complete the checkout", (done) => {
       done = once(done);
 
-      return wrapPromise(({ expect, error }) => {
+      wrapPromise(({ expect, error }) => {
         const buttonRender = window.paypal
           .Buttons({
             test: {
@@ -43,6 +43,8 @@ for (const flow of ["popup", "iframe"]) {
 
                   // $FlowFixMe
                   const win = frame.contentWindow;
+                  console.log(win);
+                  // console.log(win.document.querySelector());
                   const button = win.document.querySelector('[role="link"]');
 
                   frame.click();
