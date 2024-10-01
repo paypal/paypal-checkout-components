@@ -70,7 +70,7 @@ describe("paypal button color", () => {
   it("should render a button with gold background when empty string is passed in for color", (done) => {
     done = once(done);
 
-    return window.paypal
+    window.paypal
       .Buttons({
         style: {
           color: "",
