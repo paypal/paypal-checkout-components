@@ -192,6 +192,8 @@ describe("paypal button aria-label", () => {
   });
 
   it("uses style.label and style.period", (done) => {
+    done = once(done);
+
     window.paypal
       .Buttons({
         content: {
@@ -214,6 +216,8 @@ describe("paypal button aria-label", () => {
       });
   });
   it("handles style.label == 'installment' without style.period", (done) => {
+    done = once(done);
+
     window.paypal
       .Buttons({
         content: {
@@ -222,18 +226,25 @@ describe("paypal button aria-label", () => {
         style: {
           label: "installment",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(
+                  ".paypal-button[aria-label='Interest free payments']"
+                )
+              );
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(
-          getElementRecursive(
-            ".paypal-button[aria-label='Interest free payments']"
-          )
-        );
-        done();
-      });
+      .render("#testContainer");
   });
   it("falls back to the funding source if content is unavailable", (done) => {
+    done = once(done);
+
     window.paypal
       .Buttons({
         style: {
@@ -247,6 +258,8 @@ describe("paypal button aria-label", () => {
       });
   });
   it("falls back to the funding source if the correct content is unavailable", (done) => {
+    done = once(done);
+
     window.paypal
       .Buttons({
         content: {
