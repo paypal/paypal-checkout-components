@@ -257,12 +257,20 @@ describe("paypal button aria-label", () => {
         style: {
           label: "buynow",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(".paypal-button[aria-label='PayPal']")
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button[aria-label='PayPal']"));
-        done();
-      });
+      .render("#testContainer");
   });
   it("falls back to the funding source if the correct content is unavailable", (done) => {
     done = once(done);
@@ -275,11 +283,19 @@ describe("paypal button aria-label", () => {
         style: {
           label: "buynow",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(".paypal-button[aria-label='PayPal']")
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button[aria-label='PayPal']"));
-        done();
-      });
+      .render("#testContainer");
   });
 });
