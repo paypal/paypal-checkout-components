@@ -204,16 +204,22 @@ describe("paypal button aria-label", () => {
           label: "installment",
           period: 3,
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(
+                getElementRecursive(
+                  ".paypal-button[aria-label='Pay up to 3x without interest']"
+                )
+              );
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(
-          getElementRecursive(
-            ".paypal-button[aria-label='Pay up to 3x without interest']"
-          )
-        );
-        done();
-      });
+      .render("#testContainer");
   });
   it("handles style.label == 'installment' without style.period", (done) => {
     done = once(done);
