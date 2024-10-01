@@ -240,6 +240,7 @@ describe("paypal button aria-label", () => {
                   ".paypal-button[aria-label='Interest free payments']"
                 )
               );
+              done();
             } catch (e) {
               done(e);
             }
