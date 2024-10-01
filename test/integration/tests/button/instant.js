@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint max-lines: 0 */
 
-import { wrapPromise } from "@krakenjs/belter/src";
+import { once, wrapPromise } from "@krakenjs/belter/src";
 
 import {
   createTestContainer,
@@ -22,11 +22,37 @@ for (const flow of ["popup", "iframe"]) {
       destroyTestContainer();
     });
 
-    it("should render a button into a container and click on the button instantly, then complete the checkout", () => {
+    it("should render a button into a container and click on the button instantly, then complete the checkout", (done) => {
+      done = once(done);
+
       return wrapPromise(({ expect, error }) => {
         const buttonRender = window.paypal
           .Buttons({
-            test: { flow },
+            test: {
+              flow,
+              onRender() {
+                try {
+                  // stuff
+                  const frame = document.querySelector(
+                    "#testContainer iframe.prerender-frame"
+                  );
+
+                  if (!frame) {
+                    throw new Error(`Can not find prerender frame`);
+                  }
+
+                  // $FlowFixMe
+                  const win = frame.contentWindow;
+                  const button = win.document.querySelector('[role="link"]');
+
+                  frame.click();
+                  button.click();
+                  done();
+                } catch (e) {
+                  done(e);
+                }
+              },
+            },
             onApprove: expect("onApprove"),
             onCancel: error("onCancel"),
             onError: error("onError", (err) => {
@@ -34,21 +60,6 @@ for (const flow of ["popup", "iframe"]) {
             }),
           })
           .render("#testContainer");
-
-        const frame = document.querySelector(
-          "#testContainer iframe.prerender-frame"
-        );
-
-        if (!frame) {
-          throw new Error(`Can not find prerender frame`);
-        }
-
-        // $FlowFixMe
-        const win = frame.contentWindow;
-        const button = win.document.querySelector('[role="link"]');
-
-        frame.click();
-        button.click();
 
         return buttonRender;
       });
