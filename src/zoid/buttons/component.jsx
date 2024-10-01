@@ -489,7 +489,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       fundingEligibility: {
         type: "object",
         default: getRefinedFundingEligibility,
-        value: __ENV__ === ENV.LOCAL ? undefined : getRefinedFundingEligibility,
+        value:
+          getEnv() === ENV.LOCAL ? undefined : getRefinedFundingEligibility,
         queryParam: true,
         serialization: "base64",
       },
