@@ -97,8 +97,7 @@ describe("paypal button color", () => {
         test: {
           onRender() {
             try {
-              // assert here
-              getElementRecursive(".paypal-button-color-gold");
+              assert.ok(getElementRecursive(".paypal-button-color-gold"));
               done();
             } catch (e) {
               done(e);
@@ -109,30 +108,48 @@ describe("paypal button color", () => {
       .render("#testContainer");
   });
 
-  it('should render a button with black background when passed "black"', () => {
-    return window.paypal
+  it('should render a button with black background when passed "black"', (done) => {
+    done = once(done);
+
+    window.paypal
       .Buttons({
         style: {
           color: "black",
         },
+        test: {
+          onRender() {
+            try {
+              getElementRecursive(".paypal-button-color-black");
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-black"));
-      });
+      .render("#testContainer");
   });
 
-  it('should render a button with gold background when passed ""', () => {
-    return window.paypal
+  it('should render a button with gold background when passed ""', (done) => {
+    done = once(done);
+
+    window.paypal
       .Buttons({
         style: {
           color: "gold",
         },
+        test: {
+          onRender() {
+            try {
+              assert.ok(getElementRecursive(".paypal-button-color-gold"));
+              done();
+            } catch (e) {
+              done(e);
+            }
+          },
+        },
       })
-      .render("#testContainer")
-      .then(() => {
-        assert.ok(getElementRecursive(".paypal-button-color-gold"));
-      });
+      .render("#testContainer");
   });
 
   it("should not mutate the style object", (done) => {
