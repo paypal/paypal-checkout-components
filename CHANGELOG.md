@@ -1,3 +1,9 @@
+## <small>5.0.339 (2024-10-02)</small>
+
+* Adding Installments and IC2B for Card Fields (#2432) ([660ea8d](https://github.com/paypal/paypal-checkout-components/commit/660ea8d)), closes [#2432](https://github.com/paypal/paypal-checkout-components/issues/2432)
+
+
+
 ## <small>5.0.338 (2024-09-12)</small>
 
 * feat(qrcode): remove onEscapePath (#2434) ([48b1f57](https://github.com/paypal/paypal-checkout-components/commit/48b1f57)), closes [#2434](https://github.com/paypal/paypal-checkout-components/issues/2434)
