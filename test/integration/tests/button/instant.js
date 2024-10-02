@@ -43,8 +43,7 @@ for (const flow of ["popup", "iframe"]) {
 
                   // $FlowFixMe
                   const win = frame.contentWindow;
-                  console.log(win);
-                  // console.log(win.document.querySelector());
+
                   const button = win.document.querySelector('[role="link"]');
 
                   frame.click();
