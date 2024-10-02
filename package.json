@@ -107,7 +107,7 @@
     "@krakenjs/beaver-logger": "^5.7.0",
     "@krakenjs/belter": "^2.0.0",
     "@krakenjs/cross-domain-utils": "^3.0.0",
-    "@krakenjs/jsx-pragmatic": "^3",
+    "@krakenjs/jsx-pragmatic": "3.0.0",
     "@krakenjs/post-robot": "^11.0.0",
     "@krakenjs/zalgo-promise": "^2.0.0",
     "@krakenjs/zoid": "^10.3.1",
