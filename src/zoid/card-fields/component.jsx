@@ -23,6 +23,7 @@ import {
   getPartnerAttributionID,
   getMerchantID,
   getUserIDToken,
+  getSDKToken,
   getClientMetadataID,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
@@ -436,6 +437,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             default: getUserIDToken,
             required: false,
           },
+          sdkToken: {
+            type: "string",
+            default: getSDKToken,
+            required: false,
+          },
           installments: {
             type: "object",
             required: false,
@@ -717,6 +723,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         userIDToken: {
           type: "string",
           default: getUserIDToken,
+          required: false,
+        },
+        sdkToken: {
+          type: "string",
+          default: getSDKToken,
           required: false,
         },
         installments: {
