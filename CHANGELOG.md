@@ -1,3 +1,9 @@
+## <small>5.0.342 (2024-10-04)</small>
+
+* Add getSDKToken for card fields (#2445) ([57d78fb](https://github.com/paypal/paypal-checkout-components/commit/57d78fb)), closes [#2445](https://github.com/paypal/paypal-checkout-components/issues/2445)
+
+
+
 ## <small>5.0.341 (2024-10-03)</small>
 
 * Revert "Pin jsx-pragmatic to 3.0.0 (#2443)" (#2444) ([a2fc264](https://github.com/paypal/paypal-checkout-components/commit/a2fc264)), closes [#2443](https://github.com/paypal/paypal-checkout-components/issues/2443) [#2444](https://github.com/paypal/paypal-checkout-components/issues/2444)
