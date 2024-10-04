@@ -23,6 +23,7 @@ import {
   getPartnerAttributionID,
   getMerchantID,
   getUserIDToken,
+  getSDKToken,
   getClientMetadataID,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
@@ -45,6 +46,14 @@ const CARD_FIELD_TYPE = {
   NAME: "name",
   POSTAL: "postal",
 };
+
+type InstallmentsConfiguration = {|
+  financingCountryCode : string,
+  currencyCode : string,
+  billingCountryCode : string,
+  amount : string,
+  includeBuyerInstallments ? : boolean
+|};
 
 type CardFieldsProps = {|
   clientID: string,
@@ -100,6 +109,11 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
+  installments? : {|
+    onInstallmentsRequested : () => InstallmentsConfiguration | ZalgoPromise<InstallmentsConfiguration>,
+    onInstallmentsAvailable : (Object) => void,
+    onInstallmentsError? : (Object) => void
+  |},
 |};
 
 type CardFieldProps = {|
@@ -423,6 +437,16 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             default: getUserIDToken,
             required: false,
           },
+          sdkToken: {
+            type: "string",
+            default: getSDKToken,
+            required: false,
+          },
+          installments: {
+            type: "object",
+            required: false,
+            value: ({ props }) => props.parent.props.installments
+          },
         },
       });
     };
@@ -699,6 +723,15 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         userIDToken: {
           type: "string",
           default: getUserIDToken,
+          required: false,
+        },
+        sdkToken: {
+          type: "string",
+          default: getSDKToken,
+          required: false,
+        },
+        installments: {
+          type: "object",
           required: false,
         },
       },

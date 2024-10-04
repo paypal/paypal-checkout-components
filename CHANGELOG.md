@@ -1,3 +1,27 @@
+## <small>5.0.342 (2024-10-04)</small>
+
+* Add getSDKToken for card fields (#2445) ([57d78fb](https://github.com/paypal/paypal-checkout-components/commit/57d78fb)), closes [#2445](https://github.com/paypal/paypal-checkout-components/issues/2445)
+
+
+
+## <small>5.0.341 (2024-10-03)</small>
+
+* Revert "Pin jsx-pragmatic to 3.0.0 (#2443)" (#2444) ([a2fc264](https://github.com/paypal/paypal-checkout-components/commit/a2fc264)), closes [#2443](https://github.com/paypal/paypal-checkout-components/issues/2443) [#2444](https://github.com/paypal/paypal-checkout-components/issues/2444)
+
+
+
+## <small>5.0.340 (2024-10-02)</small>
+
+* Pin jsx-pragmatic to 3.0.0 (#2443) ([48948c9](https://github.com/paypal/paypal-checkout-components/commit/48948c9)), closes [#2443](https://github.com/paypal/paypal-checkout-components/issues/2443)
+
+
+
+## <small>5.0.339 (2024-10-02)</small>
+
+* Adding Installments and IC2B for Card Fields (#2432) ([660ea8d](https://github.com/paypal/paypal-checkout-components/commit/660ea8d)), closes [#2432](https://github.com/paypal/paypal-checkout-components/issues/2432)
+
+
+
 ## <small>5.0.338 (2024-09-12)</small>
 
 * feat(qrcode): remove onEscapePath (#2434) ([48b1f57](https://github.com/paypal/paypal-checkout-components/commit/48b1f57)), closes [#2434](https://github.com/paypal/paypal-checkout-components/issues/2434)
