@@ -60,7 +60,9 @@ export function buttonResponsiveStyle({
         12
       );
 
-      const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+      // A PayPal logo with min height 20px is what we need to achieve the desired look when the button is small
+      // A small button rendered by us is approximately 100px width by 42px height
+      const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 20);
 
       const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
