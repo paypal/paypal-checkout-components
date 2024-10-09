@@ -1,3 +1,9 @@
+## <small>5.0.343 (2024-10-09)</small>
+
+* feat(3DS): Barebones for the new 3DS component (#2433) ([6df3755](https://github.com/paypal/paypal-checkout-components/commit/6df3755)), closes [#2433](https://github.com/paypal/paypal-checkout-components/issues/2433)
+
+
+
 ## <small>5.0.342 (2024-10-04)</small>
 
 * Add getSDKToken for card fields (#2445) ([57d78fb](https://github.com/paypal/paypal-checkout-components/commit/57d78fb)), closes [#2445](https://github.com/paypal/paypal-checkout-components/issues/2445)
