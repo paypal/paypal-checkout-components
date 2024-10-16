@@ -7,7 +7,7 @@ const defaultSdkConfig = {
   sdkToken: "sdk-client-token",
 };
 
-const createThreeDomainSecureComponent = (
+const createThreeDomainSecureComponent = ({
   sdkConfig = defaultSdkConfig,
   logger = {
     info: vi.fn().mockReturnThis(),
@@ -15,12 +15,17 @@ const createThreeDomainSecureComponent = (
     error: vi.fn().mockReturnThis(),
     track: vi.fn().mockReturnThis(),
     metricCounter: vi.fn().mockReturnThis(),
-  }
-) =>
+  },
+} = {}) =>
   new ThreeDomainSecureComponent({
     sdkConfig,
+    // $FlowIssue
     logger,
   });
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
 
 describe("three domain secure component - isEligible method", () => {
   test("should console log eligible", () => {
