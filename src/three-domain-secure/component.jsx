@@ -22,7 +22,7 @@ const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   return sdkConfig;
 };
 export interface ThreeDomainSecureComponentInterface {
-  isEligibile(): void;
+  isEligible(): void;
   show(): void;
 }
 export class ThreeDomainSecureComponent {
@@ -40,9 +40,9 @@ export class ThreeDomainSecureComponent {
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
   }
 
-  isEligibile() {
+  isEligible() {
     // eslint-disable-next-line no-console
-    console.log("Eligble");
+    console.log("eligible");
   }
 
   show() {
