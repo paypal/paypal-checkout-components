@@ -1,6 +1,5 @@
 /* @flow */
 import { getLogger, getSDKToken } from "@paypal/sdk-client/src";
-import { type ZoidComponent } from "@krakenjs/zoid/src";
 
 import type { LazyExport } from "../types";
 import { protectedExport } from "../lib";

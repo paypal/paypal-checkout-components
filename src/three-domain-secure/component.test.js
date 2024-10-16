@@ -1,13 +1,7 @@
 /* @flow */
-import { describe, expect, it, vi } from "vitest";
-import { getSDKToken } from "@paypal/sdk-client/src";
+import { describe, expect, vi } from "vitest";
 
-import { ValidationError } from "../lib";
-
-import {
-  ThreeDomainSecureComponent,
-  type ThreeDomainSecureComponentInterface,
-} from "./component";
+import { ThreeDomainSecureComponent } from "./component";
 
 const defaultSdkConfig = {
   sdkToken: "sdk-client-token",
