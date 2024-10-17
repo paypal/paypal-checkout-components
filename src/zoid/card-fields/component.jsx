@@ -48,11 +48,11 @@ const CARD_FIELD_TYPE = {
 };
 
 type InstallmentsConfiguration = {|
-  financingCountryCode : string,
-  currencyCode : string,
-  billingCountryCode : string,
-  amount : string,
-  includeBuyerInstallments ? : boolean
+  financingCountryCode: string,
+  currencyCode: string,
+  billingCountryCode: string,
+  amount: string,
+  includeBuyerInstallments?: boolean,
 |};
 
 type CardFieldsProps = {|
@@ -109,10 +109,12 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
-  installments? : {|
-    onInstallmentsRequested : () => InstallmentsConfiguration | ZalgoPromise<InstallmentsConfiguration>,
-    onInstallmentsAvailable : (Object) => void,
-    onInstallmentsError? : (Object) => void
+  installments?: {|
+    onInstallmentsRequested: () =>
+      | InstallmentsConfiguration
+      | ZalgoPromise<InstallmentsConfiguration>,
+    onInstallmentsAvailable: (Object) => void,
+    onInstallmentsError?: (Object) => void,
   |},
 |};
 
@@ -445,7 +447,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           installments: {
             type: "object",
             required: false,
-            value: ({ props }) => props.parent.props.installments
+            value: ({ props }) => props.parent.props.installments,
           },
         },
       });

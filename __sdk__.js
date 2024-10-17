@@ -93,4 +93,7 @@ module.exports = {
   "shopper-insights": {
     entry: "./src/shopper-insights/interface",
   },
+  "three-domain-secure": {
+    entry: "./src/three-domain-secure/interface",
+  },
 };
