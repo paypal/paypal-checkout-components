@@ -11,13 +11,16 @@ import {
 
 export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInterface> =
   {
-    __get__: () =>
-      protectedExport(
-        new ThreeDomainSecureComponent({
-          logger: getLogger(),
-          sdkConfig: {
-            sdkToken: getSDKToken(),
-          },
-        })
-      ),
+    __get__: () => {
+      const threeDomainSecureInstance = new ThreeDomainSecureComponent({
+        logger: getLogger(),
+        sdkConfig: {
+          sdkToken: getSDKToken(),
+        },
+      });
+      return protectedExport({
+        isEligible: () => threeDomainSecureInstance.isEligible(),
+        show: () => threeDomainSecureInstance.show(),
+      });
+    },
   };
