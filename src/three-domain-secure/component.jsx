@@ -1,5 +1,7 @@
 /* @flow */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
+import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 import { ValidationError } from "../lib";
@@ -22,8 +24,8 @@ const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   return sdkConfig;
 };
 export interface ThreeDomainSecureComponentInterface {
-  isEligible(): void;
-  show(): void;
+  isEligible(): ZalgoPromise<boolean>;
+  show(): ZoidComponent<void>;
 }
 export class ThreeDomainSecureComponent {
   logger: LoggerType;
@@ -40,13 +42,13 @@ export class ThreeDomainSecureComponent {
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
   }
 
-  isEligible() {
-    // eslint-disable-next-line no-console
-    console.log("eligible");
+  isEligible(): ZalgoPromise<boolean> {
+    return new ZalgoPromise((resolve) => {
+      resolve(false);
+    });
   }
 
   show() {
-    // eslint-disable-next-line no-console
-    console.log("show");
+    create({ tag: "", url: "" });
   }
 }
