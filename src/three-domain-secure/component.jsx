@@ -6,6 +6,10 @@ import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 import { ValidationError } from "../lib";
 
+// MerchantPayloadData type
+// amount, currency, fastlane nonce, threeDSRequest (bool), transaction context with soft descriptor
+// what parameters are required and which ones are optional?
+
 type SdkConfig = {|
   sdkToken: ?string,
 |};
@@ -30,6 +34,7 @@ export interface ThreeDomainSecureComponentInterface {
 export class ThreeDomainSecureComponent {
   logger: LoggerType;
   sdkConfig: SdkConfig;
+  authenticationURL: string;
 
   constructor({
     logger,
@@ -43,6 +48,21 @@ export class ThreeDomainSecureComponent {
   }
 
   isEligible(): ZalgoPromise<boolean> {
+    // change name to isContingent??
+    // will return true or false
+    // if payer action required, return true. obtain link from response for show method - check length of links
+
+    this.authenticationURL = "response URL";
+    // if payer action not required, return false
+
+    // will make API request to v2/payments/pamyment endpoint with merchant payload an grab sdktoken as
+    // bearer token
+
+    // will need to handle errors from API response
+    // What are the other options for status response and how do we handle them from a compliance standpoint
+    // What do we do if we get a 500 error from the API?
+    // do we throw an error or return false?
+
     return new ZalgoPromise((resolve) => {
       resolve(false);
     });

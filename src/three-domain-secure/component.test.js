@@ -29,6 +29,14 @@ afterEach(() => {
 
 describe("three domain secure component - isEligible method", () => {
   test("should return false", async () => {
+    // successful response
+    // true for payer_action - false for Completed
+
+    // parameter validation
+    // testing for negative parameter such as null or invalid value
+    // error handling for API response
+
+    // mock the getpaypalapidomain so that it always returns the value that we expect
     const threeDomainSecuretClient = createThreeDomainSecureComponent();
     const eligibility = await threeDomainSecuretClient.isEligible();
     expect(eligibility).toEqual(false);
