@@ -1,44 +1,59 @@
 /* @flow */
-import { describe, expect, it, vi } from "vitest";
-import { getSDKToken } from "@paypal/sdk-client/src";
+import { describe, expect, vi } from "vitest";
 
-import { ValidationError } from "../lib";
+import { ThreeDomainSecureComponent } from "./component";
 
-import { getThreeDomainSecure } from "./component";
+const defaultSdkConfig = {
+  sdkToken: "sdk-client-token",
+};
 
-vi.mock("@paypal/sdk-client/src", () => ({
-  getSDKToken: vi.fn(),
-  getLogger: vi.fn(() => ({
+const createThreeDomainSecureComponent = ({
+  sdkConfig = defaultSdkConfig,
+  logger = {
     info: vi.fn().mockReturnThis(),
+    warn: vi.fn().mockReturnThis(),
+    error: vi.fn().mockReturnThis(),
     track: vi.fn().mockReturnThis(),
-    flush: vi.fn().mockReturnThis(),
-  })),
-}));
-vi.mock("../lib", () => ({
-  ValidationError: vi.fn(),
-}));
-describe("getThreeDomainSecure returns ThreeDomainSecureComponent", () => {
-  it("should throw an error if sdkToken is not present", () => {
-    // $FlowFixMe prop missing error
-    getSDKToken.mockReturnValue(undefined);
-    const ThreeDomainSecureComponent = getThreeDomainSecure();
-    expect(() => ThreeDomainSecureComponent()).toThrowError(ValidationError);
-    expect(ValidationError).toHaveBeenCalledWith(
+    metricCounter: vi.fn().mockReturnThis(),
+  },
+} = {}) =>
+  new ThreeDomainSecureComponent({
+    sdkConfig,
+    // $FlowIssue
+    logger,
+  });
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
+describe("three domain secure component - isEligible method", () => {
+  test("should return false", async () => {
+    const threeDomainSecuretClient = createThreeDomainSecureComponent();
+    const eligibility = await threeDomainSecuretClient.isEligible();
+    expect(eligibility).toEqual(false);
+  });
+});
+
+describe("three domain descure component - show method", () => {
+  test.skip("should return a zoid component", () => {
+    const threeDomainSecuretClient = createThreeDomainSecureComponent();
+    threeDomainSecuretClient.show();
+    // create test for zoid component
+  });
+});
+
+describe("three domain secure component - initialization", () => {
+  test("should throw an error if sdkToken is not present", () => {
+    expect(() =>
+      createThreeDomainSecureComponent({
+        sdkConfig: {
+          ...defaultSdkConfig,
+          sdkToken: "",
+        },
+      })
+    ).toThrowError(
       `script data attribute sdk-client-token is required but was not passed`
     );
-  });
-  it("should return the ThreeDomainSecure component and log the correct message", async () => {
-    // eslint-disable-next-line no-empty-function
-    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // $FlowFixMe prop missing error
-    getSDKToken.mockReturnValue("84ghb8984");
-    const ThreeDomainSecureComponent = getThreeDomainSecure();
-    expect(typeof ThreeDomainSecureComponent).toBe("function");
-
-    // Call the returned component and check the console log
-    await ThreeDomainSecureComponent();
-    expect(consoleSpy).toHaveBeenCalledWith("Three Domain Secure Called");
-
-    consoleSpy.mockRestore();
   });
 });
