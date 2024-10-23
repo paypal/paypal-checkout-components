@@ -1,3 +1,9 @@
+## <small>5.0.344 (2024-10-23)</small>
+
+* Defining ThreeDomainSecureClient component interface (#2447) ([4857dc7](https://github.com/paypal/paypal-checkout-components/commit/4857dc7)), closes [#2447](https://github.com/paypal/paypal-checkout-components/issues/2447)
+
+
+
 ## <small>5.0.343 (2024-10-09)</small>
 
 * feat(3DS): Barebones for the new 3DS component (#2433) ([6df3755](https://github.com/paypal/paypal-checkout-components/commit/6df3755)), closes [#2433](https://github.com/paypal/paypal-checkout-components/issues/2433)
