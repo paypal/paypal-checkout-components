@@ -1,8 +1,12 @@
 /* @flow */
-import { getLogger, getSDKToken } from "@paypal/sdk-client/src";
+import {
+  getLogger,
+  getSDKToken,
+  getPayPalAPIDomain,
+} from "@paypal/sdk-client/src";
 
+import { callRestAPI, protectedExport } from "../lib";
 import type { LazyExport } from "../types";
-import { protectedExport } from "../lib";
 
 import {
   ThreeDomainSecureComponent,
@@ -14,12 +18,14 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
     __get__: () => {
       const threeDomainSecureInstance = new ThreeDomainSecureComponent({
         logger: getLogger(),
+        request: callRestAPI,
         sdkConfig: {
           sdkToken: getSDKToken(),
+          paypalApiDomain: getPayPalAPIDomain(),
         },
       });
       return protectedExport({
-        isEligible: () => threeDomainSecureInstance.isEligible(),
+        isEligible: (payload) => threeDomainSecureInstance.isEligible(payload),
         show: () => threeDomainSecureInstance.show(),
       });
     },
