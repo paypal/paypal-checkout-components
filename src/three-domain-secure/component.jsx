@@ -2,7 +2,9 @@
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
+import { inlineMemoize, noop } from "@krakenjs/belter/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
+import { Overlay } from "../ui/overlay";
 
 import { ValidationError } from "../lib";
 
@@ -178,10 +180,10 @@ export class ThreeDomainSecureComponent {
   }
 
   show() {
-    return inlineMemoize(getThreeDomainSecureComponent, () => {
+    return inlineMemoize(show, () => {
       const component = create({
-        tag: "three-domain-secure",
-        url: getThreeDomainSecureUrl,
+        tag: "three-domain-secure-client",
+        url: this.authenticationURL,
 
         attributes: {
           iframe: {
@@ -215,85 +217,19 @@ export class ThreeDomainSecureComponent {
         },
 
         props: {
-          action: {
-            type: "string",
-            queryParam: true,
-            value: (data) => (data.props.action ? data.props.action : "verify"),
-          },
           xcomponent: {
             type: "string",
             queryParam: true,
             value: () => "1",
-          },
-          flow: {
-            type: "string",
-            queryParam: true,
-            value: () => "3ds",
-          },
-          createOrder: {
-            type: "function",
-            queryParam: "cart_id",
-            // $FlowFixMe[incompatible-call]
-            queryValue: ({ value }) => ZalgoPromise.try(value),
-            required: false,
-          },
-          vaultToken: {
-            type: "string",
-            queryParam: "token",
-            // We do not need to add queryValue here.
-            // This code has gone through E2E approval and so we are keeping it as a safeguard
-            // Refer zoid documentation for further clarity.
-            queryValue: ({ value }) => value,
-            required: false,
           },
           clientID: {
             type: "string",
             value: getClientID,
             queryParam: true,
           },
-          onCancel: {
-            type: "function",
-            required: false,
-          },
-          onSuccess: {
-            type: "function",
-            alias: "onContingencyResult",
-            decorate: ({ props, value, onError }) => {
-              return (err, result) => {
-                const isCardFieldFlow = props?.userType === "UNBRANDED_GUEST";
-
-                // HostedFields ONLY rejects when the err object is not null. The below implementation ensures that CardFields follows the same pattern.
-
-                const hasError = isCardFieldFlow
-                  ? Boolean(err)
-                  : // $FlowFixMe[incompatible-use]
-                    Boolean(err) || result?.success === false;
-
-                if (hasError) {
-                  return onError(err);
-                }
-
-                return value(result);
-              };
-            },
-          },
-          sdkMeta: {
-            type: "string",
-            queryParam: true,
-            sendToChild: false,
-            value: getSDKMeta,
-          },
           content: {
             type: "object",
             required: false,
-          },
-          userType: {
-            type: "string",
-            required: false,
-          },
-          nonce: {
-            type: "string",
-            default: getCSPNonce,
           },
         },
       });
