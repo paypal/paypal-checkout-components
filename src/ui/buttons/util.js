@@ -9,19 +9,21 @@ export function isBorderRadiusNumber(borderRadius?: number): boolean {
 
 export function calculateShowPoweredBy(
   layout: $Values<typeof BUTTON_LAYOUT>,
-  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  isFastlane: boolean,
 ): boolean {
   return (
-    layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD)
+    layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD) && !isFastlane
   );
 }
 
 export function calculateMessagePosition(
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
   layout: $Values<typeof BUTTON_LAYOUT>,
-  position?: $Values<typeof MESSAGE_POSITION>
+  position?: $Values<typeof MESSAGE_POSITION>,
+  isFastlane: boolean,
 ): $Values<typeof MESSAGE_POSITION> {
-  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources, isFastlane);
 
   if (showPoweredBy && position === MESSAGE_POSITION.BOTTOM) {
     // eslint-disable-next-line no-console
