@@ -247,7 +247,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             value: ({ props }) => props.parent.props.createOrder,
           },
 
-          ...(isPayPalDomain && {
+          ...(isPayPalDomain() && {
             createSubscription: {
               type: "function",
               required: false,
@@ -583,7 +583,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           required: false,
         },
 
-        ...(isPayPalDomain && {
+        ...(isPayPalDomain() && {
           createSubscription: {
             type: "function",
             required: false,
