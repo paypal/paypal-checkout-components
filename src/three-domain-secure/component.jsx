@@ -68,12 +68,12 @@ type responseBody = {|
 |};
 
 type SdkConfig = {|
-  sdkToken: ?string,
+  authenticationToken: ?string,
   paypalApiDomain: string,
 |};
 
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
-  if (!sdkConfig.sdkToken) {
+  if (!sdkConfig.authenticationToken) {
     throw new ValidationError(
       `script data attribute sdk-client-token is required but was not passed`
     );
@@ -149,7 +149,7 @@ export class ThreeDomainSecureComponent {
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
         data,
-        accessToken: this.sdkConfig.sdkToken,
+        accessToken: this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;

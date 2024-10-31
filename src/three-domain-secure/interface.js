@@ -3,6 +3,7 @@ import {
   getLogger,
   getSDKToken,
   getPayPalAPIDomain,
+  getUserIDToken,
 } from "@paypal/sdk-client/src";
 
 import { callRestAPI, protectedExport } from "../lib";
@@ -20,7 +21,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
         logger: getLogger(),
         request: callRestAPI,
         sdkConfig: {
-          sdkToken: getSDKToken(),
+          authenticationToken: getUserIDToken(),
           paypalApiDomain: getPayPalAPIDomain(),
         },
       });
