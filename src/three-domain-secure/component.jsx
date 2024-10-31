@@ -92,8 +92,13 @@ const parseMerchantPayload = ({
   merchantPayload: MerchantPayloadData,
 |}): requestData => {
   // what validation on merchant input should we do here?
+  // empty object
   const { threeDSRequested, amount, currency, nonce, transactionContext } =
     merchantPayload;
+
+  // amount - validate that it's a string
+  // currency - validate that it's a string
+  // what validations are done on the API end - what client side validation is the API expecting
 
   return {
     intent: "THREE_DS_VERIFICATION",
@@ -143,8 +148,6 @@ export class ThreeDomainSecureComponent {
     const data = parseMerchantPayload({ merchantPayload });
 
     try {
-      console.log("mervin domain", this.sdkConfig.paypalApiDomain);
-
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
@@ -155,6 +158,7 @@ export class ThreeDomainSecureComponent {
       let responseStatus = false;
       if (status === "PAYER_ACTION_REQUIRED") {
         this.authenticationURL = links[0].href;
+        // check for rel = payer action inside the object
         responseStatus = true;
       }
       return responseStatus;
