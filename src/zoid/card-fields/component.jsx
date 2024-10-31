@@ -254,7 +254,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
               value: ({ props }) => props.parent.props.createSubscription,
               validate: function ({ value, props }) {
                 if (value && !props.sdkToken) {
-                  throw new TypeError(
+                  throw new ValidationError(
                     `SDK Token must be passed in for createSubscription`
                   );
                 }
@@ -596,7 +596,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             required: false,
             validate: function ({ value, props }) {
               if (value && !props.sdkToken) {
-                throw new TypeError(
+                throw new ValidationError(
                   `SDK Token must be passed in for createSubscription`
                 );
               }
