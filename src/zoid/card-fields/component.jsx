@@ -25,6 +25,7 @@ import {
   getUserIDToken,
   getSDKToken,
   getClientMetadataID,
+  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
@@ -90,6 +91,7 @@ type CardFieldsProps = {|
     onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
   |},
   createOrder: () => ZalgoPromise<string> | string,
+  createSubscription?: () => ZalgoPromise<string> | string,
   createVaultSetupToken: () => ZalgoPromise<string>,
   onApprove: (
     {| returnUrl?: string, vaultSetupToken?: string |},
@@ -244,6 +246,14 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             required: false,
             value: ({ props }) => props.parent.props.createOrder,
           },
+
+          ...(isPayPalDomain() && {
+            createSubscription: {
+              type: "function",
+              required: false,
+              value: ({ props }) => props.parent.props.createSubscription,
+            },
+          }),
 
           createVaultSetupToken: {
             type: "function",
@@ -572,6 +582,13 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "function",
           required: false,
         },
+
+        ...(isPayPalDomain() && {
+          createSubscription: {
+            type: "function",
+            required: false,
+          },
+        }),
 
         createVaultSetupToken: {
           type: "function",
