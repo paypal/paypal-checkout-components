@@ -1,7 +1,6 @@
 /* @flow */
 import {
   getLogger,
-  getSDKToken,
   getPayPalAPIDomain,
   getUserIDToken,
 } from "@paypal/sdk-client/src";

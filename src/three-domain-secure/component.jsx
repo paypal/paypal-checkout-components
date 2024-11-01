@@ -1,6 +1,7 @@
 /* @flow */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
@@ -15,6 +16,7 @@ type MerchantPayloadData = {|
   // experience context
 |};
 
+// eslint-disable-next-line no-undef
 type Request = <TRequestData, TResponse>({|
   method?: string,
   url: string,
