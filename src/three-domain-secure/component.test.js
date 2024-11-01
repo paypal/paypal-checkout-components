@@ -4,7 +4,7 @@ import { describe, expect, vi } from "vitest";
 import { ThreeDomainSecureComponent } from "./component";
 
 const defaultSdkConfig = {
-  sdkToken: "sdk-client-token",
+  authenticationToken: "sdk-client-token",
 };
 
 const createThreeDomainSecureComponent = ({
@@ -57,7 +57,7 @@ describe("three domain secure component - initialization", () => {
       createThreeDomainSecureComponent({
         sdkConfig: {
           ...defaultSdkConfig,
-          sdkToken: "",
+          authenticationToken: "",
         },
       })
     ).toThrowError(

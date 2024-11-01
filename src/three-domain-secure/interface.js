@@ -3,9 +3,10 @@ import {
   getLogger,
   getSDKToken,
   getPayPalAPIDomain,
+  getUserIDToken,
 } from "@paypal/sdk-client/src";
 
-import { callRestAPI, protectedExport } from "../lib";
+import { callRestAPI, localOrStageExport } from "../lib";
 import type { LazyExport } from "../types";
 
 import {
@@ -20,11 +21,11 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
         logger: getLogger(),
         request: callRestAPI,
         sdkConfig: {
-          sdkToken: getSDKToken(),
+          authenticationToken: getUserIDToken(),
           paypalApiDomain: getPayPalAPIDomain(),
         },
       });
-      return protectedExport({
+      return localOrStageExport({
         isEligible: (payload) => threeDomainSecureInstance.isEligible(payload),
         show: () => threeDomainSecureInstance.show(),
       });

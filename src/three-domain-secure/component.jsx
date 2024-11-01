@@ -70,12 +70,12 @@ type responseBody = {|
 |};
 
 type SdkConfig = {|
-  sdkToken: ?string,
+  authenticationToken: ?string,
   paypalApiDomain: string,
 |};
 
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
-  if (!sdkConfig.sdkToken) {
+  if (!sdkConfig.authenticationToken) {
     throw new ValidationError(
       `script data attribute sdk-client-token is required but was not passed`
     );
@@ -94,8 +94,13 @@ const parseMerchantPayload = ({
   merchantPayload: MerchantPayloadData,
 |}): requestData => {
   // what validation on merchant input should we do here?
+  // empty object
   const { threeDSRequested, amount, currency, nonce, transactionContext } =
     merchantPayload;
+
+  // amount - validate that it's a string
+  // currency - validate that it's a string
+  // what validations are done on the API end - what client side validation is the API expecting
 
   return {
     intent: "THREE_DS_VERIFICATION",
@@ -111,9 +116,7 @@ const parseMerchantPayload = ({
       currency_code: currency,
       value: amount,
     },
-    transaction_context: {
-      soft_descriptor: transactionContext.softDescriptor,
-    },
+    ...transactionContext,
   };
 };
 
@@ -145,18 +148,17 @@ export class ThreeDomainSecureComponent {
     const data = parseMerchantPayload({ merchantPayload });
 
     try {
-      console.log("mervin domain", this.sdkConfig.paypalApiDomain);
-
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
         data,
-        accessToken: this.sdkConfig.sdkToken,
+        accessToken: this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;
       if (status === "PAYER_ACTION_REQUIRED") {
         this.authenticationURL = links[0].href;
+        // check for rel = payer action inside the object
         responseStatus = true;
       }
       return responseStatus;
