@@ -11,7 +11,7 @@ type MerchantPayloadData = {|
   currency: string,
   nonce: string,
   threeDSRequested?: boolean, // do we want to keep this name or align it with other 3DS documentation
-  transactionContext?: object,
+  transactionContext?: Object,
   // experience context
 |};
 
@@ -22,7 +22,7 @@ type Request = <TRequestData, TResponse>({|
   data: TRequestData,
   accessToken: ?string,
   // eslint-disable-next-line no-undef
-|}) => ZalgoPromise<TResponse>;
+|}) => Promise<TResponse>;
 
 type requestData = {|
   intent: "THREE_DS_VERIFICATION",
@@ -37,7 +37,7 @@ type requestData = {|
     value: string,
   |},
   transaction_context?: {|
-    soft_descriptor: string,
+    soft_descriptor?: string,
   |},
 |};
 
@@ -119,7 +119,7 @@ const parseMerchantPayload = ({
 };
 
 export interface ThreeDomainSecureComponentInterface {
-  isEligible(): ZalgoPromise<boolean>;
+  isEligible(): Promise<boolean>;
   show(): ZoidComponent<void>;
 }
 export class ThreeDomainSecureComponent {
@@ -161,7 +161,8 @@ export class ThreeDomainSecureComponent {
       }
       return responseStatus;
     } catch (error) {
-      // wWhat to do if there's an error? Loggin?
+      this.logger.warn(error);
+      return false;
     }
 
     // change name to isContingent??
