@@ -114,9 +114,7 @@ const parseMerchantPayload = ({
       currency_code: currency,
       value: amount,
     },
-    transaction_context: {
-      soft_descriptor: transactionContext.softDescriptor,
-    },
+    ...transactionContext,
   };
 };
 
