@@ -111,6 +111,7 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
+  sdkToken?: string,
   installments?: {|
     onInstallmentsRequested: () =>
       | InstallmentsConfiguration
@@ -253,7 +254,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
               required: false,
               value: ({ props }) => props.parent.props.createSubscription,
               validate: ({ value, props }) => {
-                if (value && !props.sdkToken) {
+                if (value && !props.parent.props.sdkToken) {
                   throw new ValidationError(
                     `SDK Token must be passed in for createSubscription`
                   );
