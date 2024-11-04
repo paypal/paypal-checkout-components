@@ -7,10 +7,18 @@ const defaultSdkConfig = {
   authenticationToken: "sdk-client-token",
 };
 
+const defaultEligibilityResponse = {
+  status: "PAYER_ACTION_REQUIRED",
+  links: [{ href: "https://testurl.com", rel: "payer-action" }],
+};
+
+const mockEligibilityRequest = (body = defaultEligibilityResponse) => {
+  vi.fn().mockResolvedValue(body);
+};
+
 const createThreeDomainSecureComponent = ({
   sdkConfig = defaultSdkConfig,
-  // $FlowFixMe
-  request,
+  request = mockEligibilityRequest(),
   logger = {
     info: vi.fn().mockReturnThis(),
     warn: vi.fn().mockReturnThis(),
@@ -22,6 +30,7 @@ const createThreeDomainSecureComponent = ({
   new ThreeDomainSecureComponent({
     // $FlowFixMe
     sdkConfig,
+    // $FlowIssue
     request,
     // $FlowIssue
     logger,
@@ -32,19 +41,26 @@ afterEach(() => {
 });
 
 describe("three domain secure component - isEligible method", () => {
-  test.skip("should return false", async () => {
-    // successful response
-    // true for payer_action - false for Completed
-
-    // parameter validation
-    // testing for negative parameter such as null or invalid value
-    // error handling for API response
-
-    // mock the getpaypalapidomain so that it always returns the value that we expect
+  test("should return true if payer action required", async () => {
     const threeDomainSecuretClient = createThreeDomainSecureComponent();
     // $FlowFixMe
     const eligibility = await threeDomainSecuretClient.isEligible();
     expect(eligibility).toEqual(false);
+  });
+
+  test("should return false if payer action is not returned", async () => {
+    const threeDomainSecuretClient = createThreeDomainSecureComponent();
+    // $FlowFixMe
+    const eligibility = await threeDomainSecuretClient.isEligible();
+    expect(eligibility).toEqual(false);
+  });
+
+  test("create payload with correctly parameters", async () => {
+    const threeDomainSecuretClient = createThreeDomainSecureComponent();
+    const mockedRequest = mockEligibilityRequest();
+    const eligibility = await threeDomainSecuretClient.isEligible();
+
+    expect(mockedRequest).toHaveBeenCalledWith();
   });
 });
 
