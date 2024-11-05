@@ -50,42 +50,52 @@ afterEach(() => {
 
 describe("three domain secure component - isEligible method", () => {
   test("should return true if payer action required", async () => {
-    const threeDomainSecuretClient = createThreeDomainSecureComponent();
-    const eligibility = await threeDomainSecuretClient.isEligible(
+    const threeDomainSecureClient = createThreeDomainSecureComponent();
+    const eligibility = await threeDomainSecureClient.isEligible(
       defaultMerchantPayload
     );
-    expect.assertions(1);
     expect(eligibility).toEqual(true);
   });
 
   test("should return false if payer action is not returned", async () => {
-    const threeDomainSecuretClient = createThreeDomainSecureComponent({
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
       request: () =>
         Promise.resolve({ ...defaultEligibilityResponse, status: "SUCCESS" }),
     });
-    const eligibility = await threeDomainSecuretClient.isEligible(
+    const eligibility = await threeDomainSecureClient.isEligible(
       defaultMerchantPayload
     );
     expect(eligibility).toEqual(false);
   });
 
-  test.skip("create payload with correctly parameters", async () => {
-    const threeDomainSecuretClient = createThreeDomainSecureComponent();
+  test.todo("create payload with correctly parameters", async () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent();
     const mockedRequest = mockEligibilityRequest();
-    const eligibility = await threeDomainSecuretClient.isEligible(
+    const eligibility = await threeDomainSecureClient.isEligible(
       defaultMerchantPayload
     );
 
     expect(mockedRequest).toHaveBeenCalledWith();
   });
 
-  test.skip("catch errors from the API", async () => {});
+  test("catch errors from the API", async () => {
+    const mockRequest = vi.fn().mockRejectedValue(new Error("Error with API"));
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: mockRequest,
+    });
+
+    expect.assertions(2);
+    await expect(() =>
+      threeDomainSecureClient.isEligible(defaultMerchantPayload)
+    ).rejects.toThrow(new Error("Error with API"));
+    expect(mockRequest).toHaveBeenCalled();
+  });
 });
 
 describe("three domain descure component - show method", () => {
-  test.skip("should return a zoid component", () => {
-    const threeDomainSecuretClient = createThreeDomainSecureComponent();
-    threeDomainSecuretClient.show();
+  test.todo("should return a zoid component", () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent();
+    threeDomainSecureClient.show();
     // create test for zoid component
   });
 });
