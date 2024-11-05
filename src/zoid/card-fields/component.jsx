@@ -35,7 +35,7 @@ import {
   type FundingEligibilityType,
 } from "@paypal/sdk-constants/src";
 
-import { getSessionID } from "../../lib";
+import { getSessionID, ValidationError } from "../../lib";
 
 import { CardPrerender } from "./prerender";
 
@@ -111,6 +111,7 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
+  sdkToken?: string,
   installments?: {|
     onInstallmentsRequested: () =>
       | InstallmentsConfiguration
@@ -251,7 +252,17 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             createSubscription: {
               type: "function",
               required: false,
-              value: ({ props }) => props.parent.props.createSubscription,
+              value: ({ props }) => {
+                if (
+                  props.parent.props.createSubscription &&
+                  !props.parent.props.sdkToken
+                ) {
+                  throw new ValidationError(
+                    `SDK Token must be passed in for createSubscription`
+                  );
+                }
+                return props.parent.props.createSubscription;
+              },
             },
           }),
 
@@ -587,6 +598,14 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           createSubscription: {
             type: "function",
             required: false,
+            value: ({ props }) => {
+              if (props.createSubscription && !props.sdkToken) {
+                throw new ValidationError(
+                  `SDK Token must be passed in for createSubscription`
+                );
+              }
+              return props.createSubscription;
+            },
           },
         }),
 
