@@ -166,24 +166,9 @@ export class ThreeDomainSecureComponent {
       }
       return responseStatus;
     } catch (error) {
-      console.log(error);
       this.logger.warn(error);
-      return false;
+      throw error;
     }
-
-    // change name to isContingent??
-    // will return true or false
-    // if payer action required, return true. obtain link from response for show method - check length of links
-
-    // if payer action not required, return false
-
-    // will make API request to v2/payments/pamyment endpoint with merchant payload an grab sdktoken as
-    // bearer token
-
-    // will need to handle errors from API response
-    // What are the other options for status response and how do we handle them from a compliance standpoint
-    // What do we do if we get a 500 error from the API?
-    // do we throw an error or return false?
   }
 
   show() {
