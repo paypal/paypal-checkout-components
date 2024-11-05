@@ -11,9 +11,8 @@ type MerchantPayloadData = {|
   amount: string,
   currency: string,
   nonce: string,
-  threeDSRequested?: boolean, // do we want to keep this name or align it with other 3DS documentation
+  threeDSRequested?: boolean,
   transactionContext?: Object,
-  // experience context
 |};
 
 // eslint-disable-next-line no-undef
@@ -146,8 +145,10 @@ export class ThreeDomainSecureComponent {
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
     const data = parseMerchantPayload({ merchantPayload });
-
+    console.log(data);
+    console.log(this.request);
     try {
+      // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
@@ -156,13 +157,16 @@ export class ThreeDomainSecureComponent {
       });
 
       let responseStatus = false;
+      console.log(links);
       if (status === "PAYER_ACTION_REQUIRED") {
-        this.authenticationURL = links[0].href;
-        // check for rel = payer action inside the object
+        this.authenticationURL = links.find(
+          (link) => link.rel === "payer-action"
+        ).href;
         responseStatus = true;
       }
       return responseStatus;
     } catch (error) {
+      console.log(error);
       this.logger.warn(error);
       return false;
     }
