@@ -139,8 +139,6 @@ export class ThreeDomainSecureComponent {
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
     const data = parseMerchantPayload({ merchantPayload });
-    console.log(data);
-    console.log(this.request);
     try {
       // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
@@ -151,7 +149,7 @@ export class ThreeDomainSecureComponent {
       });
 
       let responseStatus = false;
-      console.log(links);
+
       if (status === "PAYER_ACTION_REQUIRED") {
         this.authenticationURL = links.find(
           (link) => link.rel === "payer-action"
