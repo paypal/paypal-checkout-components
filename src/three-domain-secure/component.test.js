@@ -68,14 +68,48 @@ describe("three domain secure component - isEligible method", () => {
     expect(eligibility).toEqual(false);
   });
 
-  test.todo("create payload with correctly parameters", async () => {
-    const threeDomainSecureClient = createThreeDomainSecureComponent();
-    const mockedRequest = mockEligibilityRequest();
-    const eligibility = await threeDomainSecureClient.isEligible(
-      defaultMerchantPayload
+  test("should assign correct URL to authenticationURL", async () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: () =>
+        Promise.resolve({
+          ...defaultEligibilityResponse,
+          links: [
+            { href: "https://not-payer-action.com", rel: "not-payer-action" },
+            ...defaultEligibilityResponse.links,
+          ],
+        }),
+    });
+    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
+    expect(threeDomainSecureClient.authenticationURL).toEqual(
+      "https://testurl.com"
     );
+  });
 
-    expect(mockedRequest).toHaveBeenCalledWith();
+  test("create payload with correctly parameters", async () => {
+    const mockedRequest = mockEligibilityRequest();
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: mockedRequest,
+    });
+
+    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
+
+    expect(mockedRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          intent: "THREE_DS_VERIFICATION",
+          payment_source: expect.objectContaining({
+            card: expect.objectContaining({
+              single_use_token: defaultMerchantPayload.nonce,
+              verification_method: "SCA_WHEN_REQUIRED",
+            }),
+          }),
+          amount: expect.objectContaining({
+            currency_code: defaultMerchantPayload.currency,
+            value: defaultMerchantPayload.amount,
+          }),
+        }),
+      })
+    );
   });
 
   test("catch errors from the API", async () => {
