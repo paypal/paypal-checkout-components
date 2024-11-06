@@ -1,6 +1,7 @@
 /* @flow */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, noop } from "@krakenjs/belter/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
@@ -12,11 +13,11 @@ type MerchantPayloadData = {|
   amount: string,
   currency: string,
   nonce: string,
-  threeDSRequested?: boolean, // do we want to keep this name or align it with other 3DS documentation
-  transactionContext?: object,
-  // experience context
+  threeDSRequested?: boolean,
+  transactionContext?: Object,
 |};
 
+// eslint-disable-next-line no-undef
 type Request = <TRequestData, TResponse>({|
   method?: string,
   url: string,
@@ -24,7 +25,7 @@ type Request = <TRequestData, TResponse>({|
   data: TRequestData,
   accessToken: ?string,
   // eslint-disable-next-line no-undef
-|}) => ZalgoPromise<TResponse>;
+|}) => Promise<TResponse>;
 
 type requestData = {|
   intent: "THREE_DS_VERIFICATION",
@@ -39,7 +40,7 @@ type requestData = {|
     value: string,
   |},
   transaction_context?: {|
-    soft_descriptor: string,
+    soft_descriptor?: string,
   |},
 |};
 
@@ -121,7 +122,7 @@ const parseMerchantPayload = ({
 };
 
 export interface ThreeDomainSecureComponentInterface {
-  isEligible(): ZalgoPromise<boolean>;
+  isEligible(): Promise<boolean>;
   show(): ZoidComponent<void>;
 }
 export class ThreeDomainSecureComponent {
@@ -146,8 +147,10 @@ export class ThreeDomainSecureComponent {
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
     const data = parseMerchantPayload({ merchantPayload });
-
+    console.log(data);
+    console.log(this.request);
     try {
+      // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
         url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
@@ -156,29 +159,18 @@ export class ThreeDomainSecureComponent {
       });
 
       let responseStatus = false;
+      console.log(links);
       if (status === "PAYER_ACTION_REQUIRED") {
-        this.authenticationURL = links[0].href;
-        // check for rel = payer action inside the object
+        this.authenticationURL = links.find(
+          (link) => link.rel === "payer-action"
+        ).href;
         responseStatus = true;
       }
       return responseStatus;
     } catch (error) {
-      // wWhat to do if there's an error? Loggin?
+      this.logger.warn(error);
+      throw error;
     }
-
-    // change name to isContingent??
-    // will return true or false
-    // if payer action required, return true. obtain link from response for show method - check length of links
-
-    // if payer action not required, return false
-
-    // will make API request to v2/payments/pamyment endpoint with merchant payload an grab sdktoken as
-    // bearer token
-
-    // will need to handle errors from API response
-    // What are the other options for status response and how do we handle them from a compliance standpoint
-    // What do we do if we get a 500 error from the API?
-    // do we throw an error or return false?
   }
 
   show() {
