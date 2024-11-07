@@ -37,13 +37,9 @@ const parseMerchantPayload = ({
 }: {|
   merchantPayload: MerchantPayloadData,
 |}): requestData => {
-  // what validation on merchant input should we do here?
-  // empty object
   const { threeDSRequested, amount, currency, nonce, transactionContext } =
     merchantPayload;
-  // amount - validate that it's a string
-  // currency - validate that it's a string
-  // what validations are done on the API end - what client side validation is the API expecting
+
   return {
     intent: "THREE_DS_VERIFICATION",
     payment_source: {
@@ -99,6 +95,7 @@ export class ThreeDomainSecureComponent {
       });
 
       let responseStatus = false;
+
       if (status === "PAYER_ACTION_REQUIRED") {
         this.authenticationURL = links.find(
           (link) => link.rel === "payer-action"
