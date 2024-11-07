@@ -8,7 +8,7 @@ import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 import { ValidationError } from "../lib";
 
-import {
+import type {
   requestData,
   responseBody,
   Request,
@@ -59,14 +59,14 @@ const parseMerchantPayload = ({
 
 export interface ThreeDomainSecureComponentInterface {
   isEligible(): Promise<boolean>;
-  show(): Promise<threeDSResponse>;
+  show(): ZalgoPromise<threeDSResponse>;
 }
 export class ThreeDomainSecureComponent {
   logger: LoggerType;
   request: Request;
   sdkConfig: SdkConfig;
   authenticationURL: string;
-  threeDSIframe: ZoidComponent;
+  threeDSIframe: ZoidComponent<void>;
   constructor({
     logger,
     request,
@@ -84,10 +84,11 @@ export class ThreeDomainSecureComponent {
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
     const data = parseMerchantPayload({ merchantPayload });
     try {
+      console.log("Entered isEligible");
       // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
-        url: `https://te-test-qa.qa.paypal.com:12326/v2/payments/payment`,
+        url: `https://te-fastlane-3ds.qa.paypal.com:12326/v2/payments/payment`,
         data,
         accessToken: this.sdkConfig.authenticationToken,
       });
@@ -103,16 +104,16 @@ export class ThreeDomainSecureComponent {
         );
       }
       return responseStatus;
+      // eslint-disable-next-line no-unreachable
     } catch (error) {
       this.logger.warn(error);
       throw error;
     }
   }
 
-  show(): Promise<threeDSResponse> {
+  show(): ZalgoPromise<threeDSResponse> {
     if (!this.threeDSIframe) {
-      throw new ValidationError(`Ineligible for three domain secure`);
-      return;
+      return new ValidationError(`Ineligible for three domain secure`);
     }
     const promise = new ZalgoPromise();
     const cancelThreeDS = () => {
