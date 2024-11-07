@@ -71,9 +71,7 @@ describe("three domain secure component - isEligible method", () => {
   test.todo("create payload with correctly parameters", async () => {
     const threeDomainSecureClient = createThreeDomainSecureComponent();
     const mockedRequest = mockEligibilityRequest();
-    const eligibility = await threeDomainSecureClient.isEligible(
-      defaultMerchantPayload
-    );
+    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
 
     expect(mockedRequest).toHaveBeenCalledWith();
   });
