@@ -83,15 +83,18 @@ export class ThreeDomainSecureComponent {
   }
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
+    // eslint-disable-next-line no-console
+    console.log("Entered IsEligible");
+
     const data = parseMerchantPayload({ merchantPayload });
+    const idToken = merchantPayload.idToken;
     try {
-      console.log("Entered isEligible");
       // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
         url: `https://te-fastlane-3ds.qa.paypal.com:12326/v2/payments/payment`,
         data,
-        accessToken: this.sdkConfig.authenticationToken,
+        accessToken: idToken, //this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;
@@ -106,7 +109,6 @@ export class ThreeDomainSecureComponent {
         );
       }
       return responseStatus;
-      // eslint-disable-next-line no-unreachable
     } catch (error) {
       this.logger.warn(error);
       throw error;

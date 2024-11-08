@@ -3,9 +3,9 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
-import { create, type ZoidComponent, destroy } from "@krakenjs/zoid/src";
+import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, noop } from "@krakenjs/belter/src";
-import { getCSPNonce } from "@paypal/sdk-client/src";
+import { getCSPNonce, getClientID } from "@paypal/sdk-client/src";
 
 import { Overlay } from "../ui/overlay";
 
@@ -73,6 +73,11 @@ export function getThreeDomainSecureComponent(
           type: "string",
           queryParam: true,
           value: () => "1",
+        },
+        clientID: {
+          type: "string",
+          value: getClientID,
+          queryParam: true,
         },
         onSuccess: {
           type: "function",
