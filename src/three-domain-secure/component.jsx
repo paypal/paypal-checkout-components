@@ -128,7 +128,7 @@ export class ThreeDomainSecureComponent {
       });
     };
     // $FlowFixMe
-    const instance = this.threeDSIframe({
+    const instance = await this.threeDSIframe({
       onSuccess: (data) => {
         // const {threeDSRefID, authentication_status, liability_shift } = data;
         // let enrichedNonce;
