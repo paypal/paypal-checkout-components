@@ -95,5 +95,6 @@ module.exports = {
   },
   "three-domain-secure": {
     entry: "./src/three-domain-secure/interface",
+    globals,
   },
 };

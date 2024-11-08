@@ -6,6 +6,7 @@ export type MerchantPayloadData = {|
   nonce: string,
   threeDSRequested?: boolean,
   transactionContext?: Object,
+  idToken?: string,
 |};
 
 // eslint-disable-next-line no-undef
