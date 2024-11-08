@@ -16,7 +16,7 @@ import type {
   SdkConfig,
   threeDSResponse,
 } from "./types";
-import { getThreeDomainSecureComponent } from "./utils";
+import { getThreeDomainSecureComponent, type TDSProps } from "./utils";
 
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   if (!sdkConfig.authenticationToken) {
@@ -58,7 +58,7 @@ const parseMerchantPayload = ({
 };
 
 export interface ThreeDomainSecureComponentInterface {
-  isEligible(): Promise<boolean>;
+  isEligible(payload: MerchantPayloadData): Promise<boolean>;
   show(): ZalgoPromise<threeDSResponse>;
 }
 export class ThreeDomainSecureComponent {
@@ -66,7 +66,7 @@ export class ThreeDomainSecureComponent {
   request: Request;
   sdkConfig: SdkConfig;
   authenticationURL: string;
-  threeDSIframe: ZoidComponent<void>;
+  threeDSIframe: ZoidComponent<TDSProps>;
   constructor({
     logger,
     request,
@@ -93,7 +93,7 @@ export class ThreeDomainSecureComponent {
         method: "POST",
         url: `https://te-fastlane-3ds.qa.paypal.com:12326/v2/payments/payment`,
         data,
-        accessToken: idToken, //this.sdkConfig.authenticationToken,
+        accessToken: idToken, // this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;
@@ -115,7 +115,7 @@ export class ThreeDomainSecureComponent {
 
   show(): ZalgoPromise<threeDSResponse> {
     if (!this.threeDSIframe) {
-      return new ValidationError(`Ineligible for three domain secure`);
+      throw new ValidationError(`Ineligible for three domain secure`);
     }
     const promise = new ZalgoPromise();
     const cancelThreeDS = () => {
@@ -127,7 +127,7 @@ export class ThreeDomainSecureComponent {
         instance.close();
       });
     };
-
+    // $FlowFixMe
     const instance = this.threeDSIframe({
       onSuccess: (data) => {
         // const {threeDSRefID, authentication_status, liability_shift } = data;
