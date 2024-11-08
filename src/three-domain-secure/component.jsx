@@ -113,7 +113,7 @@ export class ThreeDomainSecureComponent {
     }
   }
 
-  async show(): ZalgoPromise<threeDSResponse> {
+  show(): ZalgoPromise<threeDSResponse> {
     if (!this.threeDSIframe) {
       throw new ValidationError(`Ineligible for three domain secure`);
     }
@@ -128,7 +128,7 @@ export class ThreeDomainSecureComponent {
       });
     };
     // $FlowFixMe
-    const instance = await this.threeDSIframe({
+    const instance = this.threeDSIframe({
       onSuccess: (data) => {
         // const {threeDSRefID, authentication_status, liability_shift } = data;
         // let enrichedNonce;
