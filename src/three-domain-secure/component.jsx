@@ -94,7 +94,7 @@ export class ThreeDomainSecureComponent {
         method: "POST",
         url: `https://te-fastlane-3ds.qa.paypal.com:12326/v2/payments/payment`,
         data,
-        accessToken: idToken, //this.sdkConfig.authenticationToken,
+        accessToken: idToken, // this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;
