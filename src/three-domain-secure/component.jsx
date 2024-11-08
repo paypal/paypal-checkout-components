@@ -113,7 +113,7 @@ export class ThreeDomainSecureComponent {
     }
   }
 
-  show(): ZalgoPromise<threeDSResponse> {
+  async show(): ZalgoPromise<threeDSResponse> {
     if (!this.threeDSIframe) {
       throw new ValidationError(`Ineligible for three domain secure`);
     }

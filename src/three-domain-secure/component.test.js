@@ -8,7 +8,12 @@ import { ThreeDomainSecureComponent } from "./component";
 const defaultSdkConfig = {
   authenticationToken: "sdk-client-token",
 };
-
+vi.mock("./utils", async () => {
+  return {
+    ...(await vi.importActual("./utils")),
+    getThreeDomainSecureComponent: vi.fn(),
+  };
+});
 const defaultEligibilityResponse = {
   status: "PAYER_ACTION_REQUIRED",
   links: [{ href: "https://testurl.com", rel: "payer-action" }],
