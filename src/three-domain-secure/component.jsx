@@ -91,7 +91,7 @@ export class ThreeDomainSecureComponent {
       // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
-        url: `https://www.te-fastlane-3ds.qa.paypal.com:12326/v2/payments/payment`,
+        url: `https://www.te-fastlane-3ds.qa.paypal.com/v2/payments/payment`,
         data,
         accessToken: idToken, // this.sdkConfig.authenticationToken,
       });
