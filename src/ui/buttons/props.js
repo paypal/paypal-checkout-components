@@ -486,6 +486,7 @@ export type RenderButtonProps = {|
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
+  isFlastlane?: boolean,
 |};
 
 export type PrerenderDetails = {|
@@ -597,6 +598,7 @@ export type ButtonPropsInputs = {
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  isFastlane?: boolean
 };
 
 export const DEFAULT_STYLE = {
