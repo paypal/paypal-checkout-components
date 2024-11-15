@@ -286,12 +286,6 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
             -webkit-overflow-scrolling: touch;
         }
 
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: opacity .4s ease-in-out;
-        }
 
         #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe.${CLASS.COMPONENT_FRAME} {
             z-index: 100;
@@ -307,7 +301,7 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
         }
 
         #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe.${CLASS.INVISIBLE} {
-            opacity: 0;
+            opacity: 1;
             z-index: 100;
         }
 

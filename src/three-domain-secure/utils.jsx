@@ -5,7 +5,7 @@
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, noop } from "@krakenjs/belter/src";
-import { getCSPNonce, getClientID } from "@paypal/sdk-client/src";
+import { getCSPNonce, getClientID, getSDKMeta } from "@paypal/sdk-client/src";
 
 import { Overlay } from "../ui/overlay";
 
@@ -27,12 +27,10 @@ export type TDSProps = {|
 
 export type TDSComponent = ZoidComponent<TDSProps>;
 
-export function getThreeDomainSecureComponent(
-  payerActionUrl: string
-): TDSComponent {
-  return inlineMemoize(getThreeDomainSecureComponent, () => {
+export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
+  return inlineMemoize(getFastlaneThreeDS, () => {
     const component = create({
-      tag: "three-domain-secure-client",
+      tag: "fastlane-threeds",
       url: payerActionUrl,
 
       attributes: {
@@ -66,11 +64,6 @@ export function getThreeDomainSecureComponent(
       },
 
       props: {
-        xcomponent: {
-          type: "string",
-          queryParam: true,
-          value: () => "1",
-        },
         clientID: {
           type: "string",
           value: getClientID,
@@ -80,7 +73,11 @@ export function getThreeDomainSecureComponent(
           type: "function",
           alias: "onContingencyResult",
           decorate: ({ value, onError }) => {
+            // eslint-disable-next-line no-console
+            console.log("******* Out", window.xprops);
             return (err, result) => {
+              // eslint-disable-next-line no-console
+              console.log("*******", result);
               if (err) {
                 return onError(err);
               }
@@ -97,10 +94,22 @@ export function getThreeDomainSecureComponent(
           type: "string",
           default: getCSPNonce,
         },
+        onCancel: {
+          type: "function",
+          required: false,
+        },
+        sdkMeta: {
+          type: "string",
+          queryParam: true,
+          sendToChild: false,
+          value: getSDKMeta,
+        },
       },
     });
 
     if (component.isChild()) {
+      // eslint-disable-next-line no-console
+      console.log("### Something", component.xprops);
       window.xchild = {
         props: component.xprops,
         close: noop,
