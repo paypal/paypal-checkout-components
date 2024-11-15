@@ -43,4 +43,5 @@ export type CheckoutPropsType = {|
     searchParameter: string,
     encodedState: string,
   |},
+  sdkState: string,
 |};

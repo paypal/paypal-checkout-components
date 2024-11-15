@@ -341,6 +341,17 @@ export function getCheckoutComponent(): CheckoutComponent {
           required: false,
           queryParam: true,
         },
+
+        sdkState: {
+          type: "function",
+          decorate: ({ value }) => {
+            console.log(value());
+            return value();
+          },
+          queryValue: ({ value }) => value(),
+          required: true,
+          queryParam: true,
+        },
       },
 
       dimensions: ({ props }) => {
