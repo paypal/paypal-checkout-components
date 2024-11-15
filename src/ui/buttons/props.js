@@ -779,7 +779,7 @@ export function normalizeButtonMessage(
   message: ButtonMessageInputs,
   layout: $Values<typeof BUTTON_LAYOUT>,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  isFastlane: boolean,
+  isFastlane?: boolean,
 ): ButtonMessage {
   const {
     color = MESSAGE_COLOR.BLACK,
