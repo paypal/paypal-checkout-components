@@ -3,40 +3,19 @@
 /* eslint max-lines: 0 */
 
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
-import { create, type ZoidComponent, destroy } from "@krakenjs/zoid/src";
+import { create } from "@krakenjs/zoid/src";
 import { inlineMemoize, noop } from "@krakenjs/belter/src";
 import { getCSPNonce } from "@paypal/sdk-client/src";
 
 import { Overlay } from "../ui/overlay";
 
-import { type threeDSResponse } from "./types";
-
-export type TDSProps = {|
-  action: string,
-  xcomponent: string,
-  flow: string,
-  orderID: string,
-  onSuccess: (data: threeDSResponse) => void,
-  onError: (mixed) => void,
-  sdkMeta: string,
-  content?: void | {|
-    windowMessage?: string,
-    continueMessage?: string,
-    cancelMessage?: string,
-    interrogativeMessage?: string,
-  |},
-  nonce: string,
-|};
-
-export type TDSComponent = ZoidComponent<TDSProps>;
-
 export function getThreeDomainSecureComponent(
-  payerActionUrl: string
+  payerActionUrll: string
 ): TDSComponent {
   return inlineMemoize(getThreeDomainSecureComponent, () => {
     const component = create({
-      tag: "three-domain-secure-client",
-      url: payerActionUrl,
+      tag: "fastlane-3ds",
+      url: payerActionUrll,
 
       attributes: {
         iframe: {
@@ -98,12 +77,14 @@ export function getThreeDomainSecureComponent(
       },
     });
 
-    if (component.isChild()) {
-      window.xchild = {
-        props: component.xprops,
-        close: noop,
-      };
-    }
+    // console.log(component);
+    // debugger;
+    // if (component.isChild()) {
+    //   window.xchild = {
+    //     props: component.xprops,
+    //     close: noop,
+    //   };
+    // }
 
     return component;
   });

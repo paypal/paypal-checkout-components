@@ -1,5 +1,7 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
+import { type ZoidComponent } from "@krakenjs/zoid/src";
+
 export type MerchantPayloadData = {|
   amount: string,
   currency: string,
@@ -63,6 +65,7 @@ export type responseBody = {|
 
 export type SdkConfig = {|
   authenticationToken: ?string,
+  braintreeApiDomain: string,
   paypalApiDomain: string,
 |};
 
@@ -73,5 +76,24 @@ export type threeDSResponse = {|
 |};
 
 export type TDSResult = {||};
+
+export type TDSProps = {|
+  action: string,
+  xcomponent: string,
+  flow: string,
+  orderID: string,
+  onSuccess: (threeDSResponse) => void,
+  onError: (mixed) => void,
+  sdkMeta: string,
+  content?: void | {|
+    windowMessage?: string,
+    continueMessage?: string,
+    cancelMessage?: string,
+    interrogativeMessage?: string,
+  |},
+  nonce: string,
+|};
+
+export type TDSComponent = ZoidComponent<TDSProps>;
 
 /* eslint-enable no-restricted-globals, promise/no-native */
