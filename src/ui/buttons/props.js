@@ -486,7 +486,7 @@ export type RenderButtonProps = {|
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
-  isFlastlane?: boolean,
+  isFastlane?: boolean,
 |};
 
 export type PrerenderDetails = {|
