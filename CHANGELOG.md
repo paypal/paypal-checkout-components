@@ -1,3 +1,15 @@
+## <small>5.0.346 (2024-11-13)</small>
+
+* chore(release): 5.0.345 🎉 ([7d12516](https://github.com/paypal/paypal-checkout-components/commit/7d12516))
+
+
+
+## <small>5.0.345 (2024-11-13)</small>
+
+* Add validation for SDK token when createSubscription is being passed (#2450) ([f0483a1](https://github.com/paypal/paypal-checkout-components/commit/f0483a1)), closes [#2450](https://github.com/paypal/paypal-checkout-components/issues/2450)
+
+
+
 ## <small>5.0.344 (2024-10-23)</small>
 
 * Defining ThreeDomainSecureClient component interface (#2447) ([4857dc7](https://github.com/paypal/paypal-checkout-components/commit/4857dc7)), closes [#2447](https://github.com/paypal/paypal-checkout-components/issues/2447)
