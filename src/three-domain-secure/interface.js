@@ -3,7 +3,6 @@ import {
   getEnv,
   getLogger,
   getPayPalAPIDomain,
-  getUserIDToken,
   getSDKToken,
 } from "@paypal/sdk-client/src";
 
