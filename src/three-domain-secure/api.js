@@ -59,10 +59,12 @@ export function callGraphQLAPI({
   accessToken,
   baseURL,
   data: query,
+  headers,
 }: {|
   accessToken: ?string,
   baseURL: string,
   data: GQLQuery,
+  headers: Object, // TODO fix
   // eslint-disable-next-line flowtype/no-weak-types
 |}): ZalgoPromise<any> {
   if (!accessToken) {
@@ -72,6 +74,7 @@ export function callGraphQLAPI({
   }
 
   const requestHeaders = {
+    ...headers,
     [HEADERS.AUTHORIZATION]: `Bearer ${accessToken}`,
     [HEADERS.CONTENT_TYPE]: "application/json",
     [HEADERS.PARTNER_ATTRIBUTION_ID]: getPartnerAttributionID() ?? "",
@@ -98,12 +101,14 @@ export class GraphQLClient extends HTTPClient {
     baseURL,
     data,
     accessToken,
+    headers,
   }: // eslint-disable-next-line flowtype/no-weak-types
-  $Shape<HTTPRequestOptions> & {| data: GQLQuery |} & any): ZalgoPromise<any> {
+  any): ZalgoPromise<any> {
     return callGraphQLAPI({
       accessToken: accessToken ?? this.accessToken,
       data,
       baseURL: baseURL ?? this.baseURL ?? "",
+      headers,
     });
   }
 }

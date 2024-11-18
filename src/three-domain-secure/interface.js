@@ -3,6 +3,7 @@ import {
   getEnv,
   getLogger,
   getPayPalAPIDomain,
+  getUserIDToken,
   getSDKToken,
 } from "@paypal/sdk-client/src";
 
@@ -23,13 +24,15 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
       const threeDomainSecureInstance = new ThreeDomainSecureComponent({
         logger: getLogger(),
         restClient: new RestClient(),
-        graphQLClient: new GraphQLClient(),
+        graphQLClient: new GraphQLClient({
+          baseURL:
+            getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
+          accessToken: getSDKToken(),
+        }),
         // $FlowIssue ZalgoPromise vs Promise
         sdkConfig: {
           authenticationToken: getSDKToken(),
           paypalApiDomain: getPayPalAPIDomain(),
-          braintreeApiDomain:
-            getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
         },
       });
       return {

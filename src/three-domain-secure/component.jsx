@@ -190,6 +190,9 @@ export class ThreeDomainSecureComponent {
     threeDSRefID: string
   ): ZalgoPromise<Update3DSTokenResponse> {
     return this.graphQLClient.request({
+      headers: {
+        "Braintree-Version": "2023-09-28",
+      },
       data: {
         query: `
           mutation Update3DSToken($input: UpdateTokenizedCreditCardWithExternalThreeDSecureInput!) {
