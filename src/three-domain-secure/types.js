@@ -65,7 +65,6 @@ export type responseBody = {|
 
 export type SdkConfig = {|
   authenticationToken: ?string,
-  braintreeApiDomain: string,
   paypalApiDomain: string,
 |};
 
