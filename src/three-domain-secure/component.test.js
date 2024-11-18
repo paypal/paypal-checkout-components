@@ -31,7 +31,8 @@ const mockEligibilityRequest = (body = defaultEligibilityResponse) => {
 
 const createThreeDomainSecureComponent = ({
   sdkConfig = defaultSdkConfig,
-  request = mockEligibilityRequest(),
+  restClient = mockEligibilityRequest(),
+  graphQLClient = vi.fn(),
   logger = {
     info: vi.fn().mockReturnThis(),
     warn: vi.fn().mockReturnThis(),
@@ -44,7 +45,9 @@ const createThreeDomainSecureComponent = ({
     // $FlowFixMe
     sdkConfig,
     // $FlowIssue
-    request,
+    restClient,
+    // $FlowIssue
+    graphQLClient,
     // $FlowIssue
     logger,
   });
@@ -64,7 +67,7 @@ describe("three domain secure component - isEligible method", () => {
 
   test("should return false if payer action is not returned", async () => {
     const threeDomainSecureClient = createThreeDomainSecureComponent({
-      request: () =>
+      restClient: () =>
         Promise.resolve({ ...defaultEligibilityResponse, status: "SUCCESS" }),
     });
     const eligibility = await threeDomainSecureClient.isEligible(
@@ -75,7 +78,7 @@ describe("three domain secure component - isEligible method", () => {
 
   test("should assign correct URL to authenticationURL", async () => {
     const threeDomainSecureClient = createThreeDomainSecureComponent({
-      request: () =>
+      restClient: () =>
         Promise.resolve({
           ...defaultEligibilityResponse,
           links: [
@@ -93,7 +96,7 @@ describe("three domain secure component - isEligible method", () => {
   test("create payload with correctly parameters", async () => {
     const mockedRequest = mockEligibilityRequest();
     const threeDomainSecureClient = createThreeDomainSecureComponent({
-      request: mockedRequest,
+      restClient: mockedRequest,
     });
 
     await threeDomainSecureClient.isEligible(defaultMerchantPayload);
@@ -120,7 +123,7 @@ describe("three domain secure component - isEligible method", () => {
   test("catch errors from the API", async () => {
     const mockRequest = vi.fn().mockRejectedValue(new Error("Error with API"));
     const threeDomainSecureClient = createThreeDomainSecureComponent({
-      request: mockRequest,
+      restClient: mockRequest,
     });
 
     expect.assertions(2);

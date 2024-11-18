@@ -78,13 +78,10 @@ export type threeDSResponse = {|
 export type TDSResult = {||};
 
 export type TDSProps = {|
-  action: string,
-  xcomponent: string,
-  flow: string,
-  orderID: string,
+  xcomponent?: string,
   onSuccess: (threeDSResponse) => void,
   onError: (mixed) => void,
-  sdkMeta: string,
+  sdkMeta?: string,
   content?: void | {|
     windowMessage?: string,
     continueMessage?: string,

@@ -2,7 +2,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
-import { type ZoidComponentInstance } from "@krakenjs/zoid/src";
+import { type ZoidComponent } from "@krakenjs/zoid/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
@@ -78,7 +78,7 @@ export class ThreeDomainSecureComponent {
   graphQLClient: GraphQLClient;
   sdkConfig: SdkConfig;
   authenticationURL: string;
-  threeDSIframe: (params: { ... }) => ZoidComponentInstance<TDSProps>;
+  threeDSIframe: ZoidComponent<TDSProps>;
 
   constructor({
     logger,
@@ -116,7 +116,7 @@ export class ThreeDomainSecureComponent {
         responseBody
       >({
         method: "POST",
-        url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
+        baseURL: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
         data,
         accessToken: idToken, // this.sdkConfig.authenticationToken,
       });
