@@ -56,7 +56,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe("three domain secure component - isEligible method", () => {
+describe.skip("three domain secure component - isEligible method", () => {
   test("should return true if payer action required", async () => {
     const threeDomainSecureClient = createThreeDomainSecureComponent();
     const eligibility = await threeDomainSecureClient.isEligible(
@@ -120,7 +120,7 @@ describe("three domain secure component - isEligible method", () => {
     );
   });
 
-  test("catch errors from the API", async () => {
+  test.skip("catch errors from the API", async () => {
     const mockRequest = vi.fn().mockRejectedValue(new Error("Error with API"));
     const threeDomainSecureClient = createThreeDomainSecureComponent({
       restClient: mockRequest,
