@@ -1,5 +1,5 @@
 ## <small>5.0.346 (2024-11-13)</small>
-
+can I commit??
 * chore(release): 5.0.345 🎉 ([7d12516](https://github.com/paypal/paypal-checkout-components/commit/7d12516))
 
 
