@@ -5,7 +5,7 @@ import {
   getUserIDToken,
 } from "@paypal/sdk-client/src";
 
-import { callRestAPI, localOrStageExport } from "../lib";
+import { callRestAPI, devEnvOnlyExport } from "../lib";
 import type { LazyExport } from "../types";
 
 import {
@@ -25,7 +25,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
           paypalApiDomain: getPayPalAPIDomain(),
         },
       });
-      return localOrStageExport({
+      return devEnvOnlyExport({
         isEligible: (payload) => threeDomainSecureInstance.isEligible(payload),
         show: () => threeDomainSecureInstance.show(),
       });
