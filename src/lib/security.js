@@ -2,7 +2,8 @@
 
 import { isSameDomain } from "@krakenjs/cross-domain-utils/src";
 import { supportsPopups } from "@krakenjs/belter/src";
-import { isPayPalDomain } from "@paypal/sdk-client/src";
+import { getEnv, isPayPalDomain } from "@paypal/sdk-client/src";
+import { ENV } from "@paypal/sdk-constants/src";
 
 export function allowIframe(): boolean {
   if (!isPayPalDomain()) {
@@ -28,3 +29,13 @@ export function allowIframe(): boolean {
 export const protectedExport = (unprotectedExport) =>
   isPayPalDomain() ? unprotectedExport : undefined;
 /* eslint-enable no-confusing-arrow */
+
+// $FlowIssue
+export const devEnvOnlyExport = (unprotectedExport) => {
+  const env = getEnv();
+  if (env === ENV.LOCAL || env === ENV.STAGE) {
+    return unprotectedExport;
+  } else {
+    return undefined;
+  }
+};
