@@ -6,6 +6,7 @@ import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 import { ValidationError } from "../lib";
+import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
 
 type MerchantPayloadData = {|
   amount: string,
@@ -143,7 +144,7 @@ export class ThreeDomainSecureComponent {
       // $FlowFixMe
       const { status, links } = await this.request<requestData, responseBody>({
         method: "POST",
-        url: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
+        url: `${this.sdkConfig.paypalApiDomain}/${PAYMENT_3DS_VERIFICATION}`,
         data,
         accessToken: this.sdkConfig.authenticationToken,
       });
