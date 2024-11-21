@@ -7,6 +7,7 @@ import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, noop } from "@krakenjs/belter/src";
 import { getCSPNonce, getClientID, getSDKMeta } from "@paypal/sdk-client/src";
 
+import { payPayDomainRegEx } from "../lib";
 import { Overlay } from "../ui/overlay";
 
 import { type threeDSResponse } from "./types";
@@ -62,7 +63,7 @@ export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
           />
         ).render(dom({ doc }));
       },
-      domain: /\.paypal\.(com|cn)(:\d+)?$/,
+      domain: payPayDomainRegEx,
       props: {
         clientID: {
           type: "string",

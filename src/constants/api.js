@@ -8,6 +8,7 @@ export const HEADERS = {
 };
 
 export const ELIGIBLE_PAYMENT_METHODS = "v2/payments/find-eligible-methods";
+export const PAYMENT_3DS_VERIFICATION = "v2/payments/payment";
 
 export const FPTI_TRANSITION = {
   SHOPPER_INSIGHTS_API_INIT: "sdk_shopper_insights_recommended_init",

@@ -31,7 +31,7 @@ export const protectedExport = (unprotectedExport) =>
 /* eslint-enable no-confusing-arrow */
 
 // $FlowIssue
-export const localOrStageExport = (unprotectedExport) => {
+export const devEnvOnlyExport = (unprotectedExport) => {
   const env = getEnv();
   if (env === ENV.LOCAL || env === ENV.STAGE) {
     return unprotectedExport;
@@ -39,3 +39,5 @@ export const localOrStageExport = (unprotectedExport) => {
     return undefined;
   }
 };
+
+export const payPayDomainRegEx = /\.paypal\.(com|cn)(:\d+)?$/;
