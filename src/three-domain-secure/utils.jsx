@@ -62,7 +62,7 @@ export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
           />
         ).render(dom({ doc }));
       },
-
+      domain: /\.paypal\.(com|cn)(:\d+)?$/,
       props: {
         clientID: {
           type: "string",
