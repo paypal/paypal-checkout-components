@@ -168,7 +168,7 @@ export class ThreeDomainSecureComponent {
         console.log("Received enriched nonce", enrichedNonce);
         return promise.resolve({ ...data, nonce: enrichedNonce });
       },
-      onClose: cancelThreeDS,
+      onCancel: cancelThreeDS,
       onError: (err) => {
         return ZalgoPromise.reject(
           new Error(

@@ -64,6 +64,8 @@ export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
         ).render(dom({ doc }));
       },
       domain: payPayDomainRegEx,
+      // $FlowIssue
+      allowedParentDomains: /^https?:\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/.*)?$/, // eslint-disable-line security/detect-unsafe-regex
       props: {
         clientID: {
           type: "string",
@@ -74,8 +76,6 @@ export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
           type: "function",
           alias: "onContingencyResult",
           decorate: ({ value, onError }) => {
-            // eslint-disable-next-line no-console
-            console.log("******* Out", window.xprops);
             return (err, result) => {
               // eslint-disable-next-line no-console
               console.log("*******", result);
