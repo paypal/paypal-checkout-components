@@ -163,6 +163,7 @@ export class ThreeDomainSecureComponent {
         console.log("helios response to sdk:", res);
         let enrichedNonce, response;
         if (reference_id) {
+          // $FlowFixMe ZalgoPromise not recognized
           response = await this.updateNonceWith3dsData(reference_id);
         }
         // $FlowIssue
