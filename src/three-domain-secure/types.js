@@ -10,6 +10,10 @@ export type MerchantPayloadData = {|
   transactionContext?: Object,
   idToken?: string,
 |};
+export type ThreeDsURLParams = {|
+  vaultToken: string | null,
+  action: string | null,
+|};
 
 // eslint-disable-next-line no-undef
 export type Request = <TRequestData, TResponse>({|
