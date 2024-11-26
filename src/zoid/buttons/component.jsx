@@ -284,6 +284,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
+      appSwitchWhenAvailable: {
+        type: "string",
+        required: false,
+      },
+
       branded: {
         type: "boolean",
         queryParam: true,
