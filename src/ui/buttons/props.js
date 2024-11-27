@@ -486,6 +486,7 @@ export type RenderButtonProps = {|
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
+  isFastlane?: boolean,
 |};
 
 export type PrerenderDetails = {|
@@ -597,6 +598,7 @@ export type ButtonPropsInputs = {
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  isFastlane?: boolean
 };
 
 export const DEFAULT_STYLE = {
@@ -776,7 +778,8 @@ export function normalizeButtonStyle(
 export function normalizeButtonMessage(
   message: ButtonMessageInputs,
   layout: $Values<typeof BUTTON_LAYOUT>,
-  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  isFastlane?: boolean,
 ): ButtonMessage {
   const {
     color = MESSAGE_COLOR.BLACK,
@@ -841,7 +844,7 @@ export function normalizeButtonMessage(
     amount,
     offer,
     color,
-    position: calculateMessagePosition(fundingSources, layout, position),
+    position: calculateMessagePosition(fundingSources, layout, position, isFastlane),
     align,
   };
 }
@@ -912,6 +915,7 @@ export function normalizeButtonProps(
     message,
     messageMarkup,
     renderedButtons,
+    isFastlane,
   } = props;
 
   const { country, lang } = locale;
@@ -975,7 +979,7 @@ export function normalizeButtonProps(
   const { layout } = style;
 
   message = message
-    ? normalizeButtonMessage(message, layout, renderedButtons)
+    ? normalizeButtonMessage(message, layout, renderedButtons, isFastlane)
     : undefined;
 
   return {
@@ -1015,5 +1019,6 @@ export function normalizeButtonProps(
     displayOnly,
     message,
     messageMarkup,
+    isFastlane,
   };
 }
