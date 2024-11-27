@@ -1,17 +1,81 @@
 /* @flow */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 import { ValidationError } from "../lib";
+import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
+
+type MerchantPayloadData = {|
+  amount: string,
+  currency: string,
+  nonce: string,
+  threeDSRequested?: boolean,
+  transactionContext?: Object,
+|};
+
+// eslint-disable-next-line no-undef
+type Request = <TRequestData, TResponse>({|
+  method?: string,
+  url: string,
+  // eslint-disable-next-line no-undef
+  data: TRequestData,
+  accessToken: ?string,
+  // eslint-disable-next-line no-undef
+|}) => Promise<TResponse>;
+
+type requestData = {|
+  intent: "THREE_DS_VERIFICATION",
+  payment_source: {|
+    card: {|
+      single_use_token: string,
+      verification_method: string,
+    |},
+  |},
+  amount: {|
+    currency_code: string,
+    value: string,
+  |},
+  transaction_context?: {|
+    soft_descriptor?: string,
+  |},
+|};
+
+type responseBody = {|
+  payment_id: string,
+  status: string,
+  intent: string,
+  payment_source: {|
+    card: {|
+      last_digits: string,
+      type: string,
+      name: string,
+      expiry: string,
+    |},
+  |},
+  amount: {|
+    currency_code: string,
+    value: string,
+  |},
+  transaction_context: {|
+    soft_descriptor: string,
+  |},
+  links: $ReadOnlyArray<{|
+    href: string,
+    rel: string,
+    method: string,
+  |}>,
+|};
 
 type SdkConfig = {|
-  sdkToken: ?string,
+  authenticationToken: ?string,
+  paypalApiDomain: string,
 |};
 
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
-  if (!sdkConfig.sdkToken) {
+  if (!sdkConfig.authenticationToken) {
     throw new ValidationError(
       `script data attribute sdk-client-token is required but was not passed`
     );
@@ -23,29 +87,81 @@ const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
 
   return sdkConfig;
 };
+
+const parseMerchantPayload = ({
+  merchantPayload,
+}: {|
+  merchantPayload: MerchantPayloadData,
+|}): requestData => {
+  const { threeDSRequested, amount, currency, nonce, transactionContext } =
+    merchantPayload;
+
+  return {
+    intent: "THREE_DS_VERIFICATION",
+    payment_source: {
+      card: {
+        single_use_token: nonce,
+        verification_method: threeDSRequested
+          ? "SCA_ALWAYS"
+          : "SCA_WHEN_REQUIRED",
+      },
+    },
+    amount: {
+      currency_code: currency,
+      value: amount,
+    },
+    ...transactionContext,
+  };
+};
+
 export interface ThreeDomainSecureComponentInterface {
-  isEligible(): ZalgoPromise<boolean>;
+  isEligible(): Promise<boolean>;
   show(): ZoidComponent<void>;
 }
 export class ThreeDomainSecureComponent {
   logger: LoggerType;
+  request: Request;
   sdkConfig: SdkConfig;
+  authenticationURL: string;
 
   constructor({
     logger,
+    request,
     sdkConfig,
   }: {|
     logger: LoggerType,
+    request: Request,
     sdkConfig: SdkConfig,
   |}) {
     this.logger = logger;
+    this.request = request;
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
   }
 
-  isEligible(): ZalgoPromise<boolean> {
-    return new ZalgoPromise((resolve) => {
-      resolve(false);
-    });
+  async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
+    const data = parseMerchantPayload({ merchantPayload });
+    try {
+      // $FlowFixMe
+      const { status, links } = await this.request<requestData, responseBody>({
+        method: "POST",
+        url: `${this.sdkConfig.paypalApiDomain}/${PAYMENT_3DS_VERIFICATION}`,
+        data,
+        accessToken: this.sdkConfig.authenticationToken,
+      });
+
+      let responseStatus = false;
+
+      if (status === "PAYER_ACTION_REQUIRED") {
+        this.authenticationURL = links.find(
+          (link) => link.rel === "payer-action"
+        ).href;
+        responseStatus = true;
+      }
+      return responseStatus;
+    } catch (error) {
+      this.logger.warn(error);
+      throw error;
+    }
   }
 
   show() {

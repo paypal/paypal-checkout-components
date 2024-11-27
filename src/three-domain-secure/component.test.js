@@ -1,14 +1,32 @@
 /* @flow */
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-restricted-globals, promise/no-native, compat/compat */
 import { describe, expect, vi } from "vitest";
 
 import { ThreeDomainSecureComponent } from "./component";
 
 const defaultSdkConfig = {
-  sdkToken: "sdk-client-token",
+  authenticationToken: "sdk-client-token",
+};
+
+const defaultEligibilityResponse = {
+  status: "PAYER_ACTION_REQUIRED",
+  links: [{ href: "https://testurl.com", rel: "payer-action" }],
+};
+
+const defaultMerchantPayload = {
+  amount: "1.00",
+  currency: "USD",
+  nonce: "test-nonce",
+};
+
+const mockEligibilityRequest = (body = defaultEligibilityResponse) => {
+  return vi.fn().mockResolvedValue(body);
 };
 
 const createThreeDomainSecureComponent = ({
   sdkConfig = defaultSdkConfig,
+  request = mockEligibilityRequest(),
   logger = {
     info: vi.fn().mockReturnThis(),
     warn: vi.fn().mockReturnThis(),
@@ -18,7 +36,10 @@ const createThreeDomainSecureComponent = ({
   },
 } = {}) =>
   new ThreeDomainSecureComponent({
+    // $FlowFixMe
     sdkConfig,
+    // $FlowIssue
+    request,
     // $FlowIssue
     logger,
   });
@@ -28,17 +49,87 @@ afterEach(() => {
 });
 
 describe("three domain secure component - isEligible method", () => {
-  test("should return false", async () => {
-    const threeDomainSecuretClient = createThreeDomainSecureComponent();
-    const eligibility = await threeDomainSecuretClient.isEligible();
+  test("should return true if payer action required", async () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent();
+    const eligibility = await threeDomainSecureClient.isEligible(
+      defaultMerchantPayload
+    );
+    expect(eligibility).toEqual(true);
+  });
+
+  test("should return false if payer action is not returned", async () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: () =>
+        Promise.resolve({ ...defaultEligibilityResponse, status: "SUCCESS" }),
+    });
+    const eligibility = await threeDomainSecureClient.isEligible(
+      defaultMerchantPayload
+    );
     expect(eligibility).toEqual(false);
+  });
+
+  test("should assign correct URL to authenticationURL", async () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: () =>
+        Promise.resolve({
+          ...defaultEligibilityResponse,
+          links: [
+            { href: "https://not-payer-action.com", rel: "not-payer-action" },
+            ...defaultEligibilityResponse.links,
+          ],
+        }),
+    });
+    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
+    expect(threeDomainSecureClient.authenticationURL).toEqual(
+      "https://testurl.com"
+    );
+  });
+
+  test("create payload with correctly parameters", async () => {
+    const mockedRequest = mockEligibilityRequest();
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: mockedRequest,
+    });
+
+    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
+
+    expect(mockedRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          intent: "THREE_DS_VERIFICATION",
+          payment_source: expect.objectContaining({
+            card: expect.objectContaining({
+              single_use_token: defaultMerchantPayload.nonce,
+              verification_method: "SCA_WHEN_REQUIRED",
+            }),
+          }),
+          amount: expect.objectContaining({
+            currency_code: defaultMerchantPayload.currency,
+            value: defaultMerchantPayload.amount,
+          }),
+        }),
+      })
+    );
+  });
+
+  test("catch errors from the API", async () => {
+    const mockRequest = vi.fn().mockRejectedValue(new Error("Error with API"));
+    const threeDomainSecureClient = createThreeDomainSecureComponent({
+      request: mockRequest,
+    });
+
+    expect.assertions(2);
+    await expect(() =>
+      threeDomainSecureClient.isEligible(defaultMerchantPayload)
+    ).rejects.toThrow(new Error("Error with API"));
+    expect(mockRequest).toHaveBeenCalled();
   });
 });
 
 describe("three domain descure component - show method", () => {
-  test.skip("should return a zoid component", () => {
-    const threeDomainSecuretClient = createThreeDomainSecureComponent();
-    threeDomainSecuretClient.show();
+  test.todo("should return a zoid component", () => {
+    const threeDomainSecureClient = createThreeDomainSecureComponent();
+    threeDomainSecureClient.show();
     // create test for zoid component
   });
 });
@@ -49,7 +140,7 @@ describe("three domain secure component - initialization", () => {
       createThreeDomainSecureComponent({
         sdkConfig: {
           ...defaultSdkConfig,
-          sdkToken: "",
+          authenticationToken: "",
         },
       })
     ).toThrowError(
