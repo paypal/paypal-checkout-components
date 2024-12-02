@@ -157,7 +157,7 @@ export class ThreeDomainSecureComponent {
       action,
       go_to: "next",
       onSuccess: async (res) => {
-        const { reference_id } = res;
+        const { reference_id, authentication_status, liability_shift } = res;
 
         // eslint-disable-next-line no-console
         console.log("helios response to sdk:", res);
@@ -177,7 +177,11 @@ export class ThreeDomainSecureComponent {
           console.error("BT upgradeNonce error", errors);
           return ZalgoPromise.reject(new Error(errors[0].message));
         }
-        return promise.resolve({ ...data, nonce: enrichedNonce });
+        return promise.resolve({
+          authenticationStatus: authentication_status,
+          liabilityShift: liability_shift,
+          nonce: enrichedNonce,
+        });
       },
       onCancel: cancelThreeDS,
       onError: (err) => {
