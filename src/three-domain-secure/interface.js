@@ -4,6 +4,7 @@ import {
   getLogger,
   getPayPalAPIDomain,
   getSDKToken,
+  getClientID,
 } from "@paypal/sdk-client/src";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
@@ -41,6 +42,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
         sdkConfig: {
           authenticationToken: getSDKToken(),
           paypalApiDomain: getPayPalAPIDomain(),
+          clientID: getClientID(),
         },
       });
       return {

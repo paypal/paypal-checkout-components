@@ -5,6 +5,7 @@ import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { type ZoidComponent } from "@krakenjs/zoid/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
+import { createAccessToken } from "@paypal/sdk-client/src";
 
 import { ValidationError } from "../lib";
 
@@ -95,10 +96,6 @@ export class ThreeDomainSecureComponent {
     this.restClient = restClient;
     this.graphQLClient = graphQLClient;
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
-
-    if (this.sdkConfig.authenticationToken) {
-      this.restClient.setAccessToken(this.sdkConfig.authenticationToken);
-    }
   }
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
@@ -106,8 +103,16 @@ export class ThreeDomainSecureComponent {
     console.log("Entered IsEligible");
 
     const data = parseMerchantPayload({ merchantPayload });
-    const idToken = merchantPayload.idToken;
     this.fastlaneNonce = merchantPayload.nonce;
+
+    try {
+      const accessToken = await createAccessToken(this.sdkConfig.clientID);
+      // $FlowIssue confusing ZalgoPromise return type with resolved string value
+      this.restClient.setAccessToken(accessToken);
+    } catch (error) {
+      this.logger.warn(error);
+      throw error;
+    }
 
     try {
       // $FlowFixMe
@@ -118,7 +123,6 @@ export class ThreeDomainSecureComponent {
         method: "POST",
         baseURL: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
         data,
-        accessToken: idToken, // this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;
