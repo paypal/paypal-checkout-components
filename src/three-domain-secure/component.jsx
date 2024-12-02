@@ -155,9 +155,8 @@ export class ThreeDomainSecureComponent {
     // $FlowFixMe
     const instance = this.threeDSIframe({
       payerActionUrl: this.authenticationURL,
-      onSuccess: async (data) => {
-        // const { threeDSRefID, authentication_status, liability_shift } = data;
-        const { threeDSRefID } = data;
+      onSuccess: async (res) => {
+        const { reference_id, authentication_status, liability_shift } = res;
         // eslint-disable-next-line no-console
         console.log("threeDSRefID", threeDSRefID);
         let enrichedNonce;
@@ -167,7 +166,11 @@ export class ThreeDomainSecureComponent {
         }
         // eslint-disable-next-line no-console
         console.log("Received enriched nonce", enrichedNonce);
-        return promise.resolve({ ...data, nonce: enrichedNonce });
+        return promise.resolve({
+          authenticationStatus: authentication_status,
+          liabilityShift: liability_shift,
+          nonce: enrichedNonce,
+        });
       },
       onCancel: cancelThreeDS,
       onError: (err) => {
