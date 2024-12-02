@@ -71,6 +71,7 @@ export type responseBody = {|
 export type SdkConfig = {|
   authenticationToken: ?string,
   paypalApiDomain: string,
+  clientID: string,
 |};
 
 export type threeDSResponse = {|
