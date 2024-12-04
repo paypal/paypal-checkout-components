@@ -154,6 +154,8 @@ export class ThreeDomainSecureComponent {
     };
     // $FlowFixMe
     const instance = this.threeDSIframe({
+      payerActionUrl:
+        "https://te-fastlane-3ds.qa.paypal.com/webapps/helios?action=authenticate&token=30S05532XC756423E&go_to=next",
       onSuccess: async (data) => {
         // const { threeDSRefID, authentication_status, liability_shift } = data;
         const { threeDSRefID } = data;

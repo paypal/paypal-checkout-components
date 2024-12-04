@@ -28,11 +28,11 @@ export type TDSProps = {|
 
 export type TDSComponent = ZoidComponent<TDSProps>;
 
-export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
+export function getFastlaneThreeDS(): TDSComponent {
   return inlineMemoize(getFastlaneThreeDS, () => {
     const component = create({
       tag: "fastlane-threeds",
-      url: payerActionUrl,
+      url: ({ props }) => props.payerActionUrl,
 
       attributes: {
         iframe: {
@@ -67,6 +67,9 @@ export function getFastlaneThreeDS(payerActionUrl: string): TDSComponent {
       // $FlowIssue
       allowedParentDomains: /^https?:\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/.*)?$/, // eslint-disable-line security/detect-unsafe-regex
       props: {
+        payerActionUrl: {
+          type: "string",
+        },
         clientID: {
           type: "string",
           value: getClientID,

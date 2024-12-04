@@ -5,7 +5,7 @@ import {
   getPayPalAPIDomain,
   getSDKToken,
 } from "@paypal/sdk-client/src";
-
+import { destroy as zoidDestroy, destroyComponents } from "@krakenjs/zoid/src";
 import type { LazyExport } from "../types";
 
 import {
@@ -13,9 +13,17 @@ import {
   type ThreeDomainSecureComponentInterface,
 } from "./component";
 import { GraphQLClient, RestClient } from "./api";
+import { getFastlaneThreeDS } from "./utils";
 
 const BRAINTREE_PROD = "https://payments.braintree-api.com";
 const BRAINTREE_SANDBOX = "https://payments.sandbox.braintree-api.com";
+
+export function setup() {
+  return getFastlaneThreeDS();
+}
+export function destroy(err?: mixed) {
+  zoidDestroy(err);
+}
 
 export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInterface> =
   {
