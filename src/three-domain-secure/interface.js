@@ -5,7 +5,8 @@ import {
   getPayPalAPIDomain,
   getSDKToken,
 } from "@paypal/sdk-client/src";
-import { destroy as zoidDestroy, destroyComponents } from "@krakenjs/zoid/src";
+import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
+
 import type { LazyExport } from "../types";
 
 import {
@@ -19,7 +20,7 @@ const BRAINTREE_PROD = "https://payments.braintree-api.com";
 const BRAINTREE_SANDBOX = "https://payments.sandbox.braintree-api.com";
 
 export function setup() {
-  return getFastlaneThreeDS();
+  getFastlaneThreeDS();
 }
 export function destroy(err?: mixed) {
   zoidDestroy(err);

@@ -10,21 +10,7 @@ import { getCSPNonce, getClientID, getSDKMeta } from "@paypal/sdk-client/src";
 import { payPayDomainRegEx } from "../lib";
 import { Overlay } from "../ui/overlay";
 
-import { type threeDSResponse } from "./types";
-
-export type TDSProps = {|
-  xcomponent?: string,
-  onSuccess: (data: threeDSResponse) => void,
-  onError: (mixed) => void,
-  sdkMeta?: string,
-  content?: void | {|
-    windowMessage?: string,
-    continueMessage?: string,
-    cancelMessage?: string,
-    interrogativeMessage?: string,
-  |},
-  nonce: string,
-|};
+import type { TDSProps } from "./types";
 
 export type TDSComponent = ZoidComponent<TDSProps>;
 
@@ -64,8 +50,6 @@ export function getFastlaneThreeDS(): TDSComponent {
         ).render(dom({ doc }));
       },
       domain: payPayDomainRegEx,
-      // $FlowIssue
-      allowedParentDomains: /^https?:\/\/[a-zA-Z0-9.-]+(:[0-9]+)?(\/.*)?$/, // eslint-disable-line security/detect-unsafe-regex
       props: {
         payerActionUrl: {
           type: "string",

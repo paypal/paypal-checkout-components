@@ -79,7 +79,8 @@ export type TDSResult = {||};
 
 export type TDSProps = {|
   xcomponent?: string,
-  onSuccess: (threeDSResponse) => void,
+  payerActionUrl: string,
+  onSuccess: (data: threeDSResponse) => void,
   onError: (mixed) => void,
   sdkMeta?: string,
   content?: void | {|
@@ -89,6 +90,10 @@ export type TDSProps = {|
     interrogativeMessage?: string,
   |},
   nonce: string,
+|};
+
+export type UrlProps = {|
+  payerActionUrl: string,
 |};
 
 export type TDSComponent = ZoidComponent<TDSProps>;
