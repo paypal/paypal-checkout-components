@@ -161,26 +161,32 @@ export class ThreeDomainSecureComponent {
       payerActionUrl: this.authenticationURL,
       onSuccess: async (res) => {
         const { reference_id, authentication_status, liability_shift } = res;
-        // eslint-disable-next-line no-console
-        console.log("threeDSRefID", threeDSRefID);
-        let enrichedNonce;
+        let enrichedNonce, response;
 
-        if (threeDSRefID) {
-          enrichedNonce = await this.updateNonceWith3dsData(threeDSRefID);
+        if (reference_id) {
+          response = await this.updateNonceWith3dsData(reference_id);
         }
-        // eslint-disable-next-line no-console
-        console.log("Received enriched nonce", enrichedNonce);
-        return promise.resolve({
-          authenticationStatus: authentication_status,
-          liabilityShift: liability_shift,
-          nonce: enrichedNonce,
-        });
+        // $FlowIssue
+        const { data, errors } = response;
+        if (data) {
+          enrichedNonce =
+            data?.updateTokenizedCreditCardWithExternalThreeDSecure
+              .paymentMethod.id;
+        } else if (errors) {
+          // eslint-disable-next-line no-console
+          console.log("Received enriched nonce", enrichedNonce);
+          return promise.resolve({
+            authenticationStatus: authentication_status,
+            liabilityShift: liability_shift,
+            nonce: enrichedNonce,
+          });
+        }
       },
       onCancel: cancelThreeDS,
       onError: (err) => {
         return ZalgoPromise.reject(
           new Error(
-            `Error with obtaining 3DS contingency, ${JSON.stringify(err)}`
+            `Error with obtaining 3DS auth response, ${JSON.stringify(err)}`
           )
         );
       },
@@ -203,7 +209,7 @@ export class ThreeDomainSecureComponent {
       },
       data: {
         query: `
-          mutation Update3DSToken($input: UpdateTokenizedCreditCardWithExternalThreeDSecureInput!) {
+          mutation UpdateTokenizedCreditCardWithExternalThreeDSecure($input: UpdateTokenizedCreditCardWithExternalThreeDSecureInput!) {
             updateTokenizedCreditCardWithExternalThreeDSecure(input: $input) {
               paymentMethod {
                 id
@@ -215,7 +221,7 @@ export class ThreeDomainSecureComponent {
           input: {
             paymentMethodId: this.fastlaneNonce,
             externalThreeDSecureMetadata: {
-              externalAuthenticationId: threeDSRefID,
+              externalAuthenticationId: reference_id,
             },
           },
         },

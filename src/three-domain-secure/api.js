@@ -92,7 +92,7 @@ export function callGraphQLAPI({
       throw new Error(`${baseURL}${GRAPHQL_URI} returned status ${status}`);
     }
 
-    return body.data;
+    return body;
   });
 }
 
