@@ -164,6 +164,7 @@ export class ThreeDomainSecureComponent {
         let enrichedNonce, response;
 
         if (reference_id) {
+          // $FlowFixMe ZalgoPromise not recognized
           response = await this.updateNonceWith3dsData(reference_id);
         }
         // $FlowIssue
@@ -221,7 +222,7 @@ export class ThreeDomainSecureComponent {
           input: {
             paymentMethodId: this.fastlaneNonce,
             externalThreeDSecureMetadata: {
-              externalAuthenticationId: reference_id,
+              externalAuthenticationId: threeDSRefID,
             },
           },
         },
