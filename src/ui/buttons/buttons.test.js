@@ -156,14 +156,17 @@ describe("Smart Payment Buttons - limit button to PayPal for FSS", () => {
       fundingEligibility,
     };
 
+    // $FlowFixMe
     const jsxElems = Buttons(mockedButtonProps);
 
     const allButtonsTotalCount = jsxElems?.children.filter(
+      // $FlowFixMe
       (elem) => elem?.component?.name === "Button"
     ).length;
 
     const hasPayPalButton =
       jsxElems?.children.filter(
+        // $FlowFixMe
         (elem) => elem?.props?.fundingSource === "paypal"
       ).length === 1;
 
@@ -179,14 +182,17 @@ describe("Smart Payment Buttons - limit button to PayPal for FSS", () => {
       fundingEligibility,
     };
 
+    // $FlowFixMe
     const jsxElems = Buttons(mockedButtonProps);
 
     const allButtonsTotalCount = jsxElems?.children.filter(
+      // $FlowFixMe
       (elem) => elem?.component?.name === "Button"
     ).length;
 
     const hasPayPalButton =
       jsxElems?.children.filter(
+        // $FlowFixMe
         (elem) => elem?.props?.fundingSource === "paypal"
       ).length === 1;
 

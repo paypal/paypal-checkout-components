@@ -620,7 +620,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: ({ props }) =>
           props.createSubscription &&
-          getSDKToken() &&
+          Boolean(getSDKToken()) &&
           props.intent !== "subscription",
       },
 
