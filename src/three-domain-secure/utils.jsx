@@ -64,8 +64,6 @@ export function getFastlaneThreeDS(): TDSComponent {
           alias: "onContingencyResult",
           decorate: ({ value, onError }) => {
             return (err, result) => {
-              // eslint-disable-next-line no-console
-              console.log("*******", result);
               if (err) {
                 return onError(err);
               }
@@ -96,8 +94,6 @@ export function getFastlaneThreeDS(): TDSComponent {
     });
 
     if (component.isChild()) {
-      // eslint-disable-next-line no-console
-      console.log("### Something", component.xprops);
       window.xchild = {
         props: component.xprops,
         close: noop,

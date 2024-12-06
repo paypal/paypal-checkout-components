@@ -99,9 +99,6 @@ export class ThreeDomainSecureComponent {
   }
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
-    // eslint-disable-next-line no-console
-    console.log("Entered IsEligible");
-
     const data = parseMerchantPayload({ merchantPayload });
     this.fastlaneNonce = merchantPayload.nonce;
 
@@ -149,8 +146,7 @@ export class ThreeDomainSecureComponent {
     const promise = new ZalgoPromise();
     const cancelThreeDS = () => {
       return ZalgoPromise.try(() => {
-        // eslint-disable-next-line no-console
-        console.log("cancelled");
+        this.logger.warn("3DS Cancelled");
       }).then(() => {
         // eslint-disable-next-line no-use-before-define
         instance.close();
@@ -174,8 +170,6 @@ export class ThreeDomainSecureComponent {
             data?.updateTokenizedCreditCardWithExternalThreeDSecure
               .paymentMethod.id;
         } else if (errors) {
-          // eslint-disable-next-line no-console
-          console.log("Received enriched nonce", enrichedNonce);
           return promise.resolve({
             authenticationStatus: authentication_status,
             liabilityShift: liability_shift,
@@ -192,9 +186,7 @@ export class ThreeDomainSecureComponent {
         );
       },
     });
-    // const TARGET_ELEMENT = {
-    //   BODY: "body",
-    // };
+
     return instance
       .render("body")
       .then(() => promise)
