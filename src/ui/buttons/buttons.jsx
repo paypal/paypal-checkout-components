@@ -134,7 +134,7 @@ export function validateButtonProps(props: ButtonPropsInputs) {
 }
 
 export function Buttons(props: ButtonsProps): ElementNode {
-  const { onClick = noop } = props;
+  const { onClick = noop, isFsSubscription } = props;
   const {
     applePaySupport,
     buyerCountry,
@@ -190,7 +190,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
     experiment,
     displayOnly,
   });
-  const multiple = fundingSources.length > 1;
 
   if (!fundingSources.length) {
     throw new ValidationError(
@@ -209,13 +208,20 @@ export function Buttons(props: ButtonsProps): ElementNode {
     ];
   }
 
-  const isAPM = fundingSources.some((src) => {
+  // Set the value of the FINAL fundingSource we want to use
+  const finalFundingSources = isFsSubscription
+    ? fundingSources.filter((src) => src === FUNDING.PAYPAL)
+    : fundingSources;
+
+  const multiple = finalFundingSources.length > 1;
+
+  const isAPM = finalFundingSources.some((src) => {
     return APM_LIST.includes(src);
   });
 
   const instruments = getWalletInstruments({
     wallet,
-    fundingSources,
+    fundingSources: finalFundingSources,
     layout,
     hasShippingCallback,
   });
@@ -234,7 +240,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     !fundingSource &&
     !message;
 
-  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
+  const showPoweredBy = calculateShowPoweredBy(layout, finalFundingSources);
 
   return (
     <div
@@ -260,7 +266,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         <Message markup={messageMarkup} position={message.position} />
       ) : null}
 
-      {fundingSources.map((source, i) => (
+      {finalFundingSources.map((source, i) => (
         <Button
           content={content}
           i={index(i)}
@@ -293,7 +299,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
       {showTagline ? (
         <TagLine
-          fundingSource={fundingSources[0]}
+          fundingSource={finalFundingSources[0]}
           style={style}
           locale={locale}
           multiple={multiple}
@@ -302,7 +308,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
+      {finalFundingSources.indexOf(FUNDING.CARD) !== -1 ? (
         <div id="card-fields-container" class="card-fields-container" />
       ) : null}
 
