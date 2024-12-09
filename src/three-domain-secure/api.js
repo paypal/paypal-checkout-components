@@ -24,7 +24,7 @@ type HTTPClientOptions = {|
   baseURL: ?string,
 |};
 
-class HTTPClient implements HTTPClientType {
+export class HTTPClient implements HTTPClientType {
   accessToken: ?string;
   baseURL: ?string;
 
