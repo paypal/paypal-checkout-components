@@ -39,7 +39,9 @@ describe("ThreeDomainSecure interface", () => {
 
     const threeDomainSecureInstance = ThreeDomainSecureClient.__get__();
     expect(threeDomainSecureInstance).toBeDefined();
+    // $FlowIssue
     expect(threeDomainSecureInstance.isEligible).toBeDefined();
+    // $FlowIssue
     expect(threeDomainSecureInstance.show).toBeDefined();
 
     // Replicating testbed changes
@@ -60,12 +62,15 @@ describe("ThreeDomainSecure interface", () => {
     const payload = {
       amount: "10.00",
       currency: "USD",
+      nonce: "fastlane-nonce",
     };
 
     await threeDSComponentInstance.isEligible(payload);
+    // $FlowIssue
     expect(threeDSComponentInstance.isEligible).toHaveBeenCalledWith(payload);
 
     await threeDSComponentInstance.show();
+    // $FlowIssue
     expect(threeDSComponentInstance.show).toHaveBeenCalledTimes(1);
 
     // instance check

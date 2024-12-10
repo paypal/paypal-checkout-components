@@ -1,9 +1,10 @@
 /* @flow */
-import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { describe, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
+
 import { callRestAPI } from "../lib";
 import { HEADERS } from "../constants/api";
+
 import { RestClient, GraphQLClient, callGraphQLAPI, HTTPClient } from "./api";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -48,15 +49,17 @@ describe("API", () => {
 
   describe("RestClient", () => {
     it("should make a REST API call with correct params", () => {
+      const data = { test: "data" };
       const requestOptions = {
-        data: { test: "data" },
-        url: baseURL,
+        data,
+        baseURL,
       };
       const client = new RestClient({ accessToken });
       client.request(requestOptions);
       expect(callRestAPI).toHaveBeenCalledWith({
         accessToken,
-        ...requestOptions,
+        data,
+        url: baseURL,
       });
     });
   });
