@@ -2,77 +2,23 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
-import { create, type ZoidComponent } from "@krakenjs/zoid/src";
+import { type ZoidComponent } from "@krakenjs/zoid/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
+import { createAccessToken } from "@paypal/sdk-client/src";
 
 import { ValidationError } from "../lib";
-import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
 
-type MerchantPayloadData = {|
-  amount: string,
-  currency: string,
-  nonce: string,
-  threeDSRequested?: boolean,
-  transactionContext?: Object,
-|};
-
-// eslint-disable-next-line no-undef
-type Request = <TRequestData, TResponse>({|
-  method?: string,
-  url: string,
-  // eslint-disable-next-line no-undef
-  data: TRequestData,
-  accessToken: ?string,
-  // eslint-disable-next-line no-undef
-|}) => Promise<TResponse>;
-
-type requestData = {|
-  intent: "THREE_DS_VERIFICATION",
-  payment_source: {|
-    card: {|
-      single_use_token: string,
-      verification_method: string,
-    |},
-  |},
-  amount: {|
-    currency_code: string,
-    value: string,
-  |},
-  transaction_context?: {|
-    soft_descriptor?: string,
-  |},
-|};
-
-type responseBody = {|
-  payment_id: string,
-  status: string,
-  intent: string,
-  payment_source: {|
-    card: {|
-      last_digits: string,
-      type: string,
-      name: string,
-      expiry: string,
-    |},
-  |},
-  amount: {|
-    currency_code: string,
-    value: string,
-  |},
-  transaction_context: {|
-    soft_descriptor: string,
-  |},
-  links: $ReadOnlyArray<{|
-    href: string,
-    rel: string,
-    method: string,
-  |}>,
-|};
-
-type SdkConfig = {|
-  authenticationToken: ?string,
-  paypalApiDomain: string,
-|};
+import type {
+  requestData,
+  responseBody,
+  MerchantPayloadData,
+  SdkConfig,
+  threeDSResponse,
+  TDSProps,
+} from "./types";
+import { getFastlaneThreeDS } from "./utils";
+import type { GraphQLClient, RestClient } from "./api";
 
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   if (!sdkConfig.authenticationToken) {
@@ -95,7 +41,6 @@ const parseMerchantPayload = ({
 |}): requestData => {
   const { threeDSRequested, amount, currency, nonce, transactionContext } =
     merchantPayload;
-
   return {
     intent: "THREE_DS_VERIFICATION",
     payment_source: {
@@ -115,47 +60,75 @@ const parseMerchantPayload = ({
 };
 
 export interface ThreeDomainSecureComponentInterface {
-  isEligible(): Promise<boolean>;
-  show(): ZoidComponent<void>;
+  isEligible(payload: MerchantPayloadData): Promise<boolean>;
+  show(): ZalgoPromise<threeDSResponse>;
 }
+
+type Update3DSTokenResponse = {|
+  updateTokenizedCreditCardWithExternalThreeDSecure: {|
+    paymentMethod: {|
+      id: string,
+    |},
+  |},
+|};
+
 export class ThreeDomainSecureComponent {
+  fastlaneNonce: string;
   logger: LoggerType;
-  request: Request;
+  restClient: RestClient;
+  graphQLClient: GraphQLClient;
   sdkConfig: SdkConfig;
   authenticationURL: string;
+  threeDSIframe: ZoidComponent<TDSProps>;
 
   constructor({
     logger,
-    request,
+    restClient,
+    graphQLClient,
     sdkConfig,
   }: {|
     logger: LoggerType,
-    request: Request,
+    restClient: RestClient,
+    graphQLClient: GraphQLClient,
     sdkConfig: SdkConfig,
   |}) {
     this.logger = logger;
-    this.request = request;
+    this.restClient = restClient;
+    this.graphQLClient = graphQLClient;
     this.sdkConfig = parseSdkConfig({ sdkConfig, logger });
   }
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
     const data = parseMerchantPayload({ merchantPayload });
+    this.fastlaneNonce = merchantPayload.nonce;
+
+    try {
+      const accessToken = await createAccessToken(this.sdkConfig.clientID);
+      // $FlowIssue confusing ZalgoPromise return type with resolved string value
+      this.restClient.setAccessToken(accessToken);
+    } catch (error) {
+      this.logger.warn(error);
+      throw error;
+    }
+
     try {
       // $FlowFixMe
-      const { status, links } = await this.request<requestData, responseBody>({
+      const { status, links } = await this.restClient.request<
+        requestData,
+        responseBody
+      >({
         method: "POST",
-        url: `${this.sdkConfig.paypalApiDomain}/${PAYMENT_3DS_VERIFICATION}`,
+        baseURL: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
         data,
-        accessToken: this.sdkConfig.authenticationToken,
       });
 
       let responseStatus = false;
-
       if (status === "PAYER_ACTION_REQUIRED") {
         this.authenticationURL = links.find(
           (link) => link.rel === "payer-action"
         ).href;
         responseStatus = true;
+        this.threeDSIframe = getFastlaneThreeDS();
       }
       return responseStatus;
     } catch (error) {
@@ -164,7 +137,88 @@ export class ThreeDomainSecureComponent {
     }
   }
 
-  show() {
-    create({ tag: "", url: "" });
+  show(): ZalgoPromise<threeDSResponse> {
+    if (!this.threeDSIframe) {
+      return ZalgoPromise.reject(
+        new ValidationError(`Ineligible for three domain secure`)
+      );
+    }
+    const promise = new ZalgoPromise();
+    const cancelThreeDS = () => {
+      return ZalgoPromise.try(() => {
+        this.logger.warn("3DS Cancelled");
+      }).then(() => {
+        // eslint-disable-next-line no-use-before-define
+        instance.close();
+      });
+    };
+    // $FlowFixMe
+    const instance = this.threeDSIframe({
+      payerActionUrl: this.authenticationURL,
+      onSuccess: async (res) => {
+        const { reference_id, authentication_status, liability_shift } = res;
+        let enrichedNonce, response;
+
+        if (reference_id) {
+          // $FlowFixMe ZalgoPromise not recognized
+          response = await this.updateNonceWith3dsData(reference_id);
+        }
+        // $FlowIssue
+        const { data, errors } = response;
+        if (data) {
+          enrichedNonce =
+            data?.updateTokenizedCreditCardWithExternalThreeDSecure
+              .paymentMethod.id;
+        } else if (errors) {
+          return promise.resolve({
+            authenticationStatus: authentication_status,
+            liabilityShift: liability_shift,
+            nonce: enrichedNonce,
+          });
+        }
+      },
+      onCancel: cancelThreeDS,
+      onError: (err) => {
+        return ZalgoPromise.reject(
+          new Error(
+            `Error with obtaining 3DS auth response, ${JSON.stringify(err)}`
+          )
+        );
+      },
+    });
+
+    return instance
+      .render("body")
+      .then(() => promise)
+      .finally(instance.close);
+  }
+
+  updateNonceWith3dsData(
+    threeDSRefID: string
+  ): ZalgoPromise<Update3DSTokenResponse> {
+    return this.graphQLClient.request({
+      headers: {
+        "Braintree-Version": "2023-09-28",
+      },
+      data: {
+        query: `
+          mutation UpdateTokenizedCreditCardWithExternalThreeDSecure($input: UpdateTokenizedCreditCardWithExternalThreeDSecureInput!) {
+            updateTokenizedCreditCardWithExternalThreeDSecure(input: $input) {
+              paymentMethod {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          input: {
+            paymentMethodId: this.fastlaneNonce,
+            externalThreeDSecureMetadata: {
+              externalAuthenticationId: threeDSRefID,
+            },
+          },
+        },
+      },
+    });
   }
 }
