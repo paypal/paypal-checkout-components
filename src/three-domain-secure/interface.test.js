@@ -9,6 +9,7 @@ import {
 import { describe, expect, vi } from "vitest";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
+import { devEnvOnlyExport } from "../lib";
 import { ThreeDomainSecureComponent } from "./component";
 import { GraphQLClient, RestClient } from "./api";
 import { getFastlaneThreeDS } from "./utils";
@@ -31,8 +32,8 @@ describe("ThreeDomainSecure interface", () => {
     expect(zoidDestroy).toHaveBeenCalledWith(err);
   });
 
-  it("should create and return instance of ThreeDomainSecureClient", async () => {
-    vi.mocked(getEnv).mockReturnValue("sandbox");
+  it("should create and return instance of ThreeDomainSecureClient only on dev environment", async () => {
+    vi.mocked(getEnv).mockReturnValue("stage");
     vi.mocked(getSDKToken).mockReturnValue("test-token");
     vi.mocked(getPayPalAPIDomain).mockReturnValue("test-domain");
     vi.mocked(getClientID).mockReturnValue("test-client-id");
