@@ -9,7 +9,6 @@ import {
 import { describe, expect, vi } from "vitest";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
-import { devEnvOnlyExport } from "../lib";
 import { ThreeDomainSecureComponent } from "./component";
 import { GraphQLClient, RestClient } from "./api";
 import { getFastlaneThreeDS } from "./utils";
