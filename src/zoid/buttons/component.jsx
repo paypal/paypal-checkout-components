@@ -50,6 +50,7 @@ import {
 } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
+import { send as postRobotSend } from "@krakenjs/post-robot/src";
 import {
   uniqueID,
   memoize,
@@ -99,6 +100,7 @@ export type ButtonsComponent = ZoidComponent<ButtonProps>;
 
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
+
   return create({
     tag: "paypal-buttons",
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
@@ -246,6 +248,63 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     props: {
+      // App Switch Properties
+      appSwitchWhenAvailable: {
+        // this value is a string for now while we test the app switch
+        // feature. Before we give this to a real merchant, we should
+        // change this to a boolean - Shane 11 Dec 2024
+        type: "string",
+        required: false,
+      },
+
+      hashChangeHandler: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        required: false,
+        value: () => (event) => {
+          const iframes = document.querySelectorAll("iframe");
+
+          // I don't understand why but trying to make iframes which is a NodeList
+          // into an Iterable (so we could do a for..of loop or .forEach) is not
+          // working. It ends up iterating over itself so instead of looping over the contents
+          // of the NodeList you loop over the NodeList itself which is extremely unexpected
+          // for..in works though :shrug: - Shane 11 Dec 2024
+          for (let i = 0; i < iframes.length; i++) {
+            if (iframes[i].name.includes("zoid__paypal_buttons")) {
+              postRobotSend(
+                iframes[i].contentWindow,
+                "paypal-hashchange",
+                {
+                  url: event.newURL,
+                },
+                { domain: getPayPalDomain() }
+              );
+            }
+          }
+        },
+      },
+
+      listenForHashChanges: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.addEventListener("hashchange", props.hashChangeHandler);
+          },
+      },
+
+      removeListenerForHashChanges: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.removeEventListener("hashchange", props.hashChangeHandler);
+          },
+      },
+
       // allowBillingPayments prop is used by Honey Extension to render the one-click button
       // with payment methods & to use the payment methods instead of the Billing Agreement
       allowBillingPayments: {
