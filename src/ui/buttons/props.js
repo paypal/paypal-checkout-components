@@ -497,6 +497,13 @@ export type PrerenderDetails = {|
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
 export type ButtonProps = {|
+  // app switch properties
+  appSwitchWhenAvailable: string,
+  listenForHashChanges: () => void,
+  removeListenerForHashChanges: () => void,
+  // Not passed to child iframe
+  hashChangeHandler: (event: HashChangeEvent) => void,
+
   fundingSource?: ?$Values<typeof FUNDING>,
   intent: $Values<typeof INTENT>,
   createOrder: CreateOrder,
