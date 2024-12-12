@@ -80,6 +80,7 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { getResumeFlowComponent } from "../resume-flow";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
@@ -104,6 +105,18 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
+    getExtensions: (parentProps) => {
+      return {
+        hasReturned: () => {
+          // TODO: validate the hash params
+          return true;
+        },
+        resume: () => {
+          const resumeComponent = getResumeFlowComponent();
+          resumeComponent({ ...parentProps }).render("body");
+        },
+      };
+    },
 
     autoResize: {
       width: false,
