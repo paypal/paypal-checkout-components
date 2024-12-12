@@ -80,7 +80,7 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
-import { getResumeFlowComponent } from "../resume-flow";
+import { getResumePixelComponent } from "../resume-pixel";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
@@ -112,7 +112,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return true;
         },
         resume: () => {
-          const resumeComponent = getResumeFlowComponent();
+          const resumeComponent = getResumePixelComponent();
           resumeComponent({ ...parentProps }).render("body");
         },
       };
