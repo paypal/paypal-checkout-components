@@ -4,12 +4,11 @@
 
 import { noop } from "@krakenjs/belter/src";
 import { describe, expect, vi } from "vitest";
+import { getEnv } from "@paypal/sdk-client/src";
 
 import { getFastlaneThreeDS } from "./utils";
 
-vi.mock("../lib", () => ({
-  payPayDomainRegEx: vi.fn(),
-}));
+vi.mock("@paypal/sdk-client/src");
 
 describe("Three Domain Secure Utils", () => {
   afterEach(() => {
@@ -17,6 +16,7 @@ describe("Three Domain Secure Utils", () => {
   });
 
   it("Should create and return fastlane component", () => {
+    vi.mocked(getEnv).mockReturnValue("stage");
     vi.mock("@krakenjs/zoid/src", () => ({
       create: vi.fn(() => ({
         isChild: vi.fn().mockReturnValue(false),

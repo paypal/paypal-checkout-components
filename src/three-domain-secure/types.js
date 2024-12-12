@@ -99,4 +99,12 @@ export type UrlProps = {|
 
 export type TDSComponent = ZoidComponent<TDSProps>;
 
+export type Update3DSTokenResponse = {|
+  updateTokenizedCreditCardWithExternalThreeDSecure: {|
+    paymentMethod: {|
+      id: string,
+    |},
+  |},
+|};
+
 /* eslint-enable no-restricted-globals, promise/no-native */

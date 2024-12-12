@@ -5,9 +5,13 @@
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, noop } from "@krakenjs/belter/src";
-import { getCSPNonce, getClientID, getSDKMeta } from "@paypal/sdk-client/src";
+import {
+  getCSPNonce,
+  getClientID,
+  getSDKMeta,
+  getPayPalDomainRegex,
+} from "@paypal/sdk-client/src";
 
-import { payPayDomainRegEx } from "../lib";
 import { Overlay } from "../ui/overlay";
 
 import type { TDSProps } from "./types";
@@ -49,7 +53,7 @@ export function getFastlaneThreeDS(): TDSComponent {
           />
         ).render(dom({ doc }));
       },
-      domain: payPayDomainRegEx,
+      domain: getPayPalDomainRegex(),
       props: {
         payerActionUrl: {
           type: "string",

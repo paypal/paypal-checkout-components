@@ -7,6 +7,7 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 import { createAccessToken } from "@paypal/sdk-client/src";
 
+import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
 import { ValidationError } from "../lib";
 
 import type {
@@ -16,6 +17,7 @@ import type {
   SdkConfig,
   threeDSResponse,
   TDSProps,
+  Update3DSTokenResponse,
 } from "./types";
 import { getFastlaneThreeDS } from "./utils";
 import type { GraphQLClient, RestClient } from "./api";
@@ -64,14 +66,6 @@ export interface ThreeDomainSecureComponentInterface {
   show(): ZalgoPromise<threeDSResponse>;
 }
 
-type Update3DSTokenResponse = {|
-  updateTokenizedCreditCardWithExternalThreeDSecure: {|
-    paymentMethod: {|
-      id: string,
-    |},
-  |},
-|};
-
 export class ThreeDomainSecureComponent {
   fastlaneNonce: string;
   logger: LoggerType;
@@ -118,7 +112,7 @@ export class ThreeDomainSecureComponent {
         responseBody
       >({
         method: "POST",
-        baseURL: `${this.sdkConfig.paypalApiDomain}/v2/payments/payment`,
+        baseURL: `${this.sdkConfig.paypalApiDomain}/${PAYMENT_3DS_VERIFICATION}`,
         data,
       });
 

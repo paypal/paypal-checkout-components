@@ -39,6 +39,3 @@ export const devEnvOnlyExport = (unprotectedExport) => {
     return undefined;
   }
 };
-// TODO: Remove after testing
-// $FlowIssue
-export const payPayDomainRegEx = /\.paypal\.(com|cn)(:\d+)?$/; // eslint-disable-line security/detect-unsafe-regex
