@@ -33,9 +33,14 @@ import {
   getModalComponent,
   type ModalComponent,
 } from "../zoid/modal/component";
+import { getResumeFlowComponent } from "../zoid/resume-flow";
 
 export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),
+};
+
+export const ResumePixel: LazyExport<ButtonsComponent> = {
+  __get__: () => getResumeFlowComponent(),
 };
 
 export const Checkout: LazyProtectedExport<CheckoutComponent> = {
@@ -93,6 +98,7 @@ export const destroyAll: LazyProtectedExport<typeof destroyComponents> = {
 export function setup() {
   getButtonsComponent();
   getCheckoutComponent();
+  getResumeFlowComponent();
 }
 
 export function destroy(err?: mixed) {
