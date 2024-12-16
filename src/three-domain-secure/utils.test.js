@@ -32,28 +32,6 @@ describe("Three Domain Secure Utils", () => {
     // expect(createMock).toHaveBeenCalledTimes(1);
   });
 
-  it.skip("Should call zoid create with correct params", () => {
-    vi.resetModules();
-    const createMock = vi.fn();
-
-    vi.doMock("@krakenjs/zoid/src", () => ({
-      create: createMock,
-      type: "zoidComponent",
-    }));
-
-    // const { create } = await import("@krakenjs/zoid/src");
-
-    getFastlaneThreeDS();
-
-    expect(createMock).toHaveBeenCalledTimes(1);
-    expect(createMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        tag: "fastlane-threeds",
-        url: expect.any(Function),
-      })
-    );
-  });
-
   it("Should set window.xchild if component is child", () => {
     vi.mock("@krakenjs/zoid/src", () => ({
       create: vi.fn(() => ({

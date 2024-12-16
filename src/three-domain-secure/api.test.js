@@ -5,7 +5,7 @@ import { request } from "@krakenjs/belter/src";
 import { callRestAPI } from "../lib";
 import { HEADERS } from "../constants/api";
 
-import { RestClient, GraphQLClient, callGraphQLAPI, HTTPClient } from "./api";
+import { RestClient, callGraphQLAPI, HTTPClient } from "./api";
 
 vi.mock("@krakenjs/belter/src", async () => {
   return {
@@ -28,7 +28,7 @@ vi.mock("../lib", () => ({
 
 describe("API", () => {
   const accessToken = "access_token";
-  const baseURL = "http://localhost.paypal.com:8080";
+  const baseURL = "http://test.paypal.com:port";
 
   afterEach(() => {
     vi.clearAllMocks();
@@ -60,27 +60,6 @@ describe("API", () => {
         accessToken,
         data,
         url: baseURL,
-      });
-    });
-  });
-
-  describe("GraphQLClient", () => {
-    const query = { test: "data" };
-    const data = { query };
-    const headers = { "Content-Type": "application/json" };
-
-    it.skip("should make a GraphQL API call with correct params", () => {
-      vi.spyOn({ callGraphQLAPI }, "callGraphQLAPI").mockResolvedValue({
-        data: { test: "data" },
-      });
-      const client = new GraphQLClient({ accessToken, baseURL });
-      client.request({ data, headers }).then(() => {
-        expect(callGraphQLAPI).toHaveBeenCalledWith({
-          accessToken,
-          baseURL,
-          data,
-          headers,
-        });
       });
     });
   });

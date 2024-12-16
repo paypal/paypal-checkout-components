@@ -63,7 +63,7 @@ const parseMerchantPayload = ({
 
 export interface ThreeDomainSecureComponentInterface {
   isEligible(payload: MerchantPayloadData): Promise<boolean>;
-  show(): ZalgoPromise<threeDSResponse>;
+  show(): Promise<threeDSResponse>;
 }
 
 export class ThreeDomainSecureComponent {
@@ -131,11 +131,9 @@ export class ThreeDomainSecureComponent {
     }
   }
 
-  show(): ZalgoPromise<threeDSResponse> {
+  async show(): Promise<threeDSResponse> {
     if (!this.threeDSIframe) {
-      return ZalgoPromise.reject(
-        new ValidationError(`Ineligible for three domain secure`)
-      );
+      throw new ValidationError(`Ineligible for three domain secure`);
     }
     const promise = new ZalgoPromise();
     const cancelThreeDS = () => {
@@ -147,7 +145,7 @@ export class ThreeDomainSecureComponent {
       });
     };
     // $FlowFixMe
-    const instance = this.threeDSIframe({
+    const instance = await this.threeDSIframe({
       payerActionUrl: this.authenticationURL,
       onSuccess: async (res) => {
         const { reference_id, authentication_status, liability_shift } = res;
