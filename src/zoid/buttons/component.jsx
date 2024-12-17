@@ -80,7 +80,7 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
-import { getResumePixelComponent } from "../resume-pixel";
+import { getResumePixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";

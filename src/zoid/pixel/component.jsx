@@ -84,14 +84,13 @@ export const getResumePixelComponent: () => ResumeFlowComponent = memoize(
   () => {
     const queriedEligibleFunding = [];
     return create({
-      tag: "paypal-buttons-resume-pixel",
-      url: () =>
-        `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__RESUME_PIXEL__}`,
+      tag: "paypal-pixel",
+      url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__PIXEL__}`,
 
       domain: getPayPalDomainRegex(),
       dimensions: {
-        width: "1px",
-        height: "1px",
+        width: "0px",
+        height: "0px",
       },
 
       containerTemplate,
@@ -109,6 +108,8 @@ export const getResumePixelComponent: () => ResumeFlowComponent = memoize(
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
           title: FUNDING_BRAND_LABEL.PAYPAL,
+          width: 1,
+          height: 1,
         },
       },
 
