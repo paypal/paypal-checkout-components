@@ -18,6 +18,7 @@ module.exports = {
     __HOST__: true,
     __PATH__: true,
     __COMPONENTS__: true,
+    $Shape: true,
   },
 
   rules: {
