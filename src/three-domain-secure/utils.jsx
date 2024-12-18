@@ -43,7 +43,8 @@ export function getFastlaneThreeDS(): TDSComponent {
         return (
           <Overlay
             context={context}
-            close={close}
+            // $FlowFixMe
+            close={props.onCancel || close}
             focus={focus}
             event={event}
             frame={frame}

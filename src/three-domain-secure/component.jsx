@@ -13,11 +13,11 @@ import { ValidationError } from "../lib";
 import type {
   requestData,
   responseBody,
+  GqlResponse,
   MerchantPayloadData,
   SdkConfig,
-  threeDSResponse,
+  ThreeDSResponse,
   TDSProps,
-  Update3DSTokenResponse,
 } from "./types";
 import { getFastlaneThreeDS } from "./utils";
 import type { GraphQLClient, RestClient } from "./api";
@@ -63,7 +63,7 @@ const parseMerchantPayload = ({
 
 export interface ThreeDomainSecureComponentInterface {
   isEligible(payload: MerchantPayloadData): Promise<boolean>;
-  show(): Promise<threeDSResponse>;
+  show(): Promise<ThreeDSResponse>;
 }
 
 export class ThreeDomainSecureComponent {
@@ -130,64 +130,81 @@ export class ThreeDomainSecureComponent {
       throw error;
     }
   }
-
-  async show(): Promise<threeDSResponse> {
+  // eslint-disable-next-line require-await
+  async show(): Promise<ThreeDSResponse> {
     if (!this.threeDSIframe) {
-      throw new ValidationError(`Ineligible for three domain secure`);
+      return Promise.reject(
+        new ValidationError(`Ineligible for three domain secure`)
+      );
     }
-    const promise = new ZalgoPromise();
-    const cancelThreeDS = () => {
-      return ZalgoPromise.try(() => {
-        this.logger.warn("3DS Cancelled");
-      }).then(() => {
-        // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line compat/compat
+    return new Promise((resolve, reject) => {
+      let authenticationState,
+        liabilityShift = "false";
+      const cancelThreeDS = () => {
+        return ZalgoPromise.try(() => {
+          this.logger.warn("3DS Cancelled");
+        }).then(() => {
+          resolve({
+            authenticationState: "cancelled",
+            liabilityShift: "false",
+            nonce: this.fastlaneNonce,
+          });
+          // eslint-disable-next-line no-use-before-define
+          instance.close();
+        });
+      };
+
+      const instance = this.threeDSIframe({
+        payerActionUrl: this.authenticationURL,
+        onSuccess: async (res) => {
+          const { reference_id, liability_shift, success } = res;
+          let enrichedNonce;
+          // Helios returns a boolen parameter: "success"
+          // It will be true for all cases where liability is shifted to merchant
+          // and false for downstream failures and errors
+          authenticationState = success ? "success" : "errored";
+          liabilityShift = liability_shift ? liability_shift : "false";
+
+          // call BT mutation to update fastlaneNonce with 3ds data
+          // reference_id will be available for all usecases(success/failure)
+          if (reference_id) {
+            const gqlResponse = await this.updateNonceWith3dsData(reference_id);
+            const { data, errors } = gqlResponse;
+            if (data) {
+              enrichedNonce =
+                data.updateTokenizedCreditCardWithExternalThreeDSecure
+                  .paymentMethod.id;
+            } else if (errors && errors[0]) {
+              // $FlowFixMe incompatible type payload
+              this.logger.warn(JSON.stringify(errors[0]));
+            }
+          }
+
+          // Resolve the parent promise with enriched nonce if available
+          // else, return the original nonce that the merchant sent
+          resolve({
+            authenticationState,
+            liabilityShift,
+            nonce: enrichedNonce || this.fastlaneNonce,
+          });
+        },
+        onCancel: cancelThreeDS,
+        onError: (err) => {
+          instance.close();
+          reject(new Error(err));
+        },
+      });
+
+      // Render the iframe
+      instance.render("body").catch(() => {
         instance.close();
       });
-    };
-    // $FlowFixMe
-    const instance = await this.threeDSIframe({
-      payerActionUrl: this.authenticationURL,
-      onSuccess: async (res) => {
-        const { reference_id, authentication_status, liability_shift } = res;
-        let enrichedNonce, response;
-
-        if (reference_id) {
-          // $FlowFixMe ZalgoPromise not recognized
-          response = await this.updateNonceWith3dsData(reference_id);
-        }
-        // $FlowIssue
-        const { data, errors } = response;
-        if (data) {
-          enrichedNonce =
-            data?.updateTokenizedCreditCardWithExternalThreeDSecure
-              .paymentMethod.id;
-        } else if (errors) {
-          return promise.resolve({
-            authenticationStatus: authentication_status,
-            liabilityShift: liability_shift,
-            nonce: enrichedNonce,
-          });
-        }
-      },
-      onCancel: cancelThreeDS,
-      onError: (err) => {
-        return ZalgoPromise.reject(
-          new Error(
-            `Error with obtaining 3DS auth response, ${JSON.stringify(err)}`
-          )
-        );
-      },
     });
-
-    return instance
-      .render("body")
-      .then(() => promise)
-      .finally(instance.close);
   }
 
-  updateNonceWith3dsData(
-    threeDSRefID: string
-  ): ZalgoPromise<Update3DSTokenResponse> {
+  updateNonceWith3dsData(threeDSRefID: string): Promise<GqlResponse> {
+    // $FlowFixMe Zalgopromise not recognized
     return this.graphQLClient.request({
       headers: {
         "Braintree-Version": "2023-09-28",

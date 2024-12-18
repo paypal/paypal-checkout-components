@@ -36,7 +36,7 @@ export type OverlayProps = {|
   |},
   autoResize?: boolean,
   hideCloseButton?: boolean,
-  nonce: string,
+  nonce?: string,
   fullScreen?: boolean,
 |};
 export function Overlay({

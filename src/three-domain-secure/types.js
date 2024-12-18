@@ -1,5 +1,6 @@
 /* @flow */
 /* eslint-disable no-restricted-globals, promise/no-native */
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { type ZoidComponent } from "@krakenjs/zoid/src";
 
 export type MerchantPayloadData = {|
@@ -70,10 +71,16 @@ export type SdkConfig = {|
   clientID: string,
 |};
 
-export type threeDSResponse = {|
+export type ThreeDSResponse = {|
   liabilityShift: string,
-  authenticationStatus: string,
+  authenticationState: string,
   nonce?: string,
+|};
+
+export type HeliosResponse = {|
+  liability_shift?: string,
+  reference_id?: string,
+  success: boolean,
 |};
 
 export type TDSResult = {||};
@@ -81,8 +88,9 @@ export type TDSResult = {||};
 export type TDSProps = {|
   xcomponent?: string,
   payerActionUrl: string,
-  onSuccess: (data: threeDSResponse) => void,
-  onError: (mixed) => void,
+  onSuccess: (data: HeliosResponse) => Promise<void>,
+  onError: () => void,
+  onCancel: (mixed) => ZalgoPromise<void>,
   sdkMeta?: string,
   content?: void | {|
     windowMessage?: string,
@@ -90,7 +98,7 @@ export type TDSProps = {|
     cancelMessage?: string,
     interrogativeMessage?: string,
   |},
-  nonce: string,
+  nonce?: string,
 |};
 
 export type UrlProps = {|
@@ -107,4 +115,16 @@ export type Update3DSTokenResponse = {|
   |},
 |};
 
+type ErrorLocation = {|
+  line: number,
+  column: number,
+|};
+export type GQLError = {|
+  message: string,
+  locations: $ReadOnlyArray<ErrorLocation>,
+|};
+export type GqlResponse = {|
+  data?: Update3DSTokenResponse,
+  errors?: $ReadOnlyArray<GQLError>,
+|};
 /* eslint-enable no-restricted-globals, promise/no-native */
