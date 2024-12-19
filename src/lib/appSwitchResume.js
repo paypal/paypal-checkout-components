@@ -7,9 +7,21 @@ export type AppSwitchResumeParams = {|
   buttonSessionID: string,
   payerID?: string,
   billingToken?: string,
+  paymentID?: string,
+  subscriptionID?: string,
+  checkoutState: "onApprove" | "onCancel" | "onError",
 |};
 
 export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
+  const urlHash = String(window.location.hash).replace("#", "");
+  const isPostApprovalAction = [
+    APP_SWITCH_RETURN_HASH.ONAPPROVE,
+    APP_SWITCH_RETURN_HASH.ONCANCEL,
+    APP_SWITCH_RETURN_HASH.ONERROR,
+  ].includes(urlHash);
+  if (!isPostApprovalAction) {
+    return null;
+  }
   // eslint-disable-next-line compat/compat
   const search = new URLSearchParams(location.search);
   const orderID = search.get("orderID");
@@ -17,6 +29,8 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
   const vaultSessionID = search.get("vaultSessionID");
   const buttonSessionID = search.get("buttonSessionID");
   const billingToken = search.get("billingToken");
+  const paymentID = search.get("paymentID");
+  const subscriptionID = search.get("subscriptionID");
   if (buttonSessionID) {
     const params: AppSwitchResumeParams = {
       orderID,
@@ -24,6 +38,9 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
       buttonSessionID,
       payerID,
       billingToken,
+      paymentID,
+      subscriptionID,
+      checkoutState: urlHash,
     };
     return params;
   }
@@ -31,12 +48,6 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
 }
 
 export function isAppSwitchResumeFlow(): boolean {
-  const hash = String(window.location.hash).replace("#", "");
-  const isPostApprovalAction = [
-    APP_SWITCH_RETURN_HASH.ONAPPROVE,
-    APP_SWITCH_RETURN_HASH.ONCANCEL,
-    APP_SWITCH_RETURN_HASH.ONERROR,
-  ].includes(hash);
   const params = getAppSwitchResumeParams();
-  return isPostApprovalAction && params !== null;
+  return params !== null;
 }
