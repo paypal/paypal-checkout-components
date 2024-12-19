@@ -83,7 +83,7 @@ import {
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
 import { getPixelComponent } from "../pixel";
-import { APP_SWITCH_RETURN_HASH, CLASS } from "../../constants";
+import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
