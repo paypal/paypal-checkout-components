@@ -51,7 +51,7 @@ import {
   SDK_SETTINGS,
 } from "@paypal/sdk-constants/src";
 
-import { storageState, sessionState } from "../../lib";
+import { storageState, sessionState, isAppSwitchResumeFlow } from "../../lib";
 import { type ButtonProps } from "../../ui/buttons/props";
 import { containerTemplate } from "../buttons/container";
 import { isSupportedNativeBrowser, getRenderedButtons } from "../buttons/util";
@@ -84,15 +84,14 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
         allowpaymentrequest: "allowpaymentrequest",
         scrolling: "no",
         title: FUNDING_BRAND_LABEL.PAYPAL,
-        width: 1,
-        height: 1,
+        width: "1px",
+        height: "1px",
       },
     },
 
     eligible: () => {
-      // TODO: add checks here to enable resume flow only if hasReturned is true
       return {
-        eligible: true,
+        eligible: isAppSwitchResumeFlow(),
       };
     },
 

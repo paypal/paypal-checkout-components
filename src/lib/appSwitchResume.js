@@ -1,14 +1,18 @@
 /* @flow */
+import { FUNDING } from "@paypal/sdk-constants/src";
+
 import { APP_SWITCH_RETURN_HASH } from "../constants";
 
 export type AppSwitchResumeParams = {|
-  orderID?: string,
-  vaultSessionID?: string,
+  orderID?: ?string,
+  vaultSessionID?: ?string,
   buttonSessionID: string,
-  payerID?: string,
-  billingToken?: string,
-  paymentID?: string,
-  subscriptionID?: string,
+  payerID?: ?string,
+  billingToken?: ?string,
+  vaultSetupToken?: ?string,
+  paymentID?: ?string,
+  subscriptionID?: ?string,
+  fundingSource?: ?$Values<typeof FUNDING>,
   checkoutState: "onApprove" | "onCancel" | "onError",
 |};
 
@@ -31,6 +35,8 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
   const billingToken = search.get("billingToken");
   const paymentID = search.get("paymentID");
   const subscriptionID = search.get("subscriptionID");
+  const vaultSetupToken = search.get("vaultSetupToken");
+  const fundingSource = search.get("fundingSource");
   if (buttonSessionID) {
     const params: AppSwitchResumeParams = {
       orderID,
@@ -40,6 +46,14 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
       billingToken,
       paymentID,
       subscriptionID,
+      // URLSearchParams get returns as string,
+      // but below code excepts a value from list of string.
+      // $FlowIgnore[incompatible-type]
+      fundingSource,
+      vaultSetupToken,
+      // the isPostApprovalAction already ensures
+      // that the function will exit if url hash is not one of supported values.
+      // $FlowIgnore[incompatible-type]
       checkoutState: urlHash,
     };
     return params;

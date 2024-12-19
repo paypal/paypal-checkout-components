@@ -115,16 +115,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return isAppSwitchResumeFlow();
         },
         resume: () => {
-          if (!isAppSwitchResumeFlow()) {
+          const resumeFlowParams = getAppSwitchResumeParams();
+          if (!resumeFlowParams) {
             throw new Error("Resume Flow is not supported.");
           }
-          const resumeFlowParams = getAppSwitchResumeParams();
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
             dimensions: {
               orderID: Boolean(resumeFlowParams.orderID),
-              vaultSessionID: Boolean(resumeFlowParams.vaultSessionID),
+              vaultSessionID: Boolean(resumeFlowParams.vaultSetupToken),
               billingToken: Boolean(resumeFlowParams.billingToken),
               payerID: Boolean(resumeFlowParams.payerID),
             },
