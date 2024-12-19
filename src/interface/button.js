@@ -33,14 +33,14 @@ import {
   getModalComponent,
   type ModalComponent,
 } from "../zoid/modal/component";
-import { getResumePixelComponent } from "../zoid/pixel";
+import { getPixelComponent } from "../zoid/pixel";
 
 export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),
 };
 
 export const ResumePixel: LazyExport<ButtonsComponent> = {
-  __get__: () => getResumePixelComponent(),
+  __get__: () => getPixelComponent(),
 };
 
 export const Checkout: LazyProtectedExport<CheckoutComponent> = {
@@ -98,7 +98,7 @@ export const destroyAll: LazyProtectedExport<typeof destroyComponents> = {
 export function setup() {
   getButtonsComponent();
   getCheckoutComponent();
-  getResumePixelComponent();
+  getPixelComponent();
 }
 
 export function destroy(err?: mixed) {

@@ -73,6 +73,8 @@ import {
   sessionState,
   logLatencyInstrumentationPhase,
   prepareInstrumentationPayload,
+  isAppSwitchResumeFlow,
+  getAppSwitchResumeParams,
 } from "../../lib";
 import {
   normalizeButtonStyle,
@@ -80,8 +82,8 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
-import { getResumePixelComponent } from "../pixel";
-import { CLASS } from "../../constants";
+import { getPixelComponent } from "../pixel";
+import { APP_SWITCH_RETURN_HASH, CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -105,15 +107,31 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
-    getExtensions: (parentProps) => {
+    getExtensions: (parent) => {
       return {
         hasReturned: () => {
-          // TODO: validate the hash params
-          return true;
+          return isAppSwitchResumeFlow();
         },
         resume: () => {
-          const resumeComponent = getResumePixelComponent();
-          resumeComponent({ ...parentProps }).render("body");
+          if (!isAppSwitchResumeFlow()) {
+            throw new Error("Resume Flow is not supported.");
+          }
+          const resumeFlowParams = getAppSwitchResumeParams();
+          getLogger().metricCounter({
+            namespace: "resume_flow.init.count",
+            event: "info",
+            dimensions: {
+              orderID: Boolean(resumeFlowParams.orderID),
+              vaultSessionID: Boolean(resumeFlowParams.vaultSessionID),
+              billingToken: Boolean(resumeFlowParams.billingToken),
+              payerID: Boolean(resumeFlowParams.payerID),
+            },
+          });
+          const resumeComponent = getPixelComponent();
+          resumeComponent({
+            ...parent.getProps(),
+            resumeFlowParams,
+          }).render("body");
         },
       };
     },
