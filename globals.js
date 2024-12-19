@@ -23,6 +23,7 @@ module.exports = {
     __URI__: {
       __CHECKOUT__: "/checkoutnow",
       __BUTTONS__: "/smart/buttons",
+      __PIXEL__: "/smart/pixel",
       __MENU__: "/smart/menu",
       __QRCODE__: "/smart/qrcode",
       __VENMO__: "/smart/checkout/venmo/popup",

@@ -74,6 +74,8 @@ import {
   sessionState,
   logLatencyInstrumentationPhase,
   prepareInstrumentationPayload,
+  isAppSwitchResumeFlow,
+  getAppSwitchResumeParams,
 } from "../../lib";
 import {
   normalizeButtonStyle,
@@ -81,6 +83,7 @@ import {
   type ButtonProps,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
@@ -106,6 +109,34 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
+    getExtensions: (parent) => {
+      return {
+        hasReturned: () => {
+          return isAppSwitchResumeFlow();
+        },
+        resume: () => {
+          if (!isAppSwitchResumeFlow()) {
+            throw new Error("Resume Flow is not supported.");
+          }
+          const resumeFlowParams = getAppSwitchResumeParams();
+          getLogger().metricCounter({
+            namespace: "resume_flow.init.count",
+            event: "info",
+            dimensions: {
+              orderID: Boolean(resumeFlowParams.orderID),
+              vaultSessionID: Boolean(resumeFlowParams.vaultSessionID),
+              billingToken: Boolean(resumeFlowParams.billingToken),
+              payerID: Boolean(resumeFlowParams.payerID),
+            },
+          });
+          const resumeComponent = getPixelComponent();
+          resumeComponent({
+            ...parent.getProps(),
+            resumeFlowParams,
+          }).render("body");
+        },
+      };
+    },
 
     autoResize: {
       width: false,
