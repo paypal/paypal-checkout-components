@@ -5,7 +5,6 @@ import { APP_SWITCH_RETURN_HASH } from "../constants";
 
 export type AppSwitchResumeParams = {|
   orderID?: ?string,
-  vaultSessionID?: ?string,
   buttonSessionID: string,
   payerID?: ?string,
   billingToken?: ?string,
@@ -27,10 +26,9 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
     return null;
   }
   // eslint-disable-next-line compat/compat
-  const search = new URLSearchParams(location.search);
+  const search = new URLSearchParams(window.location.search);
   const orderID = search.get("orderID");
   const payerID = search.get("payerID");
-  const vaultSessionID = search.get("vaultSessionID");
   const buttonSessionID = search.get("buttonSessionID");
   const billingToken = search.get("billingToken");
   const paymentID = search.get("paymentID");
@@ -40,7 +38,6 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
   if (buttonSessionID) {
     const params: AppSwitchResumeParams = {
       orderID,
-      vaultSessionID,
       buttonSessionID,
       payerID,
       billingToken,
