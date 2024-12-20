@@ -74,13 +74,17 @@ import {
   sessionState,
   logLatencyInstrumentationPhase,
   prepareInstrumentationPayload,
+  isAppSwitchResumeFlow,
+  getAppSwitchResumeParams,
 } from "../../lib";
 import {
   normalizeButtonStyle,
   normalizeButtonMessage,
   type ButtonProps,
+  type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
@@ -96,7 +100,12 @@ import {
   getModal,
 } from "./util";
 
-export type ButtonsComponent = ZoidComponent<ButtonProps>;
+export type ButtonsComponent = ZoidComponent<
+  ButtonProps,
+  void,
+  void,
+  ButtonExtensions
+>;
 
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
@@ -106,6 +115,41 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
+    getExtensions: (parent) => {
+      return {
+        hasReturned: () => {
+          return isAppSwitchResumeFlow();
+        },
+        resume: () => {
+          const resumeFlowParams = getAppSwitchResumeParams();
+          if (!resumeFlowParams) {
+            throw new Error("Resume Flow is not supported.");
+          }
+          getLogger().metricCounter({
+            namespace: "resume_flow.init.count",
+            event: "info",
+            dimensions: {
+              orderID: Boolean(resumeFlowParams.orderID),
+              vaultSessionID: Boolean(resumeFlowParams.vaultSetupToken),
+              billingToken: Boolean(resumeFlowParams.billingToken),
+              payerID: Boolean(resumeFlowParams.payerID),
+            },
+          });
+          const resumeComponent = getPixelComponent();
+          const parentProps = parent.getProps();
+          resumeComponent({
+            onApprove: parentProps.onApprove,
+            // $FlowIgnore[incompatible-call]
+            onError: parentProps.onError,
+            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
+            onCancel: parentProps.onCancel,
+            onClick: parentProps.onClick,
+            onComplete: parentProps.onComplete,
+            resumeFlowParams,
+          }).render("body");
+        },
+      };
+    },
 
     autoResize: {
       width: false,
