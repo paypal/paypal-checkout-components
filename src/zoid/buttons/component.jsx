@@ -81,6 +81,7 @@ import {
   normalizeButtonStyle,
   normalizeButtonMessage,
   type ButtonProps,
+  type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
 import { getPixelComponent } from "../pixel";
@@ -99,7 +100,12 @@ import {
   getModal,
 } from "./util";
 
-export type ButtonsComponent = ZoidComponent<ButtonProps>;
+export type ButtonsComponent = ZoidComponent<
+  ButtonProps,
+  void,
+  void,
+  ButtonExtensions
+>;
 
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
@@ -130,8 +136,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             },
           });
           const resumeComponent = getPixelComponent();
+          const parentProps = parent.getProps();
           resumeComponent({
-            ...parent.getProps(),
+            onApprove: parentProps.onApprove,
+            // $FlowIgnore[incompatible-call]
+            onError: parentProps.onError,
+            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
+            onCancel: parentProps.onCancel,
+            onClick: parentProps.onClick,
+            onComplete: parentProps.onComplete,
             resumeFlowParams,
           }).render("body");
         },

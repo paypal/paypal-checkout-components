@@ -28,7 +28,6 @@ import {
   getStageHost,
   getAPIStageHost,
   getPayPalDomain,
-  getUserIDToken,
   getEnableFunding,
   getStorageID,
   getUserExperienceFlow,
@@ -45,18 +44,15 @@ import {
   supportsPopups as userAgentSupportsPopups,
   noop,
 } from "@krakenjs/belter/src";
-import {
-  FUNDING_BRAND_LABEL,
-  ENV,
-  SDK_SETTINGS,
-} from "@paypal/sdk-constants/src";
+import { FUNDING_BRAND_LABEL, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 
 import { storageState, sessionState, isAppSwitchResumeFlow } from "../../lib";
-import { type ButtonProps } from "../../ui/buttons/props";
 import { containerTemplate } from "../buttons/container";
 import { isSupportedNativeBrowser, getRenderedButtons } from "../buttons/util";
 
-export type PixelComponent = ZoidComponent<ButtonProps>;
+import type { PixelComponentProps } from "./props";
+
+export type PixelComponent = ZoidComponent<PixelComponentProps>;
 
 export const getPixelComponent: () => PixelComponent = memoize(() => {
   return create({
@@ -433,14 +429,6 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
         type: "string",
         required: false,
         value: getUserExperienceFlow,
-      },
-
-      userIDToken: {
-        type: "string",
-        default: getUserIDToken,
-        required: false,
-        queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
-        bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
       },
 
       vault: {

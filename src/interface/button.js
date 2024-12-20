@@ -33,13 +33,13 @@ import {
   getModalComponent,
   type ModalComponent,
 } from "../zoid/modal/component";
-import { getPixelComponent } from "../zoid/pixel";
+import { getPixelComponent, type PixelComponent } from "../zoid/pixel";
 
 export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),
 };
 
-export const ResumePixel: LazyExport<ButtonsComponent> = {
+export const ResumePixel: LazyExport<PixelComponent> = {
   __get__: () => getPixelComponent(),
 };
 
