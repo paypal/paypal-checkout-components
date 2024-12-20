@@ -47,15 +47,14 @@ import {
 import { FUNDING_BRAND_LABEL, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 
 import { storageState, sessionState, isAppSwitchResumeFlow } from "../../lib";
-import { containerTemplate } from "../buttons/container";
-import { isSupportedNativeBrowser, getRenderedButtons } from "../buttons/util";
+import { isSupportedNativeBrowser } from "../buttons/util";
 
 import type { PixelComponentProps } from "./props";
 
 export type PixelComponent = ZoidComponent<PixelComponentProps>;
 
 export const getPixelComponent: () => PixelComponent = memoize(() => {
-  return create({
+  const component: PixelComponent = create({
     tag: "paypal-pixel",
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__PIXEL__}`,
 
@@ -64,16 +63,6 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
       width: "0px",
       height: "0px",
     },
-
-    containerTemplate,
-
-    // 2023-08-23 Shane Brunson
-    // I don't think Zoid uses this logger prop and I don't think we the SDK
-    // use it anywhere either. I'm trying to fix the main branch from building
-    // though and removing all these logger calls is more of risky change than
-    // I'm willing to make right now though.
-    // $FlowIssue mismatch between beaver-logger and zoid logger types
-    logger: getLogger(),
 
     attributes: {
       iframe: {
@@ -359,12 +348,6 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
         },
       },
 
-      renderedButtons: {
-        type: "array",
-        queryParam: true,
-        value: ({ props }) => getRenderedButtons(props),
-      },
-
       sdkCorrelationID: {
         type: "string",
         required: false,
@@ -438,4 +421,5 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
       },
     },
   });
+  return component;
 });
