@@ -496,7 +496,21 @@ export type PrerenderDetails = {|
 
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
+export type ButtonExtensions = {|
+  hasReturned: () => boolean,
+  resume: () => void,
+|};
+
 export type ButtonProps = {|
+  // app switch properties
+  appSwitchWhenAvailable: string,
+  listenForHashChanges: () => void,
+  removeListenerForHashChanges: () => void,
+  // Not passed to child iframe
+  // change any to HashChangeEvent when we move to typescript
+  // eslint-disable-next-line flowtype/no-weak-types
+  hashChangeHandler: (event: any) => void,
+
   fundingSource?: ?$Values<typeof FUNDING>,
   intent: $Values<typeof INTENT>,
   createOrder: CreateOrder,

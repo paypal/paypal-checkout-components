@@ -17,3 +17,9 @@ export const ATTRIBUTE = {
 };
 
 export const DEFAULT = ("default": "default");
+
+export const APP_SWITCH_RETURN_HASH = {
+  ONAPPROVE: ("onApprove": "onApprove"),
+  ONCANCEL: ("onCancel": "onCancel"),
+  ONERROR: ("onError": "onError"),
+};
