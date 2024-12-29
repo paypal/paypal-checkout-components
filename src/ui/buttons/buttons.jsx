@@ -167,6 +167,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     userIDToken,
     vault,
     wallet,
+    isFastlane,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -234,7 +235,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     !fundingSource &&
     !message;
 
-  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources, isFastlane);
 
   return (
     <div
