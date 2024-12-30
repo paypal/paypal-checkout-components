@@ -46,6 +46,34 @@ export class RestClient extends HTTPClient {
       ...rest,
     });
   }
+  authRequest({
+    baseURL,
+    accessToken,
+    ...rest
+  }: HTTPRequestOptions): ZalgoPromise<{ ... }> {
+    return request({
+      method: "post",
+      url: baseURL ?? this.baseURL ?? "",
+      headers: {
+        Authorization: `Basic ${accessToken}`,
+      },
+      ...rest,
+    }).then(({ body }) => {
+      if (body && body.error === "invalid_client") {
+        throw new Error(
+          `Auth Api invalid client id: \n\n${JSON.stringify(body, null, 4)}`
+        );
+      }
+
+      if (!body || !body.access_token) {
+        throw new Error(
+          `Auth Api response error:\n\n${JSON.stringify(body, null, 4)}`
+        );
+      }
+
+      return body.access_token;
+    });
+  }
 }
 
 const GRAPHQL_URI = "/graphql";
