@@ -3,11 +3,11 @@
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { type ZoidComponent } from "@krakenjs/zoid/src";
+import { base64encode } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY, CURRENCY } from "@paypal/sdk-constants/src";
-import { createAccessToken } from "@paypal/sdk-client/src";
 
-import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
+import { PAYMENT_3DS_VERIFICATION, AUTH } from "../constants/api";
 import { ValidationError } from "../lib";
 
 import type {
@@ -18,6 +18,7 @@ import type {
   SdkConfig,
   ThreeDSResponse,
   TDSProps,
+  Request,
 } from "./types";
 import { getFastlaneThreeDS } from "./utils";
 import type { GraphQLClient, RestClient } from "./api";
@@ -99,7 +100,21 @@ export class ThreeDomainSecureComponent {
     this.fastlaneNonce = merchantPayload.nonce;
 
     try {
-      const accessToken = await createAccessToken(this.sdkConfig.clientID);
+      const basicAuth = base64encode(`${this.sdkConfig.clientID}:`);
+      const authData = {
+        grant_type: `client_credentials`,
+      };
+
+      if (this.sdkConfig.merchantID?.length) {
+        // $FlowFixMe invalid error on key assignment
+        authData.target_subject = this.sdkConfig.merchantID[0];
+      }
+      // $FlowFixMe
+      const accessToken = await this.restClient.authRequest<Request, string>({
+        baseURL: `${this.sdkConfig.paypalApiDomain}${AUTH}`,
+        accessToken: `${basicAuth}`,
+        data: authData,
+      });
       // $FlowIssue confusing ZalgoPromise return type with resolved string value
       this.restClient.setAccessToken(accessToken);
     } catch (error) {
@@ -147,13 +162,13 @@ export class ThreeDomainSecureComponent {
         return ZalgoPromise.try(() => {
           this.logger.warn("3DS Cancelled");
         }).then(() => {
+          // eslint-disable-next-line no-use-before-define
+          instance.close();
           resolve({
             authenticationState: "cancelled",
             liabilityShift: "false",
             nonce: this.fastlaneNonce,
           });
-          // eslint-disable-next-line no-use-before-define
-          instance.close();
         });
       };
 

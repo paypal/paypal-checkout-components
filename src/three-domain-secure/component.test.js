@@ -49,6 +49,7 @@ const mockRestClient = {
       },
     ],
   }),
+  authRequest: vi.fn(),
 };
 
 const mockEligibilityRequest = (body = defaultEligibilityResponse) => {

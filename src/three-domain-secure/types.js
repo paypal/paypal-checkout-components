@@ -69,6 +69,7 @@ export type SdkConfig = {|
   authenticationToken: ?string,
   paypalApiDomain: string,
   clientID: string,
+  merchantID?: $ReadOnlyArray<string>,
 |};
 
 export type ThreeDSResponse = {|
