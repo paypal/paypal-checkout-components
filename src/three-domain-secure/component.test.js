@@ -4,6 +4,8 @@ import { describe, expect, vi, afterEach } from "vitest";
 import { getEnv } from "@paypal/sdk-client/src";
 import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
+import { ValidationError } from "../lib";
+
 import { ThreeDomainSecureComponent } from "./component";
 
 const defaultSdkConfig = {
@@ -149,6 +151,55 @@ describe("three domain secure component - isEligible method", () => {
     ).rejects.toThrow(new Error("Error with API"));
     expect(mockRestClient.request).toHaveBeenCalled();
   });
+
+  test.each([
+    [
+      "undefined nonce",
+      { currency: "USD", amount: "12.00", nonce: undefined },
+      "[nonce] is required and must be a string. received: undefined",
+    ],
+
+    [
+      "undefined currency",
+      { currency: undefined, amount: "12.00", nonce: "abc-nonce" },
+      "[currency] is required and must be a valid currency. received: undefined",
+    ],
+    [
+      "invalid currency",
+      { currency: "FOO", amount: "12.00", nonce: "abc-nonce" },
+      "[currency] is required and must be a valid currency. received: FOO",
+    ],
+    [
+      "amount as a number",
+      { currency: "USD", amount: 12, nonce: "abc-nonce" },
+      "[amount] is required and must be a string. received: 12",
+    ],
+    [
+      "undefined amount",
+      { currency: "USD", amount: undefined, nonce: "abc-nonce" },
+      "[amount] is required and must be a string. received: undefined",
+    ],
+    [
+      "multiple errors",
+      { currency: undefined, amount: undefined, nonce: undefined },
+      "[currency] is required and must be a valid currency. received: undefined\n" +
+        "[amount] is required and must be a string. received: undefined\n" +
+        "[nonce] is required and must be a string. received: undefined",
+    ],
+  ])(
+    "should throw validation error on %s",
+    async (_assertion, params, expected) => {
+      const threeDomainSecureClient = createThreeDomainSecureComponent();
+
+      await expect(() =>
+        threeDomainSecureClient.isEligible(params)
+      ).rejects.toThrow(new ValidationError(expected));
+
+      expect(threeDomainSecureClient.logger.warn).toHaveBeenCalledWith(
+        expected
+      );
+    }
+  );
 });
 
 describe.todo("three domain descure component - show method", () => {
