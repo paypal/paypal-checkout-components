@@ -55,6 +55,7 @@ export class RestClient extends HTTPClient {
       method: "post",
       url: baseURL ?? this.baseURL ?? "",
       headers: {
+        // $FlowIssue
         Authorization: `Basic ${accessToken}`,
       },
       ...rest,

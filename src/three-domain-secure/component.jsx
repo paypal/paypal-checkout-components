@@ -102,10 +102,12 @@ export class ThreeDomainSecureComponent {
       const authData = {
         grant_type: `client_credentials`,
       };
-      if (this.sdkConfig.merchantID.length) {
+
+      if (this.sdkConfig.merchantID?.length) {
+        // $FlowFixMe invalid error on key assignment
         authData.target_subject = this.sdkConfig.merchantID[0];
       }
-
+      // $FlowFixMe
       const accessToken = await this.restClient.authRequest<Request, string>({
         baseURL: `${this.sdkConfig.paypalApiDomain}${AUTH}`,
         accessToken: `${basicAuth}`,
