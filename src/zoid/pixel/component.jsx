@@ -387,7 +387,7 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
       storageID: {
         type: "string",
         value: getStorageID,
-        queryParam: true,
+        queryParam: false,
       },
 
       storageState: {
