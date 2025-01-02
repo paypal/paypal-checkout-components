@@ -59,6 +59,5 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
 }
 
 export function isAppSwitchResumeFlow(): boolean {
-  const params = getAppSwitchResumeParams();
-  return params !== null;
+  return Boolean(getAppSwitchResumeParams());
 }
