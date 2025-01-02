@@ -39,7 +39,7 @@ export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),
 };
 
-export const ResumePixel: LazyExport<PixelComponent> = {
+export const Pixel: LazyExport<PixelComponent> = {
   __get__: () => getPixelComponent(),
 };
 
