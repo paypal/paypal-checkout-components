@@ -9,19 +9,15 @@ import { ThreeDomainSecureComponent } from "./component";
 const defaultSdkConfig = {
   authenticationToken: "sdk-client-token",
 };
-vi.mock("./utils", async () => {
-  return {
-    ...(await vi.importActual("./utils")),
-    getFastlaneThreeDS: vi.fn(() => ({
+vi.mock("./utils", () => ({
+  getFastlaneThreeDS: vi.fn(() => {
+    return vi.fn(() => ({
       render: vi.fn().mockResolvedValue({}),
-      close: vi.fn().mockResolvedValue({}),
-    })),
-  };
-});
-const mockThreeDSIframe = vi.fn(() => ({
-  render: vi.fn().mockResolvedValue({}),
-  close: vi.fn().mockResolvedValue({}),
+      close: vi.fn(),
+    }));
+  }),
 }));
+
 vi.mock("@paypal/sdk-client/src");
 vi.mocked(getEnv).mockReturnValue("stage");
 const defaultEligibilityResponse = {
@@ -152,52 +148,14 @@ describe("three domain secure component - isEligible method", () => {
   });
 });
 
-describe.todo("three domain descure component - show method", () => {
-  test("should resolve successfully when threeDSIframe onSuccess is called", async () => {
-    mockRestClient.request = mockEligibilityRequest();
+describe("three domain descure component - show method", () => {
+  test("should reject if threeDSIframe is not available", async () => {
     const threeDomainSecureClient = createThreeDomainSecureComponent();
-    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
-    // Arrange
-    const mockSuccessResponse = {
-      reference_id: "ref-123",
-      authentication_status: "authenticated",
-      liability_shift: true,
-    };
-
-    const mockClose = vi.fn();
-
-    mockThreeDSIframe.mockImplementation(({ onSuccess }) => {
-      setTimeout(() => onSuccess(mockSuccessResponse), 0);
-      return { close: mockClose };
-    });
-    const promise = threeDomainSecureClient.show();
-
-    await expect(promise).resolves.toBeUndefined();
-    expect(mockThreeDSIframe).toHaveBeenCalledWith({
-      payerActionUrl: "test-url",
-      onSuccess: expect.any(Function),
-    });
-  });
-  test("should create a zoid component and assign to threeDSIframe", async () => {
-    mockRestClient.request = mockEligibilityRequest();
-    const threeDomainSecureClient = createThreeDomainSecureComponent();
-    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
-    expect(threeDomainSecureClient.threeDSIframe).toBeDefined();
-    threeDomainSecureClient.threeDSIframe = mockThreeDSIframe;
-    expect(await threeDomainSecureClient.show()).toEqual({
-      liabilityShift: undefined,
-      authenticationStatus: undefined,
-      nonce: "test_nonce",
-    });
-  });
-
-  test("should render threeDS Iframe", async () => {
-    mockRestClient.request = mockEligibilityRequest();
-    const threeDomainSecureClient = createThreeDomainSecureComponent();
-    await threeDomainSecureClient.isEligible(defaultMerchantPayload);
-
-    await threeDomainSecureClient.show();
-    expect(threeDomainSecureClient.threeDSIframe).toBeCalled();
+    // $FlowFixMe
+    threeDomainSecureClient.threeDSIframe = undefined;
+    await expect(threeDomainSecureClient.show()).rejects.toThrowError(
+      "Ineligible for three domain secure"
+    );
   });
 });
 
