@@ -496,6 +496,11 @@ export type PrerenderDetails = {|
 
 export type GetPrerenderDetails = () => PrerenderDetails | void;
 
+export type ButtonExtensions = {|
+  hasReturned: () => boolean,
+  resume: () => void,
+|};
+
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: string,
