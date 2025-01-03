@@ -14,6 +14,7 @@ import {
   once,
   memoize,
 } from "@krakenjs/belter/src";
+import { send as postRobotSend } from "@krakenjs/post-robot/src";
 import {
   getEnableFunding,
   getLogger,
@@ -23,6 +24,7 @@ import {
   getComponents,
   getEnv,
   getNamespace,
+  getPayPalDomain,
   getFirstRenderExperiments,
 } from "@paypal/sdk-client/src";
 import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
@@ -424,3 +426,27 @@ export const getModal: (
       });
   }
 });
+
+export const sendPostRobotMessageToButtonIframe = ({
+  eventName,
+  payload,
+}: // eslint-disable-next-line flowtype/require-exact-type
+{
+  eventName: string,
+  payload: Object,
+}) => {
+  const iframes = document.querySelectorAll("iframe");
+
+  // I don't understand why but trying to make iframes which is a NodeList
+  // into an Iterable (so we could do a for..of loop or .forEach) is not
+  // working. It ends up iterating over itself so instead of looping over the contents
+  // of the NodeList you loop over the NodeList itself which is extremely unexpected
+  // for..in works though :shrug: - Shane 11 Dec 2024
+  for (let i = 0; i < iframes.length; i++) {
+    if (iframes[i].name.includes("zoid__paypal_buttons")) {
+      postRobotSend(iframes[i].contentWindow, eventName, payload, {
+        domain: getPayPalDomain(),
+      });
+    }
+  }
+};
