@@ -247,7 +247,8 @@ export class ThreeDomainSecureComponent {
 
     const errors = [];
 
-    Object.entries(validations).forEach(([key, value]) => {
+    // eslint-disable-next-line flowtype/no-weak-types
+    Object.entries(validations).forEach(([key, value]: [string, any]) => {
       const paramValue = merchantPayload[key];
 
       if (!value.test?.every((validation) => validation(paramValue))) {
