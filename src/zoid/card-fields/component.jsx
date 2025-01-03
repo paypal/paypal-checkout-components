@@ -16,7 +16,6 @@ import {
   getClientID,
   getDebug,
   getCurrency,
-  getAmount,
   getIntent,
   getCommit,
   getVault,
@@ -296,6 +295,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             queryParam: true,
             allowDelegate: true,
             value: ({ props }) => props.parent.props.locale,
+          },
+
+          amount: {
+            type: "object",
+            value: ({ props }) => props.parent.props.amount,
+            required: false,
           },
 
           onApprove: {
@@ -713,12 +718,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "string",
           queryParam: true,
           value: getCurrency,
-        },
-
-        amount: {
-          type: "string",
-          queryParam: false,
-          value: getAmount,
         },
 
         intent: {
