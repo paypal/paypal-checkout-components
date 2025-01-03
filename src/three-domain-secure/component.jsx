@@ -5,7 +5,7 @@ import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { type ZoidComponent } from "@krakenjs/zoid/src";
 import { base64encode } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { FPTI_KEY } from "@paypal/sdk-constants/src";
+import { FPTI_KEY, CURRENCY } from "@paypal/sdk-constants/src";
 
 import { PAYMENT_3DS_VERIFICATION, AUTH } from "../constants/api";
 import { ValidationError } from "../lib";
@@ -94,6 +94,8 @@ export class ThreeDomainSecureComponent {
   }
 
   async isEligible(merchantPayload: MerchantPayloadData): Promise<boolean> {
+    this.validateMerchantPayload(merchantPayload);
+
     const data = parseMerchantPayload({ merchantPayload });
     this.fastlaneNonce = merchantPayload.nonce;
 
@@ -216,6 +218,49 @@ export class ThreeDomainSecureComponent {
         instance.close();
       });
     });
+  }
+
+  validateMerchantPayload(merchantPayload: MerchantPayloadData): void {
+    // TODO we have a ticket to standardize client-side validations
+    // eslint-disable-next-line flowtype/no-weak-types
+    const isRequired = (value: any) => Boolean(value);
+    // eslint-disable-next-line flowtype/no-weak-types
+    const isString = (value: any) => typeof value === "string";
+
+    const validations = {
+      amount: {
+        test: [isString, isRequired],
+        message: (value) =>
+          `[amount] is required and must be a string. received: ${value}`,
+      },
+      currency: {
+        test: [(value) => value in CURRENCY, isRequired],
+        message: (value) =>
+          `[currency] is required and must be a valid currency. received: ${value}`,
+      },
+      nonce: {
+        test: [isString, isRequired],
+        message: (value) =>
+          `[nonce] is required and must be a string. received: ${value}`,
+      },
+    };
+
+    const errors = [];
+
+    Object.entries(merchantPayload).forEach(([key, value]) => {
+      if (key in validations) {
+        if (!validations[key]?.test?.every((validation) => validation(value))) {
+          errors.push(validations[key]?.message(value));
+        }
+      }
+    });
+
+    if (errors.length) {
+      const joinedErrors = errors.join("\n");
+
+      this.logger.warn(joinedErrors);
+      throw new ValidationError(joinedErrors);
+    }
   }
 
   updateNonceWith3dsData(threeDSRefID: string): Promise<GqlResponse> {
