@@ -247,11 +247,11 @@ export class ThreeDomainSecureComponent {
 
     const errors = [];
 
-    Object.entries(merchantPayload).forEach(([key, value]) => {
-      if (key in validations) {
-        if (!validations[key]?.test?.every((validation) => validation(value))) {
-          errors.push(validations[key]?.message(value));
-        }
+    Object.entries(validations).forEach(([key, value]) => {
+      const paramValue = merchantPayload[key];
+
+      if (!value.test?.every((validation) => validation(paramValue))) {
+        errors.push(value.message(paramValue));
       }
     });
 

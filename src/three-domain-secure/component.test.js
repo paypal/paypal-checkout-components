@@ -152,13 +152,13 @@ describe("three domain secure component - isEligible method", () => {
   test.each([
     [
       "undefined nonce",
-      { currency: "USD", amount: "12.00", nonce: undefined },
+      { currency: "USD", amount: "12.00" },
       "[nonce] is required and must be a string. received: undefined",
     ],
 
     [
       "undefined currency",
-      { currency: undefined, amount: "12.00", nonce: "abc-nonce" },
+      { amount: "12.00", nonce: "abc-nonce" },
       "[currency] is required and must be a valid currency. received: undefined",
     ],
     [
@@ -173,14 +173,14 @@ describe("three domain secure component - isEligible method", () => {
     ],
     [
       "undefined amount",
-      { currency: "USD", amount: undefined, nonce: "abc-nonce" },
+      { currency: "USD", nonce: "abc-nonce" },
       "[amount] is required and must be a string. received: undefined",
     ],
     [
       "multiple errors",
-      { currency: undefined, amount: undefined, nonce: undefined },
-      "[currency] is required and must be a valid currency. received: undefined\n" +
-        "[amount] is required and must be a string. received: undefined\n" +
+      {},
+      "[amount] is required and must be a string. received: undefined\n" +
+        "[currency] is required and must be a valid currency. received: undefined\n" +
         "[nonce] is required and must be a string. received: undefined",
     ],
   ])(
