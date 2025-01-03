@@ -50,7 +50,6 @@ import {
 } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
-import { send as postRobotSend } from "@krakenjs/post-robot/src";
 import {
   uniqueID,
   memoize,
@@ -98,6 +97,7 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
+  sendPostRobotMessageToButtonIframe,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
@@ -305,27 +305,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        required: false,
         value: () => (event) => {
-          const iframes = document.querySelectorAll("iframe");
-
-          // I don't understand why but trying to make iframes which is a NodeList
-          // into an Iterable (so we could do a for..of loop or .forEach) is not
-          // working. It ends up iterating over itself so instead of looping over the contents
-          // of the NodeList you loop over the NodeList itself which is extremely unexpected
-          // for..in works though :shrug: - Shane 11 Dec 2024
-          for (let i = 0; i < iframes.length; i++) {
-            if (iframes[i].name.includes("zoid__paypal_buttons")) {
-              postRobotSend(
-                iframes[i].contentWindow,
-                "paypal-hashchange",
-                {
-                  url: event.newURL,
-                },
-                { domain: getPayPalDomain() }
-              );
-            }
-          }
+          sendPostRobotMessageToButtonIframe({
+            eventName: "paypal-hashchange",
+            payload: {
+              url: event.newURL,
+            },
+          });
         },
       },
 
@@ -346,6 +332,48 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ({ props }) =>
           () => {
             window.removeEventListener("hashchange", props.hashChangeHandler);
+          },
+      },
+
+      visibilityChangeHandler: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value: () => () => {
+          sendPostRobotMessageToButtonIframe({
+            eventName: "paypal-visibilitychange",
+            payload: {
+              url: window.location.href,
+              // eslint-disable-next-line compat/compat
+              visibilityState: document.visibilityState,
+            },
+          });
+        },
+      },
+
+      listenForVisibilityChange: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.addEventListener(
+              "visibilitychange",
+              props.hashChangeHandler
+            );
+          },
+      },
+
+      removeListenerForVisibilityChanges: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.removeEventListener(
+              "visibilitychange",
+              props.hashChangeHandler
+            );
           },
       },
 
