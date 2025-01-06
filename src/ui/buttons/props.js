@@ -510,6 +510,10 @@ export type ButtonProps = {|
   // change any to HashChangeEvent when we move to typescript
   // eslint-disable-next-line flowtype/no-weak-types
   hashChangeHandler: (event: any) => void,
+  listenForVisibilityChange: () => void,
+  removeListenerForVisibilityChanges: () => void,
+  // Not passed to child iframe
+  visibilityChangeHandler: () => void,
 
   fundingSource?: ?$Values<typeof FUNDING>,
   intent: $Values<typeof INTENT>,
