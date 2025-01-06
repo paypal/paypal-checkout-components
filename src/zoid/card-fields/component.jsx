@@ -645,6 +645,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           value: getLocale,
         },
 
+        amount: {
+          type: "object",
+          queryParam: false,
+          required: false,
+        },
+
         onApprove: {
           type: "function",
           required: false,
