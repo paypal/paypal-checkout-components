@@ -297,6 +297,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             value: ({ props }) => props.parent.props.locale,
           },
 
+          amount: {
+            type: "object",
+            value: ({ props }) => props.parent.props.amount,
+            required: false,
+          },
+
           onApprove: {
             type: "function",
             required: false,
@@ -637,6 +643,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           queryParam: true,
           allowDelegate: true,
           value: getLocale,
+        },
+
+        amount: {
+          type: "object",
+          queryParam: false,
+          required: false,
         },
 
         onApprove: {
