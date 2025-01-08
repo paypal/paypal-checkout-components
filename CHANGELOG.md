@@ -1,3 +1,9 @@
+## <small>5.0.347 (2025-01-08)</small>
+
+* support visibility change for manual app switch flow (#2460) ([3d1bb8f](https://github.com/paypal/paypal-checkout-components/commit/3d1bb8f)), closes [#2460](https://github.com/paypal/paypal-checkout-components/issues/2460)
+
+
+
 ## <small>5.0.346 (2024-11-13)</small>
 
 * chore(release): 5.0.345 🎉 ([7d12516](https://github.com/paypal/paypal-checkout-components/commit/7d12516))
