@@ -26,23 +26,17 @@ describe("app switch resume flow", () => {
 
   test("should test fetching resume params when parameters are correctly passed", () => {
     vi.spyOn(window, "location", "get").mockReturnValue({
-      hash: "#onApprove",
-      search: `buttonSessionID=${buttonSessionID}&orderID=${orderID}&fundingSource=${fundingSource}`,
+      hash: `#onApprove?buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
     });
 
     const params = getAppSwitchResumeParams();
 
     expect.assertions(2);
     expect(params).toEqual({
-      billingToken: null,
       buttonSessionID,
       checkoutState: "onApprove",
       fundingSource,
       orderID,
-      payerID: null,
-      paymentID: null,
-      subscriptionID: null,
-      vaultSetupToken: null,
     });
     expect(isAppSwitchResumeFlow()).toEqual(true);
   });
@@ -50,7 +44,7 @@ describe("app switch resume flow", () => {
   test("should test fetching resume params with invalid callback passed", () => {
     vi.spyOn(window, "location", "get").mockReturnValue({
       hash: "#Unknown",
-      search: `buttonSessionID=${buttonSessionID}&orderID=${orderID}&fundingSource=${fundingSource}`,
+      search: `buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
     });
 
     const params = getAppSwitchResumeParams();
@@ -62,8 +56,7 @@ describe("app switch resume flow", () => {
 
   test("should test null fetching resume params with invalid callback passed", () => {
     vi.spyOn(window, "location", "get").mockReturnValue({
-      hash: "#Unknown",
-      search: `buttonSessionID=${buttonSessionID}&orderID=${orderID}&fundingSource=${fundingSource}`,
+      hash: `#Unknown?buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
     });
 
     const params = getAppSwitchResumeParams();
@@ -73,10 +66,9 @@ describe("app switch resume flow", () => {
     expect(isAppSwitchResumeFlow()).toEqual(false);
   });
 
-  test("should test fetching resume params when parameters are correctly passed", () => {
+  test("should test fetching multiple resume params when parameters are correctly passed", () => {
     vi.spyOn(window, "location", "get").mockReturnValue({
-      hash: "#onApprove",
-      search: `buttonSessionID=${buttonSessionID}&orderID=${orderID}&fundingSource=${fundingSource}&billingToken=BA-124&payerID=PP-122&paymentID=PAY-123&subscriptionID=I-1234&vaultSetupToken=VA-3`,
+      hash: `#onApprove?buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}&billingToken=BA-124&PayerID=PP-payer-122&paymentID=PAY-123&subscriptionID=I-1234&vaultSetupToken=VA-3`,
     });
 
     const params = getAppSwitchResumeParams();
@@ -88,7 +80,7 @@ describe("app switch resume flow", () => {
       checkoutState: "onApprove",
       fundingSource,
       orderID,
-      payerID: "PP-122",
+      payerID: "PP-payer-122",
       paymentID: "PAY-123",
       subscriptionID: "I-1234",
       vaultSetupToken: "VA-3",
