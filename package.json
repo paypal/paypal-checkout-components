@@ -21,7 +21,7 @@
     "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
     "jest-screenshot": "jest test/screenshot --env=node --no-cache",
     "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
-    "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
+    "karma": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/karma start",
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
     "postversion": "./scripts/postversion.sh",
     "preversion": "./scripts/preversion.sh",
