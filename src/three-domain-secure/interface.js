@@ -33,7 +33,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
     __get__: () => {
       const threeDomainSecureInstance = new ThreeDomainSecureComponent({
         logger: getLogger(),
-        restClient: new RestClient({ accesstoken: getSDKToken() }),
+        restClient: new RestClient({ accessToken: getSDKToken() }),
         graphQLClient: new GraphQLClient({
           baseURL:
             getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
