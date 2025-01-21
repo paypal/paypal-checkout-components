@@ -3,22 +3,19 @@
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { type ZoidComponent } from "@krakenjs/zoid/src";
-import { base64encode } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY, CURRENCY } from "@paypal/sdk-constants/src";
 
-import { PAYMENT_3DS_VERIFICATION, AUTH } from "../constants/api";
+import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
 import { ValidationError } from "../lib";
 
 import type {
   requestData,
-  responseBody,
   GqlResponse,
   MerchantPayloadData,
   SdkConfig,
   ThreeDSResponse,
   TDSProps,
-  Request,
 } from "./types";
 import { getFastlaneThreeDS } from "./utils";
 import type { GraphQLClient, RestClient } from "./api";
