@@ -5,7 +5,6 @@ import {
   getPayPalAPIDomain,
   getSDKToken,
   getClientID,
-  getMerchantID,
 } from "@paypal/sdk-client/src";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
@@ -34,7 +33,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
     __get__: () => {
       const threeDomainSecureInstance = new ThreeDomainSecureComponent({
         logger: getLogger(),
-        restClient: new RestClient(),
+        restClient: new RestClient({ accesstoken: getSDKToken() }),
         graphQLClient: new GraphQLClient({
           baseURL:
             getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
@@ -45,7 +44,6 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
           authenticationToken: getSDKToken(),
           paypalApiDomain: getPayPalAPIDomain(),
           clientID: getClientID(),
-          merchantID: getMerchantID(),
         },
       });
       return devEnvOnlyExport({
