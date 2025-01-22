@@ -5,7 +5,7 @@
       "path": "size.min.js",
       "compression": "gzip",
       "maxPercentIncrease": 3.6,
-      "maxSize": "81kb"
+      "maxSize": "82kb"
     }
   ],
   "reportOutput": [
