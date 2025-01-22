@@ -23,7 +23,9 @@ import {
   getPartnerAttributionID,
   getMerchantID,
   getUserIDToken,
+  getSDKToken,
   getClientMetadataID,
+  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
@@ -33,7 +35,7 @@ import {
   type FundingEligibilityType,
 } from "@paypal/sdk-constants/src";
 
-import { getSessionID } from "../../lib";
+import { getSessionID, ValidationError } from "../../lib";
 
 import { CardPrerender } from "./prerender";
 
@@ -45,6 +47,14 @@ const CARD_FIELD_TYPE = {
   NAME: "name",
   POSTAL: "postal",
 };
+
+type InstallmentsConfiguration = {|
+  financingCountryCode: string,
+  currencyCode: string,
+  billingCountryCode: string,
+  amount: string,
+  includeBuyerInstallments?: boolean,
+|};
 
 type CardFieldsProps = {|
   clientID: string,
@@ -81,6 +91,7 @@ type CardFieldsProps = {|
     onInputSubmitRequest?: () => ZalgoPromise<Object> | Object,
   |},
   createOrder: () => ZalgoPromise<string> | string,
+  createSubscription?: () => ZalgoPromise<string> | string,
   createVaultSetupToken: () => ZalgoPromise<string>,
   onApprove: (
     {| returnUrl?: string, vaultSetupToken?: string |},
@@ -100,6 +111,14 @@ type CardFieldsProps = {|
   hcfSessionID: string,
   partnerAttributionID: string,
   merchantID: $ReadOnlyArray<string>,
+  sdkToken?: string,
+  installments?: {|
+    onInstallmentsRequested: () =>
+      | InstallmentsConfiguration
+      | ZalgoPromise<InstallmentsConfiguration>,
+    onInstallmentsAvailable: (Object) => void,
+    onInstallmentsError?: (Object) => void,
+  |},
 |};
 
 type CardFieldProps = {|
@@ -228,6 +247,24 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             required: false,
             value: ({ props }) => props.parent.props.createOrder,
           },
+
+          ...(isPayPalDomain() && {
+            createSubscription: {
+              type: "function",
+              required: false,
+              value: ({ props }) => {
+                if (
+                  props.parent.props.createSubscription &&
+                  !props.parent.props.sdkToken
+                ) {
+                  throw new ValidationError(
+                    `SDK Token must be passed in for createSubscription`
+                  );
+                }
+                return props.parent.props.createSubscription;
+              },
+            },
+          }),
 
           createVaultSetupToken: {
             type: "function",
@@ -423,6 +460,16 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             default: getUserIDToken,
             required: false,
           },
+          sdkToken: {
+            type: "string",
+            default: getSDKToken,
+            required: false,
+          },
+          installments: {
+            type: "object",
+            required: false,
+            value: ({ props }) => props.parent.props.installments,
+          },
         },
       });
     };
@@ -546,6 +593,21 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           type: "function",
           required: false,
         },
+
+        ...(isPayPalDomain() && {
+          createSubscription: {
+            type: "function",
+            required: false,
+            value: ({ props }) => {
+              if (props.createSubscription && !props.sdkToken) {
+                throw new ValidationError(
+                  `SDK Token must be passed in for createSubscription`
+                );
+              }
+              return props.createSubscription;
+            },
+          },
+        }),
 
         createVaultSetupToken: {
           type: "function",
@@ -699,6 +761,15 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
         userIDToken: {
           type: "string",
           default: getUserIDToken,
+          required: false,
+        },
+        sdkToken: {
+          type: "string",
+          default: getSDKToken,
+          required: false,
+        },
+        installments: {
+          type: "object",
           required: false,
         },
       },

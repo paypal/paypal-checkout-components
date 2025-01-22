@@ -1,3 +1,63 @@
+## <small>5.0.347 (2025-01-08)</small>
+
+* support visibility change for manual app switch flow (#2460) ([3d1bb8f](https://github.com/paypal/paypal-checkout-components/commit/3d1bb8f)), closes [#2460](https://github.com/paypal/paypal-checkout-components/issues/2460)
+
+
+
+## <small>5.0.346 (2024-11-13)</small>
+
+* chore(release): 5.0.345 🎉 ([7d12516](https://github.com/paypal/paypal-checkout-components/commit/7d12516))
+
+
+
+## <small>5.0.345 (2024-11-13)</small>
+
+* Add validation for SDK token when createSubscription is being passed (#2450) ([f0483a1](https://github.com/paypal/paypal-checkout-components/commit/f0483a1)), closes [#2450](https://github.com/paypal/paypal-checkout-components/issues/2450)
+
+
+
+## <small>5.0.344 (2024-10-23)</small>
+
+* Defining ThreeDomainSecureClient component interface (#2447) ([4857dc7](https://github.com/paypal/paypal-checkout-components/commit/4857dc7)), closes [#2447](https://github.com/paypal/paypal-checkout-components/issues/2447)
+
+
+
+## <small>5.0.343 (2024-10-09)</small>
+
+* feat(3DS): Barebones for the new 3DS component (#2433) ([6df3755](https://github.com/paypal/paypal-checkout-components/commit/6df3755)), closes [#2433](https://github.com/paypal/paypal-checkout-components/issues/2433)
+
+
+
+## <small>5.0.342 (2024-10-04)</small>
+
+* Add getSDKToken for card fields (#2445) ([57d78fb](https://github.com/paypal/paypal-checkout-components/commit/57d78fb)), closes [#2445](https://github.com/paypal/paypal-checkout-components/issues/2445)
+
+
+
+## <small>5.0.341 (2024-10-03)</small>
+
+* Revert "Pin jsx-pragmatic to 3.0.0 (#2443)" (#2444) ([a2fc264](https://github.com/paypal/paypal-checkout-components/commit/a2fc264)), closes [#2443](https://github.com/paypal/paypal-checkout-components/issues/2443) [#2444](https://github.com/paypal/paypal-checkout-components/issues/2444)
+
+
+
+## <small>5.0.340 (2024-10-02)</small>
+
+* Pin jsx-pragmatic to 3.0.0 (#2443) ([48948c9](https://github.com/paypal/paypal-checkout-components/commit/48948c9)), closes [#2443](https://github.com/paypal/paypal-checkout-components/issues/2443)
+
+
+
+## <small>5.0.339 (2024-10-02)</small>
+
+* Adding Installments and IC2B for Card Fields (#2432) ([660ea8d](https://github.com/paypal/paypal-checkout-components/commit/660ea8d)), closes [#2432](https://github.com/paypal/paypal-checkout-components/issues/2432)
+
+
+
+## <small>5.0.338 (2024-09-12)</small>
+
+* feat(qrcode): remove onEscapePath (#2434) ([48b1f57](https://github.com/paypal/paypal-checkout-components/commit/48b1f57)), closes [#2434](https://github.com/paypal/paypal-checkout-components/issues/2434)
+
+
+
 ## <small>5.0.337 (2024-08-23)</small>
 
 * Fix button color styles being applied incorrectly for vaulted flows (#2426) ([6f8e7b9](https://github.com/paypal/paypal-checkout-components/commit/6f8e7b9)), closes [#2426](https://github.com/paypal/paypal-checkout-components/issues/2426)
