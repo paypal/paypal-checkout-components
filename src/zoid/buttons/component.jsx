@@ -42,6 +42,7 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
+  getSDKToken,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -744,6 +745,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getIntent,
       },
 
+      isFsSubscription: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: ({ props }) =>
+          props.createSubscription &&
+          Boolean(getSDKToken()) &&
+          props.intent !== "subscription",
+      },
+
       jsSdkLibrary: {
         type: "string",
         queryParam: true,
@@ -1062,6 +1073,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         sendToChild: false,
         value: getSDKMeta,
+      },
+
+      sdkToken: {
+        type: "string",
+        required: false,
+        value: getSDKToken,
       },
 
       /**
