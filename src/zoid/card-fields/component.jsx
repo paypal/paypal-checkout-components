@@ -77,6 +77,7 @@ type CardFieldsProps = {|
   fundingEligibility: FundingEligibilityType,
   disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
   currency: $Values<typeof CURRENCY>,
+  amount: string,
   intent: $Values<typeof INTENT>,
   commit: boolean,
   vault: boolean,
