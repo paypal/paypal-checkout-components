@@ -647,7 +647,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
 
         amount: {
           type: "object",
-          queryParam: false,
           required: false,
         },
 
