@@ -77,6 +77,7 @@ type CardFieldsProps = {|
   fundingEligibility: FundingEligibilityType,
   disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
   currency: $Values<typeof CURRENCY>,
+  amount: string,
   intent: $Values<typeof INTENT>,
   commit: boolean,
   vault: boolean,
@@ -295,6 +296,12 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             queryParam: true,
             allowDelegate: true,
             value: ({ props }) => props.parent.props.locale,
+          },
+
+          amount: {
+            type: "object",
+            value: ({ props }) => props.parent.props.amount,
+            required: false,
           },
 
           onApprove: {
@@ -637,6 +644,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           queryParam: true,
           allowDelegate: true,
           value: getLocale,
+        },
+
+        amount: {
+          type: "object",
+          required: false,
         },
 
         onApprove: {

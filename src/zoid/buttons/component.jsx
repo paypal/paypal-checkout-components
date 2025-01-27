@@ -74,13 +74,17 @@ import {
   sessionState,
   logLatencyInstrumentationPhase,
   prepareInstrumentationPayload,
+  isAppSwitchResumeFlow,
+  getAppSwitchResumeParams,
 } from "../../lib";
 import {
   normalizeButtonStyle,
   normalizeButtonMessage,
   type ButtonProps,
+  type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 
 import { containerTemplate } from "./container";
@@ -94,17 +98,59 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
+  sendPostRobotMessageToButtonIframe,
 } from "./util";
 
-export type ButtonsComponent = ZoidComponent<ButtonProps>;
+export type ButtonsComponent = ZoidComponent<
+  ButtonProps,
+  void,
+  void,
+  ButtonExtensions
+>;
 
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
+
   return create({
     tag: "paypal-buttons",
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
+    getExtensions: (parent) => {
+      return {
+        hasReturned: () => {
+          return isAppSwitchResumeFlow();
+        },
+        resume: () => {
+          const resumeFlowParams = getAppSwitchResumeParams();
+          if (!resumeFlowParams) {
+            throw new Error("Resume Flow is not supported.");
+          }
+          getLogger().metricCounter({
+            namespace: "resume_flow.init.count",
+            event: "info",
+            dimensions: {
+              orderID: Boolean(resumeFlowParams.orderID),
+              vaultSessionID: Boolean(resumeFlowParams.vaultSetupToken),
+              billingToken: Boolean(resumeFlowParams.billingToken),
+              payerID: Boolean(resumeFlowParams.payerID),
+            },
+          });
+          const resumeComponent = getPixelComponent();
+          const parentProps = parent.getProps();
+          resumeComponent({
+            onApprove: parentProps.onApprove,
+            // $FlowIgnore[incompatible-call]
+            onError: parentProps.onError,
+            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
+            onCancel: parentProps.onCancel,
+            onClick: parentProps.onClick,
+            onComplete: parentProps.onComplete,
+            resumeFlowParams,
+          }).render("body");
+        },
+      };
+    },
 
     autoResize: {
       width: false,
@@ -247,6 +293,91 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     props: {
+      // App Switch Properties
+      appSwitchWhenAvailable: {
+        // this value is a string for now while we test the app switch
+        // feature. Before we give this to a real merchant, we should
+        // change this to a boolean - Shane 11 Dec 2024
+        type: "string",
+        required: false,
+      },
+
+      hashChangeHandler: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value: () => (event) => {
+          sendPostRobotMessageToButtonIframe({
+            eventName: "paypal-hashchange",
+            payload: {
+              url: event.newURL,
+            },
+          });
+        },
+      },
+
+      listenForHashChanges: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.addEventListener("hashchange", props.hashChangeHandler);
+          },
+      },
+
+      removeListenerForHashChanges: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.removeEventListener("hashchange", props.hashChangeHandler);
+          },
+      },
+
+      visibilityChangeHandler: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value: () => () => {
+          sendPostRobotMessageToButtonIframe({
+            eventName: "paypal-visibilitychange",
+            payload: {
+              url: window.location.href,
+              // eslint-disable-next-line compat/compat
+              visibilityState: document.visibilityState,
+            },
+          });
+        },
+      },
+
+      listenForVisibilityChange: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.addEventListener(
+              "visibilitychange",
+              props.hashChangeHandler
+            );
+          },
+      },
+
+      removeListenerForVisibilityChanges: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.removeEventListener(
+              "visibilitychange",
+              props.hashChangeHandler
+            );
+          },
+      },
+
       // allowBillingPayments prop is used by Honey Extension to render the one-click button
       // with payment methods & to use the payment methods instead of the Billing Agreement
       allowBillingPayments: {

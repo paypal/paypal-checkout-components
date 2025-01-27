@@ -10,3 +10,4 @@ import "./security";
 import "./funding/paylater";
 import "./funding/applepay";
 import "./funding/venmo";
+import "./pixel";
