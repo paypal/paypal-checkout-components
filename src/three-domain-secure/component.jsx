@@ -17,7 +17,7 @@ import type {
   ThreeDSResponse,
   TDSProps,
 } from "./types";
-import { getFastlaneThreeDS } from "./utils";
+import { getThreeDS } from "./utils";
 import type { GraphQLClient, RestClient } from "./api";
 
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
@@ -110,7 +110,7 @@ export class ThreeDomainSecureComponent {
           (link) => link.rel === "payer-action"
         ).href;
         responseStatus = true;
-        this.threeDSIframe = getFastlaneThreeDS();
+        this.threeDSIframe = getThreeDS();
       }
       return responseStatus;
     } catch (error) {
@@ -151,7 +151,7 @@ export class ThreeDomainSecureComponent {
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
           // and false for downstream failures and errors
-          authenticationState = success ? "success" : "errored";
+          authenticationState = success ? "succeeded" : "errored";
           liabilityShift = liability_shift ? liability_shift : "false";
 
           // call BT mutation to update fastlaneNonce with 3ds data
