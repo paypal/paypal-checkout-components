@@ -39,40 +39,15 @@ export class HTTPClient implements HTTPClientType {
 }
 
 export class RestClient extends HTTPClient {
-  request({ baseURL, ...rest }: HTTPRequestOptions): ZalgoPromise<{ ... }> {
-    return callRestAPI({
-      url: baseURL ?? this.baseURL ?? "",
-      accessToken: this.accessToken,
-      ...rest,
-    });
-  }
-  authRequest({
+  request({
     baseURL,
     accessToken,
     ...rest
   }: HTTPRequestOptions): ZalgoPromise<{ ... }> {
-    return request({
-      method: "post",
+    return callRestAPI({
       url: baseURL ?? this.baseURL ?? "",
-      headers: {
-        // $FlowIssue
-        Authorization: `Basic ${accessToken}`,
-      },
+      accessToken: accessToken ?? this.accessToken,
       ...rest,
-    }).then(({ body }) => {
-      if (body && body.error === "invalid_client") {
-        throw new Error(
-          `Auth Api invalid client id: \n\n${JSON.stringify(body, null, 4)}`
-        );
-      }
-
-      if (!body || !body.access_token) {
-        throw new Error(
-          `Auth Api response error:\n\n${JSON.stringify(body, null, 4)}`
-        );
-      }
-
-      return body.access_token;
     });
   }
 }
