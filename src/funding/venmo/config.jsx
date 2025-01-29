@@ -23,10 +23,15 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
       /**
-       * This could probably be removed if the enableVenmo experiment is
-       * rolled out to 100%.
+       * enableVenmo checks native browser compatibility and ramp
+       * ignore above compatibility if forcing to web
        */
-      if (experiment && experiment.enableVenmo === false) {
+      if (
+        experiment &&
+        experiment.enableVenmo === false &&
+        experiment.venmoEnableWebOnNonNativeBrowser === false &&
+        experiment.venmoWebEnabled === false
+      ) {
         return false;
       }
 
