@@ -745,16 +745,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getIntent,
       },
 
-      isFsSubscription: {
-        type: "boolean",
-        queryParam: true,
-        required: false,
-        value: ({ props }) =>
-          props.createSubscription &&
-          Boolean(getSDKToken()) &&
-          props.intent !== "subscription",
-      },
-
       jsSdkLibrary: {
         type: "string",
         queryParam: true,

@@ -148,11 +148,9 @@ const fundingEligibility = {
 };
 
 describe("Smart Payment Buttons - limit button to PayPal for FSS", () => {
-  test("should return only 1 PayPal button if isFsSubscription=true", () => {
+  test("should return only 1 PayPal button if flow=full_stack_subscription_setup", () => {
     const mockedButtonProps = {
-      // isFsSubscription is the determinant of how many buttons get shown
-      isFsSubscription: true,
-      flow: "subscription_setup",
+      flow: "full_stack_subscription_setup",
       fundingEligibility,
     };
 
@@ -174,10 +172,8 @@ describe("Smart Payment Buttons - limit button to PayPal for FSS", () => {
     expect(hasPayPalButton).toBe(true);
   });
 
-  test("should return 1 or more buttons if not isFsSubscription", () => {
+  test("should return 1 or more buttons if flow != full_stack_subscription_setup", () => {
     const mockedButtonProps = {
-      // isFsSubscription is the determinant of how many buttons get shown
-      isFsSubscription: false,
       flow: "subscription_setup",
       fundingEligibility,
     };

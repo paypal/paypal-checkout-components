@@ -615,7 +615,6 @@ export type ButtonPropsInputs = {
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  isFsSubscription: boolean,
 };
 
 export const DEFAULT_STYLE = {

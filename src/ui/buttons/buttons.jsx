@@ -134,7 +134,7 @@ export function validateButtonProps(props: ButtonPropsInputs) {
 }
 
 export function Buttons(props: ButtonsProps): ElementNode {
-  const { onClick = noop, isFsSubscription } = props;
+  const { onClick = noop } = props;
   const {
     applePaySupport,
     buyerCountry,
@@ -209,9 +209,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
   }
 
   // Set the value of the FINAL fundingSource we want to use
-  const finalFundingSources = isFsSubscription
-    ? fundingSources.filter((src) => src === FUNDING.PAYPAL)
-    : fundingSources;
+  const finalFundingSources =
+    flow === BUTTON_FLOW.FULL_STACK_SUBSCRIPTION_SETUP
+      ? fundingSources.filter((src) => src === FUNDING.PAYPAL)
+      : fundingSources;
 
   const multiple = finalFundingSources.length > 1;
 
