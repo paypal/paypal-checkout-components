@@ -63,7 +63,7 @@ export function getVenmoConfig(): FundingSourceConfig {
         platform === PLATFORM.MOBILE &&
         experiment &&
         experiment.venmoWebEnabled === false &&
-        experiment.venmoEnableOnNonNativeBrowser === false
+        experiment.venmoEnableWebOnNonNativeBrowser === false
       ) {
         return {
           native: true,

@@ -296,7 +296,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           required: false,
         },
 
-        venmoEnableOnNonNativeBrowser: {
+        venmoEnableWebOnNonNativeBrowser: {
           type: "boolean",
           queryParam: true,
           required: false,
