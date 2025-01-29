@@ -6,7 +6,7 @@ import { noop } from "@krakenjs/belter/src";
 import { describe, expect, vi } from "vitest";
 import { getEnv } from "@paypal/sdk-client/src";
 
-import { getFastlaneThreeDS } from "./utils";
+import { getThreeDS } from "./utils";
 
 vi.mock("@paypal/sdk-client/src");
 
@@ -27,7 +27,7 @@ describe("Three Domain Secure Utils", () => {
       type: "zoidComponent",
     }));
 
-    const fastlaneComponent = getFastlaneThreeDS();
+    const fastlaneComponent = getThreeDS();
     expect(fastlaneComponent).toBeDefined();
     // expect(createMock).toHaveBeenCalledTimes(1);
   });
@@ -43,7 +43,7 @@ describe("Three Domain Secure Utils", () => {
       type: "zoidComponent",
     }));
 
-    getFastlaneThreeDS();
+    getThreeDS();
 
     expect(window.xchild).toBeDefined();
     expect(window.xchild).toEqual({
