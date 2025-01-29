@@ -29,18 +29,14 @@ export function getVenmoConfig(): FundingSourceConfig {
       if (
         experiment &&
         experiment.enableVenmo === false &&
-        experiment.venmoEnableWebOnNonNativeBrowser === false &&
-        experiment.venmoWebEnabled === false
+        experiment.venmoWebEnabled !== true &&
+        experiment.venmoEnableWebOnNonNativeBrowser !== true
       ) {
         return false;
       }
 
       /**
        * Shipping callbacks will not work with Venmo unless venmo web is enabled.
-       *
-       * Note that this could cause the Venmo button to not show up on first render
-       * if a merchant passes a shipping callback but does not have a client ID
-       * that has Venmo Web enabled.
        */
       if (!experiment?.venmoWebEnabled && shippingChange) {
         return false;
@@ -67,8 +63,8 @@ export function getVenmoConfig(): FundingSourceConfig {
       if (
         platform === PLATFORM.MOBILE &&
         experiment &&
-        experiment.venmoWebEnabled === false &&
-        experiment.venmoEnableWebOnNonNativeBrowser === false
+        experiment.venmoWebEnabled !== true &&
+        experiment.venmoEnableWebOnNonNativeBrowser !== true
       ) {
         return {
           native: true,
