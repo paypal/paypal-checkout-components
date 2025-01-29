@@ -16,13 +16,13 @@ import {
   type ThreeDomainSecureComponentInterface,
 } from "./component";
 import { GraphQLClient, RestClient } from "./api";
-import { getFastlaneThreeDS } from "./utils";
+import { getThreeDS } from "./utils";
 
 const BRAINTREE_PROD = "https://payments.braintree-api.com";
 const BRAINTREE_SANDBOX = "https://payments.sandbox.braintree-api.com";
 
 export function setup() {
-  getFastlaneThreeDS();
+  getThreeDS();
 }
 export function destroy(err?: mixed) {
   zoidDestroy(err);

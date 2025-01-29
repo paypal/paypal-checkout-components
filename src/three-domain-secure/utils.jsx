@@ -18,8 +18,8 @@ import type { TDSProps } from "./types";
 
 export type TDSComponent = ZoidComponent<TDSProps>;
 
-export function getFastlaneThreeDS(): TDSComponent {
-  return inlineMemoize(getFastlaneThreeDS, () => {
+export function getThreeDS(): TDSComponent {
+  return inlineMemoize(getThreeDS, () => {
     const component = create({
       tag: "fastlane-threeds",
       url: ({ props }) => props.payerActionUrl,
