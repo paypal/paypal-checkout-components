@@ -190,6 +190,9 @@ export function Buttons(props: ButtonsProps): ElementNode {
     experiment,
     displayOnly,
   });
+  const multiple = fundingSources.length > 1;
+
+  console.log("[checkout-components] fundingSources:", fundingSources);
 
   if (!fundingSources.length) {
     throw new ValidationError(
@@ -208,21 +211,13 @@ export function Buttons(props: ButtonsProps): ElementNode {
     ];
   }
 
-  // Set the value of the FINAL fundingSource we want to use
-  const finalFundingSources =
-    flow === BUTTON_FLOW.FULL_STACK_SUBSCRIPTION_SETUP
-      ? fundingSources.filter((src) => src === FUNDING.PAYPAL)
-      : fundingSources;
-
-  const multiple = finalFundingSources.length > 1;
-
-  const isAPM = finalFundingSources.some((src) => {
+  const isAPM = fundingSources.some((src) => {
     return APM_LIST.includes(src);
   });
 
   const instruments = getWalletInstruments({
     wallet,
-    fundingSources: finalFundingSources,
+    fundingSources: fundingSources,
     layout,
     hasShippingCallback,
   });
@@ -241,7 +236,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     !fundingSource &&
     !message;
 
-  const showPoweredBy = calculateShowPoweredBy(layout, finalFundingSources);
+  const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
 
   return (
     <div
@@ -267,7 +262,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         <Message markup={messageMarkup} position={message.position} />
       ) : null}
 
-      {finalFundingSources.map((source, i) => (
+      {fundingSources.map((source, i) => (
         <Button
           content={content}
           i={index(i)}
@@ -300,7 +295,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
       {showTagline ? (
         <TagLine
-          fundingSource={finalFundingSources[0]}
+          fundingSource={fundingSources[0]}
           style={style}
           locale={locale}
           multiple={multiple}
@@ -309,7 +304,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {finalFundingSources.indexOf(FUNDING.CARD) !== -1 ? (
+      {fundingSources.indexOf(FUNDING.CARD) !== -1 ? (
         <div id="card-fields-container" class="card-fields-container" />
       ) : null}
 
