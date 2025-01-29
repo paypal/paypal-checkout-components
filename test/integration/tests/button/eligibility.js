@@ -275,9 +275,9 @@ describe("venmo button eligibility", () => {
             test: {
               onRender: expect("onRender", ({ xprops, fundingSources }) => {
                 const {
-                  experiment: { enableVenmo, venmoEnableWebOnNonNativeBrowser },
+                  experiment: { enableVenmo },
                 } = xprops;
-                if (!venmoEnableWebOnNonNativeBrowser && enableVenmo) {
+                if (enableVenmo) {
                   throw new Error(
                     `Expected venmo experiment to be ineligible: ${JSON.stringify(
                       xprops.experiment
