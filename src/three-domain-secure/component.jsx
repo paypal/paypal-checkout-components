@@ -3,22 +3,19 @@
 /* eslint-disable no-restricted-globals, promise/no-native */
 import { type LoggerType } from "@krakenjs/beaver-logger/src";
 import { type ZoidComponent } from "@krakenjs/zoid/src";
-import { base64encode } from "@krakenjs/belter/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { FPTI_KEY, CURRENCY } from "@paypal/sdk-constants/src";
 
-import { PAYMENT_3DS_VERIFICATION, AUTH } from "../constants/api";
+import { PAYMENT_3DS_VERIFICATION } from "../constants/api";
 import { ValidationError } from "../lib";
 
 import type {
   requestData,
-  responseBody,
   GqlResponse,
   MerchantPayloadData,
   SdkConfig,
   ThreeDSResponse,
   TDSProps,
-  Request,
 } from "./types";
 import { getFastlaneThreeDS } from "./utils";
 import type { GraphQLClient, RestClient } from "./api";
@@ -100,34 +97,8 @@ export class ThreeDomainSecureComponent {
     this.fastlaneNonce = merchantPayload.nonce;
 
     try {
-      const basicAuth = base64encode(`${this.sdkConfig.clientID}:`);
-      const authData = {
-        grant_type: `client_credentials`,
-      };
-
-      if (this.sdkConfig.merchantID?.length) {
-        // $FlowFixMe invalid error on key assignment
-        authData.target_subject = this.sdkConfig.merchantID[0];
-      }
       // $FlowFixMe
-      const accessToken = await this.restClient.authRequest<Request, string>({
-        baseURL: `${this.sdkConfig.paypalApiDomain}${AUTH}`,
-        accessToken: `${basicAuth}`,
-        data: authData,
-      });
-      // $FlowIssue confusing ZalgoPromise return type with resolved string value
-      this.restClient.setAccessToken(accessToken);
-    } catch (error) {
-      this.logger.warn(error);
-      throw error;
-    }
-
-    try {
-      // $FlowFixMe
-      const { status, links } = await this.restClient.request<
-        requestData,
-        responseBody
-      >({
+      const { status, links } = await this.restClient.request({
         method: "POST",
         baseURL: `${this.sdkConfig.paypalApiDomain}/${PAYMENT_3DS_VERIFICATION}`,
         data,
