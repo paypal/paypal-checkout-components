@@ -157,14 +157,11 @@ export function getVenmoExperiment(): EligibilityExperiment {
   const enableFunding = getEnableFunding();
   const isVenmoFundingEnabled =
     enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
-  const isNativeSupported = isSupportedNativeBrowser();
   const isExperimentEnabled = experiment && experiment.isEnabled();
 
   if (isDevice()) {
     return {
-      enableVenmo: Boolean(
-        (isExperimentEnabled || isVenmoFundingEnabled) && isNativeSupported
-      ),
+      enableVenmo: Boolean(isExperimentEnabled || isVenmoFundingEnabled),
     };
   } else {
     return {
