@@ -192,8 +192,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
   });
   const multiple = fundingSources.length > 1;
 
-  console.log("[checkout-components] fundingSources:", fundingSources);
-
   if (!fundingSources.length) {
     throw new ValidationError(
       `No eligible funding fundingSources found to render buttons:\n\n${JSON.stringify(
@@ -217,7 +215,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
 
   const instruments = getWalletInstruments({
     wallet,
-    fundingSources: fundingSources,
+    fundingSources,
     layout,
     hasShippingCallback,
   });
