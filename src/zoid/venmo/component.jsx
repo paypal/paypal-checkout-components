@@ -296,6 +296,12 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           required: false,
         },
 
+        venmoEnableOnNonNativeBrowser: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
+
         venmoVaultEnabled: {
           type: "boolean",
           queryParam: true,
