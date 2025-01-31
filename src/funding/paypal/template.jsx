@@ -12,6 +12,7 @@ import {
   PPLogoInlineSVG,
   PayPalLogoExternalImage,
   PayPalLogoInlineSVG,
+  PayPalRebrandLogoInlineSVG,
   CreditLogoExternalImage,
   CreditLogoInlineSVG,
   CreditMarkExternalImage,
@@ -46,12 +47,22 @@ import {
 
 import css from "./style.scoped.scss";
 
-export function Logo({ logoColor }: LogoOptions): ChildType {
-  return __WEB__ ? (
-    <PayPalLogoExternalImage logoColor={logoColor} />
-  ) : (
-    <PayPalLogoInlineSVG logoColor={logoColor} />
-  );
+export function Logo({ logoColor, experiment }: LogoOptions): ChildType {
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
+
+  if (defaultBlueButtonColor === "gold" || !isPaypalRebrandEnabled) {
+    // csnw globals.js
+    return __WEB__ ? (
+      // helps reduce bundle size by fetching logos
+      <PayPalLogoExternalImage logoColor={logoColor} />
+    ) : (
+      // cdnx/sdk-logo/xxxx/paypal-gold.svg
+      // use for server side rendering
+      <PayPalLogoInlineSVG logoColor={logoColor} />
+    );
+  }
+
+  return <PayPalRebrandLogoInlineSVG logoColor={logoColor} />;
 }
 
 function getPersonalizationText({

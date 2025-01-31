@@ -13,8 +13,13 @@ import {
   CLASS,
   ATTRIBUTE,
 } from "../../../constants";
-import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
+import {
+  BUTTON_SIZE_STYLE,
+  BUTTON_RELATIVE_STYLE,
+  BUTTON_REBRAND_SIZE_STYLE,
+} from "../config";
 import { isBorderRadiusNumber } from "../util";
+import type { Experiment } from "../../../types";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -28,16 +33,29 @@ export function buttonResponsiveStyle({
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
+  experiment = {},
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
+  experiment: Experiment,
 |}): string {
-  return Object.keys(BUTTON_SIZE_STYLE)
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
+  const color = defaultBlueButtonColor;
+
+  const shouldApplyRebrandedStyles = isPaypalRebrandEnabled && color !== "gold";
+  const buttonSizeStyle = shouldApplyRebrandedStyles
+    ? BUTTON_REBRAND_SIZE_STYLE
+    : BUTTON_SIZE_STYLE;
+
+  console.log(`shouldApplyRebrandedStyles: ${shouldApplyRebrandedStyles}`);
+  console.log(`color: ${color}`);
+
+  return Object.keys(buttonSizeStyle)
     .map((size) => {
-      const style = BUTTON_SIZE_STYLE[size];
+      const style = buttonSizeStyle[size];
 
       const buttonHeight = height || style.defaultHeight;
       const minDualWidth = Math.max(
@@ -55,12 +73,17 @@ export function buttonResponsiveStyle({
 
       const textPercPercentage = shouldResizeLabel ? 32 : 36;
       const labelPercPercentage = shouldResizeLabel ? 32 : 35;
-      const smallerLabelHeight = max(
+      let smallerLabelHeight = max(
         roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
         12
       );
+      let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
-      const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+      if (shouldApplyRebrandedStyles) {
+        const rebrandStyle = BUTTON_REBRAND_SIZE_STYLE[size];
+        labelHeight = rebrandStyle.logoHeight;
+        smallerLabelHeight = labelHeight;
+      }
 
       const pillBorderRadius = Math.ceil(buttonHeight / 2);
 

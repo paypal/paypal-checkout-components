@@ -12,13 +12,14 @@ export const BUTTON_LABEL = {
 
 export const BUTTON_COLOR = {
   DEFAULT: ("default": "default"),
+  DEFAULT_BLUE_LIGHT_BLUE: ("defaultBlue_lightBlue": "defaultBlue_lightBlue"),
+  DEFAULT_BLUE_DARK_BLUE: ("defaultBlue_darkBlue": "defaultBlue_darkBlue"),
   GOLD: ("gold": "gold"),
   BLUE: ("blue": "blue"),
   SILVER: ("silver": "silver"),
   DARKBLUE: ("darkblue": "darkblue"),
   BLACK: ("black": "black"),
   WHITE: ("white": "white"),
-  TRANSPARENT: ("transparent": "transparent"),
 };
 
 export const TEXT_COLOR = {
@@ -34,6 +35,12 @@ export const BUTTON_SIZE = {
   LARGE: ("large": "large"),
   HUGE: ("huge": "huge"),
   RESPONSIVE: ("responsive": "responsive"),
+};
+
+export const BUTTON_SIZE_REBRAND = {
+  MEDIUM: ("medium": "medium"),
+  LARGE: ("large": "large"),
+  HUGE: ("huge": "huge"),
 };
 
 export const BUTTON_SHAPE = {

@@ -97,6 +97,7 @@ export function Button({
   vault,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
 
   const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -126,9 +127,13 @@ export function Button({
     color = colors[0];
   }
 
+  if (isPaypalRebrandEnabled) {
+    color = defaultBlueButtonColor;
+  }
   // The secondary colors are used to render the smart stack (multiple buttons)
   // they keep track of the mapping of the color style prop to the
   if (multiple && i > 0) {
+    color = color === "default_blue_a" || color === "default_blue_b";
     if (
       secondaryColors[color] &&
       colors.indexOf(secondaryColors[color] !== -1)
@@ -147,6 +152,8 @@ export function Button({
     logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
   const textColor =
     textColors[color] || textColors[TEXT_COLOR.DEFAULT] || TEXT_COLOR.DEFAULT;
+
+  console.log(`color: ${color}`);
 
   const { Label, WalletLabel, Logo, showWalletMenu } = fundingConfig;
 

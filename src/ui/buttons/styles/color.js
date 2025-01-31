@@ -25,6 +25,30 @@ export const buttonColorStyle = `
         border-top-color: rgba(255, 255, 255, .85);
     }
 
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE} .menu-button {
+        background: #60CDFF;
+    }
+
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE}:hover {
+            filter: brightness(0.95);
+            overflow: inherit;
+        }
+    }
+
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE} .menu-button {
+        background: #002991;
+    }
+
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE}:hover {
+            filter: brightness(0.95);
+            overflow: inherit;
+        }
+    }
+
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD} .menu-button {
         background: #ffc439;
