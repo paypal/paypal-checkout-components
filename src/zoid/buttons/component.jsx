@@ -42,6 +42,7 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
+  isPayPalTrustedUrl,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -294,13 +295,22 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     props: {
-      // App Switch Properties
       appSwitchWhenAvailable: {
-        // this value is a string for now while we test the app switch
-        // feature. Before we give this to a real merchant, we should
-        // change this to a boolean - Shane 11 Dec 2024
-        type: "string",
+        type: "boolean",
+        queryParam: true,
         required: false,
+      },
+
+      redirect: {
+        type: "function",
+        sendToChild: true,
+        value: () => (url) => {
+          if (isPayPalTrustedUrl(url)) {
+            location.href = url;
+          } else {
+            throw new Error(`Unable to redirect to provided url ${url}`);
+          }
+        },
       },
 
       hashChangeHandler: {

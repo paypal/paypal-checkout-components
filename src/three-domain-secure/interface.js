@@ -5,7 +5,6 @@ import {
   getPayPalAPIDomain,
   getSDKToken,
   getClientID,
-  getMerchantID,
 } from "@paypal/sdk-client/src";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
@@ -17,13 +16,13 @@ import {
   type ThreeDomainSecureComponentInterface,
 } from "./component";
 import { GraphQLClient, RestClient } from "./api";
-import { getFastlaneThreeDS } from "./utils";
+import { getThreeDS } from "./utils";
 
 const BRAINTREE_PROD = "https://payments.braintree-api.com";
 const BRAINTREE_SANDBOX = "https://payments.sandbox.braintree-api.com";
 
 export function setup() {
-  getFastlaneThreeDS();
+  getThreeDS();
 }
 export function destroy(err?: mixed) {
   zoidDestroy(err);
@@ -34,7 +33,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
     __get__: () => {
       const threeDomainSecureInstance = new ThreeDomainSecureComponent({
         logger: getLogger(),
-        restClient: new RestClient(),
+        restClient: new RestClient({ accessToken: getSDKToken() }),
         graphQLClient: new GraphQLClient({
           baseURL:
             getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
@@ -45,7 +44,6 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
           authenticationToken: getSDKToken(),
           paypalApiDomain: getPayPalAPIDomain(),
           clientID: getClientID(),
-          merchantID: getMerchantID(),
         },
       });
       return devEnvOnlyExport({

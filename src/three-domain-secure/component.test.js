@@ -12,7 +12,7 @@ const defaultSdkConfig = {
   authenticationToken: "sdk-client-token",
 };
 vi.mock("./utils", () => ({
-  getFastlaneThreeDS: vi.fn(() => {
+  getThreeDS: vi.fn(() => {
     return vi.fn(() => ({
       render: vi.fn().mockResolvedValue({}),
       close: vi.fn(),
@@ -45,7 +45,6 @@ const mockRestClient = {
       },
     ],
   }),
-  authRequest: vi.fn(),
 };
 
 const mockEligibilityRequest = (body = defaultEligibilityResponse) => {

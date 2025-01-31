@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.347",
+  "version": "5.0.348",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "debug": "cross-env NODE_ENV=debug",
     "delete-size": "rm dist/size.* dist/report.html",
     "demo": "serve ./demo -l 1337",
-    "dev": "npm run check-node-version && babel-node $(npm bin)/webpack-dev-server -- --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open /index.htm --https --hot=false --static './demo/dev'",
+    "dev": "npm run check-node-version && babel-node ./node_modules/.bin/webpack-dev-server -- --config webpack.config.dev.js --port 9001 --host localhost.paypal.com --open /index.htm --https --hot=false --static './demo/dev'",
     "eslint-find-rules": "eslint-find-rules --current .eslintrc.js --unused --plugin",
     "flow": "flow",
     "flow-typed": "rm -rf flow-typed && flow-typed install && rm flow-typed/npm/puppeteer_*",
@@ -21,7 +21,7 @@
     "jest-e2e": "rm -f ./test/e2e/screenshots/*.png && jest test/e2e",
     "jest-screenshot": "jest test/screenshot --env=node --no-cache",
     "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
-    "karma": "cross-env NODE_ENV=test babel-node $(npm bin)/karma start",
+    "karma": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/karma start",
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
     "postversion": "./scripts/postversion.sh",
     "preversion": "./scripts/preversion.sh",
@@ -34,10 +34,14 @@
     "typecheck": "npm run flow",
     "version": "./scripts/version.sh",
     "vitest": "vitest",
-    "webpack": "babel-node $(npm bin)/webpack --",
+    "webpack": "babel-node ./node_modules/.bin/webpack --",
     "webpack-size": "npm run webpack -- --config webpack.config.size",
     "prepare": "husky install",
     "screenshot-server": "babel-node ./test/percy/server/index.js"
+  },
+  "engines": {
+    "node": "^18",
+    "npm": "8"
   },
   "files": [
     "src/",

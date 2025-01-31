@@ -11,7 +11,7 @@ import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
 import { ThreeDomainSecureComponent } from "./component";
 import { GraphQLClient, RestClient } from "./api";
-import { getFastlaneThreeDS } from "./utils";
+import { getThreeDS } from "./utils";
 import { setup, destroy, ThreeDomainSecureClient } from "./interface";
 
 vi.mock("@paypal/sdk-client/src");
@@ -23,7 +23,7 @@ vi.mock("./utils");
 describe("ThreeDomainSecure interface", () => {
   it("should setup and destroy", () => {
     setup();
-    expect(getFastlaneThreeDS).toHaveBeenCalledTimes(1);
+    expect(getThreeDS).toHaveBeenCalledTimes(1);
 
     const err = new Error("test error");
     destroy(err);

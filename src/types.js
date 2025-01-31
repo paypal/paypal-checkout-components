@@ -64,6 +64,7 @@ export type Experiment = {|
   venmoVaultWithoutPurchase?: boolean,
   isPaypalRebrandEnabled?: boolean,
   defaultBlueButtonColor?: string,
+  venmoEnableWebOnNonNativeBrowser?: boolean,
 |};
 
 export type Requires = {|
