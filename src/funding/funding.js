@@ -9,8 +9,10 @@ import {
   FUNDING,
   COMPONENTS,
   DISPLAY_ONLY_VALUES,
+  INTENT,
 } from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import type { Wallet, Experiment } from "../types";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
@@ -35,6 +37,9 @@ type IsFundingEligibleOptions = {|
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  intent?: $Values<typeof INTENT>,
+  createSubscription?: () => ZalgoPromise<string> | string,
+  sdkToken?: string,
 |};
 
 function isFundingVaultable({
@@ -84,6 +89,9 @@ export function isFundingEligible(
     supportedNativeBrowser,
     experiment,
     displayOnly,
+    intent,
+    createSubscription,
+    sdkToken,
   }: IsFundingEligibleOptions
 ): boolean {
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
@@ -132,6 +140,8 @@ export function isFundingEligible(
       ),
       wallet,
       displayOnly,
+      intent,
+      createSubscription,
     })
   ) {
     return false;
@@ -204,6 +214,9 @@ export function determineEligibleFunding({
   supportedNativeBrowser,
   experiment,
   displayOnly = [],
+  intent,
+  createSubscription,
+  sdkToken,
 }: {|
   fundingSource: ?$Values<typeof FUNDING>,
   remembered: $ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -223,6 +236,9 @@ export function determineEligibleFunding({
   supportedNativeBrowser: boolean,
   experiment: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  intent?: $Values<typeof INTENT>,
+  createSubscription?: () => ZalgoPromise<string> | string,
+  sdkToken?: string,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -247,6 +263,9 @@ export function determineEligibleFunding({
       supportedNativeBrowser,
       experiment,
       displayOnly,
+      intent,
+      createSubscription,
+      sdkToken,
     })
   );
 

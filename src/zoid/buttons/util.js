@@ -197,6 +197,7 @@ export function getRenderedButtons(
     createSubscription,
     createVaultSetupToken,
     displayOnly,
+    intent,
   } = props;
 
   const flow = determineFlow({
@@ -227,6 +228,9 @@ export function getRenderedButtons(
     supportedNativeBrowser,
     experiment,
     displayOnly,
+    intent,
+    // $FlowIgnore[incompatible-call]
+    createSubscription,
   });
   return renderedButtons;
 }

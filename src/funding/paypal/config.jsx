@@ -2,7 +2,11 @@
 /** @jsx node */
 
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
-import { FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
+import {
+  FUNDING_BRAND_LABEL,
+  DISPLAY_ONLY_VALUES,
+  INTENT,
+} from "@paypal/sdk-constants/src";
 
 import {
   BUTTON_COLOR,
@@ -42,6 +46,18 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+    },
+
+    eligible: ({ createSubscription, intent, displayOnly }) => {
+      if (
+        createSubscription &&
+        intent !== INTENT.SUBSCRIPTION &&
+        displayOnly?.includes(DISPLAY_ONLY_VALUES.SUBSCRIBABLE)
+      ) {
+        return false;
+      }
+
+      return true;
     },
 
     labelText: ({ content, label, period }) => {

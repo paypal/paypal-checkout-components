@@ -3,6 +3,7 @@
 /** @jsx node */
 
 import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
 import {
   PLATFORM,
@@ -13,6 +14,7 @@ import {
   FUNDING,
   ENV,
   DISPLAY_ONLY_VALUES,
+  INTENT,
 } from "@paypal/sdk-constants/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 
@@ -117,6 +119,8 @@ export type FundingSourceConfig = {|
     shippingChange?: ?boolean,
     wallet: ?Wallet,
     displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+    intent?: $Values<typeof INTENT>,
+    createSubscription?: () => ZalgoPromise<string> | string,
   |}) => boolean,
   Logo: (LogoOptions) => ChildType,
   Mark?: () => ChildType,
