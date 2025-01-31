@@ -32,7 +32,14 @@ export const buttonColorStyle = `
 
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE}:hover {
-            filter: brightness(0.95);
+            background: #008CFF;
+            overflow: inherit;
+        }
+    }
+    
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE}:active {
+            background: #E3F7FF;
             overflow: inherit;
         }
     }
@@ -44,7 +51,14 @@ export const buttonColorStyle = `
 
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE}:hover {
-            filter: brightness(0.95);
+            background: #0038BA;
+            overflow: inherit;
+        }
+    }
+    
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE}:active {
+            background: #0057D9;
             overflow: inherit;
         }
     }

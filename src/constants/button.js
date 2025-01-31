@@ -20,6 +20,7 @@ export const BUTTON_COLOR = {
   DARKBLUE: ("darkblue": "darkblue"),
   BLACK: ("black": "black"),
   WHITE: ("white": "white"),
+  TRANSPARENT: ("transparent": "transparent"),
 };
 
 export const TEXT_COLOR = {
@@ -37,7 +38,8 @@ export const BUTTON_SIZE = {
   RESPONSIVE: ("responsive": "responsive"),
 };
 
-export const BUTTON_SIZE_REBRAND = {
+// I think we can remove this
+export const BUTTON_SIZE_AB_TEST = {
   MEDIUM: ("medium": "medium"),
   LARGE: ("large": "large"),
   HUGE: ("huge": "huge"),
