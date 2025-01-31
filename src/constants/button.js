@@ -38,13 +38,6 @@ export const BUTTON_SIZE = {
   RESPONSIVE: ("responsive": "responsive"),
 };
 
-// I think we can remove this
-export const BUTTON_SIZE_AB_TEST = {
-  MEDIUM: ("medium": "medium"),
-  LARGE: ("large": "large"),
-  HUGE: ("huge": "huge"),
-};
-
 export const BUTTON_SHAPE = {
   PILL: ("pill": "pill"),
   RECT: ("rect": "rect"),
