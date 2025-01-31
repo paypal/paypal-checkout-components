@@ -41,6 +41,8 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE]: LOGO_COLOR.DARK_BLUE,
     },
 
     labelText: ({ content, label, period }) => {

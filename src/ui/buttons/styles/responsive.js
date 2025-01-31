@@ -15,6 +15,7 @@ import {
 } from "../../../constants";
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
 import { isBorderRadiusNumber } from "../util";
+import type { Experiment } from "../../../types";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -28,13 +29,20 @@ export function buttonResponsiveStyle({
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
+  experiment = {},
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
+  experiment: Experiment,
 |}): string {
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
+  const color = defaultBlueButtonColor;
+
+  const shouldApplyRebrandedStyles = isPaypalRebrandEnabled && color !== "gold";
+
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
       const style = BUTTON_SIZE_STYLE[size];
@@ -55,12 +63,18 @@ export function buttonResponsiveStyle({
 
       const textPercPercentage = shouldResizeLabel ? 32 : 36;
       const labelPercPercentage = shouldResizeLabel ? 32 : 35;
-      const smallerLabelHeight = max(
+      let smallerLabelHeight = max(
         roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
         12
       );
+      let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
-      const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+      if (shouldApplyRebrandedStyles) {
+        labelHeight = roundUp(perc(buttonHeight, 76));
+        // smallerLabelHeight gets triggered at widths < 320px
+        // We will need to investigate why the labels need to get significantly smaller at this breakpoint
+        smallerLabelHeight = labelHeight;
+      }
 
       const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
