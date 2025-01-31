@@ -32,17 +32,6 @@ type ButtonStyleMap = {
     maxHeight: number,
   |},
 };
-type ButtonRebrandStyleMap = {
-  [$Values<typeof BUTTON_SIZE>]: {|
-    defaultWidth: number,
-    defaultHeight: number,
-    minWidth: number,
-    maxWidth: number,
-    minHeight: number,
-    maxHeight: number,
-    logoHeight: number,
-  |},
-};
 
 export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
   [BUTTON_SIZE.TINY]: {
@@ -88,47 +77,5 @@ export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
     maxWidth: 750,
     minHeight: 40,
     maxHeight: 55,
-  },
-};
-
-export const BUTTON_REBRAND_SIZE_STYLE: ButtonRebrandStyleMap = {
-  [BUTTON_SIZE.SMALL]: {
-    defaultWidth: 150,
-    defaultHeight: 25,
-    minWidth: 150,
-    maxWidth: 200,
-    minHeight: 25,
-    maxHeight: 55,
-    logoHeight: 17,
-  },
-
-  [BUTTON_SIZE.MEDIUM]: {
-    defaultWidth: 250,
-    defaultHeight: 35,
-    minWidth: 200,
-    maxWidth: 300,
-    minHeight: 35,
-    maxHeight: 55,
-    logoHeight: 27,
-  },
-
-  [BUTTON_SIZE.LARGE]: {
-    defaultWidth: 350,
-    defaultHeight: 45,
-    minWidth: 300,
-    maxWidth: 500,
-    minHeight: 30,
-    maxHeight: 55,
-    logoHeight: 37,
-  },
-
-  [BUTTON_SIZE.HUGE]: {
-    defaultWidth: 500,
-    defaultHeight: 55,
-    minWidth: 500,
-    maxWidth: 750,
-    minHeight: 40,
-    maxHeight: 55,
-    logoHeight: 47,
   },
 };

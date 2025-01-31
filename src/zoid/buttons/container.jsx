@@ -6,17 +6,8 @@ import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
 import { getVersion } from "@paypal/sdk-client/src";
 
-import {
-  BUTTON_SIZE,
-  BUTTON_SIZE_REBRAND,
-  ATTRIBUTE,
-  MENU_PLACEMENT,
-} from "../../constants";
-import {
-  BUTTON_SIZE_STYLE,
-  BUTTON_REBRAND_SIZE_STYLE,
-  MINIMUM_SIZE,
-} from "../../ui/buttons/config";
+import { BUTTON_SIZE, ATTRIBUTE, MENU_PLACEMENT } from "../../constants";
+import { BUTTON_SIZE_STYLE, MINIMUM_SIZE } from "../../ui/buttons/config";
 import { type ButtonProps } from "../../ui/buttons/props";
 
 const CLASS = {
@@ -71,8 +62,7 @@ export function containerTemplate({
   });
 
   // $FlowFixMe
-  const { style, experiment, nonce } = props;
-  const { isPaypalRebrandEnabled } = experiment;
+  const { style, nonce } = props;
   const {
     label,
     layout,
@@ -81,22 +71,15 @@ export function containerTemplate({
     disableMaxHeight,
   } = style;
 
-  let minimumSize = isPaypalRebrandEnabled
-    ? BUTTON_SIZE.SMALL
-    : MINIMUM_SIZE[layout];
-  const buttonSizeStyle = isPaypalRebrandEnabled
-    ? BUTTON_REBRAND_SIZE_STYLE
-    : BUTTON_SIZE_STYLE;
-
-  const buttonSize = isPaypalRebrandEnabled ? BUTTON_SIZE_REBRAND : BUTTON_SIZE;
+  let minimumSize = MINIMUM_SIZE[layout];
 
   if (buttonHeight && !disableMaxHeight) {
-    const possibleSizes = values(buttonSize).filter((possibleSize) => {
+    const possibleSizes = values(BUTTON_SIZE).filter((possibleSize) => {
       return (
-        buttonSizeStyle[possibleSize] &&
+        BUTTON_SIZE_STYLE[possibleSize] &&
         buttonHeight &&
-        buttonSizeStyle[possibleSize].minHeight <= buttonHeight &&
-        buttonSizeStyle[possibleSize].maxHeight >= buttonHeight
+        BUTTON_SIZE_STYLE[possibleSize].minHeight <= buttonHeight &&
+        BUTTON_SIZE_STYLE[possibleSize].maxHeight >= buttonHeight
       );
     });
 
@@ -106,11 +89,12 @@ export function containerTemplate({
         sizeB: $Values<typeof BUTTON_SIZE>
       ): number => {
         return (
-          buttonSizeStyle[sizeA].defaultWidth -
-          buttonSizeStyle[sizeB].defaultWidth
+          BUTTON_SIZE_STYLE[sizeA].defaultWidth -
+          BUTTON_SIZE_STYLE[sizeB].defaultWidth
         );
       }
     );
+
     minimumSize = possibleSizes[0];
   }
 
@@ -142,8 +126,10 @@ export function containerTemplate({
                         position: relative;
                         display: inline-block;
                         width: 100%;
-                        min-height: ${buttonSizeStyle[minimumSize].minHeight}px;
-                        min-width: ${buttonSizeStyle[minimumSize].minWidth}px;
+                        min-height: ${
+                          BUTTON_SIZE_STYLE[minimumSize].minHeight
+                        }px;
+                        min-width: ${BUTTON_SIZE_STYLE[minimumSize].minWidth}px;
                         font-size: 0;
                     }
 

@@ -13,11 +13,7 @@ import {
   CLASS,
   ATTRIBUTE,
 } from "../../../constants";
-import {
-  BUTTON_SIZE_STYLE,
-  BUTTON_RELATIVE_STYLE,
-  BUTTON_REBRAND_SIZE_STYLE,
-} from "../config";
+import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
 import { isBorderRadiusNumber } from "../util";
 import type { Experiment } from "../../../types";
 
@@ -46,16 +42,10 @@ export function buttonResponsiveStyle({
   const color = defaultBlueButtonColor;
 
   const shouldApplyRebrandedStyles = isPaypalRebrandEnabled && color !== "gold";
-  const buttonSizeStyle = shouldApplyRebrandedStyles
-    ? BUTTON_REBRAND_SIZE_STYLE
-    : BUTTON_SIZE_STYLE;
 
-  console.log(`shouldApplyRebrandedStyles: ${shouldApplyRebrandedStyles}`);
-  console.log(`color: ${color}`);
-
-  return Object.keys(buttonSizeStyle)
+  return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
-      const style = buttonSizeStyle[size];
+      const style = BUTTON_SIZE_STYLE[size];
 
       const buttonHeight = height || style.defaultHeight;
       const minDualWidth = Math.max(
@@ -80,8 +70,9 @@ export function buttonResponsiveStyle({
       let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
       if (shouldApplyRebrandedStyles) {
-        const rebrandStyle = BUTTON_REBRAND_SIZE_STYLE[size];
-        labelHeight = rebrandStyle.logoHeight;
+        labelHeight = roundUp(perc(buttonHeight, 76));
+        // smallerLabelHeight gets triggered at widths < 320px
+        // We will need to investigate why the labels need to get significantly smaller at this breakpoint
         smallerLabelHeight = labelHeight;
       }
 
