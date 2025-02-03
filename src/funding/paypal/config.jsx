@@ -33,6 +33,8 @@ export function getPayPalConfig(): FundingSourceConfig {
       BUTTON_COLOR.SILVER,
       BUTTON_COLOR.BLACK,
       BUTTON_COLOR.WHITE,
+      BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE,
+      BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE,
     ],
 
     logoColors: {
