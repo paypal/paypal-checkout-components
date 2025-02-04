@@ -615,9 +615,6 @@ export type ButtonPropsInputs = {
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  intent?: $Values<typeof INTENT>,
-  createSubscription?: () => ZalgoPromise<string> | string,
-  sdkToken?: string,
 };
 
 export const DEFAULT_STYLE = {

@@ -6,8 +6,6 @@ import {
   FUNDING,
   WALLET_INSTRUMENT,
   APM_LIST,
-  INTENT,
-  DISPLAY_ONLY_VALUES,
 } from "@paypal/sdk-constants/src";
 import { noop } from "@krakenjs/belter/src";
 
@@ -136,7 +134,7 @@ export function validateButtonProps(props: ButtonPropsInputs) {
 }
 
 export function Buttons(props: ButtonsProps): ElementNode {
-  const { onClick = noop, intent, createSubscription, sdkToken } = props;
+  const { onClick = noop } = props;
   const {
     applePaySupport,
     buyerCountry,
@@ -191,17 +189,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     experiment,
     displayOnly,
-    intent,
-    createSubscription,
-    sdkToken,
   });
   const multiple = fundingSources.length > 1;
-
-  // Confirm if this is what we're supposed to do
-  if (createSubscription && intent !== INTENT.SUBSCRIPTION && sdkToken) {
-    // Error: read-only arrays cannot be written to
-    // displayOnly[0] = DISPLAY_ONLY_VALUES.SUBSCRIBABLE
-  }
 
   if (!fundingSources.length) {
     throw new ValidationError(
