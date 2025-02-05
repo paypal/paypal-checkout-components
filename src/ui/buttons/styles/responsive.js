@@ -70,7 +70,7 @@ export function buttonResponsiveStyle({
       let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
       if (shouldApplyRebrandedStyles) {
-        labelHeight = roundUp(perc(buttonHeight, 76));
+        labelHeight = roundUp(perc(buttonHeight, 76), 1);
         // smallerLabelHeight gets triggered at widths < 320px
         // We will need to investigate why the labels need to get significantly smaller at this breakpoint
         smallerLabelHeight = labelHeight;

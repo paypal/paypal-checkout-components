@@ -2,6 +2,8 @@
 
 import { CARD, WALLET_INSTRUMENT } from "@paypal/sdk-constants/src";
 
+import { BUTTON_COLOR } from "./constants";
+
 export type SecondaryInstruments = $ReadOnlyArray<{|
   type: string,
   label: string,
@@ -63,7 +65,7 @@ export type Experiment = {|
   // first render experiments
   venmoVaultWithoutPurchase?: boolean,
   isPaypalRebrandEnabled?: boolean,
-  defaultBlueButtonColor?: string,
+  defaultBlueButtonColor?: $Values<typeof BUTTON_COLOR>,
   venmoEnableWebOnNonNativeBrowser?: boolean,
 |};
 

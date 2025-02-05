@@ -128,7 +128,7 @@ export function Button({
   }
 
   if (isPaypalRebrandEnabled) {
-    color = defaultBlueButtonColor;
+    color = defaultBlueButtonColor || "gold";
   }
   // The secondary colors are used to render the smart stack (multiple buttons)
   // they keep track of the mapping of the color style prop to the
