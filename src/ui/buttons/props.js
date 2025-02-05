@@ -649,7 +649,7 @@ export function normalizeButtonStyle(
 
   props = props || getDefaultButtonPropsInput();
   const { fundingSource, experiment } = props;
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
