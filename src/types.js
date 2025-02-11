@@ -62,6 +62,7 @@ export type Experiment = {|
   venmoWebEnabled?: boolean,
   // first render experiments
   venmoVaultWithoutPurchase?: boolean,
+  venmoEnableWebOnNonNativeBrowser?: boolean,
 |};
 
 export type Requires = {|

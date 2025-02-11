@@ -1,3 +1,15 @@
+## <small>5.0.349 (2025-02-05)</small>
+
+* chore(release): 5.0.348 🎉 ([0b923aa](https://github.com/paypal/paypal-checkout-components/commit/0b923aa))
+
+
+
+## <small>5.0.348 (2025-01-29)</small>
+
+* feature(venmo): add venmoEnableOnNonNativeBrowser experiment (#2468) ([e14fc3e](https://github.com/paypal/paypal-checkout-components/commit/e14fc3e)), closes [#2468](https://github.com/paypal/paypal-checkout-components/issues/2468)
+
+
+
 ## <small>5.0.347 (2025-01-08)</small>
 
 * support visibility change for manual app switch flow (#2460) ([3d1bb8f](https://github.com/paypal/paypal-checkout-components/commit/3d1bb8f)), closes [#2460](https://github.com/paypal/paypal-checkout-components/issues/2460)
