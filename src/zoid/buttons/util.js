@@ -27,8 +27,9 @@ import {
   getPayPalDomain,
   getFirstRenderExperiments,
   getSDKToken,
+  getIntent,
 } from "@paypal/sdk-client/src";
-import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
+import { FUNDING, FPTI_KEY, INTENT } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
 import type { Experiment as EligibilityExperiment } from "../../types";
@@ -85,7 +86,7 @@ export function determineFlow(
   } else if (props.createBillingAgreement) {
     return BUTTON_FLOW.BILLING_SETUP;
   } else if (props.createSubscription) {
-    if (Boolean(getSDKToken()) && props.intent !== "subscription") {
+    if (Boolean(getSDKToken()) && getIntent() !== INTENT.SUBSCRIPTION) {
       return BUTTON_FLOW.FULL_STACK_SUBSCRIPTION_SETUP;
     }
     return BUTTON_FLOW.SUBSCRIPTION_SETUP;
