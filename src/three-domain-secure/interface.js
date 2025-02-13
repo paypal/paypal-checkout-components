@@ -8,7 +8,6 @@ import {
 } from "@paypal/sdk-client/src";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
-import { devEnvOnlyExport } from "../lib";
 import type { LazyExport } from "../types";
 
 import {
@@ -46,9 +45,9 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
           clientID: getClientID(),
         },
       });
-      return devEnvOnlyExport({
+      return {
         isEligible: (payload) => threeDomainSecureInstance.isEligible(payload),
         show: () => threeDomainSecureInstance.show(),
-      });
+      };
     },
   };
