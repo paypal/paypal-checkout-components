@@ -11,6 +11,7 @@ import {
   PPLogoExternalImage,
   PPLogoInlineSVG,
   PayPalLogoExternalImage,
+  PayPalRebrandLogoExternalImage,
   PayPalLogoInlineSVG,
   PayPalRebrandLogoInlineSVG,
   CreditLogoExternalImage,
@@ -62,7 +63,15 @@ export function Logo({ logoColor, experiment }: LogoOptions): ChildType {
     );
   }
 
-  return <PayPalRebrandLogoInlineSVG logoColor={logoColor} />;
+  // csnw globals.js
+  return __WEB__ ? (
+    // helps reduce bundle size by fetching logos
+    <PayPalRebrandLogoExternalImage logoColor={logoColor} />
+  ) : (
+    // cdnx/sdk-logo/xxxx/paypal-gold.svg
+    // use for server side rendering
+    <PayPalRebrandLogoInlineSVG logoColor={logoColor} />
+  );
 }
 
 function getPersonalizationText({
