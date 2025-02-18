@@ -43,6 +43,7 @@ import {
   getJsSdkLibrary,
   wasShopperInsightsUsed,
   isPayPalTrustedUrl,
+  getSDKInitTime,
   getSDKToken,
 } from "@paypal/sdk-client/src";
 import {
@@ -304,7 +305,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: true,
         value: () => (url) => {
-          if (isPayPalTrustedUrl(url)) {
+          if (getEnv() === ENV.LOCAL || isPayPalTrustedUrl(url)) {
             location.href = url;
           } else {
             throw new Error(`Unable to redirect to provided url ${url}`);
@@ -1066,6 +1067,47 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         value: getCorrelationID,
         queryParam: true,
+      },
+
+      sdkInitTimings: {
+        type: "object",
+        queryParam: false,
+        required: false,
+        value: () => {
+          // eslint-disable-next-line compat/compat
+          const sdkScript = window?.performance
+            ?.getEntriesByType("resource")
+            // eslint-disable-next-line security/detect-unsafe-regex
+            .find(({ name }) => /paypal\.com(?::\d+)?\/sdk\/js/.test(name));
+
+          const isCached = (performanceEntry) => {
+            if (
+              !performanceEntry ||
+              typeof performanceEntry.duration === "undefined"
+            ) {
+              return "unknown";
+            }
+
+            return performanceEntry.duration === 0 ? "yes" : "no";
+          };
+
+          let sdkInitTimeStamp;
+
+          // this technically isn't possible with the way paypal-sdk-client
+          // is set up but one day it could be refactored and this would throw
+          // an error and block the button from rendering
+          try {
+            sdkInitTimeStamp = getSDKInitTime();
+          } catch (error) {
+            // do nothing
+          }
+
+          return {
+            sdkInitTimeStamp,
+            sdkScriptDownloadDuration: sdkScript?.duration,
+            isSdkCached: isCached(sdkScript),
+          };
+        },
       },
 
       sdkMeta: {

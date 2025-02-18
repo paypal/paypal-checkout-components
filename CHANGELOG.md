@@ -1,3 +1,9 @@
+## <small>5.0.350 (2025-02-18)</small>
+
+* add timing data to xprops (#2471) ([7975ee4](https://github.com/paypal/paypal-checkout-components/commit/7975ee4)), closes [#2471](https://github.com/paypal/paypal-checkout-components/issues/2471)
+
+
+
 ## <small>5.0.349 (2025-02-05)</small>
 
 * chore(release): 5.0.348 🎉 ([0b923aa](https://github.com/paypal/paypal-checkout-components/commit/0b923aa))
