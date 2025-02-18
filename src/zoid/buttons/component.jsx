@@ -43,6 +43,7 @@ import {
   getJsSdkLibrary,
   wasShopperInsightsUsed,
   isPayPalTrustedUrl,
+  getSDKToken,
   getSDKInitTime,
 } from "@paypal/sdk-client/src";
 import {
@@ -1114,6 +1115,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         sendToChild: false,
         value: getSDKMeta,
+      },
+
+      sdkToken: {
+        type: "string",
+        required: false,
+        value: getSDKToken,
       },
 
       /**
