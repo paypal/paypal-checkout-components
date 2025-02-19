@@ -42,7 +42,6 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
-  // eslint-disable-next-line import/named
   isPayPalTrustedUrl,
 } from "@paypal/sdk-client/src";
 import {
