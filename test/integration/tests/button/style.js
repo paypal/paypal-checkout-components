@@ -226,3 +226,58 @@ describe("paypal button aria-label", () => {
       });
   });
 });
+
+// describe("paypal rebrand button", () => {
+//   beforeEach(() => {
+//     createTestContainer();
+//   });
+
+//   afterEach(() => {
+//     destroyTestContainer();
+//   });
+
+//   it.only("should renders the legacy button when isPayPalRebrandEnabled is false", () => {
+//     const mockPayPalRebrandExperiment = mockProp(
+//       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+//       "isPayPalRebrandEnabled",
+//       false
+//     );
+
+//     const button = window.paypal.Buttons({});
+
+//     return button.render("#testContainer").then(() => {
+//       // assert.ok(getElementRecursive("paypal"));
+//       mockPayPalRebrandExperiment.cancel();
+//     });
+//   });
+
+// it("should renders the legacy button when isPayPalRebrandEnabled is true and defaultBlueButtonColor is gold", () => {
+//   const mockPayPalRebrandExperiment = mockProp(
+//     window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+//     "isPayPalRebrandEnabled",
+//     false
+//   );
+
+//   const button = window.paypal.Buttons({});
+// });
+
+// it("should renders the light-blue button when isPayPalRebrandEnabled is true and defaultBlueButtonColor is light-blue", () => {
+//   const mockPayPalRebrandExperiment = mockProp(
+//     window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+//     "isPayPalRebrandEnabled",
+//     false
+//   );
+
+//   const button = window.paypal.Buttons({});
+// });
+
+// it("should renders the dark-blue button when isPayPalRebrandEnabled is true and defaultBlueButtonColor is dark-blue", () => {
+//   const mockPayPalRebrandExperiment = mockProp(
+//     window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+//     "isPayPalRebrandEnabled",
+//     false
+//   );
+
+//   const button = window.paypal.Buttons({});
+// });
+// });
