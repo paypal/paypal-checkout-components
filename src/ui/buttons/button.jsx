@@ -127,7 +127,7 @@ export function Button({
     color = colors[0];
   }
 
-  function getButtonColorForRebrandExperiment(): $Values<typeof BUTTON_COLOR> {
+  function getButtonColorForRebrandExperiment(): string {
     // override buttonColor from experiment
     let buttonColor = defaultBlueButtonColor || "gold";
 
