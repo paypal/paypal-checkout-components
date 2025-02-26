@@ -127,11 +127,23 @@ export function Button({
     color = colors[0];
   }
 
+  function getButtonColorForRebrandExperiment(): string {
+    // override buttonColor from experiment
+    let buttonColor = defaultBlueButtonColor;
+
+    const isButtonColorSetByMerchant = !(color === "" || color === undefined);
+    const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
+
+    if (shouldRenderButtonColorControl && isButtonColorSetByMerchant) {
+      // should render gold or color that set by merchant
+      buttonColor = color;
+    }
+
+    return buttonColor;
+  }
+
   if (isPaypalRebrandEnabled) {
-    color =
-      (defaultBlueButtonColor === "gold"
-        ? (color === "" ? "gold" : color) || "gold"
-        : defaultBlueButtonColor) || "gold";
+    color = getButtonColorForRebrandExperiment();
   }
   // The secondary colors are used to render the smart stack (multiple buttons)
   // they keep track of the mapping of the color style prop to the

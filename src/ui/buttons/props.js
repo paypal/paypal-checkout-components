@@ -680,6 +680,7 @@ export function normalizeButtonStyle(
 
   const isColorUnset = color === "" || color === undefined;
 
+  // This sets the button color so it gets passed to the query string parameter style.color to scnw
   if (isPaypalRebrandEnabled && isColorUnset) {
     color = defaultBlueButtonColor;
   }
