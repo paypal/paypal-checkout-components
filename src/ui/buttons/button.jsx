@@ -127,9 +127,9 @@ export function Button({
     color = colors[0];
   }
 
-  function getButtonColorForRebrandExperiment(): string {
+  function getButtonColorForRebrandExperiment(): $Values<typeof BUTTON_COLOR> {
     // override buttonColor from experiment
-    let buttonColor = defaultBlueButtonColor;
+    let buttonColor = defaultBlueButtonColor || "gold";
 
     const isButtonColorSetByMerchant = !(color === "" || color === undefined);
     const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
