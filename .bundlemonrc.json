@@ -4,8 +4,8 @@
     {
       "path": "size.min.js",
       "compression": "gzip",
-      "maxPercentIncrease": 5,
-      "maxSize": "90kb"
+      "maxPercentIncrease": 3.6,
+      "maxSize": "82kb"
     }
   ],
   "reportOutput": [
