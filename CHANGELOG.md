@@ -1,3 +1,9 @@
+## <small>5.0.351 (2025-03-06)</small>
+
+* remove check bundle size step until bundlemon issue is fixed (#2476) ([f573fd1](https://github.com/paypal/paypal-checkout-components/commit/f573fd1)), closes [#2476](https://github.com/paypal/paypal-checkout-components/issues/2476)
+
+
+
 ## <small>5.0.350 (2025-02-18)</small>
 
 * add timing data to xprops (#2471) ([7975ee4](https://github.com/paypal/paypal-checkout-components/commit/7975ee4)), closes [#2471](https://github.com/paypal/paypal-checkout-components/issues/2471)
