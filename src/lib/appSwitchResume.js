@@ -16,8 +16,51 @@ export type AppSwitchResumeParams = {|
   checkoutState: "onApprove" | "onCancel" | "onError",
 |};
 
+// The Web fallback flow uses different set of query params then appswitch flow.
+function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
+  try {
+    // eslint-disable-next-line compat/compat
+    const params = new URLSearchParams(window.location.search);
+    const buttonSessionID = params.get("buttonSessionID");
+    const fundingSource = params.get("fundingSource");
+    const orderID = params.get("token");
+    const payerID = params.get("PayerID");
+    const vaultToken = params.get("vaultSetupToken");
+    const approvalTokenID = params.get("approval_token_id");
+    const approvalSessionID = params.get("approval_session_id");
+
+    const vaultSetupToken = vaultToken || approvalTokenID || approvalSessionID;
+    if (payerID && (orderID || vaultSetupToken)) {
+      return {
+        checkoutState: "onApprove",
+        orderID,
+        vaultSetupToken,
+        payerID,
+        buttonSessionID,
+        fundingSource,
+      };
+    } else if (vaultSetupToken || orderID) {
+      return {
+        checkoutState: "onCancel",
+        orderID,
+        vaultSetupToken,
+        buttonSessionID,
+        fundingSource,
+      };
+    }
+    return null;
+  } catch (err) {
+    // no-op
+    return null;
+  }
+}
+
 export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
-  const hashString = window.location.hash && window.location.hash.slice(1);
+  const hashString =
+    window.location.hash && String(window.location.hash).slice(1);
+  if (!hashString) {
+    return getAppSwitchParamsWebFallback();
+  }
   const [hash, queryString] = hashString.split("?");
 
   const isPostApprovalAction = [
@@ -26,7 +69,7 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
     APP_SWITCH_RETURN_HASH.ONERROR,
   ].includes(hash);
   if (!isPostApprovalAction) {
-    return null;
+    return getAppSwitchParamsWebFallback();
   }
 
   const {

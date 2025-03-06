@@ -44,7 +44,6 @@ describe("app switch resume flow", () => {
   test("should test fetching resume params with invalid callback passed", () => {
     vi.spyOn(window, "location", "get").mockReturnValue({
       hash: "#Unknown",
-      search: `buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
     });
 
     const params = getAppSwitchResumeParams();
@@ -83,6 +82,43 @@ describe("app switch resume flow", () => {
       payerID: "PP-payer-122",
       paymentID: "PAY-123",
       subscriptionID: "I-1234",
+      vaultSetupToken: "VA-3",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should test onApprove resume params when parameters are passed from web fallback", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      search: `?buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}&vaultSetupToken=VA-3&PayerID=PP123456`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect.assertions(2);
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onApprove",
+      fundingSource,
+      orderID,
+      payerID: "PP123456",
+      vaultSetupToken: "VA-3",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should test onCancel resume params when parameters are passed from web fallback", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      search: `?buttonSessionID=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}&vaultSetupToken=VA-3`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect.assertions(2);
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onCancel",
+      fundingSource,
+      orderID,
       vaultSetupToken: "VA-3",
     });
     expect(isAppSwitchResumeFlow()).toEqual(true);

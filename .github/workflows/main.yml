@@ -74,4 +74,3 @@ jobs:
         with:
           directory: ./coverage/vitest
           flags: vitest
-
