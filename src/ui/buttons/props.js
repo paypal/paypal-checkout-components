@@ -678,11 +678,12 @@ export function normalizeButtonStyle(
     borderRadius,
   } = style;
 
-  const isColorUnset = color === "" || color === undefined;
-
   // This sets the button color so it gets passed to the query string parameter style.color to scnw
-  if (isPaypalRebrandEnabled && isColorUnset) {
-    color = defaultBlueButtonColor;
+  if (isPaypalRebrandEnabled) {
+    const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
+    const experimentButtonColor = defaultBlueButtonColor || "gold";
+
+    color = shouldRenderButtonColorControl ? color : experimentButtonColor;
   }
 
   // $FlowFixMe
