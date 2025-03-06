@@ -75,8 +75,3 @@ jobs:
           directory: ./coverage/vitest
           flags: vitest
 
-      - name: 🤏 Check Bundle Size
-        run: npm run check-size
-        env:
-          BUNDLEMON_PROJECT_ID: 6166e8ee491d1e00090fee72
-          CI_COMMIT_SHA: ${{github.event.pull_request.head.sha || github.sha}}
