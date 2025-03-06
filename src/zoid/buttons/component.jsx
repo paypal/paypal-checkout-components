@@ -371,7 +371,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.addEventListener(
               "visibilitychange",
-              props.hashChangeHandler
+              props.visibilityChangeHandler
             );
           },
       },
@@ -384,7 +384,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.removeEventListener(
               "visibilitychange",
-              props.hashChangeHandler
+              props.visibilityChangeHandler
             );
           },
       },
