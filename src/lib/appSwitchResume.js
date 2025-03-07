@@ -16,8 +16,52 @@ export type AppSwitchResumeParams = {|
   checkoutState: "onApprove" | "onCancel" | "onError",
 |};
 
+// The Web fallback flow uses different set of query params then appswitch flow.
+function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
+  try {
+    const params = Object.fromEntries(
+      // eslint-disable-next-line compat/compat
+      new URLSearchParams(window.location.search)
+    );
+    const {
+      buttonSessionID,
+      fundingSource,
+      token: orderID,
+      PayerID: payerID,
+      vaultSetupToken: vaultToken,
+      approval_token_id: approvalTokenID,
+      approval_session_id: approvalSessionID,
+    } = params;
+
+    const vaultSetupToken = vaultToken || approvalTokenID || approvalSessionID;
+
+    if (vaultSetupToken || orderID) {
+      const resumeParams: AppSwitchResumeParams = {
+        checkoutState: payerID ? "onApprove" : "onCancel",
+        payerID,
+        orderID,
+        vaultSetupToken,
+        buttonSessionID,
+        // URLSearchParams get returns as string,
+        // but below code excepts a value from list of string.
+        // $FlowIgnore[incompatible-type]
+        fundingSource,
+      };
+      return resumeParams;
+    }
+    return null;
+  } catch (err) {
+    // no-op
+    return null;
+  }
+}
+
 export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
-  const hashString = window.location.hash && window.location.hash.slice(1);
+  const hashString =
+    window.location.hash && String(window.location.hash).slice(1);
+  if (!hashString) {
+    return getAppSwitchParamsWebFallback();
+  }
   const [hash, queryString] = hashString.split("?");
 
   const isPostApprovalAction = [
@@ -26,7 +70,7 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
     APP_SWITCH_RETURN_HASH.ONERROR,
   ].includes(hash);
   if (!isPostApprovalAction) {
-    return null;
+    return getAppSwitchParamsWebFallback();
   }
 
   const {
