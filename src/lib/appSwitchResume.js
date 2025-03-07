@@ -19,34 +19,35 @@ export type AppSwitchResumeParams = {|
 // The Web fallback flow uses different set of query params then appswitch flow.
 function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
   try {
-    // eslint-disable-next-line compat/compat
-    const params = new URLSearchParams(window.location.search);
-    const buttonSessionID = params.get("buttonSessionID");
-    const fundingSource = params.get("fundingSource");
-    const orderID = params.get("token");
-    const payerID = params.get("PayerID");
-    const vaultToken = params.get("vaultSetupToken");
-    const approvalTokenID = params.get("approval_token_id");
-    const approvalSessionID = params.get("approval_session_id");
+    const params = Object.fromEntries(
+      // eslint-disable-next-line compat/compat
+      new URLSearchParams(window.location.search)
+    );
+    const {
+      buttonSessionID,
+      fundingSource,
+      token: orderID,
+      PayerID: payerID,
+      vaultSetupToken: vaultToken,
+      approval_token_id: approvalTokenID,
+      approval_session_id: approvalSessionID,
+    } = params;
 
     const vaultSetupToken = vaultToken || approvalTokenID || approvalSessionID;
-    if (payerID && (orderID || vaultSetupToken)) {
-      return {
-        checkoutState: "onApprove",
-        orderID,
-        vaultSetupToken,
+
+    if (vaultSetupToken || orderID) {
+      const resumeParams: AppSwitchResumeParams = {
+        checkoutState: payerID ? "onApprove" : "onCancel",
         payerID,
-        buttonSessionID,
-        fundingSource,
-      };
-    } else if (vaultSetupToken || orderID) {
-      return {
-        checkoutState: "onCancel",
         orderID,
         vaultSetupToken,
         buttonSessionID,
+        // URLSearchParams get returns as string,
+        // but below code excepts a value from list of string.
+        // $FlowIgnore[incompatible-type]
         fundingSource,
       };
+      return resumeParams;
     }
     return null;
   } catch (err) {
