@@ -85,8 +85,10 @@
     "conventional-changelog-cli": "^2.0.34",
     "cross-env": "^7.0.3",
     "flow-bin": "0.155.0",
+    "flow-remove-types": "2.246.0",
     "flow-typed": "^3.8.0",
     "fs-extra": "^10.0.0",
+    "hermes-parser": "0.23.1",
     "husky": "^7.0.4",
     "imagemagick": "^0.1.3",
     "imgur": "^0.3.1",
@@ -105,9 +107,7 @@
     "puppeteer": "^1.20.0",
     "serve": "^14.0.0",
     "vite": "^3.2.4",
-    "vitest": "^1.3.1",
-    "flow-remove-types": "2.246.0",
-    "hermes-parser": "0.23.1"
+    "vitest": "^1.3.1"
   },
   "dependencies": {
     "@krakenjs/beaver-logger": "^5.7.0",
@@ -122,7 +122,7 @@
     "@paypal/funding-components": "^1.0.31",
     "@paypal/sdk-client": "^4.0.194",
     "@paypal/sdk-constants": "^1.0.146",
-    "@paypal/sdk-logos": "^2.2.6"
+    "@paypal/sdk-logos": "^2.2.8"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
