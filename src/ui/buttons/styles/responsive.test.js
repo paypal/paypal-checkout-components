@@ -3,19 +3,13 @@
 import { describe, expect, test } from "vitest";
 
 import { BUTTON_COLOR, BUTTON_SIZE } from "../../../constants/button";
+import { BUTTON_SIZE_STYLE } from "../config";
 
 import { getResponsiveStyleVariables } from "./responsive";
 
 // use the story books and console log the values to create the output, using 1 size for now for testing
-const controlResponsiveStyleForMedium = {
-  style: {
-    defaultWidth: 250,
-    defaultHeight: 35,
-    minWidth: 200,
-    maxWidth: 300,
-    minHeight: 35,
-    maxHeight: 55,
-  },
+const expectedLegacyResponsiveStylesMedium = {
+  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.MEDIUM],
   buttonHeight: 35,
   minDualWidth: 300,
   textPercPercentage: 36,
@@ -24,15 +18,8 @@ const controlResponsiveStyleForMedium = {
   pillBorderRadius: 18,
 };
 
-const rebrandStylesVariablesForMedium = {
-  style: {
-    defaultWidth: 250,
-    defaultHeight: 35,
-    minWidth: 200,
-    maxWidth: 300,
-    minHeight: 35,
-    maxHeight: 55,
-  },
+const expectedRebrandedResponsiveStylesMedium = {
+  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.MEDIUM],
   buttonHeight: 35,
   minDualWidth: 300,
   textPercPercentage: 36,
@@ -54,12 +41,14 @@ describe("test responsive styles", () => {
       },
     };
 
-    const value = getResponsiveStyleVariables({
+    const responsiveStyleVariables = getResponsiveStyleVariables({
       experiment,
       fundingEligibility,
       size: BUTTON_SIZE.MEDIUM,
     });
-    expect(value).toEqual(controlResponsiveStyleForMedium);
+    expect(responsiveStyleVariables).toEqual(
+      expectedLegacyResponsiveStylesMedium
+    );
   });
 
   test("should return rebrand responsive styles", () => {
@@ -74,11 +63,13 @@ describe("test responsive styles", () => {
       },
     };
 
-    const value = getResponsiveStyleVariables({
+    const responsiveStyleVariables = getResponsiveStyleVariables({
       experiment,
       fundingEligibility,
       size: BUTTON_SIZE.MEDIUM,
     });
-    expect(value).toEqual(rebrandStylesVariablesForMedium);
+    expect(responsiveStyleVariables).toEqual(
+      expectedRebrandedResponsiveStylesMedium
+    );
   });
 });
