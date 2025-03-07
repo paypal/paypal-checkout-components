@@ -648,7 +648,8 @@ export function normalizeButtonStyle(
   }
 
   props = props || getDefaultButtonPropsInput();
-  const { fundingSource } = props;
+  const { fundingSource, experiment } = props;
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -676,6 +677,14 @@ export function normalizeButtonStyle(
     disableMaxHeight,
     borderRadius,
   } = style;
+
+  // This sets the button color so it gets passed to the query string parameter style.color to scnw
+  if (isPaypalRebrandEnabled) {
+    const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
+    const experimentButtonColor = defaultBlueButtonColor || "gold";
+
+    color = shouldRenderButtonColorControl ? color : experimentButtonColor;
+  }
 
   // $FlowFixMe
   if (tagline === "false") {

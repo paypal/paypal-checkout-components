@@ -12,9 +12,11 @@ import {
   BUTTON_NUMBER,
   CLASS,
   ATTRIBUTE,
+  BUTTON_SIZE,
 } from "../../../constants";
 import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE } from "../config";
 import { isBorderRadiusNumber } from "../util";
+import type { Experiment } from "../../../types";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -22,47 +24,100 @@ const MIN_SPLIT_BUTTON_WIDTH = 300;
 const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
+export function getResponsiveStyleVariables({
+  height,
+  fundingEligibility,
+  experiment = {},
+  size,
+}: {|
+  height?: ?number,
+  fundingEligibility: FundingEligibilityType,
+  experiment: Experiment,
+  size: $Values<typeof BUTTON_SIZE>,
+|}): Object {
+  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
+  const shouldApplyRebrandedStyles =
+    isPaypalRebrandEnabled && defaultBlueButtonColor !== "gold";
+
+  const style = BUTTON_SIZE_STYLE[size];
+
+  const buttonHeight = height || style.defaultHeight;
+  const minDualWidth = Math.max(
+    Math.round(
+      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+    ),
+    MIN_SPLIT_BUTTON_WIDTH
+  );
+
+  const { paylater } = fundingEligibility;
+
+  const shouldResizeLabel =
+    paylater?.products?.paylater?.variant === "DE" ||
+    paylater?.products?.payIn3?.variant === "IT" ||
+    paylater?.products?.payIn3?.variant === "ES";
+
+  const textPercPercentage = shouldResizeLabel ? 32 : 36;
+  const labelPercPercentage = shouldResizeLabel ? 32 : 35;
+
+  let smallerLabelHeight = max(
+    roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
+    12
+  );
+  let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+
+  const pillBorderRadius = Math.ceil(buttonHeight / 2);
+
+  if (shouldApplyRebrandedStyles) {
+    labelHeight = roundUp(perc(buttonHeight, 76), 1);
+    // smallerLabelHeight gets triggered at widths < 320px
+    // We will need to investigate why the labels need to get significantly smaller at this breakpoint
+    smallerLabelHeight = labelHeight;
+  }
+
+  const styleVariables = {
+    style,
+    buttonHeight,
+    minDualWidth,
+    textPercPercentage,
+    smallerLabelHeight,
+    labelHeight,
+    pillBorderRadius,
+  };
+
+  return styleVariables;
+}
+
 export function buttonResponsiveStyle({
   height,
   fundingEligibility,
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
+  experiment = {},
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
+  experiment: Experiment,
 |}): string {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
-      const style = BUTTON_SIZE_STYLE[size];
-
-      const buttonHeight = height || style.defaultHeight;
-      const minDualWidth = Math.max(
-        Math.round(
-          buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
-        ),
-        MIN_SPLIT_BUTTON_WIDTH
-      );
-
-      const { paylater } = fundingEligibility;
-      const shouldResizeLabel =
-        paylater?.products?.paylater?.variant === "DE" ||
-        paylater?.products?.payIn3?.variant === "IT" ||
-        paylater?.products?.payIn3?.variant === "ES";
-
-      const textPercPercentage = shouldResizeLabel ? 32 : 36;
-      const labelPercPercentage = shouldResizeLabel ? 32 : 35;
-      const smallerLabelHeight = max(
-        roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
-        12
-      );
-
-      const labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
-
-      const pillBorderRadius = Math.ceil(buttonHeight / 2);
+      const {
+        style,
+        buttonHeight,
+        minDualWidth,
+        textPercPercentage,
+        smallerLabelHeight,
+        labelHeight,
+        pillBorderRadius,
+      } = getResponsiveStyleVariables({
+        height,
+        fundingEligibility,
+        experiment,
+        size,
+      });
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
