@@ -1,3 +1,9 @@
+## <small>5.0.352 (2025-03-10)</small>
+
+* Button Color A/B Test (#2469) ([f187931](https://github.com/paypal/paypal-checkout-components/commit/f187931)), closes [#2469](https://github.com/paypal/paypal-checkout-components/issues/2469)
+
+
+
 ## <small>5.0.351 (2025-03-06)</small>
 
 * remove check bundle size step until bundlemon issue is fixed (#2476) ([f573fd1](https://github.com/paypal/paypal-checkout-components/commit/f573fd1)), closes [#2476](https://github.com/paypal/paypal-checkout-components/issues/2476)
