@@ -178,7 +178,7 @@ describe("test responsive style variables for rebrand light blue button", () => 
       expected: expectedRebrandedResponsiveStylesHuge,
     },
   ])(
-    `should return legacy responsive styles for size $input`,
+    `should return rebrand responsive styles for size $input`,
     ({ input, expected }) => {
       expect(
         getResponsiveStyleVariables({
