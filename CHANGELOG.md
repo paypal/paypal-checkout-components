@@ -1,3 +1,9 @@
+## <small>5.0.353 (2025-03-11)</small>
+
+* adding tests for repsonsive.js (#2479) ([4ce1fa3](https://github.com/paypal/paypal-checkout-components/commit/4ce1fa3)), closes [#2479](https://github.com/paypal/paypal-checkout-components/issues/2479)
+
+
+
 ## <small>5.0.352 (2025-03-10)</small>
 
 * Button Color A/B Test (#2469) ([f187931](https://github.com/paypal/paypal-checkout-components/commit/f187931)), closes [#2469](https://github.com/paypal/paypal-checkout-components/issues/2469)
