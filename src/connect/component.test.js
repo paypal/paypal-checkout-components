@@ -117,7 +117,7 @@ describe("getConnectComponent: returns ConnectComponent", () => {
     await getConnectComponent(mockProps);
     expect(loadAxo).toHaveBeenCalledWith({
       minified: true,
-      btSdkVersion: "3.107.1",
+      btSdkVersion: "3.116.2",
       metadata: undefined,
       platform: "PPCP",
     });
