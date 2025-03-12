@@ -1,3 +1,9 @@
+## <small>5.0.354 (2025-03-12)</small>
+
+* update bt version to 3.116.2 (#2480) ([be03105](https://github.com/paypal/paypal-checkout-components/commit/be03105)), closes [#2480](https://github.com/paypal/paypal-checkout-components/issues/2480)
+
+
+
 ## <small>5.0.353 (2025-03-11)</small>
 
 * adding tests for repsonsive.js (#2479) ([4ce1fa3](https://github.com/paypal/paypal-checkout-components/commit/4ce1fa3)), closes [#2479](https://github.com/paypal/paypal-checkout-components/issues/2479)
