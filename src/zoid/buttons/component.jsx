@@ -110,9 +110,11 @@ export type ButtonsComponent = ZoidComponent<
   ButtonExtensions
 >;
 
+// $FlowIssue
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
 
+  // $FlowIssue
   return create({
     tag: "paypal-buttons",
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
@@ -371,7 +373,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.addEventListener(
               "visibilitychange",
-              props.hashChangeHandler
+              props.visibilityChangeHandler
             );
           },
       },
@@ -384,7 +386,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.removeEventListener(
               "visibilitychange",
-              props.hashChangeHandler
+              props.visibilityChangeHandler
             );
           },
       },
