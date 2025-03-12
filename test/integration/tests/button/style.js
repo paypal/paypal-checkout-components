@@ -11,6 +11,7 @@ import {
   getElementRecursive,
   assert,
   WEBVIEW_USER_AGENT,
+  mockProp,
 } from "../common";
 
 for (const flow of ["popup", "iframe"]) {
@@ -227,57 +228,106 @@ describe("paypal button aria-label", () => {
   });
 });
 
-// describe("paypal rebrand button", () => {
-//   beforeEach(() => {
-//     createTestContainer();
-//   });
+describe("paypal rebrand button", () => {
+  beforeEach(() => {
+    createTestContainer();
+  });
 
-//   afterEach(() => {
-//     destroyTestContainer();
-//   });
+  afterEach(() => {
+    destroyTestContainer();
+  });
 
-//   it.only("should renders the legacy button when isPayPalRebrandEnabled is false", () => {
-//     const mockPayPalRebrandExperiment = mockProp(
-//       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-//       "isPayPalRebrandEnabled",
-//       false
-//     );
+  it("should renders the legacy button when isPaypalRebrandEnabled is false", () => {
+    const mockPaypalRebrandExperiment = mockProp(
+      window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+      "isPaypalRebrandEnabled",
+      false
+    );
 
-//     const button = window.paypal.Buttons({});
+    const button = window.paypal.Buttons({});
 
-//     return button.render("#testContainer").then(() => {
-//       // assert.ok(getElementRecursive("paypal"));
-//       mockPayPalRebrandExperiment.cancel();
-//     });
-//   });
+    return button.render("#testContainer").then(() => {
+      assert.ok(getElementRecursive(".paypal-button-color-gold"));
+      assert.ok(
+        getElementRecursive(".paypal-logo-paypal.paypal-logo-color-blue")
+      );
+      mockPaypalRebrandExperiment.cancel();
+    });
+  });
 
-// it("should renders the legacy button when isPayPalRebrandEnabled is true and defaultBlueButtonColor is gold", () => {
-//   const mockPayPalRebrandExperiment = mockProp(
-//     window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-//     "isPayPalRebrandEnabled",
-//     false
-//   );
+  it("should renders the legacy button when isPaypalRebrandEnabled is true and defaultBlueButtonColor is gold", () => {
+    const mockPaypalRebrandExperiment = mockProp(
+      window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+      "isPaypalRebrandEnabled",
+      true
+    );
 
-//   const button = window.paypal.Buttons({});
-// });
+    const button = window.paypal.Buttons({});
 
-// it("should renders the light-blue button when isPayPalRebrandEnabled is true and defaultBlueButtonColor is light-blue", () => {
-//   const mockPayPalRebrandExperiment = mockProp(
-//     window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-//     "isPayPalRebrandEnabled",
-//     false
-//   );
+    return button.render("#testContainer").then(() => {
+      assert.ok(getElementRecursive(".paypal-button-color-gold"));
+      assert.ok(
+        getElementRecursive(".paypal-logo-paypal.paypal-logo-color-blue")
+      );
+      mockPaypalRebrandExperiment.cancel();
+    });
+  });
 
-//   const button = window.paypal.Buttons({});
-// });
+  it("should renders the light-blue button when isPaypalRebrandEnabled is true and defaultBlueButtonColor is light-blue", () => {
+    const mockPaypalRebrandExperiment = mockProp(
+      window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+      "isPaypalRebrandEnabled",
+      true
+    );
 
-// it("should renders the dark-blue button when isPayPalRebrandEnabled is true and defaultBlueButtonColor is dark-blue", () => {
-//   const mockPayPalRebrandExperiment = mockProp(
-//     window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-//     "isPayPalRebrandEnabled",
-//     false
-//   );
+    const mockDefaultBlueColorExperiment = mockProp(
+      window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+      "defaultBlueButtonColor",
+      "defaultBlue_lightBlue"
+    );
 
-//   const button = window.paypal.Buttons({});
-// });
-// });
+    const button = window.paypal.Buttons({});
+
+    return button.render("#testContainer").then(() => {
+      assert.ok(
+        getElementRecursive(".paypal-button-color-defaultBlue_lightBlue")
+      );
+      assert.ok(
+        getElementRecursive(
+          ".paypal-logo-paypal-rebrand.paypal-logo-color-black"
+        )
+      );
+      mockPaypalRebrandExperiment.cancel();
+      mockDefaultBlueColorExperiment.cancel();
+    });
+  });
+
+  it("should renders the dark-blue button when isPaypalRebrandEnabled is true and defaultBlueButtonColor is dark-blue", () => {
+    const mockPaypalRebrandExperiment = mockProp(
+      window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+      "isPaypalRebrandEnabled",
+      true
+    );
+
+    const mockDefaultBlueColorExperiment = mockProp(
+      window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+      "defaultBlueButtonColor",
+      "defaultBlue_darkBlue"
+    );
+
+    const button = window.paypal.Buttons({});
+
+    return button.render("#testContainer").then(() => {
+      assert.ok(
+        getElementRecursive(".paypal-button-color-defaultBlue_darkBlue")
+      );
+      assert.ok(
+        getElementRecursive(
+          ".paypal-logo-paypal-rebrand.paypal-logo-color-blue"
+        )
+      );
+      mockPaypalRebrandExperiment.cancel();
+      mockDefaultBlueColorExperiment.cancel();
+    });
+  });
+});
