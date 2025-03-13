@@ -15,9 +15,9 @@ const POWERED_BY_PAYPAL_STYLE = `
         text-align: center;
         margin: 10px auto;
         height: 14px;
-        font-family: PayPalOpen-Regular, Helvetica, Arial, "Liberation Sans", sans-serif;
+        font-family: PayPalPlain-Regular, "SF Pro Text", Roboto, Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 11px;
-        font-weight: normal;
+        font-weight: 400;
         font-style: italic;
         font-stretch: normal;
         color: #7b8388;
