@@ -24,7 +24,7 @@ function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
       new URLSearchParams(window.location.search)
     );
     const {
-      buttonSessionID,
+      button_session_id: buttonSessionID,
       fundingSource,
       token: orderID,
       PayerID: payerID,
@@ -76,13 +76,17 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
   const {
     token,
     PayerID,
-    buttonSessionID,
+    button_session_id: buttonSessionID,
     billingToken,
     paymentID,
     subscriptionID,
-    vaultSetupToken,
+    vaultSetupToken: vaultToken,
+    approval_token_id: approvalTokenID,
+    approval_session_id: approvalSessionID,
     fundingSource,
   } = parseQuery(queryString);
+
+  const vaultSetupToken = vaultToken || approvalTokenID || approvalSessionID;
 
   const params: AppSwitchResumeParams = {
     orderID: token,
