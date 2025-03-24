@@ -79,3 +79,40 @@ export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
     maxHeight: 55,
   },
 };
+
+export const BUTTON_DISABLE_MAX_HEIGHT_STYLE = {
+  [BUTTON_SIZE.TINY]: {
+    minHeight: 25,
+    maxHeight: 30,
+  },
+
+  [BUTTON_SIZE.SMALL]: {
+    minHeight: 30,
+    maxHeight: 35,
+  },
+
+  [BUTTON_SIZE.MEDIUM]: {
+    minHeight: 35,
+    maxHeight: 45,
+  },
+
+  [BUTTON_SIZE.LARGE]: {
+    minHeight: 45,
+    maxHeight: 55,
+  },
+
+  [BUTTON_SIZE.XL]: {
+    minHeight: 55,
+    maxHeight: 65,
+  },
+  // 2XL
+  [BUTTON_SIZE.XXL]: {
+    minHeight: 65,
+    maxHeight: 75,
+  },
+  // 3XL
+  [BUTTON_SIZE.XXXL]: {
+    minHeight: 75,
+    maxHeight: 85,
+  },
+};

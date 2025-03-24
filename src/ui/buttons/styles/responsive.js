@@ -102,7 +102,7 @@ export function buttonResponsiveStyle({
   borderRadius?: ?number,
   experiment: Experiment,
 |}): string {
-  return Object.keys(BUTTON_SIZE_STYLE)
+  let styles = Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
       const {
         style,
@@ -118,6 +118,26 @@ export function buttonResponsiveStyle({
         experiment,
         size,
       });
+
+      const textSizeLarge = `${max(perc(buttonHeight, 36), 10)}`;
+      const textSizeSmaller = `${max(perc(buttonHeight, 32), 10)}`;
+
+      const marginTop = `${perc(max(perc(buttonHeight, 36), 10), 10)}`;
+      const marginTopSmaller = `${perc(max(perc(buttonHeight, 32), 10), 10)}`;
+
+      const spinner = `${perc(buttonHeight, 50)}`;
+
+      console.log(
+        `${size}
+        labelHeight: ${labelHeight}
+        smallerLabelHeight: ${smallerLabelHeight}
+        fontSize: ${textSizeLarge}
+        smallerFontSize: ${textSizeSmaller}
+        marginTop: -${marginTop}
+        marginTopSmaller: -${marginTopSmaller}
+        spinner: ${spinner}
+        `
+      );
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
@@ -325,7 +345,9 @@ export function buttonResponsiveStyle({
                     )}px;
                 }
 
-                .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+                .${CLASS.BUTTON} > .${
+        CLASS.BUTTON_LABEL
+      }, .SMALLER_LABEL_HEIGHT {
                     margin: 0px 4vw;
                     height: ${smallerLabelHeight}px;
                 }
@@ -413,4 +435,138 @@ export function buttonResponsiveStyle({
         `;
     })
     .join("\n");
+
+  if (disableMaxHeight) {
+    styles += `
+  /* Setup media queries for disableMaxHeight mode */
+  
+  /* TINY button (min-height: 25px, max-height: 30px) */
+  @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    // used for adding space between PP monogram and Pay Later text + APM
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: ${fontSize}px;
+      margin-top: -${marginTop}px; // negative value here
+      line-height: ${lineHeight}x;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: ${marginTop}px; // positive value here
+    }
+  
+    .${CLASS.BUTTON} .${CLASS.SPINNER} {
+      height: ${spinnerSize}px;
+      width: ${spinnerSize}px;
+    }
+    
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw; // This is the same for all sizes
+      height: ${lineHeight}px;
+    }
+  }
+  
+  /* SMALL button (min-height: 35px, max-height: 55px) */
+  @media (min-height: 35px) and (max-height: 55px) {
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: 13px;
+      margin-top: -1px;
+      line-height: 18px;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: 1px;
+    }
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw;
+      height: 18px;
+    }
+  }
+  
+  /* MEDIUM button (min-height: 45px, max-height: 55px) */
+  @media (min-height: 45px) and (max-height: 55px) {
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: 16px;
+      margin-top: -2px;
+      line-height: 22px;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: 2px;
+    }
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw;
+      height: 22px;
+    }
+  }
+  
+  /* LARGE button (min-height: 55px, max-height: 75px) */
+  @media (min-height: 55px) and (max-height: 75px) {
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: 20px;
+      margin-top: -2px;
+      line-height: 24px;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: 2px;
+    }
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw;
+      height: 24px;
+    }
+  }
+  
+  /* X-LARGE button (min-height: 75px, max-height: 95px) */
+  @media (min-height: 75px) and (max-height: 95px) {
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: 24px;
+      margin-top: -2px;
+      line-height: 28px;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: 2px;
+    }
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw;
+      height: 28px;
+    }
+  }
+  
+  /* XX-LARGE button (min-height: 95px, max-height: 115px) */
+  @media (min-height: 95px) and (max-height: 115px) {
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: 28px;
+      margin-top: -2px;
+      line-height: 32px;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: 2px;
+    }
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw;
+      height: 32px;
+    }
+  }
+  
+  /* XXX-LARGE button (min-height: 115px) */
+  @media (min-height: 115px) {
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+      font-size: 32px;
+      margin-top: -2px;
+      line-height: 36px;
+    }
+    .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+      margin-top: 2px;
+    }
+    .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+      margin: 0 4vw;
+      height: 36px;
+    }
+  }
+      `;
+  }
+  return styles;
 }
