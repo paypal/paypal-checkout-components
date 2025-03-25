@@ -15,7 +15,7 @@ export const buttonStyle = `
         margin: 0;
         background: 0;
         border: 0;
-        font-family: PayPalPlain-Regular, "SF Pro Text", Roboto, Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPalPlain-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         text-transform: none;
         font-weight: 500;
         font-smoothing: antialiased;
@@ -80,7 +80,7 @@ export const buttonStyle = `
     .${CLASS.TAGLINE} {
         max-width: 100%;
         font-size: initial;
-        font-weight: normal;
+        font-weight: 400;
         display: block;
         text-align: center;
         width: auto;

@@ -15,7 +15,7 @@ const POWERED_BY_PAYPAL_STYLE = `
         text-align: center;
         margin: 10px auto;
         height: 14px;
-        font-family: PayPalPlain-Regular, "SF Pro Text", Roboto, Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPalPlain-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 11px;
         font-weight: 400;
         font-style: italic;
