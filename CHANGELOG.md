@@ -1,3 +1,9 @@
+## <small>5.0.355 (2025-03-26)</small>
+
+* update font-family + update font-weight for poweredBy (#2482) ([44b7f0b](https://github.com/paypal/paypal-checkout-components/commit/44b7f0b)), closes [#2482](https://github.com/paypal/paypal-checkout-components/issues/2482)
+
+
+
 ## <small>5.0.354 (2025-03-12)</small>
 
 * update bt version to 3.116.2 (#2480) ([be03105](https://github.com/paypal/paypal-checkout-components/commit/be03105)), closes [#2480](https://github.com/paypal/paypal-checkout-components/issues/2480)
