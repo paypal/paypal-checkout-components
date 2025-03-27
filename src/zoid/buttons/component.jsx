@@ -303,6 +303,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
       },
 
+      showPayPalAppSwitchOverlay: {
+        type: "function",
+        queryParam: false,
+        value: () => {
+          console.log("******** showPayPalAppSwitchOverlay *********");
+          return (<Overlay />).render(dom({ doc: document }));
+        },
+      },
+
       redirect: {
         type: "function",
         sendToChild: true,
@@ -358,7 +367,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             eventName: "paypal-visibilitychange",
             payload: {
               url: window.location.href,
-              // eslint-disable-next-line compat/compat
+
               visibilityState: document.visibilityState,
             },
           });
