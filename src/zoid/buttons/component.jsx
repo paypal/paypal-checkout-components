@@ -323,6 +323,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ({ state }) =>
           (event) => {
             state.appSwitchState = "returned";
+
             sendPostRobotMessageToButtonIframe({
               eventName: "paypal-hashchange",
               payload: {
