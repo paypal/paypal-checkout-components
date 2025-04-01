@@ -1,14 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import {
-  isIos,
-  isIpadOs,
-  isFirefox,
-  animate,
-  noop,
-  supportsPopups,
-} from "@krakenjs/belter/src";
+import { animate, noop } from "@krakenjs/belter/src";
 import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 import { LOGO_COLOR, PayPalRebrandLogo } from "@paypal/sdk-logos/src";
 import { type ZalgoPromise } from "@krakenjs/zalgo-promise/src";
@@ -28,70 +21,44 @@ export function PayPalAppSwitchOverlay({
 }: OverlayProps): ElementNode {
   const uid = `paypal-overlay-${buttonSessionID}`;
   const overlayIframeName = `__paypal_checkout_sandbox_${uid}__`;
+  const nonce = "";
+  const content = {
+    windowMessage: "To finish, go back to the PayPal app.",
+    continueMessage: "Return to PayPal",
+  };
 
   function closeCheckout(e) {
     e.preventDefault();
     e.stopPropagation();
-    close();
-    // const body = document.getElementsByTagName("body")?.[0];
     const overlay = document.getElementsByName(uid)?.[0];
 
+    animate(overlay, "hide-container", noop);
+    close();
+
     if (overlay) {
-      overlay.remove();
+      // the delay is to allow the animation time to run
+      setTimeout(() => {
+        overlay.remove();
+      }, 300);
     }
-  }
-
-  function displayFocusWarning() {
-    const overlayIframe: ?HTMLIFrameElement =
-      //  $FlowFixMe
-      document.getElementsByName(overlayIframeName)?.[0];
-    const iframeDocument = overlayIframe?.contentWindow.document;
-    const warningElement = iframeDocument?.getElementsByClassName(
-      "paypal-checkout-focus-warning"
-    )?.[0];
-
-    if (!warningElement) {
-      return;
-    }
-    warningElement.innerText = `Still can't see it? Select "Window" in your toolbar to find "Log in to your PayPal account"`;
   }
 
   function focusCheckout(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!supportsPopups()) {
-      return;
-    }
-
-    if (isIos() || isIpadOs()) {
-      // Note: alerts block the event loop until they are closed.
-      // eslint-disable-next-line no-alert
-      window.alert("Please switch tabs to reactivate the PayPal window");
-    } else if (isFirefox()) {
-      displayFocusWarning();
-    }
     focus();
   }
 
-  const setupAnimations = (name) => {
-    return (el) => {
-      animate(el, `show-${name}`, noop);
-    };
-  };
-
-  const nonce = "";
-  const context = "popup";
-  const content = {
-    windowMessage: "To finish, go back to the PayPal app.",
-    continueMessage: "Return to PayPal",
+  const setupShowAnimation = () => (el) => {
+    animate(el, "show-container", noop);
   };
 
   return (
     <div
       id={uid}
       name={uid}
-      onRender={setupAnimations("container")}
+      onRender={setupShowAnimation()}
       class="paypal-checkout-sandbox"
     >
       <style nonce={nonce}>{getSandboxStyle({ uid })}</style>
@@ -107,7 +74,7 @@ export function PayPalAppSwitchOverlay({
               dir="auto"
               id={uid}
               onClick={focusCheckout}
-              class={`paypal-overlay-context-${context} paypal-checkout-overlay`}
+              class="paypal-overlay-context-popup paypal-checkout-overlay"
             >
               <a
                 href="#"
@@ -125,7 +92,6 @@ export function PayPalAppSwitchOverlay({
                     {content.windowMessage}
                   </div>
                 )}
-                <div class="paypal-checkout-focus-warning" />
                 {content.continueMessage && (
                   <div class="paypal-checkout-continue">
                     {/* This handler should be guarded with e.stopPropagation. 
@@ -136,9 +102,6 @@ export function PayPalAppSwitchOverlay({
                     </a>
                   </div>
                 )}
-                <div class="paypal-checkout-loader">
-                  <div class="paypal-spinner" />
-                </div>
               </div>
               <style nonce={nonce}>{getContainerStyle({ uid })}</style>
             </div>

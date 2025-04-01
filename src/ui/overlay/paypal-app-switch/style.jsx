@@ -1,15 +1,5 @@
 /* @flow */
 
-import { CONTEXT } from "@krakenjs/zoid/src";
-
-export const CLASS = {
-  OUTLET: "outlet",
-  VISIBLE: "visible",
-  INVISIBLE: "invisible",
-  COMPONENT_FRAME: "component-frame",
-  PRERENDER_FRAME: "prerender-frame",
-};
-
 export function getSandboxStyle({ uid }: {| uid: string |}): string {
   return `
         #${uid}.paypal-checkout-sandbox {
@@ -42,12 +32,6 @@ export function getSandboxStyle({ uid }: {| uid: string |}): string {
             left: 0;
             width: 100%;
             height: 100%;
-        }
-
-        #${uid}.paypal-checkout-sandbox .paypal-checkout-sandbox-iframe-full {
-            border: 0;
-            height: 100%;
-            width: 100vw;
         }
 
         @keyframes show-container {
@@ -102,26 +86,22 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
             background-color: #fff;
         }
 
-        #${uid}.paypal-overlay-context-${CONTEXT.POPUP} {
-            cursor: pointer;
-        }
-
         #${uid} a {
             text-decoration: none;
         }
 
         #${uid} .paypal-checkout-modal {
-            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;
+            font-family: PayPalPlain-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
             font-size: 14px;
             text-align: center;
 
             box-sizing: border-box;
+            width: 100%;
             max-width: 350px;
             top: 50%;
             left: 50%;
             position: absolute;
             transform: translateX(-50%) translateY(-50%);
-            cursor: pointer;
             text-align: center;
         }
 
@@ -129,17 +109,9 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
             display: none;
         }
 
-        .paypal-checkout-loader {
-            display: none;
-        }
-
-        #${uid}.paypal-overlay-loading .paypal-checkout-loader {
-            display: block;
-        }
-
         #${uid} .paypal-checkout-modal .paypal-checkout-logo {
             cursor: pointer;
-            margin-bottom: 30px;
+            margin-bottom: 8px;
             display: inline-block;
         }
 
@@ -147,24 +119,16 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
             height: 44px;
         }
 
-        #${uid} .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {
-            margin-right: 10px;
-        }
-
         #${uid} .paypal-checkout-modal .paypal-checkout-message {
-            font-size: 15px;
-            line-height: 1.5;
-            padding: 10px 0;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-message, #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-continue {
-            display: none;
+            font-size: 14px;
+            line-height: 18px;
+            padding: 8px 16px;
         }
 
         #${uid} .paypal-checkout-modal .paypal-checkout-continue {
-            font-size: 15px;
-            line-height: 1.35;
-            padding: 10px 0;
+            font-size: 14px;
+            line-height: 18px;
+            padding: 8px 0;
             font-weight: bold;
         }
 
@@ -198,170 +162,6 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
 
         #${uid} .paypal-checkout-close:after {
             transform: rotate(-45deg);
-        }
-
-        #${uid} .paypal-checkout-focus-warning {
-            font-size: 14px;
-            line-height: 1.35;
-            padding: 10px 0;
-        }
-
-        #${uid} .paypal-checkout-iframe-container {
-            display: none;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container,
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container > .${CLASS.OUTLET},
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container > .${CLASS.OUTLET} > iframe {
-            max-height: 95vh;
-            max-width: 95vw;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container-full,
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container-full > .${CLASS.OUTLET},
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container-full > .${CLASS.OUTLET} > iframe {
-            height: 100vh;
-            max-width: 100vw;
-            width: 100vw;
-        }
-
-        @media screen and (max-width: 470px) {
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container,
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container > .${CLASS.OUTLET},
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container > .${CLASS.OUTLET} > iframe {
-                max-height: 85vh;
-            }
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container-full,
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container-full > .${CLASS.OUTLET},
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container-full > .${CLASS.OUTLET} > iframe {
-                height: 100vh;
-            }
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container {
-
-            display: block;
-
-            position: absolute;
-
-            top: 50%;
-            left: 50%;
-
-            min-width: 450px;
-
-            transform: translate(-50%, -50%);
-            transform: translate3d(-50%, -50%, 0);
-
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} {
-
-            position: relative;
-
-            transition: all 0.3s ease;
-            animation-duration: 0.3s;
-            animation-fill-mode: forwards !important;
-
-            min-width: 450px;
-            max-width: 450px;
-            width: 450px;
-            height: 535px;
-
-            background-color: white;
-
-            overflow: auto;
-
-            opacity: 0;
-            transform: scale3d(.3, .3, .3);
-
-            -webkit-overflow-scrolling: touch;
-        }
-
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe.${CLASS.COMPONENT_FRAME} {
-            z-index: 100;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe.${CLASS.PRERENDER_FRAME} {
-            z-index: 200;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe.${CLASS.VISIBLE} {
-            opacity: 1;
-            z-index: 200;
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} > iframe.${CLASS.INVISIBLE} {
-            opacity: 1;
-            z-index: 100;
-        }
-
-        @media screen and (max-width: 470px) {
-
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .paypal-checkout-iframe-container,
-            #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} {
-                min-width: 100%;
-                min-width: calc(100% - 20px);
-
-                max-width: 100%;
-                max-width: calc(100% - 20px);
-            }
-        }
-
-        #${uid}.paypal-overlay-context-${CONTEXT.IFRAME} .${CLASS.OUTLET} iframe {
-            width: 1px;
-            min-width: 100%;
-            height: 100%;
-        }
-
-        @keyframes show-component {
-            from {
-                opacity: 0;
-                transform: scale3d(.3, .3, .3);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale3d(1, 1, 1);
-            }
-        }
-
-        @keyframes hide-component {
-            from {
-                opacity: 1;
-                transform: scale3d(1, 1, 1);
-            }
-
-            to {
-                opacity: 0;
-                transform: scale3d(.3, .3, .3);
-            }
-        }
-
-        .paypal-spinner {
-            height: 30px;
-            width: 30px;
-            display: inline-block;
-            box-sizing: content-box;
-            opacity: 1;
-            filter: alpha(opacity=100);
-            animation: rotation .7s infinite linear;
-            border-left: 8px solid rgba(0, 0, 0, .2);
-            border-right: 8px solid rgba(0, 0, 0, .2);
-            border-bottom: 8px solid rgba(0, 0, 0, .2);
-            border-top: 8px solid #fff;
-            border-radius: 100%
-        }
-
-        @keyframes rotation {
-            from {
-                transform: rotate(0deg)
-            }
-            to {
-                transform: rotate(359deg)
-            }
         }
     `;
 }
