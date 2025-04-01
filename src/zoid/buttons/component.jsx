@@ -322,7 +322,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value:
           ({ state }) =>
           (event) => {
-            console.log("hash change", state);
             state.appSwitchState = "returned";
             sendPostRobotMessageToButtonIframe({
               eventName: "paypal-hashchange",
@@ -385,7 +384,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             window.addEventListener(
               "visibilitychange",
-              props.hashChangeHandler
+              props.visibilityChangeHandler
             );
           },
       },
@@ -398,7 +397,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.removeEventListener(
               "visibilitychange",
-              props.hashChangeHandler
+              props.visibilityChangeHandler
             );
           },
       },
