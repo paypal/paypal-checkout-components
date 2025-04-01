@@ -88,9 +88,7 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
 
             transform: translate3d(0, 0, 0);
 
-            background-color: black;
-            background-color: rgba(0, 0, 0, 0.8);
-            background: radial-gradient(50% 50%, ellipse closest-corner, rgba(0,0,0,0.6) 1%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(84.48% 50% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.75) 100%);
 
             color: #fff;
         }
@@ -146,7 +144,7 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
         }
 
         #${uid} .paypal-checkout-modal .paypal-checkout-logo img {
-            height: 36px;
+            height: 44px;
         }
 
         #${uid} .paypal-checkout-modal .paypal-checkout-logo img.paypal-checkout-logo-pp {
@@ -178,24 +176,19 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
             position: absolute;
             right: 16px;
             top: 16px;
-            width: 16px;
-            height: 16px;
-            opacity: 0.6;
+            width: 24px;
+            height: 24px;
         }
 
         #${uid}.paypal-overlay-loading .paypal-checkout-close {
             display: none;
         }
 
-        #${uid} .paypal-checkout-close:hover {
-            opacity: 1;
-        }
-
         #${uid} .paypal-checkout-close:before, .paypal-checkout-close:after {
             position: absolute;
-            left: 8px;
+            left: 11px;
             content: ' ';
-            height: 16px;
+            height: 24px;
             width: 2px;
         }
 

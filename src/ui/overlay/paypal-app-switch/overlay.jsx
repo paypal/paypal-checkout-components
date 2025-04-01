@@ -16,19 +16,47 @@ import {
 } from "@krakenjs/belter/src";
 import { EVENT, CONTEXT } from "@krakenjs/zoid/src";
 import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
-import { LOGO_COLOR, PPLogo, PayPalLogo } from "@paypal/sdk-logos/src";
+import { LOGO_COLOR, PayPalRebrandLogo } from "@paypal/sdk-logos/src";
 
 import { getContainerStyle, getSandboxStyle, CLASS } from "./style";
 
-export type OverlayProps = {||};
-export function Overlay(): ElementNode {
-  const uid = `paypal-overlay-${uniqueID()}`;
+export type OverlayProps = {|
+  // context: $Values<typeof CONTEXT>,
+  close: () => ZalgoPromise<void>,
+  buttonSessionID: string,
+  focus: () => ZalgoPromise<void>,
+  // event: EventEmitterType,
+  // frame?: ?HTMLElement,
+  // prerenderFrame?: ?HTMLElement,
+  // content?: void | {|
+  //   windowMessage?: string,
+  //   continueMessage?: string,
+  //   cancelMessage?: string,
+  //   interrogativeMessage?: string,
+  // |},
+  // autoResize?: boolean,
+  // hideCloseButton?: boolean,
+  // nonce?: string,
+  // fullScreen?: boolean,
+|};
+export function PayPalAppSwitchOverlay({
+  close,
+  focus,
+  buttonSessionID,
+}: OverlayProps): ElementNode {
+  const uid = `paypal-overlay-${buttonSessionID}`;
   const overlayIframeName = `__paypal_checkout_sandbox_${uid}__`;
 
   function closeCheckout(e) {
     e.preventDefault();
     e.stopPropagation();
     close();
+    // const body = document.getElementsByTagName("body")?.[0];
+    const overlay = document.getElementsByName(uid)?.[0];
+
+    if (overlay) {
+      overlay.remove();
+    }
   }
 
   function displayFocusWarning() {
@@ -64,76 +92,24 @@ export function Overlay(): ElementNode {
     focus();
   }
 
-  // const setupAnimations = (name) => {
-  //   return (el) => {
-  //     const showContainer = () => animate(el, `show-${name}`, noop);
-  //     const hideContainer = () => animate(el, `hide-${name}`, noop);
-  //     event.on(EVENT.DISPLAY, showContainer);
-  //     event.on(EVENT.CLOSE, hideContainer);
-  //   };
-  // };
+  const setupAnimations = (name) => {
+    return (el) => {
+      animate(el, `show-${name}`, noop);
+    };
+  };
 
-  // const setupAutoResize = (el) => {
-  //   event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
-  //     if (typeof newWidth === "number") {
-  //       el.style.width = toCSS(newWidth);
-  //     }
-
-  //     if (typeof newHeight === "number") {
-  //       el.style.height = toCSS(newHeight);
-  //     }
-  //   });
-  // };
-
-  // const outletOnRender = (el) => {
-  //   setupAnimations("component")(el);
-  //   if (autoResize) {
-  //     setupAutoResize(el);
-  //   }
-  // };
-
-  let outlet;
-
-  // if (frame && prerenderFrame) {
-  //   frame.classList.add(CLASS.COMPONENT_FRAME);
-  //   prerenderFrame.classList.add(CLASS.PRERENDER_FRAME);
-
-  //   prerenderFrame.classList.add(CLASS.VISIBLE);
-  //   frame.classList.add(CLASS.INVISIBLE);
-
-  //   event.on(EVENT.RENDERED, () => {
-  //     prerenderFrame.classList.remove(CLASS.VISIBLE);
-  //     prerenderFrame.classList.add(CLASS.INVISIBLE);
-
-  //     frame.classList.remove(CLASS.INVISIBLE);
-  //     frame.classList.add(CLASS.VISIBLE);
-
-  //     setTimeout(() => {
-  //       destroyElement(prerenderFrame);
-  //     }, 1);
-  //   });
-
-  //   outlet = (
-  //     <div class={CLASS.OUTLET} onRender={outletOnRender}>
-  //       <node el={frame} />
-  //       <node el={prerenderFrame} />
-  //     </div>
-  //   );
-  // }
-
-  const hideCloseButton = false;
   const nonce = "";
-  const fullScreen = true;
   const context = "popup";
   const content = {
-    windowMessage: "Like, why don't you just but it? But like use PayPal",
-    continueMessage: "Buy it in PayPal App!!",
+    windowMessage: "To finish, go back to the PayPal app.",
+    continueMessage: "Return to PayPal",
   };
 
   return (
     <div
       id={uid}
-      // onRender={setupAnimations("container")}
+      name={uid}
+      onRender={setupAnimations("container")}
       class="paypal-checkout-sandbox"
     >
       <style nonce={nonce}>{getSandboxStyle({ uid })}</style>
@@ -141,7 +117,7 @@ export function Overlay(): ElementNode {
         title="PayPal Checkout Overlay"
         name={overlayIframeName}
         scrolling="no"
-        class={`paypal-checkout-sandbox-iframe${fullScreen ? "-full" : ""}`}
+        class="paypal-checkout-sandbox-iframe"
       >
         <html>
           <body>
@@ -151,52 +127,37 @@ export function Overlay(): ElementNode {
               onClick={focusCheckout}
               class={`paypal-overlay-context-${context} paypal-checkout-overlay`}
             >
-              {!hideCloseButton && (
-                <a
-                  href="#"
-                  class="paypal-checkout-close"
-                  onClick={closeCheckout}
-                  aria-label="close"
-                  role="button"
-                />
-              )}
-              {!fullScreen && (
-                <div class="paypal-checkout-modal">
-                  <div class="paypal-checkout-logo" dir="ltr">
-                    <PPLogo logoColor={LOGO_COLOR.WHITE} />
-                    <PayPalLogo logoColor={LOGO_COLOR.WHITE} />
+              <a
+                href="#"
+                class="paypal-checkout-close"
+                onClick={closeCheckout}
+                aria-label="close"
+                role="button"
+              />
+              <div class="paypal-checkout-modal">
+                <div class="paypal-checkout-logo" dir="ltr">
+                  <PayPalRebrandLogo logoColor={LOGO_COLOR.WHITE} />
+                </div>
+                {content.windowMessage && (
+                  <div class="paypal-checkout-message">
+                    {content.windowMessage}
                   </div>
-                  {content.windowMessage && (
-                    <div class="paypal-checkout-message">
-                      {content.windowMessage}
-                    </div>
-                  )}
-                  <div class="paypal-checkout-focus-warning" />
-                  {content.continueMessage && (
-                    <div class="paypal-checkout-continue">
-                      {/* This handler should be guarded with e.stopPropagation. 
+                )}
+                <div class="paypal-checkout-focus-warning" />
+                {content.continueMessage && (
+                  <div class="paypal-checkout-continue">
+                    {/* This handler should be guarded with e.stopPropagation. 
                           This will stop the event from bubbling up to the overlay click handler
                           and causing unexpected behavior. */}
-                      <a onClick={focusCheckout} href="#">
-                        {content.continueMessage}
-                      </a>
-                    </div>
-                  )}
-                  <div class="paypal-checkout-loader">
-                    <div class="paypal-spinner" />
+                    <a onClick={focusCheckout} href="#">
+                      {content.continueMessage}
+                    </a>
                   </div>
+                )}
+                <div class="paypal-checkout-loader">
+                  <div class="paypal-spinner" />
                 </div>
-              )}
-              <div
-                class={
-                  fullScreen
-                    ? "paypal-checkout-iframe-container-full"
-                    : "paypal-checkout-iframe-container"
-                }
-              >
-                {outlet}
               </div>
-
               <style nonce={nonce}>{getContainerStyle({ uid })}</style>
             </div>
           </body>

@@ -515,6 +515,9 @@ export type ButtonProps = {|
   // Not passed to child iframe
   visibilityChangeHandler: () => void,
 
+  showPayPalAppSwitchOverlay: () => void,
+  hidePayPalAppSwitchOverlay: () => void,
+
   fundingSource?: ?$Values<typeof FUNDING>,
   intent: $Values<typeof INTENT>,
   createOrder: CreateOrder,

@@ -90,6 +90,10 @@ export function getCheckoutComponent(): CheckoutComponent {
         const isVenmo = fundingSource === FUNDING.VENMO;
         const browserLanguage = isVenmo ? "en" : lang;
         const content = containerContent(fundingSource)[browserLanguage];
+        console.log("frame");
+        console.log(frame);
+        console.log("prerenderFrame");
+        console.log(prerenderFrame);
         if (isVenmo) {
           return (
             <VenmoOverlay

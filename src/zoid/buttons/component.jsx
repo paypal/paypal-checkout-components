@@ -88,6 +88,7 @@ import {
 import { isFundingEligible } from "../../funding";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
+import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -306,10 +307,45 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       showPayPalAppSwitchOverlay: {
         type: "function",
         queryParam: false,
-        value: () => {
-          console.log("******** showPayPalAppSwitchOverlay *********");
-          return (<Overlay />).render(dom({ doc: document }));
-        },
+        value:
+          ({ props: { buttonSessionID } }) =>
+          ({ close, focus }) => {
+            console.log(
+              "*** nik ***** show - PayPalAppSwitchOverlay *********"
+            );
+            const overlay = (
+              <PayPalAppSwitchOverlay
+                close={close}
+                focus={focus}
+                buttonSessionID={buttonSessionID}
+              />
+            ).render(dom({ doc: document }));
+
+            document.body?.appendChild(overlay);
+          },
+      },
+
+      hidePayPalAppSwitchOverlay: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props: { buttonSessionID } }) =>
+          ({ close }) => {
+            console.log(
+              "*** nik ***** hide - PayPalAppSwitchOverlay *********"
+            );
+
+            // const body = document.getElementsByTagName("body")?.[0];
+            const overlay = document.getElementsByName(
+              `paypal-overlay-${buttonSessionID}`
+            )?.[0];
+
+            console.log(overlay);
+            if (overlay) {
+              close();
+              overlay.remove();
+            }
+          },
       },
 
       redirect: {
@@ -413,7 +449,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
-        value: getAmount,
+        value: () => "",
       },
 
       apiStageHost: {
