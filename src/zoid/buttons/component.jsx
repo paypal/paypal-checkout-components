@@ -310,14 +310,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value:
           ({ props: { buttonSessionID } }) =>
           ({ close, focus }) => {
-            console.log(
-              "*** nik ***** show - PayPalAppSwitchOverlay *********"
-            );
             const overlay = (
               <PayPalAppSwitchOverlay
+                buttonSessionID={buttonSessionID}
                 close={close}
                 focus={focus}
-                buttonSessionID={buttonSessionID}
               />
             ).render(dom({ doc: document }));
 
@@ -331,16 +328,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value:
           ({ props: { buttonSessionID } }) =>
           ({ close }) => {
-            console.log(
-              "*** nik ***** hide - PayPalAppSwitchOverlay *********"
-            );
-
-            // const body = document.getElementsByTagName("body")?.[0];
             const overlay = document.getElementsByName(
               `paypal-overlay-${buttonSessionID}`
             )?.[0];
 
-            console.log(overlay);
             if (overlay) {
               close();
               overlay.remove();
@@ -449,7 +440,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
-        value: () => "",
+        value: getAmount,
       },
 
       apiStageHost: {

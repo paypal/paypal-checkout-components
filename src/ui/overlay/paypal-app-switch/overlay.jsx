@@ -1,6 +1,5 @@
 /* @flow */
 /** @jsx node */
-/* eslint max-lines: off, react/jsx-max-depth: off */
 
 import {
   isIos,
@@ -8,37 +7,20 @@ import {
   isFirefox,
   animate,
   noop,
-  destroyElement,
-  uniqueID,
   supportsPopups,
-  type EventEmitterType,
-  toCSS,
 } from "@krakenjs/belter/src";
-import { EVENT, CONTEXT } from "@krakenjs/zoid/src";
 import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 import { LOGO_COLOR, PayPalRebrandLogo } from "@paypal/sdk-logos/src";
+import { type ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
-import { getContainerStyle, getSandboxStyle, CLASS } from "./style";
+import { getContainerStyle, getSandboxStyle } from "./style";
 
-export type OverlayProps = {|
-  // context: $Values<typeof CONTEXT>,
-  close: () => ZalgoPromise<void>,
+type OverlayProps = {|
   buttonSessionID: string,
+  close: () => ZalgoPromise<void>,
   focus: () => ZalgoPromise<void>,
-  // event: EventEmitterType,
-  // frame?: ?HTMLElement,
-  // prerenderFrame?: ?HTMLElement,
-  // content?: void | {|
-  //   windowMessage?: string,
-  //   continueMessage?: string,
-  //   cancelMessage?: string,
-  //   interrogativeMessage?: string,
-  // |},
-  // autoResize?: boolean,
-  // hideCloseButton?: boolean,
-  // nonce?: string,
-  // fullScreen?: boolean,
 |};
+
 export function PayPalAppSwitchOverlay({
   close,
   focus,
