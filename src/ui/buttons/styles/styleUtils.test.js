@@ -5,7 +5,7 @@ import { describe, expect, test } from "vitest";
 import { BUTTON_COLOR, BUTTON_SIZE } from "../../../constants/button";
 import { BUTTON_SIZE_STYLE } from "../config";
 
-import { getResponsiveStyleVariables } from "./responsive";
+import { getResponsiveStyleVariables } from "./styleUtils";
 
 // expected legacy responsive styles variables
 const expectedLegacyResponsiveStylesTiny = {
