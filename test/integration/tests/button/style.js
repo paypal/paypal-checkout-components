@@ -11,7 +11,6 @@ import {
   getElementRecursive,
   assert,
   WEBVIEW_USER_AGENT,
-  IPHONE6_USER_AGENT,
   mockProp,
 } from "../common";
 
