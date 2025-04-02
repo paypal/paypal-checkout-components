@@ -1,7 +1,11 @@
 /* @flow */
 /* eslint no-template-curly-in-string: off, max-lines: off */
 
-import { BUTTON_SIZE, BUTTON_LAYOUT } from "../../constants";
+import {
+  BUTTON_SIZE,
+  BUTTON_DISABLE_HEIGHT_SIZE,
+  BUTTON_LAYOUT,
+} from "../../constants";
 
 export const MINIMUM_SIZE: {|
   [$Values<typeof BUTTON_LAYOUT>]: $Values<typeof BUTTON_SIZE>,
@@ -89,45 +93,45 @@ export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
 };
 
 export const BUTTON_DISABLE_MAX_HEIGHT_STYLE: ButtonDisableHeightStyleMap = {
-  [BUTTON_SIZE.TINY]: {
+  [BUTTON_DISABLE_HEIGHT_SIZE.TINY]: {
     height: 25,
     minHeight: 25,
-    maxHeight: 30,
+    maxHeight: 29,
   },
 
-  [BUTTON_SIZE.SMALL]: {
+  [BUTTON_DISABLE_HEIGHT_SIZE.SMALL]: {
     height: 30,
     minHeight: 30,
-    maxHeight: 35,
+    maxHeight: 34,
   },
 
-  [BUTTON_SIZE.MEDIUM]: {
+  [BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM]: {
     height: 35,
     minHeight: 35,
-    maxHeight: 45,
+    maxHeight: 44,
   },
 
-  [BUTTON_SIZE.LARGE]: {
+  [BUTTON_DISABLE_HEIGHT_SIZE.LARGE]: {
     height: 45,
     minHeight: 45,
-    maxHeight: 55,
+    maxHeight: 54,
   },
 
-  [BUTTON_SIZE.XL]: {
+  [BUTTON_DISABLE_HEIGHT_SIZE.XL]: {
     height: 55,
     minHeight: 55,
-    maxHeight: 65,
+    maxHeight: 64,
   },
-  // 2XL
-  [BUTTON_SIZE.XXL]: {
+
+  [BUTTON_DISABLE_HEIGHT_SIZE.XXL]: {
     height: 65,
     minHeight: 65,
-    maxHeight: 75,
+    maxHeight: 74,
   },
-  // 3XL
-  [BUTTON_SIZE.XXXL]: {
+
+  [BUTTON_DISABLE_HEIGHT_SIZE.XXXL]: {
     height: 75,
     minHeight: 75,
-    maxHeight: 85,
+    maxHeight: 200,
   },
 };

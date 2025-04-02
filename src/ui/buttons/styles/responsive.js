@@ -369,6 +369,7 @@ export function buttonResponsiveStyle({
         height,
         fundingEligibility,
         experiment,
+        size: null,
         disableHeightSize,
         disableMaxHeight,
       });

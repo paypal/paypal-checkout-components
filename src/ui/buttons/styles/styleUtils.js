@@ -1,7 +1,9 @@
 /* @flow */
-
-import { FundingEligibilityType } from "@paypal/sdk-constants/src/types";
-import { Experiment } from "../../../types";
+import {
+  FUNDING,
+  type FundingEligibilityType,
+} from "@paypal/sdk-constants/src";
+import type { Experiment } from "../../../types";
 import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
 import { BUTTON_SIZE, BUTTON_DISABLE_HEIGHT_SIZE } from "../../../constants";
 import { htmlEncode, max, perc, roundUp } from "@krakenjs/belter/src";
@@ -16,7 +18,11 @@ export function getLabelHeight({
   height,
   shouldApplyRebrandedStyles,
   shouldResizeLabel,
-}) {
+}: {
+  height: number,
+  shouldApplyRebrandedStyles: boolean,
+  shouldResizeLabel: boolean,
+}): number {
   const labelPercPercentage = shouldResizeLabel ? 32 : 35;
   let labelHeight = max(roundUp(perc(height, labelPercPercentage) + 5, 2), 12);
 
@@ -29,9 +35,11 @@ export function getLabelHeight({
 
 export function getFontSize({
   height,
-  shouldApplyRebrandedStyles,
   shouldResizeLabel,
-}) {
+}: {
+  height: number,
+  shouldResizeLabel: boolean,
+}): number {
   const fontPercPercentage = shouldResizeLabel ? 32 : 36;
   const textSize = `${max(perc(height, fontPercPercentage), 10)}`;
 
@@ -40,9 +48,11 @@ export function getFontSize({
 
 export function getMarginTop({
   height,
-  shouldApplyRebrandedStyles,
   shouldResizeLabel,
-}) {
+}: {
+  height: number,
+  shouldResizeLabel: boolean,
+}): number {
   const marginTopPercPercentage = shouldResizeLabel ? 32 : 36;
 
   const marginTop = `${perc(
@@ -53,11 +63,7 @@ export function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
-export function getSpinnerSize({
-  height,
-  shouldApplyRebrandedStyles,
-  shouldResizeLabel,
-}) {
+export function getSpinnerSize({ height }: { height: number }): number {
   const spinner = `${perc(height, 50)}`;
 
   return parseInt(spinner, 10);
@@ -74,7 +80,7 @@ export function getResponsiveStyleVariables({
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
-  size?: $Values<typeof BUTTON_SIZE>,
+  size: $Values<typeof BUTTON_SIZE>,
   disableHeightSize?: $Values<typeof BUTTON_DISABLE_HEIGHT_SIZE>,
   disableMaxHeight?: ?boolean,
 |}): Object {
@@ -84,13 +90,16 @@ export function getResponsiveStyleVariables({
 
   //console.log(`Disable Max Height ${disableMaxHeight}`);
   const style = BUTTON_SIZE_STYLE[size];
-  const disableHeightStyle = disableMaxHeight
-    ? BUTTON_DISABLE_MAX_HEIGHT_STYLE[disableHeightSize]
-    : "";
 
-  const buttonHeight = disableMaxHeight
-    ? disableHeightStyle.height
-    : height || style.defaultHeight;
+  const disableHeightStyle =
+    disableMaxHeight && disableHeightSize
+      ? BUTTON_DISABLE_MAX_HEIGHT_STYLE[disableHeightSize]
+      : null;
+
+  const buttonHeight =
+    disableMaxHeight && disableHeightStyle
+      ? disableHeightStyle.height
+      : height || style.defaultHeight;
 
   const minDualWidth = Math.max(
     Math.round(
@@ -113,12 +122,20 @@ export function getResponsiveStyleVariables({
     roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
     12
   );
-  let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+  let labelHeight = getLabelHeight({
+    height: buttonHeight,
+    shouldApplyRebrandedStyles: false,
+    shouldResizeLabel,
+  });
 
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
   if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(buttonHeight, 76), 1);
+    labelHeight = getLabelHeight({
+      height: buttonHeight,
+      shouldApplyRebrandedStyles,
+      shouldResizeLabel,
+    });
     // smallerLabelHeight gets triggered at widths < 320px
     // We will need to investigate why the labels need to get significantly smaller at this breakpoint
     smallerLabelHeight = labelHeight;
@@ -130,13 +147,10 @@ export function getResponsiveStyleVariables({
   });
   const marginTop = getMarginTop({
     height: buttonHeight,
-    shouldApplyRebrandedStyles,
     shouldResizeLabel,
   });
   const spinnerSize = getSpinnerSize({
     height: buttonHeight,
-    shouldApplyRebrandedStyles,
-    shouldResizeLabel,
   });
 
   const styleVariables = {
