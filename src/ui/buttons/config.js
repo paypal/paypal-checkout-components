@@ -33,6 +33,14 @@ type ButtonStyleMap = {
   |},
 };
 
+type ButtonDisableHeightStyleMap = {
+  [$Values<typeof BUTTON_DISABLE_HEIGHT_SIZE>]: {|
+    height: number,
+    minHeight: number,
+    maxHeight: number,
+  |},
+};
+
 export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
   [BUTTON_SIZE.TINY]: {
     defaultWidth: 75,
@@ -80,7 +88,7 @@ export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
   },
 };
 
-export const BUTTON_DISABLE_MAX_HEIGHT_STYLE: ButtonStyleMap = {
+export const BUTTON_DISABLE_MAX_HEIGHT_STYLE: ButtonDisableHeightStyleMap = {
   [BUTTON_SIZE.TINY]: {
     height: 25,
     minHeight: 25,
