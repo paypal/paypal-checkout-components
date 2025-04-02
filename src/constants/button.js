@@ -38,6 +38,16 @@ export const BUTTON_SIZE = {
   RESPONSIVE: ("responsive": "responsive"),
 };
 
+export const BUTTON_DISABLE_HEIGHT_SIZE = {
+  TINY: ("tiny": "tiny"),
+  SMALL: ("small": "small"),
+  MEDIUM: ("medium": "medium"),
+  LARGE: ("large": "large"),
+  XL: ("xl": "xl"),
+  XXL: ("xxl": "xxl"),
+  XXXL: ("xxxl": "xxxl"),
+};
+
 export const BUTTON_SHAPE = {
   PILL: ("pill": "pill"),
   RECT: ("rect": "rect"),
