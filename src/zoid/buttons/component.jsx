@@ -381,7 +381,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value:
           ({ props, state }) =>
           () => {
-            state.appSwitchState = state.appSwitchState ?? "pending";
+            state.appSwitchState = "pending";
 
             window.addEventListener(
               "visibilitychange",
