@@ -41,8 +41,10 @@ export const BUTTON_SIZE = {
 export const BUTTON_DISABLE_HEIGHT_SIZE = {
   TINY: ("tiny": "tiny"),
   SMALL: ("small": "small"),
-  MEDIUM: ("medium": "medium"),
-  LARGE: ("large": "large"),
+  MEDIUM_SMALL: ("mediumSmall": "mediumSmall"),
+  MEDIUM_BIG: ("mediumBig": "mediumBig"),
+  LARGE_SMALL: ("largeSmall": "largeSmall"),
+  LARGE_BIG: ("largeBig": "largeBig"),
   XL: ("xl": "xl"),
   XXL: ("xxl": "xxl"),
   XXXL: ("xxxl": "xxxl"),

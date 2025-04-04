@@ -21,7 +21,10 @@ import {
 } from "../config";
 import { isBorderRadiusNumber } from "../util";
 import type { Experiment } from "../../../types";
-import { getResponsiveStyleVariables } from "./styleUtils";
+import {
+  getResponsiveStyleVariables,
+  getDisableMaxHeightResponsiveStyleVariables,
+} from "./styleUtils";
 
 const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
@@ -48,7 +51,6 @@ export function buttonResponsiveStyle({
     .map((size) => {
       const {
         style,
-        disableHeightStyle,
         buttonHeight,
         minDualWidth,
         textPercPercentage,
@@ -356,51 +358,44 @@ export function buttonResponsiveStyle({
     .join("\n");
 
   if (disableMaxHeight) {
-    Object.keys(BUTTON_DISABLE_MAX_HEIGHT_STYLE).map((disableHeightSize) => {
+    Object.keys(BUTTON_DISABLE_MAX_HEIGHT_STYLE).map((disableMaxHeightSize) => {
       const {
-        style,
         disableHeightStyle,
-        buttonHeight,
         labelHeight,
         fontSize,
         marginTop,
         spinnerSize,
-      } = getResponsiveStyleVariables({
-        height,
+      } = getDisableMaxHeightResponsiveStyleVariables({
         fundingEligibility,
         experiment,
-        size: null,
-        disableHeightSize,
-        disableMaxHeight,
+        disableMaxHeightSize,
       });
 
-      if (disableMaxHeight) {
-        const { minHeight, maxHeight } = disableHeightStyle;
+      const { minHeight, maxHeight } = disableHeightStyle;
 
-        button_disable_max_style += `
-              @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
-                .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
-                .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-                  font-size: ${fontSize}px;
-                  margin-top: -${marginTop}px;
-                  line-height: ${labelHeight}px;
-                }
-                .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-                  margin-top: ${marginTop}px;
-                }
-              
-                .${CLASS.BUTTON} .${CLASS.SPINNER} {
-                  height: ${spinnerSize}px;
-                  width: ${spinnerSize}px;
-                }
-                
-                .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
-                  margin: 0 4vw;
-                  height: ${labelHeight}px;
-                }
+      button_disable_max_style += `
+            @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+              .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+              .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+                font-size: ${fontSize}px;
+                margin-top: -${marginTop}px;
+                line-height: ${labelHeight}px;
               }
-            `;
-      }
+              .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
+                margin-top: ${marginTop}px;
+              }
+            
+              .${CLASS.BUTTON} .${CLASS.SPINNER} {
+                height: ${spinnerSize}px;
+                width: ${spinnerSize}px;
+              }
+              
+              .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
+                margin: 0 4vw;
+                height: ${labelHeight}px;
+              }
+            }
+          `;
     });
   }
 
