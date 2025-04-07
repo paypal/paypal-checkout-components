@@ -1,6 +1,6 @@
 /* @flow */
 
-import { max, perc, roundUp } from "@krakenjs/belter/src";
+import { max, perc } from "@krakenjs/belter/src";
 import {
   FUNDING,
   type FundingEligibilityType,
@@ -12,7 +12,6 @@ import {
   BUTTON_NUMBER,
   CLASS,
   ATTRIBUTE,
-  BUTTON_SIZE,
 } from "../../../constants";
 import {
   BUTTON_SIZE_STYLE,
@@ -29,13 +28,13 @@ import {
 const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
-export function buttonResponsiveStyle({
+const generateButtonSizeStyles = ({
   height,
   fundingEligibility,
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
-  experiment = {},
+  experiment,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
@@ -43,11 +42,8 @@ export function buttonResponsiveStyle({
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
   experiment: Experiment,
-|}): string {
-  let button_size_style_obj = "";
-  let button_disable_max_style = "";
-
-  Object.keys(BUTTON_SIZE_STYLE)
+|}): string => {
+  return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
       const {
         style,
@@ -64,7 +60,7 @@ export function buttonResponsiveStyle({
         size,
       });
 
-      button_size_style_obj += `
+      return `
             @media only screen and (min-width: ${style.minWidth}px) {
                 .${CLASS.CONTAINER} {
                     min-width: ${style.minWidth}px;
@@ -356,9 +352,17 @@ export function buttonResponsiveStyle({
       `;
     })
     .join("\n");
+};
 
-  if (disableMaxHeight) {
-    Object.keys(BUTTON_DISABLE_MAX_HEIGHT_STYLE).map((disableMaxHeightSize) => {
+const generateDisableMaxHeightStyles = ({
+  fundingEligibility,
+  experiment,
+}: {|
+  fundingEligibility: FundingEligibilityType,
+  experiment: Experiment,
+|}): string => {
+  return Object.keys(BUTTON_DISABLE_MAX_HEIGHT_STYLE)
+    .map((disableMaxHeightSize) => {
       const {
         disableHeightStyle,
         labelHeight,
@@ -373,7 +377,7 @@ export function buttonResponsiveStyle({
 
       const { minHeight, maxHeight } = disableHeightStyle;
 
-      button_disable_max_style += `
+      return `
             @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
               .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
               .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
@@ -396,8 +400,40 @@ export function buttonResponsiveStyle({
               }
             }
           `;
-    });
-  }
+    })
+    .join("\n");
+};
 
-  return button_size_style_obj + button_disable_max_style;
+export function buttonResponsiveStyle({
+  height,
+  fundingEligibility,
+  disableMaxWidth,
+  disableMaxHeight,
+  borderRadius,
+  experiment = {},
+}: {|
+  height?: ?number,
+  fundingEligibility: FundingEligibilityType,
+  disableMaxWidth?: ?boolean,
+  disableMaxHeight?: ?boolean,
+  borderRadius?: ?number,
+  experiment: Experiment,
+|}): string {
+  const buttonSizeStyles = generateButtonSizeStyles({
+    height,
+    fundingEligibility,
+    disableMaxWidth,
+    disableMaxHeight,
+    borderRadius,
+    experiment,
+  });
+
+  const disableMaxHeightStyles = disableMaxHeight
+    ? generateDisableMaxHeightStyles({
+        fundingEligibility,
+        experiment,
+      })
+    : "";
+
+  return buttonSizeStyles + disableMaxHeightStyles;
 }

@@ -119,7 +119,7 @@ const expectedRebrandedResponsiveStylesHuge = {
 // DISABLE MAX HEIGHT TESTS
 
 // expected legacy responsive styles variables
-const expectedDisableMaxHeightStylesTiny = {
+const expectedLegacyDisableMaxHeightStylesTiny = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.TINY],
   labelHeight: 14,
@@ -128,7 +128,7 @@ const expectedDisableMaxHeightStylesTiny = {
   spinnerSize: 13,
 };
 
-const expectedDisableMaxHeightStylesSmall = {
+const expectedLegacyDisableMaxHeightStylesSmall = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.SMALL],
   labelHeight: 16,
@@ -137,7 +137,7 @@ const expectedDisableMaxHeightStylesSmall = {
   spinnerSize: 15,
 };
 
-const expectedDisableMaxHeightStylesMediumSmall = {
+const expectedLegacyDisableMaxHeightStylesMediumSmall = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_SMALL],
   labelHeight: 18,
@@ -146,7 +146,7 @@ const expectedDisableMaxHeightStylesMediumSmall = {
   spinnerSize: 18,
 };
 
-const expectedDisableMaxHeightStylesMediumBig = {
+const expectedLegacyDisableMaxHeightStylesMediumBig = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_BIG],
   labelHeight: 20,
@@ -155,7 +155,7 @@ const expectedDisableMaxHeightStylesMediumBig = {
   spinnerSize: 20,
 };
 
-const expectedDisableMaxHeightStylesLargeSmall = {
+const expectedLegacyDisableMaxHeightStylesLargeSmall = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.LARGE_SMALL],
   labelHeight: 22,
@@ -164,7 +164,7 @@ const expectedDisableMaxHeightStylesLargeSmall = {
   spinnerSize: 23,
 };
 
-const expectedDisableMaxHeightStylesLargeBig = {
+const expectedLegacyDisableMaxHeightStylesLargeBig = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.LARGE_BIG],
   labelHeight: 24,
@@ -173,7 +173,7 @@ const expectedDisableMaxHeightStylesLargeBig = {
   spinnerSize: 25,
 };
 
-const expectedDisableMaxHeightStylesXL = {
+const expectedLegacyDisableMaxHeightStylesXL = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.XL],
   labelHeight: 24,
@@ -182,7 +182,7 @@ const expectedDisableMaxHeightStylesXL = {
   spinnerSize: 28,
 };
 
-const expectedDisableMaxHeightStylesXXL = {
+const expectedLegacyDisableMaxHeightStylesXXL = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.XXL],
   labelHeight: 28,
@@ -191,10 +191,92 @@ const expectedDisableMaxHeightStylesXXL = {
   spinnerSize: 33,
 };
 
-const expectedDisableMaxHeightStylesXXXL = {
+const expectedLegacyDisableMaxHeightStylesXXXL = {
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.XXXL],
   labelHeight: 32,
+  fontSize: 27,
+  marginTop: 3,
+  spinnerSize: 38,
+};
+
+// expected rebrand disable max height responsive styles variables
+const expectedRebrandDisableMaxHeightStylesTiny = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.TINY],
+  labelHeight: 19,
+  fontSize: 10,
+  marginTop: 1,
+  spinnerSize: 13,
+};
+
+const expectedRebrandDisableMaxHeightStylesSmall = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.SMALL],
+  labelHeight: 23,
+  fontSize: 11,
+  marginTop: 1,
+  spinnerSize: 15,
+};
+
+const expectedRebrandDisableMaxHeightStylesMediumSmall = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_SMALL],
+  labelHeight: 27,
+  fontSize: 13,
+  marginTop: 1,
+  spinnerSize: 18,
+};
+
+const expectedRebrandDisableMaxHeightStylesMediumBig = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_BIG],
+  labelHeight: 30,
+  fontSize: 14,
+  marginTop: 1,
+  spinnerSize: 20,
+};
+
+const expectedRebrandDisableMaxHeightStylesLargeSmall = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.LARGE_SMALL],
+  labelHeight: 34,
+  fontSize: 16,
+  marginTop: 2,
+  spinnerSize: 23,
+};
+
+const expectedRebrandDisableMaxHeightStylesLargeBig = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.LARGE_BIG],
+  labelHeight: 38,
+  fontSize: 18,
+  marginTop: 2,
+  spinnerSize: 25,
+};
+
+const expectedRebrandDisableMaxHeightStylesXL = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.XL],
+  labelHeight: 42,
+  fontSize: 20,
+  marginTop: 2,
+  spinnerSize: 28,
+};
+
+const expectedRebrandDisableMaxHeightStylesXXL = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.XXL],
+  labelHeight: 49,
+  fontSize: 23,
+  marginTop: 2,
+  spinnerSize: 33,
+};
+
+const expectedRebrandDisableMaxHeightStylesXXXL = {
+  disableHeightStyle:
+    BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_HEIGHT_SIZE.XXXL],
+  labelHeight: 57,
   fontSize: 27,
   marginTop: 3,
   spinnerSize: 38,
@@ -297,39 +379,102 @@ describe("test responsive style variables for disable max height", () => {
   test.each([
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.TINY,
-      expected: expectedDisableMaxHeightStylesTiny,
+      expected: expectedLegacyDisableMaxHeightStylesTiny,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.SMALL,
-      expected: expectedDisableMaxHeightStylesSmall,
+      expected: expectedLegacyDisableMaxHeightStylesSmall,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_SMALL,
-      expected: expectedDisableMaxHeightStylesMediumSmall,
+      expected: expectedLegacyDisableMaxHeightStylesMediumSmall,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_BIG,
-      expected: expectedDisableMaxHeightStylesMediumBig,
+      expected: expectedLegacyDisableMaxHeightStylesMediumBig,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.LARGE_SMALL,
-      expected: expectedDisableMaxHeightStylesLargeSmall,
+      expected: expectedLegacyDisableMaxHeightStylesLargeSmall,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.LARGE_BIG,
-      expected: expectedDisableMaxHeightStylesLargeBig,
+      expected: expectedLegacyDisableMaxHeightStylesLargeBig,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.XL,
-      expected: expectedDisableMaxHeightStylesXL,
+      expected: expectedLegacyDisableMaxHeightStylesXL,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.XXL,
-      expected: expectedDisableMaxHeightStylesXXL,
+      expected: expectedLegacyDisableMaxHeightStylesXXL,
     },
     {
       input: BUTTON_DISABLE_HEIGHT_SIZE.XXXL,
-      expected: expectedDisableMaxHeightStylesXXXL,
+      expected: expectedLegacyDisableMaxHeightStylesXXXL,
+    },
+  ])(
+    `should return responsive styles for disable max height size $input`,
+    ({ input, expected }) => {
+      expect(
+        getDisableMaxHeightResponsiveStyleVariables({
+          fundingEligibility,
+          experiment,
+          disableMaxHeightSize: input,
+        })
+      ).toEqual(expected);
+    }
+  );
+});
+
+describe("test rebrand responsive style variables for disable max height", () => {
+  const experiment = {
+    isPaypalRebrandEnabled: true,
+    defaultBlueButtonColor: BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE,
+  };
+  const fundingEligibility = {
+    paypal: {
+      eligible: true,
+      branded: undefined,
+    },
+  };
+
+  test.each([
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.TINY,
+      expected: expectedRebrandDisableMaxHeightStylesTiny,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.SMALL,
+      expected: expectedRebrandDisableMaxHeightStylesSmall,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_SMALL,
+      expected: expectedRebrandDisableMaxHeightStylesMediumSmall,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_BIG,
+      expected: expectedRebrandDisableMaxHeightStylesMediumBig,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.LARGE_SMALL,
+      expected: expectedRebrandDisableMaxHeightStylesLargeSmall,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.LARGE_BIG,
+      expected: expectedRebrandDisableMaxHeightStylesLargeBig,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.XL,
+      expected: expectedRebrandDisableMaxHeightStylesXL,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.XXL,
+      expected: expectedRebrandDisableMaxHeightStylesXXL,
+    },
+    {
+      input: BUTTON_DISABLE_HEIGHT_SIZE.XXXL,
+      expected: expectedRebrandDisableMaxHeightStylesXXXL,
     },
   ])(
     `should return responsive styles for disable max height size $input`,

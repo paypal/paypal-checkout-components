@@ -14,13 +14,13 @@ const MIN_SPLIT_BUTTON_WIDTH = 300;
 const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
-export function getLabelHeight({
+function getLabelHeight({
   height,
   shouldApplyRebrandedStyles,
   shouldResizeLabel,
 }: {
   height: number,
-  shouldApplyRebrandedStyles: boolean,
+  shouldApplyRebrandedStyles?: boolean,
   shouldResizeLabel: boolean,
 }): number {
   const labelPercPercentage = shouldResizeLabel ? 32 : 35;
@@ -33,7 +33,7 @@ export function getLabelHeight({
   return parseInt(labelHeight, 10);
 }
 
-export function getFontSize({
+function getFontSize({
   height,
   shouldResizeLabel,
 }: {
@@ -46,7 +46,7 @@ export function getFontSize({
   return parseInt(textSize, 10);
 }
 
-export function getMarginTop({
+function getMarginTop({
   height,
   shouldResizeLabel,
 }: {
@@ -54,7 +54,6 @@ export function getMarginTop({
   shouldResizeLabel: boolean,
 }): number {
   const marginTopPercPercentage = shouldResizeLabel ? 32 : 36;
-
   const marginTop = `${perc(
     max(perc(height, marginTopPercPercentage), 10),
     10
@@ -63,7 +62,7 @@ export function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
-export function getSpinnerSize({ height }: { height: number }): number {
+function getSpinnerSize({ height }: { height: number }): number {
   const spinner = `${perc(height, 50)}`;
 
   return parseInt(spinner, 10);
@@ -147,11 +146,6 @@ export function getDisableMaxHeightResponsiveStyleVariables({
 
   const disableHeightStyle =
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[disableMaxHeightSize];
-
-  if (!disableHeightStyle) {
-    return {};
-  }
-
   const buttonHeight = disableHeightStyle.defaultHeight;
 
   const { paylater } = fundingEligibility;
@@ -161,12 +155,11 @@ export function getDisableMaxHeightResponsiveStyleVariables({
     paylater?.products?.payIn3?.variant === "IT" ||
     paylater?.products?.payIn3?.variant === "ES";
 
-  let labelHeight = getLabelHeight({
+  const labelHeight = getLabelHeight({
     height: buttonHeight,
     shouldApplyRebrandedStyles,
     shouldResizeLabel,
   });
-
   const fontSize = getFontSize({
     height: buttonHeight,
     shouldApplyRebrandedStyles,
