@@ -1,28 +1,26 @@
 /* @flow */
-import {
-  FUNDING,
-  type FundingEligibilityType,
-} from "@paypal/sdk-constants/src";
+
+import { max, perc, roundUp } from "@krakenjs/belter/src";
+import type { FundingEligibilityType } from "@paypal/sdk-constants/src";
+
 import type { Experiment } from "../../../types";
 import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
 import { BUTTON_SIZE, BUTTON_DISABLE_HEIGHT_SIZE } from "../../../constants";
-import { htmlEncode, max, perc, roundUp } from "@krakenjs/belter/src";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
 
-const FIRST_BUTTON_PERC = 50;
 const WALLET_BUTTON_PERC = 60;
 
 function getLabelHeight({
   height,
   shouldApplyRebrandedStyles,
   shouldResizeLabel,
-}: {
+}: {|
   height: number,
   shouldApplyRebrandedStyles?: boolean,
   shouldResizeLabel: boolean,
-}): number {
+|}): number {
   const labelPercPercentage = shouldResizeLabel ? 32 : 35;
   let labelHeight = max(roundUp(perc(height, labelPercPercentage) + 5, 2), 12);
 
@@ -36,10 +34,10 @@ function getLabelHeight({
 function getFontSize({
   height,
   shouldResizeLabel,
-}: {
+}: {|
   height: number,
   shouldResizeLabel: boolean,
-}): number {
+|}): number {
   const fontPercPercentage = shouldResizeLabel ? 32 : 36;
   const textSize = `${max(perc(height, fontPercPercentage), 10)}`;
 
@@ -49,10 +47,10 @@ function getFontSize({
 function getMarginTop({
   height,
   shouldResizeLabel,
-}: {
+}: {|
   height: number,
   shouldResizeLabel: boolean,
-}): number {
+|}): number {
   const marginTopPercPercentage = shouldResizeLabel ? 32 : 36;
   const marginTop = `${perc(
     max(perc(height, marginTopPercPercentage), 10),
@@ -62,7 +60,7 @@ function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
-function getSpinnerSize({ height }: { height: number }): number {
+function getSpinnerSize({ height }: {| height: number |}): number {
   const spinner = `${perc(height, 50)}`;
 
   return parseInt(spinner, 10);
@@ -162,7 +160,6 @@ export function getDisableMaxHeightResponsiveStyleVariables({
   });
   const fontSize = getFontSize({
     height: buttonHeight,
-    shouldApplyRebrandedStyles,
     shouldResizeLabel,
   });
   const marginTop = getMarginTop({
