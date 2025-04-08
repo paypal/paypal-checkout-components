@@ -365,10 +365,14 @@ const generateDisableMaxHeightStyles = ({
     .map((disableMaxHeightSize) => {
       const {
         disableHeightStyle,
+        buttonHeight,
         labelHeight,
         fontSize,
         marginTop,
         spinnerSize,
+        pillBorderRadius,
+        APMHeight,
+        applePayHeight,
       } = getDisableMaxHeightResponsiveStyleVariables({
         fundingEligibility,
         experiment,
@@ -397,6 +401,57 @@ const generateDisableMaxHeightStyles = ({
               .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
                 margin: 0 4vw;
                 height: ${labelHeight}px;
+              }
+
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] 
+              .${CLASS.BUTTON_LABEL} {
+                height: ${applePayHeight}px;
+              }
+
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] 
+              .${CLASS.BUTTON_LABEL} .${CLASS.TEXT} {
+                line-height: ${applePayHeight}px;
+              }
+
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] 
+              .${CLASS.BUTTON_LABEL},
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] 
+              .${CLASS.BUTTON_LABEL} {
+                height: ${APMHeight}px;
+              }
+
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] 
+              .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] 
+              .${CLASS.BUTTON_LABEL} .${CLASS.SPACE},
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] 
+              .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+              .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] 
+              .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
+                line-height: ${APMHeight}px;
+              }
+
+              .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
+                border-radius: ${pillBorderRadius}px;
+              }
+
+              .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} 
+              .menu-button {
+                border-top-right-radius: ${pillBorderRadius}px;
+                border-bottom-right-radius: ${pillBorderRadius}px;
+              }
+
+              .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} 
+              .${CLASS.BUTTON} {
+                width: calc(100% - ${buttonHeight + 2}px);
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              }
+
+              .menu-button {
+                height: 100%;
+                width: auto;
+                aspect-ratio: 1;
               }
             }
           `;

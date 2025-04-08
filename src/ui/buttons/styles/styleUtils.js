@@ -66,6 +66,18 @@ function getSpinnerSize({ height }: {| height: number |}): number {
   return parseInt(spinner, 10);
 }
 
+function getAPMButtonHeight({ height }: {| height: number |}): number {
+  const buttonHeight = perc(height, 50) + 5;
+
+  return parseInt(buttonHeight, 10);
+}
+
+function getApplePayButtonHeight({ height }: {| height: number |}): number {
+  const buttonHeight = perc(height, 80) + 5;
+
+  return parseInt(buttonHeight, 10);
+}
+
 export function getResponsiveStyleVariables({
   height,
   fundingEligibility,
@@ -169,13 +181,25 @@ export function getDisableMaxHeightResponsiveStyleVariables({
   const spinnerSize = getSpinnerSize({
     height: buttonHeight,
   });
+  const APMHeight = getAPMButtonHeight({
+    height: buttonHeight,
+  });
+  const applePayHeight = getApplePayButtonHeight({
+    height: buttonHeight,
+  });
+
+  const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
   const styleVariables = {
     disableHeightStyle,
+    buttonHeight,
     labelHeight,
     fontSize,
     marginTop,
     spinnerSize,
+    pillBorderRadius,
+    APMHeight,
+    applePayHeight,
   };
 
   return styleVariables;
