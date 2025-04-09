@@ -96,49 +96,49 @@ export const BUTTON_DISABLE_MAX_HEIGHT_STYLE: ButtonDisableMaxHeightStyleMap = {
   [BUTTON_DISABLE_HEIGHT_SIZE.TINY]: {
     defaultHeight: 25,
     minHeight: 25,
-    maxHeight: 29,
+    maxHeight: 30,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.SMALL]: {
     defaultHeight: 30,
     minHeight: 30,
-    maxHeight: 34,
+    maxHeight: 35,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_SMALL]: {
     defaultHeight: 35,
     minHeight: 35,
-    maxHeight: 39,
+    maxHeight: 40,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_BIG]: {
     defaultHeight: 40,
     minHeight: 40,
-    maxHeight: 44,
+    maxHeight: 45,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.LARGE_SMALL]: {
     defaultHeight: 45,
     minHeight: 45,
-    maxHeight: 49,
+    maxHeight: 50,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.LARGE_BIG]: {
     defaultHeight: 50,
     minHeight: 50,
-    maxHeight: 54,
+    maxHeight: 55,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.XL]: {
     defaultHeight: 55,
     minHeight: 55,
-    maxHeight: 64,
+    maxHeight: 65,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.XXL]: {
     defaultHeight: 65,
     minHeight: 65,
-    maxHeight: 74,
+    maxHeight: 75,
   },
 
   [BUTTON_DISABLE_HEIGHT_SIZE.XXXL]: {
