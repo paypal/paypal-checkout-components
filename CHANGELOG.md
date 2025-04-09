@@ -1,3 +1,9 @@
+## <small>5.0.356 (2025-04-09)</small>
+
+* chore(release): 5.0.355 🎉 ([4f38b43](https://github.com/paypal/paypal-checkout-components/commit/4f38b43))
+
+
+
 ## <small>5.0.355 (2025-03-26)</small>
 
 * update font-family + update font-weight for poweredBy (#2482) ([44b7f0b](https://github.com/paypal/paypal-checkout-components/commit/44b7f0b)), closes [#2482](https://github.com/paypal/paypal-checkout-components/issues/2482)
