@@ -390,6 +390,7 @@ const generateDisableMaxHeightStyles = ({
                 margin-top: -${marginTop}px;
                 line-height: ${labelHeight}px;
               }
+              
               .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
                 margin-top: ${marginTop}px;
               }

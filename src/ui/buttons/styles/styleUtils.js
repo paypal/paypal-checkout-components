@@ -5,7 +5,10 @@ import type { FundingEligibilityType } from "@paypal/sdk-constants/src";
 
 import type { Experiment } from "../../../types";
 import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
-import { BUTTON_SIZE, BUTTON_DISABLE_HEIGHT_SIZE } from "../../../constants";
+import {
+  BUTTON_SIZE,
+  BUTTON_DISABLE_MAX_HEIGHT_SIZE,
+} from "../../../constants";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
@@ -148,7 +151,7 @@ export function getDisableMaxHeightResponsiveStyleVariables({
 }: {|
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
-  disableMaxHeightSize: $Values<typeof BUTTON_DISABLE_HEIGHT_SIZE>,
+  disableMaxHeightSize: $Values<typeof BUTTON_DISABLE_MAX_HEIGHT_SIZE>,
 |}): Object {
   const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
   const shouldApplyRebrandedStyles =

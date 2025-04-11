@@ -3,7 +3,7 @@
 
 import {
   BUTTON_SIZE,
-  BUTTON_DISABLE_HEIGHT_SIZE,
+  BUTTON_DISABLE_MAX_HEIGHT_SIZE,
   BUTTON_LAYOUT,
 } from "../../constants";
 
@@ -38,7 +38,7 @@ type ButtonStyleMap = {
 };
 
 type ButtonDisableMaxHeightStyleMap = {
-  [$Values<typeof BUTTON_DISABLE_HEIGHT_SIZE>]: {|
+  [$Values<typeof BUTTON_DISABLE_MAX_HEIGHT_SIZE>]: {|
     defaultHeight: number,
     minHeight: number,
     maxHeight: number,
@@ -93,55 +93,55 @@ export const BUTTON_SIZE_STYLE: ButtonStyleMap = {
 };
 
 export const BUTTON_DISABLE_MAX_HEIGHT_STYLE: ButtonDisableMaxHeightStyleMap = {
-  [BUTTON_DISABLE_HEIGHT_SIZE.TINY]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.TINY]: {
     defaultHeight: 25,
     minHeight: 25,
     maxHeight: 30,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.SMALL]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.SMALL]: {
     defaultHeight: 30,
     minHeight: 30,
     maxHeight: 35,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_SMALL]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.MEDIUM_SMALL]: {
     defaultHeight: 35,
     minHeight: 35,
     maxHeight: 40,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.MEDIUM_BIG]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.MEDIUM_BIG]: {
     defaultHeight: 40,
     minHeight: 40,
     maxHeight: 45,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.LARGE_SMALL]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.LARGE_SMALL]: {
     defaultHeight: 45,
     minHeight: 45,
     maxHeight: 50,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.LARGE_BIG]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.LARGE_BIG]: {
     defaultHeight: 50,
     minHeight: 50,
     maxHeight: 55,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.XL]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.XL]: {
     defaultHeight: 55,
     minHeight: 55,
     maxHeight: 65,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.XXL]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.XXL]: {
     defaultHeight: 65,
     minHeight: 65,
     maxHeight: 75,
   },
 
-  [BUTTON_DISABLE_HEIGHT_SIZE.XXXL]: {
+  [BUTTON_DISABLE_MAX_HEIGHT_SIZE.XXXL]: {
     defaultHeight: 75,
     minHeight: 75,
     maxHeight: 200,

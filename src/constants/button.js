@@ -38,7 +38,7 @@ export const BUTTON_SIZE = {
   RESPONSIVE: ("responsive": "responsive"),
 };
 
-export const BUTTON_DISABLE_HEIGHT_SIZE = {
+export const BUTTON_DISABLE_MAX_HEIGHT_SIZE = {
   TINY: ("tiny": "tiny"),
   SMALL: ("small": "small"),
   MEDIUM_SMALL: ("mediumSmall": "mediumSmall"),
