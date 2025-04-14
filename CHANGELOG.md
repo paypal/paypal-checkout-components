@@ -1,3 +1,9 @@
+## <small>5.0.357 (2025-04-14)</small>
+
+* Feature/disable max height new fix (#2485) ([b33525c](https://github.com/paypal/paypal-checkout-components/commit/b33525c)), closes [#2485](https://github.com/paypal/paypal-checkout-components/issues/2485)
+
+
+
 ## <small>5.0.356 (2025-04-09)</small>
 
 * chore(release): 5.0.355 🎉 ([4f38b43](https://github.com/paypal/paypal-checkout-components/commit/4f38b43))
