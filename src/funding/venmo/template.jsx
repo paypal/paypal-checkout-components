@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx node */
 import { node, Style, type ChildType } from "@krakenjs/jsx-pragmatic/src";
+import { getCSPNonce } from "@paypal/sdk-client/src";
 import {
   VenmoLogoExternalImage,
   VenmoLogoInlineSVG,
@@ -32,8 +33,10 @@ export function WalletLabel({ ...props }: WalletLabelOptions): ChildType {
     label = instrument.label;
   }
 
+  const cspNonce = getCSPNonce();
+
   return (
-    <Style css={css}>
+    <Style nonce={cspNonce} css={css}>
       <div class="wallet-label-venmo">
         <div class="divider">|</div>
         {logo && (
