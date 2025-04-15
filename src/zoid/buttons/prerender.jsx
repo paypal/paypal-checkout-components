@@ -41,7 +41,7 @@ export function PrerenderedButtons({
   props,
   experiment,
 }: PrerenderedButtonsProps): ChildType {
-  const eagerOrderCreation = isEagerOrderCreationEnabled(props, experiment);
+  const eagerOrderCreation = isEagerOrderCreationEnabled({ props, experiment });
   let win;
   const handleClick = (
     // eslint-disable-next-line no-undef
