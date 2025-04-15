@@ -7,6 +7,7 @@ import {
   Style,
   type ChildType,
 } from "@krakenjs/jsx-pragmatic/src";
+import { getCSPNonce } from "@paypal/sdk-client/src";
 import {
   PPLogoExternalImage,
   PPLogoInlineSVG,
@@ -271,8 +272,10 @@ export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
     );
   }
 
+  const cspNonce = getCSPNonce();
+
   return (
-    <Style css={css}>
+    <Style nonce={cspNonce} css={css}>
       <div class="wallet-label">
         <div class="paypal-mark">
           {__WEB__ ? (
@@ -472,8 +475,10 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
     attrs[ATTRIBUTE.PAY_NOW] = true;
   }
 
+  const cspNonce = getCSPNonce();
+
   return (
-    <Style css={css}>
+    <Style nonce={cspNonce} css={css}>
       <div class="wallet-label-new" {...attrs}>
         {branded ? (
           <div class="paypal-mark">
