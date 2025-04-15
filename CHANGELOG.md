@@ -1,3 +1,9 @@
+## <small>5.0.358 (2025-04-15)</small>
+
+* Updates made to style tags to fix inline styling errors with strict CSP. Nonce added to style tags t ([d120e40](https://github.com/paypal/paypal-checkout-components/commit/d120e40)), closes [#2486](https://github.com/paypal/paypal-checkout-components/issues/2486)
+
+
+
 ## <small>5.0.357 (2025-04-14)</small>
 
 * Feature/disable max height new fix (#2485) ([b33525c](https://github.com/paypal/paypal-checkout-components/commit/b33525c)), closes [#2485](https://github.com/paypal/paypal-checkout-components/issues/2485)
