@@ -19,10 +19,14 @@ import type { ZoidProps } from "@krakenjs/zoid/src";
 import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
+import type { Experiment } from "../../types";
+
+import { isEagerOrderCreationEnabled } from "./util";
 
 type PrerenderedButtonsProps = {|
   nonce: ?string,
   props: ZoidProps<ButtonProps>,
+  experiment: Experiment,
   onRenderCheckout: ({|
     win?: CrossDomainWindowType,
     fundingSource: $Values<typeof FUNDING>,
@@ -35,7 +39,9 @@ export function PrerenderedButtons({
   nonce,
   onRenderCheckout,
   props,
+  experiment,
 }: PrerenderedButtonsProps): ChildType {
+  const eagerOrderCreation = isEagerOrderCreationEnabled(props, experiment);
   let win;
   const handleClick = (
     // eslint-disable-next-line no-undef
@@ -62,7 +68,11 @@ export function PrerenderedButtons({
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
       });
 
-    if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
+    if (
+      eagerOrderCreation ||
+      fundingSource === FUNDING.VENMO ||
+      fundingSource === FUNDING.APPLEPAY
+    ) {
       // wait for button to load
     } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {
       // remember the popup window to prevent showing a new popup window on every click in the prerender state

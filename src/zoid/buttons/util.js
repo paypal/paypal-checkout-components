@@ -8,6 +8,7 @@ import {
   isSafari,
   type Experiment,
   isDevice,
+  isWebView,
   isTablet,
   getElement,
   isStandAlone,
@@ -43,6 +44,7 @@ import type {
 } from "../../ui/buttons/props";
 import { determineEligibleFunding } from "../../funding";
 import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
+import type { ZoidProps } from "@krakenjs/zoid/src";
 
 type DetermineFlowOptions = {|
   createBillingAgreement: CreateBillingAgreement,
@@ -455,3 +457,30 @@ export const sendPostRobotMessageToButtonIframe = ({
     }
   }
 };
+type EagerOrderCreationEligibilityInput = {|
+  props: ZoidProps<ButtonProps>,
+  experiment: Experiment,
+|};
+
+export const isEagerOrderCreationEnabled = ({
+  props,
+  experiment,
+}: EagerOrderCreationEligibilityInput): boolean =>
+  memoize(() => {
+    const result =
+      !isWebView() &&
+      isDevice() &&
+      props.appSwitchWhenAvailable &&
+      experiment.spbEagerOrderCreation;
+
+    getLogger().info("button_eager_order_creation_enabled", {
+      buttonSessionID: props.buttonSessionID,
+      eagerOrderEnabled: result,
+      webview: isWebView(),
+      device: isDevice(),
+      appSwitchWhenAvailable: props.appSwitchWhenAvailable,
+      spbEagerOrderCreationExperiment: experiment.spbEagerOrderCreation,
+    });
+
+    return result;
+  });
