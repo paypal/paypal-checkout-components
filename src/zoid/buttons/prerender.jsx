@@ -107,7 +107,11 @@ export function PrerenderedButtons({
     <html>
       <body>
         {/* $FlowFixMe */}
-        <Buttons {...props} onClick={handleClick} />
+        <Buttons
+          {...props}
+          onClick={handleClick}
+          showLoadingSpinner={eagerOrderCreation}
+        />
       </body>
     </html>
   );
