@@ -43,6 +43,7 @@ import {
   getJsSdkLibrary,
   wasShopperInsightsUsed,
   isPayPalTrustedUrl,
+  getSDKToken,
   getSDKInitTime,
   getSDKToken,
 } from "@paypal/sdk-client/src";
