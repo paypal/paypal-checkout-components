@@ -102,6 +102,7 @@ import {
   getButtonExperiments,
   getModal,
   sendPostRobotMessageToButtonIframe,
+  isEagerOrderCreationEnabled,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
@@ -611,6 +612,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return props?.displayOnly || [];
         },
+      },
+
+      eagerOrderCreation: {
+        type: "boolean",
+        queryParam: true,
+        value: ({ props }) => isEagerOrderCreationEnabled(props),
       },
 
       enableFunding: {

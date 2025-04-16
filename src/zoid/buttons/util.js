@@ -457,30 +457,15 @@ export const sendPostRobotMessageToButtonIframe = ({
     }
   }
 };
-type EagerOrderCreationEligibilityInput = {|
-  props: ZoidProps<ButtonProps>,
-  experiment: Experiment,
-|};
 
-export const isEagerOrderCreationEnabled = ({
-  props,
-  experiment,
-}: EagerOrderCreationEligibilityInput): boolean =>
-  memoize(() => {
-    const result =
-      !isWebView() &&
+export const isEagerOrderCreationEnabled = (
+  props: ZoidProps<ButtonProps>
+): boolean => {
+  const experiment = getButtonExperiments();
+  return Boolean(
+    !isWebView() &&
       isDevice() &&
       props.appSwitchWhenAvailable &&
-      experiment.spbEagerOrderCreation;
-
-    getLogger().info("button_eager_order_creation_enabled", {
-      buttonSessionID: props.buttonSessionID,
-      eagerOrderEnabled: result,
-      webview: isWebView(),
-      device: isDevice(),
-      appSwitchWhenAvailable: props.appSwitchWhenAvailable,
-      spbEagerOrderCreationExperiment: experiment.spbEagerOrderCreation,
-    });
-
-    return result;
-  });
+      experiment.spbEagerOrderCreation
+  );
+};

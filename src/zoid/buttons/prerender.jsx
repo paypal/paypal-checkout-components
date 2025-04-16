@@ -39,9 +39,8 @@ export function PrerenderedButtons({
   nonce,
   onRenderCheckout,
   props,
-  experiment,
 }: PrerenderedButtonsProps): ChildType {
-  const eagerOrderCreation = isEagerOrderCreationEnabled({ props, experiment });
+  const eagerOrderCreation = isEagerOrderCreationEnabled(props);
   let win;
   const handleClick = (
     // eslint-disable-next-line no-undef
@@ -58,6 +57,7 @@ export function PrerenderedButtons({
       .info("paypal_js_sdk_v5_button_prerender_click", {
         fundingSource,
         card,
+        eagerOrderCreation: String(eagerOrderCreation),
         buttonsSessionID: props.buttonSessionID,
       })
       .track({
@@ -68,11 +68,12 @@ export function PrerenderedButtons({
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
       });
 
-    if (
-      eagerOrderCreation ||
-      fundingSource === FUNDING.VENMO ||
-      fundingSource === FUNDING.APPLEPAY
-    ) {
+    if (eagerOrderCreation) {
+      // Pass this click. The buttons are rendered in disabled state
+      return;
+    }
+
+    if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load
     } else if (supportsPopups() && !props.merchantRequestedPopupsDisabled) {
       // remember the popup window to prevent showing a new popup window on every click in the prerender state
