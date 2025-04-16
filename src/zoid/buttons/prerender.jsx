@@ -19,14 +19,12 @@ import type { ZoidProps } from "@krakenjs/zoid/src";
 import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
-import type { Experiment } from "../../types";
 
 import { isEagerOrderCreationEnabled } from "./util";
 
 type PrerenderedButtonsProps = {|
   nonce: ?string,
   props: ZoidProps<ButtonProps>,
-  experiment: Experiment,
   onRenderCheckout: ({|
     win?: CrossDomainWindowType,
     fundingSource: $Values<typeof FUNDING>,
@@ -40,7 +38,9 @@ export function PrerenderedButtons({
   onRenderCheckout,
   props,
 }: PrerenderedButtonsProps): ChildType {
-  const eagerOrderCreation = isEagerOrderCreationEnabled(props);
+  const eagerOrderCreation = isEagerOrderCreationEnabled(
+    props.appSwitchWhenAvailable
+  );
   let win;
   const handleClick = (
     // eslint-disable-next-line no-undef

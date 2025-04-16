@@ -44,7 +44,6 @@ import type {
 } from "../../ui/buttons/props";
 import { determineEligibleFunding } from "../../funding";
 import { BUTTON_SIZE_STYLE } from "../../ui/buttons/config";
-import type { ZoidProps } from "@krakenjs/zoid/src";
 
 type DetermineFlowOptions = {|
   createBillingAgreement: CreateBillingAgreement,
@@ -459,13 +458,13 @@ export const sendPostRobotMessageToButtonIframe = ({
 };
 
 export const isEagerOrderCreationEnabled = (
-  props: ZoidProps<ButtonProps>
+  appSwitchWhenAvailable: boolean
 ): boolean => {
   const experiment = getButtonExperiments();
   return Boolean(
     !isWebView() &&
       isDevice() &&
-      props.appSwitchWhenAvailable &&
+      appSwitchWhenAvailable &&
       experiment.spbEagerOrderCreation
   );
 };

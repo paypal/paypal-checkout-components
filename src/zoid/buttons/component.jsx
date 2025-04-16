@@ -617,7 +617,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       eagerOrderCreation: {
         type: "boolean",
         queryParam: true,
-        value: ({ props }) => isEagerOrderCreationEnabled(props),
+        value: ({ props }) =>
+          isEagerOrderCreationEnabled(props.appSwitchWhenAvailable),
       },
 
       enableFunding: {
