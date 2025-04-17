@@ -512,7 +512,7 @@ type HidePayPalAppSwitchOverlay = {|
 
 export type ButtonProps = {|
   // app switch properties
-  appSwitchWhenAvailable: string,
+  appSwitchWhenAvailable: boolean,
   listenForHashChanges: () => void,
   removeListenerForHashChanges: () => void,
   // Not passed to child iframe
