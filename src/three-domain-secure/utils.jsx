@@ -12,7 +12,7 @@ import {
   getPayPalDomainRegex,
 } from "@paypal/sdk-client/src";
 
-import { Overlay } from "../ui/overlay";
+import { Overlay } from "../ui/overlay/three-domain-secure";
 
 import type { TDSProps } from "./types";
 

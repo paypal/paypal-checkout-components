@@ -8,6 +8,7 @@ import {
   isSafari,
   type Experiment,
   isDevice,
+  isWebView,
   isTablet,
   getElement,
   isStandAlone,
@@ -454,4 +455,16 @@ export const sendPostRobotMessageToButtonIframe = ({
       });
     }
   }
+};
+
+export const isEagerOrderCreationEnabled = (
+  appSwitchWhenAvailable: boolean
+): boolean => {
+  const experiment = getButtonExperiments();
+  return Boolean(
+    !isWebView() &&
+      isDevice() &&
+      appSwitchWhenAvailable &&
+      experiment.spbEagerOrderCreation
+  );
 };
