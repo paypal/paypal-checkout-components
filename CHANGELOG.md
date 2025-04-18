@@ -1,3 +1,9 @@
+## <small>5.0.360 (2025-04-18)</small>
+
+* Fix/csp inline styling errors (#2488) ([aea59dd](https://github.com/paypal/paypal-checkout-components/commit/aea59dd)), closes [#2488](https://github.com/paypal/paypal-checkout-components/issues/2488)
+
+
+
 ## <small>5.0.359 (2025-04-18)</small>
 
 * Enable eager order creation and render buttons in disabled state for eager order creation (#2487) ([7f058aa](https://github.com/paypal/paypal-checkout-components/commit/7f058aa)), closes [#2487](https://github.com/paypal/paypal-checkout-components/issues/2487)
