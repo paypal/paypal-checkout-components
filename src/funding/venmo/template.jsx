@@ -33,7 +33,7 @@ export function WalletLabel({ ...props }: WalletLabelOptions): ChildType {
     label = instrument.label;
   }
 
-  const cspNonce = getCSPNonce();
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
 
   return (
     <Style nonce={cspNonce} css={css}>

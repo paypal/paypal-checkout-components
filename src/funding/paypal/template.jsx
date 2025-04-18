@@ -272,7 +272,7 @@ export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
     );
   }
 
-  const cspNonce = getCSPNonce();
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
 
   return (
     <Style nonce={cspNonce} css={css}>
@@ -475,7 +475,7 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
     attrs[ATTRIBUTE.PAY_NOW] = true;
   }
 
-  const cspNonce = getCSPNonce();
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
 
   return (
     <Style nonce={cspNonce} css={css}>
