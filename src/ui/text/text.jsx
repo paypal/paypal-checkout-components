@@ -50,7 +50,7 @@ export function PlaceHolder({
   chars,
   color = TEXT_COLOR.WHITE,
 }: PlaceHolderProps): ChildType {
-  const cspNonce = getCSPNonce();
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
 
   return (
     <Style nonce={cspNonce} css={css}>
