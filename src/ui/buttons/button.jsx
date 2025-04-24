@@ -71,6 +71,7 @@ type IndividualButtonProps = {|
   merchantFundingSource: ?$Values<typeof FUNDING>,
   instrument: ?WalletInstrument,
   showPayLabel: boolean,
+  showLoadingSpinner?: boolean,
 |};
 
 export function Button({
@@ -95,6 +96,7 @@ export function Button({
   tagline,
   userIDToken,
   vault,
+  showLoadingSpinner = false,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
   const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
@@ -307,6 +309,7 @@ export function Button({
         }}
         class={[
           CLASS.BUTTON,
+          `${showLoadingSpinner ? CLASS.LOADING : ""}`,
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,
           `${CLASS.NUMBER}-${

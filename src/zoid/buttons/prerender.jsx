@@ -20,6 +20,8 @@ import { DEFAULT_POPUP_SIZE } from "../checkout";
 import { Buttons } from "../../ui";
 import { type ButtonProps } from "../../ui/buttons/props";
 
+import { isEagerOrderCreationEnabled } from "./util";
+
 type PrerenderedButtonsProps = {|
   nonce: ?string,
   props: ZoidProps<ButtonProps>,
@@ -36,6 +38,9 @@ export function PrerenderedButtons({
   onRenderCheckout,
   props,
 }: PrerenderedButtonsProps): ChildType {
+  const eagerOrderCreation = isEagerOrderCreationEnabled(
+    props.appSwitchWhenAvailable
+  );
   let win;
   const handleClick = (
     // eslint-disable-next-line no-undef
@@ -52,6 +57,7 @@ export function PrerenderedButtons({
       .info("paypal_js_sdk_v5_button_prerender_click", {
         fundingSource,
         card,
+        eagerOrderCreation: String(eagerOrderCreation),
         buttonsSessionID: props.buttonSessionID,
       })
       .track({
@@ -61,6 +67,11 @@ export function PrerenderedButtons({
         [FPTI_KEY.TRANSITION]: "process_button_prerender_click",
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
       });
+
+    if (eagerOrderCreation) {
+      // Pass this click. The buttons are rendered in disabled state
+      return;
+    }
 
     if (fundingSource === FUNDING.VENMO || fundingSource === FUNDING.APPLEPAY) {
       // wait for button to load
@@ -96,7 +107,11 @@ export function PrerenderedButtons({
     <html>
       <body>
         {/* $FlowFixMe */}
-        <Buttons {...props} onClick={handleClick} />
+        <Buttons
+          {...props}
+          onClick={handleClick}
+          showLoadingSpinner={eagerOrderCreation}
+        />
       </body>
     </html>
   );

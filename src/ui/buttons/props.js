@@ -501,9 +501,18 @@ export type ButtonExtensions = {|
   resume: () => void,
 |};
 
+type ShowPayPalAppSwitchOverlay = {|
+  focus: () => void,
+  close: () => void,
+|};
+
+type HidePayPalAppSwitchOverlay = {|
+  close: () => void,
+|};
+
 export type ButtonProps = {|
   // app switch properties
-  appSwitchWhenAvailable: string,
+  appSwitchWhenAvailable: boolean,
   listenForHashChanges: () => void,
   removeListenerForHashChanges: () => void,
   // Not passed to child iframe
@@ -514,6 +523,9 @@ export type ButtonProps = {|
   removeListenerForVisibilityChanges: () => void,
   // Not passed to child iframe
   visibilityChangeHandler: () => void,
+
+  showPayPalAppSwitchOverlay: (args: ShowPayPalAppSwitchOverlay) => void,
+  hidePayPalAppSwitchOverlay: (args: HidePayPalAppSwitchOverlay) => void,
 
   fundingSource?: ?$Values<typeof FUNDING>,
   intent: $Values<typeof INTENT>,

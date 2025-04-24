@@ -1,3 +1,33 @@
+## <small>5.0.360 (2025-04-18)</small>
+
+* Fix/csp inline styling errors (#2488) ([aea59dd](https://github.com/paypal/paypal-checkout-components/commit/aea59dd)), closes [#2488](https://github.com/paypal/paypal-checkout-components/issues/2488)
+
+
+
+## <small>5.0.359 (2025-04-18)</small>
+
+* Enable eager order creation and render buttons in disabled state for eager order creation (#2487) ([7f058aa](https://github.com/paypal/paypal-checkout-components/commit/7f058aa)), closes [#2487](https://github.com/paypal/paypal-checkout-components/issues/2487)
+
+
+
+## <small>5.0.358 (2025-04-15)</small>
+
+* Updates made to style tags to fix inline styling errors with strict CSP. Nonce added to style tags t ([d120e40](https://github.com/paypal/paypal-checkout-components/commit/d120e40)), closes [#2486](https://github.com/paypal/paypal-checkout-components/issues/2486)
+
+
+
+## <small>5.0.357 (2025-04-14)</small>
+
+* Feature/disable max height new fix (#2485) ([b33525c](https://github.com/paypal/paypal-checkout-components/commit/b33525c)), closes [#2485](https://github.com/paypal/paypal-checkout-components/issues/2485)
+
+
+
+## <small>5.0.356 (2025-04-09)</small>
+
+* chore(release): 5.0.355 🎉 ([4f38b43](https://github.com/paypal/paypal-checkout-components/commit/4f38b43))
+
+
+
 ## <small>5.0.355 (2025-03-26)</small>
 
 * update font-family + update font-weight for poweredBy (#2482) ([44b7f0b](https://github.com/paypal/paypal-checkout-components/commit/44b7f0b)), closes [#2482](https://github.com/paypal/paypal-checkout-components/issues/2482)

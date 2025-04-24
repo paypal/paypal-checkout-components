@@ -7,6 +7,7 @@ import {
   type ChildType,
   type NullableChildrenType,
 } from "@krakenjs/jsx-pragmatic/src";
+import { getCSPNonce } from "@paypal/sdk-client/src";
 
 import { CLASS, TEXT_COLOR } from "../../constants";
 
@@ -49,8 +50,10 @@ export function PlaceHolder({
   chars,
   color = TEXT_COLOR.WHITE,
 }: PlaceHolderProps): ChildType {
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
+
   return (
-    <Style css={css}>
+    <Style nonce={cspNonce} css={css}>
       <div class={["placeholder", `color-${color}`].join(" ")}>
         {new Array(chars).fill("x").join("")}
       </div>

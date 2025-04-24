@@ -87,6 +87,7 @@ import {
 import { isFundingEligible } from "../../funding";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
+import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -100,6 +101,7 @@ import {
   getButtonExperiments,
   getModal,
   sendPostRobotMessageToButtonIframe,
+  isEagerOrderCreationEnabled,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
@@ -303,6 +305,41 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
       },
 
+      showPayPalAppSwitchOverlay: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props: { buttonSessionID } }) =>
+          ({ close, focus }) => {
+            const overlay = (
+              <PayPalAppSwitchOverlay
+                buttonSessionID={buttonSessionID}
+                close={close}
+                focus={focus}
+              />
+            ).render(dom({ doc: document }));
+
+            document.body?.appendChild(overlay);
+          },
+      },
+
+      hidePayPalAppSwitchOverlay: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props: { buttonSessionID } }) =>
+          ({ close }) => {
+            const overlay = document.getElementsByName(
+              `paypal-overlay-${buttonSessionID}`
+            )?.[0];
+
+            if (overlay) {
+              close();
+              overlay.remove();
+            }
+          },
+      },
+
       redirect: {
         type: "function",
         sendToChild: true,
@@ -368,7 +405,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               eventName: "paypal-visibilitychange",
               payload: {
                 url: window.location.href,
-                // eslint-disable-next-line compat/compat
                 visibilityState: document.visibilityState,
               },
             });
@@ -587,6 +623,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return props?.displayOnly || [];
         },
+      },
+
+      eagerOrderCreation: {
+        type: "boolean",
+        queryParam: true,
+        value: ({ props }) =>
+          isEagerOrderCreationEnabled(props.appSwitchWhenAvailable),
       },
 
       enableFunding: {
