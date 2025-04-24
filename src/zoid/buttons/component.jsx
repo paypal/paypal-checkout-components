@@ -124,7 +124,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         hasReturned: () => {
           return (
             isAppSwitchResumeFlow() &&
-            !parent.getHelpers()?.state?.appSwitchState === "returned"
+            !parent.getHelpers()?.state?.appSwitchState
           );
         },
         resume: () => {
