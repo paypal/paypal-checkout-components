@@ -2,6 +2,7 @@
 /** @jsx node */
 
 import { node, type ChildType, Style } from "@krakenjs/jsx-pragmatic/src";
+import { getCSPNonce } from "@paypal/sdk-client/src";
 
 import { ATTRIBUTE, TEXT_COLOR } from "../../../constants";
 import { Chevron } from "../../chevron";
@@ -17,8 +18,10 @@ export function MenuButton({
   content: ?ContentType,
 |} = {}): ChildType {
   const labelText = content?.moreOptions;
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
+
   return (
-    <Style css={css}>
+    <Style nonce={cspNonce} css={css}>
       <div
         {...{
           [ATTRIBUTE.MENU]: true,
