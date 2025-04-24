@@ -44,6 +44,7 @@ import {
   wasShopperInsightsUsed,
   isPayPalTrustedUrl,
   getSDKInitTime,
+  getSDKToken,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -1172,6 +1173,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         sendToChild: false,
         value: getSDKMeta,
+      },
+
+      sdkToken: {
+        type: "string",
+        required: false,
+        value: getSDKToken,
       },
 
       /**
