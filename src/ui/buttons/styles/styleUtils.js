@@ -25,40 +25,96 @@ function getLabelHeight({
   shouldResizeLabel: boolean,
 |}): number {
   const labelPercPercentage = shouldResizeLabel ? 32 : 35;
-  let labelHeight = max(roundUp(perc(height, labelPercPercentage) + 5, 2), 12);
+  const labelHeight = max(
+    roundUp(perc(height, labelPercPercentage) + 5, 2),
+    12
+  );
 
   if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(height, 76), 1);
+    return perc(height, 76);
   }
 
   return parseInt(labelHeight, 10);
 }
 
+function getFontRebrandSize({ height }: {| height: number |}): number {
+  if (height <= 29) {
+    return 12; // Small
+  } else if (height >= 30 && height <= 34) {
+    return 14; // Medium
+  } else if (height >= 35 && height <= 44) {
+    return 16; // Medium
+  } else if (height >= 45 && height <= 49) {
+    return 18; // Large
+  } else if (height >= 50 && height <= 54) {
+    return 20; // Large
+  } else if (height >= 55 && height <= 59) {
+    return 22; // Huge
+  } else {
+    return 24; // Huge
+  }
+}
+
 function getFontSize({
   height,
   shouldResizeLabel,
+  shouldApplyRebrandedStyles,
 }: {|
   height: number,
   shouldResizeLabel: boolean,
+  shouldApplyRebrandedStyles?: boolean,
 |}): number {
   const fontPercPercentage = shouldResizeLabel ? 32 : 36;
+
   const textSize = `${max(perc(height, fontPercPercentage), 10)}`;
 
-  return parseInt(textSize, 10);
+  return shouldApplyRebrandedStyles
+    ? getFontRebrandSize({ height })
+    : parseInt(textSize, 10);
 }
 
 function getMarginTop({
   height,
   shouldResizeLabel,
+  shouldApplyRebrandedStyles,
 }: {|
   height: number,
   shouldResizeLabel: boolean,
+  shouldApplyRebrandedStyles?: boolean,
 |}): number {
   const marginTopPercPercentage = shouldResizeLabel ? 32 : 36;
   const marginTop = `${perc(
     max(perc(height, marginTopPercPercentage), 10),
     10
   )}`;
+
+  // Option 1, no flex box
+  // if (shouldApplyRebrandedStyles) {
+  //   const fontsize = getFontSize({
+  //     height,
+  //     shouldResizeLabel,
+  //     shouldApplyRebrandedStyles,
+  //   });
+  //   const labelHeight = getLabelHeight({
+  //     height,
+  //     shouldApplyRebrandedStyles,
+  //     shouldResizeLabel,
+  //   });
+  //   const halfLabelHeight = labelHeight / 2;
+  //   const spaceRemainingInLabelWithoutFont = labelHeight - fontsize;
+
+  //   return Math.abs(halfLabelHeight - spaceRemainingInLabelWithoutFont - 1);
+  // }
+
+  if (shouldApplyRebrandedStyles) {
+    const labelHeight = getLabelHeight({
+      height,
+      shouldApplyRebrandedStyles,
+      shouldResizeLabel,
+    });
+
+    return labelHeight * 0.04;
+  }
 
   return parseInt(marginTop, 10);
 }
@@ -139,6 +195,16 @@ export function getResponsiveStyleVariables({
     smallerLabelHeight,
     labelHeight,
     pillBorderRadius,
+    fontSize: getFontSize({
+      height: buttonHeight,
+      shouldResizeLabel,
+      shouldApplyRebrandedStyles,
+    }),
+    marginTop: getMarginTop({
+      height: buttonHeight,
+      shouldResizeLabel,
+      shouldApplyRebrandedStyles,
+    }),
   };
 
   return styleVariables;
@@ -176,6 +242,7 @@ export function getDisableMaxHeightResponsiveStyleVariables({
   const fontSize = getFontSize({
     height: buttonHeight,
     shouldResizeLabel,
+    shouldApplyRebrandedStyles,
   });
   const marginTop = getMarginTop({
     height: buttonHeight,

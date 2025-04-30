@@ -309,6 +309,7 @@ export function Button({
         }}
         class={[
           CLASS.BUTTON,
+          `${isPaypalRebrandEnabled ? CLASS.REBRAND : ""}`,
           `${showLoadingSpinner ? CLASS.LOADING : ""}`,
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,

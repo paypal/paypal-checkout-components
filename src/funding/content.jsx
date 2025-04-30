@@ -337,7 +337,7 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
+          {"-"}
           Checkout
         </Text>
       </Fragment>
@@ -359,7 +359,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pay with{" "}
+          Pay with
         </Text>
         {logo}
       </Fragment>

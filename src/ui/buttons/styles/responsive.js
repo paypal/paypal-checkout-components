@@ -54,12 +54,17 @@ const generateButtonSizeStyles = ({
         smallerLabelHeight,
         labelHeight,
         pillBorderRadius,
+        fontSize,
+        marginTop,
       } = getResponsiveStyleVariables({
         height,
         fundingEligibility,
         experiment,
         size,
       });
+
+      console.log(`${size} - font-size: ${fontSize}`);
+      console.log(`${size} - margin-Top: ${marginTop}`);
 
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
@@ -72,13 +77,15 @@ const generateButtonSizeStyles = ({
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
         CLASS.CONTAINER
       } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-                    font-size: ${max(perc(buttonHeight, 36), 10)}px;
-                    margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
-                    line-height: ${labelHeight}px;
+                    // font-size: ${max(perc(buttonHeight, 36), 10)}px;
+                    font-size: ${fontSize}px;
+                    margin-top: -${marginTop}px;
+                    // line-height: ${labelHeight}px;
+                    line-height: 1.5;
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-                    margin-top: ${perc(max(perc(buttonHeight, 36), 10), 10)}px;
+                    margin-top: -${marginTop}px;
                 }
 
                 .${CLASS.BUTTON_ROW} {
@@ -247,23 +254,16 @@ const generateButtonSizeStyles = ({
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
         CLASS.CONTAINER
       } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-                    font-size: ${max(
-                      perc(buttonHeight, textPercPercentage),
-                      10
-                    )}px;
-                    margin-top: -${perc(
-                      max(perc(buttonHeight, textPercPercentage), 10),
-                      10
-                    )}px;
-                    line-height: ${smallerLabelHeight}px;
+                    font-size: ${fontSize}px;
+                    margin-top: -${marginTop}px;
+                    // line-height: ${smallerLabelHeight}px;
+                    line-height: 1.5;
+                    
                 }
 
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-                    margin-top: ${perc(
-                      max(perc(buttonHeight, textPercPercentage), 10),
-                      10
-                    )}px;
+                    margin-top: -${marginTop}px;
                 }
 
                 .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {

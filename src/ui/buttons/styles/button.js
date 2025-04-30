@@ -73,8 +73,19 @@ export const buttonStyle = `
 
     .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} * {
         vertical-align: middle;
-        height: 100%;
+        // height: 100%;
         text-align: left;
+    }
+    
+    .${CLASS.BUTTON_LABEL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+    }
+
+    .${CLASS.BUTTON_LABEL} > .paypal-logo {
+        height: 100%;
     }
 
     .${CLASS.TAGLINE} {
