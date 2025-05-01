@@ -31,7 +31,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          السداد بواسطة{" "}
+          السداد بواسطة
         </Text>
         {logo}
       </Fragment>
@@ -40,7 +40,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           اشتراك
         </Text>
       </Fragment>
@@ -53,7 +52,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          دفع بواسطة{" "}
+          دفع بواسطة
         </Text>
         {logo}
       </Fragment>
@@ -62,7 +61,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           شراء الآن
         </Text>
       </Fragment>
@@ -71,8 +69,7 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
-          تبرع{" "}
+          تبرع
         </Text>
       </Fragment>
     ),
@@ -82,7 +79,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Финализиране
         </Text>
       </Fragment>
@@ -91,7 +87,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Абониране
         </Text>
       </Fragment>
@@ -104,7 +99,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Плащане с{" "}
+          Плащане с
         </Text>
         {logo}
       </Fragment>
@@ -113,7 +108,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Купете сега
         </Text>
       </Fragment>
@@ -122,7 +116,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Дарение
         </Text>
       </Fragment>
@@ -132,7 +125,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatit přes{" "}
+          Zaplatit přes
         </Text>
         {logo}
       </Fragment>
@@ -141,7 +134,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Předplatit
         </Text>
       </Fragment>
@@ -154,7 +146,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatit přes{" "}
+          Zaplatit přes
         </Text>
         {logo}
       </Fragment>
@@ -162,7 +154,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Koupit ihned přes{" "}
+          Koupit ihned přes
         </Text>
         {logo}
       </Fragment>
@@ -171,7 +163,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Přispět
         </Text>
       </Fragment>
@@ -182,7 +173,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Betal
         </Text>
       </Fragment>
@@ -191,7 +181,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Abonner
         </Text>
       </Fragment>
@@ -204,7 +193,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betal med{" "}
+          Betal med
         </Text>
         {logo}
       </Fragment>
@@ -213,7 +202,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Køb nu
         </Text>
       </Fragment>
@@ -222,7 +210,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Doner
         </Text>
       </Fragment>
@@ -232,7 +219,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Direkt zu{" "}
+          Direkt zu
         </Text>
         {logo}
       </Fragment>
@@ -241,7 +228,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Abonnieren
         </Text>
       </Fragment>
@@ -254,11 +240,10 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Mit{" "}
+          Mit
         </Text>
         {logo}
         <Text animate optional>
-          {" "}
           zahlen
         </Text>
       </Fragment>
@@ -267,7 +252,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Jetzt kaufen
         </Text>
       </Fragment>
@@ -276,7 +260,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Spenden
         </Text>
       </Fragment>
@@ -286,7 +269,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Ολοκλήρωση αγοράς μέσω{" "}
+          Ολοκλήρωση αγοράς μέσω
         </Text>
         {logo}
       </Fragment>
@@ -295,7 +278,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Εγγραφή
         </Text>
       </Fragment>
@@ -308,7 +290,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Πληρωμή μέσω{" "}
+          Πληρωμή μέσω
         </Text>
         {logo}
       </Fragment>
@@ -317,7 +299,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Αγορά τώρα
         </Text>
       </Fragment>
@@ -326,7 +307,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Δωρεά
         </Text>
       </Fragment>
@@ -337,7 +317,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Checkout
         </Text>
       </Fragment>
@@ -346,7 +325,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Subscribe
         </Text>
       </Fragment>
@@ -359,7 +337,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pay with{" "}
+          Pay with
         </Text>
         {logo}
       </Fragment>
@@ -370,12 +348,10 @@ export const componentContent: ContentMap = {
           {logo}
           {period ? (
             <Text animate optional>
-              {" "}
               Pay up to {period.toString()}x<br /> without interest
             </Text>
           ) : (
             <Text animate optional>
-              {" "}
               Interest free
               <br /> payments
             </Text>
@@ -392,7 +368,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Buy Now
         </Text>
       </Fragment>
@@ -401,7 +376,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donate
         </Text>
       </Fragment>
@@ -412,7 +386,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Pagar
         </Text>
       </Fragment>
@@ -421,7 +394,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Suscribirse
         </Text>
       </Fragment>
@@ -434,7 +406,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pagar con{" "}
+          Pagar con
         </Text>
         {logo}
       </Fragment>
@@ -445,12 +417,10 @@ export const componentContent: ContentMap = {
           {logo}
           {period ? (
             <Text animate optional>
-              {" "}
               Pague hasta {period.toString()}x<br /> sin interés
             </Text>
           ) : (
             <Text animate optional>
-              {" "}
               Pagos en
               <br /> mensualidades
             </Text>
@@ -462,7 +432,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Comprar ahora
         </Text>
       </Fragment>
@@ -471,7 +440,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donar
         </Text>
       </Fragment>
@@ -482,7 +450,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Kassa
         </Text>
       </Fragment>
@@ -491,7 +458,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Tellige
         </Text>
       </Fragment>
@@ -504,7 +470,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Makske{" "}
+          Makske
         </Text>
         {logo}
       </Fragment>
@@ -513,7 +479,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Osta kohe
         </Text>
       </Fragment>
@@ -522,7 +487,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Annetage
         </Text>
       </Fragment>
@@ -541,7 +505,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Tilaa
         </Text>
       </Fragment>
@@ -563,7 +526,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Osta nyt
         </Text>
       </Fragment>
@@ -572,7 +534,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Lahjoita
         </Text>
       </Fragment>
@@ -583,7 +544,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Payer
         </Text>
       </Fragment>
@@ -592,7 +552,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           S&#39;abonner
         </Text>
       </Fragment>
@@ -605,7 +564,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Payer avec{" "}
+          Payer avec
         </Text>
         {logo}
       </Fragment>
@@ -614,7 +573,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Acheter
         </Text>
       </Fragment>
@@ -623,7 +581,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Faire un don
         </Text>
       </Fragment>
@@ -634,7 +591,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           שלם
         </Text>
       </Fragment>
@@ -643,7 +599,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           הצטרפות כמנוי
         </Text>
       </Fragment>
@@ -656,7 +611,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          שלם באמצעות{" "}
+          שלם באמצעות
         </Text>
         {logo}
         <Text animate optional>
@@ -668,7 +623,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           קנה עכשיו
         </Text>
       </Fragment>
@@ -677,7 +631,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           שליחת תרומה
         </Text>
       </Fragment>
@@ -696,7 +649,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Feliratkozás
         </Text>
       </Fragment>
@@ -718,7 +670,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Vásárlás
         </Text>
       </Fragment>
@@ -727,7 +678,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Adományozás
         </Text>
       </Fragment>
@@ -738,7 +688,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Checkout
         </Text>
       </Fragment>
@@ -747,7 +696,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Berlangganan
         </Text>
       </Fragment>
@@ -760,7 +708,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Bayar dengan{" "}
+          Bayar dengan
         </Text>
         {logo}
       </Fragment>
@@ -769,7 +717,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Beli Sekarang
         </Text>
       </Fragment>
@@ -778,7 +725,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donasikan
         </Text>
       </Fragment>
@@ -789,7 +735,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Paga adesso
         </Text>
       </Fragment>
@@ -798,7 +743,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Abbonati
         </Text>
       </Fragment>
@@ -811,7 +755,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Paga con{" "}
+          Paga con
         </Text>
         {logo}
       </Fragment>
@@ -820,7 +764,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Paga adesso
         </Text>
       </Fragment>
@@ -829,7 +772,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donazione
         </Text>
       </Fragment>
@@ -848,7 +790,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           サブスクリプション登録
         </Text>
       </Fragment>
@@ -870,7 +811,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           購入
         </Text>
       </Fragment>
@@ -879,7 +819,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           寄付する
         </Text>
       </Fragment>
@@ -890,7 +829,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           체크 아웃
         </Text>
       </Fragment>
@@ -899,7 +837,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           정기결제
         </Text>
       </Fragment>
@@ -921,7 +858,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           바로 구매
         </Text>
       </Fragment>
@@ -930,7 +866,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           기부
         </Text>
       </Fragment>
@@ -941,7 +876,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           „Checkout“
         </Text>
       </Fragment>
@@ -950,7 +884,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           prenumeruoti
         </Text>
       </Fragment>
@@ -963,7 +896,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Mokėti naudojant{" "}
+          Mokėti naudojant
         </Text>
         {logo}
       </Fragment>
@@ -972,7 +905,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           pirkti dabar
         </Text>
       </Fragment>
@@ -981,7 +913,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Paaukoti
         </Text>
       </Fragment>
@@ -992,7 +923,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Checkout
         </Text>
       </Fragment>
@@ -1001,7 +931,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           abonēt
         </Text>
       </Fragment>
@@ -1014,7 +943,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Maksāt ar{" "}
+          Maksāt ar
         </Text>
         {logo}
       </Fragment>
@@ -1023,8 +952,7 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
-          pirkt tūlīt{" "}
+          pirkt tūlīt
         </Text>
       </Fragment>
     ),
@@ -1032,7 +960,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Ziedot
         </Text>
       </Fragment>
@@ -1042,7 +969,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Daftar keluar{" "}
+          Daftar keluar
         </Text>
         {logo}
       </Fragment>
@@ -1050,7 +977,7 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Langgan{" "}
+          Langgan
         </Text>
         {logo}
       </Fragment>
@@ -1063,7 +990,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Bayar dengan{" "}
+          Bayar dengan
         </Text>
         {logo}
       </Fragment>
@@ -1071,7 +998,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Beli Sekarang{" "}
+          Beli Sekarang
         </Text>
         {logo}
       </Fragment>
@@ -1079,7 +1006,7 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Derma{" "}
+          Derma
         </Text>
         {logo}
       </Fragment>
@@ -1090,7 +1017,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Betalen
         </Text>
       </Fragment>
@@ -1099,7 +1025,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Abonneren
         </Text>
       </Fragment>
@@ -1112,7 +1037,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betalen met{" "}
+          Betalen met
         </Text>
         {logo}
       </Fragment>
@@ -1121,7 +1046,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Nu kopen
         </Text>
       </Fragment>
@@ -1130,7 +1054,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Doneren
         </Text>
       </Fragment>
@@ -1141,7 +1064,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Betal
         </Text>
       </Fragment>
@@ -1150,7 +1072,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Abonner
         </Text>
       </Fragment>
@@ -1163,7 +1084,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betal med{" "}
+          Betal med
         </Text>
         {logo}
       </Fragment>
@@ -1172,7 +1093,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Kjøp nå
         </Text>
       </Fragment>
@@ -1181,7 +1101,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Doner
         </Text>
       </Fragment>
@@ -1192,7 +1111,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Do kasy
         </Text>
       </Fragment>
@@ -1201,7 +1119,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Subskrybuj
         </Text>
       </Fragment>
@@ -1214,7 +1131,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zapłać z{" "}
+          Zapłać z
         </Text>
         {logo}
       </Fragment>
@@ -1223,7 +1140,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Kup teraz
         </Text>
       </Fragment>
@@ -1232,7 +1148,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Przekaż darowiznę
         </Text>
       </Fragment>
@@ -1243,7 +1158,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Checkout
         </Text>
       </Fragment>
@@ -1252,7 +1166,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Assinar
         </Text>
       </Fragment>
@@ -1265,7 +1178,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Pague com{" "}
+          Pague com
         </Text>
         {logo}
       </Fragment>
@@ -1276,13 +1189,11 @@ export const componentContent: ContentMap = {
           {logo}
           {period ? (
             <Text animate optional>
-              {" "}
               Pague em até
               <br /> {period.toString()}x sem juros
             </Text>
           ) : (
             <Text animate optional>
-              {" "}
               Pagamentos
               <br /> parcelados
             </Text>
@@ -1294,7 +1205,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Comprar agora
         </Text>
       </Fragment>
@@ -1303,7 +1213,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Doar
         </Text>
       </Fragment>
@@ -1314,7 +1223,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Checkout
         </Text>
       </Fragment>
@@ -1323,7 +1231,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Abonează-te
         </Text>
       </Fragment>
@@ -1336,7 +1243,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Plătește cu{" "}
+          Plătește cu
         </Text>
         {logo}
       </Fragment>
@@ -1345,7 +1252,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Cumpără acum
         </Text>
       </Fragment>
@@ -1354,7 +1260,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donează
         </Text>
       </Fragment>
@@ -1365,7 +1270,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Оформить покупку
         </Text>
       </Fragment>
@@ -1374,7 +1278,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Подписаться
         </Text>
       </Fragment>
@@ -1387,7 +1290,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Оплатить через{" "}
+          Оплатить через
         </Text>
         {logo}
       </Fragment>
@@ -1396,7 +1299,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Купить сейчас
         </Text>
       </Fragment>
@@ -1405,7 +1307,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Сделать пожертвование
         </Text>
       </Fragment>
@@ -1416,7 +1317,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           ගෙවා පිටවීම
         </Text>
       </Fragment>
@@ -1425,7 +1325,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           දායක වන්න
         </Text>
       </Fragment>
@@ -1439,7 +1338,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           සමග ගෙවන්න
         </Text>
       </Fragment>
@@ -1448,7 +1346,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           දැන් මිලදී ගන්න
         </Text>
       </Fragment>
@@ -1457,7 +1354,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           පරිත්‍යාග කරන්න
         </Text>
       </Fragment>
@@ -1467,7 +1363,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatiť cez{" "}
+          Zaplatiť cez
         </Text>
         {logo}
       </Fragment>
@@ -1476,7 +1372,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Predplatiť
         </Text>
       </Fragment>
@@ -1489,7 +1384,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Zaplatiť cez{" "}
+          Zaplatiť cez
         </Text>
         {logo}
       </Fragment>
@@ -1498,7 +1393,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Kúpiť
         </Text>
       </Fragment>
@@ -1507,7 +1401,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Prispieť
         </Text>
       </Fragment>
@@ -1518,7 +1411,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Blagajna
         </Text>
       </Fragment>
@@ -1527,7 +1419,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Naroči se
         </Text>
       </Fragment>
@@ -1540,7 +1431,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Plačaj z{" "}
+          Plačaj z
         </Text>
         {logo}
       </Fragment>
@@ -1549,7 +1440,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Kupi zdaj
         </Text>
       </Fragment>
@@ -1558,7 +1448,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donirajte
         </Text>
       </Fragment>
@@ -1568,7 +1457,7 @@ export const componentContent: ContentMap = {
     Checkout: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Arka e{" "}
+          Arka e
         </Text>
         {logo}
       </Fragment>
@@ -1576,7 +1465,7 @@ export const componentContent: ContentMap = {
     Subscribe: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Abonohu në{" "}
+          Abonohu në
         </Text>
         {logo}
       </Fragment>
@@ -1589,7 +1478,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Paguaj me{" "}
+          Paguaj me
         </Text>
         {logo}
       </Fragment>
@@ -1597,7 +1486,7 @@ export const componentContent: ContentMap = {
     BuyNow: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Bli tani me{" "}
+          Bli tani me
         </Text>
         {logo}
       </Fragment>
@@ -1605,7 +1494,7 @@ export const componentContent: ContentMap = {
     Donate: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Dhuro{" "}
+          Dhuro
         </Text>
         {logo}
       </Fragment>
@@ -1616,7 +1505,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Betala
         </Text>
       </Fragment>
@@ -1625,7 +1513,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Prenumerera
         </Text>
       </Fragment>
@@ -1638,7 +1525,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Betala med{" "}
+          Betala med
         </Text>
         {logo}
       </Fragment>
@@ -1647,7 +1534,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Köp nu
         </Text>
       </Fragment>
@@ -1656,7 +1542,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Donera
         </Text>
       </Fragment>
@@ -1667,7 +1552,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           ชำระเงิน
         </Text>
       </Fragment>
@@ -1676,7 +1560,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           ชำระค่าสมาชิก
         </Text>
       </Fragment>
@@ -1689,7 +1572,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          ชำระเงินด้วย{" "}
+          ชำระเงินด้วย
         </Text>
         {logo}
       </Fragment>
@@ -1698,7 +1581,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           ซื้อทันที
         </Text>
       </Fragment>
@@ -1707,7 +1589,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           บริจาค
         </Text>
       </Fragment>
@@ -1718,7 +1599,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Checkout
         </Text>
       </Fragment>
@@ -1727,7 +1607,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Mag-subscribe
         </Text>
       </Fragment>
@@ -1740,7 +1619,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Magbayad gamit ang{" "}
+          Magbayad gamit ang
         </Text>
         {logo}
       </Fragment>
@@ -1749,7 +1628,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Bumili Ngayon
         </Text>
       </Fragment>
@@ -1758,7 +1636,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Mag-donate
         </Text>
       </Fragment>
@@ -1769,7 +1646,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           ile Satın Alın
         </Text>
       </Fragment>
@@ -1783,7 +1659,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           ile Öde
         </Text>
       </Fragment>
@@ -1792,7 +1667,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Hemen Satın Alın
         </Text>
       </Fragment>
@@ -1803,7 +1677,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Thanh toán
         </Text>
       </Fragment>
@@ -1812,7 +1685,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Đăng ký
         </Text>
       </Fragment>
@@ -1825,7 +1697,7 @@ export const componentContent: ContentMap = {
     Pay: ({ logo }) => (
       <Fragment>
         <Text animate optional>
-          Thanh toán bằng{" "}
+          Thanh toán bằng
         </Text>
         {logo}
       </Fragment>
@@ -1834,7 +1706,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Mua ngay
         </Text>
       </Fragment>
@@ -1843,7 +1714,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           Quyên góp
         </Text>
       </Fragment>
@@ -1854,7 +1724,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           結帳
         </Text>
       </Fragment>
@@ -1863,7 +1732,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           订购
         </Text>
       </Fragment>
@@ -1888,7 +1756,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           捐赠
         </Text>
       </Fragment>
@@ -1897,7 +1764,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           立即购买
         </Text>
       </Fragment>
@@ -1908,7 +1774,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           結帳
         </Text>
       </Fragment>
@@ -1917,7 +1782,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           訂閱
         </Text>
       </Fragment>
@@ -1942,7 +1806,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           捐款
         </Text>
       </Fragment>
@@ -1951,7 +1814,6 @@ export const componentContent: ContentMap = {
       <Fragment>
         {logo}
         <Text animate optional>
-          {" "}
           立即購
         </Text>
       </Fragment>

@@ -26,7 +26,6 @@ export const VISIBLE = `
 export const labelStyle = `
 
     .${CLASS.BUTTON} .${CLASS.TEXT} {
-        height: 100%;
         ${HIDDEN}
     }
 
@@ -40,7 +39,7 @@ export const labelStyle = `
     .${CLASS.BUTTON} .${CLASS.VAULT_LABEL} {
         max-width: 60%;
         text-overflow: ellipsis;
-        overflow: hidden;
+        // overflow: hidden;
         white-space: nowrap;
     }
 

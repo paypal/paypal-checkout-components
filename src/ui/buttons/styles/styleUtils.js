@@ -63,6 +63,18 @@ function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
+export function getGap(height: number): number {
+  if (height <= 34) {
+    return 3; // Small and Medium
+  } else if (height <= 49) {
+    return 5; // Large
+  } else if (height <= 59) {
+    return 6; // XL
+  } else {
+    return 7; // XXL
+  }
+}
+
 function getSpinnerSize({ height }: {| height: number |}): number {
   const spinner = `${perc(height, 50)}`;
 
@@ -139,6 +151,7 @@ export function getResponsiveStyleVariables({
     smallerLabelHeight,
     labelHeight,
     pillBorderRadius,
+    gap: getGap(buttonHeight),
   };
 
   return styleVariables;
