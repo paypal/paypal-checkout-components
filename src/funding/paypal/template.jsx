@@ -38,7 +38,7 @@ import {
 } from "../common";
 import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from "../../constants";
 import { componentContent } from "../content";
-import { Text, Space, PlaceHolder } from "../../ui/text";
+import { Text, PlaceHolder } from "../../ui/text";
 import { TrackingBeacon } from "../../ui/tracking";
 import {
   HIDDEN,

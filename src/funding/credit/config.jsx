@@ -20,7 +20,6 @@ import {
   BUTTON_FLOW,
 } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
-import { Space } from "../../ui/text";
 import { WalletLabel } from "../paypal/template";
 
 export function getCreditConfig(): FundingSourceConfig {
