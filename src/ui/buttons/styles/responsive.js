@@ -65,14 +65,9 @@ const generateButtonSizeStyles = ({
       return `
             @media only screen and (min-width: ${style.minWidth}px) {
                 .${CLASS.BUTTON_LABEL} {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-wrap: nowrap;
                     gap: ${gap}px;
-                    min-width: 0px;
                 }
-
+                
                 .${CLASS.CONTAINER} {
                     min-width: ${style.minWidth}px;
                     ${disableMaxWidth ? "" : `max-width: ${style.maxWidth}px;`};

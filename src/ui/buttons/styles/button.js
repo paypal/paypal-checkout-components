@@ -68,6 +68,18 @@ export const buttonStyle = `
         white-space: nowrap;
     }
 
+    .${CLASS.BUTTON_LABEL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        min-width: 0px;
+    }
+                
+    .${CLASS.BUTTON_LABEL} img {
+        height: 100%;
+    }
+
     .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
         position: relative;
         top: 50%;

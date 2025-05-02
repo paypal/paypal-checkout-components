@@ -10,7 +10,7 @@ import {
   type FundingSourceConfig,
   BasicLabel,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 export function getP24Config(): FundingSourceConfig {
   return {
@@ -36,7 +36,6 @@ export function getP24Config(): FundingSourceConfig {
       const apmLogo = (
         <Fragment>
           {logo}
-          <Space />
           <Text animate optional>
             Przelewy24
           </Text>

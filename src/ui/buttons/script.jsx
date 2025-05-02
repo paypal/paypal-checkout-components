@@ -173,16 +173,21 @@ export function getComponentScript(): () => void {
 
         const totalGapWidth =
           calculateGap(optionalParent) * optionalChildren?.length;
-        usedWidth += totalGapWidth;
 
-        for (const optionalChild of optionalChildren) {
-          usedWidth += optionalChild.offsetWidth;
+        const totalChildrenWidth = optionalChildren.reduce((acc, child) => {
+          return acc + child.offsetWidth;
+        }, 0);
 
-          if (usedWidth > parentWidth) {
-            hideElement(optionalChild);
-          } else {
-            showElement(optionalChild);
-          }
+        usedWidth += totalGapWidth + totalChildrenWidth;
+
+        if (usedWidth > parentWidth) {
+          optionalChildren.forEach((optionalChild) =>
+            hideElement(optionalChild)
+          );
+        } else {
+          optionalChildren.forEach((optionalChild) =>
+            showElement(optionalChild)
+          );
         }
       }
     }

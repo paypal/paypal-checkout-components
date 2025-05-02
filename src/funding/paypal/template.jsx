@@ -286,12 +286,10 @@ export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
         </div>
         {instrument.oneClick && commit && content && (
           <div class="pay-label">
-            <Space />
             <Text>{content.payNow}</Text>
           </div>
         )}
         <div class="paypal-wordmark">
-          <Space />
           {__WEB__ ? (
             <PayPalLogoExternalImage logoColor={logoColor} />
           ) : (
@@ -302,7 +300,6 @@ export function WalletLabelOld(opts: WalletLabelOptions): ?ChildType {
         {logo && (
           <div class="logo" optional>
             {logo}
-            <Space />
           </div>
         )}
         <div class="label">
@@ -319,7 +316,6 @@ function ShowPayLabel(opts): ?ChildType {
   return (
     <div class="show-pay-label">
       <div class="pay-label" optional={2}>
-        <Space />
         {instrument && content ? (
           <Text>{payNow ? content.payNow : content.payWith}</Text>
         ) : (
@@ -327,7 +323,6 @@ function ShowPayLabel(opts): ?ChildType {
             <PlaceHolder chars={7} color={textColor} />
           </Text>
         )}
-        <Space />
       </div>
       <div class="logo" optional={1}>
         {instrument && logo ? (
@@ -339,7 +334,6 @@ function ShowPayLabel(opts): ?ChildType {
         )}
       </div>
       <div class="label">
-        <Space />
         {instrument && label ? (
           <Text>{label}</Text>
         ) : (
@@ -360,7 +354,6 @@ function ShowInstrumentsOnFile(opts): ?ChildType {
       {instrument?.secondaryInstruments?.[0] ? (
         <div class="balance">
           <Text>{content?.balance} &</Text>
-          <Space />
         </div>
       ) : null}
       {instrument?.type === "balance" ? (
@@ -379,7 +372,6 @@ function ShowInstrumentsOnFile(opts): ?ChildType {
             )}
           </div>
           <div class="fi-label">
-            <Space />
             {instrument && label ? (
               <Text>{label}</Text>
             ) : (
@@ -487,7 +479,6 @@ export function WalletLabel(opts: WalletLabelOptions): ?ChildType {
             ) : (
               <PPLogoInlineSVG logoColor={logoColor} />
             )}
-            <Space />
           </div>
         ) : null}
         {showPayLabel ? (

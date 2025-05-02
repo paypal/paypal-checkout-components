@@ -13,7 +13,7 @@ import {
   type FundingSourceConfig,
   BasicLabel,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 export function getSatispayConfig(): FundingSourceConfig {
   return {
@@ -41,7 +41,6 @@ export function getSatispayConfig(): FundingSourceConfig {
       const apmLogo = (
         <Fragment>
           {logo}
-          <Space />
           <Text animate optional>
             Satispay
           </Text>
