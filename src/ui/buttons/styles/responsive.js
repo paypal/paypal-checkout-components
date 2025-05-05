@@ -379,6 +379,7 @@ const generateDisableMaxHeightStyles = ({
         pillBorderRadius,
         APMHeight,
         applePayHeight,
+        gap,
       } = getDisableMaxHeightResponsiveStyleVariables({
         fundingEligibility,
         experiment,
@@ -389,6 +390,10 @@ const generateDisableMaxHeightStyles = ({
 
       return `
             @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+              .${CLASS.BUTTON_LABEL} {
+                gap: ${gap}px;
+              }
+
               .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
               .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
                 font-size: ${fontSize}px;
