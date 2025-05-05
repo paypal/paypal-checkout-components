@@ -295,7 +295,7 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           queryParam: true,
           required: false,
           value: () => {
-            return supportsPopups();
+            return !supportsPopups();
           },
         },
 
