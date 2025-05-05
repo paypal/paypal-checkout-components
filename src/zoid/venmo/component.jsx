@@ -284,6 +284,21 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           },
         },
 
+        isWebViewEnabled: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
+
+        thirdPartyContext: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => {
+            return supportsPopups();
+          },
+        },
+
         venmoWebUrl: {
           type: "string",
           queryParam: true,
