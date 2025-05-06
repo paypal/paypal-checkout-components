@@ -13,7 +13,7 @@ import {
   type FundingSourceConfig,
   BasicLabel,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 export function getTrustlyConfig(): FundingSourceConfig {
   return {
@@ -41,7 +41,6 @@ export function getTrustlyConfig(): FundingSourceConfig {
       const apmLogo = (
         <Fragment>
           {logo}
-          <Space />
           <Text animate optional>
             Trustly
           </Text>

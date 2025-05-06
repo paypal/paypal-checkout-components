@@ -23,6 +23,7 @@ const expectedLegacyResponsiveStylesTiny = {
   smallerLabelHeight: 14,
   labelHeight: 14,
   pillBorderRadius: 13,
+  gap: 3,
 };
 
 const expectedLegacyResponsiveStylesSmall = {
@@ -33,6 +34,7 @@ const expectedLegacyResponsiveStylesSmall = {
   smallerLabelHeight: 14,
   labelHeight: 14,
   pillBorderRadius: 13,
+  gap: 3,
 };
 
 const expectedLegacyResponsiveStylesMedium = {
@@ -43,6 +45,7 @@ const expectedLegacyResponsiveStylesMedium = {
   smallerLabelHeight: 18,
   labelHeight: 18,
   pillBorderRadius: 18,
+  gap: 4,
 };
 
 const expectedLegacyResponsiveStylesLarge = {
@@ -53,6 +56,7 @@ const expectedLegacyResponsiveStylesLarge = {
   smallerLabelHeight: 22,
   labelHeight: 22,
   pillBorderRadius: 23,
+  gap: 5,
 };
 
 const expectedLegacyResponsiveStylesHuge = {
@@ -63,6 +67,7 @@ const expectedLegacyResponsiveStylesHuge = {
   smallerLabelHeight: 24,
   labelHeight: 24,
   pillBorderRadius: 28,
+  gap: 6,
 };
 
 // expected should resize = true responsive styles variables
@@ -74,6 +79,7 @@ const expectedResizeLabelResponsiveStylesTiny = {
   smallerLabelHeight: 14,
   labelHeight: 14,
   pillBorderRadius: 13,
+  gap: 3,
 };
 
 const expectedResizeLabelResponsiveStylesSmall = {
@@ -84,6 +90,7 @@ const expectedResizeLabelResponsiveStylesSmall = {
   smallerLabelHeight: 14,
   labelHeight: 14,
   pillBorderRadius: 13,
+  gap: 3,
 };
 
 const expectedResizeLabelResponsiveStylesMedium = {
@@ -94,6 +101,7 @@ const expectedResizeLabelResponsiveStylesMedium = {
   smallerLabelHeight: 16,
   labelHeight: 18,
   pillBorderRadius: 18,
+  gap: 4,
 };
 
 const expectedResizeLabelResponsiveStylesLarge = {
@@ -104,6 +112,7 @@ const expectedResizeLabelResponsiveStylesLarge = {
   smallerLabelHeight: 20,
   labelHeight: 22,
   pillBorderRadius: 23,
+  gap: 5,
 };
 
 const expectedResizeLabelResponsiveStylesHuge = {
@@ -114,6 +123,7 @@ const expectedResizeLabelResponsiveStylesHuge = {
   smallerLabelHeight: 24,
   labelHeight: 24,
   pillBorderRadius: 28,
+  gap: 6,
 };
 
 // expected rebranded responsive style variables
@@ -125,6 +135,7 @@ const expectedRebrandedResponsiveStylesTiny = {
   smallerLabelHeight: 19,
   labelHeight: 19,
   pillBorderRadius: 13,
+  gap: 3,
 };
 
 const expectedRebrandedResponsiveStylesSmall = {
@@ -135,6 +146,7 @@ const expectedRebrandedResponsiveStylesSmall = {
   smallerLabelHeight: 19,
   labelHeight: 19,
   pillBorderRadius: 13,
+  gap: 3,
 };
 
 const expectedRebrandedResponsiveStylesMedium = {
@@ -145,6 +157,7 @@ const expectedRebrandedResponsiveStylesMedium = {
   smallerLabelHeight: 27,
   labelHeight: 27,
   pillBorderRadius: 18,
+  gap: 4,
 };
 
 const expectedRebrandedResponsiveStylesLarge = {
@@ -155,6 +168,7 @@ const expectedRebrandedResponsiveStylesLarge = {
   smallerLabelHeight: 34,
   labelHeight: 34,
   pillBorderRadius: 23,
+  gap: 5,
 };
 
 const expectedRebrandedResponsiveStylesHuge = {
@@ -165,6 +179,7 @@ const expectedRebrandedResponsiveStylesHuge = {
   smallerLabelHeight: 42,
   labelHeight: 42,
   pillBorderRadius: 28,
+  gap: 6,
 };
 
 // DISABLE MAX HEIGHT TESTS
@@ -181,6 +196,7 @@ const expectedLegacyDisableMaxHeightStylesTiny = {
   marginTop: 1,
   pillBorderRadius: 13,
   spinnerSize: 13,
+  gap: 3,
 };
 
 const expectedLegacyDisableMaxHeightStylesSmall = {
@@ -194,6 +210,7 @@ const expectedLegacyDisableMaxHeightStylesSmall = {
   marginTop: 1,
   pillBorderRadius: 15,
   spinnerSize: 15,
+  gap: 3,
 };
 
 const expectedLegacyDisableMaxHeightStylesMediumSmall = {
@@ -209,6 +226,7 @@ const expectedLegacyDisableMaxHeightStylesMediumSmall = {
   marginTop: 1,
   pillBorderRadius: 18,
   spinnerSize: 18,
+  gap: 4,
 };
 
 const expectedLegacyDisableMaxHeightStylesMediumBig = {
@@ -222,6 +240,7 @@ const expectedLegacyDisableMaxHeightStylesMediumBig = {
   marginTop: 1,
   pillBorderRadius: 20,
   spinnerSize: 20,
+  gap: 4,
 };
 
 const expectedLegacyDisableMaxHeightStylesLargeSmall = {
@@ -235,6 +254,7 @@ const expectedLegacyDisableMaxHeightStylesLargeSmall = {
   marginTop: 2,
   pillBorderRadius: 23,
   spinnerSize: 23,
+  gap: 5,
 };
 
 const expectedLegacyDisableMaxHeightStylesLargeBig = {
@@ -248,6 +268,7 @@ const expectedLegacyDisableMaxHeightStylesLargeBig = {
   marginTop: 2,
   pillBorderRadius: 25,
   spinnerSize: 25,
+  gap: 5,
 };
 
 const expectedLegacyDisableMaxHeightStylesXL = {
@@ -261,6 +282,7 @@ const expectedLegacyDisableMaxHeightStylesXL = {
   marginTop: 2,
   pillBorderRadius: 28,
   spinnerSize: 28,
+  gap: 6,
 };
 
 const expectedLegacyDisableMaxHeightStylesXXL = {
@@ -274,6 +296,7 @@ const expectedLegacyDisableMaxHeightStylesXXL = {
   marginTop: 2,
   pillBorderRadius: 33,
   spinnerSize: 33,
+  gap: 7,
 };
 
 const expectedLegacyDisableMaxHeightStylesXXXL = {
@@ -287,6 +310,7 @@ const expectedLegacyDisableMaxHeightStylesXXXL = {
   marginTop: 3,
   pillBorderRadius: 38,
   spinnerSize: 38,
+  gap: 7,
 };
 
 // expected shouldResizeLabel = true style variables for disable max hieght
@@ -301,6 +325,7 @@ const expectedResizeLabelDisableMaxHeightStylesTiny = {
   marginTop: 1,
   pillBorderRadius: 13,
   spinnerSize: 13,
+  gap: 3,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesSmall = {
@@ -314,6 +339,7 @@ const expectedResizeLabelDisableMaxHeightStylesSmall = {
   marginTop: 1,
   pillBorderRadius: 15,
   spinnerSize: 15,
+  gap: 3,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesMediumSmall = {
@@ -329,6 +355,7 @@ const expectedResizeLabelDisableMaxHeightStylesMediumSmall = {
   marginTop: 1,
   pillBorderRadius: 18,
   spinnerSize: 18,
+  gap: 4,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesMediumBig = {
@@ -342,6 +369,7 @@ const expectedResizeLabelDisableMaxHeightStylesMediumBig = {
   marginTop: 1,
   pillBorderRadius: 20,
   spinnerSize: 20,
+  gap: 4,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesLargeSmall = {
@@ -355,6 +383,7 @@ const expectedResizeLabelDisableMaxHeightStylesLargeSmall = {
   marginTop: 1,
   pillBorderRadius: 23,
   spinnerSize: 23,
+  gap: 5,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesLargeBig = {
@@ -368,6 +397,7 @@ const expectedResizeLabelDisableMaxHeightStylesLargeBig = {
   marginTop: 2,
   pillBorderRadius: 25,
   spinnerSize: 25,
+  gap: 5,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesXL = {
@@ -381,6 +411,7 @@ const expectedResizeLabelDisableMaxHeightStylesXL = {
   marginTop: 2,
   pillBorderRadius: 28,
   spinnerSize: 28,
+  gap: 6,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesXXL = {
@@ -394,6 +425,7 @@ const expectedResizeLabelDisableMaxHeightStylesXXL = {
   marginTop: 2,
   pillBorderRadius: 33,
   spinnerSize: 33,
+  gap: 7,
 };
 
 const expectedResizeLabelDisableMaxHeightStylesXXXL = {
@@ -407,6 +439,7 @@ const expectedResizeLabelDisableMaxHeightStylesXXXL = {
   marginTop: 2,
   pillBorderRadius: 38,
   spinnerSize: 38,
+  gap: 7,
 };
 
 // expected rebrand disable max height responsive styles variables
@@ -421,6 +454,7 @@ const expectedRebrandDisableMaxHeightStylesTiny = {
   marginTop: 1,
   pillBorderRadius: 13,
   spinnerSize: 13,
+  gap: 3,
 };
 
 const expectedRebrandDisableMaxHeightStylesSmall = {
@@ -434,6 +468,7 @@ const expectedRebrandDisableMaxHeightStylesSmall = {
   marginTop: 1,
   pillBorderRadius: 15,
   spinnerSize: 15,
+  gap: 3,
 };
 
 const expectedRebrandDisableMaxHeightStylesMediumSmall = {
@@ -449,6 +484,7 @@ const expectedRebrandDisableMaxHeightStylesMediumSmall = {
   marginTop: 1,
   pillBorderRadius: 18,
   spinnerSize: 18,
+  gap: 4,
 };
 
 const expectedRebrandDisableMaxHeightStylesMediumBig = {
@@ -462,6 +498,7 @@ const expectedRebrandDisableMaxHeightStylesMediumBig = {
   marginTop: 1,
   pillBorderRadius: 20,
   spinnerSize: 20,
+  gap: 4,
 };
 
 const expectedRebrandDisableMaxHeightStylesLargeSmall = {
@@ -475,6 +512,7 @@ const expectedRebrandDisableMaxHeightStylesLargeSmall = {
   marginTop: 2,
   pillBorderRadius: 23,
   spinnerSize: 23,
+  gap: 5,
 };
 
 const expectedRebrandDisableMaxHeightStylesLargeBig = {
@@ -488,6 +526,7 @@ const expectedRebrandDisableMaxHeightStylesLargeBig = {
   marginTop: 2,
   pillBorderRadius: 25,
   spinnerSize: 25,
+  gap: 5,
 };
 
 const expectedRebrandDisableMaxHeightStylesXL = {
@@ -501,6 +540,7 @@ const expectedRebrandDisableMaxHeightStylesXL = {
   marginTop: 2,
   pillBorderRadius: 28,
   spinnerSize: 28,
+  gap: 6,
 };
 
 const expectedRebrandDisableMaxHeightStylesXXL = {
@@ -514,6 +554,7 @@ const expectedRebrandDisableMaxHeightStylesXXL = {
   marginTop: 2,
   pillBorderRadius: 33,
   spinnerSize: 33,
+  gap: 7,
 };
 
 const expectedRebrandDisableMaxHeightStylesXXXL = {
@@ -527,6 +568,7 @@ const expectedRebrandDisableMaxHeightStylesXXXL = {
   marginTop: 3,
   pillBorderRadius: 38,
   spinnerSize: 38,
+  gap: 7,
 };
 
 describe("test responsive style variables for legacy", () => {
@@ -564,7 +606,7 @@ describe("test responsive style variables for legacy", () => {
   );
 });
 
-describe("test responsive style variables when shouldResizeLable == true", () => {
+describe("test responsive style variables when shouldResizeLabel == true", () => {
   const experiment = {
     isPaypalRebrandEnabled: false,
     defaultBlueButtonColor: BUTTON_COLOR.GOLD,

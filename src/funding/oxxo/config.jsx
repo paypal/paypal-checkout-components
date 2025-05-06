@@ -13,7 +13,7 @@ import {
   type FundingSourceConfig,
   BasicLabel,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 export function getOxxoConfig(): FundingSourceConfig {
   return {
@@ -41,7 +41,6 @@ export function getOxxoConfig(): FundingSourceConfig {
       const apmLogo = (
         <Fragment>
           {logo}
-          <Space />
           <Text animate optional>
             OXXO
           </Text>
