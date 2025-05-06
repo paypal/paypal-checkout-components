@@ -290,13 +290,10 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           required: false,
         },
 
-        thirdPartyContext: {
+        isThirdPartyContext: {
           type: "boolean",
           queryParam: true,
           required: false,
-          value: () => {
-            return !supportsPopups();
-          },
         },
 
         venmoWebUrl: {
