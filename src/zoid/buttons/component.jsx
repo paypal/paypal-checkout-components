@@ -647,7 +647,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       experiment: {
         type: "object",
         queryParam: true,
-        value: getButtonExperiments,
+        value: ({ props }) => getButtonExperiments(props),
       },
       // TODO first-render-experiment-cleanup
       // verify if this is needed/used now that were putting the first render experiments in experiment param above

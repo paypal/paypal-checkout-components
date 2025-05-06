@@ -29,12 +29,18 @@ import {
   getFirstRenderExperiments,
   getSDKToken,
   getIntent,
+  type FirstRenderExperiments,
 } from "@paypal/sdk-client/src";
 import { FUNDING, FPTI_KEY, INTENT } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
 import type { Experiment as EligibilityExperiment } from "../../types";
-import { BUTTON_FLOW, BUTTON_SIZE, BUTTON_LAYOUT } from "../../constants";
+import {
+  BUTTON_FLOW,
+  BUTTON_SIZE,
+  BUTTON_LAYOUT,
+  BUTTON_COLOR,
+} from "../../constants";
 import type {
   ApplePaySessionConfigRequest,
   CreateBillingAgreement,
@@ -312,10 +318,59 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
   }
 }
 
-export function getButtonExperiments(): EligibilityExperiment {
+function getButtonRebrandABTestExperiments({
+  props,
+  firstRenderExperiments,
+}: {|
+  props?: ButtonProps,
+  firstRenderExperiments: FirstRenderExperiments,
+|}): {|
+  shouldApplyRebrandedStyles: boolean,
+  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
+|} {
+  const {
+    isPaypalRebrandEnabled = false,
+    isPaypalRebrandABTestEnabled = false,
+  } = firstRenderExperiments;
+
+  let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
+  const propsColor = props?.style?.color ?? BUTTON_COLOR.GOLD;
+
+  const randomButtonColor = Math.floor(Math.random() * 3);
+
+  switch (randomButtonColor) {
+    case 0:
+      buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+      break;
+    case 1:
+      buttonColorABTest = BUTTON_COLOR.REBRAND_DARK_BLUE;
+      break;
+    default:
+      buttonColorABTest = propsColor;
+  }
+
+  const shouldApplyRebrandedStyles = Boolean(
+    isPaypalRebrandEnabled &&
+      isPaypalRebrandABTestEnabled &&
+      buttonColorABTest !== propsColor
+  );
+
+  return {
+    shouldApplyRebrandedStyles,
+    buttonColorABTest,
+  };
+}
+
+export function getButtonExperiments(
+  props?: ButtonProps
+): EligibilityExperiment {
   return {
     ...getVenmoExperiment(),
     ...getFirstRenderExperiments(),
+    ...getButtonRebrandABTestExperiments({
+      props,
+      firstRenderExperiments: getFirstRenderExperiments(),
+    }),
   };
 }
 

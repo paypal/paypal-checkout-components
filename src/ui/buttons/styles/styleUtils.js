@@ -92,9 +92,7 @@ export function getResponsiveStyleVariables({
   experiment: Experiment,
   size: $Values<typeof BUTTON_SIZE>,
 |}): Object {
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
-  const shouldApplyRebrandedStyles =
-    isPaypalRebrandEnabled && defaultBlueButtonColor !== "gold";
+  const { shouldApplyRebrandedStyles } = experiment;
 
   const style = BUTTON_SIZE_STYLE[size];
 
@@ -153,9 +151,7 @@ export function getDisableMaxHeightResponsiveStyleVariables({
   experiment: Experiment,
   disableMaxHeightSize: $Values<typeof BUTTON_DISABLE_MAX_HEIGHT_SIZE>,
 |}): Object {
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
-  const shouldApplyRebrandedStyles =
-    isPaypalRebrandEnabled && defaultBlueButtonColor !== "gold";
+  const { shouldApplyRebrandedStyles } = experiment;
 
   const disableHeightStyle =
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[disableMaxHeightSize];

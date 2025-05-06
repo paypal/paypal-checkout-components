@@ -289,7 +289,7 @@ const expectedLegacyDisableMaxHeightStylesXXXL = {
   spinnerSize: 38,
 };
 
-// expected shouldResizeLabel = true style variables for disable max hieght
+// expected shouldResizeLabel = true style variables for disable max height
 const expectedResizeLabelDisableMaxHeightStylesTiny = {
   APMHeight: 18,
   applePayHeight: 25,
@@ -531,9 +531,9 @@ const expectedRebrandDisableMaxHeightStylesXXXL = {
 
 describe("test responsive style variables for legacy", () => {
   const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
+    shouldApplyRebrandedStyles: false,
   };
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -564,11 +564,11 @@ describe("test responsive style variables for legacy", () => {
   );
 });
 
-describe("test responsive style variables when shouldResizeLable == true", () => {
+describe("test responsive style variables when shouldResizeLabel == true", () => {
   const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
+    shouldApplyRebrandedStyles: false,
   };
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -625,11 +625,11 @@ describe("test responsive style variables when shouldResizeLable == true", () =>
   );
 });
 
-describe("test responsive style variables for rebrand light blue button", () => {
+describe("test responsive style variables for rebranded buttons", () => {
   const experiment = {
-    isPaypalRebrandEnabled: true,
-    defaultBlueButtonColor: BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE,
+    shouldApplyRebrandedStyles: true,
   };
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -674,9 +674,9 @@ describe("test responsive style variables for rebrand light blue button", () => 
 
 describe("test responsive style variables for legacy disable max height", () => {
   const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
+    shouldApplyRebrandedStyles: false,
   };
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -735,11 +735,11 @@ describe("test responsive style variables for legacy disable max height", () => 
   );
 });
 
-describe("test responsive style variables when shouldResizeLable == true for disable max height", () => {
+describe("test responsive style variables when shouldResizeLabel == true for disable max height", () => {
   const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
+    shouldApplyRebrandedStyles: false,
   };
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -814,9 +814,9 @@ describe("test responsive style variables when shouldResizeLable == true for dis
 
 describe("test rebrand responsive style variables for disable max height", () => {
   const experiment = {
-    isPaypalRebrandEnabled: true,
-    defaultBlueButtonColor: BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE,
+    shouldApplyRebrandedStyles: true,
   };
+
   const fundingEligibility = {
     paypal: {
       eligible: true,

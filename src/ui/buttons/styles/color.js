@@ -25,39 +25,39 @@ export const buttonColorStyle = `
         border-top-color: rgba(255, 255, 255, .85);
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE} .menu-button {
         background: #60CDFF;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE}:hover {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:hover {
             background: #008CFF;
             overflow: inherit;
         }
     }
     
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE}:active {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:active {
             background: #E3F7FF;
             overflow: inherit;
         }
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE} .menu-button {
         background: #002991;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE}:hover {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE}:hover {
             background: #0038BA;
             overflow: inherit;
         }
     }
     
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT_BLUE_DARK_BLUE}:active {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE}:active {
             background: #0057D9;
             overflow: inherit;
         }

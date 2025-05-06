@@ -237,7 +237,7 @@ describe("paypal rebrand button", () => {
     destroyTestContainer();
   });
 
-  it("should renders the legacy button when isPaypalRebrandEnabled is false", () => {
+  it("should render the legacy button when isPaypalRebrandEnabled is false", () => {
     const mockPaypalRebrandExperiment = mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
       "isPaypalRebrandEnabled",
@@ -247,6 +247,7 @@ describe("paypal rebrand button", () => {
     const button = window.paypal.Buttons({});
 
     return button.render("#testContainer").then(() => {
+      assert.ok(getElementRecursive(".paypal-button-color-gold"));
       assert.ok(getElementRecursive(".paypal-button-color-gold"));
       assert.ok(
         getElementRecursive(".paypal-logo-paypal.paypal-logo-color-blue")
@@ -282,16 +283,14 @@ describe("paypal rebrand button", () => {
 
     const mockDefaultBlueColorExperiment = mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-      "defaultBlueButtonColor",
-      "defaultBlue_lightBlue"
+      "buttonColorABTest",
+      "rebrand_blue"
     );
 
     const button = window.paypal.Buttons({});
 
     return button.render("#testContainer").then(() => {
-      assert.ok(
-        getElementRecursive(".paypal-button-color-defaultBlue_lightBlue")
-      );
+      assert.ok(getElementRecursive(".paypal-button-color-rebrand_blue"));
       assert.ok(
         getElementRecursive(
           ".paypal-logo-paypal-rebrand.paypal-logo-color-black"
@@ -311,16 +310,14 @@ describe("paypal rebrand button", () => {
 
     const mockDefaultBlueColorExperiment = mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-      "defaultBlueButtonColor",
-      "defaultBlue_darkBlue"
+      "buttonColorABTest",
+      "rebrand_darkBlue"
     );
 
     const button = window.paypal.Buttons({});
 
     return button.render("#testContainer").then(() => {
-      assert.ok(
-        getElementRecursive(".paypal-button-color-defaultBlue_darkBlue")
-      );
+      assert.ok(getElementRecursive(".paypal-button-color-rebrand_darkBlue"));
       assert.ok(
         getElementRecursive(
           ".paypal-logo-paypal-rebrand.paypal-logo-color-blue"
