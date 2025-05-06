@@ -335,14 +335,16 @@ function getButtonRebrandABTestExperiments({
 
   let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
   const propsColor = props?.style?.color ?? BUTTON_COLOR.GOLD;
-
   const randomButtonColor = Math.floor(Math.random() * 3);
+  let isButtonColorOverwritten = false;
 
   switch (randomButtonColor) {
     case 0:
+      isButtonColorOverwritten = true;
       buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
       break;
     case 1:
+      isButtonColorOverwritten = true;
       buttonColorABTest = BUTTON_COLOR.REBRAND_DARK_BLUE;
       break;
     default:
@@ -350,10 +352,18 @@ function getButtonRebrandABTestExperiments({
   }
 
   const shouldApplyRebrandedStyles = Boolean(
-    isPaypalRebrandEnabled &&
-      isPaypalRebrandABTestEnabled &&
-      buttonColorABTest !== propsColor
+    isPaypalRebrandEnabled ||
+      (isPaypalRebrandABTestEnabled && isButtonColorOverwritten)
   );
+
+  // console.log("isPaypalRebrandEnabled - Nik", isPaypalRebrandEnabled);
+  // console.log(
+  //   "isPaypalRebrandABTestEnabled - Nik",
+  //   isPaypalRebrandABTestEnabled
+  // );
+  // console.log("shouldApplyRebrandedStyles - Nik", shouldApplyRebrandedStyles);
+  // console.log("buttonColorABTest - Nik", buttonColorABTest);
+  // console.log("************************************** Nik");
 
   return {
     shouldApplyRebrandedStyles,

@@ -10,6 +10,13 @@ export const BUTTON_LABEL = {
   DONATE: ("donate": "donate"),
 };
 
+export const BUTTON_COLOR_REBRAND = {
+  REBRAND_BLUE: ("rebrand_blue": "rebrand_blue"),
+  REBRAND_DARK_BLUE: ("rebrand_darkBlue": "rebrand_darkBlue"),
+  REBRAND_BLACK: ("rebrand_black": "rebrand_black"),
+  REBRAND_WHITE: ("rebrand_white": "rebrand_white"),
+};
+
 export const BUTTON_COLOR = {
   DEFAULT: ("default": "default"),
   GOLD: ("gold": "gold"),
@@ -19,10 +26,7 @@ export const BUTTON_COLOR = {
   BLACK: ("black": "black"),
   WHITE: ("white": "white"),
   TRANSPARENT: ("transparent": "transparent"),
-  REBRAND_BLUE: ("rebrand_Blue": "rebrand_Blue"),
-  REBRAND_DARK_BLUE: ("rebrand_darkBlue": "rebrand_darkBlue"),
-  REBRAND_BLACK: ("rebrand_black": "rebrand_black"),
-  REBRAND_WHITE: ("rebrand_white": "rebrand_white"),
+  ...BUTTON_COLOR_REBRAND,
 };
 
 export const TEXT_COLOR = {

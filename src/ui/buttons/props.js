@@ -36,6 +36,7 @@ import type { ContentType, Wallet, Experiment } from "../../types";
 import {
   BUTTON_LABEL,
   BUTTON_COLOR,
+  BUTTON_COLOR_REBRAND,
   BUTTON_LAYOUT,
   BUTTON_SHAPE,
   BUTTON_SIZE,
@@ -694,6 +695,9 @@ export function normalizeButtonStyle(
     borderRadius,
   } = style;
 
+  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
+  const isRebrandedColor = Boolean(rebrandedColors.includes(color));
+
   // This sets the button color so it gets passed to the query string parameter style.color to scnw
   if (isPaypalRebrandEnabled && isPaypalRebrandABTestEnabled) {
     color = buttonColorABTest || BUTTON_COLOR.GOLD;
@@ -718,6 +722,19 @@ export function normalizeButtonStyle(
       `Unexpected style.color for ${
         fundingSource || FUNDING.PAYPAL
       } button: ${color}, expected ${fundingConfig.colors.join(", ")}`
+    );
+  }
+
+  // throw error is using rebranded colors without being enrolled in elmo
+  if (color && isPaypalRebrandEnabled === false && isRebrandedColor) {
+    const filteredColors = fundingConfig.colors.filter(
+      (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
+    );
+
+    throw new Error(
+      `Unexpected style.color for ${
+        fundingSource || FUNDING.PAYPAL
+      } button: ${color}, expected ${filteredColors.join(", ")}`
     );
   }
 
