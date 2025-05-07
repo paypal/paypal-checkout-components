@@ -3,7 +3,7 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { values, uniqueID, memoize } from "@krakenjs/belter/src";
+import { values, uniqueID } from "@krakenjs/belter/src";
 import {
   type OrderCreateRequest,
   type FundingEligibilityType,
@@ -51,7 +51,6 @@ import { getFundingConfig, isFundingEligible } from "../../funding";
 
 import { BUTTON_SIZE_STYLE } from "./config";
 import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
-import { buttonColorStyle } from "./styles/color";
 
 export type CreateOrderData = {||} | {||};
 
@@ -654,139 +653,65 @@ export const DEFAULT_PROPS = {
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
   return {};
 };
-
-// Define type variables for arguments and return values
-// type ButtonRebrandABTestExperimentsArgs = {|
-//   props?: ButtonProps,
-//   experiment: Experiment,
-// |};
-
-// type ButtonRebrandABTestExperimentsResult = {|
-//   shouldApplyRebrandedStyles: boolean,
-//   buttonColorABTest: $Values<typeof BUTTON_COLOR>,
-// |};
-
-// type ABTestInput = {|
-//   isPaypalRebrandEnabled: boolean,
-//   isPaypalRebrandABTestEnabled: boolean,
-//   style: ?ButtonStyleInputs,
-//   sessionID: ?string,
-// |};
-
-// type ABTestResult = {|
-//   sessionID: ?string,
-//   shouldApplyRebrandedStyles: boolean,
-//   buttonColorABTest: $Values<typeof BUTTON_COLOR>,
-// |};
-
-// // color is getting set in other places and ruining the memoization
-// const memoizedABTestResults = memoize(
-//   (
-//     isPaypalRebrandEnabled: boolean,
-//     isPaypalRebrandABTestEnabled: boolean,
-//     style: ?ButtonStyleInputs,
-//     sessionID: ?string
-//   ): ABTestResult => {
-//     let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
-//     let shouldApplyRebrandedStyles = isPaypalRebrandEnabled;
-
-//     if (isPaypalRebrandABTestEnabled) {
-//       const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
-//       const randomButtonColor = Math.floor(Math.random() * 3);
-
-//       switch (randomButtonColor) {
-//         case 0:
-//           buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
-//           break;
-//         case 1:
-//           buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
-//           break;
-//         default:
-//           buttonColorABTest = propsColor;
-//       }
-//       console.log(
-//         "buttonColorABTest - propsColor",
-//         `${buttonColorABTest}- ${propsColor}`
-//       );
-//       shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
-//     }
-
-//     return {
-//       sessionID,
-//       shouldApplyRebrandedStyles,
-//       buttonColorABTest,
-//     };
-//   }
-// );
-
-// export function getButtonRebrandABTestExperiments({
-//   style,
-//   experiment,
-//   sessionID,
-// }: ButtonRebrandABTestExperimentsArgs): ButtonRebrandABTestExperimentsResult {
-//   const {
-//     isPaypalRebrandEnabled = false,
-//     isPaypalRebrandABTestEnabled = false,
-//   } = experiment;
-
-//   const results = memoizedABTestResults(
-//     isPaypalRebrandEnabled,
-//     isPaypalRebrandABTestEnabled,
-//     style,
-//     sessionID
-//   );
-//   // console.log("sessionID", sessionID);
-//   // console.log("memoizedABTestResults", results);
-//   return results;
-// }
 type ABTestResult = {|
-  sessionID: ?string,
   shouldApplyRebrandedStyles: boolean,
   buttonColorABTest: $Values<typeof BUTTON_COLOR>,
 |};
 
+// Global cache variables
+let cachedSessionID: ?string = null;
+let cachedResult: ?ABTestResult = null;
+
 function memoizedABTestResults(
-  isPaypalRebrandEnabled: boolean,
-  isPaypalRebrandABTestEnabled: boolean,
+  isPaypalRebrandEnabled: ?boolean,
+  isPaypalRebrandABTestEnabled: ?boolean,
   style: ?ButtonStyleInputs,
   sessionID: ?string
 ): ABTestResult {
-  // Create a memoized function inside this scope that captures outer variables
-  const memoizedBySessionID = memoize(
-    (sessionIDParam: ?string): ABTestResult => {
-      console.log("memoized function called!!!!!!!", sessionID);
-      // Use outer scope variables here
-      let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
-      let shouldApplyRebrandedStyles = isPaypalRebrandEnabled;
-
-      if (isPaypalRebrandABTestEnabled) {
-        const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
-        const randomButtonColor = Math.floor(Math.random() * 3);
-
-        switch (randomButtonColor) {
-          case 0:
-            buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
-            break;
-          case 1:
-            buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
-            break;
-          default:
-            buttonColorABTest = propsColor;
-        }
-
-        shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
-      }
-
-      return {
-        sessionID: sessionIDParam,
-        shouldApplyRebrandedStyles,
-        buttonColorABTest,
-      };
-    }
-  );
   console.log("sessionID", sessionID);
-  // Call the memoized function with only sessionID
-  return memoizedBySessionID(sessionID);
+
+  // If we have a cached result and the sessionID matches, return the cached result
+  if (cachedResult && sessionID === cachedSessionID) {
+    console.log("Using cached result for sessionID:", sessionID);
+    return cachedResult;
+  }
+
+  // Generate a new result
+  console.log("Generating new result for sessionID:", sessionID);
+
+  // Use variables from the outer scope
+  let shouldApplyRebrandedStyles = Boolean(isPaypalRebrandEnabled);
+  let buttonColorABTest: $Values<typeof BUTTON_COLOR> =
+    shouldApplyRebrandedStyles ? BUTTON_COLOR.REBRAND_BLUE : BUTTON_COLOR.GOLD;
+
+  if (isPaypalRebrandABTestEnabled) {
+    const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
+    const randomButtonColor = Math.floor(Math.random() * 3); // Ensure buttonColorABTest is always assigned
+
+    switch (randomButtonColor) {
+      case 0:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+        break;
+      case 1:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
+        break;
+      default:
+        buttonColorABTest = propsColor;
+    }
+
+    shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
+  }
+
+  // Create the result
+  cachedResult = {
+    shouldApplyRebrandedStyles,
+    buttonColorABTest,
+  };
+
+  // Update the cached sessionID
+  cachedSessionID = sessionID;
+
+  return cachedResult;
 }
 
 export function normalizeButtonStyle(
