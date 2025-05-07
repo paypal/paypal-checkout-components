@@ -723,16 +723,10 @@ export function normalizeButtonStyle(
   }
 
   props = props || getDefaultButtonPropsInput();
-  const { fundingSource, experiment, sessionID } = props;
+  const { fundingSource, experiment, colorABTest } = props;
   const { isPaypalRebrandABTestEnabled, isPaypalRebrandEnabled } = experiment;
 
-  const { shouldApplyRebrandedStyles, buttonColorABTest } =
-    memoizedABTestResults(
-      isPaypalRebrandEnabled,
-      isPaypalRebrandABTestEnabled,
-      style,
-      sessionID
-    );
+  const { shouldApplyRebrandedStyles, buttonColorABTest } = colorABTest;
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =

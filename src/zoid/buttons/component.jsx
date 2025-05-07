@@ -89,6 +89,7 @@ import { isFundingEligible } from "../../funding";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
+import { getButtonABTestValues } from "../../lib/buttonABTest";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -1224,6 +1225,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
 
         default: () => ({}),
+      },
+
+      colorABTest: {
+        type: "object",
+        default: () => ({
+          shouldApplyRebrandedStyles: false,
+          buttonColorABTest: "gold",
+        }),
+        queryParam: true,
+        decorate: ({ props, value }) => {
+          console.log("colorABTest Prop called", value);
+          return getButtonABTestValues(props);
+        },
       },
 
       supportedNativeBrowser: {
