@@ -656,64 +656,68 @@ const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
 };
 
 // Define type variables for arguments and return values
-type ButtonRebrandABTestExperimentsArgs = {|
-  props?: ButtonProps,
-  experiment: Experiment,
-|};
+// type ButtonRebrandABTestExperimentsArgs = {|
+//   props?: ButtonProps,
+//   experiment: Experiment,
+// |};
 
-type ButtonRebrandABTestExperimentsResult = {|
-  shouldApplyRebrandedStyles: boolean,
-  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
-|};
+// type ButtonRebrandABTestExperimentsResult = {|
+//   shouldApplyRebrandedStyles: boolean,
+//   buttonColorABTest: $Values<typeof BUTTON_COLOR>,
+// |};
 
-type ABTestInput = {|
-  isPaypalRebrandEnabled: boolean,
-  isPaypalRebrandABTestEnabled: boolean,
-  style: ?ButtonStyleInputs,
-  sessionID: ?string,
-|};
+// type ABTestInput = {|
+//   isPaypalRebrandEnabled: boolean,
+//   isPaypalRebrandABTestEnabled: boolean,
+//   style: ?ButtonStyleInputs,
+//   sessionID: ?string,
+// |};
 
-type ABTestResult = {|
-  sessionID: ?string,
-  shouldApplyRebrandedStyles: boolean,
-  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
-|};
+// type ABTestResult = {|
+//   sessionID: ?string,
+//   shouldApplyRebrandedStyles: boolean,
+//   buttonColorABTest: $Values<typeof BUTTON_COLOR>,
+// |};
 
-const memoizedABTestResults = memoize(
-  (
-    isPaypalRebrandEnabled: boolean,
-    isPaypalRebrandABTestEnabled: boolean,
-    style: ?ButtonStyleInputs,
-    sessionID: ?string
-  ): ABTestResult => {
-    let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
-    let shouldApplyRebrandedStyles = isPaypalRebrandEnabled;
+// // color is getting set in other places and ruining the memoization
+// const memoizedABTestResults = memoize(
+//   (
+//     isPaypalRebrandEnabled: boolean,
+//     isPaypalRebrandABTestEnabled: boolean,
+//     style: ?ButtonStyleInputs,
+//     sessionID: ?string
+//   ): ABTestResult => {
+//     let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
+//     let shouldApplyRebrandedStyles = isPaypalRebrandEnabled;
 
-    if (isPaypalRebrandABTestEnabled) {
-      const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
-      const randomButtonColor = Math.floor(Math.random() * 3);
+//     if (isPaypalRebrandABTestEnabled) {
+//       const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
+//       const randomButtonColor = Math.floor(Math.random() * 3);
 
-      switch (randomButtonColor) {
-        case 0:
-          buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
-          break;
-        case 1:
-          buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
-          break;
-        default:
-          buttonColorABTest = propsColor;
-      }
+//       switch (randomButtonColor) {
+//         case 0:
+//           buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+//           break;
+//         case 1:
+//           buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
+//           break;
+//         default:
+//           buttonColorABTest = propsColor;
+//       }
+//       console.log(
+//         "buttonColorABTest - propsColor",
+//         `${buttonColorABTest}- ${propsColor}`
+//       );
+//       shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
+//     }
 
-      shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
-    }
-
-    return {
-      sessionID,
-      shouldApplyRebrandedStyles,
-      buttonColorABTest,
-    };
-  }
-);
+//     return {
+//       sessionID,
+//       shouldApplyRebrandedStyles,
+//       buttonColorABTest,
+//     };
+//   }
+// );
 
 // export function getButtonRebrandABTestExperiments({
 //   style,
@@ -735,6 +739,55 @@ const memoizedABTestResults = memoize(
 //   // console.log("memoizedABTestResults", results);
 //   return results;
 // }
+type ABTestResult = {|
+  sessionID: ?string,
+  shouldApplyRebrandedStyles: boolean,
+  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
+|};
+
+function memoizedABTestResults(
+  isPaypalRebrandEnabled: boolean,
+  isPaypalRebrandABTestEnabled: boolean,
+  style: ?ButtonStyleInputs,
+  sessionID: ?string
+): ABTestResult {
+  // Create a memoized function inside this scope that captures outer variables
+  const memoizedBySessionID = memoize(
+    (sessionIDParam: ?string): ABTestResult => {
+      console.log("memoized function called!!!!!!!", sessionID);
+      // Use outer scope variables here
+      let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
+      let shouldApplyRebrandedStyles = isPaypalRebrandEnabled;
+
+      if (isPaypalRebrandABTestEnabled) {
+        const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
+        const randomButtonColor = Math.floor(Math.random() * 3);
+
+        switch (randomButtonColor) {
+          case 0:
+            buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+            break;
+          case 1:
+            buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
+            break;
+          default:
+            buttonColorABTest = propsColor;
+        }
+
+        shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
+      }
+
+      return {
+        sessionID: sessionIDParam,
+        shouldApplyRebrandedStyles,
+        buttonColorABTest,
+      };
+    }
+  );
+  console.log("sessionID", sessionID);
+  // Call the memoized function with only sessionID
+  return memoizedBySessionID(sessionID);
+}
 
 export function normalizeButtonStyle(
   props: ?ButtonPropsInputs,
