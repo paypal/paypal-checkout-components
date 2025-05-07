@@ -99,11 +99,7 @@ export function Button({
   showLoadingSpinner = false,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
-  const {
-    isPaypalRebrandEnabled,
-    isPaypalRebrandABTestEnabled,
-    buttonColorABTest,
-  } = experiment;
+  const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } = experiment;
 
   const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -114,7 +110,8 @@ export function Button({
   const colors = fundingConfig.colors;
   const secondaryColors = fundingConfig.secondaryColors || {};
 
-  let { color, period, label } = style;
+  let { color, period, label, buttonColorABTest, shouldApplyRebrandedStyles } =
+    style;
 
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
@@ -134,7 +131,7 @@ export function Button({
   }
 
   if (isPaypalRebrandEnabled && isPaypalRebrandABTestEnabled) {
-    color = buttonColorABTest || BUTTON_COLOR.GOLD;
+    color = buttonColorABTest;
   }
 
   // The secondary colors are used to render the smart stack (multiple buttons)
@@ -214,6 +211,7 @@ export function Button({
       onKeyPress={keypressHandler}
       nonce={nonce}
       experiment={experiment}
+      shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
       env={env}
     />
   );

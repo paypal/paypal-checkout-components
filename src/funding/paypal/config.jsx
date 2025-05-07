@@ -35,7 +35,7 @@ export function getPayPalConfig(): FundingSourceConfig {
       BUTTON_COLOR.BLACK,
       BUTTON_COLOR.WHITE,
       BUTTON_COLOR.REBRAND_BLUE,
-      BUTTON_COLOR.REBRAND_DARK_BLUE,
+      BUTTON_COLOR.REBRAND_DARKBLUE,
       BUTTON_COLOR.REBRAND_WHITE,
       BUTTON_COLOR.REBRAND_BLACK,
     ],
@@ -47,7 +47,7 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
       [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_DARK_BLUE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.REBRAND_DARKBLUE]: LOGO_COLOR.BLUE,
     },
 
     labelText: ({ content, label, period }) => {

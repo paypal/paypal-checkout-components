@@ -318,69 +318,10 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
   }
 }
 
-function getButtonRebrandABTestExperiments({
-  props,
-  firstRenderExperiments,
-}: {|
-  props?: ButtonProps,
-  firstRenderExperiments: FirstRenderExperiments,
-|}): {|
-  shouldApplyRebrandedStyles: boolean,
-  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
-|} {
-  const {
-    isPaypalRebrandEnabled = false,
-    isPaypalRebrandABTestEnabled = false,
-  } = firstRenderExperiments;
-
-  let buttonColorABTest: $Values<typeof BUTTON_COLOR>;
-  const propsColor = props?.style?.color ?? BUTTON_COLOR.GOLD;
-  const randomButtonColor = Math.floor(Math.random() * 3);
-  let isButtonColorOverwritten = false;
-
-  switch (randomButtonColor) {
-    case 0:
-      isButtonColorOverwritten = true;
-      buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
-      break;
-    case 1:
-      isButtonColorOverwritten = true;
-      buttonColorABTest = BUTTON_COLOR.REBRAND_DARK_BLUE;
-      break;
-    default:
-      buttonColorABTest = propsColor;
-  }
-
-  const shouldApplyRebrandedStyles = Boolean(
-    isPaypalRebrandEnabled ||
-      (isPaypalRebrandABTestEnabled && isButtonColorOverwritten)
-  );
-
-  // console.log("isPaypalRebrandEnabled - Nik", isPaypalRebrandEnabled);
-  // console.log(
-  //   "isPaypalRebrandABTestEnabled - Nik",
-  //   isPaypalRebrandABTestEnabled
-  // );
-  // console.log("shouldApplyRebrandedStyles - Nik", shouldApplyRebrandedStyles);
-  // console.log("buttonColorABTest - Nik", buttonColorABTest);
-  // console.log("************************************** Nik");
-
-  return {
-    shouldApplyRebrandedStyles,
-    buttonColorABTest,
-  };
-}
-
-export function getButtonExperiments(
-  props?: ButtonProps
-): EligibilityExperiment {
+export function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getVenmoExperiment(),
     ...getFirstRenderExperiments(),
-    ...getButtonRebrandABTestExperiments({
-      props,
-      firstRenderExperiments: getFirstRenderExperiments(),
-    }),
   };
 }
 

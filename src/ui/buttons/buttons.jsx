@@ -169,7 +169,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
     vault,
     wallet,
   } = normalizeButtonProps(props);
-  const { layout, shape, tagline } = style;
+  const { layout, shape, tagline, shouldApplyRebrandedStyles } = style;
 
   let fundingSources = determineEligibleFunding({
     fundingSource,
@@ -236,6 +236,10 @@ export function Buttons(props: ButtonsProps): ElementNode {
     !message;
 
   const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
+  // console.log(
+  //   "shouldApplyRebrandedStyles - button.jsx",
+  //   shouldApplyRebrandedStyles
+  // );
 
   return (
     <div
@@ -252,7 +256,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
       ].join(" ")}
     >
       <Style
-        experiment={experiment}
         nonce={nonce}
         style={style}
         fundingEligibility={fundingEligibility}

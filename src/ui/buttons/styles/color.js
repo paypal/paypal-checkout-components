@@ -44,20 +44,20 @@ export const buttonColorStyle = `
         }
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE} .menu-button {
         background: #002991;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE}:hover {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE}:hover {
             background: #0038BA;
             overflow: inherit;
         }
     }
     
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARK_BLUE}:active {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE}:active {
             background: #0057D9;
             overflow: inherit;
         }

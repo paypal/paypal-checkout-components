@@ -2,8 +2,6 @@
 
 import { type FundingEligibilityType } from "@paypal/sdk-constants/src";
 
-import type { Experiment } from "../../../types";
-
 import { pageStyle } from "./page";
 import { buttonStyle } from "./button";
 import { labelStyle } from "./labels";
@@ -16,14 +14,14 @@ export function componentStyle({
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
-  experiment,
+  shouldApplyRebrandedStyles,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
 |}): string {
   return `
         ${pageStyle}
@@ -36,7 +34,7 @@ export function componentStyle({
           disableMaxWidth,
           disableMaxHeight,
           borderRadius,
-          experiment,
+          shouldApplyRebrandedStyles,
         })}
     `;
 }

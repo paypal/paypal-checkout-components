@@ -84,16 +84,14 @@ function getApplePayButtonHeight({ height }: {| height: number |}): number {
 export function getResponsiveStyleVariables({
   height,
   fundingEligibility,
-  experiment = {},
+  shouldApplyRebrandedStyles,
   size,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
   size: $Values<typeof BUTTON_SIZE>,
 |}): Object {
-  const { shouldApplyRebrandedStyles } = experiment;
-
   const style = BUTTON_SIZE_STYLE[size];
 
   const buttonHeight = height || style.defaultHeight;
@@ -122,6 +120,7 @@ export function getResponsiveStyleVariables({
 
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
+  console.log("shouldApplyRebrandedStyles", shouldApplyRebrandedStyles);
   if (shouldApplyRebrandedStyles) {
     labelHeight = roundUp(perc(buttonHeight, 76), 1);
     // smallerLabelHeight gets triggered at widths < 320px
@@ -144,15 +143,13 @@ export function getResponsiveStyleVariables({
 
 export function getDisableMaxHeightResponsiveStyleVariables({
   fundingEligibility,
-  experiment,
+  shouldApplyRebrandedStyles,
   disableMaxHeightSize,
 }: {|
   fundingEligibility: FundingEligibilityType,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
   disableMaxHeightSize: $Values<typeof BUTTON_DISABLE_MAX_HEIGHT_SIZE>,
 |}): Object {
-  const { shouldApplyRebrandedStyles } = experiment;
-
   const disableHeightStyle =
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[disableMaxHeightSize];
   const buttonHeight = disableHeightStyle.defaultHeight;

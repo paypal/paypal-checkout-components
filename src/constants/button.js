@@ -12,7 +12,7 @@ export const BUTTON_LABEL = {
 
 export const BUTTON_COLOR_REBRAND = {
   REBRAND_BLUE: ("rebrand_blue": "rebrand_blue"),
-  REBRAND_DARK_BLUE: ("rebrand_darkBlue": "rebrand_darkBlue"),
+  REBRAND_DARKBLUE: ("rebrand_darkblue": "rebrand_darkblue"),
   REBRAND_BLACK: ("rebrand_black": "rebrand_black"),
   REBRAND_WHITE: ("rebrand_white": "rebrand_white"),
 };

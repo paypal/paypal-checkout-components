@@ -49,9 +49,10 @@ import {
 
 import css from "./style.scoped.scss";
 
-export function Logo({ logoColor, experiment }: LogoOptions): ChildType {
-  const { shouldApplyRebrandedStyles } = experiment;
-
+export function Logo({
+  logoColor,
+  shouldApplyRebrandedStyles,
+}: LogoOptions): ChildType {
   if (!shouldApplyRebrandedStyles) {
     // csnw globals.js
     return __WEB__ ? (
