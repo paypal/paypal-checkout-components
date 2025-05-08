@@ -82,6 +82,7 @@ import {
 import {
   normalizeButtonStyle,
   normalizeButtonMessage,
+  getColorABTest,
   type ButtonProps,
   type ButtonExtensions,
 } from "../../ui/buttons/props";
@@ -89,7 +90,6 @@ import { isFundingEligible } from "../../funding";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
-import { getButtonABTestValues } from "../../lib/buttonABTest";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -1234,7 +1234,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           buttonColorABTest: "gold",
         }),
         queryParam: true,
-        decorate: ({ props }) => getButtonABTestValues(props),
+        decorate: ({ props }) => {
+          const { experiment, style, sessionID } = props;
+          return getColorABTest({
+            experiment,
+            style,
+            sessionID,
+            storageState,
+          });
+        },
       },
 
       supportedNativeBrowser: {

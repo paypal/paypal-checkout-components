@@ -571,9 +571,7 @@ const expectedRebrandDisableMaxHeightStylesXXXL = {
 };
 
 describe("test responsive style variables for legacy", () => {
-  const experiment = {
-    shouldApplyRebrandedStyles: false,
-  };
+  const shouldApplyRebrandedStyles = false;
 
   const fundingEligibility = {
     paypal: {
@@ -596,7 +594,7 @@ describe("test responsive style variables for legacy", () => {
     ({ input, expected }) => {
       expect(
         getResponsiveStyleVariables({
-          experiment,
+          shouldApplyRebrandedStyles,
           fundingEligibility,
           size: input,
         })
@@ -606,9 +604,7 @@ describe("test responsive style variables for legacy", () => {
 });
 
 describe("test responsive style variables when shouldResizeLabel == true", () => {
-  const experiment = {
-    shouldApplyRebrandedStyles: false,
-  };
+  const shouldApplyRebrandedStyles = false;
 
   const fundingEligibility = {
     paypal: {
@@ -658,7 +654,7 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
       expect(
         getResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           size: input,
         })
       ).toEqual(expected);
@@ -667,9 +663,7 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
 });
 
 describe("test responsive style variables for rebranded buttons", () => {
-  const experiment = {
-    shouldApplyRebrandedStyles: true,
-  };
+  const shouldApplyRebrandedStyles = true;
 
   const fundingEligibility = {
     paypal: {
@@ -704,7 +698,7 @@ describe("test responsive style variables for rebranded buttons", () => {
     ({ input, expected }) => {
       expect(
         getResponsiveStyleVariables({
-          experiment,
+          shouldApplyRebrandedStyles,
           fundingEligibility,
           size: input,
         })
@@ -714,9 +708,7 @@ describe("test responsive style variables for rebranded buttons", () => {
 });
 
 describe("test responsive style variables for legacy disable max height", () => {
-  const experiment = {
-    shouldApplyRebrandedStyles: false,
-  };
+  const shouldApplyRebrandedStyles = false;
 
   const fundingEligibility = {
     paypal: {
@@ -768,7 +760,7 @@ describe("test responsive style variables for legacy disable max height", () => 
       expect(
         getDisableMaxHeightResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
         })
       ).toEqual(expected);
@@ -777,9 +769,7 @@ describe("test responsive style variables for legacy disable max height", () => 
 });
 
 describe("test responsive style variables when shouldResizeLabel == true for disable max height", () => {
-  const experiment = {
-    shouldApplyRebrandedStyles: false,
-  };
+  const shouldApplyRebrandedStyles = false;
 
   const fundingEligibility = {
     paypal: {
@@ -845,7 +835,7 @@ describe("test responsive style variables when shouldResizeLabel == true for dis
       expect(
         getDisableMaxHeightResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
         })
       ).toEqual(expected);
@@ -854,9 +844,7 @@ describe("test responsive style variables when shouldResizeLabel == true for dis
 });
 
 describe("test rebrand responsive style variables for disable max height", () => {
-  const experiment = {
-    shouldApplyRebrandedStyles: true,
-  };
+  const shouldApplyRebrandedStyles = true;
 
   const fundingEligibility = {
     paypal: {
@@ -908,7 +896,7 @@ describe("test rebrand responsive style variables for disable max height", () =>
       expect(
         getDisableMaxHeightResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
         })
       ).toEqual(expected);

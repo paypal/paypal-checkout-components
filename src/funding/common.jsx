@@ -51,7 +51,7 @@ export type LogoOptions = {|
   nonce?: ?string,
   experiment: Experiment,
   env: $Values<typeof ENV>,
-  shouldApplyRebrandedStyles: boolean,
+  shouldApplyRebrandedStyles?: boolean,
 |};
 
 export type LabelOptions = {|
