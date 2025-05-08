@@ -109,7 +109,28 @@ export function getComponentScript(): () => void {
     function getElementsTotalWidth(
       elements: $ReadOnlyArray<HTMLElement>
     ): number {
-      return sum(elements.map((child) => child.offsetWidth));
+      return sum(
+        elements.map((child) => Math.ceil(child.getBoundingClientRect().width))
+      );
+    }
+
+    function calculateGap(optionalParent: HTMLElement): number {
+      // Get the button element
+      const parentElement = optionalParent.parentElement;
+
+      // Get the height of the button
+      const parentHeight = parentElement?.getBoundingClientRect().height || 60;
+
+      // Calculate the gap based of height of button
+      if (parentHeight <= 34) {
+        return 3; // Small and Medium
+      } else if (parentHeight <= 49) {
+        return 5; // Large
+      } else if (parentHeight <= 59) {
+        return 6; // XL
+      } else {
+        return 7; // XXL
+      }
     }
 
     function getOptionalParents(): $ReadOnlyArray<HTMLElement> {
@@ -150,14 +171,23 @@ export function getComponentScript(): () => void {
           getElementsTotalWidth(allChildren) -
           getElementsTotalWidth(optionalChildren);
 
-        for (const optionalChild of optionalChildren) {
-          usedWidth += optionalChild.offsetWidth;
+        const totalGapWidth =
+          calculateGap(optionalParent) * optionalChildren?.length;
 
-          if (usedWidth > parentWidth) {
-            hideElement(optionalChild);
-          } else {
-            showElement(optionalChild);
-          }
+        const totalChildrenWidth = optionalChildren.reduce((acc, child) => {
+          return acc + child.offsetWidth;
+        }, 0);
+
+        usedWidth += totalGapWidth + totalChildrenWidth;
+
+        if (usedWidth > parentWidth) {
+          optionalChildren.forEach((optionalChild) =>
+            hideElement(optionalChild)
+          );
+        } else {
+          optionalChildren.forEach((optionalChild) =>
+            showElement(optionalChild)
+          );
         }
       }
     }

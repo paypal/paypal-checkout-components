@@ -1,7 +1,8 @@
 .wallet-label {
-  display: block;
   height: 100%;
   text-align: center;
+  display: flex;
+  gap: 5px;
 
   * {
     display: inline-block;
@@ -10,7 +11,6 @@
   }
 
   .divider {
-    margin: 0 5px;
     opacity: 0.2;
   }
 
@@ -53,6 +53,7 @@
   height: 100%;
   width: 100%;
   text-align: left;
+  gap: 10px;
 
   * {
     display: inline-block;
@@ -74,6 +75,7 @@
 
   .show-pay-label {
     all: inherit;
+    gap: 5px;
   }
 
   .show-instruments-on-file {

@@ -13,7 +13,7 @@ import {
   type FundingSourceConfig,
   BasicLabel,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 export function getSofortConfig(): FundingSourceConfig {
   return {
@@ -39,7 +39,6 @@ export function getSofortConfig(): FundingSourceConfig {
       const apmLogo = (
         <Fragment>
           {logo}
-          <Space />
           <Text animate optional>
             SOFORT
           </Text>

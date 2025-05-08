@@ -12,7 +12,7 @@ import {
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 import css from "./style.scoped.scss";
 
@@ -83,7 +83,6 @@ export function getPaylaterConfig(): FundingSourceConfig {
           ) : (
             <PPLogoInlineSVG logoColor={logoColor} />
           )}
-          <Space />
           <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
         </Style>
       );

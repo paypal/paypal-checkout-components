@@ -60,9 +60,24 @@ export const buttonStyle = `
     }
 
     .${CLASS.TEXT}, .${CLASS.SPACE} {
-        display: inline-block;
-        white-space: pre;
+        display: block;
         vertical-align: top;
+        min-width: 0;
+        flex: 0 0 auto;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .${CLASS.BUTTON_LABEL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        min-width: 0px;
+    }
+                
+    .${CLASS.BUTTON_LABEL} img {
+        height: 100%;
     }
 
     .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
@@ -73,8 +88,11 @@ export const buttonStyle = `
 
     .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} * {
         vertical-align: middle;
-        height: 100%;
         text-align: left;
+    }
+    
+    .${CLASS.BUTTON_LABEL} > .paypal-logo {
+        height: 100%;
     }
 
     .${CLASS.TAGLINE} {

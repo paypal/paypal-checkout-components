@@ -63,6 +63,20 @@ function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
+export function getGap(height: number): number {
+  if (height <= 34) {
+    return 3; // Small
+  } else if (height <= 44) {
+    return 4; // Medium
+  } else if (height <= 54) {
+    return 5; //  Large
+  } else if (height <= 59) {
+    return 6; // XL
+  } else {
+    return 7; // XXL+
+  }
+}
+
 function getSpinnerSize({ height }: {| height: number |}): number {
   const spinner = `${perc(height, 50)}`;
 
@@ -127,6 +141,8 @@ export function getResponsiveStyleVariables({
     smallerLabelHeight = labelHeight;
   }
 
+  const gap = getGap(buttonHeight);
+
   const styleVariables = {
     style,
     buttonHeight,
@@ -135,6 +151,7 @@ export function getResponsiveStyleVariables({
     smallerLabelHeight,
     labelHeight,
     pillBorderRadius,
+    gap,
   };
 
   return styleVariables;
@@ -183,6 +200,8 @@ export function getDisableMaxHeightResponsiveStyleVariables({
     height: buttonHeight,
   });
 
+  const gap = getGap(buttonHeight);
+
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
   const styleVariables = {
@@ -195,6 +214,7 @@ export function getDisableMaxHeightResponsiveStyleVariables({
     pillBorderRadius,
     APMHeight,
     applePayHeight,
+    gap,
   };
 
   return styleVariables;
