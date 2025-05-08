@@ -15,7 +15,6 @@ export type StateGetSet = {|
 |};
 
 export function getSessionID(): string {
-  console.log("getSessionID", window.xprops);
   if (window.xprops && window.xprops.sessionID) {
     return window.xprops.sessionID;
   }

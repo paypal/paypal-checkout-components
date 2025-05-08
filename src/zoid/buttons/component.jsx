@@ -1234,10 +1234,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           buttonColorABTest: "gold",
         }),
         queryParam: true,
-        decorate: ({ props, value }) => {
-          console.log("colorABTest Prop called", value);
-          return getButtonABTestValues(props);
-        },
+        decorate: ({ props }) => getButtonABTestValues(props),
       },
 
       supportedNativeBrowser: {
