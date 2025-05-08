@@ -283,8 +283,8 @@ describe("paypal rebrand button", () => {
 
     const mockDefaultBlueColorExperiment = mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-      "buttonColorABTest",
-      "rebrand_blue"
+      "isPaypalRebrandABTestEnabled",
+      true
     );
 
     const button = window.paypal.Buttons({});
@@ -310,8 +310,8 @@ describe("paypal rebrand button", () => {
 
     const mockDefaultBlueColorExperiment = mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-      "buttonColorABTest",
-      "rebrand_darkBlue"
+      "isPaypalRebrandABTestEnabled",
+      true
     );
 
     const button = window.paypal.Buttons({});

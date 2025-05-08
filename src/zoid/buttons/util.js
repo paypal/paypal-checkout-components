@@ -29,18 +29,12 @@ import {
   getFirstRenderExperiments,
   getSDKToken,
   getIntent,
-  type FirstRenderExperiments,
 } from "@paypal/sdk-client/src";
 import { FUNDING, FPTI_KEY, INTENT } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 
 import type { Experiment as EligibilityExperiment } from "../../types";
-import {
-  BUTTON_FLOW,
-  BUTTON_SIZE,
-  BUTTON_LAYOUT,
-  BUTTON_COLOR,
-} from "../../constants";
+import { BUTTON_FLOW, BUTTON_SIZE, BUTTON_LAYOUT } from "../../constants";
 import type {
   ApplePaySessionConfigRequest,
   CreateBillingAgreement,

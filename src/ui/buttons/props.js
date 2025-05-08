@@ -855,8 +855,7 @@ export function normalizeButtonStyle(
     disableMaxWidth,
     disableMaxHeight,
     borderRadius,
-    shouldApplyRebrandedStyles:
-      shouldApplyRebrandedStylesOverride || shouldApplyRebrandedStyles,
+    shouldApplyRebrandedStyles,
     buttonColorABTest,
   };
 }

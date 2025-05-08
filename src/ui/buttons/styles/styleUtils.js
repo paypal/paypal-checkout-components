@@ -120,7 +120,6 @@ export function getResponsiveStyleVariables({
 
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
-  console.log("shouldApplyRebrandedStyles", shouldApplyRebrandedStyles);
   if (shouldApplyRebrandedStyles) {
     labelHeight = roundUp(perc(buttonHeight, 76), 1);
     // smallerLabelHeight gets triggered at widths < 320px
