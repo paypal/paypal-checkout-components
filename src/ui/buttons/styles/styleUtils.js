@@ -3,7 +3,6 @@
 import { max, perc, roundUp } from "@krakenjs/belter/src";
 import type { FundingEligibilityType } from "@paypal/sdk-constants/src";
 
-import type { Experiment } from "../../../types";
 import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
 import {
   BUTTON_SIZE,

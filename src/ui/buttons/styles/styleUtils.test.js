@@ -3,7 +3,6 @@
 import { describe, expect, test } from "vitest";
 
 import {
-  BUTTON_COLOR,
   BUTTON_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
 } from "../../../constants/button";
