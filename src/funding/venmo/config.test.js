@@ -12,6 +12,7 @@ describe("Venmo eligibility", () => {
     components: ["buttons"],
     fundingEligibility: {},
     experiment: {
+      isWebViewEnabled: false,
       venmoWebEnabled: true,
       venmoEnableWebOnNonNativeBrowser: true,
     },

@@ -68,7 +68,7 @@ export function getVenmoConfig(): FundingSourceConfig {
       ) {
         return {
           native: true,
-          popup: true,
+          popup: experiment.isWebViewEnabled ? false : true,
         };
       }
 
