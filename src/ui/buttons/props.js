@@ -773,8 +773,9 @@ export function normalizeButtonStyle(
   const { fundingSource, experiment, colorABTest } = props;
 
   // Button rebrand elmos and variables
-  const { isPaypalRebrandABTestEnabled, isPaypalRebrandEnabled } = experiment;
-  let { shouldApplyRebrandedStyles, buttonColorABTest } = colorABTest;
+  const { isPaypalRebrandABTestEnabled, isPaypalRebrandEnabled } =
+    experiment || {};
+  let { shouldApplyRebrandedStyles, buttonColorABTest } = colorABTest || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
