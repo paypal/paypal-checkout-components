@@ -4,6 +4,12 @@ import type { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import type { CrossDomainWindowType } from "@krakenjs/cross-domain-utils/src";
 import { FUNDING, ENV, type LocaleType } from "@paypal/sdk-constants/src";
 
+import type {
+  OnShippingAddressChange,
+  OnShippingChange,
+  OnShippingOptionsChange,
+} from "../../ui/buttons/props";
+
 export type OnApproveData = {|
   orderID: string,
   payerID: string,
@@ -33,6 +39,10 @@ export type CheckoutPropsType = {|
   env: $Values<typeof ENV>,
   stage?: string,
   stageUrl?: string,
+  onShippingChange: ?OnShippingChange,
+  onShippingAddressChange: ?OnShippingAddressChange,
+  onShippingOptionsChange: ?OnShippingOptionsChange,
+  hasShippingCallback: boolean,
   locale: LocaleType,
   style: {||},
   nonce: string,
