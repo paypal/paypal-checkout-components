@@ -4,6 +4,7 @@ import {
   getLogger,
   getPayPalAPIDomain,
   getSDKToken,
+  getUserIDToken,
   getClientID,
 } from "@paypal/sdk-client/src";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
@@ -40,7 +41,7 @@ export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInter
         }),
         // $FlowIssue ZalgoPromise vs Promise
         sdkConfig: {
-          authenticationToken: getSDKToken(),
+          authenticationToken: getSDKToken() || getUserIDToken(),
           paypalApiDomain: getPayPalAPIDomain(),
           clientID: getClientID(),
         },
