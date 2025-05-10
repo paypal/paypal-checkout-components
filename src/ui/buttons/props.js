@@ -519,6 +519,11 @@ type ColorABTest = {|
   buttonColorABTest: $Values<typeof BUTTON_COLOR>,
 |};
 
+type ColorABTestStorage = {|
+  ...ColorABTest,
+  sessionID: string,
+|};
+
 type ColorABTestArgs = {|
   experiment: Experiment,
   style: ?ButtonStyle,
@@ -664,69 +669,60 @@ export const DEFAULT_PROPS = {
   PLATFORM: PLATFORM.DESKTOP,
 };
 
-function getColorABTestFromStorage(storageState): ?ColorABTest {
+function getColorABTestFromStorage(storageState): ?ColorABTestStorage {
   const sessionState = storageState.get("colorABTest");
 
   if (sessionState && sessionState.value) {
     return sessionState.value;
   }
-  // If the session ID is not found, return null
+
   return null;
 }
 
-function getSessionIdFromStorageState(storageState): ?string {
-  const sessionState = storageState.get("__session__");
+function getShouldApplyRebrandedStyles({
+  buttonColorInput,
+  isPaypalRebrandEnabled,
+}): boolean {
+  if (isPaypalRebrandEnabled) {
+    const rebrandColorsNotSetup = [
+      BUTTON_COLOR.BLACK,
+      BUTTON_COLOR.WHITE,
+      BUTTON_COLOR.SILVER,
+      BUTTON_COLOR.TRANSPARENT,
+      BUTTON_COLOR.DEFAULT,
+    ];
 
-  if (sessionState && sessionState.value && sessionState.value.guid) {
-    return sessionState.value.guid;
+    // Disable rebranded styles if the rebrand color is not set up
+    if (rebrandColorsNotSetup.includes(buttonColorInput)) {
+      return false;
+    }
+
+    return true;
   }
-  // If the session ID is not found, return null
-  return null;
+
+  return false;
 }
 
-// Update the function signature
-export function getColorABTest({
+function determineRandomButtonColor({
   experiment,
-  style,
-  sessionID,
-  storageState,
-}: ColorABTestArgs): ColorABTest {
-  if (window.xprops && window.xprops.buttonColorABTest) {
-    return window.xprops.buttonColorABTest;
-  }
+  buttonColorInput,
+}: {|
+  experiment: Experiment,
+  buttonColorInput: ?$Values<typeof BUTTON_COLOR>,
+|}): ColorABTest {
   const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } = experiment;
 
-  const sessionIdFromStorageState = getSessionIdFromStorageState(storageState);
+  let shouldApplyRebrandedStyles = getShouldApplyRebrandedStyles({
+    buttonColorInput,
+    isPaypalRebrandEnabled,
+  });
+  let buttonColorABTest = shouldApplyRebrandedStyles
+    ? BUTTON_COLOR.REBRAND_BLUE
+    : BUTTON_COLOR.GOLD;
 
-  // If we have a cached result and the sessionID matches, return the cached result
-  if (sessionIdFromStorageState && sessionID === sessionIdFromStorageState) {
-    // console.log("memoized - Using cached result for sessionID:", sessionID);
-    const buttonColorABTestFromStorage =
-      getColorABTestFromStorage(storageState);
-
-    if (buttonColorABTestFromStorage) {
-      // console.log("buttonColorABTestFromStorage", buttonColorABTestFromStorage);
-      return buttonColorABTestFromStorage;
-    }
-    // same session but buttonColorABTest is not in storage
-    // console.log(
-    //   "memoized - no cached results found for colorABTest for sessionID:",
-    //   sessionID
-    // );
-  }
-
-  // Generate a new result
-  // console.log("memoized - Generating new result for sessionID:", sessionID);
-
-  // Use variables from the outer scope
-  let shouldApplyRebrandedStyles = Boolean(isPaypalRebrandEnabled);
-  let buttonColorABTest: $Values<typeof BUTTON_COLOR> =
-    shouldApplyRebrandedStyles ? BUTTON_COLOR.REBRAND_BLUE : BUTTON_COLOR.GOLD;
-
-  // console.log("isPaypalRebrandABTestEnabled", isPaypalRebrandABTestEnabled);
   if (isPaypalRebrandABTestEnabled) {
-    const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
-    const randomButtonColor = Math.floor(Math.random() * 3); // Ensure buttonColorABTest is always assigned
+    const propsColor = buttonColorInput ?? BUTTON_COLOR.GOLD;
+    const randomButtonColor = Math.floor(Math.random() * 3);
 
     switch (randomButtonColor) {
       case 0:
@@ -742,19 +738,65 @@ export function getColorABTest({
     shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
   }
 
-  // Create the result
-  const cachedResult = {
+  return {
     shouldApplyRebrandedStyles,
     buttonColorABTest,
   };
+}
 
-  // Update the cached sessionID
-  storageState.set("colorABTest", cachedResult);
-  // console.log(
-  //   `memoized - Setting cached result for sessionID ${sessionID}:`,
-  //   cachedResult
-  // );
-  return cachedResult;
+// Update the function signature
+export function getColorABTest({
+  experiment,
+  style,
+  sessionID,
+  storageState,
+}: ColorABTestArgs): ColorABTest {
+  const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } = experiment;
+  const buttonColorABTestFromStorage = getColorABTestFromStorage(storageState);
+
+  if (buttonColorABTestFromStorage) {
+    const { sessionID: sessionIdFromStorageState, ...colorABTest } =
+      buttonColorABTestFromStorage;
+
+    // If the sessionID matches, return colorABTest from storage
+    if (sessionIdFromStorageState && sessionID === sessionIdFromStorageState) {
+      // console.log("memoized - same session detected sessionID:", sessionID);
+
+      return colorABTest;
+    }
+  }
+
+  // console.log("memoized - Generating new result for sessionID:", sessionID);
+  let shouldApplyRebrandedStyles = Boolean(isPaypalRebrandEnabled);
+  let buttonColorABTest: $Values<typeof BUTTON_COLOR> =
+    shouldApplyRebrandedStyles ? BUTTON_COLOR.REBRAND_BLUE : BUTTON_COLOR.GOLD;
+
+  if (isPaypalRebrandABTestEnabled) {
+    const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
+    const randomButtonColor = Math.floor(Math.random() * 3);
+
+    switch (randomButtonColor) {
+      case 0:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+        break;
+      case 1:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
+        break;
+      default:
+        buttonColorABTest = propsColor;
+    }
+
+    shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
+  }
+
+  const colorABTest = determineRandomButtonColor({
+    experiment,
+    buttonColorInput: style?.color,
+  });
+
+  storageState.set("colorABTest", { ...colorABTest, sessionID });
+
+  return colorABTest;
 }
 
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
@@ -775,7 +817,7 @@ export function normalizeButtonStyle(
   // Button rebrand elmos and variables
   const { isPaypalRebrandABTestEnabled, isPaypalRebrandEnabled } =
     experiment || {};
-  let { shouldApplyRebrandedStyles, buttonColorABTest } = colorABTest || {};
+  const { shouldApplyRebrandedStyles, buttonColorABTest } = colorABTest || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -825,22 +867,7 @@ export function normalizeButtonStyle(
       [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
     };
 
-    const rebrandColorsNotSetup = [
-      BUTTON_COLOR.BLACK,
-      BUTTON_COLOR.WHITE,
-      BUTTON_COLOR.SILVER,
-      BUTTON_COLOR.TRANSPARENT,
-      BUTTON_COLOR.DEFAULT,
-    ];
-
-    const mappedRebrandColor = color ? rebrandColorMap[color] : color;
-
-    // Disable rebranded styles if the rebrand color is not set up
-    if (rebrandColorsNotSetup.includes(mappedRebrandColor)) {
-      shouldApplyRebrandedStyles = false;
-    }
-
-    color = mappedRebrandColor;
+    color = color ? rebrandColorMap[color] : color;
   }
 
   // Override button color if they are enrolled in the AB test elmo
