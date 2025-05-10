@@ -108,6 +108,6 @@ window.__TEST_FUNDING_ELIGIBILITY__ = {
 
 window.__TEST_FIRST_RENDER_EXPERIMENTS__ = {
   isPaypalRebrandEnabled: false,
-  defaultBlueButtonColor: "gold",
+  isPaypalRebrandABTestEnabled: false,
   venmoWebEnabled: false,
 };

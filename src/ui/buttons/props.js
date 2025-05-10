@@ -36,6 +36,7 @@ import type { ContentType, Wallet, Experiment } from "../../types";
 import {
   BUTTON_LABEL,
   BUTTON_COLOR,
+  BUTTON_COLOR_REBRAND,
   BUTTON_LAYOUT,
   BUTTON_SHAPE,
   BUTTON_SIZE,
@@ -47,6 +48,7 @@ import {
   MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
+import type { StateGetSet } from "../../lib/session";
 
 import { BUTTON_SIZE_STYLE } from "./config";
 import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
@@ -327,6 +329,8 @@ export type ButtonStyle = {|
   disableMaxWidth?: boolean,
   disableMaxHeight?: boolean,
   borderRadius?: number,
+  shouldApplyRebrandedStyles: boolean,
+  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
 |};
 
 export type ButtonStyleInputs = {|
@@ -510,6 +514,23 @@ type HidePayPalAppSwitchOverlay = {|
   close: () => void,
 |};
 
+type ColorABTest = {|
+  shouldApplyRebrandedStyles: boolean,
+  buttonColorABTest: $Values<typeof BUTTON_COLOR>,
+|};
+
+type ColorABTestStorage = {|
+  ...ColorABTest,
+  sessionID: string,
+|};
+
+type ColorABTestArgs = {|
+  experiment: Experiment,
+  style: ?ButtonStyle,
+  sessionID: ?string,
+  storageState: StateGetSet,
+|};
+
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
@@ -627,6 +648,7 @@ export type ButtonPropsInputs = {
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  colorABTest: ColorABTest,
 };
 
 export const DEFAULT_STYLE = {
@@ -647,6 +669,136 @@ export const DEFAULT_PROPS = {
   PLATFORM: PLATFORM.DESKTOP,
 };
 
+function getColorABTestFromStorage(storageState): ?ColorABTestStorage {
+  const sessionState = storageState.get("colorABTest");
+
+  if (sessionState && sessionState.value) {
+    return sessionState.value;
+  }
+
+  return null;
+}
+
+function getShouldApplyRebrandedStyles({
+  buttonColorInput,
+  isPaypalRebrandEnabled,
+}): boolean {
+  if (isPaypalRebrandEnabled) {
+    const rebrandColorsNotSetup = [
+      BUTTON_COLOR.BLACK,
+      BUTTON_COLOR.WHITE,
+      BUTTON_COLOR.SILVER,
+      BUTTON_COLOR.TRANSPARENT,
+      BUTTON_COLOR.DEFAULT,
+    ];
+
+    // Disable rebranded styles if the rebrand color is not set up
+    if (rebrandColorsNotSetup.includes(buttonColorInput)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+function determineRandomButtonColor({
+  experiment,
+  buttonColorInput,
+}: {|
+  experiment: Experiment,
+  buttonColorInput: ?$Values<typeof BUTTON_COLOR>,
+|}): ColorABTest {
+  const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } = experiment;
+
+  let shouldApplyRebrandedStyles = getShouldApplyRebrandedStyles({
+    buttonColorInput,
+    isPaypalRebrandEnabled,
+  });
+  let buttonColorABTest = shouldApplyRebrandedStyles
+    ? BUTTON_COLOR.REBRAND_BLUE
+    : BUTTON_COLOR.GOLD;
+
+  if (isPaypalRebrandABTestEnabled) {
+    const propsColor = buttonColorInput ?? BUTTON_COLOR.GOLD;
+    const randomButtonColor = Math.floor(Math.random() * 3);
+
+    switch (randomButtonColor) {
+      case 0:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+        break;
+      case 1:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
+        break;
+      default:
+        buttonColorABTest = propsColor;
+    }
+
+    shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
+  }
+
+  return {
+    shouldApplyRebrandedStyles,
+    buttonColorABTest,
+  };
+}
+
+// Update the function signature
+export function getColorABTest({
+  experiment,
+  style,
+  sessionID,
+  storageState,
+}: ColorABTestArgs): ColorABTest {
+  const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } = experiment;
+  const buttonColorABTestFromStorage = getColorABTestFromStorage(storageState);
+
+  if (buttonColorABTestFromStorage) {
+    const { sessionID: sessionIdFromStorageState, ...colorABTest } =
+      buttonColorABTestFromStorage;
+
+    // If the sessionID matches, return colorABTest from storage
+    if (sessionIdFromStorageState && sessionID === sessionIdFromStorageState) {
+      // console.log("memoized - same session detected sessionID:", sessionID);
+
+      return colorABTest;
+    }
+  }
+
+  // console.log("memoized - Generating new result for sessionID:", sessionID);
+  let shouldApplyRebrandedStyles = Boolean(isPaypalRebrandEnabled);
+  let buttonColorABTest: $Values<typeof BUTTON_COLOR> =
+    shouldApplyRebrandedStyles ? BUTTON_COLOR.REBRAND_BLUE : BUTTON_COLOR.GOLD;
+
+  if (isPaypalRebrandABTestEnabled) {
+    const propsColor = style?.color ?? BUTTON_COLOR.GOLD;
+    const randomButtonColor = Math.floor(Math.random() * 3);
+
+    switch (randomButtonColor) {
+      case 0:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_BLUE;
+        break;
+      case 1:
+        buttonColorABTest = BUTTON_COLOR.REBRAND_DARKBLUE;
+        break;
+      default:
+        buttonColorABTest = propsColor;
+    }
+
+    shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
+  }
+
+  const colorABTest = determineRandomButtonColor({
+    experiment,
+    buttonColorInput: style?.color,
+  });
+
+  storageState.set("colorABTest", { ...colorABTest, sessionID });
+
+  return colorABTest;
+}
+
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
   return {};
 };
@@ -660,8 +812,12 @@ export function normalizeButtonStyle(
   }
 
   props = props || getDefaultButtonPropsInput();
-  const { fundingSource, experiment } = props;
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment || {};
+  const { fundingSource, experiment, colorABTest } = props;
+
+  // Button rebrand elmos and variables
+  const { isPaypalRebrandABTestEnabled, isPaypalRebrandEnabled } =
+    experiment || {};
+  const { shouldApplyRebrandedStyles, buttonColorABTest } = colorABTest || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -690,12 +846,33 @@ export function normalizeButtonStyle(
     borderRadius,
   } = style;
 
-  // This sets the button color so it gets passed to the query string parameter style.color to scnw
-  if (isPaypalRebrandEnabled) {
-    const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
-    const experimentButtonColor = defaultBlueButtonColor || "gold";
+  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
 
-    color = shouldRenderButtonColorControl ? color : experimentButtonColor;
+  if (isPaypalRebrandEnabled) {
+    const rebrandColorMap = {
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+      [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+      [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
+
+      // not mapped yet since the styles are not setup
+      [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
+      [BUTTON_COLOR.TRANSPARENT]: BUTTON_COLOR.TRANSPARENT,
+      [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
+
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+      [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+    };
+
+    color = color ? rebrandColorMap[color] : color;
+  }
+
+  // Override button color if they are enrolled in the AB test elmo
+  if (isPaypalRebrandEnabled && isPaypalRebrandABTestEnabled) {
+    color = buttonColorABTest;
   }
 
   // $FlowFixMe
@@ -713,10 +890,14 @@ export function normalizeButtonStyle(
   }
 
   if (color && fundingConfig.colors.indexOf(color) === -1) {
+    const filteredColors = fundingConfig.colors.filter(
+      (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
+    );
+
     throw new Error(
       `Unexpected style.color for ${
         fundingSource || FUNDING.PAYPAL
-      } button: ${color}, expected ${fundingConfig.colors.join(", ")}`
+      } button: ${color}, expected ${filteredColors.join(", ")}`
     );
   }
 
@@ -809,6 +990,8 @@ export function normalizeButtonStyle(
     disableMaxWidth,
     disableMaxHeight,
     borderRadius,
+    shouldApplyRebrandedStyles,
+    buttonColorABTest,
   };
 }
 

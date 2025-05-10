@@ -19,7 +19,6 @@ import {
   BUTTON_DISABLE_MAX_HEIGHT_STYLE,
 } from "../config";
 import { isBorderRadiusNumber } from "../util";
-import type { Experiment } from "../../../types";
 
 import {
   getResponsiveStyleVariables,
@@ -35,14 +34,14 @@ const generateButtonSizeStyles = ({
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
-  experiment,
+  shouldApplyRebrandedStyles,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
 |}): string => {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
@@ -58,7 +57,7 @@ const generateButtonSizeStyles = ({
       } = getResponsiveStyleVariables({
         height,
         fundingEligibility,
-        experiment,
+        shouldApplyRebrandedStyles,
         size,
       });
 
@@ -362,10 +361,10 @@ const generateButtonSizeStyles = ({
 
 const generateDisableMaxHeightStyles = ({
   fundingEligibility,
-  experiment,
+  shouldApplyRebrandedStyles,
 }: {|
   fundingEligibility: FundingEligibilityType,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
 |}): string => {
   return Object.keys(BUTTON_DISABLE_MAX_HEIGHT_STYLE)
     .map((disableMaxHeightSize) => {
@@ -382,7 +381,7 @@ const generateDisableMaxHeightStyles = ({
         gap,
       } = getDisableMaxHeightResponsiveStyleVariables({
         fundingEligibility,
-        experiment,
+        shouldApplyRebrandedStyles,
         disableMaxHeightSize,
       });
 
@@ -477,14 +476,14 @@ export function buttonResponsiveStyle({
   disableMaxWidth,
   disableMaxHeight,
   borderRadius,
-  experiment = {},
+  shouldApplyRebrandedStyles,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
   disableMaxWidth?: ?boolean,
   disableMaxHeight?: ?boolean,
   borderRadius?: ?number,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
 |}): string {
   const buttonSizeStyles = generateButtonSizeStyles({
     height,
@@ -492,13 +491,13 @@ export function buttonResponsiveStyle({
     disableMaxWidth,
     disableMaxHeight,
     borderRadius,
-    experiment,
+    shouldApplyRebrandedStyles,
   });
 
   const disableMaxHeightStyles = disableMaxHeight
     ? generateDisableMaxHeightStyles({
         fundingEligibility,
-        experiment,
+        shouldApplyRebrandedStyles,
       })
     : "";
 
