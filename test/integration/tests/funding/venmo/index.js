@@ -78,7 +78,7 @@ describe(`venmo native button test `, () => {
                 "@foo"
               );
               done();
-            }, 10000);
+            }, 1000);
           },
         },
       })
