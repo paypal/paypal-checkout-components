@@ -57,11 +57,11 @@ export const labelStyle = `
     }
 
     .${CLASS.CONTAINER} {
-        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, Segoe UI, Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-weight: 500;
     }
 
     div[data-funding-source=venmo] .${CLASS.TEXT} {
-        font-family: Scto Grotesk A, system-ui, -apple-system, Roboto, Segoe UI, Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: Scto Grotesk A, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
     }
 `;
