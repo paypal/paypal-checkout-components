@@ -55,4 +55,13 @@ export const labelStyle = `
         0% { ${COMPRESSED} }
         100% { ${EXPANDED} }
     }
+
+    .${CLASS.CONTAINER} {
+        font-family: PayPal Pro Book, SF Pro Text, Roboto, Segoe UI, Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-weight: 500;
+    }
+
+    div[data-funding-source=venmo] .${CLASS.TEXT} {
+        font-family: Scto Grotesk A, SF Pro Text, Roboto, Segoe UI, Helvetica-Neue, Helvetica, Arial, sans-serif;
+    }
 `;

@@ -113,7 +113,7 @@ export function getContainerStyle({ uid }: {| uid: string |}): string {
         }
 
         #${uid} .paypal-checkout-modal {
-            font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", helvetica, arial, sans-serif;
+            font-family: PayPal Plain, SF Pro Text, Roboto, Segoe UI, Helvetica-Neue, Helvetica, Arial, sans-serif;
             font-size: 14px;
             text-align: center;
 
