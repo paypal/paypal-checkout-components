@@ -669,7 +669,9 @@ export const DEFAULT_PROPS = {
   PLATFORM: PLATFORM.DESKTOP,
 };
 
-function getColorABTestFromStorage(storageState): ?ColorABTestStorage {
+export function getColorABTestFromStorage(
+  storageState: StateGetSet
+): ?ColorABTestStorage {
   const sessionState = storageState.get("colorABTest");
 
   if (sessionState && sessionState.value) {
@@ -679,14 +681,13 @@ function getColorABTestFromStorage(storageState): ?ColorABTestStorage {
   return null;
 }
 
-function getShouldApplyRebrandedStyles({
+export function getShouldApplyRebrandedStyles({
   buttonColorInput,
   isPaypalRebrandEnabled,
-}): boolean {
-  // console.log(
-  //   "getShouldApplyRebrandedStyles - isPaypalRebrandEnabled",
-  //   isPaypalRebrandEnabled
-  // );
+}: {|
+  buttonColorInput: ?$Values<typeof BUTTON_COLOR>,
+  isPaypalRebrandEnabled?: boolean,
+|}): boolean {
   if (isPaypalRebrandEnabled) {
     const rebrandColorsNotSetup = [
       BUTTON_COLOR.BLACK,
@@ -707,7 +708,7 @@ function getShouldApplyRebrandedStyles({
   return false;
 }
 
-function determineRandomButtonColor({
+export function determineRandomButtonColor({
   experiment,
   buttonColorInput,
 }: {|
@@ -724,13 +725,7 @@ function determineRandomButtonColor({
     ? BUTTON_COLOR.REBRAND_BLUE
     : BUTTON_COLOR.GOLD;
 
-  // console.log(
-  //   "determineRandomButtonColor - shouldApplyRebrandedStyles - BEFORE",
-  //   shouldApplyRebrandedStyles
-  // );
   if (isPaypalRebrandEnabled && isPaypalRebrandABTestEnabled) {
-    // console.log("determineRandomButtonColor - generating random button color");
-
     const propsColor = buttonColorInput ?? BUTTON_COLOR.GOLD;
     const randomButtonColor = Math.floor(Math.random() * 3);
 
@@ -747,10 +742,6 @@ function determineRandomButtonColor({
 
     shouldApplyRebrandedStyles = buttonColorABTest !== propsColor;
   }
-  // console.log(
-  //   "determineRandomButtonColor - shouldApplyRebrandedStyles - AFTER",
-  //   shouldApplyRebrandedStyles
-  // );
 
   return {
     shouldApplyRebrandedStyles,
@@ -758,7 +749,6 @@ function determineRandomButtonColor({
   };
 }
 
-// Update the function signature
 export function getColorABTest({
   experiment,
   style,
@@ -768,21 +758,11 @@ export function getColorABTest({
   const buttonColorABTestFromStorage = getColorABTestFromStorage(storageState);
 
   if (buttonColorABTestFromStorage) {
-    // console.log(
-    //   "getColorABTest - colorABTest found in local storage:",
-    //   sessionID
-    // );
-
     const { sessionID: sessionIdFromStorageState, ...colorABTest } =
       buttonColorABTestFromStorage;
 
     // If the sessionID matches, return colorABTest from storage
     if (sessionIdFromStorageState && sessionID === sessionIdFromStorageState) {
-      // console.log(
-      //   "getColorABTest - same session detected sessionID:",
-      //   sessionID
-      // );
-
       return colorABTest;
     }
   }
@@ -846,9 +826,6 @@ export function normalizeButtonStyle(
 
   const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
 
-  // console.log("isPaypalRebrandEnabled", isPaypalRebrandEnabled);
-  // console.log("isPaypalRebrandABTestEnabled", isPaypalRebrandABTestEnabled);
-  // console.log("shouldApplyRebrandedStyles", shouldApplyRebrandedStyles);
   if (isPaypalRebrandEnabled) {
     const rebrandColorMap = {
       [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
@@ -862,6 +839,8 @@ export function normalizeButtonStyle(
       [BUTTON_COLOR.TRANSPARENT]: BUTTON_COLOR.TRANSPARENT,
       [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
 
+      // normalizeButtonStyle gets called multiple times and
+      // it can be called after color is already be mapped to rebranded style
       [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
       [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
       [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
@@ -869,7 +848,6 @@ export function normalizeButtonStyle(
     };
 
     color = color ? rebrandColorMap[color] : color;
-    // console.log("rebrand color map", color);
   }
 
   // Override button color if they are enrolled in the AB test elmo
@@ -892,6 +870,7 @@ export function normalizeButtonStyle(
   }
 
   if (color && fundingConfig.colors.indexOf(color) === -1) {
+    // We don't want to include rebranded colors in the error message
     const filteredColors = fundingConfig.colors.filter(
       (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
     );
