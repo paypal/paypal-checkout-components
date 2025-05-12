@@ -49,12 +49,12 @@ describe(`venmo native button test `, () => {
       .render("#testContainer");
   });
 
-  it.only(`should display label when it's passed in as instrument on native`, (done) => {
+  it(`should display label when it's passed in as instrument on native`, (done) => {
     const wallet = {
       [fundingSource]: {
         instruments: [
           {
-            label: "@foo-butitsreallylongtextthatshouldbeclipped",
+            label: "@foo",
           },
         ],
       },
@@ -78,7 +78,7 @@ describe(`venmo native button test `, () => {
                 "@foo"
               );
               done();
-            }, 1000000);
+            }, 10000);
           },
         },
       })
