@@ -65,7 +65,7 @@ export const buttonStyle = `
         min-width: 0;
         flex: 0 0 auto;
         overflow: hidden;
-        white-space: nowrap;
+        white-space: pre;
     }
 
     .${CLASS.BUTTON_LABEL} {
