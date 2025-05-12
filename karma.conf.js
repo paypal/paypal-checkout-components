@@ -5,6 +5,19 @@ import { getKarmaConfig } from "@krakenjs/karma-config-grumbler";
 
 import { WEBPACK_CONFIG_TEST } from "./webpack.config";
 
+// manually set this to true to enable debugging settings
+const addDebugSettings = false;
+
+const karmaDebugSettings = {
+  browsers: ["Chrome"],
+  singleRun: false,
+  autoWatch: true,
+  client: {
+    clearContext: false,
+    debug: true,
+  },
+};
+
 export default function configKarma(karma: Object) {
   const karmaConfig = getKarmaConfig(karma, {
     basePath: __dirname,
@@ -14,8 +27,11 @@ export default function configKarma(karma: Object) {
     webpack: WEBPACK_CONFIG_TEST,
   });
 
+  const karmaDebugConfig = addDebugSettings ? karmaDebugSettings : {};
+
   karma.set({
     ...karmaConfig,
+    ...karmaDebugConfig,
 
     files: [
       {

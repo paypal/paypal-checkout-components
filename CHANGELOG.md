@@ -1,3 +1,15 @@
+## <small>5.0.362 (2025-05-09)</small>
+
+* Preserve whitespace (#2496) ([049e149](https://github.com/paypal/paypal-checkout-components/commit/049e149)), closes [#2496](https://github.com/paypal/paypal-checkout-components/issues/2496)
+
+
+
+## <small>5.0.361 (2025-05-08)</small>
+
+* Use flexbox for labels (#2490) ([3ee9576](https://github.com/paypal/paypal-checkout-components/commit/3ee9576)), closes [#2490](https://github.com/paypal/paypal-checkout-components/issues/2490)
+
+
+
 ## <small>5.0.360 (2025-04-18)</small>
 
 * Fix/csp inline styling errors (#2488) ([aea59dd](https://github.com/paypal/paypal-checkout-components/commit/aea59dd)), closes [#2488](https://github.com/paypal/paypal-checkout-components/issues/2488)

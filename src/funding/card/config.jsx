@@ -19,7 +19,7 @@ import {
   type FundingSourceConfig,
   type CardConfig,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 import { isRTLLanguage } from "../../lib";
 import { WalletLabel } from "../paypal/template";
 
@@ -162,21 +162,15 @@ export function getCardConfig(): FundingSourceConfig {
       return (
         <Fragment>
           {isRTL && !__WEB__ && content ? (
-            <Fragment>
-              <Text animate optional>
-                {content.payWithDebitOrCreditCard}
-              </Text>
-              <Space />
-            </Fragment>
+            <Text animate optional>
+              {content.payWithDebitOrCreditCard}
+            </Text>
           ) : null}
           {logo}
           {!isRTL && !__WEB__ && content ? (
-            <Fragment>
-              <Space />
-              <Text animate optional>
-                {content.payWithDebitOrCreditCard}
-              </Text>
-            </Fragment>
+            <Text animate optional>
+              {content.payWithDebitOrCreditCard}
+            </Text>
           ) : null}
         </Fragment>
       );

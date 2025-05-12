@@ -20,7 +20,6 @@ import {
   BUTTON_FLOW,
 } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
-import { Space } from "../../ui/text";
 import { WalletLabel } from "../paypal/template";
 
 export function getCreditConfig(): FundingSourceConfig {
@@ -47,21 +46,13 @@ export function getCreditConfig(): FundingSourceConfig {
       return __WEB__ ? (
         <Fragment>
           <PPLogoExternalImage logoColor={logoColor} />
-          <Space />
-          <span optional>
-            <PayPalLogoExternalImage logoColor={logoColor} />
-            <Space />
-          </span>
+          <PayPalLogoExternalImage logoColor={logoColor} optional />
           <CreditLogoExternalImage locale={locale} logoColor={logoColor} />
         </Fragment>
       ) : (
         <Fragment>
           <PPLogoInlineSVG logoColor={logoColor} />
-          <Space />
-          <span optional>
-            <PayPalLogoInlineSVG logoColor={logoColor} />
-            <Space />
-          </span>
+          <PayPalLogoInlineSVG logoColor={logoColor} optional />
           <CreditLogoInlineSVG locale={locale} logoColor={logoColor} />
         </Fragment>
       );
