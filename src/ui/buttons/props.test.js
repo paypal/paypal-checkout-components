@@ -1,5 +1,6 @@
 /* @flow */
 import { describe, expect, it, beforeEach, vi } from "vitest";
+import { FUNDING } from "@paypal/sdk-constants";
 
 import { BUTTON_COLOR } from "../../constants";
 
@@ -8,7 +9,134 @@ import {
   determineRandomButtonColor,
   getShouldApplyRebrandedStyles,
   getColorABTestFromStorage,
+  hasInvalidScriptOptionsForRedesign,
+  getDefaultColorForFundingSource,
 } from "./props";
+
+describe("hasInvalidScriptOptionsForRedesign", () => {
+  it("should return true for non-valid funding source", () => {
+    expect(
+      hasInvalidScriptOptionsForRedesign({ fundingSource: FUNDING.CARD })
+    ).toBe(true);
+  });
+
+  it("should return true for Venmo funding source", () => {
+    expect(
+      hasInvalidScriptOptionsForRedesign({ fundingSource: FUNDING.VENMO })
+    ).toBe(true);
+  });
+
+  it("should return true for PayLater funding source", () => {
+    expect(
+      hasInvalidScriptOptionsForRedesign({ fundingSource: FUNDING.PAYLATER })
+    ).toBe(true);
+  });
+
+  it("should return true when no params are provided", () => {
+    expect(hasInvalidScriptOptionsForRedesign({})).toBe(true);
+  });
+});
+
+describe("getDefaultColorForFundingSource", () => {
+  it("should return the specified color when it is valid for the funding source", () => {
+    const result = getDefaultColorForFundingSource({
+      fundingSource: FUNDING.PAYPAL,
+      buttonColor: BUTTON_COLOR.BLUE,
+    });
+
+    expect(result).toBe(BUTTON_COLOR.BLUE);
+  });
+
+  it("should return the first color for the funding source when specified color is not valid", () => {
+    const result = getDefaultColorForFundingSource({
+      fundingSource: FUNDING.VENMO,
+      buttonColor: BUTTON_COLOR.GOLD,
+    });
+
+    expect(result).toBe(BUTTON_COLOR.BLUE);
+  });
+
+  it("should return the first color for the funding source when color is not specified", () => {
+    const result = getDefaultColorForFundingSource({
+      fundingSource: FUNDING.CARD,
+      buttonColor: null,
+    });
+
+    expect(result).toBe(BUTTON_COLOR.BLACK);
+  });
+
+  it("should return GOLD as default if funding source config is not found", () => {
+    const result = getDefaultColorForFundingSource({
+      fundingSource: null,
+      buttonColor: null,
+    });
+
+    expect(result).toBe(BUTTON_COLOR.GOLD);
+  });
+
+  it("should return the specified color if funding source config is not found but color is provided", () => {
+    const result = getDefaultColorForFundingSource({
+      fundingSource: FUNDING.VENMO,
+      buttonColor: BUTTON_COLOR.SILVER,
+    });
+
+    expect(result).toBe(BUTTON_COLOR.SILVER);
+  });
+
+  it("should return the correct default color for Venmo", () => {
+    expect(
+      getDefaultColorForFundingSource({ fundingSource: FUNDING.VENMO })
+    ).toBe("blue");
+    expect(
+      getDefaultColorForFundingSource({
+        fundingSource: FUNDING.VENMO,
+        buttonColor: "white",
+      })
+    ).toBe("white");
+    expect(
+      getDefaultColorForFundingSource({
+        fundingSource: FUNDING.VENMO,
+        buttonColor: "gold",
+      })
+    ).toBe("blue");
+  });
+
+  it("should return the correct default color for PayLater", () => {
+    expect(
+      getDefaultColorForFundingSource({ fundingSource: FUNDING.PAYLATER })
+    ).toBe("white");
+    expect(
+      getDefaultColorForFundingSource({
+        fundingSource: FUNDING.PAYLATER,
+        buttonColor: "black",
+      })
+    ).toBe("black");
+    expect(
+      getDefaultColorForFundingSource({
+        fundingSource: FUNDING.PAYLATER,
+        buttonColor: "gold",
+      })
+    ).toBe("gold");
+  });
+
+  it("should return the correct default color for Card", () => {
+    expect(
+      getDefaultColorForFundingSource({ fundingSource: FUNDING.CARD })
+    ).toBe("black");
+    expect(
+      getDefaultColorForFundingSource({
+        fundingSource: FUNDING.CARD,
+        buttonColor: "black",
+      })
+    ).toBe("black");
+    expect(
+      getDefaultColorForFundingSource({
+        fundingSource: FUNDING.PAYLATER,
+        buttonColor: "white",
+      })
+    ).toBe("white");
+  });
+});
 
 describe("getShouldApplyRebrandedStyles", () => {
   it("should return false when isPaypalRebrandEnabled is falsy", () => {
@@ -194,6 +322,7 @@ describe("getColorABTest", () => {
       style: {},
       sessionID,
       storageState,
+      fundingSource: FUNDING.PAYPAL,
     });
 
     expect(result).toEqual({
@@ -227,6 +356,7 @@ describe("getColorABTest", () => {
       style: { color: BUTTON_COLOR.GOLD },
       sessionID,
       storageState,
+      fundingSource: FUNDING.PAYPAL,
     });
 
     expect(result).toEqual({
@@ -260,6 +390,7 @@ describe("getColorABTest", () => {
       style: { color: BUTTON_COLOR.GOLD },
       sessionID,
       storageState,
+      fundingSource: FUNDING.PAYPAL,
     });
 
     expect(result).toEqual({

@@ -1235,12 +1235,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         }),
         queryParam: true,
         decorate: ({ props }) => {
-          const { experiment, style, sessionID } = props;
+          const { experiment, style, sessionID, fundingSource } = props;
+
           return getColorABTest({
             experiment,
             style,
             sessionID,
             storageState,
+            fundingSource,
           });
         },
       },

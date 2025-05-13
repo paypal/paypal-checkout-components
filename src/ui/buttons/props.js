@@ -529,6 +529,7 @@ type ColorABTestArgs = {|
   style: ?ButtonStyle,
   sessionID: ?string,
   storageState: StateGetSet,
+  fundingSource: ?$Values<typeof FUNDING>,
 |};
 
 export type ButtonProps = {|
@@ -749,12 +750,64 @@ export function determineRandomButtonColor({
   };
 }
 
+export function hasInvalidScriptOptionsForRedesign({
+  fundingSource,
+}: {|
+  fundingSource?: ?$Values<typeof FUNDING>,
+|}): boolean {
+  const validFundingSourcesForRedesign = [FUNDING.PAYPAL];
+
+  if (validFundingSourcesForRedesign.includes(fundingSource)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function getDefaultColorForFundingSource({
+  fundingSource,
+  buttonColor,
+}: {|
+  fundingSource: ?$Values<typeof FUNDING>,
+  buttonColor?: ?$Values<typeof BUTTON_COLOR>,
+|}): $Values<typeof BUTTON_COLOR> {
+  // $FlowFixMe this is handled if the funding source is undefined
+  const fundingSourceConfig = getFundingConfig()[fundingSource];
+
+  if (fundingSourceConfig) {
+    const { colors } = fundingSourceConfig;
+
+    // verify button color is a valid color for the funding source
+    if (colors.includes(buttonColor)) {
+      // $FlowFixMe
+      return buttonColor;
+    } else {
+      // return the default color for the funding source
+      return colors[0];
+    }
+  }
+
+  // gold is the default color for the smart stack
+  return buttonColor || BUTTON_COLOR.GOLD;
+}
+
 export function getColorABTest({
   experiment,
   style,
   sessionID,
   storageState,
+  fundingSource,
 }: ColorABTestArgs): ColorABTest {
+  if (hasInvalidScriptOptionsForRedesign({ fundingSource })) {
+    return {
+      shouldApplyRebrandedStyles: false,
+      buttonColorABTest: getDefaultColorForFundingSource({
+        fundingSource,
+        buttonColor: style?.color,
+      }),
+    };
+  }
+
   const buttonColorABTestFromStorage = getColorABTestFromStorage(storageState);
 
   if (buttonColorABTestFromStorage) {
@@ -770,6 +823,7 @@ export function getColorABTest({
   const colorABTest = determineRandomButtonColor({
     experiment,
     buttonColorInput: style?.color,
+    // fundingSource,
   });
 
   storageState.set("colorABTest", { ...colorABTest, sessionID });
@@ -851,6 +905,7 @@ export function normalizeButtonStyle(
   }
 
   // Override button color if they are enrolled in the AB test elmo
+  // how is this handled in script is invalid
   if (isPaypalRebrandEnabled && isPaypalRebrandABTestEnabled) {
     color = buttonColorABTest;
   }

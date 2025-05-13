@@ -16,6 +16,10 @@ const karmaDebugSettings = {
   client: {
     // this will output the console.logs from the browser console to the terminal
     debug: true,
+    mocha: {
+      // increase timeout to view rendered assets
+      timeout: 1000000,
+    },
   },
 };
 

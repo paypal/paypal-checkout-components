@@ -12,6 +12,7 @@ import {
   assert,
   WEBVIEW_USER_AGENT,
   mockProp,
+  IPHONE6_USER_AGENT,
 } from "../common";
 
 for (const flow of ["popup", "iframe"]) {
@@ -243,51 +244,93 @@ describe("Button Redesign", () => {
       value
     );
 
-  const validateLegacyGoldButton = () => {
+  const enableFundingSource = (fundingSource) => {
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true
+    );
+  };
+
+  const validateLegacyGoldButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-gold"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
-      getElementRecursive(".paypal-logo-paypal.paypal-logo-color-blue")
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
+      )
     );
   };
 
-  const validateLegacyBlackButton = () => {
+  const validateLegacyBlackButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-black"));
     assert.ok(getElementRecursive(".paypal-button-text-color-white"));
     assert.ok(
-      getElementRecursive(".paypal-logo-paypal.paypal-logo-color-white")
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}.paypal-logo-color-white`
+      )
     );
   };
 
-  const validateLegacyWhiteButton = () => {
+  const validateLegacyBlackCardButton = (fundingSource = "card") => {
+    assert.ok(getElementRecursive(".paypal-button-color-black"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-white"));
+    assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}`));
+  };
+
+  const validateLegacyWhiteCardButton = (fundingSource = "card") => {
+    assert.ok(getElementRecursive(".paypal-button-color-white"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
+    assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}`));
+  };
+
+  const validateLegacyWhiteButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-white"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
-      getElementRecursive(".paypal-logo-paypal.paypal-logo-color-blue")
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
+      )
     );
   };
 
-  const validateLegacySilverButton = () => {
+  const validateLegacySilverButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-silver"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
-      getElementRecursive(".paypal-logo-paypal.paypal-logo-color-blue")
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
+      )
     );
   };
 
-  const validateBlueRebrandButton = () => {
+  const validateBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_blue"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
-      getElementRecursive(".paypal-logo-paypal-rebrand.paypal-logo-color-black")
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-black`
+      )
     );
   };
 
-  const validateDarkBlueRebrandButton = () => {
+  const validateDarkBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_darkblue"));
     assert.ok(getElementRecursive(".paypal-button-text-color-white"));
     assert.ok(
-      getElementRecursive(".paypal-logo-paypal-rebrand.paypal-logo-color-blue")
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-blue`
+      )
+    );
+  };
+
+  const validateLegacyBlueButton = (fundingSource = "paypal") => {
+    assert.ok(getElementRecursive(".paypal-button-color-blue"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-white"));
+    assert.ok(
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}.paypal-logo-color-white`
+      )
     );
   };
 
@@ -298,6 +341,7 @@ describe("Button Redesign", () => {
   afterEach(() => {
     destroyTestContainer();
   });
+
   describe("button color A/B Test", () => {
     const fundingSource = "paypal";
     describe("render legacy button", () => {
@@ -385,6 +429,7 @@ describe("Button Redesign", () => {
   describe("full rebrand", () => {
     describe("funding source = PayPal", () => {
       const fundingSource = "paypal";
+
       describe("supported rebranded colors", () => {
         it("should render the rebranded light blue button when color is blue and isPaypalRebrandEnabled is true", () => {
           const mockPaypalRebrandExperiment =
@@ -494,6 +539,199 @@ describe("Button Redesign", () => {
             validateLegacySilverButton();
 
             mockPaypalRebrandExperiment.cancel();
+          });
+        });
+      });
+    });
+
+    describe("unsupported funding sources", () => {
+      describe("funding source = Venmo", () => {
+        const fundingSource = "venmo";
+
+        beforeEach(() => {
+          enableFundingSource(fundingSource);
+          window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+        });
+
+        it("should render the legacy venmo button when isPaypalRebrandEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            // blue is the default color for Venmo
+            validateLegacyBlueButton(fundingSource);
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy venmo button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+          const mockPaypalRebrandABTestExperiment =
+            setMockPaypalRebrandABTestExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            // blue is the default color for Venmo
+            mockPaypalRebrandExperiment.cancel();
+            mockPaypalRebrandABTestExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy venmo button in black color is black & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+          const mockPaypalRebrandABTestExperiment =
+            setMockPaypalRebrandABTestExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+            style: {
+              color: "black",
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateLegacyBlackButton(fundingSource);
+
+            mockPaypalRebrandExperiment.cancel();
+            mockPaypalRebrandABTestExperiment.cancel();
+          });
+        });
+      });
+
+      describe("funding source = PayLater", () => {
+        const fundingSource = "paylater";
+
+        beforeEach(() => {
+          enableFundingSource(fundingSource);
+        });
+
+        it("should render the legacy PayLater button when isPaypalRebrandEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            // white is the default color for Pay Later
+            validateLegacyWhiteButton("pp");
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy PayLater button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+          const mockPaypalRebrandABTestExperiment =
+            setMockPaypalRebrandABTestExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            // white is the default color for Pay Later
+            validateLegacyWhiteButton("pp");
+
+            mockPaypalRebrandExperiment.cancel();
+            mockPaypalRebrandABTestExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy PayLater button in black color is black & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+          const mockPaypalRebrandABTestExperiment =
+            setMockPaypalRebrandABTestExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+            style: {
+              color: "black",
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateLegacyBlackButton("pp");
+
+            mockPaypalRebrandExperiment.cancel();
+            mockPaypalRebrandABTestExperiment.cancel();
+          });
+        });
+      });
+
+      describe("funding source = Card", () => {
+        const fundingSource = "card";
+
+        beforeEach(() => {
+          enableFundingSource(fundingSource);
+        });
+
+        it("should render the legacy card button when isPaypalRebrandEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            // black is the default color for Card
+            validateLegacyBlackCardButton();
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy card button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+          const mockPaypalRebrandABTestExperiment =
+            setMockPaypalRebrandABTestExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            // black is the default color for Card
+            validateLegacyBlackCardButton();
+
+            mockPaypalRebrandExperiment.cancel();
+            mockPaypalRebrandABTestExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy card button in white color is white & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+          const mockPaypalRebrandABTestExperiment =
+            setMockPaypalRebrandABTestExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+            style: {
+              color: "white",
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateLegacyWhiteCardButton();
+
+            mockPaypalRebrandExperiment.cancel();
+            mockPaypalRebrandABTestExperiment.cancel();
           });
         });
       });
