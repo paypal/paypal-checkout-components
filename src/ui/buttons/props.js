@@ -929,8 +929,6 @@ export function getButtonColor({
     style,
   });
 
-  console.log("********** experience **********", experience);
-
   switch (experience) {
     case "abTest":
       // calling this function means AB test is eligible
@@ -974,7 +972,6 @@ export function normalizeButtonStyle(
   props = props || getDefaultButtonPropsInput();
   const { fundingSource, buttonColor } = props;
   const { color, shouldApplyRebrandedStyles } = buttonColor || {};
-  console.log("********** color **********", color);
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
