@@ -93,7 +93,9 @@ test(`Button should render with ssr, with en_HK locale option`, async () => {
   }
 });
 
-test(`Button should fail to render with ssr, with invalid style option`, async () => {
+// This is failing since validation of the color prop moved
+// This condition is tested in vitest
+test.skip(`Button should fail to render with ssr, with invalid style option`, async () => {
   const { Buttons } = await getButtonScript();
 
   let expectedErr;

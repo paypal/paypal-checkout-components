@@ -20,6 +20,7 @@
 
   .logo {
     margin-left: auto;
+    margin-right: 5px;
   }
 
   .label {
@@ -35,6 +36,10 @@
   @media only screen and (max-width: 150px) {
     text-align: center;
     display: inline-block;
+
+    .label {
+      max-width: 80%;
+    }
 
     .logo {
       display: none;

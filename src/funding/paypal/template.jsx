@@ -49,10 +49,11 @@ import {
 
 import css from "./style.scoped.scss";
 
-export function Logo({ logoColor, experiment }: LogoOptions): ChildType {
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
-
-  if (defaultBlueButtonColor === "gold" || !isPaypalRebrandEnabled) {
+export function Logo({
+  logoColor,
+  shouldApplyRebrandedStyles,
+}: LogoOptions): ChildType {
+  if (!shouldApplyRebrandedStyles) {
     // csnw globals.js
     return __WEB__ ? (
       // helps reduce bundle size by fetching logos
