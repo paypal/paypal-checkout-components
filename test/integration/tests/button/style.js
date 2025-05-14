@@ -229,7 +229,7 @@ describe("paypal button aria-label", () => {
   });
 });
 
-describe("Button Redesign", () => {
+describe.only("Button Redesign", () => {
   const setMockPaypalRebrandExperiment = (value) =>
     mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,

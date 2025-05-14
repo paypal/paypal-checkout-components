@@ -82,7 +82,7 @@ import {
 import {
   normalizeButtonStyle,
   normalizeButtonMessage,
-  getColorABTest,
+  getButtonColor,
   type ButtonProps,
   type ButtonExtensions,
 } from "../../ui/buttons/props";
@@ -1227,17 +1227,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         default: () => ({}),
       },
 
-      colorABTest: {
+      buttonColor: {
         type: "object",
         default: () => ({
           shouldApplyRebrandedStyles: false,
-          buttonColorABTest: "gold",
+          color: "gold",
         }),
         queryParam: true,
         decorate: ({ props }) => {
           const { experiment, style, sessionID, fundingSource } = props;
 
-          return getColorABTest({
+          return getButtonColor({
             experiment,
             style,
             sessionID,
