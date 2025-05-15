@@ -15,9 +15,7 @@ export const buttonStyle = `
         margin: 0;
         background: 0;
         border: 0;
-        font-family: PayPalPlain-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         text-transform: none;
-        font-weight: 500;
         font-smoothing: antialiased;
         z-index: 0;
         font-size: 0;
