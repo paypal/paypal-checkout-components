@@ -283,6 +283,19 @@ export function getCheckoutComponent(): CheckoutComponent {
           required: false,
         },
 
+        hasShippingCallback: {
+          type: "boolean",
+          required: false,
+          queryParam: true,
+          value: ({ props }) => {
+            return Boolean(
+              props.onShippingChange ||
+                props.onShippingAddressChange ||
+                props.onShippingOptionsChange
+            );
+          },
+        },
+
         clientMetadataID: {
           type: "string",
           required: false,
