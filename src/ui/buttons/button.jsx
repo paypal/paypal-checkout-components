@@ -314,6 +314,7 @@ export function Button({
           `${LOGO_CLASS.LOGO_COLOR}-${logoColor}`,
           `${isWallet ? CLASS.WALLET : ""}`,
           `${borderRadiusClass}`,
+          "center-line",
         ].join(" ")}
         onClick={clickHandler}
         onRender={onButtonRender}

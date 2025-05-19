@@ -1,9 +1,9 @@
 /* @flow */
 
-import { ENV } from "@paypal/sdk-constants/src";
+import { ENV, FUNDING } from "@paypal/sdk-constants/src";
 import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS } from "../../../constants";
+import { CLASS, ATTRIBUTE } from "../../../constants";
 
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
@@ -28,13 +28,15 @@ export const buttonStyle = `
     .${CLASS.BUTTON} {
         border: 1px solid transparent;
         border-radius: 0 3px 3px 0;
-        position: relative;
         width: 100%;
         box-sizing: border-box;
         border: none;
         vertical-align: top;
         cursor: pointer;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .${CLASS.BUTTON} * {
@@ -80,11 +82,31 @@ export const buttonStyle = `
         height: 100%;
     }
 
+.${CLASS.BUTTON}.center-line {
+  position: relative;
+}
+
+.${CLASS.BUTTON}.center-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 0.1px;
+  background-color: red; /* Use a bright color that will stand out */
+  z-index: 9999; /* Make sure it's on top of other elements */
+  pointer-events: none; /* So it doesn't interfere with clicks */
+}
+
     .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
+        display: flex;
+        // align-items: stretch;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        width: 100%;
     }
+
 
     .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} * {
         vertical-align: middle;

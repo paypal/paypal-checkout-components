@@ -141,6 +141,14 @@ export function getResponsiveStyleVariables({
   }
 
   const gap = getGap(buttonHeight);
+  const fontSize = getFontSize({
+    height: buttonHeight,
+    shouldResizeLabel,
+  });
+  const lineHeight = Math.round(labelHeight * 0.8888);
+  console.log("lineHeight", lineHeight);
+  // const lineHeight = labelHeight - 1;
+  const marginTop = Math.ceil(perc(labelHeight, 8));
 
   const styleVariables = {
     style,
@@ -151,6 +159,9 @@ export function getResponsiveStyleVariables({
     labelHeight,
     pillBorderRadius,
     gap,
+    marginTop,
+    fontSize,
+    lineHeight,
   };
 
   return styleVariables;
