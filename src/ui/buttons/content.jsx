@@ -4,7 +4,11 @@
 
 import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { LANG } from "@paypal/sdk-constants/src";
-import { PayPalLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
+import {
+  PayPalLogo,
+  LOGO_COLOR,
+  PayPalRebrandLogo,
+} from "@paypal/sdk-logos/src";
 
 import { Text } from "../text";
 
@@ -67,7 +71,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },

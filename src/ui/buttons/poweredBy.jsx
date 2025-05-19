@@ -14,16 +14,15 @@ const POWERED_BY_PAYPAL_STYLE = `
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
-        height: 14px;
+        height: 16px;
         font-family: PayPalPlain-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 400;
-        font-style: italic;
         font-stretch: normal;
-        color: #7b8388;
+        color: #000000;
         position: relative;
-        margin-right: 3px;
-        bottom: 3px;
+        margin-right: 2px;
+        bottom: 1px;
     }
 
     .${CLASS.POWERED_BY} > .${CLASS.TEXT},
@@ -32,7 +31,7 @@ const POWERED_BY_PAYPAL_STYLE = `
         vertical-align: middle;
         height: 16px;
         line-height: 16px;
-        font-size: 11px;
+        font-size: 10px;
     }
 `;
 
@@ -50,7 +49,7 @@ export function PoweredByPayPal({
   return (
     <div class={CLASS.POWERED_BY}>
       <style nonce={nonce} innerHTML={POWERED_BY_PAYPAL_STYLE} />
-      {__WEB__ ? <Text /> : <PoweredBy logoColor={LOGO_COLOR.BLUE} />}
+      {__WEB__ ? <Text /> : <PoweredBy logoColor={LOGO_COLOR.BLACK} />}
     </div>
   );
 }
