@@ -99,7 +99,6 @@ export function Button({
   showLoadingSpinner = false,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
 
   const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -110,7 +109,7 @@ export function Button({
   const colors = fundingConfig.colors;
   const secondaryColors = fundingConfig.secondaryColors || {};
 
-  let { color, period, label } = style;
+  let { color, period, label, shouldApplyRebrandedStyles } = style;
 
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
@@ -129,12 +128,6 @@ export function Button({
     color = colors[0];
   }
 
-  if (isPaypalRebrandEnabled) {
-    const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
-    const experimentButtonColor = defaultBlueButtonColor || "gold";
-
-    color = shouldRenderButtonColorControl ? color : experimentButtonColor;
-  }
   // The secondary colors are used to render the smart stack (multiple buttons)
   // they keep track of the mapping of the color style prop to the
   if (multiple && i > 0) {
@@ -156,7 +149,6 @@ export function Button({
     logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
   const textColor =
     textColors[color] || textColors[TEXT_COLOR.DEFAULT] || TEXT_COLOR.DEFAULT;
-
   const { Label, WalletLabel, Logo, showWalletMenu } = fundingConfig;
 
   const clickHandler = (event, opts) => {
@@ -212,6 +204,7 @@ export function Button({
       onKeyPress={keypressHandler}
       nonce={nonce}
       experiment={experiment}
+      shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
       env={env}
     />
   );

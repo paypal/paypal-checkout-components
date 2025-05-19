@@ -9,12 +9,17 @@ import { WEBPACK_CONFIG_TEST } from "./webpack.config";
 const addDebugSettings = false;
 
 const karmaDebugSettings = {
+  // this will open a browser window and run the tests in it
   browsers: ["Chrome"],
   singleRun: false,
   autoWatch: true,
   client: {
-    clearContext: false,
+    // this will output the console.logs from the browser console to the terminal
     debug: true,
+    mocha: {
+      // increase timeout to view rendered assets
+      timeout: 1000000,
+    },
   },
 };
 

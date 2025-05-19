@@ -3,7 +3,6 @@
 import { describe, expect, test } from "vitest";
 
 import {
-  BUTTON_COLOR,
   BUTTON_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
 } from "../../../constants/button";
@@ -313,7 +312,7 @@ const expectedLegacyDisableMaxHeightStylesXXXL = {
   gap: 7,
 };
 
-// expected shouldResizeLabel = true style variables for disable max hieght
+// expected shouldResizeLabel = true style variables for disable max height
 const expectedResizeLabelDisableMaxHeightStylesTiny = {
   APMHeight: 18,
   applePayHeight: 25,
@@ -572,10 +571,8 @@ const expectedRebrandDisableMaxHeightStylesXXXL = {
 };
 
 describe("test responsive style variables for legacy", () => {
-  const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
-  };
+  const shouldApplyRebrandedStyles = false;
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -597,7 +594,7 @@ describe("test responsive style variables for legacy", () => {
     ({ input, expected }) => {
       expect(
         getResponsiveStyleVariables({
-          experiment,
+          shouldApplyRebrandedStyles,
           fundingEligibility,
           size: input,
         })
@@ -607,10 +604,8 @@ describe("test responsive style variables for legacy", () => {
 });
 
 describe("test responsive style variables when shouldResizeLabel == true", () => {
-  const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
-  };
+  const shouldApplyRebrandedStyles = false;
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -659,7 +654,7 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
       expect(
         getResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           size: input,
         })
       ).toEqual(expected);
@@ -667,11 +662,9 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
   );
 });
 
-describe("test responsive style variables for rebrand light blue button", () => {
-  const experiment = {
-    isPaypalRebrandEnabled: true,
-    defaultBlueButtonColor: BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE,
-  };
+describe("test responsive style variables for rebranded buttons", () => {
+  const shouldApplyRebrandedStyles = true;
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -705,7 +698,7 @@ describe("test responsive style variables for rebrand light blue button", () => 
     ({ input, expected }) => {
       expect(
         getResponsiveStyleVariables({
-          experiment,
+          shouldApplyRebrandedStyles,
           fundingEligibility,
           size: input,
         })
@@ -715,10 +708,8 @@ describe("test responsive style variables for rebrand light blue button", () => 
 });
 
 describe("test responsive style variables for legacy disable max height", () => {
-  const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
-  };
+  const shouldApplyRebrandedStyles = false;
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -769,7 +760,7 @@ describe("test responsive style variables for legacy disable max height", () => 
       expect(
         getDisableMaxHeightResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
         })
       ).toEqual(expected);
@@ -777,11 +768,9 @@ describe("test responsive style variables for legacy disable max height", () => 
   );
 });
 
-describe("test responsive style variables when shouldResizeLable == true for disable max height", () => {
-  const experiment = {
-    isPaypalRebrandEnabled: false,
-    defaultBlueButtonColor: BUTTON_COLOR.GOLD,
-  };
+describe("test responsive style variables when shouldResizeLabel == true for disable max height", () => {
+  const shouldApplyRebrandedStyles = false;
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -846,7 +835,7 @@ describe("test responsive style variables when shouldResizeLable == true for dis
       expect(
         getDisableMaxHeightResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
         })
       ).toEqual(expected);
@@ -855,10 +844,8 @@ describe("test responsive style variables when shouldResizeLable == true for dis
 });
 
 describe("test rebrand responsive style variables for disable max height", () => {
-  const experiment = {
-    isPaypalRebrandEnabled: true,
-    defaultBlueButtonColor: BUTTON_COLOR.DEFAULT_BLUE_LIGHT_BLUE,
-  };
+  const shouldApplyRebrandedStyles = true;
+
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -909,7 +896,7 @@ describe("test rebrand responsive style variables for disable max height", () =>
       expect(
         getDisableMaxHeightResponsiveStyleVariables({
           fundingEligibility,
-          experiment,
+          shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
         })
       ).toEqual(expected);

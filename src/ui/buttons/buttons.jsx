@@ -252,7 +252,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
       ].join(" ")}
     >
       <Style
-        experiment={experiment}
         nonce={nonce}
         style={style}
         fundingEligibility={fundingEligibility}

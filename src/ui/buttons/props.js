@@ -36,6 +36,7 @@ import type { ContentType, Wallet, Experiment } from "../../types";
 import {
   BUTTON_LABEL,
   BUTTON_COLOR,
+  BUTTON_COLOR_REBRAND,
   BUTTON_LAYOUT,
   BUTTON_SHAPE,
   BUTTON_SIZE,
@@ -47,6 +48,7 @@ import {
   MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
+import type { StateGetSet } from "../../lib/session";
 
 import { BUTTON_SIZE_STYLE } from "./config";
 import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
@@ -327,6 +329,7 @@ export type ButtonStyle = {|
   disableMaxWidth?: boolean,
   disableMaxHeight?: boolean,
   borderRadius?: number,
+  shouldApplyRebrandedStyles: boolean,
 |};
 
 export type ButtonStyleInputs = {|
@@ -510,6 +513,52 @@ type HidePayPalAppSwitchOverlay = {|
   close: () => void,
 |};
 
+type ButtonColor = {|
+  shouldApplyRebrandedStyles: boolean,
+  color: $Values<typeof BUTTON_COLOR>,
+|};
+
+type ColorABTestStorage = {|
+  ...ButtonColor,
+  sessionID: string,
+|};
+
+type GetButtonColorArgs = {|
+  experiment: Experiment,
+  fundingSource: ?$Values<typeof FUNDING>,
+  sessionID: ?string,
+  storageState: StateGetSet,
+  style: ?ButtonStyle,
+|};
+
+type GetColorForABTestArgs = {|
+  style: ?ButtonStyle,
+  sessionID: ?string,
+  storageState: StateGetSet,
+|};
+
+type GetColorForFullRedesignArgs = {|
+  fundingSource: ?$Values<typeof FUNDING>,
+  style: ?ButtonStyle,
+|};
+
+type GetDefaultColorForFundingSourceArgs = {|
+  fundingSource: ?$Values<typeof FUNDING>,
+  style: ?ButtonStyle,
+|};
+
+type GetButtonColorExperienceArgs = {|
+  experiment: Experiment,
+  fundingSource: ?$Values<typeof FUNDING>,
+  style: ?ButtonStyle,
+|};
+
+type ThrowErrorForInvalidButtonColorArgs = {|
+  fundingSource: ?$Values<typeof FUNDING>,
+  fundingSourceColors: $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
+  invalidButtonColor: $Values<typeof BUTTON_COLOR>,
+|};
+
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
@@ -627,6 +676,7 @@ export type ButtonPropsInputs = {
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  buttonColor: ButtonColor,
 };
 
 export const DEFAULT_STYLE = {
@@ -647,6 +697,266 @@ export const DEFAULT_PROPS = {
   PLATFORM: PLATFORM.DESKTOP,
 };
 
+export function getColorABTestFromStorage(
+  storageState: StateGetSet
+): ?ColorABTestStorage {
+  const sessionState = storageState.get("colorABTest");
+
+  if (sessionState && sessionState.value) {
+    return sessionState.value;
+  }
+
+  return null;
+}
+
+export function determineRandomButtonColor({
+  buttonColorInput,
+}: {|
+  buttonColorInput: ?$Values<typeof BUTTON_COLOR>,
+|}): ButtonColor {
+  let shouldApplyRebrandedStyles;
+  let buttonColor;
+
+  const randomButtonColor = Math.floor(Math.random() * 3);
+
+  switch (randomButtonColor) {
+    case 0:
+      buttonColor = BUTTON_COLOR.REBRAND_BLUE;
+      shouldApplyRebrandedStyles = true;
+      break;
+    case 1:
+      buttonColor = BUTTON_COLOR.REBRAND_DARKBLUE;
+      shouldApplyRebrandedStyles = true;
+      break;
+    default:
+      // the AB test is only run on PayPal buttons
+      // we can set default color for PayPal buttons if buttonColorInput is undefined
+      buttonColor = buttonColorInput || BUTTON_COLOR.GOLD;
+      shouldApplyRebrandedStyles = false;
+  }
+
+  return {
+    shouldApplyRebrandedStyles,
+    color: buttonColor,
+  };
+}
+
+export function hasInvalidScriptOptionsForFullRedesign({
+  fundingSource,
+}: {|
+  fundingSource?: ?$Values<typeof FUNDING>,
+|}): boolean {
+  const validFundingSourcesForRedesign = [FUNDING.PAYPAL];
+
+  if (validFundingSourcesForRedesign.includes(fundingSource)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function throwErrorForInvalidButtonColor({
+  fundingSource,
+  fundingSourceColors,
+  invalidButtonColor,
+}: ThrowErrorForInvalidButtonColorArgs) {
+  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
+  const filteredColors = fundingSourceColors.filter(
+    (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
+  );
+
+  // Throw an error if color specified by merchant is not valid for the funding source
+  throw new Error(
+    `Unexpected style.color for ${
+      fundingSource || FUNDING.PAYPAL
+    } button: ${invalidButtonColor}, expected ${filteredColors.join(", ")}`
+  );
+}
+
+export function getDefaultColorForFundingSource({
+  fundingSource,
+  style,
+}: GetDefaultColorForFundingSourceArgs): $Values<typeof BUTTON_COLOR> {
+  // $FlowFixMe this is handled if the fundingSource is undefined
+  const fundingSourceConfig = getFundingConfig()[fundingSource];
+  const { color: buttonColorInput } = style || {};
+
+  if (fundingSourceConfig) {
+    const { colors } = fundingSourceConfig;
+
+    if (!buttonColorInput) {
+      // return the default color for the funding source
+      return colors[0];
+    }
+    // verify button color is a valid color for the funding source
+    if (colors.includes(buttonColorInput)) {
+      // $FlowFixMe
+      return buttonColorInput;
+    } else {
+      throwErrorForInvalidButtonColor({
+        fundingSource,
+        fundingSourceColors: colors,
+        invalidButtonColor: buttonColorInput,
+      });
+    }
+  }
+
+  // gold is the default color for the smart stack
+  return buttonColorInput || BUTTON_COLOR.GOLD;
+}
+
+export function getColorForABTest({
+  storageState,
+  sessionID,
+  style,
+}: GetColorForABTestArgs): ButtonColor {
+  const buttonColorABTestFromStorage = getColorABTestFromStorage(storageState);
+
+  if (buttonColorABTestFromStorage) {
+    const { sessionID: sessionIdFromStorageState, ...buttonColorABTest } =
+      buttonColorABTestFromStorage;
+
+    // If the sessionID matches, return colorABTest from storage
+    if (sessionIdFromStorageState && sessionID === sessionIdFromStorageState) {
+      return buttonColorABTest;
+    }
+  }
+
+  const buttonColorABTest = determineRandomButtonColor({
+    buttonColorInput: style?.color,
+  });
+
+  storageState.set("colorABTest", { ...buttonColorABTest, sessionID });
+
+  return buttonColorABTest;
+}
+
+export function getColorForFullRedesign({
+  style,
+  fundingSource,
+}: GetColorForFullRedesignArgs): ButtonColor {
+  const rebrandColorMap = {
+    [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+    [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
+
+    // not mapped yet since the styles are not setup
+    // These should never be hit since legacy experience should be set
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
+    [BUTTON_COLOR.TRANSPARENT]: BUTTON_COLOR.TRANSPARENT,
+    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
+
+    // normalizeButtonStyle gets called multiple times and
+    // it can be called after color is already be mapped to rebranded style
+    [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+    [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+  };
+
+  // if color is invalid, buttonColor will be undefined
+  // $FlowFixMe
+  let buttonColor = rebrandColorMap[style?.color];
+
+  // either style.color is undefined and we need to get the default color for the fundingSource
+  // or an invalid color was passed in by the merchant
+  if (!buttonColor) {
+    // an error will be thrown in getDefaultColorForFundingSource if
+    // the style.color is not valid for the funding source
+    const defaultButtonColor = getDefaultColorForFundingSource({
+      fundingSource,
+      style,
+    });
+
+    buttonColor = rebrandColorMap[defaultButtonColor];
+  }
+
+  return {
+    color: buttonColor,
+    shouldApplyRebrandedStyles: true,
+  };
+}
+
+export function getButtonColorExperience({
+  experiment,
+  fundingSource,
+  style,
+}: GetButtonColorExperienceArgs): "abTest" | "fullRebrand" | "legacy" {
+  const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } =
+    experiment || {};
+  const rejectRedesign = hasInvalidScriptOptionsForFullRedesign({
+    fundingSource,
+  });
+
+  if (!isPaypalRebrandEnabled) {
+    return "legacy";
+  }
+
+  if (isPaypalRebrandABTestEnabled) {
+    // were only running AB Test on PayPal buttons
+    return rejectRedesign ? "legacy" : "abTest";
+  }
+
+  const rebrandColorsNotDevComplete = [
+    BUTTON_COLOR.BLACK,
+    BUTTON_COLOR.WHITE,
+    BUTTON_COLOR.SILVER,
+    BUTTON_COLOR.TRANSPARENT,
+    BUTTON_COLOR.DEFAULT,
+  ];
+
+  const isRebrandColorNotDevComplete = rebrandColorsNotDevComplete.includes(
+    style?.color
+  );
+
+  return rejectRedesign || isRebrandColorNotDevComplete
+    ? "legacy"
+    : "fullRebrand";
+}
+
+export function getButtonColor({
+  experiment,
+  style,
+  sessionID,
+  storageState,
+  fundingSource,
+}: GetButtonColorArgs): ButtonColor {
+  const experience = getButtonColorExperience({
+    experiment,
+    fundingSource,
+    style,
+  });
+
+  switch (experience) {
+    case "abTest":
+      // calling this function means AB test is eligible
+      return getColorForABTest({
+        storageState,
+        sessionID,
+        style,
+      });
+
+    case "fullRebrand":
+      // calling this function means full redesign is eligible
+      return getColorForFullRedesign({
+        fundingSource,
+        style,
+      });
+
+    // legacy case
+    default:
+      return {
+        shouldApplyRebrandedStyles: false,
+        color: getDefaultColorForFundingSource({
+          fundingSource,
+          style,
+        }),
+      };
+  }
+}
+
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
   return {};
 };
@@ -660,8 +970,8 @@ export function normalizeButtonStyle(
   }
 
   props = props || getDefaultButtonPropsInput();
-  const { fundingSource, experiment } = props;
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment || {};
+  const { fundingSource, buttonColor } = props;
+  const { color, shouldApplyRebrandedStyles } = buttonColor || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -675,7 +985,6 @@ export function normalizeButtonStyle(
   }
 
   let {
-    color,
     label,
     layout = fundingSource
       ? BUTTON_LAYOUT.HORIZONTAL
@@ -690,13 +999,7 @@ export function normalizeButtonStyle(
     borderRadius,
   } = style;
 
-  // This sets the button color so it gets passed to the query string parameter style.color to scnw
-  if (isPaypalRebrandEnabled) {
-    const shouldRenderButtonColorControl = defaultBlueButtonColor === "gold";
-    const experimentButtonColor = defaultBlueButtonColor || "gold";
-
-    color = shouldRenderButtonColorControl ? color : experimentButtonColor;
-  }
+  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
 
   // $FlowFixMe
   if (tagline === "false") {
@@ -713,10 +1016,15 @@ export function normalizeButtonStyle(
   }
 
   if (color && fundingConfig.colors.indexOf(color) === -1) {
+    // We don't want to include rebranded colors in the error message
+    const filteredColors = fundingConfig.colors.filter(
+      (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
+    );
+
     throw new Error(
       `Unexpected style.color for ${
         fundingSource || FUNDING.PAYPAL
-      } button: ${color}, expected ${fundingConfig.colors.join(", ")}`
+      } button: ${color}, expected ${filteredColors.join(", ")}`
     );
   }
 
@@ -809,6 +1117,7 @@ export function normalizeButtonStyle(
     disableMaxWidth,
     disableMaxHeight,
     borderRadius,
+    shouldApplyRebrandedStyles,
   };
 }
 
