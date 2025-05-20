@@ -316,7 +316,13 @@ export function Buttons(props: ButtonsProps): ElementNode {
         />
       ) : null}
 
-      {showPoweredBy ? <PoweredByPayPal locale={locale} nonce={nonce} /> : null}
+      {showPoweredBy ? (
+        <PoweredByPayPal
+          locale={locale}
+          nonce={nonce}
+          buttonColor={style.color}
+        />
+      ) : null}
 
       {message && message.position === MESSAGE_POSITION.BOTTOM ? (
         <Message markup={messageMarkup} position={message.position} />

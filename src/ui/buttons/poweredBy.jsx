@@ -5,12 +5,49 @@ import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { type LocaleType } from "@paypal/sdk-constants/src";
 import { LOGO_COLOR, LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS } from "../../constants";
+import { CLASS, BUTTON_COLOR_REBRAND } from "../../constants";
 import { Text } from "../text";
 
 import { buttonContent } from "./content";
 
-const POWERED_BY_PAYPAL_STYLE = `
+type PoweredByPayPalProps = {|
+  locale: LocaleType,
+  nonce: string,
+  buttonColor: string,
+|};
+
+function getPoweredByConfig(): {|
+  logoColors: { [string]: $Values<typeof LOGO_COLOR> },
+  textColors: { [string]: string },
+|} {
+  return {
+    logoColors: {
+      [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: LOGO_COLOR.BLACK,
+    },
+
+    textColors: {
+      [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: "#000000",
+      [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: "#FFFFFF",
+      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: "#000000",
+    },
+  };
+}
+
+export function PoweredByPayPal({
+  locale: { lang },
+  nonce,
+  buttonColor = BUTTON_COLOR_REBRAND.REBRAND_BLUE,
+}: PoweredByPayPalProps): ChildType {
+  const { PoweredBy } = buttonContent[lang];
+  const config = getPoweredByConfig();
+
+  // get appropriate logo  and text color based on button color
+  const logoColor = config.logoColors[buttonColor] || LOGO_COLOR.BLACK;
+  const textColor = config.textColors[buttonColor] || "#000000";
+
+  const POWERED_BY_PAYPAL_STYLE = `
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
@@ -18,8 +55,8 @@ const POWERED_BY_PAYPAL_STYLE = `
         font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 10px;
         font-weight: 400;
+        color: ${textColor};
         font-stretch: normal;
-        color: #000000;
         position: relative;
         margin-right: 2px;
         bottom: 1px;
@@ -35,21 +72,10 @@ const POWERED_BY_PAYPAL_STYLE = `
     }
 `;
 
-type PoweredByPayPalProps = {|
-  locale: LocaleType,
-  nonce: string,
-|};
-
-export function PoweredByPayPal({
-  locale: { lang },
-  nonce,
-}: PoweredByPayPalProps): ChildType {
-  const { PoweredBy } = buttonContent[lang];
-
   return (
     <div class={CLASS.POWERED_BY}>
       <style nonce={nonce} innerHTML={POWERED_BY_PAYPAL_STYLE} />
-      {__WEB__ ? <Text /> : <PoweredBy logoColor={LOGO_COLOR.BLACK} />}
+      {__WEB__ ? <Text /> : <PoweredBy logoColor={logoColor} />}
     </div>
   );
 }
