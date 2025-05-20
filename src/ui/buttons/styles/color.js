@@ -32,14 +32,14 @@ export const buttonColorStyle = `
 
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:hover {
-            background: #008CFF;
+            background: #54B4E0;
             overflow: inherit;
         }
     }
     
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:active {
-            background: #E3F7FF;
+            background: #3DB5FF;
             overflow: inherit;
         }
     }
