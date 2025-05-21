@@ -4,13 +4,20 @@
 
 import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { LANG } from "@paypal/sdk-constants/src";
-import { PayPalLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
+import {
+  PayPalRebrandLogo,
+  PayPalLogo,
+  LOGO_COLOR,
+} from "@paypal/sdk-logos/src";
 
 import { Text } from "../text";
 
 type ButtonContentMap = {
   [$Values<typeof LANG>]: {|
-    PoweredBy: ({| logoColor: $Values<typeof LOGO_COLOR> |}) => ChildType,
+    PoweredBy: ({|
+      logoColor: $Values<typeof LOGO_COLOR>,
+      shouldApplyRebrandedStyles?: boolean,
+    |}) => ChildType,
   |},
 };
 
@@ -19,15 +26,19 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>مدعوم من </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
   bg: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>С подкрепата на </Text>
-        <PayPalLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
@@ -35,7 +46,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Využívá službu </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -43,7 +54,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Leveret af </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -51,7 +62,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Abgewickelt durch </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -59,15 +70,19 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Με την υποστήριξη του </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
   en: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
@@ -75,7 +90,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Desarrollado por </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -83,7 +98,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -91,7 +106,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Palvelun tarjoaa </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -99,14 +114,14 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Optimisé par </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
   he: {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
-        <PayPalLogo logoColor={logoColor} /> מופעל על-ידי
+        <PayPalRebrandLogo logoColor={logoColor} /> מופעל על-ידי
       </Fragment>
     ),
   },
@@ -114,7 +129,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Üzemeltető: </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -122,7 +137,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Ditunjang teknologi </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -130,7 +145,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Con tecnologia </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -138,7 +153,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -146,7 +161,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>제공: </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -154,7 +169,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Sukurta </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -162,7 +177,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Darbojas ar </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -170,7 +185,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Dikuasakan oleh </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -178,7 +193,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Mogelijk gemaakt door </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -186,7 +201,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Leveres av </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -194,7 +209,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -202,7 +217,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -210,7 +225,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Cu tehnologia </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -218,7 +233,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Обработано </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -226,7 +241,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>බලගන්වන්නේ </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
         <Text> විසිනි</Text>
       </Fragment>
     ),
@@ -235,7 +250,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Používa technológiu </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -243,7 +258,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -251,7 +266,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Mundësuar nga </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -259,7 +274,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Tillhandahålls av </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -267,7 +282,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>ให้บริการโดย </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -275,7 +290,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Pinapagana ng </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -283,7 +298,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Çalıştıran </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -291,7 +306,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>Được hỗ trợ bởi </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -299,7 +314,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>技术支持提供方： </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
@@ -307,7 +322,7 @@ export const buttonContent: ButtonContentMap = {
     PoweredBy: ({ logoColor }) => (
       <Fragment>
         <Text>技術支持： </Text>
-        <PayPalLogo logoColor={logoColor} />
+        <PayPalRebrandLogo logoColor={logoColor} />
       </Fragment>
     ),
   },
