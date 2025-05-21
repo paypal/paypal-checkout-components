@@ -320,6 +320,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           locale={locale}
           nonce={nonce}
           buttonColor={style.color}
+          shouldApplyRebrandedStyles={style.shouldApplyRebrandedStyles}
         />
       ) : null}
 

@@ -4,13 +4,20 @@
 
 import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { LANG } from "@paypal/sdk-constants/src";
-import { PayPalRebrandLogo, LOGO_COLOR } from "@paypal/sdk-logos/src";
+import {
+  PayPalRebrandLogo,
+  PayPalLogo,
+  LOGO_COLOR,
+} from "@paypal/sdk-logos/src";
 
 import { Text } from "../text";
 
 type ButtonContentMap = {
   [$Values<typeof LANG>]: {|
-    PoweredBy: ({| logoColor: $Values<typeof LOGO_COLOR> |}) => ChildType,
+    PoweredBy: ({|
+      logoColor: $Values<typeof LOGO_COLOR>,
+      shouldApplyRebrandStyles?: boolean,
+    |}) => ChildType,
   |},
 };
 
@@ -24,10 +31,14 @@ export const buttonContent: ButtonContentMap = {
     ),
   },
   bg: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandStyles = false }) => (
       <Fragment>
         <Text>С подкрепата на </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
@@ -64,10 +75,14 @@ export const buttonContent: ButtonContentMap = {
     ),
   },
   en: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
