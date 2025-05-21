@@ -1,3 +1,9 @@
+## <small>5.0.365 (2025-05-21)</small>
+
+* Updated interactive state colors for rebrand_blue button color.  (#2500) ([197c052](https://github.com/paypal/paypal-checkout-components/commit/197c052)), closes [#2500](https://github.com/paypal/paypal-checkout-components/issues/2500)
+
+
+
 ## <small>5.0.364 (2025-05-19)</small>
 
 * Add feature flag for button redesign A/B test (#2492) ([2192192](https://github.com/paypal/paypal-checkout-components/commit/2192192)), closes [#2492](https://github.com/paypal/paypal-checkout-components/issues/2492)
