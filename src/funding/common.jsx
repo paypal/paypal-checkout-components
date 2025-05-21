@@ -51,6 +51,7 @@ export type LogoOptions = {|
   nonce?: ?string,
   experiment: Experiment,
   env: $Values<typeof ENV>,
+  shouldApplyRebrandedStyles?: boolean,
 |};
 
 export type LabelOptions = {|
@@ -211,6 +212,7 @@ export const DEFAULT_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.BLUE]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.WHITE,
   },
 
   secondaryColors: {

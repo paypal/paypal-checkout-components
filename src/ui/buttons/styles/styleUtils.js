@@ -3,7 +3,6 @@
 import { max, perc, roundUp } from "@krakenjs/belter/src";
 import type { FundingEligibilityType } from "@paypal/sdk-constants/src";
 
-import type { Experiment } from "../../../types";
 import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
 import {
   BUTTON_SIZE,
@@ -98,18 +97,14 @@ function getApplePayButtonHeight({ height }: {| height: number |}): number {
 export function getResponsiveStyleVariables({
   height,
   fundingEligibility,
-  experiment = {},
+  shouldApplyRebrandedStyles,
   size,
 }: {|
   height?: ?number,
   fundingEligibility: FundingEligibilityType,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
   size: $Values<typeof BUTTON_SIZE>,
 |}): Object {
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
-  const shouldApplyRebrandedStyles =
-    isPaypalRebrandEnabled && defaultBlueButtonColor !== "gold";
-
   const style = BUTTON_SIZE_STYLE[size];
 
   const buttonHeight = height || style.defaultHeight;
@@ -163,17 +158,13 @@ export function getResponsiveStyleVariables({
 
 export function getDisableMaxHeightResponsiveStyleVariables({
   fundingEligibility,
-  experiment,
+  shouldApplyRebrandedStyles,
   disableMaxHeightSize,
 }: {|
   fundingEligibility: FundingEligibilityType,
-  experiment: Experiment,
+  shouldApplyRebrandedStyles: boolean,
   disableMaxHeightSize: $Values<typeof BUTTON_DISABLE_MAX_HEIGHT_SIZE>,
 |}): Object {
-  const { isPaypalRebrandEnabled, defaultBlueButtonColor } = experiment;
-  const shouldApplyRebrandedStyles =
-    isPaypalRebrandEnabled && defaultBlueButtonColor !== "gold";
-
   const disableHeightStyle =
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[disableMaxHeightSize];
   const buttonHeight = disableHeightStyle.defaultHeight;

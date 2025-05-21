@@ -6,6 +6,7 @@ export const CLASS = {
     ("paypal-autoresize-container": "paypal-autoresize-container"),
   BUTTON_ROW: ("paypal-button-row": "paypal-button-row"),
   BUTTON: ("paypal-button": "paypal-button"),
+  BUTTON_REBRAND: ("paypal-button-rebrand": "paypal-button-rebrand"),
   BUTTON_LABEL:
     ("paypal-button-label-container": "paypal-button-label-container"),
   LOGO_PP: ("paypal-logo-pp": "paypal-logo-pp"),

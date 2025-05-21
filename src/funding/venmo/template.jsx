@@ -12,7 +12,7 @@ import {
   type LabelOptions,
   BasicLabel,
 } from "../common";
-import { Text, Space } from "../../ui/text";
+import { Text } from "../../ui/text";
 
 import css from "./style.scoped.scss";
 
@@ -38,11 +38,9 @@ export function WalletLabel({ ...props }: WalletLabelOptions): ChildType {
   return (
     <Style nonce={cspNonce} css={css}>
       <div class="wallet-label-venmo">
-        <div class="divider">|</div>
         {logo && (
           <div class="logo" optional>
             {logo}
-            <Space />
           </div>
         )}
         {label && (
