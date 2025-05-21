@@ -3,7 +3,11 @@
 import { max, perc, roundUp } from "@krakenjs/belter/src";
 import type { FundingEligibilityType } from "@paypal/sdk-constants/src";
 
-import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
+import {
+  BUTTON_DISABLE_MAX_HEIGHT_STYLE,
+  BUTTON_SIZE_STYLE,
+  BUTTON_REDESIGN_STYLE,
+} from "../config";
 import {
   BUTTON_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
@@ -106,6 +110,68 @@ export function getResponsiveStyleVariables({
   size: $Values<typeof BUTTON_SIZE>,
 |}): Object {
   const style = BUTTON_SIZE_STYLE[size];
+
+  const buttonHeight = height || style.defaultHeight;
+  const minDualWidth = Math.max(
+    Math.round(
+      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+    ),
+    MIN_SPLIT_BUTTON_WIDTH
+  );
+
+  const { paylater } = fundingEligibility;
+
+  const shouldResizeLabel =
+    paylater?.products?.paylater?.variant === "DE" ||
+    paylater?.products?.payIn3?.variant === "IT" ||
+    paylater?.products?.payIn3?.variant === "ES";
+
+  const textPercPercentage = shouldResizeLabel ? 32 : 36;
+  const labelPercPercentage = shouldResizeLabel ? 32 : 35;
+
+  let smallerLabelHeight = max(
+    roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
+    12
+  );
+  let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+
+  const pillBorderRadius = Math.ceil(buttonHeight / 2);
+
+  if (shouldApplyRebrandedStyles) {
+    labelHeight = roundUp(perc(buttonHeight, 76), 1);
+    // smallerLabelHeight gets triggered at widths < 320px
+    // We will need to investigate why the labels need to get significantly smaller at this breakpoint
+    smallerLabelHeight = labelHeight;
+  }
+
+  const gap = getGap(buttonHeight);
+
+  const styleVariables = {
+    style,
+    buttonHeight,
+    minDualWidth,
+    textPercPercentage,
+    smallerLabelHeight,
+    labelHeight,
+    pillBorderRadius,
+    gap,
+  };
+
+  return styleVariables;
+}
+
+export function getResponsiveRebrandedStyleVariables({
+  height,
+  fundingEligibility,
+  shouldApplyRebrandedStyles,
+  size,
+}: {|
+  height?: ?number,
+  fundingEligibility: FundingEligibilityType,
+  shouldApplyRebrandedStyles: boolean,
+  size: $Values<typeof BUTTON_SIZE>,
+|}): Object {
+  const style = BUTTON_REDESIGN_STYLE[size];
 
   const buttonHeight = height || style.defaultHeight;
   const minDualWidth = Math.max(

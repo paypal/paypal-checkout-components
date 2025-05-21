@@ -5,6 +5,7 @@ import {
   BUTTON_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
   BUTTON_LAYOUT,
+  BUTTON_REDESIGN_SIZE,
 } from "../../constants";
 
 export const MINIMUM_SIZE: {|
@@ -42,6 +43,16 @@ type ButtonDisableMaxHeightStyleMap = {
     defaultHeight: number,
     minHeight: number,
     maxHeight: number,
+  |},
+};
+
+type ButtonRedesignStyleMap = {
+  [$Values<typeof BUTTON_REDESIGN_SIZE>]: {|
+    defaultHeight: number,
+    minHeight: number,
+    maxHeight: number,
+    gap: number,
+    fontSize: number,
   |},
 };
 
@@ -145,5 +156,95 @@ export const BUTTON_DISABLE_MAX_HEIGHT_STYLE: ButtonDisableMaxHeightStyleMap = {
     defaultHeight: 75,
     minHeight: 75,
     maxHeight: 200,
+  },
+};
+
+export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
+  [BUTTON_REDESIGN_SIZE.TINY]: {
+    defaultHeight: 25,
+    minHeight: 25,
+    maxHeight: 30,
+    gap: 3,
+    fontSize: 12,
+  },
+
+  [BUTTON_REDESIGN_SIZE.SMALL]: {
+    defaultHeight: 30,
+    minHeight: 30,
+    maxHeight: 35,
+    gap: 3,
+    fontSize: 12,
+  },
+
+  [BUTTON_REDESIGN_SIZE.MEDIUM_SMALL]: {
+    defaultHeight: 35,
+    minHeight: 35,
+    maxHeight: 40,
+    gap: 4,
+    fontSize: 14,
+  },
+
+  [BUTTON_REDESIGN_SIZE.MEDIUM_BIG]: {
+    defaultHeight: 40,
+    minHeight: 40,
+    maxHeight: 45,
+    gap: 4,
+    fontSize: 16,
+  },
+
+  [BUTTON_REDESIGN_SIZE.LARGE_SMALL]: {
+    defaultHeight: 45,
+    minHeight: 45,
+    maxHeight: 50,
+    gap: 5,
+    fontSize: 18,
+  },
+
+  [BUTTON_REDESIGN_SIZE.LARGE_BIG]: {
+    defaultHeight: 50,
+    minHeight: 50,
+    maxHeight: 55,
+    gap: 5,
+    fontSize: 20,
+  },
+
+  [BUTTON_REDESIGN_SIZE.XL_SMALL]: {
+    defaultHeight: 55,
+    minHeight: 55,
+    maxHeight: 60,
+    gap: 6,
+    fontSize: 22,
+  },
+
+  [BUTTON_REDESIGN_SIZE.XL_BIG]: {
+    defaultHeight: 60,
+    minHeight: 60,
+    maxHeight: 65,
+    gap: 7,
+    fontSize: 24,
+  },
+
+  [BUTTON_REDESIGN_SIZE.XXL_SMALL]: {
+    defaultHeight: 65,
+    minHeight: 65,
+    maxHeight: 70,
+    gap: 7,
+    fontSize: 26,
+  },
+
+  [BUTTON_REDESIGN_SIZE.XXL_BIG]: {
+    defaultHeight: 70,
+    minHeight: 70,
+    maxHeight: 75,
+    fontSize: 28,
+    gap: 8,
+  },
+
+  [BUTTON_REDESIGN_SIZE.XXXL]: {
+    defaultHeight: 75,
+    minHeight: 75,
+    maxHeight: 200,
+    fontSize: 30,
+    gap: 8,
   },
 };
