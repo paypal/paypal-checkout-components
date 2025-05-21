@@ -16,7 +16,7 @@ type ButtonContentMap = {
   [$Values<typeof LANG>]: {|
     PoweredBy: ({|
       logoColor: $Values<typeof LOGO_COLOR>,
-      shouldApplyRebrandStyles?: boolean,
+      shouldApplyRebrandedStyles?: boolean,
     |}) => ChildType,
   |},
 };
@@ -31,10 +31,10 @@ export const buttonContent: ButtonContentMap = {
     ),
   },
   bg: {
-    PoweredBy: ({ logoColor, shouldApplyRebrandStyles = false }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>С подкрепата на </Text>
-        {shouldApplyRebrandStyles ? (
+        {shouldApplyRebrandedStyles ? (
           <PayPalRebrandLogo logoColor={logoColor} />
         ) : (
           <PayPalLogo logoColor={logoColor} />
@@ -75,10 +75,10 @@ export const buttonContent: ButtonContentMap = {
     ),
   },
   en: {
-    PoweredBy: ({ logoColor, shouldApplyRebrandStyles = false }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        {shouldApplyRebrandStyles ? (
+        {shouldApplyRebrandedStyles ? (
           <PayPalRebrandLogo logoColor={logoColor} />
         ) : (
           <PayPalLogo logoColor={logoColor} />

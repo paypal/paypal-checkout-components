@@ -40,7 +40,7 @@ type PoweredByPayPalProps = {|
   locale: LocaleType,
   nonce: string,
   buttonColor?: string,
-  shouldApplyRebrandStyles?: boolean,
+  shouldApplyRebrandedStyles?: boolean,
 |};
 
 function getPoweredByConfig(): {|
@@ -66,7 +66,7 @@ export function PoweredByPayPal({
   locale: { lang },
   nonce,
   buttonColor = BUTTON_COLOR_REBRAND.REBRAND_BLUE,
-  shouldApplyRebrandStyles = false,
+  shouldApplyRebrandedStyles = false,
 }: PoweredByPayPalProps): ChildType {
   const { PoweredBy } = buttonContent[lang];
   const config = getPoweredByConfig();
@@ -100,11 +100,11 @@ export function PoweredByPayPal({
     }
   `;
 
-  const POWERED_BY_STYLE = shouldApplyRebrandStyles
+  const POWERED_BY_STYLE = shouldApplyRebrandedStyles
     ? POWERED_BY_PAYPAL_REBRAND_STYLE
     : POWERED_BY_PAYPAL_STYLE;
 
-  const logoColor = shouldApplyRebrandStyles
+  const logoColor = shouldApplyRebrandedStyles
     ? rebrandLogoColor
     : LOGO_COLOR.BLUE;
 
@@ -116,7 +116,7 @@ export function PoweredByPayPal({
       ) : (
         <PoweredBy
           logoColor={logoColor}
-          shouldApplyRebrandStyles={shouldApplyRebrandStyles}
+          shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
         />
       )}
     </div>
