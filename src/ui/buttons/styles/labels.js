@@ -57,11 +57,17 @@ export const labelStyle = `
     }
 
     .${CLASS.BUTTON_LABEL} {
-        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-weight: 500;
     }
 
-    div[data-funding-source=venmo] .${CLASS.BUTTON_LABEL} {
+    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
+        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+    }
+
+    .${CLASS.BUTTON_REBRAND} div[data-funding-source=venmo] .${
+  CLASS.BUTTON_LABEL
+} {
         font-family: Scto Grotesk A, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
     }
 `;

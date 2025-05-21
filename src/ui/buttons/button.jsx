@@ -302,6 +302,7 @@ export function Button({
         }}
         class={[
           CLASS.BUTTON,
+          `${shouldApplyRebrandedStyles ? CLASS.BUTTON_REBRAND : ""}`,
           `${showLoadingSpinner ? CLASS.LOADING : ""}`,
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,
