@@ -23,10 +23,14 @@ type ButtonContentMap = {
 
 export const buttonContent: ButtonContentMap = {
   ar: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>مدعوم من </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
@@ -43,34 +47,50 @@ export const buttonContent: ButtonContentMap = {
     ),
   },
   cs: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Využívá službu </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   da: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Leveret af </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   de: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Abgewickelt durch </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   el: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Με την υποστήριξη του </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
@@ -87,242 +107,363 @@ export const buttonContent: ButtonContentMap = {
     ),
   },
   es: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Desarrollado por </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   et: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   fi: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Palvelun tarjoaa </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   fr: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Optimisé par </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   he: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
-        <PayPalRebrandLogo logoColor={logoColor} /> מופעל על-ידי
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}{" "}
+        מופעל על-ידי
       </Fragment>
     ),
   },
   hu: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Üzemeltető: </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   id: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Ditunjang teknologi </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   it: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Con tecnologia </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   ja: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   ko: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>제공: </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   lt: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Sukurta </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   lv: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Darbojas ar </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   ms: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Dikuasakan oleh </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   nl: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Mogelijk gemaakt door </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   no: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Leveres av </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   pl: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   pt: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   ro: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Cu tehnologia </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   ru: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Обработано </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   si: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>බලගන්වන්නේ </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
         <Text> විසිනි</Text>
       </Fragment>
     ),
   },
   sk: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Používa technológiu </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   sl: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Powered by </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   sq: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Mundësuar nga </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   sv: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Tillhandahålls av </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   th: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>ให้บริการโดย </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   tl: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Pinapagana ng </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   tr: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Çalıştıran </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   vi: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>Được hỗ trợ bởi </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   zh: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>技术支持提供方： </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
   zh_Hant: {
-    PoweredBy: ({ logoColor }) => (
+    PoweredBy: ({ logoColor, shouldApplyRebrandedStyles = false }) => (
       <Fragment>
         <Text>技術支持： </Text>
-        <PayPalRebrandLogo logoColor={logoColor} />
+        {shouldApplyRebrandedStyles ? (
+          <PayPalRebrandLogo logoColor={logoColor} />
+        ) : (
+          <PayPalLogo logoColor={logoColor} />
+        )}
       </Fragment>
     ),
   },
