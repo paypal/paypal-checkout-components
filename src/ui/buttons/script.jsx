@@ -180,6 +180,8 @@ export function getComponentScript(): () => void {
 
         usedWidth += totalGapWidth + totalChildrenWidth;
 
+        console.log("is the content being hidden?");
+        console.log(usedWidth, parentWidth);
         if (usedWidth > parentWidth) {
           optionalChildren.forEach((optionalChild) =>
             hideElement(optionalChild)

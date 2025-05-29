@@ -172,51 +172,60 @@ export function getResponsiveRebrandedStyleVariables({
   size: $Values<typeof BUTTON_SIZE>,
 |}): Object {
   const style = BUTTON_REDESIGN_STYLE[size];
+  const {
+    minHeight,
+    maxHeight,
+    defaultHeight,
+    minWidth,
+    maxWidth,
+    gap,
+    fontSize,
+  } = style;
 
-  const buttonHeight = height || style.defaultHeight;
-  const minDualWidth = Math.max(
-    Math.round(
-      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
-    ),
-    MIN_SPLIT_BUTTON_WIDTH
-  );
+  const buttonHeight = height || defaultHeight;
+  // const minDualWidth = Math.max(
+  //   Math.round(
+  //     buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+  //   ),
+  //   MIN_SPLIT_BUTTON_WIDTH
+  // );
 
-  const { paylater } = fundingEligibility;
+  // const { paylater } = fundingEligibility;
 
-  const shouldResizeLabel =
-    paylater?.products?.paylater?.variant === "DE" ||
-    paylater?.products?.payIn3?.variant === "IT" ||
-    paylater?.products?.payIn3?.variant === "ES";
+  // const shouldResizeLabel =
+  //   paylater?.products?.paylater?.variant === "DE" ||
+  //   paylater?.products?.payIn3?.variant === "IT" ||
+  //   paylater?.products?.payIn3?.variant === "ES";
 
-  const textPercPercentage = shouldResizeLabel ? 32 : 36;
-  const labelPercPercentage = shouldResizeLabel ? 32 : 35;
+  // const textPercPercentage = shouldResizeLabel ? 32 : 36;
+  // const labelPercPercentage = shouldResizeLabel ? 32 : 35;
 
-  let smallerLabelHeight = max(
-    roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
-    12
-  );
-  let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
+  // let smallerLabelHeight = max(
+  //   roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
+  //   12
+  // );
+  // let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
-  if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(buttonHeight, 76), 1);
-    // smallerLabelHeight gets triggered at widths < 320px
-    // We will need to investigate why the labels need to get significantly smaller at this breakpoint
-    smallerLabelHeight = labelHeight;
-  }
+  const labelHeight = roundUp(perc(buttonHeight, 76), 1);
+  // smallerLabelHeight gets triggered at widths < 320px
+  // We will need to investigate why the labels need to get significantly smaller at this breakpoint
+  // smallerLabelHeight = labelHeight;
 
-  const gap = getGap(buttonHeight);
+  // const gap = getGap(buttonHeight);
 
   const styleVariables = {
     style,
     buttonHeight,
-    minDualWidth,
-    textPercPercentage,
-    smallerLabelHeight,
     labelHeight,
     pillBorderRadius,
     gap,
+    minHeight,
+    maxHeight,
+    minWidth,
+    maxWidth,
+    fontSize,
   };
 
   return styleVariables;

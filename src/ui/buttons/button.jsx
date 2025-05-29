@@ -271,6 +271,7 @@ export function Button({
     <div
       class={[
         CLASS.BUTTON_ROW,
+        `${shouldApplyRebrandedStyles ? CLASS.BUTTON_REBRAND : ""}`,
         `${CLASS.NUMBER}-${i}`,
         `${CLASS.LAYOUT}-${layout}`,
         `${CLASS.NUMBER}-${

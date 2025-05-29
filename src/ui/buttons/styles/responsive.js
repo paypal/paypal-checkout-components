@@ -1,24 +1,10 @@
 /* @flow */
 
 import { max, perc } from "@krakenjs/belter/src";
-import {
-  FUNDING,
-  type FundingEligibilityType,
-} from "@paypal/sdk-constants/src";
+import { FUNDING, type FundingEligibilityType } from "@paypal/sdk-constants/src";
 
-import {
-  BUTTON_SHAPE,
-  BUTTON_LAYOUT,
-  BUTTON_NUMBER,
-  CLASS,
-  ATTRIBUTE,
-} from "../../../constants";
-import {
-  BUTTON_SIZE_STYLE,
-  BUTTON_RELATIVE_STYLE,
-  BUTTON_REDESIGN_STYLE,
-  BUTTON_DISABLE_MAX_HEIGHT_STYLE,
-} from "../config";
+import { BUTTON_SHAPE, BUTTON_LAYOUT, BUTTON_NUMBER, CLASS, ATTRIBUTE } from "../../../constants";
+import { BUTTON_SIZE_STYLE, BUTTON_RELATIVE_STYLE, BUTTON_REDESIGN_STYLE, BUTTON_DISABLE_MAX_HEIGHT_STYLE } from "../config";
 import { isBorderRadiusNumber } from "../util";
 
 import {
@@ -47,35 +33,27 @@ const generateButtonSizeStyles = ({
 |}): string => {
   return Object.keys(BUTTON_SIZE_STYLE)
     .map((size) => {
-      const {
-        style,
-        buttonHeight,
-        minDualWidth,
-        textPercPercentage,
-        smallerLabelHeight,
-        labelHeight,
-        pillBorderRadius,
-        gap,
-      } = getResponsiveStyleVariables({
-        height,
-        fundingEligibility,
-        shouldApplyRebrandedStyles,
-        size,
-      });
+      const { style, buttonHeight, minDualWidth, textPercPercentage, smallerLabelHeight, labelHeight, pillBorderRadius, gap } =
+        getResponsiveStyleVariables({
+          height,
+          fundingEligibility,
+          shouldApplyRebrandedStyles,
+          size,
+        });
 
       return `
     @media only screen and (min-width: ${style.minWidth}px) {
         .${CLASS.BUTTON_LABEL} {
             gap: ${gap}px;
         }
-        
+
         .${CLASS.CONTAINER} {
             min-width: ${style.minWidth}px;
             ${disableMaxWidth ? "" : `max-width: ${style.maxWidth}px;`};
             ${disableMaxHeight ? "height: 100%;" : ""};
         }
 
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
+        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
         .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
             font-size: ${max(perc(buttonHeight, 36), 10)}px;
             margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
@@ -89,28 +67,16 @@ const generateButtonSizeStyles = ({
         .${CLASS.BUTTON_ROW} {
             height: ${disableMaxHeight ? "100%" : `${buttonHeight}px`};
             vertical-align: top;
-            ${
-              disableMaxHeight
-                ? ""
-                : ` min-height: ${height || style.minHeight}px;`
-            };
-            ${
-              disableMaxHeight
-                ? ""
-                : `max-height: ${height || style.maxHeight}px;`
-            }
+            ${disableMaxHeight ? "" : `min-height: ${height || style.minHeight}px;`};
+            ${disableMaxHeight ? "" : `max-height: ${height || style.maxHeight}px;`};
         }
 
         .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
-            margin-bottom: ${perc(
-              buttonHeight,
-              BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
-            )}px;
+            margin-bottom: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN)}px;
+            
         }
 
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.VERTICAL
-      }:last-of-type {
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}:last-of-type {
             margin-bottom: 0;
         }
 
@@ -119,7 +85,7 @@ const generateButtonSizeStyles = ({
             text-align: center;
             height: 100%;
         }
-        
+
         .${CLASS.BUTTON} .${CLASS.SPINNER} {
             height: ${perc(buttonHeight, 50)}px;
             width: ${perc(buttonHeight, 50)}px;
@@ -130,48 +96,28 @@ const generateButtonSizeStyles = ({
             height: ${labelHeight}px;
         }
 
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${
-        CLASS.BUTTON_LABEL
-      } {
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${CLASS.BUTTON_LABEL} {
             height: ${perc(buttonHeight, 80) + 5}px;
         }
 
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT} {
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT} {
             line-height: ${perc(buttonHeight, 80) + 5}px;
         }
 
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      },
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
-        CLASS.BUTTON_LABEL
-      } {
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${CLASS.BUTTON_LABEL},
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${CLASS.BUTTON_LABEL} {
             height: ${perc(buttonHeight, 50) + 5}px;
         }
 
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT},
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.SPACE},
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT},
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.SPACE} {
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE},
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
             line-height: ${perc(buttonHeight, 50) + 5}px;
         }
-        
+
         .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
-            ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
-                ? `border-radius: ${borderRadius}px`
-                : ""
-            }
+            ${borderRadius && isBorderRadiusNumber(borderRadius) ? `border-radius: ${borderRadius}px` : ""};
         }
 
         .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
@@ -191,7 +137,7 @@ const generateButtonSizeStyles = ({
               borderRadius && isBorderRadiusNumber(borderRadius)
                 ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
                 : ""
-            }
+            };
         }
 
         .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} .menu-button {
@@ -208,7 +154,7 @@ const generateButtonSizeStyles = ({
             border-top-right-radius: ${pillBorderRadius}px;
             border-bottom-right-radius: ${pillBorderRadius}px;
         }
-        
+
         .${CLASS.TAGLINE} .${CLASS.TEXT} {
             height: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE)}px;
             line-height: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE)}px;
@@ -219,9 +165,7 @@ const generateButtonSizeStyles = ({
             height: 100%;
         }
 
-        .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} .${
-        CLASS.BUTTON
-      } {
+        .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} .${CLASS.BUTTON} {
             width: calc(100% - ${buttonHeight + 2}px);
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
@@ -233,24 +177,16 @@ const generateButtonSizeStyles = ({
         }
     }
 
-    @media only screen and (min-width: ${
-      style.minWidth
-    }px) and (max-width: 320px) {
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
+    @media only screen and (min-width: ${style.minWidth}px) and (max-width: 320px) {
+        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
         .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
             font-size: ${max(perc(buttonHeight, textPercPercentage), 10)}px;
-            margin-top: -${perc(
-              max(perc(buttonHeight, textPercPercentage), 10),
-              10
-            )}px;
+            margin-top: -${perc(max(perc(buttonHeight, textPercPercentage), 10), 10)}px;
             line-height: ${smallerLabelHeight}px;
         }
 
         .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-            margin-top: ${perc(
-              max(perc(buttonHeight, textPercPercentage), 10),
-              10
-            )}px;
+            margin-top: ${perc(max(perc(buttonHeight, textPercPercentage), 10), 10)}px;
         }
 
         .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
@@ -259,70 +195,47 @@ const generateButtonSizeStyles = ({
         }
     }
 
-    @media only screen and (min-width: ${
-      style.minWidth
-    }px) and (max-width: ${minDualWidth}px) {
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
+    @media only screen and (min-width: ${style.minWidth}px) and (max-width: ${minDualWidth}px) {
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
             width: 100%;
             margin-right: 0;
         }
+            
 
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
             display: none;
         }
 
-        .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
+        .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
             display: none;
         }
     }
 
     @media only screen and (min-width: ${max(style.minWidth, minDualWidth)}px) {
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
             display: inline-block;
             width: calc(${FIRST_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
             margin-right: ${perc(buttonHeight, 7) * 2}px;
         }
 
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
             display: inline-block;
-            width: calc(${100 - FIRST_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
+            width: calc(${100 - FIRST_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
         }
 
-        .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}.${
-        CLASS.WALLET
-      }.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
-        BUTTON_NUMBER.MULTIPLE
-      } {
+        .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} {
             width: calc(${WALLET_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
         }
 
-        .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}:not(.${
-        CLASS.WALLET
-      }).${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
-        BUTTON_NUMBER.MULTIPLE
-      } {
-            width: calc(${100 - WALLET_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
+        .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}:not(.${CLASS.WALLET}).${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} {
+            width: calc(${100 - WALLET_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
         }
 
-        .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
+        .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
             display: block;
         }
     }
@@ -348,289 +261,124 @@ const generateRebrandedButtonSizeStyles = ({
 |}): string => {
   return Object.keys(BUTTON_REDESIGN_STYLE)
     .map((size) => {
-      const {
-        style,
-        buttonHeight,
-        minDualWidth,
-        textPercPercentage,
-        smallerLabelHeight,
-        labelHeight,
-        pillBorderRadius,
-        gap,
-      } = getResponsiveRebrandedStyleVariables({
-        height,
-        fundingEligibility,
-        shouldApplyRebrandedStyles,
-        size,
-      });
+      const { buttonHeight, labelHeight, pillBorderRadius, gap, fontSize, lineHeight, minHeight, maxHeight, minWidth } =
+        getResponsiveRebrandedStyleVariables({
+          height,
+          fundingEligibility,
+          shouldApplyRebrandedStyles,
+          size,
+        });
 
-      // Get the height values from BUTTON_REDESIGN_STYLE
-      const redesignStyle = BUTTON_REDESIGN_STYLE[size];
-      const { minHeight, maxHeight } = redesignStyle;
+      console.log("buttonHeight", "minHeight", "maxHeight");
+      console.log(buttonHeight, minHeight, maxHeight);
 
-      return `
-    @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
-        .${CLASS.BUTTON_LABEL} {
-            gap: ${gap}px;
+      const widthBasedStyles = `
+       @media only screen and (min-width: ${minWidth}px) {
+               .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+            margin: 0px 4vw;
+            height: ${labelHeight}px;
         }
-        
-        .${CLASS.CONTAINER} {
-            min-width: ${style.minWidth}px;
-            ${disableMaxWidth ? "" : `max-width: ${style.maxWidth}px;`};
-            ${disableMaxHeight ? "height: 100%;" : ""};
-        }
-
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-            font-size: ${max(perc(buttonHeight, 36), 10)}px;
-            margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
-            line-height: ${labelHeight}px;
-        }
-
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-            margin-top: ${perc(max(perc(buttonHeight, 36), 10), 10)}px;
-        }
-
-        .${CLASS.BUTTON_ROW} {
+            
+        .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND} {
             height: ${disableMaxHeight ? "100%" : `${buttonHeight}px`};
             vertical-align: top;
-            ${
-              disableMaxHeight
-                ? ""
-                : ` min-height: ${height || redesignStyle.minHeight}px;`
-            };
-            ${
-              disableMaxHeight
-                ? ""
-                : `max-height: ${height || redesignStyle.maxHeight}px;`
-            }
+            ${disableMaxHeight ? "" : `min-height: ${buttonHeight || minHeight}px;`};
+            ${disableMaxHeight ? "" : `max-height: ${buttonHeight || maxHeight}px;`};
+        }
+      }
+      `;
+      const heightBasedStyles = `
+      @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
+            gap: ${gap}px;
         }
 
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
-            margin-bottom: ${perc(
-              buttonHeight,
-              BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
-            )}px;
+        // todo should this be only on children of the button label container?
+        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND} .${CLASS.TEXT},
+        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND} .${CLASS.SPACE} {
+            font-size: ${fontSize}px;
+            line-height: 1.3;
+            margin-top: unset; //todo remove if we don't apply legacy styles
+
         }
 
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.VERTICAL
-      }:last-of-type {
+        // todo try to delete margin-top
+        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} * {
+            // margin-top: ${perc(max(perc(buttonHeight, 36), 10), 10)}px;
+        }
+
+
+
+        // Spacing of buttons for vertical smart Stack
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${CLASS.BUTTON_REBRAND} {
+        // todo calculate this value in getResponsiveRebrandedStyleVariables 
+            margin-bottom: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN)}px;  
+        }
+        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${CLASS.BUTTON_REBRAND}:last-of-type {
             margin-bottom: 0;
         }
 
-        .${CLASS.BUTTON} {
-            display: inline-block;
-            text-align: center;
-            height: 100%;
-        }
-        
+      // todo calculate this value in getResponsiveRebrandedStyleVariables 
         .${CLASS.BUTTON} .${CLASS.SPINNER} {
             height: ${perc(buttonHeight, 50)}px;
             width: ${perc(buttonHeight, 50)}px;
         }
 
-        .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
-            margin: 0px 4vw;
-            height: ${labelHeight}px;
-        }
 
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${
-        CLASS.BUTTON_LABEL
-      } {
+
+        // Apple Pay 
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${CLASS.BUTTON_LABEL} {
+              // todo calculate this value in getResponsiveRebrandedStyleVariables 
             height: ${perc(buttonHeight, 80) + 5}px;
         }
-
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT} {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT} {
+              // todo calculate this value in getResponsiveRebrandedStyleVariables 
             line-height: ${perc(buttonHeight, 80) + 5}px;
         }
 
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      },
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
-        CLASS.BUTTON_LABEL
-      } {
+        // Alternative Payment Methods
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${CLASS.BUTTON_LABEL},
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${CLASS.BUTTON_LABEL} {
+              // todo calculate this value in getResponsiveRebrandedStyleVariables 
             height: ${perc(buttonHeight, 50) + 5}px;
         }
-
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT},
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.SPACE},
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.TEXT},
-        .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
-        CLASS.BUTTON_LABEL
-      } .${CLASS.SPACE} {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE},
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
+              // todo calculate this value in getResponsiveRebrandedStyleVariables 
             line-height: ${perc(buttonHeight, 50) + 5}px;
         }
-        
-        .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
-            ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
-                ? `border-radius: ${borderRadius}px`
-                : ""
-            }
-        }
 
-        .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
-            border-radius: 0px;
-        }
-
-        .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
-            border-radius: 4px;
-        }
-
-        .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
+        // Border radius
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
             border-radius: ${pillBorderRadius}px;
         }
 
-        .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
-            ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
-                ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
-                : ""
-            }
-        }
-
-        .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} .menu-button {
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-        }
-
-        .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} .menu-button {
-            border-top-right-radius: 4px;
-            border-bottom-right-radius: 4px;
-        }
-
-        .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} .menu-button {
+        // menu button - border radius
+        .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} .menu-button {
             border-top-right-radius: ${pillBorderRadius}px;
             border-bottom-right-radius: ${pillBorderRadius}px;
         }
-        
-        .${CLASS.TAGLINE} .${CLASS.TEXT} {
+
+        .${CLASS.TAGLINE}.${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
             height: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE)}px;
             line-height: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE)}px;
         }
 
-        .${CLASS.CARD} {
-            display: inline-block;
-            height: 100%;
-        }
-
-        .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} .${
-        CLASS.BUTTON
-      } {
+        .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU}.${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON} {
             width: calc(100% - ${buttonHeight + 2}px);
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
         }
 
-        .menu-button {
+        .menu-button.${CLASS.BUTTON_REBRAND} {
             height: ${buttonHeight}px;
             width: ${buttonHeight}px;
         }
     }
-
-    /* Special case for small heights with limited screen width */
-    @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) and (max-width: 320px) {
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-            font-size: ${max(perc(buttonHeight, textPercPercentage), 10)}px;
-            margin-top: -${perc(
-              max(perc(buttonHeight, textPercPercentage), 10),
-              10
-            )}px;
-            line-height: ${smallerLabelHeight}px;
-        }
-
-        .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-            margin-top: ${perc(
-              max(perc(buttonHeight, textPercPercentage), 10),
-              10
-            )}px;
-        }
-
-        .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
-            margin: 0px 4vw;
-            height: ${smallerLabelHeight}px;
-        }
-    }
-
-    /* Multiple button handling based on height + minDualWidth */
-    @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) and (max-width: ${minDualWidth}px) {
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
-            width: 100%;
-            margin-right: 0;
-        }
-
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
-            display: none;
-        }
-
-        .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
-            display: none;
-        }
-    }
-
-    /* Larger screens with multiple buttons */
-    @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) and (min-width: ${minDualWidth}px) {
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
-            display: inline-block;
-            width: calc(${FIRST_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
-            margin-right: ${perc(buttonHeight, 7) * 2}px;
-        }
-
-        .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
-            display: inline-block;
-            width: calc(${100 - FIRST_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
-        }
-
-        .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}.${
-        CLASS.WALLET
-      }.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
-        BUTTON_NUMBER.MULTIPLE
-      } {
-            width: calc(${WALLET_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
-        }
-
-        .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}:not(.${
-        CLASS.WALLET
-      }).${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
-        BUTTON_NUMBER.MULTIPLE
-      } {
-            width: calc(${100 - WALLET_BUTTON_PERC}% - ${perc(
-        buttonHeight,
-        7
-      )}px);
-        }
-
-        .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
-        CLASS.NUMBER
-      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
-            display: block;
-        }
-    }
 `;
+      return [widthBasedStyles, heightBasedStyles].join("\n");
     })
     .join("\n");
 };
@@ -785,8 +533,49 @@ export function buttonResponsiveStyle({
         shouldApplyRebrandedStyles,
       })
     : "";
-  const baseStyles = shouldApplyRebrandedStyles
-    ? buttonRedesignSizeStyles
-    : buttonSizeStyles;
-  return baseStyles + disableMaxHeightStyles;
+
+  const baseStyles = `
+      .${CLASS.BUTTON} {
+        display: inline-block;
+        text-align: center;
+        height: 100%;
+    }
+    // border radius
+     .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
+            ${borderRadius && isBorderRadiusNumber(borderRadius) ? `border-radius: ${borderRadius}px` : ""};
+        }
+        .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
+            border-radius: 0px;
+        }
+        .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
+            border-radius: 4px;
+        }
+        
+              // menu button - border radium
+        .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
+            ${
+              borderRadius && isBorderRadiusNumber(borderRadius)
+                ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
+                : ""
+            };
+        }
+
+        .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} .menu-button {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} .menu-button {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        
+          .${CLASS.CARD} {
+            display: inline-block;
+            height: 100%;
+        }
+    `;
+  const rebrandedStyles = shouldApplyRebrandedStyles ? buttonRedesignSizeStyles : buttonSizeStyles;
+
+  return baseStyles + rebrandedStyles + disableMaxHeightStyles;
 }

@@ -928,7 +928,6 @@ export function getButtonColor({
     fundingSource,
     style,
   });
-
   switch (experience) {
     case "abTest":
       // calling this function means AB test is eligible
@@ -944,7 +943,6 @@ export function getButtonColor({
         fundingSource,
         style,
       });
-
     // legacy case
     default:
       return {
