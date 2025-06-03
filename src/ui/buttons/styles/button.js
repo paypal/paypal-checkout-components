@@ -151,3 +151,60 @@ export const buttonStyle = `
         }
     }
 `;
+
+export const buttonRebrandStyle = `
+
+    .${CLASS.BUTTON_REBRAND} {
+        border: 1px solid transparent;
+        border-radius: 0 3px 3px 0;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        vertical-align: top;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        height: 76%;
+        min-width: 0px;
+        max-width: 90%;
+        position: relative;
+        /* The parent needs position: relative for absolute positioning to work */
+    }
+
+    .${LOGO_CLASS.LOGO} {
+        height: 100%;
+        padding: 0;
+        background: none;
+        border: none;
+        width: auto;
+         /* Set a variable we can use for height-based calculations */
+        --logo-height: 100%;
+    }
+
+    .${CLASS.TEXT} {
+        height: 58%;
+        /* Calculate padding as a percentage of the logo's height */
+        padding-bottom: calc(var(--logo-height) * 0.08);
+        display: block;
+    }
+    
+    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
+        height: 100%;
+    }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.TAGLINE} {
+        max-width: 100%;
+        font-size: initial;
+        font-weight: 400;
+        display: block;
+        text-align: center;
+        width: auto;
+    }
+`;

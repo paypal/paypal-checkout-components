@@ -1,1 +1,10 @@
-{}
+{
+  "overrides": [
+    {
+      "files": "src/ui/buttons/styles/responsive.js",
+      "options": {
+        "printWidth": 140
+      }
+    }
+  ]
+}
