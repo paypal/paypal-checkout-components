@@ -115,7 +115,7 @@ export function getComponentScript(): () => void {
     }
 
     function calculateGap(optionalParent: HTMLElement): number {
-      const isTagline = optionalParent.classList.contains(
+      const isTagline = optionalParent?.classList.contains(
         "paypal-button-tagline"
       );
 
