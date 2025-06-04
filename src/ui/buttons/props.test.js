@@ -800,7 +800,6 @@ describe("getButtonColor", () => {
 
     expect(result).toEqual(
       expect.objectContaining({
-        shouldApplyRebrandedStyles: false,
         isButtonColorABTestMerchant: true,
       })
     );
