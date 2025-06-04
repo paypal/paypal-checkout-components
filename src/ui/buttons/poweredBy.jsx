@@ -108,8 +108,13 @@ export function PoweredByPayPal({
     ? rebrandLogoColor
     : LOGO_COLOR.BLUE;
 
+  // additional class added for rebranded styles for testing purposes
+  const isRebrandClass = shouldApplyRebrandedStyles
+    ? "powered-by-paypal-rebrand"
+    : "powered-by-paypal-legacy";
+
   return (
-    <div class={CLASS.POWERED_BY}>
+    <div class={`${CLASS.POWERED_BY} ${isRebrandClass}`}>
       <style nonce={nonce} innerHTML={POWERED_BY_STYLE} />
       {__WEB__ ? (
         <Text />
