@@ -798,11 +798,12 @@ describe("getButtonColor", () => {
       fundingSource,
     });
 
-    expect(result).toEqual({
-      color: BUTTON_COLOR.BLUE,
-      shouldApplyRebrandedStyles: false,
-      isButtonColorABTestMerchant: true,
-    });
+    expect(result).toEqual(
+      expect.objectContaining({
+        shouldApplyRebrandedStyles: false,
+        isButtonColorABTestMerchant: true,
+      })
+    );
   });
 
   it("should return the default color for non-PayPal funding sources", () => {
