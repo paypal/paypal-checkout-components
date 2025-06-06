@@ -229,7 +229,7 @@ describe("paypal button aria-label", () => {
   });
 });
 
-describe.only("Button Redesign", () => {
+describe("Button Redesign", () => {
   const setMockPaypalRebrandExperiment = (value) =>
     mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
@@ -732,6 +732,152 @@ describe.only("Button Redesign", () => {
 
             mockPaypalRebrandExperiment.cancel();
             mockPaypalRebrandABTestExperiment.cancel();
+          });
+        });
+      });
+    });
+
+    describe("PoweredByPayPal", () => {
+      beforeEach(() => {
+        createTestContainer();
+      });
+
+      afterEach(() => {
+        destroyTestContainer();
+      });
+
+      const validatePoweredByRebrandBlueStyle = () => {
+        // For blue rebrand, the logo color should be black
+        assert.ok(
+          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand")
+        );
+        assert.ok(
+          getElementRecursive(
+            ".paypal-logo-paypal-rebrand.paypal-logo-color-black"
+          )
+        );
+      };
+
+      // the black and white rebrand styles are not implemented yet
+      const validatePoweredByRebrandBlackStyle = () => {
+        assert.ok(getElementRecursive(".paypal-powered-by"));
+        // For black rebrand, the logo color should be black
+        assert.ok(
+          getElementRecursive(
+            ".paypal-logo-paypal-rebrand.paypal-logo-color-black"
+          )
+        );
+      };
+
+      const validatePoweredByRebrandWhiteStyle = () => {
+        assert.ok(getElementRecursive(".paypal-powered-by"));
+        // For white rebrand, the logo color should be white
+        assert.ok(
+          getElementRecursive(
+            ".paypal-logo-paypal-rebrand.paypal-logo-color-white"
+          )
+        );
+      };
+
+      // rebranded not enabled for smart stack yet
+      describe("Rebranded styles", () => {
+        it.skip("should render rebranded poweredBy with black logo for blue button", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            style: {
+              color: "rebrand_blue",
+              showPoweredByPayPal: true,
+              shouldApplyRebrandedStyles: true,
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validatePoweredByRebrandBlueStyle();
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        // These tests are skipped because the rebrand black and white styles are not implemented yet
+        it.skip("should render rebranded poweredBy with black logo for white button", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            style: {
+              color: "rebrand_white",
+              showPoweredByPayPal: true,
+              shouldApplyRebrandedStyles: true,
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validatePoweredByRebrandWhiteStyle();
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        it.skip("should render rebranded poweredBy with white logo for black button", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            style: {
+              color: "rebrand_black",
+              showPoweredByPayPal: true,
+              shouldApplyRebrandedStyles: true,
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validatePoweredByRebrandBlackStyle();
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+      });
+
+      describe("Legacy styles", () => {
+        const validatePoweredByLegacyStyle = () => {
+          assert.ok(getElementRecursive(".paypal-powered-by"));
+          assert.ok(getElementRecursive(".powered-by-paypal-legacy"));
+        };
+
+        it("should render legacy poweredBy with blue logo when rebrand is disabled", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(false);
+
+          const button = window.paypal.Buttons({
+            style: {
+              layout: "vertical",
+              fundingSource: "undefined",
+              color: "gold",
+              showPoweredByPayPal: true,
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validatePoweredByLegacyStyle();
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        it("should render legacy poweredBy with blue logo even with black button when rebrand is disabled", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(false);
+
+          const button = window.paypal.Buttons({
+            style: {
+              layout: "vertical",
+              fundingSource: "undefined",
+              color: "black",
+              showPoweredByPayPal: true,
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validatePoweredByLegacyStyle();
+            mockPaypalRebrandExperiment.cancel();
           });
         });
       });
