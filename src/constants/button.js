@@ -45,6 +45,7 @@ export const BUTTON_SIZE = {
 };
 
 export const BUTTON_REDESIGN_SIZE = {
+  EXTRA_SMALL: ("extraSmall": "extraSmall"),
   TINY: ("tiny": "tiny"),
   SMALL: ("small": "small"),
   MEDIUM_SMALL: ("mediumSmall": "mediumSmall"),

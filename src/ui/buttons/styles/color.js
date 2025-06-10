@@ -11,6 +11,10 @@ export const buttonColorStyle = `
         color: #2C2E2F;
     }
 
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} {
+        color: #000000;
+    }
+
     .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} {
         color: #fff;
     }
