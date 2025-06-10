@@ -72,14 +72,12 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
   if (questionMarkIndex !== -1) {
     [hash, queryString] = hashString.split("?");
   } else {
-    // check for & as the hash/query separator
     const ampersandIndex = hashString.indexOf("&");
 
     if (ampersandIndex !== -1) {
       hash = hashString.slice(0, ampersandIndex);
       queryString = hashString.slice(ampersandIndex + 1);
     } else {
-      // no separator, the entire string is the hash
       hash = hashString;
     }
   }
