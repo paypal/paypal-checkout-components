@@ -24,9 +24,26 @@ describe("app switch resume flow", () => {
     expect(isAppSwitchResumeFlow()).toEqual(false);
   });
 
-  test("should test fetching resume params when parameters are correctly passed", () => {
+  test("should test fetching resume params when parameters are correctly passed with ? delimiter", () => {
     vi.spyOn(window, "location", "get").mockReturnValue({
       hash: `#onApprove?button_session_id=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect.assertions(2);
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onApprove",
+      fundingSource,
+      orderID,
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should test fetching resume params when parameters are correctly passed with only & delimiter", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: `#onApprove&button_session_id=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
     });
 
     const params = getAppSwitchResumeParams();
