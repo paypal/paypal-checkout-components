@@ -1,3 +1,9 @@
+## <small>5.0.367 (2025-06-11)</small>
+
+* Update/powered by redesign (#2499) ([8bc0ce8](https://github.com/paypal/paypal-checkout-components/commit/8bc0ce8)), closes [#2499](https://github.com/paypal/paypal-checkout-components/issues/2499)
+
+
+
 ## <small>5.0.366 (2025-06-04)</small>
 
 * update test (#2504) ([23c6f7e](https://github.com/paypal/paypal-checkout-components/commit/23c6f7e)), closes [#2504](https://github.com/paypal/paypal-checkout-components/issues/2504)
