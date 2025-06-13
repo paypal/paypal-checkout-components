@@ -42,9 +42,7 @@ describe(`paypal button funding source order`, () => {
                 new Error(
                   `Expected card to be at index ${
                     fundingSources.length - 1
-                  }, found at index ${fundingSources.indexOf(
-                    FUNDING.CARD
-                  )}, ${JSON.stringify(fundingSources)}`
+                  }, found at index ${fundingSources.indexOf(FUNDING.CARD)}`
                 )
               );
             }
