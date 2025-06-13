@@ -24,6 +24,11 @@ describe(`paypal button funding source order`, () => {
     for (const source of eligibleFundingSources) {
       mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], "eligible", true);
     }
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.APPLEPAY],
+      "eligible",
+      false
+    );
 
     window.paypal
       .Buttons({
@@ -37,7 +42,9 @@ describe(`paypal button funding source order`, () => {
                 new Error(
                   `Expected card to be at index ${
                     fundingSources.length - 1
-                  }, found at index ${fundingSources.indexOf(FUNDING.CARD)}`
+                  }, found at index ${fundingSources.indexOf(
+                    FUNDING.CARD
+                  )}, ${JSON.stringify(fundingSources)}`
                 )
               );
             }

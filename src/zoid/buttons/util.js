@@ -24,6 +24,7 @@ import {
   getNamespace,
   getPayPalDomain,
   getFirstRenderExperiments,
+  getFundingEligibility,
   getSDKToken,
   getIntent,
 } from "@paypal/sdk-client/src";
@@ -120,17 +121,19 @@ export function isSupportedNativeBrowser(): boolean {
 }
 
 export function getVenmoExperiment(): EligibilityExperiment {
+  const fundingEligibility = getFundingEligibility();
   const enableFunding = getEnableFunding();
+
   const isVenmoFundingEnabled =
     enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
   const isNativeSupported = isSupportedNativeBrowser();
   if (isDevice()) {
     return {
-      enableVenmo: Boolean(isVenmoFundingEnabled && isNativeSupported),
+      enableVenmo: isVenmoFundingEnabled && isNativeSupported,
     };
   } else {
     return {
-      enableVenmo: true,
+      enableVenmo: fundingEligibility?.venmo?.eligible || false,
     };
   }
 }
