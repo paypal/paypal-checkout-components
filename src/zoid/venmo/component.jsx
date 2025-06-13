@@ -284,6 +284,12 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           },
         },
 
+        incognito: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+        },
+
         isWebViewEnabled: {
           type: "boolean",
           queryParam: true,

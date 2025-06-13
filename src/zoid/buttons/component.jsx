@@ -97,7 +97,6 @@ import {
   applePaySession,
   determineFlow,
   isSupportedNativeBrowser,
-  createVenmoExperiment,
   getRenderedButtons,
   getButtonSize,
   getButtonExperiments,
@@ -882,14 +881,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
 
           return (...args) => {
-            const venmoExperiment = createVenmoExperiment();
-
-            if (venmoExperiment) {
-              venmoExperiment.logStart({
-                [FPTI_KEY.BUTTON_SESSION_UID]: props.buttonSessionID,
-              });
-            }
-
             return value(...args);
           };
         },

@@ -6,7 +6,6 @@ import {
   isIos,
   isIOS14,
   isSafari,
-  type Experiment,
   isDevice,
   isWebView,
   isTablet,
@@ -19,14 +18,13 @@ import { send as postRobotSend } from "@krakenjs/post-robot/src";
 import {
   getEnableFunding,
   getLogger,
-  createExperiment,
-  getFundingEligibility,
   getPlatform,
   getComponents,
   getEnv,
   getNamespace,
   getPayPalDomain,
   getFirstRenderExperiments,
+  getFundingEligibility,
   getSDKToken,
   getIntent,
 } from "@paypal/sdk-client/src";
@@ -122,59 +120,20 @@ export function isSupportedNativeBrowser(): boolean {
   return false;
 }
 
-export function createVenmoExperiment(): ?Experiment {
-  const enableFunding = getEnableFunding();
-  const isEnableFundingVenmo =
-    enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
-
-  const fundingEligibility = getFundingEligibility();
-  const hasBasicVenmoEligibility =
-    fundingEligibility &&
-    fundingEligibility[FUNDING.VENMO] &&
-    fundingEligibility[FUNDING.VENMO].eligible;
-  const isEligibleForVenmoNative =
-    isSupportedNativeBrowser() && !isEnableFundingVenmo;
-
-  // basic eligibility must be true for venmo to be eligible for the experiments
-  if (!hasBasicVenmoEligibility) {
-    return;
-  }
-
-  if (isDevice()) {
-    if (!isEligibleForVenmoNative) {
-      return;
-    }
-
-    if (isIos() && isSafari()) {
-      return createExperiment("enable_venmo_ios", 100);
-    }
-
-    if (isAndroid() && isChrome()) {
-      return createExperiment("enable_venmo_android", 100);
-    }
-  } else {
-    return createExperiment("enable_venmo_desktop", 100);
-  }
-}
-
 export function getVenmoExperiment(): EligibilityExperiment {
-  const experiment = createVenmoExperiment();
-
+  const fundingEligibility = getFundingEligibility();
   const enableFunding = getEnableFunding();
+
   const isVenmoFundingEnabled =
     enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
   const isNativeSupported = isSupportedNativeBrowser();
-  const isExperimentEnabled = experiment && experiment.isEnabled();
-
   if (isDevice()) {
     return {
-      enableVenmo: Boolean(
-        (isExperimentEnabled || isVenmoFundingEnabled) && isNativeSupported
-      ),
+      enableVenmo: isVenmoFundingEnabled && isNativeSupported,
     };
   } else {
     return {
-      enableVenmo: Boolean(isExperimentEnabled),
+      enableVenmo: fundingEligibility?.venmo?.eligible || false,
     };
   }
 }

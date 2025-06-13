@@ -30,6 +30,7 @@ export function getVenmoConfig(): FundingSourceConfig {
         experiment &&
         experiment.enableVenmo === false &&
         experiment.venmoWebEnabled !== true &&
+        experiment.isWebViewEnabled !== true &&
         experiment.venmoEnableWebOnNonNativeBrowser !== true
       ) {
         return false;
@@ -67,7 +68,7 @@ export function getVenmoConfig(): FundingSourceConfig {
         experiment.venmoEnableWebOnNonNativeBrowser !== true
       ) {
         return {
-          native: true,
+          native: experiment.isWebViewEnabled ? false : true,
           popup: experiment.isWebViewEnabled ? false : true,
         };
       }
