@@ -24,6 +24,11 @@ describe(`paypal button funding source order`, () => {
     for (const source of eligibleFundingSources) {
       mockProp(window.__TEST_FUNDING_ELIGIBILITY__[source], "eligible", true);
     }
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.APPLEPAY],
+      "eligible",
+      false
+    );
 
     window.paypal
       .Buttons({

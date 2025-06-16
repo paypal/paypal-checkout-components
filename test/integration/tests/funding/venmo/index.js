@@ -96,7 +96,7 @@ describe(`venmo desktop web button test `, () => {
     destroyTestContainer();
   });
 
-  it(`should not display button when it's passed in as instrument on desktop web`, (done) => {
+  it(`should display button when it's passed in as instrument on desktop web`, (done) => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
@@ -106,7 +106,7 @@ describe(`venmo desktop web button test `, () => {
     const paypalButtons = window.paypal.Buttons({
       fundingSource,
     });
-    assert.equal(paypalButtons.isEligible(), false);
+    assert.equal(paypalButtons.isEligible(), true);
     done();
   });
 });
@@ -133,6 +133,70 @@ describe(`venmo on tablet `, () => {
       fundingSource,
     });
     assert.equal(paypalButtons.isEligible(), false);
+    done();
+  });
+});
+
+describe("venmo eligibility", () => {
+  beforeEach(() => {
+    createTestContainer();
+    window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
+  });
+
+  afterEach(() => {
+    destroyTestContainer();
+  });
+
+  it("should return false for isEligible when eligibility is false", (done) => {
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      false
+    );
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    done();
+  });
+
+  it("should return true for isEligible when eligibility is true", (done) => {
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true
+    );
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), true);
+    done();
+  });
+
+  it("should return false for isEligible when eligibility is undefined", (done) => {
+    // Remove the eligibility property
+    delete window.__TEST_FUNDING_ELIGIBILITY__[fundingSource].eligible;
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    done();
+  });
+
+  it("should return false for isEligible when funding source is missing from eligibility object", (done) => {
+    // Remove the funding source from eligibility object
+    const original = window.__TEST_FUNDING_ELIGIBILITY__[fundingSource];
+    delete window.__TEST_FUNDING_ELIGIBILITY__[fundingSource];
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    // Restore for other tests
+    window.__TEST_FUNDING_ELIGIBILITY__[fundingSource] = original;
     done();
   });
 });
