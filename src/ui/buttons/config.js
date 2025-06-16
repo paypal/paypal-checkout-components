@@ -204,7 +204,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     maxWidth: 300,
     gap: 4,
     fontSize: 16,
-    padding: 1,
+    padding: 0,
   },
 
   [BUTTON_REDESIGN_SIZE.MEDIUM_BIG]: {
