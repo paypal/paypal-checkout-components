@@ -380,7 +380,7 @@ const generateRebrandedButtonSizeStyles = ({
 |}): string => {
   return Object.keys(BUTTON_REDESIGN_STYLE)
     .map((redesign_size) => {
-      const { buttonHeight, pillBorderRadius, gap, fontSize, minHeight, maxHeight, minWidth, minDualWidth, padding } =
+      const { buttonHeight, pillBorderRadius, gap, fontSize, minHeight, maxHeight, minWidth, padding } =
         getResponsiveRebrandedStyleVariables({
           height,
           redesign_size,
