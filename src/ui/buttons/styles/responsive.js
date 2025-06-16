@@ -387,18 +387,34 @@ const generateRebrandedButtonSizeStyles = ({
         });
 
       const widthBasedStyles = `
-        @media only screen and (min-width: ${minWidth}px) and (min-height: ${minHeight}px) {
+        @media only screen and (min-width: ${minWidth}px) {
           .${CLASS.BUTTON_ROW} {
               height: ${buttonHeight}px;
               vertical-align: top;
-              min-height: ${height || minHeight}px;;
+              min-height: ${height || minHeight}px;
               max-height: ${height || maxHeight}px;
           }
 
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               margin: 0px 4vw;
               box-sizing: border-box;
-              height: ${disableMaxHeight ? "76%" : `${buttonHeight * 0.76}px`};
+              height: ${buttonHeight * 0.76}px;
+          }
+        }`;
+
+      const disableMaxHeightStyles = `
+        @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+          .${CLASS.BUTTON_ROW} {
+              height: ${buttonHeight}px;
+              vertical-align: top;
+              min-height: ${height || minHeight}px;
+              max-height: ${height || maxHeight}px;
+          }
+
+          .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+              margin: 0px 4vw;
+              box-sizing: border-box;
+              height: ${buttonHeight * 0.76}px;
           }
         }`;
 
@@ -517,7 +533,7 @@ const generateRebrandedButtonSizeStyles = ({
               width: ${buttonHeight}px;
           }
         }`;
-      return widthBasedStyles + heightBasedStyles;
+      return disableMaxHeight ? disableMaxHeightStyles + heightBasedStyles : widthBasedStyles + heightBasedStyles;
     })
     .join("\n");
 };
