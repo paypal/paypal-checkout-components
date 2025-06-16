@@ -185,8 +185,9 @@ export const buttonRebrandStyle = `
     }
 
     .${CLASS.TEXT} {
-        height: auto;
-        display: block;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
     
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {

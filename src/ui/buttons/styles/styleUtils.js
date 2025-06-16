@@ -177,11 +177,19 @@ export function getResponsiveRebrandedStyleVariables({
     maxWidth,
     gap,
     fontSize,
+    padding,
   } = style;
 
   const buttonHeight = height || defaultHeight;
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
   const labelHeight = roundUp(perc(buttonHeight, 76), 1);
+
+  const minDualWidth = Math.max(
+    Math.round(
+      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+    ),
+    MIN_SPLIT_BUTTON_WIDTH
+  );
 
   const styleVariables = {
     style,
@@ -192,8 +200,10 @@ export function getResponsiveRebrandedStyleVariables({
     minHeight,
     maxHeight,
     minWidth,
+    minDualWidth,
     maxWidth,
     fontSize,
+    padding,
   };
 
   return styleVariables;

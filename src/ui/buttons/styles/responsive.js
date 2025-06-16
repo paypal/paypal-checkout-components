@@ -380,15 +380,31 @@ const generateRebrandedButtonSizeStyles = ({
 |}): string => {
   return Object.keys(BUTTON_REDESIGN_STYLE)
     .map((redesign_size) => {
-      const { buttonHeight, labelHeight, pillBorderRadius, gap, fontSize, minHeight, maxHeight, minWidth } =
+      const { buttonHeight, pillBorderRadius, gap, fontSize, minHeight, maxHeight, minWidth, minDualWidth, padding } =
         getResponsiveRebrandedStyleVariables({
           height,
           redesign_size,
         });
 
-      return `
-        @media only screen (min-width: ${minWidth}px) and (min-height: ${minHeight}px) {
-          .${CLASS.BUTTON_LABEL} {
+      const widthBasedStyles = `
+        @media only screen and (min-width: ${minWidth}px) and (min-height: ${minHeight}px) {
+          .${CLASS.BUTTON_ROW} {
+              height: ${buttonHeight}px;
+              vertical-align: top;
+              min-height: ${height || minHeight}px;;
+              max-height: ${height || maxHeight}px;
+          }
+
+          .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+              margin: 0px 4vw;
+              box-sizing: border-box;
+              height: ${disableMaxHeight ? "76%" : `${buttonHeight * 0.76}px`};
+          }
+        }`;
+
+      const heightBasedStyles = `
+        @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+          .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               gap: ${gap}px;
           }
 
@@ -399,14 +415,7 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
-            padding-bottom: ${labelHeight * 0.08}px;
-          }
-
-          .${CLASS.BUTTON_ROW} {
-              height: ${disableMaxHeight ? "100%" : `${buttonHeight}px`};
-              vertical-align: top;
-              ${disableMaxHeight ? "" : ` min-height: ${height || minHeight}px;`};
-              ${disableMaxHeight ? "" : `max-height: ${height || maxHeight}px;`}
+            padding-bottom: ${padding}px;
           }
 
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
@@ -426,11 +435,6 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.BUTTON} .${CLASS.SPINNER} {
               height: ${perc(buttonHeight, 50)}px;
               width: ${perc(buttonHeight, 50)}px;
-          }
-
-          .${CLASS.BUTTON} > .${CLASS.BUTTON_LABEL} {
-              margin: 0px 4vw;
-              box-sizing: border-box;
           }
 
           .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}] .${CLASS.BUTTON_LABEL} {
@@ -513,6 +517,7 @@ const generateRebrandedButtonSizeStyles = ({
               width: ${buttonHeight}px;
           }
         }`;
+      return widthBasedStyles + heightBasedStyles;
     })
     .join("\n");
 };
@@ -557,45 +562,47 @@ export function buttonResponsiveStyle({
     : "";
 
   const baseStyles = `
-      .${CLASS.BUTTON} {
-          display: inline-block;
-          text-align: center;
-          height: 100%;
-      }
-      // border radius
-      .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
-        ${borderRadius && isBorderRadiusNumber(borderRadius) ? `border-radius: ${borderRadius}px` : ""};
-      }
-      .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
-          border-radius: 0px;
-      }
-      .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
-          border-radius: 4px;
-      }
+    .${CLASS.BUTTON} {
+        display: inline-block;
+        text-align: center;
+        height: 100%;
+    }
+    
+    // border radius
+    .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
+      ${borderRadius && isBorderRadiusNumber(borderRadius) ? `border-radius: ${borderRadius}px` : ""};
+    }
+    .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
+        border-radius: 0px;
+    }
+    .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
+        border-radius: 4px;
+    }
 
-      // menu button - border radium
-      .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
-          ${
-            borderRadius && isBorderRadiusNumber(borderRadius)
-              ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
-              : ""
-          };
-      }
+    // menu button - border radius
+    .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
+        ${
+          borderRadius && isBorderRadiusNumber(borderRadius)
+            ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
+            : ""
+        };
+    }
 
-      .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} .menu-button {
-          border-top-right-radius: 0px;
-          border-bottom-right-radius: 0px;
-      }
+    .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} .menu-button {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
 
-      .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} .menu-button {
-          border-top-right-radius: 4px;
-          border-bottom-right-radius: 4px;
-      }
+    .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} .menu-button {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
 
-      .${CLASS.CARD} {
-          display: inline-block;
-          height: 100%;
-      }`;
+    .${CLASS.CARD} {
+        display: inline-block;
+        height: 100%;
+    }`;
+
   const rebrandedStyles = shouldApplyRebrandedStyles ? buttonRedesignSizeStyles : buttonSizeStyles + disableMaxHeightStyles;
 
   return baseStyles + rebrandedStyles;
