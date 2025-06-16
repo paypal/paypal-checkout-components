@@ -136,3 +136,42 @@ describe(`venmo on tablet `, () => {
     done();
   });
 });
+
+describe("venmo eligibility", () => {
+  beforeEach(() => {
+    createTestContainer();
+    window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
+  });
+
+  afterEach(() => {
+    destroyTestContainer();
+  });
+
+  it("should return false for isEligible when eligibility is false", (done) => {
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      false
+    );
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    done();
+  });
+
+  it("should return true for isEligible when eligibility is true", (done) => {
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true
+    );
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), true);
+    done();
+  });
+});
