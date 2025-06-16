@@ -174,4 +174,29 @@ describe("venmo eligibility", () => {
     assert.equal(paypalButtons.isEligible(), true);
     done();
   });
+
+  it("should return false for isEligible when eligibility is undefined", (done) => {
+    // Remove the eligibility property
+    delete window.__TEST_FUNDING_ELIGIBILITY__[fundingSource].eligible;
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    done();
+  });
+
+  it("should return false for isEligible when funding source is missing from eligibility object", (done) => {
+    // Remove the funding source from eligibility object
+    const original = window.__TEST_FUNDING_ELIGIBILITY__[fundingSource];
+    delete window.__TEST_FUNDING_ELIGIBILITY__[fundingSource];
+
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    // Restore for other tests
+    window.__TEST_FUNDING_ELIGIBILITY__[fundingSource] = original;
+    done();
+  });
 });
