@@ -1,3 +1,9 @@
+## <small>5.0.369 (2025-06-18)</small>
+
+* Update/app switch hash delimiter (#2506) ([fe3e256](https://github.com/paypal/paypal-checkout-components/commit/fe3e256)), closes [#2506](https://github.com/paypal/paypal-checkout-components/issues/2506)
+
+
+
 ## <small>5.0.368 (2025-06-18)</small>
 
 * feat(venmo): eligibility (#2507) ([faa6b27](https://github.com/paypal/paypal-checkout-components/commit/faa6b27)), closes [#2507](https://github.com/paypal/paypal-checkout-components/issues/2507)
