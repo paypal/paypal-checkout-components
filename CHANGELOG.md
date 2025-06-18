@@ -1,3 +1,9 @@
+## <small>5.0.368 (2025-06-18)</small>
+
+* feat(venmo): eligibility (#2507) ([faa6b27](https://github.com/paypal/paypal-checkout-components/commit/faa6b27)), closes [#2507](https://github.com/paypal/paypal-checkout-components/issues/2507)
+
+
+
 ## <small>5.0.367 (2025-06-11)</small>
 
 * Update/powered by redesign (#2499) ([8bc0ce8](https://github.com/paypal/paypal-checkout-components/commit/8bc0ce8)), closes [#2499](https://github.com/paypal/paypal-checkout-components/issues/2499)
