@@ -182,7 +182,6 @@ export function getResponsiveRebrandedStyleVariables({
 
   const buttonHeight = height || defaultHeight;
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
-  const labelHeight = roundUp(perc(buttonHeight, 76), 1);
 
   const minDualWidth = Math.max(
     Math.round(
@@ -194,7 +193,6 @@ export function getResponsiveRebrandedStyleVariables({
   const styleVariables = {
     style,
     buttonHeight,
-    labelHeight,
     pillBorderRadius,
     gap,
     minHeight,
