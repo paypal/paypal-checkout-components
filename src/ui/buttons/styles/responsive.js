@@ -487,7 +487,6 @@ const generateRebrandedButtonSizeStyles = ({
     .map((redesign_size) => {
       const {
         buttonHeight,
-        transformPerc,
         pillBorderRadius,
         gap,
         fontSize,
@@ -546,7 +545,7 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
-            padding-bottom: ${padding / fontSize}rem;
+              padding-bottom: ${padding / fontSize}rem;
           }
 
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
