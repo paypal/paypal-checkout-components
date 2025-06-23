@@ -1,3 +1,27 @@
+## <small>5.0.369 (2025-06-18)</small>
+
+* Update/app switch hash delimiter (#2506) ([fe3e256](https://github.com/paypal/paypal-checkout-components/commit/fe3e256)), closes [#2506](https://github.com/paypal/paypal-checkout-components/issues/2506)
+
+
+
+## <small>5.0.368 (2025-06-18)</small>
+
+* feat(venmo): eligibility (#2507) ([faa6b27](https://github.com/paypal/paypal-checkout-components/commit/faa6b27)), closes [#2507](https://github.com/paypal/paypal-checkout-components/issues/2507)
+
+
+
+## <small>5.0.367 (2025-06-11)</small>
+
+* Update/powered by redesign (#2499) ([8bc0ce8](https://github.com/paypal/paypal-checkout-components/commit/8bc0ce8)), closes [#2499](https://github.com/paypal/paypal-checkout-components/issues/2499)
+
+
+
+## <small>5.0.366 (2025-06-04)</small>
+
+* update test (#2504) ([23c6f7e](https://github.com/paypal/paypal-checkout-components/commit/23c6f7e)), closes [#2504](https://github.com/paypal/paypal-checkout-components/issues/2504)
+
+
+
 ## <small>5.0.365 (2025-05-21)</small>
 
 * Updated interactive state colors for rebrand_blue button color.  (#2500) ([197c052](https://github.com/paypal/paypal-checkout-components/commit/197c052)), closes [#2500](https://github.com/paypal/paypal-checkout-components/issues/2500)

@@ -330,6 +330,7 @@ export type ButtonStyle = {|
   disableMaxHeight?: boolean,
   borderRadius?: number,
   shouldApplyRebrandedStyles: boolean,
+  isButtonColorABTestMerchant: boolean,
 |};
 
 export type ButtonStyleInputs = {|
@@ -516,6 +517,7 @@ type HidePayPalAppSwitchOverlay = {|
 type ButtonColor = {|
   shouldApplyRebrandedStyles: boolean,
   color: $Values<typeof BUTTON_COLOR>,
+  isButtonColorABTestMerchant: boolean,
 |};
 
 type ColorABTestStorage = {|
@@ -738,6 +740,7 @@ export function determineRandomButtonColor({
   return {
     shouldApplyRebrandedStyles,
     color: buttonColor,
+    isButtonColorABTestMerchant: true,
   };
 }
 
@@ -876,6 +879,7 @@ export function getColorForFullRedesign({
   return {
     color: buttonColor,
     shouldApplyRebrandedStyles: true,
+    isButtonColorABTestMerchant: false,
   };
 }
 
@@ -953,6 +957,7 @@ export function getButtonColor({
           fundingSource,
           style,
         }),
+        isButtonColorABTestMerchant: false,
       };
   }
 }
@@ -971,7 +976,8 @@ export function normalizeButtonStyle(
 
   props = props || getDefaultButtonPropsInput();
   const { fundingSource, buttonColor } = props;
-  const { color, shouldApplyRebrandedStyles } = buttonColor || {};
+  const { color, shouldApplyRebrandedStyles, isButtonColorABTestMerchant } =
+    buttonColor || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -1118,6 +1124,7 @@ export function normalizeButtonStyle(
     disableMaxHeight,
     borderRadius,
     shouldApplyRebrandedStyles,
+    isButtonColorABTestMerchant,
   };
 }
 

@@ -81,6 +81,7 @@ describe("determineRandomButtonColor", () => {
     expect(result).toEqual({
       shouldApplyRebrandedStyles: true,
       color: BUTTON_COLOR.REBRAND_BLUE,
+      isButtonColorABTestMerchant: true,
     });
   });
 
@@ -94,6 +95,7 @@ describe("determineRandomButtonColor", () => {
     expect(result).toEqual({
       shouldApplyRebrandedStyles: true,
       color: BUTTON_COLOR.REBRAND_DARKBLUE,
+      isButtonColorABTestMerchant: true,
     });
   });
 
@@ -107,6 +109,7 @@ describe("determineRandomButtonColor", () => {
     expect(result).toEqual({
       shouldApplyRebrandedStyles: false,
       color: BUTTON_COLOR.BLACK,
+      isButtonColorABTestMerchant: true,
     });
   });
 
@@ -120,6 +123,7 @@ describe("determineRandomButtonColor", () => {
     expect(result).toEqual({
       shouldApplyRebrandedStyles: false,
       color: BUTTON_COLOR.GOLD,
+      isButtonColorABTestMerchant: true,
     });
   });
 });
@@ -494,6 +498,7 @@ describe("getColorForFullRedesign", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -507,6 +512,7 @@ describe("getColorForFullRedesign", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_DARKBLUE,
       shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -520,6 +526,7 @@ describe("getColorForFullRedesign", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -533,6 +540,7 @@ describe("getColorForFullRedesign", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_DARKBLUE,
       shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -577,6 +585,7 @@ describe("getColorForFullRedesign", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -740,6 +749,7 @@ describe("getButtonColor", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.GOLD,
       shouldApplyRebrandedStyles: false,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -765,7 +775,34 @@ describe("getButtonColor", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
     });
+  });
+
+  it("should return isButtonColorABTestMerchant === true for eligible AB Test Merchants and SDK configurations", () => {
+    const style = { color: BUTTON_COLOR.BLUE };
+    const storageState = { get: vi.fn(), set: vi.fn() };
+    const sessionID = "test-session";
+    const fundingSource = FUNDING.PAYPAL;
+    const experiment = {
+      isPaypalRebrandEnabled: true,
+      isPaypalRebrandABTestEnabled: true,
+    };
+
+    const result = getButtonColor({
+      experiment,
+      // $FlowFixMe
+      style,
+      sessionID,
+      storageState,
+      fundingSource,
+    });
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        isButtonColorABTestMerchant: true,
+      })
+    );
   });
 
   it("should return the default color for non-PayPal funding sources", () => {
@@ -790,6 +827,7 @@ describe("getButtonColor", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: false,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -814,6 +852,7 @@ describe("getButtonColor", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.WHITE,
       shouldApplyRebrandedStyles: false,
+      isButtonColorABTestMerchant: false,
     });
   });
 
@@ -825,6 +864,7 @@ describe("getButtonColor", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.GOLD,
       shouldApplyRebrandedStyles: false,
+      isButtonColorABTestMerchant: false,
     });
   });
 });
