@@ -79,8 +79,17 @@ const generateButtonSizeStyles = ({
         CLASS.CONTAINER
       } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
                     font-size: ${max(perc(buttonHeight, 40), 10)}px;
-                    margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
                     line-height: 101%;
+                }
+
+                [${ATTRIBUTE.FUNDING_SOURCE}=
+                ${FUNDING.PAYPAL}] .${CLASS.TEXT},
+                [${ATTRIBUTE.FUNDING_SOURCE}=
+                ${FUNDING.PAYLATER}] .${CLASS.TEXT},
+                [${ATTRIBUTE.FUNDING_SOURCE}=
+                ${FUNDING.CREDIT}] .${CLASS.TEXT} 
+                {
+                    margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
