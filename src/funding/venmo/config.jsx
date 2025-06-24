@@ -22,17 +22,7 @@ export function getVenmoConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
     eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
-      /**
-       * enableVenmo checks native browser compatibility and ramp
-       * ignore above compatibility if forcing to web
-       */
-      if (
-        experiment &&
-        experiment.enableVenmo === false &&
-        experiment.venmoWebEnabled !== true &&
-        experiment.isWebViewEnabled !== true &&
-        experiment.venmoEnableWebOnNonNativeBrowser !== true
-      ) {
+      if (experiment?.enableVenmo === false) {
         return false;
       }
 
@@ -74,7 +64,7 @@ export function getVenmoConfig(): FundingSourceConfig {
       }
 
       return {
-        popup: true,
+        popup: experiment?.isWebViewEnabled ? false : true,
       };
     },
 

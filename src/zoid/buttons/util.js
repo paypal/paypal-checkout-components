@@ -120,7 +120,7 @@ export function isSupportedNativeBrowser(): boolean {
   return false;
 }
 
-export function getVenmoExperiment(): EligibilityExperiment {
+export function getVenmoEligibility(): EligibilityExperiment {
   const fundingEligibility = getFundingEligibility();
   const enableFunding = getEnableFunding();
 
@@ -150,7 +150,7 @@ export function getRenderedButtons(
     style = {},
     enableFunding = getEnableFunding(),
     fundingEligibility = getRefinedFundingEligibility(),
-    experiment = getVenmoExperiment(),
+    experiment = getVenmoEligibility(),
     applePaySupport,
     supportsPopups = userAgentSupportsPopups(),
     supportedNativeBrowser = isSupportedNativeBrowser(),
@@ -273,7 +273,7 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
 
 export function getButtonExperiments(): EligibilityExperiment {
   return {
-    ...getVenmoExperiment(),
+    ...getVenmoEligibility(),
     ...getFirstRenderExperiments(),
   };
 }
