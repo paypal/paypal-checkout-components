@@ -248,7 +248,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     maxWidth: 550,
     gap: 6,
     fontSize: 22,
-    padding: 2,
+    padding: 0,
   },
 
   [BUTTON_REDESIGN_SIZE.XL_BIG]: {
@@ -262,7 +262,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     padding: 2,
   },
 
-  [BUTTON_REDESIGN_SIZE.XXL_SMALL]: {
+  [BUTTON_REDESIGN_SIZE.XXL]: {
     defaultHeight: 65,
     minHeight: 65,
     maxHeight: 100,
@@ -270,6 +270,6 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     maxWidth: 750,
     gap: 7,
     fontSize: 26,
-    padding: 2,
+    padding: 0,
   },
 };

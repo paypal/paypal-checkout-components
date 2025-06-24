@@ -78,8 +78,8 @@ const generateButtonSizeStyles = ({
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
         CLASS.CONTAINER
       } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-                    font-size: ${max(perc(buttonHeight, 40), 10)}px;
-                    line-height: 101%;
+                    font-size: ${max(perc(buttonHeight, 36), 10)}px;
+                    line-height: ${labelHeight}px;
                 }
 
                 [${ATTRIBUTE.FUNDING_SOURCE}=
@@ -270,6 +270,7 @@ const generateButtonSizeStyles = ({
                       max(perc(buttonHeight, textPercPercentage), 10),
                       10
                     )}px;
+                    line-height: ${smallerLabelHeight}px;
                 }
 
 

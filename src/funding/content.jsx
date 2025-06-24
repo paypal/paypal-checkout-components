@@ -348,7 +348,7 @@ export const componentContent: ContentMap = {
           {logo}
           {period ? (
             <Text animate optional>
-              Pay up to {period.toString()}x without interest
+              Pay up to {period.toString()}x<br /> without interest
             </Text>
           ) : (
             <Text animate optional>
@@ -1189,7 +1189,8 @@ export const componentContent: ContentMap = {
           {logo}
           {period ? (
             <Text animate optional>
-              Pague em até {period.toString()}x sem juros
+              Pague em até
+              <br /> {period.toString()}x sem juros
             </Text>
           ) : (
             <Text animate optional>

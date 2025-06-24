@@ -54,9 +54,7 @@ export const BUTTON_REDESIGN_SIZE = {
   LARGE_BIG: ("largeBig": "largeBig"),
   XL_SMALL: ("xlSmall": "xlSmall"),
   XL_BIG: ("xlBig": "xlBig"),
-  XXL_SMALL: ("xxlSmall": "xxlSmall"),
-  XXL_BIG: ("xxlBig": "xxlBig"),
-  XXXL: ("xxxl": "xxxl"),
+  XXL: ("xxl": "xxl"),
 };
 
 export const BUTTON_DISABLE_MAX_HEIGHT_SIZE = {
