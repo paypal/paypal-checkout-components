@@ -9,7 +9,7 @@ import {
   getLocale,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
+import { FUNDING, FPTI_KEY } from "@paypal/sdk-constants/src";
 import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
@@ -271,6 +271,13 @@ export const buildHostedButtonCreateOrder = ({
       });
       // $FlowIssue request returns ZalgoPromise
       const { body } = response;
+      getLogger()
+        .track({
+          [FPTI_KEY.CONTEXT_ID]: body.context_id,
+          [FPTI_KEY.EVENT_NAME]: "ncps_create_order",
+          tracking_id: userInputs?.tracking_id,
+        })
+        .flush();
       return body.context_id || onError(body.name);
     } catch (e) {
       return onError("REQUEST_FAILED");
@@ -284,6 +291,9 @@ export const buildHostedButtonOnApprove = ({
   merchantId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
+    const userInputs =
+      window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
+
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
     const method = "POST";
     const headers = await buildRequestHeaders({ url, method, enableDPoP });
@@ -299,6 +309,14 @@ export const buildHostedButtonOnApprove = ({
         context_id: data.orderID,
       }),
     }).then((response) => {
+      getLogger()
+        .track({
+          [FPTI_KEY.CONTEXT_ID]: data.orderID,
+          [FPTI_KEY.EVENT_NAME]: "ncps_onapprove_order",
+          tracking_id: userInputs?.tracking_id,
+        })
+        .flush();
+
       // The "Debit or Credit Card" button does not open a popup
       // so we need to redirect to the thank you page for buyers who complete
       // a checkout via "Debit or Credit Card".
@@ -322,6 +340,9 @@ export const buildHostedButtonOnShippingAddressChange = ({
 }: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
+      const userInputs =
+        window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
+
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
@@ -354,6 +375,14 @@ export const buildHostedButtonOnShippingAddressChange = ({
       if (response.status !== 200) {
         return actions.reject(errors?.ADDRESS_ERROR);
       }
+
+      getLogger()
+        .track({
+          [FPTI_KEY.CONTEXT_ID]: orderID,
+          [FPTI_KEY.EVENT_NAME]: "ncps_shipping_address_change",
+          tracking_id: userInputs?.tracking_id,
+        })
+        .flush();
     };
   }
 };
@@ -365,6 +394,9 @@ export const buildHostedButtonOnShippingOptionsChange = ({
 }: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
+      const userInputs =
+        window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
+
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
@@ -386,6 +418,14 @@ export const buildHostedButtonOnShippingOptionsChange = ({
       if (response.status !== 200) {
         return actions.reject(errors?.METHOD_UNAVAILABLE);
       }
+
+      getLogger()
+        .track({
+          [FPTI_KEY.CONTEXT_ID]: orderID,
+          [FPTI_KEY.EVENT_NAME]: "ncps_shipping_options_change",
+          tracking_id: userInputs?.tracking_id,
+        })
+        .flush();
     };
   }
 };

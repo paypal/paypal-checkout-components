@@ -39,6 +39,8 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getLocale: () => ({ lang: "en", country: "US" }),
     getLogger: vi.fn(() => ({
       error: vi.fn(),
+      track: vi.fn(),
+      flush: vi.fn(),
     })),
   };
 });
