@@ -214,11 +214,16 @@ export function getElementFromSelector(
     : selector;
 }
 
-export function getTrackingId(HostedButtonSelector: string): string {
-  const ele = getElementFromSelector(
+export function getTrackingId(
+  HostedButtonSelector: string | HTMLElement
+): string {
+  if (typeof HostedButtonSelector !== "string") {
+    return "";
+  }
+  const ele = document.querySelector(
     `${HostedButtonSelector} input[name="uuid"]`
   );
-  return ele && ele?.value ? ele.value : "";
+  return ele ? ele.getAttribute("value") || "" : "";
 }
 
 /**
