@@ -214,6 +214,13 @@ export function getElementFromSelector(
     : selector;
 }
 
+export function getTrackingId(HostedButtonSelector: string): string {
+  const ele = getElementFromSelector(
+    `${HostedButtonSelector} input[name="uuid"]`
+  );
+  return ele && ele?.value ? ele.value : "";
+}
+
 /**
  * Attaches form fields (html) to the given selector, and
  * initializes window.__pp_form_fields (htmlScript).
@@ -246,6 +253,7 @@ export const buildHostedButtonCreateOrder = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
+  trackingId,
 }: GetCallbackProps): CreateOrder => {
   return async (data) => {
     const userInputs =
@@ -275,7 +283,7 @@ export const buildHostedButtonCreateOrder = ({
         .track({
           [FPTI_KEY.CONTEXT_ID]: body.context_id,
           [FPTI_KEY.EVENT_NAME]: "ncps_create_order",
-          tracking_id: userInputs?.tracking_id,
+          tracking_id: trackingId,
         })
         .flush();
       return body.context_id || onError(body.name);
@@ -289,11 +297,9 @@ export const buildHostedButtonOnApprove = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
+  trackingId,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
-    const userInputs =
-      window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
-
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
     const method = "POST";
     const headers = await buildRequestHeaders({ url, method, enableDPoP });
@@ -313,7 +319,7 @@ export const buildHostedButtonOnApprove = ({
         .track({
           [FPTI_KEY.CONTEXT_ID]: data.orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_onapprove_order",
-          tracking_id: userInputs?.tracking_id,
+          tracking_id: trackingId,
         })
         .flush();
 
@@ -337,12 +343,10 @@ export const buildHostedButtonOnShippingAddressChange = ({
   enableDPoP,
   hostedButtonId,
   shouldIncludeShippingCallbacks,
+  trackingId,
 }: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
-      const userInputs =
-        window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
-
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
@@ -380,7 +384,7 @@ export const buildHostedButtonOnShippingAddressChange = ({
         .track({
           [FPTI_KEY.CONTEXT_ID]: orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_shipping_address_change",
-          tracking_id: userInputs?.tracking_id,
+          tracking_id: trackingId,
         })
         .flush();
     };
@@ -391,12 +395,10 @@ export const buildHostedButtonOnShippingOptionsChange = ({
   enableDPoP,
   hostedButtonId,
   shouldIncludeShippingCallbacks,
+  trackingId,
 }: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
-      const userInputs =
-        window[`__pp_form_fields_${hostedButtonId}`]?.getUserInputs?.() || {};
-
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/shipping-options`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
@@ -423,7 +425,7 @@ export const buildHostedButtonOnShippingOptionsChange = ({
         .track({
           [FPTI_KEY.CONTEXT_ID]: orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_shipping_options_change",
-          tracking_id: userInputs?.tracking_id,
+          tracking_id: trackingId,
         })
         .flush();
     };
