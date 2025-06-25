@@ -1,3 +1,9 @@
+## <small>5.0.370 (2025-06-25)</small>
+
+* feat(venmo): webview eligibility (#2509) ([441de0e](https://github.com/paypal/paypal-checkout-components/commit/441de0e)), closes [#2509](https://github.com/paypal/paypal-checkout-components/issues/2509)
+
+
+
 ## <small>5.0.369 (2025-06-18)</small>
 
 * Update/app switch hash delimiter (#2506) ([fe3e256](https://github.com/paypal/paypal-checkout-components/commit/fe3e256)), closes [#2506](https://github.com/paypal/paypal-checkout-components/issues/2506)
