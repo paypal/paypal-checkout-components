@@ -112,11 +112,9 @@ export type ButtonsComponent = ZoidComponent<
   ButtonExtensions
 >;
 
-// $FlowIssue
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
 
-  // $FlowIssue
   return create({
     tag: "paypal-buttons",
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
@@ -125,7 +123,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     getExtensions: (parent) => {
       return {
         hasReturned: () => {
-          return isAppSwitchResumeFlow();
+          return (
+            isAppSwitchResumeFlow() &&
+            !parent.getHelpers()?.state?.appSwitchState
+          );
         },
         resume: () => {
           const resumeFlowParams = getAppSwitchResumeParams();
@@ -356,22 +357,28 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => (event) => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-hashchange",
-            payload: {
-              url: event.newURL,
-            },
-          });
-        },
+        value:
+          ({ state }) =>
+          (event) => {
+            state.appSwitchState = "returned";
+
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-hashchange",
+              payload: {
+                url: event.newURL,
+              },
+            });
+          },
       },
 
       listenForHashChanges: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            state.appSwitchState = "pending";
+
             window.addEventListener("hashchange", props.hashChangeHandler);
           },
       },
@@ -390,24 +397,29 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => () => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-visibilitychange",
-            payload: {
-              url: window.location.href,
+        value:
+          ({ state }) =>
+          () => {
+            state.appSwitchState = "returned";
 
-              visibilityState: document.visibilityState,
-            },
-          });
-        },
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-visibilitychange",
+              payload: {
+                url: window.location.href,
+                visibilityState: document.visibilityState,
+              },
+            });
+          },
       },
 
       listenForVisibilityChange: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            state.appSwitchState = "pending";
+
             window.addEventListener(
               "visibilitychange",
               props.visibilityChangeHandler
