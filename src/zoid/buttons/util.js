@@ -128,7 +128,8 @@ export function getVenmoEligibility(): EligibilityExperiment {
     enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
 
   return {
-    enableVenmo: fundingEligibility?.venmo?.eligible && isVenmoFundingEnabled,
+    enableVenmo:
+      (fundingEligibility?.venmo?.eligible || false) && isVenmoFundingEnabled,
   };
 }
 

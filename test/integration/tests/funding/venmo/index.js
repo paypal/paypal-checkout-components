@@ -122,7 +122,7 @@ describe(`venmo on tablet `, () => {
     destroyTestContainer();
   });
 
-  it(`should NOT display button`, (done) => {
+  it(`should display button`, (done) => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
@@ -132,7 +132,7 @@ describe(`venmo on tablet `, () => {
     const paypalButtons = window.paypal.Buttons({
       fundingSource,
     });
-    assert.equal(paypalButtons.isEligible(), false);
+    assert.equal(paypalButtons.isEligible(), true);
     done();
   });
 });

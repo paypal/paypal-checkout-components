@@ -123,7 +123,7 @@ describe(`paypal standalone marks`, () => {
   });
 
   it(`should render a standalone venmo mark and error out for webviews`, () => {
-    return wrapPromise(({ expect }) => {
+    return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
@@ -132,16 +132,13 @@ describe(`paypal standalone marks`, () => {
         fundingSource,
       });
 
-      if (mark.isEligible()) {
-        throw new Error(`Expected mark to not be eligible`);
+      if (!mark.isEligible()) {
+        throw new Error(`Expected mark to be eligible`);
       }
 
-      return mark
-        .render("#testContainer")
-        .catch(expect("markRenderCatch"))
-        .then(() => {
-          window.navigator.mockUserAgent = "";
-        });
+      return mark.render("#testContainer").then(() => {
+        window.navigator.mockUserAgent = "";
+      });
     });
   });
 

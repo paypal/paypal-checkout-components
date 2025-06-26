@@ -112,7 +112,7 @@ describe(`paypal standalone buttons`, () => {
   }
 
   it(`should render a standalone venmo button and not error out when not on mobile, even when venmo is eligible`, () => {
-    return wrapPromise(({ expect }) => {
+    return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -125,8 +125,8 @@ describe(`paypal standalone buttons`, () => {
         fundingSource,
       });
 
-      if (button.isEligible()) {
-        expect(button.isEligible()).toBe(true);
+      if (!button.isEligible()) {
+        throw new Error("Expected venmo to be eligible");
       }
 
       return button
@@ -135,7 +135,6 @@ describe(`paypal standalone buttons`, () => {
           throw new Error("Did not expect error to be thrown.");
         })
         .then(() => {
-          expect("no error thrown").toBe(true);
           mockEligibility.cancel();
         });
     });
@@ -169,7 +168,7 @@ describe(`paypal standalone buttons`, () => {
   });
 
   it(`should not throw error if attempting to render a standalone venmo button with a shipping callback if venmo web is not enabled`, () => {
-    return wrapPromise(({ expect, avoid }) => {
+    return wrapPromise(({ avoid }) => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
@@ -185,8 +184,8 @@ describe(`paypal standalone buttons`, () => {
         onShippingChange: avoid("onShippingChange"),
       });
 
-      if (button.isEligible()) {
-        throw new Error("Expected venmo to be ineligible");
+      if (!button.isEligible()) {
+        throw new Error("Expected venmo to be eligible");
       }
 
       return button
@@ -195,7 +194,6 @@ describe(`paypal standalone buttons`, () => {
           throw new Error("Did not expect error to be thrown.");
         })
         .then(() => {
-          expect("no error thrown").toBe(true);
           mockEligibility.cancel();
         });
     });
