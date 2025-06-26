@@ -78,10 +78,9 @@ describe(`PayPal app switch overlay`, () => {
 
               xprops.hidePayPalAppSwitchOverlay({ close: noop });
 
+              clearTimeout(timeout);
               done();
             }, 100);
-
-            clearTimeout(timeout);
           },
         },
         onApprove(): void {
