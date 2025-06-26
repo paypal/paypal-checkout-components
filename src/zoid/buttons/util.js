@@ -126,16 +126,10 @@ export function getVenmoEligibility(): EligibilityExperiment {
 
   const isVenmoFundingEnabled =
     enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
-  const isNativeSupported = isSupportedNativeBrowser();
-  if (isDevice()) {
-    return {
-      enableVenmo: isVenmoFundingEnabled && isNativeSupported,
-    };
-  } else {
-    return {
-      enableVenmo: fundingEligibility?.venmo?.eligible || false,
-    };
-  }
+
+  return {
+    enableVenmo: fundingEligibility?.venmo?.eligible && isVenmoFundingEnabled,
+  };
 }
 
 export function getRenderedButtons(

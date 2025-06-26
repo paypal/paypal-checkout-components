@@ -6,7 +6,7 @@ import {
   VenmoLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
-import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
+import { DISPLAY_ONLY_VALUES } from "@paypal/sdk-constants/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -26,13 +26,6 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      /**
-       * Shipping callbacks will not work with Venmo unless venmo web is enabled.
-       */
-      if (!experiment?.venmoWebEnabled && shippingChange) {
-        return false;
-      }
-
       if (
         shippingChange &&
         displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)
@@ -48,24 +41,6 @@ export function getVenmoConfig(): FundingSourceConfig {
       }
 
       return true;
-    },
-
-    requires: ({ experiment, platform }) => {
-      if (
-        platform === PLATFORM.MOBILE &&
-        experiment &&
-        experiment.venmoWebEnabled !== true &&
-        experiment.venmoEnableWebOnNonNativeBrowser !== true
-      ) {
-        return {
-          native: experiment.isWebViewEnabled ? false : true,
-          popup: experiment.isWebViewEnabled ? false : true,
-        };
-      }
-
-      return {
-        popup: experiment?.isWebViewEnabled ? false : true,
-      };
     },
 
     Logo: ({ logoColor, optional }) => {
