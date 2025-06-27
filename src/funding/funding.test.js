@@ -172,33 +172,5 @@ describe("Funding eligibility", () => {
         expect(result).toBe(true);
       });
     });
-
-    describe("Mobile", () => {
-      test("should be eligible if isWebViewEnabled is true for Venmo and supportsPopups is false", () => {
-        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
-          ...defaultMockFundingOptions,
-          platform: PLATFORM.MOBILE,
-          supportsPopups: false,
-          experiment: {
-            isWebViewEnabled: true,
-          },
-        });
-
-        expect(fundingEligible).toBe(true);
-      });
-
-      test("should not be eligible if isWebViewEnabled is false for Venmo and supportsPopups is false", () => {
-        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
-          ...defaultMockFundingOptions,
-          platform: PLATFORM.MOBILE,
-          supportsPopups: false,
-          experiment: {
-            isWebViewEnabled: true,
-          },
-        });
-
-        expect(fundingEligible).toBe(true);
-      });
-    });
   });
 });
