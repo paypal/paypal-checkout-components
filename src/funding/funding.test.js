@@ -1,5 +1,5 @@
 /* @flow */
-import { COMPONENTS, FUNDING, PLATFORM } from "@paypal/sdk-constants/src";
+import { COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
 import { describe, expect } from "vitest";
 
 import { BUTTON_FLOW } from "../constants";
