@@ -72,16 +72,13 @@ describe(`PayPal app switch overlay`, () => {
 
             getElementRecursive(".paypal-checkout-continue").click();
 
-            // timeout is to allow time for focus to be called
-            setTimeout(() => {
-              if (!focusCalled) {
-                done(new Error("Expected focus function to be called"));
-              }
+            if (!focusCalled) {
+              done(new Error("Expected focus function to be called"));
+            }
 
-              xprops.hidePayPalAppSwitchOverlay({ close: noop });
+            xprops.hidePayPalAppSwitchOverlay({ close: noop });
 
-              done();
-            }, 300);
+            done();
           },
         },
         onApprove(): void {
