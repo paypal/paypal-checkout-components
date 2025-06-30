@@ -9,7 +9,6 @@ import {
   createTestContainer,
   destroyTestContainer,
   IPHONE6_USER_AGENT,
-  WEBVIEW_USER_AGENT,
   mockProp,
 } from "../common";
 
@@ -112,13 +111,13 @@ describe(`paypal standalone buttons`, () => {
     });
   }
 
-  it(`should render a standalone venmo button and error out when not on mobile, even when venmo is eligible`, () => {
-    return wrapPromise(({ expect }) => {
+  it(`should render a standalone venmo button and not error out when not on mobile, even when venmo is eligible`, () => {
+    return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        false
+        true
       );
 
       const button = window.paypal.Buttons({
@@ -126,43 +125,22 @@ describe(`paypal standalone buttons`, () => {
         fundingSource,
       });
 
-      if (button.isEligible()) {
-        throw new Error(`Expected button to not be eligible`);
+      if (!button.isEligible()) {
+        throw new Error("Expected venmo to be eligible");
       }
 
       return button
         .render("#testContainer")
-        .catch(expect("buttonRenderCatch"))
+        .catch(() => {
+          throw new Error("Did not expect error to be thrown.");
+        })
         .then(() => {
           mockEligibility.cancel();
         });
     });
   });
 
-  it(`should render a standalone venmo button and error out for webviews`, () => {
-    return wrapPromise(({ expect }) => {
-      const fundingSource = FUNDING.VENMO;
-      window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
-
-      const button = window.paypal.Buttons({
-        test: {},
-        fundingSource,
-      });
-
-      if (button.isEligible()) {
-        throw new Error(`Expected button to not be eligible`);
-      }
-
-      return button
-        .render("#testContainer")
-        .catch(expect("buttonRenderCatch"))
-        .then(() => {
-          window.navigator.mockUserAgent = "";
-        });
-    });
-  });
-
-  it(`should render a standalone venmo button with a shipping callback and venmo web enabled`, () => {
+  it(`should render a standalone venmo button with a shipping callback`, () => {
     return wrapPromise(({ avoid }) => {
       const fundingSource = FUNDING.VENMO;
 
@@ -171,11 +149,6 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
-      );
-      const mockVenmoWebExperiment = mockProp(
-        window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-        "venmoWebEnabled",
         true
       );
 
@@ -190,13 +163,12 @@ describe(`paypal standalone buttons`, () => {
 
       return button.render("#testContainer").then(() => {
         mockEligibility.cancel();
-        mockVenmoWebExperiment.cancel();
       });
     });
   });
 
-  it(`should throw error if attempting to render a standalone venmo button with a shipping callback if venmo web is not enabled`, () => {
-    return wrapPromise(({ expect, avoid }) => {
+  it(`should not throw error if attempting to render a standalone venmo button with a shipping callback if venmo web is not enabled`, () => {
+    return wrapPromise(({ avoid }) => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
@@ -212,13 +184,15 @@ describe(`paypal standalone buttons`, () => {
         onShippingChange: avoid("onShippingChange"),
       });
 
-      if (button.isEligible()) {
-        throw new Error("Expected venmo to be ineligible");
+      if (!button.isEligible()) {
+        throw new Error("Expected venmo to be eligible");
       }
 
       return button
         .render("#testContainer")
-        .catch(expect("buttonRenderCatch"))
+        .catch(() => {
+          throw new Error("Did not expect error to be thrown.");
+        })
         .then(() => {
           mockEligibility.cancel();
         });

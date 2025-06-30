@@ -26,13 +26,6 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      /**
-       * Shipping callbacks will not work with Venmo unless venmo web is enabled.
-       */
-      if (!experiment?.venmoWebEnabled && shippingChange) {
-        return false;
-      }
-
       if (
         shippingChange &&
         displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)
@@ -54,7 +47,6 @@ export function getVenmoConfig(): FundingSourceConfig {
       if (
         platform === PLATFORM.MOBILE &&
         experiment &&
-        experiment.venmoWebEnabled !== true &&
         experiment.venmoEnableWebOnNonNativeBrowser !== true
       ) {
         return {
