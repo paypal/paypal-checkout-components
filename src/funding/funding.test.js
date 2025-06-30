@@ -1,5 +1,5 @@
 /* @flow */
-import { COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
+import { COMPONENTS, FUNDING, PLATFORM } from "@paypal/sdk-constants/src";
 import { describe, expect } from "vitest";
 
 import { BUTTON_FLOW } from "../constants";
@@ -170,6 +170,34 @@ describe("Funding eligibility", () => {
           hasShippingCallback: false,
         });
         expect(result).toBe(true);
+      });
+    });
+
+    describe("Mobile", () => {
+      test("should be eligible if isWebViewEnabled is true for Venmo and supportsPopups is false", () => {
+        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
+          ...defaultMockFundingOptions,
+          platform: PLATFORM.MOBILE,
+          supportsPopups: false,
+          experiment: {
+            isWebViewEnabled: true,
+          },
+        });
+
+        expect(fundingEligible).toBe(true);
+      });
+
+      test("should not be eligible if isWebViewEnabled is false for Venmo and supportsPopups is false", () => {
+        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
+          ...defaultMockFundingOptions,
+          platform: PLATFORM.MOBILE,
+          supportsPopups: false,
+          experiment: {
+            isWebViewEnabled: true,
+          },
+        });
+
+        expect(fundingEligible).toBe(true);
       });
     });
   });
