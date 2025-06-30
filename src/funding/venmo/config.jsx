@@ -22,6 +22,7 @@ export function getVenmoConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
     eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+      // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
       }
@@ -44,20 +45,18 @@ export function getVenmoConfig(): FundingSourceConfig {
     },
 
     requires: ({ experiment, platform }) => {
-      if (
-        platform === PLATFORM.MOBILE &&
-        experiment &&
-        experiment.venmoEnableWebOnNonNativeBrowser !== true
-      ) {
+      const isNonNativeSupported =
+        experiment?.venmoEnableWebOnNonNativeBrowser === true ||
+        experiment?.isWebViewEnabled;
+
+      if (platform === PLATFORM.MOBILE) {
         return {
-          native: experiment.isWebViewEnabled ? false : true,
-          popup: experiment.isWebViewEnabled ? false : true,
+          native: isNonNativeSupported ? false : true,
+          popup: isNonNativeSupported ? false : true,
         };
       }
 
-      return {
-        popup: experiment?.isWebViewEnabled ? false : true,
-      };
+      return {};
     },
 
     Logo: ({ logoColor, optional }) => {
