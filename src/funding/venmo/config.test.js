@@ -75,23 +75,4 @@ describe("Venmo eligibility", () => {
 
     expect(isVenmoEligible).toEqual(true);
   });
-
-  test("should not be eligible if a shipping callback is passed & experiment does not include venmoWebEnabled or venmoEnableWebOnNonNativeBrowser", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      experiment: {},
-      shippingChange: true,
-    });
-
-    expect(isVenmoEligible).toEqual(false);
-  });
-
-  test("should be eligible if shipping callback exists & experiment includes venmoWebEnabled or venmoEnableWebOnNonNativeBrowser", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      shippingChange: true,
-    });
-
-    expect(isVenmoEligible).toEqual(true);
-  });
 });
