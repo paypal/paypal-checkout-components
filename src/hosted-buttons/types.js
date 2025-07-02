@@ -132,6 +132,7 @@ export type GetCallbackProps = {|
   hostedButtonId: string,
   merchantId?: string,
   shouldIncludeShippingCallbacks?: boolean,
+  trackingId?: string,
 |};
 
 export type HostedButtonsInstance = {|
