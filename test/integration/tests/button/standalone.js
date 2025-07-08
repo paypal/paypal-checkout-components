@@ -9,6 +9,7 @@ import {
   createTestContainer,
   destroyTestContainer,
   IPHONE6_USER_AGENT,
+  WEBVIEW_USER_AGENT,
   mockProp,
 } from "../common";
 
@@ -111,13 +112,13 @@ describe(`paypal standalone buttons`, () => {
     });
   }
 
-  it(`should render a standalone venmo button and not error out when not on mobile, even when venmo is eligible`, () => {
+  it(`should render a standalone venmo button and error out when not on mobile, even when venmo is eligible`, () => {
     return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        false
       );
 
       const button = window.paypal.Buttons({
@@ -125,8 +126,8 @@ describe(`paypal standalone buttons`, () => {
         fundingSource,
       });
 
-      if (!button.isEligible()) {
-        throw new Error("Expected venmo to be eligible");
+      if (button.isEligible()) {
+        throw new Error("Expected button to not be eligible");
       }
 
       return button
@@ -136,6 +137,69 @@ describe(`paypal standalone buttons`, () => {
         })
         .then(() => {
           mockEligibility.cancel();
+        });
+    });
+  });
+
+  it(`should render a standalone venmo button and error out for webviews if not web view enabled`, () => {
+    return wrapPromise(({ expect }) => {
+      const fundingSource = FUNDING.VENMO;
+      window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+
+      const mockVenmoWebExperiment = mockProp(
+        window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+        "isWebViewEnabled",
+        false
+      );
+
+      const button = window.paypal.Buttons({
+        experiment: {
+          isWebViewEnabled: false,
+        },
+        test: {},
+        fundingSource,
+      });
+
+      if (button.isEligible()) {
+        throw new Error(`Expected button to not be eligible`);
+      }
+
+      return button
+        .render("#testContainer")
+        .catch(expect("buttonRenderCatch"))
+        .then(() => {
+          window.navigator.mockUserAgent = "";
+          mockVenmoWebExperiment.cancel();
+        });
+    });
+  });
+
+  it(`should render a standalone venmo button and not error out for webviews if web view enabled`, () => {
+    return wrapPromise(({ expect }) => {
+      const fundingSource = FUNDING.VENMO;
+      window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+
+      const mockVenmoWebExperiment = mockProp(
+        window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+        "isWebViewEnabled",
+        true
+      );
+
+      const button = window.paypal.Buttons({
+        test: {},
+        fundingSource,
+      });
+
+      if (button.isEligible()) {
+        throw new Error(`Expected button to not be eligible`);
+      }
+
+      return button
+        .render("#testContainer")
+        .catch(expect("buttonRenderCatch"))
+        .then(() => {
+          window.navigator.mockUserAgent = "";
+          mockVenmoWebExperiment.cancel();
         });
     });
   });
@@ -167,7 +231,7 @@ describe(`paypal standalone buttons`, () => {
     });
   });
 
-  it(`should not throw error if attempting to render a standalone venmo button with a shipping callback if venmo web is not enabled`, () => {
+  it(`should not throw error if attempting to render a standalone venmo button with a shipping callback`, () => {
     return wrapPromise(({ avoid }) => {
       const fundingSource = FUNDING.VENMO;
 

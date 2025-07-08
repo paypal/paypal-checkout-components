@@ -27,6 +27,8 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
+      // shipping change is not supported for native app switch and qr code flows,
+      // and vaulting is only supported for native app switch and qr code flows
       if (
         shippingChange &&
         displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)

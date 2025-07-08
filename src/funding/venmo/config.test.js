@@ -1,6 +1,7 @@
 /* @flow */
 
 import { describe, expect } from "vitest";
+import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
 
 import { BUTTON_FLOW } from "../../constants";
 
@@ -21,80 +22,135 @@ describe("Venmo eligibility", () => {
   };
   const venmoConfig = getVenmoConfig();
 
-  test("should be eligible if fundingEligibility is true and enable-funding is set", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      experiment: {
-        enableVenmo: true,
-      },
+  describe("eligible", () => {
+    test("should be eligible if fundingEligibility is true and enable-funding is set", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        experiment: {
+          enableVenmo: true,
+        },
+      });
+
+      expect(isVenmoEligible).toEqual(true);
     });
 
-    expect(isVenmoEligible).toEqual(true);
-  });
+    test("should be not eligible if fundingEligibility is false || enable-funding is not set", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        experiment: {
+          enableVenmo: false,
+        },
+      });
 
-  test("should be not eligible if fundingEligibility is false || enable-funding is not set", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      experiment: {
-        enableVenmo: false,
-      },
+      expect(isVenmoEligible).toEqual(false);
     });
 
-    expect(isVenmoEligible).toEqual(false);
-  });
+    test("should not be eligible if a shipping callback is passed and displayOnly=['vaultable']", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        shippingChange: true,
+        displayOnly: [DISPLAY_ONLY_VALUES.VAULTABLE],
+      });
 
-  test("should not be eligible if a shipping callback is passed and displayOnly=['vaultable']", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      shippingChange: true,
-      displayOnly: ["vaultable"],
+      expect(isVenmoEligible).toEqual(false);
     });
 
-    expect(isVenmoEligible).toEqual(false);
-  });
+    test("should be eligible if a shipping callback is present but not displayOnly", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        shippingChange: true,
+      });
 
-  test("should be eligible if a shipping callback is present but not displayOnly", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      shippingChange: true,
+      expect(isVenmoEligible).toEqual(true);
     });
 
-    expect(isVenmoEligible).toEqual(true);
-  });
+    test("should be eligible if displayOnly=['vaultable'] but no shipping callback is present", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        displayOnly: [DISPLAY_ONLY_VALUES.VAULTABLE],
+      });
 
-  test("should be eligible if displayOnly=['vaultable'] but no shipping callback is present", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      displayOnly: ["vaultable"],
+      expect(isVenmoEligible).toEqual(true);
     });
 
-    expect(isVenmoEligible).toEqual(true);
-  });
+    test("should be eligible if neither a shipping callback nor displayOnly is present", () => {
+      const isVenmoEligible = venmoConfig.eligible?.(baseEligibilityProps);
 
-  test("should be eligible if neither a shipping callback nor displayOnly is present", () => {
-    const isVenmoEligible = venmoConfig.eligible?.(baseEligibilityProps);
-
-    expect(isVenmoEligible).toEqual(true);
-  });
-
-  test("should not be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is false", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
+      expect(isVenmoEligible).toEqual(true);
     });
 
-    expect(isVenmoEligible).toEqual(false);
-  });
+    test("should not be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is false", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
+      });
 
-  test("should be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is true", () => {
-    const isVenmoEligible = venmoConfig.eligible?.({
-      ...baseEligibilityProps,
-      flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
-      experiment: {
-        venmoVaultWithoutPurchase: true,
-      },
+      expect(isVenmoEligible).toEqual(false);
     });
 
-    expect(isVenmoEligible).toEqual(true);
+    test("should be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is true", () => {
+      const isVenmoEligible = venmoConfig.eligible?.({
+        ...baseEligibilityProps,
+        flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
+        experiment: {
+          venmoVaultWithoutPurchase: true,
+        },
+      });
+
+      expect(isVenmoEligible).toEqual(true);
+    });
+  });
+
+  describe("requires", () => {
+    test("should not check for native or popup eligibility if platform is mobile and isWebViewEnabled is true", () => {
+      const isVenmoEligible = venmoConfig.requires?.({
+        experiment: {
+          isWebViewEnabled: true,
+        },
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(isVenmoEligible).toEqual({
+        native: false,
+        popup: false,
+      });
+    });
+
+    test("should not check for native or popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is true", () => {
+      const isVenmoEligible = venmoConfig.requires?.({
+        experiment: {
+          venmoEnableWebOnNonNativeBrowser: true,
+        },
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(isVenmoEligible).toEqual({
+        native: false,
+        popup: false,
+      });
+    });
+
+    test("should check for native and popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is false and isWebViewEnabled is false", () => {
+      const isVenmoEligible = venmoConfig.requires?.({
+        experiment: {
+          isWebViewEnabled: false,
+          venmoEnableWebOnNonNativeBrowser: false,
+        },
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(isVenmoEligible).toEqual({
+        native: true,
+        popup: true,
+      });
+    });
+
+    test("should not check for native and popup eligibility if platform is not mobile", () => {
+      const isVenmoEligible = venmoConfig.requires?.({
+        platform: PLATFORM.DESKTOP,
+      });
+
+      expect(isVenmoEligible).toEqual({});
+    });
   });
 });
