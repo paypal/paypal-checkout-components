@@ -21,6 +21,28 @@ describe("Venmo eligibility", () => {
   };
   const venmoConfig = getVenmoConfig();
 
+  test("should be eligible if fundingEligibility is true and enable-funding is set", () => {
+    const isVenmoEligible = venmoConfig.eligible?.({
+      ...baseEligibilityProps,
+      experiment: {
+        enableVenmo: true,
+      },
+    });
+
+    expect(isVenmoEligible).toEqual(true);
+  });
+
+  test("should be not eligible if fundingEligibility is false || enable-funding is not set", () => {
+    const isVenmoEligible = venmoConfig.eligible?.({
+      ...baseEligibilityProps,
+      experiment: {
+        enableVenmo: false,
+      },
+    });
+
+    expect(isVenmoEligible).toEqual(false);
+  });
+
   test("should not be eligible if a shipping callback is passed and displayOnly=['vaultable']", () => {
     const isVenmoEligible = venmoConfig.eligible?.({
       ...baseEligibilityProps,
