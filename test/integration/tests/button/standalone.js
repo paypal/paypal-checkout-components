@@ -139,21 +139,12 @@ describe(`paypal standalone buttons`, () => {
     });
   });
 
-  it(`should render a standalone venmo button and error out for webviews if not web view enabled`, () => {
+  it(`should render a standalone venmo button and error out for webviews`, () => {
     return wrapPromise(({ expect }) => {
       const fundingSource = FUNDING.VENMO;
       window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
-      const mockVenmoWebExperiment = mockProp(
-        window.__TEST_FIRST_RENDER_EXPERIMENTS__,
-        "isWebViewEnabled",
-        false
-      );
-
       const button = window.paypal.Buttons({
-        experiment: {
-          isWebViewEnabled: false,
-        },
         test: {},
         fundingSource,
       });
@@ -167,34 +158,35 @@ describe(`paypal standalone buttons`, () => {
         .catch(expect("buttonRenderCatch"))
         .then(() => {
           window.navigator.mockUserAgent = "";
-          mockVenmoWebExperiment.cancel();
         });
     });
   });
 
   it(`should render a standalone venmo button and not error out for webviews if web view enabled`, () => {
-    return wrapPromise(({ expect }) => {
+    return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
+      // mock isWebViewEnabled to true
       const mockVenmoWebExperiment = mockProp(
         window.__TEST_FIRST_RENDER_EXPERIMENTS__,
         "isWebViewEnabled",
         true
       );
-
       const button = window.paypal.Buttons({
         test: {},
         fundingSource,
       });
 
-      if (button.isEligible()) {
-        throw new Error(`Expected button to not be eligible`);
+      if (!button.isEligible()) {
+        throw new Error(`Expected button to be eligible`);
       }
 
       return button
         .render("#testContainer")
-        .catch(expect("buttonRenderCatch"))
+        .catch(() => {
+          throw new Error("Did not expect error to be thrown.");
+        })
         .then(() => {
           window.navigator.mockUserAgent = "";
           mockVenmoWebExperiment.cancel();
