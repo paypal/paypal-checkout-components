@@ -80,7 +80,7 @@ describe(`PayPal app switch overlay`, () => {
               xprops.hidePayPalAppSwitchOverlay({ close: noop });
 
               done();
-            }, 100);
+            }, 300);
           },
         },
         onApprove(): void {
