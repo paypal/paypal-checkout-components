@@ -118,7 +118,7 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        false
+        true
       );
 
       const button = window.paypal.Buttons({
