@@ -113,7 +113,7 @@ describe(`paypal standalone buttons`, () => {
   }
 
   it(`should render a standalone venmo button and error out when not on mobile, even when venmo is eligible`, () => {
-    return wrapPromise(() => {
+    return wrapPromise(({ expect }) => {
       const fundingSource = FUNDING.VENMO;
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -132,9 +132,7 @@ describe(`paypal standalone buttons`, () => {
 
       return button
         .render("#testContainer")
-        .catch(() => {
-          throw new Error("Did not expect error to be thrown.");
-        })
+        .catch(expect("buttonRenderCatch"))
         .then(() => {
           mockEligibility.cancel();
         });
