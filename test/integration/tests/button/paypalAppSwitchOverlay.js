@@ -70,7 +70,7 @@ describe(`PayPal app switch overlay`, () => {
               },
             });
 
-            getElementRecursive(".paypal-checkout-continue").click();
+            getElementRecursive(".paypal-checkout-continue a").click();
 
             if (!focusCalled) {
               done(new Error("Expected focus function to be called"));
