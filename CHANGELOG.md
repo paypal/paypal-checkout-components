@@ -1,3 +1,9 @@
+## <small>5.0.371 (2025-07-08)</small>
+
+* added data-shopper-session-id as a prop so it can logged in scnw (#2513) ([a6e73ab](https://github.com/paypal/paypal-checkout-components/commit/a6e73ab)), closes [#2513](https://github.com/paypal/paypal-checkout-components/issues/2513)
+
+
+
 ## <small>5.0.370 (2025-06-25)</small>
 
 * feat(venmo): webview eligibility (#2509) ([441de0e](https://github.com/paypal/paypal-checkout-components/commit/441de0e)), closes [#2509](https://github.com/paypal/paypal-checkout-components/issues/2509)
