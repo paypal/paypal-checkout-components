@@ -1,3 +1,9 @@
+## <small>5.0.372 (2025-07-09)</small>
+
+* feat(venmo): lessen eligibility requirements for rendering (#2511) ([21f96df](https://github.com/paypal/paypal-checkout-components/commit/21f96df)), closes [#2511](https://github.com/paypal/paypal-checkout-components/issues/2511)
+
+
+
 ## <small>5.0.371 (2025-07-08)</small>
 
 * added data-shopper-session-id as a prop so it can logged in scnw (#2513) ([a6e73ab](https://github.com/paypal/paypal-checkout-components/commit/a6e73ab)), closes [#2513](https://github.com/paypal/paypal-checkout-components/issues/2513)
