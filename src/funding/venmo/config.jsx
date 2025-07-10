@@ -22,17 +22,13 @@ export function getVenmoConfig(): FundingSourceConfig {
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
     eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+      // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
       }
 
-      /**
-       * Shipping callbacks will not work with Venmo unless venmo web is enabled.
-       */
-      if (!experiment?.venmoWebEnabled && shippingChange) {
-        return false;
-      }
-
+      // shipping change is not supported for native app switch and qr code flows,
+      // and vaulting is only supported for native app switch and qr code flows
       if (
         shippingChange &&
         displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)
@@ -51,21 +47,18 @@ export function getVenmoConfig(): FundingSourceConfig {
     },
 
     requires: ({ experiment, platform }) => {
-      if (
-        platform === PLATFORM.MOBILE &&
-        experiment &&
-        experiment.venmoWebEnabled !== true &&
-        experiment.venmoEnableWebOnNonNativeBrowser !== true
-      ) {
+      const isNonNativeSupported =
+        experiment?.venmoEnableWebOnNonNativeBrowser === true ||
+        experiment?.isWebViewEnabled;
+
+      if (platform === PLATFORM.MOBILE) {
         return {
-          native: experiment.isWebViewEnabled ? false : true,
-          popup: experiment.isWebViewEnabled ? false : true,
+          native: isNonNativeSupported ? false : true,
+          popup: isNonNativeSupported ? false : true,
         };
       }
 
-      return {
-        popup: experiment?.isWebViewEnabled ? false : true,
-      };
+      return {};
     },
 
     Logo: ({ logoColor, optional }) => {
