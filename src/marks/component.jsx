@@ -32,7 +32,7 @@ import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
   isSupportedNativeBrowser,
-  getVenmoExperiment,
+  getVenmoEligibility,
 } from "../zoid/buttons/util";
 
 import { MarksElement } from "./template";
@@ -75,7 +75,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       : false;
     const supportsPopups = userAgentSupportsPopups();
     const supportedNativeBrowser = isSupportedNativeBrowser();
-    const experiment = getVenmoExperiment();
+    const experiment = getVenmoEligibility();
     const hasShippingCallback = Boolean(
       onShippingChange || onShippingAddressChange || onShippingOptionsChange
     );

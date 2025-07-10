@@ -87,21 +87,17 @@ export function PayPalAppSwitchOverlay({
                 <div class="paypal-checkout-logo" dir="ltr">
                   <PayPalRebrandLogo logoColor={LOGO_COLOR.WHITE} />
                 </div>
-                {content.windowMessage && (
-                  <div class="paypal-checkout-message">
-                    {content.windowMessage}
-                  </div>
-                )}
-                {content.continueMessage && (
-                  <div class="paypal-checkout-continue">
-                    {/* This handler should be guarded with e.stopPropagation. 
-                          This will stop the event from bubbling up to the overlay click handler
-                          and causing unexpected behavior. */}
-                    <a onClick={focusCheckout} href="#">
-                      {content.continueMessage}
-                    </a>
-                  </div>
-                )}
+                <div class="paypal-checkout-message">
+                  {content.windowMessage}
+                </div>
+                <div class="paypal-checkout-continue">
+                  {/* This handler should be guarded with e.stopPropagation. 
+                        This will stop the event from bubbling up to the overlay click handler
+                        and causing unexpected behavior. */}
+                  <a onClick={focusCheckout} href="#">
+                    {content.continueMessage}
+                  </a>
+                </div>
               </div>
               <style nonce={nonce}>{getContainerStyle({ uid })}</style>
             </div>
