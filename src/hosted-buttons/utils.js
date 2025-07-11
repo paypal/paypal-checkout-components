@@ -291,7 +291,7 @@ export const buildHostedButtonCreateOrder = ({
           tracking_id: trackingId,
         })
         .flush();
-      return body.context_id || onError(body.name);
+      return body.context_id || onError(body.details?.[0]?.issue || body.name);
     } catch (e) {
       return onError("REQUEST_FAILED");
     }
