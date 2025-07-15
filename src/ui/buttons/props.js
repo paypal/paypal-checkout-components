@@ -632,6 +632,7 @@ export type ButtonProps = {|
   hostedButtonId?: string,
   message?: ButtonMessage,
   messageMarkup?: string,
+  hideSubmitButtonForCardForm?: boolean,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
