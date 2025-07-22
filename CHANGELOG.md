@@ -1,3 +1,9 @@
+## <small>5.0.374 (2025-07-22)</small>
+
+* chore(release): 5.0.373 🎉 (#2518) ([827926f](https://github.com/paypal/paypal-checkout-components/commit/827926f)), closes [#2518](https://github.com/paypal/paypal-checkout-components/issues/2518)
+
+
+
 ## <small>5.0.372 (2025-07-09)</small>
 
 * feat(venmo): lessen eligibility requirements for rendering (#2511) ([21f96df](https://github.com/paypal/paypal-checkout-components/commit/21f96df)), closes [#2511](https://github.com/paypal/paypal-checkout-components/issues/2511)
