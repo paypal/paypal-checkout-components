@@ -1291,6 +1291,18 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         default: () => window.__TEST_WALLET__,
       },
+
+      hideSubmitButtonForCardForm: {
+        type: "boolean",
+        required: false,
+        queryParam: true,
+      },
+    },
+
+    exports: {
+      submitCardForm: {
+        type: "function",
+      },
     },
   });
 });
