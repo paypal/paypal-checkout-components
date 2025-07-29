@@ -162,13 +162,17 @@ describe(`paypal standalone buttons`, () => {
     });
   });
 
-  it(`should render a standalone venmo button and not error out for webviews if window.popupBridge is defined`, () => {
+  it(`should render a standalone venmo button and not error out for webviews if web view enabled`, () => {
     return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
 
-      window.popupBridge = {};
-
+      // mock isWebViewEnabled to true
+      const mockVenmoWebExperiment = mockProp(
+        window.__TEST_FIRST_RENDER_EXPERIMENTS__,
+        "isWebViewEnabled",
+        true
+      );
       const button = window.paypal.Buttons({
         test: {},
         fundingSource,
@@ -185,7 +189,7 @@ describe(`paypal standalone buttons`, () => {
         })
         .then(() => {
           window.navigator.mockUserAgent = "";
-          window.popupBridge = undefined;
+          mockVenmoWebExperiment.cancel();
         });
     });
   });

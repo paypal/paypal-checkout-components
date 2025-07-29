@@ -174,28 +174,30 @@ describe("Funding eligibility", () => {
     });
 
     describe("Mobile", () => {
-      test("should be eligible if window.popupBridge is defined for Venmo and supportsPopups is false", () => {
-        window.popupBridge = {};
-
+      test("should be eligible if isWebViewEnabled is true for Venmo and supportsPopups is false", () => {
         const fundingEligible = isFundingEligible(FUNDING.VENMO, {
           ...defaultMockFundingOptions,
           platform: PLATFORM.MOBILE,
           supportsPopups: false,
+          experiment: {
+            isWebViewEnabled: true,
+          },
         });
 
         expect(fundingEligible).toBe(true);
-
-        window.popupBridge = undefined;
       });
 
-      test("should not be eligible if window.popupBridge is undefined for Venmo and supportsPopups is false", () => {
+      test("should not be eligible if isWebViewEnabled is false for Venmo and supportsPopups is false", () => {
         const fundingEligible = isFundingEligible(FUNDING.VENMO, {
           ...defaultMockFundingOptions,
           platform: PLATFORM.MOBILE,
           supportsPopups: false,
+          experiment: {
+            isWebViewEnabled: true,
+          },
         });
 
-        expect(fundingEligible).toBe(false);
+        expect(fundingEligible).toBe(true);
       });
     });
   });
