@@ -1,5 +1,6 @@
 /* @flow */
 
+import { popup } from "@krakenjs/belter/src";
 import { CARD, WALLET_INSTRUMENT } from "@paypal/sdk-constants/src";
 
 export type SecondaryInstruments = $ReadOnlyArray<{|
@@ -67,6 +68,7 @@ export type Experiment = {|
   isWebViewEnabled?: boolean,
   venmoEnableWebOnNonNativeBrowser?: boolean,
   spbEagerOrderCreation?: boolean,
+  popupBridge?: boolean,
 |};
 
 export type Requires = {|

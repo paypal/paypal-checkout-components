@@ -270,6 +270,7 @@ export function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getVenmoEligibility(),
     ...getFirstRenderExperiments(),
+    popupBridge: Boolean(window?.popupBridge),
   };
 }
 
