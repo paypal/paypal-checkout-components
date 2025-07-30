@@ -1,3 +1,9 @@
+## <small>5.0.375 (2025-07-30)</small>
+
+* fix version (#2522) ([0c6eec5](https://github.com/paypal/paypal-checkout-components/commit/0c6eec5)), closes [#2522](https://github.com/paypal/paypal-checkout-components/issues/2522)
+
+
+
 ## <small>5.0.372 (2025-07-09)</small>
 
 * feat(venmo): lessen eligibility requirements for rendering (#2511) ([21f96df](https://github.com/paypal/paypal-checkout-components/commit/21f96df)), closes [#2511](https://github.com/paypal/paypal-checkout-components/issues/2511)
