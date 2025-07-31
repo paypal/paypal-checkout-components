@@ -14,6 +14,7 @@ import {
   renderDefaultButton,
   renderForm,
   renderStandaloneButton,
+  getTrackingId,
 } from "./utils";
 import type {
   HostedButtonsComponent,
@@ -49,28 +50,34 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         selector,
       });
 
+      const trackingId = getTrackingId(selector);
+
       const createOrder = buildHostedButtonCreateOrder({
         enableDPoP,
         hostedButtonId,
         merchantId,
+        trackingId,
       });
 
       const onApprove = buildHostedButtonOnApprove({
         enableDPoP,
         hostedButtonId,
         merchantId,
+        trackingId,
       });
 
       const onShippingAddressChange = buildHostedButtonOnShippingAddressChange({
         enableDPoP,
         hostedButtonId,
         shouldIncludeShippingCallbacks,
+        trackingId,
       });
 
       const onShippingOptionsChange = buildHostedButtonOnShippingOptionsChange({
         enableDPoP,
         hostedButtonId,
         shouldIncludeShippingCallbacks,
+        trackingId,
       });
 
       const buttonOptions: HostedButtonOptions = {

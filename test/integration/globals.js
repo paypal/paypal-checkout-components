@@ -110,4 +110,6 @@ window.__TEST_FIRST_RENDER_EXPERIMENTS__ = {
   isPaypalRebrandEnabled: false,
   isPaypalRebrandABTestEnabled: false,
   venmoWebEnabled: false,
+  isWebViewEnabled: false,
+  venmoEnableWebOnNonNativeBrowser: false,
 };
