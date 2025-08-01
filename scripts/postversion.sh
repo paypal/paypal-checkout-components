@@ -26,8 +26,14 @@ fi
 if [ "$tag" != "latest" ] && [ "$CREATE_ALPHA_PR" != "true" ]; then
   echo "Alpha release detected (tag: $tag) - publishing directly without PR"
   echo "Set CREATE_ALPHA_PR=true to test PR workflow for alpha releases"
-  # For alpha releases, just publish directly from current commit
-  # No need for PR workflow since this is a test release
+
+  # Publish to npm immediately for alpha releases without PR
+  echo "🚀 Publishing to npm (tag: $tag)..."
+  npm publish --tag $tag || {
+    echo "ERROR: Failed to publish to npm"
+    exit 1
+  }
+  echo "✅ Package published to npm successfully"
 else
   if [ "$tag" = "latest" ]; then
     echo "=== Main release detected - creating PR workflow ==="
@@ -95,39 +101,19 @@ $pr_description
 
   echo "✅ Created PR: $PR_URL"
 
-  # Add debugging for approval
-  echo "Attempting to approve PR..."
-  approval_result=$(gh pr review "$PR_URL" --approve --body "🤖 Auto-approved by release workflow" 2>&1)
-  approval_status=$?
+  echo ""
+  echo "📋 PR created for manual review and approval"
+  echo "   → The team can review and merge when ready"
+  echo "   → This PR contains changelog and version updates for repository history"
+  echo ""
 
-  if [ $approval_status -eq 0 ]; then
-    echo "✅ PR approved successfully"
-  else
-    echo "❌ PR approval failed with status: $approval_status"
-    echo "Approval output: $approval_result"
-  fi
-
-  # Add small delay before merge
-  echo "Waiting 2 seconds before merge..."
-  sleep 2
-
-  # Auto-merge the PR
-  echo "Attempting to merge PR..."
-  merge_result=$(gh pr merge "$PR_URL" --squash --delete-branch 2>&1)
-  merge_status=$?
-
-  if [ $merge_status -eq 0 ]; then
-    echo "✅ PR merged successfully"
-  else
-    echo "❌ PR merge failed with status: $merge_status"
-    echo "Merge output: $merge_result"
+  # Publish to npm immediately
+  echo "🚀 Publishing to npm (tag: $tag)..."
+  npm publish --tag $tag || {
+    echo "ERROR: Failed to publish to npm"
     exit 1
-  fi
-
-  # Switch back to target branch and pull the merged changes
-  echo "Switching back to $target_branch..."
-  git checkout "$target_branch"
-  git pull origin "$target_branch"
+  }
+  echo "✅ Package published to npm successfully"
 fi
 
 # Create and push git tag (for main branch releases only)
@@ -135,6 +121,3 @@ if [ "$tag" = "latest" ]; then
   git tag "v$NEW_VERSION"
   git push origin "v$NEW_VERSION"
 fi
-
-# Publish to npm
-npm publish --tag $tag
