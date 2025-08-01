@@ -1,3 +1,23 @@
+## <small>5.0.375 (2025-08-01)</small>
+
+* Revert "feat(venmo): webview eligibility detection (#2517)" (#2519) ([3b1e3df](https://github.com/paypal/paypal-checkout-components/commit/3b1e3df)), closes [#2519](https://github.com/paypal/paypal-checkout-components/issues/2519)
+
+
+
+## <small>5.0.374 (2025-07-31)</small>
+
+* fix version (#2522) ([0c6eec5](https://github.com/paypal/paypal-checkout-components/commit/0c6eec5)), closes [#2522](https://github.com/paypal/paypal-checkout-components/issues/2522)
+
+
+
+## <small>5.0.373 (2025-07-31)</small>
+
+* feat: update hosted button create order error handler (#2516) ([f5c1014](https://github.com/paypal/paypal-checkout-components/commit/f5c1014)), closes [#2516](https://github.com/paypal/paypal-checkout-components/issues/2516)
+* feat(venmo): webview eligibility detection (#2517) ([a1c952c](https://github.com/paypal/paypal-checkout-components/commit/a1c952c)), closes [#2517](https://github.com/paypal/paypal-checkout-components/issues/2517)
+* NCPS Inner source: Add FPTI logging (#2514) ([ddbeacb](https://github.com/paypal/paypal-checkout-components/commit/ddbeacb)), closes [#2514](https://github.com/paypal/paypal-checkout-components/issues/2514)
+
+
+
 ## <small>5.0.372 (2025-07-09)</small>
 
 * feat(venmo): lessen eligibility requirements for rendering (#2511) ([21f96df](https://github.com/paypal/paypal-checkout-components/commit/21f96df)), closes [#2511](https://github.com/paypal/paypal-checkout-components/issues/2511)
