@@ -1,3 +1,25 @@
+## <small>5.0.376-alpha-1fc88e03.0 (2025-08-01)</small>
+
+* Adding funding source to button's iframe title to make each title unique (#2521) ([723310e](https://github.com/paypal/paypal-checkout-components/commit/723310e)), closes [#2521](https://github.com/paypal/paypal-checkout-components/issues/2521)
+* alow alpha pr test ([b40e715](https://github.com/paypal/paypal-checkout-components/commit/b40e715))
+* fix version (#2522) ([0c6eec5](https://github.com/paypal/paypal-checkout-components/commit/0c6eec5)), closes [#2522](https://github.com/paypal/paypal-checkout-components/issues/2522)
+* manually approve pr ([1fc88e0](https://github.com/paypal/paypal-checkout-components/commit/1fc88e0))
+* NCPS Inner source: Add FPTI logging (#2514) ([ddbeacb](https://github.com/paypal/paypal-checkout-components/commit/ddbeacb)), closes [#2514](https://github.com/paypal/paypal-checkout-components/issues/2514)
+* Revert "feat(venmo): webview eligibility detection (#2517)" (#2519) ([3b1e3df](https://github.com/paypal/paypal-checkout-components/commit/3b1e3df)), closes [#2517](https://github.com/paypal/paypal-checkout-components/issues/2517) [#2519](https://github.com/paypal/paypal-checkout-components/issues/2519)
+* uidk ([e19a0ef](https://github.com/paypal/paypal-checkout-components/commit/e19a0ef))
+* update github action ([ec627ed](https://github.com/paypal/paypal-checkout-components/commit/ec627ed))
+* update pr flow ([f84b8b9](https://github.com/paypal/paypal-checkout-components/commit/f84b8b9))
+* update pr flow ([082c287](https://github.com/paypal/paypal-checkout-components/commit/082c287))
+* update pr flow ([447200b](https://github.com/paypal/paypal-checkout-components/commit/447200b))
+* update pr flow ([5437869](https://github.com/paypal/paypal-checkout-components/commit/5437869))
+* update publish action ([72069bd](https://github.com/paypal/paypal-checkout-components/commit/72069bd))
+* update version and changelong ([6f9f5ad](https://github.com/paypal/paypal-checkout-components/commit/6f9f5ad))
+* chore(release): 5.0.373 🎉 (#2518) ([827926f](https://github.com/paypal/paypal-checkout-components/commit/827926f)), closes [#2518](https://github.com/paypal/paypal-checkout-components/issues/2518)
+* feat: update hosted button create order error handler (#2516) ([f5c1014](https://github.com/paypal/paypal-checkout-components/commit/f5c1014)), closes [#2516](https://github.com/paypal/paypal-checkout-components/issues/2516)
+* feat(venmo): webview eligibility detection (#2517) ([a1c952c](https://github.com/paypal/paypal-checkout-components/commit/a1c952c)), closes [#2517](https://github.com/paypal/paypal-checkout-components/issues/2517)
+
+
+
 ## <small>5.0.375 (2025-08-01)</small>
 
 * Revert "feat(venmo): webview eligibility detection (#2517)" (#2519) ([3b1e3df](https://github.com/paypal/paypal-checkout-components/commit/3b1e3df)), closes [#2519](https://github.com/paypal/paypal-checkout-components/issues/2519)
