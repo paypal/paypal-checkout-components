@@ -6,7 +6,7 @@
 # published to npm under the `alpha-$SHA` dist-tag.
 
 # Configuration flags
-CREATE_ALPHA_PR=${CREATE_ALPHA_PR:-true} # Set to false to skip PRs for alpha releases
+CREATE_ALPHA_PR=false # Set to false to skip PRs for alpha releases
 export CREATE_ALPHA_PR
 
 bump='patch'
