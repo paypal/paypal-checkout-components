@@ -37,7 +37,7 @@ else
 ✅ Package has already been published to npm with \`latest\` tag"
   else
     echo "=== Alpha release detected with CREATE_ALPHA_PR=true - creating PR workflow ==="
-    target_branch="$current_branch"
+    target_branch="$ORIGINAL_BRANCH"
     pr_description="### Status
 ✅ Package has already been published to npm with \`$tag\` tag
 
@@ -46,10 +46,9 @@ else
 
   echo "Target branch: $target_branch"
 
-  # Create release branch and move commit there
-  release_branch="release/$NEW_VERSION"
-  echo "Creating release branch: $release_branch"
-  git checkout -b "$release_branch"
+  # We're already on the release branch created by publish.sh
+  release_branch=$(git rev-parse --abbrev-ref HEAD)
+  echo "Already on release branch: $release_branch"
 
   # Push the release branch
   echo "Pushing release branch to origin..."
