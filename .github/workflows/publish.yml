@@ -32,132 +32,14 @@ jobs:
         with:
           useLockFile: false
 
-      - name: 🧪 Confirm branch behavior
-        run: |
-          echo "Workflow running from branch: $(git rev-parse --abbrev-ref HEAD)"
-          echo "Commit SHA: $(git rev-parse HEAD)"
-          echo "Working directory: $(pwd)"
-          echo "Workflow file first line: $(head -1 .github/workflows/publish.yml)"
-          echo "This confirms we're using the workflow file from the current branch"
-
       - name: 🤖 Configure git user as GitHub Actions bot
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      - name: 🔄 Create release branch and prepare version bump
-        run: |
-          # Determine release type and tag
-          bump='patch'
-          tag='latest'
-
-          current_branch=$(git rev-parse --abbrev-ref HEAD)
-          default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
-          current_sha=$(git rev-parse --short HEAD)
-
-          if [ "$current_branch" != "$default_branch" ]; then
-            bump='prerelease'
-            tag="alpha-$current_sha"
-          fi
-
-          # Store for later steps
-          echo "RELEASE_BUMP=$bump" >> $GITHUB_ENV
-          echo "RELEASE_TAG=$tag" >> $GITHUB_ENV
-
-      - name: 📋 Generate changelog and determine version
-        run: |
-          # Build and add dist files
-          npm run build
-          git add ./dist --all
-          git add ./test/screenshot/images --all
-
-          # Generate changelog
-          ./node_modules/.bin/conventional-changelog -i CHANGELOG.md -s
-          git add CHANGELOG.md
-
-          # Version bump (without git tag) to determine new version
-          if [ "$RELEASE_BUMP" = "prerelease" ]; then
-            npm --no-git-tag-version version $RELEASE_BUMP --preid=$RELEASE_TAG
-          else
-            npm --no-git-tag-version version $RELEASE_BUMP
-          fi
-
-          # Get the new version and create release branch
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
-          release_branch="release/$NEW_VERSION"
-          echo "RELEASE_BRANCH=$release_branch" >> $GITHUB_ENV
-
-          # Create and switch to release branch
-          git checkout -b "$release_branch"
-          git add package.json
-
-      - name: 💾 Commit changes
-        run: |
-          git commit -m "chore(release): $NEW_VERSION"
-
-      - name: 🚀 Push release branch
-        run: |
-          git push origin "$RELEASE_BRANCH"
-
-      - name: 📤 Create Pull Request
-        id: create_pr
-        run: |
-          PR_URL=$(gh pr create \
-            --title "chore(release): $NEW_VERSION" \
-            --body "$(cat <<'EOF'
-          ## Automated Release: $NEW_VERSION
-
-          This is an automated release prepared by GitHub Actions.
-
-          ### Changes
-          - Version bump to $NEW_VERSION
-          - Updated CHANGELOG.md with latest commits
-          - Built latest distribution files
-
-          ### Next Steps
-          Once this PR is merged, the package will be automatically published to npm with the \`$RELEASE_TAG\` tag.
-
-          ---
-          🤖 This PR was created automatically by the release workflow
-          EOF
-          )" \
-            --base main \
-            --head "$RELEASE_BRANCH" \
-            --assignee "${{ github.actor }}")
-
-          echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
-          echo "Created PR: $PR_URL"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: ✅ Auto-approve Pull Request
-        run: |
-          gh pr review "${{ steps.create_pr.outputs.PR_URL }}" --approve --body "🤖 Auto-approved by release workflow"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 🔀 Auto-merge Pull Request
-        run: |
-          gh pr merge "${{ steps.create_pr.outputs.PR_URL }}" --squash --delete-branch
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 🏷️ Create and push git tag (for main branch releases)
-        if: env.RELEASE_TAG == 'latest'
-        run: |
-          # Switch back to main and pull the merged changes
-          git checkout main
-          git pull origin main
-
-          # Create and push tag
-          git tag "v$NEW_VERSION"
-          git push origin "v$NEW_VERSION"
-
-      - name: 📦 Publish to npm
-        run: |
-          npm publish --tag $RELEASE_TAG
+      - name: 📦 Publish to npm using existing scripts
+        run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
