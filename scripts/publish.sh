@@ -42,8 +42,15 @@ echo "Creating release branch: $release_branch"
 git checkout -b "$release_branch"
 
 # Now run version bump on the release branch
+# Use git commits only when creating PRs
 if [ "$current_branch" != "$default_branch" ]; then
-  npm --no-git-tag-version version $bump --preid=$tag
+  # Alpha release - check if we need PR (and thus git commit)
+  if [ "${CREATE_ALPHA_PR:-false}" = "true" ]; then
+    npm version $bump --preid=$tag
+  else
+    npm --no-git-tag-version version $bump --preid=$tag
+  fi
 else
+  # Main release - always needs PR, so always use git commit
   npm version $bump
 fi
