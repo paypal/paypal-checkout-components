@@ -2,8 +2,7 @@
 
 # Create PR and auto-merge instead of direct push!
 
-# Configuration flags
-CREATE_ALPHA_PR=true # Set to true to create PRs for alpha releases
+# Configuration flags inherited from publish.sh
 
 # Get the current version from package.json
 NEW_VERSION=$(node -p "require('./package.json').version")
@@ -50,12 +49,26 @@ else
   release_branch=$(git rev-parse --abbrev-ref HEAD)
   echo "Already on release branch: $release_branch"
 
+  # Check branch states before pushing
+  echo "=== Branch comparison before push ==="
+  echo "Target branch ($target_branch) latest commit:"
+  git log --oneline -1 origin/$target_branch 2> /dev/null || echo "Target branch not found on remote"
+  echo "Release branch ($release_branch) latest commit:"
+  git log --oneline -1 $release_branch
+
   # Push the release branch
   echo "Pushing release branch to origin..."
   git push origin "$release_branch" || {
     echo "ERROR: Failed to push release branch"
     exit 1
   }
+
+  # Check branch states after pushing
+  echo "=== Branch comparison after push ==="
+  echo "Target branch on remote:"
+  git ls-remote origin $target_branch
+  echo "Release branch on remote:"
+  git ls-remote origin $release_branch
 
   # Create Pull Request
   echo "Creating pull request..."
