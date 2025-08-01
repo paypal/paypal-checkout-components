@@ -13,26 +13,29 @@ echo "Preparing release: $NEW_VERSION (tag: $tag)"
 
 default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
 
-# Alpha releases: Skip PR workflow by default, unless flag is set
-if [ "$tag" != "latest" ] && [ "$CREATE_ALPHA_PR" != "true" ]; then
-  echo "Alpha release detected (tag: $tag) - publishing directly without PR"
-  echo "Set CREATE_ALPHA_PR=true to test PR workflow for alpha releases"
-
-  # Publish to npm immediately for alpha releases without PR
-  echo "🚀 Publishing to npm (tag: $tag)..."
-  npm publish --tag $tag || {
-    echo "ERROR: Failed to publish to npm"
-    exit 1
-  }
-  echo "✅ Package published to npm successfully"
+# Determine if PR should be created based on release type and configuration
+if [ "$tag" = "latest" ]; then
+  # Main releases: Always create PR
+  echo "Main release detected (tag: latest) - creating PR for review"
+  CREATE_PR=true
+elif [ "$CREATE_ALPHA_PR" = "true" ]; then
+  # Alpha releases: Only create PR if explicitly enabled in publish.sh
+  echo "Alpha release with PR enabled (tag: $tag) - creating PR for review"
+  CREATE_PR=true
 else
+  # Alpha releases: Skip PR workflow by default
+  echo "Alpha release detected (tag: $tag) - publishing directly without PR"
+  echo "Set CREATE_ALPHA_PR=true in publish.sh to enable PR workflow for alpha releases"
+  CREATE_PR=false
+fi
+
+# Create PR workflow if needed
+if [ "$CREATE_PR" = "true" ]; then
   if [ "$tag" = "latest" ]; then
-    echo "Creating PR for main release"
     target_branch="$default_branch"
     pr_description="### Status
 ✅ Package has already been published to npm with \`latest\` tag"
   else
-    echo "Creating PR for alpha release"
     target_branch="$ORIGINAL_BRANCH"
     pr_description="### Status
 ✅ Package has already been published to npm with \`$tag\` tag
@@ -72,15 +75,15 @@ $pr_description
 
   echo "✅ Created PR: $PR_URL"
   echo "📋 Ready for team review and manual merge"
-
-  # Publish to npm immediately
-  echo "🚀 Publishing to npm (tag: $tag)..."
-  npm publish --tag $tag || {
-    echo "ERROR: Failed to publish to npm"
-    exit 1
-  }
-  echo "✅ Package published to npm successfully"
 fi
+
+# Single npm publish command for all releases
+echo "🚀 Publishing to npm (tag: $tag)..."
+npm publish --tag $tag || {
+  echo "ERROR: Failed to publish to npm"
+  exit 1
+}
+echo "✅ Package published to npm successfully"
 
 # Create and push git tag (for main branch releases only)
 if [ "$tag" = "latest" ]; then
