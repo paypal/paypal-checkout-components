@@ -63,5 +63,15 @@ fi
 
 echo "Git status after version bump:"
 git status --porcelain
+
+# If there are staged changes but no commit was made, create one manually
+if git diff --cached --quiet; then
+  echo "No staged changes - npm version created commit successfully"
+else
+  echo "Found staged changes - npm version failed to commit, creating manual commit"
+  new_version=$(node -p "require('./package.json').version")
+  git commit -m "$new_version"
+fi
+
 echo "Git log (last 2 commits):"
 git log --oneline -2
