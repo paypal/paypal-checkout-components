@@ -474,6 +474,32 @@ test("buildHostedButtonCreateOrder error handling", async () => {
   expect.assertions(1);
 });
 
+test("buildHostedButtonCreateOrder error handling with issue name", async () => {
+  const createOrder = buildHostedButtonCreateOrder({
+    hostedButtonId,
+    merchantId,
+  });
+
+  // $FlowIssue
+  request.mockImplementation(() =>
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
+      body: {
+        details: [{ issue: "RESOURCE_NOT_FOUND" }],
+      },
+    })
+  );
+
+  const onError = vi.fn();
+  window[`__pp_form_fields_${hostedButtonId}`] = {
+    onError,
+  };
+
+  await createOrder({ paymentSource: "paypal" });
+  expect(onError).toHaveBeenCalledWith("RESOURCE_NOT_FOUND");
+  expect.assertions(1);
+});
+
 describe("buildHostedButtonOnApprove", () => {
   test("makes a request to the Hosted Buttons API", async () => {
     const onApprove = buildHostedButtonOnApprove({

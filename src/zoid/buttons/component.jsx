@@ -219,12 +219,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       ).render(dom({ doc }));
     },
 
-    attributes: {
-      iframe: {
-        allowpaymentrequest: "allowpaymentrequest",
-        scrolling: "no",
-        title: FUNDING_BRAND_LABEL.PAYPAL,
-      },
+    attributes: ({ props }) => {
+      let fundingSource = "";
+      if (props.fundingSource) {
+        fundingSource = `-${props.fundingSource}`;
+      }
+
+      return {
+        iframe: {
+          allowpaymentrequest: "allowpaymentrequest",
+          scrolling: "no",
+          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+        },
+      };
     },
 
     eligible: ({ props }) => {
