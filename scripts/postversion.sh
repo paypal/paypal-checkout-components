@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Create PR and auto-merge instead of direct push!
+# Create PR for manual review after publishing to npm
 
 # Configuration flags inherited from publish.sh
 
@@ -9,18 +9,9 @@ NEW_VERSION=$(node -p "require('./package.json').version")
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 current_sha=$(git rev-parse --short HEAD)
 
-echo "=== Release Info ==="
-echo "Version: $NEW_VERSION"
-echo "Current branch: $current_branch"
-echo "Tag: $tag"
-echo "Create alpha PR: $CREATE_ALPHA_PR"
+echo "Preparing release: $NEW_VERSION (tag: $tag)"
 
-# Determine if we're on main branch (for tagging logic later)
 default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
-is_main_branch=false
-if [ "$current_branch" = "$default_branch" ]; then
-  is_main_branch=true
-fi
 
 # Alpha releases: Skip PR workflow by default, unless flag is set
 if [ "$tag" != "latest" ] && [ "$CREATE_ALPHA_PR" != "true" ]; then
@@ -36,12 +27,12 @@ if [ "$tag" != "latest" ] && [ "$CREATE_ALPHA_PR" != "true" ]; then
   echo "✅ Package published to npm successfully"
 else
   if [ "$tag" = "latest" ]; then
-    echo "=== Main release detected - creating PR workflow ==="
+    echo "Creating PR for main release"
     target_branch="$default_branch"
     pr_description="### Status
 ✅ Package has already been published to npm with \`latest\` tag"
   else
-    echo "=== Alpha release detected with CREATE_ALPHA_PR=true - creating PR workflow ==="
+    echo "Creating PR for alpha release"
     target_branch="$ORIGINAL_BRANCH"
     pr_description="### Status
 ✅ Package has already been published to npm with \`$tag\` tag
@@ -49,32 +40,12 @@ else
 **Note**: This is an alpha release for testing purposes."
   fi
 
-  echo "Target branch: $target_branch"
-
-  # We're already on the release branch created by publish.sh
   release_branch=$(git rev-parse --abbrev-ref HEAD)
-  echo "Already on release branch: $release_branch"
-
-  # Check branch states before pushing
-  echo "=== Branch comparison before push ==="
-  echo "Target branch ($target_branch) latest commit:"
-  git log --oneline -1 origin/$target_branch 2> /dev/null || echo "Target branch not found on remote"
-  echo "Release branch ($release_branch) latest commit:"
-  git log --oneline -1 $release_branch
-
-  # Push the release branch
-  echo "Pushing release branch to origin..."
+  echo "Pushing release branch: $release_branch"
   git push origin "$release_branch" || {
     echo "ERROR: Failed to push release branch"
     exit 1
   }
-
-  # Check branch states after pushing
-  echo "=== Branch comparison after push ==="
-  echo "Target branch on remote:"
-  git ls-remote origin $target_branch
-  echo "Release branch on remote:"
-  git ls-remote origin $release_branch
 
   # Create Pull Request
   echo "Creating pull request..."
@@ -100,12 +71,7 @@ $pr_description
   }
 
   echo "✅ Created PR: $PR_URL"
-
-  echo ""
-  echo "📋 PR created for manual review and approval"
-  echo "   → The team can review and merge when ready"
-  echo "   → This PR contains changelog and version updates for repository history"
-  echo ""
+  echo "📋 Ready for team review and manual merge"
 
   # Publish to npm immediately
   echo "🚀 Publishing to npm (tag: $tag)..."
@@ -118,6 +84,14 @@ fi
 
 # Create and push git tag (for main branch releases only)
 if [ "$tag" = "latest" ]; then
-  git tag "v$NEW_VERSION"
-  git push origin "v$NEW_VERSION"
+  echo "Creating git tag: v$NEW_VERSION"
+  git tag "v$NEW_VERSION" || {
+    echo "ERROR: Failed to create git tag"
+    exit 1
+  }
+  git push origin "v$NEW_VERSION" || {
+    echo "ERROR: Failed to push git tag"
+    exit 1
+  }
+  echo "✅ Git tag created and pushed"
 fi

@@ -16,9 +16,7 @@ current_branch=$(git rev-parse --abbrev-ref HEAD)
 default_branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
 current_sha=$(git rev-parse --short HEAD)
 
-echo "=== Publish Info ==="
-echo "Current branch: $current_branch"
-echo "Default branch: $default_branch"
+echo "Starting release from branch: $current_branch"
 
 # Store original branch for postversion script
 export ORIGINAL_BRANCH="$current_branch"
@@ -37,19 +35,19 @@ fi
 export tag
 export FUTURE_VERSION="$future_version"
 
-echo "Current version: $current_version"
-echo "Future version: $future_version"
-echo "Release tag: $tag"
+echo "Releasing: $current_version → $future_version (tag: $tag)"
 
 # Create release branch before version bump
 release_branch="release/$future_version"
 echo "Creating release branch: $release_branch"
-git checkout -b "$release_branch"
+git checkout -b "$release_branch" || {
+  echo "ERROR: Failed to create release branch"
+  exit 1
+}
 
 # Now run version bump on the release branch
 # Use git commits only when creating PRs
-echo "Git status before version bump:"
-git status --porcelain
+echo "Running version bump..."
 
 if [ "$current_branch" != "$default_branch" ]; then
   # Alpha release - check if we need PR (and thus git commit)
@@ -66,17 +64,15 @@ else
   npm version $bump
 fi
 
-echo "Git status after version bump:"
-git status --porcelain
-
-# If there are staged changes but no commit was made, create one manually
+# Ensure version bump created a commit
 if git diff --cached --quiet; then
-  echo "No staged changes - npm version created commit successfully"
+  echo "✅ Version bump completed"
 else
-  echo "Found staged changes - npm version failed to commit, creating manual commit"
+  echo "Creating version commit..."
   new_version=$(node -p "require('./package.json').version")
-  git commit -m "$new_version"
+  git commit -m "$new_version" || {
+    echo "ERROR: Failed to create version commit"
+    exit 1
+  }
+  echo "✅ Version commit created"
 fi
-
-echo "Git log (last 2 commits):"
-git log --oneline -2
