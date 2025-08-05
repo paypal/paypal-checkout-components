@@ -1,3 +1,11 @@
+## <small>5.0.377 (2025-08-05)</small>
+
+* feat: add hideSubmitButtonForCardForm prop and submitCardForm export (#2515) ([8d0807f](https://github.com/paypal/paypal-checkout-components/commit/8d0807f)), closes [#2515](https://github.com/paypal/paypal-checkout-components/issues/2515)
+* chore(release): 5.0.376 🎉 (#2529) ([61b48b5](https://github.com/paypal/paypal-checkout-components/commit/61b48b5)), closes [#2529](https://github.com/paypal/paypal-checkout-components/issues/2529)
+* Update Github Action - publish to npm (#2526) ([f5e378f](https://github.com/paypal/paypal-checkout-components/commit/f5e378f)), closes [#2526](https://github.com/paypal/paypal-checkout-components/issues/2526)
+
+
+
 ## <small>5.0.376 (2025-08-01)</small>
 
 * Adding funding source to button's iframe title to make each title unique (#2521) ([723310e](https://github.com/paypal/paypal-checkout-components/commit/723310e)), closes [#2521](https://github.com/paypal/paypal-checkout-components/issues/2521)
