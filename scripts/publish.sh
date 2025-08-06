@@ -60,8 +60,8 @@ if [ "$current_branch" != "$default_branch" ]; then
   fi
 else
   # Main release - always needs PR, so always use git commit
-  echo "Running: npm version $bump (with git commit)"
-  npm version $bump
+  echo "Running: npm --no-git-tag-version version $bump (with git commit)"
+  npm --no-git-tag-version version $bump
 fi
 
 # Ensure version bump created a commit
