@@ -120,7 +120,9 @@ export function getResponsiveStyleVariables({
   const shouldResizeLabel =
     paylater?.products?.paylater?.variant === "DE" ||
     paylater?.products?.payIn3?.variant === "IT" ||
-    paylater?.products?.payIn3?.variant === "ES";
+    paylater?.products?.paylater?.variant === "IT" ||
+    paylater?.products?.payIn3?.variant === "ES" ||
+    paylater?.products?.paylater?.variant === "ES";
 
   const textPercPercentage = shouldResizeLabel ? 32 : 36;
   const labelPercPercentage = shouldResizeLabel ? 32 : 35;
@@ -174,7 +176,9 @@ export function getDisableMaxHeightResponsiveStyleVariables({
   const shouldResizeLabel =
     paylater?.products?.paylater?.variant === "DE" ||
     paylater?.products?.payIn3?.variant === "IT" ||
-    paylater?.products?.payIn3?.variant === "ES";
+    paylater?.products?.paylater?.variant === "IT" ||
+    paylater?.products?.payIn3?.variant === "ES" ||
+    paylater?.products?.paylater?.variant === "ES";
 
   const labelHeight = getLabelHeight({
     height: buttonHeight,
