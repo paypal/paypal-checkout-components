@@ -154,7 +154,7 @@ describe(`paylater button text`, () => {
     });
   });
 
-  it(`should display Paga in 3 rate label when payIn3 product is eligible and variant is IT`, () => {
+  it(`should display Paga a rate label when payIn3 product is eligible and variant is IT`, () => {
     const fundingSource = FUNDING.PAYLATER;
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -179,16 +179,16 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Paga in 3 rate"
+        "Paga a rate"
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Paga in 3 rate"
+        "Paga a rate"
       );
     });
   });
 
-  it(`should display Paga en 3 plazos label when payIn3 product is eligible and variant is ES`, () => {
+  it(`should display Paga a plazos label when payIn3 product is eligible and variant is ES`, () => {
     const fundingSource = FUNDING.PAYLATER;
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -213,11 +213,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Paga en 3 plazos"
+        "Paga a plazos"
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Paga en 3 plazos"
+        "Paga a plazos"
       );
     });
   });
