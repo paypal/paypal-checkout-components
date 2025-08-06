@@ -47,6 +47,10 @@ export function getVenmoConfig(): FundingSourceConfig {
     },
 
     requires: ({ experiment, platform }) => {
+      if (typeof window === "undefined") {
+        return {};
+      }
+
       const isNonNativeSupported =
         experiment?.venmoEnableWebOnNonNativeBrowser === true ||
         window.popupBridge;
