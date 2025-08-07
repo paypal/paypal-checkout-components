@@ -47,7 +47,7 @@ export function getVenmoConfig(): FundingSourceConfig {
     },
 
     requires: ({ experiment, platform }) => {
-      if (typeof window === "undefined") {
+      if (__WEB__) {
         return {};
       }
 
