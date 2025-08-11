@@ -128,10 +128,6 @@ Checks to make sure that the compiled & gzipped bundle doesn't exceed the recomm
 
 This package is published weekly, **Every Wednesday**. Please [view our Changelog](CHANGELOG.md) to stay updated with bug fixes and new features.
 
-**For maintainers:** Releases are triggered via the "publish to npm" GitHub Action. The action automatically publishes to npm and creates a PR that **must be manually approved and merged immediately** to update the main branch with version changes and built assets.
-
-For detailed release process documentation, see [building-and-deploying.md](./building-and-deploying.md).
-
 ## Logo Strategy with paypal-sdk-logos
 
 Our usage of svg logos is optimized for performance. Here's how it works for the two-phased render for the Buttons component:
