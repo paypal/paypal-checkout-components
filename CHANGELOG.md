@@ -1,3 +1,9 @@
+## <small>5.0.378 (2025-08-11)</small>
+
+* Reverting changes to GH Actions publish action (#2538) ([df34b3f](https://github.com/paypal/paypal-checkout-components/commit/df34b3f)), closes [#2538](https://github.com/paypal/paypal-checkout-components/issues/2538)
+
+
+
 ## <small>5.0.377 (2025-08-05)</small>
 
 * feat: add hideSubmitButtonForCardForm prop and submitCardForm export (#2515) ([8d0807f](https://github.com/paypal/paypal-checkout-components/commit/8d0807f)), closes [#2515](https://github.com/paypal/paypal-checkout-components/issues/2515)
