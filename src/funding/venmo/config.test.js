@@ -102,10 +102,12 @@ describe("Venmo eligibility", () => {
   });
 
   describe("requires", () => {
-    test("should not check for native or popup eligibility if platform is mobile and isWebViewEnabled is true", () => {
+    test("should not check for native or popup eligibility if platform is mobile and window.popupBridge is defined", () => {
+      window.popupBridge = {};
+
       const isVenmoEligible = venmoConfig.requires?.({
         experiment: {
-          isWebViewEnabled: true,
+          venmoEnableWebOnNonNativeBrowser: true,
         },
         platform: PLATFORM.MOBILE,
       });
@@ -114,6 +116,8 @@ describe("Venmo eligibility", () => {
         native: false,
         popup: false,
       });
+
+      window.popupBridge = undefined;
     });
 
     test("should not check for native or popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is true", () => {
@@ -130,10 +134,9 @@ describe("Venmo eligibility", () => {
       });
     });
 
-    test("should check for native and popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is false and isWebViewEnabled is false", () => {
+    test("should check for native and popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is false and window.popupBridge is not defined", () => {
       const isVenmoEligible = venmoConfig.requires?.({
         experiment: {
-          isWebViewEnabled: false,
           venmoEnableWebOnNonNativeBrowser: false,
         },
         platform: PLATFORM.MOBILE,
