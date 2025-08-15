@@ -2,7 +2,6 @@
 
 # Push and publish!
 git push
-
 if [ "$tag" = 'alpha' ]; then
   npm publish --tag $tag
 else

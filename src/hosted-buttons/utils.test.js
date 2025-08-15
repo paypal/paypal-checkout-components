@@ -21,6 +21,7 @@ import {
   renderStandaloneButton,
   applyContainerStyles,
   renderDefaultButton,
+  getTrackingId,
 } from "./utils";
 
 vi.mock("@krakenjs/belter/src", async () => {
@@ -39,6 +40,10 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getLocale: () => ({ lang: "en", country: "US" }),
     getLogger: vi.fn(() => ({
       error: vi.fn(),
+      track: vi.fn().mockImplementation(() => ({
+        flush: vi.fn(),
+      })),
+      flush: vi.fn(),
     })),
   };
 });
@@ -469,6 +474,32 @@ test("buildHostedButtonCreateOrder error handling", async () => {
   expect.assertions(1);
 });
 
+test("buildHostedButtonCreateOrder error handling with issue name", async () => {
+  const createOrder = buildHostedButtonCreateOrder({
+    hostedButtonId,
+    merchantId,
+  });
+
+  // $FlowIssue
+  request.mockImplementation(() =>
+    // eslint-disable-next-line compat/compat
+    Promise.resolve({
+      body: {
+        details: [{ issue: "RESOURCE_NOT_FOUND" }],
+      },
+    })
+  );
+
+  const onError = vi.fn();
+  window[`__pp_form_fields_${hostedButtonId}`] = {
+    onError,
+  };
+
+  await createOrder({ paymentSource: "paypal" });
+  expect(onError).toHaveBeenCalledWith("RESOURCE_NOT_FOUND");
+  expect.assertions(1);
+});
+
 describe("buildHostedButtonOnApprove", () => {
   test("makes a request to the Hosted Buttons API", async () => {
     const onApprove = buildHostedButtonOnApprove({
@@ -801,6 +832,35 @@ test("getElementFromSelector", () => {
   expect(getElementFromSelector(selector)).toBe(selector);
   expect(mockQuerySelector).toBeCalledTimes(1);
   expect(mockQuerySelector).toHaveBeenCalledWith(containerId);
+});
+
+describe("getTrackingId", () => {
+  const containerId = "#container-id";
+
+  test("returns uuid value when input element exists and has a value", () => {
+    const inputElement = document.createElement("input");
+    inputElement.setAttribute("name", "uuid");
+    inputElement.setAttribute("value", "test-uuid-123");
+
+    const containerElement = document.createElement("div");
+    containerElement.appendChild(inputElement);
+
+    vi.spyOn(document, "querySelector").mockImplementationOnce(
+      () => inputElement
+    );
+
+    const result = getTrackingId(containerId);
+
+    expect(result).toBe("test-uuid-123");
+  });
+
+  test("returns empty string when input element doesn't exist", () => {
+    vi.spyOn(document, "querySelector").mockImplementationOnce(() => null);
+
+    const result = getTrackingId(containerId);
+
+    expect(result).toBe("");
+  });
 });
 
 describe("getButtonPreferences", () => {
