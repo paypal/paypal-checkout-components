@@ -503,7 +503,6 @@ const generateRebrandedButtonSizeStyles = ({
         minHeight,
         maxHeight,
         minWidth,
-        padding,
       } = getResponsiveRebrandedStyleVariables({
         height,
         redesign_size,
@@ -555,7 +554,8 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
-              padding-bottom: ${padding / fontSize}em;
+              line-height: 1.2;
+              margin: 0;
           }
 
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
