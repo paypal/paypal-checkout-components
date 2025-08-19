@@ -4,6 +4,7 @@
 # When the default branch is used, it will be a `patch` that's published to npm
 # under the `latest` dist-tag. Any other branch will be a `prelease` that's
 # published to npm under the `alpha-$SHA` dist-tag.
+
 bump='patch'
 tag='latest'
 

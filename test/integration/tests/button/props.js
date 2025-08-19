@@ -231,4 +231,80 @@ describe(`paypal button component props`, () => {
       });
     });
   });
+
+  it("should pass hideSubmitButtonForCardForm prop to button component", () => {
+    return wrapPromise(({ expect, avoid }) => {
+      const instance = window.paypal.Buttons({
+        hideSubmitButtonForCardForm: true,
+        test: {
+          onRender: expect("onRender", ({ xprops }) => {
+            // Verify that the hideSubmitButtonForCardForm prop is passed correctly
+            if (xprops.hideSubmitButtonForCardForm !== true) {
+              throw new Error(
+                `Expected hideSubmitButtonForCardForm to be true, got ${xprops.hideSubmitButtonForCardForm}`
+              );
+            }
+          }),
+        },
+
+        createOrder: avoid("createOrder"),
+        onApprove: avoid("onApprove"),
+        onCancel: avoid("onCancel"),
+        onError: avoid("onError"),
+      });
+
+      return instance.render("#testContainer");
+    });
+  });
+
+  it("should default hideSubmitButtonForCardForm to undefined when not provided", () => {
+    return wrapPromise(({ expect, avoid }) => {
+      const instance = window.paypal.Buttons({
+        // hideSubmitButtonForCardForm not provided
+        test: {
+          onRender: expect("onRender", ({ xprops }) => {
+            // Should be undefined when not provided since it's optional
+            if (xprops.hideSubmitButtonForCardForm !== undefined) {
+              throw new Error(
+                `Expected hideSubmitButtonForCardForm to be undefined when not provided, got ${xprops.hideSubmitButtonForCardForm}`
+              );
+            }
+          }),
+        },
+
+        createOrder: avoid("createOrder"),
+        onApprove: avoid("onApprove"),
+        onCancel: avoid("onCancel"),
+        onError: avoid("onError"),
+      });
+
+      return instance.render("#testContainer");
+    });
+  });
+
+  it("should have submitCardForm export available", () => {
+    return wrapPromise(({ expect, avoid }) => {
+      const instance = window.paypal.Buttons({
+        test: {
+          onRender: expect("onRender", () => {
+            // Test passes when onRender is called, indicating successful render
+          }),
+        },
+
+        createOrder: avoid("createOrder"),
+        onApprove: avoid("onApprove"),
+        onCancel: avoid("onCancel"),
+        onError: avoid("onError"),
+      });
+
+      // Verify that submitCardForm export is available on the instance
+      if (typeof instance.submitCardForm !== "function") {
+        throw new TypeError(
+          `Expected submitCardForm to be a function, got ${typeof instance.submitCardForm}`
+        );
+      }
+
+      return instance.render("#testContainer");
+    });
+  });
 });

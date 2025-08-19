@@ -120,22 +120,17 @@ export function isSupportedNativeBrowser(): boolean {
   return false;
 }
 
-export function getVenmoExperiment(): EligibilityExperiment {
+export function getVenmoEligibility(): EligibilityExperiment {
   const fundingEligibility = getFundingEligibility();
   const enableFunding = getEnableFunding();
 
   const isVenmoFundingEnabled =
     enableFunding && enableFunding.indexOf(FUNDING.VENMO) !== -1;
-  const isNativeSupported = isSupportedNativeBrowser();
-  if (isDevice()) {
-    return {
-      enableVenmo: isVenmoFundingEnabled && isNativeSupported,
-    };
-  } else {
-    return {
-      enableVenmo: fundingEligibility?.venmo?.eligible || false,
-    };
-  }
+
+  return {
+    enableVenmo:
+      (fundingEligibility?.venmo?.eligible || false) && isVenmoFundingEnabled,
+  };
 }
 
 export function getRenderedButtons(
@@ -150,7 +145,7 @@ export function getRenderedButtons(
     style = {},
     enableFunding = getEnableFunding(),
     fundingEligibility = getRefinedFundingEligibility(),
-    experiment = getVenmoExperiment(),
+    experiment = getVenmoEligibility(),
     applePaySupport,
     supportsPopups = userAgentSupportsPopups(),
     supportedNativeBrowser = isSupportedNativeBrowser(),
@@ -273,7 +268,7 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
 
 export function getButtonExperiments(): EligibilityExperiment {
   return {
-    ...getVenmoExperiment(),
+    ...getVenmoEligibility(),
     ...getFirstRenderExperiments(),
   };
 }

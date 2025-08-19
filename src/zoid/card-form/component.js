@@ -202,6 +202,12 @@ export function getCardFormComponent(): CardFormComponent {
           value: getDisableCard,
         },
       },
+
+      exports: {
+        submit: {
+          type: "function",
+        },
+      },
     });
   });
 }

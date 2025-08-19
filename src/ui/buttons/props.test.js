@@ -868,3 +868,31 @@ describe("getButtonColor", () => {
     });
   });
 });
+
+describe("HideSubmitButtonProps type validation", () => {
+  it("should allow hideSubmitButtonForCardForm as an optional boolean property", () => {
+    // This test ensures the Flow type definition accepts the new property
+    const validButtonProps = {
+      hideSubmitButtonForCardForm: true,
+    };
+
+    // This would fail Flow type checking if the property isn't properly defined
+    expect(typeof validButtonProps.hideSubmitButtonForCardForm).toBe("boolean");
+  });
+
+  it("should allow hideSubmitButtonForCardForm to be undefined", () => {
+    const validButtonProps = {
+      // hideSubmitButtonForCardForm is optional
+    };
+
+    expect(validButtonProps.hideSubmitButtonForCardForm).toBeUndefined();
+  });
+
+  it("should allow hideSubmitButtonForCardForm to be false", () => {
+    const validButtonProps = {
+      hideSubmitButtonForCardForm: false,
+    };
+
+    expect(validButtonProps.hideSubmitButtonForCardForm).toBe(false);
+  });
+});

@@ -477,6 +477,7 @@ export type RenderButtonProps = {|
   personalization: ?Personalization,
   clientAccessToken: ?string,
   customerId: ?string,
+  shopperSessionId?: string,
   content?: ContentType,
   flow: $Values<typeof BUTTON_FLOW>,
   experiment: Experiment,
@@ -604,6 +605,7 @@ export type ButtonProps = {|
   sessionID: string,
   buttonLocation: string,
   buttonSessionID: string,
+  shopperSessionId?: string,
   onShippingChange: ?OnShippingChange,
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
@@ -630,6 +632,7 @@ export type ButtonProps = {|
   hostedButtonId?: string,
   message?: ButtonMessage,
   messageMarkup?: string,
+  hideSubmitButtonForCardForm?: boolean,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -650,6 +653,7 @@ export type ButtonPropsInputs = {
   remember?: $PropertyType<ButtonProps, "remember"> | void,
   sessionID?: $PropertyType<ButtonProps, "sessionID"> | void,
   buttonSessionID?: $PropertyType<ButtonProps, "buttonSessionID"> | void,
+  shopperSessionId?: string,
   nonce: string,
   enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
@@ -1267,6 +1271,7 @@ export function normalizeButtonProps(
     message,
     messageMarkup,
     renderedButtons,
+    shopperSessionId,
   } = props;
 
   const { country, lang } = locale;
@@ -1362,6 +1367,7 @@ export function normalizeButtonProps(
     vault,
     userIDToken,
     customerId,
+    shopperSessionId,
     applePay,
     applePaySupport,
     supportsPopups,
