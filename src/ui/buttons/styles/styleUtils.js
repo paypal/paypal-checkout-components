@@ -177,7 +177,6 @@ export function getResponsiveRebrandedStyleVariables({
     maxWidth,
     gap,
     fontSize,
-    padding,
   } = style;
 
   const buttonHeight = height || defaultHeight;
@@ -201,7 +200,6 @@ export function getResponsiveRebrandedStyleVariables({
     minDualWidth,
     maxWidth,
     fontSize,
-    padding,
   };
 
   return styleVariables;

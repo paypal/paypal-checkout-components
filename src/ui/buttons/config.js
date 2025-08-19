@@ -55,7 +55,6 @@ type ButtonRedesignStyleMap = {
     maxWidth: number,
     gap?: number,
     fontSize?: number,
-    padding?: number,
   |},
 };
 
