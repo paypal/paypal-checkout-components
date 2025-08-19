@@ -522,12 +522,6 @@ const generateRebrandedButtonSizeStyles = ({
               box-sizing: border-box;
               height: ${buttonHeight * 0.76}px;
           }
-        }
-
-        @media only screen and (max-width: 200px) {
-          .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
-              display: none;
-          }
         }`;
 
       const disableMaxHeightStyles = `

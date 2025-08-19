@@ -193,6 +193,10 @@ export const buttonRebrandStyle = `
         flex-shrink: 1;
         min-width: 0;
     }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
+        max-width: 100%;
+    }
     
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
         height: 100%;
