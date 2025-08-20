@@ -185,7 +185,6 @@ export const buttonRebrandStyle = `
     }
 
     .${CLASS.TEXT} {
-        position: relative !important;
         height: 100%;
         display: flex;
         align-items: center;

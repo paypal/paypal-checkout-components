@@ -483,6 +483,7 @@ const generateDisableMaxHeightStyles = ({
 
 const generateRebrandedButtonSizeStyles = ({
   height,
+  disableMaxWidth,
   disableMaxHeight,
   borderRadius,
 }: {|
@@ -503,6 +504,7 @@ const generateRebrandedButtonSizeStyles = ({
         minHeight,
         maxHeight,
         minWidth,
+        maxWidth,
       } = getResponsiveRebrandedStyleVariables({
         height,
         redesign_size,
@@ -510,6 +512,12 @@ const generateRebrandedButtonSizeStyles = ({
 
       const widthBasedStyles = `
         @media only screen and (min-width: ${minWidth}px) {
+          .${CLASS.CONTAINER} {
+              min-width: ${minWidth}px;
+              ${disableMaxWidth ? "" : `max-width: ${maxWidth}px;`};
+              ${disableMaxHeight ? "height: 100%;" : ""};
+          }
+
           .${CLASS.BUTTON_ROW} {
               height: ${buttonHeight}px;
               vertical-align: top;
