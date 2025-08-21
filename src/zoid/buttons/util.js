@@ -117,7 +117,7 @@ export function isSupportedNativeBrowser(): boolean {
     return true;
   }
 
-  return false;
+  return true;
 }
 
 export function getVenmoEligibility(): EligibilityExperiment {
