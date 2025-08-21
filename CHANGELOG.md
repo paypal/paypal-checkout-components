@@ -1,3 +1,9 @@
+## <small>5.0.379 (2025-08-21)</small>
+
+* Feature/label centering exploration (#2541) ([2a21090](https://github.com/paypal/paypal-checkout-components/commit/2a21090)), closes [#2541](https://github.com/paypal/paypal-checkout-components/issues/2541)
+
+
+
 ## <small>5.0.378 (2025-08-11)</small>
 
 * Reverting changes to GH Actions publish action (#2538) ([df34b3f](https://github.com/paypal/paypal-checkout-components/commit/df34b3f)), closes [#2538](https://github.com/paypal/paypal-checkout-components/issues/2538)
