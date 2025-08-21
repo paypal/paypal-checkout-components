@@ -533,6 +533,14 @@ const generateRebrandedButtonSizeStyles = ({
         }`;
 
       const disableMaxHeightStyles = `
+        @media only screen and (min-width: ${minWidth}px) {
+          .${CLASS.CONTAINER} {
+              min-width: ${minWidth}px;
+              ${disableMaxWidth ? "" : `max-width: ${maxWidth}px;`};
+              ${disableMaxHeight ? "height: 100%;" : ""};
+          }
+        }
+        
         @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
           .${CLASS.BUTTON_ROW} {
               height: ${buttonHeight}px;
