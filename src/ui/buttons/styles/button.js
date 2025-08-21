@@ -151,3 +151,62 @@ export const buttonStyle = `
         }
     }
 `;
+
+export const buttonRebrandStyle = `
+
+    .${CLASS.BUTTON_REBRAND} {
+        border: 1px solid transparent;
+        border-radius: 0 3px 3px 0;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        vertical-align: top;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        height: 76%;
+        min-width: 0px;
+        position: relative;
+    }
+
+    .${LOGO_CLASS.LOGO} {
+        height: 100%;
+        padding: 0;
+        background: none;
+        border: none;
+        width: auto;        
+    }
+
+    .${CLASS.TEXT} {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        line-height: 1.1;
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
+        max-width: 100%;
+    }
+    
+    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
+        height: 100%;
+    }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.TAGLINE} {
+        max-width: 100%;
+        font-size: initial;
+        font-weight: 400;
+        display: block;
+        text-align: center;
+        width: auto;
+    }
+`;

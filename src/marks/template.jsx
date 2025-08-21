@@ -114,6 +114,14 @@ export function MarksElement({
                     .paypal-button-card:last-child {
                         margin-right: 0px;
                     }
+
+                    .paypal-mark .paypal-logo {
+                        margin-right: ${toPx(height / 5)};
+                    }
+
+                    .paypal-mark .paypal-logo:last-child {
+                        margin-right: 0px;
+                    }
                 `}
       </style>
       {fundingSources.map((fundingSource) => (

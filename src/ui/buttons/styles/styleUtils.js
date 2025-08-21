@@ -3,10 +3,15 @@
 import { max, perc, roundUp } from "@krakenjs/belter/src";
 import type { FundingEligibilityType } from "@paypal/sdk-constants/src";
 
-import { BUTTON_DISABLE_MAX_HEIGHT_STYLE, BUTTON_SIZE_STYLE } from "../config";
+import {
+  BUTTON_DISABLE_MAX_HEIGHT_STYLE,
+  BUTTON_SIZE_STYLE,
+  BUTTON_REDESIGN_STYLE,
+} from "../config";
 import {
   BUTTON_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
+  BUTTON_REDESIGN_SIZE,
 } from "../../../constants";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
@@ -151,6 +156,50 @@ export function getResponsiveStyleVariables({
     labelHeight,
     pillBorderRadius,
     gap,
+  };
+
+  return styleVariables;
+}
+
+export function getResponsiveRebrandedStyleVariables({
+  height,
+  redesign_size,
+}: {|
+  height?: ?number,
+  redesign_size: $Values<typeof BUTTON_REDESIGN_SIZE>,
+|}): Object {
+  const style = BUTTON_REDESIGN_STYLE[redesign_size];
+  const {
+    minHeight,
+    maxHeight,
+    defaultHeight,
+    minWidth,
+    maxWidth,
+    gap,
+    fontSize,
+  } = style;
+
+  const buttonHeight = height || defaultHeight;
+  const pillBorderRadius = Math.ceil(buttonHeight / 2);
+
+  const minDualWidth = Math.max(
+    Math.round(
+      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+    ),
+    MIN_SPLIT_BUTTON_WIDTH
+  );
+
+  const styleVariables = {
+    style,
+    buttonHeight,
+    pillBorderRadius,
+    gap,
+    minHeight,
+    maxHeight,
+    minWidth,
+    minDualWidth,
+    maxWidth,
+    fontSize,
   };
 
   return styleVariables;
