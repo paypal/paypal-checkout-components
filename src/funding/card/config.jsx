@@ -6,6 +6,8 @@ import { CARD, COUNTRY, COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
 import {
   GlyphCardExternalImage,
   GlyphCardInlineSVG,
+  GlyphCardRebrandExternalImage,
+  GlyphCardRebrandInlineSVG,
 } from "@paypal/sdk-logos/src";
 
 import {
@@ -148,12 +150,29 @@ export function getCardConfig(): FundingSourceConfig {
       return FUNDING.CARD;
     },
 
-    Logo: ({ logoColor }) => {
-      return __WEB__ ? (
-        <GlyphCardExternalImage logoColor={logoColor} />
-      ) : (
-        <GlyphCardInlineSVG logoColor={logoColor} />
-      );
+    Logo: ({ logoColor, shouldApplyRebrandedStyles }) => {
+      if (!shouldApplyRebrandedStyles) {
+        // Legacy styling
+        return __WEB__ ? (
+          <GlyphCardExternalImage logoColor={logoColor} />
+        ) : (
+          <GlyphCardInlineSVG logoColor={logoColor} />
+        );
+      }
+
+      // TODO: TEMPORARY OVERRIDE FOR DEVELOPMENT
+      // New rebrand assets are not yet deployed to CDN, forcing inline SVG for testing
+      // Revert to normal __WEB__ conditional once assets are deployed
+
+      // PRODUCTION CODE (currently commented out):
+      // return __WEB__ ? (
+      //   <GlyphCardRebrandExternalImage logoColor={logoColor} />
+      // ) : (
+      //   <GlyphCardRebrandInlineSVG logoColor={logoColor} />
+      // );
+
+      // TEMPORARY DEVELOPMENT OVERRIDE:
+      return <GlyphCardRebrandInlineSVG logoColor={logoColor} />;
     },
 
     Label: ({ logo, locale, content }) => {

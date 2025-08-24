@@ -36,6 +36,7 @@ import {
 } from "../zoid/buttons/util";
 
 import { MarksElement } from "./template";
+import { MarksElementRebrand } from "./template-rebrand";
 
 const DEFAULT_HEIGHT = 20;
 
@@ -126,20 +127,35 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
 
     const render = (container) => {
       return ZalgoPromise.try(() => {
-        if (!isEligible()) {
-          throw new Error(`${fundingSource || "marks"} not eligible`);
-        }
+        // TODO: TEMPORARY OVERRIDE FOR TESTING - REMOVE BEFORE PRODUCTION
+        // Bypassing eligibility check to enable all funding sources for testing
+        // const ENABLE_ALL_FUNDING_FOR_TESTING = true;
 
+        // if (!ENABLE_ALL_FUNDING_FOR_TESTING && !isEligible()) {
+        //   throw new Error(`${fundingSource || "marks"} not eligible`);
+        // }
+        // experiment?.isPaypalRebrandEnabled; // only enableVenmo
+        const shouldUseRebrand = true;
         getElement(container).appendChild(
           (
             <div>
-              <MarksElement
-                fundingEligibility={fundingEligibility}
-                fundingSources={fundingSources}
-                height={height}
-                experiment={experiment}
-                env={env}
-              />
+              {shouldUseRebrand ? (
+                <MarksElementRebrand
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              ) : (
+                <MarksElement
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              )}
             </div>
           ).render(dom({ doc: document }))
         );

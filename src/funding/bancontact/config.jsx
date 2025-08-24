@@ -4,6 +4,8 @@
 import {
   BancontactLogoInlineSVG,
   BancontactLogoExternalImage,
+  BancontactMarkRebrandExternalImage,
+  BancontactMarkRebrandInlineSVG,
 } from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
@@ -46,6 +48,22 @@ export function getBancontactConfig(): FundingSourceConfig {
       );
 
       return <BasicLabel {...opts} logo={apmLogo} />;
+    },
+
+    Mark: ({ ...props }) => {
+      // TODO: TEMPORARY OVERRIDE FOR DEVELOPMENT
+      // New mark assets are not yet deployed to CDN, forcing inline SVG for testing
+      // Revert to normal __WEB__ conditional once assets are deployed
+
+      // PRODUCTION CODE (currently commented out):
+      // return __WEB__ ? (
+      //   <BancontactMarkRebrandExternalImage {...props} />
+      // ) : (
+      //   <BancontactMarkRebrandInlineSVG {...props} />
+      // );
+
+      // TEMPORARY DEVELOPMENT OVERRIDE:
+      return <BancontactMarkRebrandInlineSVG {...props} />;
     },
   };
 }

@@ -4,6 +4,8 @@
 import {
   VenmoLogoExternalImage,
   VenmoLogoInlineSVG,
+  VenmoRebrandLogoExternalImage,
+  VenmoRebrandLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
@@ -61,12 +63,27 @@ export function getVenmoConfig(): FundingSourceConfig {
       return {};
     },
 
-    Logo: ({ logoColor, optional }) => {
-      if (__WEB__) {
-        return VenmoLogoExternalImage({ logoColor, optional });
+    Logo: ({ logoColor, optional, shouldApplyRebrandedStyles }) => {
+      if (!shouldApplyRebrandedStyles) {
+        // Legacy styling
+        return __WEB__
+          ? VenmoLogoExternalImage({ logoColor, optional })
+          : VenmoLogoInlineSVG({ logoColor, optional });
       }
 
-      return VenmoLogoInlineSVG({ logoColor, optional });
+      // TODO: TEMPORARY OVERRIDE FOR DEVELOPMENT
+      // New rebrand assets are not yet deployed to CDN, forcing inline SVG for testing
+      // Revert to normal __WEB__ conditional once assets are deployed
+
+      // PRODUCTION CODE (currently commented out):
+      // return __WEB__ ? (
+      //   VenmoRebrandLogoExternalImage({ logoColor, optional })
+      // ) : (
+      //   VenmoRebrandLogoInlineSVG({ logoColor, optional })
+      // );
+
+      // TEMPORARY DEVELOPMENT OVERRIDE:
+      return VenmoRebrandLogoInlineSVG({ logoColor, optional });
     },
 
     Label: ({ ...props }) => {

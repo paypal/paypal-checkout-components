@@ -7,6 +7,8 @@ import { node, Style } from "@krakenjs/jsx-pragmatic/src";
 import {
   PPLogoExternalImage,
   PPLogoInlineSVG,
+  PaylaterMarkRebrandExternalImage,
+  PaylaterMarkRebrandInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 
@@ -86,6 +88,22 @@ export function getPaylaterConfig(): FundingSourceConfig {
           <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
         </Style>
       );
+    },
+
+    Mark: ({ ...props }) => {
+      // TODO: TEMPORARY OVERRIDE FOR DEVELOPMENT
+      // New mark assets are not yet deployed to CDN, forcing inline SVG for testing
+      // Revert to normal __WEB__ conditional once assets are deployed
+
+      // PRODUCTION CODE (currently commented out):
+      // return __WEB__ ? (
+      //   <PaylaterMarkRebrandExternalImage {...props} />
+      // ) : (
+      //   <PaylaterMarkRebrandInlineSVG {...props} />
+      // );
+
+      // TEMPORARY DEVELOPMENT OVERRIDE:
+      return <PaylaterMarkRebrandInlineSVG {...props} />;
     },
 
     colors: [
