@@ -20,6 +20,10 @@ export const buttonColorStyle = `
         color: #fff;
     }
 
+    .${CLASS.REBRAND}.${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} {
+        color: #000000;
+    }
+
     .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} .${CLASS.SPINNER} {
         border: 3px solid rgba(100, 100, 100, .2);
         border-top-color: rgba(33, 128, 192, 0.8);
