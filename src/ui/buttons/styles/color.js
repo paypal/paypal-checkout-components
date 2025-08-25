@@ -34,6 +34,16 @@ export const buttonColorStyle = `
         border-top-color: rgba(255, 255, 255, .85);
     }
 
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} .${CLASS.SPINNER} {
+        border: 2px solid rgba(0, 0, 0, 1);
+        border-top-color: transparent;
+    }
+
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} .${CLASS.SPINNER} {
+        border: 2px solid rgba(255, 255, 255, 1);
+        border-top-color: transparent;
+    }
+
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE} .menu-button {
         background: #60CDFF;
