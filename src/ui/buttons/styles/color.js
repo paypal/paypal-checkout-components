@@ -15,7 +15,8 @@ export const buttonColorStyle = `
         color: #000000;
     }
 
-    .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} {
+    .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE},
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} {
         color: #fff;
     }
 
@@ -63,6 +64,44 @@ export const buttonColorStyle = `
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE}:active {
             background: #0057D9;
+            overflow: inherit;
+        }
+    }
+
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK} .menu-button {
+        background: #000000;
+    }
+
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK}:hover {
+            background: #333333;
+            overflow: inherit;
+        }
+    }
+    
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK}:active {
+            background: #696969;
+            overflow: inherit;
+        }
+    }
+
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE} .menu-button {
+        background: #FFFFFF;
+    }
+
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE}:hover {
+            background: #F2F2F2;
+            overflow: inherit;
+        }
+    }
+    
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE}:active {
+            background: #E9E9E9;
             overflow: inherit;
         }
     }
@@ -361,6 +400,8 @@ export const buttonColorStyle = `
     }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE},
+    .${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE} .menu-button,
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE} .menu-button {
         background: #fff;
         border: 1px solid #555;

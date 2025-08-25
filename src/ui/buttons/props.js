@@ -849,8 +849,8 @@ export function getColorForFullRedesign({
 
     // not mapped yet since the styles are not setup
     // These should never be hit since legacy experience should be set
-    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
-    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.REBRAND_WHITE,
     [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
     [BUTTON_COLOR.TRANSPARENT]: BUTTON_COLOR.TRANSPARENT,
     [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
@@ -908,8 +908,6 @@ export function getButtonColorExperience({
   }
 
   const rebrandColorsNotDevComplete = [
-    BUTTON_COLOR.BLACK,
-    BUTTON_COLOR.WHITE,
     BUTTON_COLOR.SILVER,
     BUTTON_COLOR.TRANSPARENT,
     BUTTON_COLOR.DEFAULT,
