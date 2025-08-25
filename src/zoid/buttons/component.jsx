@@ -392,6 +392,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ({ props }) =>
           () => {
             window.removeEventListener("hashchange", props.hashChangeHandler);
+            window.location.hash = "";
           },
       },
 
