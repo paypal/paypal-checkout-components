@@ -183,7 +183,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
   },
 
   [BUTTON_REDESIGN_SIZE.SMALL]: {
-    defaultHeight: 30,
+    defaultHeight: 35,
     minHeight: 30,
     maxHeight: 35,
     minWidth: 200,
@@ -203,7 +203,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
   },
 
   [BUTTON_REDESIGN_SIZE.MEDIUM_BIG]: {
-    defaultHeight: 40,
+    defaultHeight: 45,
     minHeight: 40,
     maxHeight: 44,
     minWidth: 300,
@@ -223,7 +223,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
   },
 
   [BUTTON_REDESIGN_SIZE.LARGE_BIG]: {
-    defaultHeight: 50,
+    defaultHeight: 45,
     minHeight: 50,
     maxHeight: 55,
     minWidth: 425,
@@ -243,7 +243,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
   },
 
   [BUTTON_REDESIGN_SIZE.XL_BIG]: {
-    defaultHeight: 60,
+    defaultHeight: 55,
     minHeight: 60,
     maxHeight: 65,
     minWidth: 550,
@@ -253,7 +253,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
   },
 
   [BUTTON_REDESIGN_SIZE.XXL]: {
-    defaultHeight: 65,
+    defaultHeight: 55,
     minHeight: 65,
     maxHeight: 100,
     minWidth: 650,

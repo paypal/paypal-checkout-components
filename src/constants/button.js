@@ -25,7 +25,6 @@ export const BUTTON_COLOR = {
   DARKBLUE: ("darkblue": "darkblue"),
   BLACK: ("black": "black"),
   WHITE: ("white": "white"),
-  TRANSPARENT: ("transparent": "transparent"),
   ...BUTTON_COLOR_REBRAND,
 };
 

@@ -120,7 +120,7 @@ const generateButtonSizeStyles = ({
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
         BUTTON_LAYOUT.VERTICAL
-      }:last-of-type {
+      }:last-child {
                     margin-bottom: 0;
                 }
 
@@ -501,6 +501,7 @@ const generateRebrandedButtonSizeStyles = ({
         pillBorderRadius,
         gap,
         fontSize,
+        defaultHeight,
         minHeight,
         maxHeight,
         minWidth,
@@ -519,9 +520,8 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_ROW} {
-              height: ${buttonHeight}px;
+              height: ${defaultHeight}px;
               vertical-align: top;
-              min-height: ${height || minHeight}px;
               max-height: ${height || maxHeight}px;
           }
 
@@ -529,6 +529,22 @@ const generateRebrandedButtonSizeStyles = ({
               margin: 0px 4vw;
               box-sizing: border-box;
               height: ${buttonHeight * 0.76}px;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
+        BUTTON_LAYOUT.VERTICAL
+      }.paypal-button-number-multiple {
+              margin-bottom: ${perc(
+                buttonHeight,
+                BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
+              )}px;
+          }
+
+          //  TO:DO no margin on last-child not getting applied
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
+        BUTTON_LAYOUT.VERTICAL
+      }.paypal-button-number-multiple:last-child {
+              margin-bottom: 0;
           }
         }`;
 
@@ -543,7 +559,7 @@ const generateRebrandedButtonSizeStyles = ({
         
         @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
           .${CLASS.BUTTON_ROW} {
-              height: ${buttonHeight}px;
+              height: ${height || minHeight}px;
               vertical-align: top;
               min-height: ${height || minHeight}px;
               max-height: ${height || maxHeight}px;
@@ -572,19 +588,6 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
               line-height: 1.2;
               margin: 0;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL} {
-              margin-bottom: ${perc(
-                buttonHeight,
-                BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
-              )}px;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.VERTICAL
-      }:last-of-type {
-              margin-bottom: 0;
           }
 
           .${CLASS.BUTTON} {

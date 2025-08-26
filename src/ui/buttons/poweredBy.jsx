@@ -14,7 +14,7 @@ const POWERED_BY_PAYPAL_STYLE = `
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
-        height: 14px;
+        height: 18px;
         font-family: system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 11px;
         font-weight: 400;
@@ -30,7 +30,7 @@ const POWERED_BY_PAYPAL_STYLE = `
     .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
         display: inline-block;
         vertical-align: middle;
-        height: 16px;
+        height: 18px;
         line-height: 16px;
         font-size: 11px;
     }
