@@ -294,16 +294,6 @@ describe("Button Redesign", () => {
     );
   };
 
-  const validateLegacySilverButton = (fundingSource = "paypal") => {
-    assert.ok(getElementRecursive(".paypal-button-color-silver"));
-    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
-    assert.ok(
-      getElementRecursive(
-        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
-      )
-    );
-  };
-
   const validateBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_blue"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
@@ -320,6 +310,26 @@ describe("Button Redesign", () => {
     assert.ok(
       getElementRecursive(
         `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-blue`
+      )
+    );
+  };
+
+  const validateBlackRebrandButton = (fundingSource = "paypal") => {
+    assert.ok(getElementRecursive(".paypal-button-color-rebrand_black"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-white"));
+    assert.ok(
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-white`
+      )
+    );
+  };
+
+  const validateWhiteRebrandButton = (fundingSource = "paypal") => {
+    assert.ok(getElementRecursive(".paypal-button-color-rebrand_white"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
+    assert.ok(
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-black`
       )
     );
   };
@@ -485,10 +495,8 @@ describe("Button Redesign", () => {
             mockPaypalRebrandExperiment.cancel();
           });
         });
-      });
 
-      describe("not supported rebranded colors (yet)", () => {
-        it("should render the legacy black button when color is black and isPaypalRebrandEnabled is true", () => {
+        it("should render the rebrand black button when color is black and isPaypalRebrandEnabled is true", () => {
           const mockPaypalRebrandExperiment =
             setMockPaypalRebrandExperiment(true);
 
@@ -500,13 +508,13 @@ describe("Button Redesign", () => {
           });
 
           return button.render("#testContainer").then(() => {
-            validateLegacyBlackButton();
+            validateBlackRebrandButton();
 
             mockPaypalRebrandExperiment.cancel();
           });
         });
 
-        it("should render the legacy white button when color is white and isPaypalRebrandEnabled is true", () => {
+        it("should render the rebrand white button when color is white and isPaypalRebrandEnabled is true", () => {
           const mockPaypalRebrandExperiment =
             setMockPaypalRebrandExperiment(true);
 
@@ -518,13 +526,13 @@ describe("Button Redesign", () => {
           });
 
           return button.render("#testContainer").then(() => {
-            validateLegacyWhiteButton();
+            validateWhiteRebrandButton();
 
             mockPaypalRebrandExperiment.cancel();
           });
         });
 
-        it("should render the legacy silver button when color is silver and isPaypalRebrandEnabled is true", () => {
+        it("should render the rebrand white button when color is silver and isPaypalRebrandEnabled is true", () => {
           const mockPaypalRebrandExperiment =
             setMockPaypalRebrandExperiment(true);
 
@@ -536,7 +544,7 @@ describe("Button Redesign", () => {
           });
 
           return button.render("#testContainer").then(() => {
-            validateLegacySilverButton();
+            validateWhiteRebrandButton();
 
             mockPaypalRebrandExperiment.cancel();
           });
