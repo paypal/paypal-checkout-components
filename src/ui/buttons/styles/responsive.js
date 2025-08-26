@@ -120,7 +120,7 @@ const generateButtonSizeStyles = ({
 
                 .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
         BUTTON_LAYOUT.VERTICAL
-      }:last-child {
+      }:last-of-type {
                     margin-bottom: 0;
                 }
 

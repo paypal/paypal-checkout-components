@@ -205,7 +205,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
   [BUTTON_REDESIGN_SIZE.MEDIUM_BIG]: {
     defaultHeight: 45,
     minHeight: 40,
-    maxHeight: 44,
+    maxHeight: 45,
     minWidth: 300,
     maxWidth: 350,
     gap: 4,
