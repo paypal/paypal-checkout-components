@@ -270,8 +270,6 @@ export function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getVenmoEligibility(),
     ...getFirstRenderExperiments(),
-    // defaultBlueButtonColor: "black",
-    defaultBlueButtonColor: "defaultBlue_lightBlue",
   };
 }
 
