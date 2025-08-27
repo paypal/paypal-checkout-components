@@ -148,6 +148,22 @@ export const buttonColorStyle = `
         pointer-events: none;
     }
 
+    .${CLASS.BUTTON_REBRAND}:focus {
+        outline: none;
+    }
+    
+    .${CLASS.BUTTON_REBRAND}:focus::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        bottom: 3px;
+        left: 3px;
+        border: 0.125rem solid #FFFFFF;
+        border-radius: inherit;
+        box-shadow: 0 0 0 0.2rem #0066F5;
+        pointer-events: none;
+    }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE} .menu-button {
