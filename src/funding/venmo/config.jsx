@@ -49,7 +49,7 @@ export function getVenmoConfig(): FundingSourceConfig {
     requires: ({ experiment, platform }) => {
       const isNonNativeSupported =
         experiment?.venmoEnableWebOnNonNativeBrowser === true ||
-        experiment?.isWebViewEnabled;
+        (__WEB__ && window.popupBridge);
 
       if (platform === PLATFORM.MOBILE) {
         return {
