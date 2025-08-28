@@ -6,7 +6,7 @@ import {
   VenmoLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
-import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
+import { DISPLAY_ONLY_VALUES } from "@paypal/sdk-constants/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -44,22 +44,6 @@ export function getVenmoConfig(): FundingSourceConfig {
       }
 
       return true;
-    },
-
-    requires: ({ experiment, platform }) => {
-      const isNonNativeSupported =
-        experiment?.venmoEnableWebOnNonNativeBrowser === true &&
-        __WEB__ &&
-        window.popupBridge;
-
-      if (platform === PLATFORM.MOBILE) {
-        return {
-          native: isNonNativeSupported ? false : true,
-          popup: isNonNativeSupported ? false : true,
-        };
-      }
-
-      return {};
     },
 
     Logo: ({ logoColor, optional }) => {
