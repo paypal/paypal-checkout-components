@@ -849,11 +849,10 @@ export function getColorForFullRedesign({
 
     // not mapped yet since the styles are not setup
     // These should never be hit since legacy experience should be set
-    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
-    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
-    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
-    [BUTTON_COLOR.TRANSPARENT]: BUTTON_COLOR.TRANSPARENT,
-    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.REBRAND_BLUE,
 
     // normalizeButtonStyle gets called multiple times and
     // it can be called after color is already be mapped to rebranded style
@@ -890,7 +889,6 @@ export function getColorForFullRedesign({
 export function getButtonColorExperience({
   experiment,
   fundingSource,
-  style,
 }: GetButtonColorExperienceArgs): "abTest" | "fullRebrand" | "legacy" {
   const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } =
     experiment || {};
@@ -907,21 +905,7 @@ export function getButtonColorExperience({
     return rejectRedesign ? "legacy" : "abTest";
   }
 
-  const rebrandColorsNotDevComplete = [
-    BUTTON_COLOR.BLACK,
-    BUTTON_COLOR.WHITE,
-    BUTTON_COLOR.SILVER,
-    BUTTON_COLOR.TRANSPARENT,
-    BUTTON_COLOR.DEFAULT,
-  ];
-
-  const isRebrandColorNotDevComplete = rebrandColorsNotDevComplete.includes(
-    style?.color
-  );
-
-  return rejectRedesign || isRebrandColorNotDevComplete
-    ? "legacy"
-    : "fullRebrand";
+  return rejectRedesign ? "legacy" : "fullRebrand";
 }
 
 export function getButtonColor({

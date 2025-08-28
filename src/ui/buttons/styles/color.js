@@ -15,8 +15,13 @@ export const buttonColorStyle = `
         color: #000000;
     }
 
-    .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} {
+    .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE},
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} {
         color: #fff;
+    }
+
+    .${CLASS.REBRAND}.${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} {
+        color: #000000;
     }
 
     .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} .${CLASS.SPINNER} {
@@ -27,6 +32,16 @@ export const buttonColorStyle = `
     .${CLASS.BUTTON}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} .${CLASS.SPINNER} {
         border: 3px solid rgba(200, 200, 200, 0.2);
         border-top-color: rgba(255, 255, 255, .85);
+    }
+
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.BLACK} .${CLASS.SPINNER} {
+        border: 2px solid rgba(0, 0, 0, 1);
+        border-top-color: transparent;
+    }
+
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TEXT_COLOR}-${TEXT_COLOR.WHITE} .${CLASS.SPINNER} {
+        border: 2px solid rgba(255, 255, 255, 1);
+        border-top-color: transparent;
     }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE},
@@ -67,6 +82,44 @@ export const buttonColorStyle = `
         }
     }
 
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK} .menu-button {
+        background: #000000;
+    }
+
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK}:hover {
+            background: #333333;
+            overflow: inherit;
+        }
+    }
+    
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK}:active {
+            background: #696969;
+            overflow: inherit;
+        }
+    }
+
+    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE} .menu-button {
+        background: #FFFFFF;
+    }
+
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE}:hover {
+            background: #F2F2F2;
+            overflow: inherit;
+        }
+    }
+    
+    @media (hover:hover) {
+        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE}:active {
+            background: #E9E9E9;
+            overflow: inherit;
+        }
+    }
+
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.GOLD} .menu-button {
         background: #ffc439;
@@ -95,6 +148,22 @@ export const buttonColorStyle = `
         pointer-events: none;
     }
 
+    .${CLASS.BUTTON_REBRAND}:focus {
+        outline: none;
+    }
+    
+    .${CLASS.BUTTON_REBRAND}:focus::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        bottom: 3px;
+        left: 3px;
+        border: 0.125rem solid #FFFFFF;
+        border-radius: inherit;
+        box-shadow: 0 0 0 0.2rem #0066F5;
+        pointer-events: none;
+    }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE},
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE} .menu-button {
@@ -361,6 +430,8 @@ export const buttonColorStyle = `
     }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE},
+    .${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE},
+    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE} .menu-button,
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE} .menu-button {
         background: #fff;
         border: 1px solid #555;

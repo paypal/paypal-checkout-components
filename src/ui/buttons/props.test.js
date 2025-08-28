@@ -657,31 +657,6 @@ describe("getButtonColorExperience", () => {
     expect(result).toBe("fullRebrand");
   });
 
-  it("should return 'legacy' when rebrand is enabled but style.color is not dev complete", () => {
-    const incompleteColors = [
-      BUTTON_COLOR.BLACK,
-      BUTTON_COLOR.WHITE,
-      BUTTON_COLOR.SILVER,
-      BUTTON_COLOR.TRANSPARENT,
-      BUTTON_COLOR.DEFAULT,
-    ];
-
-    // Test each incomplete color
-    incompleteColors.forEach((incompleteColor) => {
-      const result = getButtonColorExperience({
-        experiment: {
-          isPaypalRebrandEnabled: true,
-          isPaypalRebrandABTestEnabled: false,
-        },
-        fundingSource: FUNDING.PAYPAL,
-        // $FlowFixMe
-        style: { color: incompleteColor },
-      });
-
-      expect(result).toBe("legacy");
-    });
-  });
-
   it("should handle null/undefined experiment values", () => {
     const result = getButtonColorExperience({
       // $FlowFixMe
