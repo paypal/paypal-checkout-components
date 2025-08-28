@@ -55,7 +55,7 @@ export function getVenmoConfig(): FundingSourceConfig {
         isAndroidWebview() ||
         isFacebookWebView();
 
-      if (__WEB__ && isAnyWebview() && !window.popupBridge) {
+      if (__WEB__ && isAnyWebview && !window.popupBridge) {
         return false;
       }
 
