@@ -7,7 +7,12 @@ import {
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES } from "@paypal/sdk-constants/src";
-import { isWebView } from "@krakenjs/belter/src";
+import {
+  isWebView,
+  isIosWebview,
+  isAndroidWebview,
+  isFacebookWebView,
+} from "@krakenjs/belter/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -44,7 +49,13 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      if (__WEB__ && isWebView() && !window.popupBridge) {
+      const isAnyWebview =
+        isWebView() ||
+        isIosWebview() ||
+        isAndroidWebview() ||
+        isFacebookWebView();
+
+      if (__WEB__ && isAnyWebview() && !window.popupBridge) {
         return false;
       }
 
