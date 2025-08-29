@@ -50,12 +50,13 @@ export function getVenmoConfig(): FundingSourceConfig {
       }
 
       const isAnyWebview =
-        isWebView() ||
-        isIosWebview() ||
-        isAndroidWebview() ||
-        isFacebookWebView();
+        __WEB__ &&
+        (isWebView() ||
+          isIosWebview() ||
+          isAndroidWebview() ||
+          isFacebookWebView());
 
-      if (__WEB__ && isAnyWebview && !window.popupBridge) {
+      if (isAnyWebview && !window.popupBridge) {
         return false;
       }
 
