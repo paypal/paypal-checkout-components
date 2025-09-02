@@ -143,10 +143,12 @@ export function Button({
     }
   }
 
-  const { logoColors, textColors } = fundingConfig;
+  const { logoColors, logoColorsPP, textColors } = fundingConfig;
 
   const logoColor =
     logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
+  const logoColorPP =
+    logoColorsPP || logoColorsPP[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
   const textColor =
     textColors[color] || textColors[TEXT_COLOR.DEFAULT] || TEXT_COLOR.DEFAULT;
   const { Label, WalletLabel, Logo, showWalletMenu } = fundingConfig;
@@ -199,6 +201,7 @@ export function Button({
       label={eligibleLabel}
       locale={locale}
       logoColor={logoColor}
+      logoColorPP={logoColorPP}
       fundingEligibility={fundingEligibility}
       onClick={clickHandler}
       onKeyPress={keypressHandler}

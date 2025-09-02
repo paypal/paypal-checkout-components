@@ -209,4 +209,24 @@ export const buttonRebrandStyle = `
         text-align: center;
         width: auto;
     }
+
+    @media only screen and (min-width: 0px) and (max-width: 150px) {
+        .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
+            display: none !important;
+        }
+
+        .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
+            display: block;
+        }
+    }
+
+    @media only screen and (min-width: 151px) {
+        .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
+            display: block;
+        }
+
+        .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
+            display: none;
+        }
+    }
 `;
