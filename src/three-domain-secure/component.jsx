@@ -140,8 +140,7 @@ export class ThreeDomainSecureComponent {
     }
     // eslint-disable-next-line compat/compat
     return new Promise((resolve, reject) => {
-      let authenticationState,
-        liabilityShift = "false";
+      let authenticationState, liabilityShift;
       const cancelThreeDS = () => {
         return ZalgoPromise.try(() => {
           this.logger.warn("3DS Cancelled");
@@ -150,7 +149,7 @@ export class ThreeDomainSecureComponent {
           instance.close();
           resolve({
             authenticationState: "cancelled",
-            liabilityShift: "false",
+            liabilityShift,
             nonce: this.fastlaneNonce,
           });
         });
@@ -163,9 +162,9 @@ export class ThreeDomainSecureComponent {
           let enrichedNonce;
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
-          // and false for downstream failures and errors
+          // and undefined for downstream failures, errors and cancelled case
           authenticationState = success ? "succeeded" : "errored";
-          liabilityShift = liability_shift ? liability_shift : "false";
+          liabilityShift = liability_shift;
 
           // call BT mutation to update fastlaneNonce with 3ds data
           // reference_id will be available for all usecases(success/failure)

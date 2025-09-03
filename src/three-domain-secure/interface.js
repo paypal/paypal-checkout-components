@@ -31,17 +31,18 @@ export function destroy(err?: mixed) {
 export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInterface> =
   {
     __get__: () => {
+      const accessToken = getSDKToken() || getUserIDToken();
       const threeDomainSecureInstance = new ThreeDomainSecureComponent({
         logger: getLogger(),
-        restClient: new RestClient({ accessToken: getSDKToken() }),
+        restClient: new RestClient({ accessToken }),
         graphQLClient: new GraphQLClient({
           baseURL:
             getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
-          accessToken: getSDKToken(),
+          accessToken,
         }),
         // $FlowIssue ZalgoPromise vs Promise
         sdkConfig: {
-          authenticationToken: getSDKToken() || getUserIDToken(),
+          authenticationToken: accessToken,
           paypalApiDomain: getPayPalAPIDomain(),
           clientID: getClientID(),
         },

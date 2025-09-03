@@ -74,7 +74,7 @@ export type SdkConfig = {|
 |};
 
 export type ThreeDSResponse = {|
-  liabilityShift: string,
+  liabilityShift?: string,
   authenticationState: string,
   nonce?: string,
 |};
