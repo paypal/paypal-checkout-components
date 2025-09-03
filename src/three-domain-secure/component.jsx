@@ -39,16 +39,29 @@ const parseMerchantPayload = ({
 }: {|
   merchantPayload: MerchantPayloadData,
 |}): requestData => {
-  const { threeDSRequested, amount, currency, nonce, transactionContext } =
-    merchantPayload;
+  const {
+    threeDSRequested,
+    threeDSTriggerMode,
+    amount,
+    currency,
+    nonce,
+    transactionContext,
+  } = merchantPayload;
+
+  let verificationMethod = "SCA_WHEN_REQUIRED";
+
+  if (threeDSTriggerMode) {
+    verificationMethod = threeDSTriggerMode;
+  } else if (threeDSRequested !== undefined) {
+    verificationMethod = threeDSRequested ? "SCA_ALWAYS" : "SCA_WHEN_REQUIRED";
+  }
+
   return {
     intent: "THREE_DS_VERIFICATION",
     payment_source: {
       card: {
         single_use_token: nonce,
-        verification_method: threeDSRequested
-          ? "SCA_ALWAYS"
-          : "SCA_WHEN_REQUIRED",
+        verification_method: verificationMethod,
       },
     },
     amount: {
