@@ -520,7 +520,7 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_ROW} {
-              height: ${defaultHeight}px;
+              height: ${height || defaultHeight}px;
               vertical-align: top;
               max-height: ${height || maxHeight}px;
           }
