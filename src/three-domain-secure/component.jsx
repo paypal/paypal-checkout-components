@@ -39,16 +39,29 @@ const parseMerchantPayload = ({
 }: {|
   merchantPayload: MerchantPayloadData,
 |}): requestData => {
-  const { threeDSRequested, amount, currency, nonce, transactionContext } =
-    merchantPayload;
+  const {
+    threeDSRequested,
+    threeDSTriggerMode,
+    amount,
+    currency,
+    nonce,
+    transactionContext,
+  } = merchantPayload;
+
+  let verificationMethod = "SCA_WHEN_REQUIRED";
+
+  if (threeDSTriggerMode) {
+    verificationMethod = threeDSTriggerMode;
+  } else if (threeDSRequested !== undefined) {
+    verificationMethod = threeDSRequested ? "SCA_ALWAYS" : "SCA_WHEN_REQUIRED";
+  }
+
   return {
     intent: "THREE_DS_VERIFICATION",
     payment_source: {
       card: {
         single_use_token: nonce,
-        verification_method: threeDSRequested
-          ? "SCA_ALWAYS"
-          : "SCA_WHEN_REQUIRED",
+        verification_method: verificationMethod,
       },
     },
     amount: {
@@ -127,8 +140,7 @@ export class ThreeDomainSecureComponent {
     }
     // eslint-disable-next-line compat/compat
     return new Promise((resolve, reject) => {
-      let authenticationState,
-        liabilityShift = "false";
+      let authenticationState, liabilityShift;
       const cancelThreeDS = () => {
         return ZalgoPromise.try(() => {
           this.logger.warn("3DS Cancelled");
@@ -137,7 +149,7 @@ export class ThreeDomainSecureComponent {
           instance.close();
           resolve({
             authenticationState: "cancelled",
-            liabilityShift: "false",
+            liabilityShift,
             nonce: this.fastlaneNonce,
           });
         });
@@ -150,9 +162,9 @@ export class ThreeDomainSecureComponent {
           let enrichedNonce;
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
-          // and false for downstream failures and errors
+          // and undefined for downstream failures, errors and cancelled case
           authenticationState = success ? "succeeded" : "errored";
-          liabilityShift = liability_shift ? liability_shift : "false";
+          liabilityShift = liability_shift;
 
           // call BT mutation to update fastlaneNonce with 3ds data
           // reference_id will be available for all usecases(success/failure)
