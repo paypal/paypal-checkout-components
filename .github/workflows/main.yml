@@ -28,6 +28,10 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
+      
+      # Just temporary, remove before merging
+      - name: LS deps
+        run: npm ls
 
       - name: ▶️ Run Lint
         run: npm run lint
