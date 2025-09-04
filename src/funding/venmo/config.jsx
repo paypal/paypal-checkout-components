@@ -102,6 +102,10 @@ export function getVenmoConfig(): FundingSourceConfig {
       [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.WHITE,
     },
+    textColors: {
+      ...DEFAULT_FUNDING_CONFIG.textColors,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.WHITE,
+    },
 
     secondaryColors: {
       ...DEFAULT_FUNDING_CONFIG.secondaryColors,
