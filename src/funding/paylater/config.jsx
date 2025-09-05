@@ -19,7 +19,10 @@ import { Text } from "../../ui/text";
 
 import css from "./style.scoped.scss";
 
-function getLabelText(fundingEligibility: FundingEligibilityType): ?string {
+function getLabelText(
+  fundingEligibility: FundingEligibilityType,
+  shouldApplyRebrandedStyles?: boolean
+): ?string {
   const { paylater } = fundingEligibility;
 
   let labelText;
@@ -53,7 +56,7 @@ function getLabelText(fundingEligibility: FundingEligibilityType): ?string {
     paylater?.products?.payIn4?.eligible &&
     paylater?.products?.payIn4?.variant === "FR"
   ) {
-    labelText = "4X PayPal";
+    labelText = shouldApplyRebrandedStyles ? "4X" : "4X PayPal";
   }
 
   return labelText;
@@ -83,6 +86,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
       logoColorPP,
       nonce,
       fundingEligibility,
+      env,
+      locale,
+      experiment,
       shouldApplyRebrandedStyles,
     }) => {
       if (!shouldApplyRebrandedStyles) {
@@ -103,13 +109,20 @@ export function getPaylaterConfig(): FundingSourceConfig {
           <Logo
             logoColor={logoColor}
             shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
+            env={env}
+            experiment={experiment}
+            fundingEligibility={fundingEligibility}
+            locale={locale}
           />
           {__WEB__ ? (
             <PPRebrandLogoExternalImage logoColor={logoColorPP} />
           ) : (
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
-          <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
+          <Text>
+            {getLabelText(fundingEligibility, shouldApplyRebrandedStyles) ||
+              "Pay Later"}
+          </Text>
         </Style>
       );
     },
@@ -132,6 +145,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
       [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
     },
 
     logoColors: {

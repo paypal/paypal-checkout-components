@@ -5,6 +5,8 @@ import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
 import { CLASS } from "../../../constants";
 
+import { HIDDEN, VISIBLE } from "./labels";
+
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
 export const buttonStyle = `
@@ -189,7 +191,6 @@ export const buttonRebrandStyle = `
         display: flex;
         align-items: center;
         line-height: 1.1;
-        flex-shrink: 1;
         min-width: 0;
     }
 
@@ -212,21 +213,21 @@ export const buttonRebrandStyle = `
 
     @media only screen and (min-width: 0px) and (max-width: 150px) {
         .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
-            display: none !important;
+            ${HIDDEN}
         }
 
         .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
-            display: block;
+            ${VISIBLE}
         }
     }
 
-    @media only screen and (min-width: 151px) {
+    @media only screen and (min-width: 150px) {
         .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
-            display: block;
+            ${VISIBLE}
         }
 
         .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
-            display: none;
+            ${HIDDEN}
         }
     }
 `;
