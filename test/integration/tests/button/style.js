@@ -324,6 +324,12 @@ describe("Button Redesign", () => {
     );
   };
 
+  const validateBlackRebrandCardButton = (fundingSource = "card") => {
+    assert.ok(getElementRecursive(".paypal-button-color-rebrand_black"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-white"));
+    assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}-rebrand`));
+  };
+
   const validateWhiteRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_white"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
@@ -332,6 +338,12 @@ describe("Button Redesign", () => {
         `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-black`
       )
     );
+  };
+
+  const validateWhiteRebrandCardButton = (fundingSource = "card") => {
+    assert.ok(getElementRecursive(".paypal-button-color-rebrand_white"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
+    assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}-rebrand`));
   };
 
   const validateLegacyBlueButton = (fundingSource = "paypal") => {
@@ -555,8 +567,12 @@ describe("Button Redesign", () => {
     describe("funding source = Card", () => {
       const fundingSource = "card";
 
+      beforeEach(() => {
+        enableFundingSource(fundingSource);
+      });
+
       describe("supported rebranded colors", () => {
-        // This test fails because the sdk-logo card rebrand component does not append paypal-logo-color-white class currently.
+        // Currently the color validation method is not finding '.paypal-logo-card-rebrand' class because the corresponding sdk-logo card rebrand component adds '.paypal-logo-card' as a class instead
         it.skip("should render the rebranded black when color is black and isPaypalRebrandEnabled is true", () => {
           const mockPaypalRebrandExperiment =
             setMockPaypalRebrandExperiment(true);
@@ -569,13 +585,13 @@ describe("Button Redesign", () => {
           });
 
           return button.render("#testContainer").then(() => {
-            validateBlackRebrandButton(fundingSource);
+            validateBlackRebrandCardButton(fundingSource);
 
             mockPaypalRebrandExperiment.cancel();
           });
         });
 
-        // This test fails because the sdk-logo card rebrand component does not append paypal-logo-color-black class currently.
+        // Currently the color validation method is not finding '.paypal-logo-card-rebrand' class because the corresponding sdk-logo card rebrand component adds '.paypal-logo-card' as a class instead
         it.skip("should render the rebranded white button when color is white and isPaypalRebrandEnabled is true", () => {
           const mockPaypalRebrandExperiment =
             setMockPaypalRebrandExperiment(true);
@@ -588,7 +604,7 @@ describe("Button Redesign", () => {
           });
 
           return button.render("#testContainer").then(() => {
-            validateWhiteRebrandButton();
+            validateWhiteRebrandCardButton(fundingSource);
 
             mockPaypalRebrandExperiment.cancel();
           });
