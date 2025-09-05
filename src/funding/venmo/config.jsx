@@ -8,6 +8,8 @@ import {
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES } from "@paypal/sdk-constants/src";
 import {
+  isIos,
+  isFirefox,
   isWebView,
   isIosWebview,
   isAndroidWebview,
@@ -49,15 +51,23 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      const isAnyWebview =
-        __WEB__ &&
-        (isWebView() ||
+      // User-Agent checks
+      if (__WEB__) {
+        // WebView eligibility
+        const isAnyWebview =
+          isWebView() ||
           isIosWebview() ||
           isAndroidWebview() ||
-          isFacebookWebView());
+          isFacebookWebView();
 
-      if (isAnyWebview && !window.popupBridge) {
-        return false;
+        if (isAnyWebview && !window.popupBridge) {
+          return false;
+        }
+
+        // Firefox doesn't work on iOS
+        if (isIos() && isFirefox()) {
+          return false;
+        }
       }
 
       return true;
