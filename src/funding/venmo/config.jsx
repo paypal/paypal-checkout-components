@@ -7,6 +7,18 @@ import {
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
+import {
+  isAndroid,
+  isChrome,
+  isFirefox,
+  isIos,
+  isSafari,
+  isTablet,
+  isWebView,
+  isIosWebview,
+  isAndroidWebview,
+  isFacebookWebView,
+} from "@krakenjs/belter/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -21,7 +33,7 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+    eligible: ({ experiment, shippingChange, displayOnly, flow, platform }) => {
       // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
@@ -43,22 +55,37 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      return true;
-    },
+      // Mobile User-Agent checks
+      if (__WEB__ && platform === PLATFORM.MOBILE) {
+        // WebView eligibility
+        const isWebview =
+          isWebView() ||
+          isIosWebview() ||
+          isAndroidWebview() ||
+          isFacebookWebView();
 
-    requires: ({ experiment, platform }) => {
-      const isNonNativeSupported =
-        experiment?.venmoEnableWebOnNonNativeBrowser === true ||
-        (__WEB__ && window.popupBridge);
+        if (isWebview && !window.popupBridge) {
+          return false;
+        }
 
-      if (platform === PLATFORM.MOBILE) {
-        return {
-          native: isNonNativeSupported ? false : true,
-          popup: isNonNativeSupported ? false : true,
-        };
+        // Supported browser
+        const supportedBrowser =
+          (isIos() && isChrome()) ||
+          (isIos() && isSafari()) ||
+          (isAndroid() && isChrome()) ||
+          (isAndroid() && isFirefox());
+
+        if (!supportedBrowser) {
+          return false;
+        }
+
+        // Tablets are not supported
+        if (isTablet()) {
+          return false;
+        }
       }
 
-      return {};
+      return true;
     },
 
     Logo: ({ logoColor, optional }) => {

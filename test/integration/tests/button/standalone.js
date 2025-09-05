@@ -195,6 +195,7 @@ describe(`paypal standalone buttons`, () => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
+      window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
 
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -222,6 +223,7 @@ describe(`paypal standalone buttons`, () => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
+      window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
 
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -257,6 +259,8 @@ describe(`paypal standalone buttons`, () => {
         "eligible",
         false
       );
+
+      window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
 
       const button = window.paypal.Buttons({
         test: {},
