@@ -68,29 +68,6 @@ export function getVenmoConfig(): FundingSourceConfig {
           return false;
         }
 
-        // const unsupportedBrowser =
-        //   /Opera/i.test(getUserAgent()) || // Opera
-        //   /EdgA/i.test(getUserAgent()) || // Microsoft Edge - Android mobile
-        //   isOperaMini() ||
-        //   isFirefoxIOS() ||
-        //   isEdgeIOS() ||
-        //   isQQBrowser() ||
-        //   isElectron() ||
-        //   isMacOsCna();
-
-        // if (unsupportedBrowser) {
-        //   return false;
-        // }
-
-        // const invalidSamsungBrowser =
-        //   /SamsungBrowser\/15.0/i.test(getUserAgent()) ||
-        //   /SamsungBrowser\/10.2/i.test(getUserAgent()) ||
-        //   /SamsungBrowser\/7.4/i.test(getUserAgent());
-
-        // if (invalidSamsungBrowser) {
-        //   return false;
-        // }
-
         // Supported browser
         const supportedBrowser =
           (isIos() && isChrome()) ||
