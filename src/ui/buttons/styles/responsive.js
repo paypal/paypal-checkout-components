@@ -531,23 +531,23 @@ const generateRebrandedButtonSizeStyles = ({
               height: ${buttonHeight * 0.76}px;
           }
 
-          .${CLASS.BUTTON_REBRAND} .${CLASS.NUMBER}-.${
-        BUTTON_NUMBER.MULTIPLE
-      } > .${CLASS.BUTTON_LABEL} {
+          .${CLASS.BUTTON_REBRAND}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
+        CLASS.BUTTON_LABEL
+      } {
               gap: ${gap}px;
           }
 
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-.${
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${
         BUTTON_NUMBER.MULTIPLE
       } .${CLASS.TEXT}, 
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-.${
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${
         BUTTON_NUMBER.MULTIPLE
       } .${CLASS.SPACE} {
               font-size: ${fontSize}px;
               position: relative; 
           }
 
-          .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-.${BUTTON_NUMBER.MULTIPLE} .${
+          .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
         CLASS.BUTTON_REBRAND
       } .${CLASS.TEXT} {
               line-height: 1.2;
@@ -556,7 +556,7 @@ const generateRebrandedButtonSizeStyles = ({
 
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
         CLASS.NUMBER
-      }-.${BUTTON_NUMBER.MULTIPLE} {
+      }-${BUTTON_NUMBER.MULTIPLE} {
               margin-bottom: ${perc(
                 buttonHeight,
                 BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
@@ -566,7 +566,7 @@ const generateRebrandedButtonSizeStyles = ({
           //  TO:DO no margin on last-child not getting applied
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
         CLASS.NUMBER
-      }-.${BUTTON_NUMBER.MULTIPLE}:last-child {
+      }-${BUTTON_NUMBER.MULTIPLE}:last-child {
               margin-bottom: 0;
           }
         }`;
