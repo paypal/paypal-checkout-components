@@ -520,9 +520,9 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_ROW} {
-              height: ${defaultHeight}px;
+              ${disableMaxHeight ? "" : `height: ${height || defaultHeight}px;`}
               vertical-align: top;
-              max-height: ${height || maxHeight}px;
+              ${disableMaxHeight ? "" : `max-height: ${height || maxHeight}px;`}
           }
 
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
