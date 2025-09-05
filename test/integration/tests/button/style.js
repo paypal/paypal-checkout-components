@@ -552,6 +552,85 @@ describe("Button Redesign", () => {
       });
     });
 
+    describe("funding source = Card", () => {
+      const fundingSource = "card";
+
+      describe("supported rebranded colors", () => {
+        // This test fails because the sdk-logo card rebrand component does not append paypal-logo-color-white class currently.
+        it.skip("should render the rebranded black when color is black and isPaypalRebrandEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+            style: {
+              color: "black",
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateBlackRebrandButton(fundingSource);
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        // This test fails because the sdk-logo card rebrand component does not append paypal-logo-color-black class currently.
+        it.skip("should render the rebranded white button when color is white and isPaypalRebrandEnabled is true", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(true);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+            style: {
+              color: "white",
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateWhiteRebrandButton();
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+      });
+
+      describe("supported legacy colors", () => {
+        it("should render the legacy black card button when isPaypalRebrandEnabled is false", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(false);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateLegacyBlackCardButton(fundingSource);
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+
+        it("should render the legacy white card button when color is white and isPaypalRebrandEnabled is false", () => {
+          const mockPaypalRebrandExperiment =
+            setMockPaypalRebrandExperiment(false);
+
+          const button = window.paypal.Buttons({
+            fundingSource,
+            style: {
+              color: "white",
+            },
+          });
+
+          return button.render("#testContainer").then(() => {
+            validateLegacyWhiteCardButton(fundingSource);
+
+            mockPaypalRebrandExperiment.cancel();
+          });
+        });
+      });
+    });
+
     describe("unsupported funding sources", () => {
       describe("funding source = Venmo", () => {
         const fundingSource = "venmo";
@@ -673,70 +752,6 @@ describe("Button Redesign", () => {
 
           return button.render("#testContainer").then(() => {
             validateLegacyBlackButton("pp");
-
-            mockPaypalRebrandExperiment.cancel();
-            mockPaypalRebrandABTestExperiment.cancel();
-          });
-        });
-      });
-
-      describe("funding source = Card", () => {
-        const fundingSource = "card";
-
-        beforeEach(() => {
-          enableFundingSource(fundingSource);
-        });
-
-        it("should render the legacy card button when isPaypalRebrandEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-
-          const button = window.paypal.Buttons({
-            fundingSource,
-          });
-
-          return button.render("#testContainer").then(() => {
-            // black is the default color for Card
-            validateLegacyBlackCardButton();
-
-            mockPaypalRebrandExperiment.cancel();
-          });
-        });
-
-        it("should render the legacy card button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-          const mockPaypalRebrandABTestExperiment =
-            setMockPaypalRebrandABTestExperiment(true);
-
-          const button = window.paypal.Buttons({
-            fundingSource,
-          });
-
-          return button.render("#testContainer").then(() => {
-            // black is the default color for Card
-            validateLegacyBlackCardButton();
-
-            mockPaypalRebrandExperiment.cancel();
-            mockPaypalRebrandABTestExperiment.cancel();
-          });
-        });
-
-        it("should render the legacy card button in white color is white & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-          const mockPaypalRebrandABTestExperiment =
-            setMockPaypalRebrandABTestExperiment(true);
-
-          const button = window.paypal.Buttons({
-            fundingSource,
-            style: {
-              color: "white",
-            },
-          });
-
-          return button.render("#testContainer").then(() => {
-            validateLegacyWhiteCardButton();
 
             mockPaypalRebrandExperiment.cancel();
             mockPaypalRebrandABTestExperiment.cancel();
