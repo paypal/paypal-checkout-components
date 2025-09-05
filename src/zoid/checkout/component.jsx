@@ -221,6 +221,12 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: () => "1",
         },
 
+        integration_artifact: {
+          type: "string",
+          queryParam: true,
+          value: () => "PAYPAL_JS_SDK",
+        },
+
         version: {
           type: "string",
           queryParam: true,
