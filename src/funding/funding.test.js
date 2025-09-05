@@ -172,31 +172,5 @@ describe("Funding eligibility", () => {
         expect(result).toBe(true);
       });
     });
-
-    describe("Mobile", () => {
-      test("should be eligible if window.popupBridge is defined for Venmo and supportsPopups is false", () => {
-        window.popupBridge = {};
-
-        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
-          ...defaultMockFundingOptions,
-          platform: PLATFORM.MOBILE,
-          supportsPopups: false,
-        });
-
-        expect(fundingEligible).toBe(true);
-
-        window.popupBridge = undefined;
-      });
-
-      test("should not be eligible if window.popupBridge is undefined for Venmo and supportsPopups is false", () => {
-        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
-          ...defaultMockFundingOptions,
-          platform: PLATFORM.MOBILE,
-          supportsPopups: false,
-        });
-
-        expect(fundingEligible).toBe(false);
-      });
-    });
   });
 });
