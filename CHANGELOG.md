@@ -1,3 +1,9 @@
+## <small>5.0.380 (2025-08-26)</small>
+
+* feat(venmo): webview eligibility detection (#2532) ([9822f7e](https://github.com/paypal/paypal-checkout-components/commit/9822f7e)), closes [#2532](https://github.com/paypal/paypal-checkout-components/issues/2532) [#2517](https://github.com/paypal/paypal-checkout-components/issues/2517)
+
+
+
 ## <small>5.0.379 (2025-08-21)</small>
 
 * Feature/label centering exploration (#2541) ([2a21090](https://github.com/paypal/paypal-checkout-components/commit/2a21090)), closes [#2541](https://github.com/paypal/paypal-checkout-components/issues/2541)

@@ -772,6 +772,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
                   window.popupBridge.onComplete = (err, result) => {
+                    if (!err && !result) {
+                      resolve({
+                        opType: "user_closed_window",
+                      });
+                    }
                     const queryItems =
                       result && result.queryItems ? result.queryItems : {};
                     return err ? reject(err) : resolve(queryItems);
