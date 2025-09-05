@@ -6,10 +6,14 @@ import {
   VenmoLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
-import { DISPLAY_ONLY_VALUES } from "@paypal/sdk-constants/src";
+import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
 import {
-  isIos,
+  isAndroid,
+  isChrome,
   isFirefox,
+  isIos,
+  isSafari,
+  isTablet,
   isWebView,
   isIosWebview,
   isAndroidWebview,
@@ -29,7 +33,7 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+    eligible: ({ experiment, shippingChange, displayOnly, flow, platform }) => {
       // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
@@ -51,21 +55,55 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      // User-Agent checks
-      if (__WEB__) {
+      // Mobile User-Agent checks
+      if (__WEB__ && platform === PLATFORM.MOBILE) {
         // WebView eligibility
-        const isAnyWebview =
+        const isWebview =
           isWebView() ||
           isIosWebview() ||
           isAndroidWebview() ||
           isFacebookWebView();
 
-        if (isAnyWebview && !window.popupBridge) {
+        if (isWebview && !window.popupBridge) {
           return false;
         }
 
-        // Firefox doesn't work on iOS
-        if (isIos() && isFirefox()) {
+        // const unsupportedBrowser =
+        //   /Opera/i.test(getUserAgent()) || // Opera
+        //   /EdgA/i.test(getUserAgent()) || // Microsoft Edge - Android mobile
+        //   isOperaMini() ||
+        //   isFirefoxIOS() ||
+        //   isEdgeIOS() ||
+        //   isQQBrowser() ||
+        //   isElectron() ||
+        //   isMacOsCna();
+
+        // if (unsupportedBrowser) {
+        //   return false;
+        // }
+
+        // const invalidSamsungBrowser =
+        //   /SamsungBrowser\/15.0/i.test(getUserAgent()) ||
+        //   /SamsungBrowser\/10.2/i.test(getUserAgent()) ||
+        //   /SamsungBrowser\/7.4/i.test(getUserAgent());
+
+        // if (invalidSamsungBrowser) {
+        //   return false;
+        // }
+
+        // Supported browser
+        const supportedBrowser =
+          (isIos() && isChrome()) ||
+          (isIos() && isSafari()) ||
+          (isAndroid() && isChrome()) ||
+          (isAndroid() && isFirefox());
+
+        if (!supportedBrowser) {
+          return false;
+        }
+
+        // Tablets are not supported
+        if (isTablet()) {
           return false;
         }
       }

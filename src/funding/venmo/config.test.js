@@ -8,6 +8,9 @@ import { BUTTON_FLOW } from "../../constants";
 import { getVenmoConfig } from "./config";
 
 describe("Venmo eligibility", () => {
+  window.navigator.mockUserAgent =
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
+
   const baseEligibilityProps = {
     fundingSource: undefined,
     components: ["buttons"],
@@ -173,34 +176,249 @@ describe("Venmo eligibility", () => {
       expect(shouldBeIneligible).toBe(false);
     });
 
-    test("should not be eligible on iOS Firefox", () => {
-      const mockIsIos = vi.fn(() => true);
-      const mockIsFirefox = vi.fn(() => true);
+    test("should not be eligible on Firefox iOS", () => {
+      const mockIsFirefoxIOS = vi.fn(() => true);
 
-      const shouldBeIneligibleDueToIosFirefox =
-        global.__WEB__ && mockIsIos() && mockIsFirefox();
+      const shouldBeIneligibleDueToFirefoxIOS =
+        global.__WEB__ && mockIsFirefoxIOS();
 
-      expect(shouldBeIneligibleDueToIosFirefox).toBe(true);
+      expect(shouldBeIneligibleDueToFirefoxIOS).toBe(true);
     });
 
-    test("should be eligible on iOS Safari", () => {
-      const mockIsIos = vi.fn(() => true);
-      const mockIsFirefox = vi.fn(() => false);
+    test("should be eligible when not Firefox iOS", () => {
+      const mockIsFirefoxIOS = vi.fn(() => false);
 
-      const shouldBeIneligibleDueToIosFirefox =
-        global.__WEB__ && mockIsIos() && mockIsFirefox();
+      const shouldBeIneligibleDueToFirefoxIOS =
+        global.__WEB__ && mockIsFirefoxIOS();
 
-      expect(shouldBeIneligibleDueToIosFirefox).toBe(false);
+      expect(shouldBeIneligibleDueToFirefoxIOS).toBe(false);
     });
 
-    test("should be eligible on non-iOS Firefox", () => {
-      const mockIsIos = vi.fn(() => false);
-      const mockIsFirefox = vi.fn(() => true);
+    test("should not be eligible on Edge iOS", () => {
+      const mockIsEdgeIOS = vi.fn(() => true);
 
-      const shouldBeIneligibleDueToIosFirefox =
-        global.__WEB__ && mockIsIos() && mockIsFirefox();
+      const shouldBeIneligibleDueToEdgeIOS = global.__WEB__ && mockIsEdgeIOS();
 
-      expect(shouldBeIneligibleDueToIosFirefox).toBe(false);
+      expect(shouldBeIneligibleDueToEdgeIOS).toBe(true);
+    });
+
+    test("should be eligible when not Edge iOS", () => {
+      const mockIsEdgeIOS = vi.fn(() => false);
+
+      const shouldBeIneligibleDueToEdgeIOS = global.__WEB__ && mockIsEdgeIOS();
+
+      expect(shouldBeIneligibleDueToEdgeIOS).toBe(false);
+    });
+
+    test("should not be eligible on Opera Mini", () => {
+      const mockIsOperaMini = vi.fn(() => true);
+
+      const shouldBeIneligibleDueToOperaMini =
+        global.__WEB__ && mockIsOperaMini();
+
+      expect(shouldBeIneligibleDueToOperaMini).toBe(true);
+    });
+
+    test("should be eligible when not Opera Mini", () => {
+      const mockIsOperaMini = vi.fn(() => false);
+
+      const shouldBeIneligibleDueToOperaMini =
+        global.__WEB__ && mockIsOperaMini();
+
+      expect(shouldBeIneligibleDueToOperaMini).toBe(false);
+    });
+
+    test("should not be eligible on QQ Browser", () => {
+      const mockIsQQBrowser = vi.fn(() => true);
+
+      const shouldBeIneligibleDueToQQBrowser =
+        global.__WEB__ && mockIsQQBrowser();
+
+      expect(shouldBeIneligibleDueToQQBrowser).toBe(true);
+    });
+
+    test("should be eligible when not QQ Browser", () => {
+      const mockIsQQBrowser = vi.fn(() => false);
+
+      const shouldBeIneligibleDueToQQBrowser =
+        global.__WEB__ && mockIsQQBrowser();
+
+      expect(shouldBeIneligibleDueToQQBrowser).toBe(false);
+    });
+
+    test("should not be eligible on Electron", () => {
+      const mockIsElectron = vi.fn(() => true);
+
+      const shouldBeIneligibleDueToElectron =
+        global.__WEB__ && mockIsElectron();
+
+      expect(shouldBeIneligibleDueToElectron).toBe(true);
+    });
+
+    test("should be eligible when not Electron", () => {
+      const mockIsElectron = vi.fn(() => false);
+
+      const shouldBeIneligibleDueToElectron =
+        global.__WEB__ && mockIsElectron();
+
+      expect(shouldBeIneligibleDueToElectron).toBe(false);
+    });
+
+    test("should not be eligible on macOS CNA", () => {
+      const mockIsMacOsCna = vi.fn(() => true);
+
+      const shouldBeIneligibleDueToMacOsCna =
+        global.__WEB__ && mockIsMacOsCna();
+
+      expect(shouldBeIneligibleDueToMacOsCna).toBe(true);
+    });
+
+    test("should be eligible when not macOS CNA", () => {
+      const mockIsMacOsCna = vi.fn(() => false);
+
+      const shouldBeIneligibleDueToMacOsCna =
+        global.__WEB__ && mockIsMacOsCna();
+
+      expect(shouldBeIneligibleDueToMacOsCna).toBe(false);
+    });
+
+    test("should not be eligible on Opera (user agent)", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Opera/12.02 (Android 4.1; Linux; Opera Mobi/ADR-1111101157; U; en-US) Presto/2.9.201 Version/12.02";
+
+      const shouldBeIneligibleDueToOpera =
+        global.__WEB__ && /Opera/.test(window.navigator.mockUserAgent);
+
+      expect(shouldBeIneligibleDueToOpera).toBe(true);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should not be eligible on Microsoft Edge Android (user agent)", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 8.1.0; Pixel Build/OPM4.171019.021.D1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.109 Mobile Safari/537.36 EdgA/42.0.0.2057";
+
+      const shouldBeIneligibleDueToEdgA =
+        global.__WEB__ && /EdgA/.test(window.navigator.mockUserAgent);
+
+      expect(shouldBeIneligibleDueToEdgA).toBe(true);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should be eligible with regular Chrome user agent", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 10; SM-G975F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36";
+
+      const shouldBeIneligibleDueToUnsupportedUA =
+        global.__WEB__ &&
+        (/Opera/.test(window.navigator.mockUserAgent) ||
+          /EdgA/.test(window.navigator.mockUserAgent));
+
+      expect(shouldBeIneligibleDueToUnsupportedUA).toBe(false);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should not be eligible on Samsung Browser 15.0", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 11; SAMSUNG SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/15.0 Chrome/90.0.4430.210 Mobile Safari/537.36";
+
+      const shouldBeIneligibleDueToSamsung15 =
+        global.__WEB__ &&
+        /SamsungBrowser\/15.0/i.test(window.navigator.mockUserAgent);
+
+      expect(shouldBeIneligibleDueToSamsung15).toBe(true);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should not be eligible on Samsung Browser 10.2", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 9; SAMSUNG SM-G960U) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/10.2 Chrome/71.0.3578.99 Mobile Safari/537.36";
+
+      const shouldBeIneligibleDueToSamsung10 =
+        global.__WEB__ &&
+        /SamsungBrowser\/10.2/i.test(window.navigator.mockUserAgent);
+
+      expect(shouldBeIneligibleDueToSamsung10).toBe(true);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should not be eligible on Samsung Browser 7.4", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 7.0; SAMSUNG SM-G610M Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/7.4 Chrome/59.0.3071.125 Mobile Safari/537.36";
+
+      const shouldBeIneligibleDueToSamsung7 =
+        global.__WEB__ &&
+        /SamsungBrowser\/7.4/i.test(window.navigator.mockUserAgent);
+
+      expect(shouldBeIneligibleDueToSamsung7).toBe(true);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should be eligible on Samsung Browser 16.0 (supported version)", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 12; SAMSUNG SM-G998B) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/16.0 Chrome/92.0.4515.166 Mobile Safari/537.36";
+
+      const shouldBeIneligibleDueToInvalidSamsung =
+        global.__WEB__ &&
+        (/SamsungBrowser\/15.0/i.test(window.navigator.mockUserAgent) ||
+          /SamsungBrowser\/10.2/i.test(window.navigator.mockUserAgent) ||
+          /SamsungBrowser\/7.4/i.test(window.navigator.mockUserAgent));
+
+      expect(shouldBeIneligibleDueToInvalidSamsung).toBe(false);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should be eligible on non-Samsung browser", () => {
+      const originalUserAgent = window.navigator.mockUserAgent;
+      window.navigator.mockUserAgent =
+        "Mozilla/5.0 (Linux; Android 10; SM-G975F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.120 Mobile Safari/537.36";
+
+      const shouldBeIneligibleDueToInvalidSamsung =
+        global.__WEB__ &&
+        (/SamsungBrowser\/15.0/i.test(window.navigator.mockUserAgent) ||
+          /SamsungBrowser\/10.2/i.test(window.navigator.mockUserAgent) ||
+          /SamsungBrowser\/7.4/i.test(window.navigator.mockUserAgent));
+
+      expect(shouldBeIneligibleDueToInvalidSamsung).toBe(false);
+
+      // Restore original user agent
+      window.navigator.mockUserAgent = originalUserAgent;
+    });
+
+    test("should not be eligible on tablets", () => {
+      const mockIsTablet = vi.fn(() => true);
+
+      const shouldBeIneligibleDueToTablet = global.__WEB__ && mockIsTablet();
+
+      expect(shouldBeIneligibleDueToTablet).toBe(true);
+    });
+
+    test("should be eligible on non-tablet devices", () => {
+      const mockIsTablet = vi.fn(() => false);
+
+      const shouldBeIneligibleDueToTablet = global.__WEB__ && mockIsTablet();
+
+      expect(shouldBeIneligibleDueToTablet).toBe(false);
     });
 
     test("should be eligible when __WEB__ is false (server-side)", () => {
