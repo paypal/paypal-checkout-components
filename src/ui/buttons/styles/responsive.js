@@ -531,9 +531,32 @@ const generateRebrandedButtonSizeStyles = ({
               height: ${buttonHeight * 0.76}px;
           }
 
-          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.VERTICAL
-      }.paypal-button-number-multiple {
+          .${CLASS.BUTTON_REBRAND}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
+        CLASS.BUTTON_LABEL
+      } {
+              gap: ${gap}px;
+          }
+
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${
+        BUTTON_NUMBER.MULTIPLE
+      } .${CLASS.TEXT}, 
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${
+        BUTTON_NUMBER.MULTIPLE
+      } .${CLASS.SPACE} {
+              font-size: ${fontSize}px;
+              position: relative; 
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
+        CLASS.BUTTON_REBRAND
+      } .${CLASS.TEXT} {
+              line-height: 1.2;
+              margin: 0;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} {
               margin-bottom: ${perc(
                 buttonHeight,
                 BUTTON_RELATIVE_STYLE.VERTICAL_MARGIN
@@ -541,9 +564,9 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           //  TO:DO no margin on last-child not getting applied
-          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${
-        BUTTON_LAYOUT.VERTICAL
-      }.paypal-button-number-multiple:last-child {
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE}:last-child {
               margin-bottom: 0;
           }
         }`;
@@ -578,14 +601,13 @@ const generateRebrandedButtonSizeStyles = ({
               gap: ${gap}px;
           }
 
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
-        CLASS.CONTAINER
-      } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
               font-size: ${fontSize}px;
               position: relative; 
           }
 
-          .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
+          .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
               line-height: 1.2;
               margin: 0;
           }
