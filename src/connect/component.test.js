@@ -122,6 +122,13 @@ describe("getConnectComponent: returns ConnectComponent", () => {
       platform: "PPCP",
     });
   });
+
+  test("throws error if braintree or connect is missing", async () => {
+    window.braintree = undefined;
+    await expect(() => getConnectComponent(mockProps)).rejects.toThrow(
+      "Braintree SDK is not loaded or connect is unavailable."
+    );
+  });
 });
 
 describe("getSdkVersion", () => {
