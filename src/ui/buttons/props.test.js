@@ -129,11 +129,10 @@ describe("determineRandomButtonColor", () => {
 });
 
 describe("hasInvalidScriptOptionsForFullRedesign", () => {
-  const validFundingSources = [FUNDING.PAYPAL];
+  const validFundingSources = [FUNDING.PAYPAL, FUNDING.PAYLATER];
   const invalidFundingSources = [
     FUNDING.CARD,
     FUNDING.VENMO,
-    FUNDING.PAYLATER,
     FUNDING.CREDIT,
     FUNDING.APPLEPAY,
     FUNDING.IDEAL,
