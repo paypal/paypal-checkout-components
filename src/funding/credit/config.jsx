@@ -61,19 +61,11 @@ export function getCreditConfig(): FundingSourceConfig {
     },
 
     Mark: ({ ...props }) => {
-      // TODO: TEMPORARY OVERRIDE FOR DEVELOPMENT
-      // New mark assets are not yet deployed to CDN, forcing inline SVG for testing
-      // Revert to normal __WEB__ conditional once assets are deployed
-
-      // PRODUCTION CODE (currently commented out):
-      // return __WEB__ ? (
-      //   <CreditMarkRebrandExternalImage {...props} />
-      // ) : (
-      //   <CreditMarkRebrandInlineSVG {...props} />
-      // );
-
-      // TEMPORARY DEVELOPMENT OVERRIDE:
-      return <CreditMarkRebrandInlineSVG {...props} />;
+      return __WEB__ ? (
+        <CreditMarkRebrandExternalImage {...props} />
+      ) : (
+        <CreditMarkRebrandInlineSVG {...props} />
+      );
     },
 
     WalletLabel,

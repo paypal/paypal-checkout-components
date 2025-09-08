@@ -37,16 +37,24 @@ function Mark({
   const MarkLogo = fundingConfig.Mark;
   const marksDefined = typeof MarkLogo !== "undefined";
 
+  let backgroundClasses = "paypal-mark-rebrand";
+
   const hasBlueBackground =
     fundingSource === FUNDING.PAYPAL ||
     fundingSource === FUNDING.PAYLATER ||
     fundingSource === FUNDING.CREDIT;
-  const backgroundClass = hasBlueBackground
-    ? "paypal-mark-rebrand paypal-mark-rebrand-blue"
-    : "paypal-mark-rebrand paypal-mark-rebrand-white";
+
+  backgroundClasses += hasBlueBackground
+    ? " paypal-mark-rebrand-blue"
+    : " paypal-mark-rebrand-white";
+
+  const shouldUseOwnBorderAndPadding = fundingSource === FUNDING.APPLEPAY;
+  if (shouldUseOwnBorderAndPadding) {
+    backgroundClasses += " paypal-mark-rebrand-own-border-and-padding";
+  }
 
   return (
-    <div class={backgroundClass}>
+    <div class={backgroundClasses}>
       {marksDefined && MarkLogo ? (
         <MarkLogo
           fundingEligibility={fundingEligibility}
@@ -123,6 +131,11 @@ export function MarksElementRebrand({
                     .paypal-mark-rebrand-blue {
                         background: #60CDFF;
                         border: 1px solid #60CDFF;
+                    }
+
+                    .paypal-mark-rebrand-own-border-and-padding {
+                        border: none;
+                        padding: 0px;
                     }
 
                     .paypal-mark-rebrand img {

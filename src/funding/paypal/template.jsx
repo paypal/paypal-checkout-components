@@ -65,7 +65,7 @@ export function Logo({
     );
   }
 
-  // csnw globals.js
+  // // csnw globals.js
   return __WEB__ ? (
     // helps reduce bundle size by fetching logos
     <PayPalRebrandLogoExternalImage logoColor={logoColor} />
