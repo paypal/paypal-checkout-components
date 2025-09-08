@@ -753,7 +753,11 @@ export function hasInvalidScriptOptionsForFullRedesign({
 }: {|
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
-  const validFundingSourcesForRedesign = [FUNDING.PAYPAL];
+  const validFundingSourcesForRedesign = [
+    FUNDING.PAYPAL,
+    FUNDING.PAYLATER,
+    FUNDING.CREDIT,
+  ];
 
   if (validFundingSourcesForRedesign.includes(fundingSource)) {
     return false;
@@ -844,7 +848,7 @@ export function getColorForFullRedesign({
 }: GetColorForFullRedesignArgs): ButtonColor {
   const rebrandColorMap = {
     [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_BLUE,
     [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
 
     // not mapped yet since the styles are not setup
