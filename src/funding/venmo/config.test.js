@@ -1,7 +1,7 @@
 /* @flow */
 
 import { describe, expect, vi, beforeEach, afterEach } from "vitest";
-import { DISPLAY_ONLY_VALUES } from "@paypal/sdk-constants/src";
+import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
 
 import { BUTTON_FLOW } from "../../constants";
 
@@ -427,6 +427,86 @@ describe("Venmo eligibility", () => {
       const isVenmoEligible = venmoConfig.eligible?.(baseEligibilityProps);
 
       expect(isVenmoEligible).toEqual(true);
+    });
+  });
+
+  describe("requires", () => {
+    test("should require native support when platform is mobile and venmoEnableWebOnNonNativeBrowser is false", () => {
+      const venmoRequires = venmoConfig.requires?.({
+        experiment: {
+          venmoEnableWebOnNonNativeBrowser: false,
+        },
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(venmoRequires).toEqual({
+        native: true,
+        popup: false,
+      });
+    });
+
+    test("should require native support when platform is mobile and venmoEnableWebOnNonNativeBrowser is undefined", () => {
+      const venmoRequires = venmoConfig.requires?.({
+        experiment: {},
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(venmoRequires).toEqual({
+        native: true,
+        popup: false,
+      });
+    });
+
+    test("should not require native support when platform is mobile and venmoEnableWebOnNonNativeBrowser is true", () => {
+      const venmoRequires = venmoConfig.requires?.({
+        experiment: {
+          venmoEnableWebOnNonNativeBrowser: true,
+        },
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(venmoRequires).toEqual({
+        native: false,
+        popup: false,
+      });
+    });
+
+    test("should not require native support when platform is desktop", () => {
+      const venmoRequires = venmoConfig.requires?.({
+        experiment: {
+          venmoEnableWebOnNonNativeBrowser: false,
+        },
+        platform: PLATFORM.DESKTOP,
+      });
+
+      expect(venmoRequires).toEqual({
+        native: false,
+        popup: false,
+      });
+    });
+
+    test("should not require native support when platform is not specified", () => {
+      const venmoRequires = venmoConfig.requires?.({
+        experiment: {
+          venmoEnableWebOnNonNativeBrowser: false,
+        },
+      });
+
+      expect(venmoRequires).toEqual({
+        native: false,
+        popup: false,
+      });
+    });
+
+    test("should not require native support when experiment is not provided", () => {
+      const venmoRequires = venmoConfig.requires?.({
+        platform: PLATFORM.MOBILE,
+      });
+
+      expect(venmoRequires).toEqual({
+        native: true,
+        popup: false,
+      });
     });
   });
 });

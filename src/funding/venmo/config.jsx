@@ -88,6 +88,23 @@ export function getVenmoConfig(): FundingSourceConfig {
       return true;
     },
 
+    requires: ({ experiment, platform }) => {
+      const nativeSupported =
+        experiment?.venmoEnableWebOnNonNativeBrowser === true;
+
+      if (platform === PLATFORM.MOBILE && !nativeSupported) {
+        return {
+          native: true,
+          popup: false,
+        };
+      }
+
+      return {
+        native: false,
+        popup: false,
+      };
+    },
+
     Logo: ({ logoColor, optional }) => {
       if (__WEB__) {
         return VenmoLogoExternalImage({ logoColor, optional });
