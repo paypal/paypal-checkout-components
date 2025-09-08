@@ -757,6 +757,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
     FUNDING.PAYPAL,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
+    FUNDING.CARD,
   ];
 
   if (validFundingSourcesForRedesign.includes(fundingSource)) {

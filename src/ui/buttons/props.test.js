@@ -133,9 +133,10 @@ describe("hasInvalidScriptOptionsForFullRedesign", () => {
     FUNDING.PAYPAL,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
-  ];
-  const invalidFundingSources = [
     FUNDING.CARD,
+  ];
+
+  const invalidFundingSources = [
     FUNDING.VENMO,
     FUNDING.APPLEPAY,
     FUNDING.IDEAL,
