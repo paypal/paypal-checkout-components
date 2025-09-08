@@ -779,10 +779,10 @@ describe("Button Redesign", () => {
 
       const validatePoweredByRebrandWhiteStyle = () => {
         assert.ok(getElementRecursive(".paypal-powered-by"));
-        // For white rebrand, the logo color should be white
+        // For black rebrand, the logo color should be black
         assert.ok(
           getElementRecursive(
-            ".paypal-logo-paypal-rebrand.paypal-logo-color-white"
+            ".paypal-logo-paypal-rebrand.paypal-logo-color-black"
           )
         );
       };
@@ -826,7 +826,7 @@ describe("Button Redesign", () => {
           });
         });
 
-        it.skip("should render rebranded poweredBy with white logo for black button", () => {
+        it.skip("should render rebranded poweredBy with black logo for black button", () => {
           const mockPaypalRebrandExperiment =
             setMockPaypalRebrandExperiment(true);
 
