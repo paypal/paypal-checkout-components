@@ -247,11 +247,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         enableFunding = getEnableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
         experiment = getButtonExperiments(),
-        supportsPopups = fundingSource === FUNDING.VENMO
-          ? supportsVenmoPopups(experiment)
+        supportsPopups = props.fundingSource === FUNDING.VENMO
+          ? supportsVenmoPopups(props.experiment)
           : userAgentSupportsPopups(),
-        supportedNativeBrowser = fundingSource === FUNDING.VENMO
-          ? isSupportedNativeVenmoBrowser(experiment)
+        supportedNativeBrowser = props.fundingSource === FUNDING.VENMO
+          ? isSupportedNativeVenmoBrowser(props.experiment)
           : isSupportedNativeBrowser(),
         createBillingAgreement,
         createSubscription,
