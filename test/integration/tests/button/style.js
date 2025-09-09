@@ -284,6 +284,16 @@ describe("Button Redesign", () => {
     assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}`));
   };
 
+  const validateLegacyWhiteButton = (fundingSource = "paypal") => {
+    assert.ok(getElementRecursive(".paypal-button-color-white"));
+    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
+    assert.ok(
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
+      )
+    );
+  };
+
   const validateBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_blue"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
@@ -553,7 +563,7 @@ describe("Button Redesign", () => {
         });
       });
     });
-    
+
     describe("funding source = Card", () => {
       const fundingSource = "card";
 
@@ -598,7 +608,7 @@ describe("Button Redesign", () => {
           });
         });
       });
-      
+
       describe("supported legacy colors", () => {
         it("should render the legacy black card button when isPaypalRebrandEnabled is false", () => {
           const mockPaypalRebrandExperiment =
@@ -754,8 +764,8 @@ describe("Button Redesign", () => {
           mockPaypalRebrandExperiment.cancel();
         });
       });
-    });                                                  
-    
+    });
+
     describe("unsupported funding sources", () => {
       describe("funding source = Venmo", () => {
         const fundingSource = "venmo";
