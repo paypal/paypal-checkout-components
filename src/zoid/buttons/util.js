@@ -104,15 +104,15 @@ export function determineFlow(
   }
 }
 
+export const isVenmoSupportedWebView = () => {
+  return (
+    isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
+  );
+};
+
 export function supportsVenmoPopups(
   experiment: EligibilityExperiment
 ): boolean {
-  const isVenmoSupportedWebView = () => {
-    return (
-      isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
-    );
-  };
-
   if (isVenmoSupportedWebView()) {
     if (window.popupBridge) {
       return true;
@@ -142,12 +142,6 @@ export function supportsVenmoPopups(
 export function isSupportedNativeVenmoBrowser(
   experiment: EligibilityExperiment
 ): boolean {
-  const isVenmoSupportedWebView = () => {
-    return (
-      isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
-    );
-  };
-
   if (isVenmoSupportedWebView()) {
     if (window.popupBridge) {
       return true;
