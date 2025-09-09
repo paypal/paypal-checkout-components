@@ -127,6 +127,14 @@ export function getPaylaterConfig(): FundingSourceConfig {
       );
     },
 
+    Mark: ({ ...props }) => {
+      return __WEB__ ? (
+        <PaylaterMarkRebrandExternalImage {...props} />
+      ) : (
+        <PaylaterMarkRebrandInlineSVG {...props} />
+      );
+    },
+
     colors: [
       BUTTON_COLOR.WHITE,
       BUTTON_COLOR.BLACK,

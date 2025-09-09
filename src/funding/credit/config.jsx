@@ -93,6 +93,14 @@ export function getCreditConfig(): FundingSourceConfig {
       );
     },
 
+    Mark: ({ ...props }) => {
+      return __WEB__ ? (
+        <CreditMarkRebrandExternalImage {...props} />
+      ) : (
+        <CreditMarkRebrandInlineSVG {...props} />
+      );
+    },
+
     WalletLabel,
 
     colors: [
