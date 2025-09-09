@@ -56,33 +56,35 @@ export function getVenmoConfig(): FundingSourceConfig {
       }
 
       // Mobile User-Agent checks
-      if (__WEB__ && platform === PLATFORM.MOBILE) {
-        // WebView eligibility
-        const isWebview =
-          isWebView() ||
+      const isWebview =
+        __WEB__ &&
+        platform === PLATFORM.MOBILE &&
+        (isWebView() ||
           isIosWebview() ||
           isAndroidWebview() ||
-          isFacebookWebView();
+          isFacebookWebView());
 
-        if (isWebview && !window.popupBridge) {
-          return false;
-        }
+      if (isWebview && !window.popupBridge) {
+        return false;
+      }
 
-        // Supported browser
-        const supportedBrowser =
-          (isIos() && isChrome()) ||
+      const supportedBrowser =
+        __WEB__ &&
+        platform === PLATFORM.MOBILE &&
+        ((isIos() && isChrome()) ||
           (isIos() && isSafari()) ||
           (isAndroid() && isChrome()) ||
-          (isAndroid() && isFirefox());
+          (isAndroid() && isFirefox()));
 
-        if (!supportedBrowser) {
-          return false;
-        }
+      if (__WEB__ && platform === PLATFORM.MOBILE && !supportedBrowser) {
+        return false;
+      }
 
-        // Tablets are not supported
-        if (isTablet()) {
-          return false;
-        }
+      const isUnsupportedTablet =
+        __WEB__ && platform === PLATFORM.MOBILE && isTablet();
+
+      if (isUnsupportedTablet) {
+        return false;
       }
 
       return true;
