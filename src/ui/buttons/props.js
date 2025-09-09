@@ -755,6 +755,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
 |}): boolean {
   const validFundingSourcesForRedesign = [
     FUNDING.PAYPAL,
+    FUNDING.VENMO,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
     FUNDING.CARD,
@@ -907,7 +908,7 @@ export function getButtonColorExperience({
 
   if (isPaypalRebrandABTestEnabled) {
     // were only running AB Test on PayPal buttons
-    return rejectRedesign ? "legacy" : "abTest";
+    return fundingSource === FUNDING.PAYPAL ? "abTest" : "legacy";
   }
 
   return rejectRedesign ? "legacy" : "fullRebrand";
