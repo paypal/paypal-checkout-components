@@ -104,7 +104,7 @@ export function determineFlow(
   }
 }
 
-export const isVenmoSupportedWebView = () => {
+export const isVenmoSupportedWebView = (): boolean => {
   return (
     isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
   );
