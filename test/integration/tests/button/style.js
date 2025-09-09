@@ -284,16 +284,6 @@ describe("Button Redesign", () => {
     assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}`));
   };
 
-  const validateLegacyWhiteButton = (fundingSource = "paypal") => {
-    assert.ok(getElementRecursive(".paypal-button-color-white"));
-    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
-    assert.ok(
-      getElementRecursive(
-        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
-      )
-    );
-  };
-
   const validateBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_blue"));
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
@@ -823,70 +813,6 @@ describe("Button Redesign", () => {
 
           return button.render("#testContainer").then(() => {
             validateLegacyBlackButton(fundingSource);
-
-            mockPaypalRebrandExperiment.cancel();
-            mockPaypalRebrandABTestExperiment.cancel();
-          });
-        });
-      });
-
-      describe("funding source = PayLater", () => {
-        const fundingSource = "paylater";
-
-        beforeEach(() => {
-          enableFundingSource(fundingSource);
-        });
-
-        it("should render the legacy PayLater button when isPaypalRebrandEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-
-          const button = window.paypal.Buttons({
-            fundingSource,
-          });
-
-          return button.render("#testContainer").then(() => {
-            // white is the default color for Pay Later
-            validateLegacyWhiteButton("pp");
-
-            mockPaypalRebrandExperiment.cancel();
-          });
-        });
-
-        it("should render the legacy PayLater button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-          const mockPaypalRebrandABTestExperiment =
-            setMockPaypalRebrandABTestExperiment(true);
-
-          const button = window.paypal.Buttons({
-            fundingSource,
-          });
-
-          return button.render("#testContainer").then(() => {
-            // white is the default color for Pay Later
-            validateLegacyWhiteButton("pp");
-
-            mockPaypalRebrandExperiment.cancel();
-            mockPaypalRebrandABTestExperiment.cancel();
-          });
-        });
-
-        it("should render the legacy PayLater button in black color is black & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-          const mockPaypalRebrandABTestExperiment =
-            setMockPaypalRebrandABTestExperiment(true);
-
-          const button = window.paypal.Buttons({
-            fundingSource,
-            style: {
-              color: "black",
-            },
-          });
-
-          return button.render("#testContainer").then(() => {
-            validateLegacyBlackButton("pp");
 
             mockPaypalRebrandExperiment.cancel();
             mockPaypalRebrandABTestExperiment.cancel();
