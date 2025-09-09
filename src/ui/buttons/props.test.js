@@ -134,13 +134,9 @@ describe("hasInvalidScriptOptionsForFullRedesign", () => {
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
     FUNDING.CARD,
-  ];
-
-  const invalidFundingSources = [
     FUNDING.VENMO,
-    FUNDING.APPLEPAY,
-    FUNDING.IDEAL,
   ];
+  const invalidFundingSources = [FUNDING.APPLEPAY, FUNDING.IDEAL];
 
   // Test valid funding sources
   validFundingSources.forEach((fundingSource) => {

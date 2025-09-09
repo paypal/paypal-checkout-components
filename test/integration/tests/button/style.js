@@ -286,10 +286,18 @@ describe("Button Redesign", () => {
 
   const validateBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(getElementRecursive(".paypal-button-color-rebrand_blue"));
-    assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
       getElementRecursive(
-        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-black`
+        `.paypal-button-text-color-${
+          fundingSource === "venmo" ? "white" : "black"
+        }`
+      )
+    );
+    assert.ok(
+      getElementRecursive(
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-${
+          fundingSource === "venmo" ? "white" : "black"
+        }`
       )
     );
   };
@@ -756,67 +764,66 @@ describe("Button Redesign", () => {
       });
     });
 
-    describe("unsupported funding sources", () => {
-      describe("funding source = Venmo", () => {
-        const fundingSource = "venmo";
+    describe("funding source = Venmo", () => {
+      const fundingSource = "venmo";
 
-        beforeEach(() => {
-          enableFundingSource(fundingSource);
-          window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+      beforeEach(() => {
+        enableFundingSource(fundingSource);
+        window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
+      });
+
+      it("should render the rebranded venmo button when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
         });
 
-        it("should render the legacy venmo button when isPaypalRebrandEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
+        return button.render("#testContainer").then(() => {
+          // blue is the default color for Venmo
+          validateBlueRebrandButton(fundingSource);
 
-          const button = window.paypal.Buttons({
-            fundingSource,
-          });
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
 
-          return button.render("#testContainer").then(() => {
-            // blue is the default color for Venmo
-            validateLegacyBlueButton(fundingSource);
+      it("should render the rebranded venmo button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+        const mockPaypalRebrandABTestExperiment =
+          setMockPaypalRebrandABTestExperiment(true);
 
-            mockPaypalRebrandExperiment.cancel();
-          });
+        const button = window.paypal.Buttons({
+          fundingSource,
         });
 
-        it("should render the legacy venmo button when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-          const mockPaypalRebrandABTestExperiment =
-            setMockPaypalRebrandABTestExperiment(true);
+        return button.render("#testContainer").then(() => {
+          // blue is the default color for Venmo
+          mockPaypalRebrandExperiment.cancel();
+          mockPaypalRebrandABTestExperiment.cancel();
+          validateLegacyBlueButton(fundingSource);
+        });
+      });
 
-          const button = window.paypal.Buttons({
-            fundingSource,
-          });
+      it("should render the rebranded venmo button in black color is black & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+        const mockPaypalRebrandABTestExperiment =
+          setMockPaypalRebrandABTestExperiment(true);
 
-          return button.render("#testContainer").then(() => {
-            // blue is the default color for Venmo
-            mockPaypalRebrandExperiment.cancel();
-            mockPaypalRebrandABTestExperiment.cancel();
-          });
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "black",
+          },
         });
 
-        it("should render the legacy venmo button in black color is black & when isPaypalRebrandEnabled is true & isPaypalRebrandABTestEnabled is true", () => {
-          const mockPaypalRebrandExperiment =
-            setMockPaypalRebrandExperiment(true);
-          const mockPaypalRebrandABTestExperiment =
-            setMockPaypalRebrandABTestExperiment(true);
+        return button.render("#testContainer").then(() => {
+          validateLegacyBlackButton(fundingSource);
 
-          const button = window.paypal.Buttons({
-            fundingSource,
-            style: {
-              color: "black",
-            },
-          });
-
-          return button.render("#testContainer").then(() => {
-            validateLegacyBlackButton(fundingSource);
-
-            mockPaypalRebrandExperiment.cancel();
-            mockPaypalRebrandABTestExperiment.cancel();
-          });
+          mockPaypalRebrandExperiment.cancel();
+          mockPaypalRebrandABTestExperiment.cancel();
         });
       });
     });

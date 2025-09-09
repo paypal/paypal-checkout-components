@@ -908,7 +908,7 @@ export function getButtonColorExperience({
 
   if (isPaypalRebrandABTestEnabled) {
     // were only running AB Test on PayPal buttons
-    return rejectRedesign ? "legacy" : "abTest";
+    return fundingSource === FUNDING.PAYPAL ? "abTest" : "legacy";
   }
 
   return rejectRedesign ? "legacy" : "fullRebrand";
