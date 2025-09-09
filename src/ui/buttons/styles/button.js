@@ -3,7 +3,7 @@
 import { ENV } from "@paypal/sdk-constants/src";
 import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS } from "../../../constants";
+import { CLASS, ATTRIBUTE } from "../../../constants";
 
 import { HIDDEN, VISIBLE } from "./labels";
 
@@ -211,22 +211,27 @@ export const buttonRebrandStyle = `
         width: auto;
     }
 
+    // Hide/show credit/paylater logos based on button width
     @media only screen and (min-width: 0px) and (max-width: 150px) {
-        .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
             ${HIDDEN}
         }
 
-        .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND} {
             ${VISIBLE}
         }
     }
 
     @media only screen and (min-width: 150px) {
-        .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
             ${VISIBLE}
         }
 
-        .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND} {
             ${HIDDEN}
         }
     }
