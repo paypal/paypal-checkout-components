@@ -189,7 +189,6 @@ export const buttonRebrandStyle = `
         display: flex;
         align-items: center;
         line-height: 1.1;
-        flex-shrink: 1;
         min-width: 0;
     }
 
