@@ -162,7 +162,7 @@ export class ThreeDomainSecureComponent {
           let enrichedNonce;
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
-          // and undefined for downstream failures, errors and cancelled case
+          // and false for downstream failures and errors where liability_shift= NO.
           authenticationState = success ? "succeeded" : "errored";
           liabilityShift = liability_shift;
 
