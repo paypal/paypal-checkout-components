@@ -753,7 +753,11 @@ export function hasInvalidScriptOptionsForFullRedesign({
 }: {|
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
-  const validFundingSourcesForRedesign = [FUNDING.PAYPAL, FUNDING.CARD];
+  const validFundingSourcesForRedesign = [
+    FUNDING.PAYPAL,
+    FUNDING.PAYLATER,
+    FUNDING.CARD,
+  ];
 
   if (validFundingSourcesForRedesign.includes(fundingSource)) {
     return false;
