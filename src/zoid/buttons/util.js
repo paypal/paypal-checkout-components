@@ -107,13 +107,13 @@ export function determineFlow(
 export function supportsVenmoPopups(
   experiment: EligibilityExperiment
 ): boolean {
-  const isWebview = () => {
+  const isWebViewAgent = () => {
     return (
       isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
     );
   };
 
-  if (isWebview()) {
+  if (isWebViewAgent()) {
     if (window.popupBridge) {
       return true;
     }
@@ -122,13 +122,10 @@ export function supportsVenmoPopups(
 
   const venmoUserAgentSupportsPopups = () => {
     return !(
-      isWebView() ||
-      isIosWebview() ||
-      isAndroidWebview() ||
+      isWebViewAgent() ||
       isOperaMini() ||
       isFirefoxIOS() ||
       isEdgeIOS() ||
-      isFacebookWebView() ||
       isQQBrowser() ||
       isElectron() ||
       isMacOsCna() ||
@@ -162,17 +159,20 @@ export function isSupportedNativeVenmoBrowser(
     return false;
   }
 
+  // Default supported browsers for Venmo
+  if ((isIos() && isSafari()) || (isAndroid() && isChrome())) {
+    return true;
+  }
+
+  // Additional browsers enabled by experiment
   if (
     experiment?.venmoEnableWebOnNonNativeBrowser === true &&
-    ((isIos() && isChrome()) ||
-      (isIos() && isSafari()) ||
-      (isAndroid() && isChrome()) ||
-      (isAndroid() && isFirefox()))
+    ((isIos() && isChrome()) || (isAndroid() && isFirefox()))
   ) {
     return true;
-  } else {
-    return false;
   }
+
+  return false;
 }
 
 export function isSupportedNativeBrowser(): boolean {
@@ -228,8 +228,12 @@ export function getRenderedButtons(
     fundingEligibility = getRefinedFundingEligibility(),
     experiment = getVenmoEligibility(),
     applePaySupport,
-    supportsPopups = userAgentSupportsPopups(),
-    supportedNativeBrowser = isSupportedNativeBrowser(),
+    supportsPopups = props.fundingSource === FUNDING.VENMO
+      ? supportsVenmoPopups(props.experiment)
+      : userAgentSupportsPopups(),
+    supportedNativeBrowser = props.fundingSource === FUNDING.VENMO
+      ? isSupportedNativeVenmoBrowser(props.experiment)
+      : isSupportedNativeBrowser(),
     createBillingAgreement,
     createSubscription,
     createVaultSetupToken,

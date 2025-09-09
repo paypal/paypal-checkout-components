@@ -136,7 +136,28 @@ describe("isSupportedNativeVenmoBrowser", () => {
   describe("non-webview scenarios with venmoEnableWebOnNonNativeBrowser enabled", () => {
     const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-    test("should return true when experiment is enabled", () => {
+    test("should return true when experiment is enabled for iOS Safari", () => {
+      const result = isSupportedNativeVenmoBrowser(experiment);
+
+      expect(result).toBe(true);
+    });
+
+    test("should return true when experiment is enabled for iOS Chrome", () => {
+      vi.mocked(isChrome).mockReturnValue(true);
+      vi.mocked(isSafari).mockReturnValue(false);
+
+      const result = isSupportedNativeVenmoBrowser(experiment);
+
+      expect(result).toBe(true);
+    });
+
+    test("should return true when experiment is enabled for Android Firefox", () => {
+      vi.mocked(isIos).mockReturnValue(false);
+      vi.mocked(isAndroid).mockReturnValue(true);
+      vi.mocked(isChrome).mockReturnValue(false);
+      vi.mocked(isSafari).mockReturnValue(false);
+      vi.mocked(isFirefox).mockReturnValue(true);
+
       const result = isSupportedNativeVenmoBrowser(experiment);
 
       expect(result).toBe(true);
@@ -146,20 +167,20 @@ describe("isSupportedNativeVenmoBrowser", () => {
   describe("non-webview scenarios with venmoEnableWebOnNonNativeBrowser disabled", () => {
     const experiment = { venmoEnableWebOnNonNativeBrowser: false };
 
-    test("should return false when experiment is disabled", () => {
+    test("should return true for iOS Safari even when experiment is disabled", () => {
       const result = isSupportedNativeVenmoBrowser(experiment);
 
-      expect(result).toBe(false);
+      expect(result).toBe(true);
     });
   });
 
   describe("non-webview scenarios with venmoEnableWebOnNonNativeBrowser undefined", () => {
     const experiment = {};
 
-    test("should return false when experiment is undefined", () => {
+    test("should return true for iOS Safari when experiment is undefined", () => {
       const result = isSupportedNativeVenmoBrowser(experiment);
 
-      expect(result).toBe(false);
+      expect(result).toBe(true);
     });
   });
 

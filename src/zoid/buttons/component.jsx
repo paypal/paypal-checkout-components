@@ -1274,7 +1274,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         value: ({ props }) => {
           if (props?.fundingSource === FUNDING.VENMO) {
-            return isSupportedNativeVenmoBrowser(props?.experiment);
+            return isSupportedNativeVenmoBrowser(props.experiment);
           }
           return isSupportedNativeBrowser();
         },
@@ -1285,7 +1285,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         value: ({ props }) => {
           if (props?.fundingSource === FUNDING.VENMO) {
-            return supportsVenmoPopups(props?.experiment);
+            return supportsVenmoPopups(props.experiment);
           }
           return userAgentSupportsPopups();
         },
