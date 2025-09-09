@@ -554,67 +554,6 @@ describe("Button Redesign", () => {
       });
     });
 
-    describe("funding source = PayLater", () => {
-      const fundingSource = "paylater";
-
-      beforeEach(() => {
-        enableFundingSource(fundingSource);
-      });
-
-      it("should render the rebrand PayLater button when isPaypalRebrandEnabled is true", () => {
-        const mockPaypalRebrandExperiment =
-          setMockPaypalRebrandExperiment(true);
-
-        const button = window.paypal.Buttons({
-          fundingSource,
-        });
-
-        return button.render("#testContainer").then(() => {
-          // white is the default color for Pay Later
-          validateWhiteRebrandButton("paypal");
-
-          mockPaypalRebrandExperiment.cancel();
-        });
-      });
-
-      it("should render the rebrand PayLater button in blue when color is blue & when isPaypalRebrandEnabled is true", () => {
-        const mockPaypalRebrandExperiment =
-          setMockPaypalRebrandExperiment(true);
-
-        const button = window.paypal.Buttons({
-          fundingSource,
-          style: {
-            color: "blue",
-          },
-        });
-
-        return button.render("#testContainer").then(() => {
-          // white is the default color for Pay Later
-          validateBlueRebrandButton("paypal");
-
-          mockPaypalRebrandExperiment.cancel();
-        });
-      });
-
-      it("should render the rebrand PayLater button in black when color is black & when isPaypalRebrandEnabled is true", () => {
-        const mockPaypalRebrandExperiment =
-          setMockPaypalRebrandExperiment(true);
-
-        const button = window.paypal.Buttons({
-          fundingSource,
-          style: {
-            color: "black",
-          },
-        });
-
-        return button.render("#testContainer").then(() => {
-          validateBlackRebrandButton("paypal");
-
-          mockPaypalRebrandExperiment.cancel();
-        });
-      });
-    });
-
     describe("funding source = Card", () => {
       const fundingSource = "card";
 
@@ -692,6 +631,127 @@ describe("Button Redesign", () => {
 
             mockPaypalRebrandExperiment.cancel();
           });
+        });
+      });
+    });
+
+    describe("funding source = PayLater", () => {
+      const fundingSource = "paylater";
+
+      beforeEach(() => {
+        enableFundingSource(fundingSource);
+      });
+
+      it("should render the rebrand PayLater button when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+        });
+
+        return button.render("#testContainer").then(() => {
+          // white is the default color for Pay Later
+          validateWhiteRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+
+      it("should render the rebrand PayLater button in blue when color is blue & when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "blue",
+          },
+        });
+
+        return button.render("#testContainer").then(() => {
+          // white is the default color for Pay Later
+          validateBlueRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+
+      it("should render the rebrand PayLater button in black when color is black & when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "black",
+          },
+        });
+
+        return button.render("#testContainer").then(() => {
+          validateBlackRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+    });
+
+    describe("funding source = Credit", () => {
+      const fundingSource = "credit";
+
+      beforeEach(() => {
+        enableFundingSource(fundingSource);
+      });
+
+      it("should render the rebrand Credit button when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+        });
+
+        return button.render("#testContainer").then(() => {
+          // blue is the default color for Credit
+          validateBlueRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+
+      it("should render the rebrand Credit button in white when color is white & when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "white",
+          },
+        });
+
+        return button.render("#testContainer").then(() => {
+          validateWhiteRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+
+      it("should render the rebrand Credit button in black when color is black & when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "black",
+          },
+        });
+
+        return button.render("#testContainer").then(() => {
+          validateBlackRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
         });
       });
     });
