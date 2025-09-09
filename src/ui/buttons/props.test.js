@@ -129,11 +129,15 @@ describe("determineRandomButtonColor", () => {
 });
 
 describe("hasInvalidScriptOptionsForFullRedesign", () => {
-  const validFundingSources = [FUNDING.PAYPAL, FUNDING.PAYLATER, FUNDING.CARD];
+  const validFundingSources = [
+    FUNDING.PAYPAL,
+    FUNDING.PAYLATER,
+    FUNDING.CREDIT,
+    FUNDING.CARD,
+  ];
 
   const invalidFundingSources = [
     FUNDING.VENMO,
-    FUNDING.CREDIT,
     FUNDING.APPLEPAY,
     FUNDING.IDEAL,
   ];
@@ -501,7 +505,7 @@ describe("getColorForFullRedesign", () => {
     });
   });
 
-  it("should map DARKBLUE to REBRAND_DARKBLUE", () => {
+  it("should map DARKBLUE to REBRAND_BLUE", () => {
     const result = getColorForFullRedesign({
       // $FlowFixMe
       style: { color: BUTTON_COLOR.DARKBLUE },
@@ -509,7 +513,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_DARKBLUE,
+      color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
     });

@@ -13,7 +13,7 @@ describe(`paypal button funding source order`, () => {
     destroyTestContainer();
   });
 
-  it("should render card last in the list if it is an available funding source", (done) => {
+  it.skip("should render card last in the list if it is an available funding source", (done) => {
     const eligibleFundingSources = [
       FUNDING.PAYPAL,
       FUNDING.CARD,

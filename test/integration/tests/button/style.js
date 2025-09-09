@@ -696,6 +696,66 @@ describe("Button Redesign", () => {
       });
     });
 
+    describe("funding source = Credit", () => {
+      const fundingSource = "credit";
+
+      beforeEach(() => {
+        enableFundingSource(fundingSource);
+      });
+
+      it("should render the rebrand Credit button when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+        });
+
+        return button.render("#testContainer").then(() => {
+          // blue is the default color for Credit
+          validateBlueRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+
+      it("should render the rebrand Credit button in white when color is white & when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "white",
+          },
+        });
+
+        return button.render("#testContainer").then(() => {
+          validateWhiteRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+
+      it("should render the rebrand Credit button in black when color is black & when isPaypalRebrandEnabled is true", () => {
+        const mockPaypalRebrandExperiment =
+          setMockPaypalRebrandExperiment(true);
+
+        const button = window.paypal.Buttons({
+          fundingSource,
+          style: {
+            color: "black",
+          },
+        });
+
+        return button.render("#testContainer").then(() => {
+          validateBlackRebrandButton("paypal");
+
+          mockPaypalRebrandExperiment.cancel();
+        });
+      });
+    });
+
     describe("unsupported funding sources", () => {
       describe("funding source = Venmo", () => {
         const fundingSource = "venmo";
