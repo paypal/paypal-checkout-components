@@ -98,7 +98,9 @@ import { PrerenderedButtons } from "./prerender";
 import {
   applePaySession,
   determineFlow,
+  supportsVenmoPopups,
   isSupportedNativeBrowser,
+  isSupportedNativeVenmoBrowser,
   getRenderedButtons,
   getButtonSize,
   getButtonExperiments,
@@ -244,9 +246,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         style = {},
         enableFunding = getEnableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
-        supportsPopups = userAgentSupportsPopups(),
-        supportedNativeBrowser = isSupportedNativeBrowser(),
         experiment = getButtonExperiments(),
+        supportsPopups = fundingSource === FUNDING.VENMO
+          ? supportsVenmoPopups(experiment)
+          : userAgentSupportsPopups(),
+        supportedNativeBrowser = fundingSource === FUNDING.VENMO
+          ? isSupportedNativeVenmoBrowser(experiment)
+          : isSupportedNativeBrowser(),
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
@@ -1266,13 +1272,23 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportedNativeBrowser: {
         type: "boolean",
-        value: isSupportedNativeBrowser,
+        value: ({ props }) => {
+          if (props?.fundingSource === FUNDING.VENMO) {
+            return isSupportedNativeVenmoBrowser(props?.experiment);
+          }
+          return isSupportedNativeBrowser();
+        },
         queryParam: true,
       },
 
       supportsPopups: {
         type: "boolean",
-        value: () => userAgentSupportsPopups(),
+        value: ({ props }) => {
+          if (props?.fundingSource === FUNDING.VENMO) {
+            return supportsVenmoPopups(props?.experiment);
+          }
+          return userAgentSupportsPopups();
+        },
         queryParam: true,
       },
 

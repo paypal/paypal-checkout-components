@@ -7,7 +7,7 @@ import { vi } from "vitest";
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
-    matches: false,
+    matches: query.includes("(display-mode: standalone)") ? false : true,
     media: query,
     onchange: null,
     addListener: vi.fn(), // Deprecated
@@ -18,5 +18,13 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
+// Ensure matchMedia is available globally
+global.matchMedia = window.matchMedia;
+
 // $FlowIssue missing browser crypto typedefs
-window.crypto = crypto.webcrypto;
+if (!window.crypto) {
+  Object.defineProperty(window, "crypto", {
+    value: crypto.webcrypto,
+    writable: true,
+  });
+}

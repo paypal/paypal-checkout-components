@@ -5,9 +5,19 @@ import {
   isChrome,
   isIos,
   isIOS14,
+  isFirefox,
   isSafari,
   isDevice,
+  isOperaMini,
+  isFirefoxIOS,
+  isEdgeIOS,
+  isQQBrowser,
+  isElectron,
+  isMacOsCna,
   isWebView,
+  isIosWebview,
+  isAndroidWebview,
+  isFacebookWebView,
   isTablet,
   getElement,
   isStandAlone,
@@ -91,6 +101,77 @@ export function determineFlow(
     return BUTTON_FLOW.SUBSCRIPTION_SETUP;
   } else {
     return BUTTON_FLOW.PURCHASE;
+  }
+}
+
+export function supportsVenmoPopups(
+  experiment: EligibilityExperiment
+): boolean {
+  const isWebview = () => {
+    return (
+      isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
+    );
+  };
+
+  if (isWebview()) {
+    if (window.popupBridge) {
+      return true;
+    }
+    return false;
+  }
+
+  const venmoUserAgentSupportsPopups = () => {
+    return !(
+      isWebView() ||
+      isIosWebview() ||
+      isAndroidWebview() ||
+      isOperaMini() ||
+      isFirefoxIOS() ||
+      isEdgeIOS() ||
+      isFacebookWebView() ||
+      isQQBrowser() ||
+      isElectron() ||
+      isMacOsCna() ||
+      isStandAlone()
+    );
+  };
+
+  if (experiment?.venmoEnableWebOnNonNativeBrowser === true) {
+    return venmoUserAgentSupportsPopups();
+  }
+  return userAgentSupportsPopups();
+}
+
+export function isSupportedNativeVenmoBrowser(
+  experiment: EligibilityExperiment
+): boolean {
+  const isWebview = () => {
+    return (
+      isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
+    );
+  };
+
+  if (isWebview()) {
+    if (window.popupBridge) {
+      return true;
+    }
+    return false;
+  }
+
+  if (isTablet()) {
+    return false;
+  }
+
+  if (
+    experiment?.venmoEnableWebOnNonNativeBrowser === true &&
+    ((isIos() && isChrome()) ||
+      (isIos() && isSafari()) ||
+      (isAndroid() && isChrome()) ||
+      (isAndroid() && isFirefox()))
+  ) {
+    return true;
+  } else {
+    return false;
   }
 }
 

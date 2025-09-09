@@ -7,18 +7,6 @@ import {
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
-import {
-  isAndroid,
-  isChrome,
-  isFirefox,
-  isIos,
-  isSafari,
-  isTablet,
-  isWebView,
-  isIosWebview,
-  isAndroidWebview,
-  isFacebookWebView,
-} from "@krakenjs/belter/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
@@ -33,7 +21,7 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange, displayOnly, flow, platform }) => {
+    eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
       // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
@@ -55,49 +43,14 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      // Mobile User-Agent checks
-      const isWebview =
-        __WEB__ &&
-        platform === PLATFORM.MOBILE &&
-        (isWebView() ||
-          isIosWebview() ||
-          isAndroidWebview() ||
-          isFacebookWebView());
-
-      if (isWebview && !window.popupBridge) {
-        return false;
-      }
-
-      const supportedBrowser =
-        __WEB__ &&
-        platform === PLATFORM.MOBILE &&
-        ((isIos() && isChrome()) ||
-          (isIos() && isSafari()) ||
-          (isAndroid() && isChrome()) ||
-          (isAndroid() && isFirefox()));
-
-      if (__WEB__ && platform === PLATFORM.MOBILE && !supportedBrowser) {
-        return false;
-      }
-
-      const isUnsupportedTablet =
-        __WEB__ && platform === PLATFORM.MOBILE && isTablet();
-
-      if (isUnsupportedTablet) {
-        return false;
-      }
-
       return true;
     },
 
-    requires: ({ experiment, platform }) => {
-      const nativeSupported =
-        experiment?.venmoEnableWebOnNonNativeBrowser === true;
-
-      if (platform === PLATFORM.MOBILE && !nativeSupported) {
+    requires: ({ platform }) => {
+      if (platform === PLATFORM.MOBILE) {
         return {
           native: true,
-          popup: false,
+          popup: true,
         };
       }
 
