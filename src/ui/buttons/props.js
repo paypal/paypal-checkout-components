@@ -755,6 +755,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
 |}): boolean {
   const validFundingSourcesForRedesign = [
     FUNDING.PAYPAL,
+    FUNDING.VENMO,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
     FUNDING.CARD,
