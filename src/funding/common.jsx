@@ -118,7 +118,6 @@ export type FundingSourceConfig = {|
     shippingChange?: ?boolean,
     wallet: ?Wallet,
     displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
-    platform?: $Values<typeof PLATFORM>,
   |}) => boolean,
   Logo: (LogoOptions) => ChildType,
   Mark?: () => ChildType,

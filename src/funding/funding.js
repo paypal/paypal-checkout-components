@@ -132,7 +132,6 @@ export function isFundingEligible(
       ),
       wallet,
       displayOnly,
-      platform,
     })
   ) {
     return false;
