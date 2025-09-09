@@ -4,6 +4,7 @@
 import {
   BancontactLogoInlineSVG,
   BancontactLogoExternalImage,
+  BancontactMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 import { Fragment, node } from "@krakenjs/jsx-pragmatic/src";
 
@@ -49,11 +50,7 @@ export function getBancontactConfig(): FundingSourceConfig {
     },
 
     Mark: ({ ...props }) => {
-      return __WEB__ ? (
-        <BancontactMarkRebrandExternalImage {...props} />
-      ) : (
-        <BancontactMarkRebrandInlineSVG {...props} />
-      );
+      return <BancontactMarkRebrandExternalImage {...props} />;
     },
   };
 }

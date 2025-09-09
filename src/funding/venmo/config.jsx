@@ -70,9 +70,7 @@ export function getVenmoConfig(): FundingSourceConfig {
           : VenmoLogoInlineSVG({ logoColor, optional });
       }
 
-      return __WEB__
-        ? VenmoRebrandLogoExternalImage({ logoColor, optional })
-        : VenmoRebrandLogoInlineSVG({ logoColor, optional });
+      return VenmoLogoInlineSVG({ logoColor, optional });
     },
 
     Label: ({ ...props }) => {

@@ -10,6 +10,7 @@ import {
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
   PPRebrandLogoExternalImage,
+  PaylaterMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
 import { Logo } from "../paypal/template";
@@ -128,11 +129,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
     },
 
     Mark: ({ ...props }) => {
-      return __WEB__ ? (
-        <PaylaterMarkRebrandExternalImage {...props} />
-      ) : (
-        <PaylaterMarkRebrandInlineSVG {...props} />
-      );
+      return <PaylaterMarkRebrandExternalImage {...props} />;
     },
 
     colors: [

@@ -36,6 +36,7 @@ import {
 } from "../zoid/buttons/util";
 
 import { MarksElement } from "./template";
+import { MarksElementRebrand } from "./template-rebrand";
 
 const DEFAULT_HEIGHT = 20;
 
@@ -130,16 +131,28 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
           throw new Error(`${fundingSource || "marks"} not eligible`);
         }
 
+        const shouldUseRebrand = experiment?.isPaypalRebrandEnabled;
+
         getElement(container).appendChild(
           (
             <div>
-              <MarksElement
-                fundingEligibility={fundingEligibility}
-                fundingSources={fundingSources}
-                height={height}
-                experiment={experiment}
-                env={env}
-              />
+              {shouldUseRebrand ? (
+                <MarksElementRebrand
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              ) : (
+                <MarksElement
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              )}
             </div>
           ).render(dom({ doc: document }))
         );

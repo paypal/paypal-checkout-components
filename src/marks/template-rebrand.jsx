@@ -87,7 +87,6 @@ type MarksElementOptions = {|
 export function MarksElementRebrand({
   fundingEligibility,
   fundingSources,
-  height,
   experiment,
   env,
 }: MarksElementOptions): ElementNode {
