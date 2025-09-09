@@ -505,19 +505,19 @@ describe("getColorForFullRedesign", () => {
     });
   });
 
-  // it("should map DARKBLUE to REBRAND_BLUE", () => {
-  //   const result = getColorForFullRedesign({
-  //     // $FlowFixMe
-  //     style: { color: BUTTON_COLOR.DARKBLUE },
-  //     fundingSource: FUNDING.PAYPAL,
-  //   });
+  it("should map DARKBLUE to REBRAND_BLUE", () => {
+    const result = getColorForFullRedesign({
+      // $FlowFixMe
+      style: { color: BUTTON_COLOR.DARKBLUE },
+      fundingSource: FUNDING.PAYPAL,
+    });
 
-  //   expect(result).toEqual({
-  //     color: BUTTON_COLOR.REBRAND_BLUE,
-  //     shouldApplyRebrandedStyles: true,
-  //     isButtonColorABTestMerchant: false,
-  //   });
-  // });
+    expect(result).toEqual({
+      color: BUTTON_COLOR.REBRAND_BLUE,
+      shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
+    });
+  });
 
   it("should map GOLD to REBRAND_BLUE", () => {
     const result = getColorForFullRedesign({
