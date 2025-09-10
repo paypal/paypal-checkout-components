@@ -54,10 +54,10 @@ describe("funding/util", () => {
   beforeEach(() => {
     // Reset all mocks before each test
     vi.clearAllMocks();
-    
+
     // Reset window.popupBridge
     delete window.popupBridge;
-    
+
     // Set default mock return values
     vi.mocked(isWebView).mockReturnValue(false);
     vi.mocked(isIosWebview).mockReturnValue(false);

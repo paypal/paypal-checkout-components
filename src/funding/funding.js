@@ -16,10 +16,7 @@ import type { Wallet, Experiment } from "../types";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 
 import { getFundingConfig } from "./config";
-import {
-  supportsVenmoPopups,
-  isSupportedNativeVenmoBrowser,
-} from "./util";
+import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "./util";
 
 type IsFundingEligibleOptions = {|
   layout?: $Values<typeof BUTTON_LAYOUT>,
