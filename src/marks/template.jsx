@@ -33,13 +33,13 @@ function Mark({
     throw new Error(`Can not find funding config for ${fundingSource}`);
   }
 
-  const { Logo } = fundingConfig;
+  const { Logo, shouldUseMarkForRebrandOnly } = fundingConfig;
   const MarkLogo = fundingConfig.Mark;
   const marksDefined = typeof MarkLogo !== "undefined";
 
   return (
     <div class="paypal-mark">
-      {marksDefined && MarkLogo ? (
+      {marksDefined && MarkLogo && !shouldUseMarkForRebrandOnly ? (
         <MarkLogo
           fundingEligibility={fundingEligibility}
           locale={getLocale()}

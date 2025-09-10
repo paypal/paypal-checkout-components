@@ -36,7 +36,7 @@ import {
 } from "../zoid/buttons/util";
 
 import { MarksElement } from "./template";
-import { MarksElementRebrand } from "./template-rebrand";
+import { MarksElementRebrand } from "./templateRebrand";
 
 const DEFAULT_HEIGHT = 20;
 

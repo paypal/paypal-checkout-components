@@ -61,7 +61,6 @@ function Mark({
           locale={getLocale()}
           experiment={experiment}
           env={env}
-          shouldApplyRebrandedStyles={true}
         />
       ) : (
         <Logo
@@ -69,7 +68,6 @@ function Mark({
           locale={getLocale()}
           experiment={experiment}
           env={env}
-          shouldApplyRebrandedStyles={true}
         />
       )}
     </div>

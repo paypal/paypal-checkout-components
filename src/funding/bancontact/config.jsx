@@ -49,8 +49,15 @@ export function getBancontactConfig(): FundingSourceConfig {
       return <BasicLabel {...opts} logo={apmLogo} />;
     },
 
-    Mark: ({ ...props }) => {
-      return <BancontactMarkRebrandExternalImage {...props} />;
+    Mark: ({ fundingEligibility, experiment, env }) => {
+      return (
+        <BancontactMarkRebrandExternalImage
+          fundingEligibility={fundingEligibility}
+          experiment={experiment}
+          env={env}
+        />
+      );
     },
+    shouldUseMarkForRebrandOnly: true,
   };
 }

@@ -94,9 +94,16 @@ export function getCreditConfig(): FundingSourceConfig {
       );
     },
 
-    Mark: ({ ...props }) => {
-      return <CreditMarkRebrandExternalImage {...props} />;
+    Mark: ({ fundingEligibility, experiment, env }) => {
+      return (
+        <CreditMarkRebrandExternalImage
+          fundingEligibility={fundingEligibility}
+          experiment={experiment}
+          env={env}
+        />
+      );
     },
+    shouldUseMarkForRebrandOnly: true,
 
     WalletLabel,
 

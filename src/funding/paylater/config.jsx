@@ -128,9 +128,16 @@ export function getPaylaterConfig(): FundingSourceConfig {
       );
     },
 
-    Mark: ({ ...props }) => {
-      return <PaylaterMarkRebrandExternalImage {...props} />;
+    Mark: ({ fundingEligibility, experiment, env }) => {
+      return (
+        <PaylaterMarkRebrandExternalImage
+          fundingEligibility={fundingEligibility}
+          experiment={experiment}
+          env={env}
+        />
+      );
     },
+    shouldUseMarkForRebrandOnly: true,
 
     colors: [
       BUTTON_COLOR.WHITE,
