@@ -5,19 +5,9 @@ import {
   isChrome,
   isIos,
   isIOS14,
-  isFirefox,
   isSafari,
   isDevice,
-  isOperaMini,
-  isFirefoxIOS,
-  isEdgeIOS,
-  isQQBrowser,
-  isElectron,
-  isMacOsCna,
   isWebView,
-  isIosWebview,
-  isAndroidWebview,
-  isFacebookWebView,
   isTablet,
   getElement,
   isStandAlone,
@@ -104,71 +94,6 @@ export function determineFlow(
   }
 }
 
-export const isVenmoSupportedWebView = (): boolean => {
-  return (
-    isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
-  );
-};
-
-export function supportsVenmoPopups(
-  experiment: EligibilityExperiment
-): boolean {
-  if (isVenmoSupportedWebView()) {
-    if (window.popupBridge) {
-      return true;
-    }
-    return false;
-  }
-
-  const venmoUserAgentSupportsPopups = () => {
-    return !(
-      isVenmoSupportedWebView() ||
-      isOperaMini() ||
-      isFirefoxIOS() ||
-      isEdgeIOS() ||
-      isQQBrowser() ||
-      isElectron() ||
-      isMacOsCna() ||
-      isStandAlone()
-    );
-  };
-
-  if (experiment?.venmoEnableWebOnNonNativeBrowser === true) {
-    return venmoUserAgentSupportsPopups();
-  }
-  return userAgentSupportsPopups();
-}
-
-export function isSupportedNativeVenmoBrowser(
-  experiment: EligibilityExperiment
-): boolean {
-  if (isVenmoSupportedWebView()) {
-    if (window.popupBridge) {
-      return true;
-    }
-    return false;
-  }
-
-  if (isTablet()) {
-    return false;
-  }
-
-  // Default supported browsers for Venmo
-  if ((isIos() && isSafari()) || (isAndroid() && isChrome())) {
-    return true;
-  }
-
-  // Additional browsers enabled by experiment
-  if (
-    experiment?.venmoEnableWebOnNonNativeBrowser === true &&
-    ((isIos() && isChrome()) || (isAndroid() && isFirefox()))
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
 export function isSupportedNativeBrowser(): boolean {
   logNativeScreenInformation();
 
@@ -222,12 +147,8 @@ export function getRenderedButtons(
     fundingEligibility = getRefinedFundingEligibility(),
     experiment = getVenmoEligibility(),
     applePaySupport,
-    supportsPopups = props.fundingSource === FUNDING.VENMO
-      ? supportsVenmoPopups(props.experiment)
-      : userAgentSupportsPopups(),
-    supportedNativeBrowser = props.fundingSource === FUNDING.VENMO
-      ? isSupportedNativeVenmoBrowser(props.experiment)
-      : isSupportedNativeBrowser(),
+    supportsPopups = userAgentSupportsPopups(),
+    supportedNativeBrowser = isSupportedNativeBrowser(),
     createBillingAgreement,
     createSubscription,
     createVaultSetupToken,

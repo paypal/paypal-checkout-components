@@ -244,9 +244,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         style = {},
         enableFunding = getEnableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
-        experiment = getButtonExperiments(),
         supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(),
+        experiment = getButtonExperiments(),
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
@@ -1272,7 +1272,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportsPopups: {
         type: "boolean",
-        value: userAgentSupportsPopups,
+        value: () => userAgentSupportsPopups(),
         queryParam: true,
       },
 
