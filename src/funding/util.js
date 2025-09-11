@@ -30,6 +30,10 @@ export const isVenmoSupportedWebView = (): boolean => {
 };
 
 export function supportsVenmoPopups(experiment?: Experiment): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
   if (isVenmoSupportedWebView()) {
     if (window.popupBridge) {
       return true;
@@ -59,6 +63,10 @@ export function supportsVenmoPopups(experiment?: Experiment): boolean {
 export function isSupportedNativeVenmoBrowser(
   experiment?: Experiment
 ): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
   if (isVenmoSupportedWebView()) {
     if (window.popupBridge) {
       return true;

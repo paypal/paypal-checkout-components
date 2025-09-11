@@ -220,7 +220,7 @@ describe("Funding eligibility", () => {
       beforeEach(() => {
         // Reset all mocks before each test
         vi.clearAllMocks();
-        
+
         // Mock getFundingConfig to return configs with venmo requirements
         vi.mocked(getFundingConfig).mockReturnValue({
           [FUNDING.PAYLATER]: {
@@ -292,7 +292,9 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(options.experiment);
+        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
+          options.experiment
+        );
         expect(result).toBe(true);
       });
 
@@ -326,7 +328,9 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(options.experiment);
+        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
+          options.experiment
+        );
         expect(result).toBe(false);
       });
 
@@ -429,7 +433,9 @@ describe("Funding eligibility", () => {
         const result = isFundingEligible(FUNDING.VENMO, options);
 
         expect(supportsVenmoPopups).toHaveBeenCalledWith(experimentFlags);
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(experimentFlags);
+        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
+          experimentFlags
+        );
         expect(result).toBe(true);
       });
 
@@ -451,7 +457,7 @@ describe("Funding eligibility", () => {
 
         // Test case where both succeed
         vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
-        
+
         const result2 = isFundingEligible(FUNDING.VENMO, options);
         expect(result2).toBe(true);
       });
