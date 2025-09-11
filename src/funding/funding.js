@@ -160,11 +160,11 @@ export function isFundingEligible(
   if (fundingConfig.requires) {
     const required = fundingConfig.requires({ experiment, platform });
     const popupSupport =
-      fundingSource === FUNDING.VENMO
+      source === FUNDING.VENMO
         ? supportsVenmoPopups(experiment)
         : supportsPopups;
     const nativeBrowserSupport =
-      fundingSource === FUNDING.VENMO
+      source === FUNDING.VENMO
         ? isSupportedNativeVenmoBrowser(experiment)
         : supportedNativeBrowser;
     if (required.popup === true && popupSupport === false) {
