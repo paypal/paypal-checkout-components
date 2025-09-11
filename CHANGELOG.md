@@ -1,3 +1,9 @@
+## <small>5.0.382 (2025-09-11)</small>
+
+* Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)
+
+
+
 ## <small>5.0.381 (2025-09-11)</small>
 
 * update poweredby logo to be black for white button stack (#2554) ([0b0f86e](https://github.com/paypal/paypal-checkout-components/commit/0b0f86e)), closes [#2554](https://github.com/paypal/paypal-checkout-components/issues/2554)
