@@ -211,7 +211,7 @@ export const buttonRebrandStyle = `
         width: auto;
     }
 
-    // Hide/show credit/paylater logos based on button width
+    /* Hide/show credit/paylater logos based on button width */
     @media only screen and (min-width: 0px) and (max-width: 150px) {
         [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
         [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
