@@ -35,17 +35,21 @@ function getLabelText(
   }
 
   if (
-    paylater?.products?.payIn3?.eligible &&
-    paylater?.products?.payIn3?.variant === "ES"
+    (paylater?.products?.payIn3?.eligible &&
+      paylater?.products?.payIn3?.variant === "ES") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "ES")
   ) {
-    labelText = "Paga en 3 plazos";
+    labelText = "Paga a plazos";
   }
 
   if (
-    paylater?.products?.payIn3?.eligible &&
-    paylater?.products?.payIn3?.variant === "IT"
+    (paylater?.products?.payIn3?.eligible &&
+      paylater?.products?.payIn3?.variant === "IT") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "IT")
   ) {
-    labelText = "Paga in 3 rate";
+    labelText = "Paga a rate";
   }
 
   if (paylater?.products?.payIn4?.eligible) {
