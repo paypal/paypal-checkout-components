@@ -56,18 +56,14 @@ function Mark({
   return (
     <div class={backgroundClasses}>
       {marksDefined && MarkLogo ? (
-        <MarkLogo
-          fundingEligibility={fundingEligibility}
-          locale={getLocale()}
-          experiment={experiment}
-          env={env}
-        />
+        <MarkLogo shouldApplyRebrandedStyles={true} />
       ) : (
         <Logo
           fundingEligibility={fundingEligibility}
           locale={getLocale()}
           experiment={experiment}
           env={env}
+          shouldApplyRebrandedStyles={true}
         />
       )}
     </div>
@@ -93,13 +89,17 @@ export function MarksElementRebrand({
   const rebrandWidth = 48;
 
   return (
-    <div class="paypal-marks-rebrand">
+    <div>
       <style>
         {`
                     .${CLASS.TEXT} {
                         font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
                         font-size: 12px;
                         vertical-align: middle;
+                    }
+
+                    .paypal-marks-rebrand {
+                      display: flex;
                     }
 
                     .paypal-mark-rebrand {
@@ -162,14 +162,16 @@ export function MarksElementRebrand({
                     }
                 `}
       </style>
-      {fundingSources.map((fundingSource) => (
-        <Mark
-          fundingEligibility={fundingEligibility}
-          fundingSource={fundingSource}
-          experiment={experiment}
-          env={env}
-        />
-      ))}
+      <div class="paypal-marks-rebrand">
+        {fundingSources.map((fundingSource) => (
+          <Mark
+            fundingEligibility={fundingEligibility}
+            fundingSource={fundingSource}
+            experiment={experiment}
+            env={env}
+          />
+        ))}
+      </div>
     </div>
   );
 }

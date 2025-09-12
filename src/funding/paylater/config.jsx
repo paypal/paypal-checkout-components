@@ -128,15 +128,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
       );
     },
 
-    Mark: ({ fundingEligibility, experiment, env }) => {
-      return (
-        <PaylaterMarkRebrandExternalImage
-          fundingEligibility={fundingEligibility}
-          experiment={experiment}
-          env={env}
-        />
-      );
-    },
+    Mark: () => <PaylaterMarkRebrandExternalImage />,
     shouldUseMarkForRebrandOnly: true,
 
     colors: [

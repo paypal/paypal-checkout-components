@@ -40,12 +40,7 @@ function Mark({
   return (
     <div class="paypal-mark">
       {marksDefined && MarkLogo && !shouldUseMarkForRebrandOnly ? (
-        <MarkLogo
-          fundingEligibility={fundingEligibility}
-          locale={getLocale()}
-          experiment={experiment}
-          env={env}
-        />
+        <MarkLogo />
       ) : (
         <Logo
           fundingEligibility={fundingEligibility}
