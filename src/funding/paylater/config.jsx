@@ -12,7 +12,7 @@ import {
   PPRebrandLogoExternalImage,
 } from "@paypal/sdk-logos/src";
 
-import { Logo } from "../paypal/template";
+import { Logo as PayPalRebrandLogo } from "../paypal/template";
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 import { Text } from "../../ui/text";
@@ -106,7 +106,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
 
       return (
         <Style css={css} nonce={nonce}>
-          <Logo
+          <PayPalRebrandLogo
             logoColor={logoColor}
             shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
             env={env}

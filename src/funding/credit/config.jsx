@@ -22,7 +22,7 @@ import {
   BUTTON_FLOW,
 } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
-import { WalletLabel, Logo } from "../paypal/template";
+import { WalletLabel, Logo as PayPalRebrandLogo } from "../paypal/template";
 import { Text } from "../../ui/text";
 
 import css from "./style.scoped.scss";
@@ -73,9 +73,31 @@ export function getCreditConfig(): FundingSourceConfig {
         );
       }
 
+      // Rebranded credit for DE locale uses "Später Bezahlen" text
+      if (locale.country === COUNTRY.DE) {
+        return (
+          <Style css={css} nonce={nonce}>
+            <PayPalRebrandLogo
+              logoColor={logoColor}
+              shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
+              env={env}
+              experiment={experiment}
+              fundingEligibility={fundingEligibility}
+              locale={locale}
+            />
+            {__WEB__ ? (
+              <PPRebrandLogoExternalImage logoColor={logoColorPP} />
+            ) : (
+              <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
+            )}
+            <Text>{"Später Bezahlen"}</Text>
+          </Style>
+        );
+      }
+
       return (
         <Style css={css} nonce={nonce}>
-          <Logo
+          <PayPalRebrandLogo
             logoColor={logoColor}
             shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
             locale={locale}
