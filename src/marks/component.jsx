@@ -50,6 +50,7 @@ type MarksProps = {|
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  userAgent: string,
 |};
 
 export type MarksComponent = (MarksProps) => MarksInstance;
@@ -61,6 +62,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     onShippingAddressChange,
     onShippingOptionsChange,
     displayOnly,
+    userAgent,
   }: MarksProps = {}): MarksInstance {
     const height = DEFAULT_HEIGHT;
     const fundingEligibility = getFundingEligibility();
@@ -97,6 +99,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       supportedNativeBrowser,
       experiment,
       displayOnly,
+      userAgent,
     });
     const env = getEnv();
 
@@ -121,6 +124,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         supportedNativeBrowser,
         experiment,
         displayOnly,
+        userAgent,
       });
     };
 
