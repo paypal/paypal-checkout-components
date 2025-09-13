@@ -89,6 +89,7 @@ import {
   type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "../../funding/util";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
@@ -1270,7 +1271,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportedNativeBrowser: {
         type: "boolean",
-        value: ({ experiment, fundingSource, userAgent }) => fundingSource === FUNDING.VENMO ? isSupportedNativeVenmoBrowser(experiment, userAgent) : isSupportedNativeBrowser,
+        value: ({ experiment, fundingSource, userAgent }) => fundingSource === FUNDING.VENMO ? isSupportedNativeVenmoBrowser(experiment, userAgent) : isSupportedNativeBrowser(),
         queryParam: true,
       },
 
