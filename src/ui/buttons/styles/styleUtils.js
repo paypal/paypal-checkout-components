@@ -194,6 +194,7 @@ export function getResponsiveRebrandedStyleVariables({
     buttonHeight,
     pillBorderRadius,
     gap,
+    defaultHeight,
     minHeight,
     maxHeight,
     minWidth,

@@ -4,12 +4,18 @@ import { describe, expect, test } from "vitest";
 
 import {
   BUTTON_SIZE,
+  BUTTON_REDESIGN_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
 } from "../../../constants/button";
-import { BUTTON_SIZE_STYLE, BUTTON_DISABLE_MAX_HEIGHT_STYLE } from "../config";
+import {
+  BUTTON_SIZE_STYLE,
+  BUTTON_DISABLE_MAX_HEIGHT_STYLE,
+  BUTTON_REDESIGN_STYLE,
+} from "../config";
 
 import {
   getResponsiveStyleVariables,
+  getResponsiveRebrandedStyleVariables,
   getDisableMaxHeightResponsiveStyleVariables,
 } from "./styleUtils";
 
@@ -121,62 +127,6 @@ const expectedResizeLabelResponsiveStylesHuge = {
   textPercPercentage: 32,
   smallerLabelHeight: 24,
   labelHeight: 24,
-  pillBorderRadius: 28,
-  gap: 6,
-};
-
-// expected rebranded responsive style variables
-const expectedRebrandedResponsiveStylesTiny = {
-  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.TINY],
-  buttonHeight: 25,
-  minDualWidth: 300,
-  textPercPercentage: 36,
-  smallerLabelHeight: 19,
-  labelHeight: 19,
-  pillBorderRadius: 13,
-  gap: 3,
-};
-
-const expectedRebrandedResponsiveStylesSmall = {
-  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.SMALL],
-  buttonHeight: 25,
-  minDualWidth: 300,
-  textPercPercentage: 36,
-  smallerLabelHeight: 19,
-  labelHeight: 19,
-  pillBorderRadius: 13,
-  gap: 3,
-};
-
-const expectedRebrandedResponsiveStylesMedium = {
-  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.MEDIUM],
-  buttonHeight: 35,
-  minDualWidth: 300,
-  textPercPercentage: 36,
-  smallerLabelHeight: 27,
-  labelHeight: 27,
-  pillBorderRadius: 18,
-  gap: 4,
-};
-
-const expectedRebrandedResponsiveStylesLarge = {
-  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.LARGE],
-  buttonHeight: 45,
-  minDualWidth: 300,
-  textPercPercentage: 36,
-  smallerLabelHeight: 34,
-  labelHeight: 34,
-  pillBorderRadius: 23,
-  gap: 5,
-};
-
-const expectedRebrandedResponsiveStylesHuge = {
-  style: BUTTON_SIZE_STYLE[BUTTON_SIZE.HUGE],
-  buttonHeight: 55,
-  minDualWidth: 300,
-  textPercPercentage: 36,
-  smallerLabelHeight: 42,
-  labelHeight: 42,
   pillBorderRadius: 28,
   gap: 6,
 };
@@ -570,9 +520,149 @@ const expectedRebrandDisableMaxHeightStylesXXXL = {
   gap: 7,
 };
 
+// expected rebrand responsive styles variables
+const expectedRebrandedResponsiveStylesExtraSmall = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.EXTRA_SMALL],
+  buttonHeight: 20,
+  pillBorderRadius: 10,
+  gap: 3,
+  defaultHeight: 20,
+  minHeight: 20,
+  maxHeight: 30,
+  minWidth: 50,
+  minDualWidth: 300,
+  maxWidth: 75,
+  fontSize: 12,
+};
+
+const expectedRebrandedResponsiveStylesTiny = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.TINY],
+  buttonHeight: 25,
+  pillBorderRadius: 13,
+  gap: 3,
+  defaultHeight: 25,
+  minHeight: 25,
+  maxHeight: 30,
+  minWidth: 75,
+  minDualWidth: 300,
+  maxWidth: 200,
+  fontSize: 12,
+};
+
+const expectedRebrandedResponsiveStylesSmall = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.SMALL],
+  buttonHeight: 35,
+  pillBorderRadius: 18,
+  gap: 3,
+  defaultHeight: 35,
+  minHeight: 30,
+  maxHeight: 35,
+  minWidth: 200,
+  minDualWidth: 300,
+  maxWidth: 250,
+  fontSize: 14,
+};
+
+const expectedRebrandedResponsiveStylesMediumSmall = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.MEDIUM_SMALL],
+  buttonHeight: 35,
+  pillBorderRadius: 18,
+  gap: 4,
+  defaultHeight: 35,
+  minHeight: 35,
+  maxHeight: 40,
+  minWidth: 250,
+  minDualWidth: 300,
+  maxWidth: 300,
+  fontSize: 16,
+};
+
+const expectedRebrandedResponsiveStylesMediumBig = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.MEDIUM_BIG],
+  buttonHeight: 45,
+  pillBorderRadius: 23,
+  gap: 4,
+  defaultHeight: 45,
+  minHeight: 40,
+  maxHeight: 45,
+  minWidth: 300,
+  minDualWidth: 300,
+  maxWidth: 350,
+  fontSize: 16,
+};
+
+const expectedRebrandedResponsiveStylesLargeSmall = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.LARGE_SMALL],
+  buttonHeight: 45,
+  pillBorderRadius: 23,
+  gap: 5,
+  defaultHeight: 45,
+  minHeight: 45,
+  maxHeight: 50,
+  minWidth: 350,
+  minDualWidth: 300,
+  maxWidth: 425,
+  fontSize: 18,
+};
+
+const expectedRebrandedResponsiveStylesLargeBig = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.LARGE_BIG],
+  buttonHeight: 45,
+  pillBorderRadius: 23,
+  gap: 5,
+  defaultHeight: 45,
+  minHeight: 50,
+  maxHeight: 55,
+  minWidth: 425,
+  minDualWidth: 300,
+  maxWidth: 500,
+  fontSize: 20,
+};
+
+const expectedRebrandedResponsiveStylesXlSmall = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XL_SMALL],
+  buttonHeight: 55,
+  pillBorderRadius: 28,
+  gap: 6,
+  defaultHeight: 55,
+  minHeight: 55,
+  maxHeight: 60,
+  minWidth: 500,
+  minDualWidth: 300,
+  maxWidth: 550,
+  fontSize: 22,
+};
+
+const expectedRebrandedResponsiveStylesXlBig = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XL_BIG],
+  buttonHeight: 55,
+  pillBorderRadius: 28,
+  gap: 7,
+  defaultHeight: 55,
+  minHeight: 60,
+  maxHeight: 65,
+  minWidth: 550,
+  minDualWidth: 300,
+  maxWidth: 650,
+  fontSize: 24,
+};
+
+const expectedRebrandedResponsiveStylesXXL = {
+  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XXL],
+  buttonHeight: 55,
+  pillBorderRadius: 28,
+  gap: 7,
+  defaultHeight: 55,
+  minHeight: 65,
+  maxHeight: 100,
+  minWidth: 650,
+  minDualWidth: 300,
+  maxWidth: 750,
+  fontSize: 26,
+};
+
 describe("test responsive style variables for legacy", () => {
   const shouldApplyRebrandedStyles = false;
-
   const fundingEligibility = {
     paypal: {
       eligible: true,
@@ -626,7 +716,6 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
       },
     },
   };
-
   test.each([
     {
       input: BUTTON_SIZE.TINY,
@@ -661,52 +750,59 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
     }
   );
 });
-
 describe("test responsive style variables for rebranded buttons", () => {
-  const shouldApplyRebrandedStyles = true;
-
-  const fundingEligibility = {
-    paypal: {
-      eligible: true,
-      branded: false,
-    },
-  };
-
   test.each([
     {
-      input: BUTTON_SIZE.TINY,
+      input: BUTTON_REDESIGN_SIZE.EXTRA_SMALL,
+      expected: expectedRebrandedResponsiveStylesExtraSmall,
+    },
+    {
+      input: BUTTON_REDESIGN_SIZE.TINY,
       expected: expectedRebrandedResponsiveStylesTiny,
     },
     {
-      input: BUTTON_SIZE.SMALL,
+      input: BUTTON_REDESIGN_SIZE.SMALL,
       expected: expectedRebrandedResponsiveStylesSmall,
     },
     {
-      input: BUTTON_SIZE.MEDIUM,
-      expected: expectedRebrandedResponsiveStylesMedium,
+      input: BUTTON_REDESIGN_SIZE.MEDIUM_SMALL,
+      expected: expectedRebrandedResponsiveStylesMediumSmall,
     },
     {
-      input: BUTTON_SIZE.LARGE,
-      expected: expectedRebrandedResponsiveStylesLarge,
+      input: BUTTON_REDESIGN_SIZE.MEDIUM_BIG,
+      expected: expectedRebrandedResponsiveStylesMediumBig,
     },
     {
-      input: BUTTON_SIZE.HUGE,
-      expected: expectedRebrandedResponsiveStylesHuge,
+      input: BUTTON_REDESIGN_SIZE.LARGE_SMALL,
+      expected: expectedRebrandedResponsiveStylesLargeSmall,
+    },
+    {
+      input: BUTTON_REDESIGN_SIZE.LARGE_BIG,
+      expected: expectedRebrandedResponsiveStylesLargeBig,
+    },
+    {
+      input: BUTTON_REDESIGN_SIZE.XL_SMALL,
+      expected: expectedRebrandedResponsiveStylesXlSmall,
+    },
+    {
+      input: BUTTON_REDESIGN_SIZE.XL_BIG,
+      expected: expectedRebrandedResponsiveStylesXlBig,
+    },
+    {
+      input: BUTTON_REDESIGN_SIZE.XXL,
+      expected: expectedRebrandedResponsiveStylesXXL,
     },
   ])(
     `should return rebrand responsive styles for size $input`,
     ({ input, expected }) => {
       expect(
-        getResponsiveStyleVariables({
-          shouldApplyRebrandedStyles,
-          fundingEligibility,
-          size: input,
+        getResponsiveRebrandedStyleVariables({
+          redesign_size: input,
         })
       ).toEqual(expected);
     }
   );
 });
-
 describe("test responsive style variables for legacy disable max height", () => {
   const shouldApplyRebrandedStyles = false;
 
@@ -767,7 +863,6 @@ describe("test responsive style variables for legacy disable max height", () => 
     }
   );
 });
-
 describe("test responsive style variables when shouldResizeLabel == true for disable max height", () => {
   const shouldApplyRebrandedStyles = false;
 
@@ -791,7 +886,6 @@ describe("test responsive style variables when shouldResizeLabel == true for dis
       },
     },
   };
-
   test.each([
     {
       input: BUTTON_DISABLE_MAX_HEIGHT_SIZE.TINY,

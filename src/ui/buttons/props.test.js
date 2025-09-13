@@ -129,15 +129,14 @@ describe("determineRandomButtonColor", () => {
 });
 
 describe("hasInvalidScriptOptionsForFullRedesign", () => {
-  const validFundingSources = [FUNDING.PAYPAL];
-  const invalidFundingSources = [
-    FUNDING.CARD,
-    FUNDING.VENMO,
+  const validFundingSources = [
+    FUNDING.PAYPAL,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
-    FUNDING.APPLEPAY,
-    FUNDING.IDEAL,
+    FUNDING.CARD,
+    FUNDING.VENMO,
   ];
+  const invalidFundingSources = [FUNDING.APPLEPAY, FUNDING.IDEAL];
 
   // Test valid funding sources
   validFundingSources.forEach((fundingSource) => {
@@ -502,7 +501,7 @@ describe("getColorForFullRedesign", () => {
     });
   });
 
-  it("should map DARKBLUE to REBRAND_DARKBLUE", () => {
+  it("should map DARKBLUE to REBRAND_BLUE", () => {
     const result = getColorForFullRedesign({
       // $FlowFixMe
       style: { color: BUTTON_COLOR.DARKBLUE },
@@ -510,7 +509,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_DARKBLUE,
+      color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
     });
@@ -655,31 +654,6 @@ describe("getButtonColorExperience", () => {
     });
 
     expect(result).toBe("fullRebrand");
-  });
-
-  it("should return 'legacy' when rebrand is enabled but style.color is not dev complete", () => {
-    const incompleteColors = [
-      BUTTON_COLOR.BLACK,
-      BUTTON_COLOR.WHITE,
-      BUTTON_COLOR.SILVER,
-      BUTTON_COLOR.TRANSPARENT,
-      BUTTON_COLOR.DEFAULT,
-    ];
-
-    // Test each incomplete color
-    incompleteColors.forEach((incompleteColor) => {
-      const result = getButtonColorExperience({
-        experiment: {
-          isPaypalRebrandEnabled: true,
-          isPaypalRebrandABTestEnabled: false,
-        },
-        fundingSource: FUNDING.PAYPAL,
-        // $FlowFixMe
-        style: { color: incompleteColor },
-      });
-
-      expect(result).toBe("legacy");
-    });
   });
 
   it("should handle null/undefined experiment values", () => {

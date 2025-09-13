@@ -1,3 +1,15 @@
+## <small>5.0.382 (2025-09-11)</small>
+
+* Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)
+
+
+
+## <small>5.0.381 (2025-09-11)</small>
+
+* update poweredby logo to be black for white button stack (#2554) ([0b0f86e](https://github.com/paypal/paypal-checkout-components/commit/0b0f86e)), closes [#2554](https://github.com/paypal/paypal-checkout-components/issues/2554)
+
+
+
 ## <small>5.0.380 (2025-08-26)</small>
 
 * feat(venmo): webview eligibility detection (#2532) ([9822f7e](https://github.com/paypal/paypal-checkout-components/commit/9822f7e)), closes [#2532](https://github.com/paypal/paypal-checkout-components/issues/2532) [#2517](https://github.com/paypal/paypal-checkout-components/issues/2517)

@@ -756,7 +756,13 @@ export function hasInvalidScriptOptionsForFullRedesign({
 }: {|
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
-  const validFundingSourcesForRedesign = [FUNDING.PAYPAL];
+  const validFundingSourcesForRedesign = [
+    FUNDING.PAYPAL,
+    FUNDING.VENMO,
+    FUNDING.PAYLATER,
+    FUNDING.CREDIT,
+    FUNDING.CARD,
+  ];
 
   if (validFundingSourcesForRedesign.includes(fundingSource)) {
     return false;
@@ -847,16 +853,15 @@ export function getColorForFullRedesign({
 }: GetColorForFullRedesignArgs): ButtonColor {
   const rebrandColorMap = {
     [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_BLUE,
     [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
 
     // not mapped yet since the styles are not setup
     // These should never be hit since legacy experience should be set
-    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
-    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
-    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
-    [BUTTON_COLOR.TRANSPARENT]: BUTTON_COLOR.TRANSPARENT,
-    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.REBRAND_BLUE,
 
     // normalizeButtonStyle gets called multiple times and
     // it can be called after color is already be mapped to rebranded style
@@ -893,7 +898,6 @@ export function getColorForFullRedesign({
 export function getButtonColorExperience({
   experiment,
   fundingSource,
-  style,
 }: GetButtonColorExperienceArgs): "abTest" | "fullRebrand" | "legacy" {
   const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } =
     experiment || {};
@@ -907,24 +911,10 @@ export function getButtonColorExperience({
 
   if (isPaypalRebrandABTestEnabled) {
     // were only running AB Test on PayPal buttons
-    return rejectRedesign ? "legacy" : "abTest";
+    return fundingSource === FUNDING.PAYPAL ? "abTest" : "legacy";
   }
 
-  const rebrandColorsNotDevComplete = [
-    BUTTON_COLOR.BLACK,
-    BUTTON_COLOR.WHITE,
-    BUTTON_COLOR.SILVER,
-    BUTTON_COLOR.TRANSPARENT,
-    BUTTON_COLOR.DEFAULT,
-  ];
-
-  const isRebrandColorNotDevComplete = rebrandColorsNotDevComplete.includes(
-    style?.color
-  );
-
-  return rejectRedesign || isRebrandColorNotDevComplete
-    ? "legacy"
-    : "fullRebrand";
+  return rejectRedesign ? "legacy" : "fullRebrand";
 }
 
 export function getButtonColor({

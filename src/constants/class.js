@@ -10,7 +10,10 @@ export const CLASS = {
   BUTTON_LABEL:
     ("paypal-button-label-container": "paypal-button-label-container"),
   LOGO_PP: ("paypal-logo-pp": "paypal-logo-pp"),
+  LOGO_PP_REBRAND: ("paypal-logo-pp-rebrand": "paypal-logo-pp-rebrand"),
   LOGO: ("paypal-logo": "paypal-logo"),
+  LOGO_REBRAND: ("paypal-logo-paypal-rebrand": "paypal-logo-paypal-rebrand"),
+  REBRAND: ("paypal-rebrand": "paypal-rebrand"),
 
   LABEL: ("paypal-button-label": "paypal-button-label"),
   COLOR: ("paypal-button-color": "paypal-button-color"),

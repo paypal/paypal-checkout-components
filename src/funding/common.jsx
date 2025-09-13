@@ -44,6 +44,7 @@ export type LogoOptions = {|
   locale: LocaleType,
   label?: ?$Values<typeof BUTTON_LABEL>,
   logoColor?: $Values<typeof LOGO_COLOR>,
+  logoColorPP?: $Values<typeof LOGO_COLOR>,
   optional?: boolean,
   fundingEligibility: FundingEligibilityType,
   onClick?: (event: MouseEvent, ...args: $ReadOnlyArray<mixed>) => void,
@@ -133,6 +134,7 @@ export type FundingSourceConfig = {|
     [$Values<typeof BUTTON_COLOR>]: $Values<typeof BUTTON_COLOR>,
   },
   logoColors: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof LOGO_COLOR> },
+  logoColorsPP?: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof LOGO_COLOR> },
   shapes: $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
   labelText?:
     | string
@@ -213,12 +215,17 @@ export const DEFAULT_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.BLACK,
   },
 
   secondaryColors: {
     [DEFAULT]: BUTTON_COLOR.SILVER,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
     [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
   },
 
   secondaryVaultColors: {
@@ -267,5 +274,7 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
     [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
   },
 };
