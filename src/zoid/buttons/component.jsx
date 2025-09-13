@@ -1271,13 +1271,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportedNativeBrowser: {
         type: "boolean",
-        value: ({ experiment, fundingSource, userAgent }) => fundingSource === FUNDING.VENMO ? isSupportedNativeVenmoBrowser(experiment, userAgent) : isSupportedNativeBrowser(),
+        value: ({ experiment, fundingSource, userAgent }) => (fundingSource === FUNDING.VENMO ? isSupportedNativeVenmoBrowser(experiment, userAgent) : isSupportedNativeBrowser()),
         queryParam: true,
       },
 
       supportsPopups: {
         type: "boolean",
-        value: ({ experiment, fundingSource, userAgent }) => fundingSource === FUNDING.VENMO ? supportsVenmoPopups(experiment, userAgent) : userAgentSupportsPopups(),
+        value: ({ experiment, fundingSource, userAgent }) => (fundingSource === FUNDING.VENMO ? supportsVenmoPopups(experiment, userAgent) : userAgentSupportsPopups()),
         queryParam: true,
       },
 
