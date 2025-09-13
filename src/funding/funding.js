@@ -36,6 +36,7 @@ type IsFundingEligibleOptions = {|
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  userAgent?: string,
 |};
 
 function isFundingVaultable({
@@ -85,6 +86,7 @@ export function isFundingEligible(
     supportedNativeBrowser,
     experiment,
     displayOnly,
+    userAgent,
   }: IsFundingEligibleOptions
 ): boolean {
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
@@ -157,15 +159,15 @@ export function isFundingEligible(
     return false;
   }
 
-  if (fundingConfig.requires) {
+  if (fundingConfig.requires && userAgent) {
     const required = fundingConfig.requires({ experiment, platform });
     const popupSupport =
       source === FUNDING.VENMO
-        ? supportsVenmoPopups(experiment)
+        ? supportsVenmoPopups(experiment, userAgent)
         : supportsPopups;
     const nativeBrowserSupport =
       source === FUNDING.VENMO
-        ? isSupportedNativeVenmoBrowser(experiment)
+        ? isSupportedNativeVenmoBrowser(experiment, userAgent)
         : supportedNativeBrowser;
     if (required.popup === true && popupSupport === false) {
       return false;
@@ -212,6 +214,7 @@ export function determineEligibleFunding({
   supportedNativeBrowser,
   experiment,
   displayOnly = [],
+  userAgent = "",
 }: {|
   fundingSource: ?$Values<typeof FUNDING>,
   remembered: $ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -231,6 +234,7 @@ export function determineEligibleFunding({
   supportedNativeBrowser: boolean,
   experiment: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  userAgent?: string,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -255,6 +259,7 @@ export function determineEligibleFunding({
       supportedNativeBrowser,
       experiment,
       displayOnly,
+      userAgent,
     })
   );
 

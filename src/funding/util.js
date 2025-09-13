@@ -10,8 +10,6 @@ import {
   isEdgeIOS,
   isQQBrowser,
   isElectron,
-  isMacOsCna,
-  isStandAlone,
   supportsPopups,
   isTablet,
   isIos,
@@ -23,70 +21,73 @@ import {
 
 import type { Experiment } from "../types";
 
-export const isVenmoSupportedWebView = (): boolean => {
+const isMacOsCna = (userAgent: string): boolean => {
+  return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
+};
+
+const isVenmoSupportedWebView = (userAgent: string): boolean => {
   return (
-    isWebView() || isIosWebview() || isAndroidWebview() || isFacebookWebView()
+    isWebView(userAgent) ||
+    isIosWebview(userAgent) ||
+    isAndroidWebview(userAgent) ||
+    isFacebookWebView(userAgent)
   );
 };
 
-export function supportsVenmoPopups(experiment?: Experiment): boolean {
-  if (typeof window === "undefined") {
-    return false;
-  }
+const venmoUserAgentSupportsPopups = (userAgent: string): boolean => {
+  return !(
+    isVenmoSupportedWebView(userAgent) ||
+    isOperaMini(userAgent) ||
+    isFirefoxIOS(userAgent) ||
+    isEdgeIOS(userAgent) ||
+    isQQBrowser(userAgent) ||
+    isMacOsCna(userAgent) ||
+    isElectron()
+  );
+};
 
-  if (isVenmoSupportedWebView()) {
-    if (window.popupBridge) {
+export function supportsVenmoPopups(
+  experiment?: Experiment,
+  userAgent: string
+): boolean {
+  if (isVenmoSupportedWebView(userAgent)) {
+    if (typeof window !== "undefined" && window.popupBridge) {
       return true;
     }
     return false;
   }
 
-  const venmoUserAgentSupportsPopups = () => {
-    return !(
-      isVenmoSupportedWebView() ||
-      isOperaMini() ||
-      isFirefoxIOS() ||
-      isEdgeIOS() ||
-      isQQBrowser() ||
-      isElectron() ||
-      isMacOsCna() ||
-      isStandAlone()
-    );
-  };
-
   if (experiment?.venmoEnableWebOnNonNativeBrowser === true) {
-    return venmoUserAgentSupportsPopups();
+    return venmoUserAgentSupportsPopups(userAgent);
   }
   return supportsPopups();
 }
 
 export function isSupportedNativeVenmoBrowser(
-  experiment?: Experiment
+  experiment?: Experiment,
+  userAgent: string
 ): boolean {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  if (isVenmoSupportedWebView()) {
-    if (window.popupBridge) {
+  if (isVenmoSupportedWebView(userAgent)) {
+    if (typeof window !== "undefined" && window.popupBridge) {
       return true;
     }
     return false;
   }
 
-  if (isTablet()) {
+  if (isTablet(userAgent)) {
     return false;
   }
 
   // Default supported browsers for Venmo
-  if ((isIos() && isSafari()) || (isAndroid() && isChrome())) {
+  if ((isIos(userAgent) && isSafari(userAgent)) || (isAndroid(userAgent) && isChrome(userAgent))) {
     return true;
   }
 
   // Additional browsers enabled by experiment
   if (
     experiment?.venmoEnableWebOnNonNativeBrowser === true &&
-    ((isIos() && isChrome()) || (isAndroid() && isFirefox()))
+    ((isIos(userAgent) && isChrome(userAgent)) ||
+      (isAndroid(userAgent) && isFirefox(userAgent)))
   ) {
     return true;
   }

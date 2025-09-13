@@ -251,6 +251,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         createSubscription,
         createVaultSetupToken,
         displayOnly,
+        userAgent,
       } = props;
 
       const flow = determineFlow({
@@ -294,6 +295,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           supportedNativeBrowser,
           experiment,
           displayOnly,
+          userAgent,
         })
       ) {
         return {
@@ -714,6 +716,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             createSubscription,
             createVaultSetupToken,
             displayOnly,
+            userAgent,
           } = props;
 
           const flow = determineFlow({
@@ -744,6 +747,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               supportsPopups,
               supportedNativeBrowser,
               displayOnly,
+              userAgent,
             })
           ) {
             throw new Error(`${fundingSource} is not eligible`);
@@ -1315,6 +1319,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         required: false,
         queryParam: true,
+      },
+
+      userAgent: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        default: () => window.navigator.userAgent,
       },
     },
 
