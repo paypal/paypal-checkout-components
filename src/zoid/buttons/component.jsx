@@ -1274,19 +1274,28 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportedNativeBrowser: {
         type: "boolean",
-        value: ({ props }) =>
-          props.fundingSource === FUNDING.VENMO
-            ? isSupportedNativeVenmoBrowser(props.experiment, props.userAgent)
-            : isSupportedNativeBrowser(),
+        value: ({ props }) => {
+          if (props.fundingSource === FUNDING.VENMO) {
+            return isSupportedNativeVenmoBrowser(
+              props.experiment,
+              props.userAgent
+            );
+          }
+
+          return isSupportedNativeBrowser();
+        },
         queryParam: true,
       },
 
       supportsPopups: {
         type: "boolean",
-        value: ({ props }) =>
-          props.fundingSource === FUNDING.VENMO
-            ? supportsVenmoPopups(props.experiment, props.userAgent)
-            : userAgentSupportsPopups(),
+        value: ({ props }) => {
+          if (props.fundingSource === FUNDING.VENMO) {
+            return supportsVenmoPopups(props.experiment, props.userAgent);
+          }
+
+          return userAgentSupportsPopups();
+        },
         queryParam: true,
       },
 
