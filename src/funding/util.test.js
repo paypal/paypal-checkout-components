@@ -20,10 +20,7 @@ import {
   isFirefox,
 } from "@krakenjs/belter/src";
 
-import {
-  supportsVenmoPopups,
-  isSupportedNativeVenmoBrowser,
-} from "./util";
+import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "./util";
 
 // Mock all the browser detection functions from belter
 vi.mock("@krakenjs/belter/src", () => ({
