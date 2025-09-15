@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
+import { FUNDING, type LocaleType } from "@paypal/sdk-constants/src";
 import { node, Style } from "@krakenjs/jsx-pragmatic/src";
 import {
   PPLogoExternalImage,
@@ -21,9 +21,11 @@ import css from "./style.scoped.scss";
 
 function getLabelText(
   fundingEligibility: FundingEligibilityType,
+  locale: LocaleType,
   shouldApplyRebrandedStyles?: boolean
 ): ?string {
   const { paylater } = fundingEligibility;
+  const { lang } = locale;
 
   let labelText;
 
@@ -50,6 +52,13 @@ function getLabelText(
 
   if (paylater?.products?.payIn4?.eligible) {
     labelText = "Pay in 4";
+  }
+
+  if (paylater?.products?.payIn4?.eligible && 
+      paylater?.products?.payIn4?.variant === "CA" &&
+      lang === "fr" 
+  ) {
+    labelText = "Paiement en 4";
   }
 
   if (
@@ -99,7 +108,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
             ) : (
               <PPLogoInlineSVG logoColor={logoColor} />
             )}
-            <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
+            <Text>{getLabelText(fundingEligibility, locale) || "Pay Later"}</Text>
           </Style>
         );
       }
@@ -120,7 +129,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
           <Text>
-            {getLabelText(fundingEligibility, shouldApplyRebrandedStyles) ||
+            {getLabelText(fundingEligibility, locale, shouldApplyRebrandedStyles) ||
               "Pay Later"}
           </Text>
         </Style>
