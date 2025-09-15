@@ -79,7 +79,10 @@ export function isSupportedNativeVenmoBrowser(
   }
 
   // Default supported browsers for Venmo
-  if ((isIos(userAgent) && isSafari(userAgent)) || (isAndroid(userAgent) && isChrome(userAgent))) {
+  if (
+    (isIos(userAgent) && isSafari(userAgent)) ||
+    (isAndroid(userAgent) && isChrome(userAgent))
+  ) {
     return true;
   }
 
