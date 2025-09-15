@@ -68,6 +68,8 @@ const defaultMockFundingOptions = {
   onShippingChange: null,
   onShippingAddressChange: null,
   onShippingOptionsChange: null,
+  userAgent:
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
 };
 
 describe("Funding eligibility", () => {
@@ -275,7 +277,10 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(options.experiment);
+        expect(supportsVenmoPopups).toHaveBeenCalledWith(
+          options.experiment,
+          options.userAgent
+        );
         expect(result).toBe(true);
       });
 
@@ -293,7 +298,8 @@ describe("Funding eligibility", () => {
         const result = isFundingEligible(FUNDING.VENMO, options);
 
         expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          options.experiment
+          options.experiment,
+          options.userAgent
         );
         expect(result).toBe(true);
       });
@@ -311,7 +317,10 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(options.experiment);
+        expect(supportsVenmoPopups).toHaveBeenCalledWith(
+          options.experiment,
+          options.userAgent
+        );
         expect(result).toBe(false);
       });
 
@@ -329,7 +338,8 @@ describe("Funding eligibility", () => {
         const result = isFundingEligible(FUNDING.VENMO, options);
 
         expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          options.experiment
+          options.experiment,
+          options.userAgent
         );
         expect(result).toBe(false);
       });
@@ -409,8 +419,14 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(undefined);
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(undefined);
+        expect(supportsVenmoPopups).toHaveBeenCalledWith(
+          undefined,
+          options.userAgent
+        );
+        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
+          undefined,
+          options.userAgent
+        );
         expect(result).toBe(true);
       });
 
@@ -432,9 +448,13 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(experimentFlags);
+        expect(supportsVenmoPopups).toHaveBeenCalledWith(
+          experimentFlags,
+          options.userAgent
+        );
         expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          experimentFlags
+          experimentFlags,
+          options.userAgent
         );
         expect(result).toBe(true);
       });
