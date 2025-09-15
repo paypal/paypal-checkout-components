@@ -1,3 +1,9 @@
+## <small>5.0.383 (2025-09-15)</small>
+
+* update ites btn label (#2535) ([979eaec](https://github.com/paypal/paypal-checkout-components/commit/979eaec)), closes [#2535](https://github.com/paypal/paypal-checkout-components/issues/2535)
+
+
+
 ## <small>5.0.382 (2025-09-11)</small>
 
 * Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)
