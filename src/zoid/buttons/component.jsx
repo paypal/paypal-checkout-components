@@ -61,6 +61,7 @@ import {
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
   noop,
+  getUserAgent,
 } from "@krakenjs/belter/src";
 import {
   FUNDING,
@@ -720,7 +721,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             createSubscription,
             createVaultSetupToken,
             displayOnly,
-            userAgent,
+            userAgent = getUserAgent(),
           } = props;
 
           const flow = determineFlow({
@@ -1344,7 +1345,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
-        default: () => window.navigator.userAgent,
+        value: getUserAgent,
       },
     },
 
