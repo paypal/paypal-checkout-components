@@ -114,7 +114,7 @@ describe(`paypal standalone buttons`, () => {
   }
 
   it(`should not render a standalone venmo button for webviews if window.popupBridge is not defined`, () => {
-    return wrapPromise(({ expect }) => {
+    return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
       window.popupBridge = undefined;
