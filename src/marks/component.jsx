@@ -9,6 +9,7 @@ import {
   memoize,
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
+  getUserAgent,
 } from "@krakenjs/belter/src";
 import {
   PLATFORM,
@@ -62,7 +63,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     onShippingAddressChange,
     onShippingOptionsChange,
     displayOnly,
-    userAgent,
+    userAgent = getUserAgent(),
   }: MarksProps = {}): MarksInstance {
     const height = DEFAULT_HEIGHT;
     const fundingEligibility = getFundingEligibility();
