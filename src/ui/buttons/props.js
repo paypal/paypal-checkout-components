@@ -14,6 +14,7 @@ import {
 import {
   CURRENCY,
   FUNDING,
+  FUNDING_SMART_STACK,
   PLATFORM,
   INTENT,
   COMMIT,
@@ -754,6 +755,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
   const validFundingSourcesForRedesign = [
+    FUNDING_SMART_STACK,
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.PAYLATER,
