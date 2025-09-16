@@ -132,7 +132,7 @@ export type GetCallbackProps = {|
   hostedButtonId: string,
   merchantId?: string,
   shouldIncludeShippingCallbacks?: boolean,
-  fptiTrackingParams?: { [key: string]: string | boolean | void },
+  fptiTrackingParams?: { [key: string]: mixed },
 |};
 
 export type HostedButtonsInstance = {|
