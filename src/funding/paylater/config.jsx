@@ -10,6 +10,7 @@ import {
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
   PPRebrandLogoExternalImage,
+  PaylaterMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
 import { Logo } from "../paypal/template";
@@ -130,6 +131,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
         </Style>
       );
     },
+
+    Mark: () => <PaylaterMarkRebrandExternalImage />,
+    shouldUseMarkForRebrandOnly: true,
 
     colors: [
       BUTTON_COLOR.WHITE,

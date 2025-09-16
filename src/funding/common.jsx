@@ -149,6 +149,7 @@ export type FundingSourceConfig = {|
     instrument: WalletInstrument,
     userIDToken: ?string,
   |}) => boolean,
+  shouldUseMarkForRebrandOnly?: boolean,
 |};
 
 export function BasicLabel({
