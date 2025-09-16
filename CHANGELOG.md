@@ -1,3 +1,9 @@
+## <small>5.0.384 (2025-09-16)</small>
+
+* Rebranded marks (#2555) ([46245aa](https://github.com/paypal/paypal-checkout-components/commit/46245aa)), closes [#2555](https://github.com/paypal/paypal-checkout-components/issues/2555)
+
+
+
 ## <small>5.0.383 (2025-09-15)</small>
 
 * update ites btn label (#2535) ([979eaec](https://github.com/paypal/paypal-checkout-components/commit/979eaec)), closes [#2535](https://github.com/paypal/paypal-checkout-components/issues/2535)
