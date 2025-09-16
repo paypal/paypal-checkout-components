@@ -1,3 +1,9 @@
+## <small>5.0.385 (2025-09-16)</small>
+
+* fix(venmo): popupBridge feature detection for webview eligibility (#2545) ([9d6c45b](https://github.com/paypal/paypal-checkout-components/commit/9d6c45b)), closes [#2545](https://github.com/paypal/paypal-checkout-components/issues/2545)
+
+
+
 ## <small>5.0.384 (2025-09-16)</small>
 
 * Rebranded marks (#2555) ([46245aa](https://github.com/paypal/paypal-checkout-components/commit/46245aa)), closes [#2555](https://github.com/paypal/paypal-checkout-components/issues/2555)
