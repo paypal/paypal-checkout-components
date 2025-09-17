@@ -14,7 +14,6 @@ import {
 import {
   CURRENCY,
   FUNDING,
-  FUNDING_SMART_STACK,
   PLATFORM,
   INTENT,
   COMMIT,
@@ -754,6 +753,9 @@ export function hasInvalidScriptOptionsForFullRedesign({
 }: {|
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
+  // If fundingSource is undefined, it is the smart stack experience
+  const FUNDING_SMART_STACK = undefined;
+
   const validFundingSourcesForRedesign = [
     FUNDING_SMART_STACK,
     FUNDING.PAYPAL,
