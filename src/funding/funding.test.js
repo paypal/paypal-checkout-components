@@ -279,6 +279,7 @@ describe("Funding eligibility", () => {
 
         expect(supportsVenmoPopups).toHaveBeenCalledWith(
           options.experiment,
+          true,
           options.userAgent
         );
         expect(result).toBe(true);
@@ -319,6 +320,7 @@ describe("Funding eligibility", () => {
 
         expect(supportsVenmoPopups).toHaveBeenCalledWith(
           options.experiment,
+          true,
           options.userAgent
         );
         expect(result).toBe(false);
@@ -421,6 +423,7 @@ describe("Funding eligibility", () => {
 
         expect(supportsVenmoPopups).toHaveBeenCalledWith(
           undefined,
+          true,
           options.userAgent
         );
         expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
@@ -450,6 +453,7 @@ describe("Funding eligibility", () => {
 
         expect(supportsVenmoPopups).toHaveBeenCalledWith(
           experimentFlags,
+          true,
           options.userAgent
         );
         expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(

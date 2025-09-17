@@ -1292,7 +1292,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         value: ({ props }) => {
           if (props.fundingSource === FUNDING.VENMO) {
-            return supportsVenmoPopups(props.experiment, props.userAgent);
+            return supportsVenmoPopups(
+              props.experiment,
+              userAgentSupportsPopups(),
+              props.userAgent
+            );
           }
 
           return userAgentSupportsPopups();
