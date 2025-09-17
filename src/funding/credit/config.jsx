@@ -21,7 +21,11 @@ import {
   DEFAULT,
   BUTTON_FLOW,
 } from "../../constants";
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
+import {
+  DEFAULT_FUNDING_CONFIG,
+  type FundingSourceConfig,
+  BasicLabel,
+} from "../common";
 import { WalletLabel, Logo as PayPalRebrandLogo } from "../paypal/template";
 import { Text } from "../../ui/text";
 
@@ -38,6 +42,14 @@ export function getCreditConfig(): FundingSourceConfig {
     ],
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
+
+    Label: ({ logo, experiment, ...props }) => {
+      // For rebrand, only show logo without labels
+      if (experiment?.isPaypalRebrandEnabled) {
+        return logo;
+      }
+      return BasicLabel({ logo, ...props });
+    },
 
     Logo: ({
       locale,
