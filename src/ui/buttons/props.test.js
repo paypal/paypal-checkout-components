@@ -129,11 +129,7 @@ describe("determineRandomButtonColor", () => {
 });
 
 describe("hasInvalidScriptOptionsForFullRedesign", () => {
-  // if fundingSource is undefined, it is the smart stack experience
-  const FUNDING_SMART_STACK = undefined;
-
   const validFundingSources = [
-    FUNDING_SMART_STACK,
     FUNDING.PAYPAL,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,

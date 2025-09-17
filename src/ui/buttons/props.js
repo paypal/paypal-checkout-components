@@ -753,11 +753,12 @@ export function hasInvalidScriptOptionsForFullRedesign({
 }: {|
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
-  // If fundingSource is undefined, it is the smart stack experience
-  const FUNDING_SMART_STACK = undefined;
+  // If fundingSource is undefined, it is the smart stack experience and it is valid
+  if (fundingSource === undefined) {
+    return false;
+  }
 
   const validFundingSourcesForRedesign = [
-    FUNDING_SMART_STACK,
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.PAYLATER,
