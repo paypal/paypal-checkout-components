@@ -883,7 +883,7 @@ export function getColorForFullRedesign({
       style,
     });
 
-    buttonColor = rebrandColorMap[defaultButtonColor];
+    buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
   }
 
   return {
