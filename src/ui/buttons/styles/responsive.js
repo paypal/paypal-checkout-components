@@ -636,6 +636,12 @@ const generateRebrandedButtonSizeStyles = ({
       }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
             display: block;
           }
+
+          .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} .${CLASS.TEXT} {
+            display: block;
+          }
         }
        `;
 
