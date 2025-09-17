@@ -10,7 +10,6 @@ import {
   isEdgeIOS,
   isQQBrowser,
   isElectron,
-  supportsPopups,
   isTablet,
   isIos,
   isSafari,
@@ -48,6 +47,7 @@ const venmoUserAgentSupportsPopups = (userAgent: string): boolean => {
 
 export function supportsVenmoPopups(
   experiment?: Experiment,
+  supportsPopups: boolean,
   userAgent: string
 ): boolean {
   if (isVenmoSupportedWebView(userAgent)) {
@@ -60,7 +60,7 @@ export function supportsVenmoPopups(
   if (experiment?.venmoEnableWebOnNonNativeBrowser === true) {
     return venmoUserAgentSupportsPopups(userAgent);
   }
-  return supportsPopups();
+  return supportsPopups;
 }
 
 export function isSupportedNativeVenmoBrowser(
