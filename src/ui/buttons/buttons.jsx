@@ -168,7 +168,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
     userIDToken,
     vault,
     wallet,
-    userAgent,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -191,7 +190,6 @@ export function Buttons(props: ButtonsProps): ElementNode {
     supportedNativeBrowser,
     experiment,
     displayOnly,
-    userAgent,
   });
   const multiple = fundingSources.length > 1;
 
