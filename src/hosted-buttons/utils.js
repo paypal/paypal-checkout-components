@@ -157,7 +157,7 @@ export const getButtonPreferences = ({
   };
 };
 
-export function getButtonExperiments(): EligibilityExperiment {
+function getButtonExperiments(): EligibilityExperiment {
   return {
     ...getFirstRenderExperiments(),
   };
