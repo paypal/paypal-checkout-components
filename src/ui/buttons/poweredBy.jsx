@@ -51,13 +51,13 @@ function getPoweredByConfig(): {|
     logoColors: {
       [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: LOGO_COLOR.BLACK,
       [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: LOGO_COLOR.BLACK,
     },
 
     textColors: {
       [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: "#000000",
       [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: "#000000",
-      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: "#FFFFFF",
+      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: "#000000",
     },
   };
 }
@@ -73,17 +73,19 @@ export function PoweredByPayPal({
 
   // get appropriate logo and text color based on button color
   const rebrandLogoColor = config.logoColors[buttonColor] || LOGO_COLOR.BLACK;
-  const textColor = config.textColors[buttonColor] || "#000000";
+
+  // TO-DO make text color white if the white button color is used on a dark background
+  // const textColor = config.textColors[buttonColor] || "#000000";
 
   const POWERED_BY_PAYPAL_REBRAND_STYLE = `
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
-        height: 14px;
+        height: 18px;
         font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 10px;
         font-weight: 400;
-        color: ${textColor};
+        color: #000000;
         font-stretch: normal;
         position: relative;
         margin-right: 2px;
@@ -94,8 +96,8 @@ export function PoweredByPayPal({
     .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
         display: inline-block;
         vertical-align: middle;
-        height: 16px;
-        line-height: 16px;
+        height: 18px;
+        line-height: 18px;
         font-size: 10px;
     }
   `;

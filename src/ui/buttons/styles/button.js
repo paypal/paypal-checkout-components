@@ -3,7 +3,9 @@
 import { ENV } from "@paypal/sdk-constants/src";
 import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS } from "../../../constants";
+import { CLASS, ATTRIBUTE } from "../../../constants";
+
+import { HIDDEN, VISIBLE } from "./labels";
 
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
@@ -148,6 +150,89 @@ export const buttonStyle = `
             border-top-right-radius: 4px;
             border-bottom-right-radius: 4px;
             width: 100%;
+        }
+    }
+`;
+
+export const buttonRebrandStyle = `
+
+    .${CLASS.BUTTON_REBRAND} {
+        border: 1px solid transparent;
+        border-radius: 0 3px 3px 0;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+        border: none;
+        vertical-align: top;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        height: 76%;
+        min-width: 0px;
+        position: relative;
+    }
+
+    .${LOGO_CLASS.LOGO} {
+        height: 100%;
+        padding: 0;
+        background: none;
+        border: none;
+        width: auto;        
+    }
+
+    .${CLASS.TEXT} {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        line-height: 1.1;
+        min-width: 0;
+    }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
+        max-width: 100%;
+    }
+    
+    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
+        height: 100%;
+    }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.TAGLINE} {
+        max-width: 100%;
+        font-size: initial;
+        font-weight: 400;
+        display: block;
+        text-align: center;
+        width: auto;
+    }
+
+    /* Hide/show credit/paylater logos based on button width */
+    @media only screen and (min-width: 0px) and (max-width: 150px) {
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
+            ${HIDDEN}
+        }
+
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND} {
+            ${VISIBLE}
+        }
+    }
+
+    @media only screen and (min-width: 150px) {
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND} {
+            ${VISIBLE}
+        }
+
+        [${ATTRIBUTE.FUNDING_SOURCE}="credit"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND},
+        [${ATTRIBUTE.FUNDING_SOURCE}="paylater"].${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND} {
+            ${HIDDEN}
         }
     }
 `;

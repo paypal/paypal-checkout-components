@@ -25,7 +25,6 @@ export const BUTTON_COLOR = {
   DARKBLUE: ("darkblue": "darkblue"),
   BLACK: ("black": "black"),
   WHITE: ("white": "white"),
-  TRANSPARENT: ("transparent": "transparent"),
   ...BUTTON_COLOR_REBRAND,
 };
 
@@ -42,6 +41,19 @@ export const BUTTON_SIZE = {
   LARGE: ("large": "large"),
   HUGE: ("huge": "huge"),
   RESPONSIVE: ("responsive": "responsive"),
+};
+
+export const BUTTON_REDESIGN_SIZE = {
+  EXTRA_SMALL: ("extraSmall": "extraSmall"),
+  TINY: ("tiny": "tiny"),
+  SMALL: ("small": "small"),
+  MEDIUM_SMALL: ("mediumSmall": "mediumSmall"),
+  MEDIUM_BIG: ("mediumBig": "mediumBig"),
+  LARGE_SMALL: ("largeSmall": "largeSmall"),
+  LARGE_BIG: ("largeBig": "largeBig"),
+  XL_SMALL: ("xlSmall": "xlSmall"),
+  XL_BIG: ("xlBig": "xlBig"),
+  XXL: ("xxl": "xxl"),
 };
 
 export const BUTTON_DISABLE_MAX_HEIGHT_SIZE = {

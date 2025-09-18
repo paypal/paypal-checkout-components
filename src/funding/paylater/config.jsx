@@ -8,15 +8,22 @@ import {
   PPLogoExternalImage,
   PPLogoInlineSVG,
   LOGO_COLOR,
+  PPRebrandLogoInlineSVG,
+  PPRebrandLogoExternalImage,
+  PaylaterMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
+import { Logo } from "../paypal/template";
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 import { Text } from "../../ui/text";
 
 import css from "./style.scoped.scss";
 
-function getLabelText(fundingEligibility: FundingEligibilityType): ?string {
+function getLabelText(
+  fundingEligibility: FundingEligibilityType,
+  shouldApplyRebrandedStyles?: boolean
+): ?string {
   const { paylater } = fundingEligibility;
 
   let labelText;
@@ -54,7 +61,7 @@ function getLabelText(fundingEligibility: FundingEligibilityType): ?string {
     paylater?.products?.payIn4?.eligible &&
     paylater?.products?.payIn4?.variant === "FR"
   ) {
-    labelText = "4X PayPal";
+    labelText = shouldApplyRebrandedStyles ? "4X" : "4X PayPal";
   }
 
   return labelText;
@@ -79,18 +86,54 @@ export function getPaylaterConfig(): FundingSourceConfig {
 
     Label: ({ logo }) => logo,
 
-    Logo: ({ logoColor, nonce, fundingEligibility }) => {
+    Logo: ({
+      logoColor,
+      logoColorPP,
+      nonce,
+      fundingEligibility,
+      env,
+      locale,
+      experiment,
+      shouldApplyRebrandedStyles,
+    }) => {
+      if (!shouldApplyRebrandedStyles) {
+        return (
+          <Style css={css} nonce={nonce}>
+            {__WEB__ ? (
+              <PPLogoExternalImage logoColor={logoColor} />
+            ) : (
+              <PPLogoInlineSVG logoColor={logoColor} />
+            )}
+            <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
+          </Style>
+        );
+      }
+
       return (
         <Style css={css} nonce={nonce}>
+          <Logo
+            logoColor={logoColor}
+            shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
+            env={env}
+            experiment={experiment}
+            fundingEligibility={fundingEligibility}
+            locale={locale}
+          />
           {__WEB__ ? (
-            <PPLogoExternalImage logoColor={logoColor} />
+            <PPRebrandLogoExternalImage logoColor={logoColorPP} />
           ) : (
-            <PPLogoInlineSVG logoColor={logoColor} />
+            <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
-          <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
+          <Text>
+            {getLabelText(fundingEligibility, shouldApplyRebrandedStyles) ||
+              "Pay Later"}
+          </Text>
         </Style>
       );
     },
+
+    Mark: () => <PaylaterMarkRebrandExternalImage />,
+    shouldUseMarkForRebrandOnly: true,
 
     colors: [
       BUTTON_COLOR.WHITE,
@@ -98,6 +141,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
       BUTTON_COLOR.GOLD,
       BUTTON_COLOR.BLUE,
       BUTTON_COLOR.SILVER,
+      BUTTON_COLOR.REBRAND_BLUE,
+      BUTTON_COLOR.REBRAND_WHITE,
+      BUTTON_COLOR.REBRAND_BLACK,
     ],
 
     secondaryColors: {
@@ -107,6 +153,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
       [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
     },
 
     logoColors: {
@@ -115,6 +164,15 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+    },
+
+    logoColorsPP: {
+      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
     },
 
     labelText: ({ fundingEligibility }) => {

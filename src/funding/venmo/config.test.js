@@ -8,6 +8,9 @@ import { BUTTON_FLOW } from "../../constants";
 import { getVenmoConfig } from "./config";
 
 describe("Venmo eligibility", () => {
+  window.navigator.mockUserAgent =
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
+
   const baseEligibilityProps = {
     fundingSource: undefined,
     components: ["buttons"],
@@ -102,55 +105,35 @@ describe("Venmo eligibility", () => {
   });
 
   describe("requires", () => {
-    test("should not check for native or popup eligibility if platform is mobile and isWebViewEnabled is true", () => {
-      const isVenmoEligible = venmoConfig.requires?.({
-        experiment: {
-          isWebViewEnabled: true,
-        },
+    test("should require native and popup support when platform is mobile", () => {
+      const venmoRequires = venmoConfig.requires?.({
         platform: PLATFORM.MOBILE,
       });
 
-      expect(isVenmoEligible).toEqual({
-        native: false,
-        popup: false,
-      });
-    });
-
-    test("should not check for native or popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is true", () => {
-      const isVenmoEligible = venmoConfig.requires?.({
-        experiment: {
-          venmoEnableWebOnNonNativeBrowser: true,
-        },
-        platform: PLATFORM.MOBILE,
-      });
-
-      expect(isVenmoEligible).toEqual({
-        native: false,
-        popup: false,
-      });
-    });
-
-    test("should check for native and popup eligibility if platform is mobile and venmoEnableWebOnNonNativeBrowser is false and isWebViewEnabled is false", () => {
-      const isVenmoEligible = venmoConfig.requires?.({
-        experiment: {
-          isWebViewEnabled: false,
-          venmoEnableWebOnNonNativeBrowser: false,
-        },
-        platform: PLATFORM.MOBILE,
-      });
-
-      expect(isVenmoEligible).toEqual({
+      expect(venmoRequires).toEqual({
         native: true,
         popup: true,
       });
     });
 
-    test("should not check for native and popup eligibility if platform is not mobile", () => {
-      const isVenmoEligible = venmoConfig.requires?.({
+    test("should not require native or popup support when platform is desktop", () => {
+      const venmoRequires = venmoConfig.requires?.({
         platform: PLATFORM.DESKTOP,
       });
 
-      expect(isVenmoEligible).toEqual({});
+      expect(venmoRequires).toEqual({
+        native: false,
+        popup: false,
+      });
+    });
+
+    test("should not require native or popup support when platform is not specified", () => {
+      const venmoRequires = venmoConfig.requires?.({});
+
+      expect(venmoRequires).toEqual({
+        native: false,
+        popup: false,
+      });
     });
   });
 });
