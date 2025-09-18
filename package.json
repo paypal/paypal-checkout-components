@@ -23,7 +23,6 @@
     "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
     "karma": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/karma start",
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
-    "lint:fix": "eslint --ext .js --ext .jsx src/ test/ *.js --fix",
     "postversion": "./scripts/postversion.sh",
     "preversion": "./scripts/preversion.sh",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && npm run flow-typed",
