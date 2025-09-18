@@ -48,18 +48,19 @@ export function getVenmoConfig(): FundingSourceConfig {
       return true;
     },
 
-    requires: ({ platform }) => {
+    requires: ({ experiment, platform }) => {
+      const isNonNativeSupported =
+        experiment?.venmoEnableWebOnNonNativeBrowser === true ||
+        (__WEB__ && window.popupBridge);
+
       if (platform === PLATFORM.MOBILE) {
         return {
-          native: true,
-          popup: true,
+          native: isNonNativeSupported ? false : true,
+          popup: isNonNativeSupported ? false : true,
         };
       }
 
-      return {
-        native: false,
-        popup: false,
-      };
+      return {};
     },
 
     Logo: ({ logoColor, optional, shouldApplyRebrandedStyles }) => {
