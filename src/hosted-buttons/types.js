@@ -77,6 +77,7 @@ export type HostedButtonStyles = {|
   label: string,
   height: ?number,
   tagline: boolean,
+  shouldApplyRebrandedStyles?: boolean,
 |};
 
 export type HostedButtonOptions = {|
