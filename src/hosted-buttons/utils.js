@@ -6,6 +6,7 @@ import {
   buildDPoPHeaders,
   getSDKHost,
   getClientID,
+  getFirstRenderExperiments,
   getLocale,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
@@ -14,6 +15,7 @@ import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
+import type { Experiment as EligibilityExperiment } from "../types";
 
 import type {
   ButtonVariables,
@@ -155,6 +157,12 @@ export const getButtonPreferences = ({
   };
 };
 
+export function getButtonExperiments(): EligibilityExperiment {
+  return {
+    ...getFirstRenderExperiments(),
+  };
+}
+
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
   variables?.find((variable) => variable.name === key)?.value ?? "";
 
@@ -185,6 +193,8 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
     getButtonVariable(variables, "tax_rate_preference") ===
     "tax_rate_from_profile";
 
+  const { isPaypalRebrandEnabled } = getButtonExperiments();
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
@@ -193,6 +203,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       label: getButtonVariable(variables, "button_text"),
       tagline: getButtonVariable(variables, "tagline") === "true",
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
+      shouldApplyRebrandedStyles: isPaypalRebrandEnabled,
     },
     enableDPoP: getButtonVariable(variables, "enable_dpop") === "true",
     shouldIncludeShippingCallbacks: shippingFromProfile || taxRateFromProfile,
@@ -445,7 +456,8 @@ export const getFlexDirection = ({
 
 export const getButtonColor = (
   color: Color,
-  fundingSource: FundingSources
+  fundingSource: FundingSources,
+  shouldApplyRebrandedStyles?: boolean
 ): Color => {
   const colorMap = {
     gold: {
@@ -455,7 +467,7 @@ export const getButtonColor = (
     },
     blue: {
       paypal: "blue",
-      venmo: "silver",
+      venmo: shouldApplyRebrandedStyles ? "blue" : "silver",
       paylater: "blue",
     },
     black: {
@@ -470,7 +482,7 @@ export const getButtonColor = (
     },
     silver: {
       paypal: "silver",
-      venmo: "blue",
+      venmo: shouldApplyRebrandedStyles ? "silver" : "blue",
       paylater: "silver",
     },
   };
@@ -525,7 +537,11 @@ export const getButtons = ({
     style: {
       ...style,
       // $FlowFixMe
-      color: getButtonColor(style.color, fundingSource),
+      color: getButtonColor(
+        style.color,
+        fundingSource,
+        style.shouldApplyRebrandedStyles
+      ),
     },
   });
 };
