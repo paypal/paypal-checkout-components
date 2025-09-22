@@ -85,11 +85,11 @@ describe("funding/util", () => {
       it("should return true when popupBridge is available", () => {
         window.popupBridge = {};
 
-        expect(supportsVenmoPopups({}, defaultUserAgent)).toBe(true);
+        expect(supportsVenmoPopups({}, true, defaultUserAgent)).toBe(true);
       });
 
       it("should return false when popupBridge is not available", () => {
-        expect(supportsVenmoPopups({}, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups({}, true, defaultUserAgent)).toBe(false);
       });
     });
 
@@ -98,62 +98,80 @@ describe("funding/util", () => {
         vi.mocked(supportsPopups).mockReturnValue(true);
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(true);
+        expect(supportsVenmoPopups(experiment, true, defaultUserAgent)).toBe(
+          true
+        );
       });
 
       it("should return false when experiment flag is enabled but user agent doesn't support popups due to isOperaMini", () => {
         vi.mocked(isOperaMini).mockReturnValue(true);
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
+          false
+        );
       });
 
       it("should return false when experiment flag is enabled but user agent doesn't support popups due to isFirefoxIOS", () => {
         vi.mocked(isFirefoxIOS).mockReturnValue(true);
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
+          false
+        );
       });
 
       it("should return false when experiment flag is enabled but user agent doesn't support popups due to isEdgeIOS", () => {
         vi.mocked(isEdgeIOS).mockReturnValue(true);
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
+          false
+        );
       });
 
       it("should return false when experiment flag is enabled but user agent doesn't support popups due to isQQBrowser", () => {
         vi.mocked(isQQBrowser).mockReturnValue(true);
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
+          false
+        );
       });
 
       it("should return false when experiment flag is enabled but user agent doesn't support popups due to isElectron", () => {
         vi.mocked(isElectron).mockReturnValue(true);
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
+          false
+        );
       });
 
       it("should fall back to supportsPopups when experiment flag is not enabled", () => {
         vi.mocked(supportsPopups).mockReturnValue(true);
         const experiment = {};
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(true);
+        expect(supportsVenmoPopups(experiment, true, defaultUserAgent)).toBe(
+          true
+        );
       });
 
       it("should fall back to supportsPopups when experiment flag is false", () => {
         vi.mocked(supportsPopups).mockReturnValue(false);
         const experiment = { venmoEnableWebOnNonNativeBrowser: false };
 
-        expect(supportsVenmoPopups(experiment, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
+          false
+        );
       });
 
       it("should handle undefined experiment", () => {
         vi.mocked(supportsPopups).mockReturnValue(true);
 
-        expect(supportsVenmoPopups(undefined, defaultUserAgent)).toBe(true);
+        expect(supportsVenmoPopups(undefined, true, defaultUserAgent)).toBe(
+          true
+        );
       });
     });
   });
