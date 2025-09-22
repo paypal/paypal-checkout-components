@@ -484,16 +484,10 @@ const generateDisableMaxHeightStyles = ({
 const generateRebrandedDisableMaxHeightStyles = (): string => {
   return Object.keys(BUTTON_REDESIGN_STYLE)
     .map((redesign_size) => {
-      const {
-        buttonHeight,
-        pillBorderRadius,
-        gap,
-        fontSize,
-        minHeight,
-        maxHeight,
-      } = getResponsiveRebrandedStyleVariables({
-        redesign_size,
-      });
+      const { gap, fontSize, minHeight, maxHeight } =
+        getResponsiveRebrandedStyleVariables({
+          redesign_size,
+        });
 
       return `
         @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
@@ -506,73 +500,6 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
             font-size: ${fontSize}px;
             position: relative;
           }
-
-          .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
-            line-height: 1.2;
-            margin: 0;
-          }
-
-          .${CLASS.BUTTON} .${CLASS.SPINNER} {
-            height: ${perc(buttonHeight, 50)}px;
-            width: ${perc(buttonHeight, 50)}px;
-          }
-
-          .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
-            margin: 0 4vw;
-            height: ${buttonHeight * 0.76}px;
-          }
-
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}]
-          .${CLASS.BUTTON_LABEL} {
-            height: ${perc(buttonHeight, 80) + 5}px;
-          }
-
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.APPLEPAY}]
-          .${CLASS.BUTTON_LABEL} .${CLASS.TEXT} {
-            line-height: ${perc(buttonHeight, 80) + 5}px;
-          }
-
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}]
-          .${CLASS.BUTTON_LABEL},
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}]
-          .${CLASS.BUTTON_LABEL} {
-            height: ${perc(buttonHeight, 50) + 5}px;
-          }
-
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}]
-          .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}]
-          .${CLASS.BUTTON_LABEL} .${CLASS.SPACE},
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}]
-          .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
-          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}]
-          .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
-            line-height: ${perc(buttonHeight, 50) + 5}px;
-          }
-
-          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
-            border-radius: ${pillBorderRadius}px;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL}
-          .menu-button {
-            border-top-right-radius: ${pillBorderRadius}px;
-            border-bottom-right-radius: ${pillBorderRadius}px;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU}
-          .${CLASS.BUTTON} {
-            width: calc(100% - ${buttonHeight + 2}px);
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-          }
-
-          .menu-button {
-            height: 100%;
-            width: auto;
-            aspect-ratio: 1;
-          }
-        }
       `;
     })
     .join("\n");
@@ -630,11 +557,7 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               margin: 0px 4vw;
               box-sizing: border-box;
-              ${
-                disableMaxHeight
-                  ? "height: 100%;"
-                  : `height: ${buttonHeight * 0.76}px`
-              };
+              height: ${buttonHeight * 0.76}px;
           }
 
           .${CLASS.BUTTON_REBRAND}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
@@ -889,6 +812,7 @@ const generateRebrandedButtonSizeStyles = ({
               width: ${buttonHeight}px;
           }
         }`;
+
       return widthBasedStyles + heightBasedStyles;
     })
     .join("\n");
@@ -933,9 +857,9 @@ export function buttonResponsiveStyle({
       })
     : "";
 
-  const disableMaxHeightRebrandedStyles = disableMaxHeight
-    ? generateRebrandedDisableMaxHeightStyles()
-    : "";
+  const disableMaxHeightRebrandedStyles =
+    disableMaxHeightStyles +
+    (disableMaxHeight ? generateRebrandedDisableMaxHeightStyles() : "");
 
   const baseStyles = `
     .${CLASS.BUTTON} {
@@ -943,7 +867,7 @@ export function buttonResponsiveStyle({
         text-align: center;
         height: 100%;
     }
-    
+
     // border radius
     .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
       ${
