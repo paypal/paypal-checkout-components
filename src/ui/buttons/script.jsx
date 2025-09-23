@@ -199,10 +199,59 @@ export function getComponentScript(): () => void {
       }
     }
 
+    function toggleLogos() {
+      const LOGO_CLASS = {
+        PAYPAL_LOGO: ".paypal-logo-paypal-rebrand",
+        PP_LOGO: ".paypal-logo-pp-rebrand",
+        PAYPAL_BUTTON: ".paypal-button-rebrand",
+        BUTTON_LABEL: ".paypal-button-label-container",
+      };
+
+      const paylaterButtons = getElements(LOGO_CLASS.PAYPAL_BUTTON);
+
+      for (const button of paylaterButtons) {
+        const paypalLogo = button.querySelector(LOGO_CLASS.PAYPAL_LOGO);
+        const ppLogo = button.querySelector(LOGO_CLASS.PP_LOGO);
+        const buttonLabel = button.querySelector(LOGO_CLASS.BUTTON_LABEL);
+
+        if (!buttonLabel || !paypalLogo || !ppLogo) {
+          continue;
+        }
+
+        const buttonWidth = buttonLabel.offsetWidth;
+        const gap = calculateGap(buttonLabel);
+
+        // temporarily hide PayPal logos
+        hideElement(paypalLogo);
+        hideElement(ppLogo);
+
+        const allElements = getAllChildren(buttonLabel);
+        const textElements = allElements.filter(
+          (el) => !el.classList.contains("paypal-logo-pp-rebrand")
+        );
+
+        const totalWidth = getElementsTotalWidth(textElements) + gap;
+
+        if (totalWidth > buttonWidth) {
+          hideElement(paypalLogo);
+          showElement(ppLogo);
+        } else {
+          showElement(paypalLogo);
+          hideElement(ppLogo);
+        }
+      }
+    }
+
     const setDomReady = once(
       debounce(() => {
-        window.addEventListener("resize", toggleOptionals);
-        setTimeout(toggleOptionals);
+        window.addEventListener("resize", () => {
+          toggleOptionals();
+          toggleLogos();
+        });
+        setTimeout(() => {
+          toggleOptionals();
+          toggleLogos();
+        });
         if (document.body) {
           document.body.classList.add(CLASS.DOM_READY);
         }
@@ -211,10 +260,12 @@ export function getComponentScript(): () => void {
 
     const load = () => {
       toggleOptionals();
+      toggleLogos();
       setDomReady();
     };
 
     toggleOptionals();
+    toggleLogos();
     document.addEventListener("DOMContentLoaded", load);
     window.addEventListener("load", load);
     window.addEventListener("resize", load);
