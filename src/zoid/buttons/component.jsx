@@ -1302,10 +1302,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       sdkSource: {
         type: "string",
-        value: () => {
-          const sdkSourceValue = getSDKIntegrationSource();
-          return sdkSourceValue;
-        },
+        value: () => getSDKIntegrationSource(),
         required: false,
         queryParam: true,
         bodyParam: true,
