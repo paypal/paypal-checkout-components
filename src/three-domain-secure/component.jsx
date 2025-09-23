@@ -159,7 +159,8 @@ export class ThreeDomainSecureComponent {
         payerActionUrl: this.authenticationURL,
         onSuccess: async (res) => {
           const { reference_id, liability_shift, success } = res;
-          this.logger.info("helios_response", res);
+          // $FlowFixMe incompatible type payload
+          this.logger.info("helios_response", JSON.stringify(res));
           let enrichedNonce;
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
