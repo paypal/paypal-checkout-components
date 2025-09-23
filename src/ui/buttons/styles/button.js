@@ -3,9 +3,7 @@
 import { ENV } from "@paypal/sdk-constants/src";
 import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS, ATTRIBUTE } from "../../../constants";
-
-import { HIDDEN } from "./labels";
+import { CLASS } from "../../../constants";
 
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
