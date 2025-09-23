@@ -30,6 +30,7 @@ import {
   getAPIStageHost,
   getPayPalDomain,
   getUserIDToken,
+  getSDKIntegrationSource,
   getClientMetadataID,
   getAmount,
   getEnableFunding,
@@ -1325,6 +1326,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
         queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
         bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
+      },
+
+      sdkSource: {
+        type: "string",
+        value: () => getSDKIntegrationSource(),
+        required: false,
+        queryParam: true,
+        bodyParam: true,
       },
 
       vault: {
