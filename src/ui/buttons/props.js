@@ -491,6 +491,7 @@ export type RenderButtonProps = {|
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
+  userAgent: string,
 |};
 
 export type PrerenderDetails = {|
@@ -633,6 +634,7 @@ export type ButtonProps = {|
   message?: ButtonMessage,
   messageMarkup?: string,
   hideSubmitButtonForCardForm?: boolean,
+  userAgent: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -683,6 +685,7 @@ export type ButtonPropsInputs = {
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
+  userAgent: string,
 };
 
 export const DEFAULT_STYLE = {
@@ -753,7 +756,14 @@ export function hasInvalidScriptOptionsForFullRedesign({
 }: {|
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
-  const validFundingSourcesForRedesign = [FUNDING.PAYPAL, FUNDING.CARD];
+  const validFundingSourcesForRedesign = [
+    undefined,
+    FUNDING.PAYPAL,
+    FUNDING.VENMO,
+    FUNDING.PAYLATER,
+    FUNDING.CREDIT,
+    FUNDING.CARD,
+  ];
 
   if (validFundingSourcesForRedesign.includes(fundingSource)) {
     return false;
@@ -844,7 +854,7 @@ export function getColorForFullRedesign({
 }: GetColorForFullRedesignArgs): ButtonColor {
   const rebrandColorMap = {
     [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
+    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_BLUE,
     [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
 
     // not mapped yet since the styles are not setup
@@ -876,7 +886,7 @@ export function getColorForFullRedesign({
       style,
     });
 
-    buttonColor = rebrandColorMap[defaultButtonColor];
+    buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
   }
 
   return {
@@ -902,7 +912,7 @@ export function getButtonColorExperience({
 
   if (isPaypalRebrandABTestEnabled) {
     // were only running AB Test on PayPal buttons
-    return rejectRedesign ? "legacy" : "abTest";
+    return fundingSource === FUNDING.PAYPAL ? "abTest" : "legacy";
   }
 
   return rejectRedesign ? "legacy" : "fullRebrand";
@@ -1256,6 +1266,7 @@ export function normalizeButtonProps(
     messageMarkup,
     renderedButtons,
     shopperSessionId,
+    userAgent,
   } = props;
 
   const { country, lang } = locale;
@@ -1309,6 +1320,7 @@ export function normalizeButtonProps(
         supportsPopups,
         supportedNativeBrowser,
         displayOnly,
+        userAgent,
       })
     ) {
       throw new Error(`Funding Source not eligible: ${fundingSource}`);
@@ -1360,5 +1372,6 @@ export function normalizeButtonProps(
     displayOnly,
     message,
     messageMarkup,
+    userAgent,
   };
 }

@@ -1,3 +1,45 @@
+## <small>5.0.387 (2025-09-23)</small>
+
+* feat(venmo): eligibility (#2563) ([c4e761f](https://github.com/paypal/paypal-checkout-components/commit/c4e761f)), closes [#2563](https://github.com/paypal/paypal-checkout-components/issues/2563)
+
+
+
+## <small>5.0.386 (2025-09-18)</small>
+
+* Revert "fix(venmo): popupBridge feature detection for webview eligibility (#2…" (#2561) ([e57107b](https://github.com/paypal/paypal-checkout-components/commit/e57107b)), closes [#2](https://github.com/paypal/paypal-checkout-components/issues/2) [#2561](https://github.com/paypal/paypal-checkout-components/issues/2561)
+
+
+
+## <small>5.0.385 (2025-09-16)</small>
+
+* fix(venmo): popupBridge feature detection for webview eligibility (#2545) ([9d6c45b](https://github.com/paypal/paypal-checkout-components/commit/9d6c45b)), closes [#2545](https://github.com/paypal/paypal-checkout-components/issues/2545)
+
+
+
+## <small>5.0.384 (2025-09-16)</small>
+
+* Rebranded marks (#2555) ([46245aa](https://github.com/paypal/paypal-checkout-components/commit/46245aa)), closes [#2555](https://github.com/paypal/paypal-checkout-components/issues/2555)
+
+
+
+## <small>5.0.383 (2025-09-15)</small>
+
+* update ites btn label (#2535) ([979eaec](https://github.com/paypal/paypal-checkout-components/commit/979eaec)), closes [#2535](https://github.com/paypal/paypal-checkout-components/issues/2535)
+
+
+
+## <small>5.0.382 (2025-09-11)</small>
+
+* Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)
+
+
+
+## <small>5.0.381 (2025-09-11)</small>
+
+* update poweredby logo to be black for white button stack (#2554) ([0b0f86e](https://github.com/paypal/paypal-checkout-components/commit/0b0f86e)), closes [#2554](https://github.com/paypal/paypal-checkout-components/issues/2554)
+
+
+
 ## <small>5.0.380 (2025-08-26)</small>
 
 * feat(venmo): webview eligibility detection (#2532) ([9822f7e](https://github.com/paypal/paypal-checkout-components/commit/9822f7e)), closes [#2532](https://github.com/paypal/paypal-checkout-components/issues/2532) [#2517](https://github.com/paypal/paypal-checkout-components/issues/2517)

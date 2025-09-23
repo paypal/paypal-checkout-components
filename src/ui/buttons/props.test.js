@@ -129,14 +129,14 @@ describe("determineRandomButtonColor", () => {
 });
 
 describe("hasInvalidScriptOptionsForFullRedesign", () => {
-  const validFundingSources = [FUNDING.PAYPAL, FUNDING.CARD];
-  const invalidFundingSources = [
-    FUNDING.VENMO,
+  const validFundingSources = [
+    FUNDING.PAYPAL,
     FUNDING.PAYLATER,
     FUNDING.CREDIT,
-    FUNDING.APPLEPAY,
-    FUNDING.IDEAL,
+    FUNDING.CARD,
+    FUNDING.VENMO,
   ];
+  const invalidFundingSources = [FUNDING.APPLEPAY, FUNDING.IDEAL];
 
   // Test valid funding sources
   validFundingSources.forEach((fundingSource) => {
@@ -158,12 +158,6 @@ describe("hasInvalidScriptOptionsForFullRedesign", () => {
 
       expect(result).toBe(true);
     });
-  });
-
-  it("should return true when no funding source is provided", () => {
-    const result = hasInvalidScriptOptionsForFullRedesign({});
-
-    expect(result).toBe(true);
   });
 
   it("should return true when funding source is null", () => {
@@ -501,7 +495,7 @@ describe("getColorForFullRedesign", () => {
     });
   });
 
-  it("should map DARKBLUE to REBRAND_DARKBLUE", () => {
+  it("should map DARKBLUE to REBRAND_BLUE", () => {
     const result = getColorForFullRedesign({
       // $FlowFixMe
       style: { color: BUTTON_COLOR.DARKBLUE },
@@ -509,7 +503,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_DARKBLUE,
+      color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
     });
@@ -681,7 +675,7 @@ describe("getButtonColorExperience", () => {
     expect(result).toBe("fullRebrand");
   });
 
-  it("should return legacy for smart stack (fundingSource is undefined)", () => {
+  it("should return fullRebrand for smart stack (fundingSource is undefined)", () => {
     const result = getButtonColorExperience({
       experiment: {
         isPaypalRebrandEnabled: true,
@@ -692,7 +686,7 @@ describe("getButtonColorExperience", () => {
       style: { color: BUTTON_COLOR.GOLD },
     });
 
-    expect(result).toBe("legacy");
+    expect(result).toBe("fullRebrand");
   });
 });
 

@@ -6,7 +6,7 @@ import { FPTI_KEY } from "@paypal/sdk-constants/src";
 
 import { ValidationError } from "../lib";
 
-import { ThreeDomainSecureComponent } from "./component";
+import { ThreeDomainSecureComponent, parseMerchantPayload } from "./component";
 
 const defaultSdkConfig = {
   authenticationToken: "sdk-client-token",
@@ -235,5 +235,108 @@ describe("three domain secure component - initialization", () => {
     expect(logger.track).toHaveBeenCalledWith({
       [FPTI_KEY.TRANSITION]: "three_DS_auth_v2",
     });
+  });
+});
+
+describe(" three domain secure component - parseMerchantPayload", () => {
+  const baseMerchantPayload = {
+    amount: "100.00",
+    currency: "USD",
+    nonce: "test-nonce-123",
+  };
+
+  it("should default to SCA_WHEN_REQUIRED when no 3DS parameters provided", () => {
+    const result = parseMerchantPayload({
+      merchantPayload: baseMerchantPayload,
+    });
+
+    expect(result).toEqual({
+      intent: "THREE_DS_VERIFICATION",
+      payment_source: {
+        card: {
+          single_use_token: "test-nonce-123",
+          verification_method: "SCA_WHEN_REQUIRED",
+        },
+      },
+      amount: {
+        currency_code: "USD",
+        value: "100.00",
+      },
+    });
+  });
+
+  it("should use threeDSTriggerMode when provided", () => {
+    const payload = {
+      ...baseMerchantPayload,
+      threeDSTriggerMode: "SCA_ALWAYS",
+    };
+
+    const result = parseMerchantPayload({ merchantPayload: payload });
+
+    expect(result.payment_source.card.verification_method).toBe("SCA_ALWAYS");
+  });
+
+  it("should prioritize threeDSTriggerMode over threeDSRequested", () => {
+    const payload = {
+      ...baseMerchantPayload,
+      threeDSRequested: false,
+      threeDSTriggerMode: "SCA_ALWAYS",
+    };
+
+    const result = parseMerchantPayload({ merchantPayload: payload });
+
+    expect(result.payment_source.card.verification_method).toBe("SCA_ALWAYS");
+  });
+
+  it("should use threeDSRequested when threeDSTriggerMode not provided", () => {
+    const payloadWithTrue = {
+      ...baseMerchantPayload,
+      threeDSRequested: true,
+    };
+
+    const payloadWithFalse = {
+      ...baseMerchantPayload,
+      threeDSRequested: false,
+    };
+
+    const resultTrue = parseMerchantPayload({
+      merchantPayload: payloadWithTrue,
+    });
+    const resultFalse = parseMerchantPayload({
+      merchantPayload: payloadWithFalse,
+    });
+
+    expect(resultTrue.payment_source.card.verification_method).toBe(
+      "SCA_ALWAYS"
+    );
+    expect(resultFalse.payment_source.card.verification_method).toBe(
+      "SCA_WHEN_REQUIRED"
+    );
+  });
+
+  it("should include transactionContext when provided", () => {
+    const payload = {
+      ...baseMerchantPayload,
+      transactionContext: {
+        soft_descriptor: "PAYPAL *TEST",
+      },
+    };
+
+    const result = parseMerchantPayload({ merchantPayload: payload });
+
+    expect(result.soft_descriptor).toBe("PAYPAL *TEST");
+  });
+
+  it("should handle SCA_WHEN_REQUIRED in threeDSTriggerMode", () => {
+    const payload = {
+      ...baseMerchantPayload,
+      threeDSTriggerMode: "SCA_WHEN_REQUIRED",
+    };
+
+    const result = parseMerchantPayload({ merchantPayload: payload });
+
+    expect(result.payment_source.card.verification_method).toBe(
+      "SCA_WHEN_REQUIRED"
+    );
   });
 });

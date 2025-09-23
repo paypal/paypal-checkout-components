@@ -34,7 +34,7 @@ const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   return sdkConfig;
 };
 
-const parseMerchantPayload = ({
+export const parseMerchantPayload = ({
   merchantPayload,
 }: {|
   merchantPayload: MerchantPayloadData,
