@@ -3,7 +3,9 @@
 import { ENV } from "@paypal/sdk-constants/src";
 import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS } from "../../../constants";
+import { CLASS, ATTRIBUTE } from "../../../constants";
+
+import { HIDDEN } from "./labels";
 
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
@@ -189,7 +191,6 @@ export const buttonRebrandStyle = `
         display: flex;
         align-items: center;
         line-height: 1.1;
-        flex-shrink: 1;
         min-width: 0;
     }
 

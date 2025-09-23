@@ -6,6 +6,8 @@ import { CARD, COUNTRY, COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
 import {
   GlyphCardExternalImage,
   GlyphCardInlineSVG,
+  GlyphCardRebrandExternalImage,
+  GlyphCardRebrandInlineSVG,
 } from "@paypal/sdk-logos/src";
 
 import {
@@ -129,15 +131,23 @@ export function getCardConfig(): FundingSourceConfig {
 
     vendors,
 
-    colors: [BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
+    colors: [
+      BUTTON_COLOR.BLACK,
+      BUTTON_COLOR.WHITE,
+      BUTTON_COLOR.REBRAND_WHITE,
+      BUTTON_COLOR.REBRAND_BLACK,
+    ],
 
     secondaryColors: {
       ...DEFAULT_FUNDING_CONFIG.secondaryColors,
       [DEFAULT]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLACK,
     },
 
     logoColors: {
       [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.WHITE,
       [DEFAULT]: BUTTON_COLOR.WHITE,
     },
 
@@ -148,11 +158,19 @@ export function getCardConfig(): FundingSourceConfig {
       return FUNDING.CARD;
     },
 
-    Logo: ({ logoColor }) => {
+    Logo: ({ logoColor, shouldApplyRebrandedStyles }) => {
+      if (!shouldApplyRebrandedStyles) {
+        return __WEB__ ? (
+          <GlyphCardExternalImage logoColor={logoColor} />
+        ) : (
+          <GlyphCardInlineSVG logoColor={logoColor} />
+        );
+      }
+
       return __WEB__ ? (
-        <GlyphCardExternalImage logoColor={logoColor} />
+        <GlyphCardRebrandExternalImage logoColor={logoColor} />
       ) : (
-        <GlyphCardInlineSVG logoColor={logoColor} />
+        <GlyphCardRebrandInlineSVG logoColor={logoColor} />
       );
     },
 

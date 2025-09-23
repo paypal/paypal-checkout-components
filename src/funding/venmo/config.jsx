@@ -4,6 +4,8 @@
 import {
   VenmoLogoExternalImage,
   VenmoLogoInlineSVG,
+  VenmoRebrandLogoExternalImage,
+  VenmoRebrandLogoInlineSVG,
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
@@ -46,27 +48,30 @@ export function getVenmoConfig(): FundingSourceConfig {
       return true;
     },
 
-    requires: ({ experiment, platform }) => {
-      const isNonNativeSupported =
-        experiment?.venmoEnableWebOnNonNativeBrowser === true ||
-        (__WEB__ && window.popupBridge);
-
+    requires: ({ platform }) => {
       if (platform === PLATFORM.MOBILE) {
         return {
-          native: isNonNativeSupported ? false : true,
-          popup: isNonNativeSupported ? false : true,
+          native: true,
+          popup: true,
         };
       }
 
-      return {};
+      return {
+        native: false,
+        popup: false,
+      };
     },
 
-    Logo: ({ logoColor, optional }) => {
-      if (__WEB__) {
-        return VenmoLogoExternalImage({ logoColor, optional });
+    Logo: ({ logoColor, optional, shouldApplyRebrandedStyles }) => {
+      if (!shouldApplyRebrandedStyles) {
+        return __WEB__
+          ? VenmoLogoExternalImage({ logoColor, optional })
+          : VenmoLogoInlineSVG({ logoColor, optional });
       }
 
-      return VenmoLogoInlineSVG({ logoColor, optional });
+      return __WEB__
+        ? VenmoRebrandLogoExternalImage({ logoColor, optional })
+        : VenmoRebrandLogoInlineSVG({ logoColor, optional });
     },
 
     Label: ({ ...props }) => {
@@ -82,6 +87,9 @@ export function getVenmoConfig(): FundingSourceConfig {
       BUTTON_COLOR.SILVER,
       BUTTON_COLOR.BLACK,
       BUTTON_COLOR.WHITE,
+      BUTTON_COLOR.REBRAND_BLACK,
+      BUTTON_COLOR.REBRAND_BLUE,
+      BUTTON_COLOR.REBRAND_WHITE,
     ],
 
     logoColors: {
@@ -89,6 +97,13 @@ export function getVenmoConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: LOGO_COLOR.BLUE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLUE,
+      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.WHITE,
+    },
+    textColors: {
+      ...DEFAULT_FUNDING_CONFIG.textColors,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.WHITE,
     },
 
     secondaryColors: {
@@ -97,6 +112,7 @@ export function getVenmoConfig(): FundingSourceConfig {
       [BUTTON_COLOR.GOLD]: BUTTON_COLOR.BLUE,
       [BUTTON_COLOR.BLUE]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.BLUE,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
     },
   };
 }
