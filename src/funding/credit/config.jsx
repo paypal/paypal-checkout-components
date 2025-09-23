@@ -22,8 +22,12 @@ import {
   DEFAULT,
   BUTTON_FLOW,
 } from "../../constants";
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
-import { WalletLabel, Logo } from "../paypal/template";
+import {
+  DEFAULT_FUNDING_CONFIG,
+  type FundingSourceConfig,
+  BasicLabel,
+} from "../common";
+import { WalletLabel, Logo as PayPalRebrandLogo } from "../paypal/template";
 import { Text } from "../../ui/text";
 
 import css from "./style.scoped.scss";
@@ -39,6 +43,14 @@ export function getCreditConfig(): FundingSourceConfig {
     ],
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
+
+    Label: ({ logo, experiment, ...props }) => {
+      // For rebrand, only show logo without labels
+      if (experiment?.isPaypalRebrandEnabled) {
+        return logo;
+      }
+      return BasicLabel({ logo, ...props });
+    },
 
     Logo: ({
       locale,
@@ -74,9 +86,31 @@ export function getCreditConfig(): FundingSourceConfig {
         );
       }
 
+      // Rebranded credit for DE locale uses "Später Bezahlen" text
+      if (locale.country === COUNTRY.DE) {
+        return (
+          <Style css={css} nonce={nonce}>
+            <PayPalRebrandLogo
+              logoColor={logoColor}
+              shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
+              env={env}
+              experiment={experiment}
+              fundingEligibility={fundingEligibility}
+              locale={locale}
+            />
+            {__WEB__ ? (
+              <PPRebrandLogoExternalImage logoColor={logoColorPP} />
+            ) : (
+              <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
+            )}
+            <Text>{"Später Bezahlen"}</Text>
+          </Style>
+        );
+      }
+
       return (
         <Style css={css} nonce={nonce}>
-          <Logo
+          <PayPalRebrandLogo
             logoColor={logoColor}
             shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
             locale={locale}

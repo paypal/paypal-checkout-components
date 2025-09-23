@@ -1,3 +1,9 @@
+## <small>5.0.387 (2025-09-23)</small>
+
+* feat(venmo): eligibility (#2563) ([c4e761f](https://github.com/paypal/paypal-checkout-components/commit/c4e761f)), closes [#2563](https://github.com/paypal/paypal-checkout-components/issues/2563)
+
+
+
 ## <small>5.0.386 (2025-09-18)</small>
 
 * Revert "fix(venmo): popupBridge feature detection for webview eligibility (#2…" (#2561) ([e57107b](https://github.com/paypal/paypal-checkout-components/commit/e57107b)), closes [#2](https://github.com/paypal/paypal-checkout-components/issues/2) [#2561](https://github.com/paypal/paypal-checkout-components/issues/2561)
