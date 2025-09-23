@@ -481,6 +481,29 @@ const generateDisableMaxHeightStyles = ({
     .join("\n");
 };
 
+const generateRebrandedDisableMaxHeightStyles = (): string => {
+  return Object.keys(BUTTON_REDESIGN_STYLE)
+    .map((redesign_size) => {
+      const { gap, fontSize, minHeight, maxHeight } =
+        getResponsiveRebrandedStyleVariables({
+          redesign_size,
+        });
+
+      return `
+        @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+          .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+            gap: ${gap}px;
+          }
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+            font-size: ${fontSize}px;
+            position: relative;
+          }
+      `;
+    })
+    .join("\n");
+};
+
 const generateRebrandedButtonSizeStyles = ({
   height,
   disableMaxWidth,
@@ -520,7 +543,11 @@ const generateRebrandedButtonSizeStyles = ({
           }
 
           .${CLASS.BUTTON_ROW} {
-              ${disableMaxHeight ? "" : `height: ${height || defaultHeight}px;`}
+              ${
+                disableMaxHeight
+                  ? "height: 100%;"
+                  : `height: ${height || defaultHeight}px;`
+              }
               vertical-align: top;
               ${disableMaxHeight ? "" : `max-height: ${height || maxHeight}px;`}
           }
@@ -568,30 +595,6 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.NUMBER
       }-${BUTTON_NUMBER.MULTIPLE}:last-child {
               margin-bottom: 0;
-          }
-        }`;
-
-      const disableMaxHeightStyles = `
-        @media only screen and (min-width: ${minWidth}px) {
-          .${CLASS.CONTAINER} {
-              min-width: ${minWidth}px;
-              ${disableMaxWidth ? "" : `max-width: ${maxWidth}px;`};
-              ${disableMaxHeight ? "height: 100%;" : ""};
-          }
-        }
-        
-        @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
-          .${CLASS.BUTTON_ROW} {
-              height: ${height || minHeight}px;
-              vertical-align: top;
-              min-height: ${height || minHeight}px;
-              max-height: ${height || maxHeight}px;
-          }
-
-          .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
-              margin: 0px 4vw;
-              box-sizing: border-box;
-              height: ${buttonHeight * 0.76}px;
           }
         }`;
 
@@ -734,9 +737,8 @@ const generateRebrandedButtonSizeStyles = ({
               width: ${buttonHeight}px;
           }
         }`;
-      return disableMaxHeight
-        ? disableMaxHeightStyles + heightBasedStyles
-        : widthBasedStyles + heightBasedStyles;
+
+      return widthBasedStyles + heightBasedStyles;
     })
     .join("\n");
 };
@@ -779,6 +781,10 @@ export function buttonResponsiveStyle({
         shouldApplyRebrandedStyles,
       })
     : "";
+
+  const disableMaxHeightRebrandedStyles =
+    disableMaxHeightStyles +
+    (disableMaxHeight ? generateRebrandedDisableMaxHeightStyles() : "");
 
   const baseStyles = `
     .${CLASS.BUTTON} {
@@ -827,7 +833,7 @@ export function buttonResponsiveStyle({
     }`;
 
   const rebrandedStyles = shouldApplyRebrandedStyles
-    ? buttonRedesignSizeStyles
+    ? buttonRedesignSizeStyles + disableMaxHeightRebrandedStyles
     : buttonSizeStyles + disableMaxHeightStyles;
 
   return baseStyles + rebrandedStyles;
