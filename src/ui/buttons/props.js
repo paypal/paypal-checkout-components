@@ -757,6 +757,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
   const validFundingSourcesForRedesign = [
+    undefined,
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.PAYLATER,
@@ -885,7 +886,7 @@ export function getColorForFullRedesign({
       style,
     });
 
-    buttonColor = rebrandColorMap[defaultButtonColor];
+    buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
   }
 
   return {

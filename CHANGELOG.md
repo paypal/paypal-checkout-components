@@ -1,3 +1,27 @@
+## <small>5.0.386 (2025-09-18)</small>
+
+* Revert "fix(venmo): popupBridge feature detection for webview eligibility (#2…" (#2561) ([e57107b](https://github.com/paypal/paypal-checkout-components/commit/e57107b)), closes [#2](https://github.com/paypal/paypal-checkout-components/issues/2) [#2561](https://github.com/paypal/paypal-checkout-components/issues/2561)
+
+
+
+## <small>5.0.385 (2025-09-16)</small>
+
+* fix(venmo): popupBridge feature detection for webview eligibility (#2545) ([9d6c45b](https://github.com/paypal/paypal-checkout-components/commit/9d6c45b)), closes [#2545](https://github.com/paypal/paypal-checkout-components/issues/2545)
+
+
+
+## <small>5.0.384 (2025-09-16)</small>
+
+* Rebranded marks (#2555) ([46245aa](https://github.com/paypal/paypal-checkout-components/commit/46245aa)), closes [#2555](https://github.com/paypal/paypal-checkout-components/issues/2555)
+
+
+
+## <small>5.0.383 (2025-09-15)</small>
+
+* update ites btn label (#2535) ([979eaec](https://github.com/paypal/paypal-checkout-components/commit/979eaec)), closes [#2535](https://github.com/paypal/paypal-checkout-components/issues/2535)
+
+
+
 ## <small>5.0.382 (2025-09-11)</small>
 
 * Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)

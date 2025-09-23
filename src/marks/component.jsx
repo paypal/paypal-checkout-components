@@ -33,10 +33,11 @@ import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
   isSupportedNativeBrowser,
-  getVenmoEligibility,
+  getButtonExperiments,
 } from "../zoid/buttons/util";
 
 import { MarksElement } from "./template";
+import { MarksElementRebrand } from "./templateRebrand";
 
 const DEFAULT_HEIGHT = 20;
 
@@ -78,7 +79,8 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       : false;
     const supportsPopups = userAgentSupportsPopups();
     const supportedNativeBrowser = isSupportedNativeBrowser();
-    const experiment = getVenmoEligibility();
+    const experiment = getButtonExperiments();
+
     const hasShippingCallback = Boolean(
       onShippingChange || onShippingAddressChange || onShippingOptionsChange
     );
@@ -135,16 +137,28 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
           throw new Error(`${fundingSource || "marks"} not eligible`);
         }
 
+        const isRebrandEnabled = experiment?.isPaypalRebrandEnabled;
+
         getElement(container).appendChild(
           (
             <div>
-              <MarksElement
-                fundingEligibility={fundingEligibility}
-                fundingSources={fundingSources}
-                height={height}
-                experiment={experiment}
-                env={env}
-              />
+              {isRebrandEnabled ? (
+                <MarksElementRebrand
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              ) : (
+                <MarksElement
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              )}
             </div>
           ).render(dom({ doc: document }))
         );

@@ -13,6 +13,7 @@ import {
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
   PPRebrandLogoExternalImage,
+  CreditMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
 import {
@@ -92,6 +93,9 @@ export function getCreditConfig(): FundingSourceConfig {
         </Style>
       );
     },
+
+    Mark: () => <CreditMarkRebrandExternalImage />,
+    shouldUseMarkForRebrandOnly: true,
 
     WalletLabel,
 
