@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.382",
+  "version": "5.0.388",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "jest-ssr": "jest test/ssr --env=node --no-cache --collectCoverage --collectCoverageFrom='src/' --coverageDirectory='coverage/jest'",
     "karma": "cross-env NODE_ENV=test babel-node ./node_modules/.bin/karma start",
     "lint": "eslint --ext .js --ext .jsx src/ test/ *.js",
+    "lint:fix": "eslint --ext .js --ext .jsx src/ test/ *.js --fix",
     "postversion": "./scripts/postversion.sh",
     "preversion": "./scripts/preversion.sh",
     "reinstall": "rimraf flow-typed && rimraf node_modules && npm install && npm run flow-typed",
@@ -122,7 +123,7 @@
     "@paypal/funding-components": "^1.0.31",
     "@paypal/sdk-client": "^4.0.199",
     "@paypal/sdk-constants": "^1.0.156",
-    "@paypal/sdk-logos": "^2.3.1"
+    "@paypal/sdk-logos": "^2.3.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

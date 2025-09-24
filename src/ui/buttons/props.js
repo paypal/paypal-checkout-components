@@ -491,6 +491,7 @@ export type RenderButtonProps = {|
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
+  userAgent: string,
 |};
 
 export type PrerenderDetails = {|
@@ -633,6 +634,7 @@ export type ButtonProps = {|
   message?: ButtonMessage,
   messageMarkup?: string,
   hideSubmitButtonForCardForm?: boolean,
+  userAgent: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -683,6 +685,7 @@ export type ButtonPropsInputs = {
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
+  userAgent: string,
 };
 
 export const DEFAULT_STYLE = {
@@ -754,6 +757,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
   const validFundingSourcesForRedesign = [
+    undefined,
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.PAYLATER,
@@ -882,7 +886,7 @@ export function getColorForFullRedesign({
       style,
     });
 
-    buttonColor = rebrandColorMap[defaultButtonColor];
+    buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
   }
 
   return {
@@ -1262,6 +1266,7 @@ export function normalizeButtonProps(
     messageMarkup,
     renderedButtons,
     shopperSessionId,
+    userAgent,
   } = props;
 
   const { country, lang } = locale;
@@ -1315,6 +1320,7 @@ export function normalizeButtonProps(
         supportsPopups,
         supportedNativeBrowser,
         displayOnly,
+        userAgent,
       })
     ) {
       throw new Error(`Funding Source not eligible: ${fundingSource}`);
@@ -1366,5 +1372,6 @@ export function normalizeButtonProps(
     displayOnly,
     message,
     messageMarkup,
+    userAgent,
   };
 }

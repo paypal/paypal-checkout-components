@@ -10,9 +10,10 @@ import {
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
   PPRebrandLogoExternalImage,
+  PaylaterMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
-import { Logo } from "../paypal/template";
+import { Logo as PayPalRebrandLogo } from "../paypal/template";
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 import { Text } from "../../ui/text";
@@ -35,17 +36,21 @@ function getLabelText(
   }
 
   if (
-    paylater?.products?.payIn3?.eligible &&
-    paylater?.products?.payIn3?.variant === "ES"
+    (paylater?.products?.payIn3?.eligible &&
+      paylater?.products?.payIn3?.variant === "ES") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "ES")
   ) {
-    labelText = "Paga en 3 plazos";
+    labelText = "Paga a plazos";
   }
 
   if (
-    paylater?.products?.payIn3?.eligible &&
-    paylater?.products?.payIn3?.variant === "IT"
+    (paylater?.products?.payIn3?.eligible &&
+      paylater?.products?.payIn3?.variant === "IT") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "IT")
   ) {
-    labelText = "Paga in 3 rate";
+    labelText = "Paga a rate";
   }
 
   if (paylater?.products?.payIn4?.eligible) {
@@ -106,7 +111,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
 
       return (
         <Style css={css} nonce={nonce}>
-          <Logo
+          <PayPalRebrandLogo
             logoColor={logoColor}
             shouldApplyRebrandedStyles={shouldApplyRebrandedStyles}
             env={env}
@@ -126,6 +131,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
         </Style>
       );
     },
+
+    Mark: () => <PaylaterMarkRebrandExternalImage />,
+    shouldUseMarkForRebrandOnly: true,
 
     colors: [
       BUTTON_COLOR.WHITE,

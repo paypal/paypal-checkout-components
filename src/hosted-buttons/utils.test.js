@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-globals, promise/no-native, max-lines */
 import { test, expect, vi } from "vitest";
 import { request } from "@krakenjs/belter/src";
-import { getLogger } from "@paypal/sdk-client/src";
+import { getFirstRenderExperiments, getLogger } from "@paypal/sdk-client/src";
 
 import { getButtonsComponent } from "../zoid/buttons";
 
@@ -37,6 +37,9 @@ vi.mock("@paypal/sdk-client/src", async () => {
     getClientID: () => "client_id_123",
     getMerchantID: () => ["merchant_id_123"],
     getLocale: () => ({ lang: "en", country: "US" }),
+    getFirstRenderExperiments: vi.fn(() => ({
+      isPaypalRebrandEnabled: false,
+    })),
     getLogger: vi.fn(() => ({
       error: vi.fn(),
       track: vi.fn().mockImplementation(() => ({
@@ -148,6 +151,7 @@ describe("getHostedButtonDetails", () => {
         color: "gold",
         label: "paypal",
         tagline: true,
+        shouldApplyRebrandedStyles: false,
       });
     });
     expect.assertions(1);
@@ -173,6 +177,42 @@ describe("getHostedButtonDetails", () => {
       expect(enableDPoP).toEqual(true);
     });
     expect.assertions(5);
+  });
+
+  describe("Returns appropriate rebrand styles flag", () => {
+    test("should handle when rebrand experiment returns false", async () => {
+      // $FlowIssue
+      request.mockImplementationOnce(() =>
+        // eslint-disable-next-line compat/compat
+        Promise.resolve(getHostedButtonDetailsResponse.v2)
+      );
+      await getHostedButtonDetails({
+        hostedButtonId,
+        fundingSources: [],
+      }).then(({ style }) => {
+        expect(style.shouldApplyRebrandedStyles).toBe(false);
+      });
+      expect.assertions(1);
+    });
+
+    test("should handle when rebrand experiment returns true", async () => {
+      vi.mocked(getFirstRenderExperiments).mockReturnValueOnce({
+        isPaypalRebrandEnabled: true,
+      });
+
+      // $FlowIssue
+      request.mockImplementationOnce(() =>
+        // eslint-disable-next-line compat/compat
+        Promise.resolve(getHostedButtonDetailsResponse.v2)
+      );
+      await getHostedButtonDetails({
+        hostedButtonId,
+        fundingSources: [],
+      }).then(({ style }) => {
+        expect(style.shouldApplyRebrandedStyles).toBe(true);
+      });
+      expect.assertions(1);
+    });
   });
 
   test("handles false tagline values", async () => {
@@ -777,10 +817,10 @@ test("getFlexDirection", () => {
   });
 });
 
-test("getButtonColor", () => {
+describe("getButtonColor", () => {
   const colors = ["gold", "blue", "silver", "white", "black"];
   const fundingSources = ["paypal", "venmo", "paylater"];
-  const colorMap = {
+  const colorMapLegacy = {
     gold: {
       paypal: "gold",
       venmo: "blue",
@@ -808,11 +848,51 @@ test("getButtonColor", () => {
     },
   };
 
-  colors.forEach((color) => {
-    fundingSources.forEach((fundingSource) => {
-      expect(getButtonColor(color, fundingSource)).toBe(
-        colorMap[color][fundingSource]
-      );
+  const colorMapRebrand = {
+    gold: {
+      paypal: "gold",
+      venmo: "blue",
+      paylater: "gold",
+    },
+    blue: {
+      paypal: "blue",
+      venmo: "blue",
+      paylater: "blue",
+    },
+    black: {
+      paypal: "black",
+      venmo: "black",
+      paylater: "black",
+    },
+    white: {
+      paypal: "white",
+      venmo: "white",
+      paylater: "white",
+    },
+    silver: {
+      paypal: "silver",
+      venmo: "silver",
+      paylater: "silver",
+    },
+  };
+
+  test("legacy button colors", () => {
+    colors.forEach((color) => {
+      fundingSources.forEach((fundingSource) => {
+        expect(getButtonColor(color, fundingSource)).toBe(
+          colorMapLegacy[color][fundingSource]
+        );
+      });
+    });
+  });
+
+  test("rebrand button colors", () => {
+    colors.forEach((color) => {
+      fundingSources.forEach((fundingSource) => {
+        expect(getButtonColor(color, fundingSource, true)).toBe(
+          colorMapRebrand[color][fundingSource]
+        );
+      });
     });
   });
 });
