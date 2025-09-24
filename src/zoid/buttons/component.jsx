@@ -30,6 +30,7 @@ import {
   getAPIStageHost,
   getPayPalDomain,
   getUserIDToken,
+  getSDKIntegrationSource,
   getClientMetadataID,
   getAmount,
   getEnableFunding,
@@ -61,6 +62,7 @@ import {
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
   noop,
+  getUserAgent,
 } from "@krakenjs/belter/src";
 import {
   FUNDING,
@@ -89,6 +91,10 @@ import {
   type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import {
+  supportsVenmoPopups,
+  isSupportedNativeVenmoBrowser,
+} from "../../funding/util";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
@@ -251,6 +257,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         createSubscription,
         createVaultSetupToken,
         displayOnly,
+        userAgent,
       } = props;
 
       const flow = determineFlow({
@@ -294,6 +301,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           supportedNativeBrowser,
           experiment,
           displayOnly,
+          userAgent,
         })
       ) {
         return {
@@ -714,6 +722,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             createSubscription,
             createVaultSetupToken,
             displayOnly,
+            userAgent = getUserAgent(),
           } = props;
 
           const flow = determineFlow({
@@ -744,6 +753,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               supportsPopups,
               supportedNativeBrowser,
               displayOnly,
+              userAgent,
             })
           ) {
             throw new Error(`${fundingSource} is not eligible`);
@@ -1266,13 +1276,32 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportedNativeBrowser: {
         type: "boolean",
-        value: isSupportedNativeBrowser,
+        value: ({ props }) => {
+          if (props.fundingSource === FUNDING.VENMO) {
+            return isSupportedNativeVenmoBrowser(
+              props.experiment,
+              props.userAgent
+            );
+          }
+
+          return isSupportedNativeBrowser();
+        },
         queryParam: true,
       },
 
       supportsPopups: {
         type: "boolean",
-        value: () => userAgentSupportsPopups(),
+        value: ({ props }) => {
+          if (props.fundingSource === FUNDING.VENMO) {
+            return supportsVenmoPopups(
+              props.experiment,
+              userAgentSupportsPopups(),
+              props.userAgent
+            );
+          }
+
+          return userAgentSupportsPopups();
+        },
         queryParam: true,
       },
 
@@ -1299,6 +1328,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
       },
 
+      sdkSource: {
+        type: "string",
+        value: () => getSDKIntegrationSource(),
+        required: false,
+        queryParam: true,
+        bodyParam: true,
+      },
+
       vault: {
         type: "boolean",
         queryParam: true,
@@ -1315,6 +1352,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         required: false,
         queryParam: true,
+      },
+
+      userAgent: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getUserAgent,
       },
     },
 
