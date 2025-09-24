@@ -34,21 +34,34 @@ const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   return sdkConfig;
 };
 
-const parseMerchantPayload = ({
+export const parseMerchantPayload = ({
   merchantPayload,
 }: {|
   merchantPayload: MerchantPayloadData,
 |}): requestData => {
-  const { threeDSRequested, amount, currency, nonce, transactionContext } =
-    merchantPayload;
+  const {
+    threeDSRequested,
+    threeDSTriggerMode,
+    amount,
+    currency,
+    nonce,
+    transactionContext,
+  } = merchantPayload;
+
+  let verificationMethod = "SCA_WHEN_REQUIRED";
+
+  if (threeDSRequested !== undefined) {
+    verificationMethod = threeDSRequested ? "SCA_ALWAYS" : "SCA_WHEN_REQUIRED";
+  } else if (threeDSTriggerMode) {
+    verificationMethod = threeDSTriggerMode;
+  }
+
   return {
     intent: "THREE_DS_VERIFICATION",
     payment_source: {
       card: {
         single_use_token: nonce,
-        verification_method: threeDSRequested
-          ? "SCA_ALWAYS"
-          : "SCA_WHEN_REQUIRED",
+        verification_method: verificationMethod,
       },
     },
     amount: {
@@ -128,7 +141,7 @@ export class ThreeDomainSecureComponent {
     // eslint-disable-next-line compat/compat
     return new Promise((resolve, reject) => {
       let authenticationState,
-        liabilityShift = "false";
+        liabilityShift = "NO";
       const cancelThreeDS = () => {
         return ZalgoPromise.try(() => {
           this.logger.warn("3DS Cancelled");
@@ -137,7 +150,6 @@ export class ThreeDomainSecureComponent {
           instance.close();
           resolve({
             authenticationState: "cancelled",
-            liabilityShift: "false",
             nonce: this.fastlaneNonce,
           });
         });
@@ -147,12 +159,14 @@ export class ThreeDomainSecureComponent {
         payerActionUrl: this.authenticationURL,
         onSuccess: async (res) => {
           const { reference_id, liability_shift, success } = res;
+          // $FlowFixMe incompatible type payload
+          this.logger.info("helios_response", JSON.stringify(res));
           let enrichedNonce;
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
-          // and false for downstream failures and errors
+          // and false for downstream failures and errors where liability_shift= NO.
           authenticationState = success ? "succeeded" : "errored";
-          liabilityShift = liability_shift ? liability_shift : "false";
+          liabilityShift = liability_shift;
 
           // call BT mutation to update fastlaneNonce with 3ds data
           // reference_id will be available for all usecases(success/failure)
