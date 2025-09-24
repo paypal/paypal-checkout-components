@@ -324,7 +324,20 @@ describe(" three domain secure component - parseMerchantPayload", () => {
 
     const result = parseMerchantPayload({ merchantPayload: payload });
 
-    expect(result.soft_descriptor).toBe("PAYPAL *TEST");
+    expect(result).toMatchObject({
+      intent: "THREE_DS_VERIFICATION",
+      payment_source: {
+        card: {
+          single_use_token: "test-nonce-123",
+          verification_method: "SCA_WHEN_REQUIRED",
+        },
+      },
+      amount: {
+        currency_code: "USD",
+        value: "100.00",
+      },
+      soft_descriptor: "PAYPAL *TEST",
+    });
   });
 
   it("should handle SCA_WHEN_REQUIRED in threeDSTriggerMode", () => {
