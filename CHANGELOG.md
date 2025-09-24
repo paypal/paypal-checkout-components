@@ -1,3 +1,9 @@
+## <small>5.0.388 (2025-09-24)</small>
+
+* Add sdkSource to button props (#2565) ([06b7094](https://github.com/paypal/paypal-checkout-components/commit/06b7094)), closes [#2565](https://github.com/paypal/paypal-checkout-components/issues/2565)
+
+
+
 ## <small>5.0.387 (2025-09-23)</small>
 
 * feat(venmo): eligibility (#2563) ([c4e761f](https://github.com/paypal/paypal-checkout-components/commit/c4e761f)), closes [#2563](https://github.com/paypal/paypal-checkout-components/issues/2563)
