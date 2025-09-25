@@ -287,6 +287,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       if (
         isFundingEligible(fundingSource, {
           layout,
+          createVaultSetupToken,
           platform,
           fundingSource,
           fundingEligibility,
@@ -740,6 +741,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             !isFundingEligible(fundingSource, {
               layout,
               platform,
+              createVaultSetupToken,
               fundingSource,
               fundingEligibility,
               enableFunding,

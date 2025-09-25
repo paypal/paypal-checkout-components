@@ -1,5 +1,6 @@
 /* @flow */
 
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import type {
   FundingEligibilityType,
   CardEligibility,
@@ -17,6 +18,7 @@ import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 
 import { getFundingConfig } from "./config";
 import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "./util";
+import { create } from "@krakenjs/zoid/src";
 
 type IsFundingEligibleOptions = {|
   layout?: $Values<typeof BUTTON_LAYOUT>,
@@ -37,6 +39,7 @@ type IsFundingEligibleOptions = {|
   experiment?: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   userAgent?: string,
+  createVaultSetupToken?: () => ZalgoPromise<string>,
 |};
 
 function isFundingVaultable({
@@ -73,6 +76,7 @@ export function isFundingEligible(
     platform,
     fundingSource,
     fundingEligibility,
+    createVaultSetupToken,
     enableFunding,
     components,
     onShippingChange,
@@ -89,6 +93,15 @@ export function isFundingEligible(
     userAgent,
   }: IsFundingEligibleOptions
 ): boolean {
+  // Temporary: Force credit to be eligible if the experiment is enabled
+  fundingEligibility[FUNDING.CREDIT] = {
+    branded: fundingEligibility[FUNDING.CREDIT]?.branded,
+    eligible:
+      experiment?.paypalCreditButtonCreateVaultSetupTokenExists ||
+      fundingEligibility[source]?.eligible,
+    vaultable: experiment?.paypalCreditButtonCreateVaultSetupTokenExists,
+  };
+
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
     return false;
   }
@@ -122,6 +135,7 @@ export function isFundingEligible(
     !fundingConfig.eligible?.({
       enableFunding,
       components,
+      createVaultSetupToken,
       experiment,
       flow,
       fundingSource,
@@ -199,6 +213,7 @@ export function isFundingEligible(
 export function determineEligibleFunding({
   fundingSource,
   layout,
+  createVaultSetupToken,
   platform,
   fundingEligibility,
   enableFunding,
@@ -235,6 +250,7 @@ export function determineEligibleFunding({
   experiment: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   userAgent?: string,
+  createVaultSetupToken?: () => ZalgoPromise<string>,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -242,6 +258,7 @@ export function determineEligibleFunding({
 
   let eligibleFunding = SUPPORTED_FUNDING_SOURCES.filter((source) =>
     isFundingEligible(source, {
+      createVaultSetupToken,
       layout,
       platform,
       fundingSource,
