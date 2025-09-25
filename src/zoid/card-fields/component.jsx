@@ -249,23 +249,21 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             value: ({ props }) => props.parent.props.createOrder,
           },
 
-          ...(isPayPalDomain() && {
-            createSubscription: {
-              type: "function",
-              required: false,
-              value: ({ props }) => {
-                if (
-                  props.parent.props.createSubscription &&
-                  !props.parent.props.sdkToken
-                ) {
-                  throw new ValidationError(
-                    `SDK Token must be passed in for createSubscription`
-                  );
-                }
-                return props.parent.props.createSubscription;
-              },
+          createSubscription: {
+            type: "function",
+            required: false,
+            value: ({ props }) => {
+              if (
+                props.parent.props.createSubscription &&
+                !props.parent.props.sdkToken
+              ) {
+                throw new ValidationError(
+                  `SDK Token must be passed in for createSubscription`
+                );
+              }
+              return props.parent.props.createSubscription;
             },
-          }),
+          },
 
           createVaultSetupToken: {
             type: "function",
@@ -601,20 +599,18 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           required: false,
         },
 
-        ...(isPayPalDomain() && {
-          createSubscription: {
-            type: "function",
-            required: false,
-            value: ({ props }) => {
-              if (props.createSubscription && !props.sdkToken) {
-                throw new ValidationError(
-                  `SDK Token must be passed in for createSubscription`
-                );
-              }
-              return props.createSubscription;
-            },
+        createSubscription: {
+          type: "function",
+          required: false,
+          value: ({ props }) => {
+            if (props.createSubscription && !props.sdkToken) {
+              throw new ValidationError(
+                `SDK Token must be passed in for createSubscription`
+              );
+            }
+            return props.createSubscription;
           },
-        }),
+        },
 
         createVaultSetupToken: {
           type: "function",
