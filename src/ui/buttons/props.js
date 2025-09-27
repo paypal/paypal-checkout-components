@@ -52,6 +52,7 @@ import type { StateGetSet } from "../../lib/session";
 
 import { BUTTON_SIZE_STYLE } from "./config";
 import { isBorderRadiusNumber, calculateMessagePosition } from "./util";
+import { create } from "@krakenjs/zoid/src";
 
 export type CreateOrderData = {||} | {||};
 
@@ -492,6 +493,7 @@ export type RenderButtonProps = {|
   message?: ButtonMessage,
   messageMarkup?: string,
   userAgent: string,
+  createVaultSetupToken?: () => ZalgoPromise<string>,
 |};
 
 export type PrerenderDetails = {|
@@ -686,6 +688,7 @@ export type ButtonPropsInputs = {
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
   userAgent: string,
+  createVaultSetupToken?: () => ZalgoPromise<string>,
 };
 
 export const DEFAULT_STYLE = {
@@ -1231,6 +1234,7 @@ export function normalizeButtonProps(
     buyerCountry,
     clientID,
     fundingSource,
+    createVaultSetupToken,
     style = getDefaultStyle(),
     remembered = [],
     locale = DEFAULT_PROPS.LOCALE,
@@ -1305,6 +1309,7 @@ export function normalizeButtonProps(
     if (
       !isFundingEligible(fundingSource, {
         platform,
+        createVaultSetupToken,
         fundingSource,
         fundingEligibility,
         enableFunding,
@@ -1338,6 +1343,7 @@ export function normalizeButtonProps(
     buyerCountry,
     clientID,
     fundingSource,
+    createVaultSetupToken,
     style,
     locale,
     remembered,
