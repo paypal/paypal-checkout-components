@@ -1,3 +1,9 @@
+## <small>5.0.389 (2025-09-29)</small>
+
+* [Feature]/DTXOCOEXP-1400 Add `verificationMethod` Parameter (#2546) ([b0d7e2c](https://github.com/paypal/paypal-checkout-components/commit/b0d7e2c)), closes [#2546](https://github.com/paypal/paypal-checkout-components/issues/2546)
+
+
+
 ## <small>5.0.388 (2025-09-24)</small>
 
 * Add sdkSource to button props (#2565) ([06b7094](https://github.com/paypal/paypal-checkout-components/commit/06b7094)), closes [#2565](https://github.com/paypal/paypal-checkout-components/issues/2565)
