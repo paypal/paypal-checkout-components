@@ -143,7 +143,7 @@ export class ThreeDomainSecureComponent {
     // eslint-disable-next-line compat/compat
     return new Promise((resolve, reject) => {
       let authenticationState,
-        liabilityShift = "NO";
+        liabilityShift;
       const cancelThreeDS = () => {
         return ZalgoPromise.try(() => {
           this.logger.warn("3DS Cancelled");
@@ -166,7 +166,7 @@ export class ThreeDomainSecureComponent {
           let enrichedNonce;
           // Helios returns a boolen parameter: "success"
           // It will be true for all cases where liability is shifted to merchant
-          // and false for downstream failures and errors where liability_shift= NO.
+          // and false for downstream failures and errors where liability_shift= NO|UNKNOWN.
           authenticationState = success ? "succeeded" : "errored";
           liabilityShift = liability_shift;
 
