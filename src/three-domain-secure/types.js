@@ -8,7 +8,7 @@ export type MerchantPayloadData = {|
   currency: string,
   nonce: string,
   threeDSRequested?: boolean,
-  threeDSTriggerMode?: "SCA_ALWAYS" | "SCA_WHEN_REQUIRED",
+  verificationMethod?: "SCA_ALWAYS" | "SCA_WHEN_REQUIRED",
   transactionContext?: Object,
   idToken?: string,
 |};

@@ -265,10 +265,10 @@ describe(" three domain secure component - parseMerchantPayload", () => {
     });
   });
 
-  it("should use threeDSTriggerMode when provided", () => {
+  it("should use verificationMethod when provided", () => {
     const payload = {
       ...baseMerchantPayload,
-      threeDSTriggerMode: "SCA_ALWAYS",
+      verificationMethod: "SCA_ALWAYS",
     };
 
     const result = parseMerchantPayload({ merchantPayload: payload });
@@ -276,11 +276,11 @@ describe(" three domain secure component - parseMerchantPayload", () => {
     expect(result.payment_source.card.verification_method).toBe("SCA_ALWAYS");
   });
 
-  it("should prioritize threeDSTriggerMode over threeDSRequested", () => {
+  it("should prioritize verificationMethod over threeDSRequested", () => {
     const payload = {
       ...baseMerchantPayload,
       threeDSRequested: false,
-      threeDSTriggerMode: "SCA_ALWAYS",
+      verificationMethod: "SCA_ALWAYS",
     };
 
     const result = parseMerchantPayload({ merchantPayload: payload });
@@ -288,7 +288,7 @@ describe(" three domain secure component - parseMerchantPayload", () => {
     expect(result.payment_source.card.verification_method).toBe("SCA_ALWAYS");
   });
 
-  it("should use threeDSRequested when threeDSTriggerMode not provided", () => {
+  it("should use threeDSRequested when verificationMethod not provided", () => {
     const payloadWithTrue = {
       ...baseMerchantPayload,
       threeDSRequested: true,
@@ -340,10 +340,10 @@ describe(" three domain secure component - parseMerchantPayload", () => {
     });
   });
 
-  it("should handle SCA_WHEN_REQUIRED in threeDSTriggerMode", () => {
+  it("should handle SCA_WHEN_REQUIRED in verificationMethod", () => {
     const payload = {
       ...baseMerchantPayload,
-      threeDSTriggerMode: "SCA_WHEN_REQUIRED",
+      verificationMethod: "SCA_WHEN_REQUIRED",
     };
 
     const result = parseMerchantPayload({ merchantPayload: payload });
