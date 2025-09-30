@@ -1,3 +1,9 @@
+## <small>5.0.390 (2025-09-30)</small>
+
+* [NCPS Hosted buttons] Update FPTI tracking params  (#2557) ([38b1bd4](https://github.com/paypal/paypal-checkout-components/commit/38b1bd4)), closes [#2557](https://github.com/paypal/paypal-checkout-components/issues/2557)
+
+
+
 ## <small>5.0.389 (2025-09-29)</small>
 
 * [Feature]/DTXOCOEXP-1400 Add `verificationMethod` Parameter (#2546) ([b0d7e2c](https://github.com/paypal/paypal-checkout-components/commit/b0d7e2c)), closes [#2546](https://github.com/paypal/paypal-checkout-components/issues/2546)
