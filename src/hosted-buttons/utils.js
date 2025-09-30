@@ -225,18 +225,6 @@ export function getElementFromSelector(
     : selector;
 }
 
-export function getTrackingId(
-  HostedButtonSelector: string | HTMLElement
-): string {
-  if (typeof HostedButtonSelector !== "string") {
-    return "";
-  }
-  const ele = document.querySelector(
-    `${HostedButtonSelector} input[name="uuid"]`
-  );
-  return ele ? ele.getAttribute("value") || "" : "";
-}
-
 /**
  * Attaches form fields (html) to the given selector, and
  * initializes window.__pp_form_fields (htmlScript).
@@ -269,7 +257,7 @@ export const buildHostedButtonCreateOrder = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): CreateOrder => {
   return async (data) => {
     const userInputs =
@@ -280,7 +268,7 @@ export const buildHostedButtonCreateOrder = ({
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
-
+      const funding_source = data.paymentSource.toUpperCase();
       const response = await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
@@ -288,7 +276,7 @@ export const buildHostedButtonCreateOrder = ({
         method,
         body: JSON.stringify({
           entry_point: entryPoint,
-          funding_source: data.paymentSource.toUpperCase(),
+          funding_source,
           merchant_id: merchantId,
           ...userInputs,
         }),
@@ -297,9 +285,10 @@ export const buildHostedButtonCreateOrder = ({
       const { body } = response;
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: body.context_id,
           [FPTI_KEY.EVENT_NAME]: "ncps_create_order",
-          tracking_id: trackingId,
+          funding_type: funding_source,
         })
         .flush();
       return body.context_id || onError(body.details?.[0]?.issue || body.name);
@@ -313,7 +302,7 @@ export const buildHostedButtonOnApprove = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
@@ -333,9 +322,9 @@ export const buildHostedButtonOnApprove = ({
     }).then((response) => {
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: data.orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_onapprove_order",
-          tracking_id: trackingId,
         })
         .flush();
 
@@ -359,7 +348,7 @@ export const buildHostedButtonOnShippingAddressChange = ({
   enableDPoP,
   hostedButtonId,
   shouldIncludeShippingCallbacks,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
@@ -398,9 +387,9 @@ export const buildHostedButtonOnShippingAddressChange = ({
 
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_shipping_address_change",
-          tracking_id: trackingId,
         })
         .flush();
     };
@@ -411,7 +400,7 @@ export const buildHostedButtonOnShippingOptionsChange = ({
   enableDPoP,
   hostedButtonId,
   shouldIncludeShippingCallbacks,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
@@ -439,9 +428,9 @@ export const buildHostedButtonOnShippingOptionsChange = ({
 
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_shipping_options_change",
-          tracking_id: trackingId,
         })
         .flush();
     };
