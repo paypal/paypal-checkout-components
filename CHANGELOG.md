@@ -1,3 +1,9 @@
+## <small>5.0.391 (2025-09-30)</small>
+
+* fix: add temporary solution for credit button becaming vaultable (#2569) ([4a401fc](https://github.com/paypal/paypal-checkout-components/commit/4a401fc)), closes [#2569](https://github.com/paypal/paypal-checkout-components/issues/2569)
+
+
+
 ## <small>5.0.390 (2025-09-30)</small>
 
 * [NCPS Hosted buttons] Update FPTI tracking params  (#2557) ([38b1bd4](https://github.com/paypal/paypal-checkout-components/commit/38b1bd4)), closes [#2557](https://github.com/paypal/paypal-checkout-components/issues/2557)
