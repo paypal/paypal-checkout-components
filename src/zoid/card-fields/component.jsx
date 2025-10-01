@@ -25,7 +25,6 @@ import {
   getUserIDToken,
   getSDKToken,
   getClientMetadataID,
-  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
