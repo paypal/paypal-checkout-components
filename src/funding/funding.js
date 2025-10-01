@@ -89,6 +89,15 @@ export function isFundingEligible(
     userAgent,
   }: IsFundingEligibleOptions
 ): boolean {
+  // Temporary: Force credit to be eligible if the experiment is enabled
+  if (
+    source === FUNDING.CREDIT &&
+    experiment?.paypalCreditButtonCreateVaultSetupTokenExists &&
+    flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE
+  ) {
+    return true;
+  }
+
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
     return false;
   }
