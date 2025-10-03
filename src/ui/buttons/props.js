@@ -3,7 +3,7 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { values, uniqueID } from "@krakenjs/belter/src";
+import { getUserAgent, values, uniqueID } from "@krakenjs/belter/src";
 import {
   type OrderCreateRequest,
   type FundingEligibilityType,
@@ -1266,7 +1266,7 @@ export function normalizeButtonProps(
     messageMarkup,
     renderedButtons,
     shopperSessionId,
-    userAgent,
+    userAgent = getUserAgent(),
   } = props;
 
   const { country, lang } = locale;
