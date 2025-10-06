@@ -1266,7 +1266,7 @@ export function normalizeButtonProps(
     messageMarkup,
     renderedButtons,
     shopperSessionId,
-    userAgent = __WEB__ ? getUserAgent() : "",
+    userAgent,
   } = props;
 
   const { country, lang } = locale;
