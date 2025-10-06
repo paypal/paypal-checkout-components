@@ -1,3 +1,9 @@
+## <small>5.0.392 (2025-10-06)</small>
+
+* fix(standalone): userAgent (#2572) ([2dafac0](https://github.com/paypal/paypal-checkout-components/commit/2dafac0)), closes [#2572](https://github.com/paypal/paypal-checkout-components/issues/2572)
+
+
+
 ## <small>5.0.391 (2025-09-30)</small>
 
 * fix: add temporary solution for credit button becaming vaultable (#2569) ([4a401fc](https://github.com/paypal/paypal-checkout-components/commit/4a401fc)), closes [#2569](https://github.com/paypal/paypal-checkout-components/issues/2569)
