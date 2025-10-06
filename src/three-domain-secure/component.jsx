@@ -142,8 +142,7 @@ export class ThreeDomainSecureComponent {
     }
     // eslint-disable-next-line compat/compat
     return new Promise((resolve, reject) => {
-      let authenticationState,
-        liabilityShift;
+      let authenticationState, liabilityShift;
       const cancelThreeDS = () => {
         return ZalgoPromise.try(() => {
           this.logger.warn("3DS Cancelled");
