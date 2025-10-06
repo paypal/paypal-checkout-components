@@ -1366,9 +1366,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
-        value: ({ props }) => {
-          return __WEB__ ? getUserAgent() : props.userAgent;
-        },
+        value: getUserAgent,
       },
     },
 
