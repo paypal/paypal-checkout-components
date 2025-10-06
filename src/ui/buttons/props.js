@@ -3,7 +3,7 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { getUserAgent, values, uniqueID } from "@krakenjs/belter/src";
+import { values, uniqueID } from "@krakenjs/belter/src";
 import {
   type OrderCreateRequest,
   type FundingEligibilityType,
