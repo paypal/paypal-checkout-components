@@ -133,13 +133,14 @@ describe(`paypal standalone buttons`, () => {
         });
 
         button.isEligible();
+
+        if (button.isEligible()) {
+          throw new Error(`Expected button to not be eligible`);
+        }
       } catch (e) {
         window.navigator.mockUserAgent = "";
         mockEligibility.cancel();
-        return;
       }
-
-      throw new Error("Expected button to throw an error");
     });
   });
 

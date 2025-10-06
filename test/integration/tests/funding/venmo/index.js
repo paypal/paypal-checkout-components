@@ -129,15 +129,11 @@ describe(`venmo on tablet `, () => {
       true
     );
 
-    try {
-      window.paypal.Buttons({
-        fundingSource,
-      });
-    } catch (error) {
-      done();
-    }
-
-    throw new Error("Expected 'venmo is not eligible' error");
+    const paypalButtons = window.paypal.Buttons({
+      fundingSource,
+    });
+    assert.equal(paypalButtons.isEligible(), false);
+    done();
   });
 });
 
