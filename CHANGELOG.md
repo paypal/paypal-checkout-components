@@ -1,3 +1,27 @@
+## <small>5.0.392 (2025-10-06)</small>
+
+* fix(standalone): userAgent (#2572) ([2dafac0](https://github.com/paypal/paypal-checkout-components/commit/2dafac0)), closes [#2572](https://github.com/paypal/paypal-checkout-components/issues/2572)
+
+
+
+## <small>5.0.391 (2025-09-30)</small>
+
+* fix: add temporary solution for credit button becaming vaultable (#2569) ([4a401fc](https://github.com/paypal/paypal-checkout-components/commit/4a401fc)), closes [#2569](https://github.com/paypal/paypal-checkout-components/issues/2569)
+
+
+
+## <small>5.0.390 (2025-09-30)</small>
+
+* [NCPS Hosted buttons] Update FPTI tracking params  (#2557) ([38b1bd4](https://github.com/paypal/paypal-checkout-components/commit/38b1bd4)), closes [#2557](https://github.com/paypal/paypal-checkout-components/issues/2557)
+
+
+
+## <small>5.0.389 (2025-09-29)</small>
+
+* [Feature]/DTXOCOEXP-1400 Add `verificationMethod` Parameter (#2546) ([b0d7e2c](https://github.com/paypal/paypal-checkout-components/commit/b0d7e2c)), closes [#2546](https://github.com/paypal/paypal-checkout-components/issues/2546)
+
+
+
 ## <small>5.0.388 (2025-09-24)</small>
 
 * Add sdkSource to button props (#2565) ([06b7094](https://github.com/paypal/paypal-checkout-components/commit/06b7094)), closes [#2565](https://github.com/paypal/paypal-checkout-components/issues/2565)
