@@ -1,3 +1,69 @@
+## <small>5.0.393 (2025-10-09)</small>
+
+* feat: update bt version to 3.128.0 (#2573) ([781261e](https://github.com/paypal/paypal-checkout-components/commit/781261e)), closes [#2573](https://github.com/paypal/paypal-checkout-components/issues/2573)
+
+
+
+## <small>5.0.392 (2025-10-06)</small>
+
+* fix(standalone): userAgent (#2572) ([2dafac0](https://github.com/paypal/paypal-checkout-components/commit/2dafac0)), closes [#2572](https://github.com/paypal/paypal-checkout-components/issues/2572)
+
+
+
+## <small>5.0.391 (2025-09-30)</small>
+
+* fix: add temporary solution for credit button becaming vaultable (#2569) ([4a401fc](https://github.com/paypal/paypal-checkout-components/commit/4a401fc)), closes [#2569](https://github.com/paypal/paypal-checkout-components/issues/2569)
+
+
+
+## <small>5.0.390 (2025-09-30)</small>
+
+* [NCPS Hosted buttons] Update FPTI tracking params  (#2557) ([38b1bd4](https://github.com/paypal/paypal-checkout-components/commit/38b1bd4)), closes [#2557](https://github.com/paypal/paypal-checkout-components/issues/2557)
+
+
+
+## <small>5.0.389 (2025-09-29)</small>
+
+* [Feature]/DTXOCOEXP-1400 Add `verificationMethod` Parameter (#2546) ([b0d7e2c](https://github.com/paypal/paypal-checkout-components/commit/b0d7e2c)), closes [#2546](https://github.com/paypal/paypal-checkout-components/issues/2546)
+
+
+
+## <small>5.0.388 (2025-09-24)</small>
+
+* Add sdkSource to button props (#2565) ([06b7094](https://github.com/paypal/paypal-checkout-components/commit/06b7094)), closes [#2565](https://github.com/paypal/paypal-checkout-components/issues/2565)
+
+
+
+## <small>5.0.387 (2025-09-23)</small>
+
+* feat(venmo): eligibility (#2563) ([c4e761f](https://github.com/paypal/paypal-checkout-components/commit/c4e761f)), closes [#2563](https://github.com/paypal/paypal-checkout-components/issues/2563)
+
+
+
+## <small>5.0.386 (2025-09-18)</small>
+
+* Revert "fix(venmo): popupBridge feature detection for webview eligibility (#2…" (#2561) ([e57107b](https://github.com/paypal/paypal-checkout-components/commit/e57107b)), closes [#2](https://github.com/paypal/paypal-checkout-components/issues/2) [#2561](https://github.com/paypal/paypal-checkout-components/issues/2561)
+
+
+
+## <small>5.0.385 (2025-09-16)</small>
+
+* fix(venmo): popupBridge feature detection for webview eligibility (#2545) ([9d6c45b](https://github.com/paypal/paypal-checkout-components/commit/9d6c45b)), closes [#2545](https://github.com/paypal/paypal-checkout-components/issues/2545)
+
+
+
+## <small>5.0.384 (2025-09-16)</small>
+
+* Rebranded marks (#2555) ([46245aa](https://github.com/paypal/paypal-checkout-components/commit/46245aa)), closes [#2555](https://github.com/paypal/paypal-checkout-components/issues/2555)
+
+
+
+## <small>5.0.383 (2025-09-15)</small>
+
+* update ites btn label (#2535) ([979eaec](https://github.com/paypal/paypal-checkout-components/commit/979eaec)), closes [#2535](https://github.com/paypal/paypal-checkout-components/issues/2535)
+
+
+
 ## <small>5.0.382 (2025-09-11)</small>
 
 * Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)

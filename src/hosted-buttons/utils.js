@@ -6,6 +6,7 @@ import {
   buildDPoPHeaders,
   getSDKHost,
   getClientID,
+  getFirstRenderExperiments,
   getLocale,
   getMerchantID as getSDKMerchantID,
 } from "@paypal/sdk-client/src";
@@ -14,6 +15,7 @@ import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
+import type { Experiment as EligibilityExperiment } from "../types";
 
 import type {
   ButtonVariables,
@@ -155,6 +157,12 @@ export const getButtonPreferences = ({
   };
 };
 
+function getButtonExperiments(): EligibilityExperiment {
+  return {
+    ...getFirstRenderExperiments(),
+  };
+}
+
 const getButtonVariable = (variables: ButtonVariables, key: string): string =>
   variables?.find((variable) => variable.name === key)?.value ?? "";
 
@@ -185,6 +193,8 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
     getButtonVariable(variables, "tax_rate_preference") ===
     "tax_rate_from_profile";
 
+  const { isPaypalRebrandEnabled } = getButtonExperiments();
+
   return {
     style: {
       layout: getButtonVariable(variables, "layout"),
@@ -193,6 +203,7 @@ export const getHostedButtonDetails: HostedButtonDetailsParams = async ({
       label: getButtonVariable(variables, "button_text"),
       tagline: getButtonVariable(variables, "tagline") === "true",
       height: parseInt(getButtonVariable(variables, "height"), 10) || undefined,
+      shouldApplyRebrandedStyles: isPaypalRebrandEnabled,
     },
     enableDPoP: getButtonVariable(variables, "enable_dpop") === "true",
     shouldIncludeShippingCallbacks: shippingFromProfile || taxRateFromProfile,
@@ -212,18 +223,6 @@ export function getElementFromSelector(
   return typeof selector === "string"
     ? document.querySelector(selector)
     : selector;
-}
-
-export function getTrackingId(
-  HostedButtonSelector: string | HTMLElement
-): string {
-  if (typeof HostedButtonSelector !== "string") {
-    return "";
-  }
-  const ele = document.querySelector(
-    `${HostedButtonSelector} input[name="uuid"]`
-  );
-  return ele ? ele.getAttribute("value") || "" : "";
 }
 
 /**
@@ -258,7 +257,7 @@ export const buildHostedButtonCreateOrder = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): CreateOrder => {
   return async (data) => {
     const userInputs =
@@ -269,7 +268,7 @@ export const buildHostedButtonCreateOrder = ({
       const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/create-context`;
       const method = "POST";
       const headers = await buildRequestHeaders({ url, method, enableDPoP });
-
+      const funding_source = data.paymentSource.toUpperCase();
       const response = await request({
         url,
         // $FlowIssue optional properties are not compatible with [key: string]: string
@@ -277,7 +276,7 @@ export const buildHostedButtonCreateOrder = ({
         method,
         body: JSON.stringify({
           entry_point: entryPoint,
-          funding_source: data.paymentSource.toUpperCase(),
+          funding_source,
           merchant_id: merchantId,
           ...userInputs,
         }),
@@ -286,9 +285,10 @@ export const buildHostedButtonCreateOrder = ({
       const { body } = response;
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: body.context_id,
           [FPTI_KEY.EVENT_NAME]: "ncps_create_order",
-          tracking_id: trackingId,
+          funding_type: funding_source,
         })
         .flush();
       return body.context_id || onError(body.details?.[0]?.issue || body.name);
@@ -302,7 +302,7 @@ export const buildHostedButtonOnApprove = ({
   enableDPoP,
   hostedButtonId,
   merchantId,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): OnApprove => {
   return async (data) => {
     const url = `${apiUrl}/v1/checkout/links/${hostedButtonId}/pay`;
@@ -322,9 +322,9 @@ export const buildHostedButtonOnApprove = ({
     }).then((response) => {
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: data.orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_onapprove_order",
-          tracking_id: trackingId,
         })
         .flush();
 
@@ -348,7 +348,7 @@ export const buildHostedButtonOnShippingAddressChange = ({
   enableDPoP,
   hostedButtonId,
   shouldIncludeShippingCallbacks,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): OnShippingAddressChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
@@ -387,9 +387,9 @@ export const buildHostedButtonOnShippingAddressChange = ({
 
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_shipping_address_change",
-          tracking_id: trackingId,
         })
         .flush();
     };
@@ -400,7 +400,7 @@ export const buildHostedButtonOnShippingOptionsChange = ({
   enableDPoP,
   hostedButtonId,
   shouldIncludeShippingCallbacks,
-  trackingId,
+  fptiTrackingParams,
 }: GetCallbackProps): OnShippingOptionsChange | typeof undefined => {
   if (shouldIncludeShippingCallbacks) {
     return async (data, actions) => {
@@ -428,9 +428,9 @@ export const buildHostedButtonOnShippingOptionsChange = ({
 
       getLogger()
         .track({
+          ...fptiTrackingParams,
           [FPTI_KEY.CONTEXT_ID]: orderID,
           [FPTI_KEY.EVENT_NAME]: "ncps_shipping_options_change",
-          tracking_id: trackingId,
         })
         .flush();
     };
@@ -445,7 +445,8 @@ export const getFlexDirection = ({
 
 export const getButtonColor = (
   color: Color,
-  fundingSource: FundingSources
+  fundingSource: FundingSources,
+  shouldApplyRebrandedStyles?: boolean
 ): Color => {
   const colorMap = {
     gold: {
@@ -455,7 +456,7 @@ export const getButtonColor = (
     },
     blue: {
       paypal: "blue",
-      venmo: "silver",
+      venmo: shouldApplyRebrandedStyles ? "blue" : "silver",
       paylater: "blue",
     },
     black: {
@@ -470,7 +471,7 @@ export const getButtonColor = (
     },
     silver: {
       paypal: "silver",
-      venmo: "blue",
+      venmo: shouldApplyRebrandedStyles ? "silver" : "blue",
       paylater: "silver",
     },
   };
@@ -525,7 +526,11 @@ export const getButtons = ({
     style: {
       ...style,
       // $FlowFixMe
-      color: getButtonColor(style.color, fundingSource),
+      color: getButtonColor(
+        style.color,
+        fundingSource,
+        style.shouldApplyRebrandedStyles
+      ),
     },
   });
 };
