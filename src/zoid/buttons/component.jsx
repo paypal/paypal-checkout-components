@@ -1334,7 +1334,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: () => getSDKIntegrationSource(),
         required: false,
         queryParam: true,
-        bodyParam: true,
       },
 
       vault: {
