@@ -47,7 +47,6 @@ import {
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
-  getGlobalSessionID,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -829,12 +828,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
       },
 
-      globalSessionID: {
-        type: "string",
-        required: false,
-        value: getGlobalSessionID,
-      },
-
       hostedButtonId: {
         type: "string",
         required: false,
@@ -1356,7 +1349,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: () => getSDKIntegrationSource(),
         required: false,
         queryParam: true,
-        bodyParam: true,
       },
 
       vault: {

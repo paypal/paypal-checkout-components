@@ -1,3 +1,21 @@
+## <small>5.0.394 (2025-10-13)</small>
+
+* remove bodyParam from sdkSource prop in buttons component (#2574) ([7e45eaa](https://github.com/paypal/paypal-checkout-components/commit/7e45eaa)), closes [#2574](https://github.com/paypal/paypal-checkout-components/issues/2574)
+
+
+
+## <small>5.0.393 (2025-10-09)</small>
+
+* feat: update bt version to 3.128.0 (#2573) ([781261e](https://github.com/paypal/paypal-checkout-components/commit/781261e)), closes [#2573](https://github.com/paypal/paypal-checkout-components/issues/2573)
+
+
+
+## <small>5.0.392 (2025-10-06)</small>
+
+* fix(standalone): userAgent (#2572) ([2dafac0](https://github.com/paypal/paypal-checkout-components/commit/2dafac0)), closes [#2572](https://github.com/paypal/paypal-checkout-components/issues/2572)
+
+
+
 ## <small>5.0.391 (2025-09-30)</small>
 
 * fix: add temporary solution for credit button becaming vaultable (#2569) ([4a401fc](https://github.com/paypal/paypal-checkout-components/commit/4a401fc)), closes [#2569](https://github.com/paypal/paypal-checkout-components/issues/2569)
