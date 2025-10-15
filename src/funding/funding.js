@@ -16,7 +16,6 @@ import type { Wallet, Experiment } from "../types";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 
 import { getFundingConfig } from "./config";
-import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "./util";
 
 type IsFundingEligibleOptions = {|
   layout?: $Values<typeof BUTTON_LAYOUT>,
@@ -33,6 +32,8 @@ type IsFundingEligibleOptions = {|
   wallet?: ?Wallet,
   applePaySupport: boolean,
   supportsPopups: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
@@ -83,7 +84,9 @@ export function isFundingEligible(
     wallet,
     applePaySupport,
     supportsPopups,
+    supportsVenmoPopups,
     supportedNativeBrowser,
+    supportedNativeVenmoBrowser,
     experiment,
     displayOnly,
     userAgent,
@@ -171,12 +174,10 @@ export function isFundingEligible(
   if (fundingConfig.requires && userAgent) {
     const required = fundingConfig.requires({ experiment, platform });
     const popupSupport =
-      source === FUNDING.VENMO
-        ? supportsVenmoPopups(experiment, supportsPopups, userAgent)
-        : supportsPopups;
+      source === FUNDING.VENMO ? supportsVenmoPopups : supportsPopups;
     const nativeBrowserSupport =
       source === FUNDING.VENMO
-        ? isSupportedNativeVenmoBrowser(experiment, userAgent)
+        ? supportedNativeVenmoBrowser
         : supportedNativeBrowser;
     if (required.popup === true && popupSupport === false) {
       return false;
@@ -221,6 +222,8 @@ export function determineEligibleFunding({
   applePaySupport,
   supportsPopups,
   supportedNativeBrowser,
+  supportsVenmoPopups,
+  supportedNativeVenmoBrowser,
   experiment,
   displayOnly = [],
   userAgent = "",
@@ -241,6 +244,8 @@ export function determineEligibleFunding({
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   experiment: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   userAgent?: string,
@@ -265,7 +270,9 @@ export function determineEligibleFunding({
       wallet,
       applePaySupport,
       supportsPopups,
+      supportsVenmoPopups,
       supportedNativeBrowser,
+      supportedNativeVenmoBrowser,
       experiment,
       displayOnly,
       userAgent,

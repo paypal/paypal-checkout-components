@@ -65,6 +65,8 @@ const defaultMockFundingOptions = {
   applePaySupport: false,
   supportsPopups: true,
   supportedNativeBrowser: true,
+  supportsVenmoPopups: false,
+  supportedNativeVenmoBrowser: false,
   onShippingChange: null,
   onShippingAddressChange: null,
   onShippingOptionsChange: null,
@@ -286,14 +288,13 @@ describe("Funding eligibility", () => {
       });
 
       test("should use isSupportedNativeVenmoBrowser for venmo funding source when native is required", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(true);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
-
         const options = {
           ...defaultMockFundingOptions,
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: { venmoEnableWebOnNonNativeBrowser: true },
+          supportedNativeVenmoBrowser: true,
+          supportsVenmoPopups: true,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
@@ -306,14 +307,13 @@ describe("Funding eligibility", () => {
       });
 
       test("should return false when venmo popup support is required but supportsVenmoPopups returns false", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(false);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
-
         const options = {
           ...defaultMockFundingOptions,
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: {},
+          supportsVenmoPopups: false,
+          supportedNativeVenmoBrowser: true,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
