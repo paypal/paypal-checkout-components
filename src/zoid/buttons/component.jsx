@@ -1288,7 +1288,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
-      supportsNativeVenmoBrowser: {
+      supportedNativeVenmoBrowser: {
         type: "boolean",
         value: ({ props }) => {
           return isSupportedNativeVenmoBrowser(

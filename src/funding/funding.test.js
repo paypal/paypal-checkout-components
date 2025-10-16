@@ -5,14 +5,7 @@ import { describe, expect, vi, beforeEach, afterEach } from "vitest";
 import { BUTTON_FLOW } from "../constants";
 
 import { isFundingEligible, isWalletFundingEligible } from "./funding";
-import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "./util";
 import { getFundingConfig } from "./config";
-
-// Mock the venmo utility functions
-vi.mock("./util", () => ({
-  supportsVenmoPopups: vi.fn(),
-  isSupportedNativeVenmoBrowser: vi.fn(),
-}));
 
 // Mock getFundingConfig to control funding config behavior
 vi.mock("./config", () => ({
@@ -267,23 +260,17 @@ describe("Funding eligibility", () => {
       });
 
       test("should use supportsVenmoPopups for venmo funding source when popup is required", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(true);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
-
         const options = {
           ...defaultMockFundingOptions,
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: { venmoEnableWebOnNonNativeBrowser: true },
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: true,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(
-          options.experiment,
-          true,
-          options.userAgent
-        );
         expect(result).toBe(true);
       });
 
@@ -299,10 +286,6 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          options.experiment,
-          options.userAgent
-        );
         expect(result).toBe(true);
       });
 
@@ -318,38 +301,25 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(
-          options.experiment,
-          true,
-          options.userAgent
-        );
         expect(result).toBe(false);
       });
 
       test("should return false when venmo native support is required but isSupportedNativeVenmoBrowser returns false", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(true);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(false);
-
         const options = {
           ...defaultMockFundingOptions,
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: {},
+          supportedNativeVenmoBrowser: false,
+          supportsVenmoPopups: true,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          options.experiment,
-          options.userAgent
-        );
         expect(result).toBe(false);
       });
 
       test("should use standard supportsPopups for non-venmo funding sources", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(false);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(false);
-
         // Update the mock to not require popup and native for PayPal to isolate the test
         vi.mocked(getFundingConfig).mockReturnValue({
           [FUNDING.PAYLATER]: {
@@ -402,41 +372,25 @@ describe("Funding eligibility", () => {
 
         const result = isFundingEligible(FUNDING.PAYPAL, options);
 
-        // Venmo functions should not be called for non-venmo sources
-        expect(supportsVenmoPopups).not.toHaveBeenCalled();
-        expect(isSupportedNativeVenmoBrowser).not.toHaveBeenCalled();
         expect(result).toBe(true);
       });
 
       test("should handle undefined experiment parameter for venmo", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(true);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
-
         const options = {
           ...defaultMockFundingOptions,
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: undefined,
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: true,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(
-          undefined,
-          true,
-          options.userAgent
-        );
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          undefined,
-          options.userAgent
-        );
         expect(result).toBe(true);
       });
 
       test("should pass through experiment flags to venmo utility functions", () => {
-        vi.mocked(supportsVenmoPopups).mockReturnValue(true);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
-
         const experimentFlags = {
           venmoEnableWebOnNonNativeBrowser: true,
           venmoVaultWithoutPurchase: false,
@@ -447,32 +401,23 @@ describe("Funding eligibility", () => {
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: experimentFlags,
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: true,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
 
-        expect(supportsVenmoPopups).toHaveBeenCalledWith(
-          experimentFlags,
-          true,
-          options.userAgent
-        );
-        expect(isSupportedNativeVenmoBrowser).toHaveBeenCalledWith(
-          experimentFlags,
-          options.userAgent
-        );
         expect(result).toBe(true);
       });
 
       test("should respect combination of venmo popup and native requirements", () => {
-        // Test case where popup succeeds but native fails
-        vi.mocked(supportsVenmoPopups).mockReturnValue(true);
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(false);
-
         const options = {
           ...defaultMockFundingOptions,
           fundingSource: FUNDING.VENMO,
           platform: "mobile",
           experiment: {},
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: false,
         };
 
         const result = isFundingEligible(FUNDING.VENMO, options);
@@ -480,7 +425,7 @@ describe("Funding eligibility", () => {
         expect(result).toBe(false);
 
         // Test case where both succeed
-        vi.mocked(isSupportedNativeVenmoBrowser).mockReturnValue(true);
+        options.supportedNativeVenmoBrowser = true;
 
         const result2 = isFundingEligible(FUNDING.VENMO, options);
         expect(result2).toBe(true);

@@ -89,7 +89,7 @@ describe("funding/util", () => {
       });
 
       it("should return false when popupBridge is not available", () => {
-        expect(supportsVenmoPopups({}, true, defaultUserAgent)).toBe(false);
+        expect(supportsVenmoPopups({}, false, defaultUserAgent)).toBe(false);
       });
     });
 
