@@ -144,6 +144,7 @@ export type FundingSourceConfig = {|
         fundingEligibility: ?FundingEligibilityType,
         label?: string,
         period?: number,
+        locale?: LocaleType,
       |}) => string),
   showWalletMenu: ({|
     instrument: WalletInstrument,
