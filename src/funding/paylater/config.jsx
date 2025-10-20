@@ -51,8 +51,8 @@ function getLabelText(
   }
 
   if (
-    paylater?.products?.payIn4?.eligible &&
-    paylater?.products?.payIn4?.variant === "CA" &&
+    paylater?.products?.paylater?.eligible &&
+    paylater?.products?.paylater?.variant === "CA" &&
     lang === "fr"
   ) {
     labelText = "Payer en 4";
