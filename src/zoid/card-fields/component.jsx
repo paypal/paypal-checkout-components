@@ -216,6 +216,18 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           },
         },
 
+        eligible: ({ props }) => {
+          // Prevent child field from being eligible if parent is not eligible
+          // Parent props will be empty as eligibility is checked before props are set
+          if (Object.keys(props?.parent?.props)?.length === 0) {
+            return {
+              eligible: false,
+              reason: "card payments are not eligible",
+            };
+          }
+          return { eligible: true };
+        },
+
         props: {
           type: {
             type: "string",
