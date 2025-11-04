@@ -32,6 +32,10 @@ import type {
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
+  supportsVenmoPopups,
+  isSupportedNativeVenmoBrowser,
+} from "../funding/util";
+import {
   isSupportedNativeBrowser,
   getButtonExperiments,
 } from "../zoid/buttons/util";
@@ -80,6 +84,15 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const supportsPopups = userAgentSupportsPopups();
     const supportedNativeBrowser = isSupportedNativeBrowser();
     const experiment = getButtonExperiments();
+    const supportsVenmoPopup = supportsVenmoPopups(
+      experiment,
+      supportsPopups,
+      userAgent
+    );
+    const supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
+      experiment,
+      userAgent
+    );
 
     const hasShippingCallback = Boolean(
       onShippingChange || onShippingAddressChange || onShippingOptionsChange
@@ -100,6 +113,8 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       hasShippingCallback,
       supportsPopups,
       supportedNativeBrowser,
+      supportsVenmoPopups: supportsVenmoPopup,
+      supportedNativeVenmoBrowser,
       experiment,
       displayOnly,
       userAgent,
@@ -124,7 +139,9 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         flow,
         applePaySupport,
         supportsPopups,
+        supportsVenmoPopups: supportsVenmoPopup,
         supportedNativeBrowser,
+        supportedNativeVenmoBrowser,
         experiment,
         displayOnly,
         userAgent,

@@ -91,7 +91,7 @@ import {
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
 import {
-  supportsVenmoPopups,
+  supportsVenmoPopups as supportsVenmoPopupsUtil,
   isSupportedNativeVenmoBrowser,
 } from "../../funding/util";
 import { getPixelComponent } from "../pixel";
@@ -249,16 +249,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         style = {},
         enableFunding = getEnableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
-        supportsPopups = props.fundingSource === FUNDING.VENMO
-          ? supportsVenmoPopups(
-              props.experiment,
-              userAgentSupportsPopups(),
-              getUserAgent()
-            )
-          : userAgentSupportsPopups(),
-        supportedNativeBrowser = props.fundingSource === FUNDING.VENMO
-          ? isSupportedNativeVenmoBrowser(props.experiment, getUserAgent())
-          : isSupportedNativeBrowser(),
+        supportsPopups = userAgentSupportsPopups(),
+        supportedNativeBrowser = isSupportedNativeBrowser(),
+        supportsVenmoPopups = supportsVenmoPopupsUtil(
+          props.experiment,
+          userAgentSupportsPopups(),
+          getUserAgent()
+        ),
+        supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
+          props.experiment,
+          getUserAgent()
+        ),
         experiment = getButtonExperiments(),
         createBillingAgreement,
         createSubscription,
@@ -305,6 +306,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           flow,
           applePaySupport,
           supportsPopups,
+          supportsVenmoPopups,
+          supportedNativeVenmoBrowser,
           supportedNativeBrowser,
           experiment,
           displayOnly,
@@ -725,6 +728,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             applePaySupport,
             supportsPopups,
             supportedNativeBrowser,
+            supportsVenmoPopups,
+            supportedNativeVenmoBrowser,
             createBillingAgreement,
             createSubscription,
             createVaultSetupToken,
@@ -758,6 +763,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               flow,
               applePaySupport,
               supportsPopups,
+              supportsVenmoPopups,
+              supportedNativeVenmoBrowser,
               supportedNativeBrowser,
               displayOnly,
               userAgent,
@@ -1277,33 +1284,41 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       supportedNativeBrowser: {
         type: "boolean",
-        value: ({ props }) => {
-          if (props.fundingSource === FUNDING.VENMO) {
-            return isSupportedNativeVenmoBrowser(
-              props.experiment,
-              props.userAgent
-            );
-          }
+        value: isSupportedNativeBrowser,
+        queryParam: true,
+      },
 
-          return isSupportedNativeBrowser();
+      supportedNativeVenmoBrowser: {
+        type: "boolean",
+        value: ({ props }) => {
+          return isSupportedNativeVenmoBrowser(
+            props.experiment,
+            props.userAgent
+          );
         },
         queryParam: true,
+        required: false,
       },
 
       supportsPopups: {
         type: "boolean",
-        value: ({ props }) => {
-          if (props.fundingSource === FUNDING.VENMO) {
-            return supportsVenmoPopups(
-              props.experiment,
-              userAgentSupportsPopups(),
-              props.userAgent
-            );
-          }
-
+        value: () => {
           return userAgentSupportsPopups();
         },
         queryParam: true,
+      },
+
+      supportsVenmoPopups: {
+        type: "boolean",
+        value: ({ props }) => {
+          return supportsVenmoPopupsUtil(
+            props.experiment,
+            userAgentSupportsPopups(),
+            props.userAgent
+          );
+        },
+        queryParam: true,
+        required: false,
       },
 
       test: {

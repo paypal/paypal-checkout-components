@@ -50,16 +50,16 @@ export function supportsVenmoPopups(
   supportsPopups: boolean,
   userAgent: string
 ): boolean {
-  if (isVenmoSupportedWebView(userAgent)) {
-    if (typeof window !== "undefined" && window.popupBridge) {
+  if (__WEB__ && isVenmoSupportedWebView(userAgent)) {
+    if (window.popupBridge) {
       return true;
     }
-    return false;
   }
 
   if (experiment?.venmoEnableWebOnNonNativeBrowser === true) {
     return venmoUserAgentSupportsPopups(userAgent);
   }
+
   return supportsPopups;
 }
 
@@ -67,11 +67,10 @@ export function isSupportedNativeVenmoBrowser(
   experiment?: Experiment,
   userAgent: string
 ): boolean {
-  if (isVenmoSupportedWebView(userAgent)) {
-    if (typeof window !== "undefined" && window.popupBridge) {
+  if (__WEB__ && isVenmoSupportedWebView(userAgent)) {
+    if (window.popupBridge) {
       return true;
     }
-    return false;
   }
 
   if (isTablet(userAgent)) {

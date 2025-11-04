@@ -149,6 +149,8 @@ export function getRenderedButtons(
     applePaySupport,
     supportsPopups = userAgentSupportsPopups(),
     supportedNativeBrowser = isSupportedNativeBrowser(),
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     createBillingAgreement,
     createSubscription,
     createVaultSetupToken,
@@ -181,6 +183,8 @@ export function getRenderedButtons(
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     experiment,
     displayOnly,
   });
