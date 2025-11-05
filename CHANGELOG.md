@@ -1,3 +1,9 @@
+## <small>5.0.396 (2025-11-05)</small>
+
+* feat: support button label for CA (#2576) ([528c192](https://github.com/paypal/paypal-checkout-components/commit/528c192)), closes [#2576](https://github.com/paypal/paypal-checkout-components/issues/2576)
+
+
+
 ## <small>5.0.395 (2025-11-05)</small>
 
 * feature(venmo): supportsVenmoPopups and supportedNativeVenmoBrowser props (#2575) ([7eec15c](https://github.com/paypal/paypal-checkout-components/commit/7eec15c)), closes [#2575](https://github.com/paypal/paypal-checkout-components/issues/2575)
