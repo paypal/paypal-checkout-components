@@ -1,3 +1,9 @@
+## <small>5.0.395 (2025-11-05)</small>
+
+* feature(venmo): supportsVenmoPopups and supportedNativeVenmoBrowser props (#2575) ([7eec15c](https://github.com/paypal/paypal-checkout-components/commit/7eec15c)), closes [#2575](https://github.com/paypal/paypal-checkout-components/issues/2575)
+
+
+
 ## <small>5.0.394 (2025-10-13)</small>
 
 * remove bodyParam from sdkSource prop in buttons component (#2574) ([7e45eaa](https://github.com/paypal/paypal-checkout-components/commit/7e45eaa)), closes [#2574](https://github.com/paypal/paypal-checkout-components/issues/2574)
