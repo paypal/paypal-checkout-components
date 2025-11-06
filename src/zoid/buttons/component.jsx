@@ -43,7 +43,6 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
-  isPayPalTrustedUrl,
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
@@ -371,11 +370,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: true,
         value: () => (url) => {
-          if (getEnv() === ENV.LOCAL || isPayPalTrustedUrl(url)) {
-            location.href = url;
-          } else {
-            throw new Error(`Unable to redirect to provided url ${url}`);
-          }
+          location.href = url;
         },
       },
 
