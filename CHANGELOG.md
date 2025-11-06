@@ -1,3 +1,9 @@
+## <small>5.0.397 (2025-11-06)</small>
+
+* remove the restriction to use PayPal urls (#2578) ([3444b38](https://github.com/paypal/paypal-checkout-components/commit/3444b38)), closes [#2578](https://github.com/paypal/paypal-checkout-components/issues/2578)
+
+
+
 ## <small>5.0.396 (2025-11-05)</small>
 
 * feat: support button label for CA (#2576) ([528c192](https://github.com/paypal/paypal-checkout-components/commit/528c192)), closes [#2576](https://github.com/paypal/paypal-checkout-components/issues/2576)
