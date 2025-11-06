@@ -43,7 +43,6 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
-  isPayPalTrustedUrl,
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
