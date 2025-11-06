@@ -185,6 +185,7 @@ export function Button({
             fundingEligibility,
             label: eligibleLabel,
             period,
+            locale,
           })
         : fundingConfig.labelText || fundingSource;
 

@@ -14,7 +14,6 @@ import {
   renderDefaultButton,
   renderForm,
   renderStandaloneButton,
-  getTrackingId,
 } from "./utils";
 import type {
   HostedButtonsComponent,
@@ -50,34 +49,37 @@ export const getHostedButtonsComponent = (): HostedButtonsComponent => {
         selector,
       });
 
-      const trackingId = getTrackingId(selector);
+      const fptiTrackingParams =
+        window[
+          `__pp_form_fields_${hostedButtonId}`
+        ]?.getFptiTrackingParams?.() || {};
 
       const createOrder = buildHostedButtonCreateOrder({
         enableDPoP,
         hostedButtonId,
         merchantId,
-        trackingId,
+        fptiTrackingParams,
       });
 
       const onApprove = buildHostedButtonOnApprove({
         enableDPoP,
         hostedButtonId,
         merchantId,
-        trackingId,
+        fptiTrackingParams,
       });
 
       const onShippingAddressChange = buildHostedButtonOnShippingAddressChange({
         enableDPoP,
         hostedButtonId,
         shouldIncludeShippingCallbacks,
-        trackingId,
+        fptiTrackingParams,
       });
 
       const onShippingOptionsChange = buildHostedButtonOnShippingOptionsChange({
         enableDPoP,
         hostedButtonId,
         shouldIncludeShippingCallbacks,
-        trackingId,
+        fptiTrackingParams,
       });
 
       const buttonOptions: HostedButtonOptions = {
