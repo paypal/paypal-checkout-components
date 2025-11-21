@@ -494,6 +494,7 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
             gap: ${gap}px;
           }
+
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
             font-size: ${fontSize}px;
@@ -866,7 +867,7 @@ export function buttonResponsiveStyle({
         text-align: center;
         height: 100%;
     }
-    
+
     // border radius
     .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
       ${
