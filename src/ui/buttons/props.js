@@ -568,10 +568,10 @@ type ThrowErrorForInvalidButtonColorArgs = {|
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
-  preferences?: {
+  preferences?: {|
     appSwitchWhenAvailable?: boolean,
     launchAppSwitchIn?: "newTab" | "sameTab",
-  },
+  |},
   listenForHashChanges: () => void,
   removeListenerForHashChanges: () => void,
   // Not passed to child iframe
