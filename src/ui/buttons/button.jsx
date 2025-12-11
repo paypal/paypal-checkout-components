@@ -329,7 +329,9 @@ export function Button({
         tabindex="0"
         aria-label={labelText}
       >
-        <div class={CLASS.BUTTON_LABEL}>{labelNode}</div>
+        <div class={CLASS.BUTTON_LABEL} aria-hidden="true">
+          {labelNode}
+        </div>
 
         <Spinner />
       </div>
