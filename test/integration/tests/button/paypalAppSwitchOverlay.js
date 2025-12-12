@@ -8,6 +8,7 @@ import {
   destroyTestContainer,
   getElementRecursive,
   assert,
+  removeNodes,
 } from "../common";
 
 describe(`PayPal app switch overlay`, () => {
@@ -17,6 +18,7 @@ describe(`PayPal app switch overlay`, () => {
 
   afterEach(() => {
     destroyTestContainer();
+    removeNodes(".paypal-checkout-sandbox");
   });
 
   it("should call showPayPalAppSwitchOverlay and show the overlay", (done) => {
@@ -204,14 +206,3 @@ describe(`PayPal app switch overlay`, () => {
       .render("#testContainer");
   });
 });
-
-// describe.only(`paypal button props - PayPal app switch overlay`, () => {
-//   beforeEach(() => {
-//     createTestContainer();
-//   });
-
-//   afterEach(() => {
-//     destroyTestContainer();
-//   });
-
-// });
