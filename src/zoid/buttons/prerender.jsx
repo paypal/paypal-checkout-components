@@ -52,22 +52,20 @@ export function PrerenderedButtons({
   const setDisabled = (disabled: boolean) => {
     state.disabled = disabled;
 
-    // Update DOM immediately for instant feedback
+    // Update DOM synchronously to prevent race conditions
     if (typeof document !== "undefined") {
-      setTimeout(() => {
-        const buttons = document.querySelectorAll('[data-button="true"]');
-        buttons.forEach((button) => {
-          if (disabled) {
-            button.setAttribute("tabindex", "-1");
-            button.setAttribute("aria-disabled", "true");
-            button.classList.add("paypal-button-disabled");
-          } else {
-            button.setAttribute("tabindex", "0");
-            button.setAttribute("aria-disabled", "false");
-            button.classList.remove("paypal-button-disabled");
-          }
-        });
-      }, 100);
+      const buttons = document.querySelectorAll('[data-button="true"]');
+      buttons.forEach((button) => {
+        if (disabled) {
+          button.setAttribute("tabindex", "-1");
+          button.setAttribute("aria-disabled", "true");
+          button.classList.add("paypal-button-disabled");
+        } else {
+          button.setAttribute("tabindex", "0");
+          button.setAttribute("aria-disabled", "false");
+          button.classList.remove("paypal-button-disabled");
+        }
+      });
     }
   };
 
