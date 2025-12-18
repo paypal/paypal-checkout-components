@@ -72,6 +72,7 @@ type IndividualButtonProps = {|
   instrument: ?WalletInstrument,
   showPayLabel: boolean,
   showLoadingSpinner?: boolean,
+  disabled?: boolean,
 |};
 
 export function Button({
@@ -97,6 +98,7 @@ export function Button({
   userIDToken,
   vault,
   showLoadingSpinner = false,
+  disabled = false,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
 
@@ -311,6 +313,7 @@ export function Button({
           CLASS.BUTTON,
           `${shouldApplyRebrandedStyles ? CLASS.BUTTON_REBRAND : ""}`,
           `${showLoadingSpinner ? CLASS.LOADING : ""}`,
+          `${disabled ? CLASS.DISABLED : ""}`,
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,
           `${CLASS.NUMBER}-${
@@ -326,8 +329,9 @@ export function Button({
         onClick={clickHandler}
         onRender={onButtonRender}
         onKeyPress={keypressHandler}
-        tabindex="0"
+        tabindex={showLoadingSpinner || disabled ? "-1" : "0"}
         aria-label={labelText}
+        aria-disabled={showLoadingSpinner || disabled ? "true" : "false"}
       >
         <div class={CLASS.BUTTON_LABEL} aria-hidden="true">
           {labelNode}
