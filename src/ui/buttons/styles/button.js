@@ -137,6 +137,12 @@ export const buttonStyle = `
         display: block !important;
     }
 
+    .${CLASS.BUTTON}.${CLASS.DISABLED} {
+        pointer-events: none !important;
+        cursor: not-allowed !important;
+        opacity: 0.6 !important;
+    }
+
     .${CLASS.CONTAINER} .${CLASS.VAULT_HEADER} {
         margin-top: 10px;
     }

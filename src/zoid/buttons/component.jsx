@@ -913,9 +913,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             phase: "buttons-first-render",
           });
 
-          return (...args) => {
-            return value(...args);
-          };
+          // Return the value as-is - the actual disable/enable logic
+          // is handled in prerender.jsx where it has access to the DOM
+          return value;
         },
       },
 
