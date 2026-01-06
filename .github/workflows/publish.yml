@@ -35,5 +35,4 @@ jobs:
       - name: 📦 Publish to npm using existing scripts
         run: npm run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.PAYPAL_SDK_NPM_AUTH_TOKEN }}
