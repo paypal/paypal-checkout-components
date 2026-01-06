@@ -1,3 +1,9 @@
+## <small>5.0.398 (2026-01-06)</small>
+
+* feat(buttons): add disabled prop support (#2584) ([5b9c8cd](https://github.com/paypal/paypal-checkout-components/commit/5b9c8cd)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584)
+
+
+
 ## <small>5.0.397 (2025-11-06)</small>
 
 * remove the restriction to use PayPal urls (#2578) ([3444b38](https://github.com/paypal/paypal-checkout-components/commit/3444b38)), closes [#2578](https://github.com/paypal/paypal-checkout-components/issues/2578)
