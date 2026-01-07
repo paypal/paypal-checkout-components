@@ -78,6 +78,16 @@ export function PoweredByPayPal({
   // const textColor = config.textColors[buttonColor] || "#000000";
 
   const POWERED_BY_PAYPAL_REBRAND_STYLE = `
+
+    @font-face {
+        font-family: "PayPal Plain";
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+        src: url("https://cdn-93d21c93e98e4.static.engineering.dev.paypalinc.com/test-fonts/PayPal-Plain-ui.woff2") format("woff2");
+        unicode-range: U+0020-007E, U+00A0-00FF;
+    }
+
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
