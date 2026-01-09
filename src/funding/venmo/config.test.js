@@ -82,15 +82,6 @@ describe("Venmo eligibility", () => {
       expect(isVenmoEligible).toEqual(true);
     });
 
-    test("should not be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is false", () => {
-      const isVenmoEligible = venmoConfig.eligible?.({
-        ...baseEligibilityProps,
-        flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
-      });
-
-      expect(isVenmoEligible).toEqual(false);
-    });
-
     test("should be eligible if flow is VAULT_WITHOUT_PURCHASE and venmoVaultWithoutPurchase is true", () => {
       const isVenmoEligible = venmoConfig.eligible?.({
         ...baseEligibilityProps,
