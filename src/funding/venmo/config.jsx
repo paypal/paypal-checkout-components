@@ -38,13 +38,6 @@ export function getVenmoConfig(): FundingSourceConfig {
         return false;
       }
 
-      if (
-        flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE &&
-        experiment?.venmoVaultWithoutPurchase !== true
-      ) {
-        return false;
-      }
-
       return true;
     },
 
