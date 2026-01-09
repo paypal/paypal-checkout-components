@@ -23,7 +23,7 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+    eligible: ({ experiment, shippingChange, displayOnly }) => {
       // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
