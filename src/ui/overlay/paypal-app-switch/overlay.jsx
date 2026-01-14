@@ -11,7 +11,7 @@ import { getContainerStyle, getSandboxStyle } from "./style";
 type OverlayProps = {|
   buttonSessionID: string,
   close: () => ZalgoPromise<void>,
-  focus: () => ZalgoPromise<void>,
+  focus?: () => ZalgoPromise<void>,
 |};
 
 export function PayPalAppSwitchOverlay({
@@ -47,7 +47,9 @@ export function PayPalAppSwitchOverlay({
     e.preventDefault();
     e.stopPropagation();
 
-    focus();
+    if (focus) {
+      focus();
+    }
   }
 
   const setupShowAnimation = () => (el) => {
@@ -90,14 +92,16 @@ export function PayPalAppSwitchOverlay({
                 <div class="paypal-checkout-message">
                   {content.windowMessage}
                 </div>
-                <div class="paypal-checkout-continue">
-                  {/* This handler should be guarded with e.stopPropagation. 
-                        This will stop the event from bubbling up to the overlay click handler
-                        and causing unexpected behavior. */}
-                  <a onClick={focusCheckout} href="#">
-                    {content.continueMessage}
-                  </a>
-                </div>
+                {focus ? (
+                  <div class="paypal-checkout-continue">
+                    {/* This handler should be guarded with e.stopPropagation.
+                          This will stop the event from bubbling up to the overlay click handler
+                          and causing unexpected behavior. */}
+                    <a onClick={focusCheckout} href="#">
+                      {content.continueMessage}
+                    </a>
+                  </div>
+                ) : null}
               </div>
               <style nonce={nonce}>{getContainerStyle({ uid })}</style>
             </div>
