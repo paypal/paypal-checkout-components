@@ -1,3 +1,9 @@
+## <small>5.0.400 (2026-01-15)</small>
+
+* Revert "feat(buttons): add disabled prop support (#2584)" (#2588) ([a31cab9](https://github.com/paypal/paypal-checkout-components/commit/a31cab9)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584) [#2588](https://github.com/paypal/paypal-checkout-components/issues/2588)
+
+
+
 ## <small>5.0.399 (2026-01-06)</small>
 
 * fix: use the right env variable name for npm (#2586) ([e272f5b](https://github.com/paypal/paypal-checkout-components/commit/e272f5b)), closes [#2586](https://github.com/paypal/paypal-checkout-components/issues/2586)
