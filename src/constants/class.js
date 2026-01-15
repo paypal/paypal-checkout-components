@@ -27,7 +27,6 @@ export const CLASS = {
   WALLET_MENU: ("paypal-button-wallet-menu": "paypal-button-wallet-menu"),
 
   LOADING: ("paypal-button-loading": "paypal-button-loading"),
-  DISABLED: ("paypal-button-disabled": "paypal-button-disabled"),
   SPINNER: ("paypal-button-spinner": "paypal-button-spinner"),
 
   TAGLINE: ("paypal-button-tagline": "paypal-button-tagline"),
