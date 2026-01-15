@@ -25,7 +25,6 @@ import {
   getUserIDToken,
   getSDKToken,
   getClientMetadataID,
-  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
@@ -217,6 +216,18 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           },
         },
 
+        eligible: ({ props }) => {
+          // Prevent child field from being eligible if parent is not eligible
+          // Parent props will be empty as eligibility is checked before props are set
+          if (Object.keys(props?.parent?.props)?.length === 0) {
+            return {
+              eligible: false,
+              reason: "card payments are not eligible",
+            };
+          }
+          return { eligible: true };
+        },
+
         props: {
           type: {
             type: "string",
@@ -249,23 +260,21 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             value: ({ props }) => props.parent.props.createOrder,
           },
 
-          ...(isPayPalDomain() && {
-            createSubscription: {
-              type: "function",
-              required: false,
-              value: ({ props }) => {
-                if (
-                  props.parent.props.createSubscription &&
-                  !props.parent.props.sdkToken
-                ) {
-                  throw new ValidationError(
-                    `SDK Token must be passed in for createSubscription`
-                  );
-                }
-                return props.parent.props.createSubscription;
-              },
+          createSubscription: {
+            type: "function",
+            required: false,
+            value: ({ props }) => {
+              if (
+                props.parent.props.createSubscription &&
+                !props.parent.props.sdkToken
+              ) {
+                throw new ValidationError(
+                  `SDK Token must be passed in for createSubscription`
+                );
+              }
+              return props.parent.props.createSubscription;
             },
-          }),
+          },
 
           createVaultSetupToken: {
             type: "function",
@@ -601,20 +610,18 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           required: false,
         },
 
-        ...(isPayPalDomain() && {
-          createSubscription: {
-            type: "function",
-            required: false,
-            value: ({ props }) => {
-              if (props.createSubscription && !props.sdkToken) {
-                throw new ValidationError(
-                  `SDK Token must be passed in for createSubscription`
-                );
-              }
-              return props.createSubscription;
-            },
+        createSubscription: {
+          type: "function",
+          required: false,
+          value: ({ props }) => {
+            if (props.createSubscription && !props.sdkToken) {
+              throw new ValidationError(
+                `SDK Token must be passed in for createSubscription`
+              );
+            }
+            return props.createSubscription;
           },
-        }),
+        },
 
         createVaultSetupToken: {
           type: "function",

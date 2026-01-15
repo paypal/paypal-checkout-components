@@ -8,6 +8,7 @@ export type MerchantPayloadData = {|
   currency: string,
   nonce: string,
   threeDSRequested?: boolean,
+  verificationMethod?: "SCA_ALWAYS" | "SCA_WHEN_REQUIRED",
   transactionContext?: Object,
   idToken?: string,
 |};
@@ -73,7 +74,7 @@ export type SdkConfig = {|
 |};
 
 export type ThreeDSResponse = {|
-  liabilityShift: string,
+  liabilityShift?: string,
   authenticationState: string,
   nonce?: string,
 |};

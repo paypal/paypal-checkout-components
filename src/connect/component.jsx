@@ -20,7 +20,7 @@ const MIN_MINOR_VERSION = 97;
 const MIN_PATCH_VERSION = 3;
 export const MIN_BT_VERSION = `${MIN_MAJOR_VERSION}.${MIN_MINOR_VERSION}.${MIN_PATCH_VERSION}-connect-alpha.6.1`; // Minimum for supporting AXO
 
-export const DEFAULT_BT_VERSION = `3.116.2`;
+export const DEFAULT_BT_VERSION = `3.128.0`;
 
 export function getSdkVersion(version: string | null): string {
   if (!version) {
