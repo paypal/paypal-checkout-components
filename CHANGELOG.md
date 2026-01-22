@@ -1,3 +1,9 @@
+## <small>5.0.401 (2026-01-22)</small>
+
+* App Switch in New Tab (#2581) ([fcc4629](https://github.com/paypal/paypal-checkout-components/commit/fcc4629)), closes [#2581](https://github.com/paypal/paypal-checkout-components/issues/2581)
+
+
+
 ## <small>5.0.400 (2026-01-15)</small>
 
 * Revert "feat(buttons): add disabled prop support (#2584)" (#2588) ([a31cab9](https://github.com/paypal/paypal-checkout-components/commit/a31cab9)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584) [#2588](https://github.com/paypal/paypal-checkout-components/issues/2588)
