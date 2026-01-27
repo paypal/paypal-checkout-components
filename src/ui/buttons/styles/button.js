@@ -39,6 +39,12 @@ export const buttonStyle = `
         cursor: pointer;
     }
 
+    .${CLASS.BUTTON}.${CLASS.DISABLED} {
+        pointer-events: none !important;
+        cursor: not-allowed !important;
+        opacity: 0.6 !important;
+    }
+
     .${CLASS.CONTAINER}.${CLASS.ENV}-${ENV.TEST} .${CLASS.TEXT} {
         background: rgba(0, 0, 0, 0.5) !important;
         color: transparent  !important;

@@ -1370,6 +1370,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
         value: getUserAgent,
       },
+
+      disabled: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+      },
     },
 
     exports: {

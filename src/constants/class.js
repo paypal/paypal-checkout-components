@@ -28,6 +28,7 @@ export const CLASS = {
 
   LOADING: ("paypal-button-loading": "paypal-button-loading"),
   SPINNER: ("paypal-button-spinner": "paypal-button-spinner"),
+  DISABLED: ("paypal-button-disabled": "paypal-button-disabled"),
 
   TAGLINE: ("paypal-button-tagline": "paypal-button-tagline"),
   POWERED_BY: ("paypal-powered-by": "paypal-powered-by"),
