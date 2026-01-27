@@ -1,3 +1,9 @@
+## <small>5.0.402 (2026-01-27)</small>
+
+* Add support for disabling buttons (#2590) ([14ca952](https://github.com/paypal/paypal-checkout-components/commit/14ca952)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590)
+
+
+
 ## <small>5.0.401 (2026-01-22)</small>
 
 * App Switch in New Tab (#2581) ([fcc4629](https://github.com/paypal/paypal-checkout-components/commit/fcc4629)), closes [#2581](https://github.com/paypal/paypal-checkout-components/issues/2581)
