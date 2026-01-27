@@ -35,6 +35,13 @@ export const buttonStyle = `
         overflow: hidden;
     }
 
+
+    .${CLASS.BUTTON}.${CLASS.DISABLED} {
+        pointer-events: none !important;
+        cursor: not-allowed !important;
+        opacity: 0.6 !important;
+    }
+
     .${CLASS.BUTTON} * {
         cursor: pointer;
     }

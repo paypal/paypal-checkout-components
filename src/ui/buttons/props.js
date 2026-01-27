@@ -568,6 +568,10 @@ type ThrowErrorForInvalidButtonColorArgs = {|
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
+
+  // Disabled state
+  disabled?: boolean,
+
   preferences?: {|
     appSwitchWhenAvailable?: boolean,
     launchAppSwitchIn?: "newTab" | "sameTab",
