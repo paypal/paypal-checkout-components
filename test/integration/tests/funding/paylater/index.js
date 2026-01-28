@@ -322,4 +322,38 @@ describe(`paylater button text`, () => {
       );
     });
   });
+
+  it(`should display Später Bezahlen label when paylater product is eligible and variant is AT`, () => {
+    const fundingSource = FUNDING.PAYLATER;
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true
+    );
+    mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
+      paylater: {
+        eligible: true,
+        variant: "AT",
+      },
+    });
+
+    const button = window.paypal.Buttons({
+      fundingSource,
+    });
+
+    if (!button.isEligible()) {
+      throw new Error(`Expected paylater to be eligible`);
+    }
+
+    return button.render("#testContainer").then(() => {
+      assert.equal(
+        getElementRecursive(".paypal-button-text").innerHTML,
+        "Später Bezahlen"
+      );
+      assert.equal(
+        getElementRecursive(".paypal-button").getAttribute("aria-label"),
+        "Später Bezahlen"
+      );
+    });
+  });
 });
