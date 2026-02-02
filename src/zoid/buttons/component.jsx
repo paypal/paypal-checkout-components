@@ -349,6 +349,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
       },
 
+      preferences: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        serialization: "json",
+      },
+
       showPayPalAppSwitchOverlay: {
         type: "function",
         queryParam: false,

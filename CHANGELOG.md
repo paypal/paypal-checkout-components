@@ -1,3 +1,33 @@
+## <small>5.0.402 (2026-01-27)</small>
+
+* Add support for disabling buttons (#2590) ([14ca952](https://github.com/paypal/paypal-checkout-components/commit/14ca952)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590)
+
+
+
+## <small>5.0.401 (2026-01-22)</small>
+
+* App Switch in New Tab (#2581) ([fcc4629](https://github.com/paypal/paypal-checkout-components/commit/fcc4629)), closes [#2581](https://github.com/paypal/paypal-checkout-components/issues/2581)
+
+
+
+## <small>5.0.400 (2026-01-15)</small>
+
+* Revert "feat(buttons): add disabled prop support (#2584)" (#2588) ([a31cab9](https://github.com/paypal/paypal-checkout-components/commit/a31cab9)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584) [#2588](https://github.com/paypal/paypal-checkout-components/issues/2588)
+
+
+
+## <small>5.0.399 (2026-01-06)</small>
+
+* fix: use the right env variable name for npm (#2586) ([e272f5b](https://github.com/paypal/paypal-checkout-components/commit/e272f5b)), closes [#2586](https://github.com/paypal/paypal-checkout-components/issues/2586)
+
+
+
+## <small>5.0.398 (2026-01-06)</small>
+
+* feat(buttons): add disabled prop support (#2584) ([5b9c8cd](https://github.com/paypal/paypal-checkout-components/commit/5b9c8cd)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584)
+
+
+
 ## <small>5.0.397 (2025-11-06)</small>
 
 * remove the restriction to use PayPal urls (#2578) ([3444b38](https://github.com/paypal/paypal-checkout-components/commit/3444b38)), closes [#2578](https://github.com/paypal/paypal-checkout-components/issues/2578)
