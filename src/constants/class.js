@@ -54,6 +54,4 @@ export const CLASS = {
 
   BUTTON_MESSAGE_RESERVE:
     ("paypal-button-message-reserved": "paypal-button-message-reserved"),
-
-  DISABLED: ("paypal-button-disabled": "paypal-button-disabled"),
 };

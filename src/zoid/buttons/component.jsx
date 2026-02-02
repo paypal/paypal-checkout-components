@@ -325,12 +325,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     props: {
-      disabled: {
-        type: "boolean",
-        queryParam: true,
-        required: false,
-      },
-
       appSwitchWhenAvailable: {
         type: "boolean",
         queryParam: true,
