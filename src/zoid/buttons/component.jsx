@@ -153,21 +153,28 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           const parentProps = parent.getProps();
 
           // Wrap onCancel to clear URL and reload after merchant callback
-          const wrappedOnCancel = async (...args) => {
-            if (typeof parentProps.onCancel === "function") {
-              await parentProps.onCancel(...args);
-            }
-            clearAppSwitchResumeParams();
-            window.location.reload();
+          const wrappedOnCancel = (...args) => {
+            return ZalgoPromise.try(() => {
+              // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
+              if (typeof parentProps.onCancel === "function") {
+                return parentProps.onCancel(...args);
+              }
+            }).then(() => {
+              clearAppSwitchResumeParams();
+              window.location.reload();
+            });
           };
 
           // Wrap onError to clear URL and reload after merchant callback
-          const wrappedOnError = async (...args) => {
-            if (typeof parentProps.onError === "function") {
-              await parentProps.onError(...args);
-            }
-            clearAppSwitchResumeParams();
-            window.location.reload();
+          const wrappedOnError = (...args) => {
+            return ZalgoPromise.try(() => {
+              if (typeof parentProps.onError === "function") {
+                return parentProps.onError(...args);
+              }
+            }).then(() => {
+              clearAppSwitchResumeParams();
+              window.location.reload();
+            });
           };
 
           resumeComponent({
