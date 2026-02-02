@@ -96,6 +96,7 @@ import {
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
+import { clearAppSwitchResumeParams } from "../../lib/appSwitchResume";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -150,12 +151,29 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
           const resumeComponent = getPixelComponent();
           const parentProps = parent.getProps();
+
+          // Wrap onCancel to clear URL and reload after merchant callback
+          const wrappedOnCancel = async (...args) => {
+            if (typeof parentProps.onCancel === "function") {
+              await parentProps.onCancel(...args);
+            }
+            clearAppSwitchResumeParams();
+            window.location.reload();
+          };
+
+          // Wrap onError to clear URL and reload after merchant callback
+          const wrappedOnError = async (...args) => {
+            if (typeof parentProps.onError === "function") {
+              await parentProps.onError(...args);
+            }
+            clearAppSwitchResumeParams();
+            window.location.reload();
+          };
+
           resumeComponent({
             onApprove: parentProps.onApprove,
-            // $FlowIgnore[incompatible-call]
-            onError: parentProps.onError,
-            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
-            onCancel: parentProps.onCancel,
+            onError: wrappedOnError,
+            onCancel: wrappedOnCancel,
             onClick: parentProps.onClick,
             onComplete: parentProps.onComplete,
             resumeFlowParams,
