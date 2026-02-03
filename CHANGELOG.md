@@ -1,3 +1,9 @@
+## <small>5.0.403 (2026-02-03)</small>
+
+* Revert "Add support for disabling buttons (#2590)" (#2593) ([1e48e9f](https://github.com/paypal/paypal-checkout-components/commit/1e48e9f)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590) [#2593](https://github.com/paypal/paypal-checkout-components/issues/2593)
+
+
+
 ## <small>5.0.402 (2026-01-27)</small>
 
 * Add support for disabling buttons (#2590) ([14ca952](https://github.com/paypal/paypal-checkout-components/commit/14ca952)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590)
