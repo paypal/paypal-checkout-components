@@ -30,6 +30,7 @@ import {
   getAPIStageHost,
   getPayPalDomain,
   getUserIDToken,
+  getSDKIntegrationSource,
   getClientMetadataID,
   getAmount,
   getEnableFunding,
@@ -42,11 +43,9 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
-  isPayPalTrustedUrl,
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
-  getGlobalSessionID,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -61,6 +60,7 @@ import {
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
   noop,
+  getUserAgent,
 } from "@krakenjs/belter/src";
 import {
   FUNDING,
@@ -89,6 +89,10 @@ import {
   type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import {
+  supportsVenmoPopups as supportsVenmoPopupsUtil,
+  isSupportedNativeVenmoBrowser,
+} from "../../funding/util";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
@@ -246,11 +250,21 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         fundingEligibility = getRefinedFundingEligibility(),
         supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(),
+        supportsVenmoPopups = supportsVenmoPopupsUtil(
+          props.experiment,
+          userAgentSupportsPopups(),
+          getUserAgent()
+        ),
+        supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
+          props.experiment,
+          getUserAgent()
+        ),
         experiment = getButtonExperiments(),
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
         displayOnly,
+        userAgent = getUserAgent(),
       } = props;
 
       const flow = determineFlow({
@@ -291,9 +305,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           flow,
           applePaySupport,
           supportsPopups,
+          supportsVenmoPopups,
+          supportedNativeVenmoBrowser,
           supportedNativeBrowser,
           experiment,
           displayOnly,
+          userAgent,
         })
       ) {
         return {
@@ -312,6 +329,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         queryParam: true,
         required: false,
+      },
+
+      preferences: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        serialization: "json",
       },
 
       showPayPalAppSwitchOverlay: {
@@ -353,11 +377,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: true,
         value: () => (url) => {
-          if (getEnv() === ENV.LOCAL || isPayPalTrustedUrl(url)) {
-            location.href = url;
-          } else {
-            throw new Error(`Unable to redirect to provided url ${url}`);
-          }
+          location.href = url;
         },
       },
 
@@ -710,10 +730,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             applePaySupport,
             supportsPopups,
             supportedNativeBrowser,
+            supportsVenmoPopups,
+            supportedNativeVenmoBrowser,
             createBillingAgreement,
             createSubscription,
             createVaultSetupToken,
             displayOnly,
+            userAgent = getUserAgent(),
           } = props;
 
           const flow = determineFlow({
@@ -742,8 +765,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               flow,
               applePaySupport,
               supportsPopups,
+              supportsVenmoPopups,
+              supportedNativeVenmoBrowser,
               supportedNativeBrowser,
               displayOnly,
+              userAgent,
             })
           ) {
             throw new Error(`${fundingSource} is not eligible`);
@@ -802,12 +828,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: () => {
           return () => queriedEligibleFunding;
         },
-      },
-
-      globalSessionID: {
-        type: "string",
-        required: false,
-        value: getGlobalSessionID,
       },
 
       hostedButtonId: {
@@ -1270,10 +1290,37 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
+      supportedNativeVenmoBrowser: {
+        type: "boolean",
+        value: ({ props }) => {
+          return isSupportedNativeVenmoBrowser(
+            props.experiment,
+            props.userAgent
+          );
+        },
+        queryParam: true,
+        required: false,
+      },
+
       supportsPopups: {
         type: "boolean",
-        value: () => userAgentSupportsPopups(),
+        value: () => {
+          return userAgentSupportsPopups();
+        },
         queryParam: true,
+      },
+
+      supportsVenmoPopups: {
+        type: "boolean",
+        value: ({ props }) => {
+          return supportsVenmoPopupsUtil(
+            props.experiment,
+            userAgentSupportsPopups(),
+            props.userAgent
+          );
+        },
+        queryParam: true,
+        required: false,
       },
 
       test: {
@@ -1299,6 +1346,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
       },
 
+      sdkSource: {
+        type: "string",
+        value: () => getSDKIntegrationSource(),
+        required: false,
+        queryParam: true,
+      },
+
       vault: {
         type: "boolean",
         queryParam: true,
@@ -1315,6 +1369,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         required: false,
         queryParam: true,
+      },
+
+      userAgent: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getUserAgent,
       },
     },
 
