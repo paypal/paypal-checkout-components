@@ -41,8 +41,8 @@
     "screenshot-server": "babel-node ./test/percy/server/index.js"
   },
   "engines": {
-    "node": "^18",
-    "npm": "8"
+    "node": ">=18",
+    "npm": ">=8"
   },
   "files": [
     "src/",
