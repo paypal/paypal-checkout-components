@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PayLater Button Test - Generic</title>
+
+  <!-- SDK will be loaded dynamically based on configuration -->
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #0070ba;
+    }
+    h2 {
+      color: #003087;
+      margin-top: 30px;
+      border-bottom: 2px solid #0070ba;
+      padding-bottom: 10px;
+    }
+    .info {
+      background: #e7f3ff;
+      padding: 15px;
+      border-left: 4px solid #0070ba;
+      margin: 20px 0;
+    }
+    .success {
+      background: #d4edda;
+      padding: 15px;
+      border-left: 4px solid #28a745;
+      margin: 20px 0;
+    }
+    .warning {
+      background: #fff3cd;
+      padding: 15px;
+      border-left: 4px solid #ffc107;
+      margin: 20px 0;
+    }
+    .paypal-button-container {
+      border: 2px solid #e0e0e0;
+      background: white;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+    hr {
+      margin: 30px 0;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      overflow-x: auto;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    #config-form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 2px solid #0070ba;
+      margin: 20px 0;
+    }
+    #config-form select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    #config-form button {
+      background: #0070ba;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #config-form button:hover {
+      background: #005a9e;
+    }
+    #config-form button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    #config-form label {
+      font-weight: bold;
+      color: #003087;
+    }
+    #config-form select:disabled {
+      background: #f5f5f5;
+      cursor: not-allowed;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #0070ba;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .loading-message {
+      background: #fff3cd;
+      padding: 15px;
+      border-left: 4px solid #ffc107;
+      margin: 20px 0;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🌍 PayLater Button Test - Generic</h1>
+
+  <!-- Configuration Form (always visible) -->
+  <div id="config-form">
+    <h2 style="margin-top: 0">Select Configuration</h2>
+    <p style="color: #666; margin-bottom: 20px">
+      Choose a country to test PayLater button with the appropriate currency and
+      expected label.
+    </p>
+    <form id="country-selector">
+      <label for="country">Select Country:</label>
+      <select id="country" required>
+        <option value="">-- Choose a country --</option>
+        <option value="AT|EUR">🇦🇹 Austria (AT) - EUR</option>
+        <option value="DE|EUR">🇩🇪 Germany (DE) - EUR</option>
+        <option value="IT|EUR">🇮🇹 Italy (IT) - EUR</option>
+        <option value="ES|EUR">🇪🇸 Spain (ES) - EUR</option>
+        <option value="FR|EUR">🇫🇷 France (FR) - EUR</option>
+        <option value="CA|CAD">🇨🇦 Canada (CA) - CAD</option>
+        <option value="US|USD">🇺🇸 USA (US) - USD</option>
+      </select>
+      <button type="submit">Load Buttons</button>
+    </form>
+    <p style="font-size: 13px; color: #888; margin-top: 15px">
+      💡 <strong>Tip:</strong> Bookmark URLs with parameters for quick access:
+      <code>?country=DE&currency=EUR</code>
+    </p>
+  </div>
+
+  <!-- Loading Message -->
+  <div id="loading-message" class="loading-message">
+    <strong>⏳ Loading SDK and rendering buttons...</strong>
+    <span class="loading-spinner"></span>
+    <p style="margin: 10px 0 0 0; font-size: 14px; color: #666">
+      Please wait while we load the PayPal SDK for the selected country.
+    </p>
+  </div>
+
+  <div class="info">
+    <strong>Current Configuration:</strong>
+    <ul>
+      <li>
+        SDK Source:
+        <code>clientsdknodeweb (https://localhost.paypal.com:8443)</code>
+      </li>
+      <li>
+        Page Served:
+        <code
+          >checkout-components dev server
+          (https://localhost.paypal.com:9001)</code
+        >
+      </li>
+      <li>Buyer Country: <code id="display-country">-</code></li>
+      <li>Currency: <code id="display-currency">-</code></li>
+      <li>Expected Label: <strong id="display-label">-</strong></li>
+      <li>
+        Expected Variant: Backend determines based on
+        <code>buyer-country</code> parameter
+      </li>
+    </ul>
+    <p style="margin-top: 10px; font-size: 14px; color: #666">
+      💡 <strong>Note:</strong> This page demonstrates the two-server testing
+      workflow. See <a href="LOCAL.md" style="color: #0070ba">LOCAL.md</a> for
+      complete documentation.
+    </p>
+  </div>
+
+  <div id="status-check" class="success" style="display: none">
+    <strong>✅ SDK Loaded Successfully!</strong>
+    <div id="funding-info"></div>
+  </div>
+
+  <h2>Test 1: PayLater Standalone - Blue</h2>
+  <div class="paypal-button-container">
+    <div class="buttons-paylater-blue"></div>
+  </div>
+
+  <h2>Test 2: PayLater Standalone - Gold</h2>
+  <div class="paypal-button-container">
+    <div class="buttons-paylater-gold"></div>
+  </div>
+
+  <h2>Test 3: Smart Payment Buttons - Vertical Layout</h2>
+  <p>Shows all eligible funding sources including PayLater</p>
+  <div class="paypal-button-container">
+    <div class="buttons-vertical"></div>
+  </div>
+
+  <h2>Test 4: Smart Payment Buttons - Horizontal Layout</h2>
+  <div class="paypal-button-container">
+    <div class="buttons-horizontal"></div>
+  </div>
+
+  <h2>Test 5: Color Variations</h2>
+  <div class="grid">
+    <div>
+      <strong>White:</strong>
+      <div class="paypal-button-container">
+        <div class="buttons-paylater-white"></div>
+      </div>
+    </div>
+    <div>
+      <strong>Black:</strong>
+      <div class="paypal-button-container">
+        <div class="buttons-paylater-black"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <h2>Funding Source Eligibility</h2>
+  <pre id="eligibility-data">Waiting for configuration...</pre>
+
+  <script>
+    // Configuration map with expected labels for each country
+    const COUNTRY_CONFIG = {
+      AT: { currency: "EUR", label: "Später Bezahlen", product: "paylater" },
+      DE: { currency: "EUR", label: "Später Bezahlen", product: "paylater" },
+      IT: { currency: "EUR", label: "Paga a rate", product: "payIn3/paylater" },
+      ES: {
+        currency: "EUR",
+        label: "Paga a plazos",
+        product: "payIn3/paylater",
+      },
+      FR: { currency: "EUR", label: "4X PayPal", product: "payIn4" },
+      CA: { currency: "CAD", label: "Payer en 4", product: "paylater" },
+      US: { currency: "USD", label: "Pay in 4", product: "payIn4" },
+    };
+
+    // Parse URL parameters
+    function getURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        country: params.get("country"),
+        currency: params.get("currency"),
+      };
+    }
+
+    // Get configuration from URL params
+    function getConfiguration() {
+      const urlParams = getURLParams();
+
+      if (urlParams.country && urlParams.currency) {
+        // Pre-select the dropdown to match URL params
+        const selectValue = urlParams.country + "|" + urlParams.currency;
+        const selectElement = document.getElementById("country");
+        if (selectElement) {
+          selectElement.value = selectValue;
+        }
+        return urlParams;
+      }
+
+      // No URL params
+      document.getElementById("eligibility-data").textContent =
+        "Please select a country configuration above.";
+      return null;
+    }
+
+    // Set loading state
+    function setLoadingState(isLoading) {
+      const selectElement = document.getElementById("country");
+      const buttonElement = document.querySelector("#country-selector button");
+      const loadingMessage = document.getElementById("loading-message");
+
+      if (isLoading) {
+        selectElement.disabled = true;
+        buttonElement.disabled = true;
+        buttonElement.textContent = "Loading...";
+        loadingMessage.style.display = "block";
+      } else {
+        selectElement.disabled = false;
+        buttonElement.disabled = false;
+        buttonElement.textContent = "Load Buttons";
+        loadingMessage.style.display = "none";
+      }
+    }
+
+    // Update display with current configuration
+    function updateDisplay(country, currency) {
+      const config = COUNTRY_CONFIG[country];
+      document.getElementById("display-country").textContent = country;
+      document.getElementById("display-currency").textContent = currency;
+      document.getElementById("display-label").textContent = config
+        ? config.label
+        : "Unknown";
+    }
+
+    // Load SDK dynamically with configuration
+    function loadSDK(country, currency) {
+      console.log(
+        "🔄 Loading SDK for country:",
+        country,
+        "currency:",
+        currency
+      );
+
+      // Show loading state
+      setLoadingState(true);
+
+      const script = document.createElement("script");
+      script.src =
+        "https://localhost.paypal.com:8443/sdk/js?client-id=alc_client1&currency=" +
+        currency +
+        "&buyer-country=" +
+        country +
+        "&components=buttons,funding-eligibility&debug=true";
+
+      script.onload = function () {
+        console.log("✅ SDK loaded for", country, currency);
+        initializeButtons(country, currency);
+      };
+
+      script.onerror = function () {
+        setLoadingState(false);
+        alert(
+          "❌ Failed to load SDK. Check that clientsdknodeweb is running on port 8443."
+        );
+        document.getElementById("eligibility-data").textContent =
+          "ERROR: SDK did not load. Ensure clientsdknodeweb server is running:\n\ncd /Users/abhishesinha/Documents/Workspace/paypal/BNPL/clientsdknodeweb\nnpm start";
+      };
+
+      document.head.appendChild(script);
+    }
+
+    // Form submission handler
+    const form = document.getElementById("country-selector");
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const value = document.getElementById("country").value;
+
+        if (!value) {
+          alert("Please select a country");
+          return;
+        }
+
+        const parts = value.split("|");
+        const country = parts[0];
+        const currency = parts[1];
+
+        // Redirect to URL with params
+        window.location.href = "?country=" + country + "&currency=" + currency;
+      });
+    }
+
+    // Initialize on page load
+    const config = getConfiguration();
+    if (config) {
+      updateDisplay(config.country, config.currency);
+      loadSDK(config.country, config.currency);
+    }
+
+    // Button initialization (called after SDK loads)
+    function initializeButtons(country, currency) {
+      setTimeout(function () {
+        if (typeof paypal === "undefined") {
+          alert(
+            "❌ SDK failed to load! Check that clientsdknodeweb is running on port 8443"
+          );
+          document.getElementById("eligibility-data").textContent =
+            "ERROR: SDK did not load. Ensure clientsdknodeweb server is running:\n\ncd /Users/abhishesinha/Documents/Workspace/paypal/BNPL/clientsdknodeweb\nnpm start";
+          return;
+        }
+
+        console.log("✅ PayPal SDK loaded, version:", paypal.version);
+
+        // Show status
+        document.getElementById("status-check").style.display = "block";
+
+        // Display funding eligibility using public API
+        const fundingSources = paypal.getFundingSources();
+        const payLaterEligible = paypal.isFundingEligible(
+          paypal.FUNDING.PAYLATER
+        );
+
+        console.log("Funding Sources:", fundingSources);
+        console.log("PayLater Eligible:", payLaterEligible);
+
+        let eligibilityInfo = {
+          country: country,
+          currency: currency,
+          availableSources: fundingSources,
+          payLaterEligible: payLaterEligible,
+          sdkVersion: paypal.version,
+          note: "Variant is determined by backend based on buyer-country parameter.",
+        };
+
+        document.getElementById("eligibility-data").textContent =
+          JSON.stringify(eligibilityInfo, null, 2);
+
+        // Update status with eligibility info
+        let info = "<ul>";
+        info +=
+          "<li>Available Funding Sources: <strong>" +
+          fundingSources.join(", ") +
+          "</strong></li>";
+        info +=
+          "<li>PayLater Eligible: <strong>" +
+          (payLaterEligible ? "Yes ✅" : "No ❌") +
+          "</strong></li>";
+        info += "<li>SDK Version: <strong>" + paypal.version + "</strong></li>";
+        info += "</ul>";
+
+        if (payLaterEligible) {
+          info +=
+            '<p style="color: green; font-weight: bold;">✅ PayLater is eligible! Button should render with country-specific label.</p>';
+          info +=
+            '<p style="color: #666; font-size: 14px;">💡 <em>Variant (AT, DE, FR, etc.) is determined by backend based on <code>buyer-country</code> parameter in SDK URL.</em></p>';
+        } else {
+          info +=
+            '<div class="warning"><strong>⚠️ Warning:</strong> PayLater is not eligible for this configuration.</div>';
+        }
+
+        document.getElementById("funding-info").innerHTML = info;
+
+        // Render buttons
+        renderAllButtons(country, currency);
+      }, 1000);
+    }
+
+    function renderAllButtons(country, currency) {
+      console.log("🎨 Rendering buttons for", country, currency);
+
+      // Test 1: PayLater Blue
+      paypal
+        .Buttons({
+          fundingSource: paypal.FUNDING.PAYLATER,
+          style: {
+            color: "blue",
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: "100.00", currency_code: currency },
+                },
+              ],
+            });
+          },
+          onApprove: function (data, actions) {
+            console.log("Order approved:", data);
+            alert("✅ Test order approved! (No actual transaction)");
+          },
+          onError: function (err) {
+            console.error("Button error:", err);
+          },
+        })
+        .render(".buttons-paylater-blue")
+        .catch(function (err) {
+          console.error("Failed to render PayLater blue button:", err);
+          document.querySelector(".buttons-paylater-blue").innerHTML =
+            '<p style="color: red;">Failed to render: ' + err.message + "</p>";
+        });
+
+      // Test 2: PayLater Gold
+      paypal
+        .Buttons({
+          fundingSource: paypal.FUNDING.PAYLATER,
+          style: {
+            color: "gold",
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: "100.00", currency_code: currency },
+                },
+              ],
+            });
+          },
+          onApprove: function (data, actions) {
+            console.log("Order approved:", data);
+          },
+        })
+        .render(".buttons-paylater-gold")
+        .catch(function (err) {
+          console.error("Failed to render PayLater gold button:", err);
+        });
+
+      // Test 3: Smart Buttons - Vertical
+      paypal
+        .Buttons({
+          style: {
+            layout: "vertical",
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: "100.00", currency_code: currency },
+                },
+              ],
+            });
+          },
+          onApprove: function (data, actions) {
+            console.log("Order approved:", data);
+          },
+        })
+        .render(".buttons-vertical")
+        .catch(function (err) {
+          console.error("Failed to render vertical buttons:", err);
+        });
+
+      // Test 4: Smart Buttons - Horizontal
+      paypal
+        .Buttons({
+          style: {
+            layout: "horizontal",
+            tagline: false,
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: "100.00", currency_code: currency },
+                },
+              ],
+            });
+          },
+          onApprove: function (data, actions) {
+            console.log("Order approved:", data);
+          },
+        })
+        .render(".buttons-horizontal")
+        .catch(function (err) {
+          console.error("Failed to render horizontal buttons:", err);
+        });
+
+      // Test 5: Color variations
+      paypal
+        .Buttons({
+          fundingSource: paypal.FUNDING.PAYLATER,
+          style: {
+            color: "white",
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: "100.00", currency_code: currency },
+                },
+              ],
+            });
+          },
+        })
+        .render(".buttons-paylater-white")
+        .catch(function (err) {
+          console.error("Failed to render white button:", err);
+        });
+
+      paypal
+        .Buttons({
+          fundingSource: paypal.FUNDING.PAYLATER,
+          style: {
+            color: "black",
+          },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: "100.00", currency_code: currency },
+                },
+              ],
+            });
+          },
+        })
+        .render(".buttons-paylater-black")
+        .catch(function (err) {
+          console.error("Failed to render black button:", err);
+        });
+
+      console.log("✅ All buttons rendered");
+
+      // Check for expected label text after buttons render
+      setTimeout(function () {
+        const config = COUNTRY_CONFIG[country];
+        const expectedLabel = config ? config.label : null;
+
+        if (!expectedLabel) {
+          console.warn("⚠️ WARNING: Unknown country code:", country);
+          setLoadingState(false);
+          return;
+        }
+
+        const pageText = document.body.innerText;
+        if (pageText.includes(expectedLabel)) {
+          console.log(
+            "✅ SUCCESS: " +
+              country +
+              ' label "' +
+              expectedLabel +
+              '" found on page!'
+          );
+        } else {
+          console.warn(
+            '⚠️ WARNING: Could not find "' +
+              expectedLabel +
+              '" text on page. Check funding eligibility variant.'
+          );
+        }
+
+        // Hide loading state after everything is done
+        setLoadingState(false);
+      }, 2000);
+    }
+  </script>
+</body>
