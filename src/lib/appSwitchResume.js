@@ -129,11 +129,3 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
 export function isAppSwitchResumeFlow(): boolean {
   return Boolean(getAppSwitchResumeParams());
 }
-
-export function clearAppSwitchResumeParams(): void {
-  if (window.history && window.history.replaceState) {
-    window.history.replaceState({}, document.title, window.location.pathname);
-  } else {
-    window.location.hash = "";
-  }
-}

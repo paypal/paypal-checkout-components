@@ -96,7 +96,6 @@ import {
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
-import { clearAppSwitchResumeParams } from "../../lib/appSwitchResume";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -132,13 +131,72 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     getExtensions: (parent) => {
       return {
         hasReturned: () => {
-          return isAppSwitchResumeFlow();
+          const isResumeFlow = isAppSwitchResumeFlow();
+          const currentState = parent.getHelpers()?.state?.appSwitchState;
+          const result = isResumeFlow && !currentState;
+
+          // eslint-disable-next-line no-console
+          console.log("[TANYA 100] hasReturned() check:", {
+            isResumeFlow,
+            currentState,
+            result,
+            url: window.location.href,
+          });
+
+          return result;
         },
         resume: () => {
+          // eslint-disable-next-line no-console
+          console.log(
+            "[TANYA 200] resume() called - Starting app switch resume flow"
+          );
+
           const resumeFlowParams = getAppSwitchResumeParams();
           if (!resumeFlowParams) {
             throw new Error("Resume Flow is not supported.");
           }
+
+          // eslint-disable-next-line no-console
+          console.log("[TANYA 210] resumeFlowParams:", resumeFlowParams);
+
+          // Mark state as "returned" to prevent duplicate resume() calls
+          // This ensures hasReturned() will return false on subsequent checks
+          const helpers = parent.getHelpers();
+          if (helpers?.state) {
+            helpers.state.appSwitchState = "returned";
+            // eslint-disable-next-line no-console
+            console.log(
+              '[TANYA 215] State set to "returned" - hasReturned() will now return false'
+            );
+          }
+
+          // Create a hidden container in the body where we'll render the button
+          // This button will be shown after onCancel completes
+          const hiddenContainer = window.document.createElement("div");
+          hiddenContainer.id = "paypal-button-hidden-container";
+          hiddenContainer.style.display = "none";
+          window.document.body.appendChild(hiddenContainer);
+
+          // eslint-disable-next-line no-console
+          console.log(
+            "[TANYA 216] Created hidden container, rendering button to it"
+          );
+
+          // Render the button to this hidden container
+          // After onCancel, we'll show this container
+          try {
+            parent.render(hiddenContainer).then(() => {
+              // eslint-disable-next-line no-console
+              console.log("[TANYA 217] Button rendered to hidden container");
+            });
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(
+              "[TANYA 218] Error rendering to hidden container:",
+              error
+            );
+          }
+
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
@@ -152,39 +210,100 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           const resumeComponent = getPixelComponent();
           const parentProps = parent.getProps();
 
-          // Wrap onCancel to clear URL and reload after merchant callback
+          // Wrap onCancel - no reload/URL clear to allow button re-render in place
+          // State tracking via appSwitchState prevents duplicate onCancel invocations
           const wrappedOnCancel = (...args) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 220] wrappedOnCancel called - Merchant onCancel will fire"
+            );
+
             return ZalgoPromise.try(() => {
               // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
               if (typeof parentProps.onCancel === "function") {
                 return parentProps.onCancel(...args);
               }
             }).then(() => {
-              clearAppSwitchResumeParams();
-              window.location.reload();
+              // eslint-disable-next-line no-console
+              console.log(
+                "[TANYA 230] wrappedOnCancel completed - closing pixel and rendering button"
+              );
+
+              // Close pixel
+              if (parent.pixelInstance) {
+                parent.pixelInstance.close();
+              }
+
+              // eslint-disable-next-line no-console
+              console.log(
+                "[TANYA 235] onCancel complete - showing hidden button container"
+              );
+
+              // Show the hidden button container that was rendered during resume()
+              const hiddenContainer = window.document.getElementById(
+                "paypal-button-hidden-container"
+              );
+
+              if (hiddenContainer) {
+                // eslint-disable-next-line no-console
+                console.log(
+                  "[TANYA 236] Found hidden container, making it visible"
+                );
+
+                hiddenContainer.style.display = "block";
+
+                // eslint-disable-next-line no-console
+                console.log("[TANYA 237] Button should now be visible!");
+              } else {
+                // eslint-disable-next-line no-console
+                console.error("[TANYA 238] ERROR: Hidden container not found!");
+              }
             });
           };
 
-          // Wrap onError to clear URL and reload after merchant callback
           const wrappedOnError = (...args) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 240] wrappedOnError called - Merchant onError will fire"
+            );
+
             return ZalgoPromise.try(() => {
               if (typeof parentProps.onError === "function") {
                 return parentProps.onError(...args);
               }
             }).then(() => {
-              clearAppSwitchResumeParams();
-              window.location.reload();
+              // eslint-disable-next-line no-console
+              console.log(
+                "[TANYA 250] wrappedOnError completed - closing pixel and rendering button"
+              );
+
+              // Close pixel
+              if (parent.pixelInstance) {
+                parent.pixelInstance.close();
+              }
+
+              // Automatically render the button after error
+              parent.render(
+                parent.document.querySelector(
+                  `[data-uid="${parent.props.uid}"]`
+                )
+              );
             });
           };
 
-          resumeComponent({
+          const pixelInstance = resumeComponent({
             onApprove: parentProps.onApprove,
             onError: wrappedOnError,
             onCancel: wrappedOnCancel,
             onClick: parentProps.onClick,
             onComplete: parentProps.onComplete,
             resumeFlowParams,
-          }).render("body");
+          });
+
+          // Store pixel instance so wrappedOnCancel/wrappedOnError can close it
+          parent.pixelInstance = pixelInstance;
+
+          pixelInstance.render("body");
         },
       };
     },
@@ -410,23 +529,50 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => (event) => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-hashchange",
-            payload: {
-              url: event.newURL,
-            },
-          });
-        },
+        value:
+          ({ state }) =>
+          (event) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 400] hashChangeHandler - User returned from app",
+              event.newURL
+            );
+            state.appSwitchState = "returned";
+            // eslint-disable-next-line no-console
+            console.log(
+              '[TANYA 410] State changed to "returned", sending post-robot message to iframe'
+            );
+
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-hashchange",
+              payload: {
+                url: event.newURL,
+              },
+            });
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 420] Post-robot message sent: paypal-hashchange"
+            );
+          },
       },
 
       listenForHashChanges: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 300] listenForHashChanges - App switch starting via hash"
+            );
+            state.appSwitchState = "pending";
+
             window.addEventListener("hashchange", props.hashChangeHandler);
+            // eslint-disable-next-line no-console
+            console.log(
+              '[TANYA 310] Hash change listener added, state = "pending"'
+            );
           },
       },
 
@@ -444,27 +590,53 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => () => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-visibilitychange",
-            payload: {
-              url: window.location.href,
+        value:
+          ({ state }) =>
+          () => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 600] visibilityChangeHandler - Page visibility changed",
+              document.visibilityState
+            );
+            state.appSwitchState = "returned";
+            // eslint-disable-next-line no-console
+            console.log(
+              '[TANYA 610] State changed to "returned", sending post-robot message to iframe'
+            );
 
-              visibilityState: document.visibilityState,
-            },
-          });
-        },
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-visibilitychange",
+              payload: {
+                url: window.location.href,
+                visibilityState: document.visibilityState,
+              },
+            });
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 620] Post-robot message sent: paypal-visibilitychange"
+            );
+          },
       },
 
       listenForVisibilityChange: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[TANYA 500] listenForVisibilityChange - App switch starting via visibility"
+            );
+            state.appSwitchState = "pending";
+
             window.addEventListener(
               "visibilitychange",
               props.visibilityChangeHandler
+            );
+            // eslint-disable-next-line no-console
+            console.log(
+              '[TANYA 510] Visibility change listener added, state = "pending"'
             );
           },
       },
