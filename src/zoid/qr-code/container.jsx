@@ -4,7 +4,6 @@
 import { destroyElement, type EventEmitterType } from "@krakenjs/belter/src";
 import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
 import { node, dom, type ChildType } from "@krakenjs/jsx-pragmatic/src";
-import { getCSPNonce } from "@paypal/sdk-client/src";
 
 import { type QRCodeProps } from "./types";
 
@@ -114,6 +113,7 @@ export function QRCodeContainer({
 export function containerTemplate({
   frame,
   prerenderFrame,
+  props,
   doc,
   uid,
   event,
@@ -122,7 +122,7 @@ export function containerTemplate({
     return;
   }
 
-  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
+  const { cspNonce } = props;
 
   return (
     <QRCodeContainer
