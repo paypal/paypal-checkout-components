@@ -8,6 +8,7 @@ export const BUTTON_LABEL = {
   INSTALLMENT: ("installment": "installment"),
   SUBSCRIBE: ("subscribe": "subscribe"),
   DONATE: ("donate": "donate"),
+  PAYNOWORLATER: ("paynoworlater": "paynoworlater"),
 };
 
 export const BUTTON_COLOR_REBRAND = {
