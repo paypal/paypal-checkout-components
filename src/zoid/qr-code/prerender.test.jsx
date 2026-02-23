@@ -57,10 +57,11 @@ describe("prerenderTemplate", () => {
       // $FlowIssue - mock return value
       getCSPNonce.mockReturnValue(TEST_NONCE);
 
-      // $FlowIssue - test props
+      // $FlowIssue - test mock parameters
       const result = prerenderTemplate({
         doc: document,
         close: vi.fn(),
+        // $FlowIssue - test mock parameters
         props: {},
       });
 
@@ -83,7 +84,7 @@ describe("prerenderTemplate", () => {
     // $FlowIssue - mock return value
     getCSPNonce.mockReturnValue(TEST_NONCE);
 
-    // $FlowIssue - test props
+    // $FlowIssue - test mock parameters
     prerenderTemplate({ doc: document, close: vi.fn(), props: {} });
 
     expect(capturedChildren?.length).toBe(2);
@@ -93,7 +94,7 @@ describe("prerenderTemplate", () => {
 
   test("should wire up close handler to close button", () => {
     const mockClose = vi.fn();
-    // $FlowIssue - test props
+    // $FlowIssue - test mock parameters
     prerenderTemplate({ doc: document, close: mockClose, props: {} });
 
     // Verify second child is close button with correct props

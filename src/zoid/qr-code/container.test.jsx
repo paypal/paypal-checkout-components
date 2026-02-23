@@ -55,13 +55,14 @@ describe("containerTemplate", () => {
       getCSPNonce.mockReturnValue(TEST_NONCE);
 
       const { frame, prerenderFrame, event } = createMocks();
-      // $FlowIssue - test props
+      // $FlowIssue - test mock parameters
       const result = containerTemplate({
         frame,
         prerenderFrame,
         doc: document,
         uid: TEST_UID,
         event,
+        // $FlowIssue - test mock parameters
         props: {},
       });
 
@@ -102,13 +103,14 @@ describe("containerTemplate", () => {
     getCSPNonce.mockReturnValue(TEST_NONCE);
 
     const { frame, prerenderFrame, event } = createMocks();
-    // $FlowIssue - test props
+    // $FlowIssue - test mock parameters
     const result = containerTemplate({
       frame,
       prerenderFrame,
       doc: document,
       uid: TEST_UID,
       event,
+      // $FlowIssue - test mock parameters
       props: {},
     });
 
