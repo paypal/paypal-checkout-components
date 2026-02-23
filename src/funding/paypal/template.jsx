@@ -232,12 +232,13 @@ function ButtonPersonalization(opts: LabelOptions): ?ChildType {
 export function Label(opts: LabelOptions): ChildType {
   const {
     label,
+    logo,
     locale: { lang },
   } = opts;
   const { PayNowOrLater } = componentContent[lang];
 
   if (label === BUTTON_LABEL.PAYNOWORLATER && PayNowOrLater) {
-    return <PayNowOrLater logo={<Logo {...opts} />} />;
+    return <PayNowOrLater logo={logo} />;
   }
 
   return (
