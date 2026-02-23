@@ -163,15 +163,8 @@ export function BasicLabel({
     return logo;
   }
 
-  const {
-    Checkout,
-    Pay,
-    BuyNow,
-    Installment,
-    Subscribe,
-    Donate,
-    PayNowOrLater,
-  } = componentContent[lang];
+  const { Checkout, Pay, BuyNow, Installment, Subscribe, Donate } =
+    componentContent[lang];
 
   if (label === BUTTON_LABEL.CHECKOUT) {
     return <Checkout logo={logo} />;
@@ -195,10 +188,6 @@ export function BasicLabel({
 
   if (label === BUTTON_LABEL.INSTALLMENT && Installment) {
     return <Installment logo={logo} period={period} />;
-  }
-
-  if (label === BUTTON_LABEL.PAYNOWORLATER && PayNowOrLater) {
-    return <PayNowOrLater logo={logo} />;
   }
 
   return logo;
