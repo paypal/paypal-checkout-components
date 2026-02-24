@@ -36,7 +36,7 @@ import {
   type TagOptions,
   BasicLabel,
 } from "../common";
-import { CLASS, ATTRIBUTE, BUTTON_LAYOUT, BUTTON_LABEL } from "../../constants";
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from "../../constants";
 import { componentContent } from "../content";
 import { Text, PlaceHolder } from "../../ui/text";
 import { TrackingBeacon } from "../../ui/tracking";
@@ -231,13 +231,13 @@ function ButtonPersonalization(opts: LabelOptions): ?ChildType {
 
 export function Label(opts: LabelOptions): ChildType {
   const {
-    label,
     logo,
     locale: { lang },
+    fundingEligibility,
   } = opts;
   const { PayNowOrLater } = componentContent[lang];
 
-  if (label === BUTTON_LABEL.PAYNOWORLATER && PayNowOrLater) {
+  if (fundingEligibility[FUNDING.PAYLATER]?.eligible && PayNowOrLater) {
     return <PayNowOrLater logo={logo} />;
   }
 
