@@ -16,13 +16,54 @@ export type AppSwitchResumeParams = {|
   checkoutState: "onApprove" | "onCancel" | "onError",
 |};
 
+// When the merchant's return_url contains a hash fragment (e.g. /checkout/#payment),
+// PayPal params (token, PayerID) end up inside the hash as /checkout/#payment?token=...&PayerID=...
+// because the base URL cannot be modified (iOS Safari uses it for tab matching in app switch).
+// This helper extracts query-style params embedded in the hash fragment
+function getParamsFromHashFragment(): { [string]: string } {
+  const hashString =
+    window.location.hash && String(window.location.hash).slice(1);
+  if (!hashString) {
+    return {};
+  }
+
+  // Check for ? delimiter first (e.g. #payment?token=...)
+  const questionMarkIndex = hashString.indexOf("?");
+  if (questionMarkIndex !== -1) {
+    const queryString = hashString.slice(questionMarkIndex + 1);
+    return Object.fromEntries(new URLSearchParams(queryString));
+  }
+
+  // Fallback to & delimiter (e.g. #payment&token=...)
+  const ampersandIndex = hashString.indexOf("&");
+  if (ampersandIndex !== -1) {
+    const queryString = hashString.slice(ampersandIndex + 1);
+    return Object.fromEntries(new URLSearchParams(queryString));
+  }
+
+  return {};
+}
+
 // The Web fallback flow uses different set of query params then appswitch flow.
 function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
   try {
-    const params = Object.fromEntries(
+    const searchParams = Object.fromEntries(
       // eslint-disable-next-line compat/compat
       new URLSearchParams(window.location.search)
     );
+
+    // If no PayPal params found in query string, check if they are embedded
+    // inside the hash fragment. This happens when the merchant's return_url
+    // contains a hash (e.g. /checkout/#payment) and PayPal params were appended
+    // after the fragment: /checkout/#payment?token=...&PayerID=...
+    const params =
+      searchParams.token ||
+      searchParams.vaultSetupToken ||
+      searchParams.approval_token_id ||
+      searchParams.approval_session_id
+        ? searchParams
+        : { ...getParamsFromHashFragment(), ...searchParams };
+
     const {
       button_session_id: buttonSessionID,
       fundingSource,
@@ -70,7 +111,9 @@ export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
   const questionMarkIndex = hashString.indexOf("?");
 
   if (questionMarkIndex !== -1) {
-    [hash, queryString] = hashString.split("?");
+    // Do not use .split() here, as the merchant return_url may also contain "?"
+    hash = hashString.slice(0, questionMarkIndex);
+    queryString = hashString.slice(questionMarkIndex + 1);
   } else {
     const ampersandIndex = hashString.indexOf("&");
 

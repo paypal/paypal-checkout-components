@@ -70,16 +70,24 @@ describe("app switch resume flow", () => {
     expect(isAppSwitchResumeFlow()).toEqual(false);
   });
 
-  test("should test null fetching resume params with invalid callback passed", () => {
+  test("should extract resume params from hash with non-action prefix via web fallback", () => {
+    // When hash is not a known action (e.g. #Unknown) but contains PayPal params,
+    // the web fallback should extract them from the hash fragment.
     vi.spyOn(window, "location", "get").mockReturnValue({
       hash: `#Unknown?button_session_id=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
+      search: "",
     });
 
     const params = getAppSwitchResumeParams();
 
     expect.assertions(2);
-    expect(params).toEqual(null);
-    expect(isAppSwitchResumeFlow()).toEqual(false);
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onCancel",
+      fundingSource,
+      orderID,
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
   });
 
   test("should test fetching multiple resume params when parameters are correctly passed", () => {
@@ -139,5 +147,271 @@ describe("app switch resume flow", () => {
       vaultSetupToken: "VA-3",
     });
     expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should extract resume params when merchant return_url has hash fragment with ? delimiter", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: `#payment?button_session_id=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}&PayerID=PP-payer-122`,
+      search: "",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onApprove",
+      fundingSource,
+      orderID,
+      payerID: "PP-payer-122",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should extract resume params when merchant return_url has hash fragment without PayerID (cancel)", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: `#payment?button_session_id=${buttonSessionID}&token=${orderID}&fundingSource=${fundingSource}`,
+      search: "",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onCancel",
+      fundingSource,
+      orderID,
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should extract resume params when hash uses & delimiter instead of ?", () => {
+    // Real-world case: URL like /ppcp-js-sdk?clientSideDelay=0#payment&token=...&PayerID=...
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: `#payment&token=${orderID}&PayerID=PP-payer-122&button_session_id=${buttonSessionID}`,
+      search: "?clientSideDelay=0&serverSideDelay=0",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onApprove",
+      orderID,
+      payerID: "PP-payer-122",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should extract vault resume params from hash fragment", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: `#/step3?button_session_id=${buttonSessionID}&token=${orderID}&approval_token_id=VA-3`,
+      search: "",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onCancel",
+      orderID,
+      vaultSetupToken: "VA-3",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should prefer search params over hash params when both exist", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: `#payment?token=WRONG-TOKEN`,
+      search: `?button_session_id=${buttonSessionID}&token=${orderID}&PayerID=PP-123`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onApprove",
+      orderID,
+      payerID: "PP-123",
+    });
+  });
+
+  test("should return null when hash has merchant fragment but no PayPal params", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: "#payment",
+      search: "",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual(null);
+    expect(isAppSwitchResumeFlow()).toEqual(false);
+  });
+
+  test("should return null when hash has merchant fragment with unrelated params", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: "#/checkout?step=review&cart=abc123",
+      search: "",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual(null);
+    expect(isAppSwitchResumeFlow()).toEqual(false);
+  });
+
+  test("should handle vaultSetupToken in search params", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: "",
+      search: `?button_session_id=${buttonSessionID}&vaultSetupToken=VA-123&PayerID=PP-456`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onApprove",
+      payerID: "PP-456",
+      vaultSetupToken: "VA-123",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should handle approval_token_id in search params", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: "",
+      search: `?button_session_id=${buttonSessionID}&approval_token_id=AT-789`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onCancel",
+      vaultSetupToken: "AT-789",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  test("should handle approval_session_id in search params", () => {
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: "",
+      search: `?button_session_id=${buttonSessionID}&approval_session_id=AS-999`,
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual({
+      buttonSessionID,
+      checkoutState: "onCancel",
+      vaultSetupToken: "AS-999",
+    });
+    expect(isAppSwitchResumeFlow()).toEqual(true);
+  });
+
+  describe("hash URL variations", () => {
+    // Tests for all supported hash URL formats that the web fallback must handle.
+    // PayPal appends params to the URL after app switch; the exact position depends
+    // on the merchant's return_url structure.
+
+    test("#hash - plain hash with no params returns null", () => {
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: "#hash",
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual(null);
+      expect(isAppSwitchResumeFlow()).toEqual(false);
+    });
+
+    test("?query=param#hash - PayPal params in search, merchant hash fragment", () => {
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: "#hash",
+        search: `?button_session_id=${buttonSessionID}&token=${orderID}&PayerID=PP-payer-122`,
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onApprove",
+        orderID,
+        payerID: "PP-payer-122",
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
+
+    test("#hash?query=param - PayPal params embedded in hash after ?", () => {
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: `#hash?button_session_id=${buttonSessionID}&token=${orderID}&PayerID=PP-payer-122`,
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onApprove",
+        orderID,
+        payerID: "PP-payer-122",
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
+
+    test("/#/checkout/completed - SPA-style hash path with no params returns null", () => {
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: "#/checkout/completed",
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual(null);
+      expect(isAppSwitchResumeFlow()).toEqual(false);
+    });
+
+    test("/#/checkout/completed?query=param - PayPal params after SPA-style hash path", () => {
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: `#/checkout/completed?button_session_id=${buttonSessionID}&token=${orderID}&PayerID=PP-payer-122`,
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onApprove",
+        orderID,
+        payerID: "PP-payer-122",
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
+  });
+
+  test("should return null when web fallback throws error", () => {
+    // Mock location.search as a getter that throws an error
+    // eslint-disable-next-line compat/compat
+    const originalURLSearchParams = window.URLSearchParams;
+    // eslint-disable-next-line compat/compat
+    window.URLSearchParams = class {
+      constructor() {
+        throw new Error("Invalid URL");
+      }
+    };
+
+    vi.spyOn(window, "location", "get").mockReturnValue({
+      hash: "",
+      search: "?invalid",
+    });
+
+    const params = getAppSwitchResumeParams();
+
+    expect(params).toEqual(null);
+    expect(isAppSwitchResumeFlow()).toEqual(false);
+
+    // Restore original URLSearchParams
+    // eslint-disable-next-line compat/compat
+    window.URLSearchParams = originalURLSearchParams;
   });
 });
