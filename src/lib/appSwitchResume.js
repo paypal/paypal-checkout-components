@@ -18,30 +18,43 @@ export type AppSwitchResumeParams = {|
 
 // When the merchant's return_url contains a hash fragment (e.g. /checkout/#payment),
 // PayPal params (token, PayerID) end up inside the hash as /checkout/#payment?token=...&PayerID=...
-// because the base URL cannot be modified (iOS Safari uses it for tab matching in app switch).
-// This helper extracts query-style params embedded in the hash fragment
-function getParamsFromHashFragment(): { [string]: string } {
+// This helper splits the hash into its name and query-string parts,
+// checking for ? delimiter first, then falling back to &.
+function parseHashFragment(): {| hash: string, queryString: string |} {
   const hashString =
     window.location.hash && String(window.location.hash).slice(1);
   if (!hashString) {
-    return {};
+    return { hash: "", queryString: "" };
   }
 
   // Check for ? delimiter first (e.g. #payment?token=...)
   const questionMarkIndex = hashString.indexOf("?");
   if (questionMarkIndex !== -1) {
-    const queryString = hashString.slice(questionMarkIndex + 1);
-    return Object.fromEntries(new URLSearchParams(queryString));
+    return {
+      hash: hashString.slice(0, questionMarkIndex),
+      queryString: hashString.slice(questionMarkIndex + 1),
+    };
   }
 
   // Fallback to & delimiter (e.g. #payment&token=...)
   const ampersandIndex = hashString.indexOf("&");
   if (ampersandIndex !== -1) {
-    const queryString = hashString.slice(ampersandIndex + 1);
-    return Object.fromEntries(new URLSearchParams(queryString));
+    return {
+      hash: hashString.slice(0, ampersandIndex),
+      queryString: hashString.slice(ampersandIndex + 1),
+    };
   }
 
-  return {};
+  return { hash: hashString, queryString: "" };
+}
+
+function getParamsFromHashFragment(): { [string]: string } {
+  const { queryString } = parseHashFragment();
+  if (!queryString) {
+    return {};
+  }
+  // eslint-disable-next-line compat/compat
+  return Object.fromEntries(new URLSearchParams(queryString));
 }
 
 // The Web fallback flow uses different set of query params then appswitch flow.
@@ -98,31 +111,9 @@ function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
 }
 
 export function getAppSwitchResumeParams(): AppSwitchResumeParams | null {
-  const hashString =
-    window.location.hash && String(window.location.hash).slice(1);
-  if (!hashString) {
+  const { hash, queryString } = parseHashFragment();
+  if (!hash) {
     return getAppSwitchParamsWebFallback();
-  }
-
-  let hash = "";
-  let queryString = "";
-
-  // first check for ? as the hash/query separator
-  const questionMarkIndex = hashString.indexOf("?");
-
-  if (questionMarkIndex !== -1) {
-    // Do not use .split() here, as the merchant return_url may also contain "?"
-    hash = hashString.slice(0, questionMarkIndex);
-    queryString = hashString.slice(questionMarkIndex + 1);
-  } else {
-    const ampersandIndex = hashString.indexOf("&");
-
-    if (ampersandIndex !== -1) {
-      hash = hashString.slice(0, ampersandIndex);
-      queryString = hashString.slice(ampersandIndex + 1);
-    } else {
-      hash = hashString;
-    }
   }
 
   const isPostApprovalAction = [
