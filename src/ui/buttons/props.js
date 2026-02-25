@@ -331,6 +331,8 @@ export type ButtonStyle = {|
   borderRadius?: number,
   shouldApplyRebrandedStyles: boolean,
   isButtonColorABTestMerchant: boolean,
+  isPayNowOrLaterLabelEligible: boolean,
+  shouldApplyPayNowOrLaterLabel: boolean,
 |};
 
 export type ButtonStyleInputs = {|
@@ -970,6 +972,23 @@ export function getButtonColor({
   }
 }
 
+export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
+  isPayNowOrLaterLabelEligible: boolean,
+  shouldApplyPayNowOrLaterLabel: boolean,
+|} {
+  const label = props?.style?.label;
+  const isPayNowOrLaterLabelEligible = Boolean(
+    props?.experiment?.isPaylaterCobrandedLabelEnabled &&
+      props?.fundingEligibility?.paylater?.eligible &&
+      (label === undefined || label === BUTTON_LABEL.PAYPAL)
+  );
+
+  // All eligible sessions are treatment for now; future: add randomization here
+  const shouldApplyPayNowOrLaterLabel = isPayNowOrLaterLabelEligible;
+
+  return { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel };
+}
+
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
   return {};
 };
@@ -1119,6 +1138,9 @@ export function normalizeButtonStyle(
     }
   }
 
+  const { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel } =
+    getCobrandedBNPLLabelFlags(props);
+
   return {
     label,
     layout,
@@ -1133,6 +1155,8 @@ export function normalizeButtonStyle(
     borderRadius,
     shouldApplyRebrandedStyles,
     isButtonColorABTestMerchant,
+    isPayNowOrLaterLabelEligible,
+    shouldApplyPayNowOrLaterLabel,
   };
 }
 

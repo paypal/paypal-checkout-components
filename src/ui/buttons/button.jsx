@@ -109,7 +109,13 @@ export function Button({
   const colors = fundingConfig.colors;
   const secondaryColors = fundingConfig.secondaryColors || {};
 
-  let { color, period, label, shouldApplyRebrandedStyles } = style;
+  let {
+    color,
+    period,
+    label,
+    shouldApplyRebrandedStyles,
+    shouldApplyPayNowOrLaterLabel,
+  } = style;
 
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
@@ -234,6 +240,7 @@ export function Button({
       tagline={tagline}
       content={content}
       experiment={experiment}
+      shouldApplyPayNowOrLaterLabel={shouldApplyPayNowOrLaterLabel}
     />
   );
 

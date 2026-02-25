@@ -36,7 +36,7 @@ import {
   type TagOptions,
   BasicLabel,
 } from "../common";
-import { CLASS, ATTRIBUTE, BUTTON_LAYOUT, BUTTON_LABEL } from "../../constants";
+import { CLASS, ATTRIBUTE, BUTTON_LAYOUT } from "../../constants";
 import { componentContent } from "../content";
 import { Text, PlaceHolder } from "../../ui/text";
 import { TrackingBeacon } from "../../ui/tracking";
@@ -229,32 +229,14 @@ function ButtonPersonalization(opts: LabelOptions): ?ChildType {
   );
 }
 
-function shouldShowPayNowOrLater({
-  label,
-  fundingEligibility,
-  experiment,
-  lang,
-}): boolean {
-  return Boolean(
-    fundingEligibility[FUNDING.PAYLATER]?.eligible &&
-      (label === undefined || label === BUTTON_LABEL.PAYPAL) &&
-      experiment?.isPaylaterCobrandedLabelEnabled &&
-      componentContent[lang].PayNowOrLater
-  );
-}
-
 export function Label(opts: LabelOptions): ChildType {
   const {
-    label,
     logo,
     locale: { lang },
-    fundingEligibility,
-    experiment,
+    shouldApplyPayNowOrLaterLabel,
   } = opts;
 
-  if (
-    shouldShowPayNowOrLater({ label, fundingEligibility, experiment, lang })
-  ) {
+  if (shouldApplyPayNowOrLaterLabel) {
     const { PayNowOrLater } = componentContent[lang];
     return <PayNowOrLater logo={logo} />;
   }
