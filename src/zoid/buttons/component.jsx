@@ -227,14 +227,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     attributes: ({ props }) => {
       let fundingSource = "";
       if (props.fundingSource) {
-        fundingSource = `-${props.fundingSource}`;
+        fundingSource = ` ${props.fundingSource}`;
       }
 
       return {
         iframe: {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
-          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+          // $FlowFixMe[prop-missing] PAYWITH property exists in local constants
+          title: `${FUNDING_BRAND_LABEL.PAYWITH}${fundingSource}`,
         },
       };
     },

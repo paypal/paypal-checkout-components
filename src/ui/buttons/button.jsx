@@ -293,7 +293,7 @@ export function Button({
       ].join(" ")}
     >
       <div
-        role="link"
+        role="presentation"
         {...{
           [ATTRIBUTE.BUTTON]: true,
           [ATTRIBUTE.FUNDING_SOURCE]: fundingSource,

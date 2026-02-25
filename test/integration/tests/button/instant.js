@@ -45,7 +45,7 @@ for (const flow of ["popup", "iframe"]) {
 
         // $FlowFixMe
         const win = frame.contentWindow;
-        const button = win.document.querySelector('[role="link"]');
+        const button = win.document.querySelector("[data-button]");
 
         frame.click();
         button.click();
@@ -77,7 +77,11 @@ for (const flow of ["popup", "iframe"]) {
 
         // $FlowFixMe
         const win = frame.contentWindow;
-        const button = win.document.querySelector('[role="link"]');
+        const button = win.document.querySelector("[data-button]");
+
+        if (!button) {
+          throw new Error("Button not found");
+        }
 
         frame.click();
         button.dispatchEvent(new KeyboardEvent("keypress", { keyCode: 32 }));
@@ -109,7 +113,11 @@ for (const flow of ["popup", "iframe"]) {
 
         // $FlowFixMe
         const win = frame.contentWindow;
-        const button = win.document.querySelector('[role="link"]');
+        const button = win.document.querySelector("[data-button]");
+
+        if (!button) {
+          throw new Error("Button not found");
+        }
 
         frame.click();
         button.dispatchEvent(new KeyboardEvent("keypress", { keyCode: 13 }));
