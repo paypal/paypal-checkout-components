@@ -195,6 +195,10 @@ export function Button({
           })
         : fundingConfig.labelText || fundingSource;
 
+    if (shouldApplyPayNowOrLaterLabel) {
+      labelText = "PayPal Pay Now or Later";
+    }
+
     if (!showPayLabel && instrument?.vendor && instrument.label) {
       labelText = instrument.secondaryInstruments
         ? `${instrument.secondaryInstruments[0].type} & ${instrument.vendor} ${instrument.label}`
