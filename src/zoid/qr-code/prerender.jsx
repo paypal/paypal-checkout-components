@@ -4,14 +4,16 @@
 import { type RenderOptionsType } from "@krakenjs/zoid/src";
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { SpinnerPage } from "@paypal/common-components/src";
+import { getCSPNonce } from "@paypal/sdk-client/src";
 
 import { type QRCodeProps } from "./types";
 
 export function prerenderTemplate({
   doc,
-  props,
   close,
 }: RenderOptionsType<QRCodeProps>): ?HTMLElement {
+  const cspNonce = __WEB__ ? getCSPNonce() : undefined;
+
   const style = `
     #close {
         position: absolute;
@@ -42,11 +44,9 @@ export function prerenderTemplate({
     `;
 
   const children = [
-    <style nonce={props.cspNonce} innerHTML={style} />,
+    <style nonce={cspNonce} innerHTML={style} />,
     <a href="#" id="close" aria-label="close" role="button" onClick={close} />,
   ];
 
-  return new SpinnerPage({ nonce: props.cspNonce }, children).render(
-    dom({ doc })
-  );
+  return new SpinnerPage({ nonce: cspNonce }, children).render(dom({ doc }));
 }
