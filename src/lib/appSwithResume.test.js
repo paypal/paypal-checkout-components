@@ -387,6 +387,61 @@ describe("app switch resume flow", () => {
       });
       expect(isAppSwitchResumeFlow()).toEqual(true);
     });
+
+    test("#onApprove&token=...&hash?param=value - native app return with & delimiter and merchant hash containing ?", () => {
+      // Native app constructs return URL with & delimiter between action and params,
+      // and the merchant's original hash fragment contained a ? (e.g. #hash?param1=value1).
+      // The ? must not cause a mis-split; & appears first so it takes priority.
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: `#onApprove&token=${orderID}&PayerID=PP-payer-122&button_session_id=${buttonSessionID}&switch_initiated_time=1772041777662&hash?param1=value1`,
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onApprove",
+        orderID,
+        payerID: "PP-payer-122",
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
+
+    test("#onCancel&token=...&hash?param=value - native app cancel with & delimiter and merchant hash containing ?", () => {
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: `#onCancel&token=${orderID}&button_session_id=${buttonSessionID}&hash?param1=value1`,
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onCancel",
+        orderID,
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
+
+    test("#onApprove?token=...&hash?param=value - native app return with ? delimiter and merchant hash containing ?", () => {
+      // Native app uses ? delimiter, and merchant hash also contains ?.
+      // The first ? splits action from params; the second ? is just part of param values.
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: `#onApprove?token=${orderID}&PayerID=PP-payer-122&button_session_id=${buttonSessionID}&hash?param1=value1`,
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onApprove",
+        orderID,
+        payerID: "PP-payer-122",
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
   });
 
   test("should return null when web fallback throws error", () => {

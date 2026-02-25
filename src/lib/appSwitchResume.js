@@ -19,7 +19,7 @@ export type AppSwitchResumeParams = {|
 // When the merchant's return_url contains a hash fragment (e.g. /checkout/#payment),
 // PayPal params (token, PayerID) end up inside the hash as /checkout/#payment?token=...&PayerID=...
 // This helper splits the hash into its name and query-string parts,
-// checking for ? delimiter first, then falling back to &.
+// checking for a known app switch action before &, then falling back to ? and &.
 function parseHashFragment(): {| hash: string, queryString: string |} {
   const hashString =
     window.location.hash && String(window.location.hash).slice(1);
@@ -27,7 +27,29 @@ function parseHashFragment(): {| hash: string, queryString: string |} {
     return { hash: "", queryString: "" };
   }
 
-  // Check for ? delimiter first (e.g. #payment?token=...)
+  const ampersandIndex = hashString.indexOf("&");
+
+  // If & exists and the segment before it is a known app switch action
+  // (e.g. #onApprove&token=...&hash?param=val), split on &.
+  // This handles native app returns where the action is &-delimited
+  // and the merchant's original hash contained a ?.
+  if (ampersandIndex !== -1) {
+    const possibleAction = hashString.slice(0, ampersandIndex);
+    if (
+      [
+        APP_SWITCH_RETURN_HASH.ONAPPROVE,
+        APP_SWITCH_RETURN_HASH.ONCANCEL,
+        APP_SWITCH_RETURN_HASH.ONERROR,
+      ].includes(possibleAction)
+    ) {
+      return {
+        hash: possibleAction,
+        queryString: hashString.slice(ampersandIndex + 1),
+      };
+    }
+  }
+
+  // Check for ? delimiter (e.g. #payment?token=...)
   const questionMarkIndex = hashString.indexOf("?");
   if (questionMarkIndex !== -1) {
     return {
@@ -37,7 +59,6 @@ function parseHashFragment(): {| hash: string, queryString: string |} {
   }
 
   // Fallback to & delimiter (e.g. #payment&token=...)
-  const ampersandIndex = hashString.indexOf("&");
   if (ampersandIndex !== -1) {
     return {
       hash: hashString.slice(0, ampersandIndex),
