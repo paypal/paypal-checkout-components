@@ -979,6 +979,8 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
   const label = props?.style?.label;
   const isPayNowOrLaterLabelEligible = Boolean(
     props?.experiment?.isPaylaterCobrandedLabelEnabled &&
+      (props?.fundingSource === FUNDING.PAYPAL ||
+        props?.fundingSource === undefined) &&
       props?.fundingEligibility?.paylater?.eligible &&
       (label === undefined || label === BUTTON_LABEL.PAYPAL)
   );
