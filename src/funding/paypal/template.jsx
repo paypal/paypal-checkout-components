@@ -236,8 +236,8 @@ export function Label(opts: LabelOptions): ChildType {
     shouldApplyPayNowOrLaterLabel,
   } = opts;
 
-  if (shouldApplyPayNowOrLaterLabel) {
-    const { PayNowOrLater } = componentContent[lang];
+  const { PayNowOrLater } = componentContent[lang];
+  if (shouldApplyPayNowOrLaterLabel && PayNowOrLater) {
     return <PayNowOrLater logo={logo} />;
   }
 
