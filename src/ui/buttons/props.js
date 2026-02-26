@@ -48,6 +48,7 @@ import {
   MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
+import { componentContent } from "../../funding/content";
 import type { StateGetSet } from "../../lib/session";
 
 import { BUTTON_SIZE_STYLE } from "./config";
@@ -977,12 +978,16 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
   shouldApplyPayNowOrLaterLabel: boolean,
 |} {
   const label = props?.style?.label;
+  const lang = props?.locale?.lang;
   const isPayNowOrLaterLabelEligible = Boolean(
     props?.experiment?.isPaylaterCobrandedLabelEnabled &&
       (props?.fundingSource === FUNDING.PAYPAL ||
         props?.fundingSource === undefined) &&
       props?.fundingEligibility?.paylater?.eligible &&
-      (label === undefined || label === BUTTON_LABEL.PAYPAL)
+      (label === undefined || label === BUTTON_LABEL.PAYPAL) &&
+      lang &&
+      componentContent[lang]?.PayNowOrLater &&
+      props?.flow === BUTTON_FLOW.PURCHASE
   );
 
   // All eligible sessions are treatment for now; future: add randomization here

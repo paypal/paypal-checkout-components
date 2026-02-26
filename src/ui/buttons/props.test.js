@@ -874,6 +874,7 @@ describe("getCobrandedBNPLLabelFlags", () => {
       paylater: { eligible: true },
     },
     experiment: { isPaylaterCobrandedLabelEnabled: true },
+    locale: { lang: "en", country: "US" },
     style: {},
   };
 
@@ -939,6 +940,17 @@ describe("getCobrandedBNPLLabelFlags", () => {
       });
 
     expect(isPayNowOrLaterLabelEligible).toBe(true);
+  });
+
+  it("should return false when locale does not have PayNowOrLater content", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        locale: { lang: "fr", country: "FR" },
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
   });
 
   it("should return false when props is null", () => {
