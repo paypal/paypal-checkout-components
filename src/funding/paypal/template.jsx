@@ -236,14 +236,19 @@ export function Label(opts: LabelOptions): ChildType {
     shouldApplyPayNowOrLaterLabel,
   } = opts;
 
-  const { PayNowOrLater } = componentContent[lang];
-  if (shouldApplyPayNowOrLaterLabel && PayNowOrLater) {
-    return <PayNowOrLater logo={logo} />;
+  let buttonLabel = <BasicLabel {...opts} />;
+
+  if (!__WEB__) {
+    const { PayNowOrLater } = componentContent[lang];
+
+    if (shouldApplyPayNowOrLaterLabel && PayNowOrLater) {
+      buttonLabel = <PayNowOrLater logo={logo} />;
+    }
   }
 
   return (
     <Fragment>
-      <BasicLabel {...opts} />
+      {buttonLabel}
       <ButtonPersonalization {...opts} />
     </Fragment>
   );
