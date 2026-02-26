@@ -13,6 +13,7 @@ import {
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
   PPRebrandLogoExternalImage,
+  CreditMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
 import {
@@ -39,6 +40,7 @@ export function getCreditConfig(): FundingSourceConfig {
       BUTTON_FLOW.PURCHASE,
       BUTTON_FLOW.BILLING_SETUP,
       BUTTON_FLOW.SUBSCRIPTION_SETUP,
+      BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
     ],
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
@@ -126,6 +128,9 @@ export function getCreditConfig(): FundingSourceConfig {
         </Style>
       );
     },
+
+    Mark: () => <CreditMarkRebrandExternalImage />,
+    shouldUseMarkForRebrandOnly: true,
 
     WalletLabel,
 

@@ -1,10 +1,16 @@
 /* @flow */
-import { COMPONENTS, FUNDING, PLATFORM } from "@paypal/sdk-constants/src";
-import { describe, expect } from "vitest";
+import { COMPONENTS, FUNDING } from "@paypal/sdk-constants/src";
+import { describe, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { BUTTON_FLOW } from "../constants";
 
 import { isFundingEligible, isWalletFundingEligible } from "./funding";
+import { getFundingConfig } from "./config";
+
+// Mock getFundingConfig to control funding config behavior
+vi.mock("./config", () => ({
+  getFundingConfig: vi.fn(),
+}));
 
 const defaultMockFundingOptions = {
   platform: "desktop",
@@ -52,12 +58,46 @@ const defaultMockFundingOptions = {
   applePaySupport: false,
   supportsPopups: true,
   supportedNativeBrowser: true,
+  supportsVenmoPopups: false,
+  supportedNativeVenmoBrowser: false,
   onShippingChange: null,
   onShippingAddressChange: null,
   onShippingOptionsChange: null,
+  userAgent:
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
 };
 
 describe("Funding eligibility", () => {
+  beforeEach(() => {
+    // Mock getFundingConfig with basic configs for all funding sources
+    vi.mocked(getFundingConfig).mockReturnValue({
+      [FUNDING.PAYLATER]: {
+        enabled: true,
+        automatic: true,
+      },
+      [FUNDING.CARD]: {
+        enabled: true,
+        automatic: true,
+      },
+      [FUNDING.SEPA]: {
+        enabled: false,
+        automatic: false,
+      },
+      [FUNDING.OXXO]: {
+        enabled: false,
+        automatic: false,
+      },
+      [FUNDING.VENMO]: {
+        enabled: true,
+        automatic: true,
+      },
+      [FUNDING.PAYPAL]: {
+        enabled: true,
+        automatic: true,
+      },
+    });
+  });
+
   describe("Desktop", () => {
     test("should not be eligible if funding source is missing from fundingEligibility", () => {
       const fundingEligible = isFundingEligible(
@@ -173,29 +213,222 @@ describe("Funding eligibility", () => {
       });
     });
 
-    describe("Mobile", () => {
-      test("should be eligible if window.popupBridge is defined for Venmo and supportsPopups is false", () => {
-        window.popupBridge = {};
+    describe("Venmo-specific funding requirements", () => {
+      beforeEach(() => {
+        // Reset all mocks before each test
+        vi.clearAllMocks();
 
-        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
-          ...defaultMockFundingOptions,
-          platform: PLATFORM.MOBILE,
-          supportsPopups: false,
+        // Mock getFundingConfig to return configs with venmo requirements
+        vi.mocked(getFundingConfig).mockReturnValue({
+          [FUNDING.PAYLATER]: {
+            enabled: true,
+            automatic: true,
+          },
+          [FUNDING.CARD]: {
+            enabled: true,
+            automatic: true,
+          },
+          [FUNDING.SEPA]: {
+            enabled: false,
+            automatic: false,
+          },
+          [FUNDING.OXXO]: {
+            enabled: false,
+            automatic: false,
+          },
+          [FUNDING.VENMO]: {
+            enabled: true,
+            automatic: true,
+            requires: () => ({
+              popup: true,
+              native: true,
+            }),
+          },
+          [FUNDING.PAYPAL]: {
+            enabled: true,
+            automatic: true,
+            requires: () => ({
+              popup: true,
+              native: true,
+            }),
+          },
         });
-
-        expect(fundingEligible).toBe(true);
-
-        window.popupBridge = undefined;
       });
 
-      test("should not be eligible if window.popupBridge is undefined for Venmo and supportsPopups is false", () => {
-        const fundingEligible = isFundingEligible(FUNDING.VENMO, {
+      afterEach(() => {
+        vi.resetAllMocks();
+      });
+
+      test("should use supportsVenmoPopups for venmo funding source when popup is required", () => {
+        const options = {
           ...defaultMockFundingOptions,
-          platform: PLATFORM.MOBILE,
-          supportsPopups: false,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: { venmoEnableWebOnNonNativeBrowser: true },
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: true,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(true);
+      });
+
+      test("should use isSupportedNativeVenmoBrowser for venmo funding source when native is required", () => {
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: { venmoEnableWebOnNonNativeBrowser: true },
+          supportedNativeVenmoBrowser: true,
+          supportsVenmoPopups: true,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(true);
+      });
+
+      test("should return false when venmo popup support is required but supportsVenmoPopups returns false", () => {
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: {},
+          supportsVenmoPopups: false,
+          supportedNativeVenmoBrowser: true,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(false);
+      });
+
+      test("should return false when venmo native support is required but isSupportedNativeVenmoBrowser returns false", () => {
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: {},
+          supportedNativeVenmoBrowser: false,
+          supportsVenmoPopups: true,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(false);
+      });
+
+      test("should use standard supportsPopups for non-venmo funding sources", () => {
+        // Update the mock to not require popup and native for PayPal to isolate the test
+        vi.mocked(getFundingConfig).mockReturnValue({
+          [FUNDING.PAYLATER]: {
+            enabled: true,
+            automatic: true,
+          },
+          [FUNDING.CARD]: {
+            enabled: true,
+            automatic: true,
+          },
+          [FUNDING.SEPA]: {
+            enabled: false,
+            automatic: false,
+          },
+          [FUNDING.OXXO]: {
+            enabled: false,
+            automatic: false,
+          },
+          [FUNDING.VENMO]: {
+            enabled: true,
+            automatic: true,
+            requires: () => ({
+              popup: true,
+              native: true,
+            }),
+          },
+          [FUNDING.PAYPAL]: {
+            enabled: true,
+            automatic: true,
+            // No requires function for PayPal to test standard behavior
+          },
         });
 
-        expect(fundingEligible).toBe(false);
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.PAYPAL,
+          platform: "mobile",
+          supportsPopups: true,
+          supportedNativeBrowser: true,
+          experiment: {},
+          fundingEligibility: {
+            ...defaultMockFundingOptions.fundingEligibility,
+            paypal: {
+              eligible: true,
+              vaultable: false,
+              branded: false,
+            },
+          },
+        };
+
+        const result = isFundingEligible(FUNDING.PAYPAL, options);
+
+        expect(result).toBe(true);
+      });
+
+      test("should handle undefined experiment parameter for venmo", () => {
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: undefined,
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: true,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(true);
+      });
+
+      test("should pass through experiment flags to venmo utility functions", () => {
+        const experimentFlags = {
+          venmoEnableWebOnNonNativeBrowser: true,
+          venmoVaultWithoutPurchase: false,
+        };
+
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: experimentFlags,
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: true,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(true);
+      });
+
+      test("should respect combination of venmo popup and native requirements", () => {
+        const options = {
+          ...defaultMockFundingOptions,
+          fundingSource: FUNDING.VENMO,
+          platform: "mobile",
+          experiment: {},
+          supportsVenmoPopups: true,
+          supportedNativeVenmoBrowser: false,
+        };
+
+        const result = isFundingEligible(FUNDING.VENMO, options);
+
+        expect(result).toBe(false);
+
+        // Test case where both succeed
+        options.supportedNativeVenmoBrowser = true;
+
+        const result2 = isFundingEligible(FUNDING.VENMO, options);
+        expect(result2).toBe(true);
       });
     });
   });

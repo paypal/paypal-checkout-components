@@ -165,9 +165,12 @@ export function Buttons(props: ButtonsProps): ElementNode {
     style,
     supportedNativeBrowser,
     supportsPopups,
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     userIDToken,
     vault,
     wallet,
+    userAgent,
   } = normalizeButtonProps(props);
   const { layout, shape, tagline } = style;
 
@@ -188,8 +191,11 @@ export function Buttons(props: ButtonsProps): ElementNode {
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     experiment,
     displayOnly,
+    userAgent,
   });
   const multiple = fundingSources.length > 1;
 

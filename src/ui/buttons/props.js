@@ -487,10 +487,13 @@ export type RenderButtonProps = {|
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   showPayLabel: boolean,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
+  userAgent: string,
 |};
 
 export type PrerenderDetails = {|
@@ -565,6 +568,10 @@ type ThrowErrorForInvalidButtonColorArgs = {|
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
+  preferences?: {|
+    appSwitchWhenAvailable?: boolean,
+    launchAppSwitchIn?: "newTab" | "sameTab",
+  |},
   listenForHashChanges: () => void,
   removeListenerForHashChanges: () => void,
   // Not passed to child iframe
@@ -623,6 +630,8 @@ export type ButtonProps = {|
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   applePaySupport: boolean,
   applePay: ApplePaySessionConfigRequest,
   meta: {||},
@@ -633,6 +642,7 @@ export type ButtonProps = {|
   message?: ButtonMessage,
   messageMarkup?: string,
   hideSubmitButtonForCardForm?: boolean,
+  userAgent: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -677,12 +687,15 @@ export type ButtonPropsInputs = {
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   showPayLabel: boolean,
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
+  userAgent: string,
 };
 
 export const DEFAULT_STYLE = {
@@ -754,6 +767,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
   const validFundingSourcesForRedesign = [
+    undefined,
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.PAYLATER,
@@ -882,7 +896,7 @@ export function getColorForFullRedesign({
       style,
     });
 
-    buttonColor = rebrandColorMap[defaultButtonColor];
+    buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
   }
 
   return {
@@ -1256,12 +1270,15 @@ export function normalizeButtonProps(
     applePaySupport = false,
     supportsPopups = false,
     supportedNativeBrowser = false,
+    supportsVenmoPopups = false,
+    supportedNativeVenmoBrowser = false,
     showPayLabel = true,
     displayOnly = [],
     message,
     messageMarkup,
     renderedButtons,
     shopperSessionId,
+    userAgent,
   } = props;
 
   const { country, lang } = locale;
@@ -1314,7 +1331,10 @@ export function normalizeButtonProps(
         applePaySupport,
         supportsPopups,
         supportedNativeBrowser,
+        supportsVenmoPopups,
+        supportedNativeVenmoBrowser,
         displayOnly,
+        userAgent,
       })
     ) {
       throw new Error(`Funding Source not eligible: ${fundingSource}`);
@@ -1362,9 +1382,12 @@ export function normalizeButtonProps(
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     showPayLabel,
     displayOnly,
     message,
     messageMarkup,
+    userAgent,
   };
 }

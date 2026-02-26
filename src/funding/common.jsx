@@ -144,11 +144,13 @@ export type FundingSourceConfig = {|
         fundingEligibility: ?FundingEligibilityType,
         label?: string,
         period?: number,
+        locale?: LocaleType,
       |}) => string),
   showWalletMenu: ({|
     instrument: WalletInstrument,
     userIDToken: ?string,
   |}) => boolean,
+  shouldUseMarkForRebrandOnly?: boolean,
 |};
 
 export function BasicLabel({

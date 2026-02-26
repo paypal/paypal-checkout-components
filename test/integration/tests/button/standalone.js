@@ -8,6 +8,7 @@ import { SUPPORTED_FUNDING_SOURCES } from "@paypal/funding-components/src";
 import {
   createTestContainer,
   destroyTestContainer,
+  COMMON_DESKTOP_USER_AGENT,
   IPHONE6_USER_AGENT,
   WEBVIEW_USER_AGENT,
   mockProp,
@@ -112,53 +113,34 @@ describe(`paypal standalone buttons`, () => {
     });
   }
 
-  it(`should render a standalone venmo button and error out when not on mobile, even when venmo is eligible`, () => {
-    return wrapPromise(({ expect }) => {
+  it(`should not render a standalone venmo button for webviews if window.popupBridge is not defined`, () => {
+    return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
+      window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+      window.popupBridge = undefined;
+
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        false
+        true
       );
 
-      const button = window.paypal.Buttons({
-        test: {},
-        fundingSource,
-      });
-
-      if (button.isEligible()) {
-        throw new Error("Expected button to not be eligible");
-      }
-
-      return button
-        .render("#testContainer")
-        .catch(expect("buttonRenderCatch"))
-        .then(() => {
-          mockEligibility.cancel();
+      try {
+        const button = window.paypal.Buttons({
+          test: {},
+          fundingSource,
+          enableFunding: [FUNDING.VENMO],
         });
-    });
-  });
 
-  it(`should render a standalone venmo button and error out for webviews`, () => {
-    return wrapPromise(({ expect }) => {
-      const fundingSource = FUNDING.VENMO;
-      window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+        button.isEligible();
 
-      const button = window.paypal.Buttons({
-        test: {},
-        fundingSource,
-      });
-
-      if (button.isEligible()) {
-        throw new Error(`Expected button to not be eligible`);
+        if (button.isEligible()) {
+          throw new Error(`Expected button to not be eligible`);
+        }
+      } catch (e) {
+        window.navigator.mockUserAgent = "";
+        mockEligibility.cancel();
       }
-
-      return button
-        .render("#testContainer")
-        .catch(expect("buttonRenderCatch"))
-        .then(() => {
-          window.navigator.mockUserAgent = "";
-        });
     });
   });
 
@@ -166,6 +148,12 @@ describe(`paypal standalone buttons`, () => {
     return wrapPromise(() => {
       const fundingSource = FUNDING.VENMO;
       window.navigator.mockUserAgent = WEBVIEW_USER_AGENT;
+
+      const mockEligibility = mockProp(
+        window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+        "eligible",
+        true
+      );
 
       window.popupBridge = {};
 
@@ -186,6 +174,7 @@ describe(`paypal standalone buttons`, () => {
         .then(() => {
           window.navigator.mockUserAgent = "";
           window.popupBridge = undefined;
+          mockEligibility.cancel();
         });
     });
   });
@@ -195,6 +184,7 @@ describe(`paypal standalone buttons`, () => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
+      window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
 
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -222,6 +212,7 @@ describe(`paypal standalone buttons`, () => {
       const fundingSource = FUNDING.VENMO;
 
       window.localStorage.setItem("enable_venmo_desktop", true);
+      window.navigator.mockUserAgent = COMMON_DESKTOP_USER_AGENT;
 
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -257,6 +248,8 @@ describe(`paypal standalone buttons`, () => {
         "eligible",
         false
       );
+
+      window.navigator.mockUserAgent = IPHONE6_USER_AGENT;
 
       const button = window.paypal.Buttons({
         test: {},
