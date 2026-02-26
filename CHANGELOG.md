@@ -1,3 +1,9 @@
+## <small>5.0.405 (2026-02-26)</small>
+
+* Additional fix for hash params in resume flow (#2602) ([0c53815](https://github.com/paypal/paypal-checkout-components/commit/0c53815)), closes [#2602](https://github.com/paypal/paypal-checkout-components/issues/2602)
+
+
+
 ## <small>5.0.404 (2026-02-17)</small>
 
 * chore: prefer org-level code of conduct file (#2595) ([e4433f6](https://github.com/paypal/paypal-checkout-components/commit/e4433f6)), closes [#2595](https://github.com/paypal/paypal-checkout-components/issues/2595)
