@@ -2,7 +2,7 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { FUNDING } from "@paypal/sdk-constants";
 
-import { BUTTON_COLOR } from "../../constants";
+import { BUTTON_COLOR, BUTTON_FLOW } from "../../constants";
 
 import {
   getButtonColor,
@@ -876,6 +876,7 @@ describe("getCobrandedBNPLLabelFlags", () => {
     experiment: { isPaylaterCobrandedLabelEnabled: true },
     locale: { lang: "en", country: "US" },
     style: {},
+    flow: BUTTON_FLOW.PURCHASE,
   };
 
   it("should return true when all conditions are met", () => {

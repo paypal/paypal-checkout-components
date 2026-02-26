@@ -979,19 +979,46 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
 |} {
   const label = props?.style?.label;
   const lang = props?.locale?.lang;
+  const isPurchaseFlow = props?.flow === BUTTON_FLOW.PURCHASE;
+  const isEnLang = Boolean(componentContent[lang]?.PayNowOrLater);
+  const isCobrandedEligibleFundingSource =
+    props?.fundingSource === FUNDING.PAYPAL ||
+    props?.fundingSource === undefined;
+  const isPaylaterEligible =
+    props?.fundingEligibility?.paylater?.eligible || false;
+  const isLabelEligible = label === undefined || label === BUTTON_LABEL.PAYPAL;
+
+  const isPaylaterCobrandedLabelEnabled =
+    props?.experiment?.isPaylaterCobrandedLabelEnabled || false;
+
+  // add logs to help debug any issues for alpha branch, remove later
+  // eslint-disable-next-line no-console
+  console.log("getCobrandedBNPLLabelFlags:", {
+    isPaylaterCobrandedLabelEnabled,
+    isCobrandedEligibleFundingSource,
+    isPaylaterEligible,
+    isLabelEligible,
+    isEnLang,
+    isPurchaseFlow,
+  });
+
   const isPayNowOrLaterLabelEligible = Boolean(
-    props?.experiment?.isPaylaterCobrandedLabelEnabled &&
-      (props?.fundingSource === FUNDING.PAYPAL ||
-        props?.fundingSource === undefined) &&
-      props?.fundingEligibility?.paylater?.eligible &&
-      (label === undefined || label === BUTTON_LABEL.PAYPAL) &&
-      lang &&
-      componentContent[lang]?.PayNowOrLater &&
-      props?.flow === BUTTON_FLOW.PURCHASE
+    isPaylaterCobrandedLabelEnabled &&
+      isCobrandedEligibleFundingSource &&
+      isPaylaterEligible &&
+      isLabelEligible &&
+      isEnLang &&
+      isPurchaseFlow
   );
 
   // All eligible sessions are treatment for now; future: add randomization here
   const shouldApplyPayNowOrLaterLabel = isPayNowOrLaterLabelEligible;
+
+  // eslint-disable-next-line no-console
+  console.log("getCobrandedBNPLLabelFlags result:", {
+    isPayNowOrLaterLabelEligible,
+    shouldApplyPayNowOrLaterLabel,
+  });
 
   return { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel };
 }
