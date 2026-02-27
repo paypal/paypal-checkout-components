@@ -234,7 +234,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         iframe: {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
-          // $FlowFixMe[prop-missing] PAYWITH property exists in local constants
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
           role: "presentation",
         },
