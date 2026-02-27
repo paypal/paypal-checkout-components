@@ -2,7 +2,7 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { FUNDING } from "@paypal/sdk-constants";
 
-import { BUTTON_COLOR } from "../../constants";
+import { BUTTON_COLOR, BUTTON_FLOW } from "../../constants";
 
 import {
   getButtonColor,
@@ -14,6 +14,7 @@ import {
   hasInvalidScriptOptionsForFullRedesign,
   determineRandomButtonColor,
   getColorABTestFromStorage,
+  getCobrandedBNPLLabelFlags,
 } from "./props";
 
 describe("getColorABTestFromStorage", () => {
@@ -862,5 +863,100 @@ describe("HideSubmitButtonProps type validation", () => {
     };
 
     expect(validButtonProps.hideSubmitButtonForCardForm).toBe(false);
+  });
+});
+
+describe("getCobrandedBNPLLabelFlags", () => {
+  // $FlowFixMe - test object intentionally omits non-relevant ButtonPropsInputs fields
+  const eligibleProps = {
+    fundingSource: FUNDING.PAYPAL,
+    fundingEligibility: {
+      paylater: { eligible: true },
+    },
+    experiment: { isPaylaterCobrandedLabelEnabled: true },
+    locale: { lang: "en", country: "US" },
+    style: {},
+    flow: BUTTON_FLOW.PURCHASE,
+  };
+
+  it("should return true when all conditions are met", () => {
+    const { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags(eligibleProps);
+
+    expect(isPayNowOrLaterLabelEligible).toBe(true);
+    expect(shouldApplyPayNowOrLaterLabel).toBe(true);
+  });
+
+  it("should return false when experiment flag is disabled", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        experiment: { isPaylaterCobrandedLabelEnabled: false },
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
+  });
+
+  it("should return false when paylater is not eligible", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        fundingEligibility: { paylater: { eligible: false } },
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
+  });
+
+  it("should return false when fundingSource is not PAYPAL or undefined", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        fundingSource: FUNDING.VENMO,
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
+  });
+
+  it("should return false when a non-paypal label is set", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        style: { label: "checkout" },
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
+  });
+
+  it("should return true when label is explicitly set to paypal", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        style: { label: "paypal" },
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(true);
+  });
+
+  it("should return false when locale does not have PayNowOrLater content", () => {
+    const { isPayNowOrLaterLabelEligible } =
+      // $FlowFixMe
+      getCobrandedBNPLLabelFlags({
+        ...eligibleProps,
+        locale: { lang: "fr", country: "FR" },
+      });
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
+  });
+
+  it("should return false when props is null", () => {
+    const { isPayNowOrLaterLabelEligible } = getCobrandedBNPLLabelFlags(null);
+
+    expect(isPayNowOrLaterLabelEligible).toBe(false);
   });
 });

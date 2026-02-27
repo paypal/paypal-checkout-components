@@ -73,6 +73,7 @@ export type LabelOptions = {|
   tagline: ?boolean,
   content: ?ContentType,
   experiment?: Experiment,
+  shouldApplyPayNowOrLaterLabel?: boolean,
 |};
 
 export type WalletLabelOptions = {|
