@@ -112,7 +112,28 @@ export const getConnectComponent = async (merchantProps = {}) => {
       })
       .flush();
 
-    throw new Error(error);
+    throw error;
+  }
+
+  // Added check for window.braintree and window.braintree.connect
+  if (!window.braintree || !window.braintree.connect) {
+    getLogger()
+      .track({
+        [FPTI_KEY.CONTEXT_TYPE]: "CMID",
+        [FPTI_KEY.CONTEXT_ID]: cmid,
+        [FPTI_KEY.EVENT_NAME]: `ppcp_connect_failure`,
+      })
+      .error("braintree_sdk_missing_error", { err: "Braintree SDK is not loaded or connect is unavailable." })
+      .metricCounter({
+        namespace: "connect.init.count",
+        event: "error",
+        dimensions: {
+          errorName: "braintree_sdk_missing_error",
+        },
+      })
+      .flush();
+
+    throw new Error("Braintree SDK is not loaded or connect is unavailable.");
   }
 
   try {
@@ -158,6 +179,6 @@ export const getConnectComponent = async (merchantProps = {}) => {
       })
       .flush();
 
-    throw new Error(error);
+    throw error;
   }
 };
