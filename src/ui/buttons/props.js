@@ -980,7 +980,7 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
   const label = props?.style?.label;
   const lang = props?.locale?.lang;
   const isPurchaseFlow = props?.flow === BUTTON_FLOW.PURCHASE;
-  const isEnLang = Boolean(componentContent[lang]?.PayNowOrLater);
+  const isEnLang = Boolean(lang && componentContent[lang]?.PayNowOrLater);
   const isCobrandedEligibleFundingSource =
     props?.fundingSource === FUNDING.PAYPAL ||
     props?.fundingSource === undefined;
