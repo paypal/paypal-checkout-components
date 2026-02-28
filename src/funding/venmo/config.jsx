@@ -23,7 +23,7 @@ export function getVenmoConfig(): FundingSourceConfig {
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
-    eligible: ({ experiment, shippingChange, displayOnly, flow }) => {
+    eligible: ({ experiment, shippingChange, displayOnly }) => {
       // funding-eligiblity and enable-funding is truthy
       if (experiment?.enableVenmo === false) {
         return false;
@@ -34,13 +34,6 @@ export function getVenmoConfig(): FundingSourceConfig {
       if (
         shippingChange &&
         displayOnly?.includes(DISPLAY_ONLY_VALUES.VAULTABLE)
-      ) {
-        return false;
-      }
-
-      if (
-        flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE &&
-        experiment?.venmoVaultWithoutPurchase !== true
       ) {
         return false;
       }
