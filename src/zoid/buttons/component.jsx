@@ -96,6 +96,7 @@ import {
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
+import { clearAppSwitchResumeParams } from "../../lib/appSwitchResume";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
@@ -150,12 +151,36 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
           const resumeComponent = getPixelComponent();
           const parentProps = parent.getProps();
+
+          // Wrap onCancel to clear URL and reload after merchant callback
+          const wrappedOnCancel = (...args) => {
+            return ZalgoPromise.try(() => {
+              // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
+              if (typeof parentProps.onCancel === "function") {
+                return parentProps.onCancel(...args);
+              }
+            }).then(() => {
+              clearAppSwitchResumeParams();
+              window.location.reload();
+            });
+          };
+
+          // Wrap onError to clear URL and reload after merchant callback
+          const wrappedOnError = (...args) => {
+            return ZalgoPromise.try(() => {
+              if (typeof parentProps.onError === "function") {
+                return parentProps.onError(...args);
+              }
+            }).then(() => {
+              clearAppSwitchResumeParams();
+              window.location.reload();
+            });
+          };
+
           resumeComponent({
             onApprove: parentProps.onApprove,
-            // $FlowIgnore[incompatible-call]
-            onError: parentProps.onError,
-            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
-            onCancel: parentProps.onCancel,
+            onError: wrappedOnError,
+            onCancel: wrappedOnCancel,
             onClick: parentProps.onClick,
             onComplete: parentProps.onComplete,
             resumeFlowParams,
