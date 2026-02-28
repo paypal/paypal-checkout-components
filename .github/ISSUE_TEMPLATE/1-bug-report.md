@@ -1,12 +1,12 @@
 ---
-name: 🐞 Bug report
-about:
-  Report a bug in the PayPal JavaScript SDK (https://www.paypal.com/sdk/js).
+name: "\U0001F41E Bug report"
+about: Report a bug in the PayPal JavaScript SDK (https://www.paypal.com/sdk/js).
   Before you create a new issue, please search for similar issues. It's possible somebody
   has encountered this bug already.
 title: "[Bug] Bug report"
-labels: "bug"
-assignees: ""
+labels: bug
+assignees: ''
+
 ---
 
 ### 🐞 Describe the Bug
