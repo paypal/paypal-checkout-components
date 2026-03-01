@@ -96,6 +96,7 @@ import {
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
+import { clearAppSwitchResumeParams } from "../../lib/appSwitchResume";
 
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
