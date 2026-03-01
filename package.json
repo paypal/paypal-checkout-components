@@ -117,7 +117,7 @@
     "@krakenjs/jsx-pragmatic": "^3",
     "@krakenjs/post-robot": "^11.0.0",
     "@krakenjs/zalgo-promise": "^2.0.0",
-    "@krakenjs/zoid": "^10.3.1",
+    "@krakenjs/zoid": "^10.5.0",
     "@paypal/accelerated-checkout-loader": "^1.0.1",
     "@paypal/common-components": "^1.0.35",
     "@paypal/funding-components": "^1.0.31",

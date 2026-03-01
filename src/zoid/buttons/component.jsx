@@ -138,6 +138,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           if (!resumeFlowParams) {
             throw new Error("Resume Flow is not supported.");
           }
+
+          // eslint-disable-next-line no-console
+          console.log("[RESUME] resume() called with params:", {
+            orderID: Boolean(resumeFlowParams.orderID),
+            vaultSessionID: Boolean(resumeFlowParams.vaultSetupToken),
+            billingToken: Boolean(resumeFlowParams.billingToken),
+            payerID: Boolean(resumeFlowParams.payerID),
+            checkoutState: resumeFlowParams.checkoutState,
+          });
+
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
@@ -150,16 +160,104 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
           const resumeComponent = getPixelComponent();
           const parentProps = parent.getProps();
-          resumeComponent({
+
+          const wrappedOnCancel = (data) => {
+            // eslint-disable-next-line no-console
+            console.log(
+              "[RESUME] wrappedOnCancel called - user returned from app switch with cancel state"
+            );
+
+            // Call the merchant's onCancel
+            const result = parentProps.onCancel
+              ? parentProps.onCancel(data)
+              : undefined;
+
+            // After merchant onCancel completes, close pixel and rerender button
+            Promise.resolve(result).then(() => {
+              // eslint-disable-next-line no-console
+              console.log(
+                "[RESUME] onCancel completed - closing pixel and triggering button rerender"
+              );
+
+              if (parent.pixelInstance && parent.pixelInstance.close) {
+                parent.pixelInstance.close();
+              }
+
+              // Rerender the button component to reset it for retry
+              const helpers = parent.getHelpers();
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] Attempting to rerender button. Helpers:", {
+                hasHelpers: Boolean(helpers),
+                hasRerender: Boolean(helpers && helpers.rerender),
+                helperKeys: helpers ? Object.keys(helpers) : [],
+              });
+
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] Available helper methods:", helpers);
+
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] Parent object keys:", Object.keys(parent));
+
+              if (helpers && helpers.rerender) {
+                // eslint-disable-next-line no-console
+                console.log("[RESUME] Calling rerender() on button component");
+
+                try {
+                  const rerenderPromise = helpers.rerender();
+                  // eslint-disable-next-line no-console
+                  console.log("[RESUME] Rerender returned:", {
+                    isPromise: Boolean(rerenderPromise),
+                    isThenable: Boolean(
+                      rerenderPromise &&
+                        typeof rerenderPromise.then === "function"
+                    ),
+                    type: typeof rerenderPromise,
+                  });
+
+                  rerenderPromise
+                    .then(() => {
+                      // eslint-disable-next-line no-console
+                      console.log(
+                        "[RESUME] Button rerender completed successfully!"
+                      );
+                    })
+                    .catch((err) => {
+                      // eslint-disable-next-line no-console
+                      console.error(
+                        "[RESUME] Error during button rerender:",
+                        err
+                      );
+                    });
+                } catch (syncErr) {
+                  // eslint-disable-next-line no-console
+                  console.error(
+                    "[RESUME] Synchronous error calling rerender():",
+                    syncErr
+                  );
+                }
+              } else {
+                // eslint-disable-next-line no-console
+                console.error(
+                  "[RESUME] rerender method not available on helpers"
+                );
+              }
+            });
+
+            return result;
+          };
+
+          parent.pixelInstance = resumeComponent({
             onApprove: parentProps.onApprove,
             // $FlowIgnore[incompatible-call]
             onError: parentProps.onError,
             // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
-            onCancel: parentProps.onCancel,
+            onCancel: wrappedOnCancel,
             onClick: parentProps.onClick,
             onComplete: parentProps.onComplete,
             resumeFlowParams,
-          }).render("body");
+          });
+
+          parent.pixelInstance.render("body");
         },
       };
     },
@@ -385,22 +483,78 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => (event) => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-hashchange",
-            payload: {
-              url: event.newURL,
-            },
-          });
-        },
+        value:
+          ({ state, parent }) =>
+          (event) => {
+            // eslint-disable-next-line no-console
+            console.log("[RESUME] hashChangeHandler triggered:", {
+              oldURL: event.oldURL,
+              newURL: event.newURL,
+              cancelInvoked: state.cancelInvoked,
+              isResumeFlow: isAppSwitchResumeFlow(),
+            });
+
+            state.appSwitchState = "returned";
+
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-hashchange",
+              payload: {
+                url: event.newURL,
+              },
+            });
+
+            // Check if we should trigger rerender
+            const shouldRerender =
+              state.cancelInvoked === true && // Cancel was previously invoked
+              isAppSwitchResumeFlow(); // Token is in URL hash
+
+            if (shouldRerender) {
+              // eslint-disable-next-line no-console
+              console.log(
+                "[RESUME] Hash change detected after cancel with token - triggering button rerender"
+              );
+
+              // Reset cancel flag to prevent multiple rerenders
+              state.cancelInvoked = false;
+
+              // Rerender the button component itself to pick up new URL params
+              const helpers = parent.getHelpers();
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] helpers available:", {
+                hasHelpers: Boolean(helpers),
+                hasRerender: Boolean(helpers && helpers.rerender),
+                helperKeys: helpers ? Object.keys(helpers) : [],
+              });
+
+              if (helpers && helpers.rerender) {
+                helpers.rerender().catch((err) => {
+                  // eslint-disable-next-line no-console
+                  console.error("[RESUME] Error during button rerender:", err);
+                });
+              } else {
+                // eslint-disable-next-line no-console
+                console.error(
+                  "[RESUME] rerender method not available - trying parent methods:",
+                  Object.keys(parent)
+                );
+              }
+            } else {
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] Conditions not met for rerender:", {
+                cancelInvoked: state.cancelInvoked,
+                isResumeFlow: isAppSwitchResumeFlow(),
+              });
+            }
+          },
       },
 
       listenForHashChanges: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            state.appSwitchState = "pending";
             window.addEventListener("hashchange", props.hashChangeHandler);
           },
       },
@@ -419,24 +573,81 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => () => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-visibilitychange",
-            payload: {
-              url: window.location.href,
-
+        value:
+          ({ state, parent }) =>
+          () => {
+            // eslint-disable-next-line no-console
+            console.log("[RESUME] visibilityChangeHandler triggered:", {
               visibilityState: document.visibilityState,
-            },
-          });
-        },
+              url: window.location.href,
+              cancelInvoked: state.cancelInvoked,
+              isResumeFlow: isAppSwitchResumeFlow(),
+            });
+
+            state.appSwitchState = "returned";
+
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-visibilitychange",
+              payload: {
+                url: window.location.href,
+                visibilityState: document.visibilityState,
+              },
+            });
+
+            // Check if we should trigger rerender
+            const shouldRerender =
+              state.cancelInvoked === true && // Cancel was previously invoked
+              document.visibilityState === "visible" && // Tab is now visible
+              isAppSwitchResumeFlow(); // Token is in URL hash
+
+            if (shouldRerender) {
+              // eslint-disable-next-line no-console
+              console.log(
+                "[RESUME] Visibility change detected after cancel with token - triggering button rerender"
+              );
+
+              // Reset cancel flag to prevent multiple rerenders
+              state.cancelInvoked = false;
+
+              // Rerender the button component itself to pick up new URL params
+              const helpers = parent.getHelpers();
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] helpers available:", {
+                hasHelpers: Boolean(helpers),
+                hasRerender: Boolean(helpers && helpers.rerender),
+                helperKeys: helpers ? Object.keys(helpers) : [],
+              });
+
+              if (helpers && helpers.rerender) {
+                helpers.rerender().catch((err) => {
+                  // eslint-disable-next-line no-console
+                  console.error("[RESUME] Error during button rerender:", err);
+                });
+              } else {
+                // eslint-disable-next-line no-console
+                console.error(
+                  "[RESUME] rerender method not available - trying parent methods:",
+                  Object.keys(parent)
+                );
+              }
+            } else {
+              // eslint-disable-next-line no-console
+              console.log("[RESUME] Conditions not met for rerender:", {
+                cancelInvoked: state.cancelInvoked,
+                visibilityState: document.visibilityState,
+                isResumeFlow: isAppSwitchResumeFlow(),
+              });
+            }
+          },
       },
 
       listenForVisibilityChange: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            state.appSwitchState = "pending";
             window.addEventListener(
               "visibilitychange",
               props.visibilityChangeHandler
