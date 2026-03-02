@@ -532,6 +532,11 @@ type ColorABTestStorage = {|
   sessionID: string,
 |};
 
+type BNPLLabelABTestStorage = {|
+  shouldApplyPayNowOrLaterLabel: boolean,
+  sessionID: string,
+|};
+
 type GetButtonColorArgs = {|
   experiment: Experiment,
   fundingSource: ?$Values<typeof FUNDING>,
@@ -698,6 +703,7 @@ export type ButtonPropsInputs = {
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
+  storageState?: StateGetSet,
   userAgent: string,
 };
 
@@ -729,6 +735,48 @@ export function getColorABTestFromStorage(
   }
 
   return null;
+}
+
+export function getBNPLLabelABTestFromStorage(
+  storageState: StateGetSet
+): ?BNPLLabelABTestStorage {
+  const sessionState = storageState.get("bnplLabelABTest");
+
+  if (sessionState && sessionState.value) {
+    return sessionState.value;
+  }
+
+  return null;
+}
+
+export function determineRandomBNPLLabel(): boolean {
+  return Math.random() < 0.5;
+}
+
+export function getBNPLLabelForABTest({
+  storageState,
+  sessionID,
+}: {|
+  storageState: StateGetSet,
+  sessionID: ?string,
+|}): boolean {
+  const bnplLabelFromStorage = getBNPLLabelABTestFromStorage(storageState);
+
+  if (bnplLabelFromStorage) {
+    const { sessionID: storedSessionID, shouldApplyPayNowOrLaterLabel } =
+      bnplLabelFromStorage;
+
+    if (storedSessionID && sessionID === storedSessionID) {
+      return shouldApplyPayNowOrLaterLabel;
+    }
+  }
+
+  const shouldApplyPayNowOrLaterLabel = determineRandomBNPLLabel();
+  storageState.set("bnplLabelABTest", {
+    shouldApplyPayNowOrLaterLabel,
+    sessionID,
+  });
+  return shouldApplyPayNowOrLaterLabel;
 }
 
 export function determineRandomButtonColor({
@@ -1011,8 +1059,25 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
       isPurchaseFlow
   );
 
-  // All eligible sessions are treatment for now; future: add randomization here
-  const shouldApplyPayNowOrLaterLabel = isPayNowOrLaterLabelEligible;
+  const isPaylaterCobrandedLabelRandomizationEnabled =
+    props?.experiment?.isPaylaterCobrandedLabelRandomizationEnabled ?? true;
+
+  let shouldApplyPayNowOrLaterLabel = false;
+  if (isPayNowOrLaterLabelEligible) {
+    if (
+      isPaylaterCobrandedLabelRandomizationEnabled &&
+      props?.storageState &&
+      props?.sessionID
+    ) {
+      shouldApplyPayNowOrLaterLabel = getBNPLLabelForABTest({
+        storageState: props.storageState,
+        sessionID: props.sessionID,
+      });
+    } else {
+      // Randomization disabled or storageState unavailable → 100% treatment
+      shouldApplyPayNowOrLaterLabel = true;
+    }
+  }
 
   // eslint-disable-next-line no-console
   console.log("getCobrandedBNPLLabelFlags result:", {

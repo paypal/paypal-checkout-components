@@ -69,6 +69,7 @@ export type Experiment = {|
   spbEagerOrderCreation?: boolean,
   paypalCreditButtonCreateVaultSetupTokenExists?: boolean,
   isPaylaterCobrandedLabelEnabled?: boolean,
+  isPaylaterCobrandedLabelRandomizationEnabled?: boolean,
 |};
 
 export type Requires = {|
