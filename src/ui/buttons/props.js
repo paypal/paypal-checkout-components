@@ -347,6 +347,7 @@ export type ButtonStyleInputs = {|
   disableMaxWidth?: boolean | void,
   disableMaxHeight?: boolean | void,
   borderRadius?: number | void,
+  shouldApplyPayNowOrLaterLabel?: boolean | void,
 |};
 
 type PersonalizationComponentProps = {|
@@ -767,21 +768,11 @@ export function getBNPLLabelForABTest({
       bnplLabelFromStorage;
 
     if (storedSessionID && sessionID === storedSessionID) {
-      // eslint-disable-next-line no-console
-      console.log("getBNPLLabelForABTest: using cached value", {
-        shouldApplyPayNowOrLaterLabel,
-        sessionID,
-      });
       return shouldApplyPayNowOrLaterLabel;
     }
   }
 
   const shouldApplyPayNowOrLaterLabel = determineRandomBNPLLabel();
-  // eslint-disable-next-line no-console
-  console.log("getBNPLLabelForABTest: randomized new value", {
-    shouldApplyPayNowOrLaterLabel,
-    sessionID,
-  });
   storageState.set("bnplLabelABTest", {
     shouldApplyPayNowOrLaterLabel,
     sessionID,
@@ -1049,17 +1040,6 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
   const isPaylaterCobrandedLabelEnabled =
     props?.experiment?.isPaylaterCobrandedLabelEnabled || false;
 
-  // add logs to help debug any issues for alpha branch, remove later
-  // eslint-disable-next-line no-console
-  console.log("getCobrandedBNPLLabelFlags:", {
-    isPaylaterCobrandedLabelEnabled,
-    isCobrandedEligibleFundingSource,
-    isPaylaterEligible,
-    isLabelEligible,
-    isEnLang,
-    isPurchaseFlow,
-  });
-
   const isPayNowOrLaterLabelEligible = Boolean(
     isPaylaterCobrandedLabelEnabled &&
       isCobrandedEligibleFundingSource &&
@@ -1078,7 +1058,19 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
     hasStorageState &&
     hasSessionID;
 
+  // SSR path: the client already computed values
+  const precomputedLabel = props?.style?.shouldApplyPayNowOrLaterLabel;
+
+  if (precomputedLabel === true || precomputedLabel === false) {
+    return {
+      isPayNowOrLaterLabelEligible,
+      shouldApplyPayNowOrLaterLabel: precomputedLabel,
+    };
+  }
+
+  // Client path: compute shouldApplyPayNowOrLaterLabel from scratch
   let shouldApplyPayNowOrLaterLabel = false;
+
   if (isPayNowOrLaterLabelEligible) {
     if (shouldRunABTestRandomization && props && props.storageState) {
       shouldApplyPayNowOrLaterLabel = getBNPLLabelForABTest({
@@ -1090,16 +1082,6 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
       shouldApplyPayNowOrLaterLabel = true;
     }
   }
-
-  // eslint-disable-next-line no-console
-  console.log("getCobrandedBNPLLabelFlags result:", {
-    isPayNowOrLaterLabelEligible,
-    shouldApplyPayNowOrLaterLabel,
-    isPaylaterCobrandedLabelRandomizationEnabled,
-    hasStorageState,
-    hasSessionID,
-    shouldRunABTestRandomization,
-  });
 
   return { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel };
 }
