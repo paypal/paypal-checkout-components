@@ -1080,7 +1080,7 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
 
   let shouldApplyPayNowOrLaterLabel = false;
   if (isPayNowOrLaterLabelEligible) {
-    if (shouldRunABTestRandomization) {
+    if (shouldRunABTestRandomization && props && props.storageState) {
       shouldApplyPayNowOrLaterLabel = getBNPLLabelForABTest({
         storageState: props.storageState,
         sessionID: props.sessionID,
