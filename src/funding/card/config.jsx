@@ -141,6 +141,7 @@ export function getCardConfig(): FundingSourceConfig {
     secondaryColors: {
       ...DEFAULT_FUNDING_CONFIG.secondaryColors,
       [DEFAULT]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLACK,
     },
 
     logoColors: {
