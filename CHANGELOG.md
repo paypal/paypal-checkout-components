@@ -1,3 +1,9 @@
+## <small>5.0.406 (2026-03-03)</small>
+
+* add label "Pay now or later" experiment (#2600) ([6c0d3e3](https://github.com/paypal/paypal-checkout-components/commit/6c0d3e3)), closes [#2600](https://github.com/paypal/paypal-checkout-components/issues/2600)
+
+
+
 ## <small>5.0.405 (2026-02-26)</small>
 
 * Additional fix for hash params in resume flow (#2602) ([0c53815](https://github.com/paypal/paypal-checkout-components/commit/0c53815)), closes [#2602](https://github.com/paypal/paypal-checkout-components/issues/2602)
