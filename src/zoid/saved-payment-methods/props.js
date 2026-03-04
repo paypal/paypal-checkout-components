@@ -1,31 +1,32 @@
 /* @flow */
 
-import type { Wallet, ContentType } from "../../types";
+// import type { Wallet, ContentType } from "../../types";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 export type SavedPaymentMethodsProps = {|
-  clientID?: string,
-  merchantID?: $ReadOnlyArray<string>,
-  sessionID?: string,
+  clientID?: string, // NOTE: Where is it used?
+  // merchantID?: $ReadOnlyArray<string>,
+  // sessionID?: string,
   buttonSessionID?: string,
-  env?: string,
+  env?: string, // NOTE: Where is it used?
   locale?: {|
     country: string,
     lang: string,
   |},
-  sdkMeta?: string,
-  style?: {||},
+  message?: {|
+    amount?: number,
+    currency?: string,
+  |},
+  // sdkMeta?: string,
+  style?: {||}, // TBD
   nonce?: string,
-  wallet?: ?Wallet,
-  content?: ?ContentType,
-  userIDToken?: string,
-  currency?: string,
-  amount?: string,
-  onReady?: () => void,
-  onError?: (mixed) => void,
-  onSelect?: (string) => void,
-  onDelete?: (string) => void,
-  createOrder?: () => Promise<string> | string,
-  onApprove?: (Object) => Promise<void> | void,
+  // wallet?: ?Wallet,
+  // content?: ?ContentType,
+  // userIDToken?: string,
+  // currency?: string,
+  // amount?: string,
+  // onReady?: () => void,
+  createOrder: () => ZalgoPromise<string> | string,
+  onApprove: (Object) => ZalgoPromise<void> | void,
   onCancel?: () => void,
-  commit?: boolean,
 |};

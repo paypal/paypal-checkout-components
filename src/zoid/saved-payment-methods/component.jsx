@@ -25,10 +25,7 @@ import { getSessionID } from "../../lib";
 import { containerTemplate } from "./container";
 import { PrerenderedSavedPaymentMethods } from "./prerender";
 import { type SavedPaymentMethodsProps } from "./props";
-import {
-  getSavedPaymentMethodsSize,
-  validateSavedPaymentMethodsProps,
-} from "./util";
+import { getSavedPaymentMethodsSize } from "./util";
 
 export type SavedPaymentMethodsComponent = ZoidComponent<
   SavedPaymentMethodsProps,
@@ -117,17 +114,24 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: getMerchantID,
         },
 
-        currency: {
-          type: "string",
-          queryParam: true,
-          value: getCurrency,
+        message: {
+          // TODO: Does it need `value`or `validate` function?
+          type: "object",
+          required: false,
+          queryParam: false,
         },
 
-        amount: {
-          type: "string",
-          required: false,
-          queryParam: true,
-        },
+        // currency: {
+        //   type: "string",
+        //   queryParam: true,
+        //   value: getCurrency,
+        // },
+
+        // amount: {
+        //   type: "string",
+        //   required: false,
+        //   queryParam: true,
+        // },
 
         userIDToken: {
           type: "string",
@@ -141,41 +145,21 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           default: getCSPNonce,
         },
 
-        wallet: {
-          type: "object",
-          required: false,
-          default: () => window.__TEST_WALLET__,
-        },
+        // wallet: {
+        //   type: "object",
+        //   required: false,
+        //   default: () => window.__TEST_WALLET__,
+        // },
 
-        content: {
-          type: "object",
-          required: false,
-        },
-
-        onReady: {
-          type: "function",
-          required: false,
-        },
+        // content: {
+        //   type: "object",
+        //   required: false,
+        // },
 
         onError: {
           type: "function",
           required: false,
         },
-
-        onSelect: {
-          type: "function",
-          required: false,
-        },
-
-        onDelete: {
-          type: "function",
-          required: false,
-        },
-
-        // onEdit: {
-        //   type: "function",
-        //   required: false,
-        // },
 
         createOrder: {
           type: "function",
@@ -190,12 +174,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
         onCancel: {
           type: "function",
           required: false,
-        },
-
-        commit: {
-          type: "boolean",
-          required: false,
-          queryParam: true,
         },
 
         sdkMeta: {
