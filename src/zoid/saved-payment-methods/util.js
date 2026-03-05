@@ -13,10 +13,3 @@ export function getSavedPaymentMethodsSize(): {|
     height: "50px",
   };
 }
-
-export function validateSavedPaymentMethodsProps(props: Object): void {
-  // Add validation logic here
-  if (!props.clientID) {
-    throw new Error("clientID is required for SavedPaymentMethods component");
-  }
-}
