@@ -3,6 +3,11 @@
 // import type { Wallet, ContentType } from "../../types";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
+export type MessagesOptions = {|
+  amount?: number,
+  currency?: string,
+|};
+
 export type SavedPaymentMethodsProps = {|
   clientID?: string, // NOTE: Where is it used?
   // merchantID?: $ReadOnlyArray<string>,
@@ -13,10 +18,7 @@ export type SavedPaymentMethodsProps = {|
     country: string,
     lang: string,
   |},
-  message?: {|
-    amount?: number,
-    currency?: string,
-  |},
+  message?: MessagesOptions,
   // sdkMeta?: string,
   style?: {||}, // TBD
   nonce?: string,
