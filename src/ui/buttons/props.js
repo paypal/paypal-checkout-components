@@ -48,6 +48,7 @@ import {
   MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
+import { componentContent } from "../../funding/content";
 import type { StateGetSet } from "../../lib/session";
 
 import { BUTTON_SIZE_STYLE } from "./config";
@@ -331,6 +332,8 @@ export type ButtonStyle = {|
   borderRadius?: number,
   shouldApplyRebrandedStyles: boolean,
   isButtonColorABTestMerchant: boolean,
+  isPayNowOrLaterLabelEligible: boolean,
+  shouldApplyPayNowOrLaterLabel: boolean,
 |};
 
 export type ButtonStyleInputs = {|
@@ -344,6 +347,7 @@ export type ButtonStyleInputs = {|
   disableMaxWidth?: boolean | void,
   disableMaxHeight?: boolean | void,
   borderRadius?: number | void,
+  shouldApplyPayNowOrLaterLabel?: boolean | void,
 |};
 
 type PersonalizationComponentProps = {|
@@ -529,6 +533,11 @@ type ColorABTestStorage = {|
   sessionID: string,
 |};
 
+type BNPLLabelABTestStorage = {|
+  shouldApplyPayNowOrLaterLabel: boolean,
+  sessionID: string,
+|};
+
 type GetButtonColorArgs = {|
   experiment: Experiment,
   fundingSource: ?$Values<typeof FUNDING>,
@@ -568,10 +577,6 @@ type ThrowErrorForInvalidButtonColorArgs = {|
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
-
-  // Disabled state
-  disabled?: boolean,
-
   preferences?: {|
     appSwitchWhenAvailable?: boolean,
     launchAppSwitchIn?: "newTab" | "sameTab",
@@ -699,6 +704,7 @@ export type ButtonPropsInputs = {
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
+  storageState?: StateGetSet,
   userAgent: string,
 };
 
@@ -730,6 +736,48 @@ export function getColorABTestFromStorage(
   }
 
   return null;
+}
+
+export function getBNPLLabelABTestFromStorage(
+  storageState: StateGetSet
+): ?BNPLLabelABTestStorage {
+  const sessionState = storageState.get("bnplLabelABTest");
+
+  if (sessionState && sessionState.value) {
+    return sessionState.value;
+  }
+
+  return null;
+}
+
+export function determineRandomBNPLLabel(): boolean {
+  return Math.random() < 0.5;
+}
+
+export function getBNPLLabelForABTest({
+  storageState,
+  sessionID,
+}: {|
+  storageState: StateGetSet,
+  sessionID: ?string,
+|}): boolean {
+  const bnplLabelFromStorage = getBNPLLabelABTestFromStorage(storageState);
+
+  if (bnplLabelFromStorage) {
+    const { sessionID: storedSessionID, shouldApplyPayNowOrLaterLabel } =
+      bnplLabelFromStorage;
+
+    if (storedSessionID && sessionID === storedSessionID) {
+      return shouldApplyPayNowOrLaterLabel;
+    }
+  }
+
+  const shouldApplyPayNowOrLaterLabel = determineRandomBNPLLabel();
+  storageState.set("bnplLabelABTest", {
+    shouldApplyPayNowOrLaterLabel,
+    sessionID,
+  });
+  return shouldApplyPayNowOrLaterLabel;
 }
 
 export function determineRandomButtonColor({
@@ -974,6 +1022,70 @@ export function getButtonColor({
   }
 }
 
+export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
+  isPayNowOrLaterLabelEligible: boolean,
+  shouldApplyPayNowOrLaterLabel: boolean,
+|} {
+  const label = props?.style?.label;
+  const lang = props?.locale?.lang;
+  const isPurchaseFlow = props?.flow === BUTTON_FLOW.PURCHASE;
+  const isEnLang = Boolean(lang && componentContent[lang]?.PayNowOrLater);
+  const isCobrandedEligibleFundingSource =
+    props?.fundingSource === FUNDING.PAYPAL ||
+    props?.fundingSource === undefined;
+  const isPaylaterEligible =
+    props?.fundingEligibility?.paylater?.eligible || false;
+  const isLabelEligible = label === undefined || label === BUTTON_LABEL.PAYPAL;
+
+  const isPaylaterCobrandedLabelEnabled =
+    props?.experiment?.isPaylaterCobrandedLabelEnabled || false;
+
+  const isPayNowOrLaterLabelEligible = Boolean(
+    isPaylaterCobrandedLabelEnabled &&
+      isCobrandedEligibleFundingSource &&
+      isPaylaterEligible &&
+      isLabelEligible &&
+      isEnLang &&
+      isPurchaseFlow
+  );
+
+  const isPaylaterCobrandedLabelRandomizationEnabled =
+    props?.experiment?.isPaylaterCobrandedLabelRandomizationEnabled ?? true;
+  const hasStorageState = Boolean(props?.storageState);
+  const hasSessionID = Boolean(props?.sessionID);
+  const shouldRunABTestRandomization =
+    isPaylaterCobrandedLabelRandomizationEnabled &&
+    hasStorageState &&
+    hasSessionID;
+
+  // SSR path: the client already computed values
+  const precomputedLabel = props?.style?.shouldApplyPayNowOrLaterLabel;
+
+  if (precomputedLabel === true || precomputedLabel === false) {
+    return {
+      isPayNowOrLaterLabelEligible,
+      shouldApplyPayNowOrLaterLabel: precomputedLabel,
+    };
+  }
+
+  // Client path: compute shouldApplyPayNowOrLaterLabel from scratch
+  let shouldApplyPayNowOrLaterLabel = false;
+
+  if (isPayNowOrLaterLabelEligible) {
+    if (shouldRunABTestRandomization && props && props.storageState) {
+      shouldApplyPayNowOrLaterLabel = getBNPLLabelForABTest({
+        storageState: props.storageState,
+        sessionID: props.sessionID,
+      });
+    } else {
+      // Randomization disabled or storageState unavailable → 100% treatment
+      shouldApplyPayNowOrLaterLabel = true;
+    }
+  }
+
+  return { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel };
+}
+
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
   return {};
 };
@@ -1123,6 +1235,9 @@ export function normalizeButtonStyle(
     }
   }
 
+  const { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel } =
+    getCobrandedBNPLLabelFlags(props);
+
   return {
     label,
     layout,
@@ -1137,6 +1252,8 @@ export function normalizeButtonStyle(
     borderRadius,
     shouldApplyRebrandedStyles,
     isButtonColorABTestMerchant,
+    isPayNowOrLaterLabelEligible,
+    shouldApplyPayNowOrLaterLabel,
   };
 }
 

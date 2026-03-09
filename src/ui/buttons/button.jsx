@@ -72,7 +72,6 @@ type IndividualButtonProps = {|
   instrument: ?WalletInstrument,
   showPayLabel: boolean,
   showLoadingSpinner?: boolean,
-  disabled?: boolean,
 |};
 
 export function Button({
@@ -98,7 +97,6 @@ export function Button({
   userIDToken,
   vault,
   showLoadingSpinner = false,
-  disabled = false,
 }: IndividualButtonProps): ElementNode {
   const { layout, shape, borderRadius } = style;
 
@@ -111,7 +109,13 @@ export function Button({
   const colors = fundingConfig.colors;
   const secondaryColors = fundingConfig.secondaryColors || {};
 
-  let { color, period, label, shouldApplyRebrandedStyles } = style;
+  let {
+    color,
+    period,
+    label,
+    shouldApplyRebrandedStyles,
+    shouldApplyPayNowOrLaterLabel,
+  } = style;
 
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
@@ -191,6 +195,10 @@ export function Button({
           })
         : fundingConfig.labelText || fundingSource;
 
+    if (shouldApplyPayNowOrLaterLabel) {
+      labelText = "PayPal Pay Now or Later";
+    }
+
     if (!showPayLabel && instrument?.vendor && instrument.label) {
       labelText = instrument.secondaryInstruments
         ? `${instrument.secondaryInstruments[0].type} & ${instrument.vendor} ${instrument.label}`
@@ -236,6 +244,7 @@ export function Button({
       tagline={tagline}
       content={content}
       experiment={experiment}
+      shouldApplyPayNowOrLaterLabel={shouldApplyPayNowOrLaterLabel}
     />
   );
 
@@ -313,7 +322,6 @@ export function Button({
           CLASS.BUTTON,
           `${shouldApplyRebrandedStyles ? CLASS.BUTTON_REBRAND : ""}`,
           `${showLoadingSpinner ? CLASS.LOADING : ""}`,
-          `${disabled ? CLASS.DISABLED : ""}`,
           `${CLASS.NUMBER}-${i}`,
           `${CLASS.LAYOUT}-${layout}`,
           `${CLASS.NUMBER}-${
@@ -329,8 +337,7 @@ export function Button({
         onClick={clickHandler}
         onRender={onButtonRender}
         onKeyPress={keypressHandler}
-        tabindex={showLoadingSpinner || disabled ? "-1" : "0"}
-        aria-disabled={showLoadingSpinner || disabled ? "true" : "false"}
+        tabindex="0"
         aria-label={labelText}
       >
         <div class={CLASS.BUTTON_LABEL} aria-hidden="true">

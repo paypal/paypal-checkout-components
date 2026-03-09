@@ -235,6 +235,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+          role: "presentation",
         },
       };
     },
@@ -325,12 +326,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     props: {
-      disabled: {
-        type: "boolean",
-        queryParam: true,
-        required: false,
-      },
-
       appSwitchWhenAvailable: {
         type: "boolean",
         queryParam: true,
