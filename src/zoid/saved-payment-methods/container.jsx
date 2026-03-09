@@ -5,14 +5,17 @@ import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
 import { getVersion } from "@paypal/sdk-client/src";
 import { destroyElement } from "@krakenjs/belter/src";
+import { getNamespace } from "@paypal/sdk-client/src";
 
-import { type SavedPaymentMethodsProps } from "./props";
+import { type SavedPaymentMethodsProps, type MessagesOptions } from "./props";
 
 const CLASS = {
   VISIBLE: "visible",
   INVISIBLE: "invisible",
   COMPONENT_FRAME: "component-frame",
   PRERENDER_FRAME: "prerender-frame",
+  MESSAGE: "saved-payment-methods-message",
+  FRAMES_WRAPPER: "saved-payment-methods-frames",
 };
 
 const ATTRIBUTE = {
@@ -51,7 +54,26 @@ export function containerTemplate({
     }, 1000);
   });
 
-  const { nonce } = props;
+  event.on(EVENT.PRERENDERED, () => {
+    const messageContainer = element.querySelector(
+      `[data-spm-message-container="true"]`
+    );
+    if (messageContainer instanceof HTMLElement) {
+      const success = renderMessagesInContainer(messageContainer, {
+        amount: message?.amount,
+        currency: message?.currency,
+      });
+      // TODO: Logging from the Merchant's website?
+      console.log(
+        "====== renderMessagesInContainer",
+        success,
+        messageContainer,
+        message
+      );
+    }
+  });
+
+  const { nonce, message } = props;
 
   const element = (
     <div
@@ -65,11 +87,19 @@ export function containerTemplate({
             position: relative;
             display: block;
             width: 200px;
-            min-height: 50px;
             font-size: 0;
           }
 
-          #${uid} > iframe {
+          #${uid} .${CLASS.MESSAGE} {
+            margin-bottom: 8px;
+          }
+
+          #${uid} .${CLASS.FRAMES_WRAPPER} {
+            position: relative;
+            min-height: 50px;
+          }
+
+          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -78,30 +108,48 @@ export function containerTemplate({
             border: none;
           }
 
-          #${uid} > iframe.${CLASS.COMPONENT_FRAME} {
+          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.COMPONENT_FRAME} {
             z-index: 100;
           }
 
-          #${uid} > iframe.${CLASS.PRERENDER_FRAME} {
+          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.PRERENDER_FRAME} {
             transition: opacity .2s linear;
             z-index: 200;
           }
 
-          #${uid} > iframe.${CLASS.VISIBLE} {
+          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.VISIBLE} {
             opacity: 1;
           }
 
-          #${uid} > iframe.${CLASS.INVISIBLE} {
+          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.INVISIBLE} {
             opacity: 0;
             pointer-events: none;
           }
         `}
       </style>
 
-      <node el={frame} />
-      <node el={prerenderFrame} />
+      <div class={CLASS.FRAMES_WRAPPER}>
+        <node el={frame} />
+        <node el={prerenderFrame} />
+      </div>
+      <div class={CLASS.MESSAGE} data-spm-message-container="true" />
     </div>
   ).render(dom({ doc }));
-
   return element;
+}
+
+function renderMessagesInContainer(
+  container: HTMLElement,
+  options: MessagesOptions
+): boolean {
+  if (!container || !container.ownerDocument?.body?.contains(container)) {
+    return false;
+  }
+  const namespace = getNamespace();
+  const Messages = window[namespace]?.Messages;
+  if (!Messages) {
+    return false;
+  }
+  Messages(options).render(container);
+  return true;
 }
