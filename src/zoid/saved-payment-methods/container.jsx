@@ -59,17 +59,17 @@ export function containerTemplate({
       `[data-spm-message-container="true"]`
     );
     if (messageContainer instanceof HTMLElement) {
-      const success = renderMessagesInContainer(messageContainer, {
-        amount: message?.amount,
-        currency: message?.currency,
-      });
+      // const success = renderMessagesInContainer(messageContainer, {
+      //   amount: message?.amount,
+      //   currency: message?.currency,
+      // });
       // TODO: Logging from the Merchant's website?
-      console.log(
-        "====== renderMessagesInContainer",
-        success,
-        messageContainer,
-        message
-      );
+      // console.log(
+      //   "====== renderMessagesInContainer",
+      //   success,
+      //   messageContainer,
+      //   message
+      // );
     }
   });
 
