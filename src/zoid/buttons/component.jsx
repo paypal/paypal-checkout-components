@@ -796,6 +796,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             return {
               nativeUrl: window.popupBridge.getReturnUrlPrefix(),
+              deepLinkReturnUrlPrefix:
+                typeof window.popupBridge.getDeepLinkReturnUrlPrefix ===
+                "function"
+                  ? window.popupBridge.getDeepLinkReturnUrlPrefix()
+                  : null,
               isPayPalInstalled: Boolean(window.popupBridge.isPayPalInstalled),
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
