@@ -5,9 +5,8 @@ import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
 import { getVersion } from "@paypal/sdk-client/src";
 import { destroyElement, toCSS } from "@krakenjs/belter/src";
-import { getNamespace } from "@paypal/sdk-client/src";
 
-import { type SavedPaymentMethodsProps, type MessagesOptions } from "./props";
+import { type SavedPaymentMethodsProps } from "./props";
 
 const CLASS = {
   VISIBLE: "visible",
@@ -66,7 +65,7 @@ export function containerTemplate({
     });
   };
 
-  const { nonce, message } = props;
+  const { nonce } = props;
 
   const element = (
     <div

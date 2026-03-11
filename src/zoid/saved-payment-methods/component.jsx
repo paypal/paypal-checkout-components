@@ -23,7 +23,6 @@ import {
   getCommit,
   getComponents,
   getCorrelationID,
-  getCustomerId,
   getDebug,
   getDisableSetCookie,
   getExperimentation,
@@ -41,11 +40,7 @@ import {
   getVault,
   getSDKAttribute,
 } from "@paypal/sdk-client/src";
-import {
-  getRememberedFunding,
-  getRefinedFundingEligibility,
-  rememberFunding,
-} from "@paypal/funding-components/src";
+import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { ENV, FPTI_KEY, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
@@ -67,10 +62,8 @@ import {
 import { isSupportedNativeVenmoBrowser } from "../../funding/util";
 import {
   getButtonExperiments,
-  getButtonSize,
   getModal,
   isSupportedNativeBrowser,
-  getRenderedButtons,
   sendPostRobotMessageToButtonIframe,
 } from "../buttons/util";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
@@ -78,7 +71,6 @@ import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overl
 import { containerTemplate } from "./container";
 import { PrerenderedSavedPaymentMethods } from "./prerender";
 import { type SavedPaymentMethodsProps } from "./props";
-import { getSavedPaymentMethodsSize } from "./util";
 
 export type SavedPaymentMethodsComponent = ZoidComponent<
   SavedPaymentMethodsProps,
@@ -427,7 +419,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           type: "string",
           queryParam: true,
           required: false,
-          validate: ({ props }) => {}, // TODO: Validate funding source (see buttons/component)
+          // validate: () => { }, // TODO: Validate funding source (see buttons/component)
         },
 
         getPageUrl: {

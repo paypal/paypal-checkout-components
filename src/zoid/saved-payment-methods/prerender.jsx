@@ -13,8 +13,8 @@ type PrerenderedSavedPaymentMethodsProps = {|
 
 export function PrerenderedSavedPaymentMethods({
   nonce,
-  props,
-}: PrerenderedSavedPaymentMethodsProps): ChildType {
+}: // props,
+PrerenderedSavedPaymentMethodsProps): ChildType {
   return (
     <html>
       <head>
