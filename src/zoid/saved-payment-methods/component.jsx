@@ -23,6 +23,7 @@ import {
   getCommit,
   getComponents,
   getCorrelationID,
+  getCustomerId,
   getDebug,
   getDisableSetCookie,
   getExperimentation,
@@ -46,12 +47,7 @@ import {
   rememberFunding,
 } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import {
-  ENV,
-  FPTI_KEY,
-  FUNDING,
-  SDK_SETTINGS,
-} from "@paypal/sdk-constants/src";
+import { ENV, FPTI_KEY, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
 import {
   uniqueID,
@@ -68,11 +64,6 @@ import {
   sessionState,
   storageState,
 } from "../../lib";
-import {
-  getButtonColor,
-  normalizeButtonMessage,
-  normalizeButtonStyle,
-} from "../../ui/buttons/props";
 import { isSupportedNativeVenmoBrowser } from "../../funding/util";
 import {
   getButtonExperiments,
@@ -333,12 +324,12 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: getClientAccessToken,
         },
 
-        customerId: {
-          type: "string",
-          required: false,
-          queryParam: true,
-          value: getCustomerId,
-        },
+        // customerId: {
+        //   type: "string",
+        //   required: false,
+        //   queryParam: true,
+        //   value: getCustomerId,
+        // },
 
         clientID: {
           type: "string",
@@ -533,18 +524,18 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           type: "object",
           queryParam: true,
           required: false,
-          decorate: ({ props, value }) => {
-            const {
-              style: { layout },
-              renderedButtons: fundingSources,
-            } = props;
-            return normalizeButtonMessage(
-              // $FlowFixMe
-              value,
-              layout,
-              fundingSources
-            );
-          },
+          // decorate: ({ props, value }) => {
+          //   const {
+          //     style: { layout },
+          //     renderedButtons: fundingSources,
+          //   } = props;
+          //   return normalizeButtonMessage(
+          //     // $FlowFixMe
+          //     value,
+          //     layout,
+          //     fundingSources
+          //   );
+          // },
         },
 
         nonce: {
@@ -774,19 +765,19 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        remember: {
-          type: "function",
-          value: () => {
-            return (fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>) =>
-              rememberFunding(fundingSources, { cookie: false });
-          },
-        },
+        // remember: {
+        //   type: "function",
+        //   value: () => {
+        //     return (fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>) =>
+        //       rememberFunding(fundingSources, { cookie: false });
+        //   },
+        // },
 
-        remembered: {
-          type: "array",
-          queryParam: true,
-          value: getRememberedFunding,
-        },
+        // remembered: {
+        //   type: "array",
+        //   queryParam: true,
+        //   value: getRememberedFunding,
+        // },
 
         sessionID: {
           type: "string",
@@ -890,15 +881,15 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           type: "object",
           queryParam: true,
           required: false,
-          decorate: ({ props, value }) => {
-            // $FlowFixMe
-            return normalizeButtonStyle(props, value);
-          },
+          // decorate: ({ props, value }) => {
+          //   // $FlowFixMe
+          //   return normalizeButtonStyle(props, value);
+          // },
 
-          validate: ({ props, value = {} }) => {
-            // $FlowFixMe
-            normalizeButtonStyle(props, value);
-          },
+          // validate: ({ props, value = {} }) => {
+          //   // $FlowFixMe
+          //   normalizeButtonStyle(props, value);
+          // },
 
           default: () => ({}),
         },
