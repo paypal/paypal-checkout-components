@@ -4,7 +4,7 @@
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import { EVENT, type RenderOptionsType } from "@krakenjs/zoid/src";
 import { getVersion } from "@paypal/sdk-client/src";
-import { destroyElement } from "@krakenjs/belter/src";
+import { destroyElement, toCSS } from "@krakenjs/belter/src";
 import { getNamespace } from "@paypal/sdk-client/src";
 
 import { type SavedPaymentMethodsProps, type MessagesOptions } from "./props";
@@ -29,6 +29,7 @@ export function containerTemplate({
   prerenderFrame,
   doc,
   event,
+  dimensions,
 }: RenderOptionsType<SavedPaymentMethodsProps>): ?HTMLElement {
   if (!frame || !prerenderFrame) {
     return;
@@ -39,6 +40,8 @@ export function containerTemplate({
 
   frame.classList.add(CLASS.INVISIBLE);
   prerenderFrame.classList.add(CLASS.VISIBLE);
+
+  const { width: initialWidth, height: initialHeight } = dimensions;
 
   event.on(EVENT.RENDERED, () => {
     prerenderFrame.classList.remove(CLASS.VISIBLE);
@@ -52,6 +55,17 @@ export function containerTemplate({
     }, 1000);
   });
 
+  const setupAutoResize = (el) => {
+    event.on(EVENT.RESIZE, ({ width: newWidth, height: newHeight }) => {
+      if (typeof newWidth === "number") {
+        el.style.width = toCSS(newWidth);
+      }
+      if (typeof newHeight === "number") {
+        el.style.height = toCSS(newHeight);
+      }
+    });
+  };
+
   const { nonce, message } = props;
 
   const element = (
@@ -59,13 +73,17 @@ export function containerTemplate({
       id={uid}
       class={`${tag} ${tag}-context-${context}`}
       {...{ [ATTRIBUTE.VERSION]: `${getVersion()}` }}
+      style={{
+        width: initialWidth,
+        height: initialHeight,
+      }}
+      onRender={setupAutoResize}
     >
       <style nonce={nonce}>
         {`
           #${uid} {
             position: relative;
             display: block;
-            width: 200px;
             font-size: 0;
           }
 
