@@ -14,8 +14,6 @@ const CLASS = {
   INVISIBLE: "invisible",
   COMPONENT_FRAME: "component-frame",
   PRERENDER_FRAME: "prerender-frame",
-  MESSAGE: "saved-payment-methods-message",
-  FRAMES_WRAPPER: "saved-payment-methods-frames",
 };
 
 const ATTRIBUTE = {
@@ -54,25 +52,6 @@ export function containerTemplate({
     }, 1000);
   });
 
-  event.on(EVENT.PRERENDERED, () => {
-    const messageContainer = element.querySelector(
-      `[data-spm-message-container="true"]`
-    );
-    if (messageContainer instanceof HTMLElement) {
-      const success = renderMessagesInContainer(messageContainer, {
-        amount: message?.amount,
-        currency: message?.currency,
-      });
-      // TODO: Logging from the Merchant's website?
-      console.log(
-        "====== renderMessagesInContainer",
-        success,
-        messageContainer,
-        message
-      );
-    }
-  });
-
   const { nonce, message } = props;
 
   const element = (
@@ -90,16 +69,8 @@ export function containerTemplate({
             font-size: 0;
           }
 
-          #${uid} .${CLASS.MESSAGE} {
-            margin-bottom: 8px;
-          }
 
-          #${uid} .${CLASS.FRAMES_WRAPPER} {
-            position: relative;
-            min-height: 50px;
-          }
-
-          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe {
+          #${uid} > iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -108,48 +79,30 @@ export function containerTemplate({
             border: none;
           }
 
-          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.COMPONENT_FRAME} {
+          #${uid} > iframe.${CLASS.COMPONENT_FRAME} {
             z-index: 100;
           }
 
-          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.PRERENDER_FRAME} {
+          #${uid} > iframe.${CLASS.PRERENDER_FRAME} {
             transition: opacity .2s linear;
             z-index: 200;
           }
 
-          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.VISIBLE} {
+          #${uid} > iframe.${CLASS.VISIBLE} {
             opacity: 1;
           }
 
-          #${uid} .${CLASS.FRAMES_WRAPPER} > iframe.${CLASS.INVISIBLE} {
+          #${uid} > iframe.${CLASS.INVISIBLE} {
             opacity: 0;
             pointer-events: none;
           }
         `}
       </style>
 
-      <div class={CLASS.FRAMES_WRAPPER}>
-        <node el={frame} />
-        <node el={prerenderFrame} />
-      </div>
-      <div class={CLASS.MESSAGE} data-spm-message-container="true" />
+      <node el={frame} />
+      <node el={prerenderFrame} />
     </div>
   ).render(dom({ doc }));
-  return element;
-}
 
-function renderMessagesInContainer(
-  container: HTMLElement,
-  options: MessagesOptions
-): boolean {
-  if (!container || !container.ownerDocument?.body?.contains(container)) {
-    return false;
-  }
-  const namespace = getNamespace();
-  const Messages = window[namespace]?.Messages;
-  if (!Messages) {
-    return false;
-  }
-  Messages(options).render(container);
-  return true;
+  return element;
 }
