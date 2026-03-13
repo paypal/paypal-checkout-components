@@ -128,6 +128,7 @@ type ButtonsProps = ButtonPropsInputs & {|
   onClick?: Function,
   wallet?: ?Wallet,
   showLoadingSpinner?: boolean,
+  disabled?: boolean,
 |};
 
 export function validateButtonProps(props: ButtonPropsInputs) {
@@ -135,7 +136,11 @@ export function validateButtonProps(props: ButtonPropsInputs) {
 }
 
 export function Buttons(props: ButtonsProps): ElementNode {
-  const { onClick = noop, showLoadingSpinner = false } = props;
+  const {
+    onClick = noop,
+    showLoadingSpinner = false,
+    disabled = false,
+  } = props;
   const {
     applePaySupport,
     buyerCountry,
@@ -296,6 +301,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           instrument={instruments[source]}
           showPayLabel={showPayLabel}
           showLoadingSpinner={showLoadingSpinner}
+          disabled={disabled}
         />
       ))}
 
