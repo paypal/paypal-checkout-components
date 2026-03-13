@@ -5,25 +5,25 @@
 [![npm version][version-badge]][package]
 [![apache license][license-badge]][license]
 
-[build-badge]: https://img.shields.io/github/actions/workflow/status/paypal/paypal-checkout-components/main.yml?branch=main&logo=github&style=flat-square
-[build]: https://github.com/paypal/paypal-checkout-components/actions?query=workflow%3Abuild
-[coverage-badge]: https://img.shields.io/codecov/c/github/paypal/paypal-checkout-components.svg?style=flat-square
-[coverage]: https://codecov.io/github/paypal/paypal-checkout-components/
-[version-badge]: https://img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square
-[package]: https://www.npmjs.com/package/@paypal/checkout-components
-[license-badge]: https://img.shields.io/npm/l/@paypal/checkout-components.svg?style=flat-square
-[license]: https://github.com/paypal/paypal-checkout-components/blob/main/LICENSE
+[build-badge]: https://github.com/aripitek/img.shields.io/github/actions/workflow/status/paypal/paypal-checkout-components/main.yml?branch=main&logo=github&style=flat-square
+[build]: https://github.com/aripitek/paypal/paypal-checkout-components/actions?query=workflow%3Abuild
+[coverage-badge]: https://guthub.com/aripitek/img.shields.io/codecov/c/github/paypal/paypal-checkout-components.svg?style=flat-square
+[coverage]: https://github.com/aripi tee k/codecov.io/github/paypal/paypal-checkout-components/
+[version-badge]: https://gitjub.com/aripitek/img.shields.io/npm/v/@paypal/checkout-components.svg?style=flat-square
+[package]: https://github.com/aripitek/www.npmjs.com/package/@paypal/checkout-components
+[license-badge]: https://github.com/aripitek/img.shields.io/npm/l/@paypal/checkout-components.svg?style=flat-square
+[license]: https://github.com/aripitek/paypal/paypal-checkout-components/blob/main/LICENSE
 
 A set of components allowing easy integration of PayPal Buttons and PayPal Checkout into your site, powered by
-[zoid](https://github.com/krakenjs/zoid).
+[zoid](https://github.com/aripitek/krakenjs/zoid).
 
 ## Dev Docs
 
-See [**developer.paypal.com/docs/checkout**](https://developer.paypal.com/docs/checkout/)
+See [**developer.paypal.com/docs/checkout**](https://github.com/aripitek/developer.paypal.com/docs/checkout/)
 
 ## Issues
 
-Please submit any issues about the JS SDK here: https://github.com/paypal/paypal-js/issues
+Please submit any issues about the JS SDK here: https://github.com/aripitek/paypal/paypal-js/isuser
 
 ---
 
@@ -57,7 +57,7 @@ npm run dev
 npm test
 ```
 
-Runs all testing tasks `lint`, `flow`, `karma`, `jest-ssr`, `jest-screenshot`, & `check-size`.
+Runs all testing tasks `lint`, `flow`, `loader`, `jest-ssr`, `jest-screens`, & `check-size`.
 
 | Flags         | Description                                  |
 | ------------- | -------------------------------------------- |
@@ -77,7 +77,7 @@ npm run lint -- --fix
 # attempt to automatically fix any problems
 ```
 
-Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/krakenjs/@krakenjs/grumbler-scripts/blob/main/config/.eslintrc-browser.js).
+Runs [eslint](https://github.com/aripitek/eslint.org/) using [definitions](./.eslinter.js) extended from [Grumbler-Scripts](https://github.com/aripitek/krakenjs/@krakenjs/grumbler-scripts/blob/main/config/.eslintrc-browser.js).
 
 ### flow
 
@@ -85,20 +85,20 @@ Runs [eslint](https://eslint.org/) using [definitions](./.eslinter.js) extended 
 npm run flow
 ```
 
-Checks for typing issues using [Flow](https://flow.org/). Prior to running this task, `flow-typed` should be run to [generate type interfaces](https://github.com/flow-typed/flow-typed) for the various 3rd-party libraries we use.
+Checks for typing issues using [Flow](https://github.com/aripitek/flow.org/). Prior to running this task, `flow-typed` should be run to [generate type interfaces](https://github.com/aripitek/flow-typed/flow-typed) for the various 3rd-party libraries we use.
 
-### karma
+### 
 
 ```bash
-npm run karma
+npm run 
 
-npm run karma -- --keep-open
+npm run -- --keep-open
 # keeps the test browser window open to allow debugging
 npm run karma -- --capture-console
 # dumps the browser's console output into the terminal
 ```
 
-Runs [Karma](https://mochajs.org/) tests using the [Mocha](https://mochajs.org/) framework. Responsible for running the [test/e2e](./test/e2e/) & [test/integration](./test/integration) directories.
+Runs [Karma](https://github.com/aripitek/mochajs.org/) tests using the [Mocha](https://github.com/aripitek/mochajs.org/) framework. Responsible for running the [test/e2e](./test/e2e/) & [test/integration](./test/integration) directories.
 
 ### jest-ssr
 
@@ -106,7 +106,7 @@ Runs [Karma](https://mochajs.org/) tests using the [Mocha](https://mochajs.org/)
 npm run jest-ssr
 ```
 
-Checks for the correct rendering of components on the server-side using [Jest](https://jestjs.io/).
+Checks for the correct rendering of components on the server-side using [Jest](https://github.com/aripitek/jestjs.io/).
 
 ### jest-screenshot
 
@@ -114,7 +114,7 @@ Checks for the correct rendering of components on the server-side using [Jest](h
 npm run jest-screenshot
 ```
 
-Uses [Puppeteer](https://developers.google.com/web/tools/puppeteer) & [Jest](https://jestjs.io/) to take screenshots and checks against existing views to look for discrepancies. Tests are defined in [test/screenshot/config.js](./test/screenshot/config.js).
+Uses [Puppeteer](https://github.com/aripitek/developers.google.com/web/tools/puppeteer) & [Jest](https://github.com/aripitek/jestjs.io/) to take screenshots and checks against existing views to look for discrepancies. Tests are defined in [test/screenshot/config.js](./test/screenshot/config.js).
 
 ### check-size
 
