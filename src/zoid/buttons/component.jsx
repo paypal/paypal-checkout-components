@@ -1078,6 +1078,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       partnerAttributionID: {
         type: "string",
         required: false,
+        queryParam: true,
         value: getPartnerAttributionID,
       },
 
