@@ -23,6 +23,7 @@ import {
   getCommit,
   getComponents,
   getCorrelationID,
+  getCustomerId,
   getDebug,
   getDisableSetCookie,
   getExperimentation,
@@ -42,7 +43,7 @@ import {
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { ENV, FPTI_KEY, SDK_SETTINGS } from "@paypal/sdk-constants/src";
+import { ENV, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
 import {
   uniqueID,
@@ -59,10 +60,8 @@ import {
   sessionState,
   storageState,
 } from "../../lib";
-import { isSupportedNativeVenmoBrowser } from "../../funding/util";
 import {
   getButtonExperiments,
-  getModal,
   isSupportedNativeBrowser,
   sendPostRobotMessageToButtonIframe,
 } from "../buttons/util";
@@ -206,25 +205,25 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        listenForHashChanges: {
-          type: "function",
-          queryParam: false,
-          value:
-            ({ props }) =>
-            () => {
-              window.addEventListener("hashchange", props.hashChangeHandler);
-            },
-        },
+        // listenForHashChanges: {
+        //   type: "function",
+        //   queryParam: false,
+        //   value:
+        //     ({ props }) =>
+        //     () => {
+        //       window.addEventListener("hashchange", props.hashChangeHandler);
+        //     },
+        // },
 
-        removeListenerForHashChanges: {
-          type: "function",
-          queryParam: false,
-          value:
-            ({ props }) =>
-            () => {
-              window.removeEventListener("hashchange", props.hashChangeHandler);
-            },
-        },
+        // removeListenerForHashChanges: {
+        //   type: "function",
+        //   queryParam: false,
+        //   value:
+        //     ({ props }) =>
+        //     () => {
+        //       window.removeEventListener("hashchange", props.hashChangeHandler);
+        //     },
+        // },
 
         visibilityChangeHandler: {
           type: "function",
@@ -242,31 +241,31 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        listenForVisibilityChange: {
-          type: "function",
-          queryParam: false,
-          value:
-            ({ props }) =>
-            () => {
-              window.addEventListener(
-                "visibilitychange",
-                props.visibilityChangeHandler
-              );
-            },
-        },
+        // listenForVisibilityChange: {
+        //   type: "function",
+        //   queryParam: false,
+        //   value:
+        //     ({ props }) =>
+        //     () => {
+        //       window.addEventListener(
+        //         "visibilitychange",
+        //         props.visibilityChangeHandler
+        //       );
+        //     },
+        // },
 
-        removeListenerForVisibilityChanges: {
-          type: "function",
-          queryParam: false,
-          value:
-            ({ props }) =>
-            () => {
-              window.removeEventListener(
-                "visibilitychange",
-                props.visibilityChangeHandler
-              );
-            },
-        },
+        // removeListenerForVisibilityChanges: {
+        //   type: "function",
+        //   queryParam: false,
+        //   value:
+        //     ({ props }) =>
+        //     () => {
+        //       window.removeEventListener(
+        //         "visibilitychange",
+        //         props.visibilityChangeHandler
+        //       );
+        //     },
+        // },
 
         // allowBillingPayments prop is used by Honey Extension to render the one-click button
         // with payment methods & to use the payment methods instead of the Billing Agreement
@@ -316,12 +315,12 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: getClientAccessToken,
         },
 
-        // customerId: {
-        //   type: "string",
-        //   required: false,
-        //   queryParam: true,
-        //   value: getCustomerId,
-        // },
+        customerId: {
+          type: "string",
+          required: false,
+          queryParam: true,
+          value: getCustomerId,
+        },
 
         clientID: {
           type: "string",
@@ -577,115 +576,115 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        onMessageClick: {
-          type: "function",
-          required: false,
-          value: ({ props }) => {
-            return async ({
-              offerType,
-              messageType,
-              offerCountryCode,
-              creditProductIdentifier,
-            }) => {
-              const {
-                message,
-                clientID,
-                currency,
-                buttonSessionID,
-                merchantID,
-              } = props;
-              const amount = message?.amount;
+        // onMessageClick: {
+        //   type: "function",
+        //   required: false,
+        //   value: ({ props }) => {
+        //     return async ({
+        //       offerType,
+        //       messageType,
+        //       offerCountryCode,
+        //       creditProductIdentifier,
+        //     }) => {
+        //       const {
+        //         message,
+        //         clientID,
+        //         currency,
+        //         buttonSessionID,
+        //         merchantID,
+        //       } = props;
+        //       const amount = message?.amount;
 
-              getLogger()
-                .info("saved_payment_methods_message_click")
-                .track({
-                  [FPTI_KEY.TRANSITION]: "saved_payment_methods_message_click",
-                  [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
-                  [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-                  [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
-                  [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
-                  [FPTI_KEY.EVENT_NAME]: "message_click",
-                  [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-                  [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
-                    creditProductIdentifier,
-                  [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
-                  [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
-                  [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
-                  [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
-                  [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
-                  [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
-                  [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
-                })
-                .flush();
+        //       getLogger()
+        //         .info("saved_payment_methods_message_click")
+        //         .track({
+        //           [FPTI_KEY.TRANSITION]: "saved_payment_methods_message_click",
+        //           [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+        //           [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+        //           [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+        //           [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+        //           [FPTI_KEY.EVENT_NAME]: "message_click",
+        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+        //           [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
+        //             creditProductIdentifier,
+        //           [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+        //           [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
+        //           [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
+        //           [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
+        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
+        //           [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
+        //           [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
+        //         })
+        //         .flush();
 
-              const modalInstance = await getModal(
-                clientID,
-                merchantID,
-                buttonSessionID
-              );
-              return modalInstance?.show({
-                amount,
-                offer: offerType,
-                currency,
-              });
-            };
-          },
-        },
+        //       const modalInstance = await getModal(
+        //         clientID,
+        //         merchantID,
+        //         buttonSessionID
+        //       );
+        //       return modalInstance?.show({
+        //         amount,
+        //         offer: offerType,
+        //         currency,
+        //       });
+        //     };
+        //   },
+        // },
 
-        onMessageHover: {
-          type: "function",
-          required: false,
-          value: ({ props }) => {
-            return () => {
-              const { buttonSessionID, clientID, merchantID } = props;
-              return getModal(clientID, merchantID, buttonSessionID);
-            };
-          },
-        },
+        // onMessageHover: {
+        //   type: "function",
+        //   required: false,
+        //   value: ({ props }) => {
+        //     return () => {
+        //       const { buttonSessionID, clientID, merchantID } = props;
+        //       return getModal(clientID, merchantID, buttonSessionID);
+        //     };
+        //   },
+        // },
 
-        onMessageReady: {
-          type: "function",
-          required: false,
-          value: ({ props }) => {
-            return ({
-              offerType,
-              messageType,
-              offerCountryCode,
-              creditProductIdentifier,
-              merchantID: serverMerchantId,
-            }) => {
-              const { message, buttonSessionID, currency } = props;
+        // onMessageReady: {
+        //   type: "function",
+        //   required: false,
+        //   value: ({ props }) => {
+        //     return ({
+        //       offerType,
+        //       messageType,
+        //       offerCountryCode,
+        //       creditProductIdentifier,
+        //       merchantID: serverMerchantId,
+        //     }) => {
+        //       const { message, buttonSessionID, currency } = props;
 
-              if (serverMerchantId) {
-                getLogger().addTrackingBuilder(() => ({
-                  [FPTI_KEY.SELLER_ID]: serverMerchantId,
-                }));
-              }
+        //       if (serverMerchantId) {
+        //         getLogger().addTrackingBuilder(() => ({
+        //           [FPTI_KEY.SELLER_ID]: serverMerchantId,
+        //         }));
+        //       }
 
-              getLogger()
-                .info("saved_payment_methods_message_render")
-                .track({
-                  [FPTI_KEY.TRANSITION]: "saved_payment_methods_message_render",
-                  [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
-                  [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-                  [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
-                  [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
-                  [FPTI_KEY.EVENT_NAME]: "message_render",
-                  [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-                  [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
-                    creditProductIdentifier,
-                  [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
-                  [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
-                  [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
-                  [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
-                  [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
-                  [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
-                  [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
-                })
-                .flush();
-            };
-          },
-        },
+        //       getLogger()
+        //         .info("saved_payment_methods_message_render")
+        //         .track({
+        //           [FPTI_KEY.TRANSITION]: "saved_payment_methods_message_render",
+        //           [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
+        //           [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
+        //           [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+        //           [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
+        //           [FPTI_KEY.EVENT_NAME]: "message_render",
+        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
+        //           [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
+        //             creditProductIdentifier,
+        //           [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
+        //           // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
+        //           // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
+        //           // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
+        //           [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
+        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
+        //           [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
+        //         })
+        //         .flush();
+        //     };
+        //   },
+        // },
 
         onShippingAddressChange: {
           type: "function",
@@ -756,20 +755,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
             }
           },
         },
-
-        // remember: {
-        //   type: "function",
-        //   value: () => {
-        //     return (fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>) =>
-        //       rememberFunding(fundingSources, { cookie: false });
-        //   },
-        // },
-
-        // remembered: {
-        //   type: "array",
-        //   queryParam: true,
-        //   value: getRememberedFunding,
-        // },
 
         sessionID: {
           type: "string",
@@ -892,17 +877,17 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           queryParam: true,
         },
 
-        supportedNativeVenmoBrowser: {
-          type: "boolean",
-          value: ({ props }) => {
-            return isSupportedNativeVenmoBrowser(
-              props.experiment,
-              props.userAgent
-            );
-          },
-          queryParam: true,
-          required: false,
-        },
+        // supportedNativeVenmoBrowser: {
+        //   type: "boolean",
+        //   value: ({ props }) => {
+        //     return isSupportedNativeVenmoBrowser(
+        //       props.experiment,
+        //       props.userAgent
+        //     );
+        //   },
+        //   queryParam: true,
+        //   required: false,
+        // },
 
         supportsPopups: {
           type: "boolean",
