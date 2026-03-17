@@ -591,6 +591,12 @@ export type ButtonProps = {|
   removeListenerForVisibilityChanges: () => void,
   // Not passed to child iframe
   visibilityChangeHandler: () => void,
+  listenForBfcache: () => void,
+  removeListenerForBfcache: () => void,
+  // Not passed to child iframe
+  pagehideHandler: (event: any) => void, // eslint-disable-line flowtype/no-weak-types
+  // Not passed to child iframe
+  pageshowHandler: (event: any) => void, // eslint-disable-line flowtype/no-weak-types
 
   showPayPalAppSwitchOverlay: (args: ShowPayPalAppSwitchOverlay) => void,
   hidePayPalAppSwitchOverlay: (args: HidePayPalAppSwitchOverlay) => void,

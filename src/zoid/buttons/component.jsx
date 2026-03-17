@@ -107,8 +107,8 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
-  sendPostRobotMessageToButtonIframe,
   isEagerOrderCreationEnabled,
+  sendPostRobotMessageToButtonIframe,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
@@ -455,6 +455,67 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               "visibilitychange",
               props.visibilityChangeHandler
             );
+          },
+      },
+
+      pagehideHandler: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value: () => (event) => {
+          if (event.persisted) {
+            window.__bfcache_cached_time__ = Date.now();
+          }
+        },
+      },
+
+      pageshowHandler: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value: () => (event) => {
+          if (event.persisted) {
+            const restoredTime = Date.now();
+            const cachedTime = window.__bfcache_cached_time__;
+            sendPostRobotMessageToButtonIframe({
+              eventName: "bfcache_restore",
+              payload: { cachedTime, restoredTime },
+            });
+          }
+        },
+      },
+
+      listenForBfcache: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.addEventListener("pagehide", props.pagehideHandler);
+            window.addEventListener("pageshow", props.pageshowHandler);
+          },
+      },
+
+      getBfcacheData: {
+        type: "function",
+        queryParam: false,
+        value: () => () => {
+          const cachedTime = window.__bfcache_cached_time__;
+          if (cachedTime) {
+            const cachedDurationMs = Date.now() - cachedTime;
+            return { cachedDurationMs };
+          }
+        },
+      },
+
+      removeListenerForBfcache: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props }) =>
+          () => {
+            window.removeEventListener("pagehide", props.pagehideHandler);
+            window.removeEventListener("pageshow", props.pageshowHandler);
           },
       },
 

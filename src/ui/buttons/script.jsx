@@ -264,8 +264,39 @@ export function getComponentScript(): () => void {
       setDomReady();
     };
 
+    // BFCache (Back/Forward Cache) child-side listeners
+    function setupBfcacheListeners() {
+      const postRobot = window.paypal?.postRobot || window.paypal?.postrobot;
+
+      if (!postRobot) {
+        return;
+      }
+
+      let bfcacheCachedTime = null;
+
+      // Listen for cache event from parent (consistent with paypal-hashchange pattern)
+      postRobot.on("bfcache_cache", ({ data }) => {
+        bfcacheCachedTime = data.cachedTime;
+      });
+
+      // Listen for restore event from parent
+      postRobot.on("bfcache_restore", ({ data }) => {
+        if (bfcacheCachedTime && typeof bfcacheCachedTime === "number") {
+          const cachedDurationMs = data.restoredTime - bfcacheCachedTime;
+
+          // Store for metrics logging on next button interaction
+          if (window.xprops?.onBfcacheRestore) {
+            window.xprops.onBfcacheRestore({ cachedDurationMs });
+          }
+
+          bfcacheCachedTime = null;
+        }
+      });
+    }
+
     toggleOptionals();
     toggleLogos();
+    setupBfcacheListeners();
     document.addEventListener("DOMContentLoaded", load);
     window.addEventListener("load", load);
     window.addEventListener("resize", load);
