@@ -592,7 +592,7 @@ export type ButtonProps = {|
   // Not passed to child iframe
   visibilityChangeHandler: () => void,
   onBfcacheCache: () => void,
-  onBfcacheRestore: ({ cachedDurationMs?: number }) => void,
+  onBfcacheRestore: ({| cachedDurationMs?: number |}) => void,
 
   showPayPalAppSwitchOverlay: (args: ShowPayPalAppSwitchOverlay) => void,
   hidePayPalAppSwitchOverlay: (args: HidePayPalAppSwitchOverlay) => void,
