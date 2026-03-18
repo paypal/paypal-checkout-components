@@ -458,64 +458,29 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           },
       },
 
-      pagehideHandler: {
+      onBfcacheCache: {
         type: "function",
         sendToChild: false,
-        queryParam: false,
-        value: () => (event) => {
-          if (event.persisted) {
-            window.__bfcache_cached_time__ = Date.now();
-          }
-        },
-      },
-
-      pageshowHandler: {
-        type: "function",
-        sendToChild: false,
-        queryParam: false,
-        value: () => (event) => {
-          if (event.persisted) {
-            const restoredTime = Date.now();
-            const cachedTime = window.__bfcache_cached_time__;
-            sendPostRobotMessageToButtonIframe({
-              eventName: "bfcache_restore",
-              payload: { cachedTime, restoredTime },
-            });
-          }
-        },
-      },
-
-      listenForBfcache: {
-        type: "function",
-        queryParam: false,
-        value:
-          ({ props }) =>
-          () => {
-            window.addEventListener("pagehide", props.pagehideHandler);
-            window.addEventListener("pageshow", props.pageshowHandler);
-          },
-      },
-
-      getBfcacheData: {
-        type: "function",
         queryParam: false,
         value: () => () => {
-          const cachedTime = window.__bfcache_cached_time__;
-          if (cachedTime) {
-            const cachedDurationMs = Date.now() - cachedTime;
-            return { cachedDurationMs };
-          }
+          sendPostRobotMessageToButtonIframe({
+            eventName: "bfcache_cache",
+            payload: {},
+          });
         },
       },
 
-      removeListenerForBfcache: {
+      onBfcacheRestore: {
         type: "function",
+        sendToChild: false,
         queryParam: false,
         value:
-          ({ props }) =>
-          () => {
-            window.removeEventListener("pagehide", props.pagehideHandler);
-            window.removeEventListener("pageshow", props.pageshowHandler);
+          () =>
+          ({ cachedDurationMs } = {}) => {
+            sendPostRobotMessageToButtonIframe({
+              eventName: "bfcache_restore",
+              payload: { cachedDurationMs },
+            });
           },
       },
 
