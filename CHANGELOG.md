@@ -1,3 +1,9 @@
+## <small>5.0.407 (2026-03-18)</small>
+
+* [DTINAPPXO-3543] Pass partnerAttributionID (#2607) ([8c201d8](https://github.com/paypal/paypal-checkout-components/commit/8c201d8)), closes [#2607](https://github.com/paypal/paypal-checkout-components/issues/2607)
+
+
+
 ## <small>5.0.406 (2026-03-03)</small>
 
 * add label "Pay now or later" experiment (#2600) ([6c0d3e3](https://github.com/paypal/paypal-checkout-components/commit/6c0d3e3)), closes [#2600](https://github.com/paypal/paypal-checkout-components/issues/2600)
