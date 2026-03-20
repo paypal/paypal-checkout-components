@@ -812,7 +812,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                     }
                     const queryItems =
                       result && result.queryItems ? result.queryItems : {};
-                    return err ? reject(err) : resolve(queryItems);
+                    const payload = result
+                      ? {
+                          ...queryItems,
+                          queryItems,
+                          path: result.path,
+                          hash: result.hash,
+                        }
+                      : queryItems;
+                    return err ? reject(err) : resolve(payload);
                   };
                   window.popupBridge.open(url);
                 });
@@ -827,7 +835,15 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                     }
                     const queryItems =
                       result && result.queryItems ? result.queryItems : {};
-                    return err ? reject(err) : resolve(queryItems);
+                    const payload = result
+                      ? {
+                          ...queryItems,
+                          queryItems,
+                          path: result.path,
+                          hash: result.hash,
+                        }
+                      : queryItems;
+                    return err ? reject(err) : resolve(payload);
                   };
                   window.popupBridge.launchApp(url);
                 });
