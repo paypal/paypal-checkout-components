@@ -458,18 +458,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           },
       },
 
-      onBfcacheCache: {
-        type: "function",
-        sendToChild: false,
-        queryParam: false,
-        value: () => () => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "bfcache_cache",
-            payload: {},
-          });
-        },
-      },
-
       onBfcacheRestore: {
         type: "function",
         sendToChild: false,
