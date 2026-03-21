@@ -98,6 +98,7 @@ import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
+import { readPopupBridgeBoolean } from "./popupBridge";
 import { PrerenderedButtons } from "./prerender";
 import {
   applePaySession,
@@ -801,7 +802,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 "function"
                   ? window.popupBridge.getDeepLinkReturnUrlPrefix()
                   : null,
-              isPayPalInstalled: Boolean(window.popupBridge.isPayPalInstalled),
+              isPayPalInstalled: readPopupBridgeBoolean(
+                window.popupBridge.isPayPalInstalled
+              ),
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
                   window.popupBridge.onComplete = (err, result) => {
