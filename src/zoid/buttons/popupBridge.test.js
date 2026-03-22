@@ -17,6 +17,22 @@ describe("readPopupBridgeBoolean", () => {
     expect(getter).toHaveBeenCalledTimes(1);
   });
 
+  test("calls Android-style bridge getters with the popupBridge receiver", () => {
+    const popupBridge = {
+      installed: true,
+      isPayPalInstalled(): boolean {
+        return this.installed;
+      },
+    };
+
+    expect(
+      readPopupBridgeBoolean(
+        popupBridge.isPayPalInstalled,
+        popupBridge,
+      ),
+    ).toBe(true);
+  });
+
   test("returns false when a bridge getter throws", () => {
     const getter = vi.fn(() => {
       throw new Error("boom");

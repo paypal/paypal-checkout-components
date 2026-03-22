@@ -5,10 +5,12 @@
  * addJavascriptInterface can surface the same member as a callable bridge getter.
  * Normalize both shapes at the JS SDK boundary.
  */
-export function readPopupBridgeBoolean(value: mixed): boolean {
+export function readPopupBridgeBoolean(value: mixed, owner?: mixed): boolean {
   if (typeof value === "function") {
     try {
-      return Boolean(value());
+      // eslint-disable-next-line flowtype/no-weak-types
+      const callable = (value: any);
+      return Boolean(owner ? callable.call(owner) : callable());
     } catch (_) {
       return false;
     }

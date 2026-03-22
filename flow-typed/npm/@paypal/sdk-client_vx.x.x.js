@@ -46,10 +46,6 @@ declare module "@paypal/sdk-client/server/meta" {
   declare module.exports: any;
 }
 
-declare module "@paypal/sdk-client/server/meta" {
-  declare module.exports: any;
-}
-
 declare module "@paypal/sdk-client/server/meta.test" {
   declare module.exports: any;
 }

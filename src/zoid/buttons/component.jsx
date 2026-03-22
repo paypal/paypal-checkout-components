@@ -803,7 +803,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                   ? window.popupBridge.getDeepLinkReturnUrlPrefix()
                   : null,
               isPayPalInstalled: readPopupBridgeBoolean(
-                window.popupBridge.isPayPalInstalled
+                window.popupBridge.isPayPalInstalled,
+                window.popupBridge
               ),
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
