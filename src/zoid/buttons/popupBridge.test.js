@@ -21,7 +21,7 @@ describe("readPopupBridgeBoolean", () => {
     const popupBridge = {
       installed: true,
       isPayPalInstalled(): boolean {
-        return this.installed;
+        return popupBridge.installed;
       },
     };
 
