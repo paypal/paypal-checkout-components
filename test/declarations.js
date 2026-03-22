@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint import/unambiguous: 0 */
 
-declare var jest: mixed;
+declare var jest: {| setTimeout: (ms: number) => void |};
 declare var after: Function;
 declare var afterAll: Function;
 declare var beforeAll: Function;
