@@ -1,3 +1,9 @@
+## <small>5.0.408 (2026-03-23)</small>
+
+* Pass bfcache events via post-robot (#2608) ([2e278df](https://github.com/paypal/paypal-checkout-components/commit/2e278df)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608)
+
+
+
 ## <small>5.0.407 (2026-03-18)</small>
 
 * [DTINAPPXO-3543] Pass partnerAttributionID (#2607) ([8c201d8](https://github.com/paypal/paypal-checkout-components/commit/8c201d8)), closes [#2607](https://github.com/paypal/paypal-checkout-components/issues/2607)
