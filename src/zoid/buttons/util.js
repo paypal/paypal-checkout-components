@@ -410,6 +410,7 @@ export const sendPostRobotMessageToButtonIframe = ({
     if (iframes[i].name.includes("zoid__paypal_buttons")) {
       postRobotSend(iframes[i].contentWindow, eventName, payload, {
         domain: getPayPalDomain(),
+        fireAndForget: true,
       });
     }
   }
