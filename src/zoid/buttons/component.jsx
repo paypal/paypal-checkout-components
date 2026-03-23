@@ -97,6 +97,7 @@ import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
+import { withBfCacheRecovery } from "../../lib/bfcache-buttons-recovery";
 import { containerTemplate } from "./container";
 import { PrerenderedButtons } from "./prerender";
 import {
@@ -123,7 +124,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
 
   // $FlowIssue
-  return create({
+  const Buttons = create({
     tag: "paypal-buttons",
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
@@ -1401,4 +1402,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       },
     },
   });
+
+  return withBfCacheRecovery(Buttons);
 });
