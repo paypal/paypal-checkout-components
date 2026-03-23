@@ -149,6 +149,8 @@ export function getRenderedButtons(
     applePaySupport,
     supportsPopups = userAgentSupportsPopups(),
     supportedNativeBrowser = isSupportedNativeBrowser(),
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     createBillingAgreement,
     createSubscription,
     createVaultSetupToken,
@@ -181,6 +183,8 @@ export function getRenderedButtons(
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     experiment,
     displayOnly,
   });
@@ -406,6 +410,7 @@ export const sendPostRobotMessageToButtonIframe = ({
     if (iframes[i].name.includes("zoid__paypal_buttons")) {
       postRobotSend(iframes[i].contentWindow, eventName, payload, {
         domain: getPayPalDomain(),
+        fireAndForget: true,
       });
     }
   }

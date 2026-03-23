@@ -48,6 +48,7 @@ import {
   MESSAGE_ALIGN,
 } from "../../constants";
 import { getFundingConfig, isFundingEligible } from "../../funding";
+import { componentContent } from "../../funding/content";
 import type { StateGetSet } from "../../lib/session";
 
 import { BUTTON_SIZE_STYLE } from "./config";
@@ -331,6 +332,8 @@ export type ButtonStyle = {|
   borderRadius?: number,
   shouldApplyRebrandedStyles: boolean,
   isButtonColorABTestMerchant: boolean,
+  isPayNowOrLaterLabelEligible: boolean,
+  shouldApplyPayNowOrLaterLabel: boolean,
 |};
 
 export type ButtonStyleInputs = {|
@@ -344,6 +347,7 @@ export type ButtonStyleInputs = {|
   disableMaxWidth?: boolean | void,
   disableMaxHeight?: boolean | void,
   borderRadius?: number | void,
+  shouldApplyPayNowOrLaterLabel?: boolean | void,
 |};
 
 type PersonalizationComponentProps = {|
@@ -487,10 +491,13 @@ export type RenderButtonProps = {|
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   showPayLabel: boolean,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessage,
   messageMarkup?: string,
+  userAgent: string,
 |};
 
 export type PrerenderDetails = {|
@@ -523,6 +530,11 @@ type ButtonColor = {|
 
 type ColorABTestStorage = {|
   ...ButtonColor,
+  sessionID: string,
+|};
+
+type BNPLLabelABTestStorage = {|
+  shouldApplyPayNowOrLaterLabel: boolean,
   sessionID: string,
 |};
 
@@ -565,6 +577,10 @@ type ThrowErrorForInvalidButtonColorArgs = {|
 export type ButtonProps = {|
   // app switch properties
   appSwitchWhenAvailable: boolean,
+  preferences?: {|
+    appSwitchWhenAvailable?: boolean,
+    launchAppSwitchIn?: "newTab" | "sameTab",
+  |},
   listenForHashChanges: () => void,
   removeListenerForHashChanges: () => void,
   // Not passed to child iframe
@@ -573,9 +589,7 @@ export type ButtonProps = {|
   hashChangeHandler: (event: any) => void,
   listenForVisibilityChange: () => void,
   removeListenerForVisibilityChanges: () => void,
-  // Not passed to child iframe
   visibilityChangeHandler: () => void,
-
   showPayPalAppSwitchOverlay: (args: ShowPayPalAppSwitchOverlay) => void,
   hidePayPalAppSwitchOverlay: (args: HidePayPalAppSwitchOverlay) => void,
 
@@ -623,6 +637,8 @@ export type ButtonProps = {|
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   applePaySupport: boolean,
   applePay: ApplePaySessionConfigRequest,
   meta: {||},
@@ -633,6 +649,7 @@ export type ButtonProps = {|
   message?: ButtonMessage,
   messageMarkup?: string,
   hideSubmitButtonForCardForm?: boolean,
+  userAgent: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -677,12 +694,16 @@ export type ButtonPropsInputs = {
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   showPayLabel: boolean,
   displayOnly: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
   message?: ButtonMessageInputs | void,
   messageMarkup?: string | void,
   renderedButtons: $ReadOnlyArray<$Values<typeof FUNDING>>,
   buttonColor: ButtonColor,
+  storageState?: StateGetSet,
+  userAgent: string,
 };
 
 export const DEFAULT_STYLE = {
@@ -713,6 +734,48 @@ export function getColorABTestFromStorage(
   }
 
   return null;
+}
+
+export function getBNPLLabelABTestFromStorage(
+  storageState: StateGetSet
+): ?BNPLLabelABTestStorage {
+  const sessionState = storageState.get("bnplLabelABTest");
+
+  if (sessionState && sessionState.value) {
+    return sessionState.value;
+  }
+
+  return null;
+}
+
+export function determineRandomBNPLLabel(): boolean {
+  return Math.random() < 0.5;
+}
+
+export function getBNPLLabelForABTest({
+  storageState,
+  sessionID,
+}: {|
+  storageState: StateGetSet,
+  sessionID: ?string,
+|}): boolean {
+  const bnplLabelFromStorage = getBNPLLabelABTestFromStorage(storageState);
+
+  if (bnplLabelFromStorage) {
+    const { sessionID: storedSessionID, shouldApplyPayNowOrLaterLabel } =
+      bnplLabelFromStorage;
+
+    if (storedSessionID && sessionID === storedSessionID) {
+      return shouldApplyPayNowOrLaterLabel;
+    }
+  }
+
+  const shouldApplyPayNowOrLaterLabel = determineRandomBNPLLabel();
+  storageState.set("bnplLabelABTest", {
+    shouldApplyPayNowOrLaterLabel,
+    sessionID,
+  });
+  return shouldApplyPayNowOrLaterLabel;
 }
 
 export function determineRandomButtonColor({
@@ -754,6 +817,7 @@ export function hasInvalidScriptOptionsForFullRedesign({
   fundingSource?: ?$Values<typeof FUNDING>,
 |}): boolean {
   const validFundingSourcesForRedesign = [
+    undefined,
     FUNDING.PAYPAL,
     FUNDING.VENMO,
     FUNDING.PAYLATER,
@@ -882,7 +946,7 @@ export function getColorForFullRedesign({
       style,
     });
 
-    buttonColor = rebrandColorMap[defaultButtonColor];
+    buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
   }
 
   return {
@@ -954,6 +1018,70 @@ export function getButtonColor({
         isButtonColorABTestMerchant: false,
       };
   }
+}
+
+export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
+  isPayNowOrLaterLabelEligible: boolean,
+  shouldApplyPayNowOrLaterLabel: boolean,
+|} {
+  const label = props?.style?.label;
+  const lang = props?.locale?.lang;
+  const isPurchaseFlow = props?.flow === BUTTON_FLOW.PURCHASE;
+  const isEnLang = Boolean(lang && componentContent[lang]?.PayNowOrLater);
+  const isCobrandedEligibleFundingSource =
+    props?.fundingSource === FUNDING.PAYPAL ||
+    props?.fundingSource === undefined;
+  const isPaylaterEligible =
+    props?.fundingEligibility?.paylater?.eligible || false;
+  const isLabelEligible = label === undefined || label === BUTTON_LABEL.PAYPAL;
+
+  const isPaylaterCobrandedLabelEnabled =
+    props?.experiment?.isPaylaterCobrandedLabelEnabled || false;
+
+  const isPayNowOrLaterLabelEligible = Boolean(
+    isPaylaterCobrandedLabelEnabled &&
+      isCobrandedEligibleFundingSource &&
+      isPaylaterEligible &&
+      isLabelEligible &&
+      isEnLang &&
+      isPurchaseFlow
+  );
+
+  const isPaylaterCobrandedLabelRandomizationEnabled =
+    props?.experiment?.isPaylaterCobrandedLabelRandomizationEnabled ?? true;
+  const hasStorageState = Boolean(props?.storageState);
+  const hasSessionID = Boolean(props?.sessionID);
+  const shouldRunABTestRandomization =
+    isPaylaterCobrandedLabelRandomizationEnabled &&
+    hasStorageState &&
+    hasSessionID;
+
+  // SSR path: the client already computed values
+  const precomputedLabel = props?.style?.shouldApplyPayNowOrLaterLabel;
+
+  if (precomputedLabel === true || precomputedLabel === false) {
+    return {
+      isPayNowOrLaterLabelEligible,
+      shouldApplyPayNowOrLaterLabel: precomputedLabel,
+    };
+  }
+
+  // Client path: compute shouldApplyPayNowOrLaterLabel from scratch
+  let shouldApplyPayNowOrLaterLabel = false;
+
+  if (isPayNowOrLaterLabelEligible) {
+    if (shouldRunABTestRandomization && props && props.storageState) {
+      shouldApplyPayNowOrLaterLabel = getBNPLLabelForABTest({
+        storageState: props.storageState,
+        sessionID: props.sessionID,
+      });
+    } else {
+      // Randomization disabled or storageState unavailable → 100% treatment
+      shouldApplyPayNowOrLaterLabel = true;
+    }
+  }
+
+  return { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel };
 }
 
 const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
@@ -1105,6 +1233,9 @@ export function normalizeButtonStyle(
     }
   }
 
+  const { isPayNowOrLaterLabelEligible, shouldApplyPayNowOrLaterLabel } =
+    getCobrandedBNPLLabelFlags(props);
+
   return {
     label,
     layout,
@@ -1119,6 +1250,8 @@ export function normalizeButtonStyle(
     borderRadius,
     shouldApplyRebrandedStyles,
     isButtonColorABTestMerchant,
+    isPayNowOrLaterLabelEligible,
+    shouldApplyPayNowOrLaterLabel,
   };
 }
 
@@ -1256,12 +1389,15 @@ export function normalizeButtonProps(
     applePaySupport = false,
     supportsPopups = false,
     supportedNativeBrowser = false,
+    supportsVenmoPopups = false,
+    supportedNativeVenmoBrowser = false,
     showPayLabel = true,
     displayOnly = [],
     message,
     messageMarkup,
     renderedButtons,
     shopperSessionId,
+    userAgent,
   } = props;
 
   const { country, lang } = locale;
@@ -1314,7 +1450,10 @@ export function normalizeButtonProps(
         applePaySupport,
         supportsPopups,
         supportedNativeBrowser,
+        supportsVenmoPopups,
+        supportedNativeVenmoBrowser,
         displayOnly,
+        userAgent,
       })
     ) {
       throw new Error(`Funding Source not eligible: ${fundingSource}`);
@@ -1362,9 +1501,12 @@ export function normalizeButtonProps(
     applePaySupport,
     supportsPopups,
     supportedNativeBrowser,
+    supportsVenmoPopups,
+    supportedNativeVenmoBrowser,
     showPayLabel,
     displayOnly,
     message,
     messageMarkup,
+    userAgent,
   };
 }
