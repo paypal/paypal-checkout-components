@@ -497,8 +497,8 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
             font-size: ${fontSize}px;
-            position: relative;
           }
+        }
       `;
     })
     .join("\n");
@@ -572,7 +572,6 @@ const generateRebrandedButtonSizeStyles = ({
         BUTTON_NUMBER.MULTIPLE
       } .${CLASS.SPACE} {
               font-size: ${fontSize}px;
-              position: relative; 
           }
 
           .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
@@ -681,7 +680,6 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
               font-size: ${fontSize}px;
-              position: relative; 
           }
 
           .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
