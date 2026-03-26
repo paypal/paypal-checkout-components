@@ -458,6 +458,22 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           },
       },
 
+      onBfcacheCache: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value: () => () => {
+          getLogger()
+            .info("bfcache_cache")
+            .metricCounter({
+              namespace: "pp.sdks.ppcp.buttons.bfcache_cache.count",
+              event: "bfcache_cache",
+              dimensions: {},
+            })
+            .flush();
+        },
+      },
+
       onBfcacheRestore: {
         type: "function",
         sendToChild: false,
