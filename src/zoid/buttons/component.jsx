@@ -110,6 +110,7 @@ import {
   isEagerOrderCreationEnabled,
   sendPostRobotMessageToButtonIframe,
 } from "./util";
+import { PayPalOnApproveOverlay } from "../../ui/overlay/paypal-on-approve-processing-overlay";
 
 export type ButtonsComponent = ZoidComponent<
   ButtonProps,
@@ -372,6 +373,38 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               overlay.remove();
             }
           },
+      },
+
+      showOnApproveOverlay: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props: { buttonSessionID } }) =>
+            () => {
+              const overlay = (
+                <PayPalOnApproveOverlay
+                  buttonSessionID={buttonSessionID}
+                />
+              ).render(dom({ doc: document }));
+
+              document.body?.appendChild(overlay);
+            },
+      },
+
+      hideOnApproveOverlay: {
+        type: "function",
+        queryParam: false,
+        value:
+          ({ props: { buttonSessionID } }) =>
+            () => {
+              const overlay = document.getElementsByName(
+                `paypal-onapprove-overlay-${buttonSessionID}`
+              )?.[0];
+
+              if (overlay) {
+                overlay.remove();
+              }
+            },
       },
 
       redirect: {
