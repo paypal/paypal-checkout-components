@@ -111,6 +111,7 @@ export function PrerenderedButtons({
           {...props}
           onClick={handleClick}
           showLoadingSpinner={eagerOrderCreation}
+          disabled={props.disabled}
         />
       </body>
     </html>
