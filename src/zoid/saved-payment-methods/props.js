@@ -22,6 +22,43 @@ import type {
   ShowPayPalAppSwitchOverlay,
 } from "../../ui/buttons/props";
 
+/** Mirrors smart-payment-buttons SavedPaymentMethodsStyleConfig root keys (partial overrides). */
+export type SavedPaymentMethodsStyleRootInput = {|
+  backgroundColor?: string,
+  fontFamily?: string,
+  textColorBase?: string,
+  fontSizeBase?: string,
+  primaryColor?: string,
+|};
+
+/** Mirrors smart-payment-buttons SavedPaymentMethodsStyleConfig component keys (partial overrides). */
+export type SavedPaymentMethodsStyleComponentInput = {|
+  height?: string,
+  padding?: string,
+  borderRadius?: string,
+  borderColor?: string,
+  borderWidth?: string,
+|};
+
+/** Mirrors smart-payment-buttons SavedPaymentMethodsStyleConfig layout keys (partial overrides). */
+export type SavedPaymentMethodsStyleLayoutInput = {|
+  logo?: boolean,
+  label?: boolean,
+  message?: boolean,
+  logoWidth?: string,
+  logoLabelGap?: string,
+  labelFiGap?: string,
+  labelFontSize?: string,
+  fiTextFontSize?: string,
+  iconSize?: string,
+|};
+
+export type SavedPaymentMethodsStyleInputs = {|
+  root?: SavedPaymentMethodsStyleRootInput,
+  component?: SavedPaymentMethodsStyleComponentInput,
+  layout?: SavedPaymentMethodsStyleLayoutInput,
+|};
+
 export type SavedPaymentMethodsProps = {|
   // app switch properties
   appSwitchWhenAvailable?: boolean,
@@ -49,7 +86,7 @@ export type SavedPaymentMethodsProps = {|
   onComplete?: OnComplete,
   onClick?: OnClick,
   getPrerenderDetails?: GetPrerenderDetails,
-  style?: mixed, // TBD
+  style?: SavedPaymentMethodsStyleInputs,
   locale?: LocaleType,
   commit?: boolean,
   env?: $Values<typeof ENV>,

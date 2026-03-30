@@ -70,6 +70,7 @@ import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overl
 import { containerTemplate } from "./container";
 import { PrerenderedSavedPaymentMethods } from "./prerender";
 import { type SavedPaymentMethodsProps } from "./props";
+import { validateSavedPaymentMethodsStyle } from "./util";
 
 export type SavedPaymentMethodsComponent = ZoidComponent<
   SavedPaymentMethodsProps,
@@ -525,116 +526,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        // onMessageClick: {
-        //   type: "function",
-        //   required: false,
-        //   value: ({ props }) => {
-        //     return async ({
-        //       offerType,
-        //       messageType,
-        //       offerCountryCode,
-        //       creditProductIdentifier,
-        //     }) => {
-        //       const {
-        //         message,
-        //         clientID,
-        //         currency,
-        //         buttonSessionID,
-        //         merchantID,
-        //       } = props;
-        //       const amount = message?.amount;
-
-        //       getLogger()
-        //         .info("saved_payment_methods_message_click")
-        //         .track({
-        //           [FPTI_KEY.TRANSITION]: "saved_payment_methods_message_click",
-        //           [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
-        //           [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-        //           [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
-        //           [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
-        //           [FPTI_KEY.EVENT_NAME]: "message_click",
-        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-        //           [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
-        //             creditProductIdentifier,
-        //           [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
-        //           [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
-        //           [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
-        //           [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
-        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
-        //           [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
-        //           [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: amount,
-        //         })
-        //         .flush();
-
-        //       const modalInstance = await getModal(
-        //         clientID,
-        //         merchantID,
-        //         buttonSessionID
-        //       );
-        //       return modalInstance?.show({
-        //         amount,
-        //         offer: offerType,
-        //         currency,
-        //       });
-        //     };
-        //   },
-        // },
-
-        // onMessageHover: {
-        //   type: "function",
-        //   required: false,
-        //   value: ({ props }) => {
-        //     return () => {
-        //       const { buttonSessionID, clientID, merchantID } = props;
-        //       return getModal(clientID, merchantID, buttonSessionID);
-        //     };
-        //   },
-        // },
-
-        // onMessageReady: {
-        //   type: "function",
-        //   required: false,
-        //   value: ({ props }) => {
-        //     return ({
-        //       offerType,
-        //       messageType,
-        //       offerCountryCode,
-        //       creditProductIdentifier,
-        //       merchantID: serverMerchantId,
-        //     }) => {
-        //       const { message, buttonSessionID, currency } = props;
-
-        //       if (serverMerchantId) {
-        //         getLogger().addTrackingBuilder(() => ({
-        //           [FPTI_KEY.SELLER_ID]: serverMerchantId,
-        //         }));
-        //       }
-
-        //       getLogger()
-        //         .info("saved_payment_methods_message_render")
-        //         .track({
-        //           [FPTI_KEY.TRANSITION]: "saved_payment_methods_message_render",
-        //           [FPTI_KEY.STATE]: "BUTTON_MESSAGE",
-        //           [FPTI_KEY.BUTTON_SESSION_UID]: buttonSessionID,
-        //           [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
-        //           [FPTI_KEY.CONTEXT_TYPE]: "button_session_id",
-        //           [FPTI_KEY.EVENT_NAME]: "message_render",
-        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_TYPE]: offerType,
-        //           [FPTI_KEY.BUTTON_MESSAGE_CREDIT_PRODUCT_IDENTIFIER]:
-        //             creditProductIdentifier,
-        //           [FPTI_KEY.BUTTON_MESSAGE_TYPE]: messageType,
-        //           // [FPTI_KEY.BUTTON_MESSAGE_POSITION]: message?.position,
-        //           // [FPTI_KEY.BUTTON_MESSAGE_ALIGN]: message?.align,
-        //           // [FPTI_KEY.BUTTON_MESSAGE_COLOR]: message?.color,
-        //           [FPTI_KEY.BUTTON_MESSAGE_CURRENCY]: currency,
-        //           [FPTI_KEY.BUTTON_MESSAGE_OFFER_COUNTRY]: offerCountryCode,
-        //           [FPTI_KEY.BUTTON_MESSAGE_AMOUNT]: message?.amount,
-        //         })
-        //         .flush();
-        //     };
-        //   },
-        // },
-
         onShippingAddressChange: {
           type: "function",
           required: false,
@@ -805,15 +696,10 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           type: "object",
           queryParam: true,
           required: false,
-          // decorate: ({ props, value }) => {
-          //   // $FlowFixMe
-          //   return normalizeButtonStyle(props, value);
-          // },
 
-          // validate: ({ props, value = {} }) => {
-          //   // $FlowFixMe
-          //   normalizeButtonStyle(props, value);
-          // },
+          validate: ({ value = {} }) => {
+            validateSavedPaymentMethodsStyle(value);
+          },
 
           default: () => ({}),
         },
@@ -864,8 +750,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           default: getUserIDToken,
           required: false,
           queryParam: true,
-          // queryParam: getEnv() !== ENV.LOCAL && getEnv() !== ENV.STAGE,
-          // bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
         },
 
         sdkSource: {
@@ -879,12 +763,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           type: "boolean",
           queryParam: true,
           value: getVault,
-        },
-
-        wallet: {
-          type: "object",
-          required: false,
-          default: () => window.__TEST_WALLET__,
         },
 
         userAgent: {
