@@ -513,12 +513,12 @@ export type ButtonExtensions = {|
   resume: () => void,
 |};
 
-type ShowPayPalAppSwitchOverlay = {|
+export type ShowPayPalAppSwitchOverlay = {|
   focus: () => void,
   close: () => void,
 |};
 
-type HidePayPalAppSwitchOverlay = {|
+export type HidePayPalAppSwitchOverlay = {|
   close: () => void,
 |};
 

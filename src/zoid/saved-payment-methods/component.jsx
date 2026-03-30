@@ -21,7 +21,6 @@ import {
   getClientAccessToken,
   getClientMetadataID,
   getCommit,
-  getComponents,
   getCorrelationID,
   getCustomerId,
   getDebug,
@@ -65,6 +64,7 @@ import {
   isSupportedNativeBrowser,
   sendPostRobotMessageToButtonIframe,
 } from "../buttons/util";
+import { isSupportedNativeVenmoBrowser } from "../../funding/util";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
@@ -205,26 +205,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        // listenForHashChanges: {
-        //   type: "function",
-        //   queryParam: false,
-        //   value:
-        //     ({ props }) =>
-        //     () => {
-        //       window.addEventListener("hashchange", props.hashChangeHandler);
-        //     },
-        // },
-
-        // removeListenerForHashChanges: {
-        //   type: "function",
-        //   queryParam: false,
-        //   value:
-        //     ({ props }) =>
-        //     () => {
-        //       window.removeEventListener("hashchange", props.hashChangeHandler);
-        //     },
-        // },
-
         visibilityChangeHandler: {
           type: "function",
           sendToChild: false,
@@ -241,31 +221,31 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        // listenForVisibilityChange: {
-        //   type: "function",
-        //   queryParam: false,
-        //   value:
-        //     ({ props }) =>
-        //     () => {
-        //       window.addEventListener(
-        //         "visibilitychange",
-        //         props.visibilityChangeHandler
-        //       );
-        //     },
-        // },
+        listenForVisibilityChange: {
+          type: "function",
+          queryParam: false,
+          value:
+            ({ props }) =>
+            () => {
+              window.addEventListener(
+                "visibilitychange",
+                props.visibilityChangeHandler
+              );
+            },
+        },
 
-        // removeListenerForVisibilityChanges: {
-        //   type: "function",
-        //   queryParam: false,
-        //   value:
-        //     ({ props }) =>
-        //     () => {
-        //       window.removeEventListener(
-        //         "visibilitychange",
-        //         props.visibilityChangeHandler
-        //       );
-        //     },
-        // },
+        removeListenerForVisibilityChanges: {
+          type: "function",
+          queryParam: false,
+          value:
+            ({ props }) =>
+            () => {
+              window.removeEventListener(
+                "visibilitychange",
+                props.visibilityChangeHandler
+              );
+            },
+        },
 
         // allowBillingPayments prop is used by Honey Extension to render the one-click button
         // with payment methods & to use the payment methods instead of the Billing Agreement
@@ -346,12 +326,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: getCommit,
         },
 
-        components: {
-          type: "array",
-          queryParam: true,
-          value: getComponents,
-        },
-
         createOrder: {
           type: "function",
           required: false,
@@ -414,13 +388,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           serialization: "base64",
         },
 
-        fundingSource: {
-          type: "string",
-          queryParam: true,
-          required: false,
-          // validate: () => { }, // TODO: Validate funding source (see buttons/component)
-        },
-
         getPageUrl: {
           type: "function",
           value: () => {
@@ -474,12 +441,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           },
         },
 
-        hostedButtonId: {
-          type: "string",
-          required: false,
-          queryParam: true,
-        },
-
         intent: {
           type: "string",
           queryParam: true,
@@ -515,18 +476,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           type: "object",
           queryParam: true,
           required: false,
-          // decorate: ({ props, value }) => {
-          //   const {
-          //     style: { layout },
-          //     renderedButtons: fundingSources,
-          //   } = props;
-          //   return normalizeButtonMessage(
-          //     // $FlowFixMe
-          //     value,
-          //     layout,
-          //     fundingSources
-          //   );
-          // },
         },
 
         nonce: {
@@ -702,9 +651,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           queryParam: true,
           value: ({ props }) => {
             return Boolean(
-              props.onShippingChange ||
-                props.onShippingAddressChange ||
-                props.onShippingOptionsChange
+              props.onShippingAddressChange || props.onShippingOptionsChange
             );
           },
         },
@@ -877,17 +824,17 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           queryParam: true,
         },
 
-        // supportedNativeVenmoBrowser: {
-        //   type: "boolean",
-        //   value: ({ props }) => {
-        //     return isSupportedNativeVenmoBrowser(
-        //       props.experiment,
-        //       props.userAgent
-        //     );
-        //   },
-        //   queryParam: true,
-        //   required: false,
-        // },
+        supportedNativeVenmoBrowser: {
+          type: "boolean",
+          value: ({ props }) => {
+            return isSupportedNativeVenmoBrowser(
+              props.experiment,
+              props.userAgent
+            );
+          },
+          queryParam: true,
+          required: false,
+        },
 
         supportsPopups: {
           type: "boolean",
