@@ -827,11 +827,84 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               },
               launchApp: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
-                  window.popupBridge.onComplete = (err, result) => {
-                    if (!err && !result) {
-                      resolve({
+                  let settled = false;
+                  let sawHidden = false;
+                  let visibleReturnTimeout;
+
+                  function resolveAsClosedWindow() {
+                    visibleReturnTimeout = setTimeout(() => {
+                      resolveOnce({
                         opType: "user_closed_window",
                       });
+                    }, 300);
+                  }
+
+                  function handleVisibilityChange() {
+                    if (document.visibilityState === "hidden") {
+                      sawHidden = true;
+                      return;
+                    }
+
+                    if (
+                      sawHidden &&
+                      (document.visibilityState === "visible" ||
+                        document.visibilityState === "prerender")
+                    ) {
+                      resolveAsClosedWindow();
+                    }
+                  }
+
+                  function handleReturnToPage() {
+                    if (!sawHidden || settled) {
+                      return;
+                    }
+
+                    if (
+                      document.visibilityState === "visible" ||
+                      document.visibilityState === "prerender"
+                    ) {
+                      resolveAsClosedWindow();
+                    }
+                  }
+
+                  const cleanupReturnListeners = () => {
+                    if (visibleReturnTimeout) {
+                      clearTimeout(visibleReturnTimeout);
+                      visibleReturnTimeout = undefined;
+                    }
+                    document.removeEventListener(
+                      "visibilitychange",
+                      handleVisibilityChange
+                    );
+                    window.removeEventListener("pageshow", handleReturnToPage);
+                    window.removeEventListener("focus", handleReturnToPage);
+                  };
+
+                  const settle = (handler) => (value) => {
+                    if (settled) {
+                      return;
+                    }
+                    settled = true;
+                    cleanupReturnListeners();
+                    handler(value);
+                  };
+
+                  const resolveOnce = settle(resolve);
+                  const rejectOnce = settle(reject);
+
+                  document.addEventListener(
+                    "visibilitychange",
+                    handleVisibilityChange
+                  );
+                  window.addEventListener("pageshow", handleReturnToPage);
+                  window.addEventListener("focus", handleReturnToPage);
+
+                  window.popupBridge.onComplete = (err, result) => {
+                    if (!err && !result) {
+                      resolveOnce({
+                        opType: "user_closed_window",
+                      });
+                      return;
                     }
                     const queryItems =
                       result && result.queryItems ? result.queryItems : {};
@@ -843,7 +916,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                           hash: result.hash,
                         }
                       : queryItems;
-                    return err ? reject(err) : resolve(payload);
+                    return err ? rejectOnce(err) : resolveOnce(payload);
                   };
                   window.popupBridge.launchApp(url);
                 });
