@@ -128,6 +128,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
+    bfcacheEnabled: true,
     getExtensions: (parent) => {
       return {
         hasReturned: () => {
