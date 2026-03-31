@@ -42,7 +42,7 @@ import {
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { ENV, SDK_SETTINGS } from "@paypal/sdk-constants/src";
+import { ENV, FPTI_KEY, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
 import {
   uniqueID,
@@ -56,6 +56,7 @@ import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 import {
   getSessionID,
   logLatencyInstrumentationPhase,
+  prepareInstrumentationPayload,
   sessionState,
   storageState,
 } from "../../lib";
@@ -116,11 +117,40 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
         const { buttonSessionID } = props;
 
         event.on(EVENT.PRERENDERED, () => {
+          logLatencyInstrumentationPhase({
+            buttonSessionID,
+            phase: "saved-payment-methods-first-render-end",
+          });
+
           getLogger()
             .info("saved_payment_methods_prerendered", {
               buttonSessionID,
             })
             .flush();
+
+          try {
+            const cplPhases = prepareInstrumentationPayload(
+              buttonSessionID,
+              "saved-payment-methods"
+            );
+            const cplLatencyMetrics = {
+              [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
+              [FPTI_KEY.TRANSITION]: "process_client_metrics",
+              [FPTI_KEY.CONTEXT_ID]: buttonSessionID,
+              [FPTI_KEY.PAGE]:
+                "main:xo:paypal-components:saved-payment-methods",
+              [FPTI_KEY.CPL_COMP_METRICS]: JSON.stringify(
+                cplPhases?.comp || {}
+              ),
+            };
+            getLogger().track(cplLatencyMetrics);
+          } catch (err) {
+            getLogger().track({
+              err: err.message || "CPL_LOG_PHASE_ERROR",
+              details: err.details,
+              stack: JSON.stringify(err.stack || err),
+            });
+          }
         });
 
         return (
@@ -517,7 +547,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           decorate: ({ props, value = noop }) => {
             logLatencyInstrumentationPhase({
               buttonSessionID: props.buttonSessionID,
-              phase: "buttons-first-render",
+              phase: "saved-payment-methods-first-render",
             });
 
             return (...args) => {
