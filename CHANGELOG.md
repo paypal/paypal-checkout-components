@@ -1,3 +1,9 @@
+## <small>5.0.409 (2026-04-03)</small>
+
+* Revert "Pass bfcache events via post-robot (#2608)" (#2616) ([bc56fea](https://github.com/paypal/paypal-checkout-components/commit/bc56fea)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608) [#2616](https://github.com/paypal/paypal-checkout-components/issues/2616)
+
+
+
 ## <small>5.0.408 (2026-03-23)</small>
 
 * Pass bfcache events via post-robot (#2608) ([2e278df](https://github.com/paypal/paypal-checkout-components/commit/2e278df)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608)
