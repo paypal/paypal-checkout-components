@@ -4,9 +4,10 @@ import {
   getLogger,
   getPayPalAPIDomain,
   getSDKToken,
+  getUserIDToken,
   getClientID,
 } from "@paypal/sdk-client/src";
-import { describe, expect, vi } from "vitest";
+import { beforeEach, describe, expect, vi } from "vitest";
 import { destroy as zoidDestroy } from "@krakenjs/zoid/src";
 
 import { ThreeDomainSecureComponent } from "./component";
@@ -21,6 +22,10 @@ vi.mock("./api");
 vi.mock("./utils");
 
 describe("ThreeDomainSecure interface", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should setup and destroy", () => {
     setup();
     expect(getThreeDS).toHaveBeenCalledTimes(1);
@@ -34,6 +39,7 @@ describe("ThreeDomainSecure interface", () => {
   it("should create and return instance of ThreeDomainSecureClient only on dev environment", async () => {
     vi.mocked(getEnv).mockReturnValue("stage");
     vi.mocked(getSDKToken).mockReturnValue("test-token");
+    vi.mocked(getUserIDToken).mockReturnValue(undefined);
     vi.mocked(getPayPalAPIDomain).mockReturnValue("test-domain");
     vi.mocked(getClientID).mockReturnValue("test-client-id");
 
@@ -84,5 +90,16 @@ describe("ThreeDomainSecure interface", () => {
         clientID: "test-client-id",
       },
     });
+  });
+
+  it("should not throw during __get__ when sdk token is missing", () => {
+    vi.mocked(getEnv).mockReturnValue("stage");
+    vi.mocked(getSDKToken).mockReturnValue(undefined);
+    vi.mocked(getUserIDToken).mockReturnValue(undefined);
+    vi.mocked(getPayPalAPIDomain).mockReturnValue("test-domain");
+    vi.mocked(getClientID).mockReturnValue("test-client-id");
+
+    expect(() => ThreeDomainSecureClient.__get__()).not.toThrow();
+    expect(ThreeDomainSecureComponent).not.toHaveBeenCalled();
   });
 });
