@@ -86,7 +86,6 @@ export function containerTemplate({
             font-size: 0;
           }
 
-
           #${uid} > iframe {
             position: absolute;
             top: 0;
