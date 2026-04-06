@@ -532,12 +532,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           required: false,
         },
 
-        onError: {
-          // TODO: Is it necessary? Not present in buttons
-          type: "function",
-          required: false,
-        },
-
         onInit: {
           type: "function",
           required: false,
