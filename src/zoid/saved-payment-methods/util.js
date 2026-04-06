@@ -20,6 +20,34 @@ const STYLE_COMPONENT_KEYS: Set<string> = new Set([
   "borderWidth",
 ]);
 
+const DEFAULT_STYLE_CONFIG = {
+  root: {
+    backgroundColor: "transparent",
+    fontFamily: "Arial, sans-serif",
+    textColorBase: "#000000",
+    fontSizeBase: "16px",
+    primaryColor: "#000000",
+  },
+  component: {
+    height: "32px",
+    padding: "6px 9px",
+    borderRadius: "6px",
+    borderColor: "transparent",
+    borderWidth: "0",
+  },
+  layout: {
+    logo: true,
+    label: true,
+    message: true,
+    logoWidth: "45px",
+    logoLabelGap: "12px",
+    labelFiGap: "8px",
+    labelFontSize: "16px",
+    fiTextFontSize: "14px",
+    iconSize: "28px",
+  },
+};
+
 const STYLE_LAYOUT_FIELD_TYPES: {|
   [string]: "string" | "boolean",
 |} = {
@@ -33,6 +61,139 @@ const STYLE_LAYOUT_FIELD_TYPES: {|
   fiTextFontSize: "string",
   iconSize: "string",
 };
+
+export const getStyleConfig = (style) => ({
+  root: {
+    ...DEFAULT_STYLE_CONFIG.root,
+    ...(style.root || {}),
+  },
+  component: {
+    ...DEFAULT_STYLE_CONFIG.component,
+    ...(style.component || {}),
+  },
+  layout: {
+    ...DEFAULT_STYLE_CONFIG.layout,
+    ...(style.layout || {}),
+  },
+});
+
+export const getStyles = (styleConfig) =>
+  `
+  * {
+            box-sizing: border-box;
+          }
+            .saved-payment-methods-container {
+            background-color: ${styleConfig.root.backgroundColor};
+            font-family: ${styleConfig.root.fontFamily};
+            color: ${styleConfig.root.textColorBase};
+            font-size: ${styleConfig.root.fontSizeBase};
+            display: flex;
+            align-items: center;
+            min-width: 0;
+          }
+
+          .saved-payment-methods-content {
+            min-width: 0;
+          }
+
+          .saved-payment-methods-label {
+            font-size: ${styleConfig.layout.labelFontSize};
+            font-weight: 600;
+            color: #222222;
+            margin-right: ${styleConfig.layout.labelFiGap};
+          }
+
+          .saved-payment-methods-logo {
+            width: ${styleConfig.layout.logoWidth};
+            margin-right: ${styleConfig.layout.logoLabelGap};
+          }
+
+          .saved-payment-methods-tag {
+            display: flex;
+            height: ${styleConfig.component.height};
+            align-items: center;
+            justify-content: space-between;
+            background-color: #F5F7FA;
+            padding: ${styleConfig.component.padding};
+            border-radius: ${styleConfig.component.borderRadius};
+            border-width: ${styleConfig.component.borderWidth};
+            border-color: ${styleConfig.component.borderColor};
+            border-style: solid;
+            gap: 8px;
+            min-width: 0;
+            max-width: 100%;
+            cursor: pointer;
+          }
+
+          .saved-payment-methods-tag-label {
+            font-size: ${styleConfig.layout.fiTextFontSize};
+            font-weight: 400;
+            color: #000000;
+            white-space: nowrap;
+          }
+
+          .saved-payment-methods-tag-label-fallback {
+            display: flex;
+            align-items: center;
+            min-width: 0;
+          }
+
+          .saved-payment-methods-tag-label-email {
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+          }
+
+          .saved-payment-methods-tag-label-separator {
+            flex: 0 0 auto;
+            margin: 0 4px;
+          }
+
+          .saved-payment-methods-tag-label-pay-in-full {
+            flex: 0 0 auto;
+            white-space: nowrap;
+          }
+
+          .saved-payment-methods-tag-card-icon {
+            width: ${styleConfig.layout.iconSize};
+            border-radius: 4px;
+          }
+
+          .saved-payment-methods-tag-edit-button svg path {
+            fill: ${styleConfig.root.primaryColor};
+          }
+
+          .saved-payment-methods-message {
+            height: 31px; /* Based on the error message in browser console */
+            margin-top: 6px;
+            ${
+              styleConfig.layout.logo
+                ? /* TODO: Remove calc */ `
+              margin-left: calc(${styleConfig.layout.logoWidth} + ${styleConfig.layout.logoLabelGap});
+            `
+                : ""
+            }
+          }
+
+            .saved-payment-methods-tag-loading {
+              display: flex;
+              height: ${styleConfig.component.height};
+              align-items: center;
+              justify-content: space-between;
+              background: linear-gradient(to right, #ffffff, #F5F7FA);
+              padding: ${styleConfig.component.padding};
+              border-radius: ${styleConfig.component.borderRadius};
+              border-width: ${styleConfig.component.borderWidth};
+              border-color: ${styleConfig.component.borderColor};
+              border-style: solid;
+              gap: 8px;
+              min-width: 124px;
+              max-width: 100%;
+            }
+  `;
 
 function assertPlainObject(value: mixed, path: string): void {
   if (value === undefined || value === null) {
