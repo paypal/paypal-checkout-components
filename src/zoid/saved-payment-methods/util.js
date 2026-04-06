@@ -80,119 +80,119 @@ export const getStyleConfig = (style) => ({
 export const getStyles = (styleConfig) =>
   `
   * {
-            box-sizing: border-box;
-          }
-            .saved-payment-methods-container {
-            background-color: ${styleConfig.root.backgroundColor};
-            font-family: ${styleConfig.root.fontFamily};
-            color: ${styleConfig.root.textColorBase};
-            font-size: ${styleConfig.root.fontSizeBase};
-            display: flex;
-            align-items: center;
-            min-width: 0;
-          }
+    box-sizing: border-box;
+  }
+    .saved-payment-methods-container {
+    background-color: ${styleConfig.root.backgroundColor};
+    font-family: ${styleConfig.root.fontFamily};
+    color: ${styleConfig.root.textColorBase};
+    font-size: ${styleConfig.root.fontSizeBase};
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
 
-          .saved-payment-methods-content {
-            min-width: 0;
-          }
+  .saved-payment-methods-content {
+    min-width: 0;
+  }
 
-          .saved-payment-methods-label {
-            font-size: ${styleConfig.layout.labelFontSize};
-            font-weight: 600;
-            color: #222222;
-            margin-right: ${styleConfig.layout.labelFiGap};
-          }
+  .saved-payment-methods-label {
+    font-size: ${styleConfig.layout.labelFontSize};
+    font-weight: 600;
+    color: #222222;
+    margin-right: ${styleConfig.layout.labelFiGap};
+  }
 
-          .saved-payment-methods-logo {
-            width: ${styleConfig.layout.logoWidth};
-            margin-right: ${styleConfig.layout.logoLabelGap};
-          }
+  .saved-payment-methods-logo {
+    width: ${styleConfig.layout.logoWidth};
+    margin-right: ${styleConfig.layout.logoLabelGap};
+  }
 
-          .saved-payment-methods-tag {
-            display: flex;
-            height: ${styleConfig.component.height};
-            align-items: center;
-            justify-content: space-between;
-            background-color: #F5F7FA;
-            padding: ${styleConfig.component.padding};
-            border-radius: ${styleConfig.component.borderRadius};
-            border-width: ${styleConfig.component.borderWidth};
-            border-color: ${styleConfig.component.borderColor};
-            border-style: solid;
-            gap: 8px;
-            min-width: 0;
-            max-width: 100%;
-            cursor: pointer;
-          }
+  .saved-payment-methods-tag {
+    display: flex;
+    height: ${styleConfig.component.height};
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F5F7FA;
+    padding: ${styleConfig.component.padding};
+    border-radius: ${styleConfig.component.borderRadius};
+    border-width: ${styleConfig.component.borderWidth};
+    border-color: ${styleConfig.component.borderColor};
+    border-style: solid;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+    cursor: pointer;
+  }
 
-          .saved-payment-methods-tag-label {
-            font-size: ${styleConfig.layout.fiTextFontSize};
-            font-weight: 400;
-            color: #000000;
-            white-space: nowrap;
-          }
+  .saved-payment-methods-tag-label {
+    font-size: ${styleConfig.layout.fiTextFontSize};
+    font-weight: 400;
+    color: #000000;
+    white-space: nowrap;
+  }
 
-          .saved-payment-methods-tag-label-fallback {
-            display: flex;
-            align-items: center;
-            min-width: 0;
-          }
+  .saved-payment-methods-tag-label-fallback {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
 
-          .saved-payment-methods-tag-label-email {
-            flex: 1 1 auto;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            display: inline-block;
-          }
+  .saved-payment-methods-tag-label-email {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+  }
 
-          .saved-payment-methods-tag-label-separator {
-            flex: 0 0 auto;
-            margin: 0 4px;
-          }
+  .saved-payment-methods-tag-label-separator {
+    flex: 0 0 auto;
+    margin: 0 4px;
+  }
 
-          .saved-payment-methods-tag-label-pay-in-full {
-            flex: 0 0 auto;
-            white-space: nowrap;
-          }
+  .saved-payment-methods-tag-label-pay-in-full {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
 
-          .saved-payment-methods-tag-card-icon {
-            width: ${styleConfig.layout.iconSize};
-            border-radius: 4px;
-          }
+  .saved-payment-methods-tag-card-icon {
+    width: ${styleConfig.layout.iconSize};
+    border-radius: 4px;
+  }
 
-          .saved-payment-methods-tag-edit-button svg path {
-            fill: ${styleConfig.root.primaryColor};
-          }
+  .saved-payment-methods-tag-edit-button svg path {
+    fill: ${styleConfig.root.primaryColor};
+  }
 
-          .saved-payment-methods-message {
-            height: 31px; /* Based on the error message in browser console */
-            margin-top: 6px;
-            ${
-              styleConfig.layout.logo
-                ? /* TODO: Remove calc */ `
-              margin-left: calc(${styleConfig.layout.logoWidth} + ${styleConfig.layout.logoLabelGap});
-            `
-                : ""
-            }
-          }
+  .saved-payment-methods-message {
+    height: 31px; /* Based on the error message in browser console */
+    margin-top: 6px;
+    ${
+      styleConfig.layout.logo
+        ? /* TODO: Remove calc */ `
+      margin-left: calc(${styleConfig.layout.logoWidth} + ${styleConfig.layout.logoLabelGap});
+    `
+        : ""
+    }
+  }
 
-            .saved-payment-methods-tag-loading {
-              display: flex;
-              height: ${styleConfig.component.height};
-              align-items: center;
-              justify-content: space-between;
-              background: linear-gradient(to right, #ffffff, #F5F7FA);
-              padding: ${styleConfig.component.padding};
-              border-radius: ${styleConfig.component.borderRadius};
-              border-width: ${styleConfig.component.borderWidth};
-              border-color: ${styleConfig.component.borderColor};
-              border-style: solid;
-              gap: 8px;
-              min-width: 124px;
-              max-width: 100%;
-            }
+    .saved-payment-methods-tag-loading {
+      display: flex;
+      height: ${styleConfig.component.height};
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to right, #ffffff, #F5F7FA);
+      padding: ${styleConfig.component.padding};
+      border-radius: ${styleConfig.component.borderRadius};
+      border-width: ${styleConfig.component.borderWidth};
+      border-color: ${styleConfig.component.borderColor};
+      border-style: solid;
+      gap: 8px;
+      min-width: 124px;
+      max-width: 100%;
+    }
   `;
 
 function assertPlainObject(value: mixed, path: string): void {
