@@ -1,0 +1,12 @@
+<body>
+  <script>
+    window.mockDomain = "mock://www.paypal.com";
+    var parentWindow = window.opener || window.parent;
+    window.__coverage__ = parentWindow.__coverage__;
+    window.navigator.mockUserAgent = parentWindow.navigator.mockUserAgent;
+  </script>
+
+  <script src="/base/test/integration/globals.js"></script>
+  <script src="/base/test/paypal.js"></script>
+  <script src="./index.js"></script>
+</body>
