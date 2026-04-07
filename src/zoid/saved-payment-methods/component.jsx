@@ -90,8 +90,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
       tag: "paypal-saved-payment-methods",
       url: () =>
         `${getPayPalDomain()}${
-          __PAYPAL_CHECKOUT__.__URI__.__SAVED_PAYMENT_METHODS__ ||
-          "/smart/saved-payment-methods"
+          __PAYPAL_CHECKOUT__.__URI__.__SAVED_PAYMENT_METHODS__
         }`,
 
       domain: getPayPalDomainRegex(),
