@@ -1,3 +1,9 @@
+## <small>5.0.411 (2026-04-08)</small>
+
+* chore(release): 5.0.410 🎉 ([6d3ba5e](https://github.com/paypal/paypal-checkout-components/commit/6d3ba5e))
+
+
+
 ## <small>5.0.410 (2026-04-08)</small>
 
 * feature(SavedPaymentMethods): New component SavedPaymentMethods (#2604) ([2eed0ef](https://github.com/paypal/paypal-checkout-components/commit/2eed0ef)), closes [#2604](https://github.com/paypal/paypal-checkout-components/issues/2604)
