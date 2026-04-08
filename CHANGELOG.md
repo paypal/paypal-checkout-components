@@ -1,3 +1,9 @@
+## <small>5.0.410 (2026-04-08)</small>
+
+* feature(SavedPaymentMethods): New component SavedPaymentMethods (#2604) ([2eed0ef](https://github.com/paypal/paypal-checkout-components/commit/2eed0ef)), closes [#2604](https://github.com/paypal/paypal-checkout-components/issues/2604)
+
+
+
 ## <small>5.0.409 (2026-04-03)</small>
 
 * Revert "Pass bfcache events via post-robot (#2608)" (#2616) ([bc56fea](https://github.com/paypal/paypal-checkout-components/commit/bc56fea)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608) [#2616](https://github.com/paypal/paypal-checkout-components/issues/2616)
