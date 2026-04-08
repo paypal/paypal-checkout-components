@@ -93,9 +93,8 @@ export function MarksElementRebrand({
       <style>
         {`
                     .${CLASS.TEXT} {
-                        font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+                        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
                         font-size: 12px;
-                        font-weight: 400;
                         vertical-align: middle;
                     }
 
