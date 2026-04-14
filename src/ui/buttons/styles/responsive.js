@@ -1,6 +1,6 @@
 /* @flow */
 
-import { max, perc } from "@krakenjs/belter/src";
+import { max, perc, roundUp } from "@krakenjs/belter/src";
 import {
   FUNDING,
   type FundingEligibilityType,
@@ -581,6 +581,46 @@ const generateRebrandedButtonSizeStyles = ({
               margin: 0;
           }
 
+        
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
+        CLASS.BUTTON_LABEL
+      },
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
+        CLASS.BUTTON_LABEL
+      } {
+              height: ${perc(buttonHeight, 50) + 5}px;
+          }
+
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
+        FUNDING.BANCONTACT
+      }] .${CLASS.BUTTON_LABEL} {
+              height: ${max(roundUp(perc(buttonHeight, 35) + 5, 2), 12)}px;
+          }
+
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
+        CLASS.BUTTON_LABEL
+      } .${CLASS.TEXT},
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
+        CLASS.BUTTON_LABEL
+      } .${CLASS.SPACE},
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
+        CLASS.BUTTON_LABEL
+      } .${CLASS.TEXT},
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.MYBANK}] .${
+        CLASS.BUTTON_LABEL
+      } .${CLASS.SPACE} {
+              line-height: ${perc(buttonHeight, 50) + 5}px;
+          }
+
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
+        FUNDING.BANCONTACT
+      }] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
+        FUNDING.BANCONTACT
+      }] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
+              line-height: ${max(roundUp(perc(buttonHeight, 35) + 5, 2), 12)}px;
+          }
+
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
         CLASS.NUMBER
       }-${BUTTON_NUMBER.MULTIPLE} {
@@ -719,6 +759,12 @@ const generateRebrandedButtonSizeStyles = ({
               height: ${perc(buttonHeight, 50) + 5}px;
           }
 
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
+        FUNDING.BANCONTACT
+      }] .${CLASS.BUTTON_LABEL} {
+              height: ${max(roundUp(perc(buttonHeight, 35) + 5, 2), 12)}px;
+          }
+
           .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.EPS}] .${
         CLASS.BUTTON_LABEL
       } .${CLASS.TEXT},
@@ -732,6 +778,15 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.BUTTON_LABEL
       } .${CLASS.SPACE} {
               line-height: ${perc(buttonHeight, 50) + 5}px;
+          }
+
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
+        FUNDING.BANCONTACT
+      }] .${CLASS.BUTTON_LABEL} .${CLASS.TEXT},
+          .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${
+        FUNDING.BANCONTACT
+      }] .${CLASS.BUTTON_LABEL} .${CLASS.SPACE} {
+              line-height: ${max(roundUp(perc(buttonHeight, 35) + 5, 2), 12)}px;
           }
           
           .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
