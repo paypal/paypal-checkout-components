@@ -19,6 +19,7 @@ import {
 import { getRememberedFunding } from "@paypal/funding-components/src";
 import {
   getEnableFunding,
+  getDisableFunding,
   getComponents,
   getFundingEligibility,
   getEnv,
@@ -76,6 +77,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const remembered = getRememberedFunding();
     const layout = BUTTON_LAYOUT.VERTICAL;
     const enableFunding = getEnableFunding();
+    const disableFunding = getDisableFunding();
     const components = getComponents();
     const flow = BUTTON_FLOW.PURCHASE;
     const applePaySupport = fundingEligibility?.applepay?.eligible
@@ -101,6 +103,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       fundingSource,
       fundingEligibility,
       enableFunding,
+      disableFunding,
       components,
       platform,
       remembered,
@@ -132,6 +135,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         fundingSource,
         fundingEligibility,
         enableFunding,
+        disableFunding,
         components,
         onShippingChange,
         onShippingAddressChange,
