@@ -1,6 +1,8 @@
 /* @flow */
 
-import { CLASS } from "../../../constants";
+import { FUNDING } from "@paypal/sdk-constants/src";
+
+import { CLASS, ATTRIBUTE } from "../../../constants";
 
 export const COMPRESSED = `
     max-width: 0%;
@@ -61,11 +63,34 @@ export const labelStyle = `
         font-weight: 500;
     }
 
-    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
-        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
+        font-family: system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+         font-weight: 400;
     }
 
-    .${CLASS.BUTTON_REBRAND}, div[data-funding-source=venmo] .${
+    .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.PAYPAL}] .${
+  CLASS.BUTTON_LABEL
+} {
+        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+         font-weight: 400;
+    }
+
+    .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${
+  FUNDING.PAYLATER
+}] .${CLASS.BUTTON_LABEL} {
+        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+         font-weight: 400;
+    }
+
+    .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.CARD}] .${
+  CLASS.BUTTON_LABEL
+} {
+        font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-weight: 400;
+    }
+
+
+    .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}] .${
   CLASS.BUTTON_LABEL
 } {
         font-family: Scto Grotesk A, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
