@@ -65,21 +65,21 @@ export const labelStyle = `
 
      .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
         font-family: system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
-         font-weight: 500;
+         font-weight: 400;
     }
 
     .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.PAYPAL}] .${
   CLASS.BUTTON_LABEL
 } {
         font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
-         font-weight: 500;
+         font-weight: 400;
     }
 
     .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${
   FUNDING.PAYLATER
 }] .${CLASS.BUTTON_LABEL} {
         font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
-         font-weight: 500;
+         font-weight: 400;
     }
 
     .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.CARD}] .${

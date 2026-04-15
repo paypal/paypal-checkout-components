@@ -78,7 +78,7 @@ const generateButtonSizeStyles = ({
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, .${
         CLASS.CONTAINER
       } .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
-                    font-size: ${max(perc(buttonHeight, 36), 10)}px;
+                    font-size: ${max(perc(buttonHeight, 40), 10)}px;
                     line-height: ${labelHeight}px;
                 }
 
@@ -89,11 +89,11 @@ const generateButtonSizeStyles = ({
                 [${ATTRIBUTE.FUNDING_SOURCE}=
                 ${FUNDING.CREDIT}] .${CLASS.TEXT} 
                 {
-                    margin-top: -${perc(max(perc(buttonHeight, 36), 10), 10)}px;
+                    margin-top: -${perc(max(perc(buttonHeight, 40), 10), 10)}px;
                 }
 
                 .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT} * {
-                    margin-top: ${perc(max(perc(buttonHeight, 36), 10), 10)}px;
+                    margin-top: ${perc(max(perc(buttonHeight, 40), 10), 10)}px;
                 }
 
                 .${CLASS.BUTTON_ROW} {
@@ -571,7 +571,7 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${
         BUTTON_NUMBER.MULTIPLE
       } .${CLASS.SPACE} {
-              font-size: ${fontSize}px;
+             font-size: ${max(perc(buttonHeight, 40), 10)}px;;
           }
 
           .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
