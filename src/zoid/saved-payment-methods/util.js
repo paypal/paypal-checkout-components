@@ -108,6 +108,28 @@ export const getStyles = (styleConfig) =>
     margin-right: ${styleConfig.layout.logoLabelGap};
   }
 
+  /* Preact mounts into this node; avoid an extra flex item / box alongside logo + label. */
+  #saved-payment-methods-app-root {
+    display: contents;
+  }
+
+  /* If both skeleton and button ever coexist, collapse the skeleton so it takes no space. */
+  #saved-payment-methods-app-root:has(.saved-payment-methods-tag)
+    > .saved-payment-methods-tag-loading {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
   .saved-payment-methods-tag {
     display: flex;
     height: ${styleConfig.component.height};
@@ -178,21 +200,21 @@ export const getStyles = (styleConfig) =>
     }
   }
 
-    .saved-payment-methods-tag-loading {
-      display: flex;
-      height: ${styleConfig.component.height};
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(to right, #ffffff, #F5F7FA);
-      padding: ${styleConfig.component.padding};
-      border-radius: ${styleConfig.component.borderRadius};
-      border-width: ${styleConfig.component.borderWidth};
-      border-color: ${styleConfig.component.borderColor};
-      border-style: solid;
-      gap: 8px;
-      min-width: 124px;
-      max-width: 100%;
-    }
+  .saved-payment-methods-tag-loading {
+    display: flex;
+    height: ${styleConfig.component.height};
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #ffffff, #F5F7FA);
+    padding: ${styleConfig.component.padding};
+    border-radius: ${styleConfig.component.borderRadius};
+    border-width: ${styleConfig.component.borderWidth};
+    border-color: ${styleConfig.component.borderColor};
+    border-style: solid;
+    gap: 8px;
+    min-width: 124px;
+    max-width: 100%;
+  }
   `;
 
 function assertPlainObject(value: mixed, path: string): void {
