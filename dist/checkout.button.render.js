@@ -9307,7 +9307,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19["data-version"] = "4.0.345", 
+        return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19["data-version"] = "4.0.346", 
         _ref19), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
