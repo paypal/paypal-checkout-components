@@ -25,9 +25,6 @@ jobs:
       - name: ▶️ Run lint
         run: npm run lint
 
-      - name: ▶️ Run flow-typed script
-        run: npm run flow-typed
-
       - name: ▶️ Run flow
         run: npm run flow
 
