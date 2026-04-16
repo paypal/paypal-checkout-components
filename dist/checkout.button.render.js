@@ -88,9 +88,9 @@
             if ("undefined" != typeof Promise && item instanceof Promise) return !0;
             if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
             if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
-            var _toString = {}.toString;
-            if (_toString) {
-                var name = _toString.call(item);
+            var toString = {}.toString;
+            if (toString) {
+                var name = toString.call(item);
                 if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
             }
             if ("function" == typeof item.then) return !0;
@@ -818,8 +818,8 @@
                 var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
                 var scriptLocation = stackDetails && stackDetails[1];
                 if (!scriptLocation) return;
-                for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
-                    var script = _Array$prototype$slic2[_i22];
+                for (var _i20 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i20 < _Array$prototype$slic2.length; _i20++) {
+                    var script = _Array$prototype$slic2[_i20];
                     if (script.src && script.src === scriptLocation) return script;
                 }
             } catch (err) {}
@@ -985,7 +985,7 @@
     _LOCALE.WF = [ "en", "fr", "es", "zh" ], _LOCALE.WS = [ "en" ], _LOCALE.YE = [ "ar", "en", "fr", "es", "zh" ], 
     _LOCALE.YT = [ "en", "fr", "es", "zh" ], _LOCALE.ZA = [ "en", "fr", "es", "zh" ], 
     _LOCALE.ZM = [ "en", "fr", "es", "zh" ], _LOCALE.ZW = [ "en" ], _LOCALE);
-    var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
+    var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors0, _secondaryColors0, _logoColors1, _secondaryColors1, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
     var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[DEFAULT] = {
         colors: [ "gold", "blue", "silver", "black", "white" ],
         sizes: [ BUTTON_SIZE.SMALL, BUTTON_SIZE.MEDIUM, BUTTON_SIZE.LARGE, BUTTON_SIZE.RESPONSIVE ],
@@ -1184,6 +1184,32 @@
         logoLabel: "{ logo: eps }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
+        logoColors: (_logoColors0 = {}, _logoColors0.silver = "black", _logoColors0.black = "white", 
+        _logoColors0.white = "black", _logoColors0),
+        secondaryColors: (_secondaryColors0 = {}, _secondaryColors0.gold = "silver", _secondaryColors0.blue = "silver", 
+        _secondaryColors0.silver = "silver", _secondaryColors0.black = "black", _secondaryColors0.darkblue = "silver", 
+        _secondaryColors0.white = "white", _secondaryColors0),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG.mybank = {
+        label: "{ logo: mybank }",
+        logoLabel: "{ logo: mybank }",
+        defaultColor: "silver",
+        colors: [ "silver", "black", "white" ],
+        logoColors: (_logoColors1 = {}, _logoColors1.silver = "black", _logoColors1.black = "white", 
+        _logoColors1.white = "black", _logoColors1),
+        secondaryColors: (_secondaryColors1 = {}, _secondaryColors1.gold = "silver", _secondaryColors1.blue = "silver", 
+        _secondaryColors1.silver = "silver", _secondaryColors1.black = "black", _secondaryColors1.darkblue = "silver", 
+        _secondaryColors1.white = "white", _secondaryColors1),
+        allowPrimary: !1,
+        allowPrimaryVertical: !1,
+        allowPrimaryHorizontal: !1
+    }, _BUTTON_CONFIG.p24 = {
+        label: "{ logo: p24 }",
+        logoLabel: "{ logo: p24 }",
+        defaultColor: "silver",
+        colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors10 = {}, _logoColors10.silver = "black", _logoColors10.black = "white", 
         _logoColors10.white = "black", _logoColors10),
         secondaryColors: (_secondaryColors10 = {}, _secondaryColors10.gold = "silver", _secondaryColors10.blue = "silver", 
@@ -1192,9 +1218,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.mybank = {
-        label: "{ logo: mybank }",
-        logoLabel: "{ logo: mybank }",
+    }, _BUTTON_CONFIG.blik = {
+        label: "{ logo: blik }",
+        logoLabel: "{ logo: blik }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors11 = {}, _logoColors11.silver = "black", _logoColors11.black = "white", 
@@ -1205,9 +1231,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.p24 = {
-        label: "{ logo: p24 }",
-        logoLabel: "{ logo: p24 }",
+    }, _BUTTON_CONFIG.maxima = {
+        label: "{ logo: maxima }",
+        logoLabel: "{ logo: maxima }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors12 = {}, _logoColors12.silver = "black", _logoColors12.black = "white", 
@@ -1218,9 +1244,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.blik = {
-        label: "{ logo: blik }",
-        logoLabel: "{ logo: blik }",
+    }, _BUTTON_CONFIG.boleto = {
+        label: "{ logo: boleto }",
+        logoLabel: "{ logo: boleto }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors13 = {}, _logoColors13.silver = "black", _logoColors13.black = "white", 
@@ -1231,9 +1257,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.maxima = {
-        label: "{ logo: maxima }",
-        logoLabel: "{ logo: maxima }",
+    }, _BUTTON_CONFIG.oxxo = {
+        label: "{ logo: oxxo }",
+        logoLabel: "{ logo: oxxo }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors14 = {}, _logoColors14.silver = "black", _logoColors14.black = "white", 
@@ -1244,9 +1270,9 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.boleto = {
-        label: "{ logo: boleto }",
-        logoLabel: "{ logo: boleto }",
+    }, _BUTTON_CONFIG.mercadopago = {
+        label: "{ logo: mercadopago }",
+        logoLabel: "{ logo: mercadopago }",
         defaultColor: "silver",
         colors: [ "silver", "black", "white" ],
         logoColors: (_logoColors15 = {}, _logoColors15.silver = "black", _logoColors15.black = "white", 
@@ -1257,42 +1283,16 @@
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.oxxo = {
-        label: "{ logo: oxxo }",
-        logoLabel: "{ logo: oxxo }",
-        defaultColor: "silver",
-        colors: [ "silver", "black", "white" ],
-        logoColors: (_logoColors16 = {}, _logoColors16.silver = "black", _logoColors16.black = "white", 
-        _logoColors16.white = "black", _logoColors16),
-        secondaryColors: (_secondaryColors16 = {}, _secondaryColors16.gold = "silver", _secondaryColors16.blue = "silver", 
-        _secondaryColors16.silver = "silver", _secondaryColors16.black = "black", _secondaryColors16.darkblue = "silver", 
-        _secondaryColors16.white = "white", _secondaryColors16),
-        allowPrimary: !1,
-        allowPrimaryVertical: !1,
-        allowPrimaryHorizontal: !1
-    }, _BUTTON_CONFIG.mercadopago = {
-        label: "{ logo: mercadopago }",
-        logoLabel: "{ logo: mercadopago }",
-        defaultColor: "silver",
-        colors: [ "silver", "black", "white" ],
-        logoColors: (_logoColors17 = {}, _logoColors17.silver = "black", _logoColors17.black = "white", 
-        _logoColors17.white = "black", _logoColors17),
-        secondaryColors: (_secondaryColors17 = {}, _secondaryColors17.gold = "silver", _secondaryColors17.blue = "silver", 
-        _secondaryColors17.silver = "silver", _secondaryColors17.black = "black", _secondaryColors17.darkblue = "silver", 
-        _secondaryColors17.white = "white", _secondaryColors17),
-        allowPrimary: !1,
-        allowPrimaryVertical: !1,
-        allowPrimaryHorizontal: !1
     }, _BUTTON_CONFIG.card = {
         label: "{ cards }",
         logoLabel: "{ cards }",
         defaultColor: "silver",
         colors: [ "transparent" ],
-        logoColors: (_logoColors18 = {}, _logoColors18.transparent = "black", _logoColors18),
-        secondaryColors: (_secondaryColors18 = {}, _secondaryColors18.gold = "transparent", 
-        _secondaryColors18.blue = "transparent", _secondaryColors18.silver = "transparent", 
-        _secondaryColors18.black = "transparent", _secondaryColors18.darkblue = "transparent", 
-        _secondaryColors18.white = "transparent", _secondaryColors18),
+        logoColors: (_logoColors16 = {}, _logoColors16.transparent = "black", _logoColors16),
+        secondaryColors: (_secondaryColors16 = {}, _secondaryColors16.gold = "transparent", 
+        _secondaryColors16.blue = "transparent", _secondaryColors16.silver = "transparent", 
+        _secondaryColors16.black = "transparent", _secondaryColors16.darkblue = "transparent", 
+        _secondaryColors16.white = "transparent", _secondaryColors16),
         allowPrimary: !1,
         allowPrimaryVertical: !1,
         allowPrimaryHorizontal: !1,
@@ -8806,8 +8806,8 @@
             }));
         }));
     }
-    function renderContent(text, _ref11) {
-        var label = _ref11.label, locale = _ref11.locale, color = _ref11.color, branding = _ref11.branding, logoColor = _ref11.logoColor, funding = _ref11.funding, env = _ref11.env, _cards = _ref11.cards, dynamicContent = _ref11.dynamicContent, layout = _ref11.layout, size = _ref11.size;
+    function renderContent(text, _ref1) {
+        var label = _ref1.label, locale = _ref1.locale, color = _ref1.color, branding = _ref1.branding, logoColor = _ref1.logoColor, funding = _ref1.funding, env = _ref1.env, _cards = _ref1.cards, dynamicContent = _ref1.dynamicContent, layout = _ref1.layout, size = _ref1.size;
         var _content = getLocaleContent(locale);
         return renderers = {
             text: function(value) {
@@ -8893,9 +8893,9 @@
         })), new jsx_JsxHTMLNodeContainer(nodes);
         var renderers, nodes;
     }
-    function determineButtonTitle(_ref13) {
-        var label = _ref13.label, branding = _ref13.branding;
-        var localeContent = getLocaleContent(_ref13.locale);
+    function determineButtonTitle(_ref11) {
+        var label = _ref11.label, branding = _ref11.branding;
+        var localeContent = getLocaleContent(_ref11.locale);
         var labelContent = localeContent && localeContent[label];
         if (labelContent) {
             var str = labelContent.replace(/({logo:(pp|paypal)})+(\s)*({logo:(pp|paypal)})*/, "PayPal");
@@ -8904,9 +8904,9 @@
         }
         return label;
     }
-    function componentTemplate(_ref20) {
-        var _ref21;
-        var props = _ref20.props;
+    function componentTemplate(_ref18) {
+        var _ref19;
+        var props = _ref18.props;
         if (props && props.style) {
             var style = props.style;
             "generic" === style.label && (style.label = "paypal");
@@ -8992,9 +8992,9 @@
             multiple: multiple,
             layout: layout
         }).map((function(button, i) {
-            return function(_ref14) {
-                var _ref15, _ref16, _ref17;
-                var size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, tagline = _ref14.tagline, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod, checkoutCustomization = _ref14.checkoutCustomization;
+            return function(_ref12) {
+                var _ref13, _ref14, _ref15;
+                var size = _ref12.size, label = _ref12.label, color = _ref12.color, locale = _ref12.locale, branding = _ref12.branding, multiple = _ref12.multiple, layout = _ref12.layout, shape = _ref12.shape, source = _ref12.source, funding = _ref12.funding, tagline = _ref12.tagline, i = _ref12.i, env = _ref12.env, cards = _ref12.cards, installmentperiod = _ref12.installmentperiod, checkoutCustomization = _ref12.checkoutCustomization;
                 var logoColor = getButtonConfig(label, "logoColors")[color];
                 var buttonLabel = determineLabel({
                     label: label,
@@ -9045,9 +9045,9 @@
                 var role = source === FUNDING.CARD ? {} : {
                     role: "button"
                 };
-                return jsxToHTML("div", _extends({}, ((_ref15 = {})["data-layout"] = layout || "", 
-                _ref15), ((_ref16 = {})["data-size"] = size || "", _ref16), ((_ref17 = {})["data-funding-source"] = source, 
-                _ref17["data-button"] = !0, _ref17), {
+                return jsxToHTML("div", _extends({}, ((_ref13 = {})["data-layout"] = layout || "", 
+                _ref13), ((_ref14 = {})["data-size"] = size || "", _ref14), ((_ref15 = {})["data-funding-source"] = source, 
+                _ref15["data-button"] = !0, _ref15), {
                     class: CLASS.BUTTON + " " + CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                         layout: layout,
                         shape: shape,
@@ -9062,13 +9062,13 @@
                 }, role, {
                     tabindex: hasTabIndex && 0,
                     "aria-label": buttonTitle
-                }), source === FUNDING.CARD ? contentText : function(_ref12) {
-                    var contentText = _ref12.contentText, personalizedButtonText = _ref12.personalizedButtonText, impression = _ref12.impression;
+                }), source === FUNDING.CARD ? contentText : function(_ref10) {
+                    var contentText = _ref10.contentText, personalizedButtonText = _ref10.personalizedButtonText, impression = _ref10.impression;
                     return jsxToHTML("div", {
                         class: "" + CLASS.BUTTON_LABEL
-                    }, function(_ref10) {
-                        var personalizedButtonText = _ref10.personalizedButtonText;
-                        if (_ref10.branding && _ref10.allowedAnimation) {
+                    }, function(_ref0) {
+                        var personalizedButtonText = _ref0.personalizedButtonText;
+                        if (_ref0.branding && _ref0.allowedAnimation) {
                             var COMPRESSED = "\n        max-width: 0%;\n        opacity: 0;\n    ";
                             var EXPANDED = "\n        max-width: 100%;\n        opacity: 1;\n    ";
                             var HIDDEN = "\n        position: absolute;\n        visibility: hidden;\n    ";
@@ -9082,8 +9082,8 @@
                         }
                     }({
                         personalizedButtonText: personalizedButtonText,
-                        branding: _ref12.branding,
-                        allowedAnimation: _ref12.allowedAnimation
+                        branding: _ref10.branding,
+                        allowedAnimation: _ref10.allowedAnimation
                     }), contentText, personalizedButtonText, impression && function(impression) {
                         return jsxToHTML("div", {
                             class: "tracking-beacon"
@@ -9121,10 +9121,10 @@
                 checkoutCustomization: checkoutCustomization
             });
         }));
-        var taglineNode = function(_ref18) {
-            var label = _ref18.label, color = _ref18.color, locale = _ref18.locale, env = _ref18.env, cards = _ref18.cards, checkoutCustomization = _ref18.checkoutCustomization;
-            if (_ref18.tagline && "vertical" !== _ref18.layout) {
-                var tag = _ref18.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
+        var taglineNode = function(_ref16) {
+            var label = _ref16.label, color = _ref16.color, locale = _ref16.locale, env = _ref16.env, cards = _ref16.cards, checkoutCustomization = _ref16.checkoutCustomization;
+            if (_ref16.tagline && "vertical" !== _ref16.layout) {
+                var tag = _ref16.multiple && getButtonConfig(label, "dualTag") || getButtonConfig(label, "tag");
                 var text = checkoutCustomization && checkoutCustomization.tagline && checkoutCustomization.tagline.text ? checkoutCustomization.tagline.text : renderContent(tag, {
                     locale: locale,
                     color: color,
@@ -9173,11 +9173,11 @@
         });
         var styleNode = jsxToHTML("style", {
             innerHTML: (_ref = {
-                height: (_ref19 = {
+                height: (_ref17 = {
                     height: height,
                     cardNumber: cards.length
                 }).height,
-                cardNumber: _ref19.cardNumber
+                cardNumber: _ref17.cardNumber
             }, "\n        " + pageStyle + "\n        " + buttonStyle + "\n        " + buttonColorStyle + "\n        " + layoutStyle + "\n        " + brandingStyle + "\n        " + labelStyle + "\n        " + function(_ref) {
                 var height = _ref.height, _ref$cardNumber = _ref.cardNumber, cardNumber = void 0 === _ref$cardNumber ? 4 : _ref$cardNumber;
                 return Object.keys(BUTTON_STYLE).map((function(size) {
@@ -9193,7 +9193,7 @@
             }) + "\n    ")
         });
         var _ref;
-        var _ref19;
+        var _ref17;
         var scriptNode = jsxToHTML("script", {
             innerHTML: "(" + function() {
                 var SELECTOR_ALL = "*", SELECTOR_OPTIONAL = "[optional]";
@@ -9307,8 +9307,8 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return jsxToHTML("div", _extends({}, (_ref21 = {}, _ref21["data-version"] = "4.0.344", 
-        _ref21), {
+        return jsxToHTML("div", _extends({}, (_ref19 = {}, _ref19["data-version"] = "4.0.345", 
+        _ref19), {
             class: CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
                 shape: shape,

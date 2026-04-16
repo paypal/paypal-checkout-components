@@ -889,9 +889,9 @@
                 if ("undefined" != typeof Promise && item instanceof Promise) return !0;
                 if ("undefined" != typeof window && "function" == typeof window.Window && item instanceof window.Window) return !1;
                 if ("undefined" != typeof window && "function" == typeof window.constructor && item instanceof window.constructor) return !1;
-                var _toString = {}.toString;
-                if (_toString) {
-                    var name = _toString.call(item);
+                var toString = {}.toString;
+                if (toString) {
+                    var name = toString.call(item);
                     if ("[object Window]" === name || "[object global]" === name || "[object DOMWindow]" === name) return !1;
                 }
                 if ("function" == typeof item.then) return !0;
@@ -1635,7 +1635,7 @@
             });
         }));
         function getScriptVersion() {
-            return "4.0.344";
+            return "4.0.345";
         }
         function getCurrentScriptUrl() {
             var script = getCurrentScript();
@@ -1645,7 +1645,7 @@
                 0 === scriptUrl.indexOf("//www.paypalobjects.com") && (scriptUrl = "https:" + scriptUrl);
                 return scriptUrl;
             }
-            return "https://www.paypalobjects.com/api/checkout.4.0.344.js";
+            return "https://www.paypalobjects.com/api/checkout.4.0.345.js";
         }
         function getDomainSetting(name, def) {
             var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.h)();
@@ -1693,7 +1693,7 @@
                     country: config.a.locale.country,
                     lang: config.a.locale.lang,
                     uid: getSessionID(),
-                    ver: "4.0.344"
+                    ver: "4.0.345"
                 };
             }));
             Object(client.a)((function() {
@@ -1857,6 +1857,11 @@
             }) && Object(client.q)("object_assign_broken");
         }
         var esm_extends = __webpack_require__(13);
+        function _arrayLikeToArray(r, a) {
+            (null == a || a > r.length) && (a = r.length);
+            for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+            return n;
+        }
         var headerBuilders = [];
         var corrids = [];
         Object(client.c)((function() {
@@ -1888,7 +1893,7 @@
                         void 0 === rawHeaders && (rawHeaders = "");
                         var result = {};
                         for (var _i2 = 0, _rawHeaders$trim$spli2 = rawHeaders.trim().split("\n"); _i2 < _rawHeaders$trim$spli2.length; _i2++) {
-                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _line$split.slice(1);
+                            var _line$split = _rawHeaders$trim$spli2[_i2].split(":"), _key = _line$split[0], values = _arrayLikeToArray(_line$split).slice(1);
                             result[_key.toLowerCase()] = values.join(":").trim();
                         }
                         return result;
@@ -2020,7 +2025,7 @@
                         domain: metaFrameDomain
                     });
                     return post_robot_src.bridge.openBridge(extendUrl(metaFrameUrl, {
-                        version: "4.0.344"
+                        version: "4.0.345"
                     }), metaFrameDomain).then((function() {
                         return metaListener;
                     })).then((function(_ref) {
@@ -2665,7 +2670,7 @@
             get paypal_domain_regex() {
                 return paypalDomainRegex;
             },
-            version: "4.0.344",
+            version: "4.0.345",
             cors: !0,
             env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : "production",
             state: "checkoutjs",
@@ -3322,128 +3327,128 @@
                 _ref9;
             },
             get altpayUrls() {
-                var _ref10;
+                var _ref0;
                 var paypalUrls = config.paypalUrls;
-                return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
-                _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
-                _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
-                _ref10[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
-                _ref10;
+                return (_ref0 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.altpay) + config.altpayUris.local, 
+                _ref0[constants.t.STAGE] = "" + paypalUrls.stage + config.altpayUris.stage, _ref0[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.altpayUris.sandbox, 
+                _ref0[constants.t.PRODUCTION] = "" + paypalUrls.production + config.altpayUris.production, 
+                _ref0[constants.t.TEST] = "" + paypalUrls.test + config.altpayUris.test, _ref0[constants.t.DEMO] = "" + paypalUrls.test + config.altpayUris.demo, 
+                _ref0;
             },
             get billingUrls() {
-                var _ref11;
+                var _ref1;
                 var paypalUrls = config.paypalUrls;
-                return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
-                _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
-                _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
-                _ref11[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref11[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
-                _ref11;
+                return (_ref1 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.checkout) + config.billingUris.local, 
+                _ref1[constants.t.STAGE] = "" + paypalUrls.stage + config.billingUris.stage, _ref1[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.billingUris.sandbox, 
+                _ref1[constants.t.PRODUCTION] = "" + paypalUrls.production + config.billingUris.production, 
+                _ref1[constants.t.TEST] = "" + paypalUrls.test + config.billingUris.test, _ref1[constants.t.DEMO] = "" + paypalUrls.test + config.billingUris.demo, 
+                _ref1;
             },
             get buttonUrls() {
-                var _ref12;
+                var _ref10;
                 var paypalUrls = config.paypalUrls;
-                return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
-                _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
-                _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
-                _ref12[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref12[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
-                _ref12;
+                return (_ref10 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.buttonUris.local, 
+                _ref10[constants.t.STAGE] = "" + paypalUrls.stage + config.buttonUris.stage, _ref10[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.buttonUris.sandbox, 
+                _ref10[constants.t.PRODUCTION] = "" + paypalUrls.production + config.buttonUris.production, 
+                _ref10[constants.t.TEST] = "" + paypalUrls.test + config.buttonUris.test, _ref10[constants.t.DEMO] = "" + paypalUrls.demo + config.buttonUris.demo, 
+                _ref10;
             },
             get inlinedCardFieldUrls() {
-                var _ref13;
+                var _ref11;
                 var paypalUrls = config.paypalUrls;
-                return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
-                _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
-                _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
-                _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
-                _ref13[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
-                _ref13[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
-                _ref13;
+                return (_ref11 = {})[constants.t.LOCAL] = "" + paypalUrls.local.replace(":" + config.ports.default, ":" + config.ports.button) + config.inlinedCardFieldUris.local, 
+                _ref11[constants.t.STAGE] = "" + paypalUrls.stage + config.inlinedCardFieldUris.stage, 
+                _ref11[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.inlinedCardFieldUris.sandbox, 
+                _ref11[constants.t.PRODUCTION] = "" + paypalUrls.production + config.inlinedCardFieldUris.production, 
+                _ref11[constants.t.TEST] = "" + paypalUrls.test + config.inlinedCardFieldUris.test, 
+                _ref11[constants.t.DEMO] = "" + paypalUrls.demo + config.inlinedCardFieldUris.demo, 
+                _ref11;
             },
             get loginUrls() {
-                var _ref14;
+                var _ref12;
                 var paypalUrls = config.paypalUrls;
-                return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
-                _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
-                _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref14[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
-                _ref14;
+                return (_ref12 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.loginUri, 
+                _ref12[constants.t.STAGE] = "" + paypalUrls.stage + config.loginUri, _ref12[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.loginUri, 
+                _ref12[constants.t.PRODUCTION] = "" + paypalUrls.production + config.loginUri, _ref12[constants.t.TEST] = "" + paypalUrls.test + config.loginUri, 
+                _ref12;
             },
             get paymentsStandardUrls() {
-                var _ref15;
+                var _ref13;
                 var paypalUrls = config.paypalUrls;
-                return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
-                _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
-                _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
-                _ref15[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref15;
+                return (_ref13 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.paymentStandardUri, 
+                _ref13[constants.t.STAGE] = "" + paypalUrls.stage + config.paymentStandardUri, _ref13[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.paymentStandardUri, 
+                _ref13[constants.t.PRODUCTION] = "" + paypalUrls.production + config.paymentStandardUri, 
+                _ref13[constants.t.TEST] = "" + paypalUrls.test + config.paymentStandardUri, _ref13;
             },
             get metaFrameUrls() {
-                var _ref16;
+                var _ref14;
                 var paypalUrls = config.paypalUrls;
-                return (_ref16 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
-                _ref16[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=msmaster", 
-                _ref16[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
-                _ref16[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
-                _ref16[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
-                _ref16[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
-                _ref16;
+                return (_ref14 = {})[constants.t.LOCAL] = "" + paypalUrls.local + config.postBridgeUri + "&env=local", 
+                _ref14[constants.t.STAGE] = "" + paypalUrls.stage + config.postBridgeUri + "&env=stage&stage=msmaster", 
+                _ref14[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.postBridgeUri + "&env=sandbox", 
+                _ref14[constants.t.PRODUCTION] = "" + paypalUrls.production + config.postBridgeUri + "&env=production", 
+                _ref14[constants.t.TEST] = "" + paypalUrls.test + config.postBridgeUri + "&env=test", 
+                _ref14[constants.t.DEMO] = "" + paypalUrls.demo + config.postBridgeUri + "&env=demo", 
+                _ref14;
             },
             get legacyCheckoutUrls() {
-                var _ref17;
+                var _ref15;
                 var paypalUrls = config.paypalUrls;
-                return (_ref17 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
-                _ref17[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
-                _ref17[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
-                _ref17[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
-                _ref17[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
-                _ref17;
+                return (_ref15 = {})[constants.t.LOCAL] = "" + paypalUrls.stage + config.legacyCheckoutUris.local, 
+                _ref15[constants.t.STAGE] = "" + paypalUrls.stage + config.legacyCheckoutUris.stage, 
+                _ref15[constants.t.SANDBOX] = "" + paypalUrls.sandbox + config.legacyCheckoutUris.sandbox, 
+                _ref15[constants.t.PRODUCTION] = "" + paypalUrls.production + config.legacyCheckoutUris.production, 
+                _ref15[constants.t.TEST] = "" + paypalUrls.test + config.legacyCheckoutUris.test, 
+                _ref15;
             },
             get authApiUrls() {
-                var _ref18;
+                var _ref16;
                 var apiUrls = config.apiUrls;
                 var authApiUri = config.authApiUri;
-                return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
-                _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
-                _ref18[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref18;
+                return (_ref16 = {})[constants.t.LOCAL] = "" + apiUrls.local + authApiUri, _ref16[constants.t.STAGE] = "" + apiUrls.stage + authApiUri, 
+                _ref16[constants.t.SANDBOX] = "" + apiUrls.sandbox + authApiUri, _ref16[constants.t.PRODUCTION] = "" + apiUrls.production + authApiUri, 
+                _ref16[constants.t.TEST] = "" + apiUrls.test + authApiUri, _ref16;
             },
             get paymentApiUrls() {
-                var _ref19;
+                var _ref17;
                 var apiUrls = config.apiUrls;
                 var paymentApiUri = config.paymentApiUri;
-                return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
-                _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
-                _ref19[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref19;
+                return (_ref17 = {})[constants.t.LOCAL] = "" + apiUrls.local + paymentApiUri, _ref17[constants.t.STAGE] = "" + apiUrls.stage + paymentApiUri, 
+                _ref17[constants.t.SANDBOX] = "" + apiUrls.sandbox + paymentApiUri, _ref17[constants.t.PRODUCTION] = "" + apiUrls.production + paymentApiUri, 
+                _ref17[constants.t.TEST] = "" + apiUrls.test + paymentApiUri, _ref17;
             },
             get orderApiUrls() {
-                var _ref20;
+                var _ref18;
                 var apiUrls = config.apiUrls;
                 var orderApiUri = config.orderApiUri;
-                return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref20[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
-                _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
-                _ref20[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref20;
+                return (_ref18 = {})[constants.t.LOCAL] = "" + apiUrls.local + orderApiUri, _ref18[constants.t.STAGE] = "" + apiUrls.stage + orderApiUri, 
+                _ref18[constants.t.SANDBOX] = "" + apiUrls.sandbox + orderApiUri, _ref18[constants.t.PRODUCTION] = "" + apiUrls.production + orderApiUri, 
+                _ref18[constants.t.TEST] = "" + apiUrls.test + orderApiUri, _ref18;
             },
             get billingApiUrls() {
-                var _ref21;
+                var _ref19;
                 var apiUrls = config.apiUrls;
                 var billingApiUri = config.billingApiUri;
-                return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
-                _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
-                _ref21[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref21;
+                return (_ref19 = {})[constants.t.LOCAL] = "" + apiUrls.local + billingApiUri, _ref19[constants.t.STAGE] = "" + apiUrls.stage + billingApiUri, 
+                _ref19[constants.t.SANDBOX] = "" + apiUrls.sandbox + billingApiUri, _ref19[constants.t.PRODUCTION] = "" + apiUrls.production + billingApiUri, 
+                _ref19[constants.t.TEST] = "" + apiUrls.test + billingApiUri, _ref19;
             },
             get experienceApiUrls() {
-                var _ref22;
+                var _ref20;
                 var apiUrls = config.apiUrls;
                 var experienceApiUri = config.experienceApiUri;
-                return (_ref22 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
-                _ref22[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref22[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
-                _ref22[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref22[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
-                _ref22;
+                return (_ref20 = {})[constants.t.LOCAL] = "" + apiUrls.local + experienceApiUri, 
+                _ref20[constants.t.STAGE] = "" + apiUrls.stage + experienceApiUri, _ref20[constants.t.SANDBOX] = "" + apiUrls.sandbox + experienceApiUri, 
+                _ref20[constants.t.PRODUCTION] = "" + apiUrls.production + experienceApiUri, _ref20[constants.t.TEST] = "" + apiUrls.test + experienceApiUri, 
+                _ref20;
             },
             get trackingApiUrls() {
-                var _ref23;
+                var _ref21;
                 var apiUrls = config.apiUrls;
                 var trackingApiUri = config.trackingApiUri;
-                return (_ref23 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref23[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
-                _ref23[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref23[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
-                _ref23[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref23;
+                return (_ref21 = {})[constants.t.LOCAL] = "" + apiUrls.local + trackingApiUri, _ref21[constants.t.STAGE] = "" + apiUrls.stage + trackingApiUri, 
+                _ref21[constants.t.SANDBOX] = "" + apiUrls.sandbox + trackingApiUri, _ref21[constants.t.PRODUCTION] = "" + apiUrls.production + trackingApiUri, 
+                _ref21[constants.t.TEST] = "" + apiUrls.test + trackingApiUri, _ref21;
             },
             _paypalUrl: "",
             get paypalUrl() {
@@ -4103,7 +4108,7 @@
             for (var _i8 = 0; _i8 < eventNames.length; _i8++) element.addEventListener(eventNames[_i8], handler);
             return {
                 cancel: once((function() {
-                    for (var _i10 = 0; _i10 < eventNames.length; _i10++) element.removeEventListener(eventNames[_i10], handler);
+                    for (var _i0 = 0; _i0 < eventNames.length; _i0++) element.removeEventListener(eventNames[_i0], handler);
                 }))
             };
         }
@@ -4112,7 +4117,7 @@
             element.style[name] = value;
             var capitalizedName = (string = name).charAt(0).toUpperCase() + string.slice(1).toLowerCase();
             var string;
-            for (var _i12 = 0; _i12 < VENDOR_PREFIXES.length; _i12++) element.style["" + VENDOR_PREFIXES[_i12] + capitalizedName] = value;
+            for (var _i10 = 0; _i10 < VENDOR_PREFIXES.length; _i10++) element.style["" + VENDOR_PREFIXES[_i10] + capitalizedName] = value;
         }
         var CSSRule = window.CSSRule;
         var KEYFRAMES_RULE = CSSRule.KEYFRAMES_RULE || CSSRule.WEBKIT_KEYFRAMES_RULE || CSSRule.MOZ_KEYFRAMES_RULE || CSSRule.O_KEYFRAMES_RULE || CSSRule.MS_KEYFRAMES_RULE;
@@ -4258,10 +4263,10 @@
         };
         function fixScripts(el, doc) {
             void 0 === doc && (doc = window.document);
-            for (var _i14 = 0, _querySelectorAll2 = function(el, selector) {
+            for (var _i12 = 0, _querySelectorAll2 = function(el, selector) {
                 return [].slice.call(el.querySelectorAll("script"));
-            }(el); _i14 < _querySelectorAll2.length; _i14++) {
-                var script = _querySelectorAll2[_i14];
+            }(el); _i12 < _querySelectorAll2.length; _i12++) {
+                var script = _querySelectorAll2[_i12];
                 var newScript = doc.createElement("script");
                 newScript.text = script.textContent;
                 script.parentNode.replaceChild(newScript, script);
@@ -4749,8 +4754,8 @@
             return getFrameByName(win, name) || function findChildFrameByName(win, name) {
                 var frame = getFrameByName(win, name);
                 if (frame) return frame;
-                for (var _i11 = 0, _getFrames4 = getFrames(win); _i11 < _getFrames4.length; _i11++) {
-                    var namedFrame = findChildFrameByName(_getFrames4[_i11], name);
+                for (var _i1 = 0, _getFrames4 = getFrames(win); _i1 < _getFrames4.length; _i1++) {
+                    var namedFrame = findChildFrameByName(_getFrames4[_i1], name);
                     if (namedFrame) return namedFrame;
                 }
             }(getTop(win) || win, name);
@@ -4767,7 +4772,7 @@
             if (actualParent) return actualParent === parent;
             if (child === parent) return !1;
             if (getTop(child) === child) return !1;
-            for (var _i15 = 0, _getFrames8 = getFrames(parent); _i15 < _getFrames8.length; _i15++) if (_getFrames8[_i15] === child) return !0;
+            for (var _i13 = 0, _getFrames8 = getFrames(parent); _i13 < _getFrames8.length; _i13++) if (_getFrames8[_i13] === child) return !0;
             return !1;
         }
         function isPopup(win) {
@@ -4779,9 +4784,9 @@
             return Boolean(getParent(win));
         }
         function anyMatch(collection1, collection2) {
-            for (var _i17 = 0; _i17 < collection1.length; _i17++) {
-                var item1 = collection1[_i17];
-                for (var _i19 = 0; _i19 < collection2.length; _i19++) if (item1 === collection2[_i19]) return !0;
+            for (var _i15 = 0; _i15 < collection1.length; _i15++) {
+                var item1 = collection1[_i15];
+                for (var _i17 = 0; _i17 < collection2.length; _i17++) if (item1 === collection2[_i17]) return !0;
             }
             return !1;
         }
@@ -5536,8 +5541,8 @@
                     var stackDetails = /.*at [^(]*\((.*):(.+):(.+)\)$/gi.exec(stack);
                     var scriptLocation = stackDetails && stackDetails[1];
                     if (!scriptLocation) return;
-                    for (var _i22 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i22 < _Array$prototype$slic2.length; _i22++) {
-                        var script = _Array$prototype$slic2[_i22];
+                    for (var _i20 = 0, _Array$prototype$slic2 = [].slice.call(document.getElementsByTagName("script")).reverse(); _i20 < _Array$prototype$slic2.length; _i20++) {
+                        var script = _Array$prototype$slic2[_i20];
                         if (script.src && script.src === scriptLocation) return script;
                     }
                 } catch (err) {}
@@ -5594,7 +5599,7 @@
             return getButtonConfig;
         }));
         var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _logoColors17, _secondaryColors17, _logoColors18, _secondaryColors18, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
+        var _logoColors, _tagLineColors, _secondaryColors, _logoColors2, _secondaryColors2, _logoColors3, _secondaryColors3, _logoColors4, _secondaryColors4, _logoColors5, _secondaryColors5, _logoColors6, _secondaryColors6, _logoColors7, _secondaryColors7, _logoColors8, _secondaryColors8, _logoColors9, _secondaryColors9, _logoColors0, _secondaryColors0, _logoColors1, _secondaryColors1, _logoColors10, _secondaryColors10, _logoColors11, _secondaryColors11, _logoColors12, _secondaryColors12, _logoColors13, _secondaryColors13, _logoColors14, _secondaryColors14, _logoColors15, _secondaryColors15, _logoColors16, _secondaryColors16, _BUTTON_CONFIG, _FUNDING_TO_DEFAULT_L, _LABEL_TO_FUNDING, _BUTTON_STYLE;
         var BUTTON_CONFIG = ((_BUTTON_CONFIG = {})[_constants__WEBPACK_IMPORTED_MODULE_0__.s] = {
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE, _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             sizes: [ _constants__WEBPACK_IMPORTED_MODULE_0__.l.SMALL, _constants__WEBPACK_IMPORTED_MODULE_0__.l.MEDIUM, _constants__WEBPACK_IMPORTED_MODULE_0__.l.LARGE, _constants__WEBPACK_IMPORTED_MODULE_0__.l.RESPONSIVE ],
@@ -5852,6 +5857,44 @@
             logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.EPS + " }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors0 = {}, _logoColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors0),
+            secondaryColors: (_secondaryColors0 = {}, _secondaryColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors0[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors0),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MYBANK] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MYBANK + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MYBANK + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
+            logoColors: (_logoColors1 = {}, _logoColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
+            _logoColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors1),
+            secondaryColors: (_secondaryColors1 = {}, _secondaryColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
+            _secondaryColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
+            _secondaryColors1[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
+            _secondaryColors1),
+            allowPrimary: !1,
+            allowPrimaryVertical: !1,
+            allowPrimaryHorizontal: !1
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.P24] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.P24 + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.P24 + " }",
+            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
+            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             logoColors: (_logoColors10 = {}, _logoColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
             _logoColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
             _logoColors10[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
@@ -5866,9 +5909,9 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MYBANK] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MYBANK + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MYBANK + " }",
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BLIK] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BLIK + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BLIK + " }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             logoColors: (_logoColors11 = {}, _logoColors11[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
@@ -5885,9 +5928,9 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.P24] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.P24 + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.P24 + " }",
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MAXIMA] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MAXIMA + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MAXIMA + " }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             logoColors: (_logoColors12 = {}, _logoColors12[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
@@ -5904,9 +5947,9 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BLIK] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BLIK + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BLIK + " }",
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BOLETO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BOLETO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BOLETO + " }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             logoColors: (_logoColors13 = {}, _logoColors13[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
@@ -5923,9 +5966,9 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MAXIMA] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MAXIMA + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MAXIMA + " }",
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.OXXO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.OXXO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.OXXO + " }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             logoColors: (_logoColors14 = {}, _logoColors14[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
@@ -5942,9 +5985,9 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.BOLETO] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BOLETO + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.BOLETO + " }",
+        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MERCADOPAGO] = {
+            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MERCADOPAGO + " }",
+            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MERCADOPAGO + " }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
             logoColors: (_logoColors15 = {}, _logoColors15[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
@@ -5961,58 +6004,20 @@
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.OXXO] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.OXXO + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.OXXO + " }",
-            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
-            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
-            logoColors: (_logoColors16 = {}, _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
-            _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
-            _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
-            _logoColors16),
-            secondaryColors: (_secondaryColors16 = {}, _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
-            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
-            _secondaryColors16),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
-        }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.MERCADOPAGO] = {
-            label: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MERCADOPAGO + " }",
-            logoLabel: "{ logo: " + _constants__WEBPACK_IMPORTED_MODULE_0__.h.MERCADOPAGO + " }",
-            defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
-            colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE ],
-            logoColors: (_logoColors17 = {}, _logoColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
-            _logoColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.WHITE, 
-            _logoColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
-            _logoColors17),
-            secondaryColors: (_secondaryColors17 = {}, _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK, 
-            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER, 
-            _secondaryColors17[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE, 
-            _secondaryColors17),
-            allowPrimary: !1,
-            allowPrimaryVertical: !1,
-            allowPrimaryHorizontal: !1
         }, _BUTTON_CONFIG[_constants__WEBPACK_IMPORTED_MODULE_0__.f.CARD] = {
             label: "{ cards }",
             logoLabel: "{ cards }",
             defaultColor: _constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER,
             colors: [ _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT ],
-            logoColors: (_logoColors18 = {}, _logoColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
-            _logoColors18),
-            secondaryColors: (_secondaryColors18 = {}, _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
-            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
-            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
-            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
-            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
-            _secondaryColors18[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
-            _secondaryColors18),
+            logoColors: (_logoColors16 = {}, _logoColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT] = _constants__WEBPACK_IMPORTED_MODULE_0__.i.BLACK, 
+            _logoColors16),
+            secondaryColors: (_secondaryColors16 = {}, _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.GOLD] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.SILVER] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.BLACK] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.DARKBLUE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors16[_constants__WEBPACK_IMPORTED_MODULE_0__.e.WHITE] = _constants__WEBPACK_IMPORTED_MODULE_0__.e.TRANSPARENT, 
+            _secondaryColors16),
             allowPrimary: !1,
             allowPrimaryVertical: !1,
             allowPrimaryHorizontal: !1,
@@ -6856,14 +6861,14 @@
                 }
                 if (Array.isArray(domain)) {
                     var _listenersCollection = [];
-                    for (var _i10 = 0, _domain2 = domain; _i10 < _domain2.length; _i10++) _listenersCollection.push(addRequestListener({
+                    for (var _i0 = 0, _domain2 = domain; _i0 < _domain2.length; _i0++) _listenersCollection.push(addRequestListener({
                         name: name,
                         win: win,
-                        domain: _domain2[_i10]
+                        domain: _domain2[_i0]
                     }, listener));
                     return {
                         cancel: function() {
-                            for (var _i12 = 0; _i12 < _listenersCollection.length; _i12++) _listenersCollection[_i12].cancel();
+                            for (var _i10 = 0; _i10 < _listenersCollection.length; _i10++) _listenersCollection[_i10].cancel();
                         }
                     };
                 }
@@ -9731,7 +9736,8 @@
             };
             _proto.watchForClose = function() {
                 var _this3 = this;
-                window.addEventListener("unload", (function() {
+                var eventname = "onpagehide" in window ? "pagehide" : "unload";
+                window.addEventListener(eventname, (function() {
                     return _this3.checkClose();
                 }));
             };
@@ -10521,66 +10527,67 @@
                 }));
             };
             _proto.openBridge = function(domain) {
-                var _this10 = this;
+                var _this0 = this;
                 return zalgo_promise_src.a.try((function() {
-                    if (src.bridge && _this10.driver.needsBridge) {
+                    if (src.bridge && _this0.driver.needsBridge) {
                         var needsBridgeParams = {
-                            win: _this10.window
+                            win: _this0.window
                         };
                         domain && (needsBridgeParams.domain = domain);
                         var needsBridge = src.bridge.needsBridge(needsBridgeParams);
-                        var bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
+                        var bridgeUrl = _this0.component.getBridgeUrl(_this0.props.env);
                         if (bridgeUrl) {
                             bridgeUrl = Object(lib.r)(bridgeUrl, {
                                 query: {
-                                    version: _this10.component.version
+                                    version: _this0.component.version
                                 }
                             });
-                            var bridgeDomain = _this10.component.getBridgeDomain(_this10.props.env);
+                            var bridgeDomain = _this0.component.getBridgeDomain(_this0.props.env);
                             if (!bridgeDomain) throw new Error("Can not determine domain for bridge");
                             return needsBridge ? src.bridge.openBridge(bridgeUrl, bridgeDomain).then((function(result) {
                                 if (result) return result;
                             })) : void 0;
                         }
-                        if (needsBridge && domain && !src.bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this10.context);
+                        if (needsBridge && domain && !src.bridge.hasBridge(domain, domain)) throw new Error("Bridge url needed to render " + _this0.context);
                     }
                 }));
             };
             _proto.open = function() {
-                var _this11 = this;
+                var _this1 = this;
                 return zalgo_promise_src.a.try((function() {
-                    _this11.component.log("open_" + _this11.context, {
-                        windowName: _this11.childWindowName
+                    _this1.component.log("open_" + _this1.context, {
+                        windowName: _this1.childWindowName
                     });
-                    var win = _this11.props.win;
-                    if (!win) return _this11.driver.open.call(_this11);
-                    _this11.clean.set("window", win);
+                    var win = _this1.props.win;
+                    var eventname = "onpagehide" in window ? "pagehide" : "unload";
+                    if (!win) return _this1.driver.open.call(_this1);
+                    _this1.clean.set("window", win);
                     window.addEventListener("beforeunload", (function() {
                         return win.close();
                     }));
-                    window.addEventListener("unload", (function() {
+                    window.addEventListener(eventname, (function() {
                         return win.close();
                     }));
-                    Object(cross_domain_utils_src.b)(_this11.window).name = _this11.childWindowName;
+                    Object(cross_domain_utils_src.b)(_this1.window).name = _this1.childWindowName;
                 }));
             };
             _proto.openPrerender = function() {
-                var _this12 = this;
+                var _this10 = this;
                 return zalgo_promise_src.a.try((function() {
-                    if (_this12.component.prerenderTemplate) return _this12.driver.openPrerender.call(_this12);
+                    if (_this10.component.prerenderTemplate) return _this10.driver.openPrerender.call(_this10);
                 }));
             };
             _proto.switchPrerender = function() {
-                var _this13 = this;
+                var _this11 = this;
                 return zalgo_promise_src.a.try((function() {
-                    if (_this13.prerenderWindow && _this13.driver.switchPrerender) return _this13.driver.switchPrerender.call(_this13);
+                    if (_this11.prerenderWindow && _this11.driver.switchPrerender) return _this11.driver.switchPrerender.call(_this11);
                 }));
             };
             _proto.elementReady = function(element) {
                 return Object(lib.n)(element).then(lib.F);
             };
             _proto.delegate = function(win) {
-                var _this14 = this;
+                var _this12 = this;
                 this.component.log("delegate_" + this.context);
                 var props = {
                     uid: this.props.uid,
@@ -10599,30 +10606,30 @@
                         context: this.context,
                         childWindowName: this.childWindowName,
                         isWindowClosed: function() {
-                            return Object(cross_domain_utils_src.z)(_this14.window);
+                            return Object(cross_domain_utils_src.z)(_this12.window);
                         },
                         props: props,
                         overrides: {
                             focus: function() {
-                                return _this14.focus();
+                                return _this12.focus();
                             },
                             userClose: function() {
-                                return _this14.userClose();
+                                return _this12.userClose();
                             },
                             getDomain: function() {
-                                return _this14.getDomain();
+                                return _this12.getDomain();
                             },
                             error: function(err) {
-                                return _this14.error(err);
+                                return _this12.error(err);
                             },
                             on: function(eventName, handler) {
-                                return _this14.on(eventName, handler);
+                                return _this12.on(eventName, handler);
                             }
                         }
                     }
                 }).then((function(_ref8) {
                     var data = _ref8.data;
-                    _this14.clean.register(data.destroy);
+                    _this12.clean.register(data.destroy);
                     return data;
                 })).catch((function(err) {
                     throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.S)(err));
@@ -10632,13 +10639,13 @@
                     var key = _Object$keys4[_i6];
                     var val = overrides[key];
                     if (val === constants.DELEGATE.CALL_ORIGINAL) return 1;
-                    var original = _this14[key];
-                    _this14[key] = function() {
-                        var _arguments = arguments, _this15 = this;
+                    var original = _this12[key];
+                    _this12[key] = function() {
+                        var _arguments = arguments, _this13 = this;
                         return delegate.then((function(data) {
                             var override = data.overrides[key];
-                            if (val === constants.DELEGATE.CALL_DELEGATE) return override.apply(_this15, _arguments);
-                            if ("function" == typeof val) return val(original, override).apply(_this15, _arguments);
+                            if (val === constants.DELEGATE.CALL_DELEGATE) return override.apply(_this13, _arguments);
+                            if ("function" == typeof val) return val(original, override).apply(_this13, _arguments);
                             throw new Error("Expected delgate to be CALL_ORIGINAL, CALL_DELEGATE, or factory method");
                         }));
                     };
@@ -10646,58 +10653,61 @@
                 for (var _i6 = 0, _Object$keys4 = Object.keys(overrides); _i6 < _Object$keys4.length; _i6++) _loop();
             };
             _proto.watchForClose = function() {
-                var _this16 = this;
+                var _this14 = this;
                 var closeWindowListener = Object(cross_domain_utils_src.C)(this.window, (function() {
-                    _this16.component.log("detect_close_child");
+                    _this14.component.log("detect_close_child");
                     return zalgo_promise_src.a.try((function() {
-                        return _this16.props.onClose(constants.CLOSE_REASONS.CLOSE_DETECTED);
+                        return _this14.props.onClose(constants.CLOSE_REASONS.CLOSE_DETECTED);
                     })).finally((function() {
-                        return _this16.destroy();
+                        return _this14.destroy();
                     }));
                 }), 3e3);
                 this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
             };
             _proto.watchForUnload = function() {
-                var _this17 = this;
+                var _this15 = this;
+                var eventname = "onpagehide" in window ? "pagehide" : "unload";
                 var onunload = Object(lib.H)((function() {
-                    _this17.component.log("navigate_away");
+                    _this15.component.log("navigate_away", {
+                        trigger: eventname
+                    });
                     Object(client.h)();
-                    _this17.destroyComponent();
+                    _this15.destroyComponent();
                 }));
-                var unloadWindowListener = Object(lib.b)(window, "unload", onunload);
+                var unloadWindowListener = Object(lib.b)(window, eventname, onunload);
                 this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
             };
             _proto.loadUrl = function(url) {
-                var _this18 = this;
+                var _this16 = this;
                 return zalgo_promise_src.a.try((function() {
-                    _this18.component.log("load_url");
+                    _this16.component.log("load_url");
                     if (window.location.href.split("#")[0] === url.split("#")[0]) {
                         var _query;
                         url = Object(lib.r)(url, {
                             query: (_query = {}, _query[Object(lib.U)()] = "1", _query)
                         });
                     }
-                    return _this18.driver.loadUrl.call(_this18, url);
+                    return _this16.driver.loadUrl.call(_this16, url);
                 }));
             };
             _proto.hijack = function(targetElement) {
                 targetElement.target = this.childWindowName;
             };
             _proto.runTimeout = function() {
-                var _this19 = this;
+                var _this17 = this;
                 var timeout = this.props.timeout;
                 if (timeout) {
                     var id = this.timeout = setTimeout((function() {
-                        _this19.component.log("timed_out", {
+                        _this17.component.log("timed_out", {
                             timeout: timeout.toString()
                         });
-                        var error = _this19.component.createError("Loading component timed out after " + timeout + " milliseconds");
-                        _this19.onInit.reject(error);
-                        _this19.props.onTimeout(error);
+                        var error = _this17.component.createError("Loading component timed out after " + timeout + " milliseconds");
+                        _this17.onInit.reject(error);
+                        _this17.props.onTimeout(error);
                     }), timeout);
                     this.clean.register((function() {
                         clearTimeout(id);
-                        delete _this19.timeout;
+                        delete _this17.timeout;
                     }));
                 }
             };
@@ -10716,9 +10726,9 @@
                 }, _ref9[constants.POST_MESSAGE.CHECK_CLOSE] = function() {
                     this.checkClose();
                 }, _ref9[constants.POST_MESSAGE.RESIZE] = function(source, data) {
-                    var _this20 = this;
+                    var _this18 = this;
                     return zalgo_promise_src.a.try((function() {
-                        if (_this20.driver.allowResize) return _this20.resize(data.width, data.height);
+                        if (_this18.driver.allowResize) return _this18.resize(data.width, data.height);
                     }));
                 }, _ref9[constants.POST_MESSAGE.HIDE] = function() {
                     this.hide();
@@ -10729,14 +10739,14 @@
                 }, _ref9;
             };
             _proto.resize = function(width, height) {
-                var _this21 = this;
+                var _this19 = this;
                 return zalgo_promise_src.a.try((function() {
-                    _this21.component.log("resize", {
+                    _this19.component.log("resize", {
                         height: Object(lib.R)(height),
                         width: Object(lib.R)(width)
                     });
-                    _this21.driver.resize.call(_this21, width, height);
-                    _this21.props.onResize && _this21.props.onResize();
+                    _this19.driver.resize.call(_this19, width, height);
+                    _this19.props.onResize && _this19.props.onResize();
                 }));
             };
             _proto.hide = function() {
@@ -10748,9 +10758,9 @@
                 return this.driver.show.call(this);
             };
             _proto.checkClose = function() {
-                var _this22 = this;
+                var _this20 = this;
                 var closeWindowListener = Object(cross_domain_utils_src.C)(this.window, (function() {
-                    _this22.userClose();
+                    _this20.userClose();
                 }), 50, 500);
                 this.clean.register(closeWindowListener.cancel);
             };
@@ -10758,54 +10768,54 @@
                 return this.close(constants.CLOSE_REASONS.USER_CLOSED);
             };
             _proto.close = function(reason) {
-                var _this23 = this;
+                var _this21 = this;
                 void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL);
                 return zalgo_promise_src.a.try((function() {
-                    _this23.component.log("close", {
+                    _this21.component.log("close", {
                         reason: reason
                     });
-                    _this23.event.triggerOnce(constants.EVENTS.CLOSE);
-                    return _this23.props.onClose(reason);
+                    _this21.event.triggerOnce(constants.EVENTS.CLOSE);
+                    return _this21.props.onClose(reason);
                 })).then((function() {
-                    return zalgo_promise_src.a.all([ _this23.closeComponent(), _this23.closeContainer() ]);
+                    return zalgo_promise_src.a.all([ _this21.closeComponent(), _this21.closeContainer() ]);
                 })).then((function() {
-                    return _this23.destroy();
+                    return _this21.destroy();
                 }));
             };
             _proto.closeContainer = function(reason) {
-                var _this24 = this;
+                var _this22 = this;
                 void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL);
                 return zalgo_promise_src.a.try((function() {
-                    _this24.event.triggerOnce(constants.EVENTS.CLOSE);
-                    return _this24.props.onClose(reason);
+                    _this22.event.triggerOnce(constants.EVENTS.CLOSE);
+                    return _this22.props.onClose(reason);
                 })).then((function() {
-                    return zalgo_promise_src.a.all([ _this24.closeComponent(reason), _this24.hideContainer() ]);
+                    return zalgo_promise_src.a.all([ _this22.closeComponent(reason), _this22.hideContainer() ]);
                 })).then((function() {
-                    return _this24.destroyContainer();
+                    return _this22.destroyContainer();
                 }));
             };
             _proto.destroyContainer = function() {
-                var _this25 = this;
+                var _this23 = this;
                 return zalgo_promise_src.a.try((function() {
-                    _this25.clean.run("destroyContainerEvents");
-                    _this25.clean.run("destroyContainerTemplate");
+                    _this23.clean.run("destroyContainerEvents");
+                    _this23.clean.run("destroyContainerTemplate");
                 }));
             };
             _proto.closeComponent = function(reason) {
-                var _this26 = this;
+                var _this24 = this;
                 void 0 === reason && (reason = constants.CLOSE_REASONS.PARENT_CALL);
                 var win = this.window;
                 return zalgo_promise_src.a.try((function() {
-                    return _this26.cancelContainerEvents();
+                    return _this24.cancelContainerEvents();
                 })).then((function() {
-                    _this26.event.triggerOnce(constants.EVENTS.CLOSE);
-                    return _this26.props.onClose(reason);
+                    _this24.event.triggerOnce(constants.EVENTS.CLOSE);
+                    return _this24.props.onClose(reason);
                 })).then((function() {
-                    return _this26.hideComponent();
+                    return _this24.hideComponent();
                 })).then((function() {
-                    return _this26.destroyComponent();
+                    return _this24.destroyComponent();
                 })).then((function() {
-                    _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.z)(win) && _this26.childExports.close().catch(lib.F);
+                    _this24.childExports && _this24.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.z)(win) && _this24.childExports.close().catch(lib.F);
                 }));
             };
             _proto.destroyComponent = function() {
@@ -10815,31 +10825,31 @@
                 this.clean.run("destroyWindow");
             };
             _proto.showContainer = function() {
-                var _this27 = this;
+                var _this25 = this;
                 return zalgo_promise_src.a.try((function() {
-                    if (_this27.props.onDisplay) return _this27.props.onDisplay();
+                    if (_this25.props.onDisplay) return _this25.props.onDisplay();
                 })).then((function() {
-                    if (_this27.container) return Object(lib.P)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                    if (_this25.container) return Object(lib.P)(_this25.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this25.clean.register);
                 }));
             };
             _proto.showComponent = function() {
-                var _this28 = this;
+                var _this26 = this;
                 return zalgo_promise_src.a.try((function() {
-                    if (_this28.props.onDisplay) return _this28.props.onDisplay();
+                    if (_this26.props.onDisplay) return _this26.props.onDisplay();
                 })).then((function() {
-                    if (_this28.element) return Object(lib.P)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                    if (_this26.element) return Object(lib.P)(_this26.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this26.clean.register);
                 }));
             };
             _proto.hideContainer = function() {
-                var _this29 = this;
+                var _this27 = this;
                 return zalgo_promise_src.a.try((function() {
-                    return _this29.container ? Object(lib.c)(_this29.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this29.clean.register) : zalgo_promise_src.a.resolve();
+                    return _this27.container ? Object(lib.c)(_this27.container, constants.ANIMATION_NAMES.HIDE_CONTAINER, _this27.clean.register) : zalgo_promise_src.a.resolve();
                 }));
             };
             _proto.hideComponent = function() {
-                var _this30 = this;
+                var _this28 = this;
                 return zalgo_promise_src.a.try((function() {
-                    return _this30.element ? Object(lib.c)(_this30.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this30.clean.register) : zalgo_promise_src.a.resolve();
+                    return _this28.element ? Object(lib.c)(_this28.element, constants.ANIMATION_NAMES.HIDE_COMPONENT, _this28.clean.register) : zalgo_promise_src.a.resolve();
                 }));
             };
             _proto.focus = function() {
@@ -10848,12 +10858,12 @@
                 this.window.focus();
             };
             _proto.createPrerenderTemplate = function() {
-                var _this31 = this;
+                var _this29 = this;
                 return zalgo_promise_src.a.try((function() {
-                    return _this31.component.prerenderTemplate ? zalgo_promise_src.a.try((function() {
-                        return _this31.prerenderIframe ? Object(lib.e)(_this31.prerenderIframe).then((function() {
-                            return _this31.prerenderWindow;
-                        })) : _this31.prerenderWindow;
+                    return _this29.component.prerenderTemplate ? zalgo_promise_src.a.try((function() {
+                        return _this29.prerenderIframe ? Object(lib.e)(_this29.prerenderIframe).then((function() {
+                            return _this29.prerenderWindow;
+                        })) : _this29.prerenderWindow;
                     })).then((function(win) {
                         var doc;
                         try {
@@ -10863,12 +10873,12 @@
                         }
                         var el;
                         try {
-                            el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
+                            el = _this29.renderTemplate(_this29.component.prerenderTemplate, {
                                 jsxDom: lib.C.bind(doc),
                                 document: doc
                             });
                         } catch (err) {
-                            _this31.component.logError("preprender_error", {
+                            _this29.component.logError("preprender_error", {
                                 err: err.stack ? err.stack : err.toString()
                             });
                             console.error(err.stack ? err.stack : err);
@@ -10877,18 +10887,18 @@
                         try {
                             Object(lib.X)(win, el);
                         } catch (err) {
-                            _this31.component.logError("preprender_error", {
+                            _this29.component.logError("preprender_error", {
                                 err: err.stack ? err.stack : err.toString()
                             });
                             console.error(err.stack ? err.stack : err);
                         }
-                        var _ref10 = "object" == typeof _this31.component.autoResize && null !== _this31.component.autoResize ? _this31.component.autoResize : {}, _ref10$width = _ref10.width, width = void 0 !== _ref10$width && _ref10$width, _ref10$height = _ref10.height, height = void 0 !== _ref10$height && _ref10$height, _ref10$element = _ref10.element, element = void 0 === _ref10$element ? "body" : _ref10$element;
+                        var _ref0 = "object" == typeof _this29.component.autoResize && null !== _this29.component.autoResize ? _this29.component.autoResize : {}, _ref0$width = _ref0.width, width = void 0 !== _ref0$width && _ref0$width, _ref0$height = _ref0.height, height = void 0 !== _ref0$height && _ref0$height, _ref0$element = _ref0.element, element = void 0 === _ref0$element ? "body" : _ref0$element;
                         (element = function(id, doc) {
                             void 0 === doc && (doc = document);
                             return (element = id) instanceof window.Element || null !== element && "object" == typeof element && 1 === element.nodeType && "object" == typeof element.style && "object" == typeof element.ownerDocument ? id : "string" == typeof id ? doc.querySelector(id) : void 0;
                             var element;
-                        }(element, doc)) && (width || height) && onResize(element, (function(_ref11) {
-                            _this31.resize(width ? _ref11.width : void 0, height ? _ref11.height : void 0);
+                        }(element, doc)) && (width || height) && onResize(element, (function(_ref1) {
+                            _this29.resize(width ? _ref1.width : void 0, height ? _ref1.height : void 0);
                         }), {
                             width: width,
                             height: height,
@@ -10898,9 +10908,9 @@
                 }));
             };
             _proto.renderTemplate = function(renderer, options) {
-                var _this32 = this;
+                var _this30 = this;
                 void 0 === options && (options = {});
-                var _ref12 = this.component.dimensions || {}, _ref12$width = _ref12.width, width = void 0 === _ref12$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref12$width, _ref12$height = _ref12.height, height = void 0 === _ref12$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref12$height;
+                var _ref10 = this.component.dimensions || {}, _ref10$width = _ref10.width, width = void 0 === _ref10$width ? constants.DEFAULT_DIMENSIONS.WIDTH + "px" : _ref10$width, _ref10$height = _ref10.height, height = void 0 === _ref10$height ? constants.DEFAULT_DIMENSIONS.HEIGHT + "px" : _ref10$height;
                 return renderer.call(this, Object(esm_extends.a)({
                     id: constants.CLASS_NAMES.ZOID + "-" + this.component.tag + "-" + this.props.uid,
                     props: renderer.__xdomain__ ? null : this.props,
@@ -10913,14 +10923,14 @@
                     EVENT: constants.EVENTS,
                     actions: {
                         close: function() {
-                            return _this32.userClose();
+                            return _this30.userClose();
                         },
                         focus: function() {
-                            return _this32.focus();
+                            return _this30.focus();
                         }
                     },
                     on: function(eventName, handler) {
-                        return _this32.on(eventName, handler);
+                        return _this30.on(eventName, handler);
                     },
                     jsxDom: lib.C,
                     document: document,
@@ -10931,7 +10941,7 @@
                 }, options));
             };
             _proto.openContainer = function(element) {
-                var _this33 = this;
+                var _this31 = this;
                 return zalgo_promise_src.a.try((function() {
                     var el;
                     if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
@@ -10963,64 +10973,64 @@
                         shadowHost.appendChild(slotProvider);
                         return slotProvider;
                     }(el));
-                    if (_this33.component.containerTemplate) {
-                        var container = _this33.renderTemplate(_this33.component.containerTemplate, {
+                    if (_this31.component.containerTemplate) {
+                        var container = _this31.renderTemplate(_this31.component.containerTemplate, {
                             container: el
                         });
-                        _this33.container = container;
-                        Object(lib.x)(_this33.container);
-                        Object(lib.d)(el, _this33.container);
-                        if (_this33.driver.renderedIntoContainerTemplate) {
-                            _this33.element = _this33.getOutlet();
-                            Object(lib.x)(_this33.element);
-                            if (!_this33.element) throw new Error("Could not find element to render component into");
-                            Object(lib.x)(_this33.element);
+                        _this31.container = container;
+                        Object(lib.x)(_this31.container);
+                        Object(lib.d)(el, _this31.container);
+                        if (_this31.driver.renderedIntoContainerTemplate) {
+                            _this31.element = _this31.getOutlet();
+                            Object(lib.x)(_this31.element);
+                            if (!_this31.element) throw new Error("Could not find element to render component into");
+                            Object(lib.x)(_this31.element);
                         }
-                        _this33.clean.register("destroyContainerTemplate", (function() {
-                            _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container);
-                            delete _this33.container;
+                        _this31.clean.register("destroyContainerTemplate", (function() {
+                            _this31.container && _this31.container.parentNode && _this31.container.parentNode.removeChild(_this31.container);
+                            delete _this31.container;
                         }));
-                    } else if (_this33.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this33.context);
+                    } else if (_this31.driver.renderedIntoContainerTemplate) throw new Error("containerTemplate needed to render " + _this31.context);
                 }));
             };
             _proto.cancelContainerEvents = function() {
                 this.clean.run("destroyContainerEvents");
             };
             _proto.destroy = function() {
-                var _this34 = this;
+                var _this32 = this;
                 return zalgo_promise_src.a.try((function() {
-                    if (_this34.clean.hasTasks()) {
-                        _this34.component.log("destroy");
+                    if (_this32.clean.hasTasks()) {
+                        _this32.component.log("destroy");
                         Object(client.h)();
-                        return _this34.clean.all();
+                        return _this32.clean.all();
                     }
                 })).then((function() {
-                    if (_this34.props && _this34.props.onDestroy) return _this34.props.onDestroy();
+                    if (_this32.props && _this32.props.onDestroy) return _this32.props.onDestroy();
                 }));
             };
             _proto.tryInit = function(method) {
-                var _this35 = this;
+                var _this33 = this;
                 return zalgo_promise_src.a.try(method).catch((function(err) {
-                    _this35.onInit.reject(err);
+                    _this33.onInit.reject(err);
                 })).then((function() {
-                    return _this35.onInit;
+                    return _this33.onInit;
                 }));
             };
             _proto.error = function(err) {
-                var _this36 = this;
+                var _this34 = this;
                 return zalgo_promise_src.a.try((function() {
-                    _this36.handledErrors = _this36.handledErrors || [];
-                    if (-1 === _this36.handledErrors.indexOf(err)) {
-                        _this36.handledErrors.push(err);
-                        _this36.onInit.reject(err);
-                        return _this36.destroy();
+                    _this34.handledErrors = _this34.handledErrors || [];
+                    if (-1 === _this34.handledErrors.indexOf(err)) {
+                        _this34.handledErrors.push(err);
+                        _this34.onInit.reject(err);
+                        return _this34.destroy();
                     }
                 })).then((function() {
-                    if (_this36.props.onError) return _this36.props.onError(err);
+                    if (_this34.props.onError) return _this34.props.onError(err);
                 })).catch((function(errErr) {
                     throw new Error("An error was encountered while handling error:\n\n " + Object(lib.S)(err) + "\n\n" + Object(lib.S)(errErr));
                 })).then((function() {
-                    if (!_this36.props.onError) throw err;
+                    if (!_this34.props.onError) throw err;
                 }));
             };
             ParentComponent.destroyAll = function() {
@@ -23561,8 +23571,8 @@
                 }));
             }));
         }
-        function renderContent(text, _ref11) {
-            var label = _ref11.label, locale = _ref11.locale, color = _ref11.color, branding = _ref11.branding, logoColor = _ref11.logoColor, funding = _ref11.funding, env = _ref11.env, _cards = _ref11.cards, dynamicContent = _ref11.dynamicContent, layout = _ref11.layout, size = _ref11.size;
+        function renderContent(text, _ref1) {
+            var label = _ref1.label, locale = _ref1.locale, color = _ref1.color, branding = _ref1.branding, logoColor = _ref1.logoColor, funding = _ref1.funding, env = _ref1.env, _cards = _ref1.cards, dynamicContent = _ref1.dynamicContent, layout = _ref1.layout, size = _ref1.size;
             var _content = getLocaleContent(locale);
             return Object(jsx.b)(text, {
                 text: function(value) {
@@ -23637,9 +23647,9 @@
                 }
             });
         }
-        function componentTemplate(_ref20) {
-            var _ref21;
-            var props = _ref20.props;
+        function componentTemplate(_ref18) {
+            var _ref19;
+            var props = _ref18.props;
             if (props && props.style) {
                 var style = props.style;
                 "generic" === style.label && (style.label = "paypal");
@@ -23675,9 +23685,9 @@
                 multiple: multiple,
                 layout: layout
             }).map((function(button, i) {
-                return function(_ref14) {
-                    var _ref15, _ref16, _ref17;
-                    var size = _ref14.size, label = _ref14.label, color = _ref14.color, locale = _ref14.locale, branding = _ref14.branding, multiple = _ref14.multiple, layout = _ref14.layout, shape = _ref14.shape, source = _ref14.source, funding = _ref14.funding, i = _ref14.i, env = _ref14.env, cards = _ref14.cards, installmentperiod = _ref14.installmentperiod;
+                return function(_ref12) {
+                    var _ref13, _ref14, _ref15;
+                    var size = _ref12.size, label = _ref12.label, color = _ref12.color, locale = _ref12.locale, branding = _ref12.branding, multiple = _ref12.multiple, layout = _ref12.layout, shape = _ref12.shape, source = _ref12.source, funding = _ref12.funding, i = _ref12.i, env = _ref12.env, cards = _ref12.cards, installmentperiod = _ref12.installmentperiod;
                     var logoColor = Object(button_config.e)(label, "logoColors")[color];
                     var buttonLabel = determineLabel({
                         label: label,
@@ -23706,9 +23716,9 @@
                         size: size
                     });
                     var title = button_config.a[label].title;
-                    var buttonTitle = "string" == typeof title ? title : function(_ref13) {
-                        var label = _ref13.label, branding = _ref13.branding;
-                        var localeContent = getLocaleContent(_ref13.locale);
+                    var buttonTitle = "string" == typeof title ? title : function(_ref11) {
+                        var label = _ref11.label, branding = _ref11.branding;
+                        var localeContent = getLocaleContent(_ref11.locale);
                         var labelContent = localeContent && localeContent[label];
                         if (labelContent) {
                             var str = labelContent.replace(/({logo:(pp|paypal)})+(\s)*({logo:(pp|paypal)})*/, constants.w.PAYPAL);
@@ -23725,9 +23735,9 @@
                     var role = source === constants.v.CARD ? {} : {
                         role: "button"
                     };
-                    return Object(jsx.c)("div", Object(esm_extends.a)({}, ((_ref15 = {})[constants.c.LAYOUT] = layout || "", 
-                    _ref15), ((_ref16 = {})[constants.c.SIZE] = size || "", _ref16), ((_ref17 = {})[constants.c.FUNDING_SOURCE] = source, 
-                    _ref17[constants.c.BUTTON] = !0, _ref17), {
+                    return Object(jsx.c)("div", Object(esm_extends.a)({}, ((_ref13 = {})[constants.c.LAYOUT] = layout || "", 
+                    _ref13), ((_ref14 = {})[constants.c.SIZE] = size || "", _ref14), ((_ref15 = {})[constants.c.FUNDING_SOURCE] = source, 
+                    _ref15[constants.c.BUTTON] = !0, _ref15), {
                         class: class_CLASS.BUTTON + " " + class_CLASS.NUMBER + "-" + i + " " + getCommonButtonClasses({
                             layout: layout,
                             shape: shape,
@@ -23742,13 +23752,13 @@
                     }, role, {
                         tabindex: hasTabIndex && 0,
                         "aria-label": buttonTitle
-                    }), source === constants.v.CARD ? contentText : function(_ref12) {
-                        var contentText = _ref12.contentText, personalizedButtonText = _ref12.personalizedButtonText, impression = _ref12.impression, branding = _ref12.branding, allowedAnimation = _ref12.allowedAnimation;
+                    }), source === constants.v.CARD ? contentText : function(_ref10) {
+                        var contentText = _ref10.contentText, personalizedButtonText = _ref10.personalizedButtonText, impression = _ref10.impression, branding = _ref10.branding, allowedAnimation = _ref10.allowedAnimation;
                         return Object(jsx.c)("div", {
                             class: "" + class_CLASS.BUTTON_LABEL
-                        }, function(_ref10) {
-                            var personalizedButtonText = _ref10.personalizedButtonText;
-                            if (_ref10.branding && _ref10.allowedAnimation) {
+                        }, function(_ref0) {
+                            var personalizedButtonText = _ref0.personalizedButtonText;
+                            if (_ref0.branding && _ref0.allowedAnimation) {
                                 var COMPRESSED = "\n        max-width: 0%;\n        opacity: 0;\n    ";
                                 var EXPANDED = "\n        max-width: 100%;\n        opacity: 1;\n    ";
                                 var HIDDEN = "\n        position: absolute;\n        visibility: hidden;\n    ";
@@ -23817,8 +23827,8 @@
                 size: size,
                 layout: layout
             });
-            var styleNode = function(_ref19) {
-                var height = _ref19.height, cardNumber = _ref19.cardNumber;
+            var styleNode = function(_ref17) {
+                var height = _ref17.height, cardNumber = _ref17.cardNumber;
                 return Object(jsx.c)("style", {
                     innerHTML: (_ref = {
                         height: height,
@@ -23959,8 +23969,8 @@
                     logoColor: "blue"
                 })));
             }(Object(button_props.a)(props)) : null;
-            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref21 = {}, _ref21[constants.c.VERSION] = "4.0.344", 
-            _ref21), {
+            return Object(jsx.c)("div", Object(esm_extends.a)({}, (_ref19 = {}, _ref19[constants.c.VERSION] = "4.0.345", 
+            _ref19), {
                 class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                     layout: layout,
                     shape: shape,
@@ -24007,7 +24017,7 @@
                 return jsxDom("div", Object(esm_extends.a)({
                     id: id,
                     class: tag + " " + tag + "-context-" + context + " " + tag + "-label-" + label + " " + tag + "-size-" + size + " " + tag + "-layout-" + layout
-                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.344", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
+                }, ((_ref3 = {})[constants.c.SMART_BUTTON_VERSION] = "4.0.345", _ref3)), jsxDom("style", null, "\n                    #" + id + " {\n                        font-size: 0;\n                        width: 100%;\n                        overflow: hidden;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " {\n                        text-align: center;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        display: inline-block;\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                        max-width: " + button_config.c[maximumSize].maxWidth + "px;\n                        position: relative;\n                    }\n\n                    #" + id + "." + tag + "-layout-" + constants.g.VERTICAL + " > ." + CLASS.OUTLET + " {\n                        min-width: " + button_config.c[minimumSize].minWidth + "px;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " {\n                        width:  " + defaultWidth + "px;\n                        height: " + defaultHeight + "px;\n                    }\n\n                     #" + id + "." + tag + "-size-" + constants.l.RESPONSIVE + " > ." + CLASS.OUTLET + " {\n                        width: 100%;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe {\n                        min-width: 100%;\n                        max-width: 100%;\n                        width: " + button_config.c[minimumSize].minWidth + "px;\n                        height: 100%;\n                        position: absolute;\n                        top: 0;\n                        left: 0;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.COMPONENT_FRAME + " {\n                        z-index: 100;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.PRERENDER_FRAME + " {\n                        transition: opacity .2s linear;\n                        z-index: 200;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.VISIBLE + " {\n                        opacity: 1;\n                    }\n\n                    #" + id + " > ." + CLASS.OUTLET + " > iframe." + CLASS.INVISIBLE + " {\n                        opacity: 0;\n                        pointer-events: none;\n                    }\n                "), outlet);
             },
             autoResize: {
                 height: !0,
@@ -24940,13 +24950,13 @@
             return _ref9.original.call(_ref9.context, (function(data, actions) {
                 var _this = this;
                 return new zalgo_promise_src.a((function(resolve, reject) {
-                    Object(lib.N)(actions.payment, "create", (function(_ref10) {
-                        var _ref10$args = _ref10.args, options = _ref10$args[0];
+                    Object(lib.N)(actions.payment, "create", (function(_ref0) {
+                        var _ref0$args = _ref0.args, options = _ref0$args[0];
                         options.payment || (options = {
                             payment: options,
-                            experience: _ref10$args[1]
+                            experience: _ref0$args[1]
                         });
-                        return _ref10.original.call(_ref10.context, options);
+                        return _ref0.original.call(_ref0.context, options);
                     }));
                     function resolveData(token) {
                         resolve(token);
@@ -25233,7 +25243,7 @@
         }
         var postRobot = post_robot_src;
         var onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException;
-        var interface_version = "4.0.344";
+        var interface_version = "4.0.345";
         var interface_checkout;
         var apps;
         var legacy = __webpack_require__(48);
