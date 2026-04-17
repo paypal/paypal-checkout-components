@@ -90,8 +90,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
       tag: "paypal-saved-payment-methods",
       url: () =>
         `${getPayPalDomain()}${
-          __PAYPAL_CHECKOUT__.__URI__.__SAVED_PAYMENT_METHODS__ ||
-          "/smart/saved-payment-methods"
+          __PAYPAL_CHECKOUT__.__URI__.__SAVED_PAYMENT_METHODS__
         }`,
 
       domain: getPayPalDomainRegex(),
@@ -103,7 +102,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
       },
 
       dimensions: {
-        // TODO: Does this have any effect?
         width: "400px",
         height: "30px",
       },
@@ -245,7 +243,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
               eventName: "paypal-visibilitychange",
               payload: {
                 url: window.location.href,
-
                 visibilityState: document.visibilityState,
               },
             });
@@ -534,12 +531,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           required: false,
         },
 
-        onError: {
-          // TODO: Is it necessary? Not present in buttons
-          type: "function",
-          required: false,
-        },
-
         onInit: {
           type: "function",
           required: false,
@@ -690,8 +681,8 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
 
         /**
          * Version of the SDK used in first render.
-         * This is passed to the `/smart/buttons` endpoint in order for the second render
-         * to be aware of what sdk version to load during SSR of the buttons
+         * This is passed to the `/smart/saved-payment-methods` endpoint in order for the second render
+         * to be aware of what sdk version to load during SSR
          */
         sdkVersion: {
           type: "string",
