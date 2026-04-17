@@ -5,6 +5,8 @@ import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
 import { getStyleConfig, getStyles } from "../../zoid/saved-payment-methods/util";
 
+import { PPRebrandLogo } from "@paypal/sdk-logos/src";
+
 type SavedPaymentMethodsLoadingBodyProps = {|
   nonce: ?string,
   style?: Object,
@@ -37,11 +39,11 @@ export function SavedPaymentMethodsLoadingBody({
         <div class="saved-payment-methods-content">
           <div class="saved-payment-methods-container">
             {styleConfig.layout.logo && (
-              <img
-                src="https://www.paypal.com/pay/_next/static/media/paypal-balance-icon.20370289.svg"
-                class="saved-payment-methods-logo"
-                alt="PayPal Logo"
-              />
+              <div class="saved-payment-methods-logo">
+                <div class="saved-payment-methods-logo-frame">
+                  <PPRebrandLogo />
+                </div>
+              </div>
             )}
             {styleConfig.layout.label && (
               <div class="saved-payment-methods-label">PayPal</div>

@@ -106,6 +106,29 @@ export const getStyles = (styleConfig) =>
   .saved-payment-methods-logo {
     width: ${styleConfig.layout.logoWidth};
     margin-right: ${styleConfig.layout.logoLabelGap};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .saved-payment-methods-logo-frame {
+    aspect-ratio: 45 / 30;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.2px solid #CCCCCC;
+    border-radius: 2px;
+  }
+
+  .saved-payment-methods-logo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   /* Preact mounts into this node; avoid an extra flex item / box alongside logo + label. */
