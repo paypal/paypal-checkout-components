@@ -81,7 +81,7 @@ export function PoweredByPayPal({
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
-        height: 18px;
+        height: 12px;
         font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 10px;
         font-weight: 400;
@@ -96,9 +96,13 @@ export function PoweredByPayPal({
     .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
         display: inline-block;
         vertical-align: middle;
-        height: 18px;
-        line-height: 18px;
+        height: 12px;
+        line-height: 12px;
         font-size: 10px;
+    } 
+
+    .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
+        transform: translateY(12%);
     }
   `;
 

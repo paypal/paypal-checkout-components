@@ -32,7 +32,7 @@ function getLabelHeight({
   let labelHeight = max(roundUp(perc(height, labelPercPercentage) + 5, 2), 12);
 
   if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(height, 76), 1);
+    labelHeight = roundUp(perc(height, 50), 1);
   }
 
   return parseInt(labelHeight, 10);
@@ -141,7 +141,7 @@ export function getResponsiveStyleVariables({
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
   if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(buttonHeight, 76), 1);
+    labelHeight = roundUp(perc(buttonHeight, 50), 1);
     // smallerLabelHeight gets triggered at widths < 320px
     // We will need to investigate why the labels need to get significantly smaller at this breakpoint
     smallerLabelHeight = labelHeight;

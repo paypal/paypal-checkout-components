@@ -72,6 +72,7 @@ export const labelStyle = `
   CLASS.BUTTON_LABEL
 } {
         font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-weight: 500;
     }
 
     .${CLASS.BUTTON_REBRAND}[data-funding-source=venmo] .${CLASS.BUTTON_LABEL} {
