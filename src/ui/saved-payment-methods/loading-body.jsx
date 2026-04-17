@@ -3,7 +3,7 @@
 
 import { node, Fragment, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 
-import { getStyleConfig, getStyles } from "./util";
+import { getStyleConfig, getStyles } from "../../zoid/saved-payment-methods/util";
 
 type SavedPaymentMethodsLoadingBodyProps = {|
   nonce: ?string,

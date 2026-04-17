@@ -3,7 +3,7 @@
 
 import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 
-import { SavedPaymentMethodsLoadingBody } from "../../zoid/saved-payment-methods/loading-body";
+import { SavedPaymentMethodsLoadingBody } from "./loading-body";
 import { validateSavedPaymentMethodsStyle } from "../../zoid/saved-payment-methods/util";
 
 export type SavedPaymentMethodsServerRenderProps = {|
