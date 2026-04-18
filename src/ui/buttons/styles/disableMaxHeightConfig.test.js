@@ -51,7 +51,8 @@ describe("BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE config", () => {
   });
 
   test("should have no gaps in height coverage between buckets", () => {
-    const buckets = Object.values(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE)
+    const buckets = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE)
+      .map((key) => BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[key])
       .filter((b) => b.minHeight !== undefined && b.maxHeight !== undefined)
       .sort((a, b) => a.minHeight - b.minHeight);
 
