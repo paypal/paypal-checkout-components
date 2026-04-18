@@ -522,8 +522,10 @@ const generateRebrandedButtonSizeStyles = ({
   borderRadius?: ?number,
   shouldApplyRebrandedStyles?: boolean,
 |}): string => {
-  return Object.keys(BUTTON_REDESIGN_STYLE)
-    .map((redesign_size) => {
+  const redesignSizeKeys = Object.keys(BUTTON_REDESIGN_STYLE);
+  return redesignSizeKeys
+    .map((redesign_size, sizeIndex) => {
+      const isLastSizeBucket = sizeIndex === redesignSizeKeys.length - 1;
       const {
         buttonHeight,
         pillBorderRadius,
@@ -589,7 +591,9 @@ const generateRebrandedButtonSizeStyles = ({
           }
         }
 
-        @media only screen and (min-width: ${minWidth}px) and (max-width: ${maxWidth}px) {
+        @media only screen and (min-width: ${minWidth}px)${
+        isLastSizeBucket ? "" : ` and (max-width: ${maxWidth}px)`
+      } {
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
         CLASS.TEXT
       },
