@@ -21,6 +21,7 @@ const WEBPACK_CONFIG_DEV: WebpackConfig = getWebpackConfig({
   filename: `${FILE_NAME}.js`,
   debug: true,
   minify: false,
+  web: false,
   env: ENV.LOCAL,
   vars: {
     ...testGlobals,
