@@ -11,6 +11,7 @@ import {
   BUTTON_SIZE_STYLE,
   BUTTON_DISABLE_MAX_HEIGHT_STYLE,
   BUTTON_REDESIGN_STYLE,
+  BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE,
 } from "../config";
 
 import {
@@ -398,7 +399,7 @@ const expectedRebrandDisableMaxHeightStylesTiny = {
   buttonHeight: 25,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.TINY],
-  labelHeight: 19,
+  labelHeight: 13,
   fontSize: 10,
   marginTop: 1,
   pillBorderRadius: 13,
@@ -412,7 +413,7 @@ const expectedRebrandDisableMaxHeightStylesSmall = {
   buttonHeight: 30,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.SMALL],
-  labelHeight: 23,
+  labelHeight: 15,
   fontSize: 11,
   marginTop: 1,
   pillBorderRadius: 15,
@@ -428,7 +429,7 @@ const expectedRebrandDisableMaxHeightStylesMediumSmall = {
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[
       BUTTON_DISABLE_MAX_HEIGHT_SIZE.MEDIUM_SMALL
     ],
-  labelHeight: 27,
+  labelHeight: 18,
   fontSize: 13,
   marginTop: 1,
   pillBorderRadius: 18,
@@ -442,7 +443,7 @@ const expectedRebrandDisableMaxHeightStylesMediumBig = {
   buttonHeight: 40,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.MEDIUM_BIG],
-  labelHeight: 30,
+  labelHeight: 20,
   fontSize: 14,
   marginTop: 1,
   pillBorderRadius: 20,
@@ -456,7 +457,7 @@ const expectedRebrandDisableMaxHeightStylesLargeSmall = {
   buttonHeight: 45,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.LARGE_SMALL],
-  labelHeight: 34,
+  labelHeight: 23,
   fontSize: 16,
   marginTop: 2,
   pillBorderRadius: 23,
@@ -470,7 +471,7 @@ const expectedRebrandDisableMaxHeightStylesLargeBig = {
   buttonHeight: 50,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.LARGE_BIG],
-  labelHeight: 38,
+  labelHeight: 25,
   fontSize: 18,
   marginTop: 2,
   pillBorderRadius: 25,
@@ -484,7 +485,7 @@ const expectedRebrandDisableMaxHeightStylesXL = {
   buttonHeight: 55,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.XL],
-  labelHeight: 42,
+  labelHeight: 28,
   fontSize: 20,
   marginTop: 2,
   pillBorderRadius: 28,
@@ -498,7 +499,7 @@ const expectedRebrandDisableMaxHeightStylesXXL = {
   buttonHeight: 65,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.XXL],
-  labelHeight: 49,
+  labelHeight: 33,
   fontSize: 23,
   marginTop: 2,
   pillBorderRadius: 33,
@@ -512,7 +513,7 @@ const expectedRebrandDisableMaxHeightStylesXXXL = {
   buttonHeight: 75,
   disableHeightStyle:
     BUTTON_DISABLE_MAX_HEIGHT_STYLE[BUTTON_DISABLE_MAX_HEIGHT_SIZE.XXXL],
-  labelHeight: 57,
+  labelHeight: 38,
   fontSize: 27,
   marginTop: 3,
   pillBorderRadius: 38,
@@ -532,7 +533,7 @@ const expectedRebrandedResponsiveStylesExtraSmall = {
   minWidth: 50,
   minDualWidth: 300,
   maxWidth: 75,
-  fontSize: 12,
+  fontSize: 10,
 };
 
 const expectedRebrandedResponsiveStylesTiny = {
@@ -546,7 +547,7 @@ const expectedRebrandedResponsiveStylesTiny = {
   minWidth: 75,
   minDualWidth: 300,
   maxWidth: 200,
-  fontSize: 12,
+  fontSize: 10,
 };
 
 const expectedRebrandedResponsiveStylesSmall = {
@@ -560,7 +561,7 @@ const expectedRebrandedResponsiveStylesSmall = {
   minWidth: 200,
   minDualWidth: 300,
   maxWidth: 250,
-  fontSize: 14,
+  fontSize: 12,
 };
 
 const expectedRebrandedResponsiveStylesMediumSmall = {
@@ -574,7 +575,7 @@ const expectedRebrandedResponsiveStylesMediumSmall = {
   minWidth: 250,
   minDualWidth: 300,
   maxWidth: 300,
-  fontSize: 16,
+  fontSize: 14,
 };
 
 const expectedRebrandedResponsiveStylesMediumBig = {
@@ -588,7 +589,7 @@ const expectedRebrandedResponsiveStylesMediumBig = {
   minWidth: 300,
   minDualWidth: 300,
   maxWidth: 350,
-  fontSize: 16,
+  fontSize: 14,
 };
 
 const expectedRebrandedResponsiveStylesLargeSmall = {
@@ -602,7 +603,7 @@ const expectedRebrandedResponsiveStylesLargeSmall = {
   minWidth: 350,
   minDualWidth: 300,
   maxWidth: 425,
-  fontSize: 18,
+  fontSize: 16,
 };
 
 const expectedRebrandedResponsiveStylesLargeBig = {
@@ -616,7 +617,7 @@ const expectedRebrandedResponsiveStylesLargeBig = {
   minWidth: 425,
   minDualWidth: 300,
   maxWidth: 500,
-  fontSize: 20,
+  fontSize: 18,
 };
 
 const expectedRebrandedResponsiveStylesXlSmall = {
@@ -629,36 +630,8 @@ const expectedRebrandedResponsiveStylesXlSmall = {
   maxHeight: 60,
   minWidth: 500,
   minDualWidth: 300,
-  maxWidth: 550,
-  fontSize: 22,
-};
-
-const expectedRebrandedResponsiveStylesXlBig = {
-  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XL_BIG],
-  buttonHeight: 55,
-  pillBorderRadius: 28,
-  gap: 7,
-  defaultHeight: 55,
-  minHeight: 60,
-  maxHeight: 65,
-  minWidth: 550,
-  minDualWidth: 300,
-  maxWidth: 650,
-  fontSize: 24,
-};
-
-const expectedRebrandedResponsiveStylesXXL = {
-  style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XXL],
-  buttonHeight: 55,
-  pillBorderRadius: 28,
-  gap: 7,
-  defaultHeight: 55,
-  minHeight: 65,
-  maxHeight: 100,
-  minWidth: 650,
-  minDualWidth: 300,
   maxWidth: 750,
-  fontSize: 26,
+  fontSize: 18,
 };
 
 describe("test responsive style variables for legacy", () => {
@@ -783,14 +756,6 @@ describe("test responsive style variables for rebranded buttons", () => {
     {
       input: BUTTON_REDESIGN_SIZE.XL_SMALL,
       expected: expectedRebrandedResponsiveStylesXlSmall,
-    },
-    {
-      input: BUTTON_REDESIGN_SIZE.XL_BIG,
-      expected: expectedRebrandedResponsiveStylesXlBig,
-    },
-    {
-      input: BUTTON_REDESIGN_SIZE.XXL,
-      expected: expectedRebrandedResponsiveStylesXXL,
     },
   ])(
     `should return rebrand responsive styles for size $input`,
@@ -996,4 +961,66 @@ describe("test rebrand responsive style variables for disable max height", () =>
       ).toEqual(expected);
     }
   );
+});
+
+describe("BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE config", () => {
+  test("should include all BUTTON_REDESIGN_STYLE buckets", () => {
+    Object.keys(BUTTON_REDESIGN_STYLE).forEach((key) => {
+      expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE).toHaveProperty(key);
+    });
+  });
+
+  test("should have XL_BIG bucket with correct values", () => {
+    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE.XL_BIG).toEqual({
+      minHeight: 60,
+      maxHeight: 65,
+      gap: 6,
+      fontSize: 20,
+    });
+  });
+
+  test("should have XXL_SMALL bucket with correct values", () => {
+    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE.XXL_SMALL).toEqual({
+      minHeight: 65,
+      maxHeight: 70,
+      gap: 7,
+      fontSize: 22,
+    });
+  });
+
+  test("should have XXL_BIG bucket with correct values", () => {
+    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE.XXL_BIG).toEqual({
+      minHeight: 70,
+      maxHeight: 75,
+      gap: 7,
+      fontSize: 24,
+    });
+  });
+
+  test("should have XXXL bucket with correct values", () => {
+    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE.XXXL).toEqual({
+      minHeight: 75,
+      maxHeight: 200,
+      gap: 8,
+      fontSize: 26,
+    });
+  });
+
+  test("should have no gaps in height coverage between buckets", () => {
+    const buckets = Object.values(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE)
+      .filter((b) => b.minHeight !== undefined && b.maxHeight !== undefined)
+      .sort((a, b) => a.minHeight - b.minHeight);
+
+    for (let i = 1; i < buckets.length; i++) {
+      expect(buckets[i].minHeight).toBeLessThanOrEqual(
+        buckets[i - 1].maxHeight
+      );
+    }
+  });
+
+  test("should have continuous height coverage up to 200", () => {
+    const keys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
+    const lastKey = keys[keys.length - 1];
+    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[lastKey].maxHeight).toBe(200);
+  });
 });

@@ -261,22 +261,28 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
 
 export const BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE = {
   ...BUTTON_REDESIGN_STYLE,
-  [BUTTON_REDESIGN_SIZE.XXL]: {
-    ...BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XXL],
+  XL_BIG: {
+    minHeight: 60,
+    maxHeight: 65,
+    gap: 6,
+    fontSize: 20,
+  },
+  XXL_SMALL: {
     minHeight: 65,
     maxHeight: 70,
+    gap: 7,
     fontSize: 22,
   },
-  XXXL: {
+  XXL_BIG: {
     minHeight: 70,
     maxHeight: 75,
-    gap: 10,
+    gap: 7,
     fontSize: 24,
   },
-  XXXXL: {
+  XXXL: {
     minHeight: 75,
     maxHeight: 200,
-    gap: 10,
+    gap: 8,
     fontSize: 26,
   },
 };
