@@ -253,28 +253,30 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     minHeight: 55,
     maxHeight: 60,
     minWidth: 500,
-    maxWidth: 550,
+    maxWidth: 750,
     gap: 6,
     fontSize: 18,
   },
+};
 
-  [BUTTON_REDESIGN_SIZE.XL_BIG]: {
-    defaultHeight: 55,
-    minHeight: 60,
-    maxHeight: 65,
-    minWidth: 550,
-    maxWidth: 650,
-    gap: 7,
-    fontSize: 20,
-  },
-
+export const BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE = {
+  ...BUTTON_REDESIGN_STYLE,
   [BUTTON_REDESIGN_SIZE.XXL]: {
-    defaultHeight: 55,
+    ...BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.XXL],
     minHeight: 65,
-    maxHeight: 100,
-    minWidth: 650,
-    maxWidth: 750,
-    gap: 7,
+    maxHeight: 70,
     fontSize: 22,
+  },
+  XXXL: {
+    minHeight: 70,
+    maxHeight: 75,
+    gap: 10,
+    fontSize: 24,
+  },
+  XXXXL: {
+    minHeight: 75,
+    maxHeight: 200,
+    gap: 10,
+    fontSize: 26,
   },
 };

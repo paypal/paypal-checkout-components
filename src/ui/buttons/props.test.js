@@ -11,7 +11,6 @@ import {
   getColorForABTest,
   getDefaultColorForFundingSource,
   throwErrorForInvalidButtonColor,
-  hasInvalidScriptOptionsForFullRedesign,
   determineRandomButtonColor,
   getColorABTestFromStorage,
 } from "./props";
@@ -125,47 +124,6 @@ describe("determineRandomButtonColor", () => {
       color: BUTTON_COLOR.GOLD,
       isButtonColorABTestMerchant: true,
     });
-  });
-});
-
-describe("hasInvalidScriptOptionsForFullRedesign", () => {
-  const validFundingSources = [
-    FUNDING.PAYPAL,
-    FUNDING.PAYLATER,
-    FUNDING.CREDIT,
-    FUNDING.CARD,
-    FUNDING.VENMO,
-  ];
-  const invalidFundingSources = [FUNDING.APPLEPAY, FUNDING.IDEAL];
-
-  // Test valid funding sources
-  validFundingSources.forEach((fundingSource) => {
-    it(`should return false for fundingSource: ${fundingSource}`, () => {
-      const result = hasInvalidScriptOptionsForFullRedesign({
-        fundingSource,
-      });
-
-      expect(result).toBe(false);
-    });
-  });
-
-  // Test invalid funding sources
-  invalidFundingSources.forEach((fundingSource) => {
-    it(`should return true for fundingSource: ${fundingSource}`, () => {
-      const result = hasInvalidScriptOptionsForFullRedesign({
-        fundingSource,
-      });
-
-      expect(result).toBe(true);
-    });
-  });
-
-  it("should return true when funding source is null", () => {
-    const result = hasInvalidScriptOptionsForFullRedesign({
-      fundingSource: null,
-    });
-
-    expect(result).toBe(true);
   });
 });
 

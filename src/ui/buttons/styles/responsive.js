@@ -18,6 +18,7 @@ import {
   BUTTON_RELATIVE_STYLE,
   BUTTON_DISABLE_MAX_HEIGHT_STYLE,
   BUTTON_REDESIGN_STYLE,
+  BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE,
   REBRAND_LABEL_HEIGHT_RATIO,
 } from "../config";
 import { isBorderRadiusNumber } from "../util";
@@ -487,21 +488,29 @@ const generateDisableMaxHeightStyles = ({
 };
 
 const generateRebrandedDisableMaxHeightStyles = (): string => {
-  return Object.keys(BUTTON_REDESIGN_STYLE)
-    .map((redesign_size) => {
-      const { gap, fontSize, minHeight, maxHeight } =
-        getResponsiveRebrandedStyleVariables({
-          redesign_size,
-        });
+  const sizeKeys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
+  return sizeKeys
+    .map((redesign_size, sizeIndex) => {
+      const isLastSizeBucket = sizeIndex === sizeKeys.length - 1;
+      const style = BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesign_size];
+      const { gap, fontSize, minHeight, maxHeight } = style;
 
       return `
-        @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+        @media (min-height: ${minHeight}px)${
+        isLastSizeBucket ? "" : ` and (max-height: ${maxHeight}px)`
+      } {
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
             gap: ${gap}px;
           }
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
+        CLASS.TEXT
+      },
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
+        CLASS.SPACE
+      } {
             font-size: ${fontSize}px;
+            line-height: 1.2;
+            margin: 0;
           }
         }
       `;
