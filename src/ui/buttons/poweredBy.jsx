@@ -9,6 +9,7 @@ import { CLASS, BUTTON_COLOR_REBRAND } from "../../constants";
 import { Text } from "../text";
 
 import { buttonContent } from "./content";
+import { REBRAND_LOGO_TRANSLATE_Y } from "./config";
 
 const POWERED_BY_PAYPAL_STYLE = `
     .${CLASS.POWERED_BY} {
@@ -102,7 +103,7 @@ export function PoweredByPayPal({
     } 
 
     .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
-        transform: translateY(12%);
+        transform: translateY(${REBRAND_LOGO_TRANSLATE_Y}%);
     }
   `;
 

@@ -762,7 +762,7 @@ describe("test responsive style variables for rebranded buttons", () => {
     ({ input, expected }) => {
       expect(
         getResponsiveRebrandedStyleVariables({
-          redesign_size: input,
+          redesignSize: input,
         })
       ).toEqual(expected);
     }

@@ -490,24 +490,21 @@ const generateDisableMaxHeightStyles = ({
 const generateRebrandedDisableMaxHeightStyles = (): string => {
   const sizeKeys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
   return sizeKeys
-    .map((redesign_size, sizeIndex) => {
+    .map((redesignSize, sizeIndex) => {
       const isLastSizeBucket = sizeIndex === sizeKeys.length - 1;
-      const style = BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesign_size];
+      const style = BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesignSize];
       const { gap, fontSize, minHeight, maxHeight } = style;
+      const maxHeightQuery = isLastSizeBucket
+        ? ""
+        : `and (max-height: ${maxHeight}px)`;
 
       return `
-        @media (min-height: ${minHeight}px)${
-        isLastSizeBucket ? "" : ` and (max-height: ${maxHeight}px)`
-      } {
+        @media (min-height: ${minHeight}px) ${maxHeightQuery} {
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
             gap: ${gap}px;
           }
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
-        CLASS.TEXT
-      },
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
-        CLASS.SPACE
-      } {
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT},
+          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.SPACE} {
             font-size: ${fontSize}px;
             line-height: 1.2;
             margin: 0;
@@ -533,7 +530,7 @@ const generateRebrandedButtonSizeStyles = ({
 |}): string => {
   const redesignSizeKeys = Object.keys(BUTTON_REDESIGN_STYLE);
   return redesignSizeKeys
-    .map((redesign_size, sizeIndex) => {
+    .map((redesignSize, sizeIndex) => {
       const isLastSizeBucket = sizeIndex === redesignSizeKeys.length - 1;
       const {
         buttonHeight,
@@ -548,8 +545,12 @@ const generateRebrandedButtonSizeStyles = ({
         minDualWidth,
       } = getResponsiveRebrandedStyleVariables({
         height,
-        redesign_size,
+        redesignSize,
       });
+
+      const maxWidthQuery = isLastSizeBucket
+        ? ""
+        : `and (max-width: ${maxWidth}px)`;
 
       const widthBasedStyles = `
         @media only screen and (min-width: ${minWidth}px) {
@@ -600,9 +601,7 @@ const generateRebrandedButtonSizeStyles = ({
           }
         }
 
-        @media only screen and (min-width: ${minWidth}px)${
-        isLastSizeBucket ? "" : ` and (max-width: ${maxWidth}px)`
-      } {
+        @media only screen and (min-width: ${minWidth}px) ${maxWidthQuery} {
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
         CLASS.TEXT
       },
