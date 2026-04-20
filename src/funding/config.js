@@ -29,6 +29,7 @@ import { getMercadopagoConfig } from "./mercadopago";
 import { getMultibancoConfig } from "./multibanco";
 import { getSatispayConfig } from "./satispay";
 import { getPaidyConfig } from "./paidy";
+import { getPPConfig } from "./pp";
 
 export function getFundingConfig(): {
   [$Values<typeof FUNDING>]: ?FundingSourceConfig,
@@ -61,6 +62,15 @@ export function getFundingConfig(): {
       [FUNDING.MULTIBANCO]: getMultibancoConfig(),
       [FUNDING.SATISPAY]: getSatispayConfig(),
       [FUNDING.PAIDY]: getPaidyConfig(),
+    };
+  });
+}
+
+export function getMarksFundingConfig(): {} {
+  return inlineMemoize(getMarksFundingConfig, () => {
+    return {
+      ...getFundingConfig(),
+      pp: getPPConfig(),
     };
   });
 }

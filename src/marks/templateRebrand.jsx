@@ -11,7 +11,7 @@ import { getLocale, type FundingEligibilityType } from "@paypal/sdk-client/src";
 import { toPx } from "@krakenjs/belter/src";
 
 import type { Experiment } from "../types";
-import { getFundingConfig } from "../funding";
+import { getFundingConfig, getMarksFundingConfig } from "../funding";
 import { CLASS } from "../constants";
 
 type MarkOptions = {|
@@ -28,13 +28,18 @@ function Mark({
   env,
 }: MarkOptions): ChildNodeType {
   const fundingConfig = getFundingConfig()[fundingSource];
+  const marksFundingConfig = getMarksFundingConfig()[fundingSource];
+
+  if (!marksFundingConfig) {
+    throw new Error(`Can not find marks funding config for ${fundingSource}`);
+  }
 
   if (!fundingConfig) {
     throw new Error(`Can not find funding config for ${fundingSource}`);
   }
 
   const { Logo } = fundingConfig;
-  const MarkLogo = fundingConfig.Mark;
+  const MarkLogo = marksFundingConfig.Mark;
   const marksDefined = typeof MarkLogo !== "undefined";
 
   let backgroundClasses = "paypal-mark-rebrand";

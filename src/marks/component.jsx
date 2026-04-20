@@ -70,6 +70,15 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     displayOnly,
     userAgent = getUserAgent(),
   }: MarksProps = {}): MarksInstance {
+    console.log("=== MARKS ENTRY POINT ===");
+    console.log("Props received:", {
+      fundingSource,
+      onShippingChange,
+      onShippingAddressChange,
+      onShippingOptionsChange,
+      displayOnly,
+      userAgent,
+    });
     const height = DEFAULT_HEIGHT;
     const fundingEligibility = getFundingEligibility();
     const platform = isDevice() ? PLATFORM.MOBILE : PLATFORM.DESKTOP;
