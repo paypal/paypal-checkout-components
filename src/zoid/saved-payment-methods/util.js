@@ -113,7 +113,7 @@ export const getStyles = (styleConfig) =>
   }
 
   .saved-payment-methods-logo-frame {
-    aspect-ratio: 45 / 30;
+    aspect-ratio: 1.5;
     width: 100%;
     height: 100%;
     min-width: 0;
@@ -131,26 +131,8 @@ export const getStyles = (styleConfig) =>
     object-fit: contain;
   }
 
-  /* Preact mounts into this node; avoid an extra flex item / box alongside logo + label. */
   #saved-payment-methods-app-root {
     display: contents;
-  }
-
-  /* If both skeleton and button ever coexist, collapse the skeleton so it takes no space. */
-  #saved-payment-methods-app-root:has(.saved-payment-methods-tag)
-    > .saved-payment-methods-tag-loading {
-    display: none !important;
-    visibility: hidden !important;
-    position: absolute !important;
-    width: 0 !important;
-    height: 0 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
   }
 
   .saved-payment-methods-tag {
