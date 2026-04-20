@@ -5,7 +5,7 @@ import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import type { ZoidProps } from "@krakenjs/zoid/src";
 
 import { type SavedPaymentMethodsProps } from "./props";
-import { SavedPaymentMethodsLoadingBody } from "../../ui/saved-payment-methods/loading-body";
+import { SavedPaymentMethods } from "../../ui/saved-payment-methods/template";
 
 type PrerenderedSavedPaymentMethodsProps = {|
   nonce: ?string,
@@ -24,7 +24,7 @@ PrerenderedSavedPaymentMethodsProps): ChildType {
         <meta charset="utf-8" />
       </head>
       <body>
-        <SavedPaymentMethodsLoadingBody nonce={nonce} style={style} />
+        <SavedPaymentMethods nonce={nonce} style={style} />
       </body>
     </html>
   );
