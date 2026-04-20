@@ -66,7 +66,9 @@ export function getFundingConfig(): {
   });
 }
 
-export function getMarksFundingConfig(): {} {
+export function getMarksFundingConfig(): {|
+  [$Values<typeof FUNDING>]: ?FundingSourceConfig,
+|} {
   return inlineMemoize(getMarksFundingConfig, () => {
     return {
       ...getFundingConfig(),

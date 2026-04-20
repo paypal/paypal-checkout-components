@@ -3,8 +3,8 @@
 
 import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import {
-  PPRebrandMonogramMarkExternalImage,
-  PPRebrandMonogramMarkInlineSVG,
+  PPRebrandLogoExternalImage,
+  PPRebrandLogoInlineSVG,
 } from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
@@ -12,11 +12,7 @@ import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 // Mark component for PP (PayPal monogram)
 function Mark(): ChildType {
-  return __WEB__ ? (
-    <PPRebrandMonogramMarkExternalImage />
-  ) : (
-    <PPRebrandMonogramMarkInlineSVG />
-  );
+  return __WEB__ ? <PPRebrandLogoExternalImage /> : <PPRebrandLogoInlineSVG />;
 }
 
 export function getPPConfig(): FundingSourceConfig {
