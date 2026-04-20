@@ -83,7 +83,7 @@ export function SavedPaymentMethods(
             * {
               box-sizing: border-box;
             }
-            .saved-payment-methods-container {
+            .spm-container {
               background-color: ${styleConfig.root.backgroundColor};
               font-family: ${styleConfig.root.fontFamily};
               color: ${styleConfig.root.textColorBase};
@@ -93,18 +93,18 @@ export function SavedPaymentMethods(
               min-width: 0;
             }
 
-            .saved-payment-methods-content {
+            .spm-content {
               min-width: 0;
             }
 
-            .saved-payment-methods-label {
+            .spm-label {
               font-size: ${styleConfig.layout.labelFontSize};
               font-weight: 600;
               color: #222222;
               margin-right: ${styleConfig.layout.labelFiGap};
             }
 
-            .saved-payment-methods-logo {
+            .spm-logo {
               width: ${styleConfig.layout.logoWidth};
               margin-right: ${styleConfig.layout.logoLabelGap};
               display: flex;
@@ -113,7 +113,7 @@ export function SavedPaymentMethods(
               overflow: hidden;
             }
 
-            .saved-payment-methods-logo-frame {
+            .spm-logo-frame {
               aspect-ratio: 1.5;
               width: 100%;
               height: 100%;
@@ -126,17 +126,17 @@ export function SavedPaymentMethods(
               border-radius: 2px;
             }
 
-            .saved-payment-methods-logo-frame img {
+            .spm-logo-frame img {
               width: 100%;
               height: 100%;
               object-fit: contain;
             }
 
-            #saved-payment-methods-app-root {
+            #spm-app-root {
               display: contents;
             }
 
-            .saved-payment-methods-tag {
+            .spm-tag {
               display: flex;
               height: ${styleConfig.component.height};
               align-items: center;
@@ -153,20 +153,20 @@ export function SavedPaymentMethods(
               cursor: pointer;
             }
 
-            .saved-payment-methods-tag-label {
+            .spm-tag-label {
               font-size: ${styleConfig.layout.fiTextFontSize};
               font-weight: 400;
               color: #000000;
               white-space: nowrap;
             }
 
-            .saved-payment-methods-tag-label-fallback {
+            .spm-tag-label-fallback {
               display: flex;
               align-items: center;
               min-width: 0;
             }
 
-            .saved-payment-methods-tag-label-email {
+            .spm-tag-label-email {
               flex: 1 1 auto;
               min-width: 0;
               overflow: hidden;
@@ -175,26 +175,26 @@ export function SavedPaymentMethods(
               display: inline-block;
             }
 
-            .saved-payment-methods-tag-label-separator {
+            .spm-tag-label-separator {
               flex: 0 0 auto;
               margin: 0 4px;
             }
 
-            .saved-payment-methods-tag-label-pay-in-full {
+            .spm-tag-label-pay-in-full {
               flex: 0 0 auto;
               white-space: nowrap;
             }
 
-            .saved-payment-methods-tag-card-icon {
+            .spm-tag-card-icon {
               width: ${styleConfig.layout.iconSize};
               border-radius: 4px;
             }
 
-            .saved-payment-methods-tag-edit-button svg path {
+            .spm-tag-edit-button svg path {
               fill: ${styleConfig.root.primaryColor};
             }
 
-            .saved-payment-methods-message {
+            .spm-message {
               height: 31px; /* Based on the error message in browser console */
               margin-top: 6px;
               ${
@@ -206,7 +206,7 @@ export function SavedPaymentMethods(
               }
             }
 
-            .saved-payment-methods-tag-loading {
+            .spm-tag-loading {
               display: flex;
               height: ${styleConfig.component.height};
               align-items: center;
@@ -223,27 +223,27 @@ export function SavedPaymentMethods(
             }
             `}
       </style>
-      <div class="saved-payment-methods-container">
-        <div class="saved-payment-methods-content">
-          <div class="saved-payment-methods-container">
+      <div class="spm-container">
+        <div class="spm-content">
+          <div class="spm-container">
             {styleConfig.layout.logo && (
-              <div class="saved-payment-methods-logo">
-                <div class="saved-payment-methods-logo-frame">
+              <div class="spm-logo">
+                <div class="spm-logo-frame">
                   <PPRebrandLogo />
                 </div>
               </div>
             )}
             {styleConfig.layout.label && (
-              <div class="saved-payment-methods-label">PayPal</div>
+              <div class="spm-label">PayPal</div>
             )}
-            <div id="saved-payment-methods-app-root">
-              <div class="saved-payment-methods-tag-loading" />
+            <div id="spm-app-root">
+              <div class="spm-tag-loading" />
             </div>
           </div>
           {shouldRenderMessageContainer && (
             <div
-              id="saved-payment-methods-message-root"
-              class="saved-payment-methods-message"
+              id="spm-message-root"
+              class="spm-message"
               aria-hidden="true"
             />
           )}

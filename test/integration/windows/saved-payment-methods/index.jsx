@@ -34,10 +34,10 @@ const body = document.body;
 if (body) {
   body.appendChild(
     (
-      <div class="saved-payment-methods-container">
+      <div class="spm-container">
         <button
           type="button"
-          class="saved-payment-methods-test-pay"
+          class="spm-test-pay"
           aria-label="Pay with saved payment method"
         >
           Pay with saved method
@@ -163,7 +163,7 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
     });
 }
 
-getElements(".saved-payment-methods-test-pay", document).forEach((el) => {
+getElements(".spm-test-pay", document).forEach((el) => {
   el.addEventListener("click", () => {
     if (window.xprops.onClick) {
       window.xprops.onClick();
@@ -207,13 +207,13 @@ if (action === "auth") {
     if (delay) {
       setTimeout(() => {
         getElement(
-          selector || ".saved-payment-methods-test-pay",
+          selector || ".spm-test-pay",
           document
         ).click();
       }, delay);
     } else {
       getElement(
-        selector || ".saved-payment-methods-test-pay",
+        selector || ".spm-test-pay",
         document
       ).click();
     }
@@ -241,7 +241,7 @@ if (onRender) {
   onRender({
     xprops: window.xprops,
     click() {
-      getElement(".saved-payment-methods-test-pay", document).click();
+      getElement(".spm-test-pay", document).click();
     },
   });
 }
