@@ -27,18 +27,25 @@ function Mark({
   experiment,
   env,
 }: MarkOptions): ChildNodeType {
-  const fundingConfig = getFundingConfig()[fundingSource];
-  const marksFundingConfig = getMarksFundingConfig()[fundingSource];
+  let fundingConfig;
+  let marksFundingConfig;
+
+  if (fundingSource === "pp") {
+    marksFundingConfig = getMarksFundingConfig()[fundingSource];
+  } else {
+    fundingConfig = getFundingConfig()[fundingSource];
+    marksFundingConfig = getMarksFundingConfig()[fundingSource];
+  }
 
   if (!marksFundingConfig) {
     throw new Error(`Can not find marks funding config for ${fundingSource}`);
   }
 
-  if (!fundingConfig) {
+  if (fundingSource !== "pp" && !fundingConfig) {
     throw new Error(`Can not find funding config for ${fundingSource}`);
   }
 
-  const { Logo } = fundingConfig;
+  const { Logo } = fundingConfig || {};
   const MarkLogo = marksFundingConfig.Mark;
   const marksDefined = typeof MarkLogo !== "undefined";
 
