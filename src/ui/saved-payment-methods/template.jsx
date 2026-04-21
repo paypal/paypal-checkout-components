@@ -202,7 +202,7 @@ export function SavedPaymentMethods(
               margin-top: 6px;
               ${
                 styleConfig.layout.logo
-                  ? /* TODO: Remove calc */ `
+                  ?  `
                 margin-left: calc(${styleConfig.layout.logoWidth} + ${styleConfig.layout.logoLabelGap});
               `
                   : ""
