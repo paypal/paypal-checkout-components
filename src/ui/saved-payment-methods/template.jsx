@@ -3,16 +3,19 @@
 
 import { node, Fragment, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 
+import type { SavedPaymentMethodsStyleInputs } from "../../zoid/saved-payment-methods/props";
 import { validateSavedPaymentMethodsStyle } from "../../zoid/saved-payment-methods/util";
 
 import { PPRebrandLogo } from "@paypal/sdk-logos/src";
 
 export type SavedPaymentMethodsServerRenderProps = {|
   nonce?: string,
-  style?: Object,
+  style?: SavedPaymentMethodsStyleInputs,
 |};
 
-export function validateSavedPaymentMethodsProps(props: {| style?: Object |}) {
+export function validateSavedPaymentMethodsProps(props: {|
+  style?: SavedPaymentMethodsStyleInputs,
+|}) {
   validateSavedPaymentMethodsStyle(props?.style);
 }
 
@@ -44,7 +47,7 @@ const DEFAULT_STYLE_CONFIG = {
   },
 };
 
-function getStyleConfig(style?: Object): Object {
+function getStyleConfig(style?: SavedPaymentMethodsStyleInputs) {
   const s = style || {};
   return {
     root: {
