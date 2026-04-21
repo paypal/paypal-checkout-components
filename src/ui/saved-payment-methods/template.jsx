@@ -221,6 +221,10 @@ export function SavedPaymentMethods(
               min-width: 124px;
               max-width: 100%;
             }
+
+            .spm-tag-loading.spm-tag-loading--hidden {
+              display: none !important;
+            }
             `}
       </style>
       <div class="spm-container">
