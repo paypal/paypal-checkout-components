@@ -23,6 +23,7 @@ module.exports = {
     __URI__: {
       __CHECKOUT__: "/checkoutnow",
       __BUTTONS__: "/smart/buttons",
+      __SAVED_PAYMENT_METHODS__: "/smart/saved-payment-methods",
       __PIXEL__: "/smart/pixel",
       __MENU__: "/smart/menu",
       __QRCODE__: "/smart/qrcode",

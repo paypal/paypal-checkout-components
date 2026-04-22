@@ -190,7 +190,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           phase: "buttons-first-render-end",
         });
         try {
-          const cplPhases = prepareInstrumentationPayload(buttonSessionID);
+          const cplPhases = prepareInstrumentationPayload(
+            buttonSessionID,
+            "buttons"
+          );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
             [FPTI_KEY.TRANSITION]: "process_client_metrics",
@@ -1115,6 +1118,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       partnerAttributionID: {
         type: "string",
         required: false,
+        queryParam: true,
         value: getPartnerAttributionID,
       },
 

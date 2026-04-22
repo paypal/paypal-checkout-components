@@ -1,3 +1,33 @@
+## <small>5.0.411 (2026-04-08)</small>
+
+* chore(release): 5.0.410 🎉 ([6d3ba5e](https://github.com/paypal/paypal-checkout-components/commit/6d3ba5e))
+
+
+
+## <small>5.0.410 (2026-04-08)</small>
+
+* feature(SavedPaymentMethods): New component SavedPaymentMethods (#2604) ([2eed0ef](https://github.com/paypal/paypal-checkout-components/commit/2eed0ef)), closes [#2604](https://github.com/paypal/paypal-checkout-components/issues/2604)
+
+
+
+## <small>5.0.409 (2026-04-03)</small>
+
+* Revert "Pass bfcache events via post-robot (#2608)" (#2616) ([bc56fea](https://github.com/paypal/paypal-checkout-components/commit/bc56fea)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608) [#2616](https://github.com/paypal/paypal-checkout-components/issues/2616)
+
+
+
+## <small>5.0.408 (2026-03-23)</small>
+
+* Pass bfcache events via post-robot (#2608) ([2e278df](https://github.com/paypal/paypal-checkout-components/commit/2e278df)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608)
+
+
+
+## <small>5.0.407 (2026-03-18)</small>
+
+* [DTINAPPXO-3543] Pass partnerAttributionID (#2607) ([8c201d8](https://github.com/paypal/paypal-checkout-components/commit/8c201d8)), closes [#2607](https://github.com/paypal/paypal-checkout-components/issues/2607)
+
+
+
 ## <small>5.0.406 (2026-03-03)</small>
 
 * add label "Pay now or later" experiment (#2600) ([6c0d3e3](https://github.com/paypal/paypal-checkout-components/commit/6c0d3e3)), closes [#2600](https://github.com/paypal/paypal-checkout-components/issues/2600)
