@@ -404,7 +404,7 @@ const generateDisableMaxHeightStyles = ({
       const { minHeight, maxHeight } = disableHeightStyle;
 
       return `
-            @media (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+            @container (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
               .${CLASS.BUTTON_LABEL} {
                 gap: ${gap}px;
               }
@@ -499,7 +499,7 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
         : `and (max-height: ${maxHeight}px)`;
 
       return `
-        @media (min-height: ${minHeight}px) ${maxHeightQuery} {
+        @container (min-height: ${minHeight}px) ${maxHeightQuery} {
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
             gap: ${gap}px;
           }
@@ -692,7 +692,7 @@ const generateRebrandedButtonSizeStyles = ({
        `;
 
       const heightBasedStyles = `
-        @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
+        @container (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               gap: ${gap}px;
           }
@@ -928,6 +928,10 @@ export function buttonResponsiveStyle({
     .${CLASS.CARD} {
         display: inline-block;
         height: 100%;
+    }
+
+    .${CLASS.BUTTON_ROW} {
+        container-type: size;
     }`;
 
   const rebrandedStyles = shouldApplyRebrandedStyles
