@@ -198,6 +198,29 @@ export const buttonRebrandStyle = `
     
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
         height: 100%;
+        transition: opacity 0.15s ease;
+    }
+
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND} {
+        visibility: hidden;
+    }
+
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND},
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND},
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND} {
+        visibility: visible;
+    }
+
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND}.${CLASS.HIDDEN},
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND}.${CLASS.HIDDEN},
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_REBRAND}.${CLASS.HIDDEN},
+    .${CLASS.LOGOS_READY} .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL} .${CLASS.LOGO_PP_REBRAND}.${CLASS.HIDDEN} {
+        position: static !important;
+        visibility: hidden !important;
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.TAGLINE} {

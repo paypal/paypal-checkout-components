@@ -43,6 +43,13 @@ export const labelStyle = `
         white-space: nowrap;
     }
 
+    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} .${CLASS.TEXT}:not(.${
+  CLASS.IMMEDIATE
+}):not(.${CLASS.PERSONALIZATION_TEXT}):not(.${CLASS.HIDDEN}) {
+        ${VISIBLE}
+        ${COMPRESSED}
+    }
+
     .${CLASS.DOM_READY} .${CLASS.BUTTON} .${CLASS.TEXT}:not(.${
   CLASS.IMMEDIATE
 }):not(.${CLASS.PERSONALIZATION_TEXT}):not(.${CLASS.HIDDEN}) {

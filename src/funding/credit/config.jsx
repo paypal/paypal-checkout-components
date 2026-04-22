@@ -104,7 +104,7 @@ export function getCreditConfig(): FundingSourceConfig {
             ) : (
               <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
             )}
-            <Text>{"Später Bezahlen"}</Text>
+            <Text animate>{"Später Bezahlen"}</Text>
           </Style>
         );
       }
@@ -124,7 +124,7 @@ export function getCreditConfig(): FundingSourceConfig {
           ) : (
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
-          <Text>{"Credit"}</Text>
+          <Text animate>{"Credit"}</Text>
         </Style>
       );
     },

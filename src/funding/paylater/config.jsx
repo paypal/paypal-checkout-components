@@ -136,7 +136,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
           ) : (
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
-          <Text>
+          <Text animate>
             {getLabelText(
               fundingEligibility,
               locale,

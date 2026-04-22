@@ -45,6 +45,7 @@ export const CLASS = {
   SEPARATOR: ("paypal-separator": "paypal-separator"),
 
   DOM_READY: ("dom-ready": "dom-ready"),
+  LOGOS_READY: ("logos-ready": "logos-ready"),
 
   HIDDEN: ("hidden": "hidden"),
 
