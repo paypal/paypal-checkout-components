@@ -205,7 +205,8 @@ export const buttonRebrandStyle = `
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_REBRAND} {
-        transform: translateY(${REBRAND_LOGO_TRANSLATE_Y}%);
+        // transform: translateY(${REBRAND_LOGO_TRANSLATE_Y}%);
+        transform: translateY(10%); //update me!!
     }
 
     .${CLASS.BUTTON_REBRAND}[data-funding-source=wechatpay] .${CLASS.TEXT},
@@ -223,5 +224,6 @@ export const buttonRebrandStyle = `
         display: block;
         text-align: center;
         width: auto;
+        margin-top: 8px;
     }
 `;

@@ -584,6 +584,10 @@ const generateRebrandedButtonSizeStyles = ({
               gap: ${gap}px;
           }
 
+          .${CLASS.TAGLINE} .${CLASS.TEXT} {
+              font-size: ${minWidth >= 500 ? 14 : 12}px;
+          }
+
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
         CLASS.NUMBER
       }-${BUTTON_NUMBER.MULTIPLE} {
