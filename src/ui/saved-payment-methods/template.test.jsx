@@ -15,7 +15,7 @@ describe("SavedPaymentMethods template (UI shell)", () => {
     host.innerHTML = markup;
 
     expect(host.querySelector("style[nonce='test-nonce']")).toBeTruthy();
-    expect(host.querySelector(".spm-container")).toBeTruthy();
+    expect(host.querySelector(".saved-payment-methods-container")).toBeTruthy();
     expect(host.querySelector("#spm-app-root")).toBeTruthy();
     expect(host.querySelector(".spm-tag-loading")).toBeTruthy();
     expect(host.querySelector(".spm-logo-frame")).toBeTruthy();

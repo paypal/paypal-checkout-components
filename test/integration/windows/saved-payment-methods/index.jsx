@@ -34,7 +34,7 @@ const body = document.body;
 if (body) {
   body.appendChild(
     (
-      <div class="spm-container">
+      <div class="saved-payment-methods-container">
         <button
           type="button"
           class="spm-test-pay"
@@ -206,16 +206,10 @@ if (action === "auth") {
   popupBridgePromise.then(() => {
     if (delay) {
       setTimeout(() => {
-        getElement(
-          selector || ".spm-test-pay",
-          document
-        ).click();
+        getElement(selector || ".spm-test-pay", document).click();
       }, delay);
     } else {
-      getElement(
-        selector || ".spm-test-pay",
-        document
-      ).click();
+      getElement(selector || ".spm-test-pay", document).click();
     }
   });
 } else {

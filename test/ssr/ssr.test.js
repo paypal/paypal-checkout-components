@@ -73,7 +73,7 @@ async function getSavedPaymentMethodsScript(): Promise<{|
 
   if (typeof exports.validateSavedPaymentMethodsProps !== "function") {
     throw new TypeError(
-      `Expected validateSavedPaymentMethodsProps to be a function`,
+      `Expected validateSavedPaymentMethodsProps to be a function`
     );
   }
 
@@ -95,8 +95,10 @@ test(`SavedPaymentMethods (template) should render with ssr, with minimal option
     throw new Error(`Expected html to be a non-empty string`);
   }
 
-  if (!savedPaymentMethodsHTML.includes("spm-container")) {
-    throw new Error(`Expected SSR html to include spm-container`);
+  if (!savedPaymentMethodsHTML.includes("saved-payment-methods-container")) {
+    throw new Error(
+      `Expected SSR html to include saved-payment-methods-container`
+    );
   }
 
   if (!savedPaymentMethodsHTML.includes('id="spm-app-root"')) {
@@ -108,10 +110,12 @@ test(`SavedPaymentMethods (template) should render with ssr, with minimal option
   }
 
   if (
-    !savedPaymentMethodsHTML.includes(".spm-tag-loading.spm-tag-loading--hidden")
+    !savedPaymentMethodsHTML.includes(
+      ".spm-tag-loading.spm-tag-loading--hidden"
+    )
   ) {
     throw new Error(
-      `Expected SSR styles to include spm-tag-loading--hidden rule`,
+      `Expected SSR styles to include spm-tag-loading--hidden rule`
     );
   }
 

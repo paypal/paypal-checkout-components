@@ -86,7 +86,7 @@ export function SavedPaymentMethods(
             * {
               box-sizing: border-box;
             }
-            .spm-container {
+            .saved-payment-methods-container {
               background-color: ${styleConfig.root.backgroundColor};
               font-family: ${styleConfig.root.fontFamily};
               color: ${styleConfig.root.textColorBase};
@@ -202,7 +202,7 @@ export function SavedPaymentMethods(
               margin-top: 6px;
               ${
                 styleConfig.layout.logo
-                  ?  `
+                  ? `
                 margin-left: calc(${styleConfig.layout.logoWidth} + ${styleConfig.layout.logoLabelGap});
               `
                   : ""
@@ -230,9 +230,9 @@ export function SavedPaymentMethods(
             }
             `}
       </style>
-      <div class="spm-container">
+      <div class="saved-payment-methods-container">
         <div class="spm-content">
-          <div class="spm-container">
+          <div class="saved-payment-methods-container">
             {styleConfig.layout.logo && (
               <div class="spm-logo">
                 <div class="spm-logo-frame">
@@ -240,19 +240,13 @@ export function SavedPaymentMethods(
                 </div>
               </div>
             )}
-            {styleConfig.layout.label && (
-              <div class="spm-label">PayPal</div>
-            )}
+            {styleConfig.layout.label && <div class="spm-label">PayPal</div>}
             <div id="spm-app-root">
               <div class="spm-tag-loading" />
             </div>
           </div>
           {shouldRenderMessageContainer && (
-            <div
-              id="spm-message-root"
-              class="spm-message"
-              aria-hidden="true"
-            />
+            <div id="spm-message-root" class="spm-message" aria-hidden="true" />
           )}
         </div>
       </div>

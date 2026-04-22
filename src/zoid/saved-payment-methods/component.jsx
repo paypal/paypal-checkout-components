@@ -98,7 +98,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
       autoResize: {
         width: false,
         height: true,
-        element: ".spm-container",
+        element: ".saved-payment-methods-container",
       },
 
       dimensions: {
