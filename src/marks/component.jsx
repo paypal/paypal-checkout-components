@@ -31,6 +31,7 @@ import type {
 } from "../ui/buttons/props";
 import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
+import { MARKS_FUNDING } from "../constants";
 import {
   supportsVenmoPopups,
   isSupportedNativeVenmoBrowser,
@@ -97,6 +98,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const hasShippingCallback = Boolean(
       onShippingChange || onShippingAddressChange || onShippingOptionsChange
     );
+    const isRebrandEnabled = experiment?.isPaypalRebrandEnabled;
     const fundingSources = determineEligibleFunding({
       fundingSource,
       fundingEligibility,
@@ -126,6 +128,10 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         return true;
       }
 
+      if (fundingSource === MARKS_FUNDING.PP) {
+        return Boolean(isRebrandEnabled);
+      }
+
       return isFundingEligible(fundingSource, {
         layout,
         platform,
@@ -153,8 +159,6 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         if (!isEligible()) {
           throw new Error(`${fundingSource || "marks"} not eligible`);
         }
-
-        const isRebrandEnabled = experiment?.isPaypalRebrandEnabled;
 
         getElement(container).appendChild(
           (

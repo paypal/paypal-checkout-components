@@ -30,6 +30,7 @@ import { getMultibancoConfig } from "./multibanco";
 import { getSatispayConfig } from "./satispay";
 import { getPaidyConfig } from "./paidy";
 import { getPPConfig } from "./pp";
+import { MARKS_FUNDING } from "../constants";
 
 export function getFundingConfig(): {
   [$Values<typeof FUNDING>]: ?FundingSourceConfig,
@@ -72,7 +73,7 @@ export function getMarksFundingConfig(): {|
   return inlineMemoize(getMarksFundingConfig, () => {
     return {
       ...getFundingConfig(),
-      pp: getPPConfig(),
+      [MARKS_FUNDING.PP]: getPPConfig(),
     };
   });
 }

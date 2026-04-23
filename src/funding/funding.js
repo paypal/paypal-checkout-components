@@ -101,11 +101,6 @@ export function isFundingEligible(
     return true;
   }
 
-  // Custom pp (PayPal monogram) is always eligible - bypass SDK check
-  if (source === "pp") {
-    return true;
-  }
-
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
     return false;
   }
