@@ -178,7 +178,7 @@ const generateButtonSizeStyles = ({
                 
                 .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
                   ${
-                    borderRadius && isBorderRadiusNumber(borderRadius)
+                    isBorderRadiusNumber(borderRadius) && borderRadius >= 0
                       ? `border-radius: ${borderRadius}px`
                       : ""
                   }
@@ -198,7 +198,7 @@ const generateButtonSizeStyles = ({
 
                 .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
                   ${
-                    borderRadius && isBorderRadiusNumber(borderRadius)
+                    isBorderRadiusNumber(borderRadius) && borderRadius >= 0
                       ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
                       : ""
                   }
@@ -736,7 +736,7 @@ const generateRebrandedButtonSizeStyles = ({
           
           .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
             ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
+              isBorderRadiusNumber(borderRadius) && borderRadius >= 0
                 ? `border-radius: ${borderRadius}px`
                 : ""
             }
@@ -756,7 +756,7 @@ const generateRebrandedButtonSizeStyles = ({
 
           .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
             ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
+              isBorderRadiusNumber(borderRadius) && borderRadius >= 0
                 ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
                 : ""
             }
@@ -868,7 +868,7 @@ export function buttonResponsiveStyle({
     // border radius
     .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
       ${
-        borderRadius && isBorderRadiusNumber(borderRadius)
+        isBorderRadiusNumber(borderRadius) && borderRadius >= 0
           ? `border-radius: ${borderRadius}px`
           : ""
       };
@@ -883,7 +883,7 @@ export function buttonResponsiveStyle({
     // menu button - border radius
     .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
         ${
-          borderRadius && isBorderRadiusNumber(borderRadius)
+          isBorderRadiusNumber(borderRadius) && borderRadius >= 0
             ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
             : ""
         };
