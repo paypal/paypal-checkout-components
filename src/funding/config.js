@@ -3,6 +3,8 @@
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { inlineMemoize } from "@krakenjs/belter/src";
 
+import { MARKS_FUNDING } from "../constants";
+
 import { type FundingSourceConfig } from "./common";
 import { getPayPalConfig } from "./paypal";
 import { getVenmoConfig } from "./venmo";
@@ -30,7 +32,6 @@ import { getMultibancoConfig } from "./multibanco";
 import { getSatispayConfig } from "./satispay";
 import { getPaidyConfig } from "./paidy";
 import { getPPConfig } from "./pp";
-import { MARKS_FUNDING } from "../constants";
 
 export function getFundingConfig(): {
   [$Values<typeof FUNDING>]: ?FundingSourceConfig,

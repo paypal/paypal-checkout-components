@@ -7,6 +7,7 @@ import {
   PPRebrandLogoInlineSVG,
 } from "@paypal/sdk-logos/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src/constants";
+
 import { type FundingSourceConfig } from "../common";
 
 // Mark component for PP (PayPal monogram)

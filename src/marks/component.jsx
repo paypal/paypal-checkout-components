@@ -29,9 +29,8 @@ import type {
   OnShippingAddressChange,
   OnShippingOptionsChange,
 } from "../ui/buttons/props";
-import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
+import { BUTTON_LAYOUT, BUTTON_FLOW, MARKS_FUNDING } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
-import { MARKS_FUNDING } from "../constants";
 import {
   supportsVenmoPopups,
   isSupportedNativeVenmoBrowser,
