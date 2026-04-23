@@ -234,7 +234,7 @@ export function SavedPaymentMethods(
         <div class="spm-content">
           <div class="saved-payment-methods-container">
             {styleConfig.layout.logo && (
-              <div class="spm-logo">
+              <div class="spm-logo" aria-hidden="true">
                 <div class="spm-logo-frame">
                   <PPRebrandLogo />
                 </div>
