@@ -9,7 +9,6 @@ import {
   PPLogoInlineSVG,
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
-  PPRebrandLogoExternalImage,
   PaylaterMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 

@@ -235,6 +235,12 @@ export function getComponentScript(): () => void {
         if (totalWidth > buttonWidth) {
           hideElement(paypalLogo);
           showElement(ppLogo);
+          const allTextElements = allElements.filter(
+            (el) =>
+              el.classList.contains("paypal-button-text") &&
+              !el.classList.contains("immediate")
+          );
+          allTextElements.forEach((el) => showElement(el));
         } else {
           showElement(paypalLogo);
           hideElement(ppLogo);
