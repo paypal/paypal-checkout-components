@@ -1,6 +1,7 @@
 /* @flow */
 /** @jsx node */
 
+import { node } from "@krakenjs/jsx-pragmatic/src";
 import { PPRebrandLogoExternalImage } from "@paypal/sdk-logos/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src/constants";
 
