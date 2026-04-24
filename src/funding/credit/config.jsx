@@ -99,12 +99,12 @@ export function getCreditConfig(): FundingSourceConfig {
               fundingEligibility={fundingEligibility}
               locale={locale}
             />
-            {__WEB__ ? (
-              <PPRebrandLogoExternalImage logoColor={logoColorPP} />
-            ) : (
-              <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
+            {!__WEB__ && <PPRebrandLogoInlineSVG logoColor={logoColorPP} />}
+            {!__WEB__ && (
+              <Text animate optional>
+                {"Später Bezahlen"}
+              </Text>
             )}
-            <Text>{"Später Bezahlen"}</Text>
           </Style>
         );
       }
@@ -119,12 +119,12 @@ export function getCreditConfig(): FundingSourceConfig {
             experiment={experiment}
             fundingEligibility={fundingEligibility}
           />
-          {__WEB__ ? (
-            <PPRebrandLogoExternalImage logoColor={logoColorPP} />
-          ) : (
-            <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
+          {!__WEB__ && <PPRebrandLogoInlineSVG logoColor={logoColorPP} />}
+          {!__WEB__ && (
+            <Text animate optional>
+              {"Credit"}
+            </Text>
           )}
-          <Text>{"Credit"}</Text>
         </Style>
       );
     },

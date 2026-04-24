@@ -131,18 +131,16 @@ export function getPaylaterConfig(): FundingSourceConfig {
             fundingEligibility={fundingEligibility}
             locale={locale}
           />
-          {__WEB__ ? (
-            <PPRebrandLogoExternalImage logoColor={logoColorPP} />
-          ) : (
-            <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
+          {!__WEB__ && <PPRebrandLogoInlineSVG logoColor={logoColorPP} />}
+          {!__WEB__ && (
+            <Text animate optional>
+              {getLabelText(
+                fundingEligibility,
+                locale,
+                shouldApplyRebrandedStyles
+              ) || "Pay Later"}
+            </Text>
           )}
-          <Text>
-            {getLabelText(
-              fundingEligibility,
-              locale,
-              shouldApplyRebrandedStyles
-            ) || "Pay Later"}
-          </Text>
         </Style>
       );
     },
