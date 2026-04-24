@@ -198,7 +198,7 @@ export function SavedPaymentMethods(
             }
 
             .spm-message {
-              height: 31px; /* Based on the error message in browser console */
+              height: 35px;
               margin-top: 6px;
               ${
                 styleConfig.layout.logo
