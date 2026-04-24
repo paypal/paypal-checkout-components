@@ -13,13 +13,16 @@ import { type FundingSourceConfig } from "../common";
 // Mark component for PP (PayPal monogram)
 function Mark(): ChildType {
   return __WEB__ ? (
+    // $FlowFixMe - JSX pragma compatibility
     <PPRebrandLogoExternalImage logoColor={LOGO_COLOR.BLUE} />
   ) : (
+    // $FlowFixMe - JSX pragma compatibility
     <PPRebrandLogoInlineSVG />
   );
 }
 
 export function getPPConfig(): FundingSourceConfig {
+  // $FlowFixMe - pp is a marks-only config, only needs Mark component
   return {
     Mark,
   };

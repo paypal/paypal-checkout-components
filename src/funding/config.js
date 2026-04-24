@@ -71,6 +71,7 @@ export function getFundingConfig(): {
 export function getMarksFundingConfig(): {|
   [$Values<typeof FUNDING>]: ?FundingSourceConfig,
 |} {
+  // $FlowFixMe - intentionally adding MARKS_FUNDING.PP key beyond standard FUNDING enum keys
   return inlineMemoize(getMarksFundingConfig, () => {
     return {
       ...getFundingConfig(),
