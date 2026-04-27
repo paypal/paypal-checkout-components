@@ -676,6 +676,7 @@ export type ButtonPropsInputs = {
   shopperSessionId?: string,
   nonce: string,
   enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
+  disableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
