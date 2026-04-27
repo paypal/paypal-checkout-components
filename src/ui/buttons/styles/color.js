@@ -54,12 +54,20 @@ export const buttonColorStyle = `
             background: #54B4E0;
             overflow: inherit;
         }
+
+        .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:hover {
+            background: #0073E0;
+        }
     }
     
     @media (hover:hover) {
         .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:active {
             background: #3DB5FF;
             overflow: inherit;
+        }
+
+        .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:active {
+            background: #0074FF;
         }
     }
 
