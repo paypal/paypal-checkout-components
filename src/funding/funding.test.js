@@ -444,6 +444,7 @@ describe("Funding eligibility", () => {
           ...defaultMockFundingOptions.fundingEligibility,
           credit: {
             eligible: false,
+            branded: false,
             vaultable: false,
           },
         },
