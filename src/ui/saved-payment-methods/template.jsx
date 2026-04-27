@@ -3,10 +3,10 @@
 
 import { node, Fragment, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 
+import { PPRebrandLogo } from "@paypal/sdk-logos/src";
+
 import type { SavedPaymentMethodsStyleInputs } from "../../zoid/saved-payment-methods/props";
 import { validateSavedPaymentMethodsStyle } from "../../zoid/saved-payment-methods/util";
-
-import { PPRebrandLogo } from "@paypal/sdk-logos/src";
 
 export type SavedPaymentMethodsServerRenderProps = {|
   nonce?: string,
@@ -47,7 +47,7 @@ const DEFAULT_STYLE_CONFIG = {
   },
 };
 
-function getStyleConfig(style?: SavedPaymentMethodsStyleInputs) {
+function getStyleConfig(style?: SavedPaymentMethodsStyleInputs): Object {
   const s = style || {};
   return {
     root: {
@@ -73,12 +73,13 @@ function getStyleConfig(style?: SavedPaymentMethodsStyleInputs) {
 export function SavedPaymentMethods(
   props: SavedPaymentMethodsServerRenderProps
 ): ElementNode {
-  const styleConfig = getStyleConfig(props.style);
+  const { nonce, style } = props;
+  const styleConfig = getStyleConfig(style);
   const shouldRenderMessageContainer = Boolean(styleConfig.layout.message);
 
   return (
     <Fragment>
-      <style nonce={props.nonce}>
+      <style nonce={nonce}>
         {`
             body {
               margin: 0;
