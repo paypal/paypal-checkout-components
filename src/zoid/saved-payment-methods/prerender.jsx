@@ -25,7 +25,10 @@ PrerenderedSavedPaymentMethodsProps): ChildType {
         <meta charset="utf-8" />
       </head>
       <body>
-        <SavedPaymentMethods nonce={nonce} style={style} />
+        <SavedPaymentMethods
+          nonce={typeof nonce === "string" ? nonce : undefined}
+          style={style}
+        />
       </body>
     </html>
   );

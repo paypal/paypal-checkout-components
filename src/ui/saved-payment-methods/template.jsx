@@ -1,8 +1,7 @@
 /* @flow */
 /** @jsx node */
 
-import { node, Fragment, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
-
+import { node, type ElementNode } from "@krakenjs/jsx-pragmatic/src";
 import { PPRebrandLogo } from "@paypal/sdk-logos/src";
 
 import type { SavedPaymentMethodsStyleInputs } from "../../zoid/saved-payment-methods/props";
@@ -78,7 +77,7 @@ export function SavedPaymentMethods(
   const shouldRenderMessageContainer = Boolean(styleConfig.layout.message);
 
   return (
-    <Fragment>
+    <div>
       <style nonce={nonce}>
         {`
             body {
@@ -251,6 +250,6 @@ export function SavedPaymentMethods(
           )}
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 }
