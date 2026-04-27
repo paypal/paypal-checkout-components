@@ -4,8 +4,9 @@
 import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import type { ZoidProps } from "@krakenjs/zoid/src";
 
-import { type SavedPaymentMethodsProps } from "./props";
 import { SavedPaymentMethods } from "../../ui/saved-payment-methods/template";
+
+import { type SavedPaymentMethodsProps } from "./props";
 
 type PrerenderedSavedPaymentMethodsProps = {|
   nonce: ?string,
