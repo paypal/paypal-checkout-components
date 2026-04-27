@@ -4,6 +4,8 @@
 import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import type { ZoidProps } from "@krakenjs/zoid/src";
 
+import { SavedPaymentMethods } from "../../ui/saved-payment-methods/template";
+
 import { type SavedPaymentMethodsProps } from "./props";
 
 type PrerenderedSavedPaymentMethodsProps = {|
@@ -13,32 +15,20 @@ type PrerenderedSavedPaymentMethodsProps = {|
 
 export function PrerenderedSavedPaymentMethods({
   nonce,
+  props,
 }: // props,
 PrerenderedSavedPaymentMethodsProps): ChildType {
+  const { style } = props;
   return (
     <html>
       <head>
-        <style nonce={nonce}>
-          {`
-            * {
-              box-sizing: border-box;
-            }
-            body {
-              margin: 0;
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            }
-            .saved-payment-methods-loading {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              height: 100vh;
-              color: #999;
-            }
-          `}
-        </style>
+        <meta charset="utf-8" />
       </head>
       <body>
-        <div class="saved-payment-methods-loading">...</div>
+        <SavedPaymentMethods
+          nonce={typeof nonce === "string" ? nonce : undefined}
+          style={style}
+        />
       </body>
     </html>
   );

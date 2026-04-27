@@ -424,6 +424,25 @@ describe("app switch resume flow", () => {
       expect(isAppSwitchResumeFlow()).toEqual(true);
     });
 
+    test("#onCancel&hash?token=... - XOOS malformed URL with token after merchant hash", () => {
+      // DTXOOS-3741: XOOS appends ?token=... after the merchant's hash fragment,
+      // producing hash?token=EC-123. The embedded ? must be normalized to & so that
+      // parseQuery can extract the token correctly.
+      vi.spyOn(window, "location", "get").mockReturnValue({
+        hash: `#onCancel&hash?token=${orderID}&button_session_id=${buttonSessionID}`,
+        search: "",
+      });
+
+      const params = getAppSwitchResumeParams();
+
+      expect(params).toEqual({
+        buttonSessionID,
+        checkoutState: "onCancel",
+        orderID,
+      });
+      expect(isAppSwitchResumeFlow()).toEqual(true);
+    });
+
     test("#onApprove?token=...&hash?param=value - native app return with ? delimiter and merchant hash containing ?", () => {
       // Native app uses ? delimiter, and merchant hash also contains ?.
       // The first ? splits action from params; the second ? is just part of param values.

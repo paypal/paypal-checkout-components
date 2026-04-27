@@ -1,3 +1,9 @@
+## <small>5.0.412 (2026-04-27)</small>
+
+* feature(SavedPaymentMethods): Adding loading template for prerender (#2624) ([aba46b6](https://github.com/paypal/paypal-checkout-components/commit/aba46b6)), closes [#2624](https://github.com/paypal/paypal-checkout-components/issues/2624) [#2605](https://github.com/paypal/paypal-checkout-components/issues/2605)
+
+
+
 ## <small>5.0.411 (2026-04-08)</small>
 
 * chore(release): 5.0.410 🎉 ([6d3ba5e](https://github.com/paypal/paypal-checkout-components/commit/6d3ba5e))
