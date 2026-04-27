@@ -118,3 +118,9 @@ export const MESSAGE_ALIGN = {
   LEFT: ("left": "left"),
   RIGHT: ("right": "right"),
 };
+
+// Alternative mark for the PayPal funding source (monogram icon).
+// Not a real funding source - only used in rebrand marks rendering.
+export const MARKS_FUNDING = {
+  PP: ("pp": "pp"),
+};

@@ -3,6 +3,8 @@
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { inlineMemoize } from "@krakenjs/belter/src";
 
+import { MARKS_FUNDING } from "../constants";
+
 import { type FundingSourceConfig } from "./common";
 import { getPayPalConfig } from "./paypal";
 import { getVenmoConfig } from "./venmo";
@@ -29,6 +31,7 @@ import { getMercadopagoConfig } from "./mercadopago";
 import { getMultibancoConfig } from "./multibanco";
 import { getSatispayConfig } from "./satispay";
 import { getPaidyConfig } from "./paidy";
+import { getPPConfig } from "./pp";
 
 export function getFundingConfig(): {
   [$Values<typeof FUNDING>]: ?FundingSourceConfig,
@@ -61,6 +64,18 @@ export function getFundingConfig(): {
       [FUNDING.MULTIBANCO]: getMultibancoConfig(),
       [FUNDING.SATISPAY]: getSatispayConfig(),
       [FUNDING.PAIDY]: getPaidyConfig(),
+    };
+  });
+}
+
+export function getMarksFundingConfig(): {|
+  [$Values<typeof FUNDING>]: ?FundingSourceConfig,
+|} {
+  // $FlowFixMe - intentionally adding MARKS_FUNDING.PP key beyond standard FUNDING enum keys
+  return inlineMemoize(getMarksFundingConfig, () => {
+    return {
+      ...getFundingConfig(),
+      [MARKS_FUNDING.PP]: getPPConfig(),
     };
   });
 }

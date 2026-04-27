@@ -11,7 +11,7 @@ import { getLocale, type FundingEligibilityType } from "@paypal/sdk-client/src";
 import { toPx } from "@krakenjs/belter/src";
 
 import type { Experiment } from "../types";
-import { getFundingConfig } from "../funding";
+import { getMarksFundingConfig } from "../funding";
 import { CLASS } from "../constants";
 
 type MarkOptions = {|
@@ -27,7 +27,7 @@ function Mark({
   experiment,
   env,
 }: MarkOptions): ChildNodeType {
-  const fundingConfig = getFundingConfig()[fundingSource];
+  const fundingConfig = getMarksFundingConfig()[fundingSource];
 
   if (!fundingConfig) {
     throw new Error(`Can not find funding config for ${fundingSource}`);
