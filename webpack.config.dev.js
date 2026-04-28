@@ -34,10 +34,10 @@ const WEBPACK_CONFIG_DEV: WebpackConfig = getWebpackConfig({
     __PAYPAL_CHECKOUT__: {
       ...testGlobals.__PAYPAL_CHECKOUT__,
       __URI__: {
-        __CHECKOUT__: `/demo/dev/checkout.htm`,
-        __BUTTONS__: `/demo/dev/button.htm`,
-        __MENU__: `/demo/dev/menu.htm`,
-        __CARD_FIELD__: `/demo/dev/cardfield.htm`,
+        __CHECKOUT__: `/checkout.htm`,
+        __BUTTONS__: `/button.htm`,
+        __MENU__: `/menu.htm`,
+        __CARD_FIELD__: `/cardfield.htm`,
         __MESSAGE_MODAL__: `https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js`,
       },
     },

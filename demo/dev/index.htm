@@ -945,10 +945,10 @@
 
         // Build button config
         const style = {
-          layout: STATE.layout,
           shape: STATE.shape,
           tagline: false,
         };
+        if (!fundingSource) style.layout = STATE.layout;
         if (STATE.fixedHeight) style.height = STATE.height;
         if (STATE.color) style.color = STATE.color;
         if (STATE.label) style.label = STATE.label;

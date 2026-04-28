@@ -8,11 +8,14 @@ import {
 } from "@paypal/sdk-logos/src";
 
 import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
-import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
+import {
+  DEFAULT_APM_FUNDING_CONFIG,
+  type FundingSourceConfig,
+} from "../common";
 
 export function getItauConfig(): FundingSourceConfig {
   return {
-    ...DEFAULT_FUNDING_CONFIG,
+    ...DEFAULT_APM_FUNDING_CONFIG,
 
     layouts: [BUTTON_LAYOUT.HORIZONTAL, BUTTON_LAYOUT.VERTICAL],
 
@@ -43,7 +46,7 @@ export function getItauConfig(): FundingSourceConfig {
     },
 
     secondaryColors: {
-      ...DEFAULT_FUNDING_CONFIG.secondaryColors,
+      ...DEFAULT_APM_FUNDING_CONFIG.secondaryColors,
 
       [DEFAULT]: BUTTON_COLOR.DEFAULT,
       [BUTTON_COLOR.GOLD]: BUTTON_COLOR.DEFAULT,
