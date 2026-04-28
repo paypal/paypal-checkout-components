@@ -139,8 +139,6 @@ export function getResponsiveStyleVariables({
   );
   let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
-  const pillBorderRadius = Math.ceil(buttonHeight / 2);
-
   if (shouldApplyRebrandedStyles) {
     labelHeight = roundUp(
       perc(buttonHeight, REBRAND_LABEL_HEIGHT_RATIO * 100),
@@ -160,7 +158,6 @@ export function getResponsiveStyleVariables({
     textPercPercentage,
     smallerLabelHeight,
     labelHeight,
-    pillBorderRadius,
     gap,
   };
 
@@ -259,8 +256,6 @@ export function getDisableMaxHeightResponsiveStyleVariables({
 
   const gap = getGap(buttonHeight);
 
-  const pillBorderRadius = Math.ceil(buttonHeight / 2);
-
   const styleVariables = {
     disableHeightStyle,
     buttonHeight,
@@ -268,7 +263,6 @@ export function getDisableMaxHeightResponsiveStyleVariables({
     fontSize,
     marginTop,
     spinnerSize,
-    pillBorderRadius,
     APMHeight,
     applePayHeight,
     gap,

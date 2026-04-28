@@ -391,7 +391,6 @@ const generateDisableMaxHeightStyles = ({
         fontSize,
         marginTop,
         spinnerSize,
-        pillBorderRadius,
         APMHeight,
         applePayHeight,
         gap,
@@ -459,14 +458,14 @@ const generateDisableMaxHeightStyles = ({
               }
 
               .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
-                --btn-radius: ${pillBorderRadius}px;
-                border-radius: ${pillBorderRadius}px;
+                --btn-radius: 9999px;
+                border-radius: 9999px;
               }
 
               .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL}
               .menu-button {
-                border-top-right-radius: ${pillBorderRadius}px;
-                border-bottom-right-radius: ${pillBorderRadius}px;
+                border-top-right-radius: 9999px;
+                border-bottom-right-radius: 9999px;
               }
 
               .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} 
@@ -534,7 +533,6 @@ const generateRebrandedButtonSizeStyles = ({
       const isLastSizeBucket = sizeIndex === redesignSizeKeys.length - 1;
       const {
         buttonHeight,
-        pillBorderRadius,
         gap,
         fontSize,
         defaultHeight,
@@ -602,6 +600,58 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.NUMBER
       }-${BUTTON_NUMBER.MULTIPLE}:last-child {
               margin-bottom: 0;
+          }
+
+          .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
+            ${
+              borderRadius && isBorderRadiusNumber(borderRadius)
+                ? `--btn-radius: ${borderRadius}px; border-radius: ${borderRadius}px`
+                : ""
+            }
+          }
+
+          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
+            --btn-radius: 0px;
+            border-radius: 0px;
+          }
+
+          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
+              --btn-radius: 4px;
+              border-radius: 4px;
+          }
+
+          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
+              --btn-radius: 9999px;
+              border-radius: 9999px;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
+            ${
+              borderRadius && isBorderRadiusNumber(borderRadius)
+                ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
+                : ""
+            }
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
+        BUTTON_SHAPE.SHARP
+      } .menu-button {
+              border-top-right-radius: 0px;
+              border-bottom-right-radius: 0px;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
+        BUTTON_SHAPE.RECT
+      } .menu-button {
+              border-top-right-radius: 4px;
+              border-bottom-right-radius: 4px;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
+        BUTTON_SHAPE.PILL
+      } .menu-button {
+              border-top-right-radius: 9999px;
+              border-bottom-right-radius: 9999px;
           }
         }
 
@@ -754,59 +804,7 @@ const generateRebrandedButtonSizeStyles = ({
       } .${CLASS.SPACE} {
               line-height: ${perc(buttonHeight, 50) + 5}px;
           }
-          
-          .${CLASS.BUTTON}.${CLASS.BORDER_RADIUS} {
-            ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
-                ? `--btn-radius: ${borderRadius}px; border-radius: ${borderRadius}px`
-                : ""
-            }
-          }
 
-          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.SHARP} {
-            --btn-radius: 0px;
-            border-radius: 0px;
-          }
-
-          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} {
-              --btn-radius: 4px;
-              border-radius: 4px;
-          }
-
-          .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
-              --btn-radius: ${pillBorderRadius}px;
-              border-radius: ${pillBorderRadius}px;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
-            ${
-              borderRadius && isBorderRadiusNumber(borderRadius)
-                ? `border-top-right-radius: ${borderRadius}px; border-bottom-right-radius: ${borderRadius}px`
-                : ""
-            }
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.SHARP
-      } .menu-button {
-              border-top-right-radius: 0px;
-              border-bottom-right-radius: 0px;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.RECT
-      } .menu-button {
-              border-top-right-radius: 4px;
-              border-bottom-right-radius: 4px;
-          }
-
-          .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${
-        BUTTON_SHAPE.PILL
-      } .menu-button {
-              border-top-right-radius: ${pillBorderRadius}px;
-              border-bottom-right-radius: ${pillBorderRadius}px;
-          }
-          
           .${CLASS.TAGLINE} .${CLASS.TEXT} {
               height: ${perc(buttonHeight, BUTTON_RELATIVE_STYLE.TAGLINE)}px;
               line-height: ${perc(
@@ -905,6 +903,10 @@ export function buttonResponsiveStyle({
         --btn-radius: 4px;
         border-radius: 4px;
     }
+    .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
+        --btn-radius: 9999px;
+        border-radius: 9999px;
+    }
 
     // menu button - border radius
     .${CLASS.BUTTON_ROW}.${CLASS.BORDER_RADIUS} .menu-button {
@@ -923,6 +925,10 @@ export function buttonResponsiveStyle({
     .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.RECT} .menu-button {
         border-top-right-radius: 4px;
         border-bottom-right-radius: 4px;
+    }
+    .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} .menu-button {
+        border-top-right-radius: 9999px;
+        border-bottom-right-radius: 9999px;
     }
 
     .${CLASS.CARD} {
