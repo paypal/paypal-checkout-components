@@ -118,3 +118,9 @@ export const MESSAGE_ALIGN = {
   LEFT: ("left": "left"),
   RIGHT: ("right": "right"),
 };
+
+// Mark variation options for funding sources
+export const MARK_VARIATIONS = {
+  WORDMARK: ("wordmark": "wordmark"),
+  MONOGRAM: ("monogram": "monogram"),
+};

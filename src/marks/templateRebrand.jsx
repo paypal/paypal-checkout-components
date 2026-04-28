@@ -12,10 +12,12 @@ import { toPx } from "@krakenjs/belter/src";
 
 import type { Experiment } from "../types";
 import { getFundingConfig } from "../funding";
-import { CLASS } from "../constants";
+import { CLASS, MARK_VARIATIONS } from "../constants";
+import { PayPalMonogramMark } from "../funding/paypal/monogramMark";
 
 type MarkOptions = {|
   fundingSource: $Values<typeof FUNDING>,
+  variationName?: string,
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -23,6 +25,7 @@ type MarkOptions = {|
 
 function Mark({
   fundingSource,
+  variationName,
   fundingEligibility,
   experiment,
   env,
@@ -53,7 +56,8 @@ function Mark({
     backgroundClasses += " paypal-mark-rebrand-own-border-and-padding";
   }
 
-  return (
+  // Helper function to render wordmark (Logo)
+  const renderWordmark = () => (
     <div class={backgroundClasses}>
       {marksDefined && MarkLogo ? (
         <MarkLogo shouldApplyRebrandedStyles={true} />
@@ -68,11 +72,36 @@ function Mark({
       )}
     </div>
   );
+
+  // Helper function to render monogram
+  const renderMonogram = () => (
+    <div class="paypal-mark-rebrand paypal-mark-rebrand-white">
+      <PayPalMonogramMark />
+    </div>
+  );
+
+  // Handle PayPal variations
+  if (fundingSource === FUNDING.PAYPAL) {
+    if (
+      variationName === MARK_VARIATIONS.WORDMARK ||
+      variationName === undefined
+    ) {
+      return renderWordmark();
+    }
+
+    if (variationName === MARK_VARIATIONS.MONOGRAM) {
+      return renderMonogram();
+    }
+  }
+
+  // Default logic for all other cases
+  return renderWordmark();
 }
 
 type MarksElementOptions = {|
   fundingEligibility: FundingEligibilityType,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  variationName?: string,
   height: number,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -81,6 +110,7 @@ type MarksElementOptions = {|
 export function MarksElementRebrand({
   fundingEligibility,
   fundingSources,
+  variationName,
   experiment,
   env,
 }: MarksElementOptions): ElementNode {
@@ -167,6 +197,7 @@ export function MarksElementRebrand({
           <Mark
             fundingEligibility={fundingEligibility}
             fundingSource={fundingSource}
+            variationName={variationName}
             experiment={experiment}
             env={env}
           />

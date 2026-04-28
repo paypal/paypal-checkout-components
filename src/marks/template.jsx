@@ -16,6 +16,7 @@ import { CLASS } from "../constants";
 
 type MarkOptions = {|
   fundingSource: $Values<typeof FUNDING>,
+  variationName?: string,
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -23,6 +24,7 @@ type MarkOptions = {|
 
 function Mark({
   fundingSource,
+  variationName, // eslint-disable-line no-unused-vars
   fundingEligibility,
   experiment,
   env,
@@ -56,6 +58,7 @@ function Mark({
 type MarksElementOptions = {|
   fundingEligibility: FundingEligibilityType,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  variationName?: string,
   height: number,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -64,6 +67,7 @@ type MarksElementOptions = {|
 export function MarksElement({
   fundingEligibility,
   fundingSources,
+  variationName,
   height,
   experiment,
   env,
@@ -123,6 +127,7 @@ export function MarksElement({
         <Mark
           fundingEligibility={fundingEligibility}
           fundingSource={fundingSource}
+          variationName={variationName}
           experiment={experiment}
           env={env}
         />
