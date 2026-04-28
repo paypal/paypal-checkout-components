@@ -42,9 +42,7 @@ export function TagLine({
     <div class={CLASS.TAGLINE}>
       {tagline ? (
         <Fragment>
-          <span>
-            {tagline.Component ? <tagline.Component /> : tagline.text}
-          </span>
+          {tagline.Component ? <tagline.Component /> : tagline.text}
           {tagline.tracking && tagline.tracking.impression && (
             <TrackingBeacon url={tagline.tracking.impression} nonce={nonce} />
           )}

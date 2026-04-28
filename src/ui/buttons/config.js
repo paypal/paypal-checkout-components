@@ -27,6 +27,22 @@ export const BUTTON_RELATIVE_STYLE = {
   VERTICAL_MARGIN: 30,
 };
 
+// Rebrand label container height as a ratio of button height (0.5 = 50%).
+// The PayPal logo's translateY is derived from this value to keep the logo
+// visually centered. If this ratio changes, the translateY percentage must
+// be recalculated: translateY = LOGO_VISUAL_OFFSET / LABEL_HEIGHT_RATIO.
+// Additionally, the Venmo and Card glyph viewBox/height in @paypal/sdk-logos
+// must be updated to match the new label container height.
+export const REBRAND_LABEL_HEIGHT_RATIO = 0.5;
+
+// Fixed visual offset of the PayPal logo as a fraction of total button height.
+// translateY percentage = LOGO_VISUAL_OFFSET / LABEL_HEIGHT_RATIO
+// Current: 0.06 / 0.5 = 0.12 (12%)
+const LOGO_VISUAL_OFFSET = 0.06;
+export const REBRAND_LOGO_TRANSLATE_Y: number = Math.round(
+  (LOGO_VISUAL_OFFSET / REBRAND_LABEL_HEIGHT_RATIO) * 100
+);
+
 type ButtonStyleMap = {
   [$Values<typeof BUTTON_SIZE>]: {|
     defaultWidth: number,
@@ -53,8 +69,8 @@ type ButtonRedesignStyleMap = {
     maxHeight: number,
     minWidth: number,
     maxWidth: number,
-    gap?: number,
-    fontSize?: number,
+    gap: number,
+    fontSize: number,
   |},
 };
 
@@ -169,7 +185,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     minWidth: 50,
     maxWidth: 75,
     gap: 3,
-    fontSize: 12,
+    fontSize: 10,
   },
 
   [BUTTON_REDESIGN_SIZE.TINY]: {
@@ -179,7 +195,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     minWidth: 75,
     maxWidth: 200,
     gap: 3,
-    fontSize: 12,
+    fontSize: 10,
   },
 
   [BUTTON_REDESIGN_SIZE.SMALL]: {
@@ -188,8 +204,8 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     maxHeight: 35,
     minWidth: 200,
     maxWidth: 250,
-    gap: 3,
-    fontSize: 14,
+    gap: 4,
+    fontSize: 12,
   },
 
   [BUTTON_REDESIGN_SIZE.MEDIUM_SMALL]: {
@@ -199,7 +215,7 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     minWidth: 250,
     maxWidth: 300,
     gap: 4,
-    fontSize: 16,
+    fontSize: 14,
   },
 
   [BUTTON_REDESIGN_SIZE.MEDIUM_BIG]: {
@@ -208,8 +224,8 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     maxHeight: 45,
     minWidth: 300,
     maxWidth: 350,
-    gap: 4,
-    fontSize: 16,
+    gap: 5,
+    fontSize: 14,
   },
 
   [BUTTON_REDESIGN_SIZE.LARGE_SMALL]: {
@@ -219,17 +235,17 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     minWidth: 350,
     maxWidth: 425,
     gap: 5,
-    fontSize: 18,
+    fontSize: 16,
   },
 
   [BUTTON_REDESIGN_SIZE.LARGE_BIG]: {
-    defaultHeight: 45,
+    defaultHeight: 50,
     minHeight: 50,
     maxHeight: 55,
     minWidth: 425,
     maxWidth: 500,
     gap: 5,
-    fontSize: 20,
+    fontSize: 18,
   },
 
   [BUTTON_REDESIGN_SIZE.XL_SMALL]: {
@@ -237,28 +253,36 @@ export const BUTTON_REDESIGN_STYLE: ButtonRedesignStyleMap = {
     minHeight: 55,
     maxHeight: 60,
     minWidth: 500,
-    maxWidth: 550,
+    maxWidth: 750,
     gap: 6,
-    fontSize: 22,
+    fontSize: 18,
   },
+};
 
-  [BUTTON_REDESIGN_SIZE.XL_BIG]: {
-    defaultHeight: 55,
+export const BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE = {
+  ...BUTTON_REDESIGN_STYLE,
+  XL_BIG: {
     minHeight: 60,
     maxHeight: 65,
-    minWidth: 550,
-    maxWidth: 650,
+    gap: 6,
+    fontSize: 20,
+  },
+  XXL_SMALL: {
+    minHeight: 65,
+    maxHeight: 70,
+    gap: 7,
+    fontSize: 22,
+  },
+  XXL_BIG: {
+    minHeight: 70,
+    maxHeight: 75,
     gap: 7,
     fontSize: 24,
   },
-
-  [BUTTON_REDESIGN_SIZE.XXL]: {
-    defaultHeight: 55,
-    minHeight: 65,
-    maxHeight: 100,
-    minWidth: 650,
-    maxWidth: 750,
-    gap: 7,
+  XXXL: {
+    minHeight: 75,
+    maxHeight: 200,
+    gap: 8,
     fontSize: 26,
   },
 };

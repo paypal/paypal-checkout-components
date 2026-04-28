@@ -7,6 +7,7 @@ import {
   BUTTON_DISABLE_MAX_HEIGHT_STYLE,
   BUTTON_SIZE_STYLE,
   BUTTON_REDESIGN_STYLE,
+  REBRAND_LABEL_HEIGHT_RATIO,
 } from "../config";
 import {
   BUTTON_SIZE,
@@ -32,7 +33,7 @@ function getLabelHeight({
   let labelHeight = max(roundUp(perc(height, labelPercPercentage) + 5, 2), 12);
 
   if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(height, 76), 1);
+    labelHeight = roundUp(perc(height, REBRAND_LABEL_HEIGHT_RATIO * 100), 1);
   }
 
   return parseInt(labelHeight, 10);
@@ -141,7 +142,10 @@ export function getResponsiveStyleVariables({
   const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
   if (shouldApplyRebrandedStyles) {
-    labelHeight = roundUp(perc(buttonHeight, 76), 1);
+    labelHeight = roundUp(
+      perc(buttonHeight, REBRAND_LABEL_HEIGHT_RATIO * 100),
+      1
+    );
     // smallerLabelHeight gets triggered at widths < 320px
     // We will need to investigate why the labels need to get significantly smaller at this breakpoint
     smallerLabelHeight = labelHeight;
@@ -165,12 +169,12 @@ export function getResponsiveStyleVariables({
 
 export function getResponsiveRebrandedStyleVariables({
   height,
-  redesign_size,
+  redesignSize,
 }: {|
   height?: ?number,
-  redesign_size: $Values<typeof BUTTON_REDESIGN_SIZE>,
+  redesignSize: $Values<typeof BUTTON_REDESIGN_SIZE>,
 |}): Object {
-  const style = BUTTON_REDESIGN_STYLE[redesign_size];
+  const style = BUTTON_REDESIGN_STYLE[redesignSize];
   const {
     minHeight,
     maxHeight,
