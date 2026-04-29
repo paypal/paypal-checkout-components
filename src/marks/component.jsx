@@ -29,7 +29,11 @@ import type {
   OnShippingAddressChange,
   OnShippingOptionsChange,
 } from "../ui/buttons/props";
-import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
+import {
+  BUTTON_LAYOUT,
+  BUTTON_FLOW,
+  PAYPAL_MARK_VARIATIONS,
+} from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
   supportsVenmoPopups,
@@ -52,7 +56,7 @@ type MarksInstance = {|
 
 type MarksProps = {|
   fundingSource?: ?$Values<typeof FUNDING>,
-  paypalMarkVariation?: string,
+  paypalMarkVariation?: ?$Values<typeof PAYPAL_MARK_VARIATIONS>,
   onShippingChange?: OnShippingChange,
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,

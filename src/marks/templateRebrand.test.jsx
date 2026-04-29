@@ -38,7 +38,7 @@ vi.mock("../funding/paypal/monogramMark", () => ({
 
 describe("templateRebrand Mark function variation logic", () => {
   const mockFundingEligibility = {
-    paypal: { eligible: true },
+    paypal: { eligible: true, branded: true },
   };
 
   const baseProps = {
@@ -123,7 +123,7 @@ describe("templateRebrand Mark function variation logic", () => {
 
   test("should fallback to wordmark for unrecognized paypalMarkVariation values with FUNDING.PAYPAL", () => {
     // $FlowFixMe - intentionally testing invalid value
-    const result = getMarkResult(FUNDING.PAYPAL, "invalid-variation");
+    const result = getMarkResult(FUNDING.PAYPAL, ("invalid-variation": string));
 
     // Should pass through the invalid value (fallback handled in Mark component)
     expect(result).toBeDefined();
@@ -194,7 +194,7 @@ describe("templateRebrand Mark function variation logic", () => {
 
   test("should handle edge case: empty string paypalMarkVariation", () => {
     // $FlowFixMe - testing edge case
-    const result = getMarkResult(FUNDING.PAYPAL, "");
+    const result = getMarkResult(FUNDING.PAYPAL, ("": string));
 
     // Empty string should be passed through (handled in Mark component)
     expect(result).toBeDefined();
