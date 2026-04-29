@@ -818,7 +818,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                     const payload = result
                       ? {
                           ...queryItems,
-                          queryItems,
                           path: result.path,
                           hash: result.hash,
                         }
