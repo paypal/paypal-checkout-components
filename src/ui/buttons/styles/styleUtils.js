@@ -18,6 +18,26 @@ import {
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
 
+// used for smart stack to determine font size based on individual button height, not based on the overall container height which is how the responsive styles work
+export function getRebrandFontSize(buttonHeight: number): number {
+  if (buttonHeight < 30) {
+    return 10;
+  }
+  if (buttonHeight < 35) {
+    return 12;
+  }
+  if (buttonHeight < 45) {
+    return 14;
+  }
+  if (buttonHeight < 50) {
+    return 16;
+  }
+  if (buttonHeight < 55) {
+    return 18;
+  }
+  return 20;
+}
+
 const WALLET_BUTTON_PERC = 60;
 
 function getLabelHeight({
@@ -139,6 +159,8 @@ export function getResponsiveStyleVariables({
   );
   let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
+  const pillBorderRadius = Math.ceil(buttonHeight / 2);
+
   if (shouldApplyRebrandedStyles) {
     labelHeight = roundUp(
       perc(buttonHeight, REBRAND_LABEL_HEIGHT_RATIO * 100),
@@ -158,6 +180,7 @@ export function getResponsiveStyleVariables({
     textPercPercentage,
     smallerLabelHeight,
     labelHeight,
+    pillBorderRadius,
     gap,
   };
 
@@ -183,7 +206,6 @@ export function getResponsiveRebrandedStyleVariables({
   } = style;
 
   const buttonHeight = height || defaultHeight;
-  const pillBorderRadius = Math.ceil(buttonHeight / 2);
 
   const minDualWidth = Math.max(
     Math.round(
@@ -195,7 +217,6 @@ export function getResponsiveRebrandedStyleVariables({
   const styleVariables = {
     style,
     buttonHeight,
-    pillBorderRadius,
     gap,
     defaultHeight,
     minHeight,
@@ -256,6 +277,8 @@ export function getDisableMaxHeightResponsiveStyleVariables({
 
   const gap = getGap(buttonHeight);
 
+  const pillBorderRadius = Math.ceil(buttonHeight / 2);
+
   const styleVariables = {
     disableHeightStyle,
     buttonHeight,
@@ -263,6 +286,7 @@ export function getDisableMaxHeightResponsiveStyleVariables({
     fontSize,
     marginTop,
     spinnerSize,
+    pillBorderRadius,
     APMHeight,
     applePayHeight,
     gap,

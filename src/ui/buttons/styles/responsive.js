@@ -27,6 +27,7 @@ import {
   getResponsiveStyleVariables,
   getDisableMaxHeightResponsiveStyleVariables,
   getResponsiveRebrandedStyleVariables,
+  getRebrandFontSize,
 } from "./styleUtils";
 
 const FIRST_BUTTON_PERC = 50;
@@ -391,6 +392,7 @@ const generateDisableMaxHeightStyles = ({
         fontSize,
         marginTop,
         spinnerSize,
+        pillBorderRadius,
         APMHeight,
         applePayHeight,
         gap,
@@ -458,14 +460,13 @@ const generateDisableMaxHeightStyles = ({
               }
 
               .${CLASS.BUTTON}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL} {
-                --btn-radius: 9999px;
-                border-radius: 9999px;
+                border-radius: ${pillBorderRadius}px;
               }
 
               .${CLASS.BUTTON_ROW}.${CLASS.SHAPE}-${BUTTON_SHAPE.PILL}
               .menu-button {
-                border-top-right-radius: 9999px;
-                border-bottom-right-radius: 9999px;
+                border-top-right-radius: ${pillBorderRadius}px;
+                border-bottom-right-radius: ${pillBorderRadius}px;
               }
 
               .${CLASS.BUTTON_ROW}.${CLASS.WALLET}.${CLASS.WALLET_MENU} 
@@ -662,7 +663,7 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
         CLASS.SPACE
       } {
-              font-size: ${fontSize}px;
+              font-size: ${getRebrandFontSize(buttonHeight)}px;
               line-height: 1.2;
               margin: 0;
           }
