@@ -105,10 +105,9 @@ export function MarksElementRebrand({
   fundingEligibility,
   fundingSources,
   paypalMarkVariation,
-  height,
   experiment,
   env,
-}: MarksElementRebrandOptions): ElementNode {
+}: MarksElementOptions): ElementNode {
   // Rebrand dimensions: 32px height, 48px width
   const rebrandHeight = 32;
   const rebrandWidth = 48;
