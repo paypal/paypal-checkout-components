@@ -52,7 +52,7 @@ type MarksInstance = {|
 
 type MarksProps = {|
   fundingSource?: ?$Values<typeof FUNDING>,
-  variationName?: string,
+  paypalMarkVariation?: string,
   onShippingChange?: OnShippingChange,
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,
@@ -65,7 +65,7 @@ export type MarksComponent = (MarksProps) => MarksInstance;
 export const getMarksComponent: () => MarksComponent = memoize(() => {
   function Marks({
     fundingSource,
-    variationName,
+    paypalMarkVariation,
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
@@ -165,7 +165,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
                 <MarksElementRebrand
                   fundingEligibility={fundingEligibility}
                   fundingSources={fundingSources}
-                  variationName={variationName}
+                  paypalMarkVariation={paypalMarkVariation}
                   height={height}
                   experiment={experiment}
                   env={env}
@@ -174,7 +174,6 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
                 <MarksElement
                   fundingEligibility={fundingEligibility}
                   fundingSources={fundingSources}
-                  variationName={variationName}
                   height={height}
                   experiment={experiment}
                   env={env}

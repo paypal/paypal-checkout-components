@@ -12,12 +12,12 @@ import { toPx } from "@krakenjs/belter/src";
 
 import type { Experiment } from "../types";
 import { getFundingConfig } from "../funding";
-import { CLASS, MARK_VARIATIONS } from "../constants";
+import { CLASS, PAYPAL_MARK_VARIATIONS } from "../constants";
 import { PayPalMonogramMark } from "../funding/paypal/monogramMark";
 
 type MarkOptions = {|
   fundingSource: $Values<typeof FUNDING>,
-  variationName?: string,
+  paypalMarkVariation?: ?$Values<typeof PAYPAL_MARK_VARIATIONS>,
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -25,7 +25,7 @@ type MarkOptions = {|
 
 function Mark({
   fundingSource,
-  variationName,
+  paypalMarkVariation,
   fundingEligibility,
   experiment,
   env,
@@ -73,35 +73,29 @@ function Mark({
     </div>
   );
 
-  // Helper function to render monogram
-  const renderMonogram = () => (
+  // Helper function to render PayPal monogram
+  const renderPayPalMonogram = () => (
     <div class="paypal-mark-rebrand paypal-mark-rebrand-white">
       <PayPalMonogramMark />
     </div>
   );
 
-  // Handle PayPal variations
-  if (fundingSource === FUNDING.PAYPAL) {
-    if (
-      variationName === MARK_VARIATIONS.WORDMARK ||
-      variationName === undefined
-    ) {
-      return renderWordmark();
-    }
-
-    if (variationName === MARK_VARIATIONS.MONOGRAM) {
-      return renderMonogram();
-    }
+  // Handle PayPal variations - only check for monogram, everything else defaults to wordmark
+  if (
+    fundingSource === FUNDING.PAYPAL &&
+    paypalMarkVariation === PAYPAL_MARK_VARIATIONS.MONOGRAM
+  ) {
+    return renderPayPalMonogram();
   }
 
-  // Default logic for all other cases
+  // Default logic for all other cases (handles undefined, null, "wordmark", invalid values)
   return renderWordmark();
 }
 
 type MarksElementOptions = {|
   fundingEligibility: FundingEligibilityType,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  variationName?: string,
+  paypalMarkVariation?: ?$Values<typeof PAYPAL_MARK_VARIATIONS>,
   height: number,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -110,10 +104,11 @@ type MarksElementOptions = {|
 export function MarksElementRebrand({
   fundingEligibility,
   fundingSources,
-  variationName,
+  paypalMarkVariation,
+  height,
   experiment,
   env,
-}: MarksElementOptions): ElementNode {
+}: MarksElementRebrandOptions): ElementNode {
   // Rebrand dimensions: 32px height, 48px width
   const rebrandHeight = 32;
   const rebrandWidth = 48;
@@ -197,7 +192,7 @@ export function MarksElementRebrand({
           <Mark
             fundingEligibility={fundingEligibility}
             fundingSource={fundingSource}
-            variationName={variationName}
+            paypalMarkVariation={paypalMarkVariation}
             experiment={experiment}
             env={env}
           />
