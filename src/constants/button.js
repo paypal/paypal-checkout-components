@@ -119,8 +119,8 @@ export const MESSAGE_ALIGN = {
   RIGHT: ("right": "right"),
 };
 
-// PayPal mark variation options
-export const PAYPAL_MARK_VARIATIONS = {
+// Mark variation options (generic for future funding source support)
+export const MARK_VARIATIONS = {
   WORDMARK: ("wordmark": "wordmark"),
   MONOGRAM: ("monogram": "monogram"),
 };

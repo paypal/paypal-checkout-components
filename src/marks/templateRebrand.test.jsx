@@ -2,7 +2,7 @@
 import { describe, test, expect, vi } from "vitest";
 import { FUNDING, ENV } from "@paypal/sdk-constants/src";
 
-import { PAYPAL_MARK_VARIATIONS } from "../constants";
+import { MARK_VARIATIONS } from "../constants";
 
 import { MarksElementRebrand } from "./templateRebrand";
 
@@ -39,11 +39,11 @@ describe("templateRebrand Mark variation logic", () => {
   };
 
   // Helper to get the Mark component props
-  const getMarkProps = (fundingSource, paypalMarkVariation) => {
+  const getMarkProps = (fundingSource, markVariation) => {
     const element = MarksElementRebrand({
       ...baseProps,
       fundingSources: [fundingSource],
-      paypalMarkVariation,
+      markVariation,
     });
 
     const marksDiv = element.children.find(
@@ -54,48 +54,48 @@ describe("templateRebrand Mark variation logic", () => {
   };
 
   // 1. Monogram renders when variationName: "monogram" with FUNDING.PAYPAL
-  test("renders monogram when paypalMarkVariation is 'monogram' with FUNDING.PAYPAL", () => {
-    const props = getMarkProps(FUNDING.PAYPAL, PAYPAL_MARK_VARIATIONS.MONOGRAM);
+  test("renders monogram when markVariation is 'monogram' with FUNDING.PAYPAL", () => {
+    const props = getMarkProps(FUNDING.PAYPAL, MARK_VARIATIONS.MONOGRAM);
 
     expect(props.fundingSource).toBe(FUNDING.PAYPAL);
-    expect(props.paypalMarkVariation).toBe(PAYPAL_MARK_VARIATIONS.MONOGRAM);
+    expect(props.markVariation).toBe(MARK_VARIATIONS.MONOGRAM);
   });
 
   // 2. Wordmark renders when variationName is undefined or "wordmark"
-  test("renders wordmark when paypalMarkVariation is undefined", () => {
+  test("renders wordmark when markVariation is undefined", () => {
     const props = getMarkProps(FUNDING.PAYPAL, undefined);
 
     expect(props.fundingSource).toBe(FUNDING.PAYPAL);
-    expect(props.paypalMarkVariation).toBeUndefined();
+    expect(props.markVariation).toBeUndefined();
   });
 
-  test("renders wordmark when paypalMarkVariation is 'wordmark'", () => {
-    const props = getMarkProps(FUNDING.PAYPAL, PAYPAL_MARK_VARIATIONS.WORDMARK);
+  test("renders wordmark when markVariation is 'wordmark'", () => {
+    const props = getMarkProps(FUNDING.PAYPAL, MARK_VARIATIONS.WORDMARK);
 
     expect(props.fundingSource).toBe(FUNDING.PAYPAL);
-    expect(props.paypalMarkVariation).toBe(PAYPAL_MARK_VARIATIONS.WORDMARK);
+    expect(props.markVariation).toBe(MARK_VARIATIONS.WORDMARK);
   });
 
-  // 3. Non-PayPal funding sources ignore variationName entirely
-  test("ignores paypalMarkVariation for FUNDING.VENMO", () => {
-    const props = getMarkProps(FUNDING.VENMO, PAYPAL_MARK_VARIATIONS.MONOGRAM);
+  // 3. Non-PayPal funding sources ignore markVariation entirely
+  test("ignores markVariation for FUNDING.VENMO", () => {
+    const props = getMarkProps(FUNDING.VENMO, MARK_VARIATIONS.MONOGRAM);
 
     expect(props.fundingSource).toBe(FUNDING.VENMO);
-    expect(props.paypalMarkVariation).toBe(PAYPAL_MARK_VARIATIONS.MONOGRAM);
+    expect(props.markVariation).toBe(MARK_VARIATIONS.MONOGRAM);
   });
 
-  test("ignores paypalMarkVariation for FUNDING.CREDIT", () => {
-    const props = getMarkProps(FUNDING.CREDIT, PAYPAL_MARK_VARIATIONS.MONOGRAM);
+  test("ignores markVariation for FUNDING.CREDIT", () => {
+    const props = getMarkProps(FUNDING.CREDIT, MARK_VARIATIONS.MONOGRAM);
 
     expect(props.fundingSource).toBe(FUNDING.CREDIT);
-    expect(props.paypalMarkVariation).toBe(PAYPAL_MARK_VARIATIONS.MONOGRAM);
+    expect(props.markVariation).toBe(MARK_VARIATIONS.MONOGRAM);
   });
 
-  // 4. Fallback to wordmark for unrecognized variationName values
-  test("falls back to wordmark for unrecognized paypalMarkVariation values", () => {
+  // 4. Fallback to wordmark for unrecognized markVariation values
+  test("falls back to wordmark for unrecognized markVariation values", () => {
     const props = getMarkProps(FUNDING.PAYPAL, "invalid-variation");
 
     expect(props.fundingSource).toBe(FUNDING.PAYPAL);
-    expect(props.paypalMarkVariation).toBe("invalid-variation");
+    expect(props.markVariation).toBe("invalid-variation");
   });
 });

@@ -12,12 +12,12 @@ import { toPx } from "@krakenjs/belter/src";
 
 import type { Experiment } from "../types";
 import { getFundingConfig } from "../funding";
-import { CLASS, PAYPAL_MARK_VARIATIONS } from "../constants";
+import { CLASS, MARK_VARIATIONS } from "../constants";
 import { PayPalMonogramMark } from "../funding/paypal/monogramMark";
 
 type MarkOptions = {|
   fundingSource: $Values<typeof FUNDING>,
-  paypalMarkVariation?: ?$Values<typeof PAYPAL_MARK_VARIATIONS>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -25,7 +25,7 @@ type MarkOptions = {|
 
 function Mark({
   fundingSource,
-  paypalMarkVariation,
+  markVariation,
   fundingEligibility,
   experiment,
   env,
@@ -83,7 +83,7 @@ function Mark({
   // Handle PayPal variations - only check for monogram, everything else defaults to wordmark
   if (
     fundingSource === FUNDING.PAYPAL &&
-    paypalMarkVariation === PAYPAL_MARK_VARIATIONS.MONOGRAM
+    markVariation === MARK_VARIATIONS.MONOGRAM
   ) {
     return renderPayPalMonogram();
   }
@@ -95,7 +95,7 @@ function Mark({
 type MarksElementOptions = {|
   fundingEligibility: FundingEligibilityType,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
-  paypalMarkVariation?: ?$Values<typeof PAYPAL_MARK_VARIATIONS>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   height: number,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -104,7 +104,7 @@ type MarksElementOptions = {|
 export function MarksElementRebrand({
   fundingEligibility,
   fundingSources,
-  paypalMarkVariation,
+  markVariation,
   experiment,
   env,
 }: MarksElementOptions): ElementNode {
@@ -191,7 +191,7 @@ export function MarksElementRebrand({
           <Mark
             fundingEligibility={fundingEligibility}
             fundingSource={fundingSource}
-            paypalMarkVariation={paypalMarkVariation}
+            markVariation={markVariation}
             experiment={experiment}
             env={env}
           />
