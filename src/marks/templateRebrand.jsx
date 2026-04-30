@@ -184,6 +184,11 @@ export function MarksElementRebrand({
                     .paypal-mark-rebrand .paypal-logo:last-child {
                         margin-right: 0px;
                     }
+
+                    .paypal-mark-rebrand .paypal-logo-paypal-rebrand {
+                        padding-top: 2px;
+                        margin-right: ${toPx(rebrandHeight / 5)};
+                    }
                 `}
       </style>
       <div class="paypal-marks-rebrand">
