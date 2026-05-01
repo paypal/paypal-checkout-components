@@ -4,6 +4,10 @@ import { ENV } from "@paypal/sdk-constants/src";
 import { LOGO_CLASS } from "@paypal/sdk-logos/src";
 
 import { CLASS } from "../../../constants";
+import {
+  REBRAND_LABEL_HEIGHT_RATIO,
+  REBRAND_LOGO_TRANSLATE_Y,
+} from "../config";
 
 const MIN_VAULT_BUTTON_WIDTH = 250;
 
@@ -104,8 +108,8 @@ export const buttonStyle = `
 
     .${CLASS.BUTTON} .${CLASS.SPINNER} {
         position: absolute;
-        height: 40px;
-        width: 40px;
+        height: 50%;
+        aspect-ratio: 1;
         top: 50%;
         left: 50%;
         transform: translateX(-50%) translateY(-50%);
@@ -171,7 +175,7 @@ export const buttonRebrandStyle = `
         align-items: center;
         justify-content: center;
         flex-wrap: nowrap;
-        height: 76%;
+        height: ${REBRAND_LABEL_HEIGHT_RATIO * 100}%;
         min-width: 0px;
         position: relative;
     }
@@ -200,6 +204,19 @@ export const buttonRebrandStyle = `
         height: 100%;
     }
 
+    .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_REBRAND} {
+        // transform: translateY(${REBRAND_LOGO_TRANSLATE_Y}%);
+        transform: translateY(10%); //update me!!
+    }
+
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=wechatpay] .${CLASS.TEXT},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=satispay] .${CLASS.TEXT},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=giropay] .${CLASS.TEXT},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=paidy] .${CLASS.TEXT},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=trustly] .${CLASS.TEXT} {
+        transform: translateY(-1px);
+    }
+
     .${CLASS.BUTTON_REBRAND} .${CLASS.TAGLINE} {
         max-width: 100%;
         font-size: initial;
@@ -207,5 +224,6 @@ export const buttonRebrandStyle = `
         display: block;
         text-align: center;
         width: auto;
+        margin-top: 8px;
     }
 `;
