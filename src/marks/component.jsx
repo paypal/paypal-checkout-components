@@ -9,6 +9,7 @@ import {
   memoize,
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
+  getUserAgent,
 } from "@krakenjs/belter/src";
 import {
   PLATFORM,
@@ -28,14 +29,19 @@ import type {
   OnShippingAddressChange,
   OnShippingOptionsChange,
 } from "../ui/buttons/props";
-import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
+import { BUTTON_LAYOUT, BUTTON_FLOW, MARK_VARIATIONS } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
+  supportsVenmoPopups,
+  isSupportedNativeVenmoBrowser,
+} from "../funding/util";
+import {
   isSupportedNativeBrowser,
-  getVenmoEligibility,
+  getButtonExperiments,
 } from "../zoid/buttons/util";
 
 import { MarksElement } from "./template";
+import { MarksElementRebrand } from "./templateRebrand";
 
 const DEFAULT_HEIGHT = 20;
 
@@ -46,10 +52,12 @@ type MarksInstance = {|
 
 type MarksProps = {|
   fundingSource?: ?$Values<typeof FUNDING>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   onShippingChange?: OnShippingChange,
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  userAgent: string,
 |};
 
 export type MarksComponent = (MarksProps) => MarksInstance;
@@ -57,10 +65,12 @@ export type MarksComponent = (MarksProps) => MarksInstance;
 export const getMarksComponent: () => MarksComponent = memoize(() => {
   function Marks({
     fundingSource,
+    markVariation,
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
     displayOnly,
+    userAgent = getUserAgent(),
   }: MarksProps = {}): MarksInstance {
     const height = DEFAULT_HEIGHT;
     const fundingEligibility = getFundingEligibility();
@@ -75,7 +85,17 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       : false;
     const supportsPopups = userAgentSupportsPopups();
     const supportedNativeBrowser = isSupportedNativeBrowser();
-    const experiment = getVenmoEligibility();
+    const experiment = getButtonExperiments();
+    const supportsVenmoPopup = supportsVenmoPopups(
+      experiment,
+      supportsPopups,
+      userAgent
+    );
+    const supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
+      experiment,
+      userAgent
+    );
+
     const hasShippingCallback = Boolean(
       onShippingChange || onShippingAddressChange || onShippingOptionsChange
     );
@@ -95,8 +115,11 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       hasShippingCallback,
       supportsPopups,
       supportedNativeBrowser,
+      supportsVenmoPopups: supportsVenmoPopup,
+      supportedNativeVenmoBrowser,
       experiment,
       displayOnly,
+      userAgent,
     });
     const env = getEnv();
 
@@ -118,9 +141,12 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         flow,
         applePaySupport,
         supportsPopups,
+        supportsVenmoPopups: supportsVenmoPopup,
         supportedNativeBrowser,
+        supportedNativeVenmoBrowser,
         experiment,
         displayOnly,
+        userAgent,
       });
     };
 
@@ -130,16 +156,29 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
           throw new Error(`${fundingSource || "marks"} not eligible`);
         }
 
+        const isRebrandEnabled = experiment?.isPaypalRebrandEnabled;
+
         getElement(container).appendChild(
           (
             <div>
-              <MarksElement
-                fundingEligibility={fundingEligibility}
-                fundingSources={fundingSources}
-                height={height}
-                experiment={experiment}
-                env={env}
-              />
+              {isRebrandEnabled ? (
+                <MarksElementRebrand
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  markVariation={markVariation}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              ) : (
+                <MarksElement
+                  fundingEligibility={fundingEligibility}
+                  fundingSources={fundingSources}
+                  height={height}
+                  experiment={experiment}
+                  env={env}
+                />
+              )}
             </div>
           ).render(dom({ doc: document }))
         );

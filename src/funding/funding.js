@@ -32,9 +32,12 @@ type IsFundingEligibleOptions = {|
   wallet?: ?Wallet,
   applePaySupport: boolean,
   supportsPopups: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   supportedNativeBrowser: boolean,
   experiment?: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  userAgent?: string,
 |};
 
 function isFundingVaultable({
@@ -81,11 +84,23 @@ export function isFundingEligible(
     wallet,
     applePaySupport,
     supportsPopups,
+    supportsVenmoPopups,
     supportedNativeBrowser,
+    supportedNativeVenmoBrowser,
     experiment,
     displayOnly,
+    userAgent,
   }: IsFundingEligibleOptions
 ): boolean {
+  // Temporary: Force credit to be eligible if the experiment is enabled
+  if (
+    source === FUNDING.CREDIT &&
+    experiment?.paypalCreditButtonCreateVaultSetupTokenExists &&
+    flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE
+  ) {
+    return true;
+  }
+
   if (!fundingEligibility[source] || !fundingEligibility[source].eligible) {
     return false;
   }
@@ -156,10 +171,15 @@ export function isFundingEligible(
     return false;
   }
 
-  if (fundingConfig.requires) {
+  if (fundingConfig.requires && userAgent) {
     const required = fundingConfig.requires({ experiment, platform });
-
-    if (required.popup === true && supportsPopups === false) {
+    const popupSupport =
+      source === FUNDING.VENMO ? supportsVenmoPopups : supportsPopups;
+    const nativeBrowserSupport =
+      source === FUNDING.VENMO
+        ? supportedNativeVenmoBrowser
+        : supportedNativeBrowser;
+    if (required.popup === true && popupSupport === false) {
       return false;
     }
 
@@ -167,7 +187,7 @@ export function isFundingEligible(
       return false;
     }
 
-    if (required.native === true && supportedNativeBrowser === false) {
+    if (required.native === true && nativeBrowserSupport === false) {
       return false;
     }
   }
@@ -202,8 +222,11 @@ export function determineEligibleFunding({
   applePaySupport,
   supportsPopups,
   supportedNativeBrowser,
+  supportsVenmoPopups,
+  supportedNativeVenmoBrowser,
   experiment,
   displayOnly = [],
+  userAgent = "",
 }: {|
   fundingSource: ?$Values<typeof FUNDING>,
   remembered: $ReadOnlyArray<$Values<typeof FUNDING>>,
@@ -221,8 +244,11 @@ export function determineEligibleFunding({
   applePaySupport: boolean,
   supportsPopups: boolean,
   supportedNativeBrowser: boolean,
+  supportsVenmoPopups: boolean,
+  supportedNativeVenmoBrowser: boolean,
   experiment: Experiment,
   displayOnly?: $ReadOnlyArray<$Values<typeof DISPLAY_ONLY_VALUES>>,
+  userAgent?: string,
 |}): $ReadOnlyArray<$Values<typeof FUNDING>> {
   if (fundingSource) {
     return [fundingSource];
@@ -244,9 +270,12 @@ export function determineEligibleFunding({
       wallet,
       applePaySupport,
       supportsPopups,
+      supportsVenmoPopups,
       supportedNativeBrowser,
+      supportedNativeVenmoBrowser,
       experiment,
       displayOnly,
+      userAgent,
     })
   );
 

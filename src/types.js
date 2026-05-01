@@ -67,6 +67,9 @@ export type Experiment = {|
   isWebViewEnabled?: boolean,
   venmoEnableWebOnNonNativeBrowser?: boolean,
   spbEagerOrderCreation?: boolean,
+  paypalCreditButtonCreateVaultSetupTokenExists?: boolean,
+  isPaylaterCobrandedLabelEnabled?: boolean,
+  isPaylaterCobrandedLabelRandomizationEnabled?: boolean,
 |};
 
 export type Requires = {|

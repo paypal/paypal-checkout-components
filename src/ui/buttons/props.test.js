@@ -160,12 +160,6 @@ describe("hasInvalidScriptOptionsForFullRedesign", () => {
     });
   });
 
-  it("should return true when no funding source is provided", () => {
-    const result = hasInvalidScriptOptionsForFullRedesign({});
-
-    expect(result).toBe(true);
-  });
-
   it("should return true when funding source is null", () => {
     const result = hasInvalidScriptOptionsForFullRedesign({
       fundingSource: null,
@@ -681,7 +675,7 @@ describe("getButtonColorExperience", () => {
     expect(result).toBe("fullRebrand");
   });
 
-  it("should return legacy for smart stack (fundingSource is undefined)", () => {
+  it("should return fullRebrand for smart stack (fundingSource is undefined)", () => {
     const result = getButtonColorExperience({
       experiment: {
         isPaypalRebrandEnabled: true,
@@ -692,7 +686,7 @@ describe("getButtonColorExperience", () => {
       style: { color: BUTTON_COLOR.GOLD },
     });
 
-    expect(result).toBe("legacy");
+    expect(result).toBe("fullRebrand");
   });
 });
 

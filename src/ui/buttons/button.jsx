@@ -109,7 +109,13 @@ export function Button({
   const colors = fundingConfig.colors;
   const secondaryColors = fundingConfig.secondaryColors || {};
 
-  let { color, period, label, shouldApplyRebrandedStyles } = style;
+  let {
+    color,
+    period,
+    label,
+    shouldApplyRebrandedStyles,
+    shouldApplyPayNowOrLaterLabel,
+  } = style;
 
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
@@ -185,8 +191,13 @@ export function Button({
             fundingEligibility,
             label: eligibleLabel,
             period,
+            locale,
           })
         : fundingConfig.labelText || fundingSource;
+
+    if (shouldApplyPayNowOrLaterLabel) {
+      labelText = "PayPal Pay Now or Later";
+    }
 
     if (!showPayLabel && instrument?.vendor && instrument.label) {
       labelText = instrument.secondaryInstruments
@@ -233,6 +244,7 @@ export function Button({
       tagline={tagline}
       content={content}
       experiment={experiment}
+      shouldApplyPayNowOrLaterLabel={shouldApplyPayNowOrLaterLabel}
     />
   );
 
@@ -328,7 +340,9 @@ export function Button({
         tabindex="0"
         aria-label={labelText}
       >
-        <div class={CLASS.BUTTON_LABEL}>{labelNode}</div>
+        <div class={CLASS.BUTTON_LABEL} aria-hidden="true">
+          {labelNode}
+        </div>
 
         <Spinner />
       </div>

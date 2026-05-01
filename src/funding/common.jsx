@@ -73,6 +73,7 @@ export type LabelOptions = {|
   tagline: ?boolean,
   content: ?ContentType,
   experiment?: Experiment,
+  shouldApplyPayNowOrLaterLabel?: boolean,
 |};
 
 export type WalletLabelOptions = {|
@@ -144,11 +145,13 @@ export type FundingSourceConfig = {|
         fundingEligibility: ?FundingEligibilityType,
         label?: string,
         period?: number,
+        locale?: LocaleType,
       |}) => string),
   showWalletMenu: ({|
     instrument: WalletInstrument,
     userIDToken: ?string,
   |}) => boolean,
+  shouldUseMarkForRebrandOnly?: boolean,
 |};
 
 export function BasicLabel({

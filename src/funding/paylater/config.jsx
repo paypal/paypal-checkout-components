@@ -2,7 +2,7 @@
 /** @jsx node */
 
 import type { FundingEligibilityType } from "@paypal/sdk-client/src";
-import { FUNDING } from "@paypal/sdk-constants/src";
+import { FUNDING, type LocaleType } from "@paypal/sdk-constants/src";
 import { node, Style } from "@krakenjs/jsx-pragmatic/src";
 import {
   PPLogoExternalImage,
@@ -10,6 +10,7 @@ import {
   LOGO_COLOR,
   PPRebrandLogoInlineSVG,
   PPRebrandLogoExternalImage,
+  PaylaterMarkRebrandExternalImage,
 } from "@paypal/sdk-logos/src";
 
 import { Logo as PayPalRebrandLogo } from "../paypal/template";
@@ -21,9 +22,11 @@ import css from "./style.scoped.scss";
 
 function getLabelText(
   fundingEligibility: FundingEligibilityType,
+  locale?: LocaleType,
   shouldApplyRebrandedStyles?: boolean
 ): ?string {
   const { paylater } = fundingEligibility;
+  const { lang } = locale || {};
 
   let labelText;
 
@@ -35,17 +38,29 @@ function getLabelText(
   }
 
   if (
-    paylater?.products?.payIn3?.eligible &&
-    paylater?.products?.payIn3?.variant === "ES"
+    (paylater?.products?.payIn3?.eligible &&
+      paylater?.products?.payIn3?.variant === "ES") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "ES")
   ) {
-    labelText = "Paga en 3 plazos";
+    labelText = "Paga a plazos";
   }
 
   if (
-    paylater?.products?.payIn3?.eligible &&
-    paylater?.products?.payIn3?.variant === "IT"
+    (paylater?.products?.payIn3?.eligible &&
+      paylater?.products?.payIn3?.variant === "IT") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "IT")
   ) {
-    labelText = "Paga in 3 rate";
+    labelText = "Paga a rate";
+  }
+
+  if (
+    paylater?.products?.paylater?.eligible &&
+    paylater?.products?.paylater?.variant === "CA" &&
+    lang === "fr"
+  ) {
+    labelText = "Payer en 4";
   }
 
   if (paylater?.products?.payIn4?.eligible) {
@@ -99,7 +114,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
             ) : (
               <PPLogoInlineSVG logoColor={logoColor} />
             )}
-            <Text>{getLabelText(fundingEligibility) || "Pay Later"}</Text>
+            <Text>
+              {getLabelText(fundingEligibility, locale) || "Pay Later"}
+            </Text>
           </Style>
         );
       }
@@ -120,12 +137,18 @@ export function getPaylaterConfig(): FundingSourceConfig {
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
           <Text>
-            {getLabelText(fundingEligibility, shouldApplyRebrandedStyles) ||
-              "Pay Later"}
+            {getLabelText(
+              fundingEligibility,
+              locale,
+              shouldApplyRebrandedStyles
+            ) || "Pay Later"}
           </Text>
         </Style>
       );
     },
+
+    Mark: () => <PaylaterMarkRebrandExternalImage />,
+    shouldUseMarkForRebrandOnly: true,
 
     colors: [
       BUTTON_COLOR.WHITE,
@@ -167,9 +190,9 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
     },
 
-    labelText: ({ fundingEligibility }) => {
+    labelText: ({ fundingEligibility, locale }) => {
       return (
-        (fundingEligibility && getLabelText(fundingEligibility)) ||
+        (fundingEligibility && getLabelText(fundingEligibility, locale)) ||
         `${FUNDING.PAYPAL} ${FUNDING.PAYLATER}`
       );
     },

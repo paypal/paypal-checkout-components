@@ -490,3 +490,11 @@ export const assert = {
     }
   },
 };
+
+export function removeNodes(selector: string): void {
+  document.querySelectorAll(selector).forEach((el) => {
+    if (el && el.parentNode) {
+      el.parentNode.removeChild(el);
+    }
+  });
+}
