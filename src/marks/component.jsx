@@ -29,7 +29,7 @@ import type {
   OnShippingAddressChange,
   OnShippingOptionsChange,
 } from "../ui/buttons/props";
-import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
+import { BUTTON_LAYOUT, BUTTON_FLOW, MARK_VARIATIONS } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
   supportsVenmoPopups,
@@ -52,6 +52,7 @@ type MarksInstance = {|
 
 type MarksProps = {|
   fundingSource?: ?$Values<typeof FUNDING>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   onShippingChange?: OnShippingChange,
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,
@@ -64,6 +65,7 @@ export type MarksComponent = (MarksProps) => MarksInstance;
 export const getMarksComponent: () => MarksComponent = memoize(() => {
   function Marks({
     fundingSource,
+    markVariation,
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
@@ -163,6 +165,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
                 <MarksElementRebrand
                   fundingEligibility={fundingEligibility}
                   fundingSources={fundingSources}
+                  markVariation={markVariation}
                   height={height}
                   experiment={experiment}
                   env={env}
