@@ -217,7 +217,7 @@ export const buttonRebrandStyle = `
         transform: translateY(-1px);
     }
 
-    .${CLASS.BUTTON_REBRAND} .${CLASS.TAGLINE} {
+    .${CLASS.BUTTON_REBRAND}.${CLASS.TAGLINE} {
         max-width: 100%;
         font-size: initial;
         font-weight: 400;

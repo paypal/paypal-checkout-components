@@ -83,6 +83,7 @@ export const labelStyle = `
     .${CLASS.BUTTON_REBRAND}[data-funding-source=credit],
     .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] {
         container-type: size;
+        container-name: paylater-credit-btn;
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
@@ -90,7 +91,7 @@ export const labelStyle = `
     }
 
     /* At smaller sizes, swap out the full paypal watermark for the smaller pp monogram. At 150px-200px wide: 25-40px show wordmark, 45px triggers monogram. */
-    @container ((max-width: 197px) and (min-height: 43px)) or ((max-width: 147px) and (max-height: 43px)) or ((max-width: 250px) and (min-height: 60px)) {
+    @container paylater-credit-btn ((max-width: 197px) and (min-height: 43px)) or ((max-width: 147px) and (max-height: 43px)) or ((max-width: 250px) and (min-height: 60px)) {
         .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_REBRAND} {
             display: none;
         }

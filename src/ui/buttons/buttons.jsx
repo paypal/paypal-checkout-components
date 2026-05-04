@@ -307,6 +307,7 @@ export function Buttons(props: ButtonsProps): ElementNode {
           multiple={multiple}
           nonce={nonce}
           personalization={personalization}
+          shouldApplyRebrandedStyles={style.shouldApplyRebrandedStyles}
         />
       ) : null}
 

@@ -18,26 +18,6 @@ import {
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
 const MIN_SPLIT_BUTTON_WIDTH = 300;
 
-// used for smart stack to determine font size based on individual button height, not based on the overall container height which is how the responsive styles work
-export function getRebrandFontSize(buttonHeight: number): number {
-  if (buttonHeight < 30) {
-    return 10;
-  }
-  if (buttonHeight < 35) {
-    return 12;
-  }
-  if (buttonHeight < 45) {
-    return 14;
-  }
-  if (buttonHeight < 50) {
-    return 16;
-  }
-  if (buttonHeight < 55) {
-    return 18;
-  }
-  return 20;
-}
-
 const WALLET_BUTTON_PERC = 60;
 
 function getLabelHeight({
