@@ -33,7 +33,7 @@
         credit: "Credit",
         balance: "Balance",
       },
-      wallet: server.wallet,
+      wallet: server.wallet || xprops.wallet,
     };
 
     document.write(button.Buttons(props).render(jsx.html()));

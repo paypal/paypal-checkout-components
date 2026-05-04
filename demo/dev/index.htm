@@ -413,6 +413,10 @@
         background: var(--tag-apm);
         color: var(--tag-apm-text);
       }
+      .card-tag.wallet {
+        background: #3d4a5a;
+        color: #8fb4cf;
+      }
 
       .card-body {
         padding: 10px;
@@ -617,6 +621,7 @@
         ],
       };
       const ALL_SOURCES = [...SOURCES.major, ...SOURCES.apm];
+      const WALLET_INSTRUMENTS = ["card", "bank", "balance", "credit"];
 
       function getCategory(src) {
         return SOURCES.major.includes(src) ? "major" : "apm";
@@ -870,6 +875,22 @@
           ]);
         }
 
+        // Wallet
+        {
+          const label = document.createElement("div");
+          label.className = "section-label";
+          label.textContent = "Wallet";
+          scroll.appendChild(label);
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          scroll.appendChild(grid);
+
+          WALLET_INSTRUMENTS.forEach((instrument) => {
+            renderCard(grid, "paypal", "wallet", gen, null, { instrument });
+          });
+        }
+
         if (majorSources.length > 0) {
           const label = document.createElement("div");
           label.className = "section-label";
@@ -897,17 +918,25 @@
         }
       }
 
-      function renderCard(grid, fundingSource, category, gen, stackSources) {
+      function renderCard(
+        grid,
+        fundingSource,
+        category,
+        gen,
+        stackSources,
+        walletConfig
+      ) {
         const card = document.createElement("div");
         card.className = "card";
 
         // Header
         const header = document.createElement("div");
         header.className = "card-header";
+        const cardName = walletConfig
+          ? `wallet: ${walletConfig.instrument}`
+          : fundingSource || (stackSources || []).join(", ");
         header.innerHTML = `
-        <span class="card-name">${
-          fundingSource || (stackSources || []).join(", ")
-        }</span>
+        <span class="card-name">${cardName}</span>
         <span class="card-tag ${category}">${category}</span>
       `;
         card.appendChild(header);
@@ -976,6 +1005,22 @@
           },
         };
         if (fundingSource) opts.fundingSource = fundingSource;
+
+        if (walletConfig) {
+          opts.userIDToken = "abc123";
+          opts.wallet = {
+            paypal: {
+              instruments: [
+                {
+                  type: walletConfig.instrument,
+                  label: walletConfig.label || "••1337",
+                  oneClick: true,
+                  branded: true,
+                },
+              ],
+            },
+          };
+        }
 
         // Render
         try {

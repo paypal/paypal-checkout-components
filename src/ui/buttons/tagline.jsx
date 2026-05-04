@@ -16,6 +16,7 @@ export function TagLine({
   multiple,
   nonce,
   personalization,
+  shouldApplyRebrandedStyles,
 }: {|
   fundingSource: $Values<typeof FUNDING>,
   style: ButtonStyle,
@@ -23,6 +24,7 @@ export function TagLine({
   multiple: boolean,
   nonce: string,
   personalization: ?Personalization,
+  shouldApplyRebrandedStyles?: boolean,
 |}): ?ElementNode {
   const fundingConfig = getFundingConfig()[fundingSource];
 
@@ -39,7 +41,11 @@ export function TagLine({
   const tagline = personalization && personalization.tagline;
 
   return (
-    <div class={CLASS.TAGLINE}>
+    <div
+      class={`${CLASS.TAGLINE}${
+        shouldApplyRebrandedStyles ? ` ${CLASS.BUTTON_REBRAND}` : ""
+      }`}
+    >
       {tagline ? (
         <Fragment>
           {tagline.Component ? <tagline.Component /> : tagline.text}
