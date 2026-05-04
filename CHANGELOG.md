@@ -1,3 +1,189 @@
+## <small>5.0.413 (2026-05-04)</small>
+
+* feat: add variationName prop support for PayPal monogram marks (#2630) ([18a8e94](https://github.com/paypal/paypal-checkout-components/commit/18a8e94)), closes [#2630](https://github.com/paypal/paypal-checkout-components/issues/2630)
+
+
+
+## <small>5.0.412 (2026-04-27)</small>
+
+* feature(SavedPaymentMethods): Adding loading template for prerender (#2624) ([aba46b6](https://github.com/paypal/paypal-checkout-components/commit/aba46b6)), closes [#2624](https://github.com/paypal/paypal-checkout-components/issues/2624) [#2605](https://github.com/paypal/paypal-checkout-components/issues/2605)
+
+
+
+## <small>5.0.411 (2026-04-08)</small>
+
+* chore(release): 5.0.410 🎉 ([6d3ba5e](https://github.com/paypal/paypal-checkout-components/commit/6d3ba5e))
+
+
+
+## <small>5.0.410 (2026-04-08)</small>
+
+* feature(SavedPaymentMethods): New component SavedPaymentMethods (#2604) ([2eed0ef](https://github.com/paypal/paypal-checkout-components/commit/2eed0ef)), closes [#2604](https://github.com/paypal/paypal-checkout-components/issues/2604)
+
+
+
+## <small>5.0.409 (2026-04-03)</small>
+
+* Revert "Pass bfcache events via post-robot (#2608)" (#2616) ([bc56fea](https://github.com/paypal/paypal-checkout-components/commit/bc56fea)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608) [#2616](https://github.com/paypal/paypal-checkout-components/issues/2616)
+
+
+
+## <small>5.0.408 (2026-03-23)</small>
+
+* Pass bfcache events via post-robot (#2608) ([2e278df](https://github.com/paypal/paypal-checkout-components/commit/2e278df)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608)
+
+
+
+## <small>5.0.407 (2026-03-18)</small>
+
+* [DTINAPPXO-3543] Pass partnerAttributionID (#2607) ([8c201d8](https://github.com/paypal/paypal-checkout-components/commit/8c201d8)), closes [#2607](https://github.com/paypal/paypal-checkout-components/issues/2607)
+
+
+
+## <small>5.0.406 (2026-03-03)</small>
+
+* add label "Pay now or later" experiment (#2600) ([6c0d3e3](https://github.com/paypal/paypal-checkout-components/commit/6c0d3e3)), closes [#2600](https://github.com/paypal/paypal-checkout-components/issues/2600)
+
+
+
+## <small>5.0.405 (2026-02-26)</small>
+
+* Additional fix for hash params in resume flow (#2602) ([0c53815](https://github.com/paypal/paypal-checkout-components/commit/0c53815)), closes [#2602](https://github.com/paypal/paypal-checkout-components/issues/2602)
+
+
+
+## <small>5.0.404 (2026-02-17)</small>
+
+* chore: prefer org-level code of conduct file (#2595) ([e4433f6](https://github.com/paypal/paypal-checkout-components/commit/e4433f6)), closes [#2595](https://github.com/paypal/paypal-checkout-components/issues/2595)
+
+
+
+## <small>5.0.403 (2026-02-03)</small>
+
+* Revert "Add support for disabling buttons (#2590)" (#2593) ([1e48e9f](https://github.com/paypal/paypal-checkout-components/commit/1e48e9f)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590) [#2593](https://github.com/paypal/paypal-checkout-components/issues/2593)
+
+
+
+## <small>5.0.402 (2026-01-27)</small>
+
+* Add support for disabling buttons (#2590) ([14ca952](https://github.com/paypal/paypal-checkout-components/commit/14ca952)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590)
+
+
+
+## <small>5.0.401 (2026-01-22)</small>
+
+* App Switch in New Tab (#2581) ([fcc4629](https://github.com/paypal/paypal-checkout-components/commit/fcc4629)), closes [#2581](https://github.com/paypal/paypal-checkout-components/issues/2581)
+
+
+
+## <small>5.0.400 (2026-01-15)</small>
+
+* Revert "feat(buttons): add disabled prop support (#2584)" (#2588) ([a31cab9](https://github.com/paypal/paypal-checkout-components/commit/a31cab9)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584) [#2588](https://github.com/paypal/paypal-checkout-components/issues/2588)
+
+
+
+## <small>5.0.399 (2026-01-06)</small>
+
+* fix: use the right env variable name for npm (#2586) ([e272f5b](https://github.com/paypal/paypal-checkout-components/commit/e272f5b)), closes [#2586](https://github.com/paypal/paypal-checkout-components/issues/2586)
+
+
+
+## <small>5.0.398 (2026-01-06)</small>
+
+* feat(buttons): add disabled prop support (#2584) ([5b9c8cd](https://github.com/paypal/paypal-checkout-components/commit/5b9c8cd)), closes [#2584](https://github.com/paypal/paypal-checkout-components/issues/2584)
+
+
+
+## <small>5.0.397 (2025-11-06)</small>
+
+* remove the restriction to use PayPal urls (#2578) ([3444b38](https://github.com/paypal/paypal-checkout-components/commit/3444b38)), closes [#2578](https://github.com/paypal/paypal-checkout-components/issues/2578)
+
+
+
+## <small>5.0.396 (2025-11-05)</small>
+
+* feat: support button label for CA (#2576) ([528c192](https://github.com/paypal/paypal-checkout-components/commit/528c192)), closes [#2576](https://github.com/paypal/paypal-checkout-components/issues/2576)
+
+
+
+## <small>5.0.395 (2025-11-05)</small>
+
+* feature(venmo): supportsVenmoPopups and supportedNativeVenmoBrowser props (#2575) ([7eec15c](https://github.com/paypal/paypal-checkout-components/commit/7eec15c)), closes [#2575](https://github.com/paypal/paypal-checkout-components/issues/2575)
+
+
+
+## <small>5.0.394 (2025-10-13)</small>
+
+* remove bodyParam from sdkSource prop in buttons component (#2574) ([7e45eaa](https://github.com/paypal/paypal-checkout-components/commit/7e45eaa)), closes [#2574](https://github.com/paypal/paypal-checkout-components/issues/2574)
+
+
+
+## <small>5.0.393 (2025-10-09)</small>
+
+* feat: update bt version to 3.128.0 (#2573) ([781261e](https://github.com/paypal/paypal-checkout-components/commit/781261e)), closes [#2573](https://github.com/paypal/paypal-checkout-components/issues/2573)
+
+
+
+## <small>5.0.392 (2025-10-06)</small>
+
+* fix(standalone): userAgent (#2572) ([2dafac0](https://github.com/paypal/paypal-checkout-components/commit/2dafac0)), closes [#2572](https://github.com/paypal/paypal-checkout-components/issues/2572)
+
+
+
+## <small>5.0.391 (2025-09-30)</small>
+
+* fix: add temporary solution for credit button becaming vaultable (#2569) ([4a401fc](https://github.com/paypal/paypal-checkout-components/commit/4a401fc)), closes [#2569](https://github.com/paypal/paypal-checkout-components/issues/2569)
+
+
+
+## <small>5.0.390 (2025-09-30)</small>
+
+* [NCPS Hosted buttons] Update FPTI tracking params  (#2557) ([38b1bd4](https://github.com/paypal/paypal-checkout-components/commit/38b1bd4)), closes [#2557](https://github.com/paypal/paypal-checkout-components/issues/2557)
+
+
+
+## <small>5.0.389 (2025-09-29)</small>
+
+* [Feature]/DTXOCOEXP-1400 Add `verificationMethod` Parameter (#2546) ([b0d7e2c](https://github.com/paypal/paypal-checkout-components/commit/b0d7e2c)), closes [#2546](https://github.com/paypal/paypal-checkout-components/issues/2546)
+
+
+
+## <small>5.0.388 (2025-09-24)</small>
+
+* Add sdkSource to button props (#2565) ([06b7094](https://github.com/paypal/paypal-checkout-components/commit/06b7094)), closes [#2565](https://github.com/paypal/paypal-checkout-components/issues/2565)
+
+
+
+## <small>5.0.387 (2025-09-23)</small>
+
+* feat(venmo): eligibility (#2563) ([c4e761f](https://github.com/paypal/paypal-checkout-components/commit/c4e761f)), closes [#2563](https://github.com/paypal/paypal-checkout-components/issues/2563)
+
+
+
+## <small>5.0.386 (2025-09-18)</small>
+
+* Revert "fix(venmo): popupBridge feature detection for webview eligibility (#2…" (#2561) ([e57107b](https://github.com/paypal/paypal-checkout-components/commit/e57107b)), closes [#2](https://github.com/paypal/paypal-checkout-components/issues/2) [#2561](https://github.com/paypal/paypal-checkout-components/issues/2561)
+
+
+
+## <small>5.0.385 (2025-09-16)</small>
+
+* fix(venmo): popupBridge feature detection for webview eligibility (#2545) ([9d6c45b](https://github.com/paypal/paypal-checkout-components/commit/9d6c45b)), closes [#2545](https://github.com/paypal/paypal-checkout-components/issues/2545)
+
+
+
+## <small>5.0.384 (2025-09-16)</small>
+
+* Rebranded marks (#2555) ([46245aa](https://github.com/paypal/paypal-checkout-components/commit/46245aa)), closes [#2555](https://github.com/paypal/paypal-checkout-components/issues/2555)
+
+
+
+## <small>5.0.383 (2025-09-15)</small>
+
+* update ites btn label (#2535) ([979eaec](https://github.com/paypal/paypal-checkout-components/commit/979eaec)), closes [#2535](https://github.com/paypal/paypal-checkout-components/issues/2535)
+
+
+
 ## <small>5.0.382 (2025-09-11)</small>
 
 * Css comment should be /* */ (#2556) ([ba89ffc](https://github.com/paypal/paypal-checkout-components/commit/ba89ffc)), closes [#2556](https://github.com/paypal/paypal-checkout-components/issues/2556)

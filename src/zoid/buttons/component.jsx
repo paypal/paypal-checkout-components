@@ -30,6 +30,7 @@ import {
   getAPIStageHost,
   getPayPalDomain,
   getUserIDToken,
+  getSDKIntegrationSource,
   getClientMetadataID,
   getAmount,
   getEnableFunding,
@@ -42,11 +43,9 @@ import {
   getSDKAttribute,
   getJsSdkLibrary,
   wasShopperInsightsUsed,
-  isPayPalTrustedUrl,
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
-  getGlobalSessionID,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -61,6 +60,7 @@ import {
   isApplePaySupported,
   supportsPopups as userAgentSupportsPopups,
   noop,
+  getUserAgent,
 } from "@krakenjs/belter/src";
 import {
   FUNDING,
@@ -89,6 +89,10 @@ import {
   type ButtonExtensions,
 } from "../../ui/buttons/props";
 import { isFundingEligible } from "../../funding";
+import {
+  supportsVenmoPopups as supportsVenmoPopupsUtil,
+  isSupportedNativeVenmoBrowser,
+} from "../../funding/util";
 import { getPixelComponent } from "../pixel";
 import { CLASS } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
@@ -186,7 +190,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           phase: "buttons-first-render-end",
         });
         try {
-          const cplPhases = prepareInstrumentationPayload(buttonSessionID);
+          const cplPhases = prepareInstrumentationPayload(
+            buttonSessionID,
+            "buttons"
+          );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
             [FPTI_KEY.TRANSITION]: "process_client_metrics",
@@ -231,6 +238,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+          role: "presentation",
         },
       };
     },
@@ -243,14 +251,25 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         onShippingOptionsChange,
         style = {},
         enableFunding = getEnableFunding(),
+        disableFunding = getDisableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
         supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(),
+        supportsVenmoPopups = supportsVenmoPopupsUtil(
+          props.experiment,
+          userAgentSupportsPopups(),
+          getUserAgent()
+        ),
+        supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
+          props.experiment,
+          getUserAgent()
+        ),
         experiment = getButtonExperiments(),
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
         displayOnly,
+        userAgent = getUserAgent(),
       } = props;
 
       const flow = determineFlow({
@@ -284,6 +303,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           fundingSource,
           fundingEligibility,
           enableFunding,
+          disableFunding,
           components,
           onShippingChange,
           onShippingAddressChange,
@@ -291,9 +311,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           flow,
           applePaySupport,
           supportsPopups,
+          supportsVenmoPopups,
+          supportedNativeVenmoBrowser,
           supportedNativeBrowser,
           experiment,
           displayOnly,
+          userAgent,
         })
       ) {
         return {
@@ -312,6 +335,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         queryParam: true,
         required: false,
+      },
+
+      preferences: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        serialization: "json",
       },
 
       showPayPalAppSwitchOverlay: {
@@ -353,11 +383,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: true,
         value: () => (url) => {
-          if (getEnv() === ENV.LOCAL || isPayPalTrustedUrl(url)) {
-            location.href = url;
-          } else {
-            throw new Error(`Unable to redirect to provided url ${url}`);
-          }
+          location.href = url;
         },
       },
 
@@ -706,14 +732,18 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             style = {},
             fundingEligibility = getRefinedFundingEligibility(),
             enableFunding = getEnableFunding(),
+            disableFunding = getDisableFunding(),
             experiment = getButtonExperiments(),
             applePaySupport,
             supportsPopups,
             supportedNativeBrowser,
+            supportsVenmoPopups,
+            supportedNativeVenmoBrowser,
             createBillingAgreement,
             createSubscription,
             createVaultSetupToken,
             displayOnly,
+            userAgent = getUserAgent(),
           } = props;
 
           const flow = determineFlow({
@@ -734,6 +764,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               fundingSource,
               fundingEligibility,
               enableFunding,
+              disableFunding,
               experiment,
               components,
               onShippingChange,
@@ -742,8 +773,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               flow,
               applePaySupport,
               supportsPopups,
+              supportsVenmoPopups,
+              supportedNativeVenmoBrowser,
               supportedNativeBrowser,
               displayOnly,
+              userAgent,
             })
           ) {
             throw new Error(`${fundingSource} is not eligible`);
@@ -802,12 +836,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: () => {
           return () => queriedEligibleFunding;
         },
-      },
-
-      globalSessionID: {
-        type: "string",
-        required: false,
-        value: getGlobalSessionID,
       },
 
       hostedButtonId: {
@@ -1057,6 +1085,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       partnerAttributionID: {
         type: "string",
         required: false,
+        queryParam: true,
         value: getPartnerAttributionID,
       },
 
@@ -1270,10 +1299,37 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
+      supportedNativeVenmoBrowser: {
+        type: "boolean",
+        value: ({ props }) => {
+          return isSupportedNativeVenmoBrowser(
+            props.experiment,
+            props.userAgent
+          );
+        },
+        queryParam: true,
+        required: false,
+      },
+
       supportsPopups: {
         type: "boolean",
-        value: () => userAgentSupportsPopups(),
+        value: () => {
+          return userAgentSupportsPopups();
+        },
         queryParam: true,
+      },
+
+      supportsVenmoPopups: {
+        type: "boolean",
+        value: ({ props }) => {
+          return supportsVenmoPopupsUtil(
+            props.experiment,
+            userAgentSupportsPopups(),
+            props.userAgent
+          );
+        },
+        queryParam: true,
+        required: false,
       },
 
       test: {
@@ -1299,6 +1355,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         bodyParam: getEnv() === ENV.LOCAL || getEnv() === ENV.STAGE,
       },
 
+      sdkSource: {
+        type: "string",
+        value: () => getSDKIntegrationSource(),
+        required: false,
+        queryParam: true,
+      },
+
       vault: {
         type: "boolean",
         queryParam: true,
@@ -1315,6 +1378,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         required: false,
         queryParam: true,
+      },
+
+      userAgent: {
+        type: "string",
+        required: false,
+        queryParam: true,
+        value: getUserAgent,
       },
     },
 

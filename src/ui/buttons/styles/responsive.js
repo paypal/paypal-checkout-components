@@ -497,8 +497,8 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT},
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
             font-size: ${fontSize}px;
-            position: relative;
           }
+        }
       `;
     })
     .join("\n");
@@ -529,6 +529,7 @@ const generateRebrandedButtonSizeStyles = ({
         maxHeight,
         minWidth,
         maxWidth,
+        minDualWidth,
       } = getResponsiveRebrandedStyleVariables({
         height,
         redesign_size,
@@ -571,7 +572,6 @@ const generateRebrandedButtonSizeStyles = ({
         BUTTON_NUMBER.MULTIPLE
       } .${CLASS.SPACE} {
               font-size: ${fontSize}px;
-              position: relative; 
           }
 
           .${CLASS.BUTTON_ROW}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
@@ -590,13 +590,86 @@ const generateRebrandedButtonSizeStyles = ({
               )}px;
           }
 
-          //  TO:DO no margin on last-child not getting applied
+          /*  TO:DO no margin on last-child not getting applied */
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.VERTICAL}.${
         CLASS.NUMBER
       }-${BUTTON_NUMBER.MULTIPLE}:last-child {
               margin-bottom: 0;
           }
-        }`;
+        }
+      
+        @media only screen and (min-width: ${minWidth}px) and (max-width: ${minDualWidth}px) {
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
+            width: 100%;
+            margin-right: 0;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
+            display: none;
+          }
+
+          .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
+            display: none;
+          }
+        }
+        
+        @media only screen and (min-width: ${max(minWidth, minDualWidth)}px) {
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-0 {
+            display: inline-block;
+            width: calc(${FIRST_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
+            margin-right: ${perc(buttonHeight, 7) * 2}px;
+          }
+
+          .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE}.${CLASS.NUMBER}-1 {
+            display: inline-block;
+            width: calc(${100 - FIRST_BUTTON_PERC}% - ${perc(
+        buttonHeight,
+        7
+      )}px);
+          }
+
+          .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}.${
+        CLASS.WALLET
+      }.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
+        BUTTON_NUMBER.MULTIPLE
+      } {
+            width: calc(${WALLET_BUTTON_PERC}% - ${perc(buttonHeight, 7)}px);
+          }
+
+          .${CLASS.CONTAINER}.${CLASS.WALLET} .${CLASS.BUTTON_ROW}:not(.${
+        CLASS.WALLET
+      }).${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${CLASS.NUMBER}-${
+        BUTTON_NUMBER.MULTIPLE
+      } {
+            width: calc(${100 - WALLET_BUTTON_PERC}% - ${perc(
+        buttonHeight,
+        7
+      )}px);
+          }
+
+          .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} {
+            display: block;
+          }
+
+          .${CLASS.CONTAINER}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
+        CLASS.NUMBER
+      }-${BUTTON_NUMBER.MULTIPLE} .${CLASS.TAGLINE} .${CLASS.TEXT} {
+            display: block;
+          }
+        }
+       `;
 
       const heightBasedStyles = `
         @media only screen and (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
@@ -607,7 +680,6 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.TEXT}, 
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
               font-size: ${fontSize}px;
-              position: relative; 
           }
 
           .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {

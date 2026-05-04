@@ -57,16 +57,17 @@ export const logLatencyInstrumentationPhase = ({
 };
 
 export const prepareInstrumentationPayload = (
-  buttonSessionID: string
+  buttonSessionID: string,
+  component: "buttons" | "saved-payment-methods"
 ): InstrumentationPayload => {
   const timeOrigin = getNavigationTimeOrigin();
   const renderStartTime = getStartTimeFromMark({
     buttonSessionID,
-    phase: "buttons-first-render",
+    phase: `${component}-first-render`,
   });
   const renderEndTime = getStartTimeFromMark({
     buttonSessionID,
-    phase: "buttons-first-render-end",
+    phase: `${component}-first-render-end`,
   });
   return {
     comp: {
