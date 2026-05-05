@@ -137,13 +137,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
           ) : (
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
-          <Text>
-            {getLabelText(
-              fundingEligibility,
-              locale,
-              shouldApplyRebrandedStyles
-            ) || "Pay Later"}
-          </Text>
+          <Text>{getLabelText(fundingEligibility, locale) || "Pay Later"}</Text>
         </Style>
       );
     },
