@@ -37,8 +37,8 @@ export const REBRAND_LABEL_HEIGHT_RATIO = 0.5;
 
 // Fixed visual offset of the PayPal logo as a fraction of total button height.
 // translateY percentage = LOGO_VISUAL_OFFSET / LABEL_HEIGHT_RATIO
-// Current: 0.06 / 0.5 = 0.12 (12%)
-const LOGO_VISUAL_OFFSET = 0.06;
+// Current: 0.05 / 0.5 = 0.10 (10%)
+const LOGO_VISUAL_OFFSET = 0.05;
 export const REBRAND_LOGO_TRANSLATE_Y: number = Math.round(
   (LOGO_VISUAL_OFFSET / REBRAND_LABEL_HEIGHT_RATIO) * 100
 );
