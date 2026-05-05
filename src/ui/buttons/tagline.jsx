@@ -16,6 +16,7 @@ export function TagLine({
   multiple,
   nonce,
   personalization,
+  style,
 }: {|
   fundingSource: $Values<typeof FUNDING>,
   style: ButtonStyle,
@@ -25,6 +26,7 @@ export function TagLine({
   personalization: ?Personalization,
 |}): ?ElementNode {
   const fundingConfig = getFundingConfig()[fundingSource];
+  const { shouldApplyRebrandedStyles } = style;
 
   if (!fundingConfig) {
     throw new Error(`Can not get config for ${fundingSource}`);
@@ -39,12 +41,14 @@ export function TagLine({
   const tagline = personalization && personalization.tagline;
 
   return (
-    <div class={CLASS.TAGLINE}>
+    <div
+      class={`${CLASS.TAGLINE}${
+        shouldApplyRebrandedStyles ? ` ${CLASS.BUTTON_REBRAND}` : ""
+      }`}
+    >
       {tagline ? (
         <Fragment>
-          <span>
-            {tagline.Component ? <tagline.Component /> : tagline.text}
-          </span>
+          {tagline.Component ? <tagline.Component /> : tagline.text}
           {tagline.tracking && tagline.tracking.impression && (
             <TrackingBeacon url={tagline.tracking.impression} nonce={nonce} />
           )}

@@ -142,14 +142,42 @@ export const labelStyle = `
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
-        font-family: "PayPal Pro Book", system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-weight: 400;
     }
 
-    .${CLASS.BUTTON_REBRAND}, div[data-funding-source=venmo] .${
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=paypal] .${CLASS.BUTTON_LABEL},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL},
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${
   CLASS.BUTTON_LABEL
 } {
-        font-family: "Scto Grotesk A", system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-weight: 500;
     }
 
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=venmo] .${CLASS.BUTTON_LABEL} {
+        font-family: Scto Grotesk A, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+    }
 
+    /* targeting only credit and paylater buttons for the logo swap */
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=credit],
+    .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] {
+        container-type: size;
+        container-name: paylater-credit-btn;
+    }
+
+    .${CLASS.BUTTON_REBRAND} .${CLASS.LOGO_PP_REBRAND} {
+        display: none;
+    }
+
+    /* At smaller sizes, swap out the full paypal watermark for the smaller pp monogram. At 150px-200px wide: 25-40px show wordmark, 45px triggers monogram. */
+    @container paylater-credit-btn ((max-width: 197px) and (min-height: 43px)) or ((max-width: 147px) and (max-height: 43px)) or ((max-width: 250px) and (min-height: 60px)) {
+        .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_REBRAND} {
+            display: none;
+        }
+
+        .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_PP_REBRAND} {
+            display: inline-block;
+        }
+    }
 `;

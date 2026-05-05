@@ -73,6 +73,7 @@ export type LabelOptions = {|
   tagline: ?boolean,
   content: ?ContentType,
   experiment?: Experiment,
+  shouldApplyPayNowOrLaterLabel?: boolean,
 |};
 
 export type WalletLabelOptions = {|
@@ -255,6 +256,8 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     BUTTON_COLOR.SILVER,
     BUTTON_COLOR.WHITE,
     BUTTON_COLOR.BLACK,
+    BUTTON_COLOR.REBRAND_BLACK,
+    BUTTON_COLOR.REBRAND_WHITE,
   ],
 
   logoColors: {
@@ -262,6 +265,8 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.SILVER]: LOGO_COLOR.BLACK,
     [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
     [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
   },
 
   textColors: {
@@ -269,6 +274,8 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.BLACK]: TEXT_COLOR.WHITE,
     [BUTTON_COLOR.SILVER]: TEXT_COLOR.BLACK,
     [BUTTON_COLOR.WHITE]: TEXT_COLOR.BLACK,
+    [BUTTON_COLOR.REBRAND_BLACK]: TEXT_COLOR.WHITE,
+    [BUTTON_COLOR.REBRAND_WHITE]: TEXT_COLOR.BLACK,
   },
 
   secondaryColors: {

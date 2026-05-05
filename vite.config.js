@@ -10,10 +10,20 @@
 import { defineConfig } from "vite";
 import { flowPlugin, esbuildFlowPlugin } from "@bunchtogether/vite-plugin-flow";
 
+// eslint-disable-next-line import/no-commonjs
+const zoidGlobals = require("@krakenjs/zoid/globals");
+
 const define = {
   __DEBUG__: false,
   __TEST__: true,
   __WEB__: true,
+  __ZOID__: JSON.stringify({
+    ...zoidGlobals.__ZOID__,
+    __DEFAULT_CONTAINER__: true,
+    __DEFAULT_PRERENDER__: true,
+    __FRAMEWORK_SUPPORT__: true,
+    __SCRIPT_NAMESPACE__: true,
+  }),
   __POST_ROBOT__: JSON.stringify({
     __GLOBAL_KEY__: `__post_robot__`,
     __AUTO_SETUP__: false,

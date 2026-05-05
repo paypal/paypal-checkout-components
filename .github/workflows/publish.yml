@@ -35,5 +35,6 @@ jobs:
       - name: 📦 Publish to npm using existing scripts
         run: npm run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # actions/setup-node uses this NODE_AUTH_TOKEN environment variable for npm publishing
+          # https://docs.github.com/en/actions/tutorials/publish-packages/publish-nodejs-packages
+          NODE_AUTH_TOKEN: ${{ secrets.PAYPAL_SDK_NPM_AUTH_TOKEN }}

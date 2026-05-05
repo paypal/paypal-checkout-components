@@ -190,7 +190,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           phase: "buttons-first-render-end",
         });
         try {
-          const cplPhases = prepareInstrumentationPayload(buttonSessionID);
+          const cplPhases = prepareInstrumentationPayload(
+            buttonSessionID,
+            "buttons"
+          );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
             [FPTI_KEY.TRANSITION]: "process_client_metrics",
@@ -235,6 +238,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+          role: "presentation",
         },
       };
     },
@@ -247,6 +251,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         onShippingOptionsChange,
         style = {},
         enableFunding = getEnableFunding(),
+        disableFunding = getDisableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
         supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(),
@@ -298,6 +303,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           fundingSource,
           fundingEligibility,
           enableFunding,
+          disableFunding,
           components,
           onShippingChange,
           onShippingAddressChange,
@@ -329,6 +335,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         queryParam: true,
         required: false,
+      },
+
+      preferences: {
+        type: "object",
+        queryParam: true,
+        required: false,
+        serialization: "json",
       },
 
       showPayPalAppSwitchOverlay: {
@@ -719,6 +732,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             style = {},
             fundingEligibility = getRefinedFundingEligibility(),
             enableFunding = getEnableFunding(),
+            disableFunding = getDisableFunding(),
             experiment = getButtonExperiments(),
             applePaySupport,
             supportsPopups,
@@ -750,6 +764,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               fundingSource,
               fundingEligibility,
               enableFunding,
+              disableFunding,
               experiment,
               components,
               onShippingChange,
@@ -1070,6 +1085,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       partnerAttributionID: {
         type: "string",
         required: false,
+        queryParam: true,
         value: getPartnerAttributionID,
       },
 

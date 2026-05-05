@@ -12,10 +12,12 @@ import { toPx } from "@krakenjs/belter/src";
 
 import type { Experiment } from "../types";
 import { getFundingConfig } from "../funding";
-import { CLASS } from "../constants";
+import { CLASS, MARK_VARIATIONS } from "../constants";
+import { PayPalMonogramMark } from "../funding/paypal/monogramMark";
 
 type MarkOptions = {|
   fundingSource: $Values<typeof FUNDING>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   fundingEligibility: FundingEligibilityType,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -23,6 +25,7 @@ type MarkOptions = {|
 
 function Mark({
   fundingSource,
+  markVariation,
   fundingEligibility,
   experiment,
   env,
@@ -53,7 +56,8 @@ function Mark({
     backgroundClasses += " paypal-mark-rebrand-own-border-and-padding";
   }
 
-  return (
+  // Helper function to render wordmark (Logo)
+  const renderWordmark = () => (
     <div class={backgroundClasses}>
       {marksDefined && MarkLogo ? (
         <MarkLogo shouldApplyRebrandedStyles={true} />
@@ -68,11 +72,30 @@ function Mark({
       )}
     </div>
   );
+
+  // Helper function to render PayPal monogram
+  const renderPayPalMonogram = () => (
+    <div class="paypal-mark-rebrand paypal-mark-rebrand-white">
+      <PayPalMonogramMark />
+    </div>
+  );
+
+  // Handle PayPal variations - only check for monogram, everything else defaults to wordmark
+  if (
+    fundingSource === FUNDING.PAYPAL &&
+    markVariation === MARK_VARIATIONS.MONOGRAM
+  ) {
+    return renderPayPalMonogram();
+  }
+
+  // Default logic for all other cases (handles undefined, null, "wordmark", invalid values)
+  return renderWordmark();
 }
 
 type MarksElementOptions = {|
   fundingEligibility: FundingEligibilityType,
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   height: number,
   experiment: Experiment,
   env: $Values<typeof ENV>,
@@ -81,6 +104,7 @@ type MarksElementOptions = {|
 export function MarksElementRebrand({
   fundingEligibility,
   fundingSources,
+  markVariation,
   experiment,
   env,
 }: MarksElementOptions): ElementNode {
@@ -160,6 +184,11 @@ export function MarksElementRebrand({
                     .paypal-mark-rebrand .paypal-logo:last-child {
                         margin-right: 0px;
                     }
+
+                    .paypal-mark-rebrand .paypal-logo-paypal-rebrand {
+                        padding-top: 2px;
+                        margin-right: ${toPx(rebrandHeight / 5)};
+                    }
                 `}
       </style>
       <div class="paypal-marks-rebrand">
@@ -167,6 +196,7 @@ export function MarksElementRebrand({
           <Mark
             fundingEligibility={fundingEligibility}
             fundingSource={fundingSource}
+            markVariation={markVariation}
             experiment={experiment}
             env={env}
           />

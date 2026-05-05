@@ -431,5 +431,74 @@ describe("Funding eligibility", () => {
         expect(result2).toBe(true);
       });
     });
+
+    describe("createVaultSetupToken credit experiment", () => {
+      const creditExperimentOptions = {
+        ...defaultMockFundingOptions,
+        fundingSource: FUNDING.CREDIT,
+        flow: BUTTON_FLOW.VAULT_WITHOUT_PURCHASE,
+        experiment: {
+          paypalCreditButtonCreateVaultSetupTokenExists: true,
+        },
+        fundingEligibility: {
+          ...defaultMockFundingOptions.fundingEligibility,
+          credit: {
+            eligible: false,
+            branded: false,
+            vaultable: false,
+          },
+        },
+      };
+
+      beforeEach(() => {
+        vi.mocked(getFundingConfig).mockReturnValue({
+          ...vi.mocked(getFundingConfig)(),
+          [FUNDING.CREDIT]: {
+            enabled: true,
+            automatic: true,
+          },
+        });
+      });
+
+      test("should force credit eligible when experiment is enabled and disableFunding does not include credit", () => {
+        const result = isFundingEligible(FUNDING.CREDIT, {
+          ...creditExperimentOptions,
+          disableFunding: [],
+        });
+
+        expect(result).toBe(true);
+      });
+
+      test("should not force credit eligible when merchant has disableFunding=credit", () => {
+        const result = isFundingEligible(FUNDING.CREDIT, {
+          ...creditExperimentOptions,
+          disableFunding: [FUNDING.CREDIT],
+        });
+
+        expect(result).toBe(false);
+      });
+
+      test("should not force credit eligible when experiment is disabled", () => {
+        const result = isFundingEligible(FUNDING.CREDIT, {
+          ...creditExperimentOptions,
+          disableFunding: [],
+          experiment: {
+            paypalCreditButtonCreateVaultSetupTokenExists: false,
+          },
+        });
+
+        expect(result).toBe(false);
+      });
+
+      test("should not force credit eligible when flow is not VAULT_WITHOUT_PURCHASE", () => {
+        const result = isFundingEligible(FUNDING.CREDIT, {
+          ...creditExperimentOptions,
+          disableFunding: [],
+          flow: BUTTON_FLOW.PURCHASE,
+        });
+
+        expect(result).toBe(false);
+      });
+    });
   });
 });
