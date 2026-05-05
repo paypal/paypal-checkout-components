@@ -22,8 +22,7 @@ import css from "./style.scoped.scss";
 
 function getLabelText(
   fundingEligibility: FundingEligibilityType,
-  locale?: LocaleType,
-  shouldApplyRebrandedStyles?: boolean
+  locale?: LocaleType
 ): ?string {
   const { paylater } = fundingEligibility;
   const { lang } = locale || {};
