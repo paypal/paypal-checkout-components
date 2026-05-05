@@ -1113,6 +1113,111 @@ buttonConfigs.push({
   },
 });
 
+// Austria (AT) variant button tests.
+buttonConfigs.push({
+  button: {
+    style: {
+      layout: "horizontal",
+      label: "pay",
+    },
+  },
+  container: {
+    width: 330,
+  },
+  fundingEligibility: {
+    [FUNDING.PAYPAL]: {
+      eligible: true,
+    },
+    [FUNDING.PAYLATER]: {
+      eligible: true,
+      products: {
+        paylater: {
+          eligible: true,
+          variant: "AT",
+        },
+      },
+    },
+  },
+});
+
+buttonConfigs.push({
+  button: {
+    style: {
+      layout: "horizontal",
+      label: "pay",
+    },
+  },
+  container: {
+    width: 320,
+  },
+  fundingEligibility: {
+    [FUNDING.PAYPAL]: {
+      eligible: true,
+    },
+    [FUNDING.PAYLATER]: {
+      eligible: true,
+      products: {
+        paylater: {
+          eligible: true,
+          variant: "AT",
+        },
+      },
+    },
+  },
+});
+
+buttonConfigs.push({
+  button: {
+    style: {
+      layout: "horizontal",
+      label: "pay",
+    },
+  },
+  container: {
+    width: 300,
+  },
+  fundingEligibility: {
+    [FUNDING.PAYPAL]: {
+      eligible: true,
+    },
+    [FUNDING.PAYLATER]: {
+      eligible: true,
+      products: {
+        paylater: {
+          eligible: true,
+          variant: "AT",
+        },
+      },
+    },
+  },
+});
+
+buttonConfigs.push({
+  button: {
+    style: {
+      layout: "horizontal",
+      label: "pay",
+    },
+  },
+  container: {
+    width: 290,
+  },
+  fundingEligibility: {
+    [FUNDING.PAYPAL]: {
+      eligible: true,
+    },
+    [FUNDING.PAYLATER]: {
+      eligible: true,
+      products: {
+        paylater: {
+          eligible: true,
+          variant: "AT",
+        },
+      },
+    },
+  },
+});
+
 buttonConfigs.push({
   diffThreshold: 1000,
   container: {
