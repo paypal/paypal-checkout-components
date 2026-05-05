@@ -541,7 +541,7 @@ const expectedRebrandedResponsiveStylesTiny = {
 const expectedRebrandedResponsiveStylesSmall = {
   style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.SMALL],
   buttonHeight: 35,
-  gap: 3,
+  gap: 4,
   defaultHeight: 35,
   minHeight: 30,
   maxHeight: 35,
@@ -567,7 +567,7 @@ const expectedRebrandedResponsiveStylesMediumSmall = {
 const expectedRebrandedResponsiveStylesMediumBig = {
   style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.MEDIUM_BIG],
   buttonHeight: 45,
-  gap: 4,
+  gap: 5,
   defaultHeight: 45,
   minHeight: 40,
   maxHeight: 45,
@@ -592,9 +592,9 @@ const expectedRebrandedResponsiveStylesLargeSmall = {
 
 const expectedRebrandedResponsiveStylesLargeBig = {
   style: BUTTON_REDESIGN_STYLE[BUTTON_REDESIGN_SIZE.LARGE_BIG],
-  buttonHeight: 45,
+  buttonHeight: 50,
   gap: 5,
-  defaultHeight: 45,
+  defaultHeight: 50,
   minHeight: 50,
   maxHeight: 55,
   minWidth: 425,
