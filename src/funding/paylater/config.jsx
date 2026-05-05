@@ -68,10 +68,12 @@ function getLabelText(
   }
 
   if (
-    paylater?.products?.payIn4?.eligible &&
-    paylater?.products?.payIn4?.variant === "FR"
+    (paylater?.products?.payIn4?.eligible &&
+      paylater?.products?.payIn4?.variant === "FR") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "FR")
   ) {
-    labelText = shouldApplyRebrandedStyles ? "4X" : "4X PayPal";
+    labelText = "Payer en plusieurs fois";
   }
 
   return labelText;
