@@ -16,7 +16,7 @@ export function TagLine({
   multiple,
   nonce,
   personalization,
-  shouldApplyRebrandedStyles,
+  style,
 }: {|
   fundingSource: $Values<typeof FUNDING>,
   style: ButtonStyle,
@@ -24,9 +24,9 @@ export function TagLine({
   multiple: boolean,
   nonce: string,
   personalization: ?Personalization,
-  shouldApplyRebrandedStyles?: boolean,
 |}): ?ElementNode {
   const fundingConfig = getFundingConfig()[fundingSource];
+  const { shouldApplyRebrandedStyles } = style;
 
   if (!fundingConfig) {
     throw new Error(`Can not get config for ${fundingSource}`);
