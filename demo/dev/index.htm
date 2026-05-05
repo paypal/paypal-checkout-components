@@ -1,671 +1,1042 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Button Lab</title>
+    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD&enable-funding=venmo"></script>
+    <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD"></script>
-  <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
-</head>
+      :root {
+        --bg: #0e0e11;
+        --surface: #18181c;
+        --surface-hover: #1f1f24;
+        --border: #2a2a30;
+        --border-active: #4a4a55;
+        --text: #e0e0e6;
+        --text-dim: #7a7a88;
+        --text-muted: #55555f;
+        --accent: #5b8af5;
+        --accent-dim: #3d5fa8;
+        --tag-major: #2d5a3d;
+        --tag-major-text: #6fcf8b;
+        --tag-apm: #4a3d5a;
+        --tag-apm-text: #b48fcf;
+        --error-bg: #2a1515;
+        --error-text: #f08080;
+        --success: #4caf50;
+        --mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+        --sans: "DM Sans", -apple-system, sans-serif;
+        --sidebar-w: 280px;
+      }
 
-<body>
-  <style>
-    div.options,
-    p {
-      border: 1px solid lightblue;
-      padding: 10px 20px;
-      display: inline-block;
-      margin: 10px;
-      vertical-align: top;
-    }
-  </style>
+      html,
+      body {
+        height: 100%;
+      }
 
-  <section>
-    <div class="options">
-      <form id="colors">
-        <strong>Colors</strong><br />
-        <input type="checkbox" id="color-gold" name="color" value="gold" />
-        <label for="color-gold">Gold</label>
-        <input type="checkbox" id="color-blue" name="color" value="blue" />
-        <label for="color-blue">Blue</label>
-        <input type="checkbox" id="color-silver" name="color" value="silver" />
-        <label for="color-silver">Silver</label>
-        <input type="checkbox" id="color-black" name="color" value="black" />
-        <label for="color-black">Black</label>
-        <input type="checkbox" id="color-white" name="color" value="white" />
-        <label for="color-white">White</label>
-      </form>
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        overflow: hidden;
+      }
+
+      /* ---- SIDEBAR ---- */
+      .sidebar {
+        width: var(--sidebar-w);
+        min-width: var(--sidebar-w);
+        height: 100vh;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        overflow-y: auto;
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .sidebar-title {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .control-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      /* Toggle switch */
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 0;
+      }
+
+      .toggle-row .toggle-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .toggle {
+        position: relative;
+        width: 38px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .toggle input {
+        display: none;
+      }
+
+      .toggle .slider {
+        position: absolute;
+        inset: 0;
+        background: var(--border);
+        border-radius: 10px;
+        transition: background 0.15s;
+      }
+
+      .toggle .slider::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: var(--text-dim);
+        border-radius: 50%;
+        transition: transform 0.15s, background 0.15s;
+      }
+
+      .toggle input:checked + .slider {
+        background: var(--accent);
+      }
+      .toggle input:checked + .slider::after {
+        transform: translateX(18px);
+        background: #fff;
+      }
+
+      /* Range slider */
+      .range-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .range-row input[type="range"] {
+        flex: 1;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        outline: none;
+      }
+
+      .range-row input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 14px;
+        height: 14px;
+        background: var(--accent);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .range-value {
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent);
+        min-width: 32px;
+        text-align: right;
+      }
+
+      /* Segmented / pill buttons */
+      .seg-group {
+        display: flex;
+        gap: 2px;
+        background: var(--bg);
+        border-radius: 6px;
+        padding: 2px;
+      }
+
+      .seg-btn {
+        flex: 1;
+        padding: 5px 0;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 500;
+        text-align: center;
+        color: var(--text-dim);
+        background: transparent;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.12s;
+      }
+
+      .seg-btn:hover {
+        color: var(--text);
+        background: var(--surface-hover);
+      }
+      .seg-btn.active {
+        color: #fff;
+        background: var(--accent-dim);
+      }
+
+      /* Select dropdown */
+      .styled-select {
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 6px 8px;
+        background: var(--bg);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .styled-select:focus {
+        border-color: var(--accent);
+      }
+
+      /* Funding filter chips */
+      .filter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .chip {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 3px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-dim);
+        cursor: pointer;
+        transition: all 0.12s;
+      }
+
+      .chip:hover {
+        border-color: var(--border-active);
+        color: var(--text);
+      }
+      .chip.active {
+        border-color: var(--accent);
+        background: var(--accent-dim);
+        color: #fff;
+      }
+
+      /* Funding source checklist */
+      .source-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        max-height: 240px;
+        overflow-y: auto;
+      }
+
+      .source-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 4px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+
+      .source-item:hover {
+        background: var(--surface-hover);
+      }
+
+      .source-item input[type="checkbox"] {
+        accent-color: var(--accent);
+        width: 12px;
+        height: 12px;
+      }
+
+      .source-item label {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-dim);
+        cursor: pointer;
+      }
+
+      .source-item input:checked + label {
+        color: var(--text);
+      }
+
+      /* ---- MAIN ---- */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Status bar */
+      .status-bar {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        padding: 8px 16px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .status-bar .status-item {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .status-bar .status-val {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .status-bar .status-on {
+        color: var(--success);
+      }
+      .status-bar .status-off {
+        color: var(--text-muted);
+      }
+
+      /* Grid */
+      .grid-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+      }
+
+      .section-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 16px 0 8px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-label:first-child {
+        margin-top: 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 10px;
+      }
+
+      /* Card */
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .card-name {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .card-tag {
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 600;
+        padding: 1px 5px;
+        border-radius: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .card-tag.major {
+        background: var(--tag-major);
+        color: var(--tag-major-text);
+      }
+      .card-tag.apm {
+        background: var(--tag-apm);
+        color: var(--tag-apm-text);
+      }
+      .card-tag.wallet {
+        background: #3d4a5a;
+        color: #8fb4cf;
+      }
+
+      .card-body {
+        padding: 10px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        position: relative;
+      }
+
+      .card-body.dark-bg {
+        background: #222;
+      }
+
+      .btn-target {
+        width: 100%;
+      }
+
+      .card-footer {
+        font-family: var(--mono);
+        font-size: 9px;
+        color: var(--text-muted);
+        padding: 4px 10px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 8px;
+      }
+
+      .card-error {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--error-text);
+        background: var(--error-bg);
+        padding: 8px 10px;
+        word-break: break-word;
+      }
+
+      .card-skipped {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        padding: 12px 10px;
+        text-align: center;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Button Lab</div>
+
+      <!-- Rebrand toggle -->
+      <div class="control-group">
+        <div class="toggle-row">
+          <span class="toggle-label">Rebrand</span>
+          <label class="toggle">
+            <input type="checkbox" id="ctrl-rebrand" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Height -->
+      <div class="control-group">
+        <div class="toggle-row">
+          <span class="toggle-label">Fixed Height</span>
+          <label class="toggle">
+            <input type="checkbox" id="ctrl-height-toggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div
+          class="range-row"
+          id="height-slider-row"
+          style="opacity: 0.35; pointer-events: none"
+        >
+          <input
+            type="range"
+            id="ctrl-height"
+            min="25"
+            max="65"
+            value="45"
+            disabled
+          />
+          <span class="range-value" id="height-val">45</span>
+        </div>
+      </div>
+
+      <!-- Width -->
+      <div class="control-group">
+        <span class="control-label">Width</span>
+        <div class="range-row">
+          <input type="range" id="ctrl-width" min="150" max="750" value="300" />
+          <span class="range-value" id="width-val">300</span>
+        </div>
+      </div>
+
+      <!-- Shape -->
+      <div class="control-group">
+        <span class="control-label">Shape</span>
+        <div class="seg-group" id="ctrl-shape">
+          <button class="seg-btn" data-val="sharp">sharp</button>
+          <button class="seg-btn active" data-val="rect">rect</button>
+          <button class="seg-btn" data-val="pill">pill</button>
+        </div>
+      </div>
+
+      <!-- Layout -->
+      <div class="control-group">
+        <span class="control-label">Layout</span>
+        <div class="seg-group" id="ctrl-layout">
+          <button class="seg-btn active" data-val="vertical">vert</button>
+          <button class="seg-btn" data-val="horizontal">horiz</button>
+        </div>
+      </div>
+
+      <!-- Color -->
+      <div class="control-group">
+        <span class="control-label">Color</span>
+        <select class="styled-select" id="ctrl-color">
+          <option value="">default</option>
+          <optgroup label="Legacy" id="color-legacy-opts">
+            <option value="gold">gold</option>
+            <option value="blue">blue</option>
+            <option value="silver">silver</option>
+            <option value="black">black</option>
+            <option value="white">white</option>
+          </optgroup>
+          <optgroup label="Rebrand" id="color-rebrand-opts">
+            <option value="rebrand_blue">rebrand_blue</option>
+            <option value="rebrand_darkblue">rebrand_darkblue</option>
+            <option value="rebrand_black">rebrand_black</option>
+            <option value="rebrand_white">rebrand_white</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <!-- Label -->
+      <div class="control-group">
+        <span class="control-label">Label</span>
+        <select class="styled-select" id="ctrl-label">
+          <option value="">(default / logo only)</option>
+          <option value="paypal">paypal</option>
+          <option value="checkout">checkout</option>
+          <option value="buynow">buynow</option>
+          <option value="pay">pay</option>
+          <option value="installment">installment</option>
+          <option value="subscribe">subscribe</option>
+          <option value="donate">donate</option>
+        </select>
+      </div>
+
+      <!-- Filter -->
+      <div class="control-group">
+        <span class="control-label">Filter</span>
+        <div class="filter-chips" id="ctrl-filter">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="major">Major</button>
+          <button class="chip" data-filter="apm">APMs</button>
+        </div>
+      </div>
+
+      <!-- Source list -->
+      <div class="control-group">
+        <span class="control-label">Sources</span>
+        <div class="source-list" id="source-list"></div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="status-bar" id="status-bar"></div>
+      <div class="grid-scroll" id="grid-scroll"></div>
     </div>
 
-    <div class="options">
-      <form id="widths">
-        <strong>Widths</strong><br />
-        <input type="checkbox" id="width-750px" name="width" value="750px" />
-        <label for="width-750px">750px</label>
-        <input type="checkbox" id="width-450px" name="width" value="450px" />
-        <label for="width-450px">450px</label>
-        <input type="checkbox" id="width-300px" name="width" value="300px" />
-        <label for="width-300px">300px</label>
-        <input type="checkbox" id="width-220px" name="width" value="220px" />
-        <label for="width-220px">220px</label>
-        <input type="checkbox" id="width-150px" name="width" value="150px" />
-        <label for="width-150px">150px</label>
-      </form>
-    </div>
+    <script>
+      // ---- FUNDING SOURCE REGISTRY ----
+      const SOURCES = {
+        major: ["paypal", "venmo", "paylater", "credit", "card"],
+        apm: [
+          "bancontact",
+          "blik",
+          "boleto",
+          "eps",
+          "giropay",
+          "ideal",
+          "itau",
+          "mercadopago",
+          "multibanco",
+          "mybank",
+          "oxxo",
+          "p24",
+          "paidy",
+          "payu",
+          "satispay",
+          "sepa",
+          "sofort",
+          "trustly",
+          "wechatpay",
+        ],
+      };
+      const ALL_SOURCES = [...SOURCES.major, ...SOURCES.apm];
+      const WALLET_INSTRUMENTS = ["card", "bank", "balance", "credit"];
 
-    <div class="options">
-      <form id="fis">
-        <strong>fis</strong><br />
-        <input
-          type="checkbox"
-          id="fis-applepay"
-          name="width"
-          value="applepay"
-        />
-        <label for="fis-applepay">Apple Pay</label>
-        <input type="checkbox" id="fis-venmo" name="width" value="venmo" />
-        <label for="fis-venmo">Venmo</label>
-        <input type="checkbox" id="fis-credit" name="width" value="credit" />
-        <label for="fis-credit">Credit</label>
-      </form>
-    </div>
+      function getCategory(src) {
+        return SOURCES.major.includes(src) ? "major" : "apm";
+      }
 
-    <div class="options">
-      <form id="taglines">
-        <strong>Taglines</strong><br />
-        <input
-          type="checkbox"
-          id="taglines-true"
-          name="taglines"
-          value="true"
-        />
-        <label for="taglines-true">True</label>
-        <input
-          type="checkbox"
-          id="taglines-false"
-          name="taglines"
-          value="false"
-        />
-        <label for="taglines-false">False</label>
-      </form>
-    </div>
+      // ---- STATE ----
+      const STATE = {
+        rebrand: true,
+        fixedHeight: false,
+        height: 45,
+        width: 300,
+        shape: "rect",
+        layout: "vertical",
+        color: "",
+        label: "",
+        filter: "all",
+        sources: new Set(ALL_SOURCES),
+      };
 
-    <div class="options">
-      <form id="labels">
-        <strong>Labels</strong><br />
-        <input
-          type="checkbox"
-          id="labels-checkout"
-          name="labels"
-          value="checkout"
-        />
-        <label for="labels-checkout">checkout</label>
-        <input type="checkbox" id="labels-pay" name="labels" value="pay" />
-        <label for="labels-pay">pay</label>
-        <input
-          type="checkbox"
-          id="labels-buynow"
-          name="labels"
-          value="buynow"
-        />
-        <label for="labels-buynow">buynow</label>
-      </form>
-    </div>
+      // ---- INIT SOURCE CHECKBOXES ----
+      const sourceList = document.getElementById("source-list");
+      ALL_SOURCES.forEach((src) => {
+        const item = document.createElement("div");
+        item.className = "source-item";
+        item.innerHTML = `<input type="checkbox" id="src-${src}" checked /><label for="src-${src}">${src}</label>`;
+        sourceList.appendChild(item);
+        item.querySelector("input").addEventListener("change", (e) => {
+          if (e.target.checked) STATE.sources.add(src);
+          else STATE.sources.delete(src);
+          updateFilter("custom");
+          render();
+        });
+      });
 
-    <div class="options">
-      <form id="instruments">
-        <strong>Instruments</strong><br />
-        <input
-          type="checkbox"
-          id="instruments-card"
-          name="instruments"
-          value="card"
-        />
-        <label for="instruments-card">card</label>
-        <input
-          type="checkbox"
-          id="instruments-bank"
-          name="instruments"
-          value="bank"
-        />
-        <label for="instruments-bank">bank</label>
-        <input
-          type="checkbox"
-          id="instruments-balance"
-          name="instruments"
-          value="balance"
-        />
-        <label for="instruments-balance">balance</label>
-        <input
-          type="checkbox"
-          id="instruments-credit"
-          name="instruments"
-          value="credit"
-        />
-        <label for="instruments-credit">credit</label>
-      </form>
-    </div>
+      // ---- EXPERIMENT GLOBAL ----
+      // Dev webpack replaces __FIRST_RENDER_EXPERIMENTS__ with:
+      //   window.__TEST_FIRST_RENDER_EXPERIMENTS__ || null
+      // So we must set __TEST_FIRST_RENDER_EXPERIMENTS__, not __FIRST_RENDER_EXPERIMENTS__
+      function syncExperiments() {
+        window.__TEST_FIRST_RENDER_EXPERIMENTS__ = {
+          ...(window.__TEST_FIRST_RENDER_EXPERIMENTS__ || {}),
+          isPaypalRebrandEnabled: STATE.rebrand,
+          enableVenmo: true,
+        };
+      }
 
-    <div class="options">
-      <form id="shapes">
-        <strong>Shapes</strong><br />
-        <input type="checkbox" id="shapes-sharp" name="width" value="sharp" />
-        <label for="shapes-sharp">sharp</label>
-        <input type="checkbox" id="shapes-rect" name="width" value="rect" />
-        <label for="shapes-rect">rect</label>
-        <input type="checkbox" id="shapes-pill" name="width" value="pill" />
-        <label for="shapes-pill">pill</label>
-      </form>
-    </div>
+      // ---- CONTROLS ----
 
-    <div class="options">
-      <button onclick="toggleAll(true)">Select All</button>
-      <button onclick="toggleAll(false)">Clear All</button>
-      <button onclick="generateButtons()">
-        <strong>Generate Buttons</strong>
-      </button>
-    </div>
-  </section>
+      // Rebrand
+      document
+        .getElementById("ctrl-rebrand")
+        .addEventListener("change", (e) => {
+          STATE.rebrand = e.target.checked;
+          render();
+        });
 
-  <script>
-    let colors = [];
-    let widths = [];
-    let fis = [];
-    let taglines = [];
-    let labels = [];
-    let instruments = [];
-    let shapes = [];
+      // Height toggle + slider
+      const heightToggle = document.getElementById("ctrl-height-toggle");
+      const heightSlider = document.getElementById("ctrl-height");
+      const heightVal = document.getElementById("height-val");
+      const heightSliderRow = document.getElementById("height-slider-row");
+      let heightDebounce = null;
 
-    function generateButtons() {
-      const currentButtons = document.querySelectorAll("p");
-      if (currentButtons.length) {
-        currentButtons.forEach((el) => {
-          el.parentNode.removeChild(el);
+      heightToggle.addEventListener("change", () => {
+        STATE.fixedHeight = heightToggle.checked;
+        heightSlider.disabled = !heightToggle.checked;
+        heightSliderRow.style.opacity = heightToggle.checked ? "1" : "0.35";
+        heightSliderRow.style.pointerEvents = heightToggle.checked
+          ? "auto"
+          : "none";
+        render();
+      });
+
+      heightSlider.addEventListener("input", () => {
+        STATE.height = parseInt(heightSlider.value, 10);
+        heightVal.textContent = STATE.height;
+        clearTimeout(heightDebounce);
+        heightDebounce = setTimeout(render, 150);
+      });
+
+      // Width
+      const widthSlider = document.getElementById("ctrl-width");
+      const widthVal = document.getElementById("width-val");
+      let widthDebounce = null;
+      widthSlider.addEventListener("input", () => {
+        STATE.width = parseInt(widthSlider.value, 10);
+        widthVal.textContent = STATE.width;
+        clearTimeout(widthDebounce);
+        widthDebounce = setTimeout(render, 150);
+      });
+
+      // Shape
+      setupSegmented("ctrl-shape", (val) => {
+        STATE.shape = val;
+        render();
+      });
+
+      // Layout
+      setupSegmented("ctrl-layout", (val) => {
+        STATE.layout = val;
+        render();
+      });
+
+      // Color
+      document.getElementById("ctrl-color").addEventListener("change", (e) => {
+        STATE.color = e.target.value;
+        render();
+      });
+
+      // Label
+      document.getElementById("ctrl-label").addEventListener("change", (e) => {
+        STATE.label = e.target.value;
+        render();
+      });
+
+      // Filter chips
+      document.getElementById("ctrl-filter").addEventListener("click", (e) => {
+        const btn = e.target.closest(".chip");
+        if (!btn) return;
+        const filter = btn.dataset.filter;
+        updateFilter(filter);
+        render();
+      });
+
+      function updateFilter(filter) {
+        STATE.filter = filter;
+
+        // Update chip UI
+        document
+          .querySelectorAll("#ctrl-filter .chip")
+          .forEach((c) => c.classList.remove("active"));
+        const activeChip = document.querySelector(
+          `#ctrl-filter .chip[data-filter="${filter}"]`
+        );
+        if (activeChip) activeChip.classList.add("active");
+
+        // Update source checkboxes
+        if (filter === "all") {
+          STATE.sources = new Set(ALL_SOURCES);
+        } else if (filter === "major") {
+          STATE.sources = new Set(SOURCES.major);
+        } else if (filter === "apm") {
+          STATE.sources = new Set(SOURCES.apm);
+        }
+        // 'custom' leaves sources as-is
+
+        document.querySelectorAll("#source-list input").forEach((cb) => {
+          const src = cb.id.replace("src-", "");
+          cb.checked = STATE.sources.has(src);
         });
       }
 
-      function loopForCheckedIntoArray(formId, arr) {
-        document
-          .getElementById(formId)
-          .querySelectorAll("input")
-          .forEach((el) => {
-            if (el.checked === true) {
-              arr.push(el.value);
-            }
-          });
+      function setupSegmented(id, onChange) {
+        const container = document.getElementById(id);
+        container.addEventListener("click", (e) => {
+          const btn = e.target.closest(".seg-btn");
+          if (!btn) return;
+          container
+            .querySelectorAll(".seg-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          onChange(btn.dataset.val);
+        });
       }
 
-      loopForCheckedIntoArray("colors", colors);
-      loopForCheckedIntoArray("widths", widths);
-      loopForCheckedIntoArray("fis", fis);
-      loopForCheckedIntoArray("taglines", taglines);
-      loopForCheckedIntoArray("labels", labels);
-      loopForCheckedIntoArray("instruments", instruments);
-      loopForCheckedIntoArray("shapes", shapes);
+      // ---- STATUS BAR ----
+      function updateStatusBar() {
+        const bar = document.getElementById("status-bar");
+        const rb = STATE.rebrand;
+        bar.innerHTML = `
+        <span class="status-item">rebrand:<span class="status-val ${
+          rb ? "status-on" : "status-off"
+        }">${rb ? "ON" : "OFF"}</span></span>
+        <span class="status-item">h:<span class="status-val">${
+          STATE.height
+        }</span></span>
+        <span class="status-item">w:<span class="status-val">${
+          STATE.width
+        }</span></span>
+        <span class="status-item">shape:<span class="status-val">${
+          STATE.shape
+        }</span></span>
+        <span class="status-item">layout:<span class="status-val">${
+          STATE.layout
+        }</span></span>
+        <span class="status-item">color:<span class="status-val">${
+          STATE.color || "default"
+        }</span></span>
+        <span class="status-item">sources:<span class="status-val">${
+          STATE.sources.size
+        }</span></span>
+      `;
+      }
 
-      const markOpts = [
+      // ---- RENDER ----
+      let renderGeneration = 0;
+
+      function render() {
+        renderGeneration++;
+        const gen = renderGeneration;
+
+        syncExperiments();
+        updateStatusBar();
+
+        const scroll = document.getElementById("grid-scroll");
+        scroll.innerHTML = "";
+
+        const activeSources = ALL_SOURCES.filter((s) => STATE.sources.has(s));
+        const majorSources = activeSources.filter((s) =>
+          SOURCES.major.includes(s)
+        );
+        const apmSources = activeSources.filter((s) => SOURCES.apm.includes(s));
+
+        // Smart Stacks
         {
-          fundingEligibility: {
-            applepay: {
-              eligible: true,
-            },
-            paypal: {
-              eligible: true,
-            },
-            venmo: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-              products: {
-                payIn4: {
-                  eligible: true,
-                },
-              },
-            },
-          },
-        },
-      ];
+          const label = document.createElement("div");
+          label.className = "section-label";
+          label.textContent = "Smart Stacks";
+          scroll.appendChild(label);
 
-      const buttonOpts = [];
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          scroll.appendChild(grid);
+          renderCard(grid, null, "stack", gen, [
+            "paypal",
+            "venmo",
+            "paylater",
+            "card",
+            "bancontact",
+          ]);
+          renderCard(grid, null, "stack", gen, [
+            "paypal",
+            "venmo",
+            "paylater",
+            "card",
+            "sofort",
+          ]);
+          renderCard(grid, null, "stack", gen, [
+            "paypal",
+            "venmo",
+            "paylater",
+            "card",
+            "wechatpay",
+          ]);
+          renderCard(grid, null, "stack", gen, [
+            "paypal",
+            "venmo",
+            "paylater",
+            "card",
+            "mercadopago",
+          ]);
+        }
 
-      for (const color of colors) {
-        const config = {
-          style: {
-            color,
-          },
-          fundingEligibility: {
-            applepay: {
-              eligible: true,
-            },
-            paypal: {
-              eligible: true,
-            },
-            venmo: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-              products: {
-                payIn4: {
-                  eligible: true,
-                },
-              },
-            },
-            card: {
-              eligible: true,
-            },
+        // Wallet
+        {
+          const label = document.createElement("div");
+          label.className = "section-label";
+          label.textContent = "Wallet";
+          scroll.appendChild(label);
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          scroll.appendChild(grid);
+
+          WALLET_INSTRUMENTS.forEach((instrument) => {
+            renderCard(grid, "paypal", "wallet", gen, null, { instrument });
+          });
+        }
+
+        if (majorSources.length > 0) {
+          const label = document.createElement("div");
+          label.className = "section-label";
+          label.textContent = "Major";
+          scroll.appendChild(label);
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          scroll.appendChild(grid);
+
+          majorSources.forEach((src) => renderCard(grid, src, "major", gen));
+        }
+
+        if (apmSources.length > 0) {
+          const label = document.createElement("div");
+          label.className = "section-label";
+          label.textContent = "Alternative Payment Methods";
+          scroll.appendChild(label);
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          scroll.appendChild(grid);
+
+          apmSources.forEach((src) => renderCard(grid, src, "apm", gen));
+        }
+      }
+
+      function renderCard(
+        grid,
+        fundingSource,
+        category,
+        gen,
+        stackSources,
+        walletConfig
+      ) {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        // Header
+        const header = document.createElement("div");
+        header.className = "card-header";
+        const cardName = walletConfig
+          ? `wallet: ${walletConfig.instrument}`
+          : fundingSource || (stackSources || []).join(", ");
+        header.innerHTML = `
+        <span class="card-name">${cardName}</span>
+        <span class="card-tag ${category}">${category}</span>
+      `;
+        card.appendChild(header);
+
+        // Body
+        const body = document.createElement("div");
+        body.className = "card-body";
+        if (STATE.color === "white" || STATE.color === "rebrand_white") {
+          body.classList.add("dark-bg");
+        }
+
+        const target = document.createElement("div");
+        target.className = "btn-target";
+        target.style.width = STATE.width + "px";
+        body.appendChild(target);
+
+        card.appendChild(body);
+
+        // Footer
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        const styleDesc = [
+          STATE.fixedHeight ? `h:${STATE.height}` : "h:auto",
+          `shape:${STATE.shape}`,
+          STATE.color ? `color:${STATE.color}` : null,
+          STATE.label ? `label:${STATE.label}` : null,
+          STATE.rebrand ? "rebrand" : "legacy",
+        ]
+          .filter(Boolean)
+          .join(" ");
+        footer.textContent = styleDesc;
+        card.appendChild(footer);
+
+        grid.appendChild(card);
+
+        // Build button config
+        const style = {
+          shape: STATE.shape,
+          tagline: false,
+        };
+        if (!fundingSource) style.layout = STATE.layout;
+        if (STATE.fixedHeight) style.height = STATE.height;
+        if (STATE.color) style.color = STATE.color;
+        if (STATE.label) style.label = STATE.label;
+
+        let eligibility;
+        if (fundingSource) {
+          eligibility = { [fundingSource]: { eligible: true } };
+        } else {
+          // Smart stack: use provided sources
+          eligibility = {};
+          ALL_SOURCES.forEach((s) => {
+            eligibility[s] = { eligible: (stackSources || []).includes(s) };
+          });
+        }
+
+        const opts = {
+          style,
+          fundingEligibility: eligibility,
+          content: {
+            payWithDebitOrCreditCard: "Debit or Credit Card",
+            payNow: "Pay Now",
+            payWith: "Pay with",
+            credit: "Credit",
+            balance: "Balance",
           },
         };
+        if (fundingSource) opts.fundingSource = fundingSource;
 
-        buttonOpts.push(config);
-      }
-
-      for (const label of labels) {
-        buttonOpts.push({
-          style: {
-            label,
-          },
-          fundingEligibility: {
-            applepay: {
-              eligible: true,
-            },
+        if (walletConfig) {
+          opts.userIDToken = "abc123";
+          opts.wallet = {
             paypal: {
-              eligible: true,
-            },
-            venmo: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-              products: {
-                payIn4: {
-                  eligible: true,
+              instruments: [
+                {
+                  type: walletConfig.instrument,
+                  label: walletConfig.label || "••1337",
+                  oneClick: true,
+                  branded: true,
                 },
-              },
+              ],
             },
-            card: {
-              eligible: true,
-            },
-          },
-        });
-      }
-
-      for (const shape of shapes) {
-        buttonOpts.push({
-          style: {
-            layout: "horizontal",
-            shape,
-            tagline: false,
-          },
-          fundingEligibility: {
-            paypal: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-              products: {
-                payIn4: {
-                  eligible: true,
-                },
-              },
-            },
-            card: {
-              eligible: true,
-            },
-          },
-        });
-      }
-
-      for (const label of labels) {
-        buttonOpts.push({
-          style: {
-            layout: "horizontal",
-            label,
-            tagline: false,
-          },
-          fundingEligibility: {
-            applepay: {
-              eligible: true,
-            },
-            paypal: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-              products: {
-                payIn4: {
-                  eligible: true,
-                },
-              },
-            },
-          },
-        });
-      }
-
-      for (const fi of fis) {
-        buttonOpts.push({
-          style: {
-            layout: "horizontal",
-            tagline: false,
-          },
-          fundingEligibility: {
-            paypal: {
-              eligible: true,
-            },
-            [fi]: {
-              eligible: true,
-            },
-          },
-        });
-      }
-
-      for (const tagline of taglines) {
-        buttonOpts.push({
-          style: {
-            layout: "horizontal",
-            tagline,
-          },
-          fundingEligibility: {
-            paypal: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-            },
-          },
-        });
-      }
-
-      for (const instrument of instruments) {
-        buttonOpts.push({
-          style: {
-            layout: "horizontal",
-            tagline: false,
-          },
-          fundingEligibility: {
-            paypal: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-            },
-          },
-          userIDToken: "abc123",
-          server: {
-            wallet: {
-              paypal: {
-                instruments: [
-                  {
-                    type: instrument,
-                    label: "••1337",
-                    oneClick: instrument === "card" || instrument === "balance",
-                  },
-                ],
-              },
-            },
-          },
-        });
-
-        if (instrument !== "credit") {
-          buttonOpts.push({
-            fundingSource: "paypal",
-            fundingEligibility: {
-              paypal: {
-                eligible: true,
-              },
-              paylater: {
-                eligible: true,
-              },
-            },
-            userIDToken: "abc123",
-            server: {
-              wallet: {
-                paypal: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-              },
-            },
-          });
+          };
         }
 
-        if (instrument === "credit") {
-          buttonOpts.push({
-            style: {
-              layout: "horizontal",
-              tagline: false,
-            },
-            fundingEligibility: {
-              paypal: {
-                eligible: true,
-              },
-              credit: {
-                eligible: true,
-              },
-            },
-            userIDToken: "abc123",
-            server: {
-              wallet: {
-                paypal: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-                credit: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-              },
-            },
-          });
-
-          buttonOpts.push({
-            fundingEligibility: {
-              paypal: {
-                eligible: true,
-              },
-              credit: {
-                eligible: true,
-              },
-            },
-            userIDToken: "abc123",
-            server: {
-              wallet: {
-                paypal: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-                credit: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-              },
-            },
-          });
-
-          buttonOpts.push({
-            fundingSource: "credit",
-            fundingEligibility: {
-              paypal: {
-                eligible: true,
-              },
-              credit: {
-                eligible: true,
-              },
-            },
-            userIDToken: "abc123",
-            server: {
-              wallet: {
-                paypal: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-                credit: {
-                  instruments: [
-                    {
-                      type: instrument,
-                      label: "••1337",
-                      oneClick:
-                        instrument === "card" || instrument === "balance",
-                    },
-                  ],
-                },
-              },
-            },
-          });
-        }
-      }
-
-      for (const instrument of instruments) {
-        buttonOpts.push({
-          style: {
-            color: "blue",
-          },
-          fundingEligibility: {
-            paypal: {
-              eligible: true,
-            },
-            paylater: {
-              eligible: true,
-            },
-          },
-          userIDToken: "abc123",
-          server: {
-            wallet: {
-              paypal: {
-                instruments: [
-                  {
-                    type: instrument,
-                    label: "••1337",
-                    oneClick: instrument === "card" || instrument === "balance",
-                  },
-                ],
-              },
-            },
-          },
-        });
-      }
-
-      for (const fundingSource of Object.values(constants.FUNDING)) {
-        buttonOpts.push({
-          fundingSource,
-          fundingEligibility: {
-            [fundingSource]: {
-              eligible: true,
-            },
-          },
-        });
-
-        buttonOpts.push({
-          style: {
-            label: "pay",
-          },
-          fundingSource,
-          fundingEligibility: {
-            [fundingSource]: {
-              eligible: true,
-            },
-          },
-        });
-      }
-
-      for (opts of markOpts) {
-        const p = document.createElement("p");
-        document.body.appendChild(p);
-        // need to be able to override fundingEligibility when testing
-        ["applepay", "paypal", "card", "credit"].forEach((fundingSource) => {
-          let mark = paypal.Marks({
-            fundingEligibility: {
-              [fundingSource]: {
-                eligible: true,
-              },
-            },
-            fundingSource,
-            ...opts,
-          });
-
-          if (mark.isEligible()) {
-            mark.render(p);
+        // Render
+        try {
+          const button = paypal.Buttons(opts);
+          if (button.isEligible()) {
+            button.render(target);
           } else {
-            console.warn(`${fundingSource} was not marks eligible.`);
+            body.innerHTML = `<div class="card-skipped">not eligible</div>`;
           }
-        });
-      }
-
-      for (opts of buttonOpts) {
-        if (widths.length === 0) {
-          renderButton();
-        } else {
-          for (const width of widths) {
-            renderButton(width);
-          }
+        } catch (err) {
+          body.innerHTML = `<div class="card-error">${err.message}</div>`;
         }
       }
 
-      function renderButton(width) {
-        const button = paypal.Buttons(opts);
-        if (button.isEligible()) {
-          const p = document.createElement("p");
-          if (width) {
-            p.style.minWidth = width;
-          }
-          document.body.appendChild(p);
-          button.render(p);
-        } else {
-          console.warn(`Not eligible`, opts);
-        }
-      }
-
-      colors = [];
-      widths = [];
-      fis = [];
-      taglines = [];
-      labels = [];
-      instruments = [];
-      shapes = [];
-    }
-
-    function toggleAll(bool) {
-      document.querySelectorAll('input[type="checkbox"]').forEach((el) => {
-        el.checked = bool;
-      });
-    }
-
-    generateButtons();
-  </script>
-</body>
+      // ---- BOOT ----
+      render();
+    </script>
+  </body>
+</html>

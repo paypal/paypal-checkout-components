@@ -815,27 +815,6 @@ export function determineRandomButtonColor({
   };
 }
 
-export function hasInvalidScriptOptionsForFullRedesign({
-  fundingSource,
-}: {|
-  fundingSource?: ?$Values<typeof FUNDING>,
-|}): boolean {
-  const validFundingSourcesForRedesign = [
-    undefined,
-    FUNDING.PAYPAL,
-    FUNDING.VENMO,
-    FUNDING.PAYLATER,
-    FUNDING.CREDIT,
-    FUNDING.CARD,
-  ];
-
-  if (validFundingSourcesForRedesign.includes(fundingSource)) {
-    return false;
-  }
-
-  return true;
-}
-
 export function throwErrorForInvalidButtonColor({
   fundingSource,
   fundingSourceColors,
@@ -920,13 +899,10 @@ export function getColorForFullRedesign({
     [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
     [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_BLUE,
     [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
-
-    // not mapped yet since the styles are not setup
-    // These should never be hit since legacy experience should be set
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.REBRAND_BLACK,
     [BUTTON_COLOR.WHITE]: BUTTON_COLOR.REBRAND_WHITE,
     [BUTTON_COLOR.SILVER]: BUTTON_COLOR.REBRAND_WHITE,
-    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.REBRAND_BLUE,
+    [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
 
     // normalizeButtonStyle gets called multiple times and
     // it can be called after color is already be mapped to rebranded style
@@ -966,9 +942,6 @@ export function getButtonColorExperience({
 }: GetButtonColorExperienceArgs): "abTest" | "fullRebrand" | "legacy" {
   const { isPaypalRebrandEnabled, isPaypalRebrandABTestEnabled } =
     experiment || {};
-  const rejectRedesign = hasInvalidScriptOptionsForFullRedesign({
-    fundingSource,
-  });
 
   if (!isPaypalRebrandEnabled) {
     return "legacy";
@@ -979,7 +952,7 @@ export function getButtonColorExperience({
     return fundingSource === FUNDING.PAYPAL ? "abTest" : "legacy";
   }
 
-  return rejectRedesign ? "legacy" : "fullRebrand";
+  return "fullRebrand";
 }
 
 export function getButtonColor({
