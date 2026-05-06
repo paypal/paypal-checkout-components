@@ -6,6 +6,7 @@ import {
   getLogger,
   getLocale,
   getClientID,
+  getHostedButtonID,
   getEnv,
   getIntent,
   getCommit,
@@ -552,6 +553,24 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       clientID: {
         type: "string",
         value: getClientID,
+        queryParam: true,
+      },
+
+      hostedButtonID: {
+        type: "string",
+        value: () => {
+          try {
+            // eslint-disable-next-line no-console
+            console.log("hostedButtonID function:", getHostedButtonID);
+            const result = getHostedButtonID();
+            // eslint-disable-next-line no-console
+            console.log("hostedButtonID:", result);
+            return result;
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.log("hostedButtonID err", err);
+          }
+        },
         queryParam: true,
       },
 

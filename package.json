@@ -121,9 +121,9 @@
     "@paypal/accelerated-checkout-loader": "^1.0.1",
     "@paypal/common-components": "^1.0.35",
     "@paypal/funding-components": "^1.0.31",
-    "@paypal/sdk-client": "^4.0.199",
-    "@paypal/sdk-constants": "^1.0.156",
-    "@paypal/sdk-logos": "^2.3.7"
+    "@paypal/sdk-logos": "^2.3.7",
+    "@paypal/sdk-client": "4.0.204-alpha.7",
+    "@paypal/sdk-constants": "^1.0.158-alpha.1"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
