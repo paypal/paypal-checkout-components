@@ -543,8 +543,7 @@ const generateRebrandedButtonSizeStyles = ({
 |}): string => {
   const redesignSizeKeys = Object.keys(BUTTON_REDESIGN_STYLE);
   return redesignSizeKeys
-    .map((redesignSize, sizeIndex) => {
-      const isLastSizeBucket = sizeIndex === redesignSizeKeys.length - 1;
+    .map((redesignSize) => {
       const {
         buttonHeight,
         gap,
@@ -559,10 +558,6 @@ const generateRebrandedButtonSizeStyles = ({
         height,
         redesignSize,
       });
-
-      const maxWidthQuery = isLastSizeBucket
-        ? ""
-        : `and (max-width: ${maxWidth}px)`;
 
       const widthBasedStyles = `
         @media only screen and (min-width: ${minWidth}px) {
