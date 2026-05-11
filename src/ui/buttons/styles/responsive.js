@@ -19,7 +19,6 @@ import {
   BUTTON_DISABLE_MAX_HEIGHT_STYLE,
   BUTTON_REDESIGN_STYLE,
   BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE,
-  REBRAND_LABEL_HEIGHT_RATIO,
 } from "../config";
 import { isBorderRadiusNumber } from "../util";
 
@@ -27,6 +26,8 @@ import {
   getResponsiveStyleVariables,
   getDisableMaxHeightResponsiveStyleVariables,
   getResponsiveRebrandedStyleVariables,
+  getLabelContainerHeight,
+  generateLabelHeightContainerStyles,
 } from "./styleUtils";
 
 const FIRST_BUTTON_PERC = 50;
@@ -488,11 +489,12 @@ const generateDisableMaxHeightStyles = ({
 
 const generateRebrandedDisableMaxHeightStyles = (): string => {
   const sizeKeys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
-  return sizeKeys
+
+  const bucketStyles = sizeKeys
     .map((redesignSize, sizeIndex) => {
       const isLastSizeBucket = sizeIndex === sizeKeys.length - 1;
-      const style = BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesignSize];
-      const { gap, fontSize, minHeight, maxHeight } = style;
+      const { gap, fontSize, minHeight, maxHeight } =
+        BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesignSize];
       const maxHeightQuery = isLastSizeBucket
         ? ""
         : `and (max-height: ${maxHeight}px)`;
@@ -505,13 +507,32 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT},
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.SPACE} {
             font-size: ${fontSize}px;
-            line-height: 1.2;
+            line-height: 1;
             margin: 0;
           }
         }
       `;
     })
     .join("\n");
+
+  const sizes = sizeKeys.map((redesignSize) => {
+    const { minHeight, maxHeight, fontSize } =
+      BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesignSize];
+    return { minHeight, maxHeight, fontSize };
+  });
+
+  const labelHeightStyles = generateLabelHeightContainerStyles(
+    sizes,
+    (minH, maxH, labelHeight) => `
+      @container (min-height: ${minH}px) and (max-height: ${maxH}px) {
+        .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+          height: ${labelHeight}px;
+        }
+      }
+    `
+  );
+
+  return bucketStyles + labelHeightStyles;
 };
 
 const generateRebrandedButtonSizeStyles = ({
@@ -571,9 +592,7 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               margin: 0px 4vw;
               box-sizing: border-box;
-              height: ${Math.round(
-                buttonHeight * REBRAND_LABEL_HEIGHT_RATIO
-              )}px;
+              height: ${getLabelContainerHeight(buttonHeight, fontSize)}px;
           }
 
           .${CLASS.BUTTON_REBRAND}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
@@ -663,7 +682,7 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.SPACE
       } {
               font-size: ${fontSize}px;
-              line-height: 1.2;
+              line-height: 1;
               margin: 0;
           }
         }
@@ -741,10 +760,14 @@ const generateRebrandedButtonSizeStyles = ({
         }
        `;
 
+      const midHeight = Math.round((minHeight + maxHeight) / 2);
+      const labelHeight = getLabelContainerHeight(midHeight, fontSize);
+
       const heightBasedStyles = `
         @container (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               gap: ${gap}px;
+              height: ${labelHeight}px;
           }
 
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND}.${
@@ -754,7 +777,7 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.BUTTON_REBRAND
       } .${CLASS.SPACE} {
               font-size: ${fontSize}px;
-              line-height: 1.2;
+              line-height: 1;
               margin: 0;
           }
 

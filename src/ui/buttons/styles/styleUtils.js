@@ -68,6 +68,80 @@ function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
+export function getLabelContainerHeight(
+  buttonHeight: number,
+  fontSize: number
+): number {
+  let labelHeight = Math.round(buttonHeight * REBRAND_LABEL_HEIGHT_RATIO);
+  const diff = labelHeight - fontSize;
+
+  if (diff % 2 !== 0) {
+    labelHeight -= 1;
+  }
+
+  return labelHeight;
+}
+
+export function generateDefaultLabelHeightStyles(
+  renderRule: (
+    minWidth: number,
+    maxWidth: number,
+    labelHeight: number
+  ) => string
+): string {
+  return Object.values(BUTTON_REDESIGN_STYLE)
+    .map(({ defaultHeight, minWidth, maxWidth, fontSize }) => {
+      const raw = Math.round(defaultHeight * REBRAND_LABEL_HEIGHT_RATIO);
+      const adjusted = getLabelContainerHeight(defaultHeight, fontSize);
+
+      if (raw === adjusted) {
+        return "";
+      }
+
+      return renderRule(minWidth, maxWidth, adjusted);
+    })
+    .join("");
+}
+
+export function generateLabelHeightContainerStyles(
+  sizes: $ReadOnlyArray<{|
+    minHeight: number,
+    maxHeight: number,
+    fontSize: number,
+  |}>,
+  renderRule: (minH: number, maxH: number, labelHeight: number) => string
+): string {
+  return sizes
+    .flatMap(({ minHeight, maxHeight, fontSize }) => {
+      const groups = [];
+      let groupStart = minHeight;
+      let groupLabelHeight = getLabelContainerHeight(minHeight, fontSize);
+
+      for (let h = minHeight + 1; h <= maxHeight; h++) {
+        const lh = getLabelContainerHeight(h, fontSize);
+        if (lh !== groupLabelHeight) {
+          groups.push({
+            minH: groupStart,
+            maxH: h - 1,
+            labelHeight: groupLabelHeight,
+          });
+          groupStart = h;
+          groupLabelHeight = lh;
+        }
+      }
+      groups.push({
+        minH: groupStart,
+        maxH: maxHeight,
+        labelHeight: groupLabelHeight,
+      });
+
+      return groups.map(({ minH, maxH, labelHeight }) =>
+        renderRule(minH, maxH, labelHeight)
+      );
+    })
+    .join("");
+}
+
 export function getGap(height: number): number {
   if (height <= 34) {
     return 3; // Small

@@ -188,15 +188,11 @@ export const buttonRebrandStyle = `
         width: auto;        
     }
 
-    .${CLASS.TEXT} {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        line-height: 1.1;
-        min-width: 0;
-    }
-
     .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
+        display: inline-flex;
+        align-items: center;
+        line-height: 1;
+        min-width: 0;
         max-width: 100%;
     }
     
