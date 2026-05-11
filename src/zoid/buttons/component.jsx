@@ -94,7 +94,7 @@ import {
   isSupportedNativeVenmoBrowser,
 } from "../../funding/util";
 import { getPixelComponent } from "../pixel";
-import { CLASS } from "../../constants";
+import { CLASS, BROWSER_CONTEXT } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
@@ -335,6 +335,14 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "boolean",
         queryParam: true,
         required: false,
+      },
+
+      browserContext: {
+        type: "string",
+        queryParam: "browser_context",
+        required: false,
+        value: ({ props }) =>
+          props.browserContext || BROWSER_CONTEXT.BROWSER,
       },
 
       preferences: {
