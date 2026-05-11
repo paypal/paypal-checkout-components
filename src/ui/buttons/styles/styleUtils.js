@@ -143,7 +143,7 @@ export function generateDisableMaxHeightLabelContainerStyles(): string {
     return { minHeight, maxHeight, fontSize };
   });
 
-  return generateLabelHeightContainerStyles(
+  const boundedStyles = generateLabelHeightContainerStyles(
     sizes,
     (minH, maxH, labelHeight) => `
       @container (min-height: ${minH}px) and (max-height: ${maxH}px) {
@@ -153,6 +153,23 @@ export function generateDisableMaxHeightLabelContainerStyles(): string {
       }
     `
   );
+
+  // For containers taller than the last defined bucket, cap the label height
+  // at the value computed for that bucket's maxHeight to prevent logo overflow.
+  const lastSize = sizes[sizes.length - 1];
+  const catchAllLabelHeight = getLabelContainerHeight(
+    lastSize.maxHeight,
+    lastSize.fontSize
+  );
+  const catchAllStyles = `
+    @container (min-height: ${lastSize.maxHeight + 1}px) {
+      .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+        height: ${catchAllLabelHeight}px;
+      }
+    }
+  `;
+
+  return boundedStyles + catchAllStyles;
 }
 
 export function getGap(height: number): number {

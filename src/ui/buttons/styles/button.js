@@ -205,7 +205,8 @@ export const buttonRebrandStyle = `
     }
     
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
-        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_REBRAND} {

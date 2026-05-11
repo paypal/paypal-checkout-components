@@ -63,9 +63,9 @@ describe("BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE config", () => {
     }
   });
 
-  test("should have continuous height coverage up to 200", () => {
+  test("should cap label height at the max defined bucket height", () => {
     const keys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
     const lastKey = keys[keys.length - 1];
-    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[lastKey].maxHeight).toBe(200);
+    expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[lastKey].maxHeight).toBe(75);
   });
 });
