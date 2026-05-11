@@ -27,7 +27,7 @@ import {
   getDisableMaxHeightResponsiveStyleVariables,
   getResponsiveRebrandedStyleVariables,
   getLabelContainerHeight,
-  generateLabelHeightContainerStyles,
+  generateDisableMaxHeightLabelContainerStyles,
 } from "./styleUtils";
 
 const FIRST_BUTTON_PERC = 50;
@@ -507,7 +507,6 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT},
           .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${CLASS.SPACE} {
             font-size: ${fontSize}px;
-            line-height: 1;
             margin: 0;
           }
         }
@@ -515,24 +514,10 @@ const generateRebrandedDisableMaxHeightStyles = (): string => {
     })
     .join("\n");
 
-  const sizes = sizeKeys.map((redesignSize) => {
-    const { minHeight, maxHeight, fontSize } =
-      BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesignSize];
-    return { minHeight, maxHeight, fontSize };
-  });
+  const disableMaxHeightLabelContainerStyles =
+    generateDisableMaxHeightLabelContainerStyles();
 
-  const labelHeightStyles = generateLabelHeightContainerStyles(
-    sizes,
-    (minH, maxH, labelHeight) => `
-      @container (min-height: ${minH}px) and (max-height: ${maxH}px) {
-        .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
-          height: ${labelHeight}px;
-        }
-      }
-    `
-  );
-
-  return bucketStyles + labelHeightStyles;
+  return bucketStyles + disableMaxHeightLabelContainerStyles;
 };
 
 const generateRebrandedButtonSizeStyles = ({
@@ -682,7 +667,6 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.SPACE
       } {
               font-size: ${fontSize}px;
-              line-height: 1;
               margin: 0;
           }
         }
@@ -760,8 +744,7 @@ const generateRebrandedButtonSizeStyles = ({
         }
        `;
 
-      const midHeight = Math.round((minHeight + maxHeight) / 2);
-      const labelHeight = getLabelContainerHeight(midHeight, fontSize);
+      const labelHeight = getLabelContainerHeight(defaultHeight, fontSize);
 
       const heightBasedStyles = `
         @container (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
@@ -777,7 +760,6 @@ const generateRebrandedButtonSizeStyles = ({
         CLASS.BUTTON_REBRAND
       } .${CLASS.SPACE} {
               font-size: ${fontSize}px;
-              line-height: 1;
               margin: 0;
           }
 

@@ -7,12 +7,14 @@ import {
   BUTTON_DISABLE_MAX_HEIGHT_STYLE,
   BUTTON_SIZE_STYLE,
   BUTTON_REDESIGN_STYLE,
+  BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE,
   REBRAND_LABEL_HEIGHT_RATIO,
 } from "../config";
 import {
   BUTTON_SIZE,
   BUTTON_DISABLE_MAX_HEIGHT_SIZE,
   BUTTON_REDESIGN_SIZE,
+  CLASS,
 } from "../../../constants";
 
 const BUTTON_MIN_ASPECT_RATIO = 2.2;
@@ -140,6 +142,26 @@ export function generateLabelHeightContainerStyles(
       );
     })
     .join("");
+}
+
+export function generateDisableMaxHeightLabelContainerStyles(): string {
+  const sizeKeys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
+  const sizes = sizeKeys.map((redesignSize) => {
+    const { minHeight, maxHeight, fontSize } =
+      BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE[redesignSize];
+    return { minHeight, maxHeight, fontSize };
+  });
+
+  return generateLabelHeightContainerStyles(
+    sizes,
+    (minH, maxH, labelHeight) => `
+      @container (min-height: ${minH}px) and (max-height: ${maxH}px) {
+        .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
+          height: ${labelHeight}px;
+        }
+      }
+    `
+  );
 }
 
 export function getGap(height: number): number {
