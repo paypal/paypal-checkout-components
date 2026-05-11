@@ -70,6 +70,10 @@ function getMarginTop({
   return parseInt(marginTop, 10);
 }
 
+// Computes the rebrand label container height for a given button height and font size.
+// Adjusts the raw ratio-based height down by 1px when the difference between
+// label height and font size is odd, ensuring equal top and bottom padding for
+// pixel-perfect vertical centering.
 export function getLabelContainerHeight(
   buttonHeight: number,
   fontSize: number
@@ -84,27 +88,11 @@ export function getLabelContainerHeight(
   return labelHeight;
 }
 
-export function generateDefaultLabelHeightStyles(
-  renderRule: (
-    minWidth: number,
-    maxWidth: number,
-    labelHeight: number
-  ) => string
-): string {
-  return Object.values(BUTTON_REDESIGN_STYLE)
-    .map(({ defaultHeight, minWidth, maxWidth, fontSize }) => {
-      const raw = Math.round(defaultHeight * REBRAND_LABEL_HEIGHT_RATIO);
-      const adjusted = getLabelContainerHeight(defaultHeight, fontSize);
-
-      if (raw === adjusted) {
-        return "";
-      }
-
-      return renderRule(minWidth, maxWidth, adjusted);
-    })
-    .join("");
-}
-
+// Generates container query CSS rules for label container height across a set
+// of height buckets. Within each bucket it groups consecutive pixel heights
+// that produce the same label height, emitting one rule per group rather than
+// one per pixel. The caller provides the renderRule callback to control the
+// selector and property being set.
 export function generateLabelHeightContainerStyles(
   sizes: $ReadOnlyArray<{|
     minHeight: number,
@@ -144,6 +132,9 @@ export function generateLabelHeightContainerStyles(
     .join("");
 }
 
+// Generates container query rules that set the rebrand label container height
+// for each size bucket defined in BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE.
+// Only rendered when shouldApplyRebrandedStyles and disableMaxHeight are both true.
 export function generateDisableMaxHeightLabelContainerStyles(): string {
   const sizeKeys = Object.keys(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE);
   const sizes = sizeKeys.map((redesignSize) => {

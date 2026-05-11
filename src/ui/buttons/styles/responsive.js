@@ -414,6 +414,14 @@ const generateDisableMaxHeightStyles = ({
               .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.SPACE} {
                 font-size: ${fontSize}px;
                 margin-top: -${marginTop}px;
+              }
+
+              .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON}:not(.${
+        CLASS.BUTTON_REBRAND
+      }) .${CLASS.TEXT},
+              .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON}:not(.${
+        CLASS.BUTTON_REBRAND
+      }) .${CLASS.SPACE} {
                 line-height: ${labelHeight}px;
               }
               
@@ -577,7 +585,6 @@ const generateRebrandedButtonSizeStyles = ({
           .${CLASS.BUTTON_REBRAND} > .${CLASS.BUTTON_LABEL} {
               margin: 0px 4vw;
               box-sizing: border-box;
-              height: ${getLabelContainerHeight(buttonHeight, fontSize)}px;
           }
 
           .${CLASS.BUTTON_REBRAND}.${CLASS.NUMBER}-${BUTTON_NUMBER.MULTIPLE} .${
@@ -659,18 +666,6 @@ const generateRebrandedButtonSizeStyles = ({
           }
         }
 
-        @media only screen and (min-width: ${minWidth}px) ${maxWidthQuery} {
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
-        CLASS.TEXT
-      },
-          .${CLASS.CONTAINER} .${CLASS.BUTTON_ROW} .${CLASS.BUTTON_REBRAND} .${
-        CLASS.SPACE
-      } {
-              font-size: ${fontSize}px;
-              margin: 0;
-          }
-        }
-
         @media only screen and (min-width: ${minWidth}px) and (max-width: ${minDualWidth}px) {
           .${CLASS.BUTTON_ROW}.${CLASS.LAYOUT}-${BUTTON_LAYOUT.HORIZONTAL}.${
         CLASS.NUMBER
@@ -744,7 +739,7 @@ const generateRebrandedButtonSizeStyles = ({
         }
        `;
 
-      const labelHeight = getLabelContainerHeight(defaultHeight, fontSize);
+      const labelHeight = getLabelContainerHeight(buttonHeight, fontSize);
 
       const heightBasedStyles = `
         @container (min-height: ${minHeight}px) and (max-height: ${maxHeight}px) {
