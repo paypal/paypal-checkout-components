@@ -44,7 +44,7 @@ describe("BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE config", () => {
   test("should have XXXL bucket with correct values", () => {
     expect(BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE.XXXL).toEqual({
       minHeight: 75,
-      maxHeight: 200,
+      maxHeight: 75,
       gap: 8,
       fontSize: 26,
     });
