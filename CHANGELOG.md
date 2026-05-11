@@ -1,3 +1,9 @@
+## <small>5.0.415 (2026-05-11)</small>
+
+* chore(release): 5.0.414 🎉 ([75cd952](https://github.com/paypal/paypal-checkout-components/commit/75cd952))
+
+
+
 ## <small>5.0.414 (2026-05-06)</small>
 
 * refactor: update fr pay later btn label (#2633) ([ed97035](https://github.com/paypal/paypal-checkout-components/commit/ed97035)), closes [#2633](https://github.com/paypal/paypal-checkout-components/issues/2633)
