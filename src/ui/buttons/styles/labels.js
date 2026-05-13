@@ -5,7 +5,6 @@ import { CLASS } from "../../../constants";
 export const COMPRESSED = `
     max-width: 0%;
     opacity: 0;
-    overflow: hidden;
 `;
 
 export const EXPANDED = `

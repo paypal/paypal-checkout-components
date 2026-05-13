@@ -281,7 +281,7 @@ export const BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE = {
   },
   XXXL: {
     minHeight: 75,
-    maxHeight: 200,
+    maxHeight: 75,
     gap: 8,
     fontSize: 26,
   },
