@@ -803,6 +803,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             return {
               nativeUrl: window.popupBridge.getReturnUrlPrefix(),
+              deepLinkReturnUrlPrefix:
+                typeof window.popupBridge.getDeepLinkReturnUrlPrefix ===
+                "function"
+                  ? window.popupBridge.getDeepLinkReturnUrlPrefix()
+                  : null,
+              isPayPalInstalled: Boolean(window.popupBridge.isPayPalInstalled),
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
                   window.popupBridge.onComplete = (err, result) => {
@@ -813,9 +819,39 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                     }
                     const queryItems =
                       result && result.queryItems ? result.queryItems : {};
-                    return err ? reject(err) : resolve(queryItems);
+                    const payload = result
+                      ? {
+                          ...queryItems,
+                          path: result.path,
+                          hash: result.hash,
+                        }
+                      : queryItems;
+                    return err ? reject(err) : resolve(payload);
                   };
                   window.popupBridge.open(url);
+                });
+              },
+              launchApp: (url) => {
+                return new ZalgoPromise((resolve, reject) => {
+                  window.popupBridge.onComplete = (err, result) => {
+                    if (!err && !result) {
+                      resolve({
+                        opType: "user_closed_window",
+                      });
+                    }
+                    const queryItems =
+                      result && result.queryItems ? result.queryItems : {};
+                    const payload = result
+                      ? {
+                          ...queryItems,
+                          queryItems,
+                          path: result.path,
+                          hash: result.hash,
+                        }
+                      : queryItems;
+                    return err ? reject(err) : resolve(payload);
+                  };
+                  window.popupBridge.launchApp(url);
                 });
               },
             };
