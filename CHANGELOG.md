@@ -1,3 +1,21 @@
+## <small>5.0.415 (2026-05-11)</small>
+
+* chore(release): 5.0.414 🎉 ([75cd952](https://github.com/paypal/paypal-checkout-components/commit/75cd952))
+
+
+
+## <small>5.0.414 (2026-05-06)</small>
+
+* refactor: update fr pay later btn label (#2633) ([ed97035](https://github.com/paypal/paypal-checkout-components/commit/ed97035)), closes [#2633](https://github.com/paypal/paypal-checkout-components/issues/2633)
+
+
+
+## <small>5.0.413 (2026-05-04)</small>
+
+* feat: add variationName prop support for PayPal monogram marks (#2630) ([18a8e94](https://github.com/paypal/paypal-checkout-components/commit/18a8e94)), closes [#2630](https://github.com/paypal/paypal-checkout-components/issues/2630)
+
+
+
 ## <small>5.0.412 (2026-04-27)</small>
 
 * feature(SavedPaymentMethods): Adding loading template for prerender (#2624) ([aba46b6](https://github.com/paypal/paypal-checkout-components/commit/aba46b6)), closes [#2624](https://github.com/paypal/paypal-checkout-components/issues/2624) [#2605](https://github.com/paypal/paypal-checkout-components/issues/2605)
