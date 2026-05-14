@@ -26,6 +26,7 @@ import {
   CARD,
   COMPONENTS,
   DISPLAY_ONLY_VALUES,
+  type BrandVersion,
 } from "@paypal/sdk-constants/src";
 import { type CrossDomainWindowType } from "@krakenjs/cross-domain-utils/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
@@ -335,6 +336,7 @@ export type ButtonStyle = {|
   isPayNowOrLaterLabelEligible: boolean,
   shouldApplyPayNowOrLaterLabel: boolean,
   requestedButtonColor?: $Values<typeof BUTTON_COLOR>,
+  brandVersion: BrandVersion,
 |};
 
 export type ButtonStyleInputs = {|
@@ -528,6 +530,7 @@ type ButtonColor = {|
   shouldApplyRebrandedStyles: boolean,
   color: $Values<typeof BUTTON_COLOR>,
   isButtonColorABTestMerchant: boolean,
+  brandVersion: BrandVersion,
 |};
 
 type ColorABTestStorage = {|
@@ -654,6 +657,7 @@ export type ButtonProps = {|
   messageMarkup?: string,
   hideSubmitButtonForCardForm?: boolean,
   userAgent: string,
+  buttonColor: ButtonColor,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -783,6 +787,14 @@ export function getBNPLLabelForABTest({
   return shouldApplyPayNowOrLaterLabel;
 }
 
+export function getBrandVersion({
+  shouldApplyRebrandedStyles,
+}: {|
+  shouldApplyRebrandedStyles: boolean,
+|}): BrandVersion {
+  return shouldApplyRebrandedStyles ? "v2" : "v1";
+}
+
 export function determineRandomButtonColor({
   buttonColorInput,
 }: {|
@@ -813,6 +825,7 @@ export function determineRandomButtonColor({
     shouldApplyRebrandedStyles,
     color: buttonColor,
     isButtonColorABTestMerchant: true,
+    brandVersion: getBrandVersion({ shouldApplyRebrandedStyles }),
   };
 }
 
@@ -934,6 +947,7 @@ export function getColorForFullRedesign({
     color: buttonColor,
     shouldApplyRebrandedStyles: true,
     isButtonColorABTestMerchant: false,
+    brandVersion: getBrandVersion({ shouldApplyRebrandedStyles: true }),
   };
 }
 
@@ -994,6 +1008,7 @@ export function getButtonColor({
           style,
         }),
         isButtonColorABTestMerchant: false,
+        brandVersion: getBrandVersion({ shouldApplyRebrandedStyles: false }),
       };
   }
 }
@@ -1076,8 +1091,12 @@ export function normalizeButtonStyle(
 
   props = props || getDefaultButtonPropsInput();
   const { fundingSource, buttonColor } = props;
-  const { color, shouldApplyRebrandedStyles, isButtonColorABTestMerchant } =
-    buttonColor || {};
+  const {
+    color,
+    shouldApplyRebrandedStyles,
+    isButtonColorABTestMerchant,
+    brandVersion,
+  } = buttonColor || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -1232,6 +1251,7 @@ export function normalizeButtonStyle(
     isPayNowOrLaterLabelEligible,
     shouldApplyPayNowOrLaterLabel,
     requestedButtonColor,
+    brandVersion,
   };
 }
 

@@ -13,7 +13,18 @@ import {
   throwErrorForInvalidButtonColor,
   determineRandomButtonColor,
   getColorABTestFromStorage,
+  getBrandVersion,
 } from "./props";
+
+describe("getBrandVersion", () => {
+  it("should return v2 when rebrand styles are applied", () => {
+    expect(getBrandVersion({ shouldApplyRebrandedStyles: true })).toBe("v2");
+  });
+
+  it("should return v1 when rebrand styles are not applied", () => {
+    expect(getBrandVersion({ shouldApplyRebrandedStyles: false })).toBe("v1");
+  });
+});
 
 describe("getColorABTestFromStorage", () => {
   it("should return null when storage state has no colorABTest value", () => {
@@ -81,6 +92,7 @@ describe("determineRandomButtonColor", () => {
       shouldApplyRebrandedStyles: true,
       color: BUTTON_COLOR.REBRAND_BLUE,
       isButtonColorABTestMerchant: true,
+      brandVersion: "v2",
     });
   });
 
@@ -95,6 +107,7 @@ describe("determineRandomButtonColor", () => {
       shouldApplyRebrandedStyles: true,
       color: BUTTON_COLOR.REBRAND_DARKBLUE,
       isButtonColorABTestMerchant: true,
+      brandVersion: "v2",
     });
   });
 
@@ -109,6 +122,7 @@ describe("determineRandomButtonColor", () => {
       shouldApplyRebrandedStyles: false,
       color: BUTTON_COLOR.BLACK,
       isButtonColorABTestMerchant: true,
+      brandVersion: "v1",
     });
   });
 
@@ -123,6 +137,7 @@ describe("determineRandomButtonColor", () => {
       shouldApplyRebrandedStyles: false,
       color: BUTTON_COLOR.GOLD,
       isButtonColorABTestMerchant: true,
+      brandVersion: "v1",
     });
   });
 });
@@ -327,6 +342,7 @@ describe("getColorForABTest", () => {
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       sessionID: mockSessionID,
+      brandVersion: "v2",
     };
 
     const storageState = {
@@ -344,6 +360,7 @@ describe("getColorForABTest", () => {
     expect(result).toEqual({
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
+      brandVersion: "v2",
     });
     expect(storageState.get).toHaveBeenCalledWith("colorABTest");
     expect(storageState.set).not.toHaveBeenCalled();
@@ -450,6 +467,7 @@ describe("getColorForFullRedesign", () => {
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
     });
   });
 
@@ -464,6 +482,7 @@ describe("getColorForFullRedesign", () => {
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
     });
   });
 
@@ -478,6 +497,7 @@ describe("getColorForFullRedesign", () => {
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
     });
   });
 
@@ -492,6 +512,7 @@ describe("getColorForFullRedesign", () => {
       color: BUTTON_COLOR.REBRAND_DARKBLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
     });
   });
 
@@ -537,6 +558,7 @@ describe("getColorForFullRedesign", () => {
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
     });
   });
 
@@ -676,6 +698,7 @@ describe("getButtonColor", () => {
       color: BUTTON_COLOR.GOLD,
       shouldApplyRebrandedStyles: false,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v1",
     });
   });
 
@@ -702,6 +725,7 @@ describe("getButtonColor", () => {
       color: BUTTON_COLOR.REBRAND_BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
     });
   });
 
@@ -754,6 +778,7 @@ describe("getButtonColor", () => {
       color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: false,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v1",
     });
   });
 
@@ -779,6 +804,7 @@ describe("getButtonColor", () => {
       color: BUTTON_COLOR.WHITE,
       shouldApplyRebrandedStyles: false,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v1",
     });
   });
 
@@ -791,6 +817,7 @@ describe("getButtonColor", () => {
       color: BUTTON_COLOR.GOLD,
       shouldApplyRebrandedStyles: false,
       isButtonColorABTestMerchant: false,
+      brandVersion: "v1",
     });
   });
 });
