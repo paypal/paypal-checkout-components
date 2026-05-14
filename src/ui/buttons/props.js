@@ -334,6 +334,7 @@ export type ButtonStyle = {|
   isButtonColorABTestMerchant: boolean,
   isPayNowOrLaterLabelEligible: boolean,
   shouldApplyPayNowOrLaterLabel: boolean,
+  requestedButtonColor?: $Values<typeof BUTTON_COLOR>,
 |};
 
 export type ButtonStyleInputs = {|
@@ -1102,6 +1103,7 @@ export function normalizeButtonStyle(
     disableMaxWidth,
     disableMaxHeight,
     borderRadius,
+    color: requestedButtonColor,
   } = style;
 
   const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
@@ -1229,6 +1231,7 @@ export function normalizeButtonStyle(
     isButtonColorABTestMerchant,
     isPayNowOrLaterLabelEligible,
     shouldApplyPayNowOrLaterLabel,
+    requestedButtonColor,
   };
 }
 
