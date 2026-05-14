@@ -90,7 +90,7 @@ describe("determineRandomButtonColor", () => {
 
     expect(result).toEqual({
       shouldApplyRebrandedStyles: true,
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       isButtonColorABTestMerchant: true,
       brandVersion: "v2",
     });
@@ -105,7 +105,7 @@ describe("determineRandomButtonColor", () => {
 
     expect(result).toEqual({
       shouldApplyRebrandedStyles: true,
-      color: BUTTON_COLOR.REBRAND_DARKBLUE,
+      color: BUTTON_COLOR.DARKBLUE,
       isButtonColorABTestMerchant: true,
       brandVersion: "v2",
     });
@@ -185,37 +185,6 @@ describe("throwErrorForInvalidButtonColor", () => {
         invalidButtonColor: BUTTON_COLOR.BLUE,
       });
     }).toThrow(/paypal/i);
-  });
-
-  it("should filter out rebranded colors from error message", () => {
-    // Define a local helper function to capture error message
-    function getErrorMessage(fn): string {
-      try {
-        fn();
-        return "";
-      } catch (err) {
-        return err.message;
-      }
-    }
-
-    const errorMessage = getErrorMessage(() => {
-      throwErrorForInvalidButtonColor({
-        fundingSource: FUNDING.PAYPAL,
-        fundingSourceColors: [
-          BUTTON_COLOR.GOLD,
-          BUTTON_COLOR.BLUE,
-          BUTTON_COLOR.REBRAND_BLUE, // This should be filtered out
-        ],
-        invalidButtonColor: BUTTON_COLOR.BLACK,
-      });
-    });
-
-    // Check that the error message contains gold and blue
-    expect(errorMessage).toMatch(/gold/i);
-    expect(errorMessage).toMatch(/blue/i);
-
-    // Check that the error message doesn't contain rebrand_blue
-    expect(errorMessage).not.toMatch(/rebrand_blue/i);
   });
 });
 
@@ -339,7 +308,7 @@ describe("getColorForABTest", () => {
   it("should return color from storage if sessionID matches", () => {
     const mockSessionID = "test-session-123";
     const mockStoredValue = {
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       sessionID: mockSessionID,
       brandVersion: "v2",
@@ -358,7 +327,7 @@ describe("getColorForABTest", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       brandVersion: "v2",
     });
@@ -464,7 +433,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
       brandVersion: "v2",
@@ -479,7 +448,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
       brandVersion: "v2",
@@ -494,22 +463,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_BLUE,
-      shouldApplyRebrandedStyles: true,
-      isButtonColorABTestMerchant: false,
-      brandVersion: "v2",
-    });
-  });
-
-  it("should handle REBRAND colors directly without remapping them", () => {
-    const result = getColorForFullRedesign({
-      // $FlowFixMe
-      style: { color: BUTTON_COLOR.REBRAND_DARKBLUE },
-      fundingSource: FUNDING.PAYPAL,
-    });
-
-    expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_DARKBLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
       brandVersion: "v2",
@@ -555,7 +509,7 @@ describe("getColorForFullRedesign", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
       brandVersion: "v2",
@@ -722,7 +676,7 @@ describe("getButtonColor", () => {
     });
 
     expect(result).toEqual({
-      color: BUTTON_COLOR.REBRAND_BLUE,
+      color: BUTTON_COLOR.BLUE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
       brandVersion: "v2",

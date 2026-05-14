@@ -37,7 +37,6 @@ import type { ContentType, Wallet, Experiment } from "../../types";
 import {
   BUTTON_LABEL,
   BUTTON_COLOR,
-  BUTTON_COLOR_REBRAND,
   BUTTON_LAYOUT,
   BUTTON_SHAPE,
   BUTTON_SIZE,
@@ -807,11 +806,11 @@ export function determineRandomButtonColor({
 
   switch (randomButtonColor) {
     case 0:
-      buttonColor = BUTTON_COLOR.REBRAND_BLUE;
+      buttonColor = BUTTON_COLOR.BLUE;
       shouldApplyRebrandedStyles = true;
       break;
     case 1:
-      buttonColor = BUTTON_COLOR.REBRAND_DARKBLUE;
+      buttonColor = BUTTON_COLOR.DARKBLUE;
       shouldApplyRebrandedStyles = true;
       break;
     default:
@@ -834,16 +833,11 @@ export function throwErrorForInvalidButtonColor({
   fundingSourceColors,
   invalidButtonColor,
 }: ThrowErrorForInvalidButtonColorArgs) {
-  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
-  const filteredColors = fundingSourceColors.filter(
-    (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
-  );
-
   // Throw an error if color specified by merchant is not valid for the funding source
   throw new Error(
     `Unexpected style.color for ${
       fundingSource || FUNDING.PAYPAL
-    } button: ${invalidButtonColor}, expected ${filteredColors.join(", ")}`
+    } button: ${invalidButtonColor}, expected ${fundingSourceColors.join(", ")}`
   );
 }
 
@@ -910,20 +904,13 @@ export function getColorForFullRedesign({
   fundingSource,
 }: GetColorForFullRedesignArgs): ButtonColor {
   const rebrandColorMap = {
-    [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.REBRAND_BLACK,
-    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.REBRAND_WHITE,
-    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
+    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.BLUE,
+    [BUTTON_COLOR.GOLD]: BUTTON_COLOR.BLUE,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
-
-    // normalizeButtonStyle gets called multiple times and
-    // it can be called after color is already be mapped to rebranded style
-    [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
-    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
-    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
   };
 
   // if color is invalid, buttonColor will be undefined
@@ -1125,8 +1112,6 @@ export function normalizeButtonStyle(
     color: requestedButtonColor,
   } = style;
 
-  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
-
   // $FlowFixMe
   if (tagline === "false") {
     // $FlowFixMe
@@ -1142,15 +1127,10 @@ export function normalizeButtonStyle(
   }
 
   if (color && fundingConfig.colors.indexOf(color) === -1) {
-    // We don't want to include rebranded colors in the error message
-    const filteredColors = fundingConfig.colors.filter(
-      (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
-    );
-
     throw new Error(
       `Unexpected style.color for ${
         fundingSource || FUNDING.PAYPAL
-      } button: ${color}, expected ${filteredColors.join(", ")}`
+      } button: ${color}, expected ${fundingConfig.colors.join(", ")}`
     );
   }
 
