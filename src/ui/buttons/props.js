@@ -653,6 +653,7 @@ export type ButtonProps = {|
   messageMarkup?: string,
   hideSubmitButtonForCardForm?: boolean,
   userAgent: string,
+  browserContext?: string,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -708,6 +709,7 @@ export type ButtonPropsInputs = {
   buttonColor: ButtonColor,
   storageState?: StateGetSet,
   userAgent: string,
+  browserContext?: string,
 };
 
 export const DEFAULT_STYLE = {

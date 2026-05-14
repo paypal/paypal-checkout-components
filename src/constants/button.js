@@ -124,3 +124,10 @@ export const MARK_VARIATIONS = {
   WORDMARK: ("wordmark": "wordmark"),
   MONOGRAM: ("monogram": "monogram"),
 };
+
+export const BROWSER_CONTEXT = {
+  BROWSER: ("browser": "browser"),
+  WEBVIEW: ("webview": "webview"),
+  CUSTOM_TAB: ("custom_tab": "custom_tab"),
+  AUTH_SESSION: ("auth_session": "auth_session"),
+};
