@@ -21,8 +21,8 @@ Object.defineProperty(window, "matchMedia", {
 // Ensure matchMedia is available globally
 global.matchMedia = window.matchMedia;
 
-// $FlowIssue missing browser crypto typedefs
 Object.defineProperty(window, "crypto", {
+  // $FlowIssue missing browser crypto typedefs
   value: crypto.webcrypto,
   writable: true,
 });
