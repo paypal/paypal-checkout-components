@@ -558,17 +558,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       hostedButtonID: {
         type: "string",
+        required: false,
         value: () => {
           try {
-            // eslint-disable-next-line no-console
-            console.log("hostedButtonID function:", getHostedButtonID);
-            const result = getHostedButtonID();
-            // eslint-disable-next-line no-console
-            console.log("hostedButtonID:", result);
-            return result;
+            return getHostedButtonID();
           } catch (err) {
-            // eslint-disable-next-line no-console
-            console.log("hostedButtonID err", err);
+            // hostedButtonID is optional; not present on most SDK integrations
           }
         },
         queryParam: true,
