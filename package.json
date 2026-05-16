@@ -121,11 +121,15 @@
     "@paypal/accelerated-checkout-loader": "^1.0.1",
     "@paypal/common-components": "^1.0.35",
     "@paypal/funding-components": "^1.0.31",
-    "@paypal/sdk-logos": "^2.3.7",
-    "@paypal/sdk-client": "4.0.204-alpha.7",
-    "@paypal/sdk-constants": "^1.0.158-alpha.1"
+    "@paypal/sdk-client": "4.0.204-alpha.5",
+    "@paypal/sdk-constants": "^1.0.158-alpha.1",
+    "@paypal/sdk-logos": "^2.3.7"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "alias": {
+    "@paypal/sdk-client": "./node_modules/@paypal/sdk-client",
+    "@paypal/sdk-constants": "./node_modules/@paypal/sdk-constants"
   }
 }
