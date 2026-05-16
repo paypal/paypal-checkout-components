@@ -127,5 +127,9 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "alias": {
+    "@paypal/sdk-client": "./node_modules/@paypal/sdk-client",
+    "@paypal/sdk-constants": "./node_modules/@paypal/sdk-constants"
   }
 }
