@@ -244,7 +244,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     eligible: ({ props }) => {
-      const buttonExperiments = getButtonExperiments();
+      const buttonExperiments = props.experiment ?? getButtonExperiments();
       const {
         fundingSource,
         onShippingChange,
