@@ -6,6 +6,7 @@ import {
   getLogger,
   getLocale,
   getClientID,
+  getHostedButtonID,
   getEnv,
   getIntent,
   getCommit,
@@ -552,6 +553,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       clientID: {
         type: "string",
         value: getClientID,
+        queryParam: true,
+      },
+
+      hostedButtonID: {
+        type: "string",
+        required: false,
+        value: () => {
+          try {
+            return getHostedButtonID();
+          } catch (err) {
+            // hostedButtonID is optional; not present on most SDK integrations
+          }
+        },
         queryParam: true,
       },
 
