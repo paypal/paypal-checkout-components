@@ -142,22 +142,18 @@ describe("card eligibility", () => {
 });
 
 describe("rebrand card config", () => {
-  test("should have rebrand colors", () => {
+  test("should have standard colors", () => {
     const colors = getCardConfig().colors;
     expect(colors).toEqual(
-      expect.arrayContaining([
-        BUTTON_COLOR.REBRAND_WHITE,
-        BUTTON_COLOR.REBRAND_BLACK,
-      ])
+      expect.arrayContaining([BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE])
     );
   });
 
-  test("should have rebrand logo colors", () => {
+  test("should have standard logo colors", () => {
     const logoColors = getCardConfig().logoColors;
     expect(logoColors).toEqual(
       expect.objectContaining({
-        [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.BLACK,
-        [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.WHITE,
+        [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
       })
     );
   });

@@ -47,7 +47,11 @@ import {
   MESSAGE_POSITION,
   MESSAGE_ALIGN,
 } from "../../constants";
-import { getFundingConfig, isFundingEligible } from "../../funding";
+import {
+  getFundingConfig,
+  isFundingEligible,
+  getFundingSourceColors,
+} from "../../funding";
 import { componentContent } from "../../funding/content";
 import type { StateGetSet } from "../../lib/session";
 
@@ -564,6 +568,7 @@ type GetColorForFullRedesignArgs = {|
 type GetDefaultColorForFundingSourceArgs = {|
   fundingSource: ?$Values<typeof FUNDING>,
   style: ?ButtonStyle,
+  shouldApplyRebrandedStyles: boolean,
 |};
 
 type GetButtonColorExperienceArgs = {|
@@ -844,13 +849,17 @@ export function throwErrorForInvalidButtonColor({
 export function getDefaultColorForFundingSource({
   fundingSource,
   style,
+  shouldApplyRebrandedStyles,
 }: GetDefaultColorForFundingSourceArgs): $Values<typeof BUTTON_COLOR> {
   // $FlowFixMe this is handled if the fundingSource is undefined
   const fundingSourceConfig = getFundingConfig()[fundingSource];
   const { color: buttonColorInput } = style || {};
 
   if (fundingSourceConfig) {
-    const { colors } = fundingSourceConfig;
+    const { colors } = getFundingSourceColors({
+      fundingConfig: fundingSourceConfig,
+      shouldApplyRebrandedStyles,
+    });
 
     if (!buttonColorInput) {
       // return the default color for the funding source
@@ -925,6 +934,7 @@ export function getColorForFullRedesign({
     const defaultButtonColor = getDefaultColorForFundingSource({
       fundingSource,
       style,
+      shouldApplyRebrandedStyles: true,
     });
 
     buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
@@ -993,6 +1003,7 @@ export function getButtonColor({
         color: getDefaultColorForFundingSource({
           fundingSource,
           style,
+          shouldApplyRebrandedStyles: false,
         }),
         isButtonColorABTestMerchant: false,
         brandVersion: getBrandVersion({ shouldApplyRebrandedStyles: false }),
@@ -1126,11 +1137,16 @@ export function normalizeButtonStyle(
     throw new Error(`Invalid label: ${label}`);
   }
 
-  if (color && fundingConfig.colors.indexOf(color) === -1) {
+  const { colors: validColors } = getFundingSourceColors({
+    fundingConfig,
+    shouldApplyRebrandedStyles,
+  });
+
+  if (color && validColors.indexOf(color) === -1) {
     throw new Error(
-      `Unexpected style.color for ${
-        fundingSource || FUNDING.PAYPAL
-      } button: ${color}, expected ${fundingConfig.colors.join(", ")}`
+      `Unexpected style.color for ${fundingSource || FUNDING.PAYPAL} button: ${
+        requestedButtonColor || color
+      }, expected ${validColors.join(", ")}`
     );
   }
 

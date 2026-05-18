@@ -31,7 +31,7 @@ import {
   TEXT_COLOR,
   BUTTON_FLOW,
 } from "../../constants";
-import { getFundingConfig } from "../../funding";
+import { getFundingConfig, getFundingSourceColors } from "../../funding";
 
 import type {
   ButtonStyle,
@@ -106,9 +106,6 @@ export function Button({
     throw new Error(`Can not find funding config for ${fundingSource}`);
   }
 
-  const colors = fundingConfig.colors;
-  const secondaryColors = fundingConfig.secondaryColors || {};
-
   let {
     color,
     period,
@@ -117,9 +114,13 @@ export function Button({
     shouldApplyPayNowOrLaterLabel,
   } = style;
 
+  const { colors, logoColors, secondaryColors, textColors } =
+    getFundingSourceColors({ fundingConfig, shouldApplyRebrandedStyles });
+  const { logoColorsPP } = fundingConfig;
+
   // if no color option is passed in via style props
   if (color === "" || typeof color === "undefined") {
-    // if a single button is rendered, we set color to first option in the fundingSource config
+    // if a single button is rendered, we set color to first option in the valid color set
     color = colors[0];
 
     // if multiple buttons are being rendered (smart stack), we set default color as gold > first
@@ -137,19 +138,14 @@ export function Button({
   // The secondary colors are used to render the smart stack (multiple buttons)
   // they keep track of the mapping of the color style prop to the
   if (multiple && i > 0) {
-    if (
-      secondaryColors[color] &&
-      colors.indexOf(secondaryColors[color] !== -1)
-    ) {
+    if (secondaryColors[color] && colors.includes(secondaryColors[color])) {
       color = secondaryColors[color];
-    } else if (colors.indexOf(secondaryColors[BUTTON_COLOR.DEFAULT]) !== -1) {
+    } else if (colors.includes(secondaryColors[BUTTON_COLOR.DEFAULT])) {
       color = secondaryColors[BUTTON_COLOR.DEFAULT];
     } else {
       color = colors[0];
     }
   }
-
-  const { logoColors, logoColorsPP, textColors } = fundingConfig;
 
   const logoColor =
     logoColors[color] || logoColors[LOGO_COLOR.DEFAULT] || LOGO_COLOR.DEFAULT;
@@ -289,6 +285,7 @@ export function Button({
     <div
       class={[
         CLASS.BUTTON_ROW,
+        `${shouldApplyRebrandedStyles ? CLASS.BUTTON_REBRAND : ""}`,
         `${CLASS.NUMBER}-${i}`,
         `${CLASS.LAYOUT}-${layout}`,
         `${CLASS.NUMBER}-${

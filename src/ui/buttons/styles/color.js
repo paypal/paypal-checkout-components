@@ -44,85 +44,85 @@ export const buttonColorStyle = `
         border-top-color: transparent;
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE} .menu-button {
         background: #60CDFF;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:hover {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE}:hover {
             background: #54B4E0;
             overflow: inherit;
         }
 
-        .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:hover {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.BLUE}:hover {
             background: #0073E0;
         }
     }
-    
+
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:active {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLUE}:active {
             background: #3DB5FF;
             overflow: inherit;
         }
 
-        .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE}:active {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.BLUE}:active {
             background: #0074FF;
         }
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.DARKBLUE},
+    .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.DARKBLUE} .menu-button {
         background: #002991;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE}:hover {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.DARKBLUE}:hover {
             background: #0038BA;
             overflow: inherit;
         }
     }
-    
+
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_DARKBLUE}:active {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.DARKBLUE}:active {
             background: #0057D9;
             overflow: inherit;
         }
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLACK},
+    .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLACK} .menu-button {
         background: #000000;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK}:hover {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLACK}:hover {
             background: #333333;
             overflow: inherit;
         }
     }
-    
+
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLACK}:active {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.BLACK}:active {
             background: #696969;
             overflow: inherit;
         }
     }
 
-    .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE} .menu-button {
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE},
+    .${CLASS.BUTTON_ROW}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE} .menu-button {
         background: #FFFFFF;
     }
 
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE}:hover {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE}:hover {
             background: #F2F2F2;
             overflow: inherit;
         }
     }
-    
+
     @media (hover:hover) {
-        .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE}:active {
+        .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE}:active {
             background: #E9E9E9;
             overflow: inherit;
         }
@@ -178,14 +178,20 @@ export const buttonColorStyle = `
         background: #0070ba;
     }
 
-    .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.BLUE}, 
-    .${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_BLUE} {
+    .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.BLUE},
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.VENMO}].${CLASS.COLOR}-${BUTTON_COLOR.BLUE} {
         background: #008CFF;
     }
 
     /* For APM funding sources, default button color to be defined by payment scheme branding guidelines */
     .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.BLIK}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT} {
         background: #2C2E2F;
+    }
+
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.BLIK}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT},
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.BOLETO}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT},
+    .${CLASS.BUTTON}.${CLASS.BUTTON_REBRAND}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.IDEAL}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT} {
+        background: #000000;
     }
 
     .${CLASS.BUTTON}[${ATTRIBUTE.FUNDING_SOURCE}=${FUNDING.BANCONTACT}].${CLASS.COLOR}-${BUTTON_COLOR.DEFAULT} {
@@ -457,8 +463,6 @@ export const buttonColorStyle = `
     }
 
     .${CLASS.BUTTON}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE},
-    .${CLASS.BUTTON_REBRAND}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE},
-    .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.REBRAND_WHITE} .menu-button,
     .${CLASS.BUTTON_ROW}.${CLASS.COLOR}-${BUTTON_COLOR.WHITE} .menu-button {
         background: #fff;
         border: 1px solid #555;

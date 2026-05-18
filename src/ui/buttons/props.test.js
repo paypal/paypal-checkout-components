@@ -147,6 +147,7 @@ describe("throwErrorForInvalidButtonColor", () => {
     expect(() => {
       throwErrorForInvalidButtonColor({
         fundingSource: FUNDING.PAYPAL,
+        shouldApplyRebrandedStyles: false,
         fundingSourceColors: [
           BUTTON_COLOR.GOLD,
           BUTTON_COLOR.BLUE,
@@ -161,6 +162,7 @@ describe("throwErrorForInvalidButtonColor", () => {
     expect(() => {
       throwErrorForInvalidButtonColor({
         fundingSource: FUNDING.VENMO,
+        shouldApplyRebrandedStyles: false,
         fundingSourceColors: [BUTTON_COLOR.BLUE, BUTTON_COLOR.WHITE],
         invalidButtonColor: BUTTON_COLOR.GOLD,
       });
@@ -171,6 +173,7 @@ describe("throwErrorForInvalidButtonColor", () => {
     expect(() => {
       throwErrorForInvalidButtonColor({
         fundingSource: FUNDING.PAYPAL,
+        shouldApplyRebrandedStyles: false,
         fundingSourceColors: [BUTTON_COLOR.GOLD, BUTTON_COLOR.SILVER],
         invalidButtonColor: BUTTON_COLOR.BLUE,
       });
@@ -191,19 +194,23 @@ describe("throwErrorForInvalidButtonColor", () => {
 describe("getDefaultColorForFundingSource", () => {
   beforeEach(() => {
     // Mock getFundingConfig to return consistent test data
-    vi.mock("../../funding", () => ({
-      getFundingConfig: () => ({
-        [FUNDING.PAYPAL]: {
-          colors: [BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.WHITE],
-        },
-        [FUNDING.VENMO]: {
-          colors: [BUTTON_COLOR.BLUE],
-        },
-        [FUNDING.PAYLATER]: {
-          colors: [BUTTON_COLOR.WHITE, BUTTON_COLOR.BLACK],
-        },
-      }),
-    }));
+    vi.mock("../../funding", async (importOriginal) => {
+      const actual = await importOriginal();
+      return {
+        ...actual,
+        getFundingConfig: () => ({
+          [FUNDING.PAYPAL]: {
+            colors: [BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.WHITE],
+          },
+          [FUNDING.VENMO]: {
+            colors: [BUTTON_COLOR.BLUE],
+          },
+          [FUNDING.PAYLATER]: {
+            colors: [BUTTON_COLOR.WHITE, BUTTON_COLOR.BLACK],
+          },
+        }),
+      };
+    });
   });
 
   afterEach(() => {
@@ -213,6 +220,7 @@ describe("getDefaultColorForFundingSource", () => {
   it("should return the first color in the funding source config when style.color is undefined", () => {
     const result = getDefaultColorForFundingSource({
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: {},
     });
@@ -223,6 +231,7 @@ describe("getDefaultColorForFundingSource", () => {
   it("should return style.color if it is valid for the funding source", () => {
     const result = getDefaultColorForFundingSource({
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.BLUE },
     });
@@ -234,6 +243,7 @@ describe("getDefaultColorForFundingSource", () => {
     expect(() => {
       getDefaultColorForFundingSource({
         fundingSource: FUNDING.PAYPAL,
+        shouldApplyRebrandedStyles: false,
         // $FlowFixMe
         style: { color: BUTTON_COLOR.BLACK },
       });
@@ -243,18 +253,21 @@ describe("getDefaultColorForFundingSource", () => {
   it("should return different default colors for different funding sources", () => {
     const paypalResult = getDefaultColorForFundingSource({
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: {},
     });
 
     const venmoResult = getDefaultColorForFundingSource({
       fundingSource: FUNDING.VENMO,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: {},
     });
 
     const paylaterResult = getDefaultColorForFundingSource({
       fundingSource: FUNDING.PAYLATER,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: {},
     });
@@ -267,6 +280,7 @@ describe("getDefaultColorForFundingSource", () => {
   it("should default to GOLD for smart stack (fundingSource is undefined)", () => {
     const result = getDefaultColorForFundingSource({
       fundingSource: FUNDING.IDEAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: {},
     });
@@ -277,6 +291,7 @@ describe("getDefaultColorForFundingSource", () => {
   it("should return style.color if provided for smart stack (fundingSource is undefined)", () => {
     const result = getDefaultColorForFundingSource({
       fundingSource: FUNDING.IDEAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.BLACK },
     });
@@ -287,6 +302,7 @@ describe("getDefaultColorForFundingSource", () => {
   it("should handle null style", () => {
     const result = getDefaultColorForFundingSource({
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       style: null,
     });
 
@@ -430,6 +446,7 @@ describe("getColorForFullRedesign", () => {
       // $FlowFixMe
       style: { color: BUTTON_COLOR.BLUE },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
     });
 
     expect(result).toEqual({
@@ -445,6 +462,7 @@ describe("getColorForFullRedesign", () => {
       // $FlowFixMe
       style: { color: BUTTON_COLOR.DARKBLUE },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
     });
 
     expect(result).toEqual({
@@ -460,6 +478,7 @@ describe("getColorForFullRedesign", () => {
       // $FlowFixMe
       style: { color: BUTTON_COLOR.GOLD },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
     });
 
     expect(result).toEqual({
@@ -475,6 +494,7 @@ describe("getColorForFullRedesign", () => {
       // $FlowFixMe
       style: {},
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
     });
 
     // Since we're not mocking getDefaultColorForFundingSource, just verify
@@ -491,6 +511,7 @@ describe("getColorForFullRedesign", () => {
     const result = getColorForFullRedesign({
       style: null,
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
     });
 
     expect(result).toEqual(
@@ -506,6 +527,7 @@ describe("getColorForFullRedesign", () => {
       // $FlowFixMe
       style: { color: BUTTON_COLOR.BLUE },
       fundingSource: FUNDING.VENMO,
+      shouldApplyRebrandedStyles: false,
     });
 
     expect(result).toEqual({
@@ -522,6 +544,7 @@ describe("getColorForFullRedesign", () => {
         // $FlowFixMe
         style: { color: "green" },
         fundingSource: FUNDING.PAYPAL,
+        shouldApplyRebrandedStyles: false,
       });
     }).toThrow();
   });
@@ -535,6 +558,7 @@ describe("getButtonColorExperience", () => {
         isPaypalRebrandABTestEnabled: false,
       },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.GOLD },
     });
@@ -549,6 +573,7 @@ describe("getButtonColorExperience", () => {
         isPaypalRebrandABTestEnabled: true,
       },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.GOLD },
     });
@@ -563,6 +588,7 @@ describe("getButtonColorExperience", () => {
         isPaypalRebrandABTestEnabled: true,
       },
       fundingSource: FUNDING.VENMO,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.BLUE },
     });
@@ -577,6 +603,7 @@ describe("getButtonColorExperience", () => {
         isPaypalRebrandABTestEnabled: false,
       },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.GOLD },
     });
@@ -589,6 +616,7 @@ describe("getButtonColorExperience", () => {
       // $FlowFixMe
       experiment: null,
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       // $FlowFixMe
       style: { color: BUTTON_COLOR.GOLD },
     });
@@ -603,6 +631,7 @@ describe("getButtonColorExperience", () => {
         isPaypalRebrandABTestEnabled: false,
       },
       fundingSource: FUNDING.PAYPAL,
+      shouldApplyRebrandedStyles: false,
       style: null,
     });
 

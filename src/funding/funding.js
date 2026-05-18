@@ -119,7 +119,11 @@ export function isFundingEligible(
     return false;
   }
 
-  if (!fundingConfig.automatic && source !== fundingSource) {
+  if (
+    !fundingConfig.automatic &&
+    source !== fundingSource &&
+    !experiment?.forceAllFundingAutomatic
+  ) {
     return false;
   }
 

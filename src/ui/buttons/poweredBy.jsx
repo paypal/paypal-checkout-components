@@ -5,7 +5,7 @@ import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { type LocaleType } from "@paypal/sdk-constants/src";
 import { LOGO_COLOR, LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS, BUTTON_COLOR_REBRAND } from "../../constants";
+import { CLASS, BUTTON_COLOR } from "../../constants";
 import { Text } from "../text";
 
 import { buttonContent } from "./content";
@@ -50,15 +50,15 @@ function getPoweredByConfig(): {|
 |} {
   return {
     logoColors: {
-      [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.BLACK]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
     },
 
     textColors: {
-      [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: "#000000",
-      [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: "#000000",
-      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: "#000000",
+      [BUTTON_COLOR.BLUE]: "#000000",
+      [BUTTON_COLOR.BLACK]: "#000000",
+      [BUTTON_COLOR.WHITE]: "#000000",
     },
   };
 }
@@ -66,7 +66,7 @@ function getPoweredByConfig(): {|
 export function PoweredByPayPal({
   locale: { lang },
   nonce,
-  buttonColor = BUTTON_COLOR_REBRAND.REBRAND_BLUE,
+  buttonColor = BUTTON_COLOR.BLUE,
   shouldApplyRebrandedStyles = false,
 }: PoweredByPayPalProps): ChildType {
   const { PoweredBy } = buttonContent[lang];
