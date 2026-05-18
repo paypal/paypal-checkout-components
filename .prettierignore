@@ -5,3 +5,4 @@ CHANGELOG.md
 .husky
 .playwright-mcp
 .claude
+**/*.sh
