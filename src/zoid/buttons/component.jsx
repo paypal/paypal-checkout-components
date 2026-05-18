@@ -560,7 +560,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       hostedButtonId: {
         type: "string",
         required: false,
-        value: getHostedButtonID,
+        value: () => {
+          try {
+            return getHostedButtonID();
+          } catch (err) {
+            // hostedButtonId is optional; not present on most SDK integrations
+          }
+        },
         queryParam: true,
       },
 
