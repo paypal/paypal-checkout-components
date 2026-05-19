@@ -197,11 +197,16 @@ export const buttonRebrandStyle = `
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.TEXT} {
+        height: unset;
+        display: inline-flex;
+        line-height: 1;
         max-width: 100%;
+        overflow: visible;
     }
     
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .paypal-logo {
-        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} > .${CLASS.LOGO_REBRAND} {

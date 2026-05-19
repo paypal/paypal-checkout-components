@@ -1,3 +1,9 @@
+## <small>5.0.416 (2026-05-18)</small>
+
+* [Feature] PopupBridge++ (#2609) ([4f2327d](https://github.com/paypal/paypal-checkout-components/commit/4f2327d)), closes [#2609](https://github.com/paypal/paypal-checkout-components/issues/2609)
+
+
+
 ## <small>5.0.415 (2026-05-11)</small>
 
 * chore(release): 5.0.414 🎉 ([75cd952](https://github.com/paypal/paypal-checkout-components/commit/75cd952))
