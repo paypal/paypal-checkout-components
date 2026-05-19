@@ -81,7 +81,7 @@ describe("determineRandomButtonColor", () => {
     mathRandomSpy.mockRestore();
   });
 
-  it("should return rebrand blue when random value is less than 0.33", () => {
+  it("should return rebrand blue when random value is less than 0.5", () => {
     mathRandomSpy.mockReturnValue(0);
 
     const result = determineRandomButtonColor({
@@ -96,22 +96,7 @@ describe("determineRandomButtonColor", () => {
     });
   });
 
-  it("should return rebrand darkblue when random value is between 0.33 and 0.67", () => {
-    mathRandomSpy.mockReturnValue(0.4);
-
-    const result = determineRandomButtonColor({
-      buttonColorInput: BUTTON_COLOR.GOLD,
-    });
-
-    expect(result).toEqual({
-      shouldApplyRebrandedStyles: true,
-      color: BUTTON_COLOR.DARKBLUE,
-      isButtonColorABTestMerchant: true,
-      brandVersion: "v2",
-    });
-  });
-
-  it("should return provided buttonColorInput when random value is above 0.67", () => {
+  it("should return provided buttonColorInput when random value is above 0.5", () => {
     mathRandomSpy.mockReturnValue(0.8);
 
     const result = determineRandomButtonColor({

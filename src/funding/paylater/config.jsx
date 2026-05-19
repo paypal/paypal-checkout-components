@@ -164,7 +164,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
 
     secondaryColorsRebrand: {
       ...DEFAULT_FUNDING_CONFIG.secondaryColorsRebrand,
-      [DEFAULT]: BUTTON_COLOR.WHITE,
+      [DEFAULT]: BUTTON_COLOR.BLUE,
       [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
     },
 
@@ -174,6 +174,11 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+    },
+
+    logoColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.logoColorsRebrand,
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
     },
 
     labelText: ({ fundingEligibility, locale }) => {

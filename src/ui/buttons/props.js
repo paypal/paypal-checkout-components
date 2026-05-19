@@ -807,15 +807,11 @@ export function determineRandomButtonColor({
   let shouldApplyRebrandedStyles;
   let buttonColor;
 
-  const randomButtonColor = Math.floor(Math.random() * 3);
+  const randomButtonColor = Math.floor(Math.random() * 2);
 
   switch (randomButtonColor) {
     case 0:
       buttonColor = BUTTON_COLOR.BLUE;
-      shouldApplyRebrandedStyles = true;
-      break;
-    case 1:
-      buttonColor = BUTTON_COLOR.DARKBLUE;
       shouldApplyRebrandedStyles = true;
       break;
     default:
