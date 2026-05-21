@@ -2,7 +2,7 @@
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { FUNDING } from "@paypal/sdk-constants";
 
-import { BUTTON_COLOR } from "../../constants";
+import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_SHAPE } from "../../constants";
 
 import {
   getButtonColor,
@@ -14,6 +14,7 @@ import {
   determineRandomButtonColor,
   getColorABTestFromStorage,
   getBrandVersion,
+  normalizeButtonStyle,
 } from "./props";
 
 describe("getBrandVersion", () => {
@@ -182,7 +183,25 @@ describe("getDefaultColorForFundingSource", () => {
         ...actual,
         getFundingConfig: () => ({
           [FUNDING.PAYPAL]: {
-            colors: [BUTTON_COLOR.GOLD, BUTTON_COLOR.BLUE, BUTTON_COLOR.WHITE],
+            colors: [
+              BUTTON_COLOR.GOLD,
+              BUTTON_COLOR.BLUE,
+              BUTTON_COLOR.SILVER,
+              BUTTON_COLOR.WHITE,
+            ],
+            colorsRebrand: [
+              BUTTON_COLOR.BLUE,
+              BUTTON_COLOR.BLACK,
+              BUTTON_COLOR.WHITE,
+            ],
+            layouts: [BUTTON_LAYOUT.VERTICAL, BUTTON_LAYOUT.HORIZONTAL],
+            shapes: [BUTTON_SHAPE.RECT, BUTTON_SHAPE.PILL, BUTTON_SHAPE.SHARP],
+            logoColors: {},
+            logoColorsRebrand: {},
+            textColors: {},
+            textColorsRebrand: {},
+            secondaryColors: {},
+            secondaryColorsRebrand: {},
           },
           [FUNDING.VENMO]: {
             colors: [BUTTON_COLOR.BLUE],
@@ -463,6 +482,21 @@ describe("getColorForFullRedesign", () => {
 
     expect(result).toEqual({
       color: BUTTON_COLOR.BLUE,
+      shouldApplyRebrandedStyles: true,
+      isButtonColorABTestMerchant: false,
+      brandVersion: "v2",
+    });
+  });
+
+  it("should map SILVER to WHITE", () => {
+    const result = getColorForFullRedesign({
+      // $FlowFixMe
+      style: { color: BUTTON_COLOR.SILVER },
+      fundingSource: FUNDING.PAYPAL,
+    });
+
+    expect(result).toEqual({
+      color: BUTTON_COLOR.WHITE,
       shouldApplyRebrandedStyles: true,
       isButtonColorABTestMerchant: false,
       brandVersion: "v2",
@@ -800,5 +834,53 @@ describe("HideSubmitButtonProps type validation", () => {
     };
 
     expect(validButtonProps.hideSubmitButtonForCardForm).toBe(false);
+  });
+});
+
+describe("normalizeButtonStyle requestedButtonColor", () => {
+  it("should preserve the merchant-provided color as requestedButtonColor when rebrand maps it to a different color", () => {
+    const result = normalizeButtonStyle(
+      // $FlowFixMe
+      {
+        fundingSource: FUNDING.PAYPAL,
+        buttonColor: {
+          color: BUTTON_COLOR.BLUE,
+          shouldApplyRebrandedStyles: true,
+          brandVersion: "v2",
+          isButtonColorABTestMerchant: false,
+        },
+      },
+      // $FlowFixMe
+      { color: BUTTON_COLOR.GOLD }
+    );
+
+    // Merchant configured gold — rebrand maps it to blue
+    expect(result.requestedButtonColor).toBe(BUTTON_COLOR.GOLD);
+    expect(result.color).toBe(BUTTON_COLOR.BLUE);
+    expect(result.shouldApplyRebrandedStyles).toBe(true);
+    expect(result.brandVersion).toBe("v2");
+  });
+
+  it("should preserve merchant silver as requestedButtonColor when rebrand maps it to white", () => {
+    const result = normalizeButtonStyle(
+      // $FlowFixMe
+      {
+        fundingSource: FUNDING.PAYPAL,
+        buttonColor: {
+          color: BUTTON_COLOR.WHITE,
+          shouldApplyRebrandedStyles: true,
+          brandVersion: "v2",
+          isButtonColorABTestMerchant: false,
+        },
+      },
+      // $FlowFixMe
+      { color: BUTTON_COLOR.SILVER }
+    );
+
+    // Merchant configured silver — rebrand maps it to white
+    expect(result.requestedButtonColor).toBe(BUTTON_COLOR.SILVER);
+    expect(result.color).toBe(BUTTON_COLOR.WHITE);
+    expect(result.shouldApplyRebrandedStyles).toBe(true);
+    expect(result.brandVersion).toBe("v2");
   });
 });
