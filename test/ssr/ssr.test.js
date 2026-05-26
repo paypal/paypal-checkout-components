@@ -189,6 +189,51 @@ test(`Button should render with ssr, with en_HK locale option`, async () => {
   }
 });
 
+test(`Button should render with ssr, with GB locale and paylater variant`, async () => {
+  const { Buttons } = await getButtonScript();
+
+  const buttonHTML = Buttons({
+    locale: { country: "GB", lang: "en" },
+    platform: "desktop",
+    sessionID: "xyz",
+    buttonSessionID: "abc",
+    fundingEligibility: {
+      paypal: {
+        eligible: true,
+      },
+      paylater: {
+        eligible: true,
+        products: {
+          paylater: {
+            eligible: true,
+            variant: "GB",
+          },
+        },
+      },
+      card: {
+        eligible: true,
+        isPayPalBranded: true,
+        vendors: {
+          visa: { eligible: true },
+          mastercard: { eligible: true },
+          amex: { eligible: true },
+          discover: { eligible: true },
+        },
+      },
+    },
+  }).render(html());
+
+  if (!buttonHTML || typeof buttonHTML !== "string") {
+    throw new Error(`Expected html to be a non-empty string`);
+  }
+
+  if (!buttonHTML.includes("Pay Later")) {
+    throw new Error(
+      `Expected SSR HTML to contain "Pay Later" label for GB variant`
+    );
+  }
+});
+
 // This is failing since validation of the color prop moved
 // This condition is tested in vitest
 test.skip(`Button should fail to render with ssr, with invalid style option`, async () => {

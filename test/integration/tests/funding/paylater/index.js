@@ -290,6 +290,40 @@ describe(`paylater button text`, () => {
     });
   });
 
+  it(`should display Pay Later label when paylater product is eligible and variant is GB`, () => {
+    const fundingSource = FUNDING.PAYLATER;
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true
+    );
+    mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
+      paylater: {
+        eligible: true,
+        variant: "GB",
+      },
+    });
+
+    const button = window.paypal.Buttons({
+      fundingSource,
+    });
+
+    if (!button.isEligible()) {
+      throw new Error(`Expected paylater to be eligible`);
+    }
+
+    return button.render("#testContainer").then(() => {
+      assert.equal(
+        getElementRecursive(".paypal-button-text").innerHTML,
+        "Pay Later"
+      );
+      assert.equal(
+        getElementRecursive(".paypal-button").getAttribute("aria-label"),
+        "paypal paylater"
+      );
+    });
+  });
+
   it(`should fallback to Pay Later button text if unable to retrieve products`, () => {
     const fundingSource = FUNDING.PAYLATER;
     mockProp(

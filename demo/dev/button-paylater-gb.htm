@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://www.paypalobjects.com/paypal-sdk-fonts/PayPal-Plain/PayPal-Plain.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://www.paypalobjects.com/paypal-sdk-fonts/PayPalPro-Book/PayPalPro-Book.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://www.paypalobjects.com/paypal-sdk-fonts/Scto-Grotesk-A/Scto-Grotesk-A.css"
+  />
+  <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1"></script>
+  <script src="https://localhost.paypal.com:9001/button.js"></script>
+  <script src="https://localhost.paypal.com:9001/jsx-pragmatic.js"></script>
+</head>
+
+<body>
+  <script>
+    const server = xprops.server || {};
+
+    const props = {
+      ...xprops,
+      locale: { country: "GB", lang: "en" },
+      fundingEligibility: {
+        paypal: { eligible: true },
+        paylater: {
+          eligible: true,
+          products: {
+            paylater: {
+              eligible: true,
+              variant: "GB",
+            },
+          },
+        },
+        card: {
+          eligible: true,
+          isPayPalBranded: true,
+          vendors: {
+            visa: { eligible: true },
+            mastercard: { eligible: true },
+            amex: { eligible: true },
+          },
+        },
+      },
+      content: {
+        payWithDebitOrCreditCard: "Debit or Credit Card",
+        payNow: "Pay Now",
+        payWith: "Pay with",
+        credit: "Credit",
+        balance: "Balance",
+      },
+      wallet: server.wallet || xprops.wallet,
+    };
+
+    document.write(button.Buttons(props).render(jsx.html()));
+
+    document.querySelectorAll("[data-funding-source]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const instance = paypal.Checkout({
+          createOrder: () => {
+            return "EC-XXXXXXXXXX";
+          },
+          onApprove: () => {
+            console.log("Approved");
+            instance.close();
+          },
+        });
+        instance.renderTo(window.parent.document.body);
+      });
+    });
+  </script>
+</body>
