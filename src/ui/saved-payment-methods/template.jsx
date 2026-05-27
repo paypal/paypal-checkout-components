@@ -126,6 +126,7 @@ export function SavedPaymentMethods(
               align-items: center;
               justify-content: center;
               border: 1.2px solid #CCCCCC;
+              background-color: #FFFFFF;
               border-radius: 2px;
             }
 
