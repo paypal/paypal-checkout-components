@@ -17,8 +17,12 @@ import {
   isChrome,
   isFirefox,
 } from "@krakenjs/belter/src";
+import { LOGO_COLOR } from "@paypal/sdk-logos/src";
 
+import { BUTTON_COLOR, TEXT_COLOR } from "../constants";
 import type { Experiment } from "../types";
+
+import type { FundingSourceConfig } from "./common";
 
 const isMacOsCna = (userAgent: string): boolean => {
   return /Macintosh.*AppleWebKit(?!.*Safari)/i.test(userAgent);
@@ -44,6 +48,39 @@ const venmoUserAgentSupportsPopups = (userAgent: string): boolean => {
     isElectron()
   );
 };
+
+type ActiveFundingColors = {|
+  colors: $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
+  logoColors: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof LOGO_COLOR> },
+  secondaryColors: {
+    [$Values<typeof BUTTON_COLOR>]: $Values<typeof BUTTON_COLOR>,
+  },
+  textColors: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof TEXT_COLOR> },
+|};
+
+export function getFundingSourceColors({
+  fundingConfig,
+  shouldApplyRebrandedStyles,
+}: {|
+  fundingConfig: FundingSourceConfig,
+  shouldApplyRebrandedStyles: boolean,
+|}): ActiveFundingColors {
+  return {
+    colors:
+      shouldApplyRebrandedStyles && fundingConfig.colorsRebrand
+        ? fundingConfig.colorsRebrand
+        : fundingConfig.colors,
+    logoColors: shouldApplyRebrandedStyles
+      ? fundingConfig.logoColorsRebrand
+      : fundingConfig.logoColors,
+    secondaryColors: shouldApplyRebrandedStyles
+      ? fundingConfig.secondaryColorsRebrand
+      : fundingConfig.secondaryColors,
+    textColors: shouldApplyRebrandedStyles
+      ? fundingConfig.textColorsRebrand
+      : fundingConfig.textColors,
+  };
+}
 
 export function supportsVenmoPopups(
   experiment?: Experiment,

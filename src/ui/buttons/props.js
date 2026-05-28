@@ -26,6 +26,7 @@ import {
   CARD,
   COMPONENTS,
   DISPLAY_ONLY_VALUES,
+  type BrandVersion,
 } from "@paypal/sdk-constants/src";
 import { type CrossDomainWindowType } from "@krakenjs/cross-domain-utils/src";
 import { LOGO_COLOR } from "@paypal/sdk-logos/src";
@@ -36,7 +37,6 @@ import type { ContentType, Wallet, Experiment } from "../../types";
 import {
   BUTTON_LABEL,
   BUTTON_COLOR,
-  BUTTON_COLOR_REBRAND,
   BUTTON_LAYOUT,
   BUTTON_SHAPE,
   BUTTON_SIZE,
@@ -47,7 +47,11 @@ import {
   MESSAGE_POSITION,
   MESSAGE_ALIGN,
 } from "../../constants";
-import { getFundingConfig, isFundingEligible } from "../../funding";
+import {
+  getFundingConfig,
+  isFundingEligible,
+  getFundingSourceColors,
+} from "../../funding";
 import { componentContent } from "../../funding/content";
 import type { StateGetSet } from "../../lib/session";
 
@@ -334,6 +338,8 @@ export type ButtonStyle = {|
   isButtonColorABTestMerchant: boolean,
   isPayNowOrLaterLabelEligible: boolean,
   shouldApplyPayNowOrLaterLabel: boolean,
+  requestedButtonColor?: $Values<typeof BUTTON_COLOR>,
+  brandVersion: BrandVersion,
 |};
 
 export type ButtonStyleInputs = {|
@@ -527,6 +533,7 @@ type ButtonColor = {|
   shouldApplyRebrandedStyles: boolean,
   color: $Values<typeof BUTTON_COLOR>,
   isButtonColorABTestMerchant: boolean,
+  brandVersion: BrandVersion,
 |};
 
 type ColorABTestStorage = {|
@@ -561,6 +568,7 @@ type GetColorForFullRedesignArgs = {|
 type GetDefaultColorForFundingSourceArgs = {|
   fundingSource: ?$Values<typeof FUNDING>,
   style: ?ButtonStyle,
+  shouldApplyRebrandedStyles: boolean,
 |};
 
 type GetButtonColorExperienceArgs = {|
@@ -654,6 +662,7 @@ export type ButtonProps = {|
   hideSubmitButtonForCardForm?: boolean,
   userAgent: string,
   browserContext?: string,
+  buttonColor: ButtonColor,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -784,6 +793,14 @@ export function getBNPLLabelForABTest({
   return shouldApplyPayNowOrLaterLabel;
 }
 
+export function getBrandVersion({
+  shouldApplyRebrandedStyles,
+}: {|
+  shouldApplyRebrandedStyles: boolean,
+|}): BrandVersion {
+  return shouldApplyRebrandedStyles ? "v2" : "v1";
+}
+
 export function determineRandomButtonColor({
   buttonColorInput,
 }: {|
@@ -792,15 +809,11 @@ export function determineRandomButtonColor({
   let shouldApplyRebrandedStyles;
   let buttonColor;
 
-  const randomButtonColor = Math.floor(Math.random() * 3);
+  const randomButtonColor = Math.floor(Math.random() * 2);
 
   switch (randomButtonColor) {
     case 0:
-      buttonColor = BUTTON_COLOR.REBRAND_BLUE;
-      shouldApplyRebrandedStyles = true;
-      break;
-    case 1:
-      buttonColor = BUTTON_COLOR.REBRAND_DARKBLUE;
+      buttonColor = BUTTON_COLOR.BLUE;
       shouldApplyRebrandedStyles = true;
       break;
     default:
@@ -814,6 +827,7 @@ export function determineRandomButtonColor({
     shouldApplyRebrandedStyles,
     color: buttonColor,
     isButtonColorABTestMerchant: true,
+    brandVersion: getBrandVersion({ shouldApplyRebrandedStyles }),
   };
 }
 
@@ -822,29 +836,28 @@ export function throwErrorForInvalidButtonColor({
   fundingSourceColors,
   invalidButtonColor,
 }: ThrowErrorForInvalidButtonColorArgs) {
-  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
-  const filteredColors = fundingSourceColors.filter(
-    (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
-  );
-
   // Throw an error if color specified by merchant is not valid for the funding source
   throw new Error(
     `Unexpected style.color for ${
       fundingSource || FUNDING.PAYPAL
-    } button: ${invalidButtonColor}, expected ${filteredColors.join(", ")}`
+    } button: ${invalidButtonColor}, expected ${fundingSourceColors.join(", ")}`
   );
 }
 
 export function getDefaultColorForFundingSource({
   fundingSource,
   style,
+  shouldApplyRebrandedStyles,
 }: GetDefaultColorForFundingSourceArgs): $Values<typeof BUTTON_COLOR> {
   // $FlowFixMe this is handled if the fundingSource is undefined
   const fundingSourceConfig = getFundingConfig()[fundingSource];
   const { color: buttonColorInput } = style || {};
 
   if (fundingSourceConfig) {
-    const { colors } = fundingSourceConfig;
+    const { colors } = getFundingSourceColors({
+      fundingConfig: fundingSourceConfig,
+      shouldApplyRebrandedStyles,
+    });
 
     if (!buttonColorInput) {
       // return the default color for the funding source
@@ -898,20 +911,13 @@ export function getColorForFullRedesign({
   fundingSource,
 }: GetColorForFullRedesignArgs): ButtonColor {
   const rebrandColorMap = {
-    [BUTTON_COLOR.BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.GOLD]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.REBRAND_BLACK,
-    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.REBRAND_WHITE,
-    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.REBRAND_WHITE,
+    [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
+    [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.BLUE,
+    [BUTTON_COLOR.GOLD]: BUTTON_COLOR.BLUE,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.SILVER]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.DEFAULT]: BUTTON_COLOR.DEFAULT,
-
-    // normalizeButtonStyle gets called multiple times and
-    // it can be called after color is already be mapped to rebranded style
-    [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-    [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.REBRAND_DARKBLUE,
-    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
-    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
   };
 
   // if color is invalid, buttonColor will be undefined
@@ -926,6 +932,7 @@ export function getColorForFullRedesign({
     const defaultButtonColor = getDefaultColorForFundingSource({
       fundingSource,
       style,
+      shouldApplyRebrandedStyles: true,
     });
 
     buttonColor = rebrandColorMap[defaultButtonColor] || defaultButtonColor;
@@ -935,6 +942,7 @@ export function getColorForFullRedesign({
     color: buttonColor,
     shouldApplyRebrandedStyles: true,
     isButtonColorABTestMerchant: false,
+    brandVersion: getBrandVersion({ shouldApplyRebrandedStyles: true }),
   };
 }
 
@@ -993,8 +1001,10 @@ export function getButtonColor({
         color: getDefaultColorForFundingSource({
           fundingSource,
           style,
+          shouldApplyRebrandedStyles: false,
         }),
         isButtonColorABTestMerchant: false,
+        brandVersion: getBrandVersion({ shouldApplyRebrandedStyles: false }),
       };
   }
 }
@@ -1077,8 +1087,12 @@ export function normalizeButtonStyle(
 
   props = props || getDefaultButtonPropsInput();
   const { fundingSource, buttonColor } = props;
-  const { color, shouldApplyRebrandedStyles, isButtonColorABTestMerchant } =
-    buttonColor || {};
+  const {
+    color,
+    shouldApplyRebrandedStyles,
+    isButtonColorABTestMerchant,
+    brandVersion,
+  } = buttonColor || {};
 
   const FUNDING_CONFIG = getFundingConfig();
   const fundingConfig =
@@ -1104,9 +1118,8 @@ export function normalizeButtonStyle(
     disableMaxWidth,
     disableMaxHeight,
     borderRadius,
+    color: requestedButtonColor,
   } = style;
-
-  const rebrandedColors = Object.values(BUTTON_COLOR_REBRAND);
 
   // $FlowFixMe
   if (tagline === "false") {
@@ -1122,16 +1135,16 @@ export function normalizeButtonStyle(
     throw new Error(`Invalid label: ${label}`);
   }
 
-  if (color && fundingConfig.colors.indexOf(color) === -1) {
-    // We don't want to include rebranded colors in the error message
-    const filteredColors = fundingConfig.colors.filter(
-      (fundingConfigColor) => !rebrandedColors.includes(fundingConfigColor)
-    );
+  const { colors: validColors } = getFundingSourceColors({
+    fundingConfig,
+    shouldApplyRebrandedStyles,
+  });
 
+  if (color && validColors.indexOf(color) === -1) {
     throw new Error(
-      `Unexpected style.color for ${
-        fundingSource || FUNDING.PAYPAL
-      } button: ${color}, expected ${filteredColors.join(", ")}`
+      `Unexpected style.color for ${fundingSource || FUNDING.PAYPAL} button: ${
+        requestedButtonColor || color
+      }, expected ${validColors.join(", ")}`
     );
   }
 
@@ -1231,6 +1244,8 @@ export function normalizeButtonStyle(
     isButtonColorABTestMerchant,
     isPayNowOrLaterLabelEligible,
     shouldApplyPayNowOrLaterLabel,
+    requestedButtonColor,
+    brandVersion,
   };
 }
 

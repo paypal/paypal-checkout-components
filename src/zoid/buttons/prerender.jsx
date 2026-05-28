@@ -66,6 +66,8 @@ export function PrerenderedButtons({
         [FPTI_KEY.CONTEXT_ID]: props.buttonSessionID,
         [FPTI_KEY.TRANSITION]: "process_button_prerender_click",
         [FPTI_KEY.CHOSEN_FUNDING]: fundingSource,
+        [FPTI_KEY.BUTTON_COLOR]: props.buttonColor?.color,
+        [FPTI_KEY.BRAND_VERSION]: props.buttonColor?.brandVersion,
       });
 
     if (eagerOrderCreation) {

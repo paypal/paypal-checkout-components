@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Button Lab</title>
-    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD&enable-funding=venmo"></script>
+    <script src="https://localhost.paypal.com:9001/sdk.js?client-id=alc_client1&currency=USD&enable-funding=venmo,applepay"></script>
     <script src="https://localhost.paypal.com:9001/sdk-constants.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -481,6 +481,17 @@
         </div>
       </div>
 
+      <!-- APM Mode -->
+      <div class="control-group">
+        <div class="toggle-row">
+          <span class="toggle-label">APMs in Smart Stack</span>
+          <label class="toggle">
+            <input type="checkbox" id="ctrl-apm-stack" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
       <!-- Height -->
       <div class="control-group">
         <div class="toggle-row">
@@ -540,18 +551,17 @@
         <span class="control-label">Color</span>
         <select class="styled-select" id="ctrl-color">
           <option value="">default</option>
-          <optgroup label="Legacy" id="color-legacy-opts">
+          <optgroup label="Legacy">
             <option value="gold">gold</option>
             <option value="blue">blue</option>
+            <option value="darkblue">darkblue</option>
             <option value="silver">silver</option>
             <option value="black">black</option>
             <option value="white">white</option>
           </optgroup>
-          <optgroup label="Rebrand" id="color-rebrand-opts">
-            <option value="rebrand_blue">rebrand_blue</option>
-            <option value="rebrand_darkblue">rebrand_darkblue</option>
-            <option value="rebrand_black">rebrand_black</option>
-            <option value="rebrand_white">rebrand_white</option>
+          <optgroup label="Edge Cases">
+            <option value="__empty__">&quot;&quot; (empty string)</option>
+            <option value="__undefined__">undefined</option>
           </optgroup>
         </select>
       </div>
@@ -598,6 +608,7 @@
       // ---- FUNDING SOURCE REGISTRY ----
       const SOURCES = {
         major: ["paypal", "venmo", "paylater", "credit", "card"],
+        native: ["applepay"],
         apm: [
           "bancontact",
           "blik",
@@ -620,16 +631,19 @@
           "wechatpay",
         ],
       };
-      const ALL_SOURCES = [...SOURCES.major, ...SOURCES.apm];
+      const ALL_SOURCES = [...SOURCES.major, ...SOURCES.native, ...SOURCES.apm];
       const WALLET_INSTRUMENTS = ["card", "bank", "balance", "credit"];
 
       function getCategory(src) {
-        return SOURCES.major.includes(src) ? "major" : "apm";
+        if (SOURCES.major.includes(src)) return "major";
+        if (SOURCES.native.includes(src)) return "native";
+        return "apm";
       }
 
       // ---- STATE ----
       const STATE = {
         rebrand: true,
+        apmStack: false,
         fixedHeight: false,
         height: 45,
         width: 300,
@@ -665,6 +679,7 @@
           ...(window.__TEST_FIRST_RENDER_EXPERIMENTS__ || {}),
           isPaypalRebrandEnabled: STATE.rebrand,
           enableVenmo: true,
+          forceAllFundingAutomatic: STATE.apmStack,
         };
       }
 
@@ -675,6 +690,14 @@
         .getElementById("ctrl-rebrand")
         .addEventListener("change", (e) => {
           STATE.rebrand = e.target.checked;
+          render();
+        });
+
+      // APM stack mode
+      document
+        .getElementById("ctrl-apm-stack")
+        .addEventListener("change", (e) => {
+          STATE.apmStack = e.target.checked;
           render();
         });
 
@@ -833,6 +856,9 @@
         const majorSources = activeSources.filter((s) =>
           SOURCES.major.includes(s)
         );
+        const nativeSources = activeSources.filter((s) =>
+          SOURCES.native.includes(s)
+        );
         const apmSources = activeSources.filter((s) => SOURCES.apm.includes(s));
 
         // Smart Stacks
@@ -904,6 +930,19 @@
           majorSources.forEach((src) => renderCard(grid, src, "major", gen));
         }
 
+        if (nativeSources.length > 0) {
+          const label = document.createElement("div");
+          label.className = "section-label";
+          label.textContent = "Native";
+          scroll.appendChild(label);
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          scroll.appendChild(grid);
+
+          nativeSources.forEach((src) => renderCard(grid, src, "native", gen));
+        }
+
         if (apmSources.length > 0) {
           const label = document.createElement("div");
           label.className = "section-label";
@@ -914,7 +953,13 @@
           grid.className = "grid";
           scroll.appendChild(grid);
 
-          apmSources.forEach((src) => renderCard(grid, src, "apm", gen));
+          if (STATE.apmStack) {
+            apmSources.forEach((src) =>
+              renderCard(grid, null, "stack", gen, ["paypal", src, "card"])
+            );
+          } else {
+            apmSources.forEach((src) => renderCard(grid, src, "apm", gen));
+          }
         }
       }
 
@@ -944,7 +989,7 @@
         // Body
         const body = document.createElement("div");
         body.className = "card-body";
-        if (STATE.color === "white" || STATE.color === "rebrand_white") {
+        if (STATE.color === "white") {
           body.classList.add("dark-bg");
         }
 
@@ -961,7 +1006,13 @@
         const styleDesc = [
           STATE.fixedHeight ? `h:${STATE.height}` : "h:auto",
           `shape:${STATE.shape}`,
-          STATE.color ? `color:${STATE.color}` : null,
+          STATE.color === "__empty__"
+            ? `color:""`
+            : STATE.color === "__undefined__"
+            ? `color:undefined`
+            : STATE.color
+            ? `color:${STATE.color}`
+            : null,
           STATE.label ? `label:${STATE.label}` : null,
           STATE.rebrand ? "rebrand" : "legacy",
         ]
@@ -979,7 +1030,13 @@
         };
         if (!fundingSource) style.layout = STATE.layout;
         if (STATE.fixedHeight) style.height = STATE.height;
-        if (STATE.color) style.color = STATE.color;
+        if (STATE.color === "__undefined__") {
+          style.color = undefined;
+        } else if (STATE.color === "__empty__") {
+          style.color = "";
+        } else if (STATE.color) {
+          style.color = STATE.color;
+        }
         if (STATE.label) style.label = STATE.label;
 
         let eligibility;

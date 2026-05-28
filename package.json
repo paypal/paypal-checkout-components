@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.416",
+  "version": "5.0.420",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -118,11 +118,11 @@
     "@krakenjs/post-robot": "^11.0.0",
     "@krakenjs/zalgo-promise": "^2.0.0",
     "@krakenjs/zoid": "^10.3.1",
-    "@paypal/accelerated-checkout-loader": "^1.0.1",
+    "@paypal/fastlane-sdk-loader": "^1.2.1",
     "@paypal/common-components": "^1.0.35",
     "@paypal/funding-components": "^1.0.31",
     "@paypal/sdk-client": "^4.0.199",
-    "@paypal/sdk-constants": "^1.0.156",
+    "@paypal/sdk-constants": "^1.0.158",
     "@paypal/sdk-logos": "^2.3.7"
   },
   "lint-staged": {

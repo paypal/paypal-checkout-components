@@ -151,9 +151,6 @@ export function getPaylaterConfig(): FundingSourceConfig {
       BUTTON_COLOR.GOLD,
       BUTTON_COLOR.BLUE,
       BUTTON_COLOR.SILVER,
-      BUTTON_COLOR.REBRAND_BLUE,
-      BUTTON_COLOR.REBRAND_WHITE,
-      BUTTON_COLOR.REBRAND_BLACK,
     ],
 
     secondaryColors: {
@@ -163,9 +160,12 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
       [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
-      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
-      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+    },
+
+    secondaryColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.secondaryColorsRebrand,
+      [DEFAULT]: BUTTON_COLOR.BLUE,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
     },
 
     logoColors: {
@@ -174,15 +174,11 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
     },
 
-    logoColorsPP: {
-      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+    logoColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.logoColorsRebrand,
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
     },
 
     labelText: ({ fundingEligibility, locale }) => {

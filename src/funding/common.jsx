@@ -127,14 +127,24 @@ export type FundingSourceConfig = {|
   WalletLabel?: (WalletLabelOptions) => ?ChildType,
   Tag?: (TagOptions) => ?ChildType,
   colors: $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
+  colorsRebrand?: $ReadOnlyArray<$Values<typeof BUTTON_COLOR>>,
   textColors: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof TEXT_COLOR> },
+  textColorsRebrand: {
+    [$Values<typeof BUTTON_COLOR>]: $Values<typeof TEXT_COLOR>,
+  },
   secondaryColors: {
+    [$Values<typeof BUTTON_COLOR>]: $Values<typeof BUTTON_COLOR>,
+  },
+  secondaryColorsRebrand: {
     [$Values<typeof BUTTON_COLOR>]: $Values<typeof BUTTON_COLOR>,
   },
   secondaryVaultColors: {
     [$Values<typeof BUTTON_COLOR>]: $Values<typeof BUTTON_COLOR>,
   },
   logoColors: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof LOGO_COLOR> },
+  logoColorsRebrand: {
+    [$Values<typeof BUTTON_COLOR>]: $Values<typeof LOGO_COLOR>,
+  },
   logoColorsPP?: { [$Values<typeof BUTTON_COLOR>]: $Values<typeof LOGO_COLOR> },
   shapes: $ReadOnlyArray<$Values<typeof BUTTON_SHAPE>>,
   labelText?:
@@ -206,8 +216,15 @@ export const DEFAULT_FUNDING_CONFIG: FundingSourceConfig = {
 
   colors: [BUTTON_COLOR.SILVER, BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
 
+  colorsRebrand: [BUTTON_COLOR.BLUE, BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
+
   logoColors: {
     [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+  },
+
+  logoColorsRebrand: {
+    [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+    [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
   },
 
   shapes: [BUTTON_SHAPE.RECT, BUTTON_SHAPE.PILL, BUTTON_SHAPE.SHARP],
@@ -217,20 +234,28 @@ export const DEFAULT_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.BLUE]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.DARKBLUE]: BUTTON_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_DARKBLUE]: BUTTON_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.BLACK,
-    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.BLACK,
+  },
+
+  textColorsRebrand: {
+    [DEFAULT]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLACK, // maybe delete me and only have white/black in default
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
   },
 
   secondaryColors: {
     [DEFAULT]: BUTTON_COLOR.SILVER,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
     [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
-    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
   },
 
+  secondaryColorsRebrand: {
+    [DEFAULT]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+  },
+
+  // todo where is this used?
   secondaryVaultColors: {
     [DEFAULT]: BUTTON_COLOR.SILVER,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
@@ -256,17 +281,21 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     BUTTON_COLOR.SILVER,
     BUTTON_COLOR.WHITE,
     BUTTON_COLOR.BLACK,
-    BUTTON_COLOR.REBRAND_BLACK,
-    BUTTON_COLOR.REBRAND_WHITE,
   ],
+
+  colorsRebrand: [BUTTON_COLOR.DEFAULT, BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
 
   logoColors: {
     [BUTTON_COLOR.DEFAULT]: LOGO_COLOR.DEFAULT,
     [BUTTON_COLOR.SILVER]: LOGO_COLOR.BLACK,
     [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
     [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
+  },
+
+  logoColorsRebrand: {
+    [BUTTON_COLOR.DEFAULT]: LOGO_COLOR.DEFAULT,
+    [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
+    [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
   },
 
   textColors: {
@@ -274,8 +303,12 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.BLACK]: TEXT_COLOR.WHITE,
     [BUTTON_COLOR.SILVER]: TEXT_COLOR.BLACK,
     [BUTTON_COLOR.WHITE]: TEXT_COLOR.BLACK,
-    [BUTTON_COLOR.REBRAND_BLACK]: TEXT_COLOR.WHITE,
-    [BUTTON_COLOR.REBRAND_WHITE]: TEXT_COLOR.BLACK,
+  },
+
+  textColorsRebrand: {
+    [BUTTON_COLOR.DEFAULT]: TEXT_COLOR.WHITE,
+    [BUTTON_COLOR.BLACK]: TEXT_COLOR.WHITE,
+    [BUTTON_COLOR.WHITE]: TEXT_COLOR.BLACK,
   },
 
   secondaryColors: {
@@ -283,7 +316,11 @@ export const DEFAULT_APM_FUNDING_CONFIG: FundingSourceConfig = {
     [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
     [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
     [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
-    [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
-    [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+  },
+
+  secondaryColorsRebrand: {
+    [DEFAULT]: BUTTON_COLOR.DEFAULT,
+    [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
+    [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
   },
 };

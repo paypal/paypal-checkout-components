@@ -7,7 +7,12 @@ import {
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
+import {
+  BUTTON_COLOR,
+  BUTTON_LAYOUT,
+  DEFAULT,
+  TEXT_COLOR,
+} from "../../constants";
 import {
   DEFAULT_APM_FUNDING_CONFIG,
   type FundingSourceConfig,
@@ -32,17 +37,30 @@ export function getItauConfig(): FundingSourceConfig {
       BUTTON_COLOR.DARKBLUE,
       BUTTON_COLOR.BLUE,
       BUTTON_COLOR.BLACK,
-      BUTTON_COLOR.REBRAND_BLACK,
-      BUTTON_COLOR.REBRAND_WHITE,
     ],
+
+    secondaryColorsRebrand: {
+      ...DEFAULT_APM_FUNDING_CONFIG.secondaryColorsRebrand,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.DARKBLUE,
+      [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.DEFAULT,
+    },
 
     logoColors: {
       [BUTTON_COLOR.DEFAULT]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.DARKBLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
+    },
+
+    logoColorsRebrand: {
+      ...DEFAULT_APM_FUNDING_CONFIG.logoColorsRebrand,
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
+    },
+
+    textColorsRebrand: {
+      ...DEFAULT_APM_FUNDING_CONFIG.textColorsRebrand,
+      [BUTTON_COLOR.BLUE]: TEXT_COLOR.BLACK,
     },
 
     secondaryColors: {

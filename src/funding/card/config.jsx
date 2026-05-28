@@ -58,6 +58,8 @@ export function getCardConfig(): FundingSourceConfig {
   return {
     ...DEFAULT_FUNDING_CONFIG,
 
+    colorsRebrand: [BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
+
     eligible: ({ components, fundingSource, fundingEligibility, wallet }) => {
       const cardEligibility = fundingEligibility.card;
 
@@ -131,24 +133,28 @@ export function getCardConfig(): FundingSourceConfig {
 
     vendors,
 
-    colors: [
-      BUTTON_COLOR.BLACK,
-      BUTTON_COLOR.WHITE,
-      BUTTON_COLOR.REBRAND_WHITE,
-      BUTTON_COLOR.REBRAND_BLACK,
-    ],
+    colors: [BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
 
     secondaryColors: {
       ...DEFAULT_FUNDING_CONFIG.secondaryColors,
       [DEFAULT]: BUTTON_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLACK,
+    },
+
+    secondaryColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.secondaryColorsRebrand,
+      [DEFAULT]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLACK,
     },
 
     logoColors: {
       [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.WHITE,
       [DEFAULT]: BUTTON_COLOR.WHITE,
+    },
+
+    logoColorsRebrand: {
+      [DEFAULT]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.BLACK]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
     },
 
     labelText: ({ content }) => {
