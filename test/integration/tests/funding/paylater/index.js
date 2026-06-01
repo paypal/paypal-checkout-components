@@ -319,7 +319,7 @@ describe(`paylater button text`, () => {
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "paypal paylater"
+        "Pay Later"
       );
     });
   });
