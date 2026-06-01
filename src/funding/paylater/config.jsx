@@ -37,6 +37,13 @@ function getLabelText(
   }
 
   if (
+    paylater?.products?.paylater?.eligible &&
+    paylater?.products?.paylater?.variant === "GB"
+  ) {
+    labelText = "Pay Later";
+  }
+
+  if (
     (paylater?.products?.payIn3?.eligible &&
       paylater?.products?.payIn3?.variant === "ES") ||
     (paylater?.products?.paylater?.eligible &&
