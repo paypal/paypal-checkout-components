@@ -123,4 +123,5 @@ export const BROWSER_CONTEXT = {
   ANDROID_CUSTOM_TAB: ("custom_tab": "custom_tab"),
   AS_WEB_AUTH_SESSION: ("as_web_auth_session": "as_web_auth_session"),
   SAFARI_VIEW_CONTROLLER: ("safari_view_controller": "safari_view_controller"),
+  UNKNOWN: ("unknown": "unknown"),
 };

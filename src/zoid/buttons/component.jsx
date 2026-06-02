@@ -342,8 +342,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         queryParam: "browser_context",
         required: false,
-        value: ({ props }) =>
-          props.browserContext || BROWSER_CONTEXT.BROWSER,
+        value: ({ props }) => props.browserContext || BROWSER_CONTEXT.UNKNOWN,
       },
 
       preferences: {
