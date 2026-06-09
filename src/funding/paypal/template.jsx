@@ -230,9 +230,25 @@ function ButtonPersonalization(opts: LabelOptions): ?ChildType {
 }
 
 export function Label(opts: LabelOptions): ChildType {
+  const {
+    logo,
+    locale: { lang },
+    shouldApplyPayNowOrLaterLabel,
+  } = opts;
+
+  let buttonLabel = <BasicLabel {...opts} />;
+
+  if (!__WEB__) {
+    const { PayNowOrLater } = componentContent[lang];
+
+    if (shouldApplyPayNowOrLaterLabel && PayNowOrLater) {
+      buttonLabel = <PayNowOrLater logo={logo} />;
+    }
+  }
+
   return (
     <Fragment>
-      <BasicLabel {...opts} />
+      {buttonLabel}
       <ButtonPersonalization {...opts} />
     </Fragment>
   );

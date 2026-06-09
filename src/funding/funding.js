@@ -24,6 +24,7 @@ type IsFundingEligibleOptions = {|
   flow: $Values<typeof BUTTON_FLOW>,
   fundingEligibility: FundingEligibilityType,
   enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
+  disableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   onShippingChange: ?Function,
   onShippingAddressChange: ?Function,
@@ -75,6 +76,7 @@ export function isFundingEligible(
     fundingSource,
     fundingEligibility,
     enableFunding,
+    disableFunding,
     components,
     onShippingChange,
     onShippingAddressChange,
@@ -93,10 +95,12 @@ export function isFundingEligible(
   }: IsFundingEligibleOptions
 ): boolean {
   // Temporary: Force credit to be eligible if the experiment is enabled
+  // but honor merchant opt-out via disableFunding
   if (
     source === FUNDING.CREDIT &&
     experiment?.paypalCreditButtonCreateVaultSetupTokenExists &&
-    flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE
+    flow === BUTTON_FLOW.VAULT_WITHOUT_PURCHASE &&
+    !(disableFunding || []).includes(FUNDING.CREDIT)
   ) {
     return true;
   }
@@ -212,6 +216,7 @@ export function determineEligibleFunding({
   platform,
   fundingEligibility,
   enableFunding,
+  disableFunding,
   components,
   onShippingChange,
   onShippingAddressChange,
@@ -234,6 +239,7 @@ export function determineEligibleFunding({
   platform: $Values<typeof PLATFORM>,
   fundingEligibility: FundingEligibilityType,
   enableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
+  disableFunding?: $ReadOnlyArray<?$Values<typeof FUNDING>>,
   components: $ReadOnlyArray<$Values<typeof COMPONENTS>>,
   onShippingChange?: ?Function,
   onShippingAddressChange?: ?Function,
@@ -261,6 +267,7 @@ export function determineEligibleFunding({
       fundingSource,
       fundingEligibility,
       enableFunding,
+      disableFunding,
       components,
       onShippingChange,
       onShippingAddressChange,

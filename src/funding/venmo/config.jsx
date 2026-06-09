@@ -10,7 +10,12 @@ import {
 } from "@paypal/sdk-logos/src";
 import { DISPLAY_ONLY_VALUES, PLATFORM } from "@paypal/sdk-constants/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT, BUTTON_FLOW } from "../../constants";
+import {
+  BUTTON_COLOR,
+  BUTTON_LAYOUT,
+  BUTTON_FLOW,
+  DEFAULT,
+} from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { WalletLabel, Label } from "./template";
@@ -87,9 +92,6 @@ export function getVenmoConfig(): FundingSourceConfig {
       BUTTON_COLOR.SILVER,
       BUTTON_COLOR.BLACK,
       BUTTON_COLOR.WHITE,
-      BUTTON_COLOR.REBRAND_BLACK,
-      BUTTON_COLOR.REBRAND_BLUE,
-      BUTTON_COLOR.REBRAND_WHITE,
     ],
 
     logoColors: {
@@ -97,22 +99,30 @@ export function getVenmoConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: LOGO_COLOR.BLUE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
-      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.WHITE,
     },
-    textColors: {
-      ...DEFAULT_FUNDING_CONFIG.textColors,
-      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.WHITE,
+
+    logoColorsRebrand: {
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
+    },
+
+    textColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.textColorsRebrand,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.WHITE,
     },
 
     secondaryColors: {
       ...DEFAULT_FUNDING_CONFIG.secondaryColors,
-
       [BUTTON_COLOR.GOLD]: BUTTON_COLOR.BLUE,
       [BUTTON_COLOR.BLUE]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
+    },
+
+    secondaryColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.secondaryColorsRebrand,
+      [DEFAULT]: BUTTON_COLOR.BLUE,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
     },
   };
 }

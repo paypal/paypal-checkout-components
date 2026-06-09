@@ -1,3 +1,111 @@
+## <small>5.0.421 (2026-06-08)</small>
+
+* Add background color to saved payment method PP logo (#2641) ([d06b599](https://github.com/paypal/paypal-checkout-components/commit/d06b599)), closes [#2641](https://github.com/paypal/paypal-checkout-components/issues/2641)
+
+
+
+## <small>5.0.420 (2026-05-26)</small>
+
+* chore(release): 5.0.419 🎉 ([669e327](https://github.com/paypal/paypal-checkout-components/commit/669e327))
+
+
+
+## <small>5.0.419 (2026-05-26)</small>
+
+* add requestedButtonColor unit tests (#2639) ([2e8807a](https://github.com/paypal/paypal-checkout-components/commit/2e8807a)), closes [#2639](https://github.com/paypal/paypal-checkout-components/issues/2639)
+
+
+
+## <small>5.0.418 (2026-05-26)</small>
+
+* chore(release): 5.0.417 🎉 ([4f4c966](https://github.com/paypal/paypal-checkout-components/commit/4f4c966))
+
+
+
+## <small>5.0.417 (2026-05-26)</small>
+
+* Fixed passing stale experiment to methods (#2636) ([59e1681](https://github.com/paypal/paypal-checkout-components/commit/59e1681)), closes [#2636](https://github.com/paypal/paypal-checkout-components/issues/2636)
+
+
+
+## <small>5.0.416 (2026-05-18)</small>
+
+* [Feature] PopupBridge++ (#2609) ([4f2327d](https://github.com/paypal/paypal-checkout-components/commit/4f2327d)), closes [#2609](https://github.com/paypal/paypal-checkout-components/issues/2609)
+
+
+
+## <small>5.0.415 (2026-05-11)</small>
+
+* chore(release): 5.0.414 🎉 ([75cd952](https://github.com/paypal/paypal-checkout-components/commit/75cd952))
+
+
+
+## <small>5.0.414 (2026-05-06)</small>
+
+* refactor: update fr pay later btn label (#2633) ([ed97035](https://github.com/paypal/paypal-checkout-components/commit/ed97035)), closes [#2633](https://github.com/paypal/paypal-checkout-components/issues/2633)
+
+
+
+## <small>5.0.413 (2026-05-04)</small>
+
+* feat: add variationName prop support for PayPal monogram marks (#2630) ([18a8e94](https://github.com/paypal/paypal-checkout-components/commit/18a8e94)), closes [#2630](https://github.com/paypal/paypal-checkout-components/issues/2630)
+
+
+
+## <small>5.0.412 (2026-04-27)</small>
+
+* feature(SavedPaymentMethods): Adding loading template for prerender (#2624) ([aba46b6](https://github.com/paypal/paypal-checkout-components/commit/aba46b6)), closes [#2624](https://github.com/paypal/paypal-checkout-components/issues/2624) [#2605](https://github.com/paypal/paypal-checkout-components/issues/2605)
+
+
+
+## <small>5.0.411 (2026-04-08)</small>
+
+* chore(release): 5.0.410 🎉 ([6d3ba5e](https://github.com/paypal/paypal-checkout-components/commit/6d3ba5e))
+
+
+
+## <small>5.0.410 (2026-04-08)</small>
+
+* feature(SavedPaymentMethods): New component SavedPaymentMethods (#2604) ([2eed0ef](https://github.com/paypal/paypal-checkout-components/commit/2eed0ef)), closes [#2604](https://github.com/paypal/paypal-checkout-components/issues/2604)
+
+
+
+## <small>5.0.409 (2026-04-03)</small>
+
+* Revert "Pass bfcache events via post-robot (#2608)" (#2616) ([bc56fea](https://github.com/paypal/paypal-checkout-components/commit/bc56fea)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608) [#2616](https://github.com/paypal/paypal-checkout-components/issues/2616)
+
+
+
+## <small>5.0.408 (2026-03-23)</small>
+
+* Pass bfcache events via post-robot (#2608) ([2e278df](https://github.com/paypal/paypal-checkout-components/commit/2e278df)), closes [#2608](https://github.com/paypal/paypal-checkout-components/issues/2608)
+
+
+
+## <small>5.0.407 (2026-03-18)</small>
+
+* [DTINAPPXO-3543] Pass partnerAttributionID (#2607) ([8c201d8](https://github.com/paypal/paypal-checkout-components/commit/8c201d8)), closes [#2607](https://github.com/paypal/paypal-checkout-components/issues/2607)
+
+
+
+## <small>5.0.406 (2026-03-03)</small>
+
+* add label "Pay now or later" experiment (#2600) ([6c0d3e3](https://github.com/paypal/paypal-checkout-components/commit/6c0d3e3)), closes [#2600](https://github.com/paypal/paypal-checkout-components/issues/2600)
+
+
+
+## <small>5.0.405 (2026-02-26)</small>
+
+* Additional fix for hash params in resume flow (#2602) ([0c53815](https://github.com/paypal/paypal-checkout-components/commit/0c53815)), closes [#2602](https://github.com/paypal/paypal-checkout-components/issues/2602)
+
+
+
+## <small>5.0.404 (2026-02-17)</small>
+
+* chore: prefer org-level code of conduct file (#2595) ([e4433f6](https://github.com/paypal/paypal-checkout-components/commit/e4433f6)), closes [#2595](https://github.com/paypal/paypal-checkout-components/issues/2595)
+
+
+
 ## <small>5.0.403 (2026-02-03)</small>
 
 * Revert "Add support for disabling buttons (#2590)" (#2593) ([1e48e9f](https://github.com/paypal/paypal-checkout-components/commit/1e48e9f)), closes [#2590](https://github.com/paypal/paypal-checkout-components/issues/2590) [#2593](https://github.com/paypal/paypal-checkout-components/issues/2593)
