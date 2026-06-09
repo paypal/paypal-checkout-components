@@ -8,7 +8,7 @@ import {
   LOGO_COLOR,
 } from "@paypal/sdk-logos/src";
 
-import { BUTTON_COLOR, BUTTON_LAYOUT } from "../../constants";
+import { BUTTON_COLOR, BUTTON_LAYOUT, DEFAULT } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
 import { Mark } from "./template";
@@ -51,10 +51,28 @@ export function getApplePayConfig(): FundingSourceConfig {
     Mark: ({ ...props }) => Mark({ ...props }),
 
     colors: [BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
+    colorsRebrand: [BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE],
 
     logoColors: {
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
+    },
+
+    logoColorsRebrand: {
+      [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
+    },
+
+    textColorsRebrand: {
+      [BUTTON_COLOR.BLACK]: BUTTON_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
+    },
+
+    secondaryColorsRebrand: {
+      [DEFAULT]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
+      [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
     },
 
     shippingChange: true,

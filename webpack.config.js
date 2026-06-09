@@ -44,7 +44,19 @@ export const WEBPACK_CONFIG_TEST_BUTTON_RENDER: WebpackConfig =
     vars: { ...getTestGlobals(globals) },
   });
 
+export const WEBPACK_CONFIG_SAVED_PAYMENT_METHODS_RENDER: WebpackConfig =
+  getWebpackConfig({
+    context: __dirname,
+    entry: "./src/ui/saved-payment-methods",
+    filename: "saved-payment-methods.js",
+    modulename: MODULE_NAME,
+    web: false,
+    libraryTarget: "commonjs2",
+    vars: globals,
+  });
+
 export default [
   WEBPACK_CONFIG_BUTTON_RENDER,
   WEBPACK_CONFIG_TEST_BUTTON_RENDER,
+  WEBPACK_CONFIG_SAVED_PAYMENT_METHODS_RENDER,
 ];

@@ -176,6 +176,16 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           type: "function",
           queryParam: "token",
           alias: "payment",
+          required: false,
+          // $FlowIgnore
+          queryValue: ({ value }) => ZalgoPromise.try(value),
+          decorate: ({ value }) => memoize(value),
+        },
+
+        createVaultSetupToken: {
+          type: "function",
+          queryParam: "vault_token",
+          required: false,
           // $FlowFixMe
           queryValue: ({ value }) => ZalgoPromise.try(value),
           decorate: ({ value }) => memoize(value),

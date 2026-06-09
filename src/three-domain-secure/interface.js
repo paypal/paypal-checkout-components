@@ -31,25 +31,34 @@ export function destroy(err?: mixed) {
 export const ThreeDomainSecureClient: LazyExport<ThreeDomainSecureComponentInterface> =
   {
     __get__: () => {
-      const accessToken = getSDKToken() || getUserIDToken();
-      const threeDomainSecureInstance = new ThreeDomainSecureComponent({
-        logger: getLogger(),
-        restClient: new RestClient({ accessToken }),
-        graphQLClient: new GraphQLClient({
-          baseURL:
-            getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
-          accessToken,
-        }),
-        // $FlowIssue ZalgoPromise vs Promise
-        sdkConfig: {
-          authenticationToken: accessToken,
-          paypalApiDomain: getPayPalAPIDomain(),
-          clientID: getClientID(),
-        },
-      });
+      let threeDomainSecureInstance;
+      const getThreeDomainSecureInstance = () => {
+        if (!threeDomainSecureInstance) {
+          const accessToken = getSDKToken() || getUserIDToken();
+          threeDomainSecureInstance = new ThreeDomainSecureComponent({
+            logger: getLogger(),
+            restClient: new RestClient({ accessToken }),
+            graphQLClient: new GraphQLClient({
+              baseURL:
+                getEnv() === "production" ? BRAINTREE_PROD : BRAINTREE_SANDBOX,
+              accessToken,
+            }),
+            // $FlowIssue ZalgoPromise vs Promise
+            sdkConfig: {
+              authenticationToken: accessToken,
+              paypalApiDomain: getPayPalAPIDomain(),
+              clientID: getClientID(),
+            },
+          });
+        }
+
+        return threeDomainSecureInstance;
+      };
+
       return {
-        isEligible: (payload) => threeDomainSecureInstance.isEligible(payload),
-        show: () => threeDomainSecureInstance.show(),
+        isEligible: (payload) =>
+          getThreeDomainSecureInstance().isEligible(payload),
+        show: () => getThreeDomainSecureInstance().show(),
       };
     },
   };

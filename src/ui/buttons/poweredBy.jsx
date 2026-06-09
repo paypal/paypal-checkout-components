@@ -5,10 +5,11 @@ import { node, type ChildType } from "@krakenjs/jsx-pragmatic/src";
 import { type LocaleType } from "@paypal/sdk-constants/src";
 import { LOGO_COLOR, LOGO_CLASS } from "@paypal/sdk-logos/src";
 
-import { CLASS, BUTTON_COLOR_REBRAND } from "../../constants";
+import { CLASS, BUTTON_COLOR } from "../../constants";
 import { Text } from "../text";
 
 import { buttonContent } from "./content";
+import { REBRAND_LOGO_TRANSLATE_Y } from "./config";
 
 const POWERED_BY_PAYPAL_STYLE = `
     .${CLASS.POWERED_BY} {
@@ -49,15 +50,15 @@ function getPoweredByConfig(): {|
 |} {
   return {
     logoColors: {
-      [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.BLACK]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
     },
 
     textColors: {
-      [BUTTON_COLOR_REBRAND.REBRAND_BLUE]: "#000000",
-      [BUTTON_COLOR_REBRAND.REBRAND_BLACK]: "#000000",
-      [BUTTON_COLOR_REBRAND.REBRAND_WHITE]: "#000000",
+      [BUTTON_COLOR.BLUE]: "#000000",
+      [BUTTON_COLOR.BLACK]: "#000000",
+      [BUTTON_COLOR.WHITE]: "#000000",
     },
   };
 }
@@ -65,7 +66,7 @@ function getPoweredByConfig(): {|
 export function PoweredByPayPal({
   locale: { lang },
   nonce,
-  buttonColor = BUTTON_COLOR_REBRAND.REBRAND_BLUE,
+  buttonColor = BUTTON_COLOR.BLUE,
   shouldApplyRebrandedStyles = false,
 }: PoweredByPayPalProps): ChildType {
   const { PoweredBy } = buttonContent[lang];
@@ -81,7 +82,7 @@ export function PoweredByPayPal({
     .${CLASS.POWERED_BY} {
         text-align: center;
         margin: 10px auto;
-        height: 18px;
+        height: 12px;
         font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 10px;
         font-weight: 400;
@@ -96,9 +97,13 @@ export function PoweredByPayPal({
     .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
         display: inline-block;
         vertical-align: middle;
-        height: 18px;
-        line-height: 18px;
+        height: 12px;
+        line-height: 12px;
         font-size: 10px;
+    } 
+
+    .${CLASS.POWERED_BY} > .${LOGO_CLASS.LOGO} {
+        transform: translateY(${REBRAND_LOGO_TRANSLATE_Y}%);
     }
   `;
 

@@ -215,7 +215,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           phase: "buttons-first-render-end",
         });
         try {
-          const cplPhases = prepareInstrumentationPayload(buttonSessionID);
+          const cplPhases = prepareInstrumentationPayload(
+            buttonSessionID,
+            "buttons"
+          );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
             [FPTI_KEY.TRANSITION]: "process_client_metrics",
@@ -260,11 +263,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+          role: "presentation",
         },
       };
     },
 
     eligible: ({ props }) => {
+      const buttonExperiments = props.experiment ?? getButtonExperiments();
       const {
         fundingSource,
         onShippingChange,
@@ -272,19 +277,20 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         onShippingOptionsChange,
         style = {},
         enableFunding = getEnableFunding(),
+        disableFunding = getDisableFunding(),
         fundingEligibility = getRefinedFundingEligibility(),
         supportsPopups = userAgentSupportsPopups(),
         supportedNativeBrowser = isSupportedNativeBrowser(),
         supportsVenmoPopups = supportsVenmoPopupsUtil(
-          props.experiment,
+          buttonExperiments,
           userAgentSupportsPopups(),
           getUserAgent()
         ),
         supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
-          props.experiment,
+          buttonExperiments,
           getUserAgent()
         ),
-        experiment = getButtonExperiments(),
+        experiment = buttonExperiments,
         createBillingAgreement,
         createSubscription,
         createVaultSetupToken,
@@ -323,6 +329,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           fundingSource,
           fundingEligibility,
           enableFunding,
+          disableFunding,
           components,
           onShippingChange,
           onShippingAddressChange,
@@ -751,6 +758,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             style = {},
             fundingEligibility = getRefinedFundingEligibility(),
             enableFunding = getEnableFunding(),
+            disableFunding = getDisableFunding(),
             experiment = getButtonExperiments(),
             applePaySupport,
             supportsPopups,
@@ -782,6 +790,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               fundingSource,
               fundingEligibility,
               enableFunding,
+              disableFunding,
               experiment,
               components,
               onShippingChange,
@@ -820,6 +829,12 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             return {
               nativeUrl: window.popupBridge.getReturnUrlPrefix(),
+              deepLinkReturnUrlPrefix:
+                typeof window.popupBridge.getDeepLinkReturnUrlPrefix ===
+                "function"
+                  ? window.popupBridge.getDeepLinkReturnUrlPrefix()
+                  : null,
+              isPayPalInstalled: Boolean(window.popupBridge.isPayPalInstalled),
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
                   window.popupBridge.onComplete = (err, result) => {
@@ -830,9 +845,39 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                     }
                     const queryItems =
                       result && result.queryItems ? result.queryItems : {};
-                    return err ? reject(err) : resolve(queryItems);
+                    const payload = result
+                      ? {
+                          ...queryItems,
+                          path: result.path,
+                          hash: result.hash,
+                        }
+                      : queryItems;
+                    return err ? reject(err) : resolve(payload);
                   };
                   window.popupBridge.open(url);
+                });
+              },
+              launchApp: (url) => {
+                return new ZalgoPromise((resolve, reject) => {
+                  window.popupBridge.onComplete = (err, result) => {
+                    if (!err && !result) {
+                      resolve({
+                        opType: "user_closed_window",
+                      });
+                    }
+                    const queryItems =
+                      result && result.queryItems ? result.queryItems : {};
+                    const payload = result
+                      ? {
+                          ...queryItems,
+                          queryItems,
+                          path: result.path,
+                          hash: result.hash,
+                        }
+                      : queryItems;
+                    return err ? reject(err) : resolve(payload);
+                  };
+                  window.popupBridge.launchApp(url);
                 });
               },
             };
@@ -1102,6 +1147,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       partnerAttributionID: {
         type: "string",
         required: false,
+        queryParam: true,
         value: getPartnerAttributionID,
       },
 

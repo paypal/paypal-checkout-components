@@ -9,6 +9,7 @@ import {
   BUTTON_LAYOUT,
   BUTTON_FLOW,
   BUTTON_LABEL,
+  DEFAULT,
 } from "../../constants";
 import { DEFAULT_FUNDING_CONFIG, type FundingSourceConfig } from "../common";
 
@@ -34,10 +35,6 @@ export function getPayPalConfig(): FundingSourceConfig {
       BUTTON_COLOR.SILVER,
       BUTTON_COLOR.BLACK,
       BUTTON_COLOR.WHITE,
-      BUTTON_COLOR.REBRAND_BLUE,
-      BUTTON_COLOR.REBRAND_DARKBLUE,
-      BUTTON_COLOR.REBRAND_WHITE,
-      BUTTON_COLOR.REBRAND_BLACK,
     ],
 
     logoColors: {
@@ -46,10 +43,18 @@ export function getPayPalConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_DARKBLUE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+    },
+
+    logoColorsRebrand: {
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
+      [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
+      [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLACK,
+    },
+
+    secondaryColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.secondaryColorsRebrand,
+      [DEFAULT]: BUTTON_COLOR.BLUE,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
     },
 
     labelText: ({ content, label, period }) => {

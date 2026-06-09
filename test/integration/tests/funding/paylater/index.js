@@ -120,7 +120,7 @@ describe(`paylater button text`, () => {
     });
   });
 
-  it(`should display 4X PayPal label when payIn4 product is eligible and variant is FR`, () => {
+  it(`should display Payer en plusieurs fois label when payIn4 product is eligible and variant is FR`, () => {
     const fundingSource = FUNDING.PAYLATER;
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
@@ -145,11 +145,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "4X PayPal"
+        "Payer en plusieurs fois"
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "4X PayPal"
+        "Payer en plusieurs fois"
       );
     });
   });

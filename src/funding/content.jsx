@@ -23,6 +23,7 @@ export type ContentMap = {
     Donate?: ({|
       logo: ChildType,
     |}) => ChildType /** Not available in `tr` language **/,
+    PayNowOrLater?: ({| logo: ChildType |}) => ChildType,
   |},
 };
 
@@ -376,6 +377,14 @@ export const componentContent: ContentMap = {
         {logo}
         <Text animate optional>
           Donate
+        </Text>
+      </Fragment>
+    ),
+    PayNowOrLater: ({ logo }) => (
+      <Fragment>
+        {logo}
+        <Text animate optional>
+          Pay Now or Later
         </Text>
       </Fragment>
     ),
