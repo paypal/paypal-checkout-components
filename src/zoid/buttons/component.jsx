@@ -150,22 +150,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             helpers.state.appSwitchState = "returned";
           }
 
-          // Create a hidden container in the body where we'll render the button
-          // This button will be shown after onCancel completes
-          const hiddenButtonContainer = window.document.createElement("div");
-          hiddenButtonContainer.id = "paypal-button-hidden-container";
-          hiddenButtonContainer.style.display = "none";
-          // eslint-disable-next-line compat/compat
-          window.document.body.appendChild(hiddenButtonContainer);
-
-          // Render the button to this hidden container
-          // After onCancel, we'll show this container
-          try {
-            parent.render(hiddenButtonContainer);
-          } catch (error) {
-            noop(error);
-          }
-
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
@@ -178,6 +162,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           });
           const resumeComponent = getPixelComponent();
           const parentProps = parent.getProps();
+          let closePixel = noop;
+          const rerenderButton = () => {
+            const parentHelpers = parent.getHelpers();
+
+            // $FlowIgnore[prop-missing] rerender is provided by Zoid's parent helpers
+            return parentHelpers.rerender();
+          };
 
           // Wrap onCancel - no reload/URL clear to allow button re-render in place
           // State tracking via appSwitchState prevents duplicate onCancel invocations
@@ -188,20 +179,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 return parentProps.onCancel(...args);
               }
             }).then(() => {
-              // Close pixel
-              if (parent.pixelInstance) {
-                parent.pixelInstance.close();
-              }
-
-              // Show the hidden button container that was rendered during resume()
-              const existingHiddenButtonContainer =
-                window.document.getElementById(
-                  "paypal-button-hidden-container"
-                );
-
-              if (existingHiddenButtonContainer) {
-                existingHiddenButtonContainer.style.display = "block";
-              }
+              closePixel();
+              // $FlowIgnore[incompatible-call] local linked Zoid and PPC can resolve separate ZalgoPromise types
+              return rerenderButton();
             });
           };
 
@@ -211,17 +191,9 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                 return parentProps.onError(...args);
               }
             }).then(() => {
-              // Close pixel
-              if (parent.pixelInstance) {
-                parent.pixelInstance.close();
-              }
-
-              // Automatically render the button after error
-              parent.render(
-                parent.document.querySelector(
-                  `[data-uid="${parent.props.uid}"]`
-                )
-              );
+              closePixel();
+              // $FlowIgnore[incompatible-call] local linked Zoid and PPC can resolve separate ZalgoPromise types
+              return rerenderButton();
             });
           };
 
@@ -234,8 +206,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             resumeFlowParams,
           });
 
-          // Store pixel instance so wrappedOnCancel/wrappedOnError can close it
-          parent.pixelInstance = pixelInstance;
+          closePixel = () => pixelInstance.close();
 
           pixelInstance.render("body");
         },
