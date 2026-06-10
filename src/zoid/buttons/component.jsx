@@ -118,22 +118,14 @@ export type ButtonsComponent = ZoidComponent<
   ButtonExtensions
 >;
 
-const PAYPAL_BUTTON_CONTAINER_SELECTOR = "#paypal-button-container";
+interface ZalgoThenable<T> {
+  then(onSuccess: (T) => mixed, onError: (mixed) => mixed): mixed;
+}
 
-function getAppSwitchResumeContainer(): string | HTMLElement {
-  try {
-    if (window.document.querySelector(PAYPAL_BUTTON_CONTAINER_SELECTOR)) {
-      return PAYPAL_BUTTON_CONTAINER_SELECTOR;
-    }
-  } catch (err) {
-    // ignored
-  }
-
-  const container = window.document.createElement("div");
-  container.id = "paypal-button-hidden-container";
-  // eslint-disable-next-line compat/compat
-  window.document.body.appendChild(container);
-  return container;
+function toLocalZalgoPromise<T>(promise: ZalgoThenable<T>): ZalgoPromise<T> {
+  return new ZalgoPromise((resolve, reject) => {
+    promise.then(resolve, reject);
+  });
 }
 
 // $FlowIssue
@@ -186,17 +178,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             resumeFlowParams.orderID
           ) {
             const orderID: string = resumeFlowParams.orderID;
-            let replacementButton = self;
-
-            if (typeof parentProps.createOrder === "function") {
-              // $FlowIgnore[incompatible-call] clone accepts decorate at runtime, but the upstream type omits the option.
-              replacementButton = self.clone({
-                decorate: (props) => ({
-                  ...props,
-                  createOrder: () => ZalgoPromise.resolve(orderID),
-                }),
-              });
-            }
 
             // $FlowIgnore[prop-missing] ButtonProps exposes lowercase oncancel; runtime props use onCancel.
             const parentOnCancel = parentProps.onCancel;
@@ -208,7 +189,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             }
 
             return ZalgoPromise.resolve(result).then(() => {
-              return replacementButton.render(getAppSwitchResumeContainer());
+              const { rerender } = parent.getHelpers();
+
+              return toLocalZalgoPromise(
+                rerender({
+                  decorate: (props) => ({
+                    ...props,
+                    createOrder: () => ZalgoPromise.resolve(orderID),
+                  }),
+                })
+              );
             });
           }
 
