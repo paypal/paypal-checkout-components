@@ -118,6 +118,24 @@ export type ButtonsComponent = ZoidComponent<
   ButtonExtensions
 >;
 
+const PAYPAL_BUTTON_CONTAINER_SELECTOR = "#paypal-button-container";
+
+function getAppSwitchResumeContainer(): string | HTMLElement {
+  try {
+    if (window.document.querySelector(PAYPAL_BUTTON_CONTAINER_SELECTOR)) {
+      return PAYPAL_BUTTON_CONTAINER_SELECTOR;
+    }
+  } catch (err) {
+    // ignored
+  }
+
+  const container = window.document.createElement("div");
+  container.id = "paypal-button-hidden-container";
+  // eslint-disable-next-line compat/compat
+  window.document.body.appendChild(container);
+  return container;
+}
+
 // $FlowIssue
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
@@ -137,7 +155,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
           return result;
         },
-        resume: () => {
+        resume: function resume(): void | ZalgoPromise<void> {
+          const self = this;
           const resumeFlowParams = getAppSwitchResumeParams();
           if (!resumeFlowParams) {
             throw new Error("Resume Flow is not supported.");
@@ -150,6 +169,53 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             helpers.state.appSwitchState = "returned";
           }
 
+          const parentProps = parent.getProps();
+          let closePixel = noop;
+          const createHiddenButtonContainer = () => {
+            const hiddenButtonContainer = window.document.createElement("div");
+            hiddenButtonContainer.id = "paypal-button-hidden-container";
+            hiddenButtonContainer.style.display = "none";
+            // eslint-disable-next-line compat/compat
+            window.document.body.appendChild(hiddenButtonContainer);
+
+            return hiddenButtonContainer;
+          };
+
+          if (
+            resumeFlowParams.checkoutState === "onCancel" &&
+            resumeFlowParams.orderID
+          ) {
+            const orderID: string = resumeFlowParams.orderID;
+            let replacementButton = self;
+
+            if (typeof parentProps.createOrder === "function") {
+              // $FlowIgnore[incompatible-call] clone accepts decorate at runtime, but the upstream type omits the option.
+              replacementButton = self.clone({
+                decorate: (props) => ({
+                  ...props,
+                  createOrder: () => ZalgoPromise.resolve(orderID),
+                }),
+              });
+            }
+
+            // $FlowIgnore[prop-missing] ButtonProps exposes lowercase oncancel; runtime props use onCancel.
+            const parentOnCancel = parentProps.onCancel;
+            let result;
+
+            if (typeof parentOnCancel === "function") {
+              // $FlowIgnore[incompatible-call] Resume callback payload is built at runtime.
+              result = parentOnCancel({ orderID }, {});
+            }
+
+            return ZalgoPromise.resolve(result).then(() => {
+              return replacementButton.render(getAppSwitchResumeContainer());
+            });
+          }
+
+          const hiddenButtonContainer = createHiddenButtonContainer();
+
+          self.render(hiddenButtonContainer).catch(noop);
+
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
@@ -160,42 +226,37 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               payerID: Boolean(resumeFlowParams.payerID),
             },
           });
-          const resumeComponent = getPixelComponent();
-          const parentProps = parent.getProps();
-          let closePixel = noop;
-          const rerenderButton = () => {
-            const parentHelpers = parent.getHelpers();
-
-            // $FlowIgnore[prop-missing] rerender is provided by Zoid's parent helpers
-            return parentHelpers.rerender();
-          };
-
           // Wrap onCancel - no reload/URL clear to allow button re-render in place
           // State tracking via appSwitchState prevents duplicate onCancel invocations
           const wrappedOnCancel = (...args) => {
-            return ZalgoPromise.try(() => {
-              // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
-              if (typeof parentProps.onCancel === "function") {
-                return parentProps.onCancel(...args);
-              }
-            }).then(() => {
+            // $FlowIgnore[prop-missing] ButtonProps exposes lowercase oncancel; runtime props use onCancel.
+            const parentOnCancel = parentProps.onCancel;
+            let result;
+
+            if (typeof parentOnCancel === "function") {
+              // $FlowIgnore[incompatible-call] Resume callback payload is built at runtime.
+              result = parentOnCancel(...args);
+            }
+
+            return ZalgoPromise.resolve(result).then(() => {
               closePixel();
-              // $FlowIgnore[incompatible-call] local linked Zoid and PPC can resolve separate ZalgoPromise types
-              return rerenderButton();
+              hiddenButtonContainer.style.display = "block";
             });
           };
 
           const wrappedOnError = (...args) => {
             return ZalgoPromise.try(() => {
               if (typeof parentProps.onError === "function") {
+                // $FlowIgnore[incompatible-call] Resume callback payload is built at runtime.
                 return parentProps.onError(...args);
               }
             }).then(() => {
               closePixel();
-              // $FlowIgnore[incompatible-call] local linked Zoid and PPC can resolve separate ZalgoPromise types
-              return rerenderButton();
+              hiddenButtonContainer.style.display = "block";
             });
           };
+
+          const resumeComponent = getPixelComponent();
 
           const pixelInstance = resumeComponent({
             onApprove: parentProps.onApprove,
