@@ -124,7 +124,7 @@ describe(`paypal button component resume flow`, () => {
 
     history.pushState({}, "", url.href);
     const buttons = window.paypal.Buttons({
-      test: { action: "error" },
+      test: { action: "pixelError" },
 
       createOrder(): void {
         return done(new Error("Expected createOrder to not be called"));
