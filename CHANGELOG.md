@@ -1,3 +1,9 @@
+## <small>5.0.421 (2026-06-08)</small>
+
+* Add background color to saved payment method PP logo (#2641) ([d06b599](https://github.com/paypal/paypal-checkout-components/commit/d06b599)), closes [#2641](https://github.com/paypal/paypal-checkout-components/issues/2641)
+
+
+
 ## <small>5.0.420 (2026-05-26)</small>
 
 * chore(release): 5.0.419 🎉 ([669e327](https://github.com/paypal/paypal-checkout-components/commit/669e327))
