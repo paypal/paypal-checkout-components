@@ -94,7 +94,7 @@ import {
   isSupportedNativeVenmoBrowser,
 } from "../../funding/util";
 import { getPixelComponent } from "../pixel";
-import { CLASS } from "../../constants";
+import { CLASS, APP_SWITCH_RETURN_HASH } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
@@ -138,6 +138,29 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           if (!resumeFlowParams) {
             throw new Error("Resume Flow is not supported.");
           }
+
+          // For cancel flows, call onCancel directly without the pixel iframe.
+          // This avoids a round-trip network request and fires synchronously,
+          // preserving responsiveness on Android after a full-page reload cancel.
+          if (resumeFlowParams.checkoutState === APP_SWITCH_RETURN_HASH.ONCANCEL) {
+            getLogger().metricCounter({
+              namespace: "resume_flow.cancel.count",
+              event: "info",
+              dimensions: {
+                orderID: Boolean(resumeFlowParams.orderID),
+              },
+            });
+            const parentProps = parent.getProps();
+            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
+            if (typeof parentProps.onCancel === "function") {
+              return parentProps.onCancel(
+                { orderID: resumeFlowParams.orderID },
+                {}
+              );
+            }
+            return;
+          }
+
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
