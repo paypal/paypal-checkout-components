@@ -65,8 +65,6 @@ import {
   expectedRebrandedResponsiveStylesLargeSmall,
   expectedRebrandedResponsiveStylesLargeBig,
   expectedRebrandedResponsiveStylesXlSmall,
-  expectedRebrandedResponsiveStylesXlBig,
-  expectedRebrandedResponsiveStylesXXL,
 } from "./styleUtils.test.constants";
 
 describe("test responsive style variables for legacy", () => {
