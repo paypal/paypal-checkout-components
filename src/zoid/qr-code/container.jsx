@@ -90,11 +90,9 @@ export function QRCodeContainer({
                 pointer-events: none;
             }
             #qrModal {
-                background: #2F3033;
-                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
                 border-radius: 16px;                        
-                width: 720px;
-                height: 612px;  
+                width: 100%;
+                height: 100%;  
                 display: flex;
                 align-items: center;
                 justify-content: center;
