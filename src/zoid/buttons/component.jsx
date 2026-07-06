@@ -46,6 +46,7 @@ import {
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
+  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -886,6 +887,20 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
+      },
+
+      merchantDomain: {
+        type: "string",
+        required: false,
+        sendToChild: true,
+        value: ({ props }) => {
+          if (props.merchantDomain && !isPayPalDomain()) {
+            throw new Error(
+              "merchantDomain can only be passed on PayPal-hosted flows"
+            );
+          }
+          return isPayPalDomain() ? props.merchantDomain : undefined;
+        },
       },
 
       intent: {
