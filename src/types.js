@@ -70,6 +70,7 @@ export type Experiment = {|
   paypalCreditButtonCreateVaultSetupTokenExists?: boolean,
   isPaylaterCobrandedLabelEnabled?: boolean,
   isPaylaterCobrandedLabelRandomizationEnabled?: boolean,
+  isBfcacheEnabled?: boolean,
 |};
 
 export type Requires = {|
