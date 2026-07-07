@@ -97,4 +97,10 @@ module.exports = {
     entry: "./src/three-domain-secure/interface",
     globals,
   },
+  "saved-payment-methods": {
+    entry: "./src/interface/saved-payment-methods",
+    globals,
+    fundingSources: SMART_FUNDING_SOURCES,
+    cards: SMART_CARDS,
+  },
 };

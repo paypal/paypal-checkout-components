@@ -22,8 +22,7 @@ import css from "./style.scoped.scss";
 
 function getLabelText(
   fundingEligibility: FundingEligibilityType,
-  locale?: LocaleType,
-  shouldApplyRebrandedStyles?: boolean
+  locale?: LocaleType
 ): ?string {
   const { paylater } = fundingEligibility;
   const { lang } = locale || {};
@@ -68,10 +67,12 @@ function getLabelText(
   }
 
   if (
-    paylater?.products?.payIn4?.eligible &&
-    paylater?.products?.payIn4?.variant === "FR"
+    (paylater?.products?.payIn4?.eligible &&
+      paylater?.products?.payIn4?.variant === "FR") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "FR")
   ) {
-    labelText = shouldApplyRebrandedStyles ? "4X" : "4X PayPal";
+    labelText = "Payer en plusieurs fois";
   }
 
   return labelText;
@@ -136,13 +137,7 @@ export function getPaylaterConfig(): FundingSourceConfig {
           ) : (
             <PPRebrandLogoInlineSVG logoColor={logoColorPP} />
           )}
-          <Text>
-            {getLabelText(
-              fundingEligibility,
-              locale,
-              shouldApplyRebrandedStyles
-            ) || "Pay Later"}
-          </Text>
+          <Text>{getLabelText(fundingEligibility, locale) || "Pay Later"}</Text>
         </Style>
       );
     },
@@ -156,9 +151,6 @@ export function getPaylaterConfig(): FundingSourceConfig {
       BUTTON_COLOR.GOLD,
       BUTTON_COLOR.BLUE,
       BUTTON_COLOR.SILVER,
-      BUTTON_COLOR.REBRAND_BLUE,
-      BUTTON_COLOR.REBRAND_WHITE,
-      BUTTON_COLOR.REBRAND_BLACK,
     ],
 
     secondaryColors: {
@@ -168,9 +160,12 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.SILVER]: BUTTON_COLOR.SILVER,
       [BUTTON_COLOR.BLACK]: BUTTON_COLOR.BLACK,
       [BUTTON_COLOR.WHITE]: BUTTON_COLOR.WHITE,
-      [BUTTON_COLOR.REBRAND_WHITE]: BUTTON_COLOR.REBRAND_WHITE,
-      [BUTTON_COLOR.REBRAND_BLUE]: BUTTON_COLOR.REBRAND_BLUE,
-      [BUTTON_COLOR.REBRAND_BLACK]: BUTTON_COLOR.REBRAND_BLACK,
+    },
+
+    secondaryColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.secondaryColorsRebrand,
+      [DEFAULT]: BUTTON_COLOR.BLUE,
+      [BUTTON_COLOR.BLUE]: BUTTON_COLOR.BLUE,
     },
 
     logoColors: {
@@ -179,15 +174,11 @@ export function getPaylaterConfig(): FundingSourceConfig {
       [BUTTON_COLOR.BLUE]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.BLACK]: LOGO_COLOR.WHITE,
       [BUTTON_COLOR.WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
     },
 
-    logoColorsPP: {
-      [BUTTON_COLOR.REBRAND_BLUE]: LOGO_COLOR.BLACK,
-      [BUTTON_COLOR.REBRAND_WHITE]: LOGO_COLOR.BLUE,
-      [BUTTON_COLOR.REBRAND_BLACK]: LOGO_COLOR.WHITE,
+    logoColorsRebrand: {
+      ...DEFAULT_FUNDING_CONFIG.logoColorsRebrand,
+      [BUTTON_COLOR.BLUE]: LOGO_COLOR.BLACK,
     },
 
     labelText: ({ fundingEligibility, locale }) => {

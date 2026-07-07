@@ -20,7 +20,11 @@ import {
   isFirefox,
 } from "@krakenjs/belter/src";
 
-import { supportsVenmoPopups, isSupportedNativeVenmoBrowser } from "./util";
+import {
+  getFundingSourceColors,
+  supportsVenmoPopups,
+  isSupportedNativeVenmoBrowser,
+} from "./util";
 
 // Mock all the browser detection functions from belter
 vi.mock("@krakenjs/belter/src", () => ({
@@ -74,6 +78,85 @@ describe("funding/util", () => {
 
   afterEach(() => {
     vi.resetAllMocks();
+  });
+
+  describe("getFundingSourceColors", () => {
+    const mockFundingConfig = {
+      colors: ["gold", "blue", "silver"],
+      colorsRebrand: ["blue", "black", "white"],
+      logoColors: { default: "blue", white: "blue" },
+      logoColorsRebrand: { blue: "black", black: "white", white: "black" },
+      secondaryColors: { default: "silver", black: "black" },
+      secondaryColorsRebrand: { default: "white", black: "black" },
+      textColors: { gold: "black", blue: "white" },
+      textColorsRebrand: { default: "black", blue: "black", black: "white" },
+    };
+
+    it("should return legacy color fields when shouldApplyRebrandedStyles is false", () => {
+      const result = getFundingSourceColors({
+        // $FlowFixMe
+        fundingConfig: mockFundingConfig,
+        shouldApplyRebrandedStyles: false,
+      });
+
+      expect(result.colors).toBe(mockFundingConfig.colors);
+      expect(result.logoColors).toBe(mockFundingConfig.logoColors);
+      expect(result.secondaryColors).toBe(mockFundingConfig.secondaryColors);
+      expect(result.textColors).toBe(mockFundingConfig.textColors);
+    });
+
+    it("should return rebrand color fields when shouldApplyRebrandedStyles is true", () => {
+      const result = getFundingSourceColors({
+        // $FlowFixMe
+        fundingConfig: mockFundingConfig,
+        shouldApplyRebrandedStyles: true,
+      });
+
+      expect(result.colors).toBe(mockFundingConfig.colorsRebrand);
+      expect(result.logoColors).toBe(mockFundingConfig.logoColorsRebrand);
+      expect(result.secondaryColors).toBe(
+        mockFundingConfig.secondaryColorsRebrand
+      );
+      expect(result.textColors).toBe(mockFundingConfig.textColorsRebrand);
+    });
+
+    it("should fall back to legacy colors array when shouldApplyRebrandedStyles is true but colorsRebrand is not defined", () => {
+      const configWithoutColorsRebrand = {
+        ...mockFundingConfig,
+        colorsRebrand: undefined,
+      };
+
+      const result = getFundingSourceColors({
+        // $FlowFixMe
+        fundingConfig: configWithoutColorsRebrand,
+        shouldApplyRebrandedStyles: true,
+      });
+
+      expect(result.colors).toBe(configWithoutColorsRebrand.colors);
+    });
+
+    it("should still return rebrand logo/secondary/text colors even when colorsRebrand is not defined", () => {
+      const configWithoutColorsRebrand = {
+        ...mockFundingConfig,
+        colorsRebrand: undefined,
+      };
+
+      const result = getFundingSourceColors({
+        // $FlowFixMe
+        fundingConfig: configWithoutColorsRebrand,
+        shouldApplyRebrandedStyles: true,
+      });
+
+      expect(result.logoColors).toBe(
+        configWithoutColorsRebrand.logoColorsRebrand
+      );
+      expect(result.secondaryColors).toBe(
+        configWithoutColorsRebrand.secondaryColorsRebrand
+      );
+      expect(result.textColors).toBe(
+        configWithoutColorsRebrand.textColorsRebrand
+      );
+    });
   });
 
   describe("supportsVenmoPopups", () => {

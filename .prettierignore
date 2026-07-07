@@ -3,3 +3,5 @@ dist
 coverage
 CHANGELOG.md
 .husky
+.playwright-mcp
+.claude

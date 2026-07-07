@@ -1,7 +1,7 @@
 /* @flow */
 
 import { getUserIDToken, getSDKToken } from "@paypal/sdk-client/src";
-import { loadAxo } from "@paypal/accelerated-checkout-loader";
+import { loadAxo } from "@paypal/fastlane-sdk-loader";
 import { describe, expect, test, vi } from "vitest";
 
 import {
@@ -30,7 +30,7 @@ vi.mock("@paypal/sdk-client/src", () => {
   };
 });
 
-vi.mock("@paypal/accelerated-checkout-loader", () => {
+vi.mock("@paypal/fastlane-sdk-loader", () => {
   return {
     loadAxo: vi.fn(),
   };

@@ -44,7 +44,10 @@ function parseHashFragment(): {| hash: string, queryString: string |} {
     ) {
       return {
         hash: possibleAction,
-        queryString: hashString.slice(ampersandIndex + 1),
+        // Normalize embedded ? → & so parseQuery can extract all params.
+        // XOOS bug appends ?token=... inside a fragment, producing
+        // "merchantHash?token=EC-123" instead of "merchantHash&token=EC-123".
+        queryString: hashString.slice(ampersandIndex + 1).replace("?", "&"),
       };
     }
   }

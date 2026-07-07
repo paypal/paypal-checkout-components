@@ -19,6 +19,7 @@ import {
 import { getRememberedFunding } from "@paypal/funding-components/src";
 import {
   getEnableFunding,
+  getDisableFunding,
   getComponents,
   getFundingEligibility,
   getEnv,
@@ -29,7 +30,7 @@ import type {
   OnShippingAddressChange,
   OnShippingOptionsChange,
 } from "../ui/buttons/props";
-import { BUTTON_LAYOUT, BUTTON_FLOW } from "../constants";
+import { BUTTON_LAYOUT, BUTTON_FLOW, MARK_VARIATIONS } from "../constants";
 import { determineEligibleFunding, isFundingEligible } from "../funding";
 import {
   supportsVenmoPopups,
@@ -52,6 +53,7 @@ type MarksInstance = {|
 
 type MarksProps = {|
   fundingSource?: ?$Values<typeof FUNDING>,
+  markVariation?: ?$Values<typeof MARK_VARIATIONS>,
   onShippingChange?: OnShippingChange,
   onShippingAddressChange?: OnShippingAddressChange,
   onShippingOptionsChange?: OnShippingOptionsChange,
@@ -64,6 +66,7 @@ export type MarksComponent = (MarksProps) => MarksInstance;
 export const getMarksComponent: () => MarksComponent = memoize(() => {
   function Marks({
     fundingSource,
+    markVariation,
     onShippingChange,
     onShippingAddressChange,
     onShippingOptionsChange,
@@ -76,6 +79,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const remembered = getRememberedFunding();
     const layout = BUTTON_LAYOUT.VERTICAL;
     const enableFunding = getEnableFunding();
+    const disableFunding = getDisableFunding();
     const components = getComponents();
     const flow = BUTTON_FLOW.PURCHASE;
     const applePaySupport = fundingEligibility?.applepay?.eligible
@@ -101,6 +105,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
       fundingSource,
       fundingEligibility,
       enableFunding,
+      disableFunding,
       components,
       platform,
       remembered,
@@ -132,6 +137,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
         fundingSource,
         fundingEligibility,
         enableFunding,
+        disableFunding,
         components,
         onShippingChange,
         onShippingAddressChange,
@@ -163,6 +169,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
                 <MarksElementRebrand
                   fundingEligibility={fundingEligibility}
                   fundingSources={fundingSources}
+                  markVariation={markVariation}
                   height={height}
                   experiment={experiment}
                   env={env}

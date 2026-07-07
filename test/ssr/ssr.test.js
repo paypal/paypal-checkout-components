@@ -45,6 +45,102 @@ async function getButtonScript(): Promise<{|
   return exports;
 }
 
+async function getSavedPaymentMethodsScript(): Promise<{|
+  SavedPaymentMethods: (Object) => typeof ElementNode,
+  validateSavedPaymentMethodsProps: (Object) => void,
+|}> {
+  const config = {
+    entry: "./src/ui/saved-payment-methods",
+    libraryTarget: "commonjs",
+    vars: getTestGlobals(globals),
+    web: false,
+  };
+
+  const cacheKey = `spm:${JSON.stringify(config)}`;
+  if (cache[cacheKey]) {
+    // $FlowFixMe
+    return cache[cacheKey];
+  }
+
+  const script = await webpackCompileToString(getWebpackConfig(config));
+
+  const exports: Object = {};
+  eval(script); // eslint-disable-line no-eval,security/detect-eval-with-expression
+
+  if (typeof exports.SavedPaymentMethods !== "function") {
+    throw new TypeError(`Expected SavedPaymentMethods to be a function`);
+  }
+
+  if (typeof exports.validateSavedPaymentMethodsProps !== "function") {
+    throw new TypeError(
+      `Expected validateSavedPaymentMethodsProps to be a function`
+    );
+  }
+
+  // $FlowFixMe
+  cache[cacheKey] = exports; // eslint-disable-line require-atomic-updates
+
+  // $FlowFixMe
+  return exports;
+}
+
+test(`SavedPaymentMethods (template) should render with ssr, with minimal options`, async () => {
+  const { SavedPaymentMethods } = await getSavedPaymentMethodsScript();
+
+  const savedPaymentMethodsHTML = SavedPaymentMethods({
+    nonce: "test-nonce",
+  }).render(html());
+
+  if (!savedPaymentMethodsHTML || typeof savedPaymentMethodsHTML !== "string") {
+    throw new Error(`Expected html to be a non-empty string`);
+  }
+
+  if (!savedPaymentMethodsHTML.includes("saved-payment-methods-container")) {
+    throw new Error(
+      `Expected SSR html to include saved-payment-methods-container`
+    );
+  }
+
+  if (!savedPaymentMethodsHTML.includes('id="spm-app-root"')) {
+    throw new Error(`Expected SSR html to include spm-app-root`);
+  }
+
+  if (!savedPaymentMethodsHTML.includes("spm-tag-loading")) {
+    throw new Error(`Expected SSR html to include spm-tag-loading skeleton`);
+  }
+
+  if (
+    !savedPaymentMethodsHTML.includes(
+      ".spm-tag-loading.spm-tag-loading--hidden"
+    )
+  ) {
+    throw new Error(
+      `Expected SSR styles to include spm-tag-loading--hidden rule`
+    );
+  }
+
+  if (!savedPaymentMethodsHTML.includes('nonce="test-nonce"')) {
+    throw new Error(`Expected style tag to pass through nonce`);
+  }
+});
+
+test(`SavedPaymentMethods validateSavedPaymentMethodsProps should throw on invalid style`, async () => {
+  const { validateSavedPaymentMethodsProps } =
+    await getSavedPaymentMethodsScript();
+
+  let expectedErr;
+
+  try {
+    validateSavedPaymentMethodsProps({ style: { color: "red" } });
+  } catch (err) {
+    expectedErr = err;
+  }
+
+  if (!expectedErr) {
+    throw new Error(`Expected validateSavedPaymentMethodsProps to throw`);
+  }
+});
+
 test(`Button should render with ssr, with minimal options`, async () => {
   const { Buttons } = await getButtonScript();
 
