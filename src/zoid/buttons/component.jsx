@@ -46,7 +46,6 @@ import {
   getSDKInitTime,
   getSDKToken,
   getShopperSessionId,
-  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import {
   rememberFunding,
@@ -110,6 +109,7 @@ import {
   getModal,
   sendPostRobotMessageToButtonIframe,
   isEagerOrderCreationEnabled,
+  resolveMerchantDomain,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
@@ -893,14 +893,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         sendToChild: true,
-        value: ({ props }) => {
-          if (props.merchantDomain && !isPayPalDomain()) {
-            throw new Error(
-              "merchantDomain can only be passed on PayPal-hosted flows"
-            );
-          }
-          return isPayPalDomain() ? props.merchantDomain : undefined;
-        },
+        value: ({ props }) => resolveMerchantDomain(props.merchantDomain),
       },
 
       intent: {
