@@ -428,7 +428,7 @@ export const isEagerOrderCreationEnabled = (
   );
 };
 
-// merchantDomain is only accepted on PayPal-hosted flows (e.g. NCPS/Donations/Invoicing).
+// merchantDomain is only accepted on PayPal-hosted flows (e.g. NCPS).
 // There the page origin resolves to a PayPal Domain, so the hosting service must supply
 // the true merchant origin. On merchant-hosted pages browser origin is alreadyy the merchant's,
 // so an explictly passed value is rejected
