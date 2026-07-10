@@ -1,3 +1,9 @@
+## <small>5.0.422 (2026-07-10)</small>
+
+* chore: bump zoid (#2648) ([6b43aec](https://github.com/paypal/paypal-checkout-components/commit/6b43aec)), closes [#2648](https://github.com/paypal/paypal-checkout-components/issues/2648)
+
+
+
 ## <small>5.0.421 (2026-06-08)</small>
 
 * Add background color to saved payment method PP logo (#2641) ([d06b599](https://github.com/paypal/paypal-checkout-components/commit/d06b599)), closes [#2641](https://github.com/paypal/paypal-checkout-components/issues/2641)
