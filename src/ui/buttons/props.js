@@ -662,6 +662,7 @@ export type ButtonProps = {|
   hideSubmitButtonForCardForm?: boolean,
   userAgent: string,
   browserContext?: string,
+  merchantDomain?: string,
   buttonColor: ButtonColor,
 |};
 

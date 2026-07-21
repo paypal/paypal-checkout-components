@@ -107,8 +107,9 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
-  sendPostRobotMessageToButtonIframe,
   isEagerOrderCreationEnabled,
+  resolveMerchantDomain,
+  sendPostRobotMessageToButtonIframe,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
@@ -470,6 +471,20 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               "visibilitychange",
               props.visibilityChangeHandler
             );
+          },
+      },
+
+      onBfcacheRestore: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value:
+          () =>
+          ({ cachedDurationMs } = {}) => {
+            sendPostRobotMessageToButtonIframe({
+              eventName: "bfcache_restore",
+              payload: { cachedDurationMs },
+            });
           },
       },
 
@@ -888,6 +903,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "string",
         required: false,
         queryParam: true,
+      },
+
+      merchantDomain: {
+        type: "string",
+        required: false,
+        sendToChild: true,
+        value: ({ props }) => resolveMerchantDomain(props.merchantDomain),
       },
 
       intent: {

@@ -27,6 +27,7 @@ import {
   getFundingEligibility,
   getSDKToken,
   getIntent,
+  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { FUNDING, FPTI_KEY, INTENT } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
@@ -410,6 +411,7 @@ export const sendPostRobotMessageToButtonIframe = ({
     if (iframes[i].name.includes("zoid__paypal_buttons")) {
       postRobotSend(iframes[i].contentWindow, eventName, payload, {
         domain: getPayPalDomain(),
+        fireAndForget: true,
       });
     }
   }
@@ -426,3 +428,14 @@ export const isEagerOrderCreationEnabled = (
       experiment.spbEagerOrderCreation
   );
 };
+
+// merchantDomain is only accepted on PayPal-hosted flows (e.g. NCPS).
+// There the page origin resolves to a PayPal Domain, so the hosting service must supply
+// the true merchant origin. On merchant-hosted pages browser origin is alreadyy the merchant's,
+// so an explictly passed value is rejected
+export function resolveMerchantDomain(merchantDomain: ?string): ?string {
+  if (merchantDomain && !isPayPalDomain()) {
+    throw new Error("merchantDomain can only be passed on PayPal-hosted flows");
+  }
+  return merchantDomain || undefined;
+}
