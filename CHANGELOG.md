@@ -1,3 +1,9 @@
+## <small>5.0.425 (2026-07-22)</small>
+
+* Pass bfcache events via post-robot (#2650) ([9fc4447](https://github.com/paypal/paypal-checkout-components/commit/9fc4447)), closes [#2650](https://github.com/paypal/paypal-checkout-components/issues/2650)
+
+
+
 ## <small>5.0.424 (2026-07-20)</small>
 
 * Pass partnerAttributionID as query param to Saved Payment Methods (#2649) ([2d5f637](https://github.com/paypal/paypal-checkout-components/commit/2d5f637)), closes [#2649](https://github.com/paypal/paypal-checkout-components/issues/2649)
