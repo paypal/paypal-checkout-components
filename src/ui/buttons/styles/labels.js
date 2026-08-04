@@ -29,8 +29,8 @@ export const labelStyle = `
     }
 
     .${CLASS.BUTTON} .${CLASS.TEXT}.${CLASS.IMMEDIATE}:not(.${
-  CLASS.PERSONALIZATION_TEXT
-}):not(.${CLASS.HIDDEN}) {
+      CLASS.PERSONALIZATION_TEXT
+    }):not(.${CLASS.HIDDEN}) {
         ${VISIBLE}
         ${EXPANDED}
     }
@@ -43,8 +43,8 @@ export const labelStyle = `
     }
 
     .${CLASS.DOM_READY} .${CLASS.BUTTON} .${CLASS.TEXT}:not(.${
-  CLASS.IMMEDIATE
-}):not(.${CLASS.PERSONALIZATION_TEXT}):not(.${CLASS.HIDDEN}) {
+      CLASS.IMMEDIATE
+    }):not(.${CLASS.PERSONALIZATION_TEXT}):not(.${CLASS.HIDDEN}) {
         ${VISIBLE}
         ${COMPRESSED}
         animation: show-text ${__TEST__ ? "0" : "1"}s 0s forwards;
@@ -68,8 +68,8 @@ export const labelStyle = `
     .${CLASS.BUTTON_REBRAND}[data-funding-source=paypal] .${CLASS.BUTTON_LABEL},
     .${CLASS.BUTTON_REBRAND}[data-funding-source=credit] .${CLASS.BUTTON_LABEL},
     .${CLASS.BUTTON_REBRAND}[data-funding-source=paylater] .${
-  CLASS.BUTTON_LABEL
-} {
+      CLASS.BUTTON_LABEL
+    } {
         font-family: PayPal Pro Book, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-weight: 500;
     }

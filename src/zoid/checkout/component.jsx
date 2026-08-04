@@ -298,8 +298,8 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: ({ props }) => {
             return Boolean(
               props.onShippingChange ||
-                props.onShippingAddressChange ||
-                props.onShippingOptionsChange
+              props.onShippingAddressChange ||
+              props.onShippingOptionsChange,
             );
           },
         },

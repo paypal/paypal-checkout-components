@@ -83,7 +83,7 @@ describe("three domain secure component - isEligible method", () => {
     mockRestClient.request = mockEligibilityRequest();
     const threeDomainSecureClient = createThreeDomainSecureComponent();
     const eligibility = await threeDomainSecureClient.isEligible(
-      defaultMerchantPayload
+      defaultMerchantPayload,
     );
     expect(eligibility).toEqual(true);
   });
@@ -96,7 +96,7 @@ describe("three domain secure component - isEligible method", () => {
     mockRestClient.request = mockEligibilityRequest(inEligibilityResponse);
     const threeDomainSecureClient = createThreeDomainSecureComponent();
     const eligibility = await threeDomainSecureClient.isEligible(
-      defaultMerchantPayload
+      defaultMerchantPayload,
     );
     expect(eligibility).toEqual(false);
   });
@@ -106,7 +106,7 @@ describe("three domain secure component - isEligible method", () => {
     const threeDomainSecureClient = createThreeDomainSecureComponent();
     await threeDomainSecureClient.isEligible(defaultMerchantPayload);
     expect(threeDomainSecureClient.authenticationURL).toEqual(
-      "https://testurl.com"
+      "https://testurl.com",
     );
   });
 
@@ -131,7 +131,7 @@ describe("three domain secure component - isEligible method", () => {
             value: defaultMerchantPayload.amount,
           }),
         }),
-      })
+      }),
     );
   });
 
@@ -143,7 +143,7 @@ describe("three domain secure component - isEligible method", () => {
 
     expect.assertions(2);
     await expect(() =>
-      threeDomainSecureClient.isEligible(defaultMerchantPayload)
+      threeDomainSecureClient.isEligible(defaultMerchantPayload),
     ).rejects.toThrow(new Error("Error with API"));
     expect(mockRestClient.request).toHaveBeenCalled();
   });
@@ -188,13 +188,13 @@ describe("three domain secure component - isEligible method", () => {
       const threeDomainSecureClient = createThreeDomainSecureComponent();
 
       await expect(() =>
-        threeDomainSecureClient.isEligible(params)
+        threeDomainSecureClient.isEligible(params),
       ).rejects.toThrow(new ValidationError(expected));
 
       expect(threeDomainSecureClient.logger.warn).toHaveBeenCalledWith(
-        expected
+        expected,
       );
-    }
+    },
   );
 });
 
@@ -204,7 +204,7 @@ describe("three domain descure component - show method", () => {
     // $FlowFixMe
     threeDomainSecureClient.threeDSIframe = undefined;
     await expect(threeDomainSecureClient.show()).rejects.toThrowError(
-      "Ineligible for three domain secure"
+      "Ineligible for three domain secure",
     );
   });
 });
@@ -217,9 +217,9 @@ describe("three domain secure component - initialization", () => {
           ...defaultSdkConfig,
           authenticationToken: "",
         },
-      })
+      }),
     ).toThrowError(
-      `script data attribute sdk-client-token is required but was not passed`
+      `script data attribute sdk-client-token is required but was not passed`,
     );
   });
 
@@ -307,10 +307,10 @@ describe(" three domain secure component - parseMerchantPayload", () => {
     });
 
     expect(resultTrue.payment_source.card.verification_method).toBe(
-      "SCA_ALWAYS"
+      "SCA_ALWAYS",
     );
     expect(resultFalse.payment_source.card.verification_method).toBe(
-      "SCA_WHEN_REQUIRED"
+      "SCA_WHEN_REQUIRED",
     );
   });
 
@@ -349,7 +349,7 @@ describe(" three domain secure component - parseMerchantPayload", () => {
     const result = parseMerchantPayload({ merchantPayload: payload });
 
     expect(result.payment_source.card.verification_method).toBe(
-      "SCA_WHEN_REQUIRED"
+      "SCA_WHEN_REQUIRED",
     );
   });
 });

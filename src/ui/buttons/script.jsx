@@ -53,7 +53,7 @@ export function getComponentScript(): () => void {
       elements:
         | HTMLCollection<HTMLElement>
         | NodeList<HTMLElement>
-        | $ReadOnlyArray<HTMLElement>
+        | $ReadOnlyArray<HTMLElement>,
     ): $ReadOnlyArray<HTMLElement> {
       return toArray(elements).filter((el) => {
         return el.tagName.toLowerCase() !== TAG.STYLE;
@@ -107,16 +107,16 @@ export function getComponentScript(): () => void {
     }
 
     function getElementsTotalWidth(
-      elements: $ReadOnlyArray<HTMLElement>
+      elements: $ReadOnlyArray<HTMLElement>,
     ): number {
       return sum(
-        elements.map((child) => Math.ceil(child.getBoundingClientRect().width))
+        elements.map((child) => Math.ceil(child.getBoundingClientRect().width)),
       );
     }
 
     function calculateGap(optionalParent: HTMLElement): number {
       const isTagline = optionalParent?.classList.contains(
-        "paypal-button-tagline" || false
+        "paypal-button-tagline" || false,
       );
 
       if (isTagline) {
@@ -142,17 +142,17 @@ export function getComponentScript(): () => void {
 
     function getOptionalParents(): $ReadOnlyArray<HTMLElement> {
       return unique(
-        getElements(SELECTOR.OPTIONAL).map(getParent).filter(Boolean)
+        getElements(SELECTOR.OPTIONAL).map(getParent).filter(Boolean),
       );
     }
 
     function getOptionalChildren(
-      parent: HTMLElement
+      parent: HTMLElement,
     ): $ReadOnlyArray<HTMLElement> {
       return toArray(getElements(SELECTOR.OPTIONAL, parent)).sort(
         (first, second) => {
           return getOptionalIndex(first) - getOptionalIndex(second);
-        }
+        },
       );
     }
 
@@ -189,11 +189,11 @@ export function getComponentScript(): () => void {
 
         if (usedWidth > parentWidth) {
           optionalChildren.forEach((optionalChild) =>
-            hideElement(optionalChild)
+            hideElement(optionalChild),
           );
         } else {
           optionalChildren.forEach((optionalChild) =>
-            showElement(optionalChild)
+            showElement(optionalChild),
           );
         }
       }
@@ -210,7 +210,7 @@ export function getComponentScript(): () => void {
         if (document.body) {
           document.body.classList.add(CLASS.DOM_READY);
         }
-      })
+      }),
     );
 
     const load = () => {

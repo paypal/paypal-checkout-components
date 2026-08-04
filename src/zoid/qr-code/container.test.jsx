@@ -74,7 +74,7 @@ describe("containerTemplate", () => {
       } else {
         expect(getCSPNonce).not.toHaveBeenCalled();
       }
-    }
+    },
   );
 
   test.each([
@@ -131,7 +131,7 @@ describe("QRCodeContainer", () => {
     const mocks = createMocks();
     // $FlowIssue - intentionally passing null for error test
     expect(() =>
-      QRCodeContainer({ uid: TEST_UID, ...modifyMocks(mocks) })
+      QRCodeContainer({ uid: TEST_UID, ...modifyMocks(mocks) }),
     ).toThrow("Expected frame and prerenderframe");
   });
 

@@ -34,7 +34,7 @@ describe("getLabelContainerHeight", () => {
     "returns $expected for buttonHeight=$buttonHeight fontSize=$fontSize",
     ({ buttonHeight, fontSize, expected }) => {
       expect(getLabelContainerHeight(buttonHeight, fontSize)).toBe(expected);
-    }
+    },
   );
 });
 
@@ -81,7 +81,7 @@ describe("generateLabelHeightContainerStyles", () => {
       (minH, maxH, labelHeight) => {
         calls.push({ minH, maxH, labelHeight });
         return "";
-      }
+      },
     );
     expect(calls).toEqual([{ minH: 75, maxH: 75, labelHeight: 38 }]);
   });
@@ -93,7 +93,7 @@ describe("generateDisableMaxHeightLabelContainerStyles", () => {
     expect(result).toContain("min-height:");
     expect(result).toContain("max-height:");
     expect(result).toContain(
-      ".paypal-button-rebrand > .paypal-button-label-container"
+      ".paypal-button-rebrand > .paypal-button-label-container",
     );
     expect(result).toContain("height:");
   });
@@ -103,7 +103,7 @@ describe("generateDisableMaxHeightLabelContainerStyles", () => {
     // XXXL bucket has maxHeight: 75, so catch-all starts at 76px
     expect(result).toContain("@container (min-height: 76px)");
     expect(result).not.toMatch(
-      /@container \(min-height: 76px\) and \(max-height:/
+      /@container \(min-height: 76px\) and \(max-height:/,
     );
   });
 
@@ -112,7 +112,7 @@ describe("generateDisableMaxHeightLabelContainerStyles", () => {
     // XXXL: maxHeight=75, fontSize=26 → getLabelContainerHeight(75, 26) = 38
     const catchAllHeight = getLabelContainerHeight(75, 26);
     expect(result).toContain(
-      `@container (min-height: 76px) {\n      .paypal-button-rebrand > .paypal-button-label-container {\n        height: ${catchAllHeight}px;`
+      `@container (min-height: 76px) {\n      .paypal-button-rebrand > .paypal-button-label-container {\n        height: ${catchAllHeight}px;`,
     );
   });
 

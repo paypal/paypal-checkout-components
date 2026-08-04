@@ -91,15 +91,15 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
     const supportsVenmoPopup = supportsVenmoPopups(
       experiment,
       supportsPopups,
-      userAgent
+      userAgent,
     );
     const supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
       experiment,
-      userAgent
+      userAgent,
     );
 
     const hasShippingCallback = Boolean(
-      onShippingChange || onShippingAddressChange || onShippingOptionsChange
+      onShippingChange || onShippingAddressChange || onShippingOptionsChange,
     );
     const fundingSources = determineEligibleFunding({
       fundingSource,
@@ -184,7 +184,7 @@ export const getMarksComponent: () => MarksComponent = memoize(() => {
                 />
               )}
             </div>
-          ).render(dom({ doc: document }))
+          ).render(dom({ doc: document })),
         );
       });
     };

@@ -36,8 +36,8 @@ describe(`paypal button message`, () => {
                 if (!color) {
                   throw new Error(
                     `Expected message color property to be populated: ${JSON.stringify(
-                      xprops.message
-                    )}`
+                      xprops.message,
+                    )}`,
                   );
                 }
               }),
@@ -59,8 +59,8 @@ describe(`paypal button message`, () => {
                 if (!align) {
                   throw new Error(
                     `Expected message align property to be populated: ${JSON.stringify(
-                      xprops.message
-                    )}`
+                      xprops.message,
+                    )}`,
                   );
                 }
               }),
@@ -125,13 +125,13 @@ describe(`paypal button message`, () => {
               // $FlowFixMe
               const win = frame.contentWindow;
               const message = win.document.querySelector(
-                ".paypal-button-message"
+                ".paypal-button-message",
               );
               if (!message) {
                 done(new Error("No message generated"));
               }
               const reservationDiv = win.document.querySelector(
-                ".paypal-button-message-reserved"
+                ".paypal-button-message-reserved",
               );
               if (!reservationDiv) {
                 done(new Error("message space was not reserved"));
@@ -158,13 +158,13 @@ describe(`paypal button message`, () => {
               // $FlowFixMe
               const win = frame.contentWindow;
               const message = win.document.querySelector(
-                ".paypal-button-message"
+                ".paypal-button-message",
               );
               if (!message) {
                 done(new Error("No message generated"));
               }
               const reservationDiv = win.document.querySelector(
-                ".paypal-button-message-reserved"
+                ".paypal-button-message-reserved",
               );
               if (reservationDiv) {
                 done(new Error("message space was reserved incorrectly"));
@@ -191,13 +191,13 @@ describe(`paypal button message`, () => {
               // $FlowFixMe
               const win = frame.contentWindow;
               const message = win.document.querySelector(
-                ".paypal-button-message"
+                ".paypal-button-message",
               );
               if (!message) {
                 done(new Error("No message generated"));
               }
               const reservationDiv = win.document.querySelector(
-                ".paypal-button-message-reserved"
+                ".paypal-button-message-reserved",
               );
               if (reservationDiv) {
                 done(new Error("message space was reserved incorrectly"));
@@ -508,23 +508,23 @@ describe(`paypal button message`, () => {
                 .then(() => {
                   assert.ok(
                     Object.keys(window.paypal.MessagesModal.mock.calledWith)
-                      .length === 4
+                      .length === 4,
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
-                      .onApply === "function"
+                      .onApply === "function",
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
-                      .account === "string"
+                      .account === "string",
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
-                      .buttonSessionId === "string"
+                      .buttonSessionId === "string",
                   );
                   assert.ok(
                     typeof window.paypal.MessagesModal.mock.calledWith
-                      .merchantId === "undefined"
+                      .merchantId === "undefined",
                   );
                   done();
                 })
@@ -548,15 +548,15 @@ describe(`paypal button message`, () => {
                   return clickMessage(props).then(() => {
                     assert.equal(
                       window.paypal.MessagesModal.mock.show.calledWith.amount,
-                      101
+                      101,
                     );
                     assert.equal(
                       window.paypal.MessagesModal.mock.show.calledWith.offer,
-                      "PAY_LATER"
+                      "PAY_LATER",
                     );
                     assert.equal(
                       window.paypal.MessagesModal.mock.show.calledWith.currency,
-                      "USD"
+                      "USD",
                     );
                     done();
                   });

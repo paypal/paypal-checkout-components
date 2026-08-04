@@ -58,7 +58,7 @@ export const logLatencyInstrumentationPhase = ({
 
 export const prepareInstrumentationPayload = (
   buttonSessionID: string,
-  component: "buttons" | "saved-payment-methods"
+  component: "buttons" | "saved-payment-methods",
 ): InstrumentationPayload => {
   const timeOrigin = getNavigationTimeOrigin();
   const renderStartTime = getStartTimeFromMark({

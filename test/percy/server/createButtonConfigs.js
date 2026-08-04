@@ -8,7 +8,7 @@ const createButtonConfigs = () => {
   // eslint-disable-next-line no-sync
   fs.writeFileSync(
     "./test/percy/files/buttonConfigs.json",
-    JSON.stringify(buttonConfigs)
+    JSON.stringify(buttonConfigs),
   );
 };
 

@@ -115,7 +115,7 @@ describe("funding/util", () => {
       expect(result.colors).toBe(mockFundingConfig.colorsRebrand);
       expect(result.logoColors).toBe(mockFundingConfig.logoColorsRebrand);
       expect(result.secondaryColors).toBe(
-        mockFundingConfig.secondaryColorsRebrand
+        mockFundingConfig.secondaryColorsRebrand,
       );
       expect(result.textColors).toBe(mockFundingConfig.textColorsRebrand);
     });
@@ -148,13 +148,13 @@ describe("funding/util", () => {
       });
 
       expect(result.logoColors).toBe(
-        configWithoutColorsRebrand.logoColorsRebrand
+        configWithoutColorsRebrand.logoColorsRebrand,
       );
       expect(result.secondaryColors).toBe(
-        configWithoutColorsRebrand.secondaryColorsRebrand
+        configWithoutColorsRebrand.secondaryColorsRebrand,
       );
       expect(result.textColors).toBe(
-        configWithoutColorsRebrand.textColorsRebrand
+        configWithoutColorsRebrand.textColorsRebrand,
       );
     });
   });
@@ -182,7 +182,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(supportsVenmoPopups(experiment, true, defaultUserAgent)).toBe(
-          true
+          true,
         );
       });
 
@@ -191,7 +191,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
-          false
+          false,
         );
       });
 
@@ -200,7 +200,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
-          false
+          false,
         );
       });
 
@@ -209,7 +209,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
-          false
+          false,
         );
       });
 
@@ -218,7 +218,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
-          false
+          false,
         );
       });
 
@@ -227,7 +227,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
-          false
+          false,
         );
       });
 
@@ -236,7 +236,7 @@ describe("funding/util", () => {
         const experiment = {};
 
         expect(supportsVenmoPopups(experiment, true, defaultUserAgent)).toBe(
-          true
+          true,
         );
       });
 
@@ -245,7 +245,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: false };
 
         expect(supportsVenmoPopups(experiment, false, defaultUserAgent)).toBe(
-          false
+          false,
         );
       });
 
@@ -253,7 +253,7 @@ describe("funding/util", () => {
         vi.mocked(supportsPopups).mockReturnValue(true);
 
         expect(supportsVenmoPopups(undefined, true, defaultUserAgent)).toBe(
-          true
+          true,
         );
       });
     });
@@ -310,7 +310,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(
-          isSupportedNativeVenmoBrowser(experiment, defaultUserAgent)
+          isSupportedNativeVenmoBrowser(experiment, defaultUserAgent),
         ).toBe(true);
       });
 
@@ -327,7 +327,7 @@ describe("funding/util", () => {
         const experiment = { venmoEnableWebOnNonNativeBrowser: true };
 
         expect(
-          isSupportedNativeVenmoBrowser(experiment, defaultUserAgent)
+          isSupportedNativeVenmoBrowser(experiment, defaultUserAgent),
         ).toBe(true);
       });
 
@@ -349,7 +349,7 @@ describe("funding/util", () => {
         vi.mocked(isSafari).mockReturnValue(true);
 
         expect(isSupportedNativeVenmoBrowser(undefined, defaultUserAgent)).toBe(
-          true
+          true,
         );
       });
 

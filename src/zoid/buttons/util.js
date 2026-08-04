@@ -79,7 +79,7 @@ const logNativeScreenInformation = once(() => {
 });
 
 export function determineFlow(
-  props: DetermineFlowOptions
+  props: DetermineFlowOptions,
 ): $Values<typeof BUTTON_FLOW> {
   if (props.createVaultSetupToken) {
     return BUTTON_FLOW.VAULT_WITHOUT_PURCHASE;
@@ -135,7 +135,7 @@ export function getVenmoEligibility(): EligibilityExperiment {
 }
 
 export function getRenderedButtons(
-  props: ButtonProps
+  props: ButtonProps,
 ): $ReadOnlyArray<$Values<typeof FUNDING>> {
   const {
     fundingSource,
@@ -206,8 +206,8 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
             new window.ApplePayError(
               error.code,
               error.contactField,
-              error.message
-            )
+              error.message,
+            ),
         ),
       };
     };
@@ -280,7 +280,7 @@ export function getButtonExperiments(): EligibilityExperiment {
 
 export function getButtonSize(
   props: ButtonProps,
-  container: string | HTMLElement | void
+  container: string | HTMLElement | void,
 ): string | void {
   if (!container) {
     return;
@@ -341,7 +341,7 @@ function buildModalBundleUrl(): string {
 export const getModal: (
   clientID: string,
   merchantID: $ReadOnlyArray<string> | void,
-  buttonSessionID: string
+  buttonSessionID: string,
 ) => Object = memoize(async (clientID, merchantID, buttonSessionID) => {
   try {
     const namespace = getNamespace();
@@ -418,14 +418,14 @@ export const sendPostRobotMessageToButtonIframe = ({
 };
 
 export const isEagerOrderCreationEnabled = (
-  appSwitchWhenAvailable: boolean
+  appSwitchWhenAvailable: boolean,
 ): boolean => {
   const experiment = getButtonExperiments();
   return Boolean(
     !isWebView() &&
-      isDevice() &&
-      appSwitchWhenAvailable &&
-      experiment.spbEagerOrderCreation
+    isDevice() &&
+    appSwitchWhenAvailable &&
+    experiment.spbEagerOrderCreation,
   );
 };
 

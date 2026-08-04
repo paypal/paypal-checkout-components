@@ -73,7 +73,7 @@ async function getSavedPaymentMethodsScript(): Promise<{|
 
   if (typeof exports.validateSavedPaymentMethodsProps !== "function") {
     throw new TypeError(
-      `Expected validateSavedPaymentMethodsProps to be a function`
+      `Expected validateSavedPaymentMethodsProps to be a function`,
     );
   }
 
@@ -97,7 +97,7 @@ test(`SavedPaymentMethods (template) should render with ssr, with minimal option
 
   if (!savedPaymentMethodsHTML.includes("saved-payment-methods-container")) {
     throw new Error(
-      `Expected SSR html to include saved-payment-methods-container`
+      `Expected SSR html to include saved-payment-methods-container`,
     );
   }
 
@@ -111,11 +111,11 @@ test(`SavedPaymentMethods (template) should render with ssr, with minimal option
 
   if (
     !savedPaymentMethodsHTML.includes(
-      ".spm-tag-loading.spm-tag-loading--hidden"
+      ".spm-tag-loading.spm-tag-loading--hidden",
     )
   ) {
     throw new Error(
-      `Expected SSR styles to include spm-tag-loading--hidden rule`
+      `Expected SSR styles to include spm-tag-loading--hidden rule`,
     );
   }
 
@@ -236,7 +236,7 @@ test(`Button should fail to render with ssr, with no fundingSources available`, 
   }
   if (expectedErr.code !== ERROR_CODE.VALIDATION_ERROR) {
     throw new Error(
-      `Expected button render to error out with err.code = ${ERROR_CODE.VALIDATION_ERROR}`
+      `Expected button render to error out with err.code = ${ERROR_CODE.VALIDATION_ERROR}`,
     );
   }
 });

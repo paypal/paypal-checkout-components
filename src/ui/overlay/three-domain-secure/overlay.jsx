@@ -67,7 +67,7 @@ export function Overlay({
       document.getElementsByName(overlayIframeName)?.[0];
     const iframeDocument = overlayIframe?.contentWindow.document;
     const warningElement = iframeDocument?.getElementsByClassName(
-      "paypal-checkout-focus-warning"
+      "paypal-checkout-focus-warning",
     )?.[0];
 
     if (!warningElement) {

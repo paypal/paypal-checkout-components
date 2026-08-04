@@ -39,7 +39,7 @@ export function PrerenderedButtons({
   props,
 }: PrerenderedButtonsProps): ChildType {
   const eagerOrderCreation = isEagerOrderCreationEnabled(
-    props.appSwitchWhenAvailable
+    props.appSwitchWhenAvailable,
   );
   let win;
   const handleClick = (
@@ -51,7 +51,7 @@ export function PrerenderedButtons({
     }: {|
       fundingSource: $Values<typeof FUNDING>,
       card: ?$Values<typeof CARD>,
-    |}
+    |},
   ) => {
     getLogger()
       .info("paypal_js_sdk_v5_button_prerender_click", {
@@ -84,7 +84,7 @@ export function PrerenderedButtons({
           popup("", {
             width: DEFAULT_POPUP_SIZE.WIDTH,
             height: DEFAULT_POPUP_SIZE.HEIGHT,
-          })
+          }),
         );
       }
 

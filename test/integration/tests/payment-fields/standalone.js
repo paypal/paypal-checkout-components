@@ -38,7 +38,7 @@ describe(`paypal standalone fields`, () => {
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
           "eligible",
-          true
+          true,
         );
 
         const fields = window.paypal.PaymentFields({

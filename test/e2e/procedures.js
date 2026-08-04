@@ -14,7 +14,7 @@ import { STAGE, CLIENT_ID } from "./config";
 
 export async function renderSmartButtons(
   page: Object,
-  opts?: string = ""
+  opts?: string = "",
 ): Promise<Object> {
   await page.addScriptTag({
     url: `https://www.${STAGE}/sdk/js?client-id=${CLIENT_ID}`,
@@ -27,17 +27,17 @@ export async function renderSmartButtons(
 
 export async function getButtonByFundingSource(
   buttonFrame: Object,
-  funding: string
+  funding: string,
 ): Promise<Object> {
   return await getElement(
     buttonFrame,
-    `[${DATA_ATTRIBUTES.BUTTON.FUNDING_SOURCE}=${funding}]`
+    `[${DATA_ATTRIBUTES.BUTTON.FUNDING_SOURCE}=${funding}]`,
   );
 }
 
 export async function clickButton(
   buttonFrame: Object,
-  button: Object
+  button: Object,
 ): Promise<Object> {
   const popupPromise = waitForPopup(buttonFrame);
   await button.click();
@@ -46,7 +46,7 @@ export async function clickButton(
 
 export async function runLoginFlow(
   page: Object,
-  { user, password }: {| user: string, password: string |}
+  { user, password }: {| user: string, password: string |},
 ): Promise<void> {
   await waitAndType(page, SELECTORS.LOGIN.EMAIL_FIELD, user);
 
@@ -60,7 +60,7 @@ export async function runLoginFlow(
 
 export async function runCheckoutLoginFlow(
   page: Object,
-  { user, password }: {| user: string, password: string |}
+  { user, password }: {| user: string, password: string |},
 ): Promise<void> {
   await Promise.race([
     waitForElement(page, SELECTORS.LOGIN.EMAIL_FIELD),
@@ -78,7 +78,7 @@ export async function runCheckoutLoginFlow(
 }
 
 export async function resolveCheckoutContingencies(
-  page: Object
+  page: Object,
 ): Promise<void> {
   await Promise.race([
     waitForElement(page, SELECTORS.CHECKOUT.CREDIT_CANCEL),
