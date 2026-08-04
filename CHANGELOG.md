@@ -1,3 +1,9 @@
+## <small>5.0.426 (2026-08-04)</small>
+
+* upgrade prettier to v3 (#2652) ([c062a9c](https://github.com/paypal/paypal-checkout-components/commit/c062a9c)), closes [#2652](https://github.com/paypal/paypal-checkout-components/issues/2652)
+
+
+
 ## <small>5.0.425 (2026-07-22)</small>
 
 * Pass bfcache events via post-robot (#2650) ([9fc4447](https://github.com/paypal/paypal-checkout-components/commit/9fc4447)), closes [#2650](https://github.com/paypal/paypal-checkout-components/issues/2650)
