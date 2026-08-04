@@ -102,7 +102,7 @@ describe("Funding eligibility", () => {
     test("should not be eligible if funding source is missing from fundingEligibility", () => {
       const fundingEligible = isFundingEligible(
         FUNDING.WECHATPAY,
-        defaultMockFundingOptions
+        defaultMockFundingOptions,
       );
 
       expect(fundingEligible).toBe(false);
@@ -164,7 +164,7 @@ describe("Funding eligibility", () => {
     test("should not be eligible if fundingSource.eligible is false", () => {
       const fundingEligible = isFundingEligible(
         FUNDING.SEPA,
-        defaultMockFundingOptions
+        defaultMockFundingOptions,
       );
 
       expect(fundingEligible).toBe(false);
@@ -173,7 +173,7 @@ describe("Funding eligibility", () => {
     test("should not be eligible if fundingSource.eligible is false and fundingSource.vaultable is true", () => {
       const fundingEligible = isFundingEligible(
         FUNDING.OXXO,
-        defaultMockFundingOptions
+        defaultMockFundingOptions,
       );
 
       expect(fundingEligible).toBe(false);

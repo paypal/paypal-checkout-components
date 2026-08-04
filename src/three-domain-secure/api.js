@@ -73,7 +73,7 @@ export function callGraphQLAPI({
 |}): ZalgoPromise<any> {
   if (!accessToken) {
     throw new Error(
-      `No access token passed to GraphQL request ${baseURL}${GRAPHQL_URI}`
+      `No access token passed to GraphQL request ${baseURL}${GRAPHQL_URI}`,
     );
   }
 

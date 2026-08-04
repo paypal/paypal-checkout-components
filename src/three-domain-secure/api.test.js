@@ -78,11 +78,11 @@ describe("API", () => {
           baseURL,
           data: gqlQuery,
           headers: {},
-        })
+        }),
       ).toThrowError(
         new Error(
-          `No access token passed to GraphQL request ${baseURL}/graphql`
-        )
+          `No access token passed to GraphQL request ${baseURL}/graphql`,
+        ),
       );
     });
 
@@ -140,7 +140,7 @@ describe("API", () => {
         });
       } catch (error) {
         expect(error.message).toBe(
-          `${baseURL}/graphql returned status ${status}`
+          `${baseURL}/graphql returned status ${status}`,
         );
       }
     });

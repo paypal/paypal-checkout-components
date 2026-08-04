@@ -39,7 +39,7 @@ describe("validateSavedPaymentMethodsStyle", () => {
           fiTextFontSize: "14px",
           iconSize: "28px",
         },
-      })
+      }),
     ).not.toThrow();
   });
 
@@ -47,17 +47,17 @@ describe("validateSavedPaymentMethodsStyle", () => {
     expect(() =>
       validateSavedPaymentMethodsStyle({
         root: { backgroundColor: "transparent" },
-      })
+      }),
     ).not.toThrow();
     expect(() =>
       validateSavedPaymentMethodsStyle({
         component: { height: "40px" },
-      })
+      }),
     ).not.toThrow();
     expect(() =>
       validateSavedPaymentMethodsStyle({
         layout: { logo: false },
-      })
+      }),
     ).not.toThrow();
   });
 
@@ -69,49 +69,49 @@ describe("validateSavedPaymentMethodsStyle", () => {
 
   it("rejects unknown top-level keys", () => {
     expect(() => validateSavedPaymentMethodsStyle({ color: "red" })).toThrow(
-      /Invalid style key: color/
+      /Invalid style key: color/,
     );
   });
 
   it("rejects non-object root", () => {
     expect(() => validateSavedPaymentMethodsStyle({ root: [] })).toThrow(
-      /Expected style\.root to be a plain object/
+      /Expected style\.root to be a plain object/,
     );
     expect(() => validateSavedPaymentMethodsStyle({ root: "x" })).toThrow(
-      /Expected style\.root to be a plain object/
+      /Expected style\.root to be a plain object/,
     );
   });
 
   it("rejects unknown root keys and non-string root values", () => {
     expect(() =>
-      validateSavedPaymentMethodsStyle({ root: { unknown: "a" } })
+      validateSavedPaymentMethodsStyle({ root: { unknown: "a" } }),
     ).toThrow(/Invalid style\.root key: unknown/);
     expect(() =>
-      validateSavedPaymentMethodsStyle({ root: { backgroundColor: 1 } })
+      validateSavedPaymentMethodsStyle({ root: { backgroundColor: 1 } }),
     ).toThrow(/Expected style\.root\.backgroundColor to be a string/);
   });
 
   it("rejects unknown component keys and non-string component values", () => {
     expect(() =>
-      validateSavedPaymentMethodsStyle({ component: { width: "1" } })
+      validateSavedPaymentMethodsStyle({ component: { width: "1" } }),
     ).toThrow(/Invalid style\.component key: width/);
     expect(() =>
-      validateSavedPaymentMethodsStyle({ component: { height: true } })
+      validateSavedPaymentMethodsStyle({ component: { height: true } }),
     ).toThrow(/Expected style\.component\.height to be a string/);
   });
 
   it("rejects unknown layout keys", () => {
     expect(() =>
-      validateSavedPaymentMethodsStyle({ layout: { extra: true } })
+      validateSavedPaymentMethodsStyle({ layout: { extra: true } }),
     ).toThrow(/Invalid style\.layout key: extra/);
   });
 
   it("rejects layout fields with wrong types", () => {
     expect(() =>
-      validateSavedPaymentMethodsStyle({ layout: { logo: "yes" } })
+      validateSavedPaymentMethodsStyle({ layout: { logo: "yes" } }),
     ).toThrow(/Expected style\.layout\.logo to be a boolean/);
     expect(() =>
-      validateSavedPaymentMethodsStyle({ layout: { logoWidth: true } })
+      validateSavedPaymentMethodsStyle({ layout: { logoWidth: true } }),
     ).toThrow(/Expected style\.layout\.logoWidth to be a string/);
   });
 });

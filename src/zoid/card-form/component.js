@@ -33,11 +33,11 @@ type CardProps = {|
   awaitPopupBridge: Function,
   onAuthorize: (
     {| returnUrl: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   onCancel?: (
     {| cancelUrl: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   onEvent?: ({| type: string, payload: Object |}) => void,
   meta: Object,
@@ -106,7 +106,7 @@ export function getCardFormComponent(): CardFormComponent {
           queryParam: true,
           value: ({ props }) => {
             return Boolean(
-              props.onShippingAddressChange || props.onShippingOptionsChange
+              props.onShippingAddressChange || props.onShippingOptionsChange,
             );
           },
         },

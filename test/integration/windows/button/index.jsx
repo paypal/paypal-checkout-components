@@ -34,7 +34,7 @@ let {
 const body = document.body;
 if (body) {
   body.appendChild(
-    (<ButtonsTemplate {...window.xprops} />).render(dom({ doc: document }))
+    (<ButtonsTemplate {...window.xprops} />).render(dom({ doc: document })),
   );
 }
 
@@ -66,7 +66,7 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
           order: {
             create: generateOrderID,
           },
-        }
+        },
       );
     } else {
       return ZalgoPromise.try(generateOrderID);
@@ -141,7 +141,7 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
     .renderTo(
       window.parent,
       "body",
-      supportsPopups() ? context : CONTEXT.IFRAME
+      supportsPopups() ? context : CONTEXT.IFRAME,
     )
     .catch((err) => {
       if (err instanceof window.paypal.PopupOpenError) {
@@ -229,9 +229,9 @@ if (onRender) {
     fundingSources: Array.from(
       new Set(
         getElements("[data-funding-source]").map((el) =>
-          el.getAttribute("data-funding-source")
-        )
-      )
+          el.getAttribute("data-funding-source"),
+        ),
+      ),
     ),
     click() {
       getElement(".paypal-button", document).click();

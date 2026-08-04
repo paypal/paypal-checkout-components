@@ -32,9 +32,9 @@ const setupBrowserPage = (async () => {
         test: true,
         web: false,
         vars: { ...getTestGlobals(globals) },
-      })
+      }),
     ),
-    { headless: HEADLESS, devtools: DEVTOOLS }
+    { headless: HEADLESS, devtools: DEVTOOLS },
   );
 
   for (const filename of await fs.readdir(IMAGE_DIR)) {
@@ -175,8 +175,8 @@ for (const config of buttonConfigs) {
           `Button style changed with delta of ${delta} for configuration:\n\n${JSON.stringify(
             config,
             null,
-            4
-          )}\n\nSee ${diffpath} or ${imgurUrl || ""}`
+            4,
+          )}\n\nSee ${diffpath} or ${imgurUrl || ""}`,
         );
       }
     } else {

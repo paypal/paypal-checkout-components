@@ -27,7 +27,7 @@ describe(`paypal button funding source order`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[FUNDING.APPLEPAY],
       "eligible",
-      false
+      false,
     );
 
     window.paypal
@@ -42,8 +42,8 @@ describe(`paypal button funding source order`, () => {
                 new Error(
                   `Expected card to be at index ${
                     fundingSources.length - 1
-                  }, found at index ${fundingSources.indexOf(FUNDING.CARD)}`
-                )
+                  }, found at index ${fundingSources.indexOf(FUNDING.CARD)}`,
+                ),
               );
             }
             done();

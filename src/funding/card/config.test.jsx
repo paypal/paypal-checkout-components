@@ -46,7 +46,7 @@ describe("card eligibility", () => {
         // $FlowIssue
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -58,7 +58,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility({ branded: true }),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 
@@ -70,7 +70,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 
@@ -83,7 +83,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -98,7 +98,7 @@ describe("card eligibility", () => {
           card: ["some instrument"],
         }),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -112,7 +112,7 @@ describe("card eligibility", () => {
           card: ["some instrument"],
         }),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 
@@ -124,7 +124,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(false);
   });
 
@@ -136,7 +136,7 @@ describe("card eligibility", () => {
         fundingEligibility: getEligibility(),
         wallet: getWallet(),
         flow: BUTTON_FLOW.PURCHASE,
-      })
+      }),
     ).toEqual(true);
   });
 });
@@ -145,7 +145,7 @@ describe("rebrand card config", () => {
   test("should have standard colors", () => {
     const colors = getCardConfig().colors;
     expect(colors).toEqual(
-      expect.arrayContaining([BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE])
+      expect.arrayContaining([BUTTON_COLOR.BLACK, BUTTON_COLOR.WHITE]),
     );
   });
 
@@ -154,7 +154,7 @@ describe("rebrand card config", () => {
     expect(logoColors).toEqual(
       expect.objectContaining({
         [BUTTON_COLOR.WHITE]: BUTTON_COLOR.BLACK,
-      })
+      }),
     );
   });
 });

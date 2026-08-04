@@ -14,7 +14,7 @@ describe("resolveMerchantDomain", () => {
     vi.mocked(isPayPalDomain).mockReturnValue(true);
 
     expect(resolveMerchantDomain("https://merchant.example.com")).toBe(
-      "https://merchant.example.com"
+      "https://merchant.example.com",
     );
   });
 
@@ -34,7 +34,7 @@ describe("resolveMerchantDomain", () => {
     vi.mocked(isPayPalDomain).mockReturnValue(false);
 
     expect(() => resolveMerchantDomain("https://merchant.example.com")).toThrow(
-      "merchantDomain can only be passed on PayPal-hosted flows"
+      "merchantDomain can only be passed on PayPal-hosted flows",
     );
   });
 });

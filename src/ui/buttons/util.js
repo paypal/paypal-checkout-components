@@ -9,7 +9,7 @@ export function isBorderRadiusNumber(borderRadius?: number): boolean {
 
 export function calculateShowPoweredBy(
   layout: $Values<typeof BUTTON_LAYOUT>,
-  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
 ): boolean {
   return (
     layout === BUTTON_LAYOUT.VERTICAL && fundingSources.includes(FUNDING.CARD)
@@ -19,14 +19,14 @@ export function calculateShowPoweredBy(
 export function calculateMessagePosition(
   fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
   layout: $Values<typeof BUTTON_LAYOUT>,
-  position?: $Values<typeof MESSAGE_POSITION>
+  position?: $Values<typeof MESSAGE_POSITION>,
 ): $Values<typeof MESSAGE_POSITION> {
   const showPoweredBy = calculateShowPoweredBy(layout, fundingSources);
 
   if (showPoweredBy && position === MESSAGE_POSITION.BOTTOM) {
     // eslint-disable-next-line no-console
     console.warn(
-      "PayPal Button Message cannot be positioned at bottom when displaying the Debit or Credit Card button."
+      "PayPal Button Message cannot be positioned at bottom when displaying the Debit or Credit Card button.",
     );
   }
 
@@ -42,7 +42,7 @@ export function calculateMessagePosition(
 
 export function checkLabelEligibility(
   label?: $Values<typeof BUTTON_LABEL>,
-  buyerCountry: $Values<typeof COUNTRY>
+  buyerCountry: $Values<typeof COUNTRY>,
 ): $Values<typeof BUTTON_LABEL> | typeof undefined {
   const eligibleCountriesForInstallmentLabel = ["BR", "MX"];
 

@@ -79,7 +79,7 @@ if (action === "checkout") {
             },
           },
         },
-        onShippingChangeActions
+        onShippingChangeActions,
       );
     }
   });

@@ -95,16 +95,16 @@ type CardFieldsProps = {|
   createVaultSetupToken: () => ZalgoPromise<string>,
   onApprove: (
     {| returnUrl?: string, vaultSetupToken?: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   onError?: () => ZalgoPromise<Object> | Object,
   onComplete: (
     {| returnUrl: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   onCancel?: (
     {| cancelUrl: string |},
-    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |}
+    {| redirect: (?CrossDomainWindowType, ?string) => ZalgoPromise<void> |},
   ) => ?ZalgoPromise<void>,
   action: Object,
   sdkCorrelationID: string,
@@ -114,8 +114,7 @@ type CardFieldsProps = {|
   sdkToken?: string,
   installments?: {|
     onInstallmentsRequested: () =>
-      | InstallmentsConfiguration
-      | ZalgoPromise<InstallmentsConfiguration>,
+      InstallmentsConfiguration | ZalgoPromise<InstallmentsConfiguration>,
     onInstallmentsAvailable: (Object) => void,
     onInstallmentsError?: (Object) => void,
   |},
@@ -164,7 +163,7 @@ const prerenderTemplate = ({ props, doc }) => {
 export type CardFieldsComponent = ZoidComponent<
   CardFieldsProps,
   CardFieldsExports,
-  CardFieldsChildren
+  CardFieldsChildren,
 >;
 
 export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
@@ -269,7 +268,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
                 !props.parent.props.sdkToken
               ) {
                 throw new ValidationError(
-                  `SDK Token must be passed in for createSubscription`
+                  `SDK Token must be passed in for createSubscription`,
                 );
               }
               return props.parent.props.createSubscription;
@@ -616,7 +615,7 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           value: ({ props }) => {
             if (props.createSubscription && !props.sdkToken) {
               throw new ValidationError(
-                `SDK Token must be passed in for createSubscription`
+                `SDK Token must be passed in for createSubscription`,
               );
             }
             return props.createSubscription;
@@ -795,5 +794,5 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     });
 
     return CardFields;
-  }
+  },
 );

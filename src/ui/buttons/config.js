@@ -40,7 +40,7 @@ export const REBRAND_LABEL_HEIGHT_RATIO = 0.5;
 // Current: 0.05 / 0.5 = 0.10 (10%)
 const LOGO_VISUAL_OFFSET = 0.05;
 export const REBRAND_LOGO_TRANSLATE_Y: number = Math.round(
-  (LOGO_VISUAL_OFFSET / REBRAND_LABEL_HEIGHT_RATIO) * 100
+  (LOGO_VISUAL_OFFSET / REBRAND_LABEL_HEIGHT_RATIO) * 100,
 );
 
 type ButtonStyleMap = {

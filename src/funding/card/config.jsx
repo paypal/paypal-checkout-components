@@ -67,9 +67,9 @@ export function getCardConfig(): FundingSourceConfig {
       const cardBranded = Boolean(cardEligibility && cardEligibility.branded);
       const cardVaulted = Boolean(
         wallet &&
-          wallet.card &&
-          wallet.card.instruments &&
-          wallet.card.instruments.length
+        wallet.card &&
+        wallet.card.instruments &&
+        wallet.card.instruments.length,
       );
 
       // If card is not eligible, never show card buttons

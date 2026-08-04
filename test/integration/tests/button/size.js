@@ -32,7 +32,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 162;
@@ -64,16 +64,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -95,7 +95,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 250;
@@ -127,16 +127,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -160,7 +160,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const fundingSource = FUNDING.PAYPAL;
@@ -223,15 +223,15 @@ describe(`paypal button component sizes`, () => {
 
             if (!menuButton) {
               return done(
-                new Error("Expected menu button to be rendered to the DOM")
+                new Error("Expected menu button to be rendered to the DOM"),
               );
             }
 
             if (paypalButtonWidth === containerWidth) {
               return done(
                 new Error(
-                  "Menu button should be visibile at >= 250px button width, but is scrolled out of view"
-                )
+                  "Menu button should be visibile at >= 250px button width, but is scrolled out of view",
+                ),
               );
             }
 
@@ -253,7 +253,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 350;
@@ -285,16 +285,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -316,7 +316,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 150;
@@ -348,16 +348,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -379,7 +379,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 750;
@@ -409,7 +409,7 @@ describe(`paypal button component sizes`, () => {
             // $FlowFixMe
             const win = frame.contentWindow;
             const buttonContainer = win.document.body.querySelector(
-              ".paypal-button-container"
+              ".paypal-button-container",
             );
             const width = buttonContainer.offsetWidth;
             const height = buttonContainer.offsetHeight;
@@ -417,16 +417,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -448,7 +448,7 @@ describe(`paypal button component sizes`, () => {
           height: "5px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 150;
@@ -480,16 +480,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -511,7 +511,7 @@ describe(`paypal button component sizes`, () => {
           height: "22px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 155;
@@ -543,16 +543,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -574,7 +574,7 @@ describe(`paypal button component sizes`, () => {
           height: "27px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 235;
@@ -606,16 +606,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -637,7 +637,7 @@ describe(`paypal button component sizes`, () => {
           height: "40px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 370;
@@ -669,16 +669,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -700,7 +700,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 150;
@@ -733,16 +733,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -764,7 +764,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 255;
@@ -821,7 +821,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 255;
@@ -861,7 +861,7 @@ describe(`paypal button component sizes`, () => {
             })
             .then(() => {
               const zoidContainer = container.querySelector(
-                ".paypal-buttons-context-iframe"
+                ".paypal-buttons-context-iframe",
               );
               if (
                 !zoidContainer ||
@@ -870,8 +870,8 @@ describe(`paypal button component sizes`, () => {
                 done(
                   new Error(
                     // $FlowFixMe
-                    `Expected zoid container height to be ${expectedHeight}. Received: ${zoidContainer.style.height}`
-                  )
+                    `Expected zoid container height to be ${expectedHeight}. Received: ${zoidContainer.style.height}`,
+                  ),
                 );
               }
             })
@@ -895,7 +895,7 @@ describe(`paypal button component sizes`, () => {
           display: "none",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 457;
@@ -941,7 +941,7 @@ describe(`paypal button component sizes`, () => {
           float: "right",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 150;
@@ -973,16 +973,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 
@@ -1005,7 +1005,7 @@ describe(`paypal button component sizes`, () => {
           textAlign: "center",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     window.paypal
@@ -1029,7 +1029,7 @@ describe(`paypal button component sizes`, () => {
           setTimeout(() => {
             const c = container.getBoundingClientRect();
             const e = getElement(
-              "#testContainer iframe"
+              "#testContainer iframe",
             ).getBoundingClientRect();
 
             const expectedPosition =
@@ -1039,8 +1039,8 @@ describe(`paypal button component sizes`, () => {
             if (expectedPosition !== actualPosition) {
               return done(
                 new Error(
-                  `Expected button to have left position of ${expectedPosition}, found ${actualPosition}`
-                )
+                  `Expected button to have left position of ${expectedPosition}, found ${actualPosition}`,
+                ),
               );
             }
 
@@ -1062,7 +1062,7 @@ describe(`paypal button component sizes`, () => {
           height: "100px",
         },
       },
-      getElement("#testContainer")
+      getElement("#testContainer"),
     );
 
     const expectedWidth = 162;
@@ -1095,16 +1095,16 @@ describe(`paypal button component sizes`, () => {
             if (width !== expectedWidth) {
               return done(
                 new Error(
-                  `Expected button to have width of ${expectedWidth}px, got ${width}px`
-                )
+                  `Expected button to have width of ${expectedWidth}px, got ${width}px`,
+                ),
               );
             }
 
             if (height !== expectedHeight) {
               return done(
                 new Error(
-                  `Expected button to have height of ${expectedHeight}px, got ${height}px`
-                )
+                  `Expected button to have height of ${expectedHeight}px, got ${height}px`,
+                ),
               );
             }
 

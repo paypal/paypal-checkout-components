@@ -180,7 +180,7 @@ describe("getCobrandedBNPLLabelFlags", () => {
       expect.objectContaining({
         shouldApplyPayNowOrLaterLabel,
         sessionID: "test-session-id",
-      })
+      }),
     );
   });
 

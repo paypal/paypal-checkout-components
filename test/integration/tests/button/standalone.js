@@ -46,7 +46,7 @@ describe(`paypal standalone buttons`, () => {
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
           "eligible",
-          true
+          true,
         );
 
         const button = window.paypal.Buttons({
@@ -54,13 +54,13 @@ describe(`paypal standalone buttons`, () => {
             onRender: expect("onRender", ({ fundingSources }) => {
               if (fundingSources.length !== 1) {
                 throw new Error(
-                  `Expected only one funding source to be rendered, got ${fundingSources.length}`
+                  `Expected only one funding source to be rendered, got ${fundingSources.length}`,
                 );
               }
 
               if (fundingSources[0] !== fundingSource) {
                 throw new Error(
-                  `Expected rendered funding source to be ${fundingSource}, got ${fundingSources[0]}`
+                  `Expected rendered funding source to be ${fundingSource}, got ${fundingSources[0]}`,
                 );
               }
 
@@ -91,7 +91,7 @@ describe(`paypal standalone buttons`, () => {
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
           "eligible",
-          false
+          false,
         );
 
         const button = window.paypal.Buttons({
@@ -122,7 +122,7 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        true,
       );
 
       try {
@@ -152,7 +152,7 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        true,
       );
 
       window.popupBridge = {};
@@ -189,7 +189,7 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        true,
       );
 
       const button = window.paypal.Buttons({
@@ -217,7 +217,7 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        true,
       );
 
       const button = window.paypal.Buttons({
@@ -246,7 +246,7 @@ describe(`paypal standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        false
+        false,
       );
 
       window.navigator.mockUserAgent = IPHONE6_USER_AGENT;

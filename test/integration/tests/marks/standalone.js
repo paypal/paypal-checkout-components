@@ -43,7 +43,7 @@ describe(`paypal standalone marks`, () => {
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
           "eligible",
-          true
+          true,
         );
 
         const mark = window.paypal.Marks({
@@ -73,7 +73,7 @@ describe(`paypal standalone marks`, () => {
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
           "eligible",
-          false
+          false,
         );
 
         const mark = window.paypal.Marks({
@@ -101,7 +101,7 @@ describe(`paypal standalone marks`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        false
+        false,
       );
 
       const mark = window.paypal.Marks({
@@ -151,7 +151,7 @@ describe(`paypal standalone marks`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        false
+        false,
       );
 
       const mark = window.paypal.Marks({

@@ -8,7 +8,7 @@ import { ENV } from "@paypal/sdk-constants/src";
 export function allowIframe(): boolean {
   if (!isPayPalDomain()) {
     throw new Error(
-      `Can only determine if iframe rendering is allowed on paypal domain`
+      `Can only determine if iframe rendering is allowed on paypal domain`,
     );
   }
 

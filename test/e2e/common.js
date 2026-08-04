@@ -31,7 +31,7 @@ export async function screenshot(page: Object, name: string): Promise<void> {
     path: join(
       __dirname,
       "screenshots",
-      `${getDate()}_${normalizeString(name, /[^a-zA-Z_0-9-]+/g)}.png`
+      `${getDate()}_${normalizeString(name, /[^a-zA-Z_0-9-]+/g)}.png`,
     ),
   });
 }
@@ -54,7 +54,7 @@ export function logFailedRequests(page: Object) {
 
 export async function getElement(
   page: Object,
-  selector: string
+  selector: string,
 ): Promise<Object> {
   const element = await page.$(selector);
 
@@ -67,7 +67,7 @@ export async function getElement(
 
 export async function retry<T>(
   handler: () => Promise<T>,
-  attempts: number
+  attempts: number,
 ): Promise<T> {
   try {
     return await handler();
@@ -83,7 +83,7 @@ export async function retry<T>(
 }
 
 export async function withPage(
-  handler: ({| page: Object |}) => Promise<void>
+  handler: ({| page: Object |}) => Promise<void>,
 ): Promise<void> {
   const browser = await puppeteer.launch({
     headless: HEADLESS,
@@ -108,7 +108,7 @@ export async function withPage(
           await page.goto(DOMAIN);
           await handler({ page });
         }, RETRIES);
-      }
+      },
     );
   } catch (err) {
     await browser.close();
@@ -153,7 +153,7 @@ const getDefaultPopupOpts = (): PopupOpts => {
 
 export async function waitForPopup(
   page: Object,
-  opts?: PopupOpts = getDefaultPopupOpts()
+  opts?: PopupOpts = getDefaultPopupOpts(),
 ): Promise<Object> {
   const { timeout = TIMEOUT * 1000 } = opts;
   log("WAIT FOR POPUP");
@@ -188,7 +188,7 @@ const getDefaultElementOpts = (): ElementOpts => {
 export async function waitForElement(
   page: Object,
   selector: string,
-  opts?: ElementOpts = getDefaultElementOpts()
+  opts?: ElementOpts = getDefaultElementOpts(),
 ): Promise<void> {
   const { timeout = TIMEOUT * 1000 } = opts;
   log("WAIT FOR", selector);
@@ -213,7 +213,7 @@ export async function waitAndType(
   page: Object,
   selector: string,
   text: string,
-  opts?: WaitOpts = getDefaultWaitOpts()
+  opts?: WaitOpts = getDefaultWaitOpts(),
 ): Promise<void> {
   const { timeout = TIMEOUT * 1000 } = opts;
   await waitForElement(page, selector, { timeout });
@@ -227,7 +227,7 @@ export async function waitAndType(
 export async function waitAndClick(
   page: Object,
   selector: string,
-  opts?: WaitOpts = getDefaultWaitOpts()
+  opts?: WaitOpts = getDefaultWaitOpts(),
 ): Promise<void> {
   const { timeout = TIMEOUT * 1000 } = opts;
   await waitForElement(page, selector, { timeout });
@@ -240,7 +240,7 @@ export async function waitAndClick(
 
 export async function elementExists(
   page: Object,
-  selector: string
+  selector: string,
 ): Promise<boolean> {
   log("CHECK EXISTS", selector);
 
@@ -265,7 +265,7 @@ export async function elementExists(
 
 export async function waitForClose(
   page: Object,
-  opts?: WaitOpts = getDefaultWaitOpts()
+  opts?: WaitOpts = getDefaultWaitOpts(),
 ): Promise<void> {
   const { timeout = TIMEOUT * 1000 } = opts;
 
@@ -287,7 +287,7 @@ export async function waitForClose(
       if (elapsed > timeout) {
         clearInterval(interval);
         return reject(
-          new Error(`Timed out after ${timeout}ms waiting for page to close`)
+          new Error(`Timed out after ${timeout}ms waiting for page to close`),
         );
       }
     }, 500);

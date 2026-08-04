@@ -64,7 +64,7 @@ function getMarginTop({
   const marginTopPercPercentage = shouldResizeLabel ? 32 : 36;
   const marginTop = `${perc(
     max(perc(height, marginTopPercPercentage), 10),
-    10
+    10,
   )}`;
 
   return parseInt(marginTop, 10);
@@ -76,7 +76,7 @@ function getMarginTop({
 // pixel-perfect vertical centering.
 export function getLabelContainerHeight(
   buttonHeight: number,
-  fontSize: number
+  fontSize: number,
 ): number {
   let labelHeight = Math.round(buttonHeight * REBRAND_LABEL_HEIGHT_RATIO);
   const diff = labelHeight - fontSize;
@@ -99,7 +99,7 @@ export function generateLabelHeightContainerStyles(
     maxHeight: number,
     fontSize: number,
   |}>,
-  renderRule: (minH: number, maxH: number, labelHeight: number) => string
+  renderRule: (minH: number, maxH: number, labelHeight: number) => string,
 ): string {
   return sizes
     .flatMap(({ minHeight, maxHeight, fontSize }) => {
@@ -126,7 +126,7 @@ export function generateLabelHeightContainerStyles(
       });
 
       return groups.map(({ minH, maxH, labelHeight }) =>
-        renderRule(minH, maxH, labelHeight)
+        renderRule(minH, maxH, labelHeight),
       );
     })
     .join("");
@@ -151,7 +151,7 @@ export function generateDisableMaxHeightLabelContainerStyles(): string {
           height: ${labelHeight}px;
         }
       }
-    `
+    `,
   );
 
   // For containers taller than the last defined bucket, cap the label height
@@ -159,7 +159,7 @@ export function generateDisableMaxHeightLabelContainerStyles(): string {
   const lastSize = sizes[sizes.length - 1];
   const catchAllLabelHeight = getLabelContainerHeight(
     lastSize.maxHeight,
-    lastSize.fontSize
+    lastSize.fontSize,
   );
   const catchAllStyles = `
     @container (min-height: ${lastSize.maxHeight + 1}px) {
@@ -220,9 +220,9 @@ export function getResponsiveStyleVariables({
   const buttonHeight = height || style.defaultHeight;
   const minDualWidth = Math.max(
     Math.round(
-      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC),
     ),
-    MIN_SPLIT_BUTTON_WIDTH
+    MIN_SPLIT_BUTTON_WIDTH,
   );
 
   const { paylater } = fundingEligibility;
@@ -239,7 +239,7 @@ export function getResponsiveStyleVariables({
 
   let smallerLabelHeight = max(
     roundUp(perc(buttonHeight, labelPercPercentage) + 5, 2),
-    12
+    12,
   );
   let labelHeight = max(roundUp(perc(buttonHeight, 35) + 5, 2), 12);
 
@@ -248,7 +248,7 @@ export function getResponsiveStyleVariables({
   if (shouldApplyRebrandedStyles) {
     labelHeight = roundUp(
       perc(buttonHeight, REBRAND_LABEL_HEIGHT_RATIO * 100),
-      1
+      1,
     );
     // smallerLabelHeight gets triggered at widths < 320px
     // We will need to investigate why the labels need to get significantly smaller at this breakpoint
@@ -293,9 +293,9 @@ export function getResponsiveRebrandedStyleVariables({
 
   const minDualWidth = Math.max(
     Math.round(
-      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC)
+      buttonHeight * BUTTON_MIN_ASPECT_RATIO * (100 / WALLET_BUTTON_PERC),
     ),
-    MIN_SPLIT_BUTTON_WIDTH
+    MIN_SPLIT_BUTTON_WIDTH,
   );
 
   const styleVariables = {

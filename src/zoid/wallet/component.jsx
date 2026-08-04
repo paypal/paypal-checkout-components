@@ -235,7 +235,7 @@ export function getWalletComponent(): WalletComponent {
           type: "function",
           value: () => {
             return (
-              fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+              fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
             ) => {
               rememberFunding(fundingSources, { cookie: false });
             };

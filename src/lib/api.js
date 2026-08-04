@@ -40,7 +40,7 @@ export function callRestAPI({
   }).then(({ status, body, headers: responseHeaders }) => {
     if (status >= 300) {
       const error = new Error(
-        `${url} returned status ${status}\n\n${JSON.stringify(body)}`
+        `${url} returned status ${status}\n\n${JSON.stringify(body)}`,
       );
 
       // $FlowFixMe
@@ -62,6 +62,6 @@ export function callMemoizedRestAPI({
   return inlineMemoize(
     callMemoizedRestAPI,
     () => callRestAPI({ accessToken, method, url, data }),
-    [accessToken, method, url, JSON.stringify(data)]
+    [accessToken, method, url, JSON.stringify(data)],
   );
 }

@@ -68,7 +68,7 @@ export type CreateOrderActions = {|
 
 export type CreateOrder = (
   CreateOrderData,
-  CreateOrderActions
+  CreateOrderActions,
 ) => ZalgoPromise<string> | string;
 
 export type OnApproveData = {|
@@ -96,7 +96,7 @@ export type CreateSubscriptionActions = {|
 
 export type CreateSubscription = (
   CreateSubscriptionData,
-  CreateSubscriptionActions
+  CreateSubscriptionActions,
 ) => ZalgoPromise<string> | string;
 
 export type OnApproveActions = {|
@@ -118,11 +118,11 @@ export type OnCompleteActions = {|
 
 export type OnApprove = (
   data: OnApproveData,
-  actions: OnApproveActions
+  actions: OnApproveActions,
 ) => ZalgoPromise<void> | void;
 export type OnComplete = (
   data: OnCompleteData,
-  actions: OnCompleteActions
+  actions: OnCompleteActions,
 ) => ZalgoPromise<void> | void;
 
 type OnShippingChangeAddress = {|
@@ -244,7 +244,7 @@ export type OnShippingChangeActions = {|
 
 export type OnShippingChange = (
   data: OnShippingChangeData,
-  actions: OnShippingChangeActions
+  actions: OnShippingChangeActions,
 ) => ZalgoPromise<void> | void;
 
 export type OnShippingAddressChangeData = {|
@@ -270,7 +270,7 @@ export type OnShippingAddressChangeActions = {|
 
 export type OnShippingAddressChange = (
   data: OnShippingAddressChangeData,
-  actions: OnShippingAddressChangeActions
+  actions: OnShippingAddressChangeActions,
 ) => ZalgoPromise<void> | void;
 
 export type OnShippingOptionsChangeData = {|
@@ -293,7 +293,7 @@ export type OnShippingOptionsChangeActions = {|
 
 export type OnShippingOptionsChange = (
   data: OnShippingOptionsChangeData,
-  actions: OnShippingOptionsChangeActions
+  actions: OnShippingOptionsChangeActions,
 ) => ZalgoPromise<void> | void;
 
 export type OnCancelData = {|
@@ -307,7 +307,7 @@ export type OnCancelActions = {|
 
 export type OnCancel = (
   OnCancelData,
-  OnCancelActions
+  OnCancelActions,
 ) => ZalgoPromise<void> | void;
 
 export type OnClickData = {|
@@ -429,20 +429,20 @@ export type ApplePaySessionConfig = {|
   // eslint-disable-next-line flowtype/no-weak-types
   completeMerchantValidation: (validatedSession: any) => void,
   completeShippingMethodSelection: (
-    update: ApplePayShippingMethodUpdate | {||}
+    update: ApplePayShippingMethodUpdate | {||},
   ) => void,
   completeShippingContactSelection: (
-    update: ApplePayShippingContactUpdate | {||}
+    update: ApplePayShippingContactUpdate | {||},
   ) => void,
   completePaymentMethodSelection: (
-    update: ApplePayPaymentMethodUpdate | {||}
+    update: ApplePayPaymentMethodUpdate | {||},
   ) => void,
   completePayment: (result: ApplePayPaymentAuthorizationResult) => void,
 |};
 
 export type ApplePaySessionConfigRequest = (
   version: number,
-  request: Object
+  request: Object,
 ) => ApplePaySessionConfig;
 
 export type ButtonMessage = {|
@@ -741,7 +741,7 @@ export const DEFAULT_PROPS = {
 };
 
 export function getColorABTestFromStorage(
-  storageState: StateGetSet
+  storageState: StateGetSet,
 ): ?ColorABTestStorage {
   const sessionState = storageState.get("colorABTest");
 
@@ -753,7 +753,7 @@ export function getColorABTestFromStorage(
 }
 
 export function getBNPLLabelABTestFromStorage(
-  storageState: StateGetSet
+  storageState: StateGetSet,
 ): ?BNPLLabelABTestStorage {
   const sessionState = storageState.get("bnplLabelABTest");
 
@@ -841,7 +841,7 @@ export function throwErrorForInvalidButtonColor({
   throw new Error(
     `Unexpected style.color for ${
       fundingSource || FUNDING.PAYPAL
-    } button: ${invalidButtonColor}, expected ${fundingSourceColors.join(", ")}`
+    } button: ${invalidButtonColor}, expected ${fundingSourceColors.join(", ")}`,
   );
 }
 
@@ -1030,11 +1030,11 @@ export function getCobrandedBNPLLabelFlags(props: ?ButtonPropsInputs): {|
 
   const isPayNowOrLaterLabelEligible = Boolean(
     isPaylaterCobrandedLabelEnabled &&
-      isCobrandedEligibleFundingSource &&
-      isPaylaterEligible &&
-      isLabelEligible &&
-      isEnLang &&
-      isPurchaseFlow
+    isCobrandedEligibleFundingSource &&
+    isPaylaterEligible &&
+    isLabelEligible &&
+    isEnLang &&
+    isPurchaseFlow,
   );
 
   const isPaylaterCobrandedLabelRandomizationEnabled =
@@ -1080,7 +1080,7 @@ const getDefaultButtonPropsInput = (): ButtonPropsInputs => {
 
 export function normalizeButtonStyle(
   props: ?ButtonPropsInputs,
-  style: ButtonStyleInputs
+  style: ButtonStyleInputs,
 ): ButtonStyle {
   if (!style) {
     throw new Error(`Expected props.style to be set`);
@@ -1102,7 +1102,7 @@ export function normalizeButtonStyle(
 
   if (!fundingConfig) {
     throw new Error(
-      `Expected ${fundingSource || FUNDING.PAYPAL} to be eligible`
+      `Expected ${fundingSource || FUNDING.PAYPAL} to be eligible`,
     );
   }
 
@@ -1145,7 +1145,7 @@ export function normalizeButtonStyle(
     throw new Error(
       `Unexpected style.color for ${fundingSource || FUNDING.PAYPAL} button: ${
         requestedButtonColor || color
-      }, expected ${validColors.join(", ")}`
+      }, expected ${validColors.join(", ")}`,
     );
   }
 
@@ -1153,14 +1153,14 @@ export function normalizeButtonStyle(
     throw new Error(
       `Unexpected style.shape for ${
         fundingSource || FUNDING.PAYPAL
-      } button: ${shape}, expected ${fundingConfig.shapes.join(", ")}`
+      } button: ${shape}, expected ${fundingConfig.shapes.join(", ")}`,
     );
   }
 
   if (height !== undefined) {
     if (typeof height !== "number") {
       throw new TypeError(
-        `Expected style.height to be a number, got: ${height}`
+        `Expected style.height to be a number, got: ${height}`,
       );
     }
 
@@ -1171,13 +1171,13 @@ export function normalizeButtonStyle(
 
     if (disableMaxHeight === true) {
       throw new TypeError(
-        `Unexpected style.height for style.disableMaxHeight: got: ${height}, expected undefined.`
+        `Unexpected style.height for style.disableMaxHeight: got: ${height}, expected undefined.`,
       );
     }
 
     if (height < minHeight || height > maxHeight) {
       throw new Error(
-        `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`
+        `Expected style.height to be between ${minHeight}px and ${maxHeight}px - got ${height}px`,
       );
     }
   }
@@ -1185,21 +1185,21 @@ export function normalizeButtonStyle(
   if (disableMaxHeight !== undefined) {
     if (typeof disableMaxHeight !== "boolean") {
       throw new TypeError(
-        `Expected style.disableMaxHeight to be a boolean, got: ${disableMaxHeight}`
+        `Expected style.disableMaxHeight to be a boolean, got: ${disableMaxHeight}`,
       );
     }
 
     const disableMaxHeightInvalidFundingSources = [FUNDING.CARD, undefined];
     const disableMaxHeightValidFundingSources = Object.values(FUNDING).filter(
       (fundingSourceId) =>
-        !disableMaxHeightInvalidFundingSources.includes(fundingSourceId)
+        !disableMaxHeightInvalidFundingSources.includes(fundingSourceId),
     );
 
     if (disableMaxHeightInvalidFundingSources.includes(fundingSource)) {
       throw new TypeError(
         `Unexpected fundingSource for style.disableMaxHeight: got: ${
           fundingSource ? fundingSource : "Smart Stack"
-        }, expected ${disableMaxHeightValidFundingSources.join(", ")}.`
+        }, expected ${disableMaxHeightValidFundingSources.join(", ")}.`,
       );
     }
   }
@@ -1207,13 +1207,13 @@ export function normalizeButtonStyle(
   if (borderRadius !== undefined) {
     if (!isBorderRadiusNumber(borderRadius)) {
       throw new TypeError(
-        `Expected style.borderRadius to be a number, got: ${borderRadius}`
+        `Expected style.borderRadius to be a number, got: ${borderRadius}`,
       );
     }
 
     if (borderRadius < 0) {
       throw new Error(
-        `Expected style.borderRadius to be greater than or equal to 0, got: ${borderRadius}`
+        `Expected style.borderRadius to be greater than or equal to 0, got: ${borderRadius}`,
       );
     }
   }
@@ -1221,7 +1221,7 @@ export function normalizeButtonStyle(
   if (layout === BUTTON_LAYOUT.VERTICAL) {
     if (tagline) {
       throw new Error(
-        `style.tagline is not allowed for ${BUTTON_LAYOUT.VERTICAL} layout`
+        `style.tagline is not allowed for ${BUTTON_LAYOUT.VERTICAL} layout`,
       );
     }
   }
@@ -1253,7 +1253,7 @@ export function normalizeButtonStyle(
 export function normalizeButtonMessage(
   message: ButtonMessageInputs,
   layout: $Values<typeof BUTTON_LAYOUT>,
-  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>
+  fundingSources: $ReadOnlyArray<$Values<typeof FUNDING>>,
 ): ButtonMessage {
   const {
     color = MESSAGE_COLOR.BLACK,
@@ -1269,12 +1269,12 @@ export function normalizeButtonMessage(
     }
     if (typeof amount !== "number" || isNaN(amount)) {
       throw new TypeError(
-        `Expected message.amount to be a number, got: ${amount}`
+        `Expected message.amount to be a number, got: ${amount}`,
       );
     }
     if (amount < 0) {
       throw new Error(
-        `Expected message.amount to be a positive number, got: ${amount}`
+        `Expected message.amount to be a positive number, got: ${amount}`,
       );
     }
   }
@@ -1286,12 +1286,12 @@ export function normalizeButtonMessage(
     if (!Array.isArray(offer)) {
       throw new TypeError(
         `Expected message.offer to be an array of strings, got: ${String(
-          offer
-        )}`
+          offer,
+        )}`,
       );
     }
     const invalidOffers = offer.filter(
-      (o) => !values(MESSAGE_OFFER).includes(o)
+      (o) => !values(MESSAGE_OFFER).includes(o),
     );
     if (invalidOffers.length > 0) {
       throw new Error(`Invalid offer(s): ${invalidOffers.join(",")}`);
@@ -1339,7 +1339,7 @@ const getDefaultExperiment = (): Experiment => {
 };
 
 export function normalizeButtonProps(
-  props: ?ButtonPropsInputs
+  props: ?ButtonPropsInputs,
 ): RenderButtonProps {
   if (!props) {
     throw new Error(`Expected props`);
@@ -1347,8 +1347,8 @@ export function normalizeButtonProps(
 
   const defaultHasShippingCallback = Boolean(
     props.onShippingChange ||
-      props.onShippingAddressChange ||
-      props.onShippingOptionsChange
+    props.onShippingAddressChange ||
+    props.onShippingOptionsChange,
   );
 
   let {
@@ -1408,7 +1408,7 @@ export function normalizeButtonProps(
 
   if (remembered.some((source) => FUNDING_SOURCES.indexOf(source) === -1)) {
     throw new Error(
-      `Expected valid funding sources, got ${JSON.stringify(remembered)}`
+      `Expected valid funding sources, got ${JSON.stringify(remembered)}`,
     );
   }
 

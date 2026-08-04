@@ -642,9 +642,9 @@ describe("test responsive style variables for legacy", () => {
           shouldApplyRebrandedStyles,
           fundingEligibility,
           size: input,
-        })
+        }),
       ).toEqual(expected);
-    }
+    },
   );
 });
 
@@ -700,9 +700,9 @@ describe("test responsive style variables when shouldResizeLabel == true", () =>
           fundingEligibility,
           shouldApplyRebrandedStyles,
           size: input,
-        })
+        }),
       ).toEqual(expected);
-    }
+    },
   );
 });
 describe("test responsive style variables for rebranded buttons", () => {
@@ -745,9 +745,9 @@ describe("test responsive style variables for rebranded buttons", () => {
       expect(
         getResponsiveRebrandedStyleVariables({
           redesignSize: input,
-        })
+        }),
       ).toEqual(expected);
-    }
+    },
   );
 });
 describe("test responsive style variables for legacy disable max height", () => {
@@ -805,9 +805,9 @@ describe("test responsive style variables for legacy disable max height", () => 
           fundingEligibility,
           shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
-        })
+        }),
       ).toEqual(expected);
-    }
+    },
   );
 });
 describe("test responsive style variables when shouldResizeLabel == true for disable max height", () => {
@@ -878,9 +878,9 @@ describe("test responsive style variables when shouldResizeLabel == true for dis
           fundingEligibility,
           shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
-        })
+        }),
       ).toEqual(expected);
-    }
+    },
   );
 });
 
@@ -939,8 +939,8 @@ describe("test rebrand responsive style variables for disable max height", () =>
           fundingEligibility,
           shouldApplyRebrandedStyles,
           disableMaxHeightSize: input,
-        })
+        }),
       ).toMatchObject(expected);
-    }
+    },
   );
 });

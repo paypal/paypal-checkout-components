@@ -85,7 +85,7 @@ export function getFundingSourceColors({
 export function supportsVenmoPopups(
   experiment?: Experiment,
   supportsPopups: boolean,
-  userAgent: string
+  userAgent: string,
 ): boolean {
   if (__WEB__ && isVenmoSupportedWebView(userAgent)) {
     if (window.popupBridge) {
@@ -102,7 +102,7 @@ export function supportsVenmoPopups(
 
 export function isSupportedNativeVenmoBrowser(
   experiment?: Experiment,
-  userAgent: string
+  userAgent: string,
 ): boolean {
   if (__WEB__ && isVenmoSupportedWebView(userAgent)) {
     if (window.popupBridge) {

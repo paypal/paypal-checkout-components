@@ -113,8 +113,8 @@ describe(`paypal button component props`, () => {
                 ) {
                   throw new Error(
                     `Expected ${fundingSources.join(
-                      ","
-                    )} to be queried, got ${queriedFundingSources.join(",")}`
+                      ",",
+                    )} to be queried, got ${queriedFundingSources.join(",")}`,
                   );
                 }
               });
@@ -136,7 +136,7 @@ describe(`paypal button component props`, () => {
             return instance.render("#testContainer");
           }
         });
-      })
+      }),
     );
   });
 
@@ -157,7 +157,7 @@ describe(`paypal button component props`, () => {
                   throw new Error(
                     `Expected referrerDomain to be ${domain || ""}, got ${
                       xprops.referrerDomain
-                    }`
+                    }`,
                   );
                 }
               }),
@@ -170,20 +170,20 @@ describe(`paypal button component props`, () => {
     return ZalgoPromise.all([
       expectReferrerDomainToEqual(
         "https://example.com/path?q=1",
-        "example.com"
+        "example.com",
       ),
       expectReferrerDomainToEqual(
         "https://not.example.com/path?q=1",
-        "not.example.com"
+        "not.example.com",
       ),
       expectReferrerDomainToEqual(
         // eslint-disable-next-line no-script-url
         "javascript:alert(document.cookie)",
-        undefined
+        undefined,
       ),
       expectReferrerDomainToEqual(
         "", // when there is no referrer
-        undefined
+        undefined,
       ),
     ]);
   });
@@ -202,14 +202,14 @@ describe(`paypal button component props`, () => {
           ) {
             throw new Error(
               `Expected ${renderedButtons.join(
-                ","
-              )} to be queried, got ${queriedRenderedButtons.join(",")}`
+                ",",
+              )} to be queried, got ${queriedRenderedButtons.join(",")}`,
             );
           }
 
           if (!String(xprops.clientMetadataID).startsWith("uid_")) {
             throw new Error(
-              `Expected clientMetadataId to be present in xprops, but got ${xprops.clientMetadataID}`
+              `Expected clientMetadataId to be present in xprops, but got ${xprops.clientMetadataID}`,
             );
           }
         };
@@ -241,7 +241,7 @@ describe(`paypal button component props`, () => {
             // Verify that the hideSubmitButtonForCardForm prop is passed correctly
             if (xprops.hideSubmitButtonForCardForm !== true) {
               throw new Error(
-                `Expected hideSubmitButtonForCardForm to be true, got ${xprops.hideSubmitButtonForCardForm}`
+                `Expected hideSubmitButtonForCardForm to be true, got ${xprops.hideSubmitButtonForCardForm}`,
               );
             }
           }),
@@ -266,7 +266,7 @@ describe(`paypal button component props`, () => {
             // Should be undefined when not provided since it's optional
             if (xprops.hideSubmitButtonForCardForm !== undefined) {
               throw new Error(
-                `Expected hideSubmitButtonForCardForm to be undefined when not provided, got ${xprops.hideSubmitButtonForCardForm}`
+                `Expected hideSubmitButtonForCardForm to be undefined when not provided, got ${xprops.hideSubmitButtonForCardForm}`,
               );
             }
           }),
@@ -300,7 +300,7 @@ describe(`paypal button component props`, () => {
       // Verify that submitCardForm export is available on the instance
       if (typeof instance.submitCardForm !== "function") {
         throw new TypeError(
-          `Expected submitCardForm to be a function, got ${typeof instance.submitCardForm}`
+          `Expected submitCardForm to be a function, got ${typeof instance.submitCardForm}`,
         );
       }
 

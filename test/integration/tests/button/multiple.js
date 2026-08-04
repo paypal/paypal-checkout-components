@@ -79,7 +79,7 @@ for (const flow of ["popup", "iframe"]) {
         const mockEligibility = mockProp(
           window.__TEST_FUNDING_ELIGIBILITY__[source],
           "eligible",
-          true
+          true,
         );
 
         if (source === FUNDING.VENMO) {
@@ -108,7 +108,7 @@ for (const flow of ["popup", "iframe"]) {
               assert.ok(data.currentUrl.indexOf(`token=${orderID}`) !== -1);
               assert.ok(data.currentUrl.indexOf(fragment) !== -1);
               assert.ok(
-                data.currentUrl.indexOf(`fundingSource=${source}`) !== -1
+                data.currentUrl.indexOf(`fundingSource=${source}`) !== -1,
               );
               return done();
             },

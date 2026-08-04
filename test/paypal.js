@@ -13,7 +13,7 @@ import * as paypalSavedPaymentMethods from "../src/interface/saved-payment-metho
 // the enable-funding=applepay flag is needed for applepay vertical stack and standalone buttons to render
 document.currentScript?.setAttribute(
   "src",
-  "test/paypal.js?client-id=test&enable-funding=venmo,applepay&buyer-country=MX"
+  "test/paypal.js?client-id=test&enable-funding=venmo,applepay&buyer-country=MX",
 );
 document.currentScript?.setAttribute("data-csp-nonce", "test");
 

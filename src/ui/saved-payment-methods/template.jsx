@@ -70,7 +70,7 @@ function getStyleConfig(style?: SavedPaymentMethodsStyleInputs): Object {
  * shared by zoid prerender and server SSR and must match the first client paint.
  */
 export function SavedPaymentMethods(
-  props: SavedPaymentMethodsServerRenderProps
+  props: SavedPaymentMethodsServerRenderProps,
 ): ElementNode {
   const { nonce, style } = props;
   const styleConfig = getStyleConfig(style);

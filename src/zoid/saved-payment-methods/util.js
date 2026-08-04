@@ -62,7 +62,7 @@ export function validateSavedPaymentMethodsStyle(style: mixed): void {
   for (const key of topKeys) {
     if (!allowedTop.has(key)) {
       throw new Error(
-        `Invalid style key: ${key}. Expected only root, component, and layout`
+        `Invalid style key: ${key}. Expected only root, component, and layout`,
       );
     }
   }
@@ -107,7 +107,7 @@ export function validateSavedPaymentMethodsStyle(style: mixed): void {
       const actual = typeof layout[key];
       if (actual !== expected) {
         throw new TypeError(
-          `Expected style.layout.${key} to be a ${expected}, got: ${layout[key]}`
+          `Expected style.layout.${key} to be a ${expected}, got: ${layout[key]}`,
         );
       }
     }
