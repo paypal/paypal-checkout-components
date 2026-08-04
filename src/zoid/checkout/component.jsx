@@ -55,6 +55,8 @@ export function getCheckoutComponent(): CheckoutComponent {
         },
       },
 
+      enableBfcache: false,
+
       defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
       domain: getPayPalDomainRegex(),
