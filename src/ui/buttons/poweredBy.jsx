@@ -83,7 +83,7 @@ export function PoweredByPayPal({
         text-align: center;
         margin: 10px auto;
         height: 12px;
-        font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPalOpen-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-size: 10px;
         font-weight: 400;
         color: #000000;
