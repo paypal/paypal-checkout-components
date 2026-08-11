@@ -61,7 +61,7 @@ export const labelStyle = `
     }
 
     .${CLASS.BUTTON_REBRAND} .${CLASS.BUTTON_LABEL} {
-        font-family: PayPal Plain, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
+        font-family: PayPalOpen-Regular, system-ui, -apple-system, Roboto, "Segoe UI", Helvetica-Neue, Helvetica, Arial, sans-serif;
         font-weight: 400;
     }
 
