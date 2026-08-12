@@ -22,7 +22,7 @@ type TextProps = {|
 
 export function Text(
   { optional, className = [], animate, ...rest }: TextProps,
-  children: NullableChildrenType
+  children: NullableChildrenType,
 ): ChildType {
   return (
     <span

@@ -58,7 +58,7 @@ describe("BUTTON_REDESIGN_DISABLEMAXHEIGHT_STYLE config", () => {
 
     for (let i = 1; i < buckets.length; i++) {
       expect(buckets[i].minHeight).toBeLessThanOrEqual(
-        buckets[i - 1].maxHeight
+        buckets[i - 1].maxHeight,
       );
     }
   });

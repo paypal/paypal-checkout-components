@@ -23,7 +23,7 @@ import type { GraphQLClient, RestClient } from "./api";
 const parseSdkConfig = ({ sdkConfig, logger }): SdkConfig => {
   if (!sdkConfig.authenticationToken) {
     throw new ValidationError(
-      `script data attribute sdk-client-token is required but was not passed`
+      `script data attribute sdk-client-token is required but was not passed`,
     );
   }
 
@@ -122,7 +122,7 @@ export class ThreeDomainSecureComponent {
       let responseStatus = false;
       if (status === "PAYER_ACTION_REQUIRED") {
         this.authenticationURL = links.find(
-          (link) => link.rel === "payer-action"
+          (link) => link.rel === "payer-action",
         ).href;
         responseStatus = true;
         this.threeDSIframe = getThreeDS();
@@ -137,7 +137,7 @@ export class ThreeDomainSecureComponent {
   async show(): Promise<ThreeDSResponse> {
     if (!this.threeDSIframe) {
       return Promise.reject(
-        new ValidationError(`Ineligible for three domain secure`)
+        new ValidationError(`Ineligible for three domain secure`),
       );
     }
     // eslint-disable-next-line compat/compat

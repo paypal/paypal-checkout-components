@@ -86,7 +86,7 @@ function getAppSwitchParamsWebFallback(): AppSwitchResumeParams | null {
   try {
     const searchParams = Object.fromEntries(
       // eslint-disable-next-line compat/compat
-      new URLSearchParams(window.location.search)
+      new URLSearchParams(window.location.search),
     );
 
     // If no PayPal params found in query string, check if they are embedded

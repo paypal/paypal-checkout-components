@@ -48,13 +48,13 @@ for (const flow of ["popup", "iframe"]) {
             onApprove: expect("onApprove", (data) => {
               if (data.orderID !== orderID) {
                 throw new Error(
-                  `Expected orderID to be ${orderID}, got ${data.orderID}`
+                  `Expected orderID to be ${orderID}, got ${data.orderID}`,
                 );
               }
 
               if (data.payerID !== payerID) {
                 throw new Error(
-                  `Expected payerID to be ${payerID}, got ${data.payerID}`
+                  `Expected payerID to be ${payerID}, got ${data.payerID}`,
                 );
               }
             }),

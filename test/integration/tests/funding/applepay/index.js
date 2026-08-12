@@ -34,7 +34,7 @@ describe(`applepay standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        true,
       );
       window.__COMPONENTS__ = ["buttons", "legal"];
       const button = window.paypal.Buttons({
@@ -42,13 +42,13 @@ describe(`applepay standalone buttons`, () => {
           onRender: expect("onRender", ({ fundingSources }) => {
             if (fundingSources.length !== 1) {
               throw new Error(
-                `Expected only one funding source to be rendered, got ${fundingSources.length}`
+                `Expected only one funding source to be rendered, got ${fundingSources.length}`,
               );
             }
 
             if (fundingSources[0] !== fundingSource) {
               throw new Error(
-                `Expected rendered funding source to be ${fundingSource}, got ${fundingSources[0]}`
+                `Expected rendered funding source to be ${fundingSource}, got ${fundingSources[0]}`,
               );
             }
 
@@ -66,11 +66,11 @@ describe(`applepay standalone buttons`, () => {
       return button.render("#testContainer").then(() => {
         assert.ok(
           getElementRecursive(".paypal-button-label-container"),
-          "The ApplePay Button Should Exist"
+          "The ApplePay Button Should Exist",
         );
         assert.equal(
           getElementRecursive(".paypal-button").getAttribute("aria-label"),
-          "applepay"
+          "applepay",
         );
       });
     });
@@ -86,7 +86,7 @@ describe(`applepay standalone buttons`, () => {
       const mockEligibility = mockProp(
         window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
         "eligible",
-        true
+        true,
       );
       window.__COMPONENTS__ = ["buttons", "applepay"];
       const button = window.paypal.Buttons({
@@ -94,13 +94,13 @@ describe(`applepay standalone buttons`, () => {
           onRender: expect("onRender", ({ fundingSources }) => {
             if (fundingSources.length !== 1) {
               throw new Error(
-                `Expected only one funding source to be rendered, got ${fundingSources.length}`
+                `Expected only one funding source to be rendered, got ${fundingSources.length}`,
               );
             }
 
             if (fundingSources[0] !== fundingSource) {
               throw new Error(
-                `Expected rendered funding source to be ${fundingSource}, got ${fundingSources[0]}`
+                `Expected rendered funding source to be ${fundingSource}, got ${fundingSources[0]}`,
               );
             }
 
@@ -114,7 +114,7 @@ describe(`applepay standalone buttons`, () => {
       assert.equal(
         button.isEligible(),
         false,
-        "The ApplePay Button is ineligible when standalone applepay component is requested"
+        "The ApplePay Button is ineligible when standalone applepay component is requested",
       );
       done();
     });

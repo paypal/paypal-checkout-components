@@ -1,6 +1,6 @@
 {
   "name": "@paypal/checkout-components",
-  "version": "5.0.421",
+  "version": "5.0.426",
   "description": "PayPal Checkout components, for integrating checkout products.",
   "main": "index.js",
   "scripts": {
@@ -41,8 +41,8 @@
     "screenshot-server": "babel-node ./test/percy/server/index.js"
   },
   "engines": {
-    "node": "^18",
-    "npm": "8"
+    "node": "^22",
+    "npm": "10"
   },
   "files": [
     "src/",
@@ -103,8 +103,8 @@
     "pixelmatch": "^5.2.1",
     "playwright": "^1.29.1",
     "pngjs": "^6.0.0",
-    "prettier": "^2.5.1",
-    "prettier-plugin-sh": "^0.10.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-sh": "^0.19.0",
     "puppeteer": "^1.20.0",
     "serve": "^14.0.0",
     "vite": "^3.2.4",
@@ -117,9 +117,9 @@
     "@krakenjs/jsx-pragmatic": "^3",
     "@krakenjs/post-robot": "^11.0.0",
     "@krakenjs/zalgo-promise": "^2.0.0",
-    "@krakenjs/zoid": "^10.3.1",
-    "@paypal/fastlane-sdk-loader": "^1.2.1",
+    "@krakenjs/zoid": "^10.6.0",
     "@paypal/common-components": "^1.0.35",
+    "@paypal/fastlane-sdk-loader": "^1.2.1",
     "@paypal/funding-components": "^1.0.31",
     "@paypal/sdk-client": "^4.0.199",
     "@paypal/sdk-constants": "^1.0.158",

@@ -43,7 +43,7 @@ if (body) {
           Pay with saved method
         </button>
       </div>
-    ).render(dom({ doc: document }))
+    ).render(dom({ doc: document })),
   );
 }
 
@@ -75,7 +75,7 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
           order: {
             create: generateOrderID,
           },
-        }
+        },
       );
     } else {
       return ZalgoPromise.try(generateOrderID);
@@ -152,7 +152,7 @@ function renderCheckout(props = {}, context = CONTEXT.POPUP) {
     .renderTo(
       window.parent,
       "body",
-      supportsPopups() ? context : CONTEXT.IFRAME
+      supportsPopups() ? context : CONTEXT.IFRAME,
     )
     .catch((err) => {
       if (err instanceof window.paypal.PopupOpenError) {

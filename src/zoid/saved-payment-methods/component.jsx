@@ -77,7 +77,7 @@ export type SavedPaymentMethodsComponent = ZoidComponent<
   SavedPaymentMethodsProps,
   void,
   void,
-  void
+  void,
 >;
 
 // $FlowIssue
@@ -129,7 +129,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           try {
             const cplPhases = prepareInstrumentationPayload(
               buttonSessionID,
-              "saved-payment-methods"
+              "saved-payment-methods",
             );
             const cplLatencyMetrics = {
               [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
@@ -138,7 +138,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
               [FPTI_KEY.PAGE]:
                 "main:xo:paypal-components:saved-payment-methods",
               [FPTI_KEY.CPL_COMP_METRICS]: JSON.stringify(
-                cplPhases?.comp || {}
+                cplPhases?.comp || {},
               ),
             };
             getLogger().track(cplLatencyMetrics);
@@ -202,7 +202,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
             ({ props: { buttonSessionID } }) =>
             ({ close }) => {
               const overlay = document.getElementsByName(
-                `paypal-overlay-${buttonSessionID}`
+                `paypal-overlay-${buttonSessionID}`,
               )?.[0];
 
               if (overlay) {
@@ -257,7 +257,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
             () => {
               window.addEventListener(
                 "visibilitychange",
-                props.visibilityChangeHandler
+                props.visibilityChangeHandler,
               );
             },
         },
@@ -270,7 +270,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
             () => {
               window.removeEventListener(
                 "visibilitychange",
-                props.visibilityChangeHandler
+                props.visibilityChangeHandler,
               );
             },
         },
@@ -563,7 +563,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           queryParam: true,
           value: ({ props }) => {
             return Boolean(
-              props.onShippingAddressChange || props.onShippingOptionsChange
+              props.onShippingAddressChange || props.onShippingOptionsChange,
             );
           },
         },
@@ -578,6 +578,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
         partnerAttributionID: {
           type: "string",
           required: false,
+          queryParam: true,
           value: getPartnerAttributionID,
         },
 
@@ -736,7 +737,7 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: ({ props }) => {
             return isSupportedNativeVenmoBrowser(
               props.experiment,
-              props.userAgent
+              props.userAgent,
             );
           },
           queryParam: true,

@@ -47,7 +47,7 @@ describe("templateRebrand Mark variation logic", () => {
     });
 
     const marksDiv = element.children.find(
-      (child) => child?.props?.class === "paypal-marks-rebrand"
+      (child) => child?.props?.class === "paypal-marks-rebrand",
     );
 
     return marksDiv?.children?.[0]?.props;

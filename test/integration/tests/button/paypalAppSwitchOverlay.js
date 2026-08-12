@@ -116,7 +116,7 @@ describe(`PayPal app switch overlay`, () => {
 
             if (closeCalled) {
               done(
-                new Error("Expected close function to not be called on render")
+                new Error("Expected close function to not be called on render"),
               );
             }
 
@@ -132,8 +132,8 @@ describe(`PayPal app switch overlay`, () => {
                 if (getElementRecursive(".paypal-checkout-sandbox")) {
                   done(
                     new Error(
-                      "Expected overlay to be removed from dom after close was called"
-                    )
+                      "Expected overlay to be removed from dom after close was called",
+                    ),
                   );
                 }
               } catch {
@@ -184,8 +184,8 @@ describe(`PayPal app switch overlay`, () => {
                 if (getElementRecursive(".paypal-checkout-sandbox")) {
                   done(
                     new Error(
-                      "Expected overlay to be removed from dom after close was called"
-                    )
+                      "Expected overlay to be removed from dom after close was called",
+                    ),
                   );
                 }
               } catch {

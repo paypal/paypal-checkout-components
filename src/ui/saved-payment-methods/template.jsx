@@ -70,7 +70,7 @@ function getStyleConfig(style?: SavedPaymentMethodsStyleInputs): Object {
  * shared by zoid prerender and server SSR and must match the first client paint.
  */
 export function SavedPaymentMethods(
-  props: SavedPaymentMethodsServerRenderProps
+  props: SavedPaymentMethodsServerRenderProps,
 ): ElementNode {
   const { nonce, style } = props;
   const styleConfig = getStyleConfig(style);
@@ -224,6 +224,31 @@ export function SavedPaymentMethods(
               gap: 8px;
               min-width: 124px;
               max-width: 100%;
+              position: relative;
+              overflow: hidden;
+            }
+
+            .spm-tag-loading::after {
+              content: "";
+              display: block;
+              background-color: #dddfe2;
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+              height: 100%;
+              transform: translateX(0);
+              box-shadow: 0px 0px 107px 60px #dddfe2;
+              animation: 1.5s loading-placeholder ease-in-out infinite;
+            }
+
+            @keyframes loading-placeholder {
+              0% {
+                transform: translateX(-150%);
+              }
+              100% {
+                transform: translateX(150%);
+              }
             }
 
             .spm-tag-loading.spm-tag-loading--hidden {

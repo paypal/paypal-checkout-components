@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -139,7 +139,9 @@
         height: 16px;
         background: var(--text-dim);
         border-radius: 50%;
-        transition: transform 0.15s, background 0.15s;
+        transition:
+          transform 0.15s,
+          background 0.15s;
       }
 
       .toggle input:checked + .slider {
@@ -777,7 +779,7 @@
           .querySelectorAll("#ctrl-filter .chip")
           .forEach((c) => c.classList.remove("active"));
         const activeChip = document.querySelector(
-          `#ctrl-filter .chip[data-filter="${filter}"]`
+          `#ctrl-filter .chip[data-filter="${filter}"]`,
         );
         if (activeChip) activeChip.classList.add("active");
 
@@ -854,10 +856,10 @@
 
         const activeSources = ALL_SOURCES.filter((s) => STATE.sources.has(s));
         const majorSources = activeSources.filter((s) =>
-          SOURCES.major.includes(s)
+          SOURCES.major.includes(s),
         );
         const nativeSources = activeSources.filter((s) =>
-          SOURCES.native.includes(s)
+          SOURCES.native.includes(s),
         );
         const apmSources = activeSources.filter((s) => SOURCES.apm.includes(s));
 
@@ -955,7 +957,7 @@
 
           if (STATE.apmStack) {
             apmSources.forEach((src) =>
-              renderCard(grid, null, "stack", gen, ["paypal", src, "card"])
+              renderCard(grid, null, "stack", gen, ["paypal", src, "card"]),
             );
           } else {
             apmSources.forEach((src) => renderCard(grid, src, "apm", gen));
@@ -969,7 +971,7 @@
         category,
         gen,
         stackSources,
-        walletConfig
+        walletConfig,
       ) {
         const card = document.createElement("div");
         card.className = "card";
@@ -1009,10 +1011,10 @@
           STATE.color === "__empty__"
             ? `color:""`
             : STATE.color === "__undefined__"
-            ? `color:undefined`
-            : STATE.color
-            ? `color:${STATE.color}`
-            : null,
+              ? `color:undefined`
+              : STATE.color
+                ? `color:${STATE.color}`
+                : null,
           STATE.label ? `label:${STATE.label}` : null,
           STATE.rebrand ? "rebrand" : "legacy",
         ]

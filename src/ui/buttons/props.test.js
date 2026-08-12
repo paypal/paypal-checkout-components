@@ -377,7 +377,7 @@ describe("getColorForABTest", () => {
       expect.objectContaining({
         color: expect.any(String),
         shouldApplyRebrandedStyles: expect.any(Boolean),
-      })
+      }),
     );
     expect(storageState.get).toHaveBeenCalledWith("colorABTest");
     expect(storageState.set).toHaveBeenCalledWith("colorABTest", {
@@ -405,7 +405,7 @@ describe("getColorForABTest", () => {
       expect.objectContaining({
         color: expect.any(String),
         shouldApplyRebrandedStyles: expect.any(Boolean),
-      })
+      }),
     );
     expect(storageState.get).toHaveBeenCalledWith("colorABTest");
     expect(storageState.set).toHaveBeenCalledWith("colorABTest", {
@@ -432,7 +432,7 @@ describe("getColorForABTest", () => {
       expect.objectContaining({
         color: expect.any(String),
         shouldApplyRebrandedStyles: expect.any(Boolean),
-      })
+      }),
     );
     expect(storageState.get).toHaveBeenCalledWith("colorABTest");
     expect(storageState.set).toHaveBeenCalledWith("colorABTest", {
@@ -516,7 +516,7 @@ describe("getColorForFullRedesign", () => {
       expect.objectContaining({
         color: expect.any(String),
         shouldApplyRebrandedStyles: true,
-      })
+      }),
     );
   });
 
@@ -530,7 +530,7 @@ describe("getColorForFullRedesign", () => {
       expect.objectContaining({
         color: expect.any(String),
         shouldApplyRebrandedStyles: true,
-      })
+      }),
     );
   });
 
@@ -738,7 +738,7 @@ describe("getButtonColor", () => {
     expect(result).toEqual(
       expect.objectContaining({
         isButtonColorABTestMerchant: true,
-      })
+      }),
     );
   });
 
@@ -851,7 +851,7 @@ describe("normalizeButtonStyle requestedButtonColor", () => {
         },
       },
       // $FlowFixMe
-      { color: BUTTON_COLOR.GOLD }
+      { color: BUTTON_COLOR.GOLD },
     );
 
     // Merchant configured gold — rebrand maps it to blue
@@ -874,7 +874,7 @@ describe("normalizeButtonStyle requestedButtonColor", () => {
         },
       },
       // $FlowFixMe
-      { color: BUTTON_COLOR.SILVER }
+      { color: BUTTON_COLOR.SILVER },
     );
 
     // Merchant configured silver — rebrand maps it to white

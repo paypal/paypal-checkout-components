@@ -23,7 +23,7 @@ const mockFindEligiblePaymentsRequest = (
       recommended: true,
       recommended_priority: 1,
     },
-  }
+  },
 ) =>
   vi.fn().mockResolvedValue({
     eligible_methods: eligibility,
@@ -188,7 +188,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
           countryCode: "1",
           nationalNumber: "2345678905",
         },
-      })
+      }),
     ).rejects.toThrow(new Error("Error with API"));
     expect(mockRequest).toHaveBeenCalled();
   });
@@ -215,7 +215,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
             }),
           }),
         }),
-      })
+      }),
     );
   });
 
@@ -233,7 +233,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
             email: "email2@test.com",
           }),
         }),
-      })
+      }),
     );
   });
 
@@ -258,7 +258,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
             }),
           }),
         }),
-      })
+      }),
     );
   });
 
@@ -273,11 +273,11 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
           countryCode: "1",
           nationalNumber: "2345678901",
         },
-      })
+      }),
     ).rejects.toEqual(
       new ValidationError(
-        "Expected shopper information to include a valid email format"
-      )
+        "Expected shopper information to include a valid email format",
+      ),
     );
   });
 
@@ -291,11 +291,11 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
           countryCode: "1",
           nationalNumber: "not a phone",
         },
-      })
+      }),
     ).rejects.toEqual(
       new ValidationError(
-        "Expected shopper information to be a valid phone number format"
-      )
+        "Expected shopper information to be a valid phone number format",
+      ),
     );
   });
 
@@ -308,11 +308,11 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
         phone: {
           nationalNumber: "2345678901",
         },
-      })
+      }),
     ).rejects.toEqual(
       new ValidationError(
-        "Expected phone number for shopper insights to include nationalNumber and countryCode"
-      )
+        "Expected phone number for shopper insights to include nationalNumber and countryCode",
+      ),
     );
 
     expect(
@@ -320,11 +320,11 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
         phone: {
           countryCode: "1",
         },
-      })
+      }),
     ).rejects.toEqual(
       new ValidationError(
-        "Expected phone number for shopper insights to include nationalNumber and countryCode"
-      )
+        "Expected phone number for shopper insights to include nationalNumber and countryCode",
+      ),
     );
   });
 
@@ -346,7 +346,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
             }),
           ]),
         }),
-      })
+      }),
     );
   });
 
@@ -371,7 +371,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
             country_code: "US",
           }),
         }),
-      })
+      }),
     );
   });
 
@@ -391,7 +391,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
 
     // $FlowIssue
     expect(mockRequest.mock.calls[0][0].data.customer.country_code).toEqual(
-      undefined
+      undefined,
     );
   });
 
@@ -409,7 +409,7 @@ describe("shopper insights component - getRecommendedPaymentMethods()", () => {
             include_account_details: true,
           }),
         }),
-      })
+      }),
     );
   });
 });
@@ -427,9 +427,9 @@ describe("shopper insights component - validateSdkConfig()", () => {
           sdkToken: "",
           pageType: "",
         },
-      })
+      }),
     ).toThrowError(
-      "script data attribute sdk-client-token is required but was not passed"
+      "script data attribute sdk-client-token is required but was not passed",
     );
   });
 
@@ -441,9 +441,9 @@ describe("shopper insights component - validateSdkConfig()", () => {
           sdkToken: "sdk-token",
           pageType: "",
         },
-      })
+      }),
     ).toThrowError(
-      "script data attribute page-type is required but was not passed"
+      "script data attribute page-type is required but was not passed",
     );
   });
 });

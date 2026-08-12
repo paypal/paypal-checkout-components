@@ -94,7 +94,7 @@ import {
   isSupportedNativeVenmoBrowser,
 } from "../../funding/util";
 import { getPixelComponent } from "../pixel";
-import { CLASS } from "../../constants";
+import { CLASS, BROWSER_CONTEXT } from "../../constants";
 import { PayPalAppSwitchOverlay } from "../../ui/overlay/paypal-app-switch/overlay";
 
 import { containerTemplate } from "./container";
@@ -107,15 +107,16 @@ import {
   getButtonSize,
   getButtonExperiments,
   getModal,
-  sendPostRobotMessageToButtonIframe,
   isEagerOrderCreationEnabled,
+  resolveMerchantDomain,
+  sendPostRobotMessageToButtonIframe,
 } from "./util";
 
 export type ButtonsComponent = ZoidComponent<
   ButtonProps,
   void,
   void,
-  ButtonExtensions
+  ButtonExtensions,
 >;
 
 interface ZalgoThenable<T> {
@@ -138,6 +139,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     url: () => `${getPayPalDomain()}${__PAYPAL_CHECKOUT__.__URI__.__BUTTONS__}`,
 
     domain: getPayPalDomainRegex(),
+    enableBfcache: Boolean(getButtonExperiments()?.isBfcacheEnabled),
+
     getExtensions: (parent) => {
       return {
         hasReturned: () => {
@@ -292,7 +295,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         try {
           const cplPhases = prepareInstrumentationPayload(
             buttonSessionID,
-            "buttons"
+            "buttons",
           );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
@@ -359,11 +362,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         supportsVenmoPopups = supportsVenmoPopupsUtil(
           buttonExperiments,
           userAgentSupportsPopups(),
-          getUserAgent()
+          getUserAgent(),
         ),
         supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
           buttonExperiments,
-          getUserAgent()
+          getUserAgent(),
         ),
         experiment = buttonExperiments,
         createBillingAgreement,
@@ -438,6 +441,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         required: false,
       },
 
+      browserContext: {
+        type: "string",
+        queryParam: "browser_context",
+        required: false,
+        value: ({ props }) => props.browserContext || BROWSER_CONTEXT.UNKNOWN,
+      },
+
       preferences: {
         type: "object",
         queryParam: true,
@@ -470,7 +480,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ({ props: { buttonSessionID } }) =>
           ({ close }) => {
             const overlay = document.getElementsByName(
-              `paypal-overlay-${buttonSessionID}`
+              `paypal-overlay-${buttonSessionID}`,
             )?.[0];
 
             if (overlay) {
@@ -557,7 +567,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
             window.addEventListener(
               "visibilitychange",
-              props.visibilityChangeHandler
+              props.visibilityChangeHandler,
             );
           },
       },
@@ -570,8 +580,22 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.removeEventListener(
               "visibilitychange",
-              props.visibilityChangeHandler
+              props.visibilityChangeHandler,
             );
+          },
+      },
+
+      onBfcacheRestore: {
+        type: "function",
+        sendToChild: false,
+        queryParam: false,
+        value:
+          () =>
+          ({ cachedDurationMs } = {}) => {
+            sendPostRobotMessageToButtonIframe({
+              eventName: "bfcache_restore",
+              payload: { cachedDurationMs },
+            });
           },
       },
 
@@ -992,6 +1016,13 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: true,
       },
 
+      merchantDomain: {
+        type: "string",
+        required: false,
+        sendToChild: true,
+        value: ({ props }) => resolveMerchantDomain(props.merchantDomain),
+      },
+
       intent: {
         type: "string",
         queryParam: true,
@@ -1036,7 +1067,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             // $FlowFixMe
             value,
             layout,
-            fundingSources
+            fundingSources,
           );
         },
       },
@@ -1121,7 +1152,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const modalInstance = await getModal(
               clientID,
               merchantID,
-              buttonSessionID
+              buttonSessionID,
             );
             return modalInstance?.show({
               amount,
@@ -1217,8 +1248,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return Boolean(
             props.onShippingChange ||
-              props.onShippingAddressChange ||
-              props.onShippingOptionsChange
+            props.onShippingAddressChange ||
+            props.onShippingOptionsChange,
           );
         },
       },
@@ -1452,7 +1483,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return isSupportedNativeVenmoBrowser(
             props.experiment,
-            props.userAgent
+            props.userAgent,
           );
         },
         queryParam: true,
@@ -1473,7 +1504,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return supportsVenmoPopupsUtil(
             props.experiment,
             userAgentSupportsPopups(),
-            props.userAgent
+            props.userAgent,
           );
         },
         queryParam: true,

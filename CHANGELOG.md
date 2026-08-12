@@ -1,3 +1,33 @@
+## <small>5.0.426 (2026-08-04)</small>
+
+* upgrade prettier to v3 (#2652) ([c062a9c](https://github.com/paypal/paypal-checkout-components/commit/c062a9c)), closes [#2652](https://github.com/paypal/paypal-checkout-components/issues/2652)
+
+
+
+## <small>5.0.425 (2026-07-22)</small>
+
+* Pass bfcache events via post-robot (#2650) ([9fc4447](https://github.com/paypal/paypal-checkout-components/commit/9fc4447)), closes [#2650](https://github.com/paypal/paypal-checkout-components/issues/2650)
+
+
+
+## <small>5.0.424 (2026-07-20)</small>
+
+* Pass partnerAttributionID as query param to Saved Payment Methods (#2649) ([2d5f637](https://github.com/paypal/paypal-checkout-components/commit/2d5f637)), closes [#2649](https://github.com/paypal/paypal-checkout-components/issues/2649)
+
+
+
+## <small>5.0.423 (2026-07-10)</small>
+
+* [Feature] Merchant Referrer URL (#2647) ([1bef46c](https://github.com/paypal/paypal-checkout-components/commit/1bef46c)), closes [#2647](https://github.com/paypal/paypal-checkout-components/issues/2647)
+
+
+
+## <small>5.0.422 (2026-07-10)</small>
+
+* chore: bump zoid (#2648) ([6b43aec](https://github.com/paypal/paypal-checkout-components/commit/6b43aec)), closes [#2648](https://github.com/paypal/paypal-checkout-components/issues/2648)
+
+
+
 ## <small>5.0.421 (2026-06-08)</small>
 
 * Add background color to saved payment method PP logo (#2641) ([d06b599](https://github.com/paypal/paypal-checkout-components/commit/d06b599)), closes [#2641](https://github.com/paypal/paypal-checkout-components/issues/2641)

@@ -55,6 +55,8 @@ export function getCheckoutComponent(): CheckoutComponent {
         },
       },
 
+      enableBfcache: false,
+
       defaultContext: supportsPopups() ? CONTEXT.POPUP : CONTEXT.IFRAME,
 
       domain: getPayPalDomainRegex(),
@@ -296,8 +298,8 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: ({ props }) => {
             return Boolean(
               props.onShippingChange ||
-                props.onShippingAddressChange ||
-                props.onShippingOptionsChange
+              props.onShippingAddressChange ||
+              props.onShippingOptionsChange,
             );
           },
         },

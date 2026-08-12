@@ -27,6 +27,7 @@ import {
   getFundingEligibility,
   getSDKToken,
   getIntent,
+  isPayPalDomain,
 } from "@paypal/sdk-client/src";
 import { FUNDING, FPTI_KEY, INTENT } from "@paypal/sdk-constants/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
@@ -78,7 +79,7 @@ const logNativeScreenInformation = once(() => {
 });
 
 export function determineFlow(
-  props: DetermineFlowOptions
+  props: DetermineFlowOptions,
 ): $Values<typeof BUTTON_FLOW> {
   if (props.createVaultSetupToken) {
     return BUTTON_FLOW.VAULT_WITHOUT_PURCHASE;
@@ -134,7 +135,7 @@ export function getVenmoEligibility(): EligibilityExperiment {
 }
 
 export function getRenderedButtons(
-  props: ButtonProps
+  props: ButtonProps,
 ): $ReadOnlyArray<$Values<typeof FUNDING>> {
   const {
     fundingSource,
@@ -205,8 +206,8 @@ export function applePaySession(): ?ApplePaySessionConfigRequest {
             new window.ApplePayError(
               error.code,
               error.contactField,
-              error.message
-            )
+              error.message,
+            ),
         ),
       };
     };
@@ -279,7 +280,7 @@ export function getButtonExperiments(): EligibilityExperiment {
 
 export function getButtonSize(
   props: ButtonProps,
-  container: string | HTMLElement | void
+  container: string | HTMLElement | void,
 ): string | void {
   if (!container) {
     return;
@@ -340,7 +341,7 @@ function buildModalBundleUrl(): string {
 export const getModal: (
   clientID: string,
   merchantID: $ReadOnlyArray<string> | void,
-  buttonSessionID: string
+  buttonSessionID: string,
 ) => Object = memoize(async (clientID, merchantID, buttonSessionID) => {
   try {
     const namespace = getNamespace();
@@ -410,19 +411,31 @@ export const sendPostRobotMessageToButtonIframe = ({
     if (iframes[i].name.includes("zoid__paypal_buttons")) {
       postRobotSend(iframes[i].contentWindow, eventName, payload, {
         domain: getPayPalDomain(),
+        fireAndForget: true,
       });
     }
   }
 };
 
 export const isEagerOrderCreationEnabled = (
-  appSwitchWhenAvailable: boolean
+  appSwitchWhenAvailable: boolean,
 ): boolean => {
   const experiment = getButtonExperiments();
   return Boolean(
     !isWebView() &&
-      isDevice() &&
-      appSwitchWhenAvailable &&
-      experiment.spbEagerOrderCreation
+    isDevice() &&
+    appSwitchWhenAvailable &&
+    experiment.spbEagerOrderCreation,
   );
 };
+
+// merchantDomain is only accepted on PayPal-hosted flows (e.g. NCPS).
+// There the page origin resolves to a PayPal Domain, so the hosting service must supply
+// the true merchant origin. On merchant-hosted pages browser origin is alreadyy the merchant's,
+// so an explictly passed value is rejected
+export function resolveMerchantDomain(merchantDomain: ?string): ?string {
+  if (merchantDomain && !isPayPalDomain()) {
+    throw new Error("merchantDomain can only be passed on PayPal-hosted flows");
+  }
+  return merchantDomain || undefined;
+}

@@ -37,7 +37,7 @@ for (const flow of ["popup", "iframe"]) {
             action: "checkout",
             onRender() {
               assert.ok(
-                getElementRecursive(".paypal-checkout-background-color-black")
+                getElementRecursive(".paypal-checkout-background-color-black"),
               );
               done();
             },
@@ -132,9 +132,9 @@ describe("paypal button color", () => {
               done(
                 new Error(
                   `Expected style object ${JSON.stringify(
-                    style
-                  )} to remain unmodified as ${expected}`
-                )
+                    style,
+                  )} to remain unmodified as ${expected}`,
+                ),
               );
             }
             done();
@@ -172,8 +172,8 @@ describe("paypal button aria-label", () => {
       .then(() => {
         assert.ok(
           getElementRecursive(
-            ".paypal-button[aria-label='Pay up to 3x without interest']"
-          )
+            ".paypal-button[aria-label='Pay up to 3x without interest']",
+          ),
         );
         done();
       });
@@ -192,8 +192,8 @@ describe("paypal button aria-label", () => {
       .then(() => {
         assert.ok(
           getElementRecursive(
-            ".paypal-button[aria-label='Interest free payments']"
-          )
+            ".paypal-button[aria-label='Interest free payments']",
+          ),
         );
         done();
       });
@@ -234,21 +234,21 @@ describe("Button Redesign", () => {
     mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
       "isPaypalRebrandEnabled",
-      value
+      value,
     );
 
   const setMockPaypalRebrandABTestExperiment = (value) =>
     mockProp(
       window.__TEST_FIRST_RENDER_EXPERIMENTS__,
       "isPaypalRebrandABTestEnabled",
-      value
+      value,
     );
 
   const enableFundingSource = (fundingSource) => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
   };
 
@@ -257,8 +257,8 @@ describe("Button Redesign", () => {
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
       getElementRecursive(
-        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`
-      )
+        `.paypal-logo-${fundingSource}.paypal-logo-color-blue`,
+      ),
     );
   };
 
@@ -267,8 +267,8 @@ describe("Button Redesign", () => {
     assert.ok(getElementRecursive(".paypal-button-text-color-white"));
     assert.ok(
       getElementRecursive(
-        `.paypal-logo-${fundingSource}.paypal-logo-color-white`
-      )
+        `.paypal-logo-${fundingSource}.paypal-logo-color-white`,
+      ),
     );
   };
 
@@ -286,39 +286,39 @@ describe("Button Redesign", () => {
 
   const validateBlueRebrandButton = (fundingSource = "paypal") => {
     assert.ok(
-      getElementRecursive(".paypal-button-rebrand.paypal-button-color-blue")
+      getElementRecursive(".paypal-button-rebrand.paypal-button-color-blue"),
     );
     assert.ok(
       getElementRecursive(
         `.paypal-button-text-color-${
           fundingSource === "venmo" ? "white" : "black"
-        }`
-      )
+        }`,
+      ),
     );
     assert.ok(
       getElementRecursive(
         `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-${
           fundingSource === "venmo" ? "white" : "black"
-        }`
-      )
+        }`,
+      ),
     );
   };
 
   const validateBlackRebrandButton = (fundingSource = "paypal") => {
     assert.ok(
-      getElementRecursive(".paypal-button-rebrand.paypal-button-color-black")
+      getElementRecursive(".paypal-button-rebrand.paypal-button-color-black"),
     );
     assert.ok(getElementRecursive(".paypal-button-text-color-white"));
     assert.ok(
       getElementRecursive(
-        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-white`
-      )
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-white`,
+      ),
     );
   };
 
   const validateBlackRebrandCardButton = (fundingSource = "card") => {
     assert.ok(
-      getElementRecursive(".paypal-button-rebrand.paypal-button-color-black")
+      getElementRecursive(".paypal-button-rebrand.paypal-button-color-black"),
     );
     assert.ok(getElementRecursive(".paypal-button-text-color-white"));
     assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}-rebrand`));
@@ -326,19 +326,19 @@ describe("Button Redesign", () => {
 
   const validateWhiteRebrandButton = (fundingSource = "paypal") => {
     assert.ok(
-      getElementRecursive(".paypal-button-rebrand.paypal-button-color-white")
+      getElementRecursive(".paypal-button-rebrand.paypal-button-color-white"),
     );
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(
       getElementRecursive(
-        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-black`
-      )
+        `.paypal-logo-${fundingSource}-rebrand.paypal-logo-color-black`,
+      ),
     );
   };
 
   const validateWhiteRebrandCardButton = (fundingSource = "card") => {
     assert.ok(
-      getElementRecursive(".paypal-button-rebrand.paypal-button-color-white")
+      getElementRecursive(".paypal-button-rebrand.paypal-button-color-white"),
     );
     assert.ok(getElementRecursive(".paypal-button-text-color-black"));
     assert.ok(getElementRecursive(`.paypal-logo-${fundingSource}-rebrand`));
@@ -349,8 +349,8 @@ describe("Button Redesign", () => {
     assert.ok(getElementRecursive(".paypal-button-text-color-white"));
     assert.ok(
       getElementRecursive(
-        `.paypal-logo-${fundingSource}.paypal-logo-color-white`
-      )
+        `.paypal-logo-${fundingSource}.paypal-logo-color-white`,
+      ),
     );
   };
 
@@ -812,25 +812,25 @@ describe("Button Redesign", () => {
       const validatePoweredByRebrandBlueStyle = () => {
         // For blue rebrand, the logo color should be black
         assert.ok(
-          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand")
+          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand"),
         );
         assert.ok(
           getElementRecursive(
-            ".paypal-logo-paypal-rebrand.paypal-logo-color-black"
-          )
+            ".paypal-logo-paypal-rebrand.paypal-logo-color-black",
+          ),
         );
       };
 
       // the black and white rebrand styles are not implemented yet
       const validatePoweredByRebrandBlackStyle = () => {
         assert.ok(
-          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand")
+          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand"),
         );
       };
 
       const validatePoweredByRebrandWhiteStyle = () => {
         assert.ok(
-          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand")
+          getElementRecursive(".paypal-powered-by.powered-by-paypal-rebrand"),
         );
       };
 

@@ -206,8 +206,8 @@ export function Buttons(props: ButtonsProps): ElementNode {
       `No eligible funding fundingSources found to render buttons:\n\n${JSON.stringify(
         fundingEligibility,
         null,
-        4
-      )}`
+        4,
+      )}`,
     );
   }
 

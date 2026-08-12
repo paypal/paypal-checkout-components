@@ -4,11 +4,11 @@ const semver = require("semver");
 
 const expectedNodeVersion = readFileSync(
   join(__dirname, "../", ".nvmrc"),
-  "utf-8"
+  "utf-8",
 );
 const isValidNodeVersion = semver.satisfies(
   process.version,
-  expectedNodeVersion
+  expectedNodeVersion,
 );
 
 // successfully exit when Node version is valid

@@ -77,7 +77,7 @@ describe("prerenderTemplate", () => {
       // Verify SpinnerPage receives correct nonce prop
       expect(result).toBeDefined();
       expect(capturedSpinnerPageProps).toEqual({ nonce: expectedNonce });
-    }
+    },
   );
 
   test("should apply cspNonce to style element in children", () => {

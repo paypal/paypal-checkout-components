@@ -139,7 +139,7 @@ describe("getHostedButtonDetails", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(getHostedButtonDetailsResponse.v1)
+      Promise.resolve(getHostedButtonDetailsResponse.v1),
     );
     await getHostedButtonDetails({
       hostedButtonId,
@@ -161,7 +161,7 @@ describe("getHostedButtonDetails", () => {
     // $FlowIssue
     request.mockImplementationOnce(() =>
       // eslint-disable-next-line compat/compat
-      Promise.resolve(getHostedButtonDetailsResponse.v2)
+      Promise.resolve(getHostedButtonDetailsResponse.v2),
     );
     await getHostedButtonDetails({
       hostedButtonId,
@@ -184,7 +184,7 @@ describe("getHostedButtonDetails", () => {
       // $FlowIssue
       request.mockImplementationOnce(() =>
         // eslint-disable-next-line compat/compat
-        Promise.resolve(getHostedButtonDetailsResponse.v2)
+        Promise.resolve(getHostedButtonDetailsResponse.v2),
       );
       await getHostedButtonDetails({
         hostedButtonId,
@@ -203,7 +203,7 @@ describe("getHostedButtonDetails", () => {
       // $FlowIssue
       request.mockImplementationOnce(() =>
         // eslint-disable-next-line compat/compat
-        Promise.resolve(getHostedButtonDetailsResponse.v2)
+        Promise.resolve(getHostedButtonDetailsResponse.v2),
       );
       await getHostedButtonDetails({
         hostedButtonId,
@@ -238,7 +238,7 @@ describe("getHostedButtonDetails", () => {
             ],
           },
         },
-      })
+      }),
     );
     await getHostedButtonDetails({
       hostedButtonId,
@@ -246,7 +246,7 @@ describe("getHostedButtonDetails", () => {
       expect(style).toEqual(
         expect.objectContaining({
           tagline: false,
-        })
+        }),
       );
     });
 
@@ -273,7 +273,7 @@ describe("getHostedButtonDetails", () => {
           },
           version: "2",
         },
-      })
+      }),
     );
     await getHostedButtonDetails({
       hostedButtonId,
@@ -308,7 +308,7 @@ describe("getHostedButtonDetails", () => {
             ],
           },
         },
-      })
+      }),
     );
     await getHostedButtonDetails({
       hostedButtonId,
@@ -316,7 +316,7 @@ describe("getHostedButtonDetails", () => {
       expect(style).toEqual(
         expect.objectContaining({
           tagline: false,
-        })
+        }),
       );
     });
 
@@ -339,7 +339,7 @@ describe("getHostedButtonDetails", () => {
           },
           version: "2",
         },
-      })
+      }),
     );
     await getHostedButtonDetails({
       hostedButtonId,
@@ -367,7 +367,7 @@ describe("createAccessToken", () => {
         headers: expect.objectContaining({
           Authorization: expect.stringContaining("Basic "),
         }),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -382,7 +382,7 @@ describe("createAccessToken", () => {
           Authorization: expect.stringContaining("Basic "),
           DPoP: expect.any(String),
         }),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -399,7 +399,7 @@ describe("BuildRequestHeaders", () => {
         Authorization: expect.stringContaining("Bearer"),
         "Content-Type": "application/json",
         "PayPal-Entry-Point": "SDK",
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -418,7 +418,7 @@ describe("BuildRequestHeaders", () => {
         "Content-Type": "application/json",
         "PayPal-Entry-Point": "SDK",
         DPoP: expect.any(String),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -436,7 +436,7 @@ test("buildHostedButtonCreateOrder", async () => {
           context_id: orderID,
           status: "CREATED",
         },
-      })
+      }),
     );
 
   const createOrder = buildHostedButtonCreateOrder({
@@ -449,7 +449,7 @@ test("buildHostedButtonCreateOrder", async () => {
       headers: expect.objectContaining({
         Authorization: `Bearer ${accessToken}`,
       }),
-    })
+    }),
   );
   expect(createdOrderID).toBe(orderID);
   expect.assertions(2);
@@ -473,7 +473,7 @@ test("buildHostedButtonCreateOrder with DPoP enabled", async () => {
           context_id: orderID,
           status: "CREATED",
         },
-      })
+      }),
     );
   await createOrder({ paymentSource: "paypal" });
   expect(request).toHaveBeenCalledWith(
@@ -482,7 +482,7 @@ test("buildHostedButtonCreateOrder with DPoP enabled", async () => {
         Authorization: `DPoP ${accessToken}`,
         DPoP: expect.any(String),
       }),
-    })
+    }),
   );
   expect.assertions(1);
 });
@@ -500,7 +500,7 @@ test("buildHostedButtonCreateOrder error handling", async () => {
       body: {
         name: "RESOURCE_NOT_FOUND",
       },
-    })
+    }),
   );
 
   const onError = vi.fn();
@@ -526,7 +526,7 @@ test("buildHostedButtonCreateOrder error handling with issue name", async () => 
       body: {
         details: [{ issue: "RESOURCE_NOT_FOUND" }],
       },
-    })
+    }),
   );
 
   const onError = vi.fn();
@@ -551,7 +551,7 @@ describe("buildHostedButtonOnApprove", () => {
       // eslint-disable-next-line compat/compat
       Promise.resolve({
         body: {},
-      })
+      }),
     );
     await onApprove({ orderID, paymentSource: "paypal" });
     expect(request).toHaveBeenCalledWith(
@@ -561,7 +561,7 @@ describe("buildHostedButtonOnApprove", () => {
           merchant_id: merchantId,
           context_id: orderID,
         }),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -579,7 +579,7 @@ describe("buildHostedButtonOnApprove", () => {
         // eslint-disable-next-line compat/compat
         Promise.resolve({
           body: {},
-        })
+        }),
       );
     await onApprove({ orderID, paymentSource: "paypal" });
     expect(request).toHaveBeenCalledWith(
@@ -588,7 +588,7 @@ describe("buildHostedButtonOnApprove", () => {
           Authorization: `DPoP ${accessToken}`,
           DPoP: expect.any(String),
         }),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -603,14 +603,14 @@ describe("buildHostedButtonOnApprove", () => {
       // eslint-disable-next-line compat/compat
       Promise.resolve({
         body: {},
-      })
+      }),
     );
 
     test("redirects from the merchant's site to a thank you page", async () => {
       expect(window.location.href).toBe("http://localhost:3000/");
       await onApprove({ orderID, paymentSource: "card" });
       expect(window.location).toBe(
-        "https://example.com/ncp/payment/B1234567890/EC-1234567890"
+        "https://example.com/ncp/payment/B1234567890/EC-1234567890",
       );
     });
 
@@ -626,12 +626,12 @@ describe("buildHostedButtonOnApprove", () => {
               },
             ],
           },
-        })
+        }),
       );
 
       await onApprove({ orderID, paymentSource: "card" });
       expect(window.location).toBe(
-        "https://example.com/ncp/payment/B1234567890/EC-1234567890?status=DUPLICATE_INVOICE_ID"
+        "https://example.com/ncp/payment/B1234567890/EC-1234567890?status=DUPLICATE_INVOICE_ID",
       );
     });
   });
@@ -672,7 +672,7 @@ describe("buildHostedButtonOnShippingAddressChange", () => {
       Promise.resolve({
         body: {},
         status: 200,
-      })
+      }),
     );
     // $FlowIssue
     await onShippingAddressChange(data, actions);
@@ -687,7 +687,7 @@ describe("buildHostedButtonOnShippingAddressChange", () => {
             postal_code: postalCode,
           },
         }),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -704,7 +704,7 @@ describe("buildHostedButtonOnShippingAddressChange", () => {
       Promise.resolve({
         body: {},
         status: 500,
-      })
+      }),
     );
 
     const localActions = {
@@ -714,7 +714,7 @@ describe("buildHostedButtonOnShippingAddressChange", () => {
 
     // $FlowIssueeslint-disable-next-line compat/compat
     await expect(onShippingAddressChange(data, localActions)).rejects.toThrow(
-      errors.ADDRESS_ERROR
+      errors.ADDRESS_ERROR,
     );
 
     expect(localActions.reject).toHaveBeenCalledWith(errors.ADDRESS_ERROR);
@@ -762,7 +762,7 @@ describe("buildHostedButtonOnShippingOptionsChange", () => {
       Promise.resolve({
         body: {},
         status: 200,
-      })
+      }),
     );
     // $FlowIssue
     await onShippingOptionsChange(data, actions);
@@ -772,7 +772,7 @@ describe("buildHostedButtonOnShippingOptionsChange", () => {
           context_id: orderID,
           shipping_option_id: id,
         }),
-      })
+      }),
     );
     expect.assertions(1);
   });
@@ -789,7 +789,7 @@ describe("buildHostedButtonOnShippingOptionsChange", () => {
       Promise.resolve({
         body: {},
         status: 500,
-      })
+      }),
     );
     // $FlowIssue
     await onShippingOptionsChange(data, actions);
@@ -880,7 +880,7 @@ describe("getButtonColor", () => {
     colors.forEach((color) => {
       fundingSources.forEach((fundingSource) => {
         expect(getButtonColor(color, fundingSource)).toBe(
-          colorMapLegacy[color][fundingSource]
+          colorMapLegacy[color][fundingSource],
         );
       });
     });
@@ -890,7 +890,7 @@ describe("getButtonColor", () => {
     colors.forEach((color) => {
       fundingSources.forEach((fundingSource) => {
         expect(getButtonColor(color, fundingSource, true)).toBe(
-          colorMapRebrand[color][fundingSource]
+          colorMapRebrand[color][fundingSource],
         );
       });
     });
@@ -997,7 +997,7 @@ describe("applyContainerStyles", () => {
     // Intentionally not setting up the button container to throw the error
     const shouldThrowError = () => applyContainerStyles(params);
     expect(shouldThrowError).toThrowError(
-      `Element with id ${buttonContainerId} not found.`
+      `Element with id ${buttonContainerId} not found.`,
     );
   });
 });
@@ -1052,7 +1052,7 @@ describe("render buttons", () => {
       expect(Buttons).toHaveBeenCalledWith(
         expect.objectContaining({
           fundingSource: "paypal",
-        })
+        }),
       );
     });
 
@@ -1072,7 +1072,7 @@ describe("render buttons", () => {
 
       expect(renderMock).toHaveBeenCalledTimes(0);
       expect(errorMock).toHaveBeenCalledWith(
-        "ncps_standalone_venmo_ineligible"
+        "ncps_standalone_venmo_ineligible",
       );
     });
   });
@@ -1112,7 +1112,7 @@ describe("render buttons", () => {
 
       expect(errorMock).toHaveBeenCalledTimes(1);
       expect(errorMock).toHaveBeenCalledWith(
-        "ncps_standalone_venmo_ineligible"
+        "ncps_standalone_venmo_ineligible",
       );
       expect(renderMock).toHaveBeenCalledWith(expectedContainerId);
     });
@@ -1133,10 +1133,10 @@ describe("render buttons", () => {
 
       expect(errorMock).toHaveBeenCalledTimes(2);
       expect(errorMock).toHaveBeenCalledWith(
-        "ncps_standalone_venmo_ineligible"
+        "ncps_standalone_venmo_ineligible",
       );
       expect(errorMock).toHaveBeenCalledWith(
-        "ncps_standalone_paylater_ineligible"
+        "ncps_standalone_paylater_ineligible",
       );
       expect(renderMock).toHaveBeenCalledTimes(0);
     });

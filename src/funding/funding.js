@@ -57,7 +57,7 @@ function isFundingVaultable({
 
     // If any vendors are both eligible & vaultable, card is vaultable
     return Object.keys(vendors).some(
-      (vendor) => vendors[vendor]?.eligible && vendors[vendor]?.vaultable
+      (vendor) => vendors[vendor]?.eligible && vendors[vendor]?.vaultable,
     );
   }
 
@@ -92,7 +92,7 @@ export function isFundingEligible(
     experiment,
     displayOnly,
     userAgent,
-  }: IsFundingEligibleOptions
+  }: IsFundingEligibleOptions,
 ): boolean {
   // Temporary: Force credit to be eligible if the experiment is enabled
   // but honor merchant opt-out via disableFunding
@@ -145,9 +145,9 @@ export function isFundingEligible(
       layout,
       shippingChange: Boolean(
         hasShippingCallback ||
-          onShippingChange ||
-          onShippingAddressChange ||
-          onShippingOptionsChange
+        onShippingChange ||
+        onShippingAddressChange ||
+        onShippingOptionsChange,
       ),
       wallet,
       displayOnly,
@@ -283,7 +283,7 @@ export function determineEligibleFunding({
       experiment,
       displayOnly,
       userAgent,
-    })
+    }),
   );
 
   if (layout === BUTTON_LAYOUT.HORIZONTAL) {

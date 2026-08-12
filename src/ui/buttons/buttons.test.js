@@ -159,13 +159,13 @@ describe("Smart Payment Buttons - limit button to PayPal for FSS", () => {
 
     const allButtonsTotalCount = jsxElems?.children.filter(
       // $FlowFixMe
-      (elem) => elem?.component?.name === "Button"
+      (elem) => elem?.component?.name === "Button",
     ).length;
 
     const hasPayPalButton =
       jsxElems?.children.filter(
         // $FlowFixMe
-        (elem) => elem?.props?.fundingSource === "paypal"
+        (elem) => elem?.props?.fundingSource === "paypal",
       ).length === 1;
 
     expect(allButtonsTotalCount).toBe(1);
@@ -183,13 +183,13 @@ describe("Smart Payment Buttons - limit button to PayPal for FSS", () => {
 
     const allButtonsTotalCount = jsxElems?.children.filter(
       // $FlowFixMe
-      (elem) => elem?.component?.name === "Button"
+      (elem) => elem?.component?.name === "Button",
     ).length;
 
     const hasPayPalButton =
       jsxElems?.children.filter(
         // $FlowFixMe
-        (elem) => elem?.props?.fundingSource === "paypal"
+        (elem) => elem?.props?.fundingSource === "paypal",
       ).length === 1;
 
     expect(allButtonsTotalCount).toBeGreaterThanOrEqual(1);
