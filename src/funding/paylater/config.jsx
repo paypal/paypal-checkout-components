@@ -31,7 +31,7 @@ function getLabelText(
 
   if (
     paylater?.products?.paylater?.eligible &&
-    paylater?.products?.paylater?.variant === "DE"
+    ["DE", "AT"].includes(paylater?.products?.paylater?.variant)
   ) {
     labelText = "Später Bezahlen";
   }
