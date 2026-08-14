@@ -1,3 +1,9 @@
+## <small>5.0.427 (2026-08-14)</small>
+
+* Feature/austria geo expansion paylater button (#2594) ([f0d630f](https://github.com/paypal/paypal-checkout-components/commit/f0d630f)), closes [#2594](https://github.com/paypal/paypal-checkout-components/issues/2594)
+
+
+
 ## <small>5.0.426 (2026-08-04)</small>
 
 * upgrade prettier to v3 (#2652) ([c062a9c](https://github.com/paypal/paypal-checkout-components/commit/c062a9c)), closes [#2652](https://github.com/paypal/paypal-checkout-components/issues/2652)
