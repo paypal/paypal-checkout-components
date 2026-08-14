@@ -116,7 +116,7 @@ export type ButtonsComponent = ZoidComponent<
   ButtonProps,
   void,
   void,
-  ButtonExtensions,
+  ButtonExtensions
 >;
 
 // $FlowIssue
@@ -195,7 +195,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         try {
           const cplPhases = prepareInstrumentationPayload(
             buttonSessionID,
-            "buttons",
+            "buttons"
           );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
@@ -231,16 +231,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     attributes: ({ props }) => {
-      let fundingSource = "";
-      if (props.fundingSource) {
-        fundingSource = `-${props.fundingSource}`;
-      }
+      // avoid title colliding when no fundingSource is set
+      const title = props.fundingSource
+        ? `${FUNDING_BRAND_LABEL.PAYPAL}-${props.fundingSource}`
+        : `${FUNDING_BRAND_LABEL.PAYPAL} Payment Buttons`;
 
       return {
         iframe: {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
-          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+          title,
           role: "presentation",
         },
       };
@@ -262,11 +262,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         supportsVenmoPopups = supportsVenmoPopupsUtil(
           buttonExperiments,
           userAgentSupportsPopups(),
-          getUserAgent(),
+          getUserAgent()
         ),
         supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
           buttonExperiments,
-          getUserAgent(),
+          getUserAgent()
         ),
         experiment = buttonExperiments,
         createBillingAgreement,
@@ -380,7 +380,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ({ props: { buttonSessionID } }) =>
           ({ close }) => {
             const overlay = document.getElementsByName(
-              `paypal-overlay-${buttonSessionID}`,
+              `paypal-overlay-${buttonSessionID}`
             )?.[0];
 
             if (overlay) {
@@ -456,7 +456,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.addEventListener(
               "visibilitychange",
-              props.visibilityChangeHandler,
+              props.visibilityChangeHandler
             );
           },
       },
@@ -469,7 +469,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.removeEventListener(
               "visibilitychange",
-              props.visibilityChangeHandler,
+              props.visibilityChangeHandler
             );
           },
       },
@@ -956,7 +956,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             // $FlowFixMe
             value,
             layout,
-            fundingSources,
+            fundingSources
           );
         },
       },
@@ -1041,7 +1041,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const modalInstance = await getModal(
               clientID,
               merchantID,
-              buttonSessionID,
+              buttonSessionID
             );
             return modalInstance?.show({
               amount,
@@ -1137,8 +1137,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return Boolean(
             props.onShippingChange ||
-            props.onShippingAddressChange ||
-            props.onShippingOptionsChange,
+              props.onShippingAddressChange ||
+              props.onShippingOptionsChange
           );
         },
       },
@@ -1372,7 +1372,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return isSupportedNativeVenmoBrowser(
             props.experiment,
-            props.userAgent,
+            props.userAgent
           );
         },
         queryParam: true,
@@ -1393,7 +1393,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return supportsVenmoPopupsUtil(
             props.experiment,
             userAgentSupportsPopups(),
-            props.userAgent,
+            props.userAgent
           );
         },
         queryParam: true,
