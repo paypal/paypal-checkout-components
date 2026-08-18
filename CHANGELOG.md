@@ -1,3 +1,9 @@
+## <small>5.0.428 (2026-08-18)</small>
+
+* Fix duplicate PayPal screen reader announcement  (#2655) ([5ea9f54](https://github.com/paypal/paypal-checkout-components/commit/5ea9f54)), closes [#2655](https://github.com/paypal/paypal-checkout-components/issues/2655)
+
+
+
 ## <small>5.0.427 (2026-08-14)</small>
 
 * Feature/austria geo expansion paylater button (#2594) ([f0d630f](https://github.com/paypal/paypal-checkout-components/commit/f0d630f)), closes [#2594](https://github.com/paypal/paypal-checkout-components/issues/2594)
