@@ -1,3 +1,9 @@
+## <small>5.0.430 (2026-08-24)</small>
+
+* chore(release): 5.0.429 🎉 ([a7b2d95](https://github.com/paypal/paypal-checkout-components/commit/a7b2d95))
+
+
+
 ## <small>5.0.429 (2026-08-24)</small>
 
 * Revert "Fix duplicate PayPal screen reader announcement  (#2655)" (#2656) ([8a47d3a](https://github.com/paypal/paypal-checkout-components/commit/8a47d3a)), closes [#2655](https://github.com/paypal/paypal-checkout-components/issues/2655) [#2656](https://github.com/paypal/paypal-checkout-components/issues/2656)
