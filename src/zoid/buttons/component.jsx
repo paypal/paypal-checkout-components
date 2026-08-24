@@ -231,16 +231,16 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
 
     attributes: ({ props }) => {
-      // avoid title colliding when no fundingSource is set
-      const title = props.fundingSource
-        ? `${FUNDING_BRAND_LABEL.PAYPAL}-${props.fundingSource}`
-        : `${FUNDING_BRAND_LABEL.PAYPAL} Payment Buttons`;
+      let fundingSource = "";
+      if (props.fundingSource) {
+        fundingSource = `-${props.fundingSource}`;
+      }
 
       return {
         iframe: {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
-          title,
+          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
           role: "presentation",
         },
       };
