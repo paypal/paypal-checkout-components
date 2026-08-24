@@ -1,3 +1,9 @@
+## <small>5.0.431 (2026-08-24)</small>
+
+* chore(release): 5.0.430 🎉 ([1e6da34](https://github.com/paypal/paypal-checkout-components/commit/1e6da34))
+
+
+
 ## <small>5.0.430 (2026-08-24)</small>
 
 * chore(release): 5.0.429 🎉 ([a7b2d95](https://github.com/paypal/paypal-checkout-components/commit/a7b2d95))
