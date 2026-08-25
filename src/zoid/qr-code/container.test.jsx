@@ -30,6 +30,7 @@ const createMocks = () => ({
     reset: vi.fn(),
     triggerOnce: vi.fn(),
   },
+  isRedesign: false,
 });
 
 const originalWebValue = global.__WEB__;
@@ -168,8 +169,14 @@ describe("QRCodeContainer", () => {
 
   test("should set up visibility classes for prerender transition", () => {
     // Initial state: prerenderFrame visible, component frame invisible
-    const { frame, prerenderFrame, event } = createMocks();
-    QRCodeContainer({ uid: TEST_UID, frame, prerenderFrame, event });
+    const { frame, prerenderFrame, event, isRedesign } = createMocks();
+    QRCodeContainer({
+      uid: TEST_UID,
+      frame,
+      prerenderFrame,
+      event,
+      isRedesign,
+    });
 
     // Verify component frame is initially hidden
     expect(frame.classList.contains("component-frame")).toBe(true);
@@ -199,12 +206,13 @@ describe("QRCodeContainer", () => {
   });
 
   test("should pass cspNonce to QRCodeContainer and apply to rendered style", () => {
-    const { frame, prerenderFrame, event } = createMocks();
+    const { frame, prerenderFrame, event, isRedesign } = createMocks();
     const result = QRCodeContainer({
       uid: TEST_UID,
       frame,
       prerenderFrame,
       event,
+      isRedesign,
       cspNonce: TEST_NONCE,
     });
 
