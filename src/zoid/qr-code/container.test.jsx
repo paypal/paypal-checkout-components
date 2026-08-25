@@ -118,6 +118,37 @@ describe("containerTemplate", () => {
     const styleElement = result.querySelector("style");
     expect(styleElement?.getAttribute("nonce")).toBe(TEST_NONCE);
   });
+
+  test.each([
+    [
+      "experiment enabled",
+      { experiment: { venmoDesktopQRCodeEnhancements: true } },
+      "512px",
+      "382px",
+    ],
+    ["experiment disabled", { experiment: {} }, "720px", "612px"],
+    ["experiment missing", {}, "720px", "612px"],
+  ])(
+    "should size #qrModal based on venmoDesktopQRCodeEnhancements (%s)",
+    (_name, props, expectedWidth, expectedHeight) => {
+      const { frame, prerenderFrame, event } = createMocks();
+      // $FlowIssue - test mock parameters
+      const result = containerTemplate({
+        frame,
+        prerenderFrame,
+        doc: document,
+        uid: TEST_UID,
+        event,
+        // $FlowIssue - test mock parameters
+        props,
+      });
+
+      // $FlowFixMe - result is HTMLElement in test context
+      const styleText = result.querySelector("style")?.textContent ?? "";
+      expect(styleText).toContain(`width: ${expectedWidth};`);
+      expect(styleText).toContain(`height: ${expectedHeight};`);
+    },
+  );
 });
 
 describe("QRCodeContainer", () => {

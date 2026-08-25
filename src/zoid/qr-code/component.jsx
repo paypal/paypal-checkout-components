@@ -69,6 +69,11 @@ export function getQRCodeComponent(): QRCodeComponent {
           required: false,
           value: getCSPNonce,
         },
+        experiment: {
+          type: "object",
+          queryParam: false,
+          required: false,
+        },
         debug: {
           type: "boolean",
           value: getDebug,

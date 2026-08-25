@@ -21,12 +21,14 @@ export function QRCodeContainer({
   prerenderFrame,
   event,
   cspNonce,
+  isRedesign,
 }: {|
   uid: string,
   frame: ?HTMLIFrameElement,
   prerenderFrame: ?HTMLIFrameElement,
   event: EventEmitterType,
   cspNonce?: ?string,
+  isRedesign: boolean,
 |}): ?ChildType {
   if (!frame || !prerenderFrame) {
     throw new Error(`Expected frame and prerenderframe`);
@@ -93,8 +95,8 @@ export function QRCodeContainer({
                 background: #2F3033;
                 box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
                 border-radius: 16px;
-                width: 512px;
-                height: 382px;
+                width: ${isRedesign ? "512px" : "720px"};
+                height: ${isRedesign ? "382px" : "612px"};
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -117,12 +119,14 @@ export function containerTemplate({
   doc,
   uid,
   event,
+  props,
 }: RenderOptionsType<QRCodeProps>): ?HTMLElement {
   if (!frame || !prerenderFrame) {
     return;
   }
 
   const cspNonce = __WEB__ ? getCSPNonce() : undefined;
+  const isRedesign = Boolean(props?.experiment?.venmoDesktopQRCodeEnhancements);
 
   return (
     <QRCodeContainer
@@ -131,6 +135,7 @@ export function containerTemplate({
       event={event}
       frame={frame}
       prerenderFrame={prerenderFrame}
+      isRedesign={isRedesign}
     />
   ).render(dom({ doc }));
 }
