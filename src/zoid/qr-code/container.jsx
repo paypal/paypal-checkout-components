@@ -92,15 +92,15 @@ export function QRCodeContainer({
             #qrModal {
                 background: #2F3033;
                 box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
-                border-radius: 16px;                        
-                width: 720px;
-                height: 612px;  
+                border-radius: 16px;
+                width: 512px;
+                height: 382px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
                 position: relative;
-            }     
+            }
             `}
       />
       <div id="qrModal">
