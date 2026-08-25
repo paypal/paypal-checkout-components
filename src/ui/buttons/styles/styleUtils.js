@@ -229,6 +229,7 @@ export function getResponsiveStyleVariables({
 
   const shouldResizeLabel =
     paylater?.products?.paylater?.variant === "DE" ||
+    paylater?.products?.paylater?.variant === "AT" ||
     paylater?.products?.payIn3?.variant === "IT" ||
     paylater?.products?.paylater?.variant === "IT" ||
     paylater?.products?.payIn3?.variant === "ES" ||
@@ -331,6 +332,7 @@ export function getDisableMaxHeightResponsiveStyleVariables({
 
   const shouldResizeLabel =
     paylater?.products?.paylater?.variant === "DE" ||
+    paylater?.products?.paylater?.variant === "AT" ||
     paylater?.products?.payIn3?.variant === "IT" ||
     paylater?.products?.paylater?.variant === "IT" ||
     paylater?.products?.payIn3?.variant === "ES" ||
