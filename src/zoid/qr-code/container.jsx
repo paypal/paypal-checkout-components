@@ -69,9 +69,10 @@ export function QRCodeContainer({
                 top: 0;
                 left: 0;
                 z-index: 20000;
-                align-items: center;
-                justify-content: center;
-                background-color: rgba(0, 0, 0, 0.4); 
+                align-items: safe center;
+                justify-content: safe center;
+                overflow: auto;
+                background-color:rgba(0, 0, 0, 0.4);
             }
             #${uid} iframe {
                 display: flex;
@@ -128,7 +129,7 @@ export function containerTemplate({
   const cspNonce = __WEB__ ? getCSPNonce() : undefined;
   const isRedesign = Boolean(props?.experiment?.venmoDesktopQRCodeEnhancements);
 
-  return (
+  const result = (
     <QRCodeContainer
       uid={uid}
       cspNonce={cspNonce}
@@ -138,4 +139,6 @@ export function containerTemplate({
       isRedesign={isRedesign}
     />
   ).render(dom({ doc }));
+
+  return result;
 }
