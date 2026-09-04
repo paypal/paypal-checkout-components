@@ -25,6 +25,7 @@ import {
   noop,
   supportsPopups,
   inlineMemoize,
+  stringifyError,
 } from "@krakenjs/belter/src";
 import { FUNDING } from "@paypal/sdk-constants/src";
 import {
@@ -41,6 +42,42 @@ import { fixCreditRedirect } from "./hacks";
 import { DEFAULT_POPUP_SIZE } from "./config";
 
 export type CheckoutComponent = ZoidComponent<CheckoutPropsType>;
+
+const WINDOW_NAME_LOG_TRUNCATION_LENGTH = 100;
+
+function spyOnWindowNameAssignment(): void {
+  try {
+    let currentWindowName = window.name;
+
+    Object.defineProperty(window, "name", {
+      configurable: true,
+      get(): string {
+        return currentWindowName;
+      },
+      set(value: string): void {
+        getLogger().error("checkout_window_name_overwritten", {
+          err: stringifyError(
+            new Error(
+              `window.name was overwritten: ${String(value).slice(
+                0,
+                WINDOW_NAME_LOG_TRUNCATION_LENGTH,
+              )}`,
+            ),
+          ),
+          originalValue: currentWindowName.slice(
+            0,
+            WINDOW_NAME_LOG_TRUNCATION_LENGTH,
+          ),
+        });
+        currentWindowName = value;
+      },
+    });
+  } catch (error) {
+    getLogger().error("checkout_window_name_spy_error", {
+      err: stringifyError(error),
+    });
+  }
+}
 
 export function getCheckoutComponent(): CheckoutComponent {
   return inlineMemoize(getCheckoutComponent, () => {
@@ -382,6 +419,8 @@ export function getCheckoutComponent(): CheckoutComponent {
     });
 
     if (component.isChild()) {
+      spyOnWindowNameAssignment();
+
       window.xchild = {
         props: component.xprops,
         show: noop,
