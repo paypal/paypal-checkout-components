@@ -1,3 +1,9 @@
+## <small>5.0.433 (2026-09-04)</small>
+
+* Revert "Fix duplicate PayPal announcement for screen readers via distinct ifr…" (#2659) ([a2953bd](https://github.com/paypal/paypal-checkout-components/commit/a2953bd)), closes [#2659](https://github.com/paypal/paypal-checkout-components/issues/2659)
+
+
+
 ## <small>5.0.432 (2026-09-01)</small>
 
 * Fix duplicate PayPal announcement for screen readers via distinct iframe aria-label (#2658) ([5b32454](https://github.com/paypal/paypal-checkout-components/commit/5b32454)), closes [#2658](https://github.com/paypal/paypal-checkout-components/issues/2658)
