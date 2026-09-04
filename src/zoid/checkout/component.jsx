@@ -43,7 +43,10 @@ import { DEFAULT_POPUP_SIZE } from "./config";
 
 export type CheckoutComponent = ZoidComponent<CheckoutPropsType>;
 
-const WINDOW_NAME_LOG_TRUNCATION_LENGTH = 100;
+const WINDOW_NAME_LOG_TRUNCATION_LENGTH = 50;
+// Matches window names zoid itself writes, eg `__zoid__paypal_checkout__<payload>__`.
+// See buildChildWindowName in @krakenjs/zoid.
+const ZOID_WINDOW_NAME_PATTERN = /^__zoid__.+__$/;
 
 function spyOnWindowNameAssignment(): void {
   try {
@@ -55,6 +58,11 @@ function spyOnWindowNameAssignment(): void {
         return currentWindowName;
       },
       set(value: string): void {
+        if (ZOID_WINDOW_NAME_PATTERN.test(value)) {
+          currentWindowName = value;
+          return;
+        }
+
         getLogger().error("checkout_window_name_overwritten", {
           err: stringifyError(
             new Error(
