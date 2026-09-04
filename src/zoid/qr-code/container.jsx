@@ -21,12 +21,14 @@ export function QRCodeContainer({
   prerenderFrame,
   event,
   cspNonce,
+  isRedesign,
 }: {|
   uid: string,
   frame: ?HTMLIFrameElement,
   prerenderFrame: ?HTMLIFrameElement,
   event: EventEmitterType,
   cspNonce?: ?string,
+  isRedesign: boolean,
 |}): ?ChildType {
   if (!frame || !prerenderFrame) {
     throw new Error(`Expected frame and prerenderframe`);
@@ -67,9 +69,10 @@ export function QRCodeContainer({
                 top: 0;
                 left: 0;
                 z-index: 20000;
-                align-items: center;
-                justify-content: center;
-                background-color: rgba(0, 0, 0, 0.4); 
+                align-items: safe center;
+                justify-content: safe center;
+                overflow: auto;
+                background-color:rgba(0, 0, 0, 0.4);
             }
             #${uid} iframe {
                 display: flex;
@@ -92,15 +95,15 @@ export function QRCodeContainer({
             #qrModal {
                 background: #2F3033;
                 box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
-                border-radius: 16px;                        
-                width: 720px;
-                height: 612px;  
+                border-radius: 16px;
+                width: ${isRedesign ? "512px" : "720px"};
+                height: ${isRedesign ? "382px" : "612px"};
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
                 position: relative;
-            }     
+            }
             `}
       />
       <div id="qrModal">
@@ -117,20 +120,25 @@ export function containerTemplate({
   doc,
   uid,
   event,
+  props,
 }: RenderOptionsType<QRCodeProps>): ?HTMLElement {
   if (!frame || !prerenderFrame) {
     return;
   }
 
   const cspNonce = __WEB__ ? getCSPNonce() : undefined;
+  const isRedesign = Boolean(props?.experiment?.venmoDesktopQRCodeEnhancements);
 
-  return (
+  const result = (
     <QRCodeContainer
       uid={uid}
       cspNonce={cspNonce}
       event={event}
       frame={frame}
       prerenderFrame={prerenderFrame}
+      isRedesign={isRedesign}
     />
   ).render(dom({ doc }));
+
+  return result;
 }

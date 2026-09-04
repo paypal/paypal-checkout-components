@@ -69,6 +69,14 @@ export function getQRCodeComponent(): QRCodeComponent {
           required: false,
           value: getCSPNonce,
         },
+        experiment: {
+          type: "object",
+          queryParam: false,
+          required: false,
+          // containerTemplate needs this to size the modal, even when
+          // rendering is delegated to another window.
+          allowDelegate: true,
+        },
         debug: {
           type: "boolean",
           value: getDebug,
