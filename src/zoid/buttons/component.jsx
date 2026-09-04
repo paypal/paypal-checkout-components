@@ -241,7 +241,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           allowpaymentrequest: "allowpaymentrequest",
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
-          "aria-label": "Payment Button",
           role: "presentation",
         },
       };
