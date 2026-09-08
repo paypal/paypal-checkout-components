@@ -72,7 +72,7 @@ function spyOnWindowNameAssignment(): void {
               )}`,
             ),
           ),
-          originalValue: currentWindowName.slice(
+          originalValue: String(currentWindowName).slice(
             0,
             WINDOW_NAME_LOG_TRUNCATION_LENGTH,
           ),
