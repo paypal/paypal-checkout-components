@@ -1,3 +1,9 @@
+## <small>5.0.434 (2026-09-09)</small>
+
+* observe window name (#2660) ([8ca3828](https://github.com/paypal/paypal-checkout-components/commit/8ca3828)), closes [#2660](https://github.com/paypal/paypal-checkout-components/issues/2660)
+
+
+
 ## <small>5.0.433 (2026-09-04)</small>
 
 * Revert "Fix duplicate PayPal announcement for screen readers via distinct ifr…" (#2659) ([a2953bd](https://github.com/paypal/paypal-checkout-components/commit/a2953bd)), closes [#2659](https://github.com/paypal/paypal-checkout-components/issues/2659)
