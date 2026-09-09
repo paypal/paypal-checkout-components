@@ -39,7 +39,8 @@ vi.mock("./util", async (importOriginal) => ({
 
 describe("getButtonsComponent iframe title", () => {
   it("uses the plain PayPal label when no funding source is set", () => {
-    const { attributes } = getButtonsComponent();
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
 
     expect(attributes({ props: {} }).iframe.title).toBe(
       FUNDING_BRAND_LABEL.PAYPAL,
@@ -47,7 +48,8 @@ describe("getButtonsComponent iframe title", () => {
   });
 
   it("appends the funding source to the label when one is set", () => {
-    const { attributes } = getButtonsComponent();
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
 
     expect(attributes({ props: { fundingSource: "venmo" } }).iframe.title).toBe(
       `${FUNDING_BRAND_LABEL.PAYPAL}-venmo`,
