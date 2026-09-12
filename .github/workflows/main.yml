@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -19,7 +19,7 @@ jobs:
         run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NVMRC }}
           registry-url: "https://registry.npmjs.org"
