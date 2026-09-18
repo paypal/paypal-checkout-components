@@ -53,6 +53,112 @@ describe(`paylater button text`, () => {
     });
   });
 
+  it(`should display Pay Later button text when paylater product is eligible and variant is AU (Pay Monthly)`, () => {
+    const fundingSource = FUNDING.PAYLATER;
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true,
+    );
+    mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
+      paylater: {
+        eligible: true,
+        variant: "AU",
+      },
+    });
+
+    const button = window.paypal.Buttons({
+      fundingSource,
+    });
+
+    if (!button.isEligible()) {
+      throw new Error(`Expected paylater to be eligible`);
+    }
+
+    return button.render("#testContainer").then(() => {
+      assert.equal(
+        getElementRecursive(".paypal-button-text").innerHTML,
+        "Pay Later",
+      );
+      assert.equal(
+        getElementRecursive(".paypal-button").getAttribute("aria-label"),
+        "Pay Later",
+      );
+    });
+  });
+
+  it(`should display Pay Later button text when AU buyer is eligible for both payIn4 and paylater (variant AU wins over Pay in 4)`, () => {
+    const fundingSource = FUNDING.PAYLATER;
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true,
+    );
+    mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
+      payIn4: {
+        eligible: true,
+        variant: "AU",
+      },
+      paylater: {
+        eligible: true,
+        variant: "AU",
+      },
+    });
+
+    const button = window.paypal.Buttons({
+      fundingSource,
+    });
+
+    if (!button.isEligible()) {
+      throw new Error(`Expected paylater to be eligible`);
+    }
+
+    return button.render("#testContainer").then(() => {
+      assert.equal(
+        getElementRecursive(".paypal-button-text").innerHTML,
+        "Pay Later",
+      );
+      assert.equal(
+        getElementRecursive(".paypal-button").getAttribute("aria-label"),
+        "Pay Later",
+      );
+    });
+  });
+
+  it(`should display Pay Later button text when AU buyer is eligible for payIn4 only (Pi4-only still reads Pay Later)`, () => {
+    const fundingSource = FUNDING.PAYLATER;
+    mockProp(
+      window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
+      "eligible",
+      true,
+    );
+    mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
+      payIn4: {
+        eligible: true,
+        variant: "AU",
+      },
+    });
+
+    const button = window.paypal.Buttons({
+      fundingSource,
+    });
+
+    if (!button.isEligible()) {
+      throw new Error(`Expected paylater to be eligible`);
+    }
+
+    return button.render("#testContainer").then(() => {
+      assert.equal(
+        getElementRecursive(".paypal-button-text").innerHTML,
+        "Pay Later",
+      );
+      assert.equal(
+        getElementRecursive(".paypal-button").getAttribute("aria-label"),
+        "Pay Later",
+      );
+    });
+  });
+
   it(`should display Pay Later button text when payIn4 product is not eligible`, () => {
     const fundingSource = FUNDING.PAYLATER;
     mockProp(
@@ -328,7 +434,7 @@ describe(`paylater button text`, () => {
     mockProp(
       window.__TEST_FUNDING_ELIGIBILITY__[fundingSource],
       "eligible",
-      true
+      true,
     );
     mockProp(window.__TEST_FUNDING_ELIGIBILITY__[fundingSource], "products", {
       paylater: {
@@ -348,11 +454,11 @@ describe(`paylater button text`, () => {
     return button.render("#testContainer").then(() => {
       assert.equal(
         getElementRecursive(".paypal-button-text").innerHTML,
-        "Später Bezahlen"
+        "Später Bezahlen",
       );
       assert.equal(
         getElementRecursive(".paypal-button").getAttribute("aria-label"),
-        "Später Bezahlen"
+        "Später Bezahlen",
       );
     });
   });
