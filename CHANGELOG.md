@@ -1,3 +1,9 @@
+## <small>5.0.435 (2026-09-21)</small>
+
+* chore: add test for button iframe title (#2661) ([71f1981](https://github.com/paypal/paypal-checkout-components/commit/71f1981)), closes [#2661](https://github.com/paypal/paypal-checkout-components/issues/2661)
+
+
+
 ## <small>5.0.434 (2026-09-09)</small>
 
 * observe window name (#2660) ([8ca3828](https://github.com/paypal/paypal-checkout-components/commit/8ca3828)), closes [#2660](https://github.com/paypal/paypal-checkout-components/issues/2660)
