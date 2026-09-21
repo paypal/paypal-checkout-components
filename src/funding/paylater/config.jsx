@@ -59,7 +59,7 @@ function getLabelText(
     paylater?.products?.paylater?.variant === "CA" &&
     lang === "fr"
   ) {
-    labelText = "Payer en 4";
+    labelText = "Payer plus tard";
   }
 
   if (paylater?.products?.payIn4?.eligible) {
