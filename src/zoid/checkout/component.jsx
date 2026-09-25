@@ -97,6 +97,9 @@ export function getCheckoutComponent(): CheckoutComponent {
       attributes: {
         iframe: {
           scrolling: "yes",
+          // Delegates the Permissions Policy 'payment' feature so PaymentRequest
+          // works when this iframe falls back to CONTEXT.IFRAME (supportsPopups() false).
+          allow: "payment",
         },
       },
 
