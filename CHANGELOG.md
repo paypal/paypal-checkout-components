@@ -1,3 +1,9 @@
+## <small>5.0.436 (2026-09-29)</small>
+
+* feat: update ca button label text (#2662) ([1c7a1f0](https://github.com/paypal/paypal-checkout-components/commit/1c7a1f0)), closes [#2662](https://github.com/paypal/paypal-checkout-components/issues/2662)
+
+
+
 ## <small>5.0.435 (2026-09-21)</small>
 
 * chore: add test for button iframe title (#2661) ([71f1981](https://github.com/paypal/paypal-checkout-components/commit/71f1981)), closes [#2661](https://github.com/paypal/paypal-checkout-components/issues/2661)
