@@ -56,3 +56,21 @@ describe("getButtonsComponent iframe title", () => {
     );
   });
 });
+
+describe("getButtonsComponent iframe payment permissions policy", () => {
+  it("delegates the payment permissions policy to the buttons iframe", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(attributes({ props: {} }).iframe.allow).toBe("payment");
+  });
+
+  it("keeps the legacy allowpaymentrequest attribute alongside the modern allow attribute", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    const iframeAttrs = attributes({ props: {} }).iframe;
+    expect(iframeAttrs.allowpaymentrequest).toBe("allowpaymentrequest");
+    expect(iframeAttrs.allow).toBe("payment");
+  });
+});

@@ -239,6 +239,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       return {
         iframe: {
           allowpaymentrequest: "allowpaymentrequest",
+          allow: "payment",
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
           role: "presentation",
