@@ -1,6 +1,7 @@
 /* @flow */
 
 import { describe, expect, it, vi } from "vitest";
+import { supportsPopups } from "@krakenjs/belter/src";
 
 import { getCheckoutComponent } from "./component";
 
@@ -34,7 +35,7 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),
 }));
 
-describe("getCheckoutComponent iframe payment permissions policy (DTINAPPXO-5124)", () => {
+describe("getCheckoutComponent iframe payment permissions policy", () => {
   it("delegates the payment permissions policy to the checkout iframe", () => {
     getCheckoutComponent();
     const { attributes } = createMock.mock.calls[0][0];
@@ -47,6 +48,22 @@ describe("getCheckoutComponent iframe payment permissions policy (DTINAPPXO-5124
     const { attributes } = createMock.mock.calls[0][0];
 
     expect(attributes.iframe.scrolling).toBe("yes");
+    expect(attributes.iframe.allow).toBe("payment");
+  });
+
+  it("still delegates the payment permissions policy when the component falls back to CONTEXT.IFRAME", async () => {
+    // getCheckoutComponent() is inline-memoized, so the earlier tests' calls
+    // never re-invoke create(). Reset the module registry to get a fresh,
+    // un-memoized component that actually re-evaluates supportsPopups().
+    vi.mocked(supportsPopups).mockReturnValueOnce(false);
+    vi.resetModules();
+    const { getCheckoutComponent: getFreshCheckoutComponent } = await import(
+      "./component"
+    );
+
+    getFreshCheckoutComponent();
+
+    const { attributes } = createMock.mock.calls.at(-1)[0];
     expect(attributes.iframe.allow).toBe("payment");
   });
 });

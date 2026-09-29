@@ -57,7 +57,7 @@ describe("getButtonsComponent iframe title", () => {
   });
 });
 
-describe("getButtonsComponent iframe payment permissions policy (DTINAPPXO-5124)", () => {
+describe("getButtonsComponent iframe payment permissions policy", () => {
   it("delegates the payment permissions policy to the buttons iframe", () => {
     getButtonsComponent();
     const { attributes } = createMock.mock.calls[0][0];
