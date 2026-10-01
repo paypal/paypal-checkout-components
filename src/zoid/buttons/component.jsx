@@ -119,6 +119,16 @@ export type ButtonsComponent = ZoidComponent<
   ButtonExtensions,
 >;
 
+interface ZalgoThenable<T> {
+  then(onSuccess: (T) => mixed, onError: (mixed) => mixed): mixed;
+}
+
+function toLocalZalgoPromise<T>(promise: ZalgoThenable<T>): ZalgoPromise<T> {
+  return new ZalgoPromise((resolve, reject) => {
+    promise.then(resolve, reject);
+  });
+}
+
 // $FlowIssue
 export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
   const queriedEligibleFunding = [];
@@ -134,13 +144,71 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     getExtensions: (parent) => {
       return {
         hasReturned: () => {
-          return isAppSwitchResumeFlow();
+          const isResumeFlow = isAppSwitchResumeFlow();
+          const currentState = parent.getHelpers()?.state?.appSwitchState;
+          const result = isResumeFlow && !currentState;
+
+          return result;
         },
-        resume: () => {
+        resume: function resume(): void | ZalgoPromise<void> {
+          const self = this;
           const resumeFlowParams = getAppSwitchResumeParams();
           if (!resumeFlowParams) {
             throw new Error("Resume Flow is not supported.");
           }
+
+          // Mark state as "returned" to prevent duplicate resume() calls
+          // This ensures hasReturned() will return false on subsequent checks
+          const helpers = parent.getHelpers();
+          if (helpers?.state) {
+            helpers.state.appSwitchState = "returned";
+          }
+
+          const parentProps = parent.getProps();
+          let closePixel = noop;
+          const createHiddenButtonContainer = () => {
+            const hiddenButtonContainer = window.document.createElement("div");
+            hiddenButtonContainer.id = "paypal-button-hidden-container";
+            hiddenButtonContainer.style.display = "none";
+            // eslint-disable-next-line compat/compat
+            window.document.body.appendChild(hiddenButtonContainer);
+
+            return hiddenButtonContainer;
+          };
+
+          if (
+            resumeFlowParams.checkoutState === "onCancel" &&
+            resumeFlowParams.orderID
+          ) {
+            const orderID: string = resumeFlowParams.orderID;
+
+            // $FlowIgnore[prop-missing] ButtonProps exposes lowercase oncancel; runtime props use onCancel.
+            const parentOnCancel = parentProps.onCancel;
+            let result;
+
+            if (typeof parentOnCancel === "function") {
+              // $FlowIgnore[incompatible-call] Resume callback payload is built at runtime.
+              result = parentOnCancel({ orderID }, {});
+            }
+
+            return ZalgoPromise.resolve(result).then(() => {
+              const { rerender } = parent.getHelpers();
+
+              return toLocalZalgoPromise(
+                rerender({
+                  decorate: (props) => ({
+                    ...props,
+                    createOrder: () => ZalgoPromise.resolve(orderID),
+                  }),
+                })
+              );
+            });
+          }
+
+          const hiddenButtonContainer = createHiddenButtonContainer();
+
+          self.render(hiddenButtonContainer).catch(noop);
+
           getLogger().metricCounter({
             namespace: "resume_flow.init.count",
             event: "info",
@@ -151,18 +219,50 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
               payerID: Boolean(resumeFlowParams.payerID),
             },
           });
+          // Wrap onCancel - no reload/URL clear to allow button re-render in place
+          // State tracking via appSwitchState prevents duplicate onCancel invocations
+          const wrappedOnCancel = (...args) => {
+            // $FlowIgnore[prop-missing] ButtonProps exposes lowercase oncancel; runtime props use onCancel.
+            const parentOnCancel = parentProps.onCancel;
+            let result;
+
+            if (typeof parentOnCancel === "function") {
+              // $FlowIgnore[incompatible-call] Resume callback payload is built at runtime.
+              result = parentOnCancel(...args);
+            }
+
+            return ZalgoPromise.resolve(result).then(() => {
+              closePixel();
+              hiddenButtonContainer.style.display = "block";
+            });
+          };
+
+          const wrappedOnError = (...args) => {
+            return ZalgoPromise.try(() => {
+              if (typeof parentProps.onError === "function") {
+                // $FlowIgnore[incompatible-call] Resume callback payload is built at runtime.
+                return parentProps.onError(...args);
+              }
+            }).then(() => {
+              closePixel();
+              hiddenButtonContainer.style.display = "block";
+            });
+          };
+
           const resumeComponent = getPixelComponent();
-          const parentProps = parent.getProps();
-          resumeComponent({
+
+          const pixelInstance = resumeComponent({
             onApprove: parentProps.onApprove,
-            // $FlowIgnore[incompatible-call]
-            onError: parentProps.onError,
-            // $FlowIgnore[prop-missing] onCancel is incorrectly declared as oncancel in button props
-            onCancel: parentProps.onCancel,
+            onError: wrappedOnError,
+            onCancel: wrappedOnCancel,
             onClick: parentProps.onClick,
             onComplete: parentProps.onComplete,
             resumeFlowParams,
-          }).render("body");
+          });
+
+          closePixel = () => pixelInstance.close();
+
+          pixelInstance.render("body");
         },
       };
     },
@@ -402,22 +502,28 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => (event) => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-hashchange",
-            payload: {
-              url: event.newURL,
-            },
-          });
-        },
+        value:
+          ({ state }) =>
+          (event) => {
+            state.appSwitchState = "returned";
+
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-hashchange",
+              payload: {
+                url: event.newURL,
+              },
+            });
+          },
       },
 
       listenForHashChanges: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            state.appSwitchState = "pending";
+
             window.addEventListener("hashchange", props.hashChangeHandler);
           },
       },
@@ -436,24 +542,29 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         type: "function",
         sendToChild: false,
         queryParam: false,
-        value: () => () => {
-          sendPostRobotMessageToButtonIframe({
-            eventName: "paypal-visibilitychange",
-            payload: {
-              url: window.location.href,
+        value:
+          ({ state }) =>
+          () => {
+            state.appSwitchState = "returned";
 
-              visibilityState: document.visibilityState,
-            },
-          });
-        },
+            sendPostRobotMessageToButtonIframe({
+              eventName: "paypal-visibilitychange",
+              payload: {
+                url: window.location.href,
+                visibilityState: document.visibilityState,
+              },
+            });
+          },
       },
 
       listenForVisibilityChange: {
         type: "function",
         queryParam: false,
         value:
-          ({ props }) =>
+          ({ props, state }) =>
           () => {
+            state.appSwitchState = "pending";
+
             window.addEventListener(
               "visibilitychange",
               props.visibilityChangeHandler,
