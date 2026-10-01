@@ -1,3 +1,33 @@
+## <small>5.0.436 (2026-09-29)</small>
+
+* feat: update ca button label text (#2662) ([1c7a1f0](https://github.com/paypal/paypal-checkout-components/commit/1c7a1f0)), closes [#2662](https://github.com/paypal/paypal-checkout-components/issues/2662)
+
+
+
+## <small>5.0.435 (2026-09-21)</small>
+
+* chore: add test for button iframe title (#2661) ([71f1981](https://github.com/paypal/paypal-checkout-components/commit/71f1981)), closes [#2661](https://github.com/paypal/paypal-checkout-components/issues/2661)
+
+
+
+## <small>5.0.434 (2026-09-09)</small>
+
+* observe window name (#2660) ([8ca3828](https://github.com/paypal/paypal-checkout-components/commit/8ca3828)), closes [#2660](https://github.com/paypal/paypal-checkout-components/issues/2660)
+
+
+
+## <small>5.0.433 (2026-09-04)</small>
+
+* Revert "Fix duplicate PayPal announcement for screen readers via distinct ifr…" (#2659) ([a2953bd](https://github.com/paypal/paypal-checkout-components/commit/a2953bd)), closes [#2659](https://github.com/paypal/paypal-checkout-components/issues/2659)
+
+
+
+## <small>5.0.432 (2026-09-01)</small>
+
+* Fix duplicate PayPal announcement for screen readers via distinct iframe aria-label (#2658) ([5b32454](https://github.com/paypal/paypal-checkout-components/commit/5b32454)), closes [#2658](https://github.com/paypal/paypal-checkout-components/issues/2658)
+
+
+
 ## <small>5.0.431 (2026-08-24)</small>
 
 * chore(release): 5.0.430 🎉 ([1e6da34](https://github.com/paypal/paypal-checkout-components/commit/1e6da34))
