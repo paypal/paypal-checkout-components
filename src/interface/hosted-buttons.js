@@ -1,13 +1,12 @@
 /* @flow */
 
-import type { Node } from "react";
-
+import { getHostedButtonsComponent } from "../hosted-buttons";
+import type { HostedButtonsComponent } from "../hosted-buttons/types";
+import { getButtonsComponent } from "../zoid/buttons";
 import {
-  getHostedButtonsComponent,
-  type HostedButtonsComponent,
-} from "../hosted-buttons";
-import { getButtonsComponent, type ButtonsComponent } from "../zoid/buttons";
-import { getCardFormComponent, type CardFormComponent } from "../zoid/card-form";
+  getCardFormComponent,
+  type CardFormComponent,
+} from "../zoid/card-form";
 import { getQRCodeComponent, type QRCodeComponent } from "../zoid/qr-code";
 import { getCheckoutComponent, type CheckoutComponent } from "../zoid/checkout";
 import type { LazyExport, LazyProtectedExport } from "../types";
@@ -17,8 +16,8 @@ export const HostedButtons: LazyExport<HostedButtonsComponent> = {
   __get__: () => getHostedButtonsComponent(),
 };
 
-export const Buttons: LazyProtectedExport<ButtonsComponent> = {
-  __get__: () => protectedExport(getButtonsComponent()),
+export const Checkout: LazyProtectedExport<CheckoutComponent> = {
+  __get__: () => protectedExport(getCheckoutComponent()),
 };
 
 export const CardForm: LazyProtectedExport<CardFormComponent> = {
@@ -36,7 +35,4 @@ export const allowIframe: LazyProtectedExport<typeof _allowIframe> = {
 export function setup() {
   getButtonsComponent();
   getCheckoutComponent();
-  getHostedButtonsComponent();
-  getCardFormComponent();
-  getQRCodeComponent();
 }
