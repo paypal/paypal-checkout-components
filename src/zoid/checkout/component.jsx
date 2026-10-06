@@ -68,13 +68,13 @@ function spyOnWindowNameAssignment(): void {
             new Error(
               `window.name was overwritten: ${String(value).slice(
                 0,
-                WINDOW_NAME_LOG_TRUNCATION_LENGTH,
-              )}`,
-            ),
+                WINDOW_NAME_LOG_TRUNCATION_LENGTH
+              )}`
+            )
           ),
           originalValue: String(currentWindowName).slice(
             0,
-            WINDOW_NAME_LOG_TRUNCATION_LENGTH,
+            WINDOW_NAME_LOG_TRUNCATION_LENGTH
           ),
         });
         currentWindowName = value;
@@ -99,7 +99,11 @@ export function getCheckoutComponent(): CheckoutComponent {
           scrolling: "yes",
           // Delegates the Permissions Policy 'payment' feature so PaymentRequest
           // works when this iframe falls back to CONTEXT.IFRAME (supportsPopups() false).
-          allow: "payment",
+          // zoid never sets this iframe's `src` attribute (it navigates the frame
+          // via window.location/form-POST after creation instead), so the 'src'
+          // keyword that bare `allow="payment"` resolves to can never match the
+          // actual checkout origin. Name the origin explicitly instead.
+          allow: `payment ${getPayPalDomain()}`,
         },
       },
 
@@ -346,8 +350,8 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: ({ props }) => {
             return Boolean(
               props.onShippingChange ||
-              props.onShippingAddressChange ||
-              props.onShippingOptionsChange,
+                props.onShippingAddressChange ||
+                props.onShippingOptionsChange
             );
           },
         },
