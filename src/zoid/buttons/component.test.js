@@ -56,3 +56,32 @@ describe("getButtonsComponent iframe title", () => {
     );
   });
 });
+
+describe("getButtonsComponent iframe allow attribute", () => {
+  it("does not set allow when the WebMCP first-render experiment flag is absent", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(attributes({ props: {} }).iframe.allow).toBeUndefined();
+  });
+
+  it("does not set allow when the WebMCP first-render experiment flag is disabled", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(
+      attributes({ props: { experiment: { isWebMCPEnabled: false } } }).iframe
+        .allow,
+    ).toBeUndefined();
+  });
+
+  it("sets allow to 'tools' when the WebMCP first-render experiment flag is enabled", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(
+      attributes({ props: { experiment: { isWebMCPEnabled: true } } }).iframe
+        .allow,
+    ).toBe("tools");
+  });
+});

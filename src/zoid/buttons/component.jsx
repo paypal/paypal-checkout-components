@@ -236,13 +236,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         fundingSource = `-${props.fundingSource}`;
       }
 
+      const baseIframeAttributes = {
+        allowpaymentrequest: "allowpaymentrequest",
+        scrolling: "no",
+        title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+        role: "presentation",
+      };
+
       return {
-        iframe: {
-          allowpaymentrequest: "allowpaymentrequest",
-          scrolling: "no",
-          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
-          role: "presentation",
-        },
+        iframe: props.experiment?.isWebMCPEnabled
+          ? { ...baseIframeAttributes, allow: "tools" }
+          : baseIframeAttributes,
       };
     },
 
