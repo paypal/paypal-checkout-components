@@ -247,6 +247,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           scrolling: "no",
           title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
           role: "presentation",
+          ...(props.experiment?.isWebMCPEnabled ? { allow: "tools" } : {}),
         },
       };
     },
