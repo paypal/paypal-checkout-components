@@ -236,19 +236,22 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         fundingSource = `-${props.fundingSource}`;
       }
 
+      const baseIframeAttributes = {
+        allowpaymentrequest: "allowpaymentrequest",
+        // Named origin, not bare "payment": zoid never sets this iframe's `src`
+        // attribute (it navigates the frame via window.location/form-POST after
+        // creation instead), so the 'src' keyword that bare `allow="payment"`
+        // resolves to can never match the actual checkout origin.
+        allow: `payment ${getPayPalDomain()}`,
+        scrolling: "no",
+        title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+        role: "presentation",
+      };
+
       return {
-        iframe: {
-          allowpaymentrequest: "allowpaymentrequest",
-          // Named origin, not bare "payment": zoid never sets this iframe's `src`
-          // attribute (it navigates the frame via window.location/form-POST after
-          // creation instead), so the 'src' keyword that bare `allow="payment"`
-          // resolves to can never match the actual checkout origin.
-          allow: `payment ${getPayPalDomain()}`,
-          scrolling: "no",
-          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
-          role: "presentation",
-          ...(props.experiment?.isWebMCPEnabled ? { allow: "tools" } : {}),
-        },
+        iframe: props.experiment?.isWebMCPEnabled
+          ? { ...baseIframeAttributes, allow: "tools *" }
+          : baseIframeAttributes,
       };
     },
 
