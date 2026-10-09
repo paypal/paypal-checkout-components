@@ -29,6 +29,7 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
     error: vi.fn(),
   })),
   getPayPalDomainRegex: vi.fn(() => /paypal\.com/),
+  getPayPalDomain: vi.fn(() => "https://www.paypal.com"),
   getEnv: vi.fn(() => "test"),
 }));
 
@@ -43,7 +44,7 @@ describe("getButtonsComponent iframe title", () => {
     const { attributes } = createMock.mock.calls[0][0];
 
     expect(attributes({ props: {} }).iframe.title).toBe(
-      FUNDING_BRAND_LABEL.PAYPAL,
+      FUNDING_BRAND_LABEL.PAYPAL
     );
   });
 
@@ -52,7 +53,43 @@ describe("getButtonsComponent iframe title", () => {
     const { attributes } = createMock.mock.calls[0][0];
 
     expect(attributes({ props: { fundingSource: "venmo" } }).iframe.title).toBe(
-      `${FUNDING_BRAND_LABEL.PAYPAL}-venmo`,
+      `${FUNDING_BRAND_LABEL.PAYPAL}-venmo`
     );
+  });
+});
+
+describe("getButtonsComponent iframe payment permissions policy", () => {
+  it("delegates the payment permissions policy to the buttons iframe's actual origin", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(attributes({ props: {} }).iframe.allow).toBe(
+      "payment https://www.paypal.com"
+    );
+  });
+
+  it("keeps the legacy allowpaymentrequest attribute alongside the modern allow attribute", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    const iframeAttrs = attributes({ props: {} }).iframe;
+    expect(iframeAttrs.allowpaymentrequest).toBe("allowpaymentrequest");
+    expect(iframeAttrs.allow).toBe("payment https://www.paypal.com");
+  });
+
+  it("names the origin explicitly rather than relying on the 'src' keyword", () => {
+    // zoid's openFrame() never sets this iframe's `src` attribute — it creates
+    // the iframe bare, then navigates it later via proxyWin.setLocation(), which
+    // uses window.location/form-POST, not the `src` attribute. Permissions
+    // Policy's 'src' keyword resolves by reading that attribute, so a bare
+    // `allow="payment"` (== `payment 'src'`) can never grant the feature here.
+    // Regression test for the retest failure after the original 'payment'-only
+    // fix (DTINAPPXO-5124).
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    const iframeAttrs = attributes({ props: {} }).iframe;
+    expect(iframeAttrs.allow).not.toBe("payment");
+    expect(iframeAttrs.allow).toContain("https://www.paypal.com");
   });
 });
