@@ -1,3 +1,9 @@
+## <small>5.0.437 (2026-10-09)</small>
+
+* Delegate payment Permissions Policy to buttons and checkout iframes (#2665) ([4824404](https://github.com/paypal/paypal-checkout-components/commit/4824404)), closes [#2665](https://github.com/paypal/paypal-checkout-components/issues/2665)
+
+
+
 ## <small>5.0.436 (2026-09-29)</small>
 
 * feat: update ca button label text (#2662) ([1c7a1f0](https://github.com/paypal/paypal-checkout-components/commit/1c7a1f0)), closes [#2662](https://github.com/paypal/paypal-checkout-components/issues/2662)
