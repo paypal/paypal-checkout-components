@@ -30,6 +30,7 @@ const createMocks = () => ({
     reset: vi.fn(),
     triggerOnce: vi.fn(),
   },
+  isRedesign: false,
 });
 
 const originalWebValue = global.__WEB__;
@@ -118,6 +119,37 @@ describe("containerTemplate", () => {
     const styleElement = result.querySelector("style");
     expect(styleElement?.getAttribute("nonce")).toBe(TEST_NONCE);
   });
+
+  test.each([
+    [
+      "experiment enabled",
+      { experiment: { venmoDesktopQRCodeEnhancements: true } },
+      "512px",
+      "382px",
+    ],
+    ["experiment disabled", { experiment: {} }, "720px", "612px"],
+    ["experiment missing", {}, "720px", "612px"],
+  ])(
+    "should size #qrModal based on venmoDesktopQRCodeEnhancements (%s)",
+    (_name, props, expectedWidth, expectedHeight) => {
+      const { frame, prerenderFrame, event } = createMocks();
+      // $FlowIssue - test mock parameters
+      const result = containerTemplate({
+        frame,
+        prerenderFrame,
+        doc: document,
+        uid: TEST_UID,
+        event,
+        // $FlowIssue - test mock parameters
+        props,
+      });
+
+      // $FlowFixMe - result is HTMLElement in test context
+      const styleText = result.querySelector("style")?.textContent ?? "";
+      expect(styleText).toContain(`width: ${expectedWidth};`);
+      expect(styleText).toContain(`height: ${expectedHeight};`);
+    },
+  );
 });
 
 describe("QRCodeContainer", () => {
@@ -137,8 +169,14 @@ describe("QRCodeContainer", () => {
 
   test("should set up visibility classes for prerender transition", () => {
     // Initial state: prerenderFrame visible, component frame invisible
-    const { frame, prerenderFrame, event } = createMocks();
-    QRCodeContainer({ uid: TEST_UID, frame, prerenderFrame, event });
+    const { frame, prerenderFrame, event, isRedesign } = createMocks();
+    QRCodeContainer({
+      uid: TEST_UID,
+      frame,
+      prerenderFrame,
+      event,
+      isRedesign,
+    });
 
     // Verify component frame is initially hidden
     expect(frame.classList.contains("component-frame")).toBe(true);
@@ -168,12 +206,13 @@ describe("QRCodeContainer", () => {
   });
 
   test("should pass cspNonce to QRCodeContainer and apply to rendered style", () => {
-    const { frame, prerenderFrame, event } = createMocks();
+    const { frame, prerenderFrame, event, isRedesign } = createMocks();
     const result = QRCodeContainer({
       uid: TEST_UID,
       frame,
       prerenderFrame,
       event,
+      isRedesign,
       cspNonce: TEST_NONCE,
     });
 
