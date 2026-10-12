@@ -34,7 +34,13 @@ import {
   type FundingEligibilityType,
 } from "@paypal/sdk-constants/src";
 
-import { getSessionID, ValidationError } from "../../lib";
+import {
+  getSessionID,
+  ValidationError,
+  registerMaskedComponent,
+  hasUserInteracted,
+  notifyUserInteraction,
+} from "../../lib";
 
 import { CardPrerender } from "./prerender";
 
@@ -340,6 +346,13 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             type: "string",
             queryParam: true,
             value: ({ props }) => props.parent.props.sdkMeta,
+          },
+
+          maskIP: {
+            type: "boolean",
+            queryParam: true,
+            required: false,
+            value: ({ props }) => props.parent.props.maskIP,
           },
 
           style: {
@@ -683,6 +696,19 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           value: getSDKMeta,
         },
 
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
+        },
+
+        onUserInteraction: {
+          type: "function",
+          required: false,
+          value: () => notifyUserInteraction,
+        },
+
         style: {
           type: "object",
           required: false,
@@ -796,3 +822,5 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     return CardFields;
   },
 );
+
+registerMaskedComponent(getCardFieldsComponent);

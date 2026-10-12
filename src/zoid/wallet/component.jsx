@@ -39,6 +39,8 @@ import {
   rememberFunding,
 } from "@paypal/funding-components/src";
 
+import { registerMaskedComponent, hasUserInteracted } from "../../lib";
+
 import { type WalletProps } from "./props";
 import { WalletPrerender } from "./prerender";
 import { WalletContainer } from "./container";
@@ -106,6 +108,13 @@ export function getWalletComponent(): WalletComponent {
           queryParam: true,
           sendToChild: false,
           value: getSDKMeta,
+        },
+
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
         },
 
         clientID: {
@@ -312,3 +321,5 @@ export function getWalletComponent(): WalletComponent {
     });
   });
 }
+
+registerMaskedComponent(getWalletComponent);

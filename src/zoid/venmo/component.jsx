@@ -29,7 +29,7 @@ import {
 import { FUNDING } from "@paypal/sdk-constants/src";
 import { SpinnerPage, VenmoOverlay } from "@paypal/common-components/src";
 
-import { getSessionID } from "../../lib";
+import { getSessionID, registerMaskedComponent, hasUserInteracted } from "../../lib";
 import { containerContent } from "../content";
 import type { CheckoutPropsType } from "../checkout/props";
 
@@ -125,6 +125,13 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
           type: "string",
           queryParam: true,
           value: getSDKMeta,
+        },
+
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
         },
 
         nonce: {
@@ -365,3 +372,5 @@ export function getVenmoCheckoutComponent(): VenmoCheckoutComponent {
     return component;
   });
 }
+
+registerMaskedComponent(getVenmoCheckoutComponent);

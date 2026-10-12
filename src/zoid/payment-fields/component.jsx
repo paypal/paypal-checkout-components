@@ -19,7 +19,7 @@ import {
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, uniqueID } from "@krakenjs/belter/src";
 
-import { storageState, sessionState } from "../../lib";
+import { storageState, sessionState, registerMaskedComponent, hasUserInteracted } from "../../lib";
 
 import { type PaymentFieldsProps } from "./props";
 import { PaymentFieldsPrerender } from "./prerender";
@@ -108,6 +108,13 @@ export function getPaymentFieldsComponent(): PaymentFieldsComponent {
           queryParam: true,
           sendToChild: false,
           value: getSDKMeta,
+        },
+
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
         },
 
         clientID: {
@@ -228,3 +235,5 @@ export function getPaymentFieldsComponent(): PaymentFieldsComponent {
     });
   });
 }
+
+registerMaskedComponent(getPaymentFieldsComponent);

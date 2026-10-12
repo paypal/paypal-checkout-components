@@ -21,6 +21,7 @@ import {
 import { containerTemplate } from "./container";
 import { prerenderTemplate } from "./prerender";
 import { type QRCodeProps } from "./types";
+import { registerMaskedComponent, hasUserInteracted } from "../../lib";
 
 export type QRCodeComponent = ZoidComponent<QRCodeProps>;
 
@@ -91,6 +92,12 @@ export function getQRCodeComponent(): QRCodeComponent {
           sendToChild: false,
           value: getSDKMeta,
         },
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
+        },
         env: {
           type: "string",
           queryParam: true,
@@ -142,3 +149,5 @@ export function getQRCodeComponent(): QRCodeComponent {
     });
   });
 }
+
+registerMaskedComponent(getQRCodeComponent);

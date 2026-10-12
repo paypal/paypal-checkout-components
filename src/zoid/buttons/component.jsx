@@ -80,6 +80,9 @@ import {
   prepareInstrumentationPayload,
   isAppSwitchResumeFlow,
   getAppSwitchResumeParams,
+  registerMaskedComponent,
+  hasUserInteracted,
+  notifyUserInteraction,
 } from "../../lib";
 import {
   normalizeButtonStyle,
@@ -1277,6 +1280,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getSDKMeta,
       },
 
+      maskIP: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: () => !hasUserInteracted(),
+      },
+
+      onUserInteraction: {
+        type: "function",
+        required: false,
+        value: () => notifyUserInteraction,
+      },
+
       sdkToken: {
         type: "string",
         required: false,
@@ -1468,3 +1484,5 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
   });
 });
+
+registerMaskedComponent(getButtonsComponent);

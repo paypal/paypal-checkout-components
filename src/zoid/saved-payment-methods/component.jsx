@@ -59,6 +59,9 @@ import {
   prepareInstrumentationPayload,
   sessionState,
   storageState,
+  registerMaskedComponent,
+  hasUserInteracted,
+  notifyUserInteraction,
 } from "../../lib";
 import {
   getButtonExperiments,
@@ -674,6 +677,19 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: getSDKMeta,
         },
 
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
+        },
+
+        onUserInteraction: {
+          type: "function",
+          required: false,
+          value: () => notifyUserInteraction,
+        },
+
         sdkToken: {
           type: "string",
           required: false,
@@ -796,3 +812,5 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
       },
     });
   });
+
+registerMaskedComponent(getSavedPaymentMethodsComponent);

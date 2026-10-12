@@ -15,6 +15,8 @@ import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize } from "@krakenjs/belter/src";
 import { Overlay, SpinnerPage } from "@paypal/common-components/src";
 
+import { registerMaskedComponent, hasUserInteracted } from "../../lib";
+
 import { type InstallmentsProps } from "./props";
 
 export type InstallmentsComponent = ZoidComponent<InstallmentsProps>;
@@ -85,6 +87,13 @@ export function getInstallmentsComponent(): InstallmentsComponent {
           value: getSDKMeta,
         },
 
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
+        },
+
         clientID: {
           type: "string",
           queryParam: true,
@@ -104,3 +113,5 @@ export function getInstallmentsComponent(): InstallmentsComponent {
     });
   });
 }
+
+registerMaskedComponent(getInstallmentsComponent);

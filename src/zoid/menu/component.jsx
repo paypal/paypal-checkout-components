@@ -11,6 +11,8 @@ import {
 import { create, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize } from "@krakenjs/belter/src";
 
+import { registerMaskedComponent, hasUserInteracted } from "../../lib";
+
 import { type MenuProps } from "./props";
 
 export type MenuComponent = ZoidComponent<MenuProps>;
@@ -59,6 +61,13 @@ export function getMenuComponent(): MenuComponent {
           value: getSDKMeta,
         },
 
+        maskIP: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => !hasUserInteracted(),
+        },
+
         clientID: {
           type: "string",
           queryParam: true,
@@ -67,3 +76,5 @@ export function getMenuComponent(): MenuComponent {
     });
   });
 }
+
+registerMaskedComponent(getMenuComponent);
