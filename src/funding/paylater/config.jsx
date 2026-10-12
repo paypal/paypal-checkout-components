@@ -68,6 +68,15 @@ function getLabelText(
 
   if (
     (paylater?.products?.payIn4?.eligible &&
+      paylater?.products?.payIn4?.variant === "AU") ||
+    (paylater?.products?.paylater?.eligible &&
+      paylater?.products?.paylater?.variant === "AU")
+  ) {
+    labelText = "Pay Later";
+  }
+
+  if (
+    (paylater?.products?.payIn4?.eligible &&
       paylater?.products?.payIn4?.variant === "FR") ||
     (paylater?.products?.paylater?.eligible &&
       paylater?.products?.paylater?.variant === "FR")
