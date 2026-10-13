@@ -664,6 +664,9 @@ export type ButtonProps = {|
   browserContext?: string,
   merchantDomain?: string,
   buttonColor: ButtonColor,
+  registerWebMCPTools: (Object) => Promise<Object>,
+  unregisterWebMCPTools: (Object) => void,
+  webMCP?: Object,
 |};
 
 // eslint-disable-next-line flowtype/require-exact-type
@@ -720,6 +723,7 @@ export type ButtonPropsInputs = {
   storageState?: StateGetSet,
   userAgent: string,
   browserContext?: string,
+  webMCP?: Object,
 };
 
 export const DEFAULT_STYLE = {

@@ -80,6 +80,8 @@ import {
   prepareInstrumentationPayload,
   isAppSwitchResumeFlow,
   getAppSwitchResumeParams,
+  registerWebMCPTools,
+  unregisterWebMCPTools,
 } from "../../lib";
 import {
   normalizeButtonStyle,
@@ -351,6 +353,18 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: "browser_context",
         required: false,
         value: ({ props }) => props.browserContext || BROWSER_CONTEXT.UNKNOWN,
+      },
+
+      registerWebMCPTools: {
+        type: "function",
+        queryParam: false,
+        value: () => registerWebMCPTools,
+      },
+
+      unregisterWebMCPTools: {
+        type: "function",
+        queryParam: false,
+        value: () => unregisterWebMCPTools,
       },
 
       preferences: {
@@ -1382,6 +1396,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
         queryParam: true,
         required: false,
+      },
+
+      webMCP: {
+        type: "object",
+        required: false,
+      },
+
+      webmcpEnabled: {
+        type: "boolean",
+        queryParam: true,
+        value: ({ props }) => Boolean(props.webMCP),
       },
 
       supportsPopups: {
