@@ -13,14 +13,6 @@ import { getLogger } from "@paypal/sdk-client/src";
 // render/destroy). This module only tracks which factory getters exist, so
 // it knows which `.instances` arrays to walk; it never imports those zoid
 // factories directly to avoid a circular import back to this file.
-//
-// The mask-on-init/flush-then-clear logic lives entirely here, scoped to
-// this repo's own `getLogger()` singleton, rather than defaulting to masked
-// inside the shared `@paypal/sdk-client` package itself. That package is
-// used by other, unrelated consumers (for example checkout apps running on
-// paypal.com/venmo.com) that have no reason to ever call an "interaction
-// happened" signal - defaulting to masked at that shared layer would mask
-// their events forever instead of just ours.
 type ComponentGetter = () => {
   instances: $ReadOnlyArray<{ updateProps: (mixed) => Promise<void> }>,
 };
