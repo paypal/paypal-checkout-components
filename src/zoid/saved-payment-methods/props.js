@@ -33,11 +33,11 @@ export type SavedPaymentMethodsStyleRootInput = {|
 
 /** Mirrors smart-payment-buttons SavedPaymentMethodsStyleConfig component keys (partial overrides). */
 export type SavedPaymentMethodsStyleComponentInput = {|
-  height?: string,
+  height?: string | number,
   padding?: string,
-  borderRadius?: string,
+  borderRadius?: string | number,
   borderColor?: string,
-  borderWidth?: string,
+  borderWidth?: string | number,
 |};
 
 /** Mirrors smart-payment-buttons SavedPaymentMethodsStyleConfig layout keys (partial overrides). */
@@ -45,7 +45,7 @@ export type SavedPaymentMethodsStyleLayoutInput = {|
   logo?: boolean,
   label?: boolean,
   message?: boolean,
-  logoWidth?: string,
+  logoWidth?: string | number,
   logoLabelGap?: string,
   labelFiGap?: string,
   labelFontSize?: string,

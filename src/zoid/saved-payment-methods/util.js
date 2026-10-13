@@ -12,27 +12,50 @@ const STYLE_ROOT_KEYS: Set<string> = new Set([
   "primaryColor",
 ]);
 
-const STYLE_COMPONENT_KEYS: Set<string> = new Set([
-  "height",
-  "padding",
-  "borderRadius",
-  "borderColor",
-  "borderWidth",
-]);
+const STYLE_COMPONENT_FIELD_TYPES: {|
+  [string]: "string" | "string-or-number",
+|} = {
+  height: "string-or-number",
+  padding: "string",
+  borderRadius: "string-or-number",
+  borderColor: "string",
+  borderWidth: "string-or-number",
+};
 
 const STYLE_LAYOUT_FIELD_TYPES: {|
-  [string]: "string" | "boolean",
+  [string]: "string" | "boolean" | "string-or-number",
 |} = {
   logo: "boolean",
   label: "boolean",
   message: "boolean",
-  logoWidth: "string",
+  logoWidth: "string-or-number",
   logoLabelGap: "string",
   labelFiGap: "string",
   labelFontSize: "string",
   fiTextFontSize: "string",
   iconSize: "string",
 };
+
+function assertStyleField(
+  value: mixed,
+  expected: "string" | "boolean" | "string-or-number",
+  path: string
+): void {
+  const actual = typeof value;
+  if (expected === "string-or-number") {
+    if (actual === "string" || actual === "number") {
+      return;
+    }
+    throw new TypeError(
+      `Expected ${path} to be a string or number, got: ${String(value)}`
+    );
+  }
+  if (actual !== expected) {
+    throw new TypeError(
+      `Expected ${path} to be a ${expected}, got: ${String(value)}`
+    );
+  }
+}
 
 function assertPlainObject(value: mixed, path: string): void {
   if (value === undefined || value === null) {
@@ -86,12 +109,11 @@ export function validateSavedPaymentMethodsStyle(style: mixed): void {
     // $FlowFixMe[prop-missing]
     const component: Object = s.component;
     for (const key of Object.keys(component)) {
-      if (!STYLE_COMPONENT_KEYS.has(key)) {
+      const expected = STYLE_COMPONENT_FIELD_TYPES[key];
+      if (!expected) {
         throw new Error(`Invalid style.component key: ${key}`);
       }
-      if (typeof component[key] !== "string") {
-        throw new TypeError(`Expected style.component.${key} to be a string`);
-      }
+      assertStyleField(component[key], expected, `style.component.${key}`);
     }
   }
 
@@ -104,12 +126,7 @@ export function validateSavedPaymentMethodsStyle(style: mixed): void {
       if (!expected) {
         throw new Error(`Invalid style.layout key: ${key}`);
       }
-      const actual = typeof layout[key];
-      if (actual !== expected) {
-        throw new TypeError(
-          `Expected style.layout.${key} to be a ${expected}, got: ${layout[key]}`,
-        );
-      }
+      assertStyleField(layout[key], expected, `style.layout.${key}`);
     }
   }
 }
