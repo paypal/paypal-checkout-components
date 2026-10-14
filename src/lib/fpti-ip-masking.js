@@ -44,11 +44,16 @@ export function notifyUserInteraction() {
       hasInteracted = true;
 
       maskedComponentGetters.forEach((getComponent) => {
-        getComponent().instances.forEach((instance) => {
-          instance.updateProps({ maskIP: false }).catch(() => {
-            // instance was destroyed between interaction and relay; nothing to update
+        try {
+          getComponent().instances.forEach((instance) => {
+            instance.updateProps({ maskIP: false }).catch(() => {
+              // instance was destroyed between interaction and relay; nothing to update
+            });
           });
-        });
+        } catch {
+          // one component failing to construct must not block the relay to
+          // every other registered component
+        }
       });
     });
 }

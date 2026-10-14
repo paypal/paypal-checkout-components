@@ -30,6 +30,8 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
     track: vi.fn(),
     info: vi.fn(),
     error: vi.fn(),
+    addMetaBuilder: vi.fn(),
+    immediateFlush: vi.fn(() => Promise.resolve()),
   })),
   getPayPalDomainRegex: vi.fn(() => /paypal\.com/),
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),
@@ -80,5 +82,19 @@ describe("getCheckoutComponent iframe payment permissions policy", () => {
 
     expect(attributes.iframe.allow).not.toBe("payment");
     expect(attributes.iframe.allow).toContain("https://www.paypal.com");
+  });
+});
+
+describe("getCheckoutComponent FPTI IP masking", () => {
+  it("defaults maskIP to true before any interaction, receiving relay from siblings", async () => {
+    const { hasUserInteracted } = await import("../../lib");
+    getCheckoutComponent();
+    const { props } = createMock.mock.calls.at(-1)[0];
+
+    expect(hasUserInteracted()).toBe(false);
+    expect(props.maskIP.value()).toBe(true);
+    // Checkout never originates interaction itself - it's always opened
+    // after a button click, which is the real hook.
+    expect(props.onUserInteraction).toBeUndefined();
   });
 });
