@@ -5,6 +5,7 @@ import {
   destroy as zoidDestroy,
   destroyComponents,
 } from "@krakenjs/zoid/src";
+import * as _postRobot from "@krakenjs/post-robot/src";
 
 import type { LazyExport, LazyProtectedExport } from "../types";
 import { allowIframe as _allowIframe, protectedExport } from "../lib";
@@ -38,6 +39,8 @@ import { getPixelComponent, type PixelComponent } from "../zoid/pixel";
 export const Buttons: LazyExport<ButtonsComponent> = {
   __get__: () => getButtonsComponent(),
 };
+
+export const postRobot = _postRobot;
 
 export const Pixel: LazyExport<PixelComponent> = {
   __get__: () => getPixelComponent(),
