@@ -112,13 +112,13 @@ describe("getButtonsComponent iframe allow attribute", () => {
     ).toBeUndefined();
   });
 
-  it("sets allow to 'tools' when the WebMCP first-render experiment flag is enabled", () => {
+  it("sets allow to 'tools *' when the WebMCP first-render experiment flag is enabled", () => {
     getButtonsComponent();
     const { attributes } = createMock.mock.calls[0][0];
 
     expect(
       attributes({ props: { experiment: { isWebMCPEnabled: true } } }).iframe
         .allow,
-    ).toBe("tools");
+    ).toBe("tools *");
   });
 });
