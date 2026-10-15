@@ -367,17 +367,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: () => unregisterWebMCPTools,
       },
 
-      webMCP: {
-        type: "object",
-        required: false,
-      },
-
-      webmcpEnabled: {
-        type: "boolean",
-        queryParam: true,
-        value: ({ props }) => Boolean(props.webMCP),
-      },
-
       preferences: {
         type: "object",
         queryParam: true,
@@ -1407,17 +1396,6 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         },
         queryParam: true,
         required: false,
-      },
-
-      webMCP: {
-        type: "object",
-        required: false,
-      },
-
-      webmcpEnabled: {
-        type: "boolean",
-        queryParam: true,
-        value: ({ props }) => Boolean(props.webMCP),
       },
 
       supportsPopups: {

@@ -93,23 +93,3 @@ describe("getButtonsComponent iframe payment permissions policy", () => {
     expect(iframeAttrs.allow).toContain("https://www.paypal.com");
   });
 });
-
-describe("getButtonsComponent WebMCP props", () => {
-  it("enables WebMCP in the button iframe when configuration is provided", () => {
-    getButtonsComponent();
-    const { props } = createMock.mock.calls[0][0];
-
-    expect(
-      props.webmcpEnabled.value({
-        props: { webMCP: { serviceOrigin: "https://mcp.paypal.com" } },
-      }),
-    ).toBe(true);
-  });
-
-  it("leaves WebMCP disabled when configuration is absent", () => {
-    getButtonsComponent();
-    const { props } = createMock.mock.calls[0][0];
-
-    expect(props.webmcpEnabled.value({ props: {} })).toBe(false);
-  });
-});

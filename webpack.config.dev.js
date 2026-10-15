@@ -8,21 +8,17 @@ import { ENV } from "@paypal/sdk-constants";
 import { getTestGlobals } from "./test/globals";
 import globals from "./globals";
 
+const FILE_NAME = "sdk";
+
 const PROTOCOL = "https";
 const HOSTNAME = "localhost.paypal.com";
 const PORT = 9001;
-const PAYPAL_DOMAIN =
-  process.env.PAYPAL_LOCAL_DOMAIN || "https://localhost.paypal.com:9001";
-const PAYPAL_SDK_PATH = process.env.PAYPAL_LOCAL_SDK_PATH || "/sdk.js";
-const PAYPAL_BUTTONS_URI =
-  process.env.PAYPAL_LOCAL_BUTTONS_URI || "/button.htm";
-const PAYPAL_BUTTONS_PROXY = process.env.PAYPAL_LOCAL_BUTTONS_PROXY;
 
 const testGlobals = getTestGlobals(globals);
 
 const WEBPACK_CONFIG_DEV: WebpackConfig = getWebpackConfig({
   entry: "./paypal.dev.js",
-  filename: PAYPAL_SDK_PATH.replace(/^\//, ""),
+  filename: `${FILE_NAME}.js`,
   debug: true,
   minify: false,
   web: false,
@@ -33,13 +29,13 @@ const WEBPACK_CONFIG_DEV: WebpackConfig = getWebpackConfig({
     __HOST__: `${HOSTNAME}:${PORT}`,
     __SDK_HOST__: `${HOSTNAME}:${PORT}`,
     __PORT__: PORT,
-    __PATH__: PAYPAL_SDK_PATH,
-    __PAYPAL_DOMAIN__: PAYPAL_DOMAIN,
+    __PATH__: `/${FILE_NAME}.js`,
+    __PAYPAL_DOMAIN__: "https://localhost.paypal.com:9001",
     __PAYPAL_CHECKOUT__: {
       ...testGlobals.__PAYPAL_CHECKOUT__,
       __URI__: {
         __CHECKOUT__: `/checkout.htm`,
-        __BUTTONS__: PAYPAL_BUTTONS_URI,
+        __BUTTONS__: `/button.htm`,
         __MENU__: `/menu.htm`,
         __CARD_FIELD__: `/cardfield.htm`,
         __MESSAGE_MODAL__: `https://www.paypalobjects.com/upstream/bizcomponents/js/modal.js`,
@@ -47,24 +43,6 @@ const WEBPACK_CONFIG_DEV: WebpackConfig = getWebpackConfig({
     },
   },
 });
-
-WEBPACK_CONFIG_DEV.output = {
-  ...WEBPACK_CONFIG_DEV.output,
-  filename: PAYPAL_SDK_PATH.replace(/^\//, ""),
-};
-
-if (PAYPAL_BUTTONS_PROXY) {
-  WEBPACK_CONFIG_DEV.devServer = {
-    ...WEBPACK_CONFIG_DEV.devServer,
-    proxy: [
-      {
-        changeOrigin: true,
-        context: ["/smart/buttons"],
-        target: PAYPAL_BUTTONS_PROXY,
-      },
-    ],
-  };
-}
 
 const WEBPACK_CONFIG_BUTTON_RENDER: WebpackConfig = getWebpackConfig({
   context: __dirname,
