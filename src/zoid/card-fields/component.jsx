@@ -79,6 +79,7 @@ type CardFieldsProps = {|
   cardFieldsSessionID: string,
   debug: boolean,
   sdkMeta: string,
+  hasInteracted?: boolean,
   fundingEligibility: FundingEligibilityType,
   disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
   currency: $Values<typeof CURRENCY>,
