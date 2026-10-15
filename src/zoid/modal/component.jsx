@@ -140,11 +140,11 @@ export function getModalComponent(): ModalComponent {
           value: getSDKMeta,
         },
 
-        maskIP: {
+        hasInteracted: {
           type: "boolean",
           queryParam: true,
           required: false,
-          value: () => !hasUserInteracted(),
+          value: () => hasUserInteracted(),
         },
 
         clientID: {

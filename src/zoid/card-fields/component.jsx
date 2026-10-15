@@ -348,11 +348,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             value: ({ props }) => props.parent.props.sdkMeta,
           },
 
-          maskIP: {
+          hasInteracted: {
             type: "boolean",
             queryParam: true,
             required: false,
-            value: ({ props }) => props.parent.props.maskIP,
+            value: ({ props }) => props.parent.props.hasInteracted,
           },
 
           style: {
@@ -696,11 +696,11 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           value: getSDKMeta,
         },
 
-        maskIP: {
+        hasInteracted: {
           type: "boolean",
           queryParam: true,
           required: false,
-          value: () => !hasUserInteracted(),
+          value: () => hasUserInteracted(),
         },
 
         onUserInteraction: {

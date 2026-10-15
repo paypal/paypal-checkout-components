@@ -108,13 +108,13 @@ describe("getButtonsComponent iframe payment permissions policy", () => {
 });
 
 describe("getButtonsComponent FPTI IP masking", () => {
-  it("defaults maskIP to true before any interaction", async () => {
+  it("defaults hasInteracted to false before any interaction", async () => {
     const { hasUserInteracted } = await import("../../lib");
     getButtonsComponent();
     const { props } = createMock.mock.calls[0][0];
 
     expect(hasUserInteracted()).toBe(false);
-    expect(props.maskIP.value()).toBe(true);
+    expect(props.hasInteracted.value()).toBe(false);
   });
 
   it("exposes onUserInteraction wired to the shared interaction signal", async () => {
@@ -135,6 +135,6 @@ describe("getButtonsComponent FPTI IP masking", () => {
     notifyUserInteraction();
     await vi.waitFor(() => expect(hasUserInteracted()).toBe(true));
 
-    expect(props.maskIP.value()).toBe(false);
+    expect(props.hasInteracted.value()).toBe(true);
   });
 });

@@ -257,11 +257,11 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
         value: getLocale,
       },
 
-      maskIP: {
+      hasInteracted: {
         type: "boolean",
         queryParam: true,
         required: false,
-        value: () => !hasUserInteracted(),
+        value: () => hasUserInteracted(),
       },
 
       merchantID: {

@@ -110,11 +110,11 @@ export function getPaymentFieldsComponent(): PaymentFieldsComponent {
           value: getSDKMeta,
         },
 
-        maskIP: {
+        hasInteracted: {
           type: "boolean",
           queryParam: true,
           required: false,
-          value: () => !hasUserInteracted(),
+          value: () => hasUserInteracted(),
         },
 
         clientID: {

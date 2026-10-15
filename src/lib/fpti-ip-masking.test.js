@@ -102,9 +102,9 @@ describe("fpti-ip-masking", () => {
     notifyUserInteraction();
 
     await vi.waitFor(() =>
-      expect(updatePropsA).toHaveBeenCalledWith({ maskIP: false }),
+      expect(updatePropsA).toHaveBeenCalledWith({ hasInteracted: true }),
     );
-    expect(updatePropsB).toHaveBeenCalledWith({ maskIP: false });
+    expect(updatePropsB).toHaveBeenCalledWith({ hasInteracted: true });
   });
 
   it("does not throw when a relayed instance was already destroyed", async () => {
@@ -137,7 +137,7 @@ describe("fpti-ip-masking", () => {
     expect(() => notifyUserInteraction()).not.toThrow();
 
     await vi.waitFor(() =>
-      expect(updateProps).toHaveBeenCalledWith({ maskIP: false }),
+      expect(updateProps).toHaveBeenCalledWith({ hasInteracted: true }),
     );
   });
 });

@@ -46,7 +46,7 @@ export function notifyUserInteraction() {
       maskedComponentGetters.forEach((getComponent) => {
         try {
           getComponent().instances.forEach((instance) => {
-            instance.updateProps({ maskIP: false }).catch(() => {
+            instance.updateProps({ hasInteracted: true }).catch(() => {
               // instance was destroyed between interaction and relay; nothing to update
             });
           });

@@ -92,11 +92,11 @@ export function getQRCodeComponent(): QRCodeComponent {
           sendToChild: false,
           value: getSDKMeta,
         },
-        maskIP: {
+        hasInteracted: {
           type: "boolean",
           queryParam: true,
           required: false,
-          value: () => !hasUserInteracted(),
+          value: () => hasUserInteracted(),
         },
         env: {
           type: "string",

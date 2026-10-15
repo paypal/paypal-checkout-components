@@ -217,11 +217,11 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: getSDKMeta,
         },
 
-        maskIP: {
+        hasInteracted: {
           type: "boolean",
           queryParam: true,
           required: false,
-          value: () => !hasUserInteracted(),
+          value: () => hasUserInteracted(),
         },
 
         nonce: {

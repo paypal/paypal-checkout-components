@@ -86,13 +86,13 @@ describe("getCheckoutComponent iframe payment permissions policy", () => {
 });
 
 describe("getCheckoutComponent FPTI IP masking", () => {
-  it("defaults maskIP to true before any interaction, receiving relay from siblings", async () => {
+  it("defaults hasInteracted to false before any interaction, receiving relay from siblings", async () => {
     const { hasUserInteracted } = await import("../../lib");
     getCheckoutComponent();
     const { props } = createMock.mock.calls.at(-1)[0];
 
     expect(hasUserInteracted()).toBe(false);
-    expect(props.maskIP.value()).toBe(true);
+    expect(props.hasInteracted.value()).toBe(false);
     // Checkout never originates interaction itself - it's always opened
     // after a button click, which is the real hook.
     expect(props.onUserInteraction).toBeUndefined();

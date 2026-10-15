@@ -1280,11 +1280,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getSDKMeta,
       },
 
-      maskIP: {
+      hasInteracted: {
         type: "boolean",
         queryParam: true,
         required: false,
-        value: () => !hasUserInteracted(),
+        value: () => hasUserInteracted(),
       },
 
       onUserInteraction: {

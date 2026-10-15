@@ -36,7 +36,7 @@ vi.mock("@paypal/funding-components/src", () => ({
 }));
 
 describe("getCardFieldsComponent FPTI IP masking", () => {
-  it("defaults maskIP to true before any interaction", async () => {
+  it("defaults hasInteracted to false before any interaction", async () => {
     const { hasUserInteracted } = await import("../../lib");
     getCardFieldsComponent();
     // The last create() call is the top-level CardFields component; the
@@ -44,7 +44,7 @@ describe("getCardFieldsComponent FPTI IP masking", () => {
     const { props } = createMock.mock.calls.at(-1)[0];
 
     expect(hasUserInteracted()).toBe(false);
-    expect(props.maskIP.value()).toBe(true);
+    expect(props.hasInteracted.value()).toBe(false);
   });
 
   it("exposes onUserInteraction wired to the shared interaction signal", async () => {
@@ -65,10 +65,10 @@ describe("getCardFieldsComponent FPTI IP masking", () => {
     notifyUserInteraction();
     await vi.waitFor(() => expect(hasUserInteracted()).toBe(true));
 
-    expect(props.maskIP.value()).toBe(false);
+    expect(props.hasInteracted.value()).toBe(true);
   });
 
-  it("passes the parent's maskIP value down to each individual field iframe", async () => {
+  it("passes the parent's hasInteracted value down to each individual field iframe", async () => {
     getCardFieldsComponent();
     const fieldCall = createMock.mock.calls.find(
       (call) => call[0].tag === "paypal-card-number-field",
@@ -77,11 +77,15 @@ describe("getCardFieldsComponent FPTI IP masking", () => {
     expect(fieldCall).toBeDefined();
     const { props } = fieldCall[0];
 
-    expect(props.maskIP.value({ props: { parent: { props: { maskIP: true } } } })).toBe(
-      true,
-    );
     expect(
-      props.maskIP.value({ props: { parent: { props: { maskIP: false } } } }),
+      props.hasInteracted.value({
+        props: { parent: { props: { hasInteracted: true } } },
+      }),
+    ).toBe(true);
+    expect(
+      props.hasInteracted.value({
+        props: { parent: { props: { hasInteracted: false } } },
+      }),
     ).toBe(false);
   });
 });
