@@ -13,7 +13,7 @@ import { getQRCodeComponent } from "./component";
 // function so existing assertions (typeof component === "function") keep
 // working.
 const { createMock } = vi.hoisted(() => ({
-  createMock: vi.fn((options) => Object.assign(() => {}, options)),
+  createMock: vi.fn((options) => Object.assign(() => undefined, options)),
 }));
 
 vi.mock("@krakenjs/zoid/src", () => ({
@@ -28,7 +28,7 @@ vi.mock("@paypal/sdk-client/src", () => ({
     flush: vi.fn().mockReturnThis(),
     metricCounter: vi.fn().mockReturnThis(),
     addMetaBuilder: vi.fn(),
-    immediateFlush: vi.fn(() => Promise.resolve()),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
   })),
   getPayPalDomainRegex: vi.fn(() => /paypal\.com/),
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),

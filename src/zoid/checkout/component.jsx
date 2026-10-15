@@ -456,4 +456,7 @@ export function getCheckoutComponent(): CheckoutComponent {
   });
 }
 
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
 registerMaskedComponent(getCheckoutComponent);

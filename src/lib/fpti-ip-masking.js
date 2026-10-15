@@ -1,6 +1,7 @@
 /* @flow */
 
 import { getLogger } from "@paypal/sdk-client/src";
+import { type ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 // Every rendered surface is its own cross-origin iframe with its own logger,
 // so unmasking one does not unmask the rest. Each component registers its
@@ -13,9 +14,15 @@ import { getLogger } from "@paypal/sdk-client/src";
 // render/destroy). This module only tracks which factory getters exist, so
 // it knows which `.instances` arrays to walk; it never imports those zoid
 // factories directly to avoid a circular import back to this file.
+//
+// Deliberately inexact: a registered getter's real return type (a zoid
+// ZoidComponent/ZoidComponentInstance) has many more properties than these -
+// this type only names the ones the relay actually uses.
+/* eslint-disable flowtype/require-exact-type */
 type ComponentGetter = () => {
-  instances: $ReadOnlyArray<{ updateProps: (mixed) => Promise<void> }>,
+  instances: $ReadOnlyArray<{ updateProps: (mixed) => ZalgoPromise<void> }>,
 };
+/* eslint-enable flowtype/require-exact-type */
 
 const maskedComponentGetters: Array<ComponentGetter> = [];
 

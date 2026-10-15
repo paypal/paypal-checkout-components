@@ -114,4 +114,7 @@ export function getInstallmentsComponent(): InstallmentsComponent {
   });
 }
 
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
 registerMaskedComponent(getInstallmentsComponent);

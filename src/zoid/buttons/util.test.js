@@ -11,7 +11,7 @@ vi.mock("@paypal/sdk-client/src", () => ({
   // without these, importing ../../lib (transitively) would throw.
   getLogger: vi.fn(() => ({
     addMetaBuilder: vi.fn(),
-    immediateFlush: vi.fn(() => Promise.resolve()),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
   })),
 }));
 

@@ -1,10 +1,11 @@
 /* @flow */
 
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 const { loggerMock } = vi.hoisted(() => {
   const addMetaBuilder = vi.fn();
-  const immediateFlush = vi.fn(() => Promise.resolve());
+  const immediateFlush = vi.fn().mockResolvedValue(undefined);
   return { loggerMock: { addMetaBuilder, immediateFlush } };
 });
 
@@ -17,7 +18,7 @@ describe("fpti-ip-masking", () => {
     vi.resetModules();
     loggerMock.addMetaBuilder.mockClear();
     loggerMock.immediateFlush.mockReset();
-    loggerMock.immediateFlush.mockImplementation(() => Promise.resolve());
+    loggerMock.immediateFlush.mockResolvedValue(undefined);
   });
 
   it("registers a meta builder that masks the IP before any interaction", async () => {
@@ -65,10 +66,10 @@ describe("fpti-ip-masking", () => {
   });
 
   it("does not start a second flush while one is already in flight", async () => {
-    let resolveFlush = () => {};
+    let resolveFlush = () => undefined;
     loggerMock.immediateFlush.mockImplementation(
       () =>
-        new Promise((resolve) => {
+        new ZalgoPromise((resolve) => {
           resolveFlush = resolve;
         }),
     );
@@ -90,8 +91,8 @@ describe("fpti-ip-masking", () => {
       "./fpti-ip-masking"
     );
 
-    const updatePropsA = vi.fn(() => Promise.resolve());
-    const updatePropsB = vi.fn(() => Promise.resolve());
+    const updatePropsA = vi.fn().mockResolvedValue(undefined);
+    const updatePropsB = vi.fn().mockResolvedValue(undefined);
     registerMaskedComponent(() => ({
       instances: [{ updateProps: updatePropsA }],
     }));
@@ -111,9 +112,9 @@ describe("fpti-ip-masking", () => {
     const { registerMaskedComponent, notifyUserInteraction, hasUserInteracted } =
       await import("./fpti-ip-masking");
 
-    const destroyedUpdateProps = vi.fn(() =>
-      Promise.reject(new Error("instance destroyed")),
-    );
+    const destroyedUpdateProps = vi
+      .fn()
+      .mockRejectedValue(new Error("instance destroyed"));
     registerMaskedComponent(() => ({
       instances: [{ updateProps: destroyedUpdateProps }],
     }));
@@ -128,7 +129,7 @@ describe("fpti-ip-masking", () => {
       "./fpti-ip-masking"
     );
 
-    const updateProps = vi.fn(() => Promise.resolve());
+    const updateProps = vi.fn().mockResolvedValue(undefined);
     registerMaskedComponent(() => {
       throw new Error("factory blew up");
     });

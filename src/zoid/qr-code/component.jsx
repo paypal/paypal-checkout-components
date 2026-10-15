@@ -18,10 +18,11 @@ import {
   getBuyerCountry,
 } from "@paypal/sdk-client/src";
 
+import { registerMaskedComponent, hasUserInteracted } from "../../lib";
+
 import { containerTemplate } from "./container";
 import { prerenderTemplate } from "./prerender";
 import { type QRCodeProps } from "./types";
-import { registerMaskedComponent, hasUserInteracted } from "../../lib";
 
 export type QRCodeComponent = ZoidComponent<QRCodeProps>;
 
@@ -150,4 +151,7 @@ export function getQRCodeComponent(): QRCodeComponent {
   });
 }
 
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
 registerMaskedComponent(getQRCodeComponent);

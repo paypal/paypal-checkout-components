@@ -39,7 +39,7 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
     // without these, importing ../../lib (transitively, via component.jsx)
     // would throw.
     addMetaBuilder: vi.fn(),
-    immediateFlush: vi.fn(() => Promise.resolve()),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
   })),
   getPayPalDomainRegex: vi.fn(() => /paypal\.com/),
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),

@@ -24,7 +24,7 @@ vi.mock("@paypal/sdk-client/src", async () => {
     // throw when that registration runs.
     getLogger: vi.fn(() => ({
       addMetaBuilder: vi.fn(),
-      immediateFlush: vi.fn(() => Promise.resolve()),
+      immediateFlush: vi.fn().mockResolvedValue(undefined),
     })),
   };
 });
