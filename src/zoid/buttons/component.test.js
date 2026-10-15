@@ -12,12 +12,20 @@ window.__ENV__ = "test";
 // Capture the config object component.jsx passes to zoid's create() so we can
 // exercise the real (un-exported) attributes() logic instead of re-implementing it.
 const { createMock } = vi.hoisted(() => ({
-  createMock: vi.fn((options) => options),
+  // component.jsx registers itself with the FPTI masking relay via
+  // registerMaskedComponent(getButtonsComponent); that relay reads
+  // `.instances` off whatever create() returns, so the mock needs one too.
+  createMock: vi.fn((options) => ({ ...options, instances: [] })),
 }));
 
 vi.mock("@krakenjs/zoid/src", () => ({
   create: createMock,
   EVENT: { PRERENDERED: "prerendered" },
+  // buttons/prerender.jsx pulls DEFAULT_POPUP_SIZE from "../checkout", which
+  // transitively evaluates checkout/component.jsx (registering it with the
+  // FPTI masking relay). CONTEXT is needed so that module doesn't throw if
+  // the relay actually invokes getCheckoutComponent() during a test.
+  CONTEXT: { POPUP: "popup", IFRAME: "iframe" },
 }));
 
 vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
@@ -27,6 +35,11 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
     track: vi.fn(),
     info: vi.fn(),
     error: vi.fn(),
+    // src/lib/fpti-ip-masking.js registers a meta builder on module load;
+    // without these, importing ../../lib (transitively, via component.jsx)
+    // would throw.
+    addMetaBuilder: vi.fn(),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
   })),
   getPayPalDomainRegex: vi.fn(() => /paypal\.com/),
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),
@@ -91,5 +104,37 @@ describe("getButtonsComponent iframe payment permissions policy", () => {
     const iframeAttrs = attributes({ props: {} }).iframe;
     expect(iframeAttrs.allow).not.toBe("payment");
     expect(iframeAttrs.allow).toContain("https://www.paypal.com");
+  });
+});
+
+describe("getButtonsComponent FPTI IP masking", () => {
+  it("defaults hasInteracted to false before any interaction", async () => {
+    const { hasUserInteracted } = await import("../../lib");
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    expect(hasUserInteracted()).toBe(false);
+    expect(props.hasInteracted.value()).toBe(false);
+  });
+
+  it("exposes onUserInteraction wired to the shared interaction signal", async () => {
+    const { notifyUserInteraction } = await import("../../lib");
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    expect(props.onUserInteraction.value()).toBe(notifyUserInteraction);
+  });
+
+  it("reflects interaction state once notifyUserInteraction has resolved", async () => {
+    const { notifyUserInteraction, hasUserInteracted } = await import(
+      "../../lib"
+    );
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    notifyUserInteraction();
+    await vi.waitFor(() => expect(hasUserInteracted()).toBe(true));
+
+    expect(props.hasInteracted.value()).toBe(true);
   });
 });

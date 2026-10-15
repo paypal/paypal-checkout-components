@@ -45,7 +45,7 @@ import {
 } from "@krakenjs/belter/src";
 import { FUNDING_BRAND_LABEL, SDK_SETTINGS } from "@paypal/sdk-constants/src";
 
-import { storageState, sessionState, isAppSwitchResumeFlow } from "../../lib";
+import { storageState, sessionState, isAppSwitchResumeFlow, registerMaskedComponent, hasUserInteracted } from "../../lib";
 import { isSupportedNativeBrowser } from "../buttons/util";
 
 import type { PixelComponentProps } from "./props";
@@ -257,6 +257,13 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
         value: getLocale,
       },
 
+      hasInteracted: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: () => hasUserInteracted(),
+      },
+
       merchantID: {
         type: "array",
         queryParam: true,
@@ -422,3 +429,8 @@ export const getPixelComponent: () => PixelComponent = memoize(() => {
   });
   return component;
 });
+
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
+registerMaskedComponent(getPixelComponent);

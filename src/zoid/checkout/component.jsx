@@ -34,7 +34,7 @@ import {
   VenmoOverlay,
 } from "@paypal/common-components/src";
 
-import { getSessionID } from "../../lib";
+import { getSessionID, registerMaskedComponent, hasUserInteracted } from "../../lib";
 import { containerContent } from "../content";
 
 import type { CheckoutPropsType } from "./props";
@@ -215,6 +215,13 @@ export function getCheckoutComponent(): CheckoutComponent {
           type: "string",
           queryParam: true,
           value: getSDKMeta,
+        },
+
+        hasInteracted: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => hasUserInteracted(),
         },
 
         nonce: {
@@ -448,3 +455,8 @@ export function getCheckoutComponent(): CheckoutComponent {
     return component;
   });
 }
+
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
+registerMaskedComponent(getCheckoutComponent);

@@ -80,6 +80,9 @@ import {
   prepareInstrumentationPayload,
   isAppSwitchResumeFlow,
   getAppSwitchResumeParams,
+  registerMaskedComponent,
+  hasUserInteracted,
+  notifyUserInteraction,
 } from "../../lib";
 import {
   normalizeButtonStyle,
@@ -1277,6 +1280,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getSDKMeta,
       },
 
+      hasInteracted: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: () => hasUserInteracted(),
+      },
+
+      onUserInteraction: {
+        type: "function",
+        required: false,
+        value: () => notifyUserInteraction,
+      },
+
       sdkToken: {
         type: "string",
         required: false,
@@ -1468,3 +1484,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
   });
 });
+
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
+registerMaskedComponent(getButtonsComponent);
