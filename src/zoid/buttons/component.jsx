@@ -250,7 +250,10 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
 
       return {
         iframe: props.experiment?.isWebMCPEnabled
-          ? { ...baseIframeAttributes, allow: "tools *" }
+          ? {
+              ...baseIframeAttributes,
+              allow: `${baseIframeAttributes.allow}; tools *`,
+            }
           : baseIframeAttributes,
       };
     },
