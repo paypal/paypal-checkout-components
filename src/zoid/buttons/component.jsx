@@ -358,13 +358,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
       registerWebMCPTools: {
         type: "function",
         queryParam: false,
-        value: () => registerWebMCPTools,
+        required: false,
+        value: ({ props }) =>
+          props.experiment?.isWebMCPEnabled ? registerWebMCPTools : undefined,
       },
 
       unregisterWebMCPTools: {
         type: "function",
         queryParam: false,
-        value: () => unregisterWebMCPTools,
+        required: false,
+        value: ({ props }) =>
+          props.experiment?.isWebMCPEnabled ? unregisterWebMCPTools : undefined,
       },
 
       preferences: {

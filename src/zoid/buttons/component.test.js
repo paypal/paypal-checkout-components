@@ -93,3 +93,33 @@ describe("getButtonsComponent iframe payment permissions policy", () => {
     expect(iframeAttrs.allow).toContain("https://www.paypal.com");
   });
 });
+
+describe("getButtonsComponent WebMCP registration props", () => {
+  it("exposes registerWebMCPTools/unregisterWebMCPTools when the first-render experiment is enabled", () => {
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    const experimentProps = {
+      props: { experiment: { isWebMCPEnabled: true } },
+    };
+    expect(typeof props.registerWebMCPTools.value(experimentProps)).toBe(
+      "function",
+    );
+    expect(typeof props.unregisterWebMCPTools.value(experimentProps)).toBe(
+      "function",
+    );
+  });
+
+  it("omits registerWebMCPTools/unregisterWebMCPTools when the first-render experiment is disabled or absent", () => {
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    expect(props.registerWebMCPTools.value({ props: {} })).toBeUndefined();
+    expect(props.unregisterWebMCPTools.value({ props: {} })).toBeUndefined();
+    expect(
+      props.registerWebMCPTools.value({
+        props: { experiment: { isWebMCPEnabled: false } },
+      }),
+    ).toBeUndefined();
+  });
+});
