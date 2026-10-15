@@ -49,7 +49,7 @@ vi.mock("@paypal/sdk-client/src", async () => {
       // src/lib/fpti-ip-masking.js registers a meta builder on module load;
       // without these, importing ../../lib would throw.
       addMetaBuilder: vi.fn(),
-      immediateFlush: vi.fn(() => Promise.resolve()),
+      immediateFlush: vi.fn().mockResolvedValue(undefined),
     })),
   };
 });
