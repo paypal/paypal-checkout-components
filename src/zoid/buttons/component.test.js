@@ -93,3 +93,35 @@ describe("getButtonsComponent iframe payment permissions policy", () => {
     expect(iframeAttrs.allow).toContain("https://www.paypal.com");
   });
 });
+
+describe("getButtonsComponent iframe allow attribute", () => {
+  it("does not append tools when the WebMCP first-render experiment flag is absent", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    const { allow } = attributes({ props: {} }).iframe;
+    expect(allow).toBe("payment https://www.paypal.com");
+    expect(allow).not.toContain("tools");
+  });
+
+  it("does not append tools when the WebMCP first-render experiment flag is disabled", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    const { allow } = attributes({
+      props: { experiment: { isWebMCPEnabled: false } },
+    }).iframe;
+    expect(allow).toBe("payment https://www.paypal.com");
+    expect(allow).not.toContain("tools");
+  });
+
+  it("appends 'tools *' alongside the payment permission when the WebMCP first-render experiment flag is enabled", () => {
+    getButtonsComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(
+      attributes({ props: { experiment: { isWebMCPEnabled: true } } }).iframe
+        .allow,
+    ).toBe("payment https://www.paypal.com; tools *");
+  });
+});

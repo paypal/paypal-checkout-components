@@ -71,6 +71,7 @@ export type Experiment = {|
   isPaylaterCobrandedLabelEnabled?: boolean,
   isPaylaterCobrandedLabelRandomizationEnabled?: boolean,
   isBfcacheEnabled?: boolean,
+  isWebMCPEnabled?: boolean,
 |};
 
 export type Requires = {|
