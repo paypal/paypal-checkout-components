@@ -1,6 +1,7 @@
 /* @flow */
 
-import { getLogger } from "@paypal/sdk-client/src";
+import { getEnv, getLogger } from "@paypal/sdk-client/src";
+import { ENV } from "@paypal/sdk-constants/src";
 
 import { getActiveTransport, setActiveTransport } from "./activeTransport";
 import { TRANSPORT, OPENER_POLL_MS } from "./constants";
@@ -61,11 +62,36 @@ export function fallBackIfOpenerLost() {
   }
 }
 
+/**
+ * Console command for testing the fallback in a non-production environment:
+ *
+ *   __PP_TRANSPORT__.simulateOpenerLoss()
+ *
+ * Runs the same switch as the opener watch without severing the opener. Not
+ * installed in production.
+ */
+function installSimulation() {
+  try {
+    if (getEnv() === ENV.PRODUCTION) {
+      return;
+    }
+
+    // $FlowFixMe[prop-missing] deliberate debug global
+    window.__PP_TRANSPORT__ = {
+      simulateOpenerLoss: () => fallBack("simulated_opener_loss"),
+    };
+  } catch (err) {
+    // No env available in this context; skip rather than expose it blindly.
+  }
+}
+
 export function armTransportFallback() {
   if (armed) {
     return;
   }
   armed = true;
+
+  installSimulation();
 
   if (isOpenerLost()) {
     fallBack("opener_lost_at_start");
