@@ -15,19 +15,26 @@ import { GraphQLClient, RestClient } from "./api";
 import { getThreeDS } from "./utils";
 import { setup, destroy, ThreeDomainSecureClient } from "./interface";
 
-vi.mock("@paypal/sdk-client/src", async () => {
-  const automocked = await vi.importMock("@paypal/sdk-client/src");
-  return {
-    ...automocked,
-    // src/lib/fpti-ip-masking.js registers a meta builder on module load;
-    // the fully auto-mocked getLogger() returns undefined, which would
-    // throw when that registration runs.
-    getLogger: vi.fn(() => ({
-      addMetaBuilder: vi.fn(),
-      immediateFlush: vi.fn().mockResolvedValue(undefined),
-    })),
-  };
-});
+const { stableLoggerMock } = vi.hoisted(() => ({
+  stableLoggerMock: {
+    addMetaBuilder: vi.fn(),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
+  },
+}));
+
+vi.mock("@paypal/sdk-client/src", () => ({
+  getEnv: vi.fn(),
+  getPayPalAPIDomain: vi.fn(),
+  getSDKToken: vi.fn(),
+  getUserIDToken: vi.fn(),
+  getClientID: vi.fn(),
+  // src/lib/fpti-ip-masking.js registers a meta builder on module load;
+  // a fully auto-mocked getLogger() returns undefined, which would throw
+  // when that registration runs. The real getLogger() is a memoized
+  // singleton, so this mock returns the same stable object on every call
+  // too - a test asserts on the exact object passed via getLogger().
+  getLogger: vi.fn(() => stableLoggerMock),
+}));
 vi.mock("@krakenjs/zoid/src");
 vi.mock("./component");
 vi.mock("./api");
