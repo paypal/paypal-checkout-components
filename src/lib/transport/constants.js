@@ -128,9 +128,10 @@ export const APP = {
   SMART_PAYMENT_BUTTONS: "paypal_smart_payment_buttons",
 };
 
-// smartcomponentnodeweb's relay token endpoint. Relative on purpose, see
+// websdknodeweb's relay token endpoint. The version segment only has to match
+// `v:major.:minor.:patch`; the route does not use it. Relative on purpose, see
 // getFirebaseSessionToken.js.
-export const RELAY_SESSION_TOKEN_PATH = "/smart/relay/session-token";
+export const RELAY_SESSION_TOKEN_PATH = "/web-sdk/v6.0.0/relay/session-token";
 
 export const FIREBASE_MESSAGES_PATH = (sessionUID: string): string =>
   `users/${sessionUID}/messages`;

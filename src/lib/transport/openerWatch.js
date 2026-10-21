@@ -17,8 +17,8 @@ import { TRANSPORT, OPENER_POLL_MS } from "./constants";
  * decision about in-flight calls that has not been made.
  *
  * Known gaps of this draft:
- *   - Polling, so detection lags by up to OPENER_POLL_MS. A call made in that
- *     window goes over postMessage and fails/hangs.
+ *   - Polling, so detection lags by up to OPENER_POLL_MS. Calls are covered by
+ *     fallBackIfOpenerLost(); only the Firebase connection start is delayed.
  *   - A reachable-but-unresponsive opener (frozen, discarded, severed by
  *     bfcache) is not detected; only the null/closed signals are.
  *   - No resume/visibility trigger yet. See the stashed detectSuspension.js.
@@ -40,10 +40,25 @@ function fallBack(reason: string) {
   }
 
   getLogger()
-    .info("checkout_transport_fallback", { reason, to: TRANSPORT.FIREBASE })
+    .info("checkout_transport_firebase_fallback", {
+      reason,
+      to: TRANSPORT.FIREBASE,
+    })
     .flush();
 
   setActiveTransport(TRANSPORT.FIREBASE);
+}
+
+/**
+ * Call-time check, used by the wrapper before it picks a transport: if the
+ * opener is already gone, switch now rather than waiting for the next poll
+ * tick, so a callback made inside the polling gap is not sent over
+ * postMessage to a dead target. A no-op while the opener is reachable.
+ */
+export function fallBackIfOpenerLost() {
+  if (getActiveTransport() !== TRANSPORT.FIREBASE && isOpenerLost()) {
+    fallBack("opener_lost_at_call");
+  }
 }
 
 export function armTransportFallback() {

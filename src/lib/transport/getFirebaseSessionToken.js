@@ -8,9 +8,9 @@ import { RELAY_SESSION_TOKEN_PATH } from "./constants";
 /**
  * Mint a Firebase custom auth token for a relay channel.
  *
- * Uses smartcomponentnodeweb's endpoint:
+ * Uses the websdknodeweb endpoint added for v6:
  *
- *   GET /smart/relay/session-token?sessionId=<uuid>
+ *   GET /web-sdk/v<major.minor.patch>/relay/session-token?sessionId=<uuid>
  *   -> { sessionToken }
  *
  * This REPLACES the earlier `GetFireBaseSessionToken` GraphQL call. That call
@@ -23,8 +23,9 @@ import { RELAY_SESSION_TOKEN_PATH } from "./constants";
  *    `sessionID`; callers pass that, never the raw `sessionID`.
  *  - The endpoint is same-origin only (it rejects any `Sec-Fetch-Site` other
  *    than `same-origin`), so the URL is deliberately RELATIVE: it must be
- *    requested from a page on the same origin that serves `/smart`. That
- *    holds on the PayPal checkout host and for the smart-buttons frame.
+ *    requested from a page on the same origin that serves `/web-sdk`. That
+ *    holds on the PayPal checkout host and for the smart-buttons frame; on a
+ *    local stack the dev proxy needs a `/web-sdk` entry.
  *
  * Security: this is not an authorization boundary. The request carries no
  * buyer credentials, so anyone who can derive the channel id (i.e. anyone who

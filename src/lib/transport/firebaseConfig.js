@@ -16,7 +16,7 @@ export type FirebaseConfig = {|
 
 /**
  * The v6 SDK's PayPal Firebase project for the current env, baked in at build
- * time from `globals.js`. It must be the project that smartcomponentnodeweb's relay
+ * time from `globals.js`. It must be the project that the websdknodeweb relay
  * token endpoint signs for in this env (local / stage / test -> dev52; sandbox ->
  * dcg18; production -> dcg04) and the same one
  * smartcomponentnodeweb uses, or sign-in fails with CREDENTIAL_MISMATCH. The
@@ -24,8 +24,8 @@ export type FirebaseConfig = {|
  */
 export function getFirebaseConfig(): ?FirebaseConfig {
   const env = getEnv();
-  // local / stage / test use the dev52 project (the one SCNW's relay token
-  // endpoint signs for in those envs).
+  // local / stage / test use the dev52 project (the one websdknodeweb signs
+  // for when /web-sdk resolves to msmaster).
   let project = __FIREBASE__.__STAGE__;
 
   if (env === ENV.PRODUCTION) {

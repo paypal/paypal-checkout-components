@@ -7,7 +7,8 @@ import { getQueryParam, stringifyError } from "@krakenjs/belter/src";
 import { getActiveTransport, onTransportChange } from "./activeTransport";
 import { createFirebaseChannel, type FirebaseChannel } from "./firebaseChannel";
 import { getFirebaseConfig } from "./firebaseConfig";
-import { armTransportFallback } from "./openerWatch";
+import { armTransportFallback, fallBackIfOpenerLost } from "./openerWatch";
+import { pickRelayable } from "./pickRelayable";
 import { TRANSPORT, RELAYABLE } from "./constants";
 
 /**
@@ -114,29 +115,6 @@ function installEagerConnection() {
   connectEagerly();
 }
 
-/**
- * Copy only the allowlisted keys of a payload. Anything else — in particular
- * anything token-bearing — never leaves the page. See RELAYABLE.
- */
-function pick(data: mixed, keys: $ReadOnlyArray<string>): Object {
-  const out = {};
-
-  if (!data || typeof data !== "object") {
-    return out;
-  }
-
-  for (const key of keys) {
-    // $FlowFixMe[incompatible-use] narrowed to object above
-    const value = data[key];
-
-    if (value !== undefined) {
-      out[key] = value;
-    }
-  }
-
-  return out;
-}
-
 export function withTransport<T>(name: string, value: ?T): ?T {
   if (typeof value !== "function") {
     return value;
@@ -161,7 +139,7 @@ export function withTransport<T>(name: string, value: ?T): ?T {
     }
   } catch (err) {
     getLogger()
-      .warn("checkout_transport_setup_failed", {
+      .warn("checkout_transport_firebase_setup_failed", {
         label: "popup_install",
         err: stringifyError(err),
       })
@@ -170,6 +148,16 @@ export function withTransport<T>(name: string, value: ?T): ?T {
 
   // $FlowFixMe[incompatible-return] wrapper preserves the callable shape
   return function transportRouted(...args): ZalgoPromise<mixed> {
+    // Only popups that were offered the relay may switch. Checked at call time
+    // so a call inside the polling gap does not go to a dead opener.
+    try {
+      if (getRelayChannelID()) {
+        fallBackIfOpenerLost();
+      }
+    } catch (err) {
+      // Never let the check itself break a call that postMessage could serve.
+    }
+
     if (getActiveTransport() !== TRANSPORT.FIREBASE) {
       // $FlowFixMe[object-this-reference]
       return value.apply(this, args);
@@ -179,13 +167,16 @@ export function withTransport<T>(name: string, value: ?T): ?T {
       const [first, ...rest] = args;
 
       getLogger()
-        .info("checkout_transport_call", { name, transport: "firebase" })
+        .info("checkout_transport_firebase_call", {
+          name,
+          transport: "firebase",
+        })
         .flush();
 
       const actions = rest[0];
 
       return getChannel()
-        .request(name, pick(first, allowedKeys))
+        .request(name, pickRelayable(name, first))
         .then((response) => {
           // Shipping callbacks: the parent's handler called `actions.reject`.
           // Replay it locally so the app runs its own reject behaviour.

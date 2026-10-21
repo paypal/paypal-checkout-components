@@ -4,6 +4,7 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { uniqueID, stringifyError } from "@krakenjs/belter/src";
 import { getVersion, getLogger } from "@paypal/sdk-client/src";
 
+import { logTransportDebug } from "./debugLog";
 import { loadFirebaseSDK } from "./loadFirebaseSDK";
 import { getFirebaseSessionToken } from "./getFirebaseSessionToken";
 import type { FirebaseConfig } from "./firebaseConfig";
@@ -39,6 +40,7 @@ import {
  */
 
 type Pending = {|
+  name: string,
   resolve: (mixed) => void,
   reject: (Error) => void,
 |};
@@ -98,6 +100,12 @@ export function createFirebaseChannel({
       return new ZalgoPromise((resolve, reject) => {
         const timer = setTimeout(() => {
           delete pending[requestUID];
+          getLogger()
+            .warn("checkout_transport_firebase_request_timeout", {
+              name,
+              requestUID,
+            })
+            .flush();
           reject(
             new Error(
               `Firebase call timed out after ${RPC_TIMEOUT_MS}ms (${name})`,
@@ -106,6 +114,7 @@ export function createFirebaseChannel({
         }, RPC_TIMEOUT_MS);
 
         pending[requestUID] = {
+          name,
           resolve: (value) => {
             clearTimeout(timer);
             resolve(value);
@@ -125,6 +134,7 @@ export function createFirebaseChannel({
             message_type: MESSAGE_TYPE.REQUEST,
             message_data: data,
           });
+          logTransportDebug("request_sent", { name, requestUID, messageUID });
         } catch (err) {
           clearTimeout(timer);
           delete pending[requestUID];
@@ -172,6 +182,11 @@ export function createFirebaseChannel({
       }
 
       delete pending[requestUID];
+      logTransportDebug("response_received", {
+        name: waiting.name,
+        requestUID,
+        status: parsed.message_status,
+      });
 
       if (parsed.message_status === RESPONSE_STATUS.SUCCESS) {
         waiting.resolve(parsed.message_data);
@@ -222,6 +237,13 @@ export function createFirebaseChannel({
               // The subscription is dead (typically PERMISSION_DENIED once
               // the custom token expires). Nothing will arrive again, so
               // fail whatever is waiting instead of letting it time out.
+              getLogger()
+                .warn("checkout_transport_firebase_subscription_failed", {
+                  err: stringifyError(err),
+                  pending: Object.keys(pending).length,
+                })
+                .flush();
+
               for (const requestUID of Object.keys(pending)) {
                 pending[requestUID].reject(
                   err || new Error(`Firebase subscription failed`),
