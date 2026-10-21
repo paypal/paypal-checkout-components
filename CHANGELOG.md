@@ -1,3 +1,9 @@
+## <small>5.0.438 (2026-10-19)</small>
+
+* fix: pin webpack version (#2674) ([c115544](https://github.com/paypal/paypal-checkout-components/commit/c115544)), closes [#2674](https://github.com/paypal/paypal-checkout-components/issues/2674)
+
+
+
 ## <small>5.0.437 (2026-10-09)</small>
 
 * Delegate payment Permissions Policy to buttons and checkout iframes (#2665) ([4824404](https://github.com/paypal/paypal-checkout-components/commit/4824404)), closes [#2665](https://github.com/paypal/paypal-checkout-components/issues/2665)
