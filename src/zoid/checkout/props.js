@@ -43,6 +43,7 @@ export type CheckoutPropsType = {|
   onShippingAddressChange: ?OnShippingAddressChange,
   onShippingOptionsChange: ?OnShippingOptionsChange,
   hasShippingCallback: boolean,
+  relayChannelID?: string,
   locale: LocaleType,
   style: {||},
   nonce: string,
