@@ -1,9 +1,13 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { getLogger, getEnv } from "@paypal/sdk-client/src";
-import { ENV } from "@paypal/sdk-constants/src";
-import { noop, stringifyError } from "@krakenjs/belter/src";
+import { getLogger } from "@paypal/sdk-client/src";
+import {
+  noop,
+  stringifyError,
+  parseQuery,
+  undotify,
+} from "@krakenjs/belter/src";
 
 import { getRelayChannelID, withTransport } from "./withTransport";
 import { isOpenerLost } from "./openerWatch";
@@ -33,61 +37,31 @@ import { isOpenerLost } from "./openerWatch";
  *     which is never relayed), so the parent gets no buyer token and
  *     client-side capture will fail. Zoid helpers (close, resize, ...) are
  *     local no-ops.
- *
- * Prototype gate: non-production only. Remove `isDetachedBootEnabled` to
- * enable it everywhere.
  */
 
 const DETACHED_TAG = "paypal-checkout";
 
-function isDetachedBootEnabled(): boolean {
-  try {
-    return getEnv() !== ENV.PRODUCTION;
-  } catch (err) {
-    return false;
-  }
+// zoid puts props in the popup URL with belter's `dotify` (nested objects as
+// `a.b`, arrays as `a.0` / `a[]`, booleans and numbers as strings).
+// `undotify` is its inverse and restores the types.
+export function parseDetachedQuery(search: string): Object {
+  return undotify(parseQuery(search.replace(/^\?/, "")));
 }
 
-function readString(params: URLSearchParams, key: string): ?string {
-  const value = params.get(key);
-  return value === null ? undefined : value;
+// IDs can look numeric, and undotify turns numeric-looking strings into
+// numbers, so read them back as strings.
+function str(value: mixed): ?string {
+  return value === undefined || value === null ? undefined : String(value);
 }
 
-function readBoolean(
-  params: URLSearchParams,
-  key: string,
-  fallback: boolean,
-): boolean {
-  const value = params.get(key);
-
-  if (value === null) {
-    return fallback;
-  }
-
-  return value === "true" || value === "1";
+function bool(value: mixed, fallback: boolean): boolean {
+  return typeof value === "boolean" ? value : fallback;
 }
 
-function readList(
-  params: URLSearchParams,
-  prefix: string,
-): $ReadOnlyArray<string> {
-  const values = [];
+function readLocale(query: Object): ?{| lang: string, country: string |} {
+  const raw = query.locale && query.locale.x;
 
-  params.forEach((value, key) => {
-    if (key.indexOf(`${prefix}.`) === 0) {
-      values.push(value);
-    }
-  });
-
-  return values;
-}
-
-function readLocale(
-  params: URLSearchParams,
-): ?{| lang: string, country: string |} {
-  const raw = params.get("locale.x");
-
-  if (!raw) {
+  if (typeof raw !== "string") {
     return undefined;
   }
 
@@ -105,24 +79,26 @@ function unavailable(name: string): () => ZalgoPromise<void> {
     );
 }
 
-export function buildDetachedXprops(params: URLSearchParams): Object {
+export function buildDetachedXprops(query: Object): Object {
   const xprops: Object = {
     // Data props, from the popup URL.
-    clientID: readString(params, "clientID"),
-    sessionID: readString(params, "sessionID"),
-    buttonSessionID: readString(params, "buttonSessionID"),
-    stickinessID: readString(params, "stickinessID"),
-    relayChannelID: readString(params, "relayChannelID"),
-    fundingSource: readString(params, "fundingSource"),
-    buyerCountry: readString(params, "buyerCountry"),
-    clientMetadataID: readString(params, "client-metadata-id"),
-    token: readString(params, "token"),
-    env: readString(params, "env"),
-    commit: readBoolean(params, "commit", true),
-    branded: readBoolean(params, "branded", false),
-    hasShippingCallback: readBoolean(params, "hasShippingCallback", false),
-    enableFunding: readList(params, "enableFunding"),
-    locale: readLocale(params),
+    clientID: str(query.clientID),
+    sessionID: str(query.sessionID),
+    buttonSessionID: str(query.buttonSessionID),
+    stickinessID: str(query.stickinessID),
+    relayChannelID: str(query.relayChannelID),
+    fundingSource: str(query.fundingSource),
+    buyerCountry: str(query.buyerCountry),
+    clientMetadataID: str(query["client-metadata-id"]),
+    token: str(query.token),
+    env: str(query.env),
+    commit: bool(query.commit, true),
+    branded: bool(query.branded, false),
+    hasShippingCallback: bool(query.hasShippingCallback, false),
+    enableFunding: Array.isArray(query.enableFunding)
+      ? query.enableFunding.map(String)
+      : [],
+    locale: readLocale(query),
 
     // zoid helpers: local only. There is no parent to call.
     tag: DETACHED_TAG,
@@ -161,7 +137,7 @@ export function buildDetachedXprops(params: URLSearchParams): Object {
   xprops.onApprove = approve;
   xprops.onAuthorize = approve;
 
-  if (readBoolean(params, "hasOnCancel", true)) {
+  if (bool(query.hasOnCancel, true)) {
     xprops.onCancel = withTransport("onCancel", unavailable("onCancel"));
   }
 
@@ -170,7 +146,7 @@ export function buildDetachedXprops(params: URLSearchParams): Object {
     ["onShippingAddressChange", "hasOnShippingAddressChange"],
     ["onShippingOptionsChange", "hasOnShippingOptionsChange"],
   ]) {
-    if (readBoolean(params, flag, false)) {
+    if (bool(query[flag], false)) {
       xprops[name] = withTransport(name, unavailable(name));
     }
   }
@@ -186,13 +162,13 @@ export function buildDetachedXprops(params: URLSearchParams): Object {
  */
 export function recoverDetachedCheckout(err: mixed): ?Object {
   try {
-    if (!isDetachedBootEnabled() || !getRelayChannelID() || !isOpenerLost()) {
+    if (!getRelayChannelID() || !isOpenerLost()) {
       return null;
     }
 
-    // eslint-disable-next-line compat/compat
-    const params = new URLSearchParams(window.location.search);
-    const xprops = buildDetachedXprops(params);
+    const xprops = buildDetachedXprops(
+      parseDetachedQuery(window.location.search),
+    );
 
     window.xprops = xprops;
 

@@ -1,16 +1,15 @@
 /* @flow */
-/* eslint-disable compat/compat, no-empty-function */
+/* eslint-disable no-empty-function */
 
 import { describe, it, expect, vi } from "vitest";
 
-import { buildDetachedXprops } from "./detachedChild";
+import { buildDetachedXprops, parseDetachedQuery } from "./detachedChild";
 
 vi.mock("@paypal/sdk-client/src", () => ({
   getLogger: () => ({
     info: () => ({ flush: () => {} }),
     warn: () => ({ flush: () => {} }),
   }),
-  getEnv: () => "test",
 }));
 
 vi.mock("./withTransport", () => ({
@@ -25,7 +24,7 @@ vi.mock("./withTransport", () => ({
 describe("buildDetachedXprops", () => {
   it("reads data props from the URL", () => {
     const xprops = buildDetachedXprops(
-      new URLSearchParams(
+      parseDetachedQuery(
         "clientID=abc&buttonSessionID=b1&fundingSource=paypal&client-metadata-id=cmid&locale.x=en_US&commit=false&token=EC-1",
       ),
     );
@@ -41,7 +40,7 @@ describe("buildDetachedXprops", () => {
 
   it("exposes only the callbacks the parent had", () => {
     const xprops = buildDetachedXprops(
-      new URLSearchParams("hasOnCancel=true&hasOnShippingChange=true"),
+      parseDetachedQuery("hasOnCancel=true&hasOnShippingChange=true"),
     );
 
     expect(xprops.onApprove.relayedName).toBe("onApprove");
@@ -53,16 +52,14 @@ describe("buildDetachedXprops", () => {
   });
 
   it("omits onCancel when the parent had none", () => {
-    const xprops = buildDetachedXprops(
-      new URLSearchParams("hasOnCancel=false"),
-    );
+    const xprops = buildDetachedXprops(parseDetachedQuery("hasOnCancel=false"));
     expect(xprops.onCancel).toBeUndefined();
   });
 
   it("resolves onAuth without relaying it", async () => {
-    const xprops = buildDetachedXprops(new URLSearchParams(""));
+    const xprops = buildDetachedXprops(parseDetachedQuery(""));
     await expect(xprops.onAuth({ accessToken: "x" })).resolves.toBeUndefined();
   });
 });
 
-/* eslint-enable compat/compat, no-empty-function */
+/* eslint-enable no-empty-function */
