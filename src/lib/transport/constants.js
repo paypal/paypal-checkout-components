@@ -87,6 +87,7 @@ export const RELAYABLE: { [string]: $ReadOnlyArray<string> } = {
     "paymentID",
     "paymentToken",
     "shippingAddress",
+    "amount",
     "errors",
   ],
   onShippingOptionsChange: [
@@ -94,6 +95,8 @@ export const RELAYABLE: { [string]: $ReadOnlyArray<string> } = {
     "paymentID",
     "paymentToken",
     "selectedShippingOption",
+    "options",
+    "amount",
     "errors",
   ],
 };
