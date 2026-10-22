@@ -15,24 +15,25 @@ import { pickRelayable } from "./pickRelayable";
 import { RELAYABLE } from "./constants";
 
 /**
- * Route an xprops callback through whichever transport is currently active.
+ * Route an xprops callback over postMessage, or over the Firebase relay once
+ * the popup has fallen back (see openerWatch.js).
  *
  * Applied via zoid's PUBLIC `childDecorate` prop hook, so nothing in zoid or
  * post-robot is modified: the function the checkout app calls as
  * `window.xprops.onApprove(...)` is this wrapper, and the app never learns
  * which wire carried the call.
  *
- * With post_message active the wrapper is a pass-through to the original
+ * Until the popup falls back, the wrapper is a pass-through to the original
  * cross-domain function, i.e. exactly today's behaviour.
  *
- * With firebase active the call goes over the relay instead as a named
+ * After it falls back, the call goes over the relay instead as a named
  * request carrying only the filtered first argument. Function arguments
  * (`actions`) cannot travel: the parent reports a `reject` back in its
  * response and this wrapper applies it to the app's own `actions.reject`.
  *
  * The only automatic switch is postMessage -> firebase when the opener is
- * lost (openerWatch.js). If Firebase is active and unavailable, the call
- * rejects; there is no fallback back to postMessage.
+ * lost (openerWatch.js). If the popup has fallen back and Firebase is
+ * unavailable, the call rejects; there is no fallback back to postMessage.
  */
 
 let channel: ?FirebaseChannel = null;
