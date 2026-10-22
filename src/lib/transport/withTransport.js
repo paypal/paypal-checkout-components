@@ -4,12 +4,15 @@ import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import { getLogger } from "@paypal/sdk-client/src";
 import { getQueryParam, stringifyError } from "@krakenjs/belter/src";
 
-import { getActiveTransport, onTransportChange } from "./activeTransport";
 import { createFirebaseChannel, type FirebaseChannel } from "./firebaseChannel";
 import { getFirebaseConfig } from "./firebaseConfig";
-import { armTransportFallback, fallBackIfOpenerLost } from "./openerWatch";
+import {
+  armTransportFallback,
+  fallBackIfOpenerLost,
+  isFellBack,
+} from "./openerWatch";
 import { pickRelayable } from "./pickRelayable";
-import { TRANSPORT, RELAYABLE } from "./constants";
+import { RELAYABLE } from "./constants";
 
 /**
  * Route an xprops callback through whichever transport is currently active.
@@ -33,7 +36,6 @@ import { TRANSPORT, RELAYABLE } from "./constants";
  */
 
 let channel: ?FirebaseChannel = null;
-let unavailableReason: ?string = null;
 
 /**
  * The channel key is the per-checkout `relayChannelID`, a UUID the button
@@ -61,7 +63,9 @@ function getChannel(): FirebaseChannel {
   const config = getFirebaseConfig();
 
   if (!channelID || !config) {
-    unavailableReason = !channelID ? "no_channel_id" : "no_firebase_config";
+    const unavailableReason = !channelID
+      ? "no_channel_id"
+      : "no_firebase_config";
 
     getLogger()
       .info("checkout_transport_firebase_unavailable", {
@@ -82,37 +86,21 @@ function getChannel(): FirebaseChannel {
 }
 
 /**
- * Connect eagerly: open the Firebase channel as soon as Firebase becomes the
- * active transport (and at startup if it already is), instead of on the first
- * relayed call. Token fetch, SDK load and sign-in then happen while the page
- * is idle, so the first call does not pay for them, and a setup failure shows
- * up in the logs immediately rather than at the moment a callback is needed.
+ * Connect eagerly: open the Firebase channel as soon as the popup falls back,
+ * instead of on the first relayed call. Token fetch, SDK load and sign-in
+ * then happen while the page is idle, so the first call does not pay for
+ * them, and a setup failure shows up in the logs immediately rather than at
+ * the moment a callback is needed. Passed to `armTransportFallback`.
  *
  * Failure here is deliberately quiet: getChannel() has already logged it, and
  * the next real call retries with a fresh channel.
  */
-let eagerInstalled = false;
-
 function connectEagerly() {
-  if (getActiveTransport() !== TRANSPORT.FIREBASE) {
-    return;
-  }
-
   try {
     getChannel();
   } catch (err) {
     // Logged in getChannel(); a later call will retry.
   }
-}
-
-function installEagerConnection() {
-  if (eagerInstalled) {
-    return;
-  }
-  eagerInstalled = true;
-
-  onTransportChange(connectEagerly);
-  connectEagerly();
 }
 
 export function withTransport<T>(name: string, value: ?T): ?T {
@@ -134,8 +122,7 @@ export function withTransport<T>(name: string, value: ?T): ?T {
     // No channel id means the button frame did not offer the relay (older
     // frame, or id generation failed): stay on postMessage and never arm.
     if (getRelayChannelID()) {
-      installEagerConnection();
-      armTransportFallback();
+      armTransportFallback(connectEagerly);
     }
   } catch (err) {
     getLogger()
@@ -158,7 +145,7 @@ export function withTransport<T>(name: string, value: ?T): ?T {
       // Never let the check itself break a call that postMessage could serve.
     }
 
-    if (getActiveTransport() !== TRANSPORT.FIREBASE) {
+    if (!isFellBack()) {
       // $FlowFixMe[object-this-reference]
       return value.apply(this, args);
     }

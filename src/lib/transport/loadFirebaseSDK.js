@@ -9,7 +9,7 @@ import {
   type Memoized,
 } from "@krakenjs/belter/src";
 
-import { FIREBASE_SCRIPTS } from "./constants";
+import { FIREBASE_SCRIPTS, RELAY_FIREBASE_APP_NAME } from "./constants";
 import type { FirebaseConfig } from "./firebaseConfig";
 
 /**
@@ -17,25 +17,29 @@ import type { FirebaseConfig } from "./firebaseConfig";
  * Deliberately narrow — anything wider would imply we own more of Firebase's
  * behaviour than we do.
  */
+type FirebaseDatabase = {|
+  ref: (string) => {|
+    // eslint-disable-next-line no-undef
+    set: <T>(T) => mixed,
+    // eslint-disable-next-line no-undef
+    on: <T>("value", (T) => void, (Error) => void) => void,
+    off: () => void,
+  |},
+  goOnline: () => void,
+  goOffline: () => void,
+|};
+
 export type FirebaseSDK = {|
-  initializeApp: (FirebaseConfig) => void,
-  auth: () => {|
-    signInWithCustomToken: (string) => ZalgoPromise<mixed>,
+  initializeApp: (FirebaseConfig, name: string) => void,
+  app: (name: string) => {|
+    auth: () => {|
+      signInWithCustomToken: (string) => ZalgoPromise<mixed>,
+    |},
+    database: () => FirebaseDatabase,
   |},
   database: {|
     INTERNAL: {|
       forceWebSockets: () => void,
-    |},
-    (): {|
-      ref: (string) => {|
-        // eslint-disable-next-line no-undef
-        set: <T>(T) => mixed,
-        // eslint-disable-next-line no-undef
-        on: <T>("value", (T) => void, (Error) => void) => void,
-        off: () => void,
-      |},
-      goOnline: () => void,
-      goOffline: () => void,
     |},
   |},
 |};
@@ -66,7 +70,8 @@ function loadScript(url: string): ZalgoPromise<void> {
  * loaded a button page will usually hit cache.
  *
  * Memoized: concurrent failures (say onApprove and onShippingChange racing)
- * must share one load and one `initializeApp` call.
+ * must share one load and one `initializeApp` call. The app is named so it
+ * cannot collide with a default app the page initialized itself.
  */
 // $FlowIgnore[value-as-type]
 export const loadFirebaseSDK: Memoized<
@@ -92,7 +97,7 @@ export const loadFirebaseSDK: Memoized<
       throw new Error(`Firebase failed to load`);
     }
 
-    firebase.initializeApp(config);
+    firebase.initializeApp(config, RELAY_FIREBASE_APP_NAME);
 
     return firebase;
   });

@@ -12,6 +12,7 @@ import {
   APP,
   FIREBASE_MESSAGES_PATH,
   MESSAGE_TYPE,
+  RELAY_FIREBASE_APP_NAME,
   RESPONSE_STATUS,
   RPC_TIMEOUT_MS,
 } from "./constants";
@@ -36,7 +37,7 @@ import {
  * first argument. The parent answers with a response; nothing is ever sent
  * from the parent to the popup unprompted, so inbound requests are ignored.
  *
- * Nothing here decides when to be used. See `activeTransport.js`.
+ * Nothing here decides when to be used. See `openerWatch.js`.
  */
 
 type Pending = {|
@@ -69,9 +70,6 @@ export function createFirebaseChannel({
 
   let closed = false;
   let connectionFailed = false;
-  let writeEnvelope = (envelope: Object): void => {
-    throw new Error(`Firebase channel is not connected yet: ${envelope.type}`);
-  };
 
   const envelopeBase = () => ({
     session_uid: sessionUID,
@@ -79,70 +77,6 @@ export function createFirebaseChannel({
     source_app_version: getVersion(),
     target_app: APP.SMART_PAYMENT_BUTTONS,
   });
-
-  // `connection` needs `handleIncoming`; break the cycle with indirection.
-  let connectionRef: any = null; // eslint-disable-line flowtype/no-weak-types
-  let incoming: (mixed) => void = () => undefined;
-
-  const request = (name: string, data: Object): ZalgoPromise<mixed> => {
-    return connectionRef.then(() => {
-      if (closed) {
-        throw new Error(`Firebase channel closed`);
-      }
-
-      const requestUID = uniqueID();
-      const messageUID = uniqueID();
-
-      // Record before writing: the value listener echoes our own write
-      // straight back to us.
-      seen[messageUID] = true;
-
-      return new ZalgoPromise((resolve, reject) => {
-        const timer = setTimeout(() => {
-          delete pending[requestUID];
-          getLogger()
-            .warn("checkout_transport_firebase_request_timeout", {
-              name,
-              requestUID,
-            })
-            .flush();
-          reject(
-            new Error(
-              `Firebase call timed out after ${RPC_TIMEOUT_MS}ms (${name})`,
-            ),
-          );
-        }, RPC_TIMEOUT_MS);
-
-        pending[requestUID] = {
-          name,
-          resolve: (value) => {
-            clearTimeout(timer);
-            resolve(value);
-          },
-          reject: (err) => {
-            clearTimeout(timer);
-            reject(err);
-          },
-        };
-
-        try {
-          writeEnvelope({
-            ...envelopeBase(),
-            message_name: name,
-            message_uid: messageUID,
-            request_uid: requestUID,
-            message_type: MESSAGE_TYPE.REQUEST,
-            message_data: data,
-          });
-          logTransportDebug("request_sent", { name, requestUID, messageUID });
-        } catch (err) {
-          clearTimeout(timer);
-          delete pending[requestUID];
-          reject(err);
-        }
-      });
-    });
-  };
 
   const handleIncoming = (raw: mixed) => {
     if (typeof raw !== "string" || !raw) {
@@ -201,28 +135,22 @@ export function createFirebaseChannel({
     }
   };
 
-  incoming = handleIncoming;
-
   const connection = ZalgoPromise.hash({
     firebase: loadFirebaseSDK(config),
     sessionToken: getFirebaseSessionToken(sessionUID),
   })
     .then(({ firebase, sessionToken }) => {
-      return firebase
+      const app = firebase.app(RELAY_FIREBASE_APP_NAME);
+
+      return app
         .auth()
         .signInWithCustomToken(sessionToken)
         .then(() => {
-          const database = firebase.database();
+          const database = app.database();
 
           // Long-polling can stall behind a suspended tab in exactly the
           // conditions this transport exists to survive.
           firebase.database.INTERNAL.forceWebSockets();
-
-          writeEnvelope = (envelope) => {
-            database
-              .ref(`${FIREBASE_MESSAGES_PATH(sessionUID)}/${uniqueID()}`)
-              .set(JSON.stringify(envelope));
-          };
 
           database.ref(FIREBASE_MESSAGES_PATH(sessionUID)).on(
             "value",
@@ -230,7 +158,7 @@ export function createFirebaseChannel({
               const messages = (snapshot && snapshot.val()) || {};
 
               for (const key of Object.keys(messages)) {
-                incoming(messages[key]);
+                handleIncoming(messages[key]);
               }
             },
             (err) => {
@@ -263,8 +191,6 @@ export function createFirebaseChannel({
       return database;
     });
 
-  connectionRef = connection;
-
   connection.catch((err) => {
     connectionFailed = true;
 
@@ -274,6 +200,70 @@ export function createFirebaseChannel({
       })
       .flush();
   });
+
+  const request = (name: string, data: Object): ZalgoPromise<mixed> => {
+    return connection.then((database) => {
+      if (closed) {
+        throw new Error(`Firebase channel closed`);
+      }
+
+      const requestUID = uniqueID();
+      const messageUID = uniqueID();
+
+      // Record before writing: the value listener echoes our own write
+      // straight back to us.
+      seen[messageUID] = true;
+
+      return new ZalgoPromise((resolve, reject) => {
+        const timer = setTimeout(() => {
+          delete pending[requestUID];
+          getLogger()
+            .warn("checkout_transport_firebase_request_timeout", {
+              name,
+              requestUID,
+            })
+            .flush();
+          reject(
+            new Error(
+              `Firebase call timed out after ${RPC_TIMEOUT_MS}ms (${name})`,
+            ),
+          );
+        }, RPC_TIMEOUT_MS);
+
+        pending[requestUID] = {
+          name,
+          resolve: (value) => {
+            clearTimeout(timer);
+            resolve(value);
+          },
+          reject: (err) => {
+            clearTimeout(timer);
+            reject(err);
+          },
+        };
+
+        try {
+          database
+            .ref(`${FIREBASE_MESSAGES_PATH(sessionUID)}/${uniqueID()}`)
+            .set(
+              JSON.stringify({
+                ...envelopeBase(),
+                message_name: name,
+                message_uid: messageUID,
+                request_uid: requestUID,
+                message_type: MESSAGE_TYPE.REQUEST,
+                message_data: data,
+              }),
+            );
+          logTransportDebug("request_sent", { name, requestUID, messageUID });
+        } catch (err) {
+          clearTimeout(timer);
+          delete pending[requestUID];
+          reject(err);
+        }
+      });
+    });
+  };
 
   return {
     isUsable: () => !closed && !connectionFailed,

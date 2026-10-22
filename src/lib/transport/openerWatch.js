@@ -1,10 +1,9 @@
 /* @flow */
 
-import { getEnv, getLogger } from "@paypal/sdk-client/src";
-import { ENV } from "@paypal/sdk-constants/src";
+import { getLogger } from "@paypal/sdk-client/src";
 
-import { getActiveTransport, setActiveTransport } from "./activeTransport";
-import { TRANSPORT, OPENER_POLL_MS } from "./constants";
+import { OPENER_POLL_MS } from "./constants";
+import { installDevHooks } from "./devHooks";
 
 /**
  * Arming (first draft): postMessage is the default transport; once this popup
@@ -14,8 +13,16 @@ import { TRANSPORT, OPENER_POLL_MS } from "./constants";
  * are readable cross-origin (`closed` is one of the few cross-origin-safe
  * properties); anything else about the opener is not touched.
  *
- * One-way: once on Firebase we stay there. Switching back would need a
- * decision about in-flight calls that has not been made.
+ * Nothing here decides anything beyond that one signal, and nothing switches
+ * back: once on Firebase we stay there, because switching back would need a
+ * decision about in-flight calls that has not been made. What a switch does
+ * and does not affect:
+ *   - Calls made after the switch use Firebase.
+ *   - A call already in flight stays on the transport it started on; it
+ *     cannot be migrated.
+ *
+ * Coordination between the two ends is not needed: the button frame serves
+ * the relay for the life of the checkout regardless of this state.
  *
  * Known gaps of this draft:
  *   - Polling, so detection lags by up to OPENER_POLL_MS. Calls are covered by
@@ -25,6 +32,13 @@ import { TRANSPORT, OPENER_POLL_MS } from "./constants";
  *   - No resume/visibility trigger yet. See the stashed detectSuspension.js.
  */
 let armed = false;
+let fellBack = false;
+let onFallbackHandler: ?() => void = null;
+
+/** Whether new calls should go over Firebase. One-way. */
+export function isFellBack(): boolean {
+  return fellBack;
+}
 
 export function isOpenerLost(): boolean {
   try {
@@ -36,18 +50,26 @@ export function isOpenerLost(): boolean {
 }
 
 function fallBack(reason: string) {
-  if (getActiveTransport() === TRANSPORT.FIREBASE) {
+  if (fellBack) {
     return;
   }
+
+  fellBack = true;
 
   getLogger()
     .info("checkout_transport_firebase_fallback", {
       reason,
-      to: TRANSPORT.FIREBASE,
+      to: "firebase",
     })
     .flush();
 
-  setActiveTransport(TRANSPORT.FIREBASE);
+  try {
+    if (onFallbackHandler) {
+      onFallbackHandler();
+    }
+  } catch (err) {
+    // The handler (eager connect) is best effort; the next call retries.
+  }
 }
 
 /**
@@ -57,41 +79,24 @@ function fallBack(reason: string) {
  * postMessage to a dead target. A no-op while the opener is reachable.
  */
 export function fallBackIfOpenerLost() {
-  if (getActiveTransport() !== TRANSPORT.FIREBASE && isOpenerLost()) {
+  if (!fellBack && isOpenerLost()) {
     fallBack("opener_lost_at_call");
   }
 }
 
 /**
- * Console command for testing the fallback in a non-production environment:
- *
- *   __PP_TRANSPORT__.simulateOpenerLoss()
- *
- * Runs the same switch as the opener watch without severing the opener. Not
- * installed in production.
+ * Start watching. `onFallback` runs once, when the switch happens (including
+ * immediately if the opener is already lost); the wrapper uses it to open the
+ * Firebase connection early.
  */
-function installSimulation() {
-  try {
-    if (getEnv() === ENV.PRODUCTION) {
-      return;
-    }
-
-    // $FlowFixMe[prop-missing] deliberate debug global
-    window.__PP_TRANSPORT__ = {
-      simulateOpenerLoss: () => fallBack("simulated_opener_loss"),
-    };
-  } catch (err) {
-    // No env available in this context; skip rather than expose it blindly.
-  }
-}
-
-export function armTransportFallback() {
+export function armTransportFallback(onFallback: () => void) {
   if (armed) {
     return;
   }
   armed = true;
+  onFallbackHandler = onFallback;
 
-  installSimulation();
+  installDevHooks(); // testing only, see devHooks.js
 
   if (isOpenerLost()) {
     fallBack("opener_lost_at_start");
@@ -99,7 +104,7 @@ export function armTransportFallback() {
   }
 
   const timer = setInterval(() => {
-    if (getActiveTransport() === TRANSPORT.FIREBASE) {
+    if (fellBack) {
       clearInterval(timer);
       return;
     }

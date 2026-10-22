@@ -19,8 +19,8 @@ import { RELAY_SESSION_TOKEN_PATH } from "./constants";
  * endpoint; a token from the wrong one fails with CREDENTIAL_MISMATCH.
  *
  * Constraints that shape this code:
- *  - `sessionId` must be a UUID. `channelID.js` derives one from the checkout
- *    `sessionID`; callers pass that, never the raw `sessionID`.
+ *  - `sessionId` must be a UUID. Callers pass the per-checkout
+ *    `relayChannelID` the button frame generated, never the raw `sessionID`.
  *  - The endpoint is same-origin only (it rejects any `Sec-Fetch-Site` other
  *    than `same-origin`), so the URL is deliberately RELATIVE: it must be
  *    requested from a page on the same origin that serves `/web-sdk`. That

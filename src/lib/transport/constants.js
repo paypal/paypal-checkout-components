@@ -9,23 +9,6 @@
  * one here without changing it there silently drops messages.
  */
 
-export const TRANSPORT = {
-  POST_MESSAGE: ("post_message": "post_message"),
-  FIREBASE: ("firebase": "firebase"),
-};
-
-export type TransportName = $Values<typeof TRANSPORT>;
-
-/**
- * Which transport new calls use when nothing has set one explicitly.
- *
- * `post_message` (today's behaviour). The popup switches itself to `firebase`
- * when it detects that its opener is lost (see openerWatch.js). The
- * button frame cannot detect that, so it does not gate on its own active
- * transport; it serves the relay for the lifetime of a checkout.
- */
-export const DEFAULT_TRANSPORT: TransportName = TRANSPORT.POST_MESSAGE;
-
 /** How often the popup checks that its opener is still there. */
 export const OPENER_POLL_MS = 500;
 
@@ -135,6 +118,12 @@ export const APP = {
 // `v:major.:minor.:patch`; the route does not use it. Relative on purpose, see
 // getFirebaseSessionToken.js.
 export const RELAY_SESSION_TOKEN_PATH = "/web-sdk/v6.0.0/relay/session-token";
+
+// Named Firebase app for the relay, so it never collides with a default app
+// the checkout page may have initialized itself (a second `initializeApp` on
+// the default app with a different config throws). Independent of the app
+// names smartcomponentnodeweb uses in its own frame.
+export const RELAY_FIREBASE_APP_NAME = "paypal_checkout_relay";
 
 export const FIREBASE_MESSAGES_PATH = (sessionUID: string): string =>
   `users/${sessionUID}/messages`;
