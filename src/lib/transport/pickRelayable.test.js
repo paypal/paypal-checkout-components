@@ -33,6 +33,21 @@ describe("pickRelayable", () => {
     }
   });
 
+  it("reduces an onError error to a truncated message", () => {
+    const err = new Error("boom");
+    // $FlowFixMe
+    err.token = "secret";
+
+    expect(pickRelayable("onError", err)).toEqual({ message: "boom" });
+    expect(pickRelayable("onError", "oops")).toEqual({ message: "oops" });
+    expect(pickRelayable("onError", null)).toEqual({
+      message: "<unknown error: [object Null]>",
+    });
+    expect(
+      pickRelayable("onError", new Error("x".repeat(600))).message,
+    ).toHaveLength(500);
+  });
+
   it("ignores inherited keys", () => {
     const data = Object.create({ orderID: "inherited" });
     expect(pickRelayable("onApprove", data)).toEqual({});

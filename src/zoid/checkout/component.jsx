@@ -35,7 +35,9 @@ import {
 } from "@paypal/common-components/src";
 
 import { getSessionID } from "../../lib";
-import { withTransport } from "../../lib/transport";
+import { withTransport, recoverDetachedCheckout } from "../../lib/transport";
+// TESTING ONLY, remove before merge (see devHooks.js)
+import { severOpenerAtBootIfRequested } from "../../lib/transport/devHooks";
 import { containerContent } from "../content";
 
 import type { CheckoutPropsType } from "./props";
@@ -88,8 +90,8 @@ function spyOnWindowNameAssignment(): void {
   }
 }
 
-export function getCheckoutComponent(): CheckoutComponent {
-  return inlineMemoize(getCheckoutComponent, () => {
+function buildCheckoutComponent(): CheckoutComponent {
+  return inlineMemoize(buildCheckoutComponent, () => {
     const component = create({
       tag: "paypal-checkout",
       url: () =>
@@ -403,6 +405,13 @@ export function getCheckoutComponent(): CheckoutComponent {
           childDecorate: ({ value }) => withTransport("onCancel", value),
         },
 
+        onError: {
+          type: "function",
+          required: false,
+          sendToChild: false,
+          childDecorate: ({ onError }) => withTransport("onError", onError),
+        },
+
         onFocused: {
           type: "function",
           value: ({ event }) => {
@@ -464,5 +473,38 @@ export function getCheckoutComponent(): CheckoutComponent {
     }
 
     return component;
+  });
+}
+
+// Wraps the zoid component. In a popup that lost its parent before booting,
+// zoid's child registration throws; recoverDetachedCheckout then supplies an
+// xprops built from the URL (non-production prototype, see detachedChild.js).
+// Everywhere else this is exactly buildCheckoutComponent.
+export function getCheckoutComponent(): CheckoutComponent {
+  return inlineMemoize(getCheckoutComponent, () => {
+    severOpenerAtBootIfRequested(); // TESTING ONLY
+
+    try {
+      return buildCheckoutComponent();
+    } catch (err) {
+      const detached = recoverDetachedCheckout(err);
+
+      if (!detached) {
+        throw err;
+      }
+
+      spyOnWindowNameAssignment();
+
+      window.xchild = {
+        props: detached.xprops,
+        show: noop,
+        hide: noop,
+      };
+
+      fixCreditRedirect();
+
+      // $FlowFixMe the stand-in only implements what the checkout app reads
+      return detached;
+    }
   });
 }
