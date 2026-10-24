@@ -45,7 +45,7 @@ let channel: ?FirebaseChannel = null;
  * `window.name`. Reading it from `window.xprops` would defeat the purpose —
  * xprops arrives over the very channel that may be down.
  */
-function getRelayChannelID(): ?string {
+export function getRelayChannelID(): ?string {
   return getQueryParam("relayChannelID") || null;
 }
 

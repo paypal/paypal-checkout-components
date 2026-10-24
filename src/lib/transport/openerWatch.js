@@ -1,6 +1,8 @@
 /* @flow */
 
 import { getLogger } from "@paypal/sdk-client/src";
+import { safeInterval } from "@krakenjs/belter/src";
+import { getOpener, isWindowClosed } from "@krakenjs/cross-domain-utils/src";
 
 import { OPENER_POLL_MS } from "./constants";
 
@@ -11,9 +13,9 @@ import { OPENER_POLL_MS } from "./constants";
  * Applies to popups only: a checkout rendered in an iframe is never "lost",
  * since its parent is reachable.
  *
- * "Lost" means `window.opener` is null or the opener window is closed. Both
- * are readable cross-origin (`closed` is one of the few cross-origin-safe
- * properties); anything else about the opener is not touched.
+ * "Lost" means the opener (as zoid reads it, via cross-domain-utils' `getOpener`)
+ * is missing or `isWindowClosed`. Both are safe cross-origin; anything else
+ * about the opener is not touched.
  *
  * Nothing here decides anything beyond that one signal, and nothing switches
  * back: once on Firebase we stay there, because switching back would need a
@@ -54,7 +56,8 @@ export function isOpenerLost(): boolean {
       return false;
     }
 
-    return !window.opener || window.opener.closed;
+    const opener = getOpener(window);
+    return !opener || isWindowClosed(opener);
   } catch (err) {
     // Reading a property off a severed cross-origin opener can throw.
     return true;
@@ -141,14 +144,14 @@ export function armTransportFallback(onFallback: () => void) {
     return;
   }
 
-  const timer = setInterval(() => {
+  const poll = safeInterval(() => {
     if (fellBack) {
-      clearInterval(timer);
+      poll.cancel();
       return;
     }
 
     if (isOpenerLost()) {
-      clearInterval(timer);
+      poll.cancel();
       fallBack("opener_lost");
     }
   }, OPENER_POLL_MS);

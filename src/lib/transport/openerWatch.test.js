@@ -12,6 +12,10 @@ vi.mock("@paypal/sdk-client/src", () => ({
   }),
 }));
 
+// A live opener as cross-domain-utils' isWindowClosed sees it: not closed, and
+// with a parent and top (it treats a window without them as closed).
+const liveOpener = () => ({ closed: false, parent: {}, top: {} });
+
 function setOpener(value: mixed) {
   Object.defineProperty(window, "opener", {
     value,
@@ -36,7 +40,7 @@ describe("openerWatch", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     infoMock.mockClear();
-    setOpener({ closed: false });
+    setOpener(liveOpener());
   });
 
   afterEach(() => {
