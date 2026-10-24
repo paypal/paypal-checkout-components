@@ -375,36 +375,6 @@ function buildCheckoutComponent(): CheckoutComponent {
           },
         },
 
-        // Which optional callbacks the parent has, in the URL, so a popup that
-        // lost its parent before booting can still show the right UI.
-        hasOnCancel: {
-          type: "boolean",
-          required: false,
-          queryParam: true,
-          value: ({ props }) => Boolean(props.onCancel),
-        },
-
-        hasOnShippingChange: {
-          type: "boolean",
-          required: false,
-          queryParam: true,
-          value: ({ props }) => Boolean(props.onShippingChange),
-        },
-
-        hasOnShippingAddressChange: {
-          type: "boolean",
-          required: false,
-          queryParam: true,
-          value: ({ props }) => Boolean(props.onShippingAddressChange),
-        },
-
-        hasOnShippingOptionsChange: {
-          type: "boolean",
-          required: false,
-          queryParam: true,
-          value: ({ props }) => Boolean(props.onShippingOptionsChange),
-        },
-
         clientMetadataID: {
           type: "string",
           required: false,
@@ -433,6 +403,13 @@ function buildCheckoutComponent(): CheckoutComponent {
           type: "function",
           required: false,
           childDecorate: ({ value }) => withTransport("onCancel", value),
+        },
+
+        onError: {
+          type: "function",
+          required: false,
+          sendToChild: false,
+          childDecorate: ({ onError }) => withTransport("onError", onError),
         },
 
         onFocused: {
