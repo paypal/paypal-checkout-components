@@ -24,5 +24,38 @@ declare var __PAYPAL_CHECKOUT__: {|
   |},
 |};
 
+declare var __FIREBASE__: {|
+  __PRODUCTION__: {|
+    apiKey: string,
+    authDomain: string,
+    databaseURL: string,
+    projectId: string,
+    storageBucket: string,
+    messagingSenderId: string,
+    appId: string,
+    measurementId?: string,
+  |},
+  __SANDBOX__: {|
+    apiKey: string,
+    authDomain: string,
+    databaseURL: string,
+    projectId: string,
+    storageBucket: string,
+    messagingSenderId: string,
+    appId: string,
+    measurementId?: string,
+  |},
+  __STAGE__: {|
+    apiKey: string,
+    authDomain: string,
+    databaseURL: string,
+    projectId: string,
+    storageBucket: string,
+    messagingSenderId: string,
+    appId: string,
+    measurementId?: string,
+  |},
+|};
+
 declare var __WEB__: boolean;
 declare var __TREE_SHAKE__: boolean;
