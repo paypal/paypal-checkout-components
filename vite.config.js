@@ -53,6 +53,17 @@ export default defineConfig({
     setupFiles: ["vitestSetup.js"],
     include: ["**/src/**/*.test.{js,jsx}"],
     globals: true,
+    // Default thread pool keeps all jsdom environments alive in long-running
+    // worker threads, so memory accumulates across the ~140+ test files
+    // until the worker OOMs in memory-constrained CI runners. Forks give
+    // each a real OS process the kernel reclaims in full between runs.
+    pool: "forks",
+    poolOptions: {
+      forks: {
+        minForks: 1,
+        maxForks: 4,
+      },
+    },
     coverage: {
       // exclude untested files
       all: false,

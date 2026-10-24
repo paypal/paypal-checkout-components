@@ -17,7 +17,7 @@ import {
   getClientMetadataID,
 } from "@paypal/sdk-client/src";
 
-import { getSessionID } from "../../lib";
+import { getSessionID, registerMaskedComponent, hasUserInteracted } from "../../lib";
 import type {
   OnShippingOptionsChange,
   OnShippingAddressChange,
@@ -186,6 +186,13 @@ export function getCardFormComponent(): CardFormComponent {
           value: getSDKMeta,
         },
 
+        hasInteracted: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => hasUserInteracted(),
+        },
+
         style: {
           type: "object",
           required: false,
@@ -211,3 +218,8 @@ export function getCardFormComponent(): CardFormComponent {
     });
   });
 }
+
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
+registerMaskedComponent(getCardFormComponent);
