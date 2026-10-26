@@ -849,6 +849,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                   ? window.popupBridge.getDeepLinkReturnUrlPrefix()
                   : null,
               isPayPalInstalled: Boolean(window.popupBridge.isPayPalInstalled),
+              isVenmoInstalled: Boolean(window.popupBridge.isVenmoInstalled),
               start: (url) => {
                 return new ZalgoPromise((resolve, reject) => {
                   window.popupBridge.onComplete = (err, result) => {
