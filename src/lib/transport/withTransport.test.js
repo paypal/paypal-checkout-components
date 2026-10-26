@@ -90,12 +90,13 @@ describe("withTransport", () => {
     expect(armTransportFallback).toHaveBeenCalledTimes(1);
   });
 
-  it("never arms without a relay channel and stays on postMessage", async () => {
+  it("returns the original function untouched without a relay channel", async () => {
     window.history.replaceState(null, "", "/");
     const { withTransport } = await load();
     const original = vi.fn(() => "direct");
     const wrapped = withTransport("onApprove", original);
 
+    expect(wrapped).toBe(original);
     expect(armTransportFallback).not.toHaveBeenCalled();
     expect(wrapped("a")).toBe("direct");
     expect(fallBackIfOpenerLost).not.toHaveBeenCalled();

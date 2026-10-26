@@ -117,14 +117,27 @@ export function withTransport<T>(name: string, value: ?T): ?T {
     return value;
   }
 
-  // Runs on every popup, including the ones that never need the relay: a
-  // failure here must not be able to break xprops hydration.
+  // No channel id means the button frame did not offer the relay (older
+  // frame, an iframe checkout, the experiment off, or id generation failed).
+  // Hand back the original function: such a popup runs exactly the code it
+  // ran before the relay existed. A failure reading the URL must not break
+  // xprops hydration either, so it also means no relay.
+  let relayOffered = false;
+
   try {
-    // No channel id means the button frame did not offer the relay (older
-    // frame, or id generation failed): stay on postMessage and never arm.
-    if (getRelayChannelID()) {
-      armTransportFallback(connectEagerly);
-    }
+    relayOffered = Boolean(getRelayChannelID());
+  } catch (err) {
+    // Treated as not offered.
+  }
+
+  if (!relayOffered) {
+    return value;
+  }
+
+  // Runs on every relay popup: a failure here must not be able to break
+  // xprops hydration.
+  try {
+    armTransportFallback(connectEagerly);
   } catch (err) {
     getLogger()
       .warn("checkout_transport_firebase_setup_failed", {
@@ -139,9 +152,7 @@ export function withTransport<T>(name: string, value: ?T): ?T {
     // Only popups that were offered the relay may switch. Checked at call time
     // so a call inside the polling gap does not go to a dead opener.
     try {
-      if (getRelayChannelID()) {
-        fallBackIfOpenerLost();
-      }
+      fallBackIfOpenerLost();
     } catch (err) {
       // Never let the check itself break a call that postMessage could serve.
     }
