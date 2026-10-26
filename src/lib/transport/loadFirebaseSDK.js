@@ -9,8 +9,8 @@ import {
   type Memoized,
 } from "@krakenjs/belter/src";
 
-import { FIREBASE_SCRIPTS, RELAY_FIREBASE_APP_NAME } from "./constants";
-import type { FirebaseConfig } from "./firebaseConfig";
+import { RELAY_FIREBASE_APP_NAME } from "./constants";
+import { getFirebaseScripts, type FirebaseConfig } from "./firebaseConfig";
 
 /**
  * Minimal surface of the Firebase compat SDK that this transport touches.
@@ -82,11 +82,17 @@ export const loadFirebaseSDK: Memoized<
       return;
     }
 
+    const scripts = getFirebaseScripts();
+
+    if (!scripts) {
+      throw new Error(`Firebase script URLs are not available`);
+    }
+
     // app must be present before auth/database register themselves on it.
-    return loadScript(FIREBASE_SCRIPTS.APP).then(() => {
+    return loadScript(scripts.APP).then(() => {
       return ZalgoPromise.all([
-        loadScript(FIREBASE_SCRIPTS.AUTH),
-        loadScript(FIREBASE_SCRIPTS.DATABASE),
+        loadScript(scripts.AUTH),
+        loadScript(scripts.DATABASE),
       ]);
     });
   }).then(() => {

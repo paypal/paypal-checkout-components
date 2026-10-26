@@ -18,43 +18,6 @@ module.exports = {
     __SCRIPT_NAMESPACE__: true,
   },
 
-  // Firebase projects for the checkout relay, one per environment.
-  //
-  // These values are client-side configuration, safe to commit and ship in
-  // the bundle by design. A Firebase web apiKey only identifies the project;
-  // it does not grant access. Access is governed by Firebase security rules
-  // and the per-checkout custom auth token the relay signs in with.
-  // See https://firebase.google.com/docs/projects/api-keys
-  __FIREBASE__: {
-    __PRODUCTION__: {
-      apiKey: "AIzaSyAiR0UNJRDFc3ZTFMTMz8y82NzrMpLGnyw",
-      authDomain: "dcg04-lsp-dmz-ppcp-web-sdk.firebaseapp.com",
-      databaseURL: "https://dcg04-smart-payment-buttons-rtdb.firebaseio.com",
-      projectId: "dcg04-lsp-dmz-ppcp-web-sdk",
-      storageBucket: "dcg04-lsp-dmz-ppcp-web-sdk.firebasestorage.app",
-      messagingSenderId: "883207152968",
-      appId: "1:883207152968:web:1b85104b451c81b40bbf7d",
-    },
-    __SANDBOX__: {
-      apiKey: "AIzaSyCSn0ilJtKQYbLbDglGZRtxEtmDDNGutGA",
-      authDomain: "dcg18-sb-hrzdmz-ppcp-web-sdk.firebaseapp.com",
-      databaseURL: "https://dcg18-smart-payment-buttons-rtdb.firebaseio.com",
-      projectId: "dcg18-sb-hrzdmz-ppcp-web-sdk",
-      storageBucket: "dcg18-sb-hrzdmz-ppcp-web-sdk.firebasestorage.app",
-      messagingSenderId: "707836249070",
-      appId: "1:707836249070:web:36b515c96b6fc8709804ff",
-    },
-    __STAGE__: {
-      apiKey: "AIzaSyCmcGArF4nO3MF_IxBf3NKDTjOhffAg6vs",
-      authDomain: "dev52-test-apps-ppcp-web-sdk.firebaseapp.com",
-      databaseURL: "https://dev52-smart-payment-buttons-rtdb.firebaseio.com",
-      projectId: "dev52-test-apps-ppcp-web-sdk",
-      storageBucket: "dev52-test-apps-ppcp-web-sdk.firebasestorage.app",
-      messagingSenderId: "856463611148",
-      appId: "1:856463611148:web:e25395afe382e16ed4e529",
-    },
-  },
-
   __PAYPAL_CHECKOUT__: {
     __REMEMBERED_FUNDING__: [],
     __URI__: {

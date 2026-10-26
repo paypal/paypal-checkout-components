@@ -24,36 +24,20 @@ declare var __PAYPAL_CHECKOUT__: {|
   |},
 |};
 
+// Provided at build time, per environment.
+// Absent in builds that do not provide it (such as this repo's own bundles),
+// so read it through getFirebaseConfig() / getFirebaseScripts().
 declare var __FIREBASE__: {|
-  __PRODUCTION__: {|
+  __CONFIG__: {|
     apiKey: string,
     authDomain: string,
     databaseURL: string,
     projectId: string,
-    storageBucket: string,
-    messagingSenderId: string,
-    appId: string,
-    measurementId?: string,
   |},
-  __SANDBOX__: {|
-    apiKey: string,
-    authDomain: string,
-    databaseURL: string,
-    projectId: string,
-    storageBucket: string,
-    messagingSenderId: string,
-    appId: string,
-    measurementId?: string,
-  |},
-  __STAGE__: {|
-    apiKey: string,
-    authDomain: string,
-    databaseURL: string,
-    projectId: string,
-    storageBucket: string,
-    messagingSenderId: string,
-    appId: string,
-    measurementId?: string,
+  __SCRIPTS__: {|
+    APP: string,
+    AUTH: string,
+    DATABASE: string,
   |},
 |};
 

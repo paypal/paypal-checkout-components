@@ -8,7 +8,7 @@ import { RELAY_SESSION_TOKEN_PATH } from "./constants";
 /**
  * Mint a Firebase custom auth token for a relay channel.
  *
- * Uses the web SDK server's relay endpoint:
+ * Uses the relay session token endpoint:
  *
  *   GET /web-sdk/v<major.minor.patch>/relay/session-token?sessionId=<uuid>
  *   -> { sessionToken }
