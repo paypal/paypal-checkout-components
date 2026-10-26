@@ -8,6 +8,9 @@ import { OPENER_POLL_MS } from "./constants";
  * Arming: postMessage is the default transport; once this popup
  * can no longer reach its opener, switch to Firebase.
  *
+ * Applies to popups only: a checkout rendered in an iframe is never "lost",
+ * since its parent is reachable.
+ *
  * "Lost" means `window.opener` is null or the opener window is closed. Both
  * are readable cross-origin (`closed` is one of the few cross-origin-safe
  * properties); anything else about the opener is not touched.
@@ -42,6 +45,12 @@ export function isFellBack(): boolean {
 
 export function isOpenerLost(): boolean {
   try {
+    // Only a popup has an opener to lose. Inside an iframe `window.opener` is
+    // always null, but the parent is reachable, so this is not a lost opener.
+    if (window.parent !== window) {
+      return false;
+    }
+
     return !window.opener || window.opener.closed;
   } catch (err) {
     // Reading a property off a severed cross-origin opener can throw.

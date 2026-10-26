@@ -62,6 +62,24 @@ describe("openerWatch", () => {
       expect(isOpenerLost()).toBe(true);
     });
 
+    it("is false inside an iframe, where there is never an opener", async () => {
+      const { isOpenerLost } = await load();
+      const original = Object.getOwnPropertyDescriptor(window, "parent");
+      setOpener(null);
+      Object.defineProperty(window, "parent", {
+        configurable: true,
+        value: {},
+      });
+
+      try {
+        expect(isOpenerLost()).toBe(false);
+      } finally {
+        if (original) {
+          Object.defineProperty(window, "parent", original);
+        }
+      }
+    });
+
     it("is true when reading the opener throws", async () => {
       const { isOpenerLost } = await load();
       Object.defineProperty(window, "opener", {
