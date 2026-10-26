@@ -1,6 +1,6 @@
 /* @flow */
 
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
 
 import { getButtonsComponent } from "./component";
@@ -168,5 +168,59 @@ describe("getButtonsComponent iframe allow attribute", () => {
       attributes({ props: { experiment: { isWebMCPEnabled: true } } }).iframe
         .allow,
     ).toBe("payment https://www.paypal.com; tools *");
+  });
+});
+
+describe("getButtonsComponent getPopupBridge prop", () => {
+  const originalPopupBridge = window.popupBridge;
+
+  afterEach(() => {
+    // $FlowIgnore[incompatible-type]
+    window.popupBridge = originalPopupBridge;
+  });
+
+  it("returns undefined when window.popupBridge is not present", () => {
+    // $FlowIgnore[incompatible-type]
+    delete window.popupBridge;
+
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+    const getPopupBridge = props.getPopupBridge.value();
+
+    expect(getPopupBridge()).toBeUndefined();
+  });
+
+  it("exposes isVenmoInstalled alongside isPayPalInstalled when window.popupBridge is present", () => {
+    // $FlowIgnore[incompatible-type]
+    window.popupBridge = {
+      getReturnUrlPrefix: () => "https://example.com/return",
+      isPayPalInstalled: false,
+      isVenmoInstalled: true,
+      open: vi.fn(),
+    };
+
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+    const getPopupBridge = props.getPopupBridge.value();
+
+    expect(getPopupBridge()).toMatchObject({
+      isPayPalInstalled: false,
+      isVenmoInstalled: true,
+    });
+  });
+
+  it("coerces a missing isVenmoInstalled to false rather than undefined", () => {
+    // $FlowIgnore[incompatible-type]
+    window.popupBridge = {
+      getReturnUrlPrefix: () => "https://example.com/return",
+      isPayPalInstalled: false,
+      open: vi.fn(),
+    };
+
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+    const getPopupBridge = props.getPopupBridge.value();
+
+    expect(getPopupBridge().isVenmoInstalled).toBe(false);
   });
 });
