@@ -116,10 +116,9 @@ export const APP = {
   SMART_PAYMENT_BUTTONS: "paypal_smart_payment_buttons",
 };
 
-// The relay session token endpoint. The version segment only has to match
-// `v:major.:minor.:patch`; the route does not use it. Relative on purpose, see
-// getFirebaseSessionToken.js.
-export const RELAY_SESSION_TOKEN_PATH = "/web-sdk/v6.0.0/relay/session-token";
+// The relay session token endpoint, served from the same origin as the smart
+// payment buttons. Relative on purpose, see getFirebaseSessionToken.js.
+export const RELAY_SESSION_TOKEN_PATH = "/smart/relay/session-token";
 
 // Named Firebase app for the relay, so it never collides with a default app
 // the checkout page may have initialized itself (a second `initializeApp` on
