@@ -14,18 +14,34 @@ const state = vi.hoisted(() => ({
   channelID: "chan",
   openerLost: true,
   relayError: false,
+  withTransportThrows: false,
+  logs: [],
+  counters: [],
 }));
 
 vi.mock("@paypal/sdk-client/src", () => ({
   getLogger: () => ({
-    info: () => ({ flush: () => {} }),
-    warn: () => ({ flush: () => {} }),
+    info: (event, payload) => {
+      state.logs.push([event, payload]);
+      return { flush: () => {} };
+    },
+    warn: (event, payload) => {
+      state.logs.push([event, payload]);
+      return { flush: () => {} };
+    },
+    metricCounter: (counter) => {
+      state.counters.push(counter);
+    },
   }),
 }));
 
 vi.mock("./withTransport", () => ({
   getRelayChannelID: () => state.channelID,
   withTransport: (name) => {
+    if (state.withTransportThrows) {
+      throw new Error("withTransport failed");
+    }
+
     const fn = () => {
       if (name === "onError" && state.relayError) {
         return ZalgoPromise.reject(new Error("relay down"));
@@ -130,6 +146,9 @@ describe("recoverDetachedCheckout", () => {
   beforeEach(() => {
     state.channelID = "chan";
     state.openerLost = true;
+    state.withTransportThrows = false;
+    state.logs = [];
+    state.counters = [];
     window.history.replaceState(
       null,
       "",
@@ -167,6 +186,72 @@ describe("recoverDetachedCheckout", () => {
 
     expect(recoverDetachedCheckout(new Error("x"))).toBeNull();
     expect(window.xprops).toBeUndefined();
+  });
+
+  const find = (event) => state.logs.find(([name]) => name === event);
+
+  it("logs and counts a recovery, naming the key props the URL lacked", () => {
+    recoverDetachedCheckout(new Error("no opener"));
+
+    const boot = find("checkout_transport_detached_boot");
+    expect(boot?.[1]).toMatchObject({
+      hasToken: true,
+      missing: "sessionID,buttonSessionID,fundingSource",
+    });
+    expect(state.counters).toEqual([
+      expect.objectContaining({
+        namespace: "checkout_transport.detached_boot.count",
+        dimensions: { outcome: "recovered" },
+      }),
+    ]);
+  });
+
+  it("logs why a checkout without a relay channel was not recovered", () => {
+    state.channelID = "";
+
+    recoverDetachedCheckout(new Error("Unable to find parent"));
+
+    const skipped = find("checkout_transport_detached_boot_skipped");
+    expect(skipped?.[1]?.reason).toBe("no_channel_id");
+    expect(skipped?.[1]?.err).toContain("Unable to find parent");
+    expect(state.counters[0].dimensions).toEqual({
+      outcome: "skipped",
+      reason: "no_channel_id",
+    });
+  });
+
+  it("logs why a checkout whose opener is alive was not recovered", () => {
+    state.openerLost = false;
+
+    recoverDetachedCheckout(new Error("zoid version mismatch"));
+
+    expect(find("checkout_transport_detached_boot_skipped")?.[1]).toMatchObject(
+      { reason: "opener_present" },
+    );
+    expect(state.counters[0].dimensions).toEqual({
+      outcome: "skipped",
+      reason: "opener_present",
+    });
+  });
+
+  it("logs both errors, and counts a failure, when the recovery itself fails", () => {
+    state.withTransportThrows = true;
+
+    expect(recoverDetachedCheckout(new Error("zoid failed"))).toBeNull();
+
+    const failed = find("checkout_transport_detached_boot_failed");
+    expect(failed?.[1]?.err).toContain("withTransport failed");
+    expect(failed?.[1]?.zoidErr).toContain("zoid failed");
+    expect(state.counters[0].dimensions).toEqual({ outcome: "failed" });
+  });
+
+  it("never lets a throwing logger or counter affect the result", () => {
+    state.openerLost = false;
+    state.logs.push = () => {
+      throw new Error("logger down");
+    };
+
+    expect(recoverDetachedCheckout(new Error("x"))).toBeNull();
   });
 });
 

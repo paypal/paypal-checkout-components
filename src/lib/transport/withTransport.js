@@ -104,6 +104,16 @@ function connectEagerly() {
   }
 }
 
+// Whether this popup booted from the URL after losing its parent, rather than
+// falling back mid-session. Lets outcomes be split by those two cases.
+function isDetachedBoot(): boolean {
+  try {
+    return Boolean(window.xprops && window.xprops.isDetached);
+  } catch (err) {
+    return false;
+  }
+}
+
 /**
  * How a relayed call ended and how long it took, measured from the call to its
  * result (so the first call includes connection setup). Names and timings
@@ -120,6 +130,7 @@ function logOutcome(
       .info(`checkout_transport_firebase_call_${outcome}`, {
         name,
         durationMs: Date.now() - startedAt,
+        detached: isDetachedBoot(),
         ...(err ? { err: stringifyError(err) } : {}),
       })
       .flush();

@@ -192,6 +192,23 @@ describe("withTransport", () => {
     expect(JSON.stringify(state.logs)).not.toContain("O-1");
   });
 
+  it("marks outcomes from a detached boot so they can be told apart", async () => {
+    state.fellBack = true;
+    const { withTransport } = await load();
+
+    await withTransport("onApprove", () => {})({});
+    window.xprops = { isDetached: true };
+    await withTransport("onApprove", () => {})({});
+    delete window.xprops;
+
+    const flags = state.logs
+      .filter(
+        ([event]) => event === "checkout_transport_firebase_call_succeeded",
+      )
+      .map(([, payload]) => payload.detached);
+    expect(flags).toEqual([false, true]);
+  });
+
   it("logs a failed relayed call and still rejects", async () => {
     state.fellBack = true;
     state.requestError = new Error("timed out");

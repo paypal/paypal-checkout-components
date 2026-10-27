@@ -15,7 +15,7 @@ import { getRelayChannelID, withTransport } from "./withTransport";
 import { isOpenerLost } from "./openerWatch";
 
 /**
- * Boot-time opener loss.
+ * PROTOTYPE: boot-time opener loss.
  *
  * zoid builds a popup's `window.xprops` from a payload that only the parent
  * window can supply (same-domain popups carry just a reference in
@@ -23,23 +23,21 @@ import { isOpenerLost } from "./openerWatch";
  * when the checkout popup boots, zoid's child registration throws and the
  * checkout app never gets xprops.
  *
- * This module is the recovery for that case: it builds `window.xprops` from
- * the popup's own URL and routes the callbacks over the Firebase relay. It
- * runs only when zoid has already failed, only for popups that were given a
- * `relayChannelID`, and only when the opener is really gone, so it cannot
- * affect a checkout that would otherwise work.
+ * This module is the recovery for that case, in the spirit of the v6 bridge:
+ * it builds `window.xprops` from the popup's own URL and routes the callbacks
+ * over the Firebase relay. It runs only when zoid has already failed, only
+ * for popups that were given a `relayChannelID`, and only when the opener is
+ * really gone, so it cannot affect a checkout that would otherwise work.
  *
- * What it provides:
- *   - Data props: whatever the Checkout component puts in the URL as
- *     `queryParam`s.
- *   - Callbacks: the relayable ones (onApprove/onAuthorize, onCancel, onError,
- *     and the shipping callbacks unless `hasShippingCallback` is false).
- *   - zoid helpers (close, resize, ...) as local no-ops.
- *
- * What it does not provide:
- *   - `onAuth` is a no-op: it carries a buyer access token, which is never
- *     relayed, so flows that depend on that token (such as client-side
- *     capture) are not supported in this mode.
+ * What it can and cannot provide:
+ *   - Data props: whatever the Checkout component put in the URL as
+ *     `queryParam`s (see PROPS below).
+ *   - Callbacks: the relayable ones (onApprove/onAuthorize, onCancel, onError, and the
+ *     shipping callbacks unless `hasShippingCallback` is false).
+ *   - NOT provided: `onAuth` does nothing (it carries a buyer access token,
+ *     which is never relayed), so the parent gets no buyer token and
+ *     client-side capture will fail. Zoid helpers (close, resize, ...) are
+ *     local no-ops.
  */
 
 const DETACHED_TAG = "paypal-checkout";
@@ -104,8 +102,6 @@ export function buildDetachedXprops(query: Object): Object {
       ? query.enableFunding.map(String)
       : [],
     locale: readLocale(query),
-    // zoid's `country` prop holds the same locale object; the URL carries
-    // only the country code, so rebuild it from `locale.x`.
     country: readLocale(query),
     sdkMeta: str(query.sdkMeta),
     version: str(query.version),
@@ -140,8 +136,9 @@ export function buildDetachedXprops(query: Object): Object {
 
   // Relayed callbacks. withTransport arms the opener watch and the eager
   // Firebase connection on first use, and sends every call over the relay.
-  // onApprove, onCancel and onError are always present, and the shipping
-  // callbacks are present unless the URL says hasShippingCallback is false. The button frame's relay peer treats a call for a callback the
+  // Like the v6 bridge: onApprove and onCancel are always present, and the
+  // shipping callbacks are present unless the URL says hasShippingCallback is
+  // false. The button frame's relay peer treats a call for a callback the
   // merchant did not supply as a no-op.
   const approve = withTransport("onApprove", unavailable("onApprove"));
   xprops.onApprove = approve;
@@ -172,6 +169,41 @@ export function buildDetachedXprops(query: Object): Object {
   return xprops;
 }
 
+// Props a usable checkout needs. Logged when the URL did not carry them.
+const KEY_PROPS = [
+  "token",
+  "clientID",
+  "sessionID",
+  "buttonSessionID",
+  "fundingSource",
+];
+
+function countBoot(outcome: string, reason?: string) {
+  try {
+    getLogger().metricCounter({
+      namespace: "checkout_transport.detached_boot.count",
+      event: "info",
+      dimensions: reason ? { outcome, reason } : { outcome },
+    });
+  } catch (_) {
+    // instrumentation must never affect the checkout
+  }
+}
+
+function logSkipped(err: mixed, reason: string) {
+  try {
+    getLogger()
+      .info("checkout_transport_detached_boot_skipped", {
+        reason,
+        err: stringifyError(err),
+      })
+      .flush();
+    countBoot("skipped", reason);
+  } catch (_) {
+    // instrumentation must never affect the checkout
+  }
+}
+
 /**
  * Called when creating the Checkout component threw. Returns a stand-in
  * component (enough for `paypal.Checkout.isChild()` and `xprops`) after
@@ -180,7 +212,13 @@ export function buildDetachedXprops(query: Object): Object {
  */
 export function recoverDetachedCheckout(err: mixed): ?Object {
   try {
-    if (!getRelayChannelID() || !isOpenerLost()) {
+    if (!getRelayChannelID()) {
+      logSkipped(err, "no_channel_id");
+      return null;
+    }
+
+    if (!isOpenerLost()) {
+      logSkipped(err, "opener_present");
       return null;
     }
 
@@ -194,11 +232,13 @@ export function recoverDetachedCheckout(err: mixed): ?Object {
       .info("checkout_transport_detached_boot", {
         err: stringifyError(err),
         hasToken: Boolean(xprops.token),
+        missing: KEY_PROPS.filter((key) => !xprops[key]).join(","),
         callbacks: Object.keys(xprops)
           .filter((key) => key.indexOf("on") === 0)
           .join(","),
       })
       .flush();
+    countBoot("recovered");
 
     return {
       xprops,
@@ -210,8 +250,10 @@ export function recoverDetachedCheckout(err: mixed): ?Object {
     getLogger()
       .warn("checkout_transport_detached_boot_failed", {
         err: stringifyError(recoveryErr),
+        zoidErr: stringifyError(err),
       })
       .flush();
+    countBoot("failed");
     return null;
   }
 }
