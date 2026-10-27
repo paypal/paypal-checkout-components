@@ -54,11 +54,13 @@ vi.mock("./firebaseChannel", () => ({
   createFirebaseChannel: vi.fn(() => {
     const channel = {
       isUsable: () => state.usable,
-      request: vi.fn(() =>
-        state.requestError
-          ? ZalgoPromise.reject(state.requestError)
-          : ZalgoPromise.resolve(state.response),
-      ),
+      request: vi.fn(() => {
+        if (state.requestError) {
+          return ZalgoPromise.reject(state.requestError);
+        }
+
+        return ZalgoPromise.resolve(state.response);
+      }),
       close: vi.fn(),
     };
     state.channels.push(channel);
