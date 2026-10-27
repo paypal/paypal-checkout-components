@@ -42,6 +42,13 @@ let fellBack = false;
 // one" apart from "had one and lost it" in the fallback event.
 let hadOpenerAtStart = false;
 let onFallbackHandler: ?() => void = null;
+// Why the switch happened (opener_lost_at_start, opener_lost or
+// opener_lost_at_call). Lets relayed call outcomes be split by cause.
+let fallbackReason: ?string = null;
+
+export function getFallbackReason(): ?string {
+  return fallbackReason;
+}
 
 /** Whether new calls should go over Firebase. One-way. */
 export function isFellBack(): boolean {
@@ -86,6 +93,7 @@ function fallBack(reason: string) {
   }
 
   fellBack = true;
+  fallbackReason = reason;
 
   getLogger()
     .info("checkout_transport_firebase_fallback", {

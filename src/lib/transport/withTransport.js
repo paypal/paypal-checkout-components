@@ -9,6 +9,7 @@ import { getFirebaseConfig } from "./firebaseConfig";
 import {
   armTransportFallback,
   fallBackIfOpenerLost,
+  getFallbackReason,
   isFellBack,
 } from "./openerWatch";
 import { pickRelayable } from "./pickRelayable";
@@ -114,6 +115,16 @@ function isDetachedBoot(): boolean {
   }
 }
 
+// Which recovery mode carried the call: a boot from the URL, or the reason the
+// watch switched mid-session. One field to compare outcomes across modes.
+function getMode(): string {
+  if (isDetachedBoot()) {
+    return "detached_boot";
+  }
+
+  return getFallbackReason() || "unknown";
+}
+
 /**
  * How a relayed call ended and how long it took, measured from the call to its
  * result (so the first call includes connection setup). Names and timings
@@ -131,6 +142,7 @@ function logOutcome(
         name,
         durationMs: Date.now() - startedAt,
         detached: isDetachedBoot(),
+        mode: getMode(),
         ...(err ? { err: stringifyError(err) } : {}),
       })
       .flush();
