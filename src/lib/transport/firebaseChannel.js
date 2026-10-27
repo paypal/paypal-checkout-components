@@ -1,7 +1,7 @@
 /* @flow */
 
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
-import { uniqueID, stringifyError } from "@krakenjs/belter/src";
+import { uniqueID, stringifyError, noop } from "@krakenjs/belter/src";
 import { getVersion, getLogger } from "@paypal/sdk-client/src";
 
 import { logTransportDebug } from "./debugLog";
@@ -135,9 +135,25 @@ export function createFirebaseChannel({
     }
   };
 
+  // Where setup time goes: milliseconds since the channel was created until
+  // each piece was ready. Side branches only; they never change the promises
+  // the connection waits on.
+  const startedAt = Date.now();
+  let sdkMs;
+  let tokenMs;
+  const sdkPromise = loadFirebaseSDK(config);
+  const tokenPromise = getFirebaseSessionToken(sessionUID);
+
+  sdkPromise.then(() => {
+    sdkMs = Date.now() - startedAt;
+  }, noop);
+  tokenPromise.then(() => {
+    tokenMs = Date.now() - startedAt;
+  }, noop);
+
   const connection = ZalgoPromise.hash({
-    firebase: loadFirebaseSDK(config),
-    sessionToken: getFirebaseSessionToken(sessionUID),
+    firebase: sdkPromise,
+    sessionToken: tokenPromise,
   })
     .then(({ firebase, sessionToken }) => {
       const app = firebase.app(RELAY_FIREBASE_APP_NAME);
@@ -187,7 +203,13 @@ export function createFirebaseChannel({
         });
     })
     .then((database) => {
-      getLogger().info("checkout_transport_firebase_connected").flush();
+      getLogger()
+        .info("checkout_transport_firebase_connected", {
+          durationMs: Date.now() - startedAt,
+          sdkMs,
+          tokenMs,
+        })
+        .flush();
       return database;
     });
 
@@ -197,6 +219,9 @@ export function createFirebaseChannel({
     getLogger()
       .warn("checkout_transport_firebase_connect_failed", {
         err: stringifyError(err),
+        durationMs: Date.now() - startedAt,
+        sdkMs,
+        tokenMs,
       })
       .flush();
   });

@@ -105,6 +105,54 @@ describe("openerWatch", () => {
       expect(reasons()).toEqual(["opener_lost_at_start"]);
     });
 
+    it("logs when it arms, with whether the opener was there", async () => {
+      const { armTransportFallback } = await load();
+
+      armTransportFallback(vi.fn());
+      armTransportFallback(vi.fn());
+
+      const armed = infoMock.mock.calls.filter(
+        ([event]) => event === "checkout_transport_firebase_armed",
+      );
+      expect(armed).toHaveLength(1);
+      expect(armed[0][1]).toEqual({ hadOpenerAtStart: true });
+    });
+
+    it("says whether the opener was missing or closed when it falls back", async () => {
+      const { armTransportFallback } = await load();
+
+      armTransportFallback(vi.fn());
+      setOpener({ closed: true });
+      vi.advanceTimersByTime(5000);
+
+      const fallback = infoMock.mock.calls.find(
+        ([event]) => event === "checkout_transport_firebase_fallback",
+      );
+      expect(fallback?.[1]).toMatchObject({
+        reason: "opener_lost",
+        hadOpenerAtStart: true,
+        openerNull: false,
+        openerClosed: true,
+      });
+    });
+
+    it("records that a popup never had an opener", async () => {
+      const { armTransportFallback } = await load();
+      setOpener(null);
+
+      armTransportFallback(vi.fn());
+
+      const fallback = infoMock.mock.calls.find(
+        ([event]) => event === "checkout_transport_firebase_fallback",
+      );
+      expect(fallback?.[1]).toMatchObject({
+        reason: "opener_lost_at_start",
+        hadOpenerAtStart: false,
+        openerNull: true,
+        openerClosed: null,
+      });
+    });
+
     it("stays on postMessage while the opener is reachable", async () => {
       const { armTransportFallback, isFellBack } = await load();
       const onFallback = vi.fn();

@@ -36,6 +36,9 @@ import { OPENER_POLL_MS } from "./constants";
  */
 let armed = false;
 let fellBack = false;
+// Whether the popup had a live opener when the watch started. Tells "never had
+// one" apart from "had one and lost it" in the fallback event.
+let hadOpenerAtStart = false;
 let onFallbackHandler: ?() => void = null;
 
 /** Whether new calls should go over Firebase. One-way. */
@@ -58,6 +61,22 @@ export function isOpenerLost(): boolean {
   }
 }
 
+// Non-identifying facts about the opener, for working out why it was lost.
+// Reading them can throw on a severed cross-origin opener, which is itself a
+// signal.
+function getOpenerState(): {| openerNull: boolean, openerClosed: ?boolean |} {
+  try {
+    const opener = window.opener;
+
+    return {
+      openerNull: !opener,
+      openerClosed: opener ? Boolean(opener.closed) : null,
+    };
+  } catch (err) {
+    return { openerNull: false, openerClosed: null };
+  }
+}
+
 function fallBack(reason: string) {
   if (fellBack) {
     return;
@@ -69,6 +88,8 @@ function fallBack(reason: string) {
     .info("checkout_transport_firebase_fallback", {
       reason,
       to: "firebase",
+      hadOpenerAtStart,
+      ...getOpenerState(),
     })
     .flush();
 
@@ -104,6 +125,16 @@ export function armTransportFallback(onFallback: () => void) {
   }
   armed = true;
   onFallbackHandler = onFallback;
+  hadOpenerAtStart = !isOpenerLost();
+
+  // The denominator for the fallback rate: popups that could fall back.
+  try {
+    getLogger()
+      .info("checkout_transport_firebase_armed", { hadOpenerAtStart })
+      .flush();
+  } catch (err) {
+    // Logging must never affect the checkout.
+  }
 
   if (isOpenerLost()) {
     fallBack("opener_lost_at_start");

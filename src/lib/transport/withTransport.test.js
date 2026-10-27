@@ -1,7 +1,16 @@
 /* @flow */
 /* eslint-disable no-empty-function, compat/compat */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+} from "vitest";
 import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 
 import { armTransportFallback, fallBackIfOpenerLost } from "./openerWatch";
@@ -13,11 +22,16 @@ const state = vi.hoisted(() => ({
   response: undefined,
   usable: true,
   lostCheckThrows: false,
+  logs: [],
+  requestError: null,
 }));
 
 vi.mock("@paypal/sdk-client/src", () => ({
   getLogger: () => ({
-    info: () => ({ flush: vi.fn() }),
+    info: (event, payload) => {
+      state.logs.push([event, payload]);
+      return { flush: vi.fn() };
+    },
     warn: () => ({ flush: vi.fn() }),
   }),
 }));
@@ -40,7 +54,11 @@ vi.mock("./firebaseChannel", () => ({
   createFirebaseChannel: vi.fn(() => {
     const channel = {
       isUsable: () => state.usable,
-      request: vi.fn(() => ZalgoPromise.resolve(state.response)),
+      request: vi.fn(() =>
+        state.requestError
+          ? ZalgoPromise.reject(state.requestError)
+          : ZalgoPromise.resolve(state.response),
+      ),
       close: vi.fn(),
     };
     state.channels.push(channel);
@@ -56,6 +74,22 @@ function load(): Object {
 }
 
 describe("withTransport", () => {
+  // ZalgoPromise's isPromise() rejects anything that is `instanceof
+  // window.constructor`. Under vitest's jsdom `window` is the Node global,
+  // whose constructor is Object, so every promise looks like a plain value and
+  // is not flattened. Give the global a throwaway constructor for this file.
+  beforeAll(() => {
+    Object.defineProperty(window, "constructor", {
+      value: function Window() {},
+      configurable: true,
+      writable: true,
+    });
+  });
+
+  afterAll(() => {
+    delete window.constructor;
+  });
+
   beforeEach(() => {
     state.fellBack = false;
     state.config = { apiKey: "k", databaseURL: "d" };
@@ -63,6 +97,8 @@ describe("withTransport", () => {
     state.response = undefined;
     state.usable = true;
     state.lostCheckThrows = false;
+    state.logs = [];
+    state.requestError = null;
     vi.mocked(armTransportFallback).mockClear();
     vi.mocked(fallBackIfOpenerLost).mockClear();
     window.history.replaceState(null, "", "/?relayChannelID=chan-1");
@@ -138,6 +174,46 @@ describe("withTransport", () => {
     expect(state.channels[0].request).toHaveBeenCalledWith("onApprove", {
       orderID: "O-1",
     });
+  });
+
+  it("logs how a relayed call ended and how long it took, without its data", async () => {
+    state.fellBack = true;
+    const { withTransport } = await load();
+
+    await withTransport("onApprove", () => {})({ orderID: "O-1" });
+
+    const outcome = state.logs.find(
+      ([event]) => event === "checkout_transport_firebase_call_succeeded",
+    );
+    expect(outcome?.[1]).toMatchObject({ name: "onApprove" });
+    expect(typeof outcome?.[1]?.durationMs).toBe("number");
+    expect(JSON.stringify(state.logs)).not.toContain("O-1");
+  });
+
+  it("logs a failed relayed call and still rejects", async () => {
+    state.fellBack = true;
+    state.requestError = new Error("timed out");
+    const { withTransport } = await load();
+
+    await expect(withTransport("onApprove", () => {})({})).rejects.toThrow(
+      /timed out/,
+    );
+
+    const outcome = state.logs.find(
+      ([event]) => event === "checkout_transport_firebase_call_failed",
+    );
+    expect(outcome?.[1]).toMatchObject({ name: "onApprove" });
+    expect(String(outcome?.[1]?.err)).toContain("timed out");
+  });
+
+  it("does not log an outcome for a call that stayed on postMessage", async () => {
+    const { withTransport } = await load();
+
+    withTransport("onApprove", () => {})({});
+
+    expect(
+      state.logs.filter(([event]) => event.includes("call_")),
+    ).toHaveLength(0);
   });
 
   it("replays a reported reject on the app's own actions", async () => {

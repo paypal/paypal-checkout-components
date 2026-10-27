@@ -23,13 +23,20 @@ const fake = vi.hoisted(() => ({
   onError: null,
   off: null,
   goOffline: null,
+  logs: [],
 }));
 
 vi.mock("@paypal/sdk-client/src", () => ({
   getVersion: () => "5.0.0",
   getLogger: () => ({
-    info: () => ({ flush: () => {} }),
-    warn: () => ({ flush: () => {} }),
+    info: (event, payload) => {
+      fake.logs.push([event, payload]);
+      return { flush: () => {} };
+    },
+    warn: (event, payload) => {
+      fake.logs.push([event, payload]);
+      return { flush: () => {} };
+    },
   }),
 }));
 
@@ -120,6 +127,7 @@ describe("createFirebaseChannel", () => {
 
   beforeEach(() => {
     fake.sdkFails = false;
+    fake.logs = [];
     fake.written = [];
     fake.onValue = null;
     fake.onError = null;
@@ -247,6 +255,34 @@ describe("createFirebaseChannel", () => {
   it("is usable until closed", () => {
     const ch = channel();
     expect(ch.isUsable()).toBe(true);
+  });
+
+  it("reports how long setup took and where the time went", async () => {
+    const ch = channel();
+    const promise = ch.request("onApprove", {});
+    deliver(respond(fake.written[0]));
+    await promise;
+
+    const connected = fake.logs.find(
+      ([event]) => event === "checkout_transport_firebase_connected",
+    );
+    expect(typeof connected?.[1]?.durationMs).toBe("number");
+    expect(typeof connected?.[1]?.sdkMs).toBe("number");
+    expect(typeof connected?.[1]?.tokenMs).toBe("number");
+  });
+
+  it("reports the timings it has when the connection fails", async () => {
+    fake.sdkFails = true;
+    const ch = channel();
+
+    await expect(ch.request("onApprove", {})).rejects.toThrow();
+
+    const failed = fake.logs.find(
+      ([event]) => event === "checkout_transport_firebase_connect_failed",
+    );
+    expect(typeof failed?.[1]?.durationMs).toBe("number");
+    // Token fetch resolved; the SDK never did.
+    expect(failed?.[1]?.sdkMs).toBeUndefined();
   });
 
   it("is not usable, and its requests reject, when the connection fails", async () => {

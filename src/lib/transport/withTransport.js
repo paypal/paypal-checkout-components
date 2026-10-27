@@ -104,6 +104,30 @@ function connectEagerly() {
   }
 }
 
+/**
+ * How a relayed call ended and how long it took, measured from the call to its
+ * result (so the first call includes connection setup). Names and timings
+ * only, never payloads.
+ */
+function logOutcome(
+  name: string,
+  startedAt: number,
+  outcome: "succeeded" | "failed",
+  err?: mixed,
+) {
+  try {
+    getLogger()
+      .info(`checkout_transport_firebase_call_${outcome}`, {
+        name,
+        durationMs: Date.now() - startedAt,
+        ...(err ? { err: stringifyError(err) } : {}),
+      })
+      .flush();
+  } catch (loggingError) {
+    // Logging must never affect a relayed call.
+  }
+}
+
 export function withTransport<T>(name: string, value: ?T): ?T {
   if (typeof value !== "function") {
     return value;
@@ -162,6 +186,8 @@ export function withTransport<T>(name: string, value: ?T): ?T {
       return value.apply(this, args);
     }
 
+    const startedAt = Date.now();
+
     return ZalgoPromise.try(() => {
       const [first, ...rest] = args;
 
@@ -191,6 +217,15 @@ export function withTransport<T>(name: string, value: ?T): ?T {
             return actions.reject(response.message);
           }
         });
-    });
+    }).then(
+      (result) => {
+        logOutcome(name, startedAt, "succeeded");
+        return result;
+      },
+      (err) => {
+        logOutcome(name, startedAt, "failed", err);
+        throw err;
+      },
+    );
   };
 }
