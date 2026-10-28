@@ -34,12 +34,7 @@ import {
   VenmoOverlay,
 } from "@paypal/common-components/src";
 
-import {
-  getSessionID,
-  registerMaskedComponent,
-  hasUserInteracted,
-} from "../../lib";
-import { withTransport } from "../../lib/transport";
+import { getSessionID, registerMaskedComponent, hasUserInteracted } from "../../lib";
 import { containerContent } from "../content";
 
 import type { CheckoutPropsType } from "./props";
@@ -73,13 +68,13 @@ function spyOnWindowNameAssignment(): void {
             new Error(
               `window.name was overwritten: ${String(value).slice(
                 0,
-                WINDOW_NAME_LOG_TRUNCATION_LENGTH,
-              )}`,
-            ),
+                WINDOW_NAME_LOG_TRUNCATION_LENGTH
+              )}`
+            )
           ),
           originalValue: String(currentWindowName).slice(
             0,
-            WINDOW_NAME_LOG_TRUNCATION_LENGTH,
+            WINDOW_NAME_LOG_TRUNCATION_LENGTH
           ),
         });
         currentWindowName = value;
@@ -196,15 +191,6 @@ export function getCheckoutComponent(): CheckoutComponent {
           type: "string",
           value: getSessionID,
           queryParam: true,
-        },
-
-        // A UUID the button frame generates per checkout, sent in the popup's
-        // URL so it survives loss of the opener. Keys the Firebase relay
-        // channel; the popup only arms the relay when it is present.
-        relayChannelID: {
-          type: "string",
-          queryParam: true,
-          required: false,
         },
 
         buttonSessionID: {
@@ -342,7 +328,6 @@ export function getCheckoutComponent(): CheckoutComponent {
         onApprove: {
           type: "function",
           alias: "onAuthorize",
-          childDecorate: ({ value }) => withTransport("onApprove", value),
         },
 
         onComplete: {
@@ -353,22 +338,16 @@ export function getCheckoutComponent(): CheckoutComponent {
         onShippingChange: {
           type: "function",
           required: false,
-          childDecorate: ({ value }) =>
-            withTransport("onShippingChange", value),
         },
 
         onShippingAddressChange: {
           type: "function",
           required: false,
-          childDecorate: ({ value }) =>
-            withTransport("onShippingAddressChange", value),
         },
 
         onShippingOptionsChange: {
           type: "function",
           required: false,
-          childDecorate: ({ value }) =>
-            withTransport("onShippingOptionsChange", value),
         },
 
         hasShippingCallback: {
@@ -378,8 +357,8 @@ export function getCheckoutComponent(): CheckoutComponent {
           value: ({ props }) => {
             return Boolean(
               props.onShippingChange ||
-              props.onShippingAddressChange ||
-              props.onShippingOptionsChange,
+                props.onShippingAddressChange ||
+                props.onShippingOptionsChange
             );
           },
         },
@@ -411,7 +390,6 @@ export function getCheckoutComponent(): CheckoutComponent {
         onCancel: {
           type: "function",
           required: false,
-          childDecorate: ({ value }) => withTransport("onCancel", value),
         },
 
         onFocused: {

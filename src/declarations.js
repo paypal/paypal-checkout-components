@@ -24,22 +24,5 @@ declare var __PAYPAL_CHECKOUT__: {|
   |},
 |};
 
-// Provided at build time, per environment.
-// Absent in builds that do not provide it (such as this repo's own bundles),
-// so read it through getFirebaseConfig() / getFirebaseScripts().
-declare var __FIREBASE__: {|
-  __CONFIG__: {|
-    apiKey: string,
-    authDomain: string,
-    databaseURL: string,
-    projectId: string,
-  |},
-  __SCRIPTS__: {|
-    APP: string,
-    AUTH: string,
-    DATABASE: string,
-  |},
-|};
-
 declare var __WEB__: boolean;
 declare var __TREE_SHAKE__: boolean;
