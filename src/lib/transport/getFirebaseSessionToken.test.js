@@ -18,9 +18,7 @@ describe("getFirebaseSessionToken", () => {
     await expect(getFirebaseSessionToken("a b/c")).resolves.toBe("tok");
 
     const call = requestMock.mock.calls[0][0];
-    expect(call.url).toBe(
-      "/web-sdk/v6.0.0/relay/session-token?sessionId=a%20b%2Fc",
-    );
+    expect(call.url).toBe("/smart/relay/session-token?sessionId=a%20b%2Fc");
     expect(call.method).toBe("GET");
   });
 

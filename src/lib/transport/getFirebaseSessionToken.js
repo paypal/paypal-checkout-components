@@ -10,7 +10,7 @@ import { RELAY_SESSION_TOKEN_PATH } from "./constants";
  *
  * Uses the relay session token endpoint:
  *
- *   GET /web-sdk/v<major.minor.patch>/relay/session-token?sessionId=<uuid>
+ *   GET /smart/relay/session-token?sessionId=<uuid>
  *   -> { sessionToken }
  *
  * The token must come from the project this build's relay config points at
@@ -22,7 +22,7 @@ import { RELAY_SESSION_TOKEN_PATH } from "./constants";
  *    `relayChannelID` the button frame generated, never the raw `sessionID`.
  *  - The endpoint is same-origin only (it rejects any `Sec-Fetch-Site` other
  *    than `same-origin`), so the URL is deliberately RELATIVE: it must be
- *    requested from a page on the same origin that serves `/web-sdk`.
+ *    requested from a page on the same origin that serves `/smart`.
  *
  * The request carries no buyer credentials. The relay is protected by the
  * unguessable per-checkout channel id, the database's security rules, and the
