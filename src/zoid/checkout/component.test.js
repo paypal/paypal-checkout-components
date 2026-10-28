@@ -59,9 +59,8 @@ describe("getCheckoutComponent iframe payment permissions policy", () => {
     // un-memoized component that actually re-evaluates supportsPopups().
     vi.mocked(supportsPopups).mockReturnValueOnce(false);
     vi.resetModules();
-    const { getCheckoutComponent: getFreshCheckoutComponent } = await import(
-      "./component"
-    );
+    const { getCheckoutComponent: getFreshCheckoutComponent } =
+      await import("./component");
 
     getFreshCheckoutComponent();
 
