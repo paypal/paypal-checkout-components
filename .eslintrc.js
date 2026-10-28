@@ -6,7 +6,6 @@ module.exports = {
   globals: {
     Promise: false,
     __PAYPAL_CHECKOUT__: true,
-    __FIREBASE__: true,
     __sdk__: true,
     __LOCALE__: true,
     __CLIENT_ID__: true,
