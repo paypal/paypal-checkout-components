@@ -4,9 +4,9 @@
  * Wire and policy constants for the pluggable xprops transport.
  *
  * The Firebase-facing values (envelope shape, app names, message names, RTDB
- * path, CDN script URLs) are an interop contract with the button frame's
- * `messageSocket` (smart-payment-buttons, `src/api/socket.js`). Changing one
- * here without changing it there silently drops messages.
+ * path, CDN script URLs) are an interop contract with the button frame's relay
+ * socket. Changing one here without changing it there silently drops
+ * messages.
  */
 
 /** How often the popup checks that its opener is still there. */
