@@ -38,9 +38,10 @@ export const OPENER_POLL_MS = 500;
  *   - createOrder / createAuthCode: zoid memoizes these parent-side
  *     (`decorate: memoize`), and the function the button frame holds is the RAW one.
  *     Calling it directly over the relay would mint a second order.
- *   - zoid built-ins (close, focus, resize, show, hide, onError, onProps,
- *     export, getParent...). zoid defines these; this package cannot wrap
- *     them without changing zoid.
+ *   - zoid built-ins other than onError (close, focus, resize, show, hide,
+ *     onProps, export, getParent...). zoid defines these; this package cannot
+ *     wrap them without changing zoid. onError is the exception: the checkout
+ *     component redeclares it with a `childDecorate` that wraps zoid's own.
  */
 export const RELAYABLE: { [string]: $ReadOnlyArray<string> } = {
   onApprove: [
@@ -53,6 +54,9 @@ export const RELAYABLE: { [string]: $ReadOnlyArray<string> } = {
     "appName",
   ],
   onCancel: ["orderID", "paymentID", "billingToken"],
+  // Terminal, like onApprove/onCancel. The error itself is reduced to its
+  // message before it is relayed (see pickRelayable).
+  onError: ["message"],
   onShippingChange: [
     "orderID",
     "paymentID",

@@ -9,6 +9,7 @@ import { getFirebaseConfig } from "./firebaseConfig";
 import {
   armTransportFallback,
   fallBackIfOpenerLost,
+  getFallbackReason,
   isFellBack,
 } from "./openerWatch";
 import { pickRelayable } from "./pickRelayable";
@@ -45,7 +46,7 @@ let channel: ?FirebaseChannel = null;
  * `window.name`. Reading it from `window.xprops` would defeat the purpose —
  * xprops arrives over the very channel that may be down.
  */
-function getRelayChannelID(): ?string {
+export function getRelayChannelID(): ?string {
   return getQueryParam("relayChannelID") || null;
 }
 
@@ -104,6 +105,26 @@ function connectEagerly() {
   }
 }
 
+// Whether this popup booted from the URL after losing its parent, rather than
+// falling back mid-session. Lets outcomes be split by those two cases.
+function isDetachedBoot(): boolean {
+  try {
+    return Boolean(window.xprops && window.xprops.isDetached);
+  } catch (err) {
+    return false;
+  }
+}
+
+// Which recovery mode carried the call: a boot from the URL, or the reason the
+// watch switched mid-session. One field to compare outcomes across modes.
+function getMode(): string {
+  if (isDetachedBoot()) {
+    return "detached_boot";
+  }
+
+  return getFallbackReason() || "unknown";
+}
+
 /**
  * How a relayed call ended and how long it took, measured from the call to its
  * result (so the first call includes connection setup). Names and timings
@@ -120,6 +141,8 @@ function logOutcome(
       .info(`checkout_transport_firebase_call_${outcome}`, {
         name,
         durationMs: Date.now() - startedAt,
+        detached: isDetachedBoot(),
+        mode: getMode(),
         ...(err ? { err: stringifyError(err) } : {}),
       })
       .flush();

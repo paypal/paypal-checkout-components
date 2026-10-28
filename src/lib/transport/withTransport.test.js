@@ -17,6 +17,7 @@ import { armTransportFallback, fallBackIfOpenerLost } from "./openerWatch";
 
 const state = vi.hoisted(() => ({
   fellBack: false,
+  reason: null,
   config: { apiKey: "k", databaseURL: "d" },
   channels: [],
   response: undefined,
@@ -39,6 +40,7 @@ vi.mock("@paypal/sdk-client/src", () => ({
 vi.mock("./openerWatch", () => ({
   armTransportFallback: vi.fn(),
   isFellBack: () => state.fellBack,
+  getFallbackReason: () => state.reason,
   fallBackIfOpenerLost: vi.fn(() => {
     if (state.lostCheckThrows) {
       throw new Error("check failed");
@@ -94,6 +96,7 @@ describe("withTransport", () => {
 
   beforeEach(() => {
     state.fellBack = false;
+    state.reason = null;
     state.config = { apiKey: "k", databaseURL: "d" };
     state.channels = [];
     state.response = undefined;
@@ -190,6 +193,41 @@ describe("withTransport", () => {
     expect(outcome?.[1]).toMatchObject({ name: "onApprove" });
     expect(typeof outcome?.[1]?.durationMs).toBe("number");
     expect(JSON.stringify(state.logs)).not.toContain("O-1");
+  });
+
+  it("marks outcomes from a detached boot so they can be told apart", async () => {
+    state.fellBack = true;
+    const { withTransport } = await load();
+
+    await withTransport("onApprove", () => {})({});
+    window.xprops = { isDetached: true };
+    await withTransport("onApprove", () => {})({});
+    delete window.xprops;
+
+    const flags = state.logs
+      .filter(
+        ([event]) => event === "checkout_transport_firebase_call_succeeded",
+      )
+      .map(([, payload]) => payload.detached);
+    expect(flags).toEqual([false, true]);
+  });
+
+  it("tags outcomes with the recovery mode that carried them", async () => {
+    state.fellBack = true;
+    state.reason = "opener_lost";
+    const { withTransport } = await load();
+
+    await withTransport("onApprove", () => {})({});
+    window.xprops = { isDetached: true };
+    await withTransport("onApprove", () => {})({});
+    delete window.xprops;
+
+    const modes = state.logs
+      .filter(
+        ([event]) => event === "checkout_transport_firebase_call_succeeded",
+      )
+      .map(([, payload]) => payload.mode);
+    expect(modes).toEqual(["opener_lost", "detached_boot"]);
   });
 
   it("logs a failed relayed call and still rejects", async () => {
