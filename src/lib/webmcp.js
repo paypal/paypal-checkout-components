@@ -91,13 +91,29 @@ export async function registerWebMCPTools(
         {
           annotations: definition.annotations,
           description: definition.description,
+          // Resolve with an MCP-style { content, isError } result instead of
+          // rejecting: agents treat a rejected execute() as an untrusted/
+          // unexpected page failure and sanitize the message down to a
+          // generic error, discarding the actual (often actionable, e.g.
+          // "Please provide an email address to continue.") reason.
           execute: (args) =>
-            registration.executeTool({
-              args,
-              protocolVersion: registration.protocolVersion,
-              registrationId: registration.registrationId,
-              toolName: definition.name,
-            }),
+            registration
+              .executeTool({
+                args,
+                protocolVersion: registration.protocolVersion,
+                registrationId: registration.registrationId,
+                toolName: definition.name,
+              })
+              .catch((error) => ({
+                content: [
+                  {
+                    type: "text",
+                    text:
+                      error instanceof Error ? error.message : String(error),
+                  },
+                ],
+                isError: true,
+              })),
           inputSchema: definition.inputSchema,
           name: definition.name,
         },

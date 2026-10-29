@@ -47,6 +47,47 @@ describe("top-level WebMCP registration", () => {
     });
   });
 
+  it("resolves execute() with an isError result instead of rejecting when executeTool fails", async () => {
+    // Agents treat a rejected execute() as an untrusted/unexpected page
+    // failure and sanitize the message to a generic error, discarding the
+    // actual (often actionable, e.g. "Please provide an email address to
+    // continue.") reason. Resolving with { content, isError: true } instead
+    // preserves it.
+    const registerTool = vi.fn(async () => undefined);
+    const executeTool = vi.fn(async () => {
+      throw new Error(
+        "UNPROCESSABLE: Please provide an email address to continue.",
+      );
+    });
+    // $FlowIgnore[prop-missing]
+    document.modelContext = { registerTool };
+
+    await registerWebMCPTools({
+      executeTool,
+      protocolVersion: 1,
+      registrationId: "registration-1",
+      toolDefinitions: [
+        {
+          description: "Checkout",
+          name: "shopping.initiateCheckout",
+        },
+      ],
+    });
+
+    const [tool] = registerTool.mock.calls[0];
+    const result = await tool.execute({});
+
+    expect(result).toEqual({
+      content: [
+        {
+          type: "text",
+          text: "UNPROCESSABLE: Please provide an email address to continue.",
+        },
+      ],
+      isError: true,
+    });
+  });
+
   it("does not register the same bridge registration twice", async () => {
     const registerTool = vi.fn(async () => undefined);
     // $FlowIgnore[prop-missing]
