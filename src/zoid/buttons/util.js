@@ -15,6 +15,7 @@ import {
   memoize,
 } from "@krakenjs/belter/src";
 import { send as postRobotSend } from "@krakenjs/post-robot/src";
+import { ZalgoPromise } from "@krakenjs/zalgo-promise/src";
 import {
   getEnableFunding,
   getLogger,
@@ -415,6 +416,26 @@ export const sendPostRobotMessageToButtonIframe = ({
       });
     }
   }
+};
+
+export const sendPostRobotRequestToButtonIframe = ({
+  eventName,
+  payload,
+}: {
+  eventName: string,
+  payload: Object,
+}): ZalgoPromise<mixed> => {
+  const iframes = document.querySelectorAll("iframe");
+
+  for (let i = 0; i < iframes.length; i++) {
+    if (iframes[i].name.includes("zoid__paypal_buttons")) {
+      return postRobotSend(iframes[i].contentWindow, eventName, payload, {
+        domain: getPayPalDomain(),
+      }).then(({ data }) => data);
+    }
+  }
+
+  throw new Error("PayPal Buttons iframe is not available");
 };
 
 export const isEagerOrderCreationEnabled = (

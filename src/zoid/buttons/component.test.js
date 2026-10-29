@@ -33,9 +33,20 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
   getEnv: vi.fn(() => "test"),
 }));
 
+const sendPostRobotRequestToButtonIframeMock = vi.fn();
+
 vi.mock("./util", async (importOriginal) => ({
   ...(await importOriginal()),
   getButtonExperiments: vi.fn(() => ({})),
+  sendPostRobotRequestToButtonIframe: (...args) =>
+    sendPostRobotRequestToButtonIframeMock(...args),
+}));
+
+const registerWebMCPToolsMock = vi.fn(async () => ({ registered: true }));
+
+vi.mock("../../lib", async (importOriginal) => ({
+  ...(await importOriginal()),
+  registerWebMCPTools: (...args) => registerWebMCPToolsMock(...args),
 }));
 
 describe("getButtonsComponent iframe attributes", () => {
@@ -108,6 +119,8 @@ describe("getButtonsComponent WebMCP registration props", () => {
     expect(typeof props.unregisterWebMCPTools.value(experimentProps)).toBe(
       "function",
     );
+    expect(props.webmcpEnabled).toBeUndefined();
+    expect(props.webMCP).toBeUndefined();
   });
 
   it("omits registerWebMCPTools/unregisterWebMCPTools when the first-render experiment is disabled or absent", () => {
@@ -121,5 +134,36 @@ describe("getButtonsComponent WebMCP registration props", () => {
         props: { experiment: { isWebMCPEnabled: false } },
       }),
     ).toBeUndefined();
+  });
+
+  it("wires registerWebMCPTools' executeTool to round-trip through the button iframe via postRobot", async () => {
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    const register = props.registerWebMCPTools.value({
+      props: { experiment: { isWebMCPEnabled: true } },
+    });
+
+    await register({
+      protocolVersion: 1,
+      registrationId: "reg-1",
+      toolDefinitions: [],
+    });
+
+    expect(registerWebMCPToolsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        protocolVersion: 1,
+        registrationId: "reg-1",
+        executeTool: expect.any(Function),
+      }),
+    );
+
+    const { executeTool } = registerWebMCPToolsMock.mock.calls[0][0];
+    await executeTool({ toolName: "get_cart", args: {} });
+
+    expect(sendPostRobotRequestToButtonIframeMock).toHaveBeenCalledWith({
+      eventName: "paypal-webmcp:execute-top-frame-tool",
+      payload: { toolName: "get_cart", args: {} },
+    });
   });
 });

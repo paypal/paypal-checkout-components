@@ -112,7 +112,10 @@ import {
   isEagerOrderCreationEnabled,
   resolveMerchantDomain,
   sendPostRobotMessageToButtonIframe,
+  sendPostRobotRequestToButtonIframe,
 } from "./util";
+
+const WEBMCP_EXECUTE_TOOL_EVENT = "paypal-webmcp:execute-top-frame-tool";
 
 export type ButtonsComponent = ZoidComponent<
   ButtonProps,
@@ -360,7 +363,17 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         queryParam: false,
         required: false,
         value: ({ props }) =>
-          props.experiment?.isWebMCPEnabled ? registerWebMCPTools : undefined,
+          props.experiment?.isWebMCPEnabled
+            ? (registration) =>
+                registerWebMCPTools({
+                  ...registration,
+                  executeTool: (request) =>
+                    sendPostRobotRequestToButtonIframe({
+                      eventName: WEBMCP_EXECUTE_TOOL_EVENT,
+                      payload: request,
+                    }),
+                })
+            : undefined,
       },
 
       unregisterWebMCPTools: {
