@@ -80,6 +80,9 @@ import {
   prepareInstrumentationPayload,
   isAppSwitchResumeFlow,
   getAppSwitchResumeParams,
+  registerMaskedComponent,
+  hasUserInteracted,
+  notifyUserInteraction,
 } from "../../lib";
 import {
   normalizeButtonStyle,
@@ -116,7 +119,7 @@ export type ButtonsComponent = ZoidComponent<
   ButtonProps,
   void,
   void,
-  ButtonExtensions,
+  ButtonExtensions
 >;
 
 // $FlowIssue
@@ -195,7 +198,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         try {
           const cplPhases = prepareInstrumentationPayload(
             buttonSessionID,
-            "buttons",
+            "buttons"
           );
           const cplLatencyMetrics = {
             [FPTI_KEY.STATE]: "CPL_LATENCY_METRICS",
@@ -236,13 +239,25 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         fundingSource = `-${props.fundingSource}`;
       }
 
+      const baseIframeAttributes = {
+        allowpaymentrequest: "allowpaymentrequest",
+        // Named origin, not bare "payment": zoid never sets this iframe's `src`
+        // attribute (it navigates the frame via window.location/form-POST after
+        // creation instead), so the 'src' keyword that bare `allow="payment"`
+        // resolves to can never match the actual checkout origin.
+        allow: `payment ${getPayPalDomain()}`,
+        scrolling: "no",
+        title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
+        role: "presentation",
+      };
+
       return {
-        iframe: {
-          allowpaymentrequest: "allowpaymentrequest",
-          scrolling: "no",
-          title: `${FUNDING_BRAND_LABEL.PAYPAL}${fundingSource}`,
-          role: "presentation",
-        },
+        iframe: props.experiment?.isWebMCPEnabled
+          ? {
+              ...baseIframeAttributes,
+              allow: `${baseIframeAttributes.allow}; tools *`,
+            }
+          : baseIframeAttributes,
       };
     },
 
@@ -262,11 +277,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         supportsVenmoPopups = supportsVenmoPopupsUtil(
           buttonExperiments,
           userAgentSupportsPopups(),
-          getUserAgent(),
+          getUserAgent()
         ),
         supportedNativeVenmoBrowser = isSupportedNativeVenmoBrowser(
           buttonExperiments,
-          getUserAgent(),
+          getUserAgent()
         ),
         experiment = buttonExperiments,
         createBillingAgreement,
@@ -380,7 +395,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           ({ props: { buttonSessionID } }) =>
           ({ close }) => {
             const overlay = document.getElementsByName(
-              `paypal-overlay-${buttonSessionID}`,
+              `paypal-overlay-${buttonSessionID}`
             )?.[0];
 
             if (overlay) {
@@ -456,7 +471,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.addEventListener(
               "visibilitychange",
-              props.visibilityChangeHandler,
+              props.visibilityChangeHandler
             );
           },
       },
@@ -469,7 +484,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           () => {
             window.removeEventListener(
               "visibilitychange",
-              props.visibilityChangeHandler,
+              props.visibilityChangeHandler
             );
           },
       },
@@ -956,7 +971,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             // $FlowFixMe
             value,
             layout,
-            fundingSources,
+            fundingSources
           );
         },
       },
@@ -1041,7 +1056,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
             const modalInstance = await getModal(
               clientID,
               merchantID,
-              buttonSessionID,
+              buttonSessionID
             );
             return modalInstance?.show({
               amount,
@@ -1137,8 +1152,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return Boolean(
             props.onShippingChange ||
-            props.onShippingAddressChange ||
-            props.onShippingOptionsChange,
+              props.onShippingAddressChange ||
+              props.onShippingOptionsChange
           );
         },
       },
@@ -1272,6 +1287,19 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: getSDKMeta,
       },
 
+      hasInteracted: {
+        type: "boolean",
+        queryParam: true,
+        required: false,
+        value: () => hasUserInteracted(),
+      },
+
+      onUserInteraction: {
+        type: "function",
+        required: false,
+        value: () => notifyUserInteraction,
+      },
+
       sdkToken: {
         type: "string",
         required: false,
@@ -1372,7 +1400,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
         value: ({ props }) => {
           return isSupportedNativeVenmoBrowser(
             props.experiment,
-            props.userAgent,
+            props.userAgent
           );
         },
         queryParam: true,
@@ -1393,7 +1421,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
           return supportsVenmoPopupsUtil(
             props.experiment,
             userAgentSupportsPopups(),
-            props.userAgent,
+            props.userAgent
           );
         },
         queryParam: true,
@@ -1463,3 +1491,8 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
     },
   });
 });
+
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
+registerMaskedComponent(getButtonsComponent);

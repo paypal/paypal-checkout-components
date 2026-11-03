@@ -12,6 +12,8 @@ import { create, EVENT, type ZoidComponent } from "@krakenjs/zoid/src";
 import { inlineMemoize, destroyElement, toCSS } from "@krakenjs/belter/src";
 import { node, dom } from "@krakenjs/jsx-pragmatic/src";
 
+import { registerMaskedComponent, hasUserInteracted } from "../../lib";
+
 import { type ModalProps } from "./props";
 
 const CLASS = {
@@ -138,6 +140,13 @@ export function getModalComponent(): ModalComponent {
           value: getSDKMeta,
         },
 
+        hasInteracted: {
+          type: "boolean",
+          queryParam: true,
+          required: false,
+          value: () => hasUserInteracted(),
+        },
+
         clientID: {
           type: "string",
           queryParam: true,
@@ -156,3 +165,8 @@ export function getModalComponent(): ModalComponent {
     });
   });
 }
+
+// $FlowFixMe - the relay is intentionally duck-typed across every
+// zoid component's differently-shaped instance type
+// $FlowFixMe
+registerMaskedComponent(getModalComponent);

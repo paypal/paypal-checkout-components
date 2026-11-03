@@ -4,9 +4,21 @@
  * Verifies component initialization, memoization, and proper setup of SDK dependencies.
  */
 
-import { describe, expect, test, vi } from "vitest";
+import { describe, expect, test, it, vi } from "vitest";
 
 import { getQRCodeComponent } from "./component";
+
+// Capture the config object component.jsx passes to zoid's create() so we can
+// inspect props (eg. hasInteracted), while still returning a callable
+// function so existing assertions (typeof component === "function") keep
+// working.
+const { createMock } = vi.hoisted(() => ({
+  createMock: vi.fn((options) => Object.assign(() => undefined, options)),
+}));
+
+vi.mock("@krakenjs/zoid/src", () => ({
+  create: createMock,
+}));
 
 vi.mock("@paypal/sdk-client/src", () => ({
   getLogger: vi.fn(() => ({
@@ -15,6 +27,8 @@ vi.mock("@paypal/sdk-client/src", () => ({
     track: vi.fn().mockReturnThis(),
     flush: vi.fn().mockReturnThis(),
     metricCounter: vi.fn().mockReturnThis(),
+    addMetaBuilder: vi.fn(),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
   })),
   getPayPalDomainRegex: vi.fn(() => /paypal\.com/),
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),
@@ -42,5 +56,19 @@ describe("getQRCodeComponent", () => {
     const component2 = getQRCodeComponent();
 
     expect(component1).toBe(component2);
+  });
+});
+
+describe("getQRCodeComponent FPTI IP masking", () => {
+  it("defaults hasInteracted to false before any interaction, receiving relay from siblings", async () => {
+    const { hasUserInteracted } = await import("../../lib");
+    getQRCodeComponent();
+    const { props } = createMock.mock.calls[0][0];
+
+    expect(hasUserInteracted()).toBe(false);
+    expect(props.hasInteracted.value()).toBe(false);
+    // QR Code never originates interaction itself - it's always opened
+    // after the Venmo button click, which is the real hook.
+    expect(props.onUserInteraction).toBeUndefined();
   });
 });

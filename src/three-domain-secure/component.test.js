@@ -20,7 +20,16 @@ vi.mock("./utils", () => ({
   }),
 }));
 
-vi.mock("@paypal/sdk-client/src");
+vi.mock("@paypal/sdk-client/src", () => ({
+  getEnv: vi.fn(),
+  // src/lib/fpti-ip-masking.js registers a meta builder on module load;
+  // a fully auto-mocked getLogger() returns undefined, which would throw
+  // when that registration runs.
+  getLogger: vi.fn(() => ({
+    addMetaBuilder: vi.fn(),
+    immediateFlush: vi.fn().mockResolvedValue(undefined),
+  })),
+}));
 vi.mocked(getEnv).mockReturnValue("stage");
 const defaultEligibilityResponse = {
   status: "PAYER_ACTION_REQUIRED",
