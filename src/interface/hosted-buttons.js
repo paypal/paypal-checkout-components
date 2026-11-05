@@ -28,6 +28,9 @@ export const QRCode: LazyProtectedExport<QRCodeComponent> = {
   __get__: () => protectedExport(getQRCodeComponent()),
 };
 
+// Intentionally mirrors `allowIframe` in ./button.js: checkout calls
+// `paypal.allowIframe()` before rendering in an iframe, and with only
+// `components=hosted-buttons` loaded that export would otherwise be undefined.
 export const allowIframe: LazyProtectedExport<typeof _allowIframe> = {
   __get__: () => protectedExport(_allowIframe),
 };
