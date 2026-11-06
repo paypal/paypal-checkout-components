@@ -1,3 +1,5 @@
+/* @flow */
+
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { isPayPalDomain } from "@paypal/sdk-client/src";
 
