@@ -1,3 +1,9 @@
+## <small>5.0.439 (2026-11-09)</small>
+
+* Fix/hosted buttons allow iframe (#2667) ([f2c422a](https://github.com/paypal/paypal-checkout-components/commit/f2c422a)), closes [#2667](https://github.com/paypal/paypal-checkout-components/issues/2667)
+
+
+
 ## <small>5.0.438 (2026-10-19)</small>
 
 * fix: pin webpack version (#2674) ([c115544](https://github.com/paypal/paypal-checkout-components/commit/c115544)), closes [#2674](https://github.com/paypal/paypal-checkout-components/issues/2674)
