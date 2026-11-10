@@ -850,7 +850,7 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                   : null,
               isPayPalInstalled: Boolean(window.popupBridge.isPayPalInstalled),
               isVenmoInstalled: Boolean(window.popupBridge.isVenmoInstalled),
-              start: (url) => {
+              start: (url, { appSwitch } = {}) => {
                 return new ZalgoPromise((resolve, reject) => {
                   window.popupBridge.onComplete = (err, result) => {
                     if (!err && !result) {
@@ -869,7 +869,11 @@ export const getButtonsComponent: () => ButtonsComponent = memoize(() => {
                       : queryItems;
                     return err ? reject(err) : resolve(payload);
                   };
-                  window.popupBridge.open(url);
+                  if (appSwitch) {
+                    window.popupBridge.open(url, { appSwitch: true });
+                  } else {
+                    window.popupBridge.open(url);
+                  }
                 });
               },
               launchApp: (url) => {
