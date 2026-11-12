@@ -1,3 +1,9 @@
+## <small>5.0.440 (2026-11-12)</small>
+
+* Revert "Mask buyer IP in logged events until SDK interaction (#2670)" (#2683) ([aa78662](https://github.com/paypal/paypal-checkout-components/commit/aa78662)), closes [#2670](https://github.com/paypal/paypal-checkout-components/issues/2670) [#2683](https://github.com/paypal/paypal-checkout-components/issues/2683)
+
+
+
 ## <small>5.0.439 (2026-11-09)</small>
 
 * Fix/hosted buttons allow iframe (#2667) ([f2c422a](https://github.com/paypal/paypal-checkout-components/commit/f2c422a)), closes [#2667](https://github.com/paypal/paypal-checkout-components/issues/2667)
