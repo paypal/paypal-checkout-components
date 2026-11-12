@@ -7,4 +7,3 @@ export * from "./security";
 export * from "./session";
 export * from "./appSwitchResume";
 export * from "./perceived-latency-instrumentation";
-export * from "./fpti-ip-masking";

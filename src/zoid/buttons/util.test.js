@@ -7,12 +7,6 @@ import { resolveMerchantDomain } from "./util";
 
 vi.mock("@paypal/sdk-client/src", () => ({
   isPayPalDomain: vi.fn(),
-  // src/lib/fpti-ip-masking.js registers a meta builder on module load;
-  // without these, importing ../../lib (transitively) would throw.
-  getLogger: vi.fn(() => ({
-    addMetaBuilder: vi.fn(),
-    immediateFlush: vi.fn().mockResolvedValue(undefined),
-  })),
 }));
 
 describe("resolveMerchantDomain", () => {

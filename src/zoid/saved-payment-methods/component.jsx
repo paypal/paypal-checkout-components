@@ -59,9 +59,6 @@ import {
   prepareInstrumentationPayload,
   sessionState,
   storageState,
-  registerMaskedComponent,
-  hasUserInteracted,
-  notifyUserInteraction,
 } from "../../lib";
 import {
   getButtonExperiments,
@@ -677,19 +674,6 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
           value: getSDKMeta,
         },
 
-        hasInteracted: {
-          type: "boolean",
-          queryParam: true,
-          required: false,
-          value: () => hasUserInteracted(),
-        },
-
-        onUserInteraction: {
-          type: "function",
-          required: false,
-          value: () => notifyUserInteraction,
-        },
-
         sdkToken: {
           type: "string",
           required: false,
@@ -812,8 +796,3 @@ export const getSavedPaymentMethodsComponent: () => SavedPaymentMethodsComponent
       },
     });
   });
-
-// $FlowFixMe - the relay is intentionally duck-typed across every
-// zoid component's differently-shaped instance type
-// $FlowFixMe
-registerMaskedComponent(getSavedPaymentMethodsComponent);

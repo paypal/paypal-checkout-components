@@ -34,13 +34,7 @@ import {
   type FundingEligibilityType,
 } from "@paypal/sdk-constants/src";
 
-import {
-  getSessionID,
-  ValidationError,
-  registerMaskedComponent,
-  hasUserInteracted,
-  notifyUserInteraction,
-} from "../../lib";
+import { getSessionID, ValidationError } from "../../lib";
 
 import { CardPrerender } from "./prerender";
 
@@ -79,7 +73,6 @@ type CardFieldsProps = {|
   cardFieldsSessionID: string,
   debug: boolean,
   sdkMeta: string,
-  hasInteracted?: boolean,
   fundingEligibility: FundingEligibilityType,
   disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
   currency: $Values<typeof CURRENCY>,
@@ -347,13 +340,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             type: "string",
             queryParam: true,
             value: ({ props }) => props.parent.props.sdkMeta,
-          },
-
-          hasInteracted: {
-            type: "boolean",
-            queryParam: true,
-            required: false,
-            value: ({ props }) => props.parent.props.hasInteracted,
           },
 
           style: {
@@ -697,19 +683,6 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
           value: getSDKMeta,
         },
 
-        hasInteracted: {
-          type: "boolean",
-          queryParam: true,
-          required: false,
-          value: () => hasUserInteracted(),
-        },
-
-        onUserInteraction: {
-          type: "function",
-          required: false,
-          value: () => notifyUserInteraction,
-        },
-
         style: {
           type: "object",
           required: false,
@@ -823,8 +796,3 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
     return CardFields;
   },
 );
-
-// $FlowFixMe - the relay is intentionally duck-typed across every
-// zoid component's differently-shaped instance type
-// $FlowFixMe
-registerMaskedComponent(getCardFieldsComponent);
