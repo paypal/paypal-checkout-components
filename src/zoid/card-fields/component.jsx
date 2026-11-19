@@ -25,6 +25,7 @@ import {
   getUserIDToken,
   getSDKToken,
   getClientMetadataID,
+  getDisableSetCookie,
 } from "@paypal/sdk-client/src";
 import { getRefinedFundingEligibility } from "@paypal/funding-components/src";
 import {
@@ -75,6 +76,7 @@ type CardFieldsProps = {|
   sdkMeta: string,
   fundingEligibility: FundingEligibilityType,
   disableCard?: $ReadOnlyArray<$Values<typeof CARD>>,
+  disableSetCookie?: boolean,
   currency: $Values<typeof CURRENCY>,
   amount: string,
   intent: $Values<typeof INTENT>,
@@ -251,6 +253,13 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             required: false,
             queryParam: true,
             value: ({ props }) => props.parent.props.clientMetadataID,
+          },
+
+          disableSetCookie: {
+            type: "boolean",
+            required: false,
+            queryParam: true,
+            value: ({ props }) => props.parent.props.disableSetCookie,
           },
 
           createOrder: {
@@ -602,6 +611,13 @@ export const getCardFieldsComponent: () => CardFieldsComponent = memoize(
             return clientMetadataId ? clientMetadataId : props.sessionID;
           },
           queryParam: true,
+        },
+
+        disableSetCookie: {
+          type: "boolean",
+          required: false,
+          queryParam: true,
+          value: getDisableSetCookie,
         },
 
         createOrder: {
