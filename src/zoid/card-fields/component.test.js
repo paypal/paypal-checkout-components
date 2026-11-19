@@ -49,7 +49,7 @@ describe("getCardFieldsComponent disableSetCookie prop", () => {
     expect(disableSetCookie.value()).toBe(true);
   });
 
-  it("defines disableSetCookie on every child field as an optional boolean query param", () => {
+  it("defines disableSetCookie on every card field (number, cvv, expiry, name, postal) as an optional boolean query param", () => {
     const children = getChildOptions();
 
     expect(children.map(({ tag }) => tag).sort()).toEqual([
@@ -57,6 +57,8 @@ describe("getCardFieldsComponent disableSetCookie prop", () => {
       "paypal-card-expiry-field",
       "paypal-card-name-field",
       "paypal-card-number-field",
+      // created via genericCardField but not yet exposed as a child (see TODO)
+      "paypal-card-postal-field",
     ]);
 
     children.forEach(({ props }) => {
