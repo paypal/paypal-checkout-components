@@ -1,6 +1,6 @@
 /* @flow */
 
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { FUNDING_BRAND_LABEL } from "@paypal/sdk-constants/src";
 
 import { getButtonsComponent } from "./component";
@@ -123,5 +123,150 @@ describe("getButtonsComponent iframe allow attribute", () => {
       attributes({ props: { experiment: { isWebMCPEnabled: true } } }).iframe
         .allow,
     ).toBe("payment https://www.paypal.com; tools *");
+  });
+});
+
+describe("getButtonsComponent getPopupBridge prop", () => {
+  const originalPopupBridge = window.popupBridge;
+
+  afterEach(() => {
+    // $FlowIgnore[incompatible-type]
+    window.popupBridge = originalPopupBridge;
+  });
+
+  it("returns undefined when window.popupBridge is not present", () => {
+    // $FlowIgnore[incompatible-type]
+    delete window.popupBridge;
+
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+    const getPopupBridge = props.getPopupBridge.value();
+
+    expect(getPopupBridge()).toBeUndefined();
+  });
+
+  it("exposes isVenmoInstalled alongside isPayPalInstalled when window.popupBridge is present", () => {
+    // $FlowIgnore[incompatible-type]
+    window.popupBridge = {
+      getReturnUrlPrefix: () => "https://example.com/return",
+      isPayPalInstalled: false,
+      isVenmoInstalled: true,
+      open: vi.fn(),
+    };
+
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+    const getPopupBridge = props.getPopupBridge.value();
+
+    expect(getPopupBridge()).toMatchObject({
+      isPayPalInstalled: false,
+      isVenmoInstalled: true,
+    });
+  });
+
+  it("coerces a missing isVenmoInstalled to false rather than undefined", () => {
+    // $FlowIgnore[incompatible-type]
+    window.popupBridge = {
+      getReturnUrlPrefix: () => "https://example.com/return",
+      isPayPalInstalled: false,
+      open: vi.fn(),
+    };
+
+    getButtonsComponent();
+    const { props } = createMock.mock.calls[0][0];
+    const getPopupBridge = props.getPopupBridge.value();
+
+    expect(getPopupBridge().isVenmoInstalled).toBe(false);
+  });
+
+  describe("start()", () => {
+    const CHECKOUT_URL = "https://account.venmo.com/go/web/paypal?token=EC-1";
+
+    function setupBridge(): Object {
+      const mockBridge = {
+        getReturnUrlPrefix: () => "https://example.com/return",
+        isPayPalInstalled: false,
+        isVenmoInstalled: true,
+        open: vi.fn(),
+      };
+      // $FlowIgnore[incompatible-type]
+      window.popupBridge = mockBridge;
+
+      getButtonsComponent();
+      const { props } = createMock.mock.calls[0][0];
+      const bridge = props.getPopupBridge.value()();
+
+      return { bridge, mockBridge };
+    }
+
+    it("opens with the URL only when no options are passed, as before", () => {
+      const { bridge, mockBridge } = setupBridge();
+
+      bridge.start(CHECKOUT_URL);
+
+      expect(mockBridge.open).toHaveBeenCalledTimes(1);
+      expect(mockBridge.open.mock.calls[0]).toEqual([CHECKOUT_URL]);
+    });
+
+    it("opens with the URL only when appSwitch is not set", () => {
+      const { bridge, mockBridge } = setupBridge();
+
+      bridge.start(CHECKOUT_URL, {});
+      bridge.start(CHECKOUT_URL, { appSwitch: false });
+
+      expect(mockBridge.open.mock.calls).toEqual([
+        [CHECKOUT_URL],
+        [CHECKOUT_URL],
+      ]);
+    });
+
+    it("passes the appSwitch option through to popupBridge.open", () => {
+      const { bridge, mockBridge } = setupBridge();
+
+      bridge.start(CHECKOUT_URL, { appSwitch: true });
+
+      expect(mockBridge.open).toHaveBeenCalledTimes(1);
+      expect(mockBridge.open).toHaveBeenCalledWith(CHECKOUT_URL, {
+        appSwitch: true,
+      });
+    });
+
+    it("resolves with the query items from onComplete, with or without appSwitch", async () => {
+      for (const options of [undefined, { appSwitch: true }]) {
+        const { bridge, mockBridge } = setupBridge();
+
+        const promise = bridge.start(CHECKOUT_URL, options);
+        mockBridge.onComplete(null, {
+          path: "/return",
+          hash: "h",
+          queryItems: { opType: "onApprove", payerID: "PAYER-1" },
+        });
+
+        expect(await promise).toEqual({
+          opType: "onApprove",
+          payerID: "PAYER-1",
+          path: "/return",
+          hash: "h",
+        });
+      }
+    });
+
+    it("resolves user_closed_window when onComplete fires with no result", async () => {
+      const { bridge, mockBridge } = setupBridge();
+
+      const promise = bridge.start(CHECKOUT_URL, { appSwitch: true });
+      mockBridge.onComplete(null, null);
+
+      expect(await promise).toEqual({ opType: "user_closed_window" });
+    });
+
+    it("rejects when onComplete fires with an error", async () => {
+      const { bridge, mockBridge } = setupBridge();
+
+      const promise = bridge.start(CHECKOUT_URL);
+      mockBridge.onComplete(new Error("bridge failed"), null);
+
+      await expect(promise).rejects.toThrow("bridge failed");
+    });
   });
 });
