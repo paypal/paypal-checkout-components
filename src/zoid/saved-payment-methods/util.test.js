@@ -91,13 +91,36 @@ describe("validateSavedPaymentMethodsStyle", () => {
     ).toThrow(/Expected style\.root\.backgroundColor to be a string/);
   });
 
-  it("rejects unknown component keys and non-string component values", () => {
+  it("allows numeric component and layout size fields", () => {
+    expect(() =>
+      validateSavedPaymentMethodsStyle({
+        component: {
+          height: 32,
+          borderRadius: 6,
+          borderWidth: 0,
+        },
+        layout: {
+          logoWidth: 45,
+        },
+      }),
+    ).not.toThrow();
+  });
+
+  it("rejects unknown component keys and wrong component value types", () => {
     expect(() =>
       validateSavedPaymentMethodsStyle({ component: { width: "1" } }),
     ).toThrow(/Invalid style\.component key: width/);
     expect(() =>
       validateSavedPaymentMethodsStyle({ component: { height: true } }),
-    ).toThrow(/Expected style\.component\.height to be a string/);
+    ).toThrow(/Expected style\.component\.height to be a string or number/);
+    expect(() =>
+      validateSavedPaymentMethodsStyle({ component: { padding: 8 } }),
+    ).toThrow(/Expected style\.component\.padding to be a string/);
+    expect(() =>
+      validateSavedPaymentMethodsStyle({ component: { borderWidth: true } }),
+    ).toThrow(
+      /Expected style\.component\.borderWidth to be a string or number/,
+    );
   });
 
   it("rejects unknown layout keys", () => {
@@ -112,6 +135,9 @@ describe("validateSavedPaymentMethodsStyle", () => {
     ).toThrow(/Expected style\.layout\.logo to be a boolean/);
     expect(() =>
       validateSavedPaymentMethodsStyle({ layout: { logoWidth: true } }),
-    ).toThrow(/Expected style\.layout\.logoWidth to be a string/);
+    ).toThrow(/Expected style\.layout\.logoWidth to be a string or number/);
+    expect(() =>
+      validateSavedPaymentMethodsStyle({ layout: { labelFiGap: true } }),
+    ).toThrow(/Expected style\.layout\.labelFiGap to be a string/);
   });
 });
