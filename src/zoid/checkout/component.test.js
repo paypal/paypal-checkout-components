@@ -35,12 +35,15 @@ vi.mock("@paypal/sdk-client/src", async (importOriginal) => ({
   getPayPalDomain: vi.fn(() => "https://www.paypal.com"),
 }));
 
+const EXPECTED_ALLOW =
+  "payment https://www.paypal.com; publickey-credentials-get https://www.paypal.com";
+
 describe("getCheckoutComponent iframe payment permissions policy", () => {
   it("delegates the payment permissions policy to the checkout iframe's actual origin", () => {
     getCheckoutComponent();
     const { attributes } = createMock.mock.calls[0][0];
 
-    expect(attributes.iframe.allow).toBe("payment https://www.paypal.com");
+    expect(attributes.iframe.allow).toBe(EXPECTED_ALLOW);
   });
 
   it("keeps the existing scrolling attribute alongside the new allow attribute", () => {
@@ -48,7 +51,7 @@ describe("getCheckoutComponent iframe payment permissions policy", () => {
     const { attributes } = createMock.mock.calls[0][0];
 
     expect(attributes.iframe.scrolling).toBe("yes");
-    expect(attributes.iframe.allow).toBe("payment https://www.paypal.com");
+    expect(attributes.iframe.allow).toBe(EXPECTED_ALLOW);
   });
 
   it("still delegates the payment permissions policy when the component falls back to CONTEXT.IFRAME", async () => {
@@ -57,14 +60,13 @@ describe("getCheckoutComponent iframe payment permissions policy", () => {
     // un-memoized component that actually re-evaluates supportsPopups().
     vi.mocked(supportsPopups).mockReturnValueOnce(false);
     vi.resetModules();
-    const { getCheckoutComponent: getFreshCheckoutComponent } = await import(
-      "./component"
-    );
+    const { getCheckoutComponent: getFreshCheckoutComponent } =
+      await import("./component");
 
     getFreshCheckoutComponent();
 
     const { attributes } = createMock.mock.calls.at(-1)[0];
-    expect(attributes.iframe.allow).toBe("payment https://www.paypal.com");
+    expect(attributes.iframe.allow).toBe(EXPECTED_ALLOW);
   });
 
   it("names the origin explicitly rather than relying on the 'src' keyword", () => {
@@ -80,5 +82,16 @@ describe("getCheckoutComponent iframe payment permissions policy", () => {
 
     expect(attributes.iframe.allow).not.toBe("payment");
     expect(attributes.iframe.allow).toContain("https://www.paypal.com");
+  });
+});
+
+describe("getCheckoutComponent iframe passkey (WebAuthn) permissions policy", () => {
+  it("delegates publickey-credentials-get to the checkout iframe's actual origin", () => {
+    getCheckoutComponent();
+    const { attributes } = createMock.mock.calls[0][0];
+
+    expect(attributes.iframe.allow).toContain(
+      "publickey-credentials-get https://www.paypal.com",
+    );
   });
 });
